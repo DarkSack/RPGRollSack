@@ -1,0 +1,22 @@
+# Configuración de la base de datos
+# SQLite es la base de datos por defecto para este plugin
+
+database:
+  # Tipo de base de datos (actualmente solo SQLite está soportado)
+  type: sqlite
+
+  # Nombre del archivo de base de datos
+  # Se guardará en plugins/RPGRoll/database/
+  filename: rpgroll.db
+
+  # Configuración de conexión
+  connection:
+    # Habilitar claves foráneas (recomendado)
+    foreign_keys: true
+
+    # Modo de journal (WAL es más rápido para lecturas/escrituras concurrentes)
+    # Opciones: DELETE, TRUNCATE, PERSIST, MEMORY, WAL, OFF
+    journal_mode: WAL
+
+    # Timeout en milisegundos para esperar cuando la BD está bloqueada
+    busy_timeout: 5000

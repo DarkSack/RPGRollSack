@@ -1,0 +1,109 @@
+# Archivo de idioma: Español de México (es_MX)
+# RPGRoll - Sistema de mensajes
+
+# Mensajes generales
+general:
+  prefix: "&7[&6RPGRoll&7]&r"
+  no_permission: "&cNo tienes permiso para usar este comando."
+  player_only: "&cEste comando solo puede ser usado por jugadores."
+  unknown_command: "&cComando desconocido. Usa &e/rpg help&c para ver los comandos disponibles."
+  config_reloaded: "&aConfiguración recargada correctamente."
+
+# Sistema de jugadores
+player:
+  data_loading: "&eÁcargando datos del jugador..."
+  data_loaded: "&a¡Datos cargados correctamente!"
+  data_error: "&cError al cargar datos. Por favor contacta a un administrador."
+  first_join: "&e¡Bienvenido a RPGRoll! Selecciona tu raza y clase para comenzar."
+
+# Sistema de niveles
+level:
+  level_up: "&a¡Felicidades! Has subido al nivel &e{level}&a!"
+  exp_gained: "&a+{exp} EXP"
+  max_level: "&eHas alcanzado el nivel máximo."
+  current_level: "&aNivel actual: &e{level}"
+  current_exp: "&aExperiencia: &e{current}/{required}"
+  exp_to_next: "&aExperiencia para siguiente nivel: &e{remaining}"
+
+# Sistema de estadísticas
+stats:
+  view_stats: "&6=== Estadísticas de {player} ==="
+  strength: "&cFuerza: &f{value}"
+  dexterity: "&aDestreza: &f{value}"
+  constitution: "&6Constitución: &f{value}"
+  intelligence: "&9Inteligencia: &f{value}"
+  wisdom: "&bSabiduría: &f{value}"
+  charisma: "&dCarisma: &f{value}"
+  points_available: "&ePoints disponibles: &f{points}"
+  stat_increased: "&a¡{stat} aumentada a {value}!"
+  stat_max: "&c¡Esta estadística ya está al máximo!"
+  no_points: "&cNo tienes puntos de estadística disponibles."
+  invalid_stat: "&cEstadística inválida. Usa: strength, dexterity, constitution, intelligence, wisdom, charisma"
+
+# Sistema de clases
+class:
+  select: "&aHas seleccionado la clase: &e{class}"
+  current: "&aTu clase actual: &e{class}"
+  no_class: "&cAún no has seleccionado una clase."
+  cannot_change: "&cNo puedes cambiar de clase."
+  min_level: "&cNecesitas nivel {level} para seleccionar una clase."
+  list: "&6Clases disponibles: &e{classes}"
+
+# Sistema de razas
+race:
+  select: "&aHas seleccionado la raza: &e{race}"
+  current: "&aTu raza actual: &e{race}"
+  no_race: "&cAún no has seleccionado una raza."
+  cannot_change: "&cNo puedes cambiar de raza."
+  list: "&6Razas disponibles: &e{races}"
+
+# Sistema de habilidades
+skill:
+  activated: "&aHabilidad &e{skill}&a activada!"
+  cooldown: "&cEsta habilidad está en cooldown. Espera {time} segundos."
+  no_mana: "&cNo tienes suficiente maná. Necesitas {mana}."
+  in_combat: "&cNo puedes usar esta habilidad en combate."
+  learned: "&a¡Has aprendido la habilidad &e{skill}&a!"
+  max_level: "&eEsta habilidad ya está al nivel máximo."
+
+# Sistema de profesiones
+profession:
+  learned: "&aHas aprendido la profesión: &e{profession}"
+  max_professions: "&cYa tienes el máximo de profesiones permitidas ({max})."
+  dropped: "&eHas abandonado la profesión: &e{profession}"
+  cannot_drop: "&cNo puedes abandonar profesiones."
+  exp_gained: "&a+{exp} EXP en {profession}"
+  level_up: "&aTu nivel de &e{profession}&a ha subido a &e{level}&a!"
+
+# Sistema de combate
+combat:
+  entered: "&cHas entrado en combate!"
+  exited: "&aYa no estás en combate."
+  critical_hit: "&e¡Golpe crítico! &6{damage} daño"
+  killed_by: "&cHas sido asesinado por {killer}"
+
+# Sistema de quests (misiones)
+quest:
+  started: "&aHas comenzado la misión: &e{quest}"
+  completed: "&a¡Misión completada! &e{quest}"
+  failed: "&cMisión fallida: &e{quest}"
+  objective_progress: "&e{quest}: &a{current}/{total} {objective}"
+  reward_received: "&aRecompensa recibida: &e{reward}"
+
+# Errores y advertencias
+error:
+  database: "&cError de base de datos. Contacta a un administrador."
+  internal: "&cError interno del servidor."
+  invalid_player: "&cJugador no encontrado."
+  command_failed: "&cError al ejecutar el comando."
+
+# Comandos - Ayuda
+help:
+  header: "&6=== Ayuda de RPGRoll ==="
+  footer: "&6======================"
+  rpg_stats: "&e/rpg stats &7- Ver tus estadísticas"
+  rpg_level: "&e/rpg level &7- Ver tu nivel y experiencia"
+  rpg_class: "&e/rpg class [nombre] &7- Ver o cambiar tu clase"
+  rpg_race: "&e/rpg race [nombre] &7- Ver o cambiar tu raza"
+  rpg_skills: "&e/rpg skills &7- Ver tus habilidades"
+  rpg_reload: "&e/rpg reload &7- Recargar configuración (admin)"

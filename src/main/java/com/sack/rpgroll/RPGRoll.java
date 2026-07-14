@@ -25,4 +25,8 @@ public final class RPGRoll extends JavaPlugin {
 
     }
 
+    public Bootstrap getBootstrap() {
+        return bootstrap;
+    }
+
 }

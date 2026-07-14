@@ -1,0 +1,96 @@
+# Configuración de recompensas por subir de nivel
+# Si un nivel no está especificado, se usarán valores por defecto
+
+rewards:
+  # Nivel 2
+  "2":
+    exp_required: 150
+    stat_points: 2
+    health_bonus: 10
+    mana_bonus: 6
+
+  # Nivel 3
+  "3":
+    exp_required: 325
+    stat_points: 2
+    health_bonus: 15
+    mana_bonus: 9
+
+  # Nivel 5
+  "5":
+    exp_required: 1000
+    stat_points: 3
+    health_bonus: 25
+    mana_bonus: 15
+    unlocked_skills:
+      - "power_strike"
+
+  # Nivel 10
+  "10":
+    exp_required: 5000
+    stat_points: 3
+    health_bonus: 50
+    mana_bonus: 30
+    unlocked_skills:
+      - "whirlwind"
+      - "fireball"
+
+  # Nivel 15
+  "15":
+    exp_required: 15000
+    stat_points: 4
+    health_bonus: 75
+    mana_bonus: 45
+    unlocked_traits:
+      - "warriors_resolve"
+
+  # Nivel 20
+  "20":
+    exp_required: 35000
+    stat_points: 4
+    health_bonus: 100
+    mana_bonus: 60
+    unlocked_skills:
+      - "meteor_strike"
+
+  # Nivel 25
+  "25":
+    exp_required: 65000
+    stat_points: 5
+    health_bonus: 125
+    mana_bonus: 75
+    unlocked_traits:
+      - "arcane_master"
+
+  # Nivel 30
+  "30":
+    exp_required: 110000
+    stat_points: 5
+    health_bonus: 150
+    mana_bonus: 90
+
+  # Nivel 50
+  "50":
+    exp_required: 700000
+    stat_points: 6
+    health_bonus: 250
+    mana_bonus: 150
+
+  # Nivel 100 (Máximo)
+  "100":
+    exp_required: 10000000
+    stat_points: 8
+    health_bonus: 500
+    mana_bonus: 300
+    unlocked_traits:
+      - "legend_of_old"
+
+# Configuración global
+defaults:
+  stat_points_per_level: 2
+  health_bonus_per_level: 5
+  mana_bonus_per_level: 3
+
+  # Fórmula para XP requerido: base_exp * (level-1)^exp_multiplier
+  base_exp: 100
+  exp_multiplier: 1.5
