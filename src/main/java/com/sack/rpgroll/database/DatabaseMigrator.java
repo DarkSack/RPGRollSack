@@ -5,46 +5,52 @@ import com.sack.rpgroll.RPGRoll;
 import java.sql.Connection;
 import java.util.List;
 
+/**
+ * Coordina la ejecución de migraciones.
+ */
 public class DatabaseMigrator {
 
     private final RPGRoll plugin;
-
     private final Connection connection;
 
-    public DatabaseMigrator(
-            RPGRoll plugin,
-            Connection connection) {
+    public DatabaseMigrator(RPGRoll plugin, Connection connection) {
         this.plugin = plugin;
         this.connection = connection;
     }
 
-    public void migrate() {
+    public void migrate() throws Exception {
+
+        SchemaVersionTracker versionTracker = new SchemaVersionTracker(plugin, connection);
+
+        versionTracker.initialize();
 
         MigrationRegistry registry = new MigrationRegistry(plugin);
 
         List<Migration> migrations = registry.load();
 
-        MigrationExecutor executor = new MigrationExecutor(connection);
+        if (migrations.isEmpty()) {
+            plugin.getLogger().info("✔ No hay migraciones registradas.");
+            return;
+        }
 
-        for (Migration migration : migrations) {
+        List<Migration> pending = versionTracker.getPendingMigrations(migrations);
 
-            try {
+        if (pending.isEmpty()) {
+            plugin.getLogger().info("✔ Base de datos actualizada.");
+            return;
+        }
 
-                plugin.getLogger().info(
-                        "Aplicando " + migration.filename());
+        plugin.getLogger().info("Migraciones pendientes: " + pending.size());
 
-                executor.execute(migration);
+        MigrationExecutor executor = new MigrationExecutor(plugin, connection, versionTracker);
 
-            } catch (Exception exception) {
+        for (Migration migration : pending) {
 
-                plugin.getLogger().severe(
-                        "Error aplicando " + migration.filename());
-
-                exception.printStackTrace();
-
-            }
+            executor.execute(migration);
 
         }
+
+        plugin.getLogger().info("✔ Todas las migraciones fueron aplicadas.");
 
     }
 

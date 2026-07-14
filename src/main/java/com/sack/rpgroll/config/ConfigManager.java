@@ -3,6 +3,8 @@ package com.sack.rpgroll.config;
 import com.sack.rpgroll.RPGRoll;
 import com.sack.rpgroll.config.creator.DirectoryCreator;
 import com.sack.rpgroll.config.creator.ResourceCopier;
+import com.sack.rpgroll.config.loader.YamlLoader;
+import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,6 +18,7 @@ public class ConfigManager {
 
     private final DirectoryCreator directoryCreator;
     private final ResourceCopier resourceCopier;
+    private final YamlLoader yamlLoader;
 
     public ConfigManager(RPGRoll plugin) {
 
@@ -25,6 +28,7 @@ public class ConfigManager {
 
         this.directoryCreator = new DirectoryCreator(plugin);
         this.resourceCopier = new ResourceCopier(plugin, configFiles);
+        this.yamlLoader = new YamlLoader(plugin);
 
     }
 
@@ -68,12 +72,49 @@ public class ConfigManager {
                 "gameplay.yml",
                 true));
 
+        // Configuración de habilidades
+        configFiles.add(new ConfigFile(
+                "config/skills.yml",
+                "skills.yml",
+                true));
+
+        // Configuración de traits
+        configFiles.add(new ConfigFile(
+                "config/traits.yml",
+                "traits.yml",
+                true));
+
+        // Configuración de recompensas de level up
+        configFiles.add(new ConfigFile(
+                "config/levelup-rewards.yml",
+                "levelup-rewards.yml",
+                true));
+
         // Idioma por defecto
         configFiles.add(new ConfigFile(
                 "lang/es_MX.yml",
                 "lang/es_MX.yml",
                 true));
 
+    }
+
+    /**
+     * Carga un archivo YAML específico como YamlConfiguration.
+     * 
+     * Útil para cargar configuraciones después de la inicialización.
+     * 
+     * @param filename nombre del archivo (relativo a plugins/RPGRoll/)
+     * @return YamlConfiguration cargada, o null si no existe
+     */
+    public YamlConfiguration getConfig(String filename) {
+        return yamlLoader.loadConfig(filename);
+    }
+
+    /**
+     * Obtiene el cargador de YAML para cargas manuales.
+     */
+    public YamlLoader getYamlLoader() {
+        return yamlLoader;
     }
 
     /**

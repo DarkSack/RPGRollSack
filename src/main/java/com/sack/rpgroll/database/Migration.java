@@ -1,14 +1,12 @@
 package com.sack.rpgroll.database;
 
-import java.nio.file.Path;
-
 public record Migration(
 
         int version,
 
         String filename,
 
-        Path path
+        String resourcePath
 
 ) implements Comparable<Migration> {
 

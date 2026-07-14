@@ -1,0 +1,101 @@
+# Configuración del sistema de juego RPG
+
+# Configuración de experiencia y niveles
+experience:
+  # Experiencia base necesaria para subir del nivel 1 al 2
+  base_exp: 100
+
+  # Multiplicador de experiencia por nivel
+  # Formula: base_exp * (level ^ exp_multiplier)
+  exp_multiplier: 1.5
+
+  # Nivel máximo alcanzable
+  max_level: 100
+
+  # Experiencia otorgada por matar mobs
+  mob_exp:
+    zombie: 10
+    skeleton: 12
+    creeper: 15
+    spider: 8
+    enderman: 50
+    boss: 500
+
+# Sistema de estadísticas (DnD style)
+stats:
+  # Valor base de todas las estadísticas al crear un personaje
+  base_value: 10
+
+  # Valor mínimo permitido
+  min_value: 1
+
+  # Valor máximo permitido
+  max_value: 20
+
+  # Puntos de estadística otorgados por nivel
+  points_per_level: 2
+
+  # Estadísticas disponibles
+  # strength: Fuerza - Daño cuerpo a cuerpo
+  # dexterity: Destreza - Precisión y evasión
+  # constitution: Constitución - Vida y resistencia
+  # intelligence: Inteligencia - Daño mágico
+  # wisdom: Sabiduría - Regeneración de maná
+  # charisma: Carisma - Comercio y diálogo
+
+# Sistema de clases
+classes:
+  # Permitir cambio de clase
+  allow_class_change: false
+
+  # Nivel mínimo para elegir una clase
+  min_level_for_class: 1
+
+  # Clases disponibles (se cargarán desde classes/)
+  enabled: true
+
+# Sistema de razas
+races:
+  # Permitir cambio de raza
+  allow_race_change: false
+
+  # Razas disponibles (se cargarán desde races/)
+  enabled: true
+
+# Sistema de habilidades
+skills:
+  # Cooldown global entre habilidades (en segundos)
+  global_cooldown: 1.0
+
+  # Permitir uso de habilidades en combate
+  allow_in_combat: true
+
+  # Costo de maná base
+  base_mana_cost: 10
+
+# Sistema de profesiones
+professions:
+  # Número máximo de profesiones por jugador
+  max_per_player: 2
+
+  # Permitir abandonar profesiones
+  allow_drop: true
+
+  # Experiencia perdida al abandonar (porcentaje)
+  drop_penalty: 50
+
+# Sistema de combate
+combat:
+  # Tiempo en segundo para considerar "en combate" después del último golpe
+  combat_duration: 10
+
+  # Permitir regeneración natural en combate
+  natural_regen_in_combat: false
+
+  # Daño crítico
+  critical:
+    # Probabilidad base de crítico (porcentaje)
+    base_chance: 5.0
+
+    # Multiplicador de daño crítico
+    damage_multiplier: 2.0
