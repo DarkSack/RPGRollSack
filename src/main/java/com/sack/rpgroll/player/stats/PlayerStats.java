@@ -1,16 +1,7 @@
 package com.sack.rpgroll.player.stats;
 
-/**
- * Estadísticas base de un jugador RPG (estilo D&D).
- * 
- * Record inmutable que representa los 6 atributos principales:
- * - Strength (Fuerza): Daño cuerpo a cuerpo
- * - Dexterity (Destreza): Precisión y evasión
- * - Constitution (Constitución): Vida y resistencia
- * - Intelligence (Inteligencia): Daño mágico
- * - Wisdom (Sabiduría): Regeneración de maná
- * - Charisma (Carisma): Comercio y diálogo
- */
+import com.sack.rpgroll.gameplay.stats.StatType;
+
 public record PlayerStats(
         int strength,
         int dexterity,
@@ -23,23 +14,12 @@ public record PlayerStats(
     public static final int MIN_STAT = 1;
     public static final int MAX_STAT = 20;
 
-    /**
-     * Factory method para crear estadísticas por defecto.
-     * Se utilizan cuando un jugador crea su personaje.
-     */
     public static PlayerStats createDefault() {
         return new PlayerStats(
-                DEFAULT_STAT,
-                DEFAULT_STAT,
-                DEFAULT_STAT,
-                DEFAULT_STAT,
-                DEFAULT_STAT,
-                DEFAULT_STAT);
+                DEFAULT_STAT, DEFAULT_STAT, DEFAULT_STAT,
+                DEFAULT_STAT, DEFAULT_STAT, DEFAULT_STAT);
     }
 
-    /**
-     * Constructor con validación.
-     */
     public PlayerStats {
         if (strength < MIN_STAT || strength > MAX_STAT) {
             throw new IllegalArgumentException("Strength debe estar entre " + MIN_STAT + " y " + MAX_STAT);
@@ -61,10 +41,6 @@ public record PlayerStats(
         }
     }
 
-    /**
-     * Obtiene el modificador de un atributo.
-     * En D&D, el modificador = (atributo - 10) / 2
-     */
     public int getStrengthModifier() {
         return (strength - 10) / 2;
     }
@@ -85,15 +61,47 @@ public record PlayerStats(
         return (wisdom - 10) / 2;
     }
 
-    public int CharismaModifier() {
+    public int getCharismaModifier() {
         return (charisma - 10) / 2;
     }
 
-    /**
-     * Obtiene la suma de todos los atributos.
-     */
     public int getTotalStats() {
         return strength + dexterity + constitution + intelligence + wisdom + charisma;
     }
 
+    /**
+     * Obtiene el valor actual de un stat específico.
+     *
+     * @param stat el StatType a consultar
+     * @return el valor actual de ese stat
+     */
+    public int get(StatType stat) {
+        return switch (stat) {
+            case STRENGTH -> strength;
+            case DEXTERITY -> dexterity;
+            case CONSTITUTION -> constitution;
+            case INTELLIGENCE -> intelligence;
+            case WISDOM -> wisdom;
+            case CHARISMA -> charisma;
+        };
+    }
+
+    /**
+     * Devuelve una nueva instancia de PlayerStats con un stat modificado.
+     * Como PlayerStats es inmutable, este método no muta el objeto actual.
+     *
+     * @param stat  el StatType a modificar
+     * @param value el nuevo valor para ese stat (debe respetar MIN_STAT/MAX_STAT)
+     * @return una nueva instancia de PlayerStats con el valor actualizado
+     */
+    public PlayerStats with(StatType stat, int value) {
+        return switch (stat) {
+            case STRENGTH -> new PlayerStats(value, dexterity, constitution, intelligence, wisdom, charisma);
+            case DEXTERITY -> new PlayerStats(strength, value, constitution, intelligence, wisdom, charisma);
+            case CONSTITUTION -> new PlayerStats(strength, dexterity, value, intelligence, wisdom, charisma);
+            case INTELLIGENCE -> new PlayerStats(strength, dexterity, constitution, value, wisdom, charisma);
+            case WISDOM -> new PlayerStats(strength, dexterity, constitution, intelligence, value, charisma);
+            case CHARISMA -> new PlayerStats(strength, dexterity, constitution, intelligence, wisdom, value);
+        };
+    }
 }
