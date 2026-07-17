@@ -8,12 +8,13 @@ import com.sack.rpgroll.database.DatabaseManager;
 import com.sack.rpgroll.gameplay.listener.LevelUpListener;
 import com.sack.rpgroll.gameplay.listener.MobKillListener;
 import com.sack.rpgroll.gameplay.levelup.LevelUpRewardsConfig;
-import com.sack.rpgroll.gameplay.levelup.PlayerLevelUpHandler;
 import com.sack.rpgroll.gameplay.skill.SkillRegistry;
 import com.sack.rpgroll.gameplay.trait.TraitRegistry;
 import com.sack.rpgroll.gui.listener.GUIListener;
 import com.sack.rpgroll.player.PlayerManager;
 import com.sack.rpgroll.player.listener.PlayerEventListener;
+import com.sack.rpgroll.race.RaceRegistry;
+
 import org.bukkit.Bukkit;
 
 public class Bootstrap {
@@ -28,18 +29,20 @@ public class Bootstrap {
 
     public void initialize() {
 
-        printBanner();
+        try {
+            printBanner();
+            registerCoreServices();
+            registerCommands();
+            registerEventListeners();
 
-        registerCoreServices();
+            plugin.getLogger().info("==================================");
+            plugin.getLogger().info("RPGRoll iniciado correctamente.");
+            plugin.getLogger().info("==================================");
 
-        registerCommands();
-
-        registerEventListeners();
-
-        plugin.getLogger().info("==================================");
-        plugin.getLogger().info("RPGRoll iniciado correctamente.");
-        plugin.getLogger().info("==================================");
-
+        } catch (Exception e) {
+            plugin.getLogger().severe("✘ Error crítico durante el arranque de RPGRoll: " + e.getMessage());
+            Bukkit.getPluginManager().disablePlugin(plugin);
+        }
     }
 
     public void shutdown() {
@@ -104,6 +107,12 @@ public class Bootstrap {
         levelUpRewardsConfig.load();
         services.register(LevelUpRewardsConfig.class, levelUpRewardsConfig);
         plugin.getLogger().info("✔ LevelUpRewardsConfig registrado");
+
+        // 7. RaceRegistry - Carga de razas
+        RaceRegistry raceRegistry = new RaceRegistry(plugin, configManager.getYamlLoader());
+        raceRegistry.load();
+        services.register(RaceRegistry.class, raceRegistry);
+        plugin.getLogger().info("✔ RaceRegistry registrado");
 
     }
 
