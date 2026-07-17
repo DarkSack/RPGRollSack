@@ -6,6 +6,7 @@ import com.sack.rpgroll.config.ConfigManager;
 import com.sack.rpgroll.gameplay.levelup.LevelUpRewardsConfig;
 import com.sack.rpgroll.gameplay.skill.SkillRegistry;
 import com.sack.rpgroll.gameplay.trait.TraitRegistry;
+import com.sack.rpgroll.race.RaceManager;
 import com.sack.rpgroll.race.RaceRegistry;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -29,7 +30,6 @@ public class ReloadCommand implements RPGCommand {
         sender.sendMessage(ChatColor.YELLOW + "Recargando configuración y contenido...");
 
         try {
-
             var services = plugin.getBootstrap().getServices();
 
             // 1. Recargar configuración base (crea carpetas/archivos faltantes)
@@ -40,12 +40,10 @@ public class ReloadCommand implements RPGCommand {
             services.get(TraitRegistry.class).load();
             services.get(LevelUpRewardsConfig.class).load();
 
-            if (services.contains(RaceRegistry.class)) {
-                services.get(RaceRegistry.class).load();
+            if (services.contains(RaceManager.class)) {
+                services.get(RaceManager.class).reload();
             }
-
             sender.sendMessage(ChatColor.GREEN + "✔ Configuración y contenido recargados correctamente.");
-
             plugin.getLogger().info("Configuración recargada por: " + sender.getName());
 
         } catch (Exception exception) {
