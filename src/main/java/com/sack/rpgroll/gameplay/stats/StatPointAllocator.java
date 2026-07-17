@@ -4,11 +4,19 @@ import com.sack.rpgroll.player.RPGPlayer;
 import com.sack.rpgroll.player.stats.PlayerStats;
 
 /**
- * Gestiona la asignación de puntos de estadística.
+ * Gestiona la asignación de puntos de estadística durante la creación
+ * o progresión de un personaje.
+ * <p>
+ * Como {@link RPGPlayer} y {@link PlayerStats} son inmutables, este allocator
+ * mantiene internamente la instancia más reciente de RPGPlayer y la reemplaza
+ * en cada asignación exitosa. El resultado final se obtiene con
+ * {@link #getPlayer()}.
  */
 public class StatPointAllocator {
 
-    private final RPGPlayer player;
+    private static final int MAX_STAT_VALUE = PlayerStats.MAX_STAT;
+
+    private RPGPlayer player;
     private int availablePoints;
 
     public StatPointAllocator(RPGPlayer player, int availablePoints) {
@@ -16,68 +24,42 @@ public class StatPointAllocator {
         this.availablePoints = availablePoints;
     }
 
-    /**
-     * Asigna puntos a una estadística.
-     */
-    public boolean allocate(String stat, int amount) {
-        if (amount > availablePoints) {
+    public boolean allocate(String statInput, int amount) {
+        if (amount <= 0 || amount > availablePoints) {
             return false;
         }
 
-        if (amount <= 0) {
+        StatType stat = StatType.fromString(statInput);
+        if (stat == null) {
             return false;
         }
 
         PlayerStats currentStats = player.getStats();
+        int currentValue = currentStats.get(stat);
 
-        // Validar límites
-        if (currentStats.strength() + amount > 20) {
-            return false; // Máximo 20
+        if (currentValue + amount > MAX_STAT_VALUE) {
+            return false;
         }
 
-        switch (stat.toLowerCase()) {
-            case "strength", "str", "fuerza":
-                availablePoints -= amount;
-                return true;
-            case "dexterity", "dex", "destreza":
-                availablePoints -= amount;
-                return true;
-            case "constitution", "con", "constitucion":
-                availablePoints -= amount;
-                return true;
-            case "intelligence", "int", "inteligencia":
-                availablePoints -= amount;
-                return true;
-            case "wisdom", "wis", "sabiduria":
-                availablePoints -= amount;
-                return true;
-            case "charisma", "cha", "carisma":
-                availablePoints -= amount;
-                return true;
-            default:
-                return false;
-        }
+        PlayerStats updatedStats = currentStats.with(stat, currentValue + amount);
+        player = player.updateStats(updatedStats);
+        availablePoints -= amount;
+        return true;
     }
 
-    /**
-     * Obtiene los puntos disponibles restantes.
-     */
     public int getAvailablePoints() {
         return availablePoints;
     }
 
-    /**
-     * Verifica si hay puntos disponibles.
-     */
     public boolean hasPoints() {
         return availablePoints > 0;
     }
 
-    /**
-     * Verifica si se gastaron todos los puntos.
-     */
     public boolean isComplete() {
         return availablePoints == 0;
     }
 
+    public RPGPlayer getPlayer() {
+        return player;
+    }
 }

@@ -28,8 +28,11 @@ public class DirectoryCreator {
         File dataFolder = plugin.getDataFolder();
 
         if (!dataFolder.exists()) {
-            dataFolder.mkdirs();
-            plugin.getLogger().info("✔ Carpeta principal creada.");
+            if (dataFolder.mkdirs()) {
+                plugin.getLogger().info("✔ Carpeta principal creada.");
+            } else {
+                plugin.getLogger().severe("✘ No se pudo crear la carpeta principal: " + dataFolder.getPath());
+            }
         }
 
         for (String directory : DIRECTORIES) {
@@ -37,15 +40,12 @@ public class DirectoryCreator {
             File folder = new File(dataFolder, directory);
 
             if (!folder.exists()) {
-
-                folder.mkdirs();
-
-                plugin.getLogger().info("✔ Carpeta creada: " + directory);
-
+                if (folder.mkdirs()) {
+                    plugin.getLogger().info("✔ Carpeta creada: " + directory);
+                } else {
+                    plugin.getLogger().severe("✘ No se pudo crear la carpeta: " + directory);
+                }
             }
-
         }
-
     }
-
 }

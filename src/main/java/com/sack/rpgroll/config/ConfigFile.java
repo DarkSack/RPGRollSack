@@ -8,7 +8,7 @@ package com.sack.rpgroll.config;
  * @param required    Indica si el archivo es obligatorio
  */
 public record ConfigFile(
-                String resource,
-                String destination,
-                boolean required) {
+        String resource,
+        String destination,
+        boolean required) {
 }

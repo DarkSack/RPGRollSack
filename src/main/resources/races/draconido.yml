@@ -1,0 +1,21 @@
+id: draconido
+display-name: "&cDraconido"
+description: "Descendientes de dragones ancestrales, con escamas resistentes y aliento elemental."
+
+base-attributes:
+  strength: 2
+  constitution: 2
+  charisma: 1
+  dexterity: -1
+
+passive-traits:
+  - resistencia_fuego
+  - aliento_elemental
+  - escamas_dracónicas
+
+icon: BLAZE_POWDER
+
+lore:
+  - "&7Sangre de dragón corre por sus venas"
+  - "&7Sus escamas resisten el fuego y el calor extremo"
+  - "&7Temidos y respetados por igual en el campo de batalla"
