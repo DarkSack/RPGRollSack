@@ -40,13 +40,16 @@ public class ConfigManager {
         plugin.getLogger().info("");
         plugin.getLogger().info("========== ConfigManager ==========");
 
-        directoryCreator.create();
+        try {
+            directoryCreator.create();
+            resourceCopier.copy();
+            plugin.getLogger().info("Configuración inicializada correctamente.");
+        } catch (Exception e) {
+            plugin.getLogger().severe("✘ Error crítico inicializando configuración: " + e.getMessage());
+            throw new IllegalStateException("Fallo al inicializar ConfigManager", e);
+        }
 
-        resourceCopier.copy();
-
-        plugin.getLogger().info("Configuración inicializada correctamente.");
         plugin.getLogger().info("===================================");
-
     }
 
     /**

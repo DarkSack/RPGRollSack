@@ -1,5 +1,6 @@
 package com.sack.rpgroll.gameplay.stats;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public enum StatType {
@@ -19,7 +20,7 @@ public enum StatType {
     private static final Map<String, StatType> LOOKUP = buildLookup();
 
     private static Map<String, StatType> buildLookup() {
-        Map<String, StatType> map = new java.util.HashMap<>();
+        Map<String, StatType> map = new HashMap<>();
         for (StatType type : values()) {
             for (String alias : type.aliases) {
                 map.put(alias, type);

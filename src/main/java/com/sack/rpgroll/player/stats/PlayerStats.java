@@ -2,6 +2,10 @@ package com.sack.rpgroll.player.stats;
 
 import com.sack.rpgroll.gameplay.stats.StatType;
 
+/**
+ * Estadísticas base de un jugador RPG (estilo D&D).
+ * Record inmutable que representa los 6 atributos principales.
+ */
 public record PlayerStats(
         int strength,
         int dexterity,
@@ -71,9 +75,6 @@ public record PlayerStats(
 
     /**
      * Obtiene el valor actual de un stat específico.
-     *
-     * @param stat el StatType a consultar
-     * @return el valor actual de ese stat
      */
     public int get(StatType stat) {
         return switch (stat) {
@@ -88,11 +89,6 @@ public record PlayerStats(
 
     /**
      * Devuelve una nueva instancia de PlayerStats con un stat modificado.
-     * Como PlayerStats es inmutable, este método no muta el objeto actual.
-     *
-     * @param stat  el StatType a modificar
-     * @param value el nuevo valor para ese stat (debe respetar MIN_STAT/MAX_STAT)
-     * @return una nueva instancia de PlayerStats con el valor actualizado
      */
     public PlayerStats with(StatType stat, int value) {
         return switch (stat) {

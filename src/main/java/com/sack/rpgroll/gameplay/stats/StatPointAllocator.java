@@ -24,16 +24,6 @@ public class StatPointAllocator {
         this.availablePoints = availablePoints;
     }
 
-    /**
-     * Asigna puntos a una estadística del jugador.
-     * Si la asignación es válida, actualiza internamente el RPGPlayer
-     * a una nueva instancia con el stat modificado.
-     *
-     * @param statInput nombre o alias del stat (ej. "str", "fuerza", "strength")
-     * @param amount    cantidad de puntos a asignar (debe ser positivo)
-     * @return {@code true} si la asignación fue exitosa, {@code false} si es
-     *         inválida
-     */
     public boolean allocate(String statInput, int amount) {
         if (amount <= 0 || amount > availablePoints) {
             return false;
@@ -57,31 +47,18 @@ public class StatPointAllocator {
         return true;
     }
 
-    /**
-     * Obtiene los puntos disponibles restantes.
-     */
     public int getAvailablePoints() {
         return availablePoints;
     }
 
-    /**
-     * Verifica si hay puntos disponibles.
-     */
     public boolean hasPoints() {
         return availablePoints > 0;
     }
 
-    /**
-     * Verifica si se gastaron todos los puntos.
-     */
     public boolean isComplete() {
         return availablePoints == 0;
     }
 
-    /**
-     * Obtiene la instancia actualizada de RPGPlayer, con todas las
-     * asignaciones de puntos aplicadas hasta el momento.
-     */
     public RPGPlayer getPlayer() {
         return player;
     }

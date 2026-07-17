@@ -13,23 +13,6 @@ import java.util.Objects;
  * Es un objeto de datos inmutable: no contiene lógica de carga desde YAML
  * ni de persistencia en base de datos. Esa responsabilidad corresponde
  * a un futuro {@code RaceLoader} / {@code RaceRegistry}.
- * <p>
- * Ejemplo de origen esperado (races/elfo.yml):
- * 
- * <pre>
- * id: elfo
- * display-name: "Elfo"
- * description: "Longevos y ágiles, con afinidad natural a la magia."
- * base-attributes:
- *   dexterity: 2
- *   intelligence: 1
- * passive-traits:
- *   - vision_nocturna
- *   - resistencia_encantamiento
- * icon: END_CRYSTAL
- * lore:
- *   - "Habitantes ancestrales del bosque"
- * </pre>
  *
  * @param id              identificador único de la raza (coincide con el nombre
  *                        del archivo YAML)
@@ -55,10 +38,6 @@ public record Race(
         Material icon,
         List<String> lore) {
 
-    /**
-     * Constructor compacto: valida invariantes y garantiza inmutabilidad profunda
-     * de las colecciones (evita que un caller externo mute el estado interno).
-     */
     public Race {
         Objects.requireNonNull(id, "id no puede ser null");
         Objects.requireNonNull(displayName, "displayName no puede ser null");
@@ -69,32 +48,15 @@ public record Race(
         }
 
         description = description == null ? "" : description;
-        baseAttributes = baseAttributes == null
-                ? Map.of()
-                : Map.copyOf(baseAttributes);
-        passiveTraitIds = passiveTraitIds == null
-                ? List.of()
-                : List.copyOf(passiveTraitIds);
-        lore = lore == null
-                ? List.of()
-                : List.copyOf(lore);
+        baseAttributes = baseAttributes == null ? Map.of() : Map.copyOf(baseAttributes);
+        passiveTraitIds = passiveTraitIds == null ? List.of() : List.copyOf(passiveTraitIds);
+        lore = lore == null ? List.of() : List.copyOf(lore);
     }
 
-    /**
-     * Obtiene el bonificador de un atributo base específico otorgado por esta raza.
-     *
-     * @param stat         el StatType a consultar
-     * @param defaultValue valor a devolver si la raza no define bonificador para
-     *                     ese stat
-     * @return el bonificador definido, o {@code defaultValue} si no existe
-     */
     public int getBaseAttribute(StatType stat, int defaultValue) {
         return baseAttributes.getOrDefault(stat, defaultValue);
     }
 
-    /**
-     * @return {@code true} si esta raza otorga al menos un trait pasivo
-     */
     public boolean hasPassiveTraits() {
         return !passiveTraitIds.isEmpty();
     }
