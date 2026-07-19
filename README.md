@@ -22,14 +22,14 @@ RPGRoll se construye priorizando:
 
 ## 🛠️ Stack tecnológico
 
-| Componente | Tecnología |
-|---|---|
-| Lenguaje | Java 21 |
-| API | Paper API 1.21.1 |
-| Build | Gradle (Kotlin DSL) |
+| Componente    | Tecnología                                                         |
+| ------------- | ------------------------------------------------------------------ |
+| Lenguaje      | Java 21                                                            |
+| API           | Paper API 1.21.1                                                   |
+| Build         | Gradle (Kotlin DSL)                                                |
 | Base de datos | SQLite (implementación actual) — preparado para MySQL y PostgreSQL |
-| Configuración | YAML |
-| Migraciones | SQL versionado (estilo Flyway) |
+| Configuración | YAML                                                               |
+| Migraciones   | SQL versionado (estilo Flyway)                                     |
 
 ---
 
@@ -59,7 +59,7 @@ Los administradores de servidor podrán crear y balancear contenido **únicament
 
 ---
 
-## 📦 Estado del desarrollo
+## 🗂️ Estado del desarrollo
 
 ### ✅ Sprint 1 — Infraestructura (COMPLETADO)
 
@@ -80,10 +80,10 @@ Base del framework: arranque, registro de servicios y sistema de configuración 
 
 Sistema de base de datos y migraciones propio, inspirado en Flyway.
 
-- **`database/DatabaseProvider`** *(interfaz)* — `connect()`, `disconnect()`, `isConnected()`, `getConnection()`.
+- **`database/DatabaseProvider`** _(interfaz)_ — `connect()`, `disconnect()`, `isConnected()`, `getConnection()`.
 - **`database/provider/SQLiteProvider`** — implementación de `DatabaseProvider` responsable únicamente de abrir/cerrar la conexión SQLite.
 - **`database/DatabaseManager`** — coordina el acceso a la base de datos. No contiene SQL, no crea tablas, no conoce el motor concreto; selecciona el proveedor según `database.yml`.
-- **`database/Migration`** *(record)* — representa una migración (`version`, `filename`, `path`).
+- **`database/Migration`** _(record)_ — representa una migración (`version`, `filename`, `path`).
 - **`database/MigrationRegistry`** — detecta y ordena automáticamente las migraciones en `database/migrations`.
 - **`database/MigrationExecutor`** — ejecuta el SQL de cada archivo de migración (ej. `V2__create_players.sql`).
 - **`database/DatabaseMigrator`** — conoce el `schema_version` actual, determina las migraciones pendientes y ejecuta únicamente esas.
