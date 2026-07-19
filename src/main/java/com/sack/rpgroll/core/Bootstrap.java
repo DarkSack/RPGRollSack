@@ -4,16 +4,22 @@ import com.sack.rpgroll.RPGRoll;
 import com.sack.rpgroll.command.CommandManager;
 import com.sack.rpgroll.command.commands.*;
 import com.sack.rpgroll.config.ConfigManager;
+import com.sack.rpgroll.content.Reloadable;
 import com.sack.rpgroll.database.DatabaseManager;
 import com.sack.rpgroll.gameplay.listener.LevelUpListener;
 import com.sack.rpgroll.gameplay.listener.MobKillListener;
 import com.sack.rpgroll.gameplay.levelup.LevelUpRewardsConfig;
-import com.sack.rpgroll.gameplay.skill.SkillRegistry;
-import com.sack.rpgroll.gameplay.trait.TraitRegistry;
+import com.sack.rpgroll.gameplay.skill.SkillManager;
+import com.sack.rpgroll.gameplay.trait.TraitManager;
 import com.sack.rpgroll.gui.listener.GUIListener;
 import com.sack.rpgroll.player.PlayerManager;
 import com.sack.rpgroll.player.listener.PlayerEventListener;
-import com.sack.rpgroll.race.RaceRegistry;
+import com.sack.rpgroll.race.RaceManager;
+import java.util.logging.Level;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import org.bukkit.Bukkit;
 
@@ -40,7 +46,11 @@ public class Bootstrap {
             plugin.getLogger().info("==================================");
 
         } catch (Exception e) {
-            plugin.getLogger().severe("✘ Error crítico durante el arranque de RPGRoll: " + e.getMessage());
+            plugin.getLogger().log(
+                    Level.SEVERE,
+                    "✘ Error crítico durante el arranque de RPGRoll",
+                    e);
+
             Bukkit.getPluginManager().disablePlugin(plugin);
         }
     }
@@ -69,6 +79,8 @@ public class Bootstrap {
 
     }
 
+    private final List<Reloadable> reloadableContent = new ArrayList<>();
+
     private void registerCoreServices() {
 
         plugin.getLogger().info("Inicializando servicios...");
@@ -90,17 +102,19 @@ public class Bootstrap {
         services.register(PlayerManager.class, playerManager);
         plugin.getLogger().info("✔ PlayerManager registrado");
 
-        // 4. SkillRegistry - Carga de habilidades
-        SkillRegistry skillRegistry = new SkillRegistry(plugin, configManager.getYamlLoader());
-        skillRegistry.load();
-        services.register(SkillRegistry.class, skillRegistry);
-        plugin.getLogger().info("✔ SkillRegistry registrado");
+        // 4. SkillManager - Carga de habilidades
+        SkillManager skillManager = new SkillManager(plugin, configManager.getYamlLoader());
+        skillManager.initialize();
+        services.register(SkillManager.class, skillManager);
+        reloadableContent.add(skillManager);
+        plugin.getLogger().info("✔ SkillManager registrado");
 
-        // 5. TraitRegistry - Carga de traits
-        TraitRegistry traitRegistry = new TraitRegistry(plugin, configManager.getYamlLoader());
-        traitRegistry.load();
-        services.register(TraitRegistry.class, traitRegistry);
-        plugin.getLogger().info("✔ TraitRegistry registrado");
+        // 5. TraitManager - Carga de traits
+        TraitManager traitManager = new TraitManager(plugin, configManager.getYamlLoader());
+        traitManager.initialize();
+        services.register(TraitManager.class, traitManager);
+        reloadableContent.add(traitManager);
+        plugin.getLogger().info("✔ TraitManager registrado");
 
         // 6. LevelUpRewardsConfig - Carga de recompensas de level up
         LevelUpRewardsConfig levelUpRewardsConfig = new LevelUpRewardsConfig(plugin, configManager.getYamlLoader());
@@ -108,12 +122,17 @@ public class Bootstrap {
         services.register(LevelUpRewardsConfig.class, levelUpRewardsConfig);
         plugin.getLogger().info("✔ LevelUpRewardsConfig registrado");
 
-        // 7. RaceRegistry - Carga de razas
-        RaceRegistry raceRegistry = new RaceRegistry(plugin, configManager.getYamlLoader());
-        raceRegistry.load();
-        services.register(RaceRegistry.class, raceRegistry);
-        plugin.getLogger().info("✔ RaceRegistry registrado");
+        // 7. RaceManager - Sistema de razas
+        RaceManager raceManager = new RaceManager(plugin, configManager.getYamlLoader());
+        raceManager.initialize();
+        services.register(RaceManager.class, raceManager);
+        reloadableContent.add(raceManager);
+        plugin.getLogger().info("✔ RaceManager registrado");
 
+    }
+
+    public List<Reloadable> getReloadableContent() {
+        return Collections.unmodifiableList(reloadableContent);
     }
 
     private void registerCommands() {
