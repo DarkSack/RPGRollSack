@@ -76,7 +76,7 @@ Base del framework: arranque, registro de servicios y sistema de configuración 
   - `loader/YamlLoader` — carga de archivos YAML.
   - `migration/ConfigMigrator` y `migration/VersionChecker` — migración y verificación de versiones de configuración.
 
-### 🔄 Sprint 2 — Persistencia (80–90%)
+### ✅ Sprint 2 — Persistencia (80–90%)
 
 Sistema de base de datos y migraciones propio, inspirado en Flyway.
 
@@ -198,7 +198,3 @@ Próximos módulos planeados: sistema de razas, clases, habilidades, profesiones
 El `.jar` generado se coloca en la carpeta `plugins/` del servidor.
 
 ---
-
-## 📄 Licencia
-
-Por definir.
