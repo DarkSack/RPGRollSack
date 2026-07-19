@@ -6,7 +6,11 @@ import com.sack.rpgroll.gameplay.combat.CombatStats;
 import com.sack.rpgroll.player.PlayerManager;
 import com.sack.rpgroll.player.RPGPlayer;
 import com.sack.rpgroll.player.stats.PlayerStats;
-import org.bukkit.ChatColor;
+import com.sack.rpgroll.util.MessageUtil;
+
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -19,106 +23,151 @@ import java.util.Optional;
  */
 public class MyStatsCommand implements RPGCommand {
 
-    private final RPGRoll plugin;
+        private final RPGRoll plugin;
 
-    public MyStatsCommand(RPGRoll plugin) {
-        this.plugin = plugin;
-    }
+        public MyStatsCommand(RPGRoll plugin) {
+                this.plugin = plugin;
+        }
 
-    @Override
-    public void execute(CommandSender sender, String[] args) {
+        @Override
+        public void execute(CommandSender sender, String[] args) {
 
-        Player player = (Player) sender;
+                Player player = (Player) sender;
 
-        try {
+                try {
 
-            PlayerManager playerManager = plugin.getBootstrap()
-                    .getServices()
-                    .get(PlayerManager.class);
+                        PlayerManager playerManager = plugin.getBootstrap()
+                                        .getServices()
+                                        .get(PlayerManager.class);
 
-            Optional<RPGPlayer> rpgPlayer = playerManager.getPlayer(player.getUniqueId());
+                        Optional<RPGPlayer> rpgPlayer = playerManager.getPlayer(player.getUniqueId());
 
-            if (rpgPlayer.isEmpty()) {
-                player.sendMessage(ChatColor.RED + "Error al cargar tus datos.");
-                return;
-            }
+                        if (rpgPlayer.isEmpty()) {
+                                player.sendMessage(Component.text("No se encontraron estadísticas para tu personaje.",
+                                                NamedTextColor.RED));
+                                player.sendMessage(Component.text("Error al cargar tus datos.", NamedTextColor.RED));
+                                return;
+                        }
 
-            displayDetailedStats(player, rpgPlayer.get());
+                        displayDetailedStats(player, rpgPlayer.get());
 
-        } catch (Exception exception) {
+                } catch (Exception exception) {
 
-            player.sendMessage(ChatColor.RED + "Error al cargar estadísticas.");
-            exception.printStackTrace();
+                        player.sendMessage(Component.text("Error al cargar estadísticas.", NamedTextColor.RED));
+                        exception.printStackTrace();
+
+                }
 
         }
 
-    }
+        private void displayDetailedStats(Player player, RPGPlayer rpgPlayer) {
 
-    private void displayDetailedStats(Player player, RPGPlayer rpgPlayer) {
+                PlayerStats stats = rpgPlayer.getStats();
+                CombatStats combatStats = rpgPlayer.getCombatStats();
 
-        PlayerStats stats = rpgPlayer.getStats();
-        CombatStats combatStats = rpgPlayer.getCombatStats();
+                player.sendMessage(MessageUtil.blank());
 
-        player.sendMessage("");
-        player.sendMessage(ChatColor.GOLD + "╔════════════════════════════════╗");
-        player.sendMessage(ChatColor.YELLOW + "╠        " + ChatColor.BOLD + "MIS ESTADÍSTICAS" + ChatColor.RESET
-                + ChatColor.YELLOW + "        ╣");
-        player.sendMessage(ChatColor.GOLD + "╠════════════════════════════════╣");
+                player.sendMessage(MessageUtil.top());
+                player.sendMessage(MessageUtil.title("MIS ESTADÍSTICAS"));
+                player.sendMessage(MessageUtil.separator());
 
-        // Información básica
-        player.sendMessage(ChatColor.AQUA + "╠ Nivel: " + ChatColor.WHITE + rpgPlayer.getLevel());
-        player.sendMessage(ChatColor.AQUA + "╠ Raza: " + ChatColor.WHITE + rpgPlayer.getRace());
-        player.sendMessage(ChatColor.AQUA + "╠ Clase: " + ChatColor.WHITE + rpgPlayer.getPlayerClass());
+                // Información básica
 
-        player.sendMessage(ChatColor.GOLD + "╠════════════════════════════════╣");
-        player.sendMessage(ChatColor.LIGHT_PURPLE + "╠ ATRIBUTOS D&D");
+                player.sendMessage(MessageUtil.line(
+                                NamedTextColor.AQUA,
+                                "Nivel",
+                                rpgPlayer.getLevel()));
 
-        // Stats D&D
-        player.sendMessage(ChatColor.RED + "╠ Fuerza: " + ChatColor.WHITE + stats.strength());
-        player.sendMessage(ChatColor.GREEN + "╠ Destreza: " + ChatColor.WHITE + stats.dexterity());
-        player.sendMessage(ChatColor.GOLD + "╠ Constitución: " + ChatColor.WHITE + stats.constitution());
-        player.sendMessage(ChatColor.BLUE + "╠ Inteligencia: " + ChatColor.WHITE + stats.intelligence());
-        player.sendMessage(ChatColor.AQUA + "╠ Sabiduría: " + ChatColor.WHITE + stats.wisdom());
-        player.sendMessage(ChatColor.LIGHT_PURPLE + "╠ Carisma: " + ChatColor.WHITE + stats.charisma());
+                player.sendMessage(MessageUtil.line(
+                                NamedTextColor.AQUA,
+                                "Raza",
+                                rpgPlayer.getRace()));
 
-        player.sendMessage(ChatColor.GOLD + "╠════════════════════════════════╣");
-        player.sendMessage(ChatColor.LIGHT_PURPLE + "╠ ESTADÍSTICAS DE COMBATE");
+                player.sendMessage(MessageUtil.line(
+                                NamedTextColor.AQUA,
+                                "Clase",
+                                rpgPlayer.getPlayerClass()));
 
-        // Combat Stats
-        player.sendMessage(ChatColor.RED + "╠ Salud: " + ChatColor.WHITE +
-                combatStats.currentHealth() + "/" + combatStats.maxHealth());
-        player.sendMessage(ChatColor.BLUE + "╠ Maná: " + ChatColor.WHITE +
-                combatStats.currentMana() + "/" + combatStats.maxMana());
-        player.sendMessage(ChatColor.GRAY + "╠ Armadura: " + ChatColor.WHITE +
-                String.format("%.1f", combatStats.armorRating()));
-        player.sendMessage(ChatColor.GRAY + "╠ Evasión: " + ChatColor.WHITE +
-                String.format("%.1f%%", combatStats.evasionChance() * 100));
-        player.sendMessage(ChatColor.YELLOW + "╠ Crítico: " + ChatColor.WHITE +
-                String.format("%.1f%%", combatStats.criticalChance() * 100));
+                player.sendMessage(MessageUtil.separator());
 
-        player.sendMessage(ChatColor.GOLD + "╚════════════════════════════════╝");
-        player.sendMessage("");
+                player.sendMessage(MessageUtil.section("ATRIBUTOS D&D"));
 
-    }
+                player.sendMessage(MessageUtil.line(NamedTextColor.RED,
+                                "Fuerza",
+                                stats.strength()));
 
-    @Override
-    public String getName() {
-        return "mystats";
-    }
+                player.sendMessage(MessageUtil.line(NamedTextColor.GREEN,
+                                "Destreza",
+                                stats.dexterity()));
 
-    @Override
-    public String getDescription() {
-        return "Muestra tus estadísticas detalladas";
-    }
+                player.sendMessage(MessageUtil.line(NamedTextColor.GOLD,
+                                "Constitución",
+                                stats.constitution()));
 
-    @Override
-    public String getUsage() {
-        return "/rpg mystats";
-    }
+                player.sendMessage(MessageUtil.line(NamedTextColor.BLUE,
+                                "Inteligencia",
+                                stats.intelligence()));
 
-    @Override
-    public List<String> getAliases() {
-        return List.of("stats", "detailed", "detalles");
-    }
+                player.sendMessage(MessageUtil.line(NamedTextColor.AQUA,
+                                "Sabiduría",
+                                stats.wisdom()));
+
+                player.sendMessage(MessageUtil.line(NamedTextColor.LIGHT_PURPLE,
+                                "Carisma",
+                                stats.charisma()));
+
+                player.sendMessage(MessageUtil.separator());
+
+                player.sendMessage(MessageUtil.section("ESTADÍSTICAS DE COMBATE"));
+
+                player.sendMessage(MessageUtil.line(
+                                NamedTextColor.RED,
+                                "Salud",
+                                combatStats.currentHealth() + "/" + combatStats.maxHealth()));
+
+                player.sendMessage(MessageUtil.line(
+                                NamedTextColor.BLUE,
+                                "Maná",
+                                combatStats.currentMana() + "/" + combatStats.maxMana()));
+
+                player.sendMessage(MessageUtil.line(
+                                NamedTextColor.GRAY,
+                                "Armadura",
+                                String.format("%.1f", combatStats.armorRating())));
+
+                player.sendMessage(MessageUtil.line(
+                                NamedTextColor.GRAY,
+                                "Evasión",
+                                String.format("%.1f%%", combatStats.evasionChance() * 100)));
+
+                player.sendMessage(MessageUtil.line(
+                                NamedTextColor.YELLOW,
+                                "Crítico",
+                                String.format("%.1f%%", combatStats.criticalChance() * 100)));
+
+                player.sendMessage(MessageUtil.bottom());
+
+                player.sendMessage(MessageUtil.blank());
+        }
+
+        @Override
+        public String getName() {
+                return "mystats";
+        }
+
+        @Override
+        public String getDescription() {
+                return "Muestra tus estadísticas detalladas";
+        }
+
+        @Override
+        public String getUsage() {
+                return "/rpg mystats";
+        }
+
+        @Override
+        public List<String> getAliases() {
+                return List.of("stats", "detailed", "detalles");
+        }
 
 }

@@ -4,8 +4,6 @@ import com.sack.rpgroll.RPGRoll;
 import com.sack.rpgroll.config.ConfigManager;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import java.sql.Connection;
-
 /**
  * DatabaseManager es el coordinador central de la capa de persistencia.
  * 

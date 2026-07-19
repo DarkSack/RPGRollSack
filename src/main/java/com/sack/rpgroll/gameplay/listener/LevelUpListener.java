@@ -1,7 +1,10 @@
 package com.sack.rpgroll.gameplay.listener;
 
 import com.sack.rpgroll.gameplay.event.LevelUpEvent;
-import org.bukkit.ChatColor;
+
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -20,16 +23,20 @@ public class LevelUpListener implements Listener {
         var rewards = event.getRewards();
 
         // Anunciar a todos los jugadores
-        Bukkit.broadcastMessage(ChatColor.GOLD + "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-        Bukkit.broadcastMessage(ChatColor.YELLOW + "✦ " + ChatColor.GOLD + player.getName() +
-                ChatColor.YELLOW + " ha alcanzado el nivel " + ChatColor.GOLD + newLevel +
-                ChatColor.YELLOW + " ✦");
+        Bukkit.broadcast(Component.text("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━", NamedTextColor.GOLD));
+        Bukkit.broadcast(
+                Component.text("✦ ", NamedTextColor.YELLOW)
+                        .append(Component.text(player.getName(), NamedTextColor.GOLD))
+                        .append(Component.text(" ha alcanzado el nivel ", NamedTextColor.YELLOW))
+                        .append(Component.text(String.valueOf(newLevel), NamedTextColor.GOLD))
+                        .append(Component.text(" ✦", NamedTextColor.YELLOW)));
 
         if (!rewards.getSummary().isEmpty()) {
-            Bukkit.broadcastMessage(ChatColor.AQUA + "Recompensas: " + ChatColor.WHITE + rewards.getSummary());
+            Bukkit.broadcast(Component.text("Recompensas: ", NamedTextColor.AQUA)
+                    .append(Component.text(rewards.getSummary(), NamedTextColor.WHITE)));
         }
 
-        Bukkit.broadcastMessage(ChatColor.GOLD + "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+        Bukkit.broadcast(Component.text("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━", NamedTextColor.GOLD));
     }
 
 }
