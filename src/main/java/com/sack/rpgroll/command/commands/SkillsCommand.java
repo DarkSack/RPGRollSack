@@ -4,7 +4,10 @@ import com.sack.rpgroll.RPGRoll;
 import com.sack.rpgroll.command.RPGCommand;
 import com.sack.rpgroll.player.PlayerManager;
 import com.sack.rpgroll.player.RPGPlayer;
-import org.bukkit.ChatColor;
+
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -37,7 +40,8 @@ public class SkillsCommand implements RPGCommand {
             Optional<RPGPlayer> rpgPlayer = playerManager.getPlayer(player.getUniqueId());
 
             if (rpgPlayer.isEmpty()) {
-                player.sendMessage(ChatColor.RED + "Error al cargar tus datos.");
+                player.sendMessage(Component.text("No se encontraron datos de jugador para ti.", NamedTextColor.RED));
+                player.sendMessage(Component.text("Error al cargar tus datos.", NamedTextColor.RED));
                 return;
             }
 
@@ -45,7 +49,7 @@ public class SkillsCommand implements RPGCommand {
 
         } catch (Exception exception) {
 
-            player.sendMessage(ChatColor.RED + "Error al cargar habilidades.");
+            player.sendMessage(Component.text("Error al cargar habilidades.", NamedTextColor.RED));
             exception.printStackTrace();
 
         }
@@ -57,19 +61,18 @@ public class SkillsCommand implements RPGCommand {
         var skills = rpgPlayer.getSkills();
 
         player.sendMessage("");
-        player.sendMessage(ChatColor.GOLD + "============ Tus Habilidades ===========");
+        player.sendMessage(Component.text("============ Tus Habilidades ===========", NamedTextColor.GOLD));
 
         if (skills.getLearnedSkillIds().isEmpty()) {
-            player.sendMessage(ChatColor.YELLOW + "Aún no has aprendido habilidades.");
+            player.sendMessage(Component.text("Aún no has aprendido habilidades.", NamedTextColor.YELLOW));
         } else {
             for (String skillId : skills.getLearnedSkillIds()) {
                 int level = skills.getSkillLevel(skillId);
-                player.sendMessage(ChatColor.GREEN + "• " + ChatColor.WHITE + skillId +
-                        ChatColor.GRAY + " (Nivel " + level + ")");
+                player.sendMessage(Component.text("• " + skillId + " (Nivel " + level + ")", NamedTextColor.GREEN));
             }
         }
 
-        player.sendMessage(ChatColor.GOLD + "========================================");
+        player.sendMessage(Component.text("========================================", NamedTextColor.GOLD));
         player.sendMessage("");
 
     }

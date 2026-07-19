@@ -1,6 +1,7 @@
 package com.sack.rpgroll.gui;
 
 import com.sack.rpgroll.gui.listener.GUIListener;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -15,7 +16,7 @@ public abstract class InventoryGUI {
     protected final Player player;
     protected final Inventory inventory;
 
-    public InventoryGUI(Player player, String title, int size) {
+    public InventoryGUI(Player player, Component title, int size) {
         this.player = player;
         this.inventory = Bukkit.createInventory(null, size, title);
     }
@@ -27,8 +28,6 @@ public abstract class InventoryGUI {
 
     /**
      * Maneja el click en el inventario.
-     * 
-     * @param event El evento de click
      */
     public abstract void handleClick(InventoryClickEvent event);
 

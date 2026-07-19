@@ -2,7 +2,9 @@ package com.sack.rpgroll.gui.character;
 
 import com.sack.rpgroll.player.PlayerManager;
 import com.sack.rpgroll.player.RPGPlayer;
-import org.bukkit.ChatColor;
+
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.entity.Player;
 
 import java.util.Optional;
@@ -38,9 +40,11 @@ public class CharacterCreationFlow {
             if (rpgPlayer.getRace() != null && !rpgPlayer.getRace().isEmpty() &&
                     rpgPlayer.getPlayerClass() != null && !rpgPlayer.getPlayerClass().isEmpty()) {
 
-                player.sendMessage(ChatColor.RED + "Ya tienes un personaje creado.");
-                player.sendMessage(ChatColor.YELLOW + "Raza: " + ChatColor.WHITE + rpgPlayer.getRace());
-                player.sendMessage(ChatColor.YELLOW + "Clase: " + ChatColor.WHITE + rpgPlayer.getPlayerClass());
+                player.sendMessage(Component.text("Ya tienes un personaje creado.", NamedTextColor.RED));
+                player.sendMessage(Component.text("Raza: ", NamedTextColor.YELLOW)
+                        .append(Component.text(rpgPlayer.getRace(), NamedTextColor.WHITE)));
+                player.sendMessage(Component.text("Clase: ", NamedTextColor.YELLOW)
+                        .append(Component.text(rpgPlayer.getPlayerClass(), NamedTextColor.WHITE)));
                 return;
             }
         }
@@ -63,7 +67,8 @@ public class CharacterCreationFlow {
     private void onRaceSelected(String race) {
         this.selectedRace = race;
 
-        player.sendMessage(ChatColor.GREEN + "Has seleccionado la raza: " + ChatColor.GOLD + race);
+        player.sendMessage(Component.text("Has seleccionado la raza: ", NamedTextColor.GREEN)
+                .append(Component.text(race, NamedTextColor.GOLD)));
 
         // Continuar con selección de clase
         showClassSelection();
@@ -94,7 +99,7 @@ public class CharacterCreationFlow {
         Optional<RPGPlayer> rpgPlayerOpt = playerManager.getPlayer(player.getUniqueId());
 
         if (rpgPlayerOpt.isEmpty()) {
-            player.sendMessage(ChatColor.RED + "Error al crear personaje.");
+            player.sendMessage(Component.text("Error al crear personaje.", NamedTextColor.RED));
             return;
         }
 
@@ -109,18 +114,22 @@ public class CharacterCreationFlow {
         playerManager.savePlayer(updatedPlayer);
 
         // Mensaje de éxito
-        player.sendMessage("");
-        player.sendMessage(ChatColor.GOLD + "════════════════════════════════");
-        player.sendMessage(ChatColor.GREEN + "  ¡Personaje creado con éxito!");
-        player.sendMessage("");
-        player.sendMessage(ChatColor.YELLOW + "  Raza: " + ChatColor.WHITE + selectedRace);
-        player.sendMessage(ChatColor.YELLOW + "  Clase: " + ChatColor.WHITE + selectedClass);
-        player.sendMessage(ChatColor.YELLOW + "  Nivel: " + ChatColor.WHITE + "1");
-        player.sendMessage("");
-        player.sendMessage(ChatColor.GRAY + "  Usa " + ChatColor.WHITE + "/rpg stats" +
-                ChatColor.GRAY + " para ver tus estadísticas");
-        player.sendMessage(ChatColor.GOLD + "════════════════════════════════");
-        player.sendMessage("");
+        player.sendMessage(Component.text(""));
+        player.sendMessage(Component.text("════════════════════════════════", NamedTextColor.GOLD));
+        player.sendMessage(Component.text("  ¡Personaje creado con éxito!", NamedTextColor.GREEN));
+        player.sendMessage(Component.text(""));
+        player.sendMessage(Component.text("  Raza: ", NamedTextColor.YELLOW)
+                .append(Component.text(selectedRace, NamedTextColor.WHITE)));
+        player.sendMessage(Component.text("  Clase: ", NamedTextColor.YELLOW)
+                .append(Component.text(selectedClass, NamedTextColor.WHITE)));
+        player.sendMessage(Component.text("  Nivel: ", NamedTextColor.YELLOW)
+                .append(Component.text("1", NamedTextColor.WHITE)));
+        player.sendMessage(Component.text(""));
+        player.sendMessage(Component.text("  Usa ", NamedTextColor.GRAY)
+                .append(Component.text("/rpg stats", NamedTextColor.WHITE))
+                .append(Component.text(" para ver tus estadísticas", NamedTextColor.GRAY)));
+        player.sendMessage(Component.text("════════════════════════════════", NamedTextColor.GOLD));
+        player.sendMessage(Component.text(""));
     }
 
 }
