@@ -152,6 +152,7 @@ public class Bootstrap {
         commandManager.register(new AddXPCommand(plugin));
         commandManager.register(new MyStatsCommand(plugin));
         commandManager.register(new LevelUpDebugCommand(plugin));
+        commandManager.register(new AdminGuiCommand(plugin));
         commandManager.register(new ReloadCommand(plugin));
 
         // Registrar el comando principal /rpg
@@ -171,7 +172,8 @@ public class Bootstrap {
 
         // Listeners de jugador
         PlayerManager playerManager = services.get(PlayerManager.class);
-        PlayerEventListener playerListener = new PlayerEventListener(playerManager);
+        RaceManager raceManager = services.get(RaceManager.class);
+        PlayerEventListener playerListener = new PlayerEventListener(plugin, playerManager, raceManager);
         Bukkit.getPluginManager().registerEvents(playerListener, plugin);
 
         // Listeners de GUI
