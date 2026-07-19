@@ -13,6 +13,7 @@ public class DirectoryCreator {
             "classes",
             "races",
             "skills",
+            "traits",
             "lang",
             "database",
             "professions",
