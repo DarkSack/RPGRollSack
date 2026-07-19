@@ -2,170 +2,134 @@ package com.sack.rpgroll.gui.character;
 
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
+import com.sack.rpgroll.race.Race;
+import com.sack.rpgroll.race.RaceManager;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 
-import org.bukkit.Material;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
 /**
  * GUI para seleccionar la raza del personaje.
+ * Las razas mostradas provienen de RaceManager (races/*.yml), no están
+ * hardcodeadas — cualquier raza que el admin agregue aparece automáticamente
+ * tras un /rpg reload.
  */
 public class RaceSelectionGUI extends InventoryGUI {
 
-    private final Consumer<String> onRaceSelected;
-    private final Map<Integer, String> slotToRace;
+        private static final int[] CONTENT_SLOTS = { 10, 11, 12, 13, 14, 15, 16 };
 
-    public RaceSelectionGUI(Player player, Consumer<String> onRaceSelected) {
-        super(
-                player,
-                Component.text("Selecciona tu Raza", NamedTextColor.GOLD)
-                        .decorate(TextDecoration.BOLD),
-                27);
+        private final Consumer<String> onRaceSelected;
+        private final Map<Integer, String> slotToRace;
+        private final RaceManager raceManager;
 
-        this.onRaceSelected = onRaceSelected;
-        this.slotToRace = new HashMap<>();
-    }
+        public RaceSelectionGUI(Player player, RaceManager raceManager, Consumer<String> onRaceSelected) {
+                super(
+                                player,
+                                Component.text("Selecciona tu Raza", NamedTextColor.GOLD)
+                                                .decorate(TextDecoration.BOLD),
+                                27);
 
-    @Override
-    public void build() {
-
-        clear();
-
-        // ===== Fila superior =====
-
-        for (int i = 0; i < 9; i++) {
-            setItem(i, ItemBuilder.createFiller());
+                this.raceManager = raceManager;
+                this.onRaceSelected = onRaceSelected;
+                this.slotToRace = new HashMap<>();
         }
 
-        // ===== Razas =====
+        @Override
+        public void build() {
 
-        addRace(
-                10,
-                "Humano",
-                Material.IRON_SWORD,
+                clear();
+                slotToRace.clear();
 
-                Component.text("Versátiles y adaptables", NamedTextColor.GRAY),
-                Component.text("+1 a todas las estadísticas", NamedTextColor.DARK_GRAY),
-                Component.text("Bonificación: Talento extra", NamedTextColor.DARK_GRAY));
+                for (int i = 0; i < 9; i++) {
+                        setItem(i, ItemBuilder.createFiller());
+                }
 
-        addRace(
-                11,
-                "Elfo",
-                Material.BOW,
+                List<Race> races = new ArrayList<>(raceManager.getAll());
 
-                Component.text("Ágiles y sabios", NamedTextColor.GRAY),
-                Component.text("+2 Destreza, +1 Sabiduría", NamedTextColor.DARK_GRAY),
-                Component.text("Bonificación: Visión en la oscuridad", NamedTextColor.DARK_GRAY));
+                if (races.isEmpty()) {
+                        setItem(13, new ItemBuilder(org.bukkit.Material.BARRIER)
+                                        .setName(Component.text("Sin razas disponibles", NamedTextColor.RED))
+                                        .setLore(Component.text("No hay razas cargadas. Contacta a un admin.",
+                                                        NamedTextColor.GRAY))
+                                        .build());
+                } else {
+                        for (int i = 0; i < races.size() && i < CONTENT_SLOTS.length; i++) {
+                                addRace(CONTENT_SLOTS[i], races.get(i));
+                        }
 
-        addRace(
-                12,
-                "Enano",
-                Material.IRON_PICKAXE,
+                        if (races.size() > CONTENT_SLOTS.length) {
+                                player.getServer().getLogger().warning(
+                                                "RaceSelectionGUI: hay más razas (" + races.size()
+                                                                + ") de las que caben en la GUI ("
+                                                                + CONTENT_SLOTS.length
+                                                                + "). Algunas no se muestran — considerar paginación.");
+                        }
+                }
 
-                Component.text("Resistentes y fuertes", NamedTextColor.GRAY),
-                Component.text("+2 Constitución, +1 Fuerza", NamedTextColor.DARK_GRAY),
-                Component.text("Bonificación: Resistencia al veneno", NamedTextColor.DARK_GRAY));
+                for (int i = 18; i < 27; i++) {
+                        setItem(i, ItemBuilder.createFiller());
+                }
 
-        addRace(
-                13,
-                "Orco",
-                Material.IRON_AXE,
-
-                Component.text("Poderosos y salvajes", NamedTextColor.GRAY),
-                Component.text("+2 Fuerza, +1 Constitución", NamedTextColor.DARK_GRAY),
-                Component.text("Bonificación: Ataque feroz", NamedTextColor.DARK_GRAY));
-
-        addRace(
-                14,
-                "Halfling",
-                Material.BREAD,
-
-                Component.text("Astutos y afortunados", NamedTextColor.GRAY),
-                Component.text("+2 Destreza, +1 Carisma", NamedTextColor.DARK_GRAY),
-                Component.text("Bonificación: Suerte", NamedTextColor.DARK_GRAY));
-
-        addRace(
-                15,
-                "Tiefling",
-                Material.BLAZE_POWDER,
-
-                Component.text("Carismáticos y místicos", NamedTextColor.GRAY),
-                Component.text("+2 Carisma, +1 Inteligencia", NamedTextColor.DARK_GRAY),
-                Component.text("Bonificación: Resistencia al fuego", NamedTextColor.DARK_GRAY));
-
-        addRace(
-                16,
-                "Dracónido",
-                Material.DRAGON_HEAD,
-
-                Component.text("Honorables y fuertes", NamedTextColor.GRAY),
-                Component.text("+2 Fuerza, +1 Carisma", NamedTextColor.DARK_GRAY),
-                Component.text("Bonificación: Aliento de dragón", NamedTextColor.DARK_GRAY));
-
-        // ===== Botón cancelar =====
-
-        for (int i = 18; i < 27; i++) {
-            setItem(i, ItemBuilder.createFiller());
+                setItem(22, ItemBuilder.createCancelButton("Cancelar"));
         }
 
-        setItem(22, ItemBuilder.createCancelButton("Cancelar"));
-    }
+        private void addRace(int slot, Race race) {
 
-    private void addRace(
-            int slot,
-            String name,
-            Material icon,
-            Component... lore) {
+                List<Component> lore = new ArrayList<>();
 
-        ItemStack item = new ItemBuilder(icon)
-                .setName(
-                        Component.text(name, NamedTextColor.GOLD)
-                                .decorate(TextDecoration.BOLD))
-                .setLore(lore)
-                .build();
+                if (!race.description().isEmpty()) {
+                        lore.add(Component.text(ChatColor.translateAlternateColorCodes('&', race.description())));
+                }
 
-        setItem(slot, item);
-        slotToRace.put(slot, name);
-    }
+                race.baseAttributes().forEach((stat, value) -> {
+                        String sign = value >= 0 ? "+" : "";
+                        lore.add(Component.text(sign + value + " " + stat.name(), NamedTextColor.DARK_GRAY));
+                });
 
-    @Override
-    public void handleClick(InventoryClickEvent event) {
+                for (String loreLine : race.lore()) {
+                        lore.add(Component.text(ChatColor.translateAlternateColorCodes('&', loreLine)));
+                }
 
-        event.setCancelled(true);
+                ItemStack item = new ItemBuilder(race.icon())
+                                .setName(Component.text(ChatColor.translateAlternateColorCodes('&', race.displayName()))
+                                                .decorate(TextDecoration.BOLD))
+                                .setLore(lore.toArray(new Component[0]))
+                                .build();
 
-        int slot = event.getRawSlot();
-
-        // Cancelar
-        if (slot == 22) {
-
-            close();
-
-            player.sendMessage(
-                    Component.text(
-                            "Creación de personaje cancelada.",
-                            NamedTextColor.YELLOW));
-
-            return;
+                setItem(slot, item);
+                slotToRace.put(slot, race.id());
         }
 
-        // Selección de raza
-        if (slotToRace.containsKey(slot)) {
+        @Override
+        public void handleClick(InventoryClickEvent event) {
 
-            String selectedRace = slotToRace.get(slot);
+                event.setCancelled(true);
 
-            close();
+                int slot = event.getRawSlot();
 
-            onRaceSelected.accept(selectedRace);
+                if (slot == 22) {
+                        close();
+                        player.sendMessage(Component.text("Creación de personaje cancelada.", NamedTextColor.YELLOW));
+                        return;
+                }
+
+                if (slotToRace.containsKey(slot)) {
+                        String selectedRaceId = slotToRace.get(slot);
+                        close();
+                        onRaceSelected.accept(selectedRaceId);
+                }
         }
-    }
 
 }
