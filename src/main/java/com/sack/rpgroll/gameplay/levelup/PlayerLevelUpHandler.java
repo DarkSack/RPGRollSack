@@ -89,16 +89,21 @@ public class PlayerLevelUpHandler {
 
         if (rewards.statPoints() > 0) {
             player.sendMessage(
-                    NamedTextColor.AQUA + "╠ +Puntos de Estadística: " + NamedTextColor.WHITE + rewards.statPoints());
+                    Component.text("╠ +Puntos de Estadística: ", NamedTextColor.AQUA)
+                            .append(Component.text(rewards.statPoints(), NamedTextColor.WHITE)));
         }
         if (rewards.healthBonus() > 0) {
-            player.sendMessage(NamedTextColor.RED + "╠ +Salud: " + NamedTextColor.WHITE + rewards.healthBonus());
+            player.sendMessage(
+                    Component.text("╠ +Salud: ", NamedTextColor.RED)
+                            .append(Component.text(rewards.healthBonus(), NamedTextColor.WHITE)));
         }
         if (rewards.manaBonus() > 0) {
-            player.sendMessage(NamedTextColor.BLUE + "╠ +Maná: " + NamedTextColor.WHITE + rewards.manaBonus());
+            player.sendMessage(
+                    Component.text("╠ +Maná: ", NamedTextColor.BLUE)
+                            .append(Component.text(rewards.manaBonus(), NamedTextColor.WHITE)));
         }
 
-        player.sendMessage(NamedTextColor.GOLD + "╚════════════════════════════════╝");
+        player.sendMessage(Component.text("╚════════════════════════════════╝", NamedTextColor.GOLD));
         player.sendMessage("");
     }
 

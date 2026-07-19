@@ -5,6 +5,7 @@ import com.sack.rpgroll.command.RPGCommand;
 import com.sack.rpgroll.gui.character.CharacterCreationFlow;
 import com.sack.rpgroll.player.PlayerManager;
 
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 
 import org.bukkit.command.CommandSender;
@@ -40,8 +41,9 @@ public class CreateCommand implements RPGCommand {
             flow.start();
 
         } catch (Exception exception) {
-
-            player.sendMessage(NamedTextColor.RED + "Error al iniciar creación de personaje.");
+            player.sendMessage(
+                    Component.text("Ocurrió un error al iniciar la creación de personaje.", NamedTextColor.RED));
+            player.sendMessage(Component.text("Error al iniciar creación de personaje.", NamedTextColor.RED));
             exception.printStackTrace();
 
         }
