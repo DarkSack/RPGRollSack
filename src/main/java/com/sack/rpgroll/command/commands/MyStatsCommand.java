@@ -6,7 +6,10 @@ import com.sack.rpgroll.gameplay.combat.CombatStats;
 import com.sack.rpgroll.player.PlayerManager;
 import com.sack.rpgroll.player.RPGPlayer;
 import com.sack.rpgroll.player.stats.PlayerStats;
-import org.bukkit.ChatColor;
+import com.sack.rpgroll.util.MessageUtil;
+
+import net.kyori.adventure.text.format.NamedTextColor;
+
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -39,7 +42,7 @@ public class MyStatsCommand implements RPGCommand {
             Optional<RPGPlayer> rpgPlayer = playerManager.getPlayer(player.getUniqueId());
 
             if (rpgPlayer.isEmpty()) {
-                player.sendMessage(ChatColor.RED + "Error al cargar tus datos.");
+                player.sendMessage(NamedTextColor.RED + "Error al cargar tus datos.");
                 return;
             }
 
@@ -47,7 +50,7 @@ public class MyStatsCommand implements RPGCommand {
 
         } catch (Exception exception) {
 
-            player.sendMessage(ChatColor.RED + "Error al cargar estadísticas.");
+            player.sendMessage(NamedTextColor.RED + "Error al cargar estadísticas.");
             exception.printStackTrace();
 
         }
@@ -59,46 +62,89 @@ public class MyStatsCommand implements RPGCommand {
         PlayerStats stats = rpgPlayer.getStats();
         CombatStats combatStats = rpgPlayer.getCombatStats();
 
-        player.sendMessage("");
-        player.sendMessage(ChatColor.GOLD + "╔════════════════════════════════╗");
-        player.sendMessage(ChatColor.YELLOW + "╠        " + ChatColor.BOLD + "MIS ESTADÍSTICAS" + ChatColor.RESET
-                + ChatColor.YELLOW + "        ╣");
-        player.sendMessage(ChatColor.GOLD + "╠════════════════════════════════╣");
+        player.sendMessage(MessageUtil.blank());
+
+        player.sendMessage(MessageUtil.top());
+        player.sendMessage(MessageUtil.title("MIS ESTADÍSTICAS"));
+        player.sendMessage(MessageUtil.separator());
 
         // Información básica
-        player.sendMessage(ChatColor.AQUA + "╠ Nivel: " + ChatColor.WHITE + rpgPlayer.getLevel());
-        player.sendMessage(ChatColor.AQUA + "╠ Raza: " + ChatColor.WHITE + rpgPlayer.getRace());
-        player.sendMessage(ChatColor.AQUA + "╠ Clase: " + ChatColor.WHITE + rpgPlayer.getPlayerClass());
 
-        player.sendMessage(ChatColor.GOLD + "╠════════════════════════════════╣");
-        player.sendMessage(ChatColor.LIGHT_PURPLE + "╠ ATRIBUTOS D&D");
+        player.sendMessage(MessageUtil.line(
+                NamedTextColor.AQUA,
+                "Nivel",
+                rpgPlayer.getLevel()));
 
-        // Stats D&D
-        player.sendMessage(ChatColor.RED + "╠ Fuerza: " + ChatColor.WHITE + stats.strength());
-        player.sendMessage(ChatColor.GREEN + "╠ Destreza: " + ChatColor.WHITE + stats.dexterity());
-        player.sendMessage(ChatColor.GOLD + "╠ Constitución: " + ChatColor.WHITE + stats.constitution());
-        player.sendMessage(ChatColor.BLUE + "╠ Inteligencia: " + ChatColor.WHITE + stats.intelligence());
-        player.sendMessage(ChatColor.AQUA + "╠ Sabiduría: " + ChatColor.WHITE + stats.wisdom());
-        player.sendMessage(ChatColor.LIGHT_PURPLE + "╠ Carisma: " + ChatColor.WHITE + stats.charisma());
+        player.sendMessage(MessageUtil.line(
+                NamedTextColor.AQUA,
+                "Raza",
+                rpgPlayer.getRace()));
 
-        player.sendMessage(ChatColor.GOLD + "╠════════════════════════════════╣");
-        player.sendMessage(ChatColor.LIGHT_PURPLE + "╠ ESTADÍSTICAS DE COMBATE");
+        player.sendMessage(MessageUtil.line(
+                NamedTextColor.AQUA,
+                "Clase",
+                rpgPlayer.getPlayerClass()));
 
-        // Combat Stats
-        player.sendMessage(ChatColor.RED + "╠ Salud: " + ChatColor.WHITE +
-                combatStats.currentHealth() + "/" + combatStats.maxHealth());
-        player.sendMessage(ChatColor.BLUE + "╠ Maná: " + ChatColor.WHITE +
-                combatStats.currentMana() + "/" + combatStats.maxMana());
-        player.sendMessage(ChatColor.GRAY + "╠ Armadura: " + ChatColor.WHITE +
-                String.format("%.1f", combatStats.armorRating()));
-        player.sendMessage(ChatColor.GRAY + "╠ Evasión: " + ChatColor.WHITE +
-                String.format("%.1f%%", combatStats.evasionChance() * 100));
-        player.sendMessage(ChatColor.YELLOW + "╠ Crítico: " + ChatColor.WHITE +
-                String.format("%.1f%%", combatStats.criticalChance() * 100));
+        player.sendMessage(MessageUtil.separator());
 
-        player.sendMessage(ChatColor.GOLD + "╚════════════════════════════════╝");
-        player.sendMessage("");
+        player.sendMessage(MessageUtil.section("ATRIBUTOS D&D"));
 
+        player.sendMessage(MessageUtil.line(NamedTextColor.RED,
+                "Fuerza",
+                stats.strength()));
+
+        player.sendMessage(MessageUtil.line(NamedTextColor.GREEN,
+                "Destreza",
+                stats.dexterity()));
+
+        player.sendMessage(MessageUtil.line(NamedTextColor.GOLD,
+                "Constitución",
+                stats.constitution()));
+
+        player.sendMessage(MessageUtil.line(NamedTextColor.BLUE,
+                "Inteligencia",
+                stats.intelligence()));
+
+        player.sendMessage(MessageUtil.line(NamedTextColor.AQUA,
+                "Sabiduría",
+                stats.wisdom()));
+
+        player.sendMessage(MessageUtil.line(NamedTextColor.LIGHT_PURPLE,
+                "Carisma",
+                stats.charisma()));
+
+        player.sendMessage(MessageUtil.separator());
+
+        player.sendMessage(MessageUtil.section("ESTADÍSTICAS DE COMBATE"));
+
+        player.sendMessage(MessageUtil.line(
+                NamedTextColor.RED,
+                "Salud",
+                combatStats.currentHealth() + "/" + combatStats.maxHealth()));
+
+        player.sendMessage(MessageUtil.line(
+                NamedTextColor.BLUE,
+                "Maná",
+                combatStats.currentMana() + "/" + combatStats.maxMana()));
+
+        player.sendMessage(MessageUtil.line(
+                NamedTextColor.GRAY,
+                "Armadura",
+                String.format("%.1f", combatStats.armorRating())));
+
+        player.sendMessage(MessageUtil.line(
+                NamedTextColor.GRAY,
+                "Evasión",
+                String.format("%.1f%%", combatStats.evasionChance() * 100)));
+
+        player.sendMessage(MessageUtil.line(
+                NamedTextColor.YELLOW,
+                "Crítico",
+                String.format("%.1f%%", combatStats.criticalChance() * 100)));
+
+        player.sendMessage(MessageUtil.bottom());
+
+        player.sendMessage(MessageUtil.blank());
     }
 
     @Override

@@ -1,11 +1,14 @@
 package com.sack.rpgroll.gui.util;
 
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
+
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -29,37 +32,29 @@ public class ItemBuilder {
     /**
      * Establece el nombre del item.
      */
-    public ItemBuilder setName(String name) {
-        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
+    public ItemBuilder setName(Component name) {
+        meta.displayName(name);
         return this;
     }
 
     /**
-     * Establece el lore del item.
+     * Establece el lore.
      */
-    public ItemBuilder setLore(String... lore) {
-        List<String> loreList = new ArrayList<>();
-        for (String line : lore) {
-            loreList.add(ChatColor.translateAlternateColorCodes('&', line));
-        }
-        meta.setLore(loreList);
+    public ItemBuilder setLore(Component... lore) {
+        meta.lore(Arrays.asList(lore));
         return this;
     }
 
     /**
-     * Establece el lore del item desde una lista.
+     * Establece el lore.
      */
-    public ItemBuilder setLore(List<String> lore) {
-        List<String> loreList = new ArrayList<>();
-        for (String line : lore) {
-            loreList.add(ChatColor.translateAlternateColorCodes('&', line));
-        }
-        meta.setLore(loreList);
+    public ItemBuilder setLore(List<Component> lore) {
+        meta.lore(lore);
         return this;
     }
 
     /**
-     * Construye el ItemStack final.
+     * Construye el ItemStack.
      */
     public ItemStack build() {
         item.setItemMeta(meta);
@@ -67,29 +62,33 @@ public class ItemBuilder {
     }
 
     /**
-     * Crea un item de relleno (panel de cristal gris).
+     * Item de relleno.
      */
     public static ItemStack createFiller() {
         return new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE)
-                .setName("&7")
+                .setName(Component.text(" ", NamedTextColor.GRAY))
                 .build();
     }
 
     /**
-     * Crea un botón de confirmar.
+     * Botón de confirmar.
      */
     public static ItemStack createConfirmButton(String text) {
         return new ItemBuilder(Material.LIME_STAINED_GLASS_PANE)
-                .setName("&a&l✔ " + text)
+                .setName(
+                        Component.text("✔ " + text, NamedTextColor.GREEN)
+                                .decorate(TextDecoration.BOLD))
                 .build();
     }
 
     /**
-     * Crea un botón de cancelar.
+     * Botón de cancelar.
      */
     public static ItemStack createCancelButton(String text) {
         return new ItemBuilder(Material.RED_STAINED_GLASS_PANE)
-                .setName("&c&l✖ " + text)
+                .setName(
+                        Component.text("✖ " + text, NamedTextColor.RED)
+                                .decorate(TextDecoration.BOLD))
                 .build();
     }
 

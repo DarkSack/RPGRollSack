@@ -3,8 +3,10 @@ package com.sack.rpgroll.command.commands;
 import com.sack.rpgroll.RPGRoll;
 import com.sack.rpgroll.command.RPGCommand;
 import com.sack.rpgroll.player.RPGPlayer;
+
+import net.kyori.adventure.text.format.NamedTextColor;
+
 import com.sack.rpgroll.player.PlayerManager;
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -37,7 +39,7 @@ public class LevelCommand implements RPGCommand {
             Optional<RPGPlayer> rpgPlayer = playerManager.getPlayer(player.getUniqueId());
 
             if (rpgPlayer.isEmpty()) {
-                player.sendMessage(ChatColor.RED + "Error al cargar tus datos.");
+                player.sendMessage(NamedTextColor.RED + "Error al cargar tus datos.");
                 return;
             }
 
@@ -45,7 +47,7 @@ public class LevelCommand implements RPGCommand {
 
         } catch (Exception exception) {
 
-            player.sendMessage(ChatColor.RED + "Error al cargar información de nivel.");
+            player.sendMessage(NamedTextColor.RED + "Error al cargar información de nivel.");
             exception.printStackTrace();
 
         }
@@ -61,21 +63,23 @@ public class LevelCommand implements RPGCommand {
         int requiredExp = progression.getRequiredExpForNextLevel();
         int remaining = progression.getExpToNextLevel();
 
-        player.sendMessage(ChatColor.GOLD + "========== Tu Nivel ==========");
-        player.sendMessage(ChatColor.GREEN + "Nivel: " + ChatColor.WHITE + level);
-        player.sendMessage(ChatColor.AQUA + "Experiencia: " + ChatColor.WHITE + experience + "/" + requiredExp);
+        player.sendMessage(NamedTextColor.GOLD + "========== Tu Nivel ==========");
+        player.sendMessage(NamedTextColor.GREEN + "Nivel: " + NamedTextColor.WHITE + level);
+        player.sendMessage(
+                NamedTextColor.AQUA + "Experiencia: " + NamedTextColor.WHITE + experience + "/" + requiredExp);
 
         if (level < 100) {
-            player.sendMessage(ChatColor.YELLOW + "Para siguiente nivel: " + ChatColor.WHITE + remaining + " EXP");
+            player.sendMessage(
+                    NamedTextColor.YELLOW + "Para siguiente nivel: " + NamedTextColor.WHITE + remaining + " EXP");
 
             // Barra de progreso
             String progressBar = createProgressBar(experience, requiredExp);
-            player.sendMessage(ChatColor.GRAY + "[" + progressBar + ChatColor.GRAY + "]");
+            player.sendMessage(NamedTextColor.GRAY + "[" + progressBar + NamedTextColor.GRAY + "]");
         } else {
-            player.sendMessage(ChatColor.GOLD + "¡Has alcanzado el nivel máximo!");
+            player.sendMessage(NamedTextColor.GOLD + "¡Has alcanzado el nivel máximo!");
         }
 
-        player.sendMessage(ChatColor.GOLD + "==============================");
+        player.sendMessage(NamedTextColor.GOLD + "==============================");
 
     }
 
@@ -89,9 +93,9 @@ public class LevelCommand implements RPGCommand {
 
         for (int i = 0; i < barLength; i++) {
             if (i < filled) {
-                bar.append(ChatColor.GREEN).append("█");
+                bar.append(NamedTextColor.GREEN).append("█");
             } else {
-                bar.append(ChatColor.DARK_GRAY).append("█");
+                bar.append(NamedTextColor.DARK_GRAY).append("█");
             }
         }
 

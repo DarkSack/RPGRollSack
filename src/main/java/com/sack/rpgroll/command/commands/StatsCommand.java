@@ -3,8 +3,10 @@ package com.sack.rpgroll.command.commands;
 import com.sack.rpgroll.RPGRoll;
 import com.sack.rpgroll.command.RPGCommand;
 import com.sack.rpgroll.player.RPGPlayer;
+
+import net.kyori.adventure.text.format.NamedTextColor;
+
 import com.sack.rpgroll.player.PlayerManager;
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -37,7 +39,7 @@ public class StatsCommand implements RPGCommand {
             Optional<RPGPlayer> rpgPlayer = playerManager.getPlayer(player.getUniqueId());
 
             if (rpgPlayer.isEmpty()) {
-                player.sendMessage(ChatColor.RED + "Error al cargar tus datos.");
+                player.sendMessage(NamedTextColor.RED + "Error al cargar tus datos.");
                 return;
             }
 
@@ -45,7 +47,7 @@ public class StatsCommand implements RPGCommand {
 
         } catch (Exception exception) {
 
-            player.sendMessage(ChatColor.RED + "Error al cargar estadísticas.");
+            player.sendMessage(NamedTextColor.RED + "Error al cargar estadísticas.");
             exception.printStackTrace();
 
         }
@@ -56,14 +58,14 @@ public class StatsCommand implements RPGCommand {
 
         var stats = rpgPlayer.getStats();
 
-        player.sendMessage(ChatColor.GOLD + "========== Tus Estadísticas ==========");
-        player.sendMessage(ChatColor.RED + "Fuerza: " + ChatColor.WHITE + stats.strength());
-        player.sendMessage(ChatColor.GREEN + "Destreza: " + ChatColor.WHITE + stats.dexterity());
-        player.sendMessage(ChatColor.GOLD + "Constitución: " + ChatColor.WHITE + stats.constitution());
-        player.sendMessage(ChatColor.BLUE + "Inteligencia: " + ChatColor.WHITE + stats.intelligence());
-        player.sendMessage(ChatColor.AQUA + "Sabiduría: " + ChatColor.WHITE + stats.wisdom());
-        player.sendMessage(ChatColor.LIGHT_PURPLE + "Carisma: " + ChatColor.WHITE + stats.charisma());
-        player.sendMessage(ChatColor.GOLD + "======================================");
+        player.sendMessage(NamedTextColor.GOLD + "========== Tus Estadísticas ==========");
+        player.sendMessage(NamedTextColor.RED + "Fuerza: " + NamedTextColor.WHITE + stats.strength());
+        player.sendMessage(NamedTextColor.GREEN + "Destreza: " + NamedTextColor.WHITE + stats.dexterity());
+        player.sendMessage(NamedTextColor.GOLD + "Constitución: " + NamedTextColor.WHITE + stats.constitution());
+        player.sendMessage(NamedTextColor.BLUE + "Inteligencia: " + NamedTextColor.WHITE + stats.intelligence());
+        player.sendMessage(NamedTextColor.AQUA + "Sabiduría: " + NamedTextColor.WHITE + stats.wisdom());
+        player.sendMessage(NamedTextColor.LIGHT_PURPLE + "Carisma: " + NamedTextColor.WHITE + stats.charisma());
+        player.sendMessage(NamedTextColor.GOLD + "======================================");
 
     }
 

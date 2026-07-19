@@ -1,7 +1,9 @@
 package com.sack.rpgroll.command;
 
 import com.sack.rpgroll.RPGRoll;
-import org.bukkit.ChatColor;
+
+import net.kyori.adventure.text.format.NamedTextColor;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -60,21 +62,21 @@ public class CommandManager implements CommandExecutor, TabCompleter {
         RPGCommand subCommand = getCommand(subCommandName);
 
         if (subCommand == null) {
-            sender.sendMessage(ChatColor.RED + "Subcomando desconocido: " + args[0]);
-            sender.sendMessage(ChatColor.YELLOW + "Usa /rpg help para ver los comandos disponibles.");
+            sender.sendMessage(NamedTextColor.RED + "Subcomando desconocido: " + args[0]);
+            sender.sendMessage(NamedTextColor.YELLOW + "Usa /rpg help para ver los comandos disponibles.");
             return true;
         }
 
         // Verificar si es solo para jugadores
         if (subCommand.isPlayerOnly() && !(sender instanceof Player)) {
-            sender.sendMessage(ChatColor.RED + "Este comando solo puede ser usado por jugadores.");
+            sender.sendMessage(NamedTextColor.RED + "Este comando solo puede ser usado por jugadores.");
             return true;
         }
 
         // Verificar permisos
         String permission = subCommand.getPermission();
         if (permission != null && !sender.hasPermission(permission)) {
-            sender.sendMessage(ChatColor.RED + "No tienes permiso para usar este comando.");
+            sender.sendMessage(NamedTextColor.RED + "No tienes permiso para usar este comando.");
             return true;
         }
 
@@ -83,7 +85,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
             String[] subArgs = Arrays.copyOfRange(args, 1, args.length);
             subCommand.execute(sender, subArgs);
         } catch (Exception exception) {
-            sender.sendMessage(ChatColor.RED + "Error al ejecutar el comando.");
+            sender.sendMessage(NamedTextColor.RED + "Error al ejecutar el comando.");
             exception.printStackTrace();
         }
 
@@ -145,7 +147,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
      * Muestra la ayuda con todos los comandos disponibles.
      */
     private void sendHelp(CommandSender sender) {
-        sender.sendMessage(ChatColor.GOLD + "========== RPGRoll - Ayuda ==========");
+        sender.sendMessage(NamedTextColor.GOLD + "========== RPGRoll - Ayuda ==========");
 
         for (RPGCommand cmd : commands.values()) {
 
@@ -156,11 +158,11 @@ public class CommandManager implements CommandExecutor, TabCompleter {
             }
 
             sender.sendMessage(
-                    ChatColor.YELLOW + cmd.getUsage() +
-                            ChatColor.GRAY + " - " + cmd.getDescription());
+                    NamedTextColor.YELLOW + cmd.getUsage() +
+                            NamedTextColor.GRAY + " - " + cmd.getDescription());
         }
 
-        sender.sendMessage(ChatColor.GOLD + "=====================================");
+        sender.sendMessage(NamedTextColor.GOLD + "=====================================");
     }
 
     /**

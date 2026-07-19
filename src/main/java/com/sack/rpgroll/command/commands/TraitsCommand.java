@@ -4,7 +4,9 @@ import com.sack.rpgroll.RPGRoll;
 import com.sack.rpgroll.command.RPGCommand;
 import com.sack.rpgroll.player.PlayerManager;
 import com.sack.rpgroll.player.RPGPlayer;
-import org.bukkit.ChatColor;
+
+import net.kyori.adventure.text.format.NamedTextColor;
+
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -37,7 +39,7 @@ public class TraitsCommand implements RPGCommand {
             Optional<RPGPlayer> rpgPlayer = playerManager.getPlayer(player.getUniqueId());
 
             if (rpgPlayer.isEmpty()) {
-                player.sendMessage(ChatColor.RED + "Error al cargar tus datos.");
+                player.sendMessage(NamedTextColor.RED + "Error al cargar tus datos.");
                 return;
             }
 
@@ -45,7 +47,7 @@ public class TraitsCommand implements RPGCommand {
 
         } catch (Exception exception) {
 
-            player.sendMessage(ChatColor.RED + "Error al cargar traits.");
+            player.sendMessage(NamedTextColor.RED + "Error al cargar traits.");
             exception.printStackTrace();
 
         }
@@ -57,18 +59,18 @@ public class TraitsCommand implements RPGCommand {
         var traits = rpgPlayer.getTraits();
 
         player.sendMessage("");
-        player.sendMessage(ChatColor.GOLD + "============== Tus Traits ==============");
+        player.sendMessage(NamedTextColor.GOLD + "============== Tus Traits ==============");
 
         if (traits.getTraitIds().isEmpty()) {
-            player.sendMessage(ChatColor.YELLOW + "Aún no tienes traits adquiridos.");
+            player.sendMessage(NamedTextColor.YELLOW + "Aún no tienes traits adquiridos.");
         } else {
             for (String traitId : traits.getTraitIds()) {
-                player.sendMessage(ChatColor.LIGHT_PURPLE + "✦ " + ChatColor.WHITE + traitId);
+                player.sendMessage(NamedTextColor.LIGHT_PURPLE + "✦ " + NamedTextColor.WHITE + traitId);
             }
         }
 
-        player.sendMessage(ChatColor.GRAY + "Cantidad total: " + ChatColor.WHITE + traits.count());
-        player.sendMessage(ChatColor.GOLD + "========================================");
+        player.sendMessage(NamedTextColor.GRAY + "Cantidad total: " + NamedTextColor.WHITE + traits.count());
+        player.sendMessage(NamedTextColor.GOLD + "========================================");
         player.sendMessage("");
 
     }

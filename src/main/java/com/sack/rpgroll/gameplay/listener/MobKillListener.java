@@ -5,7 +5,11 @@ import com.sack.rpgroll.gameplay.levelup.LevelUpRewardsConfig;
 import com.sack.rpgroll.gameplay.levelup.PlayerLevelUpHandler;
 import com.sack.rpgroll.player.PlayerManager;
 import com.sack.rpgroll.player.RPGPlayer;
-import org.bukkit.ChatColor;
+
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
+
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -65,8 +69,13 @@ public class MobKillListener implements Listener {
             playerManager.savePlayer(updatedPlayer);
 
             // Mostrar mensaje
-            killer.sendMessage(ChatColor.GOLD + "+" + ChatColor.YELLOW + xpReward +
-                    ChatColor.GOLD + " EXP");
+            killer.sendMessage(Component.text("╔════════════════════════════════╗", NamedTextColor.GOLD));
+            killer.sendMessage(
+                    Component.text("╠ ", NamedTextColor.YELLOW)
+                            .append(Component.text("+" + xpReward, NamedTextColor.YELLOW)
+                                    .decorate(TextDecoration.BOLD))
+                            .append(Component.text(" EXP", NamedTextColor.GOLD)));
+            killer.sendMessage(Component.text("╚════════════════════════════════╝", NamedTextColor.GOLD));
 
             // Verificar level up automático
             PlayerLevelUpHandler levelUpHandler = new PlayerLevelUpHandler(playerManager, levelUpRewardsConfig);

@@ -3,8 +3,10 @@ package com.sack.rpgroll.command.commands;
 import com.sack.rpgroll.RPGRoll;
 import com.sack.rpgroll.command.RPGCommand;
 import com.sack.rpgroll.player.RPGPlayer;
+
+import net.kyori.adventure.text.format.NamedTextColor;
+
 import com.sack.rpgroll.player.PlayerManager;
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -41,7 +43,7 @@ public class RaceCommand implements RPGCommand {
             Optional<RPGPlayer> rpgPlayer = playerManager.getPlayer(player.getUniqueId());
 
             if (rpgPlayer.isEmpty()) {
-                player.sendMessage(ChatColor.RED + "Error al cargar tus datos.");
+                player.sendMessage(NamedTextColor.RED + "Error al cargar tus datos.");
                 return;
             }
 
@@ -63,7 +65,7 @@ public class RaceCommand implements RPGCommand {
 
         } catch (Exception exception) {
 
-            player.sendMessage(ChatColor.RED + "Error al procesar comando de raza.");
+            player.sendMessage(NamedTextColor.RED + "Error al procesar comando de raza.");
             exception.printStackTrace();
 
         }
@@ -75,29 +77,29 @@ public class RaceCommand implements RPGCommand {
         String playerRace = rpgPlayer.getRace();
 
         if (playerRace == null || playerRace.isEmpty()) {
-            player.sendMessage(ChatColor.YELLOW + "Aún no has seleccionado una raza.");
-            player.sendMessage(ChatColor.GRAY + "Usa " + ChatColor.WHITE + "/rpg race <nombre>" +
-                    ChatColor.GRAY + " para seleccionar una.");
-            player.sendMessage(ChatColor.GRAY + "Usa " + ChatColor.WHITE + "/rpg race list" +
-                    ChatColor.GRAY + " para ver las razas disponibles.");
+            player.sendMessage(NamedTextColor.YELLOW + "Aún no has seleccionado una raza.");
+            player.sendMessage(NamedTextColor.GRAY + "Usa " + NamedTextColor.WHITE + "/rpg race <nombre>" +
+                    NamedTextColor.GRAY + " para seleccionar una.");
+            player.sendMessage(NamedTextColor.GRAY + "Usa " + NamedTextColor.WHITE + "/rpg race list" +
+                    NamedTextColor.GRAY + " para ver las razas disponibles.");
         } else {
-            player.sendMessage(ChatColor.GREEN + "Tu raza actual: " +
-                    ChatColor.GOLD + playerRace);
+            player.sendMessage(NamedTextColor.GREEN + "Tu raza actual: " +
+                    NamedTextColor.GOLD + playerRace);
         }
 
     }
 
     private void showAvailableRaces(Player player) {
 
-        player.sendMessage(ChatColor.GOLD + "========== Razas Disponibles ==========");
+        player.sendMessage(NamedTextColor.GOLD + "========== Razas Disponibles ==========");
 
         for (String raceName : AVAILABLE_RACES) {
-            player.sendMessage(ChatColor.YELLOW + "• " + ChatColor.WHITE + raceName);
+            player.sendMessage(NamedTextColor.YELLOW + "• " + NamedTextColor.WHITE + raceName);
         }
 
-        player.sendMessage(ChatColor.GOLD + "=======================================");
-        player.sendMessage(ChatColor.GRAY + "Usa " + ChatColor.WHITE + "/rpg race <nombre>" +
-                ChatColor.GRAY + " para seleccionar una raza.");
+        player.sendMessage(NamedTextColor.GOLD + "=======================================");
+        player.sendMessage(NamedTextColor.GRAY + "Usa " + NamedTextColor.WHITE + "/rpg race <nombre>" +
+                NamedTextColor.GRAY + " para seleccionar una raza.");
 
     }
 
@@ -108,9 +110,9 @@ public class RaceCommand implements RPGCommand {
                 .anyMatch(r -> r.equalsIgnoreCase(newRace));
 
         if (!validRace) {
-            player.sendMessage(ChatColor.RED + "Raza no válida: " + newRace);
-            player.sendMessage(ChatColor.GRAY + "Usa " + ChatColor.WHITE + "/rpg race list" +
-                    ChatColor.GRAY + " para ver las razas disponibles.");
+            player.sendMessage(NamedTextColor.RED + "Raza no válida: " + newRace);
+            player.sendMessage(NamedTextColor.GRAY + "Usa " + NamedTextColor.WHITE + "/rpg race list" +
+                    NamedTextColor.GRAY + " para ver las razas disponibles.");
             return;
         }
 
@@ -120,8 +122,8 @@ public class RaceCommand implements RPGCommand {
         // Verificar si puede cambiar de raza
         if (currentRace != null && !currentRace.isEmpty()) {
             // TODO: Verificar configuración allow_race_change
-            player.sendMessage(ChatColor.RED + "Ya tienes una raza seleccionada.");
-            player.sendMessage(ChatColor.YELLOW + "El cambio de raza no está permitido actualmente.");
+            player.sendMessage(NamedTextColor.RED + "Ya tienes una raza seleccionada.");
+            player.sendMessage(NamedTextColor.YELLOW + "El cambio de raza no está permitido actualmente.");
             return;
         }
 
@@ -135,8 +137,8 @@ public class RaceCommand implements RPGCommand {
         RPGPlayer updatedPlayer = rpgPlayer.setRace(formattedRace);
         playerManager.savePlayer(updatedPlayer);
 
-        player.sendMessage(ChatColor.GREEN + "¡Has seleccionado la raza: " +
-                ChatColor.GOLD + formattedRace + ChatColor.GREEN + "!");
+        player.sendMessage(NamedTextColor.GREEN + "¡Has seleccionado la raza: " +
+                NamedTextColor.GOLD + formattedRace + NamedTextColor.GREEN + "!");
 
     }
 
