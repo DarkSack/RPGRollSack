@@ -4,6 +4,7 @@ import com.sack.rpgroll.RPGRoll;
 import com.sack.rpgroll.command.RPGCommand;
 import com.sack.rpgroll.player.RPGPlayer;
 
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 
 import com.sack.rpgroll.player.PlayerManager;
@@ -39,7 +40,9 @@ public class LevelCommand implements RPGCommand {
             Optional<RPGPlayer> rpgPlayer = playerManager.getPlayer(player.getUniqueId());
 
             if (rpgPlayer.isEmpty()) {
-                player.sendMessage(NamedTextColor.RED + "Error al cargar tus datos.");
+                player.sendMessage(
+                        Component.text("No se pudo encontrar tu información de jugador.").color(NamedTextColor.RED));
+                player.sendMessage(Component.text("Error al cargar tus datos.", NamedTextColor.RED));
                 return;
             }
 
@@ -47,7 +50,7 @@ public class LevelCommand implements RPGCommand {
 
         } catch (Exception exception) {
 
-            player.sendMessage(NamedTextColor.RED + "Error al cargar información de nivel.");
+            player.sendMessage(Component.text("Error al cargar información de nivel.", NamedTextColor.RED));
             exception.printStackTrace();
 
         }
@@ -63,43 +66,19 @@ public class LevelCommand implements RPGCommand {
         int requiredExp = progression.getRequiredExpForNextLevel();
         int remaining = progression.getExpToNextLevel();
 
-        player.sendMessage(NamedTextColor.GOLD + "========== Tu Nivel ==========");
-        player.sendMessage(NamedTextColor.GREEN + "Nivel: " + NamedTextColor.WHITE + level);
+        player.sendMessage(Component.text("========== Tu Nivel ==========", NamedTextColor.GOLD));
+        player.sendMessage(Component.text("Nivel: " + level, NamedTextColor.GREEN));
         player.sendMessage(
-                NamedTextColor.AQUA + "Experiencia: " + NamedTextColor.WHITE + experience + "/" + requiredExp);
+                Component.text("Experiencia: " + experience + "/" + requiredExp, NamedTextColor.AQUA));
 
         if (level < 100) {
             player.sendMessage(
-                    NamedTextColor.YELLOW + "Para siguiente nivel: " + NamedTextColor.WHITE + remaining + " EXP");
-
-            // Barra de progreso
-            String progressBar = createProgressBar(experience, requiredExp);
-            player.sendMessage(NamedTextColor.GRAY + "[" + progressBar + NamedTextColor.GRAY + "]");
+                    Component.text("Para siguiente nivel: " + remaining + " EXP", NamedTextColor.YELLOW));
         } else {
-            player.sendMessage(NamedTextColor.GOLD + "¡Has alcanzado el nivel máximo!");
+            player.sendMessage(Component.text("¡Has alcanzado el nivel máximo!", NamedTextColor.GOLD));
         }
 
-        player.sendMessage(NamedTextColor.GOLD + "==============================");
-
-    }
-
-    private String createProgressBar(int current, int required) {
-
-        int barLength = 20;
-        double percentage = (double) current / required;
-        int filled = (int) (barLength * percentage);
-
-        StringBuilder bar = new StringBuilder();
-
-        for (int i = 0; i < barLength; i++) {
-            if (i < filled) {
-                bar.append(NamedTextColor.GREEN).append("█");
-            } else {
-                bar.append(NamedTextColor.DARK_GRAY).append("█");
-            }
-        }
-
-        return bar.toString();
+        player.sendMessage(Component.text("==============================", NamedTextColor.GOLD));
 
     }
 

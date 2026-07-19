@@ -7,6 +7,7 @@ import com.sack.rpgroll.gameplay.levelup.PlayerLevelUpHandler;
 import com.sack.rpgroll.player.PlayerManager;
 import com.sack.rpgroll.player.RPGPlayer;
 
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 
 import org.bukkit.command.CommandSender;
@@ -31,7 +32,7 @@ public class LevelUpDebugCommand implements RPGCommand {
     public void execute(CommandSender sender, String[] args) {
 
         if (!sender.hasPermission("rpgroll.admin.*") && !sender.hasPermission("rpgroll.admin.reload")) {
-            sender.sendMessage(NamedTextColor.RED + "No tienes permisos para usar este comando.");
+            sender.sendMessage(Component.text("No tienes permisos para usar este comando.", NamedTextColor.RED));
             return;
         }
 
@@ -50,21 +51,22 @@ public class LevelUpDebugCommand implements RPGCommand {
             Optional<RPGPlayer> rpgPlayer = playerManager.getPlayer(player.getUniqueId());
 
             if (rpgPlayer.isEmpty()) {
-                player.sendMessage(NamedTextColor.RED + "Error al cargar tus datos.");
+                player.sendMessage(Component.text("Error al cargar tus datos.", NamedTextColor.RED));
                 return;
             }
 
             PlayerLevelUpHandler handler = new PlayerLevelUpHandler(playerManager, rewardsConfig);
 
             if (handler.tryLevelUp(player, rpgPlayer.get())) {
-                player.sendMessage(NamedTextColor.GREEN + "✔ Level up procesado exitosamente.");
+                player.sendMessage(Component.text("✔ Level up procesado exitosamente.", NamedTextColor.GREEN));
             } else {
-                player.sendMessage(NamedTextColor.YELLOW + "No tienes suficiente XP para subir de nivel.");
+                player.sendMessage(
+                        Component.text("No tienes suficiente XP para subir de nivel.", NamedTextColor.YELLOW));
             }
 
         } catch (Exception exception) {
 
-            player.sendMessage(NamedTextColor.RED + "Error al procesar level up.");
+            player.sendMessage(Component.text("Error al procesar level up.", NamedTextColor.RED));
             exception.printStackTrace();
 
         }

@@ -5,6 +5,7 @@ import com.sack.rpgroll.command.RPGCommand;
 import com.sack.rpgroll.player.PlayerManager;
 import com.sack.rpgroll.player.RPGPlayer;
 
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 
 import org.bukkit.command.CommandSender;
@@ -39,7 +40,8 @@ public class TraitsCommand implements RPGCommand {
             Optional<RPGPlayer> rpgPlayer = playerManager.getPlayer(player.getUniqueId());
 
             if (rpgPlayer.isEmpty()) {
-                player.sendMessage(NamedTextColor.RED + "Error al cargar tus datos.");
+                player.sendMessage(Component.text("No se pudo encontrar tu perfil de jugador.", NamedTextColor.RED));
+                player.sendMessage(Component.text("Error al cargar tus datos.", NamedTextColor.RED));
                 return;
             }
 
@@ -47,7 +49,7 @@ public class TraitsCommand implements RPGCommand {
 
         } catch (Exception exception) {
 
-            player.sendMessage(NamedTextColor.RED + "Error al cargar traits.");
+            player.sendMessage(Component.text("Error al cargar traits.", NamedTextColor.RED));
             exception.printStackTrace();
 
         }
@@ -59,18 +61,18 @@ public class TraitsCommand implements RPGCommand {
         var traits = rpgPlayer.getTraits();
 
         player.sendMessage("");
-        player.sendMessage(NamedTextColor.GOLD + "============== Tus Traits ==============");
+        player.sendMessage(Component.text("============== Tus Traits ==============", NamedTextColor.GOLD));
 
         if (traits.getTraitIds().isEmpty()) {
-            player.sendMessage(NamedTextColor.YELLOW + "Aún no tienes traits adquiridos.");
+            player.sendMessage(Component.text("Aún no tienes traits adquiridos.", NamedTextColor.YELLOW));
         } else {
             for (String traitId : traits.getTraitIds()) {
-                player.sendMessage(NamedTextColor.LIGHT_PURPLE + "✦ " + NamedTextColor.WHITE + traitId);
+                player.sendMessage(Component.text("✦ " + traitId, NamedTextColor.LIGHT_PURPLE));
             }
         }
 
-        player.sendMessage(NamedTextColor.GRAY + "Cantidad total: " + NamedTextColor.WHITE + traits.count());
-        player.sendMessage(NamedTextColor.GOLD + "========================================");
+        player.sendMessage(Component.text("Cantidad total: " + traits.count(), NamedTextColor.GRAY));
+        player.sendMessage(Component.text("========================================", NamedTextColor.GOLD));
         player.sendMessage("");
 
     }
