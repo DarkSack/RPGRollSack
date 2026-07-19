@@ -75,18 +75,6 @@ public class ConfigManager {
                 "gameplay.yml",
                 true));
 
-        // Configuración de habilidades
-        configFiles.add(new ConfigFile(
-                "config/skills.yml",
-                "skills.yml",
-                true));
-
-        // Configuración de traits
-        configFiles.add(new ConfigFile(
-                "config/traits.yml",
-                "traits.yml",
-                true));
-
         // Configuración de recompensas de level up
         configFiles.add(new ConfigFile(
                 "config/levelup-rewards.yml",

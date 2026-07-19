@@ -3,11 +3,10 @@ package com.sack.rpgroll.command.commands;
 import com.sack.rpgroll.RPGRoll;
 import com.sack.rpgroll.command.RPGCommand;
 import com.sack.rpgroll.config.ConfigManager;
+import com.sack.rpgroll.content.Reloadable;
 import com.sack.rpgroll.gameplay.levelup.LevelUpRewardsConfig;
-import com.sack.rpgroll.gameplay.skill.SkillRegistry;
-import com.sack.rpgroll.gameplay.trait.TraitRegistry;
+import com.sack.rpgroll.gameplay.trait.TraitManager;
 import com.sack.rpgroll.race.RaceManager;
-import com.sack.rpgroll.race.RaceRegistry;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
@@ -32,27 +31,19 @@ public class ReloadCommand implements RPGCommand {
         try {
             var services = plugin.getBootstrap().getServices();
 
-            // 1. Recargar configuración base (crea carpetas/archivos faltantes)
             services.get(ConfigManager.class).initialize();
-
-            // 2. Recargar contenido dependiente de YAML
-            services.get(SkillRegistry.class).load();
-            services.get(TraitRegistry.class).load();
             services.get(LevelUpRewardsConfig.class).load();
 
-            if (services.contains(RaceManager.class)) {
-                services.get(RaceManager.class).reload();
+            // Recarga genérica: cualquier contenido futuro se suma solo
+            // agregándose a reloadableContent en Bootstrap, sin tocar este archivo.
+            for (Reloadable content : plugin.getBootstrap().getReloadableContent()) {
+                content.reload();
             }
-            sender.sendMessage(ChatColor.GREEN + "✔ Configuración y contenido recargados correctamente.");
-            plugin.getLogger().info("Configuración recargada por: " + sender.getName());
 
         } catch (Exception exception) {
-
             sender.sendMessage(ChatColor.RED + "Error al recargar la configuración.");
             plugin.getLogger().severe("✘ Error en /rpg reload: " + exception.getMessage());
-
         }
-
     }
 
     @Override

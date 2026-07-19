@@ -1,5 +1,7 @@
 package com.sack.rpgroll.gameplay.skill;
 
+import com.sack.rpgroll.content.RPGContent;
+
 /**
  * Representa una habilidad (Skill) del juego.
  * Las skills son acciones especiales que los jugadores pueden aprender y usar.
@@ -11,7 +13,7 @@ public record Skill(
         int requiredLevel,
         int manaCost,
         int cooldownSeconds,
-        double damageMultiplier) {
+        double damageMultiplier) implements RPGContent {
 
     /**
      * Obtiene la información formateada de la skill.
