@@ -16,24 +16,41 @@ public abstract class InventoryGUI {
     protected final Player player;
     protected final Inventory inventory;
 
+    private boolean selectionMade = false;
+
     public InventoryGUI(Player player, Component title, int size) {
         this.player = player;
         this.inventory = Bukkit.createInventory(null, size, title);
     }
 
-    /**
-     * Construye y llena el inventario con items.
-     */
     public abstract void build();
 
-    /**
-     * Maneja el click en el inventario.
-     */
     public abstract void handleClick(InventoryClickEvent event);
 
     /**
-     * Abre el inventario para el jugador.
+     * Si es true, GUIListener reabrirá esta GUI automáticamente cuando
+     * el jugador la cierre sin haber hecho una selección (ESC, click afuera).
+     * Por defecto false — las GUIs deben declararse explícitamente obligatorias.
      */
+    public boolean isSelectionRequired() {
+        return false;
+    }
+
+    /**
+     * @return true si el jugador ya completó una selección válida en esta GUI.
+     */
+    public boolean isSelectionMade() {
+        return selectionMade;
+    }
+
+    /**
+     * Marca que se realizó una selección válida. Debe llamarse en handleClick()
+     * antes de close(), justo cuando se confirma la elección del jugador.
+     */
+    protected void markSelectionMade() {
+        this.selectionMade = true;
+    }
+
     public void open() {
         build();
         GUIListener.registerGUI(player, this);
@@ -41,37 +58,26 @@ public abstract class InventoryGUI {
     }
 
     /**
-     * Cierra el inventario.
+     * Cierra el inventario. No desregistra la GUI aquí — eso lo hace
+     * GUIListener al recibir InventoryCloseEvent, que es el único punto
+     * que decide si corresponde reabrir por selección obligatoria.
      */
     public void close() {
-        GUIListener.unregisterGUI(player);
         player.closeInventory();
     }
 
-    /**
-     * Obtiene el inventario.
-     */
     public Inventory getInventory() {
         return inventory;
     }
 
-    /**
-     * Obtiene el jugador.
-     */
     public Player getPlayer() {
         return player;
     }
 
-    /**
-     * Coloca un item en un slot específico.
-     */
     protected void setItem(int slot, ItemStack item) {
         inventory.setItem(slot, item);
     }
 
-    /**
-     * Limpia el inventario.
-     */
     protected void clear() {
         inventory.clear();
     }

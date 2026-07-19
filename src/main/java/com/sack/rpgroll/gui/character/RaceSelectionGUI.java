@@ -8,8 +8,9 @@ import com.sack.rpgroll.race.RaceManager;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 
-import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
@@ -21,29 +22,40 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 /**
- * GUI para seleccionar la raza del personaje.
- * Las razas mostradas provienen de RaceManager (races/*.yml), no están
- * hardcodeadas — cualquier raza que el admin agregue aparece automáticamente
- * tras un /rpg reload.
+ * GUI para seleccionar la raza del personaje. Las razas provienen de
+ * RaceManager (races/*.yml) y se muestran como cabezas de jugador con
+ * textura custom (base64).
  */
 public class RaceSelectionGUI extends InventoryGUI {
-
+        private static final MiniMessage MINI = MiniMessage.miniMessage();
         private static final int[] CONTENT_SLOTS = { 10, 11, 12, 13, 14, 15, 16 };
+        private static final int CANCEL_SLOT = 22;
 
         private final Consumer<String> onRaceSelected;
         private final Map<Integer, String> slotToRace;
         private final RaceManager raceManager;
+        private final boolean mandatory;
 
-        public RaceSelectionGUI(Player player, RaceManager raceManager, Consumer<String> onRaceSelected) {
+        /**
+         * @param mandatory si es true, no se muestra botón de cancelar y la GUI
+         *                  se reabre automáticamente si se cierra sin seleccionar.
+         */
+        public RaceSelectionGUI(Player player, RaceManager raceManager, Consumer<String> onRaceSelected,
+                        boolean mandatory) {
                 super(
                                 player,
-                                Component.text("Selecciona tu Raza", NamedTextColor.GOLD)
-                                                .decorate(TextDecoration.BOLD),
+                                Component.text("Selecciona tu Raza", NamedTextColor.GOLD).decorate(TextDecoration.BOLD),
                                 27);
 
                 this.raceManager = raceManager;
                 this.onRaceSelected = onRaceSelected;
+                this.mandatory = mandatory;
                 this.slotToRace = new HashMap<>();
+        }
+
+        @Override
+        public boolean isSelectionRequired() {
+                return mandatory;
         }
 
         @Override
@@ -59,7 +71,7 @@ public class RaceSelectionGUI extends InventoryGUI {
                 List<Race> races = new ArrayList<>(raceManager.getAll());
 
                 if (races.isEmpty()) {
-                        setItem(13, new ItemBuilder(org.bukkit.Material.BARRIER)
+                        setItem(13, new ItemBuilder(Material.BARRIER)
                                         .setName(Component.text("Sin razas disponibles", NamedTextColor.RED))
                                         .setLore(Component.text("No hay razas cargadas. Contacta a un admin.",
                                                         NamedTextColor.GRAY))
@@ -68,30 +80,22 @@ public class RaceSelectionGUI extends InventoryGUI {
                         for (int i = 0; i < races.size() && i < CONTENT_SLOTS.length; i++) {
                                 addRace(CONTENT_SLOTS[i], races.get(i));
                         }
-
-                        if (races.size() > CONTENT_SLOTS.length) {
-                                player.getServer().getLogger().warning(
-                                                "RaceSelectionGUI: hay más razas (" + races.size()
-                                                                + ") de las que caben en la GUI ("
-                                                                + CONTENT_SLOTS.length
-                                                                + "). Algunas no se muestran — considerar paginación.");
-                        }
                 }
 
                 for (int i = 18; i < 27; i++) {
                         setItem(i, ItemBuilder.createFiller());
                 }
 
-                setItem(22, ItemBuilder.createCancelButton("Cancelar"));
+                if (!mandatory) {
+                        setItem(CANCEL_SLOT, ItemBuilder.createCancelButton("Cancelar"));
+                }
         }
 
         private void addRace(int slot, Race race) {
 
                 List<Component> lore = new ArrayList<>();
 
-                if (!race.description().isEmpty()) {
-                        lore.add(Component.text(ChatColor.translateAlternateColorCodes('&', race.description())));
-                }
+                lore.addAll(ItemBuilder.toLoreLines(race.description()));
 
                 race.baseAttributes().forEach((stat, value) -> {
                         String sign = value >= 0 ? "+" : "";
@@ -99,12 +103,11 @@ public class RaceSelectionGUI extends InventoryGUI {
                 });
 
                 for (String loreLine : race.lore()) {
-                        lore.add(Component.text(ChatColor.translateAlternateColorCodes('&', loreLine)));
+                        lore.addAll(ItemBuilder.toLoreLines(loreLine));
                 }
 
-                ItemStack item = new ItemBuilder(race.icon())
-                                .setName(Component.text(ChatColor.translateAlternateColorCodes('&', race.displayName()))
-                                                .decorate(TextDecoration.BOLD))
+                ItemStack item = ItemBuilder.skull(race.icon())
+                                .setName(MINI.deserialize(race.displayName()))
                                 .setLore(lore.toArray(new Component[0]))
                                 .build();
 
@@ -119,7 +122,7 @@ public class RaceSelectionGUI extends InventoryGUI {
 
                 int slot = event.getRawSlot();
 
-                if (slot == 22) {
+                if (!mandatory && slot == CANCEL_SLOT) {
                         close();
                         player.sendMessage(Component.text("Creación de personaje cancelada.", NamedTextColor.YELLOW));
                         return;
@@ -127,6 +130,7 @@ public class RaceSelectionGUI extends InventoryGUI {
 
                 if (slotToRace.containsKey(slot)) {
                         String selectedRaceId = slotToRace.get(slot);
+                        markSelectionMade();
                         close();
                         onRaceSelected.accept(selectedRaceId);
                 }

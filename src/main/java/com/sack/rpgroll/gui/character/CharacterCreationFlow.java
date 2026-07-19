@@ -59,7 +59,7 @@ public class CharacterCreationFlow {
      * Muestra la GUI de selección de raza.
      */
     private void showRaceSelection() {
-        RaceSelectionGUI raceGUI = new RaceSelectionGUI(player, raceManager, this::onRaceSelected);
+        RaceSelectionGUI raceGUI = new RaceSelectionGUI(player, raceManager, this::onRaceSelected, true);
         raceGUI.open();
     }
 
@@ -80,7 +80,7 @@ public class CharacterCreationFlow {
      * Muestra la GUI de selección de clase.
      */
     private void showClassSelection() {
-        ClassSelectionGUI classGUI = new ClassSelectionGUI(player, selectedRace, this::onClassSelected);
+        ClassSelectionGUI classGUI = new ClassSelectionGUI(player, selectedRace, this::onClassSelected, true);
         classGUI.open();
     }
 

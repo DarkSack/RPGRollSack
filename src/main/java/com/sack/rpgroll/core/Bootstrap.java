@@ -177,7 +177,7 @@ public class Bootstrap {
         Bukkit.getPluginManager().registerEvents(playerListener, plugin);
 
         // Listeners de GUI
-        GUIListener guiListener = new GUIListener();
+        GUIListener guiListener = new GUIListener(plugin);
         Bukkit.getPluginManager().registerEvents(guiListener, plugin);
 
         // Listeners de gameplay (XP, skills, etc)
