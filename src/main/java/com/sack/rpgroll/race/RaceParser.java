@@ -3,7 +3,6 @@ package com.sack.rpgroll.race;
 import com.sack.rpgroll.RPGRoll;
 import com.sack.rpgroll.content.ContentParser;
 import com.sack.rpgroll.gameplay.stats.StatType;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -11,10 +10,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Convierte un YamlConfiguration en una instancia de Race.
- * No conoce TraitRegistry — los passive-traits se cargan como IDs de texto.
- */
 public class RaceParser implements ContentParser<Race> {
 
     private final RPGRoll plugin;
@@ -33,11 +28,10 @@ public class RaceParser implements ContentParser<Race> {
 
         String displayName = config.getString("display-name", id);
         String description = config.getString("description", "");
-
         Map<StatType, Integer> baseAttributes = parseBaseAttributes(config, id);
         List<String> passiveTraits = config.getStringList("passive-traits");
         List<String> lore = config.getStringList("lore");
-        Material icon = parseIcon(config, id);
+        String icon = parseIcon(config, id);
 
         return new Race(id, displayName, description, baseAttributes, passiveTraits, icon, lore);
     }
@@ -55,8 +49,7 @@ public class RaceParser implements ContentParser<Race> {
             StatType stat = StatType.fromString(key);
 
             if (stat == null) {
-                plugin.getLogger().warning(
-                        "✘ Raza '" + raceId + "': atributo desconocido '" + key + "', ignorado.");
+                plugin.getLogger().warning("✘ Raza '" + raceId + "': atributo desconocido '" + key + "', ignorado.");
                 continue;
             }
 
@@ -66,25 +59,17 @@ public class RaceParser implements ContentParser<Race> {
         return attributes;
     }
 
-    private Material parseIcon(YamlConfiguration config, String raceId) {
+    private String parseIcon(YamlConfiguration config, String raceId) {
 
-        String iconName = config.getString("icon");
+        String icon = config.getString("icon");
 
-        if (iconName == null || iconName.isBlank()) {
+        if (icon == null || icon.isBlank()) {
             plugin.getLogger().warning(
-                    "✘ Raza '" + raceId + "' sin campo 'icon', usando BARRIER por defecto.");
-            return Material.BARRIER;
+                    "✘ Raza '" + raceId + "' sin campo 'icon' (textura base64), usará cabeza sin textura.");
+            return "";
         }
 
-        Material material = Material.matchMaterial(iconName);
-
-        if (material == null) {
-            plugin.getLogger().warning(
-                    "✘ Raza '" + raceId + "' tiene un icon inválido: '" + iconName + "', usando BARRIER por defecto.");
-            return Material.BARRIER;
-        }
-
-        return material;
+        return icon;
     }
 
 }

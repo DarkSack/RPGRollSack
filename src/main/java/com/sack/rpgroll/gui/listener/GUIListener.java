@@ -1,5 +1,6 @@
 package com.sack.rpgroll.gui.listener;
 
+import com.sack.rpgroll.RPGRoll;
 import com.sack.rpgroll.gui.InventoryGUI;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -17,26 +18,22 @@ import java.util.UUID;
  */
 public class GUIListener implements Listener {
 
-    // Mapa de inventarios activos (Player UUID -> GUI)
     private static final Map<UUID, InventoryGUI> activeGUIs = new HashMap<>();
 
-    /**
-     * Registra una GUI como activa para un jugador.
-     */
+    private final RPGRoll plugin;
+
+    public GUIListener(RPGRoll plugin) {
+        this.plugin = plugin;
+    }
+
     public static void registerGUI(Player player, InventoryGUI gui) {
         activeGUIs.put(player.getUniqueId(), gui);
     }
 
-    /**
-     * Desregistra la GUI activa de un jugador.
-     */
     public static void unregisterGUI(Player player) {
         activeGUIs.remove(player.getUniqueId());
     }
 
-    /**
-     * Obtiene la GUI activa de un jugador.
-     */
     public static InventoryGUI getActiveGUI(Player player) {
         return activeGUIs.get(player.getUniqueId());
     }
@@ -60,11 +57,9 @@ public class GUIListener implements Listener {
             return;
         }
 
-        // Verificar si el inventario clickeado es el de la GUI
         if (clickedInventory.equals(gui.getInventory())) {
             gui.handleClick(event);
         } else if (event.getView().getTopInventory().equals(gui.getInventory())) {
-            // Prevenir clicks en el inventario del jugador mientras la GUI está abierta
             event.setCancelled(true);
         }
     }
@@ -78,9 +73,19 @@ public class GUIListener implements Listener {
 
         InventoryGUI gui = activeGUIs.get(player.getUniqueId());
 
-        if (gui != null && event.getInventory().equals(gui.getInventory())) {
-            // Desregistrar GUI cuando se cierra
-            unregisterGUI(player);
+        if (gui == null || !event.getInventory().equals(gui.getInventory())) {
+            return;
+        }
+
+        unregisterGUI(player);
+
+        if (gui.isSelectionRequired() && !gui.isSelectionMade()) {
+
+            plugin.getServer().getScheduler().runTask(plugin, () -> {
+                if (player.isOnline()) {
+                    gui.open();
+                }
+            });
         }
     }
 

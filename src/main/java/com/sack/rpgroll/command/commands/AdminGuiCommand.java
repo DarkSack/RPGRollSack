@@ -59,7 +59,7 @@ public class AdminGuiCommand implements RPGCommand {
         RaceSelectionGUI gui = new RaceSelectionGUI(player, raceManager, raceId -> {
             player.sendMessage(Component.text("[Preview] Raza seleccionada: ", NamedTextColor.AQUA)
                     .append(Component.text(raceId, NamedTextColor.WHITE)));
-        });
+        }, false);
 
         gui.open();
     }
@@ -68,7 +68,7 @@ public class AdminGuiCommand implements RPGCommand {
         ClassSelectionGUI gui = new ClassSelectionGUI(player, "(preview)", playerClass -> {
             player.sendMessage(Component.text("[Preview] Clase seleccionada: ", NamedTextColor.AQUA)
                     .append(Component.text(playerClass, NamedTextColor.WHITE)));
-        });
+        }, false);
 
         gui.open();
     }
