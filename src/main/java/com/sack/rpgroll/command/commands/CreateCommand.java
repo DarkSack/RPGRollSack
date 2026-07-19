@@ -7,7 +7,7 @@ import com.sack.rpgroll.player.PlayerManager;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-
+import com.sack.rpgroll.race.RaceManager;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -32,17 +32,12 @@ public class CreateCommand implements RPGCommand {
 
         try {
 
-            PlayerManager playerManager = plugin.getBootstrap()
-                    .getServices()
-                    .get(PlayerManager.class);
-
-            // Iniciar flujo de creación
-            CharacterCreationFlow flow = new CharacterCreationFlow(player, playerManager);
+            PlayerManager playerManager = plugin.getBootstrap().getServices().get(PlayerManager.class);
+            RaceManager raceManager = plugin.getBootstrap().getServices().get(RaceManager.class);
+            CharacterCreationFlow flow = new CharacterCreationFlow(player, playerManager, raceManager);
             flow.start();
 
         } catch (Exception exception) {
-            player.sendMessage(
-                    Component.text("Ocurrió un error al iniciar la creación de personaje.", NamedTextColor.RED));
             player.sendMessage(Component.text("Error al iniciar creación de personaje.", NamedTextColor.RED));
             exception.printStackTrace();
 

@@ -2,7 +2,7 @@ package com.sack.rpgroll.gui.character;
 
 import com.sack.rpgroll.player.PlayerManager;
 import com.sack.rpgroll.player.RPGPlayer;
-
+import com.sack.rpgroll.race.RaceManager;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.entity.Player;
@@ -17,13 +17,15 @@ public class CharacterCreationFlow {
 
     private final Player player;
     private final PlayerManager playerManager;
+    private final RaceManager raceManager;
 
     private String selectedRace;
     private String selectedClass;
 
-    public CharacterCreationFlow(Player player, PlayerManager playerManager) {
+    public CharacterCreationFlow(Player player, PlayerManager playerManager, RaceManager raceManager) {
         this.player = player;
         this.playerManager = playerManager;
+        this.raceManager = raceManager;
     }
 
     /**
@@ -57,7 +59,7 @@ public class CharacterCreationFlow {
      * Muestra la GUI de selección de raza.
      */
     private void showRaceSelection() {
-        RaceSelectionGUI raceGUI = new RaceSelectionGUI(player, this::onRaceSelected);
+        RaceSelectionGUI raceGUI = new RaceSelectionGUI(player, raceManager, this::onRaceSelected);
         raceGUI.open();
     }
 
