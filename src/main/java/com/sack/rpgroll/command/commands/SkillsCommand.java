@@ -2,7 +2,6 @@ package com.sack.rpgroll.command.commands;
 
 import com.sack.rpgroll.RPGRoll;
 import com.sack.rpgroll.command.RPGCommand;
-import com.sack.rpgroll.gameplay.skill.SkillRegistry;
 import com.sack.rpgroll.player.PlayerManager;
 import com.sack.rpgroll.player.RPGPlayer;
 import org.bukkit.ChatColor;

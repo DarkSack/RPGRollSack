@@ -1,64 +1,30 @@
-package com.sack.rpgroll.race.loader;
+package com.sack.rpgroll.race;
 
 import com.sack.rpgroll.RPGRoll;
-import com.sack.rpgroll.config.loader.YamlLoader;
+import com.sack.rpgroll.content.ContentParser;
 import com.sack.rpgroll.gameplay.stats.StatType;
-import com.sack.rpgroll.race.Race;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
- * Responsable de leer los archivos YAML en plugins/RPGRoll/races/
- * y convertirlos en instancias de {@link Race}.
- * <p>
- * No decide qué hacer con las razas cargadas (eso es responsabilidad
- * de RaceRegistry) ni conoce TraitRegistry — los passive-traits se
- * cargan como simples IDs de texto, sin resolverlos.
- * <p>
- * Cada archivo se procesa de forma independiente: si uno falla (falta
- * un campo obligatorio, un Material inválido, etc.) se descarta ese
- * archivo con un warning y se continúa con los demás.
+ * Convierte un YamlConfiguration en una instancia de Race.
+ * No conoce TraitRegistry — los passive-traits se cargan como IDs de texto.
  */
-public class RaceLoader {
+public class RaceParser implements ContentParser<Race> {
 
     private final RPGRoll plugin;
-    private final YamlLoader yamlLoader;
 
-    public RaceLoader(RPGRoll plugin, YamlLoader yamlLoader) {
+    public RaceParser(RPGRoll plugin) {
         this.plugin = plugin;
-        this.yamlLoader = yamlLoader;
     }
 
-    /**
-     * Carga todas las razas definidas en plugins/RPGRoll/races/*.yml
-     *
-     * @return lista de razas cargadas exitosamente (excluye archivos inválidos)
-     */
-    public List<Race> load() {
-
-        List<YamlConfiguration> files = yamlLoader.loadAllInFolder("races");
-        List<Race> races = new ArrayList<>();
-
-        for (YamlConfiguration config : files) {
-            try {
-                races.add(parse(config));
-            } catch (Exception e) {
-                plugin.getLogger().warning("✘ Error cargando raza: " + e.getMessage());
-            }
-        }
-
-        plugin.getLogger().info("✔ " + races.size() + " raza(s) cargada(s).");
-
-        return races;
-    }
-
-    private Race parse(YamlConfiguration config) {
+    @Override
+    public Race parse(YamlConfiguration config) {
 
         String id = config.getString("id");
         if (id == null || id.isBlank()) {
@@ -79,14 +45,13 @@ public class RaceLoader {
     private Map<StatType, Integer> parseBaseAttributes(YamlConfiguration config, String raceId) {
 
         Map<StatType, Integer> attributes = new HashMap<>();
-
         ConfigurationSection section = config.getConfigurationSection("base-attributes");
+
         if (section == null) {
             return attributes;
         }
 
         for (String key : section.getKeys(false)) {
-
             StatType stat = StatType.fromString(key);
 
             if (stat == null) {

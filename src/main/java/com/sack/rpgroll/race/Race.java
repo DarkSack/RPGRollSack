@@ -1,5 +1,6 @@
 package com.sack.rpgroll.race;
 
+import com.sack.rpgroll.content.RPGContent;
 import com.sack.rpgroll.gameplay.stats.StatType;
 import org.bukkit.Material;
 
@@ -36,7 +37,7 @@ public record Race(
         Map<StatType, Integer> baseAttributes,
         List<String> passiveTraitIds,
         Material icon,
-        List<String> lore) {
+        List<String> lore) implements RPGContent {
 
     public Race {
         Objects.requireNonNull(id, "id no puede ser null");
