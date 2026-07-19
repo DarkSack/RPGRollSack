@@ -1,0 +1,77 @@
+id: minero
+display-name: "&7⛏ Minero"
+description: |
+  Extrae minerales de las profundidades.
+  Cada bloque roto otorga dinero y experiencia.
+  Los bloques colocados por jugadores no otorgan recompensa.
+
+# Código base64 de textura de cabeza (minecraft-heads.com -> More -> Value)
+icon: "PEGAR_AQUI_EL_CODIGO_BASE64_REAL"
+
+lore:
+  - "&7Un oficio tan antiguo como la piedra misma."
+
+max-level: 50
+exp-base: 100
+exp-multiplier: 1.4
+
+rewards:
+  STONE:
+    money: 0.5
+    experience: 1
+
+  COBBLESTONE:
+    money: 0.3
+    experience: 1
+
+  COAL_ORE:
+    money: 2.0
+    experience: 5
+
+  DEEPSLATE_COAL_ORE:
+    money: 2.5
+    experience: 6
+
+  IRON_ORE:
+    money: 4.0
+    experience: 8
+
+  DEEPSLATE_IRON_ORE:
+    money: 4.5
+    experience: 9
+
+  COPPER_ORE:
+    money: 3.0
+    experience: 6
+
+  GOLD_ORE:
+    money: 8.0
+    experience: 15
+
+  DEEPSLATE_GOLD_ORE:
+    money: 9.0
+    experience: 16
+
+  REDSTONE_ORE:
+    money: 5.0
+    experience: 10
+
+  LAPIS_ORE:
+    money: 6.0
+    experience: 12
+
+  DIAMOND_ORE:
+    money: 50.0
+    experience: 100
+
+  DEEPSLATE_DIAMOND_ORE:
+    money: 55.0
+    experience: 105
+
+  EMERALD_ORE:
+    money: 70.0
+    experience: 130
+
+  ANCIENT_DEBRIS:
+    money: 150.0
+    experience: 250

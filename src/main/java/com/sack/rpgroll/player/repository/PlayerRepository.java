@@ -5,6 +5,8 @@ import com.sack.rpgroll.database.DatabaseManager;
 import com.sack.rpgroll.gameplay.combat.CombatStats;
 import com.sack.rpgroll.player.RPGPlayer;
 import com.sack.rpgroll.player.identity.PlayerIdentity;
+import com.sack.rpgroll.player.jobs.JobProgress;
+import com.sack.rpgroll.player.jobs.PlayerJobs;
 import com.sack.rpgroll.player.progression.PlayerProgression;
 import com.sack.rpgroll.player.skills.PlayerSkills;
 import com.sack.rpgroll.player.stats.PlayerStats;
@@ -15,7 +17,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
-import java.util.UUID;
 
 /**
  * PlayerRepository maneja la persistencia de jugadores en la base de datos.
@@ -143,6 +144,30 @@ public class PlayerRepository {
 
                     PlayerTraits traits = new PlayerTraits(acquiredTraits);
 
+                    // Cargar trabajos
+                    String jobsQuery = "SELECT job_id, level, experience FROM player_jobs WHERE uuid = ?";
+                    Map<String, JobProgress> activeJobs = new LinkedHashMap<>();
+
+                    try (PreparedStatement jobsStatement = connection.prepareStatement(jobsQuery)) {
+
+                        jobsStatement.setString(1, uuid.toString());
+
+                        try (ResultSet jobsResult = jobsStatement.executeQuery()) {
+
+                            while (jobsResult.next()) {
+                                String jobId = jobsResult.getString("job_id");
+                                activeJobs.put(jobId, new JobProgress(
+                                        jobId,
+                                        jobsResult.getInt("level"),
+                                        jobsResult.getInt("experience")));
+                            }
+
+                        }
+
+                    }
+
+                    PlayerJobs jobs = new PlayerJobs(activeJobs);
+
                     // Calcular combat stats (basado en estadísticas)
                     CombatStats combatStats = CombatStats.create(
                             stats.constitution(),
@@ -151,7 +176,8 @@ public class PlayerRepository {
                             progression.level());
 
                     // Construir jugador completo
-                    RPGPlayer player = RPGPlayer.from(identity, stats, progression, skills, traits, combatStats);
+                    RPGPlayer player = RPGPlayer.from(identity, stats, progression, skills, traits, combatStats,
+                            jobs);
                     return Optional.of(player);
 
                 }
@@ -226,6 +252,9 @@ public class PlayerRepository {
             // Guardar traits
             saveTraits(connection, player);
 
+            // Guardar trabajos
+            saveJobs(connection, player);
+
             return true;
 
         } catch (SQLException exception) {
@@ -288,6 +317,9 @@ public class PlayerRepository {
 
             // Actualizar traits
             saveTraits(connection, player);
+
+            // Actualizar trabajos
+            saveJobs(connection, player);
 
             return true;
 
@@ -383,6 +415,41 @@ public class PlayerRepository {
             try (PreparedStatement statement = connection.prepareStatement(insertTrait)) {
                 statement.setString(1, uuid.toString());
                 statement.setString(2, traitId);
+                statement.executeUpdate();
+            }
+        }
+
+    }
+
+    /**
+     * Guarda o actualiza los trabajos activos del jugador (máximo 3),
+     * incluyendo su nivel y experiencia actuales.
+     */
+    private void saveJobs(Connection connection, RPGPlayer player) throws SQLException {
+
+        UUID uuid = player.getUUID();
+        PlayerJobs jobs = player.getJobs();
+
+        // Limpiar trabajos existentes
+        String deleteJobs = "DELETE FROM player_jobs WHERE uuid = ?";
+
+        try (PreparedStatement statement = connection.prepareStatement(deleteJobs)) {
+            statement.setString(1, uuid.toString());
+            statement.executeUpdate();
+        }
+
+        // Insertar trabajos activos
+        String insertJob = "INSERT INTO player_jobs (uuid, job_id, level, experience) VALUES (?, ?, ?, ?)";
+
+        for (String jobId : jobs.getActiveJobIds()) {
+
+            JobProgress progress = jobs.getProgress(jobId).orElseThrow();
+
+            try (PreparedStatement statement = connection.prepareStatement(insertJob)) {
+                statement.setString(1, uuid.toString());
+                statement.setString(2, jobId);
+                statement.setInt(3, progress.level());
+                statement.setInt(4, progress.experience());
                 statement.executeUpdate();
             }
         }

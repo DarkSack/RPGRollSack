@@ -1,200 +1,223 @@
-# RPGRoll
+# 🛡️ RPGRoll Framework
 
-**Framework RPG modular para PaperMC (Minecraft Java 1.21.1)**
+> **Nombre final pendiente**
 
-RPGRoll no es un plugin RPG más: es un **framework** pensado para construir contenido de rol (razas, clases, habilidades, profesiones, quests, NPCs y más) definiendo YAML, sin tocar código Java para cada nueva pieza de contenido.
+Un framework RPG para **Minecraft Java Edition 1.21.1 (Paper)** diseñado para transformar un servidor vanilla en una experiencia de rol completa inspirada en juegos como **Dungeons & Dragons**, MMORPGs clásicos y sistemas RPG modernos.
 
----
-
-## ✨ Filosofía del proyecto
-
-> No estamos desarrollando un plugin pequeño. Estamos desarrollando un framework.
-
-RPGRoll se construye priorizando:
-
-- 🧼 **Código limpio** y principios SOLID
-- 🧩 **Separación de responsabilidades** entre módulos
-- 🏗️ **Arquitectura desacoplada** y extensible
-- 📈 **Escalabilidad** a largo plazo
-- 🔧 **Mantenibilidad** pensada para años de desarrollo, no para un solo release
+> ⚠️ **Estado del proyecto:** En desarrollo activo (Alpha)
 
 ---
 
-## 🛠️ Stack tecnológico
+# ✨ Características
 
-| Componente    | Tecnología                                                         |
-| ------------- | ------------------------------------------------------------------ |
-| Lenguaje      | Java 21                                                            |
-| API           | Paper API 1.21.1                                                   |
-| Build         | Gradle (Kotlin DSL)                                                |
-| Base de datos | SQLite (implementación actual) — preparado para MySQL y PostgreSQL |
-| Configuración | YAML                                                               |
-| Migraciones   | SQL versionado (estilo Flyway)                                     |
+El objetivo del proyecto es proporcionar una base sólida para crear servidores RPG altamente personalizables.
+
+## Sistema RPG
+
+- 🎭 Clases
+- 🧬 Razas
+- ⚒️ Trabajos (Jobs)
+- ⭐ Sistema de niveles
+- 📈 Experiencia (XP)
+- ❤️ Estadísticas del jugador
+- 💎 Traits
+- ⚔️ Skills
+- 🎒 Objetos únicos
+- 🛡️ Equipamiento RPG
+- ✨ Encantamientos personalizados
+- 📜 Ítems completamente configurables
+- 🎲 Bonificaciones por raza
+- ⚡ Habilidades especiales por clase
+
+Cada **raza** y cada **clase** otorgarán efectos pasivos, habilidades únicas y modificadores de estadísticas.
 
 ---
 
-## 🎯 Objetivo final
+# 🚀 Roadmap
 
-Construir algo cercano a un pequeño **motor de videojuegos RPG**, donde el contenido del servidor se define casi por completo mediante configuración:
+Estas son algunas de las características planeadas para futuras versiones.
+
+- ✅ Sistema de clases
+- ✅ Sistema de razas
+- ✅ Sistema de estadísticas
+- ✅ Sistema de experiencia
+- 🚧 Sistema de trabajos
+- 🚧 Objetos únicos
+- 🚧 Encantamientos personalizados
+- 🚧 Habilidades activas
+- 🚧 Árboles de talentos
+- 🚧 NPCs RPG
+- 🚧 Quests
+- 🚧 Dungeons
+- 🚧 Bosses personalizados
+- 🚧 Economía integrada mediante Vault
+- 🚧 Sistema de profesiones
+- 🚧 Sistema de atributos avanzados
+- 🚧 API pública para desarrolladores
+- 🚧 Compatibilidad con plugins externos
+
+---
+
+# 📦 Compatibilidad
+
+| Software  | Versión                |
+| --------- | ---------------------- |
+| Minecraft | **1.21.1**             |
+| Paper     | ✅                     |
+| Java      | **21**                 |
+| Vault     | Opcional (Soft Depend) |
+
+---
+
+# 🔧 Instalación
+
+1. Descarga el archivo `.jar`.
+2. Colócalo dentro de la carpeta:
 
 ```
 plugins/
-└── RPGRoll/
-    ├── config/
-    ├── classes/
-    ├── races/
-    ├── skills/
-    ├── professions/
-    ├── items/
-    ├── quests/
-    ├── spells/
-    ├── lang/
-    ├── database/
-    │   ├── rpgroll.db
-    │   └── migrations/
-    └── cache/
 ```
 
-Los administradores de servidor podrán crear y balancear contenido **únicamente editando archivos YAML**.
+3. Reinicia el servidor.
 
 ---
 
-## 🗂️ Estado del desarrollo
+# 🎮 Comandos
 
-### ✅ Sprint 1 — Infraestructura (COMPLETADO)
-
-Base del framework: arranque, registro de servicios y sistema de configuración propio.
-
-- **`Bootstrap`** — Inicia el framework. No contiene lógica de negocio, solo registra servicios.
-- **`ServiceRegistry`** — Registro interno de servicios del framework.
-- **Sistema de configuración propio**, independiente de `JavaPlugin#getConfig()`:
-  - `config/ConfigManager` — copia, carga y registra configuraciones.
-  - `config/ConfigRegistry` — mantiene todos los YAML cargados en memoria.
-  - `config/ConfigFile` — record que representa un archivo de configuración.
-  - `creator/DirectoryCreator` — crea automáticamente las carpetas del framework (`classes`, `races`, `skills`, `lang`, `database`, `professions`, `items`, `quests`).
-  - `creator/ResourceCopier` — copia los recursos base (`config.yml`, `database.yml`, `gameplay.yml`, `lang/es_MX.yml`) desde el jar.
-  - `loader/YamlLoader` — carga de archivos YAML.
-  - `migration/ConfigMigrator` y `migration/VersionChecker` — migración y verificación de versiones de configuración.
-
-### ✅ Sprint 2 — Persistencia (80–90%)
-
-Sistema de base de datos y migraciones propio, inspirado en Flyway.
-
-- **`database/DatabaseProvider`** _(interfaz)_ — `connect()`, `disconnect()`, `isConnected()`, `getConnection()`.
-- **`database/provider/SQLiteProvider`** — implementación de `DatabaseProvider` responsable únicamente de abrir/cerrar la conexión SQLite.
-- **`database/DatabaseManager`** — coordina el acceso a la base de datos. No contiene SQL, no crea tablas, no conoce el motor concreto; selecciona el proveedor según `database.yml`.
-- **`database/Migration`** _(record)_ — representa una migración (`version`, `filename`, `path`).
-- **`database/MigrationRegistry`** — detecta y ordena automáticamente las migraciones en `database/migrations`.
-- **`database/MigrationExecutor`** — ejecuta el SQL de cada archivo de migración (ej. `V2__create_players.sql`).
-- **`database/DatabaseMigrator`** — conoce el `schema_version` actual, determina las migraciones pendientes y ejecuta únicamente esas.
-
-#### Flujo de migraciones
+Comando principal:
 
 ```
-Servidor inicia
-      │
-      ▼
-MigrationRegistry
-      │
-      ▼
-DatabaseMigrator
-      │
-      ▼
-¿Existe V1? ──Sí──▶ ¿Existe V2? ──No──▶ Ejecutar ──▶ Guardar versión
+/rpg
 ```
 
-#### Tabla de control de versión
-
-```sql
-CREATE TABLE schema_version (
-    version    INTEGER PRIMARY KEY,
-    applied_at INTEGER NOT NULL
-);
-```
-
-Garantiza que ninguna migración ya aplicada vuelva a ejecutarse.
-
----
-
-## 🗄️ Base de datos
-
-Actualmente se usa **SQLite**, con una base de datos independiente por instalación del plugin:
+Alias:
 
 ```
-plugins/RPGRoll/database/rpgroll.db
-```
-
-No se comparte entre servidores.
-
-### `database.yml`
-
-```yaml
-provider: SQLITE
-
-sqlite:
-  file: rpgroll.db
-
-mysql:
-  host: localhost
-  port: 3306
-  database: rpgroll
-  username: root
-  password: ""
-```
-
-> Por ahora solo el proveedor `SQLITE` está operativo. La estructura ya contempla MySQL y PostgreSQL.
-
-### Migraciones SQL
-
-Ubicadas en `resources/database/migrations` (**nunca** dentro de `src/main/java`):
-
-```
-V1__create_schema_version.sql
-V2__create_players.sql
-V3__create_player_stats.sql
+/rpgroll
+/dnd
 ```
 
 ---
 
-## ⚙️ Configuración
+## 👤 Comandos de Jugador
 
-El `ConfigManager` expone las configuraciones cargadas de forma directa, sin depender de `plugin.getConfig()`:
+| Comando        | Descripción                 | Permiso                  |
+| -------------- | --------------------------- | ------------------------ |
+| `/rpg create`  | Crear personaje             | `rpgroll.player.create`  |
+| `/rpg stats`   | Ver estadísticas            | `rpgroll.player.stats`   |
+| `/rpg mystats` | Ver estadísticas detalladas | `rpgroll.player.mystats` |
+| `/rpg level`   | Ver nivel y experiencia     | `rpgroll.player.level`   |
+| `/rpg class`   | Ver o cambiar clase         | `rpgroll.player.class`   |
+| `/rpg race`    | Ver o cambiar raza          | `rpgroll.player.race`    |
+| `/rpg jobs`    | Ver trabajos                | `rpgroll.player.jobs`    |
+| `/rpg skills`  | Ver habilidades             | `rpgroll.player.skills`  |
+| `/rpg traits`  | Ver traits                  | `rpgroll.player.traits`  |
 
-```java
-configManager.getConfig("database"); // devuelve un YamlConfiguration
+---
+
+## 👑 Comandos de Administrador
+
+| Comando                           | Descripción                      | Permiso                 |
+| --------------------------------- | -------------------------------- | ----------------------- |
+| `/rpg reload`                     | Recargar configuración           | `rpgroll.admin.reload`  |
+| `/rpg addxp <jugador> <cantidad>` | Agregar experiencia              | `rpgroll.admin.addxp`   |
+| `/rpg levelup <jugador>`          | Subir nivel (Debug)              | `rpgroll.admin.levelup` |
+| `/rpg gui`                        | Abrir interfaces en modo preview | `rpgroll.admin.gui`     |
+
+---
+
+# 🔐 Permisos
+
+## Jugador
+
+```
+rpgroll.player.*
+```
+
+Incluye:
+
+- rpgroll.player.create
+- rpgroll.player.stats
+- rpgroll.player.mystats
+- rpgroll.player.level
+- rpgroll.player.class
+- rpgroll.player.race
+- rpgroll.player.jobs
+- rpgroll.player.skills
+- rpgroll.player.traits
+
+---
+
+## Administrador
+
+```
+rpgroll.admin.*
+```
+
+Incluye:
+
+- rpgroll.admin.reload
+- rpgroll.admin.addxp
+- rpgroll.admin.levelup
+- rpgroll.admin.gui
+
+---
+
+## Acceso total
+
+```
+rpgroll.*
 ```
 
 ---
 
-## 🧭 Arquitectura futura
+# 🧩 Integraciones
 
-```
-database/
-├── provider/
-│   ├── SQLiteProvider
-│   ├── MySQLProvider
-│   └── PostgreSQLProvider
-├── repository/
-├── entity/
-└── migration/
-```
+Actualmente soporta:
 
-Próximos módulos planeados: sistema de razas, clases, habilidades, profesiones (con recompensas por bloque, protección anti-farm y persistencia), integración de economía vía Vault, quests y NPCs.
+- Vault (Soft Depend)
+
+En el futuro se planea compatibilidad con múltiples plugins de economía, NPCs y administración.
 
 ---
 
-## 📋 Requisitos
+# 🛠️ Tecnologías
 
 - Java 21
-- Servidor PaperMC 1.21.1
-- Gradle (incluido vía wrapper)
-
-## 🚀 Build
-
-```bash
-./gradlew build
-```
-
-El `.jar` generado se coloca en la carpeta `plugins/` del servidor.
+- Gradle
+- Paper API 1.21.1
+- Adventure API
+- SQLite
+- Vault API
 
 ---
+
+# 📖 Filosofía del proyecto
+
+RPGRoll no busca ser simplemente un plugin con niveles.
+
+El objetivo es convertirse en un **Framework RPG** que permita a cualquier servidor construir su propio mundo de fantasía mediante sistemas modulares, altamente configurables y fáciles de extender.
+
+La idea es que prácticamente cualquier mecánica RPG pueda implementarse utilizando este framework.
+
+---
+
+# ❤️ Estado del desarrollo
+
+Actualmente el proyecto se encuentra en una fase temprana de desarrollo.
+
+Las APIs internas y algunas funcionalidades pueden cambiar antes de la versión **1.0**.
+
+---
+
+# 📄 Licencia
+
+Licencia pendiente.
+
+---
+
+## 👨‍💻 Autor
+
+**Sack**
+
+Framework RPG para servidores Paper inspirado en Dungeons & Dragons y MMORPGs.

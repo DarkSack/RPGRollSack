@@ -14,11 +14,13 @@ public class DirectoryCreator {
             "races",
             "skills",
             "traits",
+            "jobs",
             "lang",
             "database",
             "professions",
             "items",
-            "quests");
+            "quests"
+            );
 
     public DirectoryCreator(RPGRoll plugin) {
         this.plugin = plugin;
