@@ -8,10 +8,14 @@ import com.sack.rpgroll.content.Reloadable;
 import com.sack.rpgroll.database.DatabaseManager;
 import com.sack.rpgroll.gameplay.listener.LevelUpListener;
 import com.sack.rpgroll.gameplay.listener.MobKillListener;
+import com.sack.rpgroll.gameplay.job.JobManager;
+import com.sack.rpgroll.gameplay.job.JobRewardService;
+import com.sack.rpgroll.gameplay.job.listener.MinerJobListener;
 import com.sack.rpgroll.gameplay.levelup.LevelUpRewardsConfig;
 import com.sack.rpgroll.gameplay.skill.SkillManager;
 import com.sack.rpgroll.gameplay.trait.TraitManager;
 import com.sack.rpgroll.gui.listener.GUIListener;
+import com.sack.rpgroll.integration.VaultEconomyProvider;
 import com.sack.rpgroll.player.PlayerManager;
 import com.sack.rpgroll.player.listener.PlayerEventListener;
 import com.sack.rpgroll.race.RaceManager;
@@ -22,6 +26,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.Bukkit;
+import org.bukkit.NamespacedKey;
 
 public class Bootstrap {
 
@@ -129,6 +134,23 @@ public class Bootstrap {
         reloadableContent.add(raceManager);
         plugin.getLogger().info("✔ RaceManager registrado");
 
+        // 8. VaultEconomyProvider - Conexión con Vault (opcional)
+        VaultEconomyProvider economyProvider = new VaultEconomyProvider(plugin);
+        boolean economyAvailable = economyProvider.setup();
+        services.register(VaultEconomyProvider.class, economyProvider);
+
+        // 9. JobManager - Sistema de trabajos
+        JobManager jobManager = new JobManager(plugin, configManager.getYamlLoader());
+        jobManager.initialize();
+        services.register(JobManager.class, jobManager);
+        reloadableContent.add(jobManager);
+        plugin.getLogger().info("✔ JobManager registrado");
+
+        if (!economyAvailable) {
+            plugin.getLogger().warning(
+                    "✘ Sistema de trabajos cargado, pero sin economía activa. Las recompensas en dinero no se pagarán.");
+        }
+
     }
 
     public List<Reloadable> getReloadableContent() {
@@ -154,6 +176,7 @@ public class Bootstrap {
         commandManager.register(new LevelUpDebugCommand(plugin));
         commandManager.register(new AdminGuiCommand(plugin));
         commandManager.register(new ReloadCommand(plugin));
+        commandManager.register(new JobsCommand(plugin));
 
         // Registrar el comando principal /rpg
         plugin.getCommand("rpg").setExecutor(commandManager);
@@ -170,9 +193,19 @@ public class Bootstrap {
 
         plugin.getLogger().info("Registrando event listeners...");
 
-        // Listeners de jugador
         PlayerManager playerManager = services.get(PlayerManager.class);
         RaceManager raceManager = services.get(RaceManager.class);
+        JobManager jobManager = services.get(JobManager.class);
+        VaultEconomyProvider economyProvider = services.get(VaultEconomyProvider.class);
+        ConfigManager configManager = services.get(ConfigManager.class);
+        LevelUpRewardsConfig levelUpRewardsConfig = services.get(LevelUpRewardsConfig.class);
+
+        // Listeners de trabajo
+        JobRewardService jobRewardService = new JobRewardService(plugin, playerManager, jobManager, economyProvider);
+        MinerJobListener minerJobListener = new MinerJobListener(jobRewardService);
+        Bukkit.getPluginManager().registerEvents(minerJobListener, plugin);
+
+        // Listeners de jugador
         PlayerEventListener playerListener = new PlayerEventListener(plugin, playerManager, raceManager);
         Bukkit.getPluginManager().registerEvents(playerListener, plugin);
 
@@ -181,8 +214,6 @@ public class Bootstrap {
         Bukkit.getPluginManager().registerEvents(guiListener, plugin);
 
         // Listeners de gameplay (XP, skills, etc)
-        ConfigManager configManager = services.get(ConfigManager.class);
-        LevelUpRewardsConfig levelUpRewardsConfig = services.get(LevelUpRewardsConfig.class);
         MobKillListener mobKillListener = new MobKillListener(playerManager, configManager, levelUpRewardsConfig);
         Bukkit.getPluginManager().registerEvents(mobKillListener, plugin);
 

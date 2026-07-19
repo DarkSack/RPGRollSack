@@ -6,6 +6,7 @@ import com.sack.rpgroll.player.progression.PlayerProgression;
 import com.sack.rpgroll.player.skills.PlayerSkills;
 import com.sack.rpgroll.player.stats.PlayerStats;
 import com.sack.rpgroll.player.traits.PlayerTraits;
+import com.sack.rpgroll.player.jobs.PlayerJobs;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
@@ -32,18 +33,20 @@ public class RPGPlayer {
     private final PlayerSkills skills;
     private final PlayerTraits traits;
     private final CombatStats combatStats;
+    private final PlayerJobs jobs;
 
     /**
      * Constructor privado. Usar factory methods para crear instancias.
      */
     private RPGPlayer(PlayerIdentity identity, PlayerStats stats, PlayerProgression progression,
-            PlayerSkills skills, PlayerTraits traits, CombatStats combatStats) {
+            PlayerSkills skills, PlayerTraits traits, CombatStats combatStats, PlayerJobs jobs) {
         this.identity = identity;
         this.stats = stats;
         this.progression = progression;
         this.skills = skills;
         this.traits = traits;
         this.combatStats = combatStats;
+        this.jobs = jobs;
     }
 
     /**
@@ -56,16 +59,32 @@ public class RPGPlayer {
         PlayerSkills skills = PlayerSkills.empty();
         PlayerTraits traits = PlayerTraits.empty();
         CombatStats combatStats = CombatStats.empty();
-
-        return new RPGPlayer(identity, stats, progression, skills, traits, combatStats);
+        PlayerJobs jobs = PlayerJobs.empty();
+        return new RPGPlayer(identity, stats, progression, skills, traits, combatStats, jobs);
     }
 
     /**
      * Factory method: Cargar jugador desde datos existentes (BD).
      */
     public static RPGPlayer from(PlayerIdentity identity, PlayerStats stats, PlayerProgression progression,
-            PlayerSkills skills, PlayerTraits traits, CombatStats combatStats) {
-        return new RPGPlayer(identity, stats, progression, skills, traits, combatStats);
+            PlayerSkills skills, PlayerTraits traits, CombatStats combatStats, PlayerJobs jobs) {
+        return new RPGPlayer(identity, stats, progression, skills, traits, combatStats, jobs);
+    }
+
+    public PlayerJobs getJobs() {
+        return jobs;
+    }
+
+    public RPGPlayer joinJob(String jobId) {
+        return new RPGPlayer(identity, stats, progression, skills, traits, combatStats, jobs.join(jobId));
+    }
+
+    public RPGPlayer leaveJob(String jobId) {
+        return new RPGPlayer(identity, stats, progression, skills, traits, combatStats, jobs.leave(jobId));
+    }
+
+    public RPGPlayer updateJobs(PlayerJobs newJobs) {
+        return new RPGPlayer(identity, stats, progression, skills, traits, combatStats, newJobs);
     }
 
     // ============ GETTERS ============
@@ -126,7 +145,7 @@ public class RPGPlayer {
                 identity.username(),
                 race,
                 identity.playerClass());
-        return new RPGPlayer(newIdentity, stats, progression, skills, traits, combatStats);
+        return new RPGPlayer(newIdentity, stats, progression, skills, traits, combatStats, jobs);
     }
 
     /**
@@ -139,7 +158,7 @@ public class RPGPlayer {
                 identity.username(),
                 identity.race(),
                 playerClass);
-        return new RPGPlayer(newIdentity, stats, progression, skills, traits, combatStats);
+        return new RPGPlayer(newIdentity, stats, progression, skills, traits, combatStats, jobs);
     }
 
     /**
@@ -158,7 +177,7 @@ public class RPGPlayer {
                 progression.createdAt(),
                 System.currentTimeMillis());
 
-        return new RPGPlayer(identity, stats, newProgression, skills, traits, combatStats);
+        return new RPGPlayer(identity, stats, newProgression, skills, traits, combatStats, jobs);
     }
 
     /**
@@ -176,7 +195,7 @@ public class RPGPlayer {
                 progression.createdAt(),
                 System.currentTimeMillis());
 
-        return new RPGPlayer(identity, stats, newProgression, skills, traits, combatStats);
+        return new RPGPlayer(identity, stats, newProgression, skills, traits, combatStats, jobs);
     }
 
     /**
@@ -184,7 +203,7 @@ public class RPGPlayer {
      * Devuelve una nueva instancia de RPGPlayer.
      */
     public RPGPlayer updateStats(PlayerStats newStats) {
-        return new RPGPlayer(identity, newStats, progression, skills, traits, combatStats);
+        return new RPGPlayer(identity, newStats, progression, skills, traits, combatStats, jobs);
     }
 
     /**
@@ -193,7 +212,7 @@ public class RPGPlayer {
      */
     public RPGPlayer learnSkill(String skillId) {
         PlayerSkills newSkills = skills.learn(skillId);
-        return new RPGPlayer(identity, stats, progression, newSkills, traits, combatStats);
+        return new RPGPlayer(identity, stats, progression, newSkills, traits, combatStats, jobs);
     }
 
     /**
@@ -202,7 +221,7 @@ public class RPGPlayer {
      */
     public RPGPlayer upgradeSkill(String skillId) {
         PlayerSkills newSkills = skills.upgradeSkill(skillId);
-        return new RPGPlayer(identity, stats, progression, newSkills, traits, combatStats);
+        return new RPGPlayer(identity, stats, progression, newSkills, traits, combatStats, jobs);
     }
 
     /**
@@ -211,7 +230,7 @@ public class RPGPlayer {
      */
     public RPGPlayer acquireTrait(String traitId) {
         PlayerTraits newTraits = traits.acquire(traitId);
-        return new RPGPlayer(identity, stats, progression, skills, newTraits, combatStats);
+        return new RPGPlayer(identity, stats, progression, skills, newTraits, combatStats, jobs);
     }
 
     /**
@@ -219,7 +238,7 @@ public class RPGPlayer {
      * Devuelve una nueva instancia de RPGPlayer.
      */
     public RPGPlayer updateCombatStats(CombatStats newCombatStats) {
-        return new RPGPlayer(identity, stats, progression, skills, traits, newCombatStats);
+        return new RPGPlayer(identity, stats, progression, skills, traits, newCombatStats, jobs);
     }
 
     // ============ UTILIDADES ============
