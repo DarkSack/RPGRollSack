@@ -5,9 +5,9 @@ import com.sack.rpgroll.command.RPGCommand;
 import com.sack.rpgroll.config.ConfigManager;
 import com.sack.rpgroll.content.Reloadable;
 import com.sack.rpgroll.gameplay.levelup.LevelUpRewardsConfig;
-import com.sack.rpgroll.gameplay.trait.TraitManager;
-import com.sack.rpgroll.race.RaceManager;
-import org.bukkit.ChatColor;
+
+import net.kyori.adventure.text.format.NamedTextColor;
+
 import org.bukkit.command.CommandSender;
 
 /**
@@ -26,7 +26,7 @@ public class ReloadCommand implements RPGCommand {
     @Override
     public void execute(CommandSender sender, String[] args) {
 
-        sender.sendMessage(ChatColor.YELLOW + "Recargando configuración y contenido...");
+        sender.sendMessage(NamedTextColor.YELLOW + "Recargando configuración y contenido...");
 
         try {
             var services = plugin.getBootstrap().getServices();
@@ -41,7 +41,7 @@ public class ReloadCommand implements RPGCommand {
             }
 
         } catch (Exception exception) {
-            sender.sendMessage(ChatColor.RED + "Error al recargar la configuración.");
+            sender.sendMessage(NamedTextColor.RED + "Error al recargar la configuración.");
             plugin.getLogger().severe("✘ Error en /rpg reload: " + exception.getMessage());
         }
     }

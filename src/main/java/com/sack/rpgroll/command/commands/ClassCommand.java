@@ -3,8 +3,10 @@ package com.sack.rpgroll.command.commands;
 import com.sack.rpgroll.RPGRoll;
 import com.sack.rpgroll.command.RPGCommand;
 import com.sack.rpgroll.player.RPGPlayer;
+
+import net.kyori.adventure.text.format.NamedTextColor;
+
 import com.sack.rpgroll.player.PlayerManager;
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -41,7 +43,7 @@ public class ClassCommand implements RPGCommand {
             Optional<RPGPlayer> rpgPlayer = playerManager.getPlayer(player.getUniqueId());
 
             if (rpgPlayer.isEmpty()) {
-                player.sendMessage(ChatColor.RED + "Error al cargar tus datos.");
+                player.sendMessage(NamedTextColor.RED + "Error al cargar tus datos.");
                 return;
             }
 
@@ -63,7 +65,7 @@ public class ClassCommand implements RPGCommand {
 
         } catch (Exception exception) {
 
-            player.sendMessage(ChatColor.RED + "Error al procesar comando de clase.");
+            player.sendMessage(NamedTextColor.RED + "Error al procesar comando de clase.");
             exception.printStackTrace();
 
         }
@@ -75,29 +77,29 @@ public class ClassCommand implements RPGCommand {
         String playerClass = rpgPlayer.getPlayerClass();
 
         if (playerClass == null || playerClass.isEmpty()) {
-            player.sendMessage(ChatColor.YELLOW + "Aún no has seleccionado una clase.");
-            player.sendMessage(ChatColor.GRAY + "Usa " + ChatColor.WHITE + "/rpg class <nombre>" +
-                    ChatColor.GRAY + " para seleccionar una.");
-            player.sendMessage(ChatColor.GRAY + "Usa " + ChatColor.WHITE + "/rpg class list" +
-                    ChatColor.GRAY + " para ver las clases disponibles.");
+            player.sendMessage(NamedTextColor.YELLOW + "Aún no has seleccionado una clase.");
+            player.sendMessage(NamedTextColor.GRAY + "Usa " + NamedTextColor.WHITE + "/rpg class <nombre>" +
+                    NamedTextColor.GRAY + " para seleccionar una.");
+            player.sendMessage(NamedTextColor.GRAY + "Usa " + NamedTextColor.WHITE + "/rpg class list" +
+                    NamedTextColor.GRAY + " para ver las clases disponibles.");
         } else {
-            player.sendMessage(ChatColor.GREEN + "Tu clase actual: " +
-                    ChatColor.GOLD + playerClass);
+            player.sendMessage(NamedTextColor.GREEN + "Tu clase actual: " +
+                    NamedTextColor.GOLD + playerClass);
         }
 
     }
 
     private void showAvailableClasses(Player player) {
 
-        player.sendMessage(ChatColor.GOLD + "========== Clases Disponibles ==========");
+        player.sendMessage(NamedTextColor.GOLD + "========== Clases Disponibles ==========");
 
         for (String className : AVAILABLE_CLASSES) {
-            player.sendMessage(ChatColor.YELLOW + "• " + ChatColor.WHITE + className);
+            player.sendMessage(NamedTextColor.YELLOW + "• " + NamedTextColor.WHITE + className);
         }
 
-        player.sendMessage(ChatColor.GOLD + "========================================");
-        player.sendMessage(ChatColor.GRAY + "Usa " + ChatColor.WHITE + "/rpg class <nombre>" +
-                ChatColor.GRAY + " para seleccionar una clase.");
+        player.sendMessage(NamedTextColor.GOLD + "========================================");
+        player.sendMessage(NamedTextColor.GRAY + "Usa " + NamedTextColor.WHITE + "/rpg class <nombre>" +
+                NamedTextColor.GRAY + " para seleccionar una clase.");
 
     }
 
@@ -108,16 +110,16 @@ public class ClassCommand implements RPGCommand {
                 .anyMatch(c -> c.equalsIgnoreCase(newClass));
 
         if (!validClass) {
-            player.sendMessage(ChatColor.RED + "Clase no válida: " + newClass);
-            player.sendMessage(ChatColor.GRAY + "Usa " + ChatColor.WHITE + "/rpg class list" +
-                    ChatColor.GRAY + " para ver las clases disponibles.");
+            player.sendMessage(NamedTextColor.RED + "Clase no válida: " + newClass);
+            player.sendMessage(NamedTextColor.GRAY + "Usa " + NamedTextColor.WHITE + "/rpg class list" +
+                    NamedTextColor.GRAY + " para ver las clases disponibles.");
             return;
         }
 
         // Verificar si ya tiene clase
         if (rpgPlayer.getPlayerClass() != null && !rpgPlayer.getPlayerClass().isEmpty()) {
-            player.sendMessage(ChatColor.RED + "Ya tienes una clase seleccionada.");
-            player.sendMessage(ChatColor.YELLOW + "El cambio de clase no está permitido actualmente.");
+            player.sendMessage(NamedTextColor.RED + "Ya tienes una clase seleccionada.");
+            player.sendMessage(NamedTextColor.YELLOW + "El cambio de clase no está permitido actualmente.");
             return;
         }
 
@@ -131,8 +133,8 @@ public class ClassCommand implements RPGCommand {
         RPGPlayer updatedPlayer = rpgPlayer.setClass(formattedClass);
         playerManager.savePlayer(updatedPlayer);
 
-        player.sendMessage(ChatColor.GREEN + "¡Has seleccionado la clase: " +
-                ChatColor.GOLD + formattedClass + ChatColor.GREEN + "!");
+        player.sendMessage(NamedTextColor.GREEN + "¡Has seleccionado la clase: " +
+                NamedTextColor.GOLD + formattedClass + NamedTextColor.GREEN + "!");
 
     }
 

@@ -3,8 +3,12 @@ package com.sack.rpgroll.gameplay.levelup;
 import com.sack.rpgroll.gameplay.event.LevelUpEvent;
 import com.sack.rpgroll.player.PlayerManager;
 import com.sack.rpgroll.player.RPGPlayer;
+
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
+
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import java.util.Optional;
@@ -67,25 +71,34 @@ public class PlayerLevelUpHandler {
      * Envía un mensaje celebrando el level up.
      */
     private void sendLevelUpMessage(Player player, int newLevel, LevelUpRewards rewards) {
-        player.sendMessage("");
-        player.sendMessage(ChatColor.GOLD + "╔════════════════════════════════╗");
-        player.sendMessage(ChatColor.YELLOW + "╠ " + ChatColor.BOLD + "¡SUBISTE DE NIVEL!" + ChatColor.RESET
-                + ChatColor.YELLOW + " ╣");
-        player.sendMessage(ChatColor.GOLD + "╠════════════════════════════════╣");
+        player.sendMessage(Component.empty());
+
+        player.sendMessage(Component.text("╔════════════════════════════════╗", NamedTextColor.GOLD));
+
         player.sendMessage(
-                ChatColor.GREEN + "╠ Nivel: " + ChatColor.WHITE + newLevel + ChatColor.RESET + ChatColor.GREEN);
+                Component.text("╠ ", NamedTextColor.YELLOW)
+                        .append(Component.text("¡SUBISTE DE NIVEL!", NamedTextColor.YELLOW)
+                                .decorate(TextDecoration.BOLD))
+                        .append(Component.text(" ╣", NamedTextColor.YELLOW)));
+
+        player.sendMessage(Component.text("╠════════════════════════════════╣", NamedTextColor.GOLD));
+
+        player.sendMessage(
+                Component.text("╠ Nivel: ", NamedTextColor.GREEN)
+                        .append(Component.text(newLevel, NamedTextColor.WHITE)));
 
         if (rewards.statPoints() > 0) {
-            player.sendMessage(ChatColor.AQUA + "╠ +Puntos de Estadística: " + ChatColor.WHITE + rewards.statPoints());
+            player.sendMessage(
+                    NamedTextColor.AQUA + "╠ +Puntos de Estadística: " + NamedTextColor.WHITE + rewards.statPoints());
         }
         if (rewards.healthBonus() > 0) {
-            player.sendMessage(ChatColor.RED + "╠ +Salud: " + ChatColor.WHITE + rewards.healthBonus());
+            player.sendMessage(NamedTextColor.RED + "╠ +Salud: " + NamedTextColor.WHITE + rewards.healthBonus());
         }
         if (rewards.manaBonus() > 0) {
-            player.sendMessage(ChatColor.BLUE + "╠ +Maná: " + ChatColor.WHITE + rewards.manaBonus());
+            player.sendMessage(NamedTextColor.BLUE + "╠ +Maná: " + NamedTextColor.WHITE + rewards.manaBonus());
         }
 
-        player.sendMessage(ChatColor.GOLD + "╚════════════════════════════════╝");
+        player.sendMessage(NamedTextColor.GOLD + "╚════════════════════════════════╝");
         player.sendMessage("");
     }
 

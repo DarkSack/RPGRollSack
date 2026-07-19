@@ -4,7 +4,9 @@ import com.sack.rpgroll.RPGRoll;
 import com.sack.rpgroll.command.RPGCommand;
 import com.sack.rpgroll.gui.character.CharacterCreationFlow;
 import com.sack.rpgroll.player.PlayerManager;
-import org.bukkit.ChatColor;
+
+import net.kyori.adventure.text.format.NamedTextColor;
+
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -39,7 +41,7 @@ public class CreateCommand implements RPGCommand {
 
         } catch (Exception exception) {
 
-            player.sendMessage(ChatColor.RED + "Error al iniciar creación de personaje.");
+            player.sendMessage(NamedTextColor.RED + "Error al iniciar creación de personaje.");
             exception.printStackTrace();
 
         }
