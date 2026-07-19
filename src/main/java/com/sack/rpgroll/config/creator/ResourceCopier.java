@@ -27,6 +27,7 @@ public class ResourceCopier {
             "races",
             "classes",
             "skills",
+            "traits",
             "professions",
             "items",
             "quests");

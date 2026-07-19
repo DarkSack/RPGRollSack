@@ -5,6 +5,9 @@ import com.sack.rpgroll.config.loader.YamlLoader;
 
 import java.util.*;
 
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.YamlConfiguration;
+
 /**
  * Carga y gestiona las recompensas de level up desde YAML.
  */
@@ -26,37 +29,43 @@ public class LevelUpRewardsConfig {
     public void load() {
         rewards.clear();
 
-        Map<String, Object> config = yamlLoader.load("levelup-rewards.yml");
+        YamlConfiguration config = yamlLoader.loadConfig("levelup-rewards.yml");
 
-        if (config == null || config.isEmpty()) {
+        if (config == null) {
             plugin.getLogger().warning("No se pudo cargar levelup-rewards.yml");
             setDefaults();
             return;
         }
 
-        Map<String, Object> rewardsData = (Map<String, Object>) config.get("rewards");
+        ConfigurationSection rewardsSection = config.getConfigurationSection("rewards");
 
-        if (rewardsData == null) {
+        if (rewardsSection == null) {
             plugin.getLogger().warning("No se encontró sección 'rewards' en levelup-rewards.yml");
             setDefaults();
             return;
         }
 
-        for (Map.Entry<String, Object> entry : rewardsData.entrySet()) {
+        for (String levelKey : rewardsSection.getKeys(false)) {
+
             int level;
             try {
-                level = Integer.parseInt(entry.getKey());
+                level = Integer.parseInt(levelKey);
             } catch (NumberFormatException e) {
+                plugin.getLogger().warning("Nivel inválido: " + levelKey);
                 continue;
             }
 
-            Map<String, Object> rewardData = (Map<String, Object>) entry.getValue();
+            ConfigurationSection rewardSection = rewardsSection.getConfigurationSection(levelKey);
+
+            if (rewardSection == null) {
+                plugin.getLogger().warning("La recompensa del nivel " + level + " está vacía.");
+                continue;
+            }
 
             try {
-                LevelUpRewards reward = parseReward(level, rewardData);
-                rewards.put(level, reward);
+                rewards.put(level, parseReward(level, rewardSection));
             } catch (Exception e) {
-                plugin.getLogger().warning("Error al cargar recompensa del nivel: " + level);
+                plugin.getLogger().warning("Error al cargar recompensa del nivel " + level);
                 e.printStackTrace();
             }
         }
@@ -91,16 +100,23 @@ public class LevelUpRewardsConfig {
     /**
      * Parsea una recompensa desde el YAML.
      */
-    private LevelUpRewards parseReward(int level, Map<String, Object> data) {
-        int expRequired = ((Number) data.getOrDefault("exp_required", calculateExpRequired(level))).intValue();
-        int statPoints = ((Number) data.getOrDefault("stat_points", 2)).intValue();
-        int healthBonus = ((Number) data.getOrDefault("health_bonus", 5 * level)).intValue();
-        int manaBonus = ((Number) data.getOrDefault("mana_bonus", 3 * level)).intValue();
+    private LevelUpRewards parseReward(int level, ConfigurationSection section) {
 
-        List<String> unlockedSkills = (List<String>) data.getOrDefault("unlocked_skills", List.of());
-        List<String> unlockedTraits = (List<String>) data.getOrDefault("unlocked_traits", List.of());
+        int expRequired = section.getInt("exp_required", calculateExpRequired(level));
+        int statPoints = section.getInt("stat_points", 2);
+        int healthBonus = section.getInt("health_bonus", 5 * level);
+        int manaBonus = section.getInt("mana_bonus", 3 * level);
 
-        return new LevelUpRewards(level, expRequired, statPoints, healthBonus, manaBonus, unlockedSkills,
+        List<String> unlockedSkills = section.getStringList("unlocked_skills");
+        List<String> unlockedTraits = section.getStringList("unlocked_traits");
+
+        return new LevelUpRewards(
+                level,
+                expRequired,
+                statPoints,
+                healthBonus,
+                manaBonus,
+                unlockedSkills,
                 unlockedTraits);
     }
 
