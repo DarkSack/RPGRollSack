@@ -1,0 +1,70 @@
+id: pescador
+display-name: "&b🎣 Pescador"
+description: |
+  Domina el arte de la pesca en ríos, lagos y océanos.
+  Cada captura otorga dinero y experiencia — los tesoros valen más.
+icon: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDE5ZTAzOTdkMzU1MTBmNzM4NjQzMTBkYWNhOTY2MDM2NTE4ZWY3ZTRlMjBmZDNjMmUzMTg1ODQwZTQxNDFjZiJ9fX0="
+lore:
+  - "&7Paciencia y caña, la fortuna llega sola."
+max-level: 50
+exp-base: 90
+exp-multiplier: 1.35
+
+rewards:
+  COD:
+    money: 1.0
+    experience: 2
+
+  SALMON:
+    money: 1.5
+    experience: 3
+
+  TROPICAL_FISH:
+    money: 3.0
+    experience: 5
+
+  PUFFERFISH:
+    money: 2.5
+    experience: 4
+
+  # Tesoros (poco frecuentes, mayor recompensa)
+  BOW:
+    money: 15.0
+    experience: 30
+
+  ENCHANTED_BOOK:
+    money: 20.0
+    experience: 40
+
+  NAME_TAG:
+    money: 10.0
+    experience: 20
+
+  SADDLE:
+    money: 12.0
+    experience: 25
+
+  NAUTILUS_SHELL:
+    money: 18.0
+    experience: 35
+
+  # "Basura" de pesca (recompensa mínima)
+  LEATHER_BOOTS:
+    money: 0.2
+    experience: 1
+
+  BONE:
+    money: 0.2
+    experience: 1
+
+  STRING:
+    money: 0.2
+    experience: 1
+
+  BOWL:
+    money: 0.1
+    experience: 1
+
+  LILY_PAD:
+    money: 0.2
+    experience: 1

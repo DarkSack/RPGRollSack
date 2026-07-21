@@ -1,6 +1,9 @@
 id: elfo
 display-name: "&bElfo"
-description: "Longevos y ágiles, con una afinidad natural hacia la magia y el bosque."
+description: |
+  Longevos y ágiles
+  con una afinidad natural
+  hacia la magia y el bosque.
 
 base-attributes:
   dexterity: 2

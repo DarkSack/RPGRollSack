@@ -1,6 +1,8 @@
 id: fireball
 name: "&cBola de Fuego"
-description: "Lanza una bola de fuego que inflige daño mágico."
+description: |
+  Lanza una bola de
+  fuego que inflige daño mágico.
 required-level: 5
 mana-cost: 20
 cooldown-seconds: 8

@@ -1,0 +1,72 @@
+id: alquimista
+display-name: "&d⚗ Alquimista"
+description: |
+  Domina el arte de crear pociones mágicas.
+  Cada poción completada otorga dinero y experiencia según su tipo.
+icon: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTU0ZjhjOTY0NDUxZWI3YmVhMzYwN2JhZDc3MTE2NDdlY2EzYmEwZTNiYjFjYTEwYmQzNjM5NzRiYTlhNGUwMCJ9fX0="
+lore:
+  - "&7El fuego lento revela los secretos del mundo."
+max-level: 50
+exp-base: 95
+exp-multiplier: 1.35
+
+rewards:
+  HEALING:
+    money: 5.0
+    experience: 10
+
+  REGENERATION:
+    money: 6.0
+    experience: 12
+
+  STRENGTH:
+    money: 5.0
+    experience: 10
+
+  SWIFTNESS:
+    money: 4.0
+    experience: 8
+
+  FIRE_RESISTANCE:
+    money: 5.0
+    experience: 10
+
+  WATER_BREATHING:
+    money: 4.0
+    experience: 8
+
+  NIGHT_VISION:
+    money: 3.0
+    experience: 6
+
+  INVISIBILITY:
+    money: 8.0
+    experience: 15
+
+  POISON:
+    money: 3.0
+    experience: 6
+
+  WEAKNESS:
+    money: 2.0
+    experience: 4
+
+  SLOWNESS:
+    money: 2.0
+    experience: 4
+
+  HARMING:
+    money: 4.0
+    experience: 8
+
+  LUCK:
+    money: 12.0
+    experience: 25
+
+  TURTLE_MASTER:
+    money: 7.0
+    experience: 14
+
+  SLOW_FALLING:
+    money: 5.0
+    experience: 10

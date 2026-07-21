@@ -34,6 +34,7 @@ public class MigrationRegistry {
         register(3, "V3__create_player_skills.sql");
         register(4, "V4__create_player_traits.sql");
         register(5, "V5__create_player_jobs.sql");
+        register(6, "V6__create_player_quests.sql");
 
     }
 

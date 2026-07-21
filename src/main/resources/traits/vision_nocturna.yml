@@ -1,6 +1,8 @@
 id: vision_nocturna
 name: "&7Visión Nocturna"
-description: "Otorgado por raza élfica. Mejora la percepción en la oscuridad."
+description: |
+  Otorgado por raza élfica.
+  Mejora la percepción en la oscuridad.
 required-level: 1
 effect:
   wisdom-bonus: 1

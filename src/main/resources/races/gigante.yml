@@ -1,6 +1,8 @@
 id: gigante
 display-name: "&6Gigante"
-description: "Criaturas colosales de gran fuerza física, lentas pero devastadoras en combate."
+description: |
+  Criaturas colosales de gran fuerza física
+  lentas pero devastadoras en combate.
 
 base-attributes:
   strength: 3
