@@ -10,7 +10,9 @@ import com.sack.rpgroll.gameplay.listener.LevelUpListener;
 import com.sack.rpgroll.gameplay.listener.MobKillListener;
 import com.sack.rpgroll.gameplay.job.JobManager;
 import com.sack.rpgroll.gameplay.job.JobRewardService;
+import com.sack.rpgroll.gameplay.job.PlacedBlockTracker;
 import com.sack.rpgroll.gameplay.job.listener.MinerJobListener;
+import com.sack.rpgroll.gameplay.job.listener.PescadorJobListener;
 import com.sack.rpgroll.gameplay.levelup.LevelUpRewardsConfig;
 import com.sack.rpgroll.gameplay.skill.SkillManager;
 import com.sack.rpgroll.gameplay.trait.TraitManager;
@@ -134,12 +136,17 @@ public class Bootstrap {
         reloadableContent.add(raceManager);
         plugin.getLogger().info("✔ RaceManager registrado");
 
-        // 8. VaultEconomyProvider - Conexión con Vault (opcional)
+        // 8. PlacedBlockTracker - Sistema anti-farm para minero
+        PlacedBlockTracker placedBlockTracker = new PlacedBlockTracker(plugin, dbManager);
+        services.register(PlacedBlockTracker.class, placedBlockTracker);
+        plugin.getLogger().info("✔ PlacedBlockTracker registrado");
+
+        // 9. VaultEconomyProvider - Conexión con Vault (opcional)
         VaultEconomyProvider economyProvider = new VaultEconomyProvider(plugin);
         boolean economyAvailable = economyProvider.setup();
         services.register(VaultEconomyProvider.class, economyProvider);
 
-        // 9. JobManager - Sistema de trabajos
+        // 10. JobManager - Sistema de trabajos
         JobManager jobManager = new JobManager(plugin, configManager.getYamlLoader());
         jobManager.initialize();
         services.register(JobManager.class, jobManager);
@@ -201,9 +208,13 @@ public class Bootstrap {
         LevelUpRewardsConfig levelUpRewardsConfig = services.get(LevelUpRewardsConfig.class);
 
         // Listeners de trabajo
+        PlacedBlockTracker placedBlockTracker = services.get(PlacedBlockTracker.class);
         JobRewardService jobRewardService = new JobRewardService(plugin, playerManager, jobManager, economyProvider);
-        MinerJobListener minerJobListener = new MinerJobListener(jobRewardService);
+        MinerJobListener minerJobListener = new MinerJobListener(jobRewardService, placedBlockTracker);
         Bukkit.getPluginManager().registerEvents(minerJobListener, plugin);
+
+        PescadorJobListener pescadorJobListener = new PescadorJobListener(jobRewardService);
+        Bukkit.getPluginManager().registerEvents(pescadorJobListener, plugin);
 
         // Listeners de jugador
         PlayerEventListener playerListener = new PlayerEventListener(plugin, playerManager, raceManager);

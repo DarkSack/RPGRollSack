@@ -1,6 +1,8 @@
 id: draconido
-display-name: "&cDraconido"
-description: "Descendientes de dragones ancestrales, con escamas resistentes y aliento elemental."
+display-name: "Draconido"
+description: |
+  Descendientes de dragones ancestrales
+  con escamas resistentes y aliento elemental.
 
 base-attributes:
   strength: 2
