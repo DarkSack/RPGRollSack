@@ -1,0 +1,44 @@
+id: granjero
+display-name: "&a🌾 Granjero"
+description: |
+  Cultiva y cosecha la tierra para obtener dinero y experiencia.
+  Solo los cultivos completamente maduros otorgan recompensa.
+icon: "PEGAR_AQUI_EL_CODIGO_BASE64_REAL"
+lore:
+  - "&7La paciencia de la tierra da sus frutos."
+max-level: 50
+exp-base: 85
+exp-multiplier: 1.3
+
+rewards:
+  WHEAT:
+    money: 1.0
+    experience: 2
+
+  CARROTS:
+    money: 1.2
+    experience: 2
+
+  POTATOES:
+    money: 1.2
+    experience: 2
+
+  BEETROOTS:
+    money: 1.5
+    experience: 3
+
+  NETHER_WART:
+    money: 2.5
+    experience: 5
+
+  COCOA:
+    money: 2.0
+    experience: 4
+
+  MELON_STEM:
+    money: 1.8
+    experience: 3
+
+  PUMPKIN_STEM:
+    money: 1.8
+    experience: 3

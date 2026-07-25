@@ -8,9 +8,25 @@ import com.sack.rpgroll.content.Reloadable;
 import com.sack.rpgroll.database.DatabaseManager;
 import com.sack.rpgroll.gameplay.listener.LevelUpListener;
 import com.sack.rpgroll.gameplay.listener.MobKillListener;
+import com.sack.rpgroll.gameplay.enchant.EnchantManager;
+import com.sack.rpgroll.gameplay.enchant.EnchantedBookFactory;
+import com.sack.rpgroll.gameplay.enchant.ItemEnchantmentStorage;
+import com.sack.rpgroll.gameplay.enchant.effect.EnchantEffectRegistry;
+import com.sack.rpgroll.gameplay.enchant.effect.handlers.LifestealEffectHandler;
+import com.sack.rpgroll.gameplay.enchant.effect.handlers.PotionEffectSelfPassiveHandler;
+import com.sack.rpgroll.gameplay.enchant.effect.handlers.PotionEffectTargetHandler;
+import com.sack.rpgroll.gameplay.enchant.effect.handlers.SetFireEffectHandler;
+import com.sack.rpgroll.gameplay.enchant.listener.EnchantCombiner;
+import com.sack.rpgroll.gameplay.enchant.listener.EnchantDropListener;
+import com.sack.rpgroll.gameplay.enchant.listener.EnchantHitListener;
+import com.sack.rpgroll.gameplay.enchant.listener.EnchantShopListener;
+import com.sack.rpgroll.gameplay.enchant.listener.PassiveEnchantTask;
 import com.sack.rpgroll.gameplay.job.JobManager;
 import com.sack.rpgroll.gameplay.job.JobRewardService;
 import com.sack.rpgroll.gameplay.job.PlacedBlockTracker;
+import com.sack.rpgroll.gameplay.job.listener.AlquimistaJobListener;
+import com.sack.rpgroll.gameplay.job.listener.CazadorJobListener;
+import com.sack.rpgroll.gameplay.job.listener.GranjeroJobListener;
 import com.sack.rpgroll.gameplay.job.listener.MinerJobListener;
 import com.sack.rpgroll.gameplay.job.listener.PescadorJobListener;
 import com.sack.rpgroll.gameplay.levelup.LevelUpRewardsConfig;
@@ -20,6 +36,8 @@ import com.sack.rpgroll.gui.listener.GUIListener;
 import com.sack.rpgroll.integration.VaultEconomyProvider;
 import com.sack.rpgroll.player.PlayerManager;
 import com.sack.rpgroll.player.listener.PlayerEventListener;
+import com.sack.rpgroll.playerclass.ClassManager;
+import com.sack.rpgroll.race.RaceAttributeApplier;
 import com.sack.rpgroll.race.RaceManager;
 import java.util.logging.Level;
 
@@ -82,6 +100,10 @@ public class Bootstrap {
 
         }
 
+        if (services.contains(PassiveEnchantTask.class)) {
+            services.get(PassiveEnchantTask.class).cancel();
+        }
+
         plugin.getLogger().info("✔ Todos los servicios detenidos correctamente.");
 
     }
@@ -136,17 +158,29 @@ public class Bootstrap {
         reloadableContent.add(raceManager);
         plugin.getLogger().info("✔ RaceManager registrado");
 
-        // 8. PlacedBlockTracker - Sistema anti-farm para minero
+        // 7.1 RaceAttributeApplier - Aplicador de atributos de raza
+        RaceAttributeApplier raceAttributeApplier = new RaceAttributeApplier(plugin);
+        services.register(RaceAttributeApplier.class, raceAttributeApplier);
+        plugin.getLogger().info("✔ RaceAttributeApplier registrado");
+
+        // 8. ClassManager - Sistema de clases
+        ClassManager classManager = new ClassManager(plugin, configManager.getYamlLoader());
+        classManager.initialize();
+        services.register(ClassManager.class, classManager);
+        reloadableContent.add(classManager);
+        plugin.getLogger().info("✔ ClassManager registrado");
+
+        // 9. PlacedBlockTracker - Sistema anti-farm para minero
         PlacedBlockTracker placedBlockTracker = new PlacedBlockTracker(plugin, dbManager);
         services.register(PlacedBlockTracker.class, placedBlockTracker);
         plugin.getLogger().info("✔ PlacedBlockTracker registrado");
 
-        // 9. VaultEconomyProvider - Conexión con Vault (opcional)
+        // 10. VaultEconomyProvider - Conexión con Vault (opcional)
         VaultEconomyProvider economyProvider = new VaultEconomyProvider(plugin);
         boolean economyAvailable = economyProvider.setup();
         services.register(VaultEconomyProvider.class, economyProvider);
 
-        // 10. JobManager - Sistema de trabajos
+        // 11. JobManager - Sistema de trabajos
         JobManager jobManager = new JobManager(plugin, configManager.getYamlLoader());
         jobManager.initialize();
         services.register(JobManager.class, jobManager);
@@ -157,6 +191,28 @@ public class Bootstrap {
             plugin.getLogger().warning(
                     "✘ Sistema de trabajos cargado, pero sin economía activa. Las recompensas en dinero no se pagarán.");
         }
+
+        // 12. Sistema de encantamientos - orden correcto: catálogo -> storage ->
+        // factory -> efectos
+        EnchantManager enchantManager = new EnchantManager(plugin, configManager.getYamlLoader());
+        enchantManager.initialize();
+        services.register(EnchantManager.class, enchantManager);
+        reloadableContent.add(enchantManager);
+        plugin.getLogger().info("✔ EnchantManager registrado");
+
+        ItemEnchantmentStorage itemEnchantmentStorage = new ItemEnchantmentStorage(plugin, enchantManager);
+        services.register(ItemEnchantmentStorage.class, itemEnchantmentStorage);
+
+        EnchantedBookFactory enchantedBookFactory = new EnchantedBookFactory(itemEnchantmentStorage);
+        services.register(EnchantedBookFactory.class, enchantedBookFactory);
+
+        EnchantEffectRegistry enchantEffectRegistry = new EnchantEffectRegistry();
+        enchantEffectRegistry.register("SET_FIRE", new SetFireEffectHandler());
+        enchantEffectRegistry.register("LIFESTEAL", new LifestealEffectHandler());
+        enchantEffectRegistry.register("POTION_EFFECT_TARGET", new PotionEffectTargetHandler());
+        enchantEffectRegistry.register("POTION_EFFECT_SELF_PASSIVE", new PotionEffectSelfPassiveHandler());
+        services.register(EnchantEffectRegistry.class, enchantEffectRegistry);
+        plugin.getLogger().info("✔ EnchantEffectRegistry registrado (4 tipos de efecto)");
 
     }
 
@@ -184,6 +240,9 @@ public class Bootstrap {
         commandManager.register(new AdminGuiCommand(plugin));
         commandManager.register(new ReloadCommand(plugin));
         commandManager.register(new JobsCommand(plugin));
+        commandManager.register(new AdminSetRaceCommand(plugin));
+        commandManager.register(new AdminSetClassCommand(plugin));
+        commandManager.register(new EnchantCommand(plugin));
 
         // Registrar el comando principal /rpg
         plugin.getCommand("rpg").setExecutor(commandManager);
@@ -200,37 +259,79 @@ public class Bootstrap {
 
         plugin.getLogger().info("Registrando event listeners...");
 
+        // Servicios base que varios listeners necesitan
         PlayerManager playerManager = services.get(PlayerManager.class);
         RaceManager raceManager = services.get(RaceManager.class);
+        ClassManager classManager = services.get(ClassManager.class);
         JobManager jobManager = services.get(JobManager.class);
         VaultEconomyProvider economyProvider = services.get(VaultEconomyProvider.class);
         ConfigManager configManager = services.get(ConfigManager.class);
         LevelUpRewardsConfig levelUpRewardsConfig = services.get(LevelUpRewardsConfig.class);
-
-        // Listeners de trabajo
         PlacedBlockTracker placedBlockTracker = services.get(PlacedBlockTracker.class);
+        EnchantManager enchantManager = services.get(EnchantManager.class);
+        ItemEnchantmentStorage itemEnchantmentStorage = services.get(ItemEnchantmentStorage.class);
+        EnchantedBookFactory enchantedBookFactory = services.get(EnchantedBookFactory.class);
+        EnchantEffectRegistry enchantEffectRegistry = services.get(EnchantEffectRegistry.class);
+
+        // Clave compartida para marcar entidades nacidas de spawner (anti-farm
+        // de Cazador y anti-drop-de-encantamientos en granjas automáticas)
+        NamespacedKey fromSpawnerKey = new NamespacedKey(plugin, "from-spawner");
+
+        // ===== Listeners de trabajos =====
         JobRewardService jobRewardService = new JobRewardService(plugin, playerManager, jobManager, economyProvider);
+
         MinerJobListener minerJobListener = new MinerJobListener(jobRewardService, placedBlockTracker);
         Bukkit.getPluginManager().registerEvents(minerJobListener, plugin);
 
         PescadorJobListener pescadorJobListener = new PescadorJobListener(jobRewardService);
         Bukkit.getPluginManager().registerEvents(pescadorJobListener, plugin);
 
-        // Listeners de jugador
-        PlayerEventListener playerListener = new PlayerEventListener(plugin, playerManager, raceManager);
+        CazadorJobListener cazadorJobListener = new CazadorJobListener(jobRewardService, fromSpawnerKey);
+        Bukkit.getPluginManager().registerEvents(cazadorJobListener, plugin);
+
+        GranjeroJobListener granjeroJobListener = new GranjeroJobListener(jobRewardService);
+        Bukkit.getPluginManager().registerEvents(granjeroJobListener, plugin);
+
+        AlquimistaJobListener alquimistaJobListener = new AlquimistaJobListener(jobRewardService);
+        Bukkit.getPluginManager().registerEvents(alquimistaJobListener, plugin);
+
+        // ===== Listeners de jugador =====
+        RaceAttributeApplier raceAttributeApplier = services.get(RaceAttributeApplier.class);
+        PlayerEventListener playerListener = new PlayerEventListener(plugin, playerManager, raceManager, classManager,
+                raceAttributeApplier);
         Bukkit.getPluginManager().registerEvents(playerListener, plugin);
 
-        // Listeners de GUI
+        // ===== Listeners de GUI =====
         GUIListener guiListener = new GUIListener(plugin);
         Bukkit.getPluginManager().registerEvents(guiListener, plugin);
 
-        // Listeners de gameplay (XP, skills, etc)
+        // ===== Listeners de gameplay (XP, skills, etc) =====
         MobKillListener mobKillListener = new MobKillListener(playerManager, configManager, levelUpRewardsConfig);
         Bukkit.getPluginManager().registerEvents(mobKillListener, plugin);
 
-        // Listener de celebración de level up
         LevelUpListener levelUpListener = new LevelUpListener();
         Bukkit.getPluginManager().registerEvents(levelUpListener, plugin);
+
+        // ===== Listeners de encantamientos =====
+        EnchantHitListener enchantHitListener = new EnchantHitListener(itemEnchantmentStorage, enchantManager,
+                enchantEffectRegistry);
+        Bukkit.getPluginManager().registerEvents(enchantHitListener, plugin);
+
+        EnchantCombiner enchantCombiner = new EnchantCombiner(itemEnchantmentStorage, enchantManager);
+        Bukkit.getPluginManager().registerEvents(enchantCombiner, plugin);
+
+        EnchantDropListener enchantDropListener = new EnchantDropListener(enchantManager, enchantedBookFactory,
+                fromSpawnerKey);
+        Bukkit.getPluginManager().registerEvents(enchantDropListener, plugin);
+
+        EnchantShopListener enchantShopListener = new EnchantShopListener(enchantManager, enchantedBookFactory,
+                economyProvider);
+        Bukkit.getPluginManager().registerEvents(enchantShopListener, plugin);
+
+        PassiveEnchantTask passiveEnchantTask = new PassiveEnchantTask(itemEnchantmentStorage, enchantManager,
+                enchantEffectRegistry);
+        passiveEnchantTask.start(plugin);
+        services.register(PassiveEnchantTask.class, passiveEnchantTask);
 
         plugin.getLogger().info("✔ Event listeners registrados.");
 

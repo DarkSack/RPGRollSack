@@ -1,23 +1,22 @@
 id: gigante
 display-name: "&6Gigante"
 description: |
-  Criaturas colosales de gran fuerza física
-  lentas pero devastadoras en combate.
-
+  Criaturas colosales de gran fuerza física, lentas pero devastadoras.
 base-attributes:
   strength: 3
   constitution: 3
   dexterity: -2
   intelligence: -1
 
+physical:
+  scale: 2
+  movement-speed-percent: -0.15
+  extra-health: 6.0
+  knockback-resistance: 0.3
+
 passive-traits:
   - fuerza_colosal
   - resistencia_fisica
-  - golpe_aturdidor
-
 icon: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzczYjMyMjA1MzY0MjU1ZmEyODUxMmJlNTc4YjdkOTg4NTMzOTg2OTllYThmNmIyODU0MjMxODkwZTI5NiJ9fX0=
-
 lore:
   - "&7Descendientes de los antiguos titanes de piedra"
-  - "&7Su fuerza puede derribar murallas"
-  - "&7Pocos se atreven a enfrentarlos cuerpo a cuerpo"

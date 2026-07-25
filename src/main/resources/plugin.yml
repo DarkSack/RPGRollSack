@@ -75,7 +75,8 @@ permissions:
       rpgroll.admin.addxp: true
       rpgroll.admin.levelup: true
       rpgroll.admin.gui: true
-
+      rpgroll.admin.setrace: true
+      rpgroll.admin.setclass: true
   rpgroll.admin.reload:
     description: Recargar configuración del plugin
     default: op
@@ -95,3 +96,15 @@ permissions:
   rpgroll.player.jobs:
     description: Ver y gestionar trabajos
     default: true
+
+  rpgroll.admin.enchant:
+    description: Administrar encantamientos custom
+    default: op
+
+  rpgroll.admin.setrace:
+    description: Cambiar la raza de un jugador
+    default: op
+
+  rpgroll.admin.setclass:
+    description: Cambiar la clase de un jugador
+    default: op

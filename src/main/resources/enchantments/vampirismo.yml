@@ -1,0 +1,15 @@
+id: vampirismo
+display-name: "&4Vampirismo"
+description: "Absorbe parte del daño infligido como vida propia."
+max-level: 5
+applicable-to: [WEAPON]
+trigger: ON_HIT
+effect: LIFESTEAL
+params:
+  percent-per-level: 5.0
+
+drop-chance: 0.03
+drop-mobs: [ZOMBIE, SKELETON, WITHER_SKELETON]
+
+shop-price-base: 50.0
+shop-price-per-level: 30.0
