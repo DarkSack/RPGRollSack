@@ -8,12 +8,12 @@ import com.sack.rpgroll.player.PlayerManager;
 import com.sack.rpgroll.player.RPGPlayer;
 import com.sack.rpgroll.player.jobs.JobProgress;
 import com.sack.rpgroll.player.jobs.PlayerJobs;
+import com.sack.rpgroll.util.ComponentUtils;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -94,7 +94,7 @@ public class JobAbandonGUI extends InventoryGUI {
     private void addJob(int slot, Job job, JobProgress progress) {
 
         ItemStack item = ItemBuilder.skull(job.icon())
-                .setName(Component.text(ChatColor.translateAlternateColorCodes('&', job.displayName()))
+                .setName(ComponentUtils.parse(job.displayName())
                         .decorate(TextDecoration.BOLD))
                 .setLore(
                         Component.text("Nivel: " + progress.level(), NamedTextColor.YELLOW),

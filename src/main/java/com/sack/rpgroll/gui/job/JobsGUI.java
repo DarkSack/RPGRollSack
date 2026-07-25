@@ -8,12 +8,12 @@ import com.sack.rpgroll.player.PlayerManager;
 import com.sack.rpgroll.player.RPGPlayer;
 import com.sack.rpgroll.player.jobs.JobProgress;
 import com.sack.rpgroll.player.jobs.PlayerJobs;
+import com.sack.rpgroll.util.ComponentUtils;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -102,7 +102,7 @@ public class JobsGUI extends InventoryGUI {
 
         if (!job.description().isEmpty()) {
             for (String line : job.description().split("\n")) {
-                lore.add(Component.text(ChatColor.translateAlternateColorCodes('&', line), NamedTextColor.GRAY));
+                lore.add(ComponentUtils.parse(line).color(NamedTextColor.GRAY));
             }
         }
 
@@ -134,8 +134,7 @@ public class JobsGUI extends InventoryGUI {
         }
 
         ItemStack item = ItemBuilder.skull(job.icon())
-                .setName(Component.text(ChatColor.translateAlternateColorCodes('&', job.displayName()))
-                        .decorate(TextDecoration.BOLD))
+                .setName(ComponentUtils.parse(job.displayName()).decorate(TextDecoration.BOLD))
                 .setLore(lore)
                 .build();
 
