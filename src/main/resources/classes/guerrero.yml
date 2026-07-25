@@ -1,0 +1,13 @@
+id: guerrero
+display-name: "&cGuerrero"
+description: |
+  Maestro del combate cuerpo a cuerpo.
+  Prioriza fuerza y resistencia sobre todo lo demás.
+base-attributes:
+  strength: 3
+  constitution: 2
+passive-traits: []
+icon: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvN2I5M2ZmMjgzODIwMGRmMmQyOWJhNjI4YWM2ZmUyNjkzM2YxN2MxY2M3ZmVlMDIxNGM0MTU4NzNiMjZlNmY2YiJ9fX0="
+lore:
+  - "&7Armas: Espadas, Hachas y Escudos"
+  - "&7Rol: Tanque / DPS"

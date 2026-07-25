@@ -32,8 +32,9 @@ public class RaceParser implements ContentParser<Race> {
         List<String> passiveTraits = config.getStringList("passive-traits");
         List<String> lore = config.getStringList("lore");
         String icon = parseIcon(config, id);
+        RacePhysicalModifiers physicalModifiers = parsePhysicalModifiers(config);
 
-        return new Race(id, displayName, description, baseAttributes, passiveTraits, icon, lore);
+        return new Race(id, displayName, description, baseAttributes, passiveTraits, icon, lore, physicalModifiers);
     }
 
     private Map<StatType, Integer> parseBaseAttributes(YamlConfiguration config, String raceId) {
@@ -70,6 +71,21 @@ public class RaceParser implements ContentParser<Race> {
         }
 
         return icon;
+    }
+
+    private RacePhysicalModifiers parsePhysicalModifiers(YamlConfiguration config) {
+
+        ConfigurationSection section = config.getConfigurationSection("physical");
+
+        if (section == null) {
+            return RacePhysicalModifiers.none();
+        }
+
+        return new RacePhysicalModifiers(
+                section.getDouble("scale", 1.0),
+                section.getDouble("movement-speed-percent", 0.0),
+                section.getDouble("extra-health", 0.0),
+                section.getDouble("knockback-resistance", 0.0));
     }
 
 }

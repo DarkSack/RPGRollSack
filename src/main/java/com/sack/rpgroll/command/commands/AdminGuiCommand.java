@@ -4,6 +4,8 @@ import com.sack.rpgroll.RPGRoll;
 import com.sack.rpgroll.command.RPGCommand;
 import com.sack.rpgroll.gui.character.ClassSelectionGUI;
 import com.sack.rpgroll.gui.character.RaceSelectionGUI;
+import com.sack.rpgroll.playerclass.ClassManager;
+import com.sack.rpgroll.race.RaceAttributeApplier;
 import com.sack.rpgroll.race.RaceManager;
 
 import net.kyori.adventure.text.Component;
@@ -55,17 +57,23 @@ public class AdminGuiCommand implements RPGCommand {
 
     private void openRacePreview(Player player) {
         RaceManager raceManager = plugin.getBootstrap().getServices().get(RaceManager.class);
+        RaceAttributeApplier raceAttributeApplier = plugin.getBootstrap().getServices().get(RaceAttributeApplier.class);
 
         RaceSelectionGUI gui = new RaceSelectionGUI(player, raceManager, raceId -> {
             player.sendMessage(Component.text("[Preview] Raza seleccionada: ", NamedTextColor.AQUA)
                     .append(Component.text(raceId, NamedTextColor.WHITE)));
+
+            raceManager.get(raceId).ifPresent(race -> raceAttributeApplier.apply(player, race));
+
         }, false);
 
         gui.open();
     }
 
     private void openClassPreview(Player player) {
-        ClassSelectionGUI gui = new ClassSelectionGUI(player, "(preview)", playerClass -> {
+        ClassManager classManager = plugin.getBootstrap().getServices().get(ClassManager.class);
+
+        ClassSelectionGUI gui = new ClassSelectionGUI(player, classManager, "(preview)", playerClass -> {
             player.sendMessage(Component.text("[Preview] Clase seleccionada: ", NamedTextColor.AQUA)
                     .append(Component.text(playerClass, NamedTextColor.WHITE)));
         }, false);

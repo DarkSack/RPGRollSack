@@ -19,8 +19,8 @@ public class DirectoryCreator {
             "database",
             "professions",
             "items",
-            "quests"
-            );
+            "quests",
+            "enchantments");
 
     public DirectoryCreator(RPGRoll plugin) {
         this.plugin = plugin;

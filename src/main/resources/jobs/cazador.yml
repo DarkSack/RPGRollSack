@@ -1,0 +1,60 @@
+id: cazador
+display-name: "&4⚔ Cazador"
+description: |
+  Elimina criaturas hostiles y salvajes por dinero y experiencia.
+  Los mobs de granjas automáticas (spawners) no otorgan recompensa.
+icon: "PEGAR_AQUI_EL_CODIGO_BASE64_REAL"
+lore:
+  - "&7La caza es un arte que pocos dominan."
+max-level: 50
+exp-base: 110
+exp-multiplier: 1.4
+
+rewards:
+  ZOMBIE:
+    money: 2.0
+    experience: 4
+
+  SKELETON:
+    money: 2.5
+    experience: 5
+
+  SPIDER:
+    money: 2.0
+    experience: 4
+
+  CREEPER:
+    money: 3.0
+    experience: 6
+
+  ENDERMAN:
+    money: 6.0
+    experience: 12
+
+  WITCH:
+    money: 8.0
+    experience: 15
+
+  PHANTOM:
+    money: 4.0
+    experience: 8
+
+  DROWNED:
+    money: 3.0
+    experience: 6
+
+  WITHER_SKELETON:
+    money: 15.0
+    experience: 30
+
+  BLAZE:
+    money: 10.0
+    experience: 20
+
+  ENDER_DRAGON:
+    money: 500.0
+    experience: 1000
+
+  WITHER:
+    money: 400.0
+    experience: 800

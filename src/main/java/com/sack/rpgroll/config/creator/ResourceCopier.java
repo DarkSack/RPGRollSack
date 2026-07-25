@@ -31,8 +31,8 @@ public class ResourceCopier {
             "professions",
             "items",
             "quests",
-            "jobs"
-        );
+            "jobs",
+            "enchantments");
 
     public ResourceCopier(RPGRoll plugin, List<ConfigFile> configFiles) {
         this.plugin = plugin;

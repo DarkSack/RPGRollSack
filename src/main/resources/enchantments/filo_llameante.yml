@@ -1,0 +1,9 @@
+id: filo_llameante
+display-name: "&6Filo Llameante"
+max-level: 3
+applicable-to: [WEAPON]
+trigger: ON_HIT
+effect: SET_FIRE
+params:
+  duration-ticks: 40 # base, se multiplica por nivel
+  chance: 1.0

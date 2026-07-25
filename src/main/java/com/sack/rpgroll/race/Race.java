@@ -7,17 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-/**
- * Representa una raza jugable dentro del sistema RPG.
- * <p>
- * Es un objeto de datos inmutable: no contiene lógica de carga desde YAML
- * ni de persistencia en base de datos.
- *
- * @param icon código base64 de textura de cabeza de jugador
- *             (minecraft-heads.com
- *             u otra fuente). Puede estar vacío si la raza no define ícono —
- *             en ese caso se muestra una cabeza sin textura custom.
- */
 public record Race(
         String id,
         String displayName,
@@ -25,7 +14,8 @@ public record Race(
         Map<StatType, Integer> baseAttributes,
         List<String> passiveTraitIds,
         String icon,
-        List<String> lore) implements RPGContent {
+        List<String> lore,
+        RacePhysicalModifiers physicalModifiers) implements RPGContent {
 
     public Race {
         Objects.requireNonNull(id, "id no puede ser null");
@@ -40,6 +30,7 @@ public record Race(
         baseAttributes = baseAttributes == null ? Map.of() : Map.copyOf(baseAttributes);
         passiveTraitIds = passiveTraitIds == null ? List.of() : List.copyOf(passiveTraitIds);
         lore = lore == null ? List.of() : List.copyOf(lore);
+        physicalModifiers = physicalModifiers == null ? RacePhysicalModifiers.none() : physicalModifiers;
     }
 
     public int getBaseAttribute(StatType stat, int defaultValue) {

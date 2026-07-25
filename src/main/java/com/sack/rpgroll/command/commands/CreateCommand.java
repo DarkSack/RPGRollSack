@@ -4,9 +4,12 @@ import com.sack.rpgroll.RPGRoll;
 import com.sack.rpgroll.command.RPGCommand;
 import com.sack.rpgroll.gui.character.CharacterCreationFlow;
 import com.sack.rpgroll.player.PlayerManager;
+import com.sack.rpgroll.playerclass.ClassManager;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+
+import com.sack.rpgroll.race.RaceAttributeApplier;
 import com.sack.rpgroll.race.RaceManager;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -34,7 +37,12 @@ public class CreateCommand implements RPGCommand {
 
             PlayerManager playerManager = plugin.getBootstrap().getServices().get(PlayerManager.class);
             RaceManager raceManager = plugin.getBootstrap().getServices().get(RaceManager.class);
-            CharacterCreationFlow flow = new CharacterCreationFlow(player, playerManager, raceManager);
+            ClassManager classManager = plugin.getBootstrap().getServices().get(ClassManager.class);
+            RaceAttributeApplier raceAttributeApplier = plugin.getBootstrap().getServices()
+                    .get(RaceAttributeApplier.class);
+
+            CharacterCreationFlow flow = new CharacterCreationFlow(player, playerManager, raceManager, classManager,
+                    raceAttributeApplier);
             flow.start();
 
         } catch (Exception exception) {

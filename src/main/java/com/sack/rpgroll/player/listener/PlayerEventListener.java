@@ -4,6 +4,8 @@ import com.sack.rpgroll.RPGRoll;
 import com.sack.rpgroll.gui.character.CharacterCreationFlow;
 import com.sack.rpgroll.player.PlayerManager;
 import com.sack.rpgroll.player.RPGPlayer;
+import com.sack.rpgroll.playerclass.ClassManager;
+import com.sack.rpgroll.race.RaceAttributeApplier;
 import com.sack.rpgroll.race.RaceManager;
 
 import org.bukkit.entity.Player;
@@ -14,26 +16,23 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.Optional;
 
-/**
- * PlayerEventListener sincroniza el sistema RPG con eventos de Minecraft.
- * <p>
- * Eventos manejados:
- * - PlayerJoinEvent: carga/crea el jugador RPG, y si no tiene personaje
- * completo (sin raza o clase), abre automáticamente el flujo de creación.
- * - PlayerQuitEvent: descarga y guarda el jugador RPG.
- */
 public class PlayerEventListener implements Listener {
 
-    private static final long CHARACTER_CREATION_DELAY_TICKS = 20L; // 1 segundo
+    private static final long CHARACTER_CREATION_DELAY_TICKS = 20L;
 
     private final RPGRoll plugin;
     private final PlayerManager playerManager;
     private final RaceManager raceManager;
+    private final ClassManager classManager;
+    private final RaceAttributeApplier raceAttributeApplier;
 
-    public PlayerEventListener(RPGRoll plugin, PlayerManager playerManager, RaceManager raceManager) {
+    public PlayerEventListener(RPGRoll plugin, PlayerManager playerManager, RaceManager raceManager,
+            ClassManager classManager, RaceAttributeApplier raceAttributeApplier) {
         this.plugin = plugin;
         this.playerManager = playerManager;
         this.raceManager = raceManager;
+        this.classManager = classManager;
+        this.raceAttributeApplier = raceAttributeApplier;
     }
 
     @EventHandler
@@ -43,8 +42,6 @@ public class PlayerEventListener implements Listener {
 
         playerManager.loadOrCreate(player);
 
-        // Se agenda con delay: abrir un inventario en el mismo tick del join
-        // es poco confiable mientras el cliente termina de cargar.
         plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
 
             if (!player.isOnline()) {
@@ -57,8 +54,15 @@ public class PlayerEventListener implements Listener {
                 return;
             }
 
+            String raceId = rpgPlayer.get().getRace();
+
+            if (raceId != null && !raceId.isEmpty()) {
+                raceManager.get(raceId).ifPresent(race -> raceAttributeApplier.apply(player, race));
+            }
+
             if (!rpgPlayer.get().isCharacterComplete()) {
-                new CharacterCreationFlow(player, playerManager, raceManager).start();
+                new CharacterCreationFlow(player, playerManager, raceManager, classManager, raceAttributeApplier)
+                        .start();
             }
 
         }, CHARACTER_CREATION_DELAY_TICKS);
