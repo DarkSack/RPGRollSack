@@ -4,12 +4,12 @@ import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.playerclass.ClassManager;
 import com.sack.rpgroll.playerclass.PlayerClass;
+import com.sack.rpgroll.util.ComponentUtils;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -109,9 +109,7 @@ public class ClassSelectionGUI extends InventoryGUI {
                 }
 
                 ItemStack item = ItemBuilder.skull(playerClass.icon())
-                                .setName(Component
-                                                .text(ChatColor.translateAlternateColorCodes('&',
-                                                                playerClass.displayName()))
+                                .setName(ComponentUtils.parse(playerClass.displayName())
                                                 .decorate(TextDecoration.BOLD))
                                 .setLore(lore.toArray(new Component[0]))
                                 .build();
