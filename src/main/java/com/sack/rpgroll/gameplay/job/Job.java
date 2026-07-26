@@ -25,8 +25,12 @@ public record Job(
         int maxLevel,
         int expBase,
         double expMultiplier,
-        Map<String, JobReward> rewards
-) implements RPGContent {
+        Map<String, JobReward> rewards,
+        double newBiomeMoney,
+        int newBiomeExperience,
+        int distanceBlocks,
+        double distanceMoney,
+        int distanceExperience) implements RPGContent {
 
     public Job {
         Objects.requireNonNull(id, "id no puede ser null");
@@ -39,7 +43,11 @@ public record Job(
         if (maxLevel <= 0) {
             throw new IllegalArgumentException("maxLevel debe ser mayor a 0");
         }
-
+        newBiomeMoney = Math.max(0, newBiomeMoney);
+        newBiomeExperience = Math.max(0, newBiomeExperience);
+        distanceBlocks = Math.max(0, distanceBlocks);
+        distanceMoney = Math.max(0, distanceMoney);
+        distanceExperience = Math.max(0, distanceExperience);
         description = description == null ? "" : description;
         icon = icon == null ? "" : icon;
         lore = lore == null ? List.of() : List.copyOf(lore);
@@ -48,7 +56,8 @@ public record Job(
 
     /**
      * Calcula la experiencia total requerida para alcanzar un nivel dado.
-     * Misma fórmula usada en LevelUpRewardsConfig: expBase * (nivel-1)^multiplicador.
+     * Misma fórmula usada en LevelUpRewardsConfig: expBase *
+     * (nivel-1)^multiplicador.
      */
     public int getExpRequiredForLevel(int level) {
         if (level <= 1) {
@@ -63,6 +72,10 @@ public record Job(
      */
     public JobReward getReward(String target) {
         return rewards.get(target);
+    }
+
+    public boolean hasExplorationRewards() {
+        return newBiomeMoney > 0 || distanceBlocks > 0;
     }
 
     public boolean hasReward(String target) {

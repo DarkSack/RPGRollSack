@@ -34,8 +34,14 @@ public class JobParser implements ContentParser<Job> {
         double expMultiplier = config.getDouble("exp-multiplier", 1.4);
 
         Map<String, JobReward> rewards = parseRewards(config, id);
+        double newBiomeMoney = config.getDouble("new-biome-money", 0.0);
+        int newBiomeExperience = config.getInt("new-biome-experience", 0);
+        int distanceBlocks = config.getInt("distance-blocks", 0);
+        double distanceMoney = config.getDouble("distance-money", 0.0);
+        int distanceExperience = config.getInt("distance-experience", 0);
 
-        return new Job(id, displayName, description, icon, lore, maxLevel, expBase, expMultiplier, rewards);
+        return new Job(id, displayName, description, icon, lore, maxLevel, expBase, expMultiplier, rewards,
+                newBiomeMoney, newBiomeExperience, distanceBlocks, distanceMoney, distanceExperience);
     }
 
     private Map<String, JobReward> parseRewards(YamlConfiguration config, String jobId) {
@@ -43,11 +49,14 @@ public class JobParser implements ContentParser<Job> {
         Map<String, JobReward> rewards = new HashMap<>();
         ConfigurationSection section = config.getConfigurationSection("rewards");
 
+        boolean isExplorationJob = config.contains("new-biome-money") || config.contains("distance-blocks");
+
         if (section == null) {
-            plugin.getLogger().warning("✘ Trabajo '" + jobId + "' sin sección 'rewards'.");
+            if (!isExplorationJob) {
+                plugin.getLogger().warning("✘ Trabajo '" + jobId + "' sin sección 'rewards'.");
+            }
             return rewards;
         }
-
         for (String target : section.getKeys(false)) {
 
             ConfigurationSection rewardSection = section.getConfigurationSection(target);

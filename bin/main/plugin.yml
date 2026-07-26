@@ -108,3 +108,6 @@ permissions:
   rpgroll.admin.setclass:
     description: Cambiar la clase de un jugador
     default: op
+  rpgroll.admin.job:
+    description: Gestionar trabajos de jugadores
+    default: op

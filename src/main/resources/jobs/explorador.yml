@@ -1,0 +1,18 @@
+id: explorador
+display-name: "&2🧭 Explorador"
+description: |
+  Recorre el mundo y descubre nuevos biomas.
+  Cada bioma nuevo y cada tramo recorrido otorgan recompensa.
+icon: "PEGAR_AQUI_CODIGO_BASE64"
+lore:
+  - "&7El mundo es más grande de lo que imaginas."
+max-level: 50
+exp-base: 80
+exp-multiplier: 1.3
+
+new-biome-money: 15.0
+new-biome-experience: 30
+
+distance-blocks: 500
+distance-money: 2.0
+distance-experience: 5

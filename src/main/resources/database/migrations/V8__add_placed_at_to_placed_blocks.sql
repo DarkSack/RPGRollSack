@@ -1,0 +1,1 @@
+ALTER TABLE placed_blocks ADD COLUMN placed_at INTEGER NOT NULL DEFAULT (unixepoch('now'));
