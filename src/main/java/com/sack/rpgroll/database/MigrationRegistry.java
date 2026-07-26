@@ -35,6 +35,8 @@ public class MigrationRegistry {
         register(4, "V4__create_player_traits.sql");
         register(5, "V5__create_player_jobs.sql");
         register(6, "V6__create_placed_blocks.sql");
+        register(7, "V7__create_explorer_progress.sql");
+        register(8, "V8__add_placed_at_column_to_placed_blocks.sql");
 
     }
 

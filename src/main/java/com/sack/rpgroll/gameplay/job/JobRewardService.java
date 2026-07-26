@@ -83,6 +83,51 @@ public class JobRewardService {
     }
 
     /**
+     * Igual que reward(), pero recibe la JobReward ya resuelta en vez de
+     * buscarla por target en el catálogo. Usado por Explorador, cuyo pago
+     * no depende de un target sino de eventos calculados (bioma nuevo, tramo
+     * de distancia).
+     */
+    public void rewardDirect(Player bukkitPlayer, String jobId, JobReward reward) {
+
+        Optional<RPGPlayer> rpgPlayerOpt = playerManager.getPlayer(bukkitPlayer.getUniqueId());
+        if (rpgPlayerOpt.isEmpty()) {
+            return;
+        }
+
+        RPGPlayer rpgPlayer = rpgPlayerOpt.get();
+        PlayerJobs playerJobs = rpgPlayer.getJobs();
+
+        if (!playerJobs.hasJob(jobId)) {
+            return;
+        }
+
+        Optional<Job> jobOpt = jobManager.get(jobId);
+        if (jobOpt.isEmpty()) {
+            return;
+        }
+
+        Job job = jobOpt.get();
+
+        boolean paid = payReward(bukkitPlayer, reward);
+
+        JobProgress current = playerJobs.getProgress(jobId).orElse(JobProgress.start(jobId));
+        JobProgress updated = applyExperience(job, current, reward.experience());
+
+        boolean leveledUp = updated.level() > current.level();
+
+        RPGPlayer updatedPlayer = rpgPlayer.updateJobs(playerJobs.withProgress(updated));
+        playerManager.savePlayer(updatedPlayer);
+
+        sendFeedback(bukkitPlayer, job, reward, paid);
+
+        if (leveledUp) {
+            bukkitPlayer.sendMessage(Component.text(
+                    "🎉 " + job.displayName() + " subió a nivel " + updated.level() + "!", NamedTextColor.GOLD));
+        }
+    }
+
+    /**
      * Paga la recompensa en dinero, si Vault/economía está disponible.
      *
      * @return true si se pagó efectivamente, false si no había economía activa

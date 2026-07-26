@@ -21,11 +21,14 @@ import com.sack.rpgroll.gameplay.enchant.listener.EnchantDropListener;
 import com.sack.rpgroll.gameplay.enchant.listener.EnchantHitListener;
 import com.sack.rpgroll.gameplay.enchant.listener.EnchantShopListener;
 import com.sack.rpgroll.gameplay.enchant.listener.PassiveEnchantTask;
+import com.sack.rpgroll.gameplay.job.ExplorerProgressStorage;
 import com.sack.rpgroll.gameplay.job.JobManager;
 import com.sack.rpgroll.gameplay.job.JobRewardService;
+import com.sack.rpgroll.gameplay.job.PlacedBlockCleanupTask;
 import com.sack.rpgroll.gameplay.job.PlacedBlockTracker;
 import com.sack.rpgroll.gameplay.job.listener.AlquimistaJobListener;
 import com.sack.rpgroll.gameplay.job.listener.CazadorJobListener;
+import com.sack.rpgroll.gameplay.job.listener.ExplorerJobListener;
 import com.sack.rpgroll.gameplay.job.listener.GranjeroJobListener;
 import com.sack.rpgroll.gameplay.job.listener.MinerJobListener;
 import com.sack.rpgroll.gameplay.job.listener.PescadorJobListener;
@@ -102,6 +105,10 @@ public class Bootstrap {
 
         if (services.contains(PassiveEnchantTask.class)) {
             services.get(PassiveEnchantTask.class).cancel();
+        }
+
+        if (services.contains(PlacedBlockCleanupTask.class)) {
+            services.get(PlacedBlockCleanupTask.class).cancel();
         }
 
         plugin.getLogger().info("✔ Todos los servicios detenidos correctamente.");
@@ -187,6 +194,14 @@ public class Bootstrap {
         reloadableContent.add(jobManager);
         plugin.getLogger().info("✔ JobManager registrado");
 
+        // Explorer Progress - Sistema de progreso de exploración
+        ExplorerProgressStorage explorerProgressStorage = new ExplorerProgressStorage(plugin, dbManager);
+        services.register(ExplorerProgressStorage.class, explorerProgressStorage);
+
+        PlacedBlockCleanupTask cleanupTask = new PlacedBlockCleanupTask(plugin, dbManager);
+        cleanupTask.start();
+        services.register(PlacedBlockCleanupTask.class, cleanupTask);
+
         if (!economyAvailable) {
             plugin.getLogger().warning(
                     "✘ Sistema de trabajos cargado, pero sin economía activa. Las recompensas en dinero no se pagarán.");
@@ -243,6 +258,7 @@ public class Bootstrap {
         commandManager.register(new AdminSetRaceCommand(plugin));
         commandManager.register(new AdminSetClassCommand(plugin));
         commandManager.register(new EnchantCommand(plugin));
+        commandManager.register(new AdminJobCommand(plugin));
 
         // Registrar el comando principal /rpg
         plugin.getCommand("rpg").setExecutor(commandManager);
@@ -311,6 +327,12 @@ public class Bootstrap {
 
         LevelUpListener levelUpListener = new LevelUpListener();
         Bukkit.getPluginManager().registerEvents(levelUpListener, plugin);
+
+        // ===== Listeners de explorador =====
+        ExplorerProgressStorage explorerProgressStorage = services.get(ExplorerProgressStorage.class);
+        ExplorerJobListener explorerJobListener = new ExplorerJobListener(jobManager, playerManager,
+                explorerProgressStorage, jobRewardService);
+        Bukkit.getPluginManager().registerEvents(explorerJobListener, plugin);
 
         // ===== Listeners de encantamientos =====
         EnchantHitListener enchantHitListener = new EnchantHitListener(itemEnchantmentStorage, enchantManager,
