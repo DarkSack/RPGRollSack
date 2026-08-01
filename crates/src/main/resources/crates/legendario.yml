@@ -1,0 +1,97 @@
+id: legendario
+display-name: "&6&lCrate Legendario"
+gui-title: "&4&lAbriendo Crate Legendario"
+require-key: true
+
+key:
+  material: NETHER_STAR
+  name: "&6&lLlave del Crate Legendario"
+  lore:
+    - "&7Una llave que brilla con poder."
+    - "&7Úsala en un Crate Legendario."
+
+hologram:
+  - "&4&l☠ CRATE LEGENDARIO ☠"
+  - "&7Solo para los más valientes"
+  - "&eNecesitas una llave legendaria"
+
+rewards:
+  - id: netherite_scrap
+    display-name: "&f4 Fragmentos de Netherita"
+    icon: NETHERITE_SCRAP
+    weight: 35
+    actions:
+      - type: GIVE_ITEM
+        value: "NETHERITE_SCRAP,4"
+      - type: MESSAGE
+        value: "&aGanaste 4 Fragmentos de Netherita."
+
+  - id: diamantes
+    display-name: "&b12 Diamantes"
+    icon: DIAMOND
+    weight: 28
+    actions:
+      - type: GIVE_ITEM
+        value: "DIAMOND,12"
+      - type: SOUND
+        value: "ENTITY_EXPERIENCE_ORB_PICKUP,1.0,1.0"
+      - type: MESSAGE
+        value: "&b¡Ganaste 12 Diamantes!"
+
+  - id: espada_netherite
+    display-name: "&6Espada de Netherita"
+    icon: NETHERITE_SWORD
+    lore:
+      - "&7Forjada para la batalla."
+    weight: 18
+    actions:
+      - type: GIVE_ITEM
+        value: "NETHERITE_SWORD,1"
+      - type: SOUND
+        value: "ITEM_TOTEM_USE,1.0,1.0"
+      - type: MESSAGE
+        value: "&6¡Ganaste una Espada de Netherita!"
+
+  - id: elytra
+    display-name: "&d1 Élitro"
+    icon: ELYTRA
+    lore:
+      - "&7Para volar por los cielos."
+    weight: 12
+    announce: true
+    actions:
+      - type: GIVE_ITEM
+        value: "ELYTRA,1"
+      - type: SOUND
+        value: "ENTITY_PLAYER_LEVELUP,1.0,1.0"
+      - type: MESSAGE
+        value: "&d¡Ganaste un Élitro!"
+
+  - id: xp_grande
+    display-name: "&d2000 Puntos de Experiencia"
+    icon: EXPERIENCE_BOTTLE
+    weight: 6
+    actions:
+      - type: COMMAND
+        value: "xp add {player} 2000 points"
+      - type: MESSAGE
+        value: "&d¡Ganaste 2000 puntos de experiencia!"
+
+  - id: totem
+    display-name: "&6&l¡TOTEM DE LA INMORTALIDAD!"
+    icon: TOTEM_OF_UNDYING
+    lore:
+      - "&7El premio mayor."
+      - "&e¡Extremadamente raro!"
+    weight: 1
+    announce: true
+    actions:
+      - type: GIVE_ITEM
+        value: "TOTEM_OF_UNDYING,1"
+      # Ejemplo de COMMAND con otro comando vanilla, para el premio mayor.
+      - type: COMMAND
+        value: "title {player} title \"¡PREMIO MAYOR!\""
+      - type: SOUND
+        value: "ENTITY_ENDER_DRAGON_GROWL,1.0,1.0"
+      - type: MESSAGE
+        value: "&6&l¡¡¡GANASTE UN TOTEM DE LA INMORTALIDAD!!!"

@@ -119,6 +119,29 @@ public class CommandManager implements CommandExecutor, TabCompleter {
                     completions.add(cmd.getName());
                 }
             }
+
+            Collections.sort(completions);
+            return completions;
+        }
+
+        // Delegar autocompletado de argumentos al subcomando correspondiente
+        RPGCommand subCommand = getCommand(args[0]);
+        if (subCommand == null) {
+            return completions;
+        }
+
+        String permission = subCommand.getPermission();
+        if (permission != null && !sender.hasPermission(permission)) {
+            return completions;
+        }
+
+        String[] subArgs = Arrays.copyOfRange(args, 1, args.length);
+        String currentInput = subArgs[subArgs.length - 1].toLowerCase();
+
+        for (String suggestion : subCommand.getTabCompletions(sender, subArgs)) {
+            if (suggestion.toLowerCase().startsWith(currentInput)) {
+                completions.add(suggestion);
+            }
         }
 
         Collections.sort(completions);

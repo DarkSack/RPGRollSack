@@ -1,6 +1,7 @@
 package com.sack.rpgroll.gui.character;
 
 import com.sack.rpgroll.api.stats.StatType;
+import com.sack.rpgroll.gameplay.combat.CombatStats;
 import com.sack.rpgroll.player.PlayerManager;
 import com.sack.rpgroll.player.RPGPlayer;
 import com.sack.rpgroll.player.stats.PlayerStats;
@@ -102,10 +103,17 @@ public class CharacterCreationFlow {
         RPGPlayer rpgPlayer = rpgPlayerOpt.get();
         PlayerStats finalStats = calculateInitialStats();
 
+        CombatStats initialCombatStats = CombatStats.create(
+                finalStats.getConstitutionModifier(),
+                finalStats.getIntelligenceModifier(),
+                finalStats.getDexterityModifier(),
+                rpgPlayer.getLevel());
+
         RPGPlayer updatedPlayer = rpgPlayer
                 .setRace(selectedRace)
                 .setClass(selectedClass)
-                .updateStats(finalStats);
+                .updateStats(finalStats)
+                .updateCombatStats(initialCombatStats);
 
         playerManager.savePlayer(updatedPlayer);
 

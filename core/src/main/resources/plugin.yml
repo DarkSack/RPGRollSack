@@ -34,6 +34,9 @@ permissions:
       rpgroll.player.skills: true
       rpgroll.player.traits: true
       rpgroll.player.mystats: true
+      rpgroll.player.allocate: true
+      rpgroll.player.useskill: true
+      rpgroll.player.jobs: true
 
   rpgroll.player.stats:
     description: Ver estadísticas
@@ -67,6 +70,14 @@ permissions:
     description: Ver estadísticas detalladas
     default: true
 
+  rpgroll.player.allocate:
+    description: Gastar puntos de estadística disponibles
+    default: true
+
+  rpgroll.player.useskill:
+    description: Usar habilidades aprendidas
+    default: true
+
   rpgroll.admin.*:
     description: Acceso a todos los comandos de administrador
     default: op
@@ -77,6 +88,8 @@ permissions:
       rpgroll.admin.gui: true
       rpgroll.admin.setrace: true
       rpgroll.admin.setclass: true
+      rpgroll.admin.resetstats: true
+      rpgroll.admin.job: true
   rpgroll.admin.reload:
     description: Recargar configuración del plugin
     default: op
@@ -104,6 +117,11 @@ permissions:
   rpgroll.admin.setclass:
     description: Cambiar la clase de un jugador
     default: op
+
+  rpgroll.admin.resetstats:
+    description: Reiniciar y reembolsar los puntos de atributo de un jugador
+    default: op
+
   rpgroll.admin.job:
     description: Gestionar trabajos de jugadores
     default: op

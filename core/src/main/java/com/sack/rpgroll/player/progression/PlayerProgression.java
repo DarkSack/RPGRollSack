@@ -2,17 +2,19 @@ package com.sack.rpgroll.player.progression;
 
 /**
  * Información de progresión de un jugador.
- * 
+ *
  * Record inmutable que representa:
  * - Nivel actual
  * - Experiencia acumulada
  * - Timestamps
+ * - Puntos de estadística ganados por nivel y aún no gastados
  */
 public record PlayerProgression(
         int level,
         int experience,
         long createdAt,
-        long lastLogin
+        long lastLogin,
+        int unspentStatPoints
 ) {
 
     public static final int MIN_LEVEL = 1;
@@ -20,12 +22,18 @@ public record PlayerProgression(
     public static final int BASE_EXP = 100;
     public static final double EXP_MULTIPLIER = 1.5;
 
+    public PlayerProgression {
+        if (unspentStatPoints < 0) {
+            throw new IllegalArgumentException("unspentStatPoints no puede ser negativo");
+        }
+    }
+
     /**
      * Factory method para crear progresión inicial.
      */
     public static PlayerProgression createNew() {
         long now = System.currentTimeMillis();
-        return new PlayerProgression(1, 0, now, now);
+        return new PlayerProgression(1, 0, now, now, 0);
     }
 
     /**
@@ -79,6 +87,34 @@ public record PlayerProgression(
      */
     public boolean isMaxLevel() {
         return level >= MAX_LEVEL;
+    }
+
+    /**
+     * Devuelve una copia con puntos de estadística adicionales sin gastar.
+     */
+    public PlayerProgression addStatPoints(int amount) {
+        return new PlayerProgression(level, experience, createdAt, lastLogin, unspentStatPoints + amount);
+    }
+
+    /**
+     * Devuelve una copia con puntos de estadística gastados.
+     *
+     * @throws IllegalArgumentException si amount es mayor a los puntos disponibles
+     */
+    public PlayerProgression spendStatPoints(int amount) {
+        if (amount > unspentStatPoints) {
+            throw new IllegalArgumentException("No hay suficientes puntos de estadística disponibles");
+        }
+        return new PlayerProgression(level, experience, createdAt, lastLogin, unspentStatPoints - amount);
+    }
+
+    /**
+     * Reemplaza directamente el total de puntos sin gastar. Pensado para
+     * herramientas de administración (ej. reset de stats), no para el
+     * flujo normal de juego.
+     */
+    public PlayerProgression withUnspentStatPoints(int amount) {
+        return new PlayerProgression(level, experience, createdAt, lastLogin, amount);
     }
 
 }

@@ -1,0 +1,18 @@
+name: RPGRoll-NPCs
+version: 1.0.0
+main: com.sack.rpgroll.npcs.RPGRollNPCs
+api-version: "1.21"
+author: Sack
+description: Sistema de NPCs interactuables para RPGRoll
+depend: [RPGRoll, ProtocolLib]
+
+commands:
+  npc:
+    description: Gestiona NPCs
+    usage: /npc <create|edit|list|delete|reload> [id]
+    permission: rpgrollnpcs.admin.*
+
+permissions:
+  rpgrollnpcs.admin.*:
+    description: Acceso completo a comandos de NPCs
+    default: op

@@ -2,6 +2,8 @@ package com.sack.rpgroll.command.commands;
 
 import com.sack.rpgroll.RPGRoll;
 import com.sack.rpgroll.command.RPGCommand;
+import com.sack.rpgroll.gameplay.skill.Skill;
+import com.sack.rpgroll.gameplay.skill.SkillManager;
 import com.sack.rpgroll.player.PlayerManager;
 import com.sack.rpgroll.player.RPGPlayer;
 
@@ -37,6 +39,10 @@ public class SkillsCommand implements RPGCommand {
                     .getServices()
                     .get(PlayerManager.class);
 
+            SkillManager skillManager = plugin.getBootstrap()
+                    .getServices()
+                    .get(SkillManager.class);
+
             Optional<RPGPlayer> rpgPlayer = playerManager.getPlayer(player.getUniqueId());
 
             if (rpgPlayer.isEmpty()) {
@@ -45,7 +51,7 @@ public class SkillsCommand implements RPGCommand {
                 return;
             }
 
-            displaySkills(player, rpgPlayer.get());
+            displaySkills(player, rpgPlayer.get(), skillManager);
 
         } catch (Exception exception) {
 
@@ -56,7 +62,7 @@ public class SkillsCommand implements RPGCommand {
 
     }
 
-    private void displaySkills(Player player, RPGPlayer rpgPlayer) {
+    private void displaySkills(Player player, RPGPlayer rpgPlayer, SkillManager skillManager) {
 
         var skills = rpgPlayer.getSkills();
 
@@ -67,8 +73,23 @@ public class SkillsCommand implements RPGCommand {
             player.sendMessage(Component.text("Aún no has aprendido habilidades.", NamedTextColor.YELLOW));
         } else {
             for (String skillId : skills.getLearnedSkillIds()) {
+
                 int level = skills.getSkillLevel(skillId);
-                player.sendMessage(Component.text("• " + skillId + " (Nivel " + level + ")", NamedTextColor.GREEN));
+                Optional<Skill> skillOpt = skillManager.get(skillId);
+
+                if (skillOpt.isEmpty()) {
+                    player.sendMessage(
+                            Component.text("• " + skillId + " (Nivel " + level + ")", NamedTextColor.GREEN));
+                    continue;
+                }
+
+                Skill skill = skillOpt.get();
+                player.sendMessage(
+                        Component.text("• " + skill.name() + " (Nivel " + level + ")", NamedTextColor.GREEN)
+                                .append(Component.text(
+                                        " — " + skill.manaCost() + " maná, " + skill.cooldownSeconds()
+                                                + "s cooldown — /rpg use " + skill.id(),
+                                        NamedTextColor.GRAY)));
             }
         }
 

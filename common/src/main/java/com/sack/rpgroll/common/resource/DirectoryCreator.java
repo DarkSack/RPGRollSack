@@ -1,31 +1,25 @@
-package com.sack.rpgroll.config.creator;
+package com.sack.rpgroll.common.resource;
 
-import com.sack.rpgroll.RPGRoll;
+import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 import java.util.List;
 
+/**
+ * Crea las carpetas de datos que un plugin necesita en su primer arranque.
+ * Genérico — no asume ningún nombre de carpeta específico, cada plugin
+ * (RPGRoll o cualquiera de sus addons) pasa la lista que le corresponde.
+ * Compartido vía :common para no reimplementar esta lógica en cada uno.
+ */
 public class DirectoryCreator {
 
-    private final RPGRoll plugin;
+    private final Plugin plugin;
 
-    private static final List<String> DIRECTORIES = List.of(
-            "classes",
-            "races",
-            "skills",
-            "traits",
-            "jobs",
-            "lang",
-            "database",
-            "professions",
-            "items",
-            "quests");
-
-    public DirectoryCreator(RPGRoll plugin) {
+    public DirectoryCreator(Plugin plugin) {
         this.plugin = plugin;
     }
 
-    public void create() {
+    public void create(List<String> directories) {
 
         File dataFolder = plugin.getDataFolder();
 
@@ -37,7 +31,7 @@ public class DirectoryCreator {
             }
         }
 
-        for (String directory : DIRECTORIES) {
+        for (String directory : directories) {
 
             File folder = new File(dataFolder, directory);
 
@@ -50,4 +44,5 @@ public class DirectoryCreator {
             }
         }
     }
+
 }

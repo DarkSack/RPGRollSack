@@ -58,7 +58,11 @@ public class RPGPlayer {
         PlayerProgression progression = PlayerProgression.createNew();
         PlayerSkills skills = PlayerSkills.empty();
         PlayerTraits traits = PlayerTraits.empty();
-        CombatStats combatStats = CombatStats.empty();
+        CombatStats combatStats = CombatStats.create(
+                stats.getConstitutionModifier(),
+                stats.getIntelligenceModifier(),
+                stats.getDexterityModifier(),
+                progression.level());
         PlayerJobs jobs = PlayerJobs.empty();
         return new RPGPlayer(identity, stats, progression, skills, traits, combatStats, jobs);
     }
@@ -133,6 +137,10 @@ public class RPGPlayer {
         return progression.experience();
     }
 
+    public int getUnspentStatPoints() {
+        return progression.unspentStatPoints();
+    }
+
     // ============ MODIFICADORES ============
 
     /**
@@ -175,14 +183,19 @@ public class RPGPlayer {
                 progression.level(),
                 progression.experience() + amount,
                 progression.createdAt(),
-                System.currentTimeMillis());
+                System.currentTimeMillis(),
+                progression.unspentStatPoints());
 
         return new RPGPlayer(identity, stats, newProgression, skills, traits, combatStats, jobs);
     }
 
     /**
      * Sube de nivel al jugador.
-     * Devuelve una nueva instancia de RPGPlayer.
+     * Devuelve una nueva instancia de RPGPlayer. No otorga puntos de
+     * estadística ni bonos de salud/maná — eso lo hace
+     * {@link com.sack.rpgroll.gameplay.levelup.PlayerLevelUpHandler}
+     * llamando a {@link #addStatPoints(int)}/{@link #updateCombatStats(CombatStats)}
+     * con las recompensas configuradas para el nivel alcanzado.
      */
     public RPGPlayer levelUp() {
         if (progression.isMaxLevel()) {
@@ -193,9 +206,37 @@ public class RPGPlayer {
                 progression.level() + 1,
                 progression.experience(),
                 progression.createdAt(),
-                System.currentTimeMillis());
+                System.currentTimeMillis(),
+                progression.unspentStatPoints());
 
         return new RPGPlayer(identity, stats, newProgression, skills, traits, combatStats, jobs);
+    }
+
+    /**
+     * Otorga puntos de estadística sin gastar (ej. recompensa de level up).
+     * Devuelve una nueva instancia de RPGPlayer.
+     */
+    public RPGPlayer addStatPoints(int amount) {
+        return new RPGPlayer(identity, stats, progression.addStatPoints(amount), skills, traits, combatStats, jobs);
+    }
+
+    /**
+     * Gasta puntos de estadística disponibles.
+     * Devuelve una nueva instancia de RPGPlayer.
+     *
+     * @throws IllegalArgumentException si no hay suficientes puntos disponibles
+     */
+    public RPGPlayer spendStatPoints(int amount) {
+        return new RPGPlayer(identity, stats, progression.spendStatPoints(amount), skills, traits, combatStats, jobs);
+    }
+
+    /**
+     * Reemplaza directamente el total de puntos de estadística sin gastar.
+     * Pensado para herramientas de administración (ej. reset de stats).
+     */
+    public RPGPlayer withUnspentStatPoints(int amount) {
+        return new RPGPlayer(identity, stats, progression.withUnspentStatPoints(amount), skills, traits, combatStats,
+                jobs);
     }
 
     /**

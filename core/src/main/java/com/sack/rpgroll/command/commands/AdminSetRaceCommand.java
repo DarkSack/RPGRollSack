@@ -2,6 +2,7 @@ package com.sack.rpgroll.command.commands;
 
 import com.sack.rpgroll.RPGRoll;
 import com.sack.rpgroll.command.RPGCommand;
+import com.sack.rpgroll.gameplay.combat.CombatStats;
 import com.sack.rpgroll.api.stats.StatType;
 import com.sack.rpgroll.player.PlayerManager;
 import com.sack.rpgroll.player.RPGPlayer;
@@ -87,7 +88,12 @@ public class AdminSetRaceCommand implements RPGCommand {
             if (recalc) {
                 ClassManager classManager = plugin.getBootstrap().getServices().get(ClassManager.class);
                 PlayerStats recalculated = recalculateStats(race, classManager, rpgPlayer.getPlayerClass());
-                rpgPlayer = rpgPlayer.updateStats(recalculated);
+                CombatStats recalculatedCombatStats = CombatStats.create(
+                        recalculated.getConstitutionModifier(),
+                        recalculated.getIntelligenceModifier(),
+                        recalculated.getDexterityModifier(),
+                        rpgPlayer.getLevel());
+                rpgPlayer = rpgPlayer.updateStats(recalculated).updateCombatStats(recalculatedCombatStats);
             }
 
             playerManager.savePlayer(rpgPlayer);

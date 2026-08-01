@@ -1,0 +1,19 @@
+name: RPGRoll-Crates
+version: 1.0.0
+main: com.sack.rpgroll.crates.CratesPlugin
+api-version: "1.21"
+author: Sack
+description: Crates con ruleta e integración con DecentHolograms para RPGRoll
+depend: [RPGRoll]
+softdepend: [DecentHolograms]
+
+commands:
+  crate:
+    description: Gestiona crates
+    usage: /crate <setlocation|removelocation|givekey|list|reload> [args]
+    permission: rpgrollcrates.admin.*
+
+permissions:
+  rpgrollcrates.admin.*:
+    description: Acceso completo a comandos de crates
+    default: op
