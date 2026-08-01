@@ -1,0 +1,109 @@
+name: RPGRoll
+version: 1.0.0
+main: com.sack.rpgroll.RPGRoll
+api-version: "1.21"
+author: Sack
+description: DnD RPG Framework para Minecraft Paper
+softdepend: [Vault]
+
+# Comandos del plugin
+commands:
+  rpg:
+    description: Comando principal de RPGRoll
+    usage: /rpg <subcomando> [argumentos]
+    aliases: [rpgroll, dnd]
+
+# Permisos del plugin
+permissions:
+  rpgroll.*:
+    description: Acceso completo a todos los comandos de RPGRoll
+    default: op
+    children:
+      rpgroll.player.*: true
+      rpgroll.admin.*: true
+
+  rpgroll.player.*:
+    description: Acceso a todos los comandos de jugador
+    default: true
+    children:
+      rpgroll.player.stats: true
+      rpgroll.player.level: true
+      rpgroll.player.class: true
+      rpgroll.player.race: true
+      rpgroll.player.create: true
+      rpgroll.player.skills: true
+      rpgroll.player.traits: true
+      rpgroll.player.mystats: true
+
+  rpgroll.player.stats:
+    description: Ver estadísticas
+    default: true
+
+  rpgroll.player.level:
+    description: Ver nivel y experiencia
+    default: true
+
+  rpgroll.player.class:
+    description: Ver y cambiar clase
+    default: true
+
+  rpgroll.player.race:
+    description: Ver y cambiar raza
+    default: true
+
+  rpgroll.player.create:
+    description: Crear personaje
+    default: true
+
+  rpgroll.player.skills:
+    description: Ver habilidades
+    default: true
+
+  rpgroll.player.traits:
+    description: Ver traits
+    default: true
+
+  rpgroll.player.mystats:
+    description: Ver estadísticas detalladas
+    default: true
+
+  rpgroll.admin.*:
+    description: Acceso a todos los comandos de administrador
+    default: op
+    children:
+      rpgroll.admin.reload: true
+      rpgroll.admin.addxp: true
+      rpgroll.admin.levelup: true
+      rpgroll.admin.gui: true
+      rpgroll.admin.setrace: true
+      rpgroll.admin.setclass: true
+  rpgroll.admin.reload:
+    description: Recargar configuración del plugin
+    default: op
+
+  rpgroll.admin.addxp:
+    description: Agregar experiencia a jugadores
+    default: op
+
+  rpgroll.admin.levelup:
+    description: Subir de nivel (debug)
+    default: op
+
+  rpgroll.admin.gui:
+    description: Abrir interfaces de selección en modo preview
+    default: op
+
+  rpgroll.player.jobs:
+    description: Ver y gestionar trabajos
+    default: true
+
+  rpgroll.admin.setrace:
+    description: Cambiar la raza de un jugador
+    default: op
+
+  rpgroll.admin.setclass:
+    description: Cambiar la clase de un jugador
+    default: op
+  rpgroll.admin.job:
+    description: Gestionar trabajos de jugadores
+    default: op
