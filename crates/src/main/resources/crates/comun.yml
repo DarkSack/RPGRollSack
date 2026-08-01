@@ -1,0 +1,88 @@
+id: comun
+display-name: "&eCrate Común"
+gui-title: "&6Abriendo Crate Común"
+require-key: true
+
+key:
+  material: TRIPWIRE_HOOK
+  name: "&eLlave de Crate Común"
+  lore:
+    - "&7Úsala en un Crate Común."
+
+hologram:
+  - "&6&lCRATE COMÚN"
+  - "&7Necesitas una llave"
+  - "&7Click derecho para abrir"
+
+# Los weights no necesitan sumar 100 (son relativos entre sí), pero
+# ayuda a la legibilidad: acá suman 100, así cada weight se lee directo
+# como "% de probabilidad".
+rewards:
+  - id: manzanas
+    display-name: "&f8 Manzanas Doradas"
+    icon: GOLDEN_APPLE
+    weight: 30
+    actions:
+      - type: GIVE_ITEM
+        value: "GOLDEN_APPLE,8"
+      - type: MESSAGE
+        value: "&aGanaste 8 Manzanas Doradas."
+
+  - id: hierro
+    display-name: "&f16 Lingotes de Hierro"
+    icon: IRON_INGOT
+    weight: 25
+    actions:
+      - type: GIVE_ITEM
+        value: "IRON_INGOT,16"
+      - type: MESSAGE
+        value: "&aGanaste 16 Lingotes de Hierro."
+
+  - id: oro
+    display-name: "&f8 Lingotes de Oro"
+    icon: GOLD_INGOT
+    weight: 20
+    actions:
+      - type: GIVE_ITEM
+        value: "GOLD_INGOT,8"
+      - type: MESSAGE
+        value: "&aGanaste 8 Lingotes de Oro."
+
+  - id: esmeraldas
+    display-name: "&f10 Esmeraldas"
+    icon: EMERALD
+    weight: 14
+    actions:
+      - type: GIVE_ITEM
+        value: "EMERALD,10"
+      - type: SOUND
+        value: "ENTITY_EXPERIENCE_ORB_PICKUP,1.0,1.0"
+      - type: MESSAGE
+        value: "&aGanaste 10 Esmeraldas."
+
+  - id: experiencia
+    display-name: "&d500 Puntos de Experiencia"
+    icon: EXPERIENCE_BOTTLE
+    weight: 8
+    actions:
+      # Ejemplo de COMMAND: usa un comando vanilla (corre como consola,
+      # {player} se reemplaza por el nombre real).
+      - type: COMMAND
+        value: "xp add {player} 500 points"
+      - type: MESSAGE
+        value: "&d¡Ganaste 500 puntos de experiencia!"
+
+  - id: diamantes
+    display-name: "&b3 Diamantes"
+    icon: DIAMOND
+    lore:
+      - "&7No está nada mal."
+    weight: 3
+    announce: true
+    actions:
+      - type: GIVE_ITEM
+        value: "DIAMOND,3"
+      - type: SOUND
+        value: "ENTITY_PLAYER_LEVELUP,1.0,1.5"
+      - type: MESSAGE
+        value: "&b¡Ganaste 3 Diamantes!"

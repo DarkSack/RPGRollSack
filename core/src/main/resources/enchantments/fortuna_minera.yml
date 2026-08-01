@@ -1,8 +1,0 @@
-id: fortuna_minera
-display-name: "&eFortuna Minera"
-max-level: 3
-applicable-to: [TOOL]
-trigger: ON_MINE_BLOCK
-effect: EXTRA_DROP_CHANCE
-params:
-  chance-per-level: 0.15

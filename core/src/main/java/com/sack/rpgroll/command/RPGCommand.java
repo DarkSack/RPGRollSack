@@ -65,4 +65,14 @@ public interface RPGCommand {
         return true;
     }
 
+    /**
+     * Sugerencias de autocompletado para los argumentos de este subcomando
+     * (ya sin el nombre del subcomando, ver {@link CommandManager}).
+     *
+     * @return lista de sugerencias, vacía si no aplica
+     */
+    default List<String> getTabCompletions(CommandSender sender, String[] args) {
+        return List.of();
+    }
+
 }

@@ -1,0 +1,34 @@
+# resources/menus/tienda_herrero.yml
+id: tienda_herrero
+title: "&6Tienda del Herrero"
+rows: 3
+
+items:
+  - slot: 11
+    material: IRON_SWORD
+    name: "&fEspada de Hierro"
+    lore:
+      - "&7Precio: &e50 monedas (Lingote de Oro)"
+    actions:
+      # Dos condicionales con la MISMA condición, en este orden: primero se
+      # entrega el ítem (si corresponde), y recién después se cobra el oro.
+      # Si el orden se invirtiera, el segundo condicional volvería a evaluar
+      # HAS_ITEM ya sin el oro recién descontado y nunca daría la espada.
+      - type: CONDITIONAL
+        value: "HAS_ITEM:GOLD_INGOT,50;GIVE_ITEM:IRON_SWORD,1;MESSAGE:No tienes suficiente oro (necesitas 50 lingotes)."
+      - type: CONDITIONAL
+        value: "HAS_ITEM:GOLD_INGOT,50;TAKE_ITEM:GOLD_INGOT,50"
+
+  - slot: 13
+    material: SHIELD
+    name: "&fEscudo"
+    lore:
+      - "&7Precio: &e30 monedas"
+    actions:
+      - type: GIVE_ITEM
+        value: "SHIELD,1"
+
+  - slot: 15
+    material: BARRIER
+    name: "&cCerrar"
+    actions: []

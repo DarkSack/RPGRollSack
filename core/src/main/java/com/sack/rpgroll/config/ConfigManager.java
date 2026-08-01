@@ -1,8 +1,9 @@
 package com.sack.rpgroll.config;
 
 import com.sack.rpgroll.RPGRoll;
-import com.sack.rpgroll.config.creator.DirectoryCreator;
-import com.sack.rpgroll.config.creator.ResourceCopier;
+import com.sack.rpgroll.common.resource.DirectoryCreator;
+import com.sack.rpgroll.common.resource.ResourceCopier;
+import com.sack.rpgroll.common.resource.ResourceFile;
 import com.sack.rpgroll.common.yaml.YamlLoader;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -12,9 +13,33 @@ import java.util.List;
 
 public class ConfigManager {
 
+    /** Carpetas de datos que RPGRoll necesita, tengan o no contenido de ejemplo. */
+    private static final List<String> DIRECTORIES = List.of(
+            "classes",
+            "races",
+            "skills",
+            "traits",
+            "jobs",
+            "lang",
+            "database",
+            "professions",
+            "items",
+            "quests");
+
+    /** Carpetas de contenido variable que deben poblarse con YAML de ejemplo desde resources/. */
+    private static final List<String> CONTENT_DIRECTORIES = List.of(
+            "races",
+            "classes",
+            "skills",
+            "traits",
+            "professions",
+            "items",
+            "quests",
+            "jobs");
+
     private final RPGRoll plugin;
 
-    private final List<ConfigFile> configFiles = new ArrayList<>();
+    private final List<ResourceFile> configFiles = new ArrayList<>();
 
     private final DirectoryCreator directoryCreator;
     private final ResourceCopier resourceCopier;
@@ -27,7 +52,7 @@ public class ConfigManager {
         registerFiles();
 
         this.directoryCreator = new DirectoryCreator(plugin);
-        this.resourceCopier = new ResourceCopier(plugin, configFiles);
+        this.resourceCopier = new ResourceCopier(plugin);
         this.yamlLoader = new YamlLoader(plugin);
 
     }
@@ -41,8 +66,9 @@ public class ConfigManager {
         plugin.getLogger().info("========== ConfigManager ==========");
 
         try {
-            directoryCreator.create();
-            resourceCopier.copy();
+            directoryCreator.create(DIRECTORIES);
+            resourceCopier.copyFiles(configFiles);
+            resourceCopier.copyDirectories(CONTENT_DIRECTORIES);
             plugin.getLogger().info("Configuración inicializada correctamente.");
         } catch (Exception e) {
             plugin.getLogger().severe("✘ Error crítico inicializando configuración: " + e.getMessage());
@@ -58,31 +84,31 @@ public class ConfigManager {
     private void registerFiles() {
 
         // Configuración principal
-        configFiles.add(new ConfigFile(
+        configFiles.add(new ResourceFile(
                 "config/config.yml",
                 "config.yml",
                 true));
 
         // Configuración de la base de datos
-        configFiles.add(new ConfigFile(
+        configFiles.add(new ResourceFile(
                 "config/database.yml",
                 "database.yml",
                 true));
 
         // Configuración del gameplay
-        configFiles.add(new ConfigFile(
+        configFiles.add(new ResourceFile(
                 "config/gameplay.yml",
                 "gameplay.yml",
                 true));
 
         // Configuración de recompensas de level up
-        configFiles.add(new ConfigFile(
+        configFiles.add(new ResourceFile(
                 "config/levelup-rewards.yml",
                 "levelup-rewards.yml",
                 true));
 
         // Idioma por defecto
-        configFiles.add(new ConfigFile(
+        configFiles.add(new ResourceFile(
                 "lang/es_MX.yml",
                 "lang/es_MX.yml",
                 true));
@@ -91,9 +117,9 @@ public class ConfigManager {
 
     /**
      * Carga un archivo YAML específico como YamlConfiguration.
-     * 
+     *
      * Útil para cargar configuraciones después de la inicialización.
-     * 
+     *
      * @param filename nombre del archivo (relativo a plugins/RPGRoll/)
      * @return YamlConfiguration cargada, o null si no existe
      */
@@ -111,7 +137,7 @@ public class ConfigManager {
     /**
      * Devuelve todos los archivos registrados.
      */
-    public List<ConfigFile> getConfigFiles() {
+    public List<ResourceFile> getConfigFiles() {
         return Collections.unmodifiableList(configFiles);
     }
 

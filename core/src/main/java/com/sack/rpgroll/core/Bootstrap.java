@@ -7,8 +7,13 @@ import com.sack.rpgroll.command.commands.*;
 import com.sack.rpgroll.config.ConfigManager;
 import com.sack.rpgroll.common.content.Reloadable;
 import com.sack.rpgroll.database.DatabaseManager;
+import com.sack.rpgroll.gameplay.combat.CombatTracker;
+import com.sack.rpgroll.gameplay.combat.ResourceRegenTask;
+import com.sack.rpgroll.gameplay.hud.PlayerResourceBar;
+import com.sack.rpgroll.gameplay.listener.CombatEffectsListener;
 import com.sack.rpgroll.gameplay.listener.LevelUpListener;
 import com.sack.rpgroll.gameplay.listener.MobKillListener;
+import com.sack.rpgroll.gameplay.skill.SkillCooldownTracker;
 import com.sack.rpgroll.gameplay.job.ExplorerProgressStorage;
 import com.sack.rpgroll.gameplay.job.JobManager;
 import com.sack.rpgroll.gameplay.job.JobRewardService;
@@ -40,6 +45,7 @@ import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
+import org.bukkit.configuration.file.FileConfiguration;
 
 public class Bootstrap {
 
@@ -94,6 +100,9 @@ public class Bootstrap {
         // Cancelar tareas programadas
         if (services.contains(PlacedBlockCleanupTask.class)) {
             services.get(PlacedBlockCleanupTask.class).cancel();
+        }
+        if (services.contains(ResourceRegenTask.class)) {
+            services.get(ResourceRegenTask.class).cancel();
         }
 
         plugin.getLogger().info("✔ Todos los servicios detenidos correctamente.");
@@ -192,6 +201,40 @@ public class Bootstrap {
                     "✘ Sistema de trabajos cargado, pero sin economía activa. Las recompensas en dinero no se pagarán.");
         }
 
+        // 12. CombatTracker / SkillCooldownTracker / PlayerResourceBar - combate y HUD
+        CombatTracker combatTracker = new CombatTracker();
+        services.register(CombatTracker.class, combatTracker);
+
+        SkillCooldownTracker skillCooldownTracker = new SkillCooldownTracker();
+        services.register(SkillCooldownTracker.class, skillCooldownTracker);
+
+        PlayerResourceBar resourceBar = new PlayerResourceBar();
+        services.register(PlayerResourceBar.class, resourceBar);
+        plugin.getLogger().info("✔ CombatTracker, SkillCooldownTracker y PlayerResourceBar registrados");
+
+        // 13. ResourceRegenTask - regeneración pasiva de salud/maná
+        FileConfiguration gameplayConfig = configManager.getConfig("gameplay.yml");
+        double healthRegenPercent = gameplayConfig != null
+                ? gameplayConfig.getDouble("combat.health_regen_percent", 2.0)
+                : 2.0;
+        double manaRegenPercent = gameplayConfig != null
+                ? gameplayConfig.getDouble("combat.mana_regen_percent", 5.0)
+                : 5.0;
+        int regenIntervalSeconds = gameplayConfig != null
+                ? gameplayConfig.getInt("combat.regen_interval_seconds", 5)
+                : 5;
+        int combatDurationSeconds = gameplayConfig != null
+                ? gameplayConfig.getInt("combat.combat_duration", 10)
+                : 10;
+        boolean regenInCombat = gameplayConfig != null
+                && gameplayConfig.getBoolean("combat.natural_regen_in_combat", false);
+
+        ResourceRegenTask regenTask = new ResourceRegenTask(plugin, playerManager, combatTracker, resourceBar,
+                healthRegenPercent, manaRegenPercent, combatDurationSeconds, regenInCombat);
+        regenTask.start(regenIntervalSeconds * 20L);
+        services.register(ResourceRegenTask.class, regenTask);
+        plugin.getLogger().info("✔ ResourceRegenTask iniciada (cada " + regenIntervalSeconds + "s)");
+
     }
 
     public List<Reloadable> getReloadableContent() {
@@ -221,6 +264,9 @@ public class Bootstrap {
         commandManager.register(new AdminSetRaceCommand(plugin));
         commandManager.register(new AdminSetClassCommand(plugin));
         commandManager.register(new AdminJobCommand(plugin));
+        commandManager.register(new AllocateStatCommand(plugin));
+        commandManager.register(new UseSkillCommand(plugin));
+        commandManager.register(new AdminResetStatsCommand(plugin));
 
         // Registrar el comando principal /rpg
         plugin.getCommand("rpg").setExecutor(commandManager);
@@ -271,9 +317,16 @@ public class Bootstrap {
 
         // ===== Listeners de jugador =====
         RaceAttributeApplier raceAttributeApplier = services.get(RaceAttributeApplier.class);
+        PlayerResourceBar resourceBar = services.get(PlayerResourceBar.class);
         PlayerEventListener playerListener = new PlayerEventListener(plugin, playerManager, raceManager, classManager,
-                raceAttributeApplier);
+                raceAttributeApplier, resourceBar);
         Bukkit.getPluginManager().registerEvents(playerListener, plugin);
+
+        // ===== Listeners de combate (armadura, evasión, crítico, salud) =====
+        CombatTracker combatTracker = services.get(CombatTracker.class);
+        CombatEffectsListener combatEffectsListener = new CombatEffectsListener(playerManager, combatTracker,
+                resourceBar);
+        Bukkit.getPluginManager().registerEvents(combatEffectsListener, plugin);
 
         // ===== Listeners de GUI =====
         GUIListener guiListener = new GUIListener(plugin);

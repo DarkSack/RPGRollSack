@@ -7,5 +7,7 @@ pluginManagement {
 include(
     "api",
     "common",
-    "core"
+    "core",
+    "npcs",
+    "crates"
 )

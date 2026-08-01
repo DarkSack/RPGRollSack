@@ -90,6 +90,14 @@ public class MyStatsCommand implements RPGCommand {
 
                 player.sendMessage(MessageUtil.separator());
 
+                if (rpgPlayer.getUnspentStatPoints() > 0) {
+                        player.sendMessage(MessageUtil.line(
+                                        NamedTextColor.GREEN,
+                                        "Puntos sin gastar",
+                                        rpgPlayer.getUnspentStatPoints() + " (usa /rpg allocate <atributo> <cantidad>)"));
+                        player.sendMessage(MessageUtil.separator());
+                }
+
                 player.sendMessage(MessageUtil.section("ATRIBUTOS D&D"));
 
                 player.sendMessage(MessageUtil.line(NamedTextColor.RED,
@@ -167,7 +175,7 @@ public class MyStatsCommand implements RPGCommand {
 
         @Override
         public List<String> getAliases() {
-                return List.of("stats", "detailed", "detalles");
+                return List.of("detailed", "detalles");
         }
 
 }

@@ -75,12 +75,14 @@ public class PlayerRepository {
                             playerResult.getInt("level"),
                             playerResult.getInt("experience"),
                             playerResult.getLong("created_at"),
-                            playerResult.getLong("last_login"));
+                            playerResult.getLong("last_login"),
+                            playerResult.getInt("unspent_stat_points"));
 
                     // Cargar estadísticas
                     String statsQuery = "SELECT * FROM player_stats WHERE uuid = ?";
 
                     PlayerStats stats = PlayerStats.createDefault();
+                    CombatStats persistedCombatStats = null;
 
                     try (PreparedStatement statsStatement = connection.prepareStatement(statsQuery)) {
 
@@ -96,6 +98,14 @@ public class PlayerRepository {
                                         statsResult.getInt("intelligence"),
                                         statsResult.getInt("wisdom"),
                                         statsResult.getInt("charisma"));
+
+                                persistedCombatStats = CombatStats.of(
+                                        statsResult.getInt("max_health"),
+                                        statsResult.getInt("current_health"),
+                                        statsResult.getInt("max_mana"),
+                                        statsResult.getInt("current_mana"),
+                                        stats.getDexterityModifier(),
+                                        progression.level());
                             }
 
                         }
@@ -168,12 +178,16 @@ public class PlayerRepository {
 
                     PlayerJobs jobs = new PlayerJobs(activeJobs);
 
-                    // Calcular combat stats (basado en estadísticas)
-                    CombatStats combatStats = CombatStats.create(
-                            stats.constitution(),
-                            stats.intelligence(),
-                            stats.dexterity(),
-                            progression.level());
+                    // Combat stats: se cargan tal cual de la BD (para no perder el
+                    // progreso acumulado de salud/maná) o se derivan de las
+                    // estadísticas base si el jugador no tenía fila en player_stats.
+                    CombatStats combatStats = persistedCombatStats != null
+                            ? persistedCombatStats
+                            : CombatStats.create(
+                                    stats.getConstitutionModifier(),
+                                    stats.getIntelligenceModifier(),
+                                    stats.getDexterityModifier(),
+                                    progression.level());
 
                     // Construir jugador completo
                     RPGPlayer player = RPGPlayer.from(identity, stats, progression, skills, traits, combatStats,
@@ -206,9 +220,9 @@ public class PlayerRepository {
             Connection connection = databaseManager.getConnection();
 
             // Insertar en tabla players
-            String insertPlayer = "INSERT INTO players (uuid, username, race, class, level, experience, created_at, last_login) "
+            String insertPlayer = "INSERT INTO players (uuid, username, race, class, level, experience, created_at, last_login, unspent_stat_points) "
                     +
-                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
             try (PreparedStatement statement = connection.prepareStatement(insertPlayer)) {
 
@@ -220,17 +234,21 @@ public class PlayerRepository {
                 statement.setInt(6, player.getExperience());
                 statement.setLong(7, player.getProgression().createdAt());
                 statement.setLong(8, player.getProgression().lastLogin());
+                statement.setInt(9, player.getUnspentStatPoints());
 
                 statement.executeUpdate();
 
             }
 
             // Insertar en tabla player_stats
-            String insertStats = "INSERT INTO player_stats (uuid, strength, dexterity, constitution, intelligence, wisdom, charisma) "
+            String insertStats = "INSERT INTO player_stats (uuid, strength, dexterity, constitution, intelligence, wisdom, charisma, "
                     +
-                    "VALUES (?, ?, ?, ?, ?, ?, ?)";
+                    "max_health, current_health, max_mana, current_mana) " +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
             try (PreparedStatement statement = connection.prepareStatement(insertStats)) {
+
+                CombatStats combatStats = player.getCombatStats();
 
                 statement.setString(1, player.getUUID().toString());
                 statement.setInt(2, player.getStats().strength());
@@ -239,6 +257,10 @@ public class PlayerRepository {
                 statement.setInt(5, player.getStats().intelligence());
                 statement.setInt(6, player.getStats().wisdom());
                 statement.setInt(7, player.getStats().charisma());
+                statement.setInt(8, combatStats.maxHealth());
+                statement.setInt(9, combatStats.currentHealth());
+                statement.setInt(10, combatStats.maxMana());
+                statement.setInt(11, combatStats.currentMana());
 
                 statement.executeUpdate();
 
@@ -279,7 +301,9 @@ public class PlayerRepository {
             Connection connection = databaseManager.getConnection();
 
             // Actualizar tabla players
-            String updatePlayer = "UPDATE players SET race = ?, class = ?, level = ?, experience = ?, last_login = ? WHERE uuid = ?";
+            String updatePlayer = "UPDATE players SET race = ?, class = ?, level = ?, experience = ?, last_login = ?, "
+                    +
+                    "unspent_stat_points = ? WHERE uuid = ?";
 
             try (PreparedStatement statement = connection.prepareStatement(updatePlayer)) {
 
@@ -288,7 +312,8 @@ public class PlayerRepository {
                 statement.setInt(3, player.getLevel());
                 statement.setInt(4, player.getExperience());
                 statement.setLong(5, System.currentTimeMillis());
-                statement.setString(6, player.getUUID().toString());
+                statement.setInt(6, player.getUnspentStatPoints());
+                statement.setString(7, player.getUUID().toString());
 
                 statement.executeUpdate();
 
@@ -296,9 +321,12 @@ public class PlayerRepository {
 
             // Actualizar tabla player_stats
             String updateStats = "UPDATE player_stats SET strength = ?, dexterity = ?, constitution = ?, " +
-                    "intelligence = ?, wisdom = ?, charisma = ? WHERE uuid = ?";
+                    "intelligence = ?, wisdom = ?, charisma = ?, max_health = ?, current_health = ?, " +
+                    "max_mana = ?, current_mana = ? WHERE uuid = ?";
 
             try (PreparedStatement statement = connection.prepareStatement(updateStats)) {
+
+                CombatStats combatStats = player.getCombatStats();
 
                 statement.setInt(1, player.getStats().strength());
                 statement.setInt(2, player.getStats().dexterity());
@@ -306,7 +334,11 @@ public class PlayerRepository {
                 statement.setInt(4, player.getStats().intelligence());
                 statement.setInt(5, player.getStats().wisdom());
                 statement.setInt(6, player.getStats().charisma());
-                statement.setString(7, player.getUUID().toString());
+                statement.setInt(7, combatStats.maxHealth());
+                statement.setInt(8, combatStats.currentHealth());
+                statement.setInt(9, combatStats.maxMana());
+                statement.setInt(10, combatStats.currentMana());
+                statement.setString(11, player.getUUID().toString());
 
                 statement.executeUpdate();
 

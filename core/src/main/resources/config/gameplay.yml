@@ -92,6 +92,13 @@ combat:
   # Permitir regeneración natural en combate
   natural_regen_in_combat: false
 
+  # Regeneración pasiva de salud/maná (porcentaje del máximo por intervalo)
+  health_regen_percent: 2.0
+  mana_regen_percent: 5.0
+
+  # Cada cuántos segundos se aplica la regeneración pasiva
+  regen_interval_seconds: 5
+
   # Daño crítico
   critical:
     # Probabilidad base de crítico (porcentaje)

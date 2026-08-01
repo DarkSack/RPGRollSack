@@ -1,5 +1,6 @@
 package com.sack.rpgroll.gameplay.levelup;
 
+import com.sack.rpgroll.gameplay.combat.CombatStats;
 import com.sack.rpgroll.gameplay.event.LevelUpEvent;
 import com.sack.rpgroll.player.PlayerManager;
 import com.sack.rpgroll.player.RPGPlayer;
@@ -51,8 +52,32 @@ public class PlayerLevelUpHandler {
         // Subir de nivel
         RPGPlayer leveledUpPlayer = rpgPlayer.levelUp();
 
-        // Aplicar recompensas (habilidades y traits se aprenderían aquí)
-        // Por ahora solo guardamos el nivel
+        // Aplicar recompensas: puntos de stat y crecimiento de salud/maná.
+        if (rewards.statPoints() > 0) {
+            leveledUpPlayer = leveledUpPlayer.addStatPoints(rewards.statPoints());
+        }
+
+        CombatStats combatStats = leveledUpPlayer.getCombatStats();
+        if (rewards.healthBonus() > 0) {
+            combatStats = combatStats.growHealth(rewards.healthBonus());
+        }
+        if (rewards.manaBonus() > 0) {
+            combatStats = combatStats.growMana(rewards.manaBonus());
+        }
+        leveledUpPlayer = leveledUpPlayer.updateCombatStats(combatStats);
+
+        // Aprender habilidades/traits desbloqueados (sin pisar el nivel de una
+        // skill que el jugador ya hubiera subido manualmente).
+        for (String skillId : rewards.unlockedSkills()) {
+            if (!leveledUpPlayer.getSkills().hasSkill(skillId)) {
+                leveledUpPlayer = leveledUpPlayer.learnSkill(skillId);
+            }
+        }
+        for (String traitId : rewards.unlockedTraits()) {
+            if (!leveledUpPlayer.getTraits().hasTrait(traitId)) {
+                leveledUpPlayer = leveledUpPlayer.acquireTrait(traitId);
+            }
+        }
 
         // Guardar
         playerManager.savePlayer(leveledUpPlayer);
@@ -101,6 +126,16 @@ public class PlayerLevelUpHandler {
             player.sendMessage(
                     Component.text("╠ +Maná: ", NamedTextColor.BLUE)
                             .append(Component.text(rewards.manaBonus(), NamedTextColor.WHITE)));
+        }
+        for (String skillId : rewards.unlockedSkills()) {
+            player.sendMessage(
+                    Component.text("╠ ¡Nueva habilidad desbloqueada!: ", NamedTextColor.LIGHT_PURPLE)
+                            .append(Component.text(skillId, NamedTextColor.WHITE)));
+        }
+        for (String traitId : rewards.unlockedTraits()) {
+            player.sendMessage(
+                    Component.text("╠ ¡Nuevo trait desbloqueado!: ", NamedTextColor.LIGHT_PURPLE)
+                            .append(Component.text(traitId, NamedTextColor.WHITE)));
         }
 
         player.sendMessage(Component.text("╚════════════════════════════════╝", NamedTextColor.GOLD));

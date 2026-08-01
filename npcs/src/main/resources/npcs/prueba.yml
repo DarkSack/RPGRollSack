@@ -1,0 +1,29 @@
+# src/main/resources/npcs/prueba.yml
+id: prueba
+display-name: "NPC de Prueba"
+skin:
+  value: "ewogICJ0aW1lc3RhbXAiIDogMTcxMDE4MTk2ODgxNSwKICAicHJvZmlsZUlkIiA6ICJmN2QxOWQxNTZhY2I0NDE2OGQ4YTAxYThkNWYwMmEyZCIsCiAgInByb2ZpbGVOYW1lIiA6ICJUaGVGbG9vZDQyNEsiLAogICJzaWduYXR1cmVSZXF1aXJlZCIgOiB0cnVlLAogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzEzNGNiYTdkMDAzODE4MzdmYzkwYzVmZWQ3YzVlY2NkZTI0MDI3NWI1NGJiMTY5ZDE4N2Q5Mzc2M2E2ZDFkIgogICAgfQogIH0KfQ=="
+  signature: "xs/WBXNdQa7G+vHcQlBJk6FjVvRB9UCARvunZB+nVxiju+DSHaNX1vXy85gDRI4JSB/xequzg9AjPWg6XtMHpumlzGdNgcWiHBvtyYxMtY/5k0wpelyLYu37GSYpBaaEQwU39mLEtthERwH5cEUSlvzjy3JVGlzzvjl4/CO0UuIDw4isBOnK4ShXOyZA0QqylfC9BvGBYXCZEKRQyVxKHqYPxVI0U9IX/24/zj5n7L3ixVOyq1LyL4om3/VJuNm+6N4jgqAw9R0hS7Jl23J6Urn3r17skFqyE79PDP/FqBluTPVzffxY3Hm1okxe30tekv80PXxp3vtN+E/qF+wk+for3/K/tZ5BEGE+HOGZ5FhA3zHJ54UW/ss0pGdnsJ1RY27EQhuNNaSBtM2bQMQZgHd54nHrc7rX2NwcTG8EQ7czpJHhx9DgyIbXca1wQ+0a/qhCZVcljZGuOHhgf4d1upCHdB93/+6BbPTrPyUcjpXoBqV63wwZX4xlGyUa/QRVV6acujiOFH6PSmLpP8ri0fbK5WANLJ9smiJtygngnzlPTxo9Jm61Mm696IlPs9toEx3QjmGlkFyVXylP1LQ3JEK7NjENu8B82I2ARftlpZyLONfaqpdqUH2YtIK9pfj7CNuNDTPl3d5ggCnPrzRrS1vuZCpFCMrMGf0JtZBnmMI="
+pose: "STANDING"
+
+location:
+  world: world
+  x: -3.0
+  y: 80.0
+  z: -15.0
+  yaw: 0.0
+  pitch: 0.0
+
+actions:
+  - type: MESSAGE
+    value: "Bienvenido, {player}."
+  - type: SOUND
+    value: "ENTITY_VILLAGER_YES,1.0,1.2"
+  - type: CONDITIONAL
+    value: "HAS_JOB:minero;MESSAGE:Ya eres minero, sigue así!;MESSAGE:¿No quieres unirte a los mineros?"
+  - type: CONDITIONAL
+    value: "MIN_JOB_LEVEL:minero,20;GIVE_ITEM:DIAMOND,5;MESSAGE:Necesitas nivel 20 de Minero."
+  - type: CONDITIONAL
+    value: "HAS_JOB:minero && MIN_JOB_LEVEL:minero,20 && HAS_ITEM:IRON_PICKAXE;GIVE_ITEM:DIAMOND,5;MESSAGE:Necesitas ser Minero nivel 20 y llevar un pico de hierro."
+  - type: OPEN_GUI
+    value: "tienda_herrero"

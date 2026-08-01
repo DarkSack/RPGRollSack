@@ -37,6 +37,7 @@ public class MigrationRegistry {
         register(6, "V6__create_placed_blocks.sql");
         register(7, "V7__create_explorer_progress.sql");
         register(8, "V8__add_placed_at_to_placed_blocks.sql");
+        register(9, "V9__add_stat_points_and_resources.sql");
 
     }
 
