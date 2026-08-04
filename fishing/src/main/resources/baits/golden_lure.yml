@@ -1,0 +1,7 @@
+id: golden_lure
+display-name: "&6Señuelo Dorado"
+material: GOLD_NUGGET
+description: "La carnada legendaria — atrae la atención de lo que normalmente ni se acerca."
+tags: [magic, shiny]
+quality-bonus: 3
+legendary-weight-multiplier: 6.0

@@ -1,0 +1,9 @@
+id: fertility
+display-name: "Fertilidad"
+description: "Requiere que AMBOS padres aporten una copia fuerte para expresarse del todo."
+attribute-key: fertility
+dominance: RECESSIVE
+min-value: 0
+max-value: 100
+applicable-species: []
+mutations: []

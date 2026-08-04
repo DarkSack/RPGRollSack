@@ -1,0 +1,31 @@
+id: summer
+display-name: "&eVerano"
+icon: WHEAT
+color: YELLOW
+description: "Calor intenso, sequías y ríos bajos. El Coloso de Ceniza a veces despierta."
+duration-amount: 7
+duration-unit: MINECRAFT_DAYS
+tags: [hot, drought]
+exclusive-boss: ash_colossus
+world-events: [meteor_shower]
+world-event-daily-chance: 0.2
+
+climate:
+  rain-chance: 0.1
+  storm-chance: 0.02
+  snow-chance: 0.0
+  fog-chance: 0.02
+  base-temperature: 28
+  temperature-variance: 5
+  wind-strength: 0.2
+  humidity: 0.3
+  heatwave-chance: 0.15
+  thunderstorm-chance: 0.05
+
+vegetation-effects:
+  - DRY_GRASS
+
+biome-temperature-modifiers:
+  desert: 10
+  plains: 5
+  badlands: 8

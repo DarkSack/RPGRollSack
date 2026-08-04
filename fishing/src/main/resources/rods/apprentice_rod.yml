@@ -1,0 +1,11 @@
+id: apprentice_rod
+display-name: "&fCaña de Aprendiz"
+material: FISHING_ROD
+description: "Una caña simple con bonos modestos — el primer paso más allá de la pesca vanilla."
+durability: 64
+cast-power: 1.0
+reel-speed: 1.1
+precision: 5
+resistance: 1.2
+luck-bonus: 1.1
+preferred-categories: []

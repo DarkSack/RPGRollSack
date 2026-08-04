@@ -1,0 +1,15 @@
+id: bluefin_tuna
+display-name: "&fAtún"
+icon: COD
+description: "Un pez grande de mar abierto, más activo en verano."
+category: SALTWATER
+rarity: UNCOMMON
+water-types: [OCEAN, DEEP_OCEAN]
+min-weight: 5
+max-weight: 35
+min-length: 60
+max-length: 200
+base-price: 15
+base-experience: 8
+behavior: AGGRESSIVE
+allowed-seasons: [summer]

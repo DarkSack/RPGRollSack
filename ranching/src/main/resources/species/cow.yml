@@ -1,0 +1,20 @@
+id: cow
+display-name: "&fVaca"
+icon: COW_SPAWN_EGG
+description: "Ganado bovino clásico — leche, carne y cuero."
+entity-type: COW
+product-types: [milk, meat, leather]
+base-production:
+  milk: 3.0
+  meat: 4.0
+  leather: 2.0
+base-weight-min: 400
+base-weight-max: 750
+baby-stage-duration-ticks: 6000
+juvenile-stage-duration-ticks: 12000
+elder-threshold-ticks: 480000
+gestation-duration-ticks: 24000
+min-litter-size: 1
+max-litter-size: 1
+base-fertility: 0.5
+diet-tags: [grain, hay]

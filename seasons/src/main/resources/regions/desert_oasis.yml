@@ -1,0 +1,11 @@
+# Ejemplo: una zona que siempre está en verano, sin importar la estación real del mundo.
+id: desert_oasis
+world: world
+min-x: -200
+min-y: 0
+min-z: -200
+max-x: -100
+max-y: 255
+max-z: -100
+override-mode: PINNED_SEASON
+pinned-season: summer

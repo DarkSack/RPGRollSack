@@ -1,0 +1,16 @@
+id: river_trout
+display-name: "&fTrucha"
+icon: SALMON
+description: "Común en cualquier río de agua fría."
+category: FRESHWATER
+rarity: COMMON
+water-types: [RIVER]
+depths: []
+min-weight: 0.3
+max-weight: 2.5
+min-length: 15
+max-length: 45
+base-price: 4
+base-experience: 3
+behavior: FAST
+attracted-by-bait-tags: [freshwater, worm]

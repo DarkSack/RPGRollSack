@@ -1,0 +1,27 @@
+id: spring
+display-name: "&aPrimavera"
+icon: SUNFLOWER
+color: GREEN
+description: "Clima templado, lluvias frecuentes, florecen las llanuras."
+duration-amount: 7
+duration-unit: MINECRAFT_DAYS
+tags: [mild, growth]
+
+climate:
+  rain-chance: 0.4
+  storm-chance: 0.05
+  snow-chance: 0.0
+  fog-chance: 0.15
+  base-temperature: 16
+  temperature-variance: 4
+  wind-strength: 0.3
+  humidity: 0.6
+  heatwave-chance: 0.01
+  thunderstorm-chance: 0.03
+
+vegetation-effects:
+  - FLOWER_BOOM
+
+mob-modifiers:
+  - mob-id: forest_goblin
+    extra-spawn-chance: 0.05

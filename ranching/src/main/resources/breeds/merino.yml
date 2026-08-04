@@ -1,0 +1,9 @@
+id: merino
+display-name: "&fMerino"
+description: "La raza de lana más fina."
+species: sheep
+production-multiplier: 1.5
+weight-multiplier: 0.9
+fertility-multiplier: 1.0
+resistance-multiplier: 1.0
+temperament: "Dócil"

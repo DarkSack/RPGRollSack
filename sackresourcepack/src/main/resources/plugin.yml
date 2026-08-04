@@ -1,0 +1,17 @@
+name: SackResourcePack
+version: 1.0.0
+main: com.sack.rpgroll.sackresourcepack.SackResourcePackPlugin
+api-version: "1.21"
+author: Sack
+description: Asset Pipeline para resource packs — escaneo de módulos, resolución de dependencias, fusión de namespaces, CustomModelData estable, validación, build+hash y distribución automática. Framework independiente, no depende de RPGRoll.
+
+commands:
+  srp:
+    description: Comandos de SackResourcePack
+    usage: /srp <reload|rebuild|validate|publish|status|content|conflicts|models|textures|sounds|fonts|cache|dev> [args]
+    permission: sackresourcepack.admin.*
+
+permissions:
+  sackresourcepack.admin.*:
+    description: Acceso completo a los comandos de SackResourcePack
+    default: op

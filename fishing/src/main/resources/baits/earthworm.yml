@@ -1,0 +1,7 @@
+id: earthworm
+display-name: "&fLombriz"
+material: STRING
+description: "La carnada más básica — funciona bien en agua dulce."
+tags: [freshwater, worm]
+quality-bonus: 1
+legendary-weight-multiplier: 1.0

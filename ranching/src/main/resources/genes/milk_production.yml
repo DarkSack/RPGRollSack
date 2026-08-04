@@ -1,0 +1,14 @@
+id: milk_production
+display-name: "Producción de leche"
+description: "Qué tan lechera es la vaca — un solo padre con una copia alta alcanza para heredarla."
+attribute-key: milk_production
+dominance: DOMINANT
+min-value: 0
+max-value: 100
+applicable-species: [cow]
+mutations:
+  - id: double_production
+    display-name: "Producción doble"
+    effect-type: MULTIPLY
+    effect-value: 2.0
+    chance: 0.01

@@ -1,0 +1,7 @@
+id: flu_vaccine
+display-name: "&bVacuna Antigripal"
+icon: POTION
+description: "Reduce fuertemente el riesgo de gripe bovina."
+prevents-diseases: [bovine_flu]
+risk-reduction: 0.85
+immunity-duration-ticks: 48000

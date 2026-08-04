@@ -1,0 +1,29 @@
+id: autumn
+display-name: "&6Otoño"
+icon: JACK_O_LANTERN
+color: GOLD
+description: "Hojas cayendo, niebla matutina, y algo de aurora en el cielo nocturno."
+duration-amount: 7
+duration-unit: MINECRAFT_DAYS
+tags: [mild, decay]
+world-events: [aurora]
+world-event-daily-chance: 0.15
+
+climate:
+  rain-chance: 0.35
+  storm-chance: 0.08
+  snow-chance: 0.0
+  fog-chance: 0.3
+  base-temperature: 10
+  temperature-variance: 5
+  wind-strength: 0.5
+  humidity: 0.6
+  heatwave-chance: 0.0
+  thunderstorm-chance: 0.04
+
+vegetation-effects:
+  - FALLING_LEAVES
+
+mob-modifiers:
+  - mob-id: forest_goblin
+    extra-spawn-chance: 0.08

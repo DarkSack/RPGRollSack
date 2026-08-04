@@ -1,0 +1,9 @@
+id: default_calendar
+display-name: "Calendario Estándar"
+description: "El ciclo clásico de 4 estaciones — usado por cualquier mundo que no tenga una región con override."
+
+seasons:
+  - spring
+  - summer
+  - autumn
+  - winter

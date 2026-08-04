@@ -1,0 +1,19 @@
+id: sheep
+display-name: "&fOveja"
+icon: SHEEP_SPAWN_EGG
+description: "Lana y carne."
+entity-type: SHEEP
+product-types: [wool, meat]
+base-production:
+  wool: 2.0
+  meat: 3.0
+base-weight-min: 45
+base-weight-max: 100
+baby-stage-duration-ticks: 4800
+juvenile-stage-duration-ticks: 9600
+elder-threshold-ticks: 360000
+gestation-duration-ticks: 12000
+min-litter-size: 1
+max-litter-size: 2
+base-fertility: 0.55
+diet-tags: [grain, hay]

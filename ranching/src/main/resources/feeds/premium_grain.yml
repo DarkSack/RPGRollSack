@@ -1,0 +1,10 @@
+id: premium_grain
+display-name: "&6Grano Premium"
+icon: WHEAT_SEEDS
+description: "Mezcla balanceada de granos — mejora la producción de verdad."
+quality: PREMIUM
+tags: [grain]
+nutrition-value: 35
+health-bonus: 5
+happiness-bonus: 8
+production-bonus: 10

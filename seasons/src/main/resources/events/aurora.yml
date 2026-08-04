@@ -1,0 +1,18 @@
+id: aurora
+display-name: "&d&lAurora"
+icon: END_ROD
+description: "Luces de colores danzan en el cielo nocturno."
+duration: 600
+
+components:
+  - type: MESSAGE
+    text: "&dUna aurora ilumina el cielo..."
+
+  - type: PARTICLE
+    particle: END_ROD
+    count: 25
+
+  - type: SOUND
+    sound: AMBIENT_CAVE
+    volume: 0.5
+    pitch: 1.2

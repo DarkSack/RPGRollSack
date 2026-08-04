@@ -1,0 +1,8 @@
+id: sunken_chest
+display-name: "&6Cofre Hundido"
+icon: CHEST
+description: "Un pequeño cofre que se hundió hace años — todavía tiene algo de valor adentro."
+rarity: RARE
+reward-material: EMERALD
+reward-amount: 3
+weight: 1.0

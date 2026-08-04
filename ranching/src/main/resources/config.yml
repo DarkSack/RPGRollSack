@@ -1,0 +1,22 @@
+# Cómo se calculan los genes de una cría a partir de sus padres:
+#   SIMPLE          - promedio de ambos padres +/- una pequeña variación al azar, sin dominancia.
+#   ADVANCED        - dominancia real por alelo (dominante/recesivo/mixto), como un cuadro de Punnett.
+#   PROBABILISTIC   - igual que ADVANCED, pero antes de aparear se puede consultar la distribución de
+#                     probabilidad completa (ver Breeding Planner) en vez de solo el resultado final.
+genetics-mode: ADVANCED
+
+# Probabilidad (0.0-1.0) de que una cría desarrolle una mutación rara al nacer.
+mutation-chance: 0.01
+
+# Cuántas generaciones hacia atrás se revisan al planear un cruce para avisar de endogamia.
+inbreeding-warning-generations: 3
+
+# Intervalos de tareas periódicas, en ticks (20 ticks = 1 segundo).
+growth-check-interval-ticks: 200
+welfare-check-interval-ticks: 200
+health-check-interval-ticks: 200
+pregnancy-check-interval-ticks: 100
+production-check-interval-ticks: 100
+
+# Radio (bloques) en el que una enfermedad contagiosa puede propagarse a animales cercanos.
+disease-contagion-radius: 6.0

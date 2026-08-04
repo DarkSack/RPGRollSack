@@ -1,0 +1,44 @@
+# Carpeta (relativa a plugins/SackResourcePack/) donde cada módulo tiene su
+# propio pack.yml + assets/ — ver la documentación para el formato exacto.
+content-directory: content
+
+http:
+  # Servidor HTTP embebido (com.sun.net.httpserver, sin dependencias extra)
+  # que sirve resourcepack.zip — la opción más simple, cero configuración.
+  enabled: true
+  bind-address: 0.0.0.0
+  port: 8080
+  path: /resourcepack.zip
+  # Si tenés el pack hosteado en otro lado (nginx, un bucket, un CDN...),
+  # completá esto y se manda esa URL en vez de la del servidor embebido.
+  public-url: ""
+
+# pack_format del pack.mcmeta generado — 34 corresponde a 1.21-1.21.1.
+# Si tu servidor corre otra versión, ajustalo acá (ver la wiki de Minecraft
+# para el pack_format correcto de tu versión exacta).
+pack-format: 34
+
+# Cada asset nuevo (modelo/textura/etc.) recibe un CustomModelData estable,
+# asignado una sola vez y persistido en cmd-registry.yml — nunca cambia
+# entre builds. Este es el primer número que se usa.
+custom-model-data-base: 10000
+
+# Subida a un endpoint remoto genérico (PUT/POST autenticado) además del
+# host embebido — NO implementa firmas específicas de proveedor (ej. AWS
+# SigV4 para S3 directo); pensado para un endpoint propio, un proxy, o
+# cualquier servicio que acepte un PUT/POST con un header de autenticación.
+remote-upload:
+  enabled: false
+  url: ""
+  method: PUT
+  auth-header-name: "Authorization"
+  auth-header-value: ""
+
+distribution:
+  required: false
+  prompt-message: "&6Este servidor usa un resource pack personalizado."
+
+# Modo de desarrollo: un watcher sobre content/ reconstruye y reenvía el
+# pack automáticamente apenas guardás un cambio. Podés dejarlo prendido
+# siempre, o alternarlo con /srp dev.
+development-mode: false

@@ -1,0 +1,22 @@
+id: leviathan
+display-name: "&5&lLeviatán"
+icon: TROPICAL_FISH
+custom-model-data: 1000
+description: "Una criatura ancestral que solo emerge bajo condiciones extremadamente específicas. Requiere la Carnada Legendaria."
+category: LEGENDARY
+rarity: LEGENDARY
+depths: [BOTTOM, UNDERWATER_CAVE]
+min-weight: 80
+max-weight: 250
+min-length: 300
+max-length: 800
+base-price: 500
+base-experience: 200
+behavior: ELUSIVE
+allowed-seasons: [winter]
+allowed-weathers: [STORM]
+legendary: true
+required-level: 50
+requires-full-moon: true
+required-bait: golden_lure
+catch-effect: level_up

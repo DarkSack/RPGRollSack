@@ -1,0 +1,9 @@
+id: bovine_flu
+display-name: "&cGripe Bovina"
+description: "Contagiosa entre animales de la misma especie — baja producción mientras dura."
+symptoms: [fiebre, letargo]
+duration-ticks: 12000
+contagion-chance: 0.08
+health-penalty-per-check: 2
+happiness-penalty-per-check: 3
+production-penalty: 0.6

@@ -1,0 +1,16 @@
+id: atlantic_salmon
+display-name: "&fSalmón"
+icon: SALMON
+description: "Sube por los ríos en otoño."
+category: FRESHWATER
+rarity: COMMON
+water-types: [RIVER, LAKE]
+min-weight: 0.6
+max-weight: 4.3
+min-length: 20
+max-length: 60
+base-price: 6
+base-experience: 4
+behavior: FAST
+allowed-seasons: [autumn]
+attracted-by-bait-tags: [freshwater, worm]

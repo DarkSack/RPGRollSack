@@ -1,0 +1,10 @@
+id: antibiotic_shot
+display-name: "&fInyección de Antibióticos"
+icon: SPLASH_POTION
+description: "Trata infecciones activas — no siempre cura al instante."
+type: ANTIBIOTIC
+cures-diseases: [bovine_flu]
+cure-chance: 0.6
+recovery-boost-ticks: 3000
+health-bonus: 3
+happiness-bonus: 0
