@@ -1,0 +1,19 @@
+id: local
+display-name: "Local"
+icon: OAK_SIGN
+color: GRAY
+priority: 5
+scope: PROXIMITY
+distance: 100
+view-permission: ""
+speak-permission: ""
+cooldown-millis: 0
+format: "&7[&fLocal&7] &f{player}&7: &f{message}"
+text-format: LEGACY
+join-sound: ""
+filter-profanity: true
+filter-caps: true
+allow-urls: false
+default-joined: true
+cross-world: true
+also-action-bar: false

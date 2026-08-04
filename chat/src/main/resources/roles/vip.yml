@@ -1,0 +1,7 @@
+id: vip
+prefix: "&6[VIP] &r"
+suffix: ""
+color: GOLD
+icon: DIAMOND
+priority: 5
+permission: "rpgrollchat.role.vip"

@@ -1,0 +1,19 @@
+id: ayuda
+display-name: "Ayuda"
+icon: BOOK
+color: AQUA
+priority: 1
+scope: GLOBAL
+distance: 0
+view-permission: ""
+speak-permission: ""
+cooldown-millis: 0
+format: "&7[&bAyuda&7] &f{player}&7: &f{message}"
+text-format: LEGACY
+join-sound: ""
+filter-profanity: true
+filter-caps: true
+allow-urls: false
+default-joined: true
+cross-world: true
+also-action-bar: false

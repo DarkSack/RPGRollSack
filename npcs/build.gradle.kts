@@ -6,6 +6,8 @@ plugins {
 group = "com.sack"
 version = "1.0.0"
 
+base.archivesName.set("RPGRoll-NPCs")
+
 dependencies {
     // rpgroll.addon-conventions ya agrega compileOnly(:api) y compileOnly(:common),
     // pero este addon también usa InventoryGUI/ItemBuilder (framework de GUIs) y

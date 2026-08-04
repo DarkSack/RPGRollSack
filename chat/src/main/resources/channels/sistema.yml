@@ -1,0 +1,19 @@
+id: sistema
+display-name: "Sistema"
+icon: REDSTONE_TORCH
+color: YELLOW
+priority: 20
+scope: GLOBAL
+distance: 0
+view-permission: ""
+speak-permission: "rpgrollchat.channel.sistema"
+cooldown-millis: 0
+format: "&e[&6Sistema&e] &f{message}"
+text-format: LEGACY
+join-sound: ENTITY_EXPERIENCE_ORB_PICKUP
+filter-profanity: false
+filter-caps: false
+allow-urls: true
+default-joined: true
+cross-world: true
+also-action-bar: true

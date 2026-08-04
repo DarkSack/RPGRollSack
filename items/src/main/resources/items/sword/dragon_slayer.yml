@@ -1,0 +1,32 @@
+id: dragon_slayer
+category: sword
+material: NETHERITE_SWORD
+display-name: "&4Dragon Slayer"
+lore:
+  - "&7Forjada para matar dragones."
+rarity: MYTHIC
+glow: true
+
+stats:
+  damage: 14
+  critical_chance: 20
+  critical_damage: 75
+
+requirements:
+  level: 40
+
+durability:
+  max: 1000
+  repairable: true
+  degrade-per-use: 1
+
+triggers:
+  ENTITY_KILL:
+    - type: MESSAGE
+      value: "&4¡Otro enemigo cae ante Dragon Slayer!"
+    - type: PARTICLE
+      particle: DRAGON_BREATH
+      count: 15
+
+economy:
+  sell: 2000

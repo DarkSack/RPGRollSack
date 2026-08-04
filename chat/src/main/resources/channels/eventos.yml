@@ -1,0 +1,19 @@
+id: eventos
+display-name: "Eventos"
+icon: FIREWORK_ROCKET
+color: LIGHT_PURPLE
+priority: 15
+scope: GLOBAL
+distance: 0
+view-permission: ""
+speak-permission: "rpgrollchat.channel.eventos"
+cooldown-millis: 0
+format: "&d[&5Eventos&d] &f{message}"
+text-format: LEGACY
+join-sound: ENTITY_PLAYER_LEVELUP
+filter-profanity: false
+filter-caps: false
+allow-urls: true
+default-joined: true
+cross-world: true
+also-action-bar: true

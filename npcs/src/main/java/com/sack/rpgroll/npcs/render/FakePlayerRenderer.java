@@ -53,7 +53,7 @@ public class FakePlayerRenderer {
 
     public void spawnFor(Player viewer, NpcDefinition npc, UUID npcUuid, int entityId) {
 
-        WrappedGameProfile profile = new WrappedGameProfile(npcUuid, npc.displayName());
+        WrappedGameProfile profile = new WrappedGameProfile(npcUuid, sanitizeProfileName(npc.id()));
 
         if (npc.hasCustomSkin()) {
             profile.getProperties().put(
@@ -64,7 +64,7 @@ public class FakePlayerRenderer {
                             npc.skinSignature()));
         }
 
-        sendPlayerInfoAdd(viewer, profile);
+        sendPlayerInfoAdd(viewer, profile, npc.displayName());
         sendNamedEntitySpawn(viewer, npc, npcUuid, entityId);
         applyPose(viewer, npc, entityId);
 
@@ -76,7 +76,7 @@ public class FakePlayerRenderer {
         sendEntityDestroy(viewer, entityId);
     }
 
-    private void sendPlayerInfoAdd(Player viewer, WrappedGameProfile profile) {
+    private void sendPlayerInfoAdd(Player viewer, WrappedGameProfile profile, String displayName) {
 
         PacketContainer packet = protocolManager.createPacket(PacketType.Play.Server.PLAYER_INFO);
 
@@ -86,11 +86,29 @@ public class FakePlayerRenderer {
                 profile,
                 0,
                 EnumWrappers.NativeGameMode.SURVIVAL,
-                WrappedChatComponent.fromText(profile.getName()));
+                WrappedChatComponent.fromText(displayName));
 
         packet.getPlayerInfoDataLists().write(1, List.of(data));
 
         sendPacket(viewer, packet);
+    }
+
+    /**
+     * El "name" de un {@link WrappedGameProfile} viaja por el protocolo como
+     * un username real de Minecraft (máx. 16 caracteres ASCII) — a diferencia
+     * del nombre visible en la tablist, que se manda aparte como chat
+     * component y no tiene ese límite. Acá solo se usa como identificador
+     * interno del perfil falso, nunca se muestra al jugador.
+     */
+    private String sanitizeProfileName(String id) {
+
+        String sanitized = id.replaceAll("[^a-zA-Z0-9_]", "");
+
+        if (sanitized.isBlank()) {
+            sanitized = "npc";
+        }
+
+        return sanitized.length() > 16 ? sanitized.substring(0, 16) : sanitized;
     }
 
     private void sendPlayerInfoRemove(Player viewer, UUID npcUuid) {

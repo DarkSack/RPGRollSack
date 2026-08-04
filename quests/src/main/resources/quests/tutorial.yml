@@ -1,0 +1,70 @@
+id: tutorial
+display-name: "&aTutorial: Los Primeros Pasos"
+category: MAIN_STORY
+difficulty: EASY
+repeatable: false
+
+stages:
+  - id: talk_to_elder
+    dialog:
+      - npc: "Bienvenido aventurero."
+      - player: "¿Necesitas ayuda?"
+      - npc: |
+          Claro. Hay monstruos cerca del bosque
+          y necesito que alguien se encargue de ellos.
+    options:
+      - label: "Aceptar la misión"
+        next-stage: get_sword
+      - label: "Pedir más información"
+        next-stage: more_info
+    on-start:
+      - type: MESSAGE
+        value: "&e¡Nueva misión disponible: Tutorial!"
+
+  - id: more_info
+    dialog:
+      - npc: "Los monstruos salieron de una cueva al norte del pueblo."
+    options:
+      - label: "Aceptar la misión"
+        next-stage: get_sword
+      - label: "Volver"
+        next-stage: talk_to_elder
+
+  - id: get_sword
+    objectives:
+      - type: COLLECT_ITEM
+        material: WOODEN_SWORD
+        amount: 1
+        description: "Consigue una espada"
+    on-complete:
+      - type: MESSAGE
+        value: "&aConseguiste tu espada."
+
+  - id: defeat_captain
+    objectives:
+      - type: KILL_ENTITY
+        entity: ZOMBIE
+        amount: 1
+        description: "Derrota al capitán de los monstruos"
+    on-complete:
+      - type: SOUND
+        sound: ENTITY_PLAYER_LEVELUP
+
+  - id: travel_to_kingdom
+    objectives:
+      - type: REACH_LOCATION
+        world: world
+        x: 120
+        y: 65
+        z: -340
+        radius: 8
+        description: "Viaja al reino"
+    on-complete:
+      - type: MESSAGE
+        value: "&6¡Llegaste al reino! Así comienza la historia principal..."
+
+rewards:
+  money: 100
+  experience: 200
+  items:
+    - IRON_SWORD

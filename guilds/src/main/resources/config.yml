@@ -1,0 +1,7 @@
+guild-creation:
+  money-cost: 5000
+  min-level: 5
+  required-permission: ""
+  required-quest: ""
+  required-item: ""
+  required-item-amount: 0

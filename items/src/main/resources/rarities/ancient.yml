@@ -1,0 +1,5 @@
+id: ancient
+display-name: "Ancestral"
+color: "#8B5A2B"
+glow: true
+particle: PORTAL

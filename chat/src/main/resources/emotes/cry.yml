@@ -1,0 +1,4 @@
+id: cry
+template: "&f{player} &7rompe en llanto."
+target-template: ""
+radius: 0

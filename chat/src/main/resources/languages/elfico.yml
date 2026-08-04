@@ -1,0 +1,4 @@
+id: elfico
+display-name: "Élfico"
+obfuscation-char: "◌"
+default-for-races: ["elf", "elfo"]

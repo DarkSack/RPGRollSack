@@ -1,0 +1,35 @@
+id: frost_bolt
+display-name: "&bDardo de Escarcha"
+icon: SNOWBALL
+color: AQUA
+school: frost
+rarity: COMMON
+level: 1
+cast-time: 0
+cooldown: 30
+trigger: RIGHT_CLICK
+tree-tier: 0
+tags: [frost, projectile]
+description: "El hechizo básico de la escuela de Escarcha — un proyectil que congela al impactar."
+
+cost:
+  mana: 12
+
+components:
+  - type: PROJECTILE
+    speed: 1.3
+    max-distance: 25
+    hit-radius: 1.0
+    trail-particle: SNOWFLAKE
+
+  - type: DAMAGE_DIRECT
+    amount: 4
+
+  - type: APPLY_EFFECT
+    effect-id: frozen
+    target: target
+
+  - type: SOUND
+    sound: BLOCK_GLASS_BREAK
+    volume: 1.0
+    pitch: 1.0

@@ -1,0 +1,4 @@
+id: orco
+display-name: "Orco"
+obfuscation-char: "#"
+default-for-races: ["orc", "orco"]

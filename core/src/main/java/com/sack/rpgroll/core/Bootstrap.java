@@ -28,8 +28,12 @@ import com.sack.rpgroll.gameplay.job.listener.PescadorJobListener;
 import com.sack.rpgroll.gameplay.levelup.LevelUpRewardsConfig;
 import com.sack.rpgroll.gameplay.skill.SkillManager;
 import com.sack.rpgroll.gameplay.trait.TraitManager;
+import com.sack.rpgroll.gui.admin.ChatPromptManager;
 import com.sack.rpgroll.gui.listener.GUIListener;
+import com.sack.rpgroll.integration.RPGRollPlaceholders;
 import com.sack.rpgroll.integration.VaultEconomyProvider;
+import com.sack.rpgroll.license.LicenseManager;
+import com.sack.rpgroll.license.LicenseResult;
 import com.sack.rpgroll.player.PlayerManager;
 import com.sack.rpgroll.player.listener.PlayerEventListener;
 import com.sack.rpgroll.api.playerclass.ClassManager;
@@ -60,6 +64,11 @@ public class Bootstrap {
     public void initialize() {
 
         try {
+            if (!verifyLicense()) {
+                Bukkit.getPluginManager().disablePlugin(plugin);
+                return;
+            }
+
             printBanner();
             registerCoreServices();
             registerCommands();
@@ -67,6 +76,8 @@ public class Bootstrap {
 
             RPGRollAPI.init(plugin);
             plugin.getLogger().info("✔ RPGRollAPI inicializada");
+
+            registerPlaceholders();
 
             plugin.getLogger().info("==================================");
             plugin.getLogger().info("RPGRoll iniciado correctamente.");
@@ -76,6 +87,51 @@ public class Bootstrap {
             plugin.getLogger().log(Level.SEVERE, "✘ Error crítico durante el arranque de RPGRoll", e);
             Bukkit.getPluginManager().disablePlugin(plugin);
         }
+    }
+
+    /**
+     * @return true si la licencia es válida y el arranque puede continuar.
+     *         Si es false, ya se logueó el motivo — el caller solo debe
+     *         deshabilitar el plugin.
+     */
+    private boolean verifyLicense() {
+
+        if (Boolean.getBoolean("rpgroll.devmode")) {
+            plugin.getLogger().warning("✔ Chequeo de licencia OMITIDO (-Drpgroll.devmode=true) — NO usar en producción.");
+            return true;
+        }
+
+        LicenseResult result = new LicenseManager(plugin).check();
+
+        if (result.isValid()) {
+            plugin.getLogger().info("✔ Licencia verificada: " + result.message());
+            return true;
+        }
+
+        plugin.getLogger().severe("==================================");
+        plugin.getLogger().severe("✘ RPGRoll no pudo verificar tu licencia:");
+        plugin.getLogger().severe("  " + result.message());
+        plugin.getLogger().severe("  El plugin se va a deshabilitar. Si compraste RPGRoll,");
+        plugin.getLogger().severe("  asegurate de haberlo descargado desde tu panel de Polymart.");
+        plugin.getLogger().severe("==================================");
+
+        return false;
+    }
+
+    /**
+     * PlaceholderAPI es softdepend — el framework debe arrancar igual sin
+     * ella. Registrar la expansión acá (después de {@code RPGRollAPI.init})
+     * asegura que %rpgroll_...% ya pueda leer jugadores desde el primer
+     * placeholder resuelto.
+     */
+    private void registerPlaceholders() {
+
+        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") == null) {
+            return;
+        }
+
+        new RPGRollPlaceholders(plugin).register();
+        plugin.getLogger().info("✔ Placeholders registrados en PlaceholderAPI (%rpgroll_...%)");
     }
 
     public void shutdown() {
@@ -267,6 +323,7 @@ public class Bootstrap {
         commandManager.register(new AllocateStatCommand(plugin));
         commandManager.register(new UseSkillCommand(plugin));
         commandManager.register(new AdminResetStatsCommand(plugin));
+        commandManager.register(new AdminContentCommand(plugin));
 
         // Registrar el comando principal /rpg
         plugin.getCommand("rpg").setExecutor(commandManager);
@@ -331,6 +388,10 @@ public class Bootstrap {
         // ===== Listeners de GUI =====
         GUIListener guiListener = new GUIListener(plugin);
         Bukkit.getPluginManager().registerEvents(guiListener, plugin);
+
+        ChatPromptManager chatPromptManager = new ChatPromptManager(plugin);
+        Bukkit.getPluginManager().registerEvents(chatPromptManager, plugin);
+        services.register(ChatPromptManager.class, chatPromptManager);
 
         // ===== Listeners de gameplay (XP, skills, etc) =====
         MobKillListener mobKillListener = new MobKillListener(playerManager, configManager, levelUpRewardsConfig);

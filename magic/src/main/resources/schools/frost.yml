@@ -1,0 +1,9 @@
+id: frost
+display-name: "&bEscarcha"
+color: AQUA
+icon: PACKED_ICE
+description: "Escuela de hielo y control de área."
+cast-sound: BLOCK_GLASS_BREAK
+
+race-affinities:
+  elf: 0.2

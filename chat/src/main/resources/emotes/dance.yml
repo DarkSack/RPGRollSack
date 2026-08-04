@@ -1,0 +1,4 @@
+id: dance
+template: "&f{player} &7se pone a bailar."
+target-template: "&f{player} &7baila con &f{target}&7."
+radius: 0

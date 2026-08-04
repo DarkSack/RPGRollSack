@@ -1,0 +1,19 @@
+antispam:
+  flood-max-messages: 5
+  flood-window-millis: 10000
+  repetition-threshold: 3
+  max-caps-percent: 70
+  min-length-for-caps-check: 8
+  banned-words: []
+  ad-keywords:
+    - "discord.gg"
+    - "www."
+    - "http://"
+    - "https://"
+    - ".com"
+    - ".net"
+
+replacements:
+  ":)": "🙂"
+  ":(": "🙁"
+  "<3": "❤"

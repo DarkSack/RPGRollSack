@@ -2,6 +2,7 @@ package com.sack.rpgroll.npcs.command;
 
 import com.sack.rpgroll.npcs.core.*;
 import com.sack.rpgroll.npcs.gui.NpcAdminGUI;
+import com.sack.rpgroll.npcs.gui.NpcMenuBrowserGUI;
 import com.sack.rpgroll.npcs.integration.MineSkinClient;
 import com.sack.rpgroll.npcs.listener.ChatPromptManager;
 
@@ -70,13 +71,15 @@ public class NpcAdminCommand implements CommandExecutor {
 
                         player.sendMessage(
                                         Component.text(
-                                                        "Uso: /npc <create|edit|list|delete|reload> [id]",
+                                                        "Uso: /npc <create|edit|list|delete|reload|menus> [id]",
                                                         NamedTextColor.RED));
 
                         return true;
                 }
 
                 switch (args[0].toLowerCase()) {
+
+                        case "menus" -> new NpcMenuBrowserGUI(player, menuManager, chatPromptManager).open();
 
                         case "create" -> {
 

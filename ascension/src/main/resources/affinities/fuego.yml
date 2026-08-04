@@ -1,0 +1,7 @@
+id: fuego
+display-name: "&6Fuego"
+opposing: agua
+resist-causes:
+  - FIRE
+  - FIRE_TICK
+  - LAVA

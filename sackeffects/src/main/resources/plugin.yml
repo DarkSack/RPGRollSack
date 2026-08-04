@@ -1,0 +1,18 @@
+name: SackEffects
+version: 1.0.0
+main: com.sack.rpgroll.sackeffects.SackEffectsPlugin
+api-version: "1.21"
+author: Sack
+description: Librería de efectos (partículas con formas, sonidos, títulos/actionbar/bossbar, efectos de poción) reusable por cualquier plugin, similar en espíritu a SCore
+depend: [RPGRoll]
+
+commands:
+  sackeffects:
+    description: Comandos administrativos de SackEffects
+    usage: /sackeffects <browser|reload|test <id> [jugador]> [args]
+    permission: sackeffects.admin.*
+
+permissions:
+  sackeffects.admin.*:
+    description: Acceso completo a comandos administrativos de SackEffects
+    default: op

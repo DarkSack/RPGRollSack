@@ -1,0 +1,19 @@
+id: staff
+display-name: "Staff"
+icon: NETHER_STAR
+color: RED
+priority: 10
+scope: STAFF
+distance: 0
+view-permission: "rpgrollchat.channel.staff"
+speak-permission: "rpgrollchat.channel.staff"
+cooldown-millis: 0
+format: "&c[&4Staff&c] &f{player}&7: &f{message}"
+text-format: LEGACY
+join-sound: BLOCK_NOTE_BLOCK_PLING
+filter-profanity: false
+filter-caps: false
+allow-urls: true
+default-joined: false
+cross-world: true
+also-action-bar: false

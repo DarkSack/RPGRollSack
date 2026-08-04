@@ -1,0 +1,5 @@
+id: rare
+display-name: "Rara"
+color: aqua
+glow: false
+sound: ENTITY_EXPERIENCE_ORB_PICKUP

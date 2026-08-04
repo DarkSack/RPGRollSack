@@ -1,0 +1,4 @@
+id: veneno
+display-name: "&2Veneno"
+resist-causes:
+  - POISON

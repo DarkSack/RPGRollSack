@@ -1,0 +1,45 @@
+id: archmage
+base-class: mago
+display-name: "&9Archimago"
+
+requirements:
+  level: 20
+
+stats:
+  magic_power: 5
+
+restrictions:
+  - "no-heavy-armor"
+
+talents:
+  inicio:
+    display-name: "&7Inicio"
+    cost: 1
+    stats:
+      mana: 10
+
+  arcano:
+    display-name: "&9Dominio Arcano"
+    cost: 2
+    requires: [inicio]
+    stats:
+      magic_power: 4
+
+  arcano_2:
+    display-name: "&9Sobrecarga Arcana"
+    cost: 3
+    requires: [arcano]
+    skill: arcane_overload
+
+  proteccion:
+    display-name: "&7Escudo de Maná"
+    cost: 2
+    requires: [inicio]
+    stats:
+      magic_resistance: 4
+
+  proteccion_2:
+    display-name: "&7Barrera Inquebrantable"
+    cost: 3
+    requires: [proteccion]
+    trait: mana_barrier

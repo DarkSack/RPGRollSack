@@ -1,0 +1,14 @@
+id: magnet
+display-name: "&6Magnet"
+rarity: UNCOMMON
+max-level: 1
+
+categories:
+  - TOOLS
+
+trigger:
+  - BLOCK_BREAK
+
+effects:
+  - type: PICKUP_ITEMS
+    radius: 6

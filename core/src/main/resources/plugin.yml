@@ -4,7 +4,7 @@ main: com.sack.rpgroll.RPGRoll
 api-version: "1.21"
 author: Sack
 description: DnD RPG Framework para Minecraft Paper
-softdepend: [Vault]
+softdepend: [Vault, PlaceholderAPI]
 
 # Comandos del plugin
 commands:
@@ -90,6 +90,7 @@ permissions:
       rpgroll.admin.setclass: true
       rpgroll.admin.resetstats: true
       rpgroll.admin.job: true
+      rpgroll.admin.content: true
   rpgroll.admin.reload:
     description: Recargar configuración del plugin
     default: op
@@ -124,4 +125,8 @@ permissions:
 
   rpgroll.admin.job:
     description: Gestionar trabajos de jugadores
+    default: op
+
+  rpgroll.admin.content:
+    description: Editor visual de razas/clases/trabajos/skills/traits
     default: op

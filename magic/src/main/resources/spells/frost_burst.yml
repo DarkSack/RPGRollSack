@@ -1,0 +1,35 @@
+id: frost_burst
+display-name: "&b&lEstallido de Escarcha"
+icon: BLUE_ICE
+color: AQUA
+school: frost
+rarity: RARE
+level: 3
+cast-time: 0
+cooldown: 100
+trigger: RIGHT_CLICK
+tree-parent: frost_bolt
+tree-tier: 1
+tags: [frost, area]
+description: "Onda de hielo alrededor tuyo que congela a todos los enemigos cercanos. Requiere haber aprendido Dardo de Escarcha antes."
+
+cost:
+  mana: 25
+
+components:
+  - type: DAMAGE_AREA
+    radius: 4
+    amount: 5
+
+  - type: APPLY_EFFECT
+    effect-id: frozen
+    target: target
+
+  - type: PARTICLE
+    particle: SNOWFLAKE
+    count: 40
+
+  - type: SOUND
+    sound: BLOCK_GLASS_BREAK
+    volume: 1.2
+    pitch: 0.7

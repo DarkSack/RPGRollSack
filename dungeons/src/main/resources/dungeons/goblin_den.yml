@@ -1,0 +1,141 @@
+id: goblin_den
+category: cave
+display-name: "&2Guarida de los Trasgos"
+icon: MOSSY_COBBLESTONE
+description: "Una cueva infestada de trasgos, custodiada por un guardián de ceniza."
+recommended-level: 10
+estimated-minutes: 20
+min-players: 1
+max-players: 4
+cooldown: 12h
+repeatable: true
+tags: [cave, goblins]
+
+lobby:
+  world: world
+  x: 0
+  y: 64
+  z: 0
+  yaw: 0
+  pitch: 0
+
+bounds:
+  world: world
+  min-x: -30
+  min-y: 50
+  min-z: -30
+  max-x: 30
+  max-y: 90
+  max-z: 30
+
+rooms:
+  - id: entrada
+    type: ENTRANCE
+    entry:
+      world: world
+      x: 0
+      y: 64
+      z: 5
+    events:
+      ROOM_ENTER:
+        - type: MESSAGE
+          value: "&2El eco de gruñidos resuena en la oscuridad..."
+
+  - id: sala_trasgos
+    type: COMBAT
+    entry:
+      world: world
+      x: 0
+      y: 64
+      z: -10
+    waves:
+      - id: wave1
+        mobs:
+          - id: forest_goblin
+            amount: 3
+        time-limit: 0s
+        delay-before: 0s
+      - id: wave2
+        mobs:
+          - id: forest_goblin
+            amount: 4
+        time-limit: 90s
+        delay-before: 3s
+    events:
+      WAVE_CLEAR:
+        - type: MESSAGE
+          value: "&7Otra oleada cae..."
+      ROOM_CLEAR:
+        - type: SOUND
+          sound: ENTITY_PLAYER_LEVELUP
+
+  - id: sala_jefe
+    type: BOSS
+    entry:
+      world: world
+      x: 0
+      y: 64
+      z: -25
+    boss: ash_colossus
+    events:
+      ROOM_ENTER:
+        - type: TITLE
+          title: "&4&l¡El Coloso de Ceniza despierta!"
+          subtitle: "&7Prepárense para la batalla final"
+      BOSS_DEFEATED:
+        - type: PARTICLE
+          particle: TOTEM_OF_UNDYING
+          count: "40"
+
+difficulties:
+  - id: normal
+    display-name: "Normal"
+    health-multiplier: 1.0
+    damage-multiplier: 1.0
+    loot-multiplier: 1.0
+  - id: hard
+    display-name: "Difícil"
+    health-multiplier: 1.5
+    damage-multiplier: 1.3
+    loot-multiplier: 1.3
+    modifiers:
+      - DOUBLE_DAMAGE_TAKEN
+
+checkpoints:
+  mode: REVIVE_AT_CHECKPOINT
+  shared-lives: false
+  max-retries: 3
+
+revive:
+  mode: BY_TEAMMATE
+  timer: 0s
+
+loot:
+  - type: MONEY
+    amount-min: 50
+    amount-max: 100
+    chance: 100
+    scope: PER_PLAYER
+  - type: EXPERIENCE
+    amount-min: 100
+    amount-max: 150
+    chance: 100
+    scope: PER_PLAYER
+  - type: ITEM
+    reference: IRON_INGOT
+    amount-min: 2
+    amount-max: 5
+    chance: 60
+    scope: SHARED
+
+triggers:
+  DUNGEON_START:
+    - type: MESSAGE
+      value: "&a¡Entraron a la Guarida de los Trasgos!"
+  DUNGEON_COMPLETE:
+    - type: TITLE
+      title: "&6¡Mazmorra completada!"
+      subtitle: "&7Guarida de los Trasgos"
+  DUNGEON_FAIL:
+    - type: MESSAGE
+      value: "&cEl grupo cayó derrotado..."

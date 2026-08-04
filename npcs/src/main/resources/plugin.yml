@@ -9,7 +9,7 @@ depend: [RPGRoll, ProtocolLib]
 commands:
   npc:
     description: Gestiona NPCs
-    usage: /npc <create|edit|list|delete|reload> [id]
+    usage: /npc <create|edit|list|delete|reload|menus> [id]
     permission: rpgrollnpcs.admin.*
 
 permissions:

@@ -1,0 +1,6 @@
+id: celestial
+display-name: "Celestial"
+color: "#00FFFF"
+glow: true
+sound: BLOCK_BEACON_ACTIVATE
+particle: TOTEM_OF_UNDYING

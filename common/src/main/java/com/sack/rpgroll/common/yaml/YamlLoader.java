@@ -122,6 +122,61 @@ public class YamlLoader {
     }
 
     /**
+     * Igual que {@link #loadAllInFolder(String)}, pero recorre subcarpetas
+     * recursivamente. Pensado para contenido organizado en categorías (ej.
+     * items/sword/flame_blade.yml, items/armor/knight_helmet.yml) donde el
+     * administrador agrupa archivos libremente sin que la estructura de
+     * carpetas tenga significado para el loader — solo se usa para ordenar.
+     *
+     * @param relativeFolder ejemplo: "items"
+     * @return lista de YamlConfiguration cargadas, vacía si la carpeta no existe
+     */
+    public List<YamlConfiguration> loadAllInFolderRecursive(String relativeFolder) {
+
+        File folder = new File(plugin.getDataFolder(), relativeFolder);
+
+        if (!folder.exists() || !folder.isDirectory()) {
+            return List.of();
+        }
+
+        List<YamlConfiguration> configs = new ArrayList<>();
+        collectRecursive(folder, relativeFolder, configs);
+
+        return configs;
+
+    }
+
+    private void collectRecursive(File folder, String relativeFolder, List<YamlConfiguration> configs) {
+
+        File[] files = folder.listFiles();
+
+        if (files == null) {
+            return;
+        }
+
+        for (File file : files) {
+
+            if (file.isDirectory()) {
+                collectRecursive(file, relativeFolder, configs);
+                continue;
+            }
+
+            if (!file.getName().toLowerCase().endsWith(".yml")) {
+                continue;
+            }
+
+            try {
+                configs.add(YamlConfiguration.loadConfiguration(file));
+            } catch (Exception e) {
+                plugin.getLogger().warning(
+                        "✘ Error al parsear YAML: " + relativeFolder + "/" + file.getName()
+                                + " — " + e.getMessage());
+            }
+        }
+
+    }
+
+    /**
      * Igual que {@link #loadAllInFolder(String)}, pero además expone el nombre
      * de archivo (sin extensión) de cada configuración cargada. Útil cuando
      * el loader que consume esto necesita el filename como fallback de id

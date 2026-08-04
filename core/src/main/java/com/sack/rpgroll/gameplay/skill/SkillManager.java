@@ -4,6 +4,7 @@ import com.sack.rpgroll.RPGRoll;
 import com.sack.rpgroll.common.yaml.YamlLoader;
 import com.sack.rpgroll.common.content.ContentManager;
 
+import java.io.File;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,8 +13,17 @@ import java.util.Optional;
  */
 public class SkillManager extends ContentManager<Skill> {
 
+    private final SkillDefinitionWriter writer;
+
     public SkillManager(RPGRoll plugin, YamlLoader yamlLoader) {
         super(plugin, yamlLoader, "skills", "skill", new SkillParser());
+        this.writer = new SkillDefinitionWriter(new File(plugin.getDataFolder(), "skills"), plugin.getLogger());
+    }
+
+    /** Persiste la skill a disco y recarga todo el registro para reflejar el cambio de inmediato. */
+    public void save(Skill skill) {
+        writer.save(skill);
+        reload();
     }
 
     // ============ Compatibilidad con la API anterior (SkillRegistry) ============

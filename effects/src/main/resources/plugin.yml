@@ -1,0 +1,19 @@
+name: RPGRoll-Effects
+version: 1.0.0
+main: com.sack.rpgroll.effects.EffectsPlugin
+api-version: "1.21"
+author: Sack
+description: Motor de efectos de estado (buffs/debuffs/auras/maldiciones/bendiciones) basado en componentes, aplicables desde cualquier addon de RPGRoll
+depend: [RPGRoll]
+softdepend: [SackEffects, RPGRoll-Guilds]
+
+commands:
+  rpgeffects:
+    description: Comandos administrativos de RPGRoll-Effects
+    usage: /rpgeffects <browser|reload|apply <id> <jugador>|remove <id> <jugador>|list [jugador]> [args]
+    permission: rpgrolleffects.admin.*
+
+permissions:
+  rpgrolleffects.admin.*:
+    description: Acceso completo a comandos administrativos de RPGRoll-Effects
+    default: op

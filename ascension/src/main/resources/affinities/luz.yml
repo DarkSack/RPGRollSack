@@ -1,0 +1,5 @@
+id: luz
+display-name: "&eLuz"
+opposing: oscuridad
+resist-causes:
+  - MAGIC

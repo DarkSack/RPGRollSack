@@ -1,0 +1,35 @@
+id: fireball
+display-name: "&6Bola de Fuego"
+icon: FIRE_CHARGE
+color: RED
+school: fire
+rarity: COMMON
+level: 1
+cast-time: 0
+cooldown: 40
+trigger: RIGHT_CLICK
+tree-tier: 0
+tags: [fire, projectile]
+description: "El hechizo básico de la escuela de Fuego — un proyectil que explota al impactar."
+
+cost:
+  mana: 15
+
+components:
+  - type: PROJECTILE
+    speed: 1.0
+    max-distance: 25
+    hit-radius: 1.0
+    trail-particle: FLAME
+
+  - type: DAMAGE_DIRECT
+    amount: 8
+
+  - type: PARTICLE
+    particle: FLAME
+    count: 20
+
+  - type: SOUND
+    sound: ENTITY_GENERIC_EXPLODE
+    volume: 1.0
+    pitch: 1.2

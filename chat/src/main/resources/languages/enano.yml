@@ -1,0 +1,4 @@
+id: enano
+display-name: "Enano"
+obfuscation-char: "▪"
+default-for-races: ["dwarf", "enano"]

@@ -1,0 +1,22 @@
+name: RPGRoll-Items
+version: 1.0.0
+main: com.sack.rpgroll.items.ItemsPlugin
+api-version: "1.21"
+author: Sack
+description: Motor de ítems personalizados (componentes, stats, sockets, skins, mejoras, recetas) para RPGRoll
+depend: [RPGRoll]
+softdepend: [RPGRoll-Enchantments, Vault, "PlaceholderAPI"]
+
+commands:
+  itemadmin:
+    description: Gestiona definiciones de ítems (crear, dar, editar, recargar)
+    usage: /itemadmin <give|list|reload|create|browser|editor> [args]
+    permission: rpgrollitems.admin.*
+  item:
+    description: Interactúa con el ítem RPGRoll que tenés en mano
+    usage: /item <info|upgrade|skin|socket> [args]
+
+permissions:
+  rpgrollitems.admin.*:
+    description: Acceso completo a comandos administrativos de ítems
+    default: op

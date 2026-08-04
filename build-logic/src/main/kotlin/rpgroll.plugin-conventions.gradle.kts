@@ -3,11 +3,13 @@ plugins {
 }
 
 repositories {
+    mavenLocal()
     mavenCentral()
 
     maven("https://repo.papermc.io/repository/maven-public/")
     maven("https://repo.dmulloy2.net/repository/public/") // ProtocolLib
     maven("https://jitpack.io/")                            // Vault, DecentHolograms
+    maven("https://repo.extendedclip.com/content/repositories/placeholderapi/") // PlaceholderAPI
 }
 
 dependencies {

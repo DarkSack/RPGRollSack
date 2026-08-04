@@ -1,0 +1,41 @@
+id: frozen
+display-name: "&bCongelado"
+icon: ICE
+color: AQUA
+category: ELEMENTAL
+rarity: COMMON
+description: "Reduce velocidad y ataque. Se rompe si te aplican Burning (y viceversa)."
+duration: 100
+priority: 0
+visible: true
+
+tags: [cold, debuff]
+conflicts: [burning]
+
+stacking:
+  mode: NONE
+  max-stacks: 1
+
+conditions: []
+
+components:
+  - type: MOVEMENT_MODIFIER
+    trigger: ON_APPLY
+    amount: -0.4
+    operation: ADD_SCALAR
+
+  - type: ATTRIBUTE_MODIFIER
+    trigger: ON_APPLY
+    attribute: GENERIC_ATTACK_DAMAGE
+    amount: -1
+    operation: ADD_NUMBER
+
+  - type: SOUND
+    trigger: ON_APPLY
+    sound: BLOCK_GLASS_BREAK
+    volume: 0.8
+    pitch: 1.2
+
+  - type: MESSAGE
+    trigger: ON_APPLY
+    text: "&b¡Estás congelado!"

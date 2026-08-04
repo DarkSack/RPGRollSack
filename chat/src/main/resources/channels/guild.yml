@@ -1,0 +1,19 @@
+id: guild
+display-name: "Guild"
+icon: SHIELD
+color: GREEN
+priority: 8
+scope: GUILD
+distance: 0
+view-permission: ""
+speak-permission: ""
+cooldown-millis: 0
+format: "&2[&aGuild&2] &f{player}&7: &f{message}"
+text-format: LEGACY
+join-sound: ""
+filter-profanity: true
+filter-caps: true
+allow-urls: false
+default-joined: true
+cross-world: true
+also-action-bar: false

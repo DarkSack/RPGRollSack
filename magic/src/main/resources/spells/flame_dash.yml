@@ -1,0 +1,29 @@
+id: flame_dash
+display-name: "&6Embestida Ígnea"
+icon: BLAZE_ROD
+color: RED
+school: fire
+rarity: UNCOMMON
+level: 1
+cast-time: 0
+cooldown: 60
+trigger: LEFT_CLICK
+tree-tier: 0
+tags: [fire, movement]
+description: "Un impulso corto hacia adelante dejando una estela de llamas."
+
+cost:
+  mana: 10
+
+components:
+  - type: DASH
+    distance: 6
+
+  - type: PARTICLE
+    particle: FLAME
+    count: 15
+
+  - type: SOUND
+    sound: ENTITY_BLAZE_SHOOT
+    volume: 0.8
+    pitch: 1.5

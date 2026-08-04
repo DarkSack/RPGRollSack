@@ -1,0 +1,32 @@
+id: lifesteal
+display-name: "&cLifesteal"
+rarity: LEGENDARY
+max-level: 5
+
+categories:
+  - WEAPON
+
+conflicts:
+  - VAMPIRISM
+
+trigger:
+  - PLAYER_ATTACK
+
+levels:
+  1:
+    amount: 1
+  2:
+    amount: 2
+  3:
+    amount: 3
+  4:
+    amount: 4
+  5:
+    amount: 5
+
+effects:
+  - type: HEAL
+    amount: "{amount}"
+  - type: PARTICLE
+    particle: HEART
+    count: 6

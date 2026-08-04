@@ -1,0 +1,4 @@
+id: wave
+template: "&f{player} &7saluda."
+target-template: "&f{player} &7saluda a &f{target}&7."
+radius: 0

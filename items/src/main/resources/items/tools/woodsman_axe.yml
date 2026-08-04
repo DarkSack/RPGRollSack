@@ -1,0 +1,24 @@
+id: woodsman_axe
+category: tools
+material: IRON_AXE
+display-name: "&2Hacha del Leñador"
+lore:
+  - "&7Tala árboles enteros sin esfuerzo."
+rarity: UNCOMMON
+
+stats:
+  mining_speed: 20
+
+durability:
+  max: 350
+  repairable: true
+  degrade-per-use: 1
+
+triggers:
+  BLOCK_BREAK:
+    - type: PARTICLE
+      particle: SWEEP_ATTACK
+      count: 2
+
+economy:
+  sell: 70

@@ -9,8 +9,17 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class NpcMenuManager extends ContentManager<NpcMenuDefinition> {
 
+    private final NpcMenuWriter writer;
+
     public NpcMenuManager(JavaPlugin npcsPlugin) {
         super(resolveCoreInstance(), new YamlLoader(npcsPlugin), "menus", "menú", new NpcMenuParser());
+        this.writer = new NpcMenuWriter(npcsPlugin);
+    }
+
+    /** Persiste el menú a disco y recarga todo el registro para reflejar el cambio de inmediato. */
+    public void save(NpcMenuDefinition definition) {
+        writer.save(definition);
+        reload();
     }
 
     private static RPGRoll resolveCoreInstance() {

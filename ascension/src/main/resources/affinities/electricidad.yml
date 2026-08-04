@@ -1,0 +1,4 @@
+id: electricidad
+display-name: "&eElectricidad"
+resist-causes:
+  - LIGHTNING

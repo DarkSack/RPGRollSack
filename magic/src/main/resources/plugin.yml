@@ -1,0 +1,26 @@
+name: RPGRoll-Magic
+version: 1.0.0
+main: com.sack.rpgroll.magic.MagicPlugin
+api-version: "1.21"
+author: Sack
+description: Framework de magia modular — escuelas, hechizos construidos por componentes, maná, catalizadores, grimorios, runas y árboles de progresión.
+depend: [RPGRoll]
+softdepend: [SackEffects, RPGRoll-Effects]
+
+commands:
+  magicadmin:
+    description: Comandos administrativos de RPGRoll-Magic (Magic Studio)
+    usage: /magicadmin <browser|reload|givecatalyst|givegrimoire> [args]
+    permission: rpgrollmagic.admin.*
+  magic:
+    description: Comandos de jugador de RPGRoll-Magic
+    usage: /magic <spellbook|select <id>|cast <id>|cooldowns>
+    permission: rpgrollmagic.use
+
+permissions:
+  rpgrollmagic.admin.*:
+    description: Acceso completo a comandos administrativos de Magic Studio
+    default: op
+  rpgrollmagic.use:
+    description: Uso básico del sistema de magia (spellbook, seleccionar, lanzar)
+    default: true

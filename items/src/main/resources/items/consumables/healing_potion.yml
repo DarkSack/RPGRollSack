@@ -1,0 +1,17 @@
+id: healing_potion
+category: consumables
+material: POTION
+display-name: "&dPoción de Curación"
+lore:
+  - "&7Restaura una buena cantidad de vida al consumirla."
+rarity: COMMON
+
+triggers:
+  CONSUME:
+    - type: HEAL
+      amount: "10"
+    - type: PARTICLE
+      particle: HEART
+      count: 6
+    - type: MESSAGE
+      value: "&d¡Te sentís renovado!"

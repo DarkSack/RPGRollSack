@@ -1,0 +1,139 @@
+id: ash_colossus
+category: MINI_BOSS
+display-name: "&cColoso de Ceniza"
+name-color: "#FF5533"
+level: 25
+rarity: epic
+tags: [ "boss", "fire", "elemental" ]
+description: "Un guardián de piedra y ceniza que despierta cuando el volcán ruge."
+base-entity-type: PIGLIN_BRUTE
+
+model:
+  scale: 1.8
+  glow: false
+  invisible: false
+  equipment:
+    hand: NETHERITE_AXE
+    head: NETHERITE_HELMET
+
+stats:
+  health: 400
+  damage: 12
+  defense: 6
+  speed: 95
+  armor: 8
+  dodge: 5
+  accuracy: 95
+  critical_chance: 15
+  critical_damage: 75
+  knockback_resistance: 80
+
+resistances:
+  fire: 80
+  explosion: 40
+
+weaknesses:
+  - type: ELEMENT
+    key: water
+    extra-damage-percent: 50
+
+ai:
+  goals: [ "ATTACK_PLAYERS" ]
+  aggro-range: 24
+  flee-health-percent: 0
+  move-speed: 0.9
+
+skills:
+  - id: ember_wave
+    display-name: "Onda de Brasas"
+    trigger: PERIODIC
+    cooldown: 12s
+    chance: 50
+    actions:
+      - type: PARTICLE
+        particle: FLAME
+        count: "40"
+      - type: DAMAGE
+        amount: "6"
+      - type: SOUND
+        sound: ENTITY_BLAZE_SHOOT
+        volume: "1.0"
+        pitch: "0.8"
+
+# La fase "enraged" suma esta skill a las activas — desde ese momento
+# también rueda en cada chequeo PERIODIC, junto con ember_wave.
+phases:
+  - id: enraged
+    health-threshold-percent: 50
+    stat-multipliers:
+      damage: 1.4
+      speed: 1.2
+    skills:
+      - id: ash_nova
+        display-name: "Nova de Ceniza"
+        trigger: PERIODIC
+        cooldown: 15s
+        chance: 70
+        actions:
+          - type: PARTICLE
+            particle: LAVA
+            count: "60"
+          - type: DAMAGE
+            amount: "10"
+          - type: PUSH
+            strength: "1.8"
+    bossbar-color: RED
+    bossbar-title: "&4&lColoso de Ceniza &7[Enfurecido]"
+    dialogue: "&c\"¡Arderán junto con este bosque!\""
+    particle: LAVA
+
+triggers:
+  SPAWN:
+    - type: MESSAGE
+      value: "&c&l[Coloso de Ceniza] &7¡Despierta de entre las cenizas!"
+  PHASE_CHANGE:
+    - type: TITLE
+      title: "&c&l¡EL COLOSO DESPIERTA!"
+      subtitle: "&7Su furia consume la ceniza a su alrededor"
+    - type: SOUND
+      sound: ENTITY_WITHER_SPAWN
+      volume: "1.0"
+      pitch: "0.7"
+  DEATH:
+    - type: EXPLOSION
+      power: "2.0"
+      break-blocks: "false"
+
+loot:
+  - type: ITEM
+    reference: NETHERITE_SCRAP
+    amount-min: 1
+    amount-max: 2
+    chance: 40
+    required-level: 20
+    scope: SHARED
+  - type: MONEY
+    amount-min: 50
+    amount-max: 100
+    chance: 100
+    scope: PER_PLAYER
+  - type: EXPERIENCE
+    amount-min: 100
+    amount-max: 150
+    chance: 100
+    scope: PER_PLAYER
+
+bossbar:
+  enabled: true
+  color: RED
+  style: NOTCHED_10
+  title: "&4&lColoso de Ceniza"
+
+dialogues:
+  - trigger: SPAWN
+    text: "&c\"¿Quién se atreve a perturbar mi descanso?\""
+  - trigger: DEATH
+    text: "&7\"La ceniza... vuelve a la ceniza...\""
+
+spawn-rules:
+  natural-spawn: false

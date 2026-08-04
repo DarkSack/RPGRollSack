@@ -1,0 +1,30 @@
+# resources/menus/tienda_general.yml
+id: tienda_general
+title: "&2Tienda General"
+rows: 3
+
+items:
+  - slot: 11
+    material: BREAD
+    name: "&fPan"
+    lore:
+      - "&7Precio: &e5 monedas (Lingote de Oro)"
+    actions:
+      - type: CONDITIONAL
+        value: "HAS_ITEM:GOLD_INGOT,5;GIVE_ITEM:BREAD,4;MESSAGE:No tienes suficiente oro (necesitas 5 lingotes)."
+      - type: CONDITIONAL
+        value: "HAS_ITEM:GOLD_INGOT,5;TAKE_ITEM:GOLD_INGOT,5"
+
+  - slot: 13
+    material: TORCH
+    name: "&fAntorchas"
+    lore:
+      - "&7Precio: &e2 monedas"
+    actions:
+      - type: GIVE_ITEM
+        value: "TORCH,8"
+
+  - slot: 15
+    material: BARRIER
+    name: "&cCerrar"
+    actions: []

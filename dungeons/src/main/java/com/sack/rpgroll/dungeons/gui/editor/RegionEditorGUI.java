@@ -1,0 +1,132 @@
+package com.sack.rpgroll.dungeons.gui.editor;
+
+import com.sack.rpgroll.gui.InventoryGUI;
+import com.sack.rpgroll.gui.util.ItemBuilder;
+import com.sack.rpgroll.dungeons.core.DungeonBounds;
+import com.sack.rpgroll.dungeons.core.DungeonPoint;
+
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
+
+/**
+ * Fija la región física (dos esquinas) y el punto de lobby parándose en
+ * el lugar y haciendo click — sin comandos ni WorldEdit.
+ */
+public class RegionEditorGUI extends InventoryGUI {
+
+    private static final int SIZE = 27;
+
+    private static final int CORNER1_SLOT = 10;
+    private static final int CORNER2_SLOT = 12;
+    private static final int LOBBY_SLOT = 14;
+    private static final int BACK_SLOT = 22;
+
+    private final DungeonEditorSession session;
+    private final Runnable onBack;
+
+    private Location corner1;
+    private Location corner2;
+
+    public RegionEditorGUI(Player player, DungeonEditorSession session, Runnable onBack) {
+        super(player, Component.text("Región: " + session.original.id(), NamedTextColor.GOLD), SIZE);
+        this.session = session;
+        this.onBack = onBack;
+
+        DungeonBounds bounds = session.bounds;
+        var world = Bukkit.getWorld(bounds.world());
+
+        if (world != null && !bounds.equals(DungeonBounds.none())) {
+            this.corner1 = new Location(world, bounds.minX(), bounds.minY(), bounds.minZ());
+            this.corner2 = new Location(world, bounds.maxX(), bounds.maxY(), bounds.maxZ());
+        }
+    }
+
+    @Override
+    public void build() {
+
+        clear();
+
+        for (int slot = 0; slot < SIZE; slot++) {
+            setItem(slot, ItemBuilder.createFiller());
+        }
+
+        DungeonBounds bounds = session.bounds;
+
+        setItem(CORNER1_SLOT, new ItemBuilder(Material.RED_WOOL)
+                .setName(Component.text("Esquina 1: " + coordText(corner1), NamedTextColor.YELLOW))
+                .setLore(Component.text("Click para fijarla en tu posición actual", NamedTextColor.GRAY))
+                .build());
+
+        setItem(CORNER2_SLOT, new ItemBuilder(Material.BLUE_WOOL)
+                .setName(Component.text("Esquina 2: " + coordText(corner2), NamedTextColor.YELLOW))
+                .setLore(Component.text("Click para fijarla en tu posición actual", NamedTextColor.GRAY))
+                .build());
+
+        setItem(LOBBY_SLOT, new ItemBuilder(Material.BEACON)
+                .setName(Component.text("Lobby: " + pointText(session.lobbyPoint), NamedTextColor.YELLOW))
+                .setLore(Component.text("Click para fijarlo en tu posición y mirada actual", NamedTextColor.GRAY))
+                .build());
+
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+    }
+
+    private String coordText(Location location) {
+        return location == null ? "(sin fijar)"
+                : String.format("%.0f, %.0f, %.0f", location.getX(), location.getY(), location.getZ());
+    }
+
+    private String pointText(DungeonPoint point) {
+        return String.format("%s %.0f, %.0f, %.0f", point.world(), point.x(), point.y(), point.z());
+    }
+
+    @Override
+    public void handleClick(InventoryClickEvent event) {
+
+        event.setCancelled(true);
+        int slot = event.getSlot();
+
+        if (slot == CORNER1_SLOT) {
+            corner1 = player.getLocation();
+            applyBoundsIfReady();
+            build();
+            return;
+        }
+
+        if (slot == CORNER2_SLOT) {
+            corner2 = player.getLocation();
+            applyBoundsIfReady();
+            build();
+            return;
+        }
+
+        if (slot == LOBBY_SLOT) {
+            session.lobbyPoint = DungeonPoint.fromLocation(player.getLocation());
+            build();
+            return;
+        }
+
+        if (slot == BACK_SLOT) {
+            onBack.run();
+        }
+    }
+
+    private void applyBoundsIfReady() {
+
+        if (corner1 == null || corner2 == null || corner1.getWorld() == null) {
+            return;
+        }
+
+        session.bounds = new DungeonBounds(corner1.getWorld().getName(),
+                corner1.getX(), corner1.getY(), corner1.getZ(),
+                corner2.getX(), corner2.getY(), corner2.getZ());
+
+        player.sendMessage(Component.text("✔ Región actualizada.", NamedTextColor.GREEN));
+    }
+
+}

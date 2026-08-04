@@ -1,0 +1,9 @@
+id: fuerza_bruta
+name: "&cFuerza Bruta"
+description: |
+  Otorgado por raza enana.
+  Aumenta el daño cuerpo a cuerpo infligido.
+required-level: 1
+effect:
+  wisdom-bonus: 0
+  defense-bonus: 0.02

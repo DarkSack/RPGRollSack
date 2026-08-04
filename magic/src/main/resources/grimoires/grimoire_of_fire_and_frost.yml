@@ -1,0 +1,12 @@
+id: grimoire_of_fire_and_frost
+display-name: "&5Grimorio del Fuego y la Escarcha"
+icon: WRITTEN_BOOK
+description: "Un tomo introductorio que enseña los hechizos básicos de Fuego y Escarcha, más sus evoluciones."
+required-level: 1
+
+spells:
+  - fireball
+  - flame_dash
+  - meteor
+  - frost_bolt
+  - frost_burst

@@ -2,6 +2,8 @@ package com.sack.rpgroll.crates.command;
 
 import com.sack.rpgroll.crates.core.Crate;
 import com.sack.rpgroll.crates.core.CrateManager;
+import com.sack.rpgroll.crates.gui.ChatPromptManager;
+import com.sack.rpgroll.crates.gui.CrateBrowserGUI;
 import com.sack.rpgroll.crates.hologram.DecentHologramsHook;
 import com.sack.rpgroll.crates.key.CrateKeyItem;
 import com.sack.rpgroll.crates.location.PlacedCrate;
@@ -36,17 +38,20 @@ public class CrateAdminCommand implements CommandExecutor {
     private final PlacedCrateManager placedCrateManager;
     private final DecentHologramsHook hologramsHook;
     private final CrateKeyItem crateKeyItem;
+    private final ChatPromptManager chatPromptManager;
 
     public CrateAdminCommand(
             CrateManager crateManager,
             PlacedCrateManager placedCrateManager,
             DecentHologramsHook hologramsHook,
-            CrateKeyItem crateKeyItem) {
+            CrateKeyItem crateKeyItem,
+            ChatPromptManager chatPromptManager) {
 
         this.crateManager = crateManager;
         this.placedCrateManager = placedCrateManager;
         this.hologramsHook = hologramsHook;
         this.crateKeyItem = crateKeyItem;
+        this.chatPromptManager = chatPromptManager;
     }
 
     @Override
@@ -73,6 +78,7 @@ public class CrateAdminCommand implements CommandExecutor {
             case "givekey" -> handleGiveKey(player, args);
             case "list" -> handleList(player);
             case "reload" -> handleReload(player);
+            case "browser" -> new CrateBrowserGUI(player, crateManager, chatPromptManager).open();
             default -> sendUsage(player);
         }
 
@@ -81,7 +87,7 @@ public class CrateAdminCommand implements CommandExecutor {
 
     private void sendUsage(Player player) {
         player.sendMessage(Component.text(
-                "Uso: /crate <setlocation|removelocation|givekey|list|reload> [args]", NamedTextColor.RED));
+                "Uso: /crate <setlocation|removelocation|givekey|list|reload|browser> [args]", NamedTextColor.RED));
     }
 
     private void handleSetLocation(Player player, String[] args) {
