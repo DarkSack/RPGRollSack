@@ -1,0 +1,18 @@
+id: meteor_shower
+display-name: "&6&lLluvia de Meteoritos"
+icon: FIRE_CHARGE
+description: "El cielo se llena de fuego durante un rato — puramente ambiental por ahora, sin daño real."
+duration: 400
+
+components:
+  - type: MESSAGE
+    text: "&6El cielo comienza a arder con estrellas fugaces..."
+
+  - type: PARTICLE
+    particle: FLAME
+    count: 40
+
+  - type: SOUND
+    sound: ENTITY_GENERIC_EXPLODE
+    volume: 0.6
+    pitch: 1.5

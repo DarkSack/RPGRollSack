@@ -1,0 +1,16 @@
+id: dragon_fish
+display-name: "&4Pez Dragón"
+icon: TROPICAL_FISH
+custom-model-data: 1002
+description: "Vive cerca de fumarolas volcánicas submarinas — quema al sacarlo del agua."
+category: VOLCANIC
+rarity: EPIC
+water-types: [DEEP_OCEAN]
+min-weight: 3
+max-weight: 12
+min-length: 40
+max-length: 90
+base-price: 60
+base-experience: 25
+behavior: AGGRESSIVE
+catch-status-effect: burning

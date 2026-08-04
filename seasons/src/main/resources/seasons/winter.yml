@@ -1,0 +1,32 @@
+id: winter
+display-name: "&bInvierno"
+icon: SNOWBALL
+color: AQUA
+description: "Nieve, ríos congelados, y las auroras más frecuentes del año."
+duration-amount: 7
+duration-unit: MINECRAFT_DAYS
+tags: [cold, snow]
+world-events: [aurora]
+world-event-daily-chance: 0.25
+
+climate:
+  rain-chance: 0.3
+  storm-chance: 0.1
+  snow-chance: 0.5
+  fog-chance: 0.1
+  base-temperature: -5
+  temperature-variance: 4
+  wind-strength: 0.6
+  humidity: 0.4
+  heatwave-chance: 0.0
+  thunderstorm-chance: 0.01
+
+vegetation-effects:
+  - SNOW_LAYERS
+  - ICE_LAKES
+
+biome-temperature-modifiers:
+  taiga: -15
+  snowy_taiga: -10
+  plains: -12
+  forest: -10

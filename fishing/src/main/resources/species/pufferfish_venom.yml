@@ -1,0 +1,14 @@
+id: pufferfish_venom
+display-name: "&2Pez Globo"
+icon: PUFFERFISH
+description: "Tímido y venenoso — prefiere pantanos y aguas tibias."
+category: TROPICAL
+rarity: RARE
+water-types: [SWAMP, OCEAN]
+min-weight: 0.5
+max-weight: 3
+min-length: 10
+max-length: 30
+base-price: 20
+base-experience: 10
+behavior: SHY

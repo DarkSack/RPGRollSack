@@ -1,0 +1,26 @@
+name: RPGRoll-Ranching
+version: 1.0.0
+main: com.sack.rpgroll.ranching.RanchingPlugin
+api-version: "1.21"
+author: Sack
+description: Ganadería como simulación viva — genética hereditaria con linajes, reproducción, nutrición, bienestar animal, enfermedades/vacunas y producción con calidad.
+depend: [RPGRoll]
+softdepend: [SackEffects, RPGRoll-Effects, RPGRoll-Seasons]
+
+commands:
+  ranchingadmin:
+    description: Comandos administrativos de RPGRoll-Ranching (Ranch Studio)
+    usage: /ranchingadmin <browser|reload|spawn <especie> <raza>> [args]
+    permission: rpgrollranching.admin.*
+  ranching:
+    description: Comandos de jugador de RPGRoll-Ranching
+    usage: /ranching <inspect>
+    permission: rpgrollranching.use
+
+permissions:
+  rpgrollranching.admin.*:
+    description: Acceso completo a comandos administrativos de Ranch Studio
+    default: op
+  rpgrollranching.use:
+    description: Uso básico de ganadería (inspeccionar animales, enciclopedia)
+    default: true

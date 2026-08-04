@@ -1,0 +1,26 @@
+name: RPGRoll-Fishing
+version: 1.0.0
+main: com.sack.rpgroll.fishing.FishingPlugin
+api-version: "1.21"
+author: Sack
+description: Pesca como profesión completa — cientos de especies configurables, cañas/carnadas, minijuego vanilla o RPG, tesoros/basura, peces legendarios y enciclopedia de capturas.
+depend: [RPGRoll]
+softdepend: [SackEffects, RPGRoll-Effects, RPGRoll-Seasons]
+
+commands:
+  fishingadmin:
+    description: Comandos administrativos de RPGRoll-Fishing (Fishing Studio)
+    usage: /fishingadmin <browser|reload|giverod <id>|givebait <id>> [args]
+    permission: rpgrollfishing.admin.*
+  fishing:
+    description: Comandos de jugador de RPGRoll-Fishing
+    usage: /fishing <encyclopedia|stats>
+    permission: rpgrollfishing.use
+
+permissions:
+  rpgrollfishing.admin.*:
+    description: Acceso completo a comandos administrativos de Fishing Studio
+    default: op
+  rpgrollfishing.use:
+    description: Uso básico de pesca (enciclopedia, estadísticas)
+    default: true

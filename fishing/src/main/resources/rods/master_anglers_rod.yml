@@ -1,0 +1,11 @@
+id: master_anglers_rod
+display-name: "&6Caña del Maestro Pescador"
+material: BLAZE_ROD
+description: "Para quien ya se ganó el derecho a perseguir leyendas."
+durability: 128
+cast-power: 1.3
+reel-speed: 1.4
+precision: 20
+resistance: 1.8
+luck-bonus: 1.6
+preferred-categories: [legendary, deep, volcanic]

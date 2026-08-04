@@ -1,0 +1,9 @@
+id: jersey
+display-name: "&fJersey"
+description: "Más chica que la Holstein, pero con leche de mayor calidad."
+species: cow
+production-multiplier: 1.1
+weight-multiplier: 0.8
+fertility-multiplier: 1.15
+resistance-multiplier: 1.1
+temperament: "Activa"

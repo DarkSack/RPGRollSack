@@ -1,0 +1,20 @@
+id: chicken
+display-name: "&fGallina"
+icon: CHICKEN_SPAWN_EGG
+description: "Ave de corral — huevos, carne y plumas."
+entity-type: CHICKEN
+product-types: [eggs, meat, feathers]
+base-production:
+  eggs: 1.0
+  meat: 1.5
+  feathers: 1.0
+base-weight-min: 1.5
+base-weight-max: 3
+baby-stage-duration-ticks: 3000
+juvenile-stage-duration-ticks: 6000
+elder-threshold-ticks: 240000
+gestation-duration-ticks: 0
+min-litter-size: 1
+max-litter-size: 1
+base-fertility: 0.6
+diet-tags: [grain]

@@ -20,5 +20,9 @@ include(
     "chat",
     "sackeffects",
     "effects",
-    "magic"
+    "magic",
+    "seasons",
+    "fishing",
+    "sackresourcepack",
+    "ranching"
 )

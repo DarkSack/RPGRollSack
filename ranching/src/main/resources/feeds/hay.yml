@@ -1,0 +1,10 @@
+id: hay
+display-name: "&fHeno"
+icon: HAY_BLOCK
+description: "Alimento básico y barato."
+quality: COMMON
+tags: [hay]
+nutrition-value: 15
+health-bonus: 1
+happiness-bonus: 2
+production-bonus: 0

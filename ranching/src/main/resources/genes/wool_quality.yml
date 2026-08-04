@@ -1,0 +1,14 @@
+id: wool_quality
+display-name: "Calidad de lana"
+description: "Determina la calidad de la lana esquilada — muy rara vez sale dorada."
+attribute-key: wool_quality
+dominance: MIXED
+min-value: 0
+max-value: 100
+applicable-species: [sheep]
+mutations:
+  - id: golden_wool
+    display-name: "Lana dorada"
+    effect-type: COSMETIC_TAG
+    effect-value: 0
+    chance: 0.005
