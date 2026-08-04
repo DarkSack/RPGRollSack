@@ -1,0 +1,8 @@
+id: piercing_shot
+display-name: "&7Runa de Perforación"
+icon: ARROW
+description: "El proyectil ya no se detiene en el primer enemigo golpeado — atraviesa hasta 3."
+type: PIERCING
+
+params:
+  max-pierces: 3

@@ -1,0 +1,19 @@
+id: mana_draught
+category: consumables
+material: POTION
+display-name: "&bElixir de Maná"
+lore:
+  - "&7Restaura una buena cantidad de maná al consumirlo."
+rarity: COMMON
+
+triggers:
+  CONSUME:
+    - type: PARTICLE
+      particle: ENCHANT
+      count: 6
+    - type: SOUND
+      sound: ENTITY_EXPERIENCE_ORB_PICKUP
+      volume: "1.0"
+      pitch: "1.4"
+    - type: MESSAGE
+      value: "&bTu mente se siente más clara."

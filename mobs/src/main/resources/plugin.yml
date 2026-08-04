@@ -1,0 +1,19 @@
+name: RPGRoll-Mobs
+version: 1.0.0
+main: com.sack.rpgroll.mobs.MobsPlugin
+api-version: "1.21"
+author: Sack
+description: Motor de mobs, jefes e invocaciones personalizados (componentes, fases, IA, loot) para RPGRoll
+depend: [RPGRoll]
+softdepend: [RPGRoll-Items, RPGRoll-Quests, PlaceholderAPI]
+
+commands:
+  mobadmin:
+    description: Gestiona definiciones de mobs (spawnear, editar, recargar)
+    usage: /mobadmin <spawn|list|reload|create|browser|editor|killall> [args]
+    permission: rpgrollmobs.admin.*
+
+permissions:
+  rpgrollmobs.admin.*:
+    description: Acceso completo a comandos administrativos de mobs
+    default: op

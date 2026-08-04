@@ -1,0 +1,12 @@
+id: forest
+world: world
+
+min:
+  x: -150
+  y: 60
+  z: 50
+
+max:
+  x: -50
+  y: 100
+  z: 150

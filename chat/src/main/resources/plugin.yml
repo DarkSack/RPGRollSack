@@ -1,0 +1,78 @@
+name: RPGRoll-Chat
+version: 1.0.0
+main: com.sack.rpgroll.chat.ChatPlugin
+api-version: "1.21"
+author: Sack
+description: Motor de chat modular de RPGRoll — canales, proximidad, idiomas, roles, formatos dinámicos, whisper, antispam, reacciones y logs
+depend: [RPGRoll]
+softdepend: [RPGRoll-Guilds, PlaceholderAPI]
+
+commands:
+  channel:
+    description: Unirse/salir/listar canales de chat
+    usage: /channel <join|leave|list|switch|info> [canal]
+  ch:
+    description: Alias de /channel
+    usage: /ch <join|leave|list|switch|info> [canal]
+  w:
+    description: Enviar un mensaje privado
+    usage: /w <jugador> <mensaje>
+  r:
+    description: Responder al último whisper
+    usage: /r <mensaje>
+  socialspy:
+    description: Alternar espía de whispers (staff)
+    usage: /socialspy
+    permission: rpgrollchat.socialspy
+  ignore:
+    description: Ignorar jugadores/guilds/canales
+    usage: /ignore <player|guild|channel> <add|remove|list> [nombre]
+  me:
+    description: Acción narrativa en tercera persona
+    usage: /me <acción>
+  do:
+    description: Descripción narrativa fuera de personaje (OOC)
+    usage: /do <descripción>
+  emote:
+    description: Ejecutar una emote (wave, laugh, sit, cry, dance, ...)
+    usage: /emote <nombre> [jugador]
+  wave:
+    description: Emote de saludo
+    usage: /wave [jugador]
+  laugh:
+    description: Emote de risa
+    usage: /laugh [jugador]
+  sit:
+    description: Emote de sentarse
+    usage: /sit
+  cry:
+    description: Emote de llanto
+    usage: /cry
+  dance:
+    description: Emote de baile
+    usage: /dance [jugador]
+  react:
+    description: Reaccionar al último mensaje visto en un canal
+    usage: /react <emoji>
+  chatlog:
+    description: Buscar/exportar/moderar el historial de chat
+    usage: /chatlog <search|export|clear> [canal] [jugador] [fecha]
+    permission: rpgrollchat.staff
+  language:
+    description: Aprender/hablar idiomas
+    usage: /language <list|learn|speak> [idioma]
+  chatadmin:
+    description: Comandos administrativos de chat
+    usage: /chatadmin <reload|browser [channel|language|role|emote]|editor> [args]
+    permission: rpgrollchat.admin.*
+
+permissions:
+  rpgrollchat.admin.*:
+    description: Acceso completo a comandos administrativos de chat
+    default: op
+  rpgrollchat.staff:
+    description: Acceso a logs de chat y moderación
+    default: op
+  rpgrollchat.socialspy:
+    description: Ver whispers ajenos
+    default: op

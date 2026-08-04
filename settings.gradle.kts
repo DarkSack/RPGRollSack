@@ -9,5 +9,16 @@ include(
     "common",
     "core",
     "npcs",
-    "crates"
+    "crates",
+    "enchantments",
+    "quests",
+    "items",
+    "ascension",
+    "mobs",
+    "dungeons",
+    "guilds",
+    "chat",
+    "sackeffects",
+    "effects",
+    "magic"
 )

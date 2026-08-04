@@ -1,0 +1,40 @@
+id: blessing
+display-name: "&e✦ Bendición ✦"
+icon: BEACON
+color: YELLOW
+category: MAGIC
+rarity: RARE
+description: "Curación periódica y armadura extra."
+duration: 200
+priority: 0
+visible: true
+
+tags: [holy, buff]
+conflicts: []
+
+stacking:
+  mode: NONE
+  max-stacks: 1
+
+conditions: []
+
+components:
+  - type: PERIODIC_HEAL
+    trigger: ON_SECOND
+    amount: 2
+
+  - type: ATTRIBUTE_MODIFIER
+    trigger: ON_APPLY
+    attribute: GENERIC_ARMOR
+    amount: 2
+    operation: ADD_NUMBER
+
+  - type: SOUND
+    trigger: ON_APPLY
+    sound: BLOCK_BEACON_ACTIVATE
+    volume: 1.0
+    pitch: 1.4
+
+  - type: MESSAGE
+    trigger: ON_APPLY
+    text: "&e✦ ¡Has sido bendecido! ✦"

@@ -1,0 +1,4 @@
+id: naturaleza
+display-name: "&2Naturaleza"
+resist-causes:
+  - FALL

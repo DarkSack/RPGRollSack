@@ -1,0 +1,25 @@
+id: shadow_boots
+category: armor
+material: LEATHER_BOOTS
+display-name: "&8Botas de las Sombras"
+lore:
+  - "&7Livianas como el viento nocturno."
+rarity: UNCOMMON
+
+stats:
+  defense: 2
+  evasion: 5
+
+attributes:
+  GENERIC_MOVEMENT_SPEED: 0.03
+
+requirements:
+  level: 5
+
+durability:
+  max: 200
+  repairable: true
+  degrade-per-use: 0
+
+economy:
+  sell: 60

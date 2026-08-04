@@ -1,0 +1,5 @@
+id: epic
+display-name: "Épica"
+color: light_purple
+glow: true
+sound: ENTITY_ILLUSIONER_CAST_SPELL

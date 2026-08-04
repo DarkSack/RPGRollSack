@@ -1,0 +1,9 @@
+id: explosive_impact
+display-name: "&6Runa de Impacto Explosivo"
+icon: FIRE_CHARGE
+description: "Al impactar, genera una explosión adicional a tu alrededor del punto de colisión."
+type: EXPLOSIVE
+
+params:
+  radius: 3
+  damage: 6

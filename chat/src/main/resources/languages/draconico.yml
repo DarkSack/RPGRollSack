@@ -1,0 +1,4 @@
+id: draconico
+display-name: "Dracónico"
+obfuscation-char: "◆"
+default-for-races: ["dragonkin", "draconido"]

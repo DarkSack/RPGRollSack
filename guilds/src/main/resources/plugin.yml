@@ -1,0 +1,25 @@
+name: RPGRoll-Guilds
+version: 1.0.0
+main: com.sack.rpgroll.guilds.GuildsPlugin
+api-version: "1.21"
+author: Sack
+description: Sistema social de RPGRoll — equipos temporales (Teams) y organizaciones permanentes (Guilds)
+depend: [RPGRoll]
+softdepend: [RPGRoll-Items, RPGRoll-Quests, Vault, PlaceholderAPI]
+
+commands:
+  team:
+    description: Comandos de equipo temporal
+    usage: /team <create|invite|accept|decline|leave|kick|promote|demote|info|config|buff|ping|waypoint|chat|queue> [args]
+  guild:
+    description: Comandos de guild
+    usage: /guild <create|disband|invite|accept|decline|leave|kick|promote|demote|info|vault|territory|upgrade|diplomacy|quest|achievements|calendar|ranking|chat|customize> [args]
+  guildadmin:
+    description: Comandos administrativos de guilds
+    usage: /guildadmin <reload|browser [guilds|quests]|delete> [args]
+    permission: rpgrollguilds.admin.*
+
+permissions:
+  rpgrollguilds.admin.*:
+    description: Acceso completo a comandos administrativos de guilds
+    default: op

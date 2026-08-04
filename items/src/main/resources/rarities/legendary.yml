@@ -1,0 +1,6 @@
+id: legendary
+display-name: "Legendaria"
+color: gold
+glow: true
+sound: ENTITY_PLAYER_LEVELUP
+particle: FLAME

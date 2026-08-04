@@ -1,0 +1,35 @@
+id: poison
+display-name: "&2Veneno"
+icon: SPIDER_EYE
+color: DARK_GREEN
+category: SURVIVAL
+rarity: COMMON
+description: "Daño periódico que escala con los stacks (hasta 4)."
+duration: 160
+priority: 0
+visible: true
+
+tags: [poison, debuff]
+conflicts: []
+
+stacking:
+  mode: REFRESH
+  max-stacks: 4
+
+conditions: []
+
+components:
+  - type: PERIODIC_DAMAGE
+    trigger: ON_SECOND
+    amount: 1
+    amount-per-stack: 1
+
+  - type: SOUND
+    trigger: ON_APPLY
+    sound: ENTITY_SPIDER_AMBIENT
+    volume: 0.7
+    pitch: 1.0
+
+  - type: MESSAGE
+    trigger: ON_APPLY
+    text: "&2¡Estás envenenado!"

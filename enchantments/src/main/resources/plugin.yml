@@ -1,0 +1,19 @@
+name: RPGRoll-Enchantments
+version: 1.0.0
+main: com.sack.rpgroll.enchantments.EnchantmentsPlugin
+api-version: "1.21"
+author: Sack
+description: Sistema de encantamientos personalizados basado en componentes (triggers, condiciones y efectos) para RPGRoll
+depend: [RPGRoll]
+softdepend: [PlaceholderAPI]
+
+commands:
+  renchant:
+    description: Gestiona encantamientos personalizados
+    usage: /renchant <apply|remove|give|list|info|reload|browser> [args]
+    permission: rpgrollenchantments.admin.*
+
+permissions:
+  rpgrollenchantments.admin.*:
+    description: Acceso completo a comandos de encantamientos
+    default: op

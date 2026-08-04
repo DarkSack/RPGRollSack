@@ -1,0 +1,45 @@
+id: berserker
+base-class: guerrero
+display-name: "&4Berserker"
+
+requirements:
+  level: 20
+
+stats:
+  damage: 4
+
+restrictions:
+  - "no-shield"
+
+talents:
+  inicio:
+    display-name: "&7Inicio"
+    cost: 1
+    stats:
+      health: 5
+
+  ataque:
+    display-name: "&cFuria de Batalla"
+    cost: 2
+    requires: [inicio]
+    stats:
+      damage: 3
+
+  ataque_2:
+    display-name: "&cGolpe Devastador"
+    cost: 3
+    requires: [ataque]
+    skill: devastating_blow
+
+  defensa:
+    display-name: "&7Piel de Hierro"
+    cost: 2
+    requires: [inicio]
+    stats:
+      defense: 4
+
+  defensa_2:
+    display-name: "&7Furia Inquebrantable"
+    cost: 3
+    requires: [defensa]
+    trait: unbreakable_will

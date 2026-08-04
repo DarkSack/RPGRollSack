@@ -1,0 +1,33 @@
+id: poison
+display-name: "&2Veneno"
+rarity: UNCOMMON
+max-level: 3
+
+categories:
+  - WEAPON
+
+trigger:
+  - PLAYER_ATTACK
+
+conditions:
+  - target.type != ZOMBIE
+
+levels:
+  1:
+    duration: 60
+    amplifier: 0
+  2:
+    duration: 100
+    amplifier: 1
+  3:
+    duration: 140
+    amplifier: 2
+
+effects:
+  - type: POTION
+    potion: POISON
+    apply-to: target
+    duration: "{duration}"
+    amplifier: "{amplifier}"
+  - type: MESSAGE
+    value: "&2¡Envenenaste a tu objetivo!"

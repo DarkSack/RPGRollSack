@@ -1,0 +1,9 @@
+id: gather_wood
+display-name: "Recolectando Madera"
+description: "Recolectá 200 bloques de madera de roble."
+type: GATHER_RESOURCE
+target-reference: OAK_LOG
+target-amount: 200
+reward-money: 300
+reward-xp: 100
+min-guild-level: 1

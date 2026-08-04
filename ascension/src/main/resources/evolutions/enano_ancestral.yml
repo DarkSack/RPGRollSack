@@ -1,0 +1,25 @@
+id: enano_ancestral
+base-race: enano
+display-name: "&6Enano Ancestral"
+
+requirements:
+  level: 40
+
+stats:
+  strength: 8
+  constitution: 10
+
+affinities:
+  earth: 20
+
+resistances:
+  physical: 15
+
+traits:
+  - stoneskin
+
+skills:
+  - earthquake_slam
+
+professions:
+  - minero

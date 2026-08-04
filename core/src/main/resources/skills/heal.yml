@@ -1,0 +1,9 @@
+id: heal
+name: "&aCuración"
+description: |
+  Restaura una porción de la
+  salud máxima del jugador.
+required-level: 3
+mana-cost: 15
+cooldown-seconds: 12
+damage-multiplier: 0.0

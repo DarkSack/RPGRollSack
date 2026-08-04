@@ -1,0 +1,5 @@
+id: "2"
+required-level: 100
+exp-bonus-percent: 10
+skills:
+  - prestige_aura_2

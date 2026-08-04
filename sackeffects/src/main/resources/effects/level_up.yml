@@ -1,0 +1,38 @@
+id: level_up
+display-name: "&6¡Subida de nivel!"
+description: "Explosión de partículas doradas alrededor del jugador + sonido + título, pensado para dispararse desde otro addon (ej. Ascension) al subir de nivel."
+
+steps:
+  - type: PARTICLE
+    delay: 0
+    particle: TOTEM_OF_UNDYING
+    shape: SPHERE
+    target: SELF
+    radius: 1.2
+    points: 60
+    count: 1
+    speed: 0
+
+  - type: SOUND
+    delay: 0
+    sound: ENTITY_PLAYER_LEVELUP
+    target: SELF
+    volume: 1.0
+    pitch: 1.0
+
+  - type: TITLE
+    delay: 2
+    title: "&6&l¡NIVEL SUPERIOR!"
+    subtitle: "&7Seguí así"
+    target: SELF
+    fade-in: 5
+    stay: 40
+    fade-out: 10
+
+  - type: PARTICLE
+    delay: 10
+    particle: FIREWORK
+    shape: BURST
+    target: SELF
+    count: 40
+    speed: 0.3

@@ -1,0 +1,13 @@
+id: mago
+display-name: "&9Mago"
+description: |
+  Manipula las artes arcanas a distancia.
+  Prioriza inteligencia y sabiduría sobre todo lo demás.
+base-attributes:
+  intelligence: 3
+  wisdom: 2
+passive-traits: []
+icon: ""
+lore:
+  - "&7Armas: Varitas y Bastones"
+  - "&7Rol: DPS mágico / Soporte"

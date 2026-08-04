@@ -1,0 +1,63 @@
+# Ejemplo mínimo: solo "id" es obligatorio, todo lo demás usa sus valores
+# por defecto salvo lo que se especifique acá. Compará con goblin_den.yml
+# (ejemplo completo con 3 salas, oleadas, jefe y loot) para ver el rango
+# de complejidad soportado.
+id: trial_of_ash
+category: trial
+display-name: "&6Prueba de Ceniza"
+icon: NETHERRACK
+description: "Una prueba corta de una sola sala, pensada para un jugador."
+recommended-level: 5
+estimated-minutes: 5
+min-players: 1
+max-players: 1
+cooldown: 1h
+repeatable: true
+tags: [trial, solo]
+
+lobby:
+  world: world
+  x: 0
+  y: 64
+  z: 100
+  yaw: 0
+  pitch: 0
+
+bounds:
+  world: world
+  min-x: -15
+  min-y: 50
+  min-z: 85
+  max-x: 15
+  max-y: 80
+  max-z: 115
+
+rooms:
+  - id: sala_unica
+    type: COMBAT
+    entry:
+      world: world
+      x: 0
+      y: 64
+      z: 100
+    waves:
+      - id: wave1
+        mobs:
+          - id: forest_goblin
+            amount: 2
+        time-limit: 0s
+        delay-before: 0s
+
+difficulties:
+  - id: normal
+    display-name: "Normal"
+    health-multiplier: 1.0
+    damage-multiplier: 1.0
+    loot-multiplier: 1.0
+
+loot:
+  - type: EXPERIENCE
+    amount-min: 30
+    amount-max: 50
+    chance: 100
+    scope: PER_PLAYER

@@ -1,0 +1,15 @@
+# No edites este archivo a mano.
+#
+# Si compraste RPGRoll en Polymart, la clave de abajo ya viene
+# reemplazada automáticamente en tu descarga por tu clave real de
+# comprador — no necesitás hacer nada.
+#
+# Si ves el texto "%%__LICENSE__%%" tal cual (sin reemplazar), significa
+# que esta copia NO fue descargada desde Polymart y el plugin no va a
+# arrancar.
+key: '%%__LICENSE__%%'
+
+# ID público de tu recurso en Polymart (el número al final de la URL de
+# tu listing, ej. https://polymart.org/resource/rpgroll.1234 -> 1234).
+# No es un dato sensible, pero configuralo con tu ID real antes de publicar.
+resource-id: '0'

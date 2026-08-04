@@ -1,0 +1,5 @@
+id: agua
+display-name: "&9Agua"
+opposing: fuego
+resist-causes:
+  - DROWNING

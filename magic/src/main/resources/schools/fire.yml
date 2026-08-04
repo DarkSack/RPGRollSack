@@ -1,0 +1,13 @@
+id: fire
+display-name: "&cFuego"
+color: RED
+icon: BLAZE_POWDER
+description: "Escuela de destrucción y daño directo."
+cast-sound: ENTITY_BLAZE_SHOOT
+
+race-affinities:
+  demon: 0.3
+  elf: -0.1
+
+class-affinities:
+  mage: 0.15

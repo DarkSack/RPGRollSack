@@ -1,0 +1,34 @@
+id: shield
+display-name: "&fEscudo"
+icon: SHIELD
+color: WHITE
+category: MAGIC
+rarity: UNCOMMON
+description: "Otorga absorción — vida extra que se descuenta antes que la vida real. Reaplicar suma más stacks (hasta 3)."
+duration: 200
+priority: 0
+visible: true
+
+tags: [shield, buff]
+conflicts: []
+
+stacking:
+  mode: REFRESH
+  max-stacks: 3
+
+conditions: []
+
+components:
+  - type: SHIELD
+    trigger: ON_APPLY
+    amount: 4
+
+  - type: SOUND
+    trigger: ON_APPLY
+    sound: ITEM_SHIELD_BLOCK
+    volume: 1.0
+    pitch: 1.0
+
+  - type: MESSAGE
+    trigger: ON_APPLY
+    text: "&f&l🛡 ¡Escudo activado!"

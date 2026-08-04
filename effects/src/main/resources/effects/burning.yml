@@ -1,0 +1,35 @@
+id: burning
+display-name: "&6Quemadura"
+icon: BLAZE_POWDER
+color: GOLD
+category: ELEMENTAL
+rarity: COMMON
+description: "Daño periódico que escala con los stacks. Se rompe si te aplican Frozen (y viceversa)."
+duration: 100
+priority: 0
+visible: true
+
+tags: [fire, debuff]
+conflicts: [frozen]
+
+stacking:
+  mode: REFRESH
+  max-stacks: 5
+
+conditions: []
+
+components:
+  - type: PERIODIC_DAMAGE
+    trigger: ON_SECOND
+    amount: 1
+    amount-per-stack: 0.5
+
+  - type: SOUND
+    trigger: ON_APPLY
+    sound: ENTITY_GENERIC_BURN
+    volume: 1.0
+    pitch: 1.0
+
+  - type: MESSAGE
+    trigger: ON_APPLY
+    text: "&6¡Estás en llamas!"

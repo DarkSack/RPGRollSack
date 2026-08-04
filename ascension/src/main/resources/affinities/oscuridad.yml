@@ -1,0 +1,5 @@
+id: oscuridad
+display-name: "&5Oscuridad"
+opposing: luz
+resist-causes:
+  - WITHER

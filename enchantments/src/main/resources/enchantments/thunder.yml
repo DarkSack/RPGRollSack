@@ -1,0 +1,17 @@
+id: thunder
+display-name: "&eThunder"
+rarity: EPIC
+max-level: 1
+
+categories:
+  - WEAPON
+
+trigger:
+  - PLAYER_ATTACK
+
+chance: 15%
+
+effects:
+  - LIGHTNING
+  - type: MESSAGE
+    value: "&e¡Un rayo golpeó a tu objetivo!"

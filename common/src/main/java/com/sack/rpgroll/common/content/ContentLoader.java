@@ -23,6 +23,7 @@ public class ContentLoader<T extends RPGContent> {
     private final String folder;
     private final String label;
     private final ContentParser<T> parser;
+    private final boolean recursive;
 
     /**
      * @param folder carpeta relativa a plugins/RPGRoll/ (ej. "races",
@@ -30,16 +31,29 @@ public class ContentLoader<T extends RPGContent> {
      * @param label  nombre singular usado en logs (ej. "raza", "trabajo")
      */
     public ContentLoader(JavaPlugin plugin, YamlLoader yamlLoader, String folder, String label, ContentParser<T> parser) {
+        this(plugin, yamlLoader, folder, label, parser, false);
+    }
+
+    /**
+     * @param recursive si es true, también lee YAML dentro de subcarpetas
+     *                  (ej. items/sword/flame_blade.yml) — útil para
+     *                  contenido organizado en categorías.
+     */
+    public ContentLoader(JavaPlugin plugin, YamlLoader yamlLoader, String folder, String label,
+            ContentParser<T> parser, boolean recursive) {
         this.plugin = plugin;
         this.yamlLoader = yamlLoader;
         this.folder = folder;
         this.label = label;
         this.parser = parser;
+        this.recursive = recursive;
     }
 
     public List<T> load() {
 
-        List<YamlConfiguration> files = yamlLoader.loadAllInFolder(folder);
+        List<YamlConfiguration> files = recursive
+                ? yamlLoader.loadAllInFolderRecursive(folder)
+                : yamlLoader.loadAllInFolder(folder);
         List<T> results = new ArrayList<>();
 
         for (YamlConfiguration config : files) {

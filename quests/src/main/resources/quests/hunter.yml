@@ -1,0 +1,32 @@
+id: hunter
+display-name: "&cCazador de Zombies"
+category: DAILY
+difficulty: NORMAL
+repeatable: true
+cooldown: 24h
+
+requirements:
+  level: 5
+
+stages:
+  - id: hunt
+    objectives:
+      - type: KILL_ENTITY
+        entity: ZOMBIE
+        amount: 20
+        description: "Elimina 20 zombies"
+    conditions:
+      - player.level >= 5
+    on-progress:
+      - type: MESSAGE
+        value: "&7Progreso de cacería registrado."
+    on-complete:
+      - type: TITLE
+        title: "&c¡Cacería completa!"
+        subtitle: "&7Volvé con el cazador"
+
+rewards:
+  money: 250
+  experience: 500
+  commands:
+    - "say {player} completó la cacería diaria"

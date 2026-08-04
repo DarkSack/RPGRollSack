@@ -1,0 +1,4 @@
+id: sit
+template: "&f{player} &7se sienta."
+target-template: ""
+radius: 0

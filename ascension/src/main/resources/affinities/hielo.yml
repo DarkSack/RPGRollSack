@@ -1,0 +1,4 @@
+id: hielo
+display-name: "&bHielo"
+resist-causes:
+  - FREEZE

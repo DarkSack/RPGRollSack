@@ -1,0 +1,18 @@
+# src/main/resources/npcs/guardia.yml
+id: guardia
+display-name: "&7Guardia de la Ciudad"
+pose: "STANDING"
+
+location:
+  world: world
+  x: 10.0
+  y: 65.0
+  z: 5.0
+  yaw: 90.0
+  pitch: 0.0
+
+actions:
+  - type: MESSAGE
+    value: "Circula, ciudadano. Nada que ver por aquí."
+  - type: SOUND
+    value: "ENTITY_VILLAGER_AMBIENT,1.0,1.0"

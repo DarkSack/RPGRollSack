@@ -1,0 +1,40 @@
+id: bleeding
+display-name: "&cSangrado"
+icon: REDSTONE
+color: RED
+category: COMBAT
+rarity: COMMON
+description: "Daño periódico que escala con los stacks. Al llegar a 3 stacks se transforma en Hemorrhage."
+duration: 100
+priority: 0
+visible: true
+
+tags: [bleed, debuff]
+conflicts: []
+
+stacking:
+  mode: UPGRADE
+  max-stacks: 3
+  upgrade-to: hemorrhage
+
+conditions: []
+
+components:
+  - type: PERIODIC_DAMAGE
+    trigger: ON_SECOND
+    amount: 1
+    amount-per-stack: 0.5
+
+  - type: SOUND
+    trigger: ON_APPLY
+    sound: ENTITY_PLAYER_HURT
+    volume: 0.6
+    pitch: 1.6
+
+  - type: MESSAGE
+    trigger: ON_APPLY
+    text: "&c¡Estás sangrando!"
+
+  - type: MESSAGE
+    trigger: ON_EXPIRE
+    text: "&7La hemorragia se detuvo."

@@ -10,7 +10,7 @@ softdepend: [DecentHolograms]
 commands:
   crate:
     description: Gestiona crates
-    usage: /crate <setlocation|removelocation|givekey|list|reload> [args]
+    usage: /crate <setlocation|removelocation|givekey|list|reload|browser> [args]
     permission: rpgrollcrates.admin.*
 
 permissions:

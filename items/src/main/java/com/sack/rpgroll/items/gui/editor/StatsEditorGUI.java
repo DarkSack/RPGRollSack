@@ -1,0 +1,261 @@
+package com.sack.rpgroll.items.gui.editor;
+
+import com.sack.rpgroll.gui.InventoryGUI;
+import com.sack.rpgroll.gui.util.ItemBuilder;
+
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.ClickType;
+import org.bukkit.event.inventory.InventoryClickEvent;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
+/**
+ * Editor de stats RPGRoll (virtuales, agregadas por el motor de stats) y
+ * atributos vanilla reales (visibles en el tooltip nativo de Minecraft).
+ * Click izquierdo +1, shift+izquierdo +10, click derecho -1, shift+derecho
+ * -10 — sin necesidad de tipear números para los ajustes más comunes.
+ */
+public class StatsEditorGUI extends InventoryGUI {
+
+    private static final int SIZE = 54;
+
+    private static final String[] VANILLA_ATTRIBUTES = {
+            "GENERIC_MAX_HEALTH", "GENERIC_ATTACK_DAMAGE", "GENERIC_ATTACK_SPEED", "GENERIC_MOVEMENT_SPEED",
+            "GENERIC_ARMOR", "GENERIC_ARMOR_TOUGHNESS", "GENERIC_KNOCKBACK_RESISTANCE", "GENERIC_LUCK"
+    };
+
+    private static final int ADD_CUSTOM_STAT_SLOT = 27;
+    private static final int ATTRIBUTES_START_SLOT = 36;
+    private static final int ADD_CUSTOM_ATTRIBUTE_SLOT = 44;
+    private static final int BACK_SLOT = 49;
+
+    private final EditorSession session;
+    private final Runnable onBack;
+    private final List<String> statIds;
+
+    public StatsEditorGUI(Player player, EditorSession session, Runnable onBack) {
+        super(player, Component.text("Stats: " + session.original.id(), NamedTextColor.GOLD), SIZE);
+        this.session = session;
+        this.onBack = onBack;
+        this.statIds = new ArrayList<>(session.statRegistry.all());
+        this.statIds.sort(String::compareTo);
+    }
+
+    @Override
+    public void build() {
+
+        clear();
+
+        for (int slot = 0; slot < SIZE; slot++) {
+            setItem(slot, ItemBuilder.createFiller());
+        }
+
+        // Fila 27-35 separa "stats custom" de "atributos vanilla"; 45-53 es la
+        // fila de control (solo Volver acá).
+        for (int slot = 27; slot <= 35; slot++) {
+            setItem(slot, new ItemBuilder(Material.ORANGE_STAINED_GLASS_PANE)
+                    .setName(Component.text("Atributos vanilla", NamedTextColor.GRAY)).build());
+        }
+        for (int slot = 45; slot < SIZE; slot++) {
+            setItem(slot, new ItemBuilder(Material.BLACK_STAINED_GLASS_PANE)
+                    .setName(Component.text(" ", NamedTextColor.GRAY)).build());
+        }
+
+        for (int i = 0; i < statIds.size() && i < 27; i++) {
+            setItem(i, statItem(statIds.get(i), session.stats.getOrDefault(statIds.get(i), 0.0)));
+        }
+
+        setItem(ADD_CUSTOM_STAT_SLOT, new ItemBuilder(Material.EMERALD)
+                .setName(Component.text("Agregar stat custom", NamedTextColor.GREEN))
+                .setLore(Component.text("Click para escribir uno nuevo por chat", NamedTextColor.GRAY))
+                .build());
+
+        for (int i = 0; i < VANILLA_ATTRIBUTES.length; i++) {
+
+            String attribute = VANILLA_ATTRIBUTES[i];
+            setItem(ATTRIBUTES_START_SLOT + i,
+                    attributeItem(attribute, session.attributeModifiers.getOrDefault(attribute, 0.0)));
+        }
+
+        setItem(ADD_CUSTOM_ATTRIBUTE_SLOT, new ItemBuilder(Material.EMERALD)
+                .setName(Component.text("Agregar atributo custom", NamedTextColor.GREEN))
+                .setLore(Component.text("Click para escribir uno nuevo por chat", NamedTextColor.GRAY))
+                .build());
+
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+    }
+
+    private org.bukkit.inventory.ItemStack statItem(String statId, double value) {
+        return new ItemBuilder(value > 0 ? Material.REDSTONE : Material.GUNPOWDER)
+                .setName(Component.text(formatName(statId) + ": " + formatNumber(value), NamedTextColor.RED))
+                .setLore(Component.text("Click: +1 · Shift-click: +10", NamedTextColor.GRAY),
+                        Component.text("Click derecho: -1 · Shift-click derecho: -10", NamedTextColor.GRAY))
+                .build();
+    }
+
+    private org.bukkit.inventory.ItemStack attributeItem(String attribute, double value) {
+        return new ItemBuilder(value > 0 ? Material.DIAMOND : Material.FLINT)
+                .setName(Component.text(formatName(attribute) + ": " + formatNumber(value), NamedTextColor.AQUA))
+                .setLore(Component.text("Atributo vanilla (visible en tooltip nativo)", NamedTextColor.DARK_GRAY),
+                        Component.text("Click: +1 · Shift-click: +10 · Derecho: -1/-10", NamedTextColor.GRAY))
+                .build();
+    }
+
+    private String formatName(String key) {
+
+        String[] parts = key.toLowerCase(Locale.ROOT).split("_");
+        StringBuilder result = new StringBuilder();
+
+        for (String part : parts) {
+            if (!result.isEmpty()) {
+                result.append(" ");
+            }
+            if (!part.isEmpty()) {
+                result.append(Character.toUpperCase(part.charAt(0))).append(part.substring(1));
+            }
+        }
+
+        return result.toString();
+    }
+
+    private String formatNumber(double value) {
+        return value == Math.floor(value) ? String.valueOf((long) value) : String.valueOf(value);
+    }
+
+    private double delta(ClickType click) {
+        return switch (click) {
+            case LEFT -> 1;
+            case SHIFT_LEFT -> 10;
+            case RIGHT -> -1;
+            case SHIFT_RIGHT -> -10;
+            default -> 0;
+        };
+    }
+
+    @Override
+    public void handleClick(InventoryClickEvent event) {
+
+        event.setCancelled(true);
+        int slot = event.getSlot();
+
+        if (slot < statIds.size() && slot < 27) {
+            adjustStat(statIds.get(slot), event.getClick());
+            return;
+        }
+
+        if (slot == ADD_CUSTOM_STAT_SLOT) {
+            promptCustomStat();
+            return;
+        }
+
+        if (slot >= ATTRIBUTES_START_SLOT && slot < ATTRIBUTES_START_SLOT + VANILLA_ATTRIBUTES.length) {
+            adjustAttribute(VANILLA_ATTRIBUTES[slot - ATTRIBUTES_START_SLOT], event.getClick());
+            return;
+        }
+
+        if (slot == ADD_CUSTOM_ATTRIBUTE_SLOT) {
+            promptCustomAttribute();
+            return;
+        }
+
+        if (slot == BACK_SLOT) {
+            onBack.run();
+        }
+    }
+
+    private void adjustStat(String statId, ClickType click) {
+
+        double delta = delta(click);
+        if (delta == 0) {
+            return;
+        }
+
+        double updated = session.stats.getOrDefault(statId, 0.0) + delta;
+
+        if (updated == 0) {
+            session.stats.remove(statId);
+        } else {
+            session.stats.put(statId, updated);
+        }
+
+        build();
+    }
+
+    private void adjustAttribute(String attribute, ClickType click) {
+
+        double delta = delta(click);
+        if (delta == 0) {
+            return;
+        }
+
+        double updated = session.attributeModifiers.getOrDefault(attribute, 0.0) + delta;
+
+        if (updated == 0) {
+            session.attributeModifiers.remove(attribute);
+        } else {
+            session.attributeModifiers.put(attribute, updated);
+        }
+
+        build();
+    }
+
+    private void promptCustomStat() {
+        session.chatPromptManager.prompt(player, "Escribí: <stat> <valor> (ej. mining_speed 15):", value -> {
+
+            String[] parts = value.trim().split("\\s+");
+
+            if (parts.length != 2) {
+                player.sendMessage(Component.text("Formato inválido.", NamedTextColor.RED));
+                return;
+            }
+
+            try {
+                String statId = parts[0].toLowerCase(Locale.ROOT);
+                session.stats.put(statId, Double.parseDouble(parts[1]));
+                session.statRegistry.register(statId);
+            } catch (NumberFormatException e) {
+                player.sendMessage(Component.text("Valor numérico inválido.", NamedTextColor.RED));
+                return;
+            }
+
+            reopen();
+        });
+    }
+
+    private void promptCustomAttribute() {
+        session.chatPromptManager.prompt(player,
+                "Escribí: <ATRIBUTO_VANILLA> <valor> (ej. GENERIC_SCALE 0.5):", value -> {
+
+                    String[] parts = value.trim().split("\\s+");
+
+                    if (parts.length != 2) {
+                        player.sendMessage(Component.text("Formato inválido.", NamedTextColor.RED));
+                        return;
+                    }
+
+                    try {
+                        session.attributeModifiers.put(parts[0].toUpperCase(Locale.ROOT),
+                                Double.parseDouble(parts[1]));
+                    } catch (NumberFormatException e) {
+                        player.sendMessage(Component.text("Valor numérico inválido.", NamedTextColor.RED));
+                        return;
+                    }
+
+                    build();
+                });
+    }
+
+    private void reopen() {
+        this.statIds.clear();
+        this.statIds.addAll(session.statRegistry.all());
+        this.statIds.sort(String::compareTo);
+        build();
+    }
+
+}

@@ -1,0 +1,5 @@
+id: ruby
+display-name: "&cRubí"
+type: FIRE
+stats:
+  damage: 3

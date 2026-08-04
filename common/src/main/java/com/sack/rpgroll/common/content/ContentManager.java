@@ -25,9 +25,15 @@ public class ContentManager<T extends RPGContent> implements Reloadable {
 
     protected ContentManager(JavaPlugin plugin, YamlLoader yamlLoader, String folder, String label,
             ContentParser<T> parser) {
+        this(plugin, yamlLoader, folder, label, parser, false);
+    }
+
+    /** @param recursive ver {@link ContentLoader#ContentLoader(JavaPlugin, YamlLoader, String, String, ContentParser, boolean)}. */
+    protected ContentManager(JavaPlugin plugin, YamlLoader yamlLoader, String folder, String label,
+            ContentParser<T> parser, boolean recursive) {
         this.plugin = plugin;
         this.label = label;
-        this.loader = new ContentLoader<>(plugin, yamlLoader, folder, label, parser);
+        this.loader = new ContentLoader<>(plugin, yamlLoader, folder, label, parser, recursive);
         this.registry = new ContentRegistry<>(plugin, label);
     }
 

@@ -6,6 +6,7 @@ import com.sack.rpgroll.crates.command.CrateAdminCommand;
 import com.sack.rpgroll.crates.core.Crate;
 import com.sack.rpgroll.crates.core.CrateActionExecutor;
 import com.sack.rpgroll.crates.core.CrateManager;
+import com.sack.rpgroll.crates.gui.ChatPromptManager;
 import com.sack.rpgroll.crates.hologram.DecentHologramsHook;
 import com.sack.rpgroll.crates.key.CrateKeyItem;
 import com.sack.rpgroll.crates.listener.CrateInteractListener;
@@ -47,12 +48,15 @@ public class CratesPlugin extends JavaPlugin {
                 new CrateInteractListener(this, crateManager, placedCrateManager, crateKeyItem, actionExecutor),
                 this);
 
+        ChatPromptManager chatPromptManager = new ChatPromptManager(this);
+        getServer().getPluginManager().registerEvents(chatPromptManager, this);
+
         var crateCommand = getCommand("crate");
         if (crateCommand == null) {
             getLogger().severe("✘ El comando 'crate' no está declarado en plugin.yml");
         } else {
-            crateCommand.setExecutor(
-                    new CrateAdminCommand(crateManager, placedCrateManager, hologramsHook, crateKeyItem));
+            crateCommand.setExecutor(new CrateAdminCommand(crateManager, placedCrateManager, hologramsHook,
+                    crateKeyItem, chatPromptManager));
         }
 
         rebuildHolograms();

@@ -1,0 +1,6 @@
+id: divine
+display-name: "Divina"
+color: yellow
+glow: true
+sound: ENTITY_ENDER_DRAGON_AMBIENT
+particle: END_ROD

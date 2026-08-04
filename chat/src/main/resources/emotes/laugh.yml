@@ -1,0 +1,4 @@
+id: laugh
+template: "&f{player} &7comienza a reír."
+target-template: "&f{player} &7se ríe de &f{target}&7."
+radius: 0

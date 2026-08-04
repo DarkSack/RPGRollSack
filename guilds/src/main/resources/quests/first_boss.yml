@@ -1,0 +1,8 @@
+id: first_boss
+display-name: "Primera Sangre"
+description: "Derrotá tu primer jefe como guild."
+type: DEFEAT_BOSS
+target-amount: 1
+reward-money: 500
+reward-xp: 200
+min-guild-level: 1

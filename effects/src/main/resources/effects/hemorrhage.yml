@@ -1,0 +1,39 @@
+id: hemorrhage
+display-name: "&4&lHemorragia"
+icon: REDSTONE_BLOCK
+color: DARK_RED
+category: COMBAT
+rarity: UNCOMMON
+description: "Lo que queda de acumular 3 stacks de Sangrado — mucho más daño y te frena en seco."
+duration: 140
+priority: 1
+visible: true
+
+tags: [bleed, debuff]
+conflicts: []
+
+stacking:
+  mode: NONE
+  max-stacks: 1
+
+conditions: []
+
+components:
+  - type: PERIODIC_DAMAGE
+    trigger: ON_SECOND
+    amount: 4
+
+  - type: MOVEMENT_MODIFIER
+    trigger: ON_APPLY
+    amount: -0.25
+    operation: ADD_SCALAR
+
+  - type: SOUND
+    trigger: ON_APPLY
+    sound: ENTITY_WOLF_WHINE
+    volume: 1.0
+    pitch: 0.7
+
+  - type: MESSAGE
+    trigger: ON_APPLY
+    text: "&4&l¡HEMORRAGIA! Estás perdiendo mucha sangre."

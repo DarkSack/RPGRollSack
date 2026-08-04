@@ -1,0 +1,72 @@
+id: forest_goblin
+category: NORMAL
+display-name: "&2Trasgo del Bosque"
+level: 5
+rarity: common
+tags: [ "forest", "humanoid" ]
+description: "Un trasgo hostil que ronda los bosques densos."
+base-entity-type: ZOMBIE
+
+model:
+  scale: 0.85
+  glow: false
+  invisible: false
+  equipment:
+    hand: STONE_SWORD
+    head: LEATHER_HELMET
+
+stats:
+  health: 30
+  damage: 4
+  defense: 1
+  speed: 105
+  armor: 2
+  dodge: 5
+  accuracy: 90
+  critical_chance: 10
+  critical_damage: 50
+  knockback_resistance: 0
+
+resistances:
+  poison: 25
+
+ai:
+  goals: [ "ATTACK_PLAYERS", "FLEE" ]
+  aggro-range: 14
+  flee-health-percent: 20
+  move-speed: 1.05
+
+skills:
+  - id: goblin_screech
+    display-name: "Chillido"
+    trigger: PERIODIC
+    cooldown: 20s
+    chance: 30
+    conditions:
+      - "target.type == PLAYER"
+    actions:
+      - type: SOUND
+        sound: ENTITY_VEX_HURT
+        volume: "1.0"
+        pitch: "1.4"
+
+loot:
+  - type: ITEM
+    reference: IRON_NUGGET
+    amount-min: 1
+    amount-max: 3
+    chance: 60
+    scope: SHARED
+  - type: MONEY
+    amount-min: 2
+    amount-max: 5
+    chance: 100
+    scope: PER_PLAYER
+
+spawn-rules:
+  biomes: [ "forest", "dark_forest", "birch_forest" ]
+  min-height: 60
+  max-height: 200
+  hour: "19-6"
+  natural-spawn: false
+  spawn-weight: 1.0

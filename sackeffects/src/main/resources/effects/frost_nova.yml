@@ -1,0 +1,50 @@
+id: frost_nova
+display-name: "&b&lNova de Escarcha"
+description: "Onda de partículas de hielo alrededor del que la lanza, con sonido, una bossbar temporal para todos los que estén cerca y un efecto de lentitud sobre ellos. Pensado como ejemplo de un ability/hechizo de área."
+
+steps:
+  - type: PARTICLE
+    delay: 0
+    particle: SNOWFLAKE
+    shape: CIRCLE
+    target: SELF
+    radius: 0.5
+    points: 30
+    count: 1
+    speed: 0
+
+  - type: SOUND
+    delay: 0
+    sound: BLOCK_GLASS_BREAK
+    target: LOCATION
+    volume: 1.5
+    pitch: 0.7
+
+  - type: PARTICLE
+    delay: 3
+    particle: SNOWFLAKE
+    shape: CIRCLE
+    target: SELF
+    radius: 2.5
+    points: 50
+    count: 1
+    speed: 0
+
+  - type: BOSSBAR
+    delay: 3
+    title: "&b❄ Nova de Escarcha"
+    color: AQUA
+    style: SOLID
+    duration: 60
+    target: ALL_NEARBY
+    around: SELF
+    radius: 6
+
+  - type: POTION
+    delay: 3
+    potion: SLOWNESS
+    duration: 60
+    amplifier: 1
+    target: ALL_NEARBY
+    around: SELF
+    radius: 6

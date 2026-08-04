@@ -1,0 +1,7 @@
+id: apprentice_wand
+display-name: "&fVarita de Aprendiz"
+material: STICK
+description: "Una varita simple, sin ningún bono — lo mínimo para poder canalizar magia."
+power-multiplier: 1.0
+cost-multiplier: 1.0
+range-multiplier: 1.0

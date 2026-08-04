@@ -1,0 +1,25 @@
+id: alto_elfo
+base-race: elfo
+display-name: "&bAlto Elfo"
+
+requirements:
+  level: 40
+
+stats:
+  intelligence: 8
+  magic_power: 10
+
+affinities:
+  light: 20
+
+resistances:
+  magic: 15
+
+traits:
+  - arcane_affinity
+
+skills:
+  - arcane_bolt
+
+professions:
+  - alquimista

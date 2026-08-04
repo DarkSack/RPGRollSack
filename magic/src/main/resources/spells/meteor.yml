@@ -1,0 +1,35 @@
+id: meteor
+display-name: "&4&lMeteoro"
+icon: MAGMA_BLOCK
+color: DARK_RED
+school: fire
+rarity: EPIC
+level: 5
+cast-time: 60
+cooldown: 200
+trigger: HOLD
+tree-parent: fireball
+tree-tier: 1
+tags: [fire, area, channeled]
+description: "Canalizá 3 segundos quieto para invocar una explosión devastadora a tus pies. Requiere haber aprendido Bola de Fuego antes."
+
+cost:
+  mana: 50
+
+components:
+  - type: DAMAGE_AREA
+    radius: 5
+    amount: 20
+
+  - type: PARTICLE
+    particle: LAVA
+    count: 40
+
+  - type: PARTICLE
+    particle: EXPLOSION
+    count: 3
+
+  - type: SOUND
+    sound: ENTITY_GENERIC_EXPLODE
+    volume: 1.5
+    pitch: 0.8

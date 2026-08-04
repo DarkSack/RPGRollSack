@@ -1,0 +1,8 @@
+id: master_alchemist
+base-job: alquimista
+display-name: "&dMaster Alchemist"
+required-job-level: 25
+unlocked-recipes:
+  - greater_healing_potion
+unlocked-tools:
+  - alchemist_cauldron

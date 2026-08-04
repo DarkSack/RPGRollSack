@@ -80,7 +80,7 @@ public class DatabaseManager {
                 .getServices()
                 .get(ConfigManager.class);
 
-        databaseConfig = configManager.getConfig("config/database.yml");
+        databaseConfig = configManager.getConfig("database.yml");
 
         if (databaseConfig == null) {
             throw new Exception("No se pudo cargar database.yml");

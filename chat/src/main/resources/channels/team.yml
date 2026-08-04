@@ -1,0 +1,19 @@
+id: team
+display-name: "Equipo"
+icon: IRON_SWORD
+color: BLUE
+priority: 8
+scope: TEAM
+distance: 0
+view-permission: ""
+speak-permission: ""
+cooldown-millis: 0
+format: "&9[&bEquipo&9] &f{player}&7: &f{message}"
+text-format: LEGACY
+join-sound: ""
+filter-profanity: true
+filter-caps: true
+allow-urls: false
+default-joined: true
+cross-world: true
+also-action-bar: false
