@@ -1,0 +1,44 @@
+# ============================================================================
+# ESPECIE DE REFERENCIA — usa TODOS los campos que soporta una Species,
+# incluyendo camadas múltiples (min/max-litter-size distintos entre sí, a
+# diferencia de la vaca de ejemplo que siempre tiene 1). Documentación
+# ejecutable. Ver "Ranching" en la docs. (El addon tiene 5 tipos de contenido
+# más — breeds/, genes/, feeds/, diseases/, vaccines/, medicines/ — ver sus
+# propias carpetas de ejemplo para el formato de cada uno.)
+# ============================================================================
+
+id: reference_full_example
+display-name: "&d&lConejo de Referencia"
+icon: RABBIT_SPAWN_EGG
+description: "Una especie de ejemplo que documenta cada campo disponible, incluyendo camadas múltiples."
+entity-type: RABBIT
+
+# Tipos de producto que puede generar (claves libres, resueltas contra base-production)
+product-types:
+  - meat
+  - fur
+
+base-production:
+  meat: 1.5
+  fur: 0.8
+
+base-weight-min: 1.0
+base-weight-max: 3.0
+
+# Duración de cada etapa de vida, en ticks (20 ticks = 1 segundo)
+baby-stage-duration-ticks: 3000
+juvenile-stage-duration-ticks: 6000
+elder-threshold-ticks: 120000
+
+gestation-duration-ticks: 12000
+
+# A diferencia de la vaca (siempre 1 cría), esta especie pare camadas de 2 a 6
+min-litter-size: 2
+max-litter-size: 6
+
+base-fertility: 0.8
+
+# Tags de comida (feeds/*.yml define sus propios tags) que esta especie puede comer
+diet-tags:
+  - grain
+  - vegetable

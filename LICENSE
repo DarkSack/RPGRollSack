@@ -1,0 +1,75 @@
+RPGROLL FRAMEWORK — LICENCIA DE USO COMERCIAL (EULA)
+Copyright (c) 2026 Sack (DarkSack). Todos los derechos reservados.
+
+Este software (el "Software") — incluyendo, sin limitarse a, el núcleo RPGRoll,
+todos sus addons (NPCs, Crates, Enchantments, Quests, Items, Ascension, Mobs,
+Dungeons, Guilds, Chat, SackEffects, RPGRoll-Effects, RPGRoll-Magic,
+RPGRoll-Seasons, RPGRoll-Fishing, RPGRoll-Ranching, RPGRoll-Workers,
+SackResourcePack), su código fuente, documentación, assets y archivos de
+configuración de ejemplo — es propiedad exclusiva del autor. NO es software de
+código abierto y NO se distribuye bajo ninguna licencia permisiva (MIT,
+Apache, GPL, etc.).
+
+1. CONCESIÓN DE LICENCIA
+   Al adquirir una copia legítima de uno o más módulos del Software, el autor
+   concede al comprador ("Licenciatario") una licencia limitada, no exclusiva,
+   no transferible y revocable para:
+     a) Instalar y ejecutar el/los módulo(s) comprado(s), en su forma
+        compilada (.jar), en los servidores de Minecraft que el Licenciatario
+        opera o administra.
+     b) Modificar los archivos de configuración (YAML) provistos para
+        adaptar el contenido del juego a su propio servidor.
+
+2. RESTRICCIONES
+   Salvo autorización previa y por escrito del autor, el Licenciatario NO
+   puede:
+     a) Redistribuir, revender, sublicenciar, alquilar, prestar o compartir
+        el Software (compilado o su código fuente) con terceros, de forma
+        gratuita o paga.
+     b) Publicar el código fuente, en su totalidad o en parte, en
+        repositorios públicos o privados accesibles a terceros.
+     c) Descompilar, realizar ingeniería inversa o desensamblar el Software
+        compilado, salvo en la medida en que la ley aplicable lo permita
+        expresamente pese a esta restricción.
+     d) Eliminar, ocultar o alterar avisos de copyright, marcas o atribución
+        de autoría presentes en el Software.
+     e) Usar el Software, o cualquier parte de él, como base para un producto
+        competidor que se ofrezca comercialmente a terceros.
+     f) Usar el nombre "RPGRoll", "SackResourcePack", "SackEffects" ni el
+        nombre o marca del autor para promocionar productos derivados sin
+        autorización.
+
+3. PROPIEDAD
+   Todos los derechos, títulos e intereses sobre el Software —incluyendo
+   derechos de autor, marcas y secretos comerciales— permanecen en todo
+   momento en poder exclusivo del autor. Esta licencia no transfiere ninguna
+   propiedad sobre el Software; solo otorga el derecho de uso descrito en la
+   Sección 1.
+
+4. SIN GARANTÍA
+   EL SOFTWARE SE PROVEE "TAL CUAL", SIN GARANTÍA DE NINGÚN TIPO, EXPRESA O
+   IMPLÍCITA, INCLUYENDO PERO NO LIMITÁNDOSE A GARANTÍAS DE COMERCIABILIDAD,
+   IDONEIDAD PARA UN PROPÓSITO PARTICULAR Y NO INFRACCIÓN. EL AUTOR NO
+   GARANTIZA QUE EL SOFTWARE ESTARÁ LIBRE DE ERRORES O FUNCIONARÁ SIN
+   INTERRUPCIONES.
+
+5. LIMITACIÓN DE RESPONSABILIDAD
+   EN NINGÚN CASO EL AUTOR SERÁ RESPONSABLE POR DAÑOS DIRECTOS, INDIRECTOS,
+   INCIDENTALES, ESPECIALES O CONSECUENTES DERIVADOS DEL USO O LA
+   IMPOSIBILIDAD DE USAR EL SOFTWARE, INCLUSO SI SE LE HUBIERA ADVERTIDO DE
+   LA POSIBILIDAD DE TALES DAÑOS.
+
+6. TERMINACIÓN
+   Esta licencia se termina automáticamente, sin necesidad de aviso previo,
+   si el Licenciatario incumple cualquiera de sus términos. Al terminarse, el
+   Licenciatario debe cesar todo uso del Software y destruir todas las copias
+   en su poder.
+
+7. ESTADO ACTUAL DE DISTRIBUCIÓN
+   A la fecha, los módulos de RPGRoll todavía no se encuentran publicados en
+   ningún canal de venta público. Esta licencia rige igualmente cualquier
+   copia de evaluación, preventa o acceso anticipado que el autor entregue
+   antes del lanzamiento público.
+
+Para consultas sobre licenciamiento, uso comercial extendido o permisos
+especiales, contactar al autor (Sack / DarkSack).

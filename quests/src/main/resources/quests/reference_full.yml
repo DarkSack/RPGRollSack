@@ -1,0 +1,140 @@
+# ============================================================================
+# QUEST DE REFERENCIA — usa TODOS los campos que soporta RPGRoll-Quests: los
+# 9 tipos de objetivo, los 6 eventos (on-start/on-progress/on-complete/
+# on-fail/on-abandon/on-stage-change), diálogo con opciones, y toda
+# recompensa/requisito. Documentación ejecutable, no pensada para jugarse tal
+# cual. Ver la página "Misiones (Quests)" en la docs.
+# ============================================================================
+
+id: reference_full_example
+display-name: "&d&lMisión de Referencia"
+
+# MAIN_STORY | SIDE_QUEST | DAILY | WEEKLY | PROFESSION | GUILD | EVENT | DUNGEON | ACHIEVEMENT
+category: SIDE_QUEST
+
+# EASY | NORMAL | HARD | ELITE | LEGENDARY | MYTHIC
+difficulty: HARD
+
+repeatable: true
+cooldown: "1d" # solo aplica si repeatable: true — soporta s/m/h/d
+
+requirements:
+  level: 15
+  race: elf
+  class: ranger
+  profession: hunter
+  trait: keen_eye
+  permission: rpgroll.quests.reference
+  money: 50
+  items:
+    - material: BOW
+      amount: 1
+  completed:
+    - tutorial
+  world: world
+  region: forest # id de un archivo en regions/
+  biome: FOREST
+  weather: CLEAR # CLEAR | RAIN | THUNDER
+  hour: "6-20" # rango de hora del mundo (0-24000 en horas de 0-24)
+
+stages:
+  - id: stage-1
+    objectives:
+      - type: KILL_ENTITY
+        description: "Cazar 5 zombies"
+        amount: 5
+        entity: ZOMBIE
+      - type: BREAK_BLOCK
+        description: "Talar 10 troncos de roble"
+        amount: 10
+        material: OAK_LOG
+      - type: PLACE_BLOCK
+        description: "Colocar 5 antorchas"
+        amount: 5
+        material: TORCH
+      - type: COLLECT_ITEM
+        description: "Recolectar 3 manzanas"
+        amount: 3
+        material: APPLE
+      - type: WAIT
+        description: "Esperar 10 segundos"
+        amount: 1
+        seconds: "10"
+
+    conditions:
+      - "player.level >= 10"
+
+    dialog:
+      - npc: "Bienvenido, aventurero. ¿Listo para la primera prueba?"
+      - player: "Estoy listo."
+
+    options:
+      - label: "Aceptar el desafío"
+        next-stage: stage-2
+      - label: "Necesito más tiempo"
+        next-stage: stage-1
+
+    on-start:
+      - type: MESSAGE
+        value: "&d¡Comenzó la etapa 1 de la Misión de Referencia!"
+    on-progress:
+      - type: MESSAGE
+        value: "&7Progreso registrado."
+    on-stage-change:
+      - type: SOUND
+        value: "ENTITY_EXPERIENCE_ORB_PICKUP"
+
+  - id: stage-2
+    objectives:
+      - type: DELIVER_ITEM
+        description: "Entregar 3 manzanas al NPC"
+        amount: 3
+        material: APPLE
+        npc: reference_full_example # id de un NPC de RPGRoll-NPCs
+      - type: TALK_TO_NPC
+        description: "Hablar con el Guardia"
+        amount: 1
+        npc: guardia
+      - type: COMMAND
+        description: "Ejecutar /rpg stats"
+        amount: 1
+        command: "rpg stats"
+      - type: REACH_LOCATION
+        description: "Llegar al claro del bosque"
+        amount: 1
+        world: world
+        x: "-100"
+        y: "70"
+        z: "100"
+        radius: "5"
+      - type: DISCOVER_REGION
+        description: "Descubrir el bosque"
+        amount: 1
+        region: forest
+
+    on-complete:
+      - type: MESSAGE
+        value: "&a¡Misión de Referencia completada!"
+      - type: COMMAND
+        value: "give {player} diamond 1"
+    on-fail:
+      - type: MESSAGE
+        value: "&cFallaste la Misión de Referencia."
+    on-abandon:
+      - type: MESSAGE
+        value: "&7Abandonaste la Misión de Referencia."
+
+rewards:
+  money: 250
+  experience: 500
+  items:
+    - DIAMOND
+    - GOLDEN_APPLE
+  commands:
+    - "lp user {player} permission set rpgroll.reference true"
+  quests:
+    - hunter # inicia esta otra quest automáticamente al completar
+  extra:
+    - type: MESSAGE
+      value: "&d¡Recompensa extra entregada!"
+    - COMPLETE_QUEST # acción informativa, no fuerza progreso (ver docs)

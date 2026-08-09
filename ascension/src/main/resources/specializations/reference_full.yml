@@ -1,0 +1,78 @@
+# ============================================================================
+# ESPECIALIZACIÓN DE CLASE DE REFERENCIA — usa TODOS los campos que soporta
+# una ClassSpecialization de RPGRoll-Ascension, incluyendo un árbol de
+# talentos con prerequisitos y los 3 tipos de recompensa de nodo (skill,
+# trait, enchantment). Documentación ejecutable. Ver "Ascension" en la docs.
+# (Nota: Ascension tiene 9 tipos de contenido más — achievements, affinities,
+# evolutions, factions, job-evolutions, legacy, prestige, secrets, titles —
+# ver sus propias carpetas de ejemplo para el formato de cada uno.)
+# ============================================================================
+
+id: reference_full_example
+base-class: mago # debe existir como PlayerClass en el core
+display-name: "&9&lArquimago de Referencia"
+
+requirements:
+  level: 25
+  prestige: 1
+  trait: strong_mind
+  completed-quests:
+    - tutorial
+    - reference_full_example
+  reputation:
+    orden_arcana: 50
+    reino: 20
+
+# Bonos de stat fijos, aplicados con solo tener la especialización (además de los del árbol de talentos)
+stats:
+  magic_power: 5
+  magic_resistance: 3
+
+# Ids de restricciones "duras" evaluadas por el motor (ej. no poder usar armadura pesada)
+restrictions:
+  - "no-heavy-armor"
+
+# Equipamiento exclusivo de esta especialización (solo documental/informativo salvo que otro sistema lo lea)
+exclusive-equipment:
+  - archmage_staff
+  - archmage_robe
+
+# Árbol de talentos: cada clave es el id del nodo. "requires" referencia otros ids de este mismo árbol.
+talents:
+  inicio:
+    display-name: "&7Inicio"
+    cost: 1
+    stats:
+      mana: 10
+
+  arcane_mastery:
+    display-name: "&9Dominio Arcano"
+    cost: 2
+    requires: [inicio]
+    stats:
+      magic_power: 4
+
+  arcane_overload:
+    display-name: "&9Sobrecarga Arcana"
+    cost: 3
+    requires: [arcane_mastery]
+    skill: arcane_overload # otorga una skill del core al desbloquear este nodo
+
+  mana_shield:
+    display-name: "&7Escudo de Maná"
+    cost: 2
+    requires: [inicio]
+    stats:
+      magic_resistance: 4
+
+  unbreakable_barrier:
+    display-name: "&7Barrera Inquebrantable"
+    cost: 3
+    requires: [mana_shield]
+    trait: mana_barrier # otorga un trait del core al desbloquear este nodo
+
+  runic_edge:
+    display-name: "&5Filo Rúnico"
+    cost: 4
+    requires: [arcane_overload, unbreakable_barrier]
+    enchantment: flaming_strike # otorga (o permite aplicar) un encantamiento de RPGRoll-Enchantments

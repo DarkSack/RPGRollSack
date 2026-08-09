@@ -1,0 +1,59 @@
+# ============================================================================
+# NPC DE REFERENCIA — usa TODOS los tipos de acción y el formato completo de
+# condicionales que soporta RPGRoll-NPCs. Documentación ejecutable, no
+# pensada para dar en partidas reales tal cual. Ver la página "NPCs" en la docs.
+# ============================================================================
+
+id: reference_full_example
+display-name: "&b&lNPC de Referencia"
+
+# STANDING | SITTING | SLEEPING | CROUCHING (según lo que soporte tu versión de servidor)
+pose: "STANDING"
+
+location:
+  world: world
+  x: 0.0
+  y: 65.0
+  z: 0.0
+  yaw: 180.0
+  pitch: 0.0
+
+# Se ejecutan TODAS en orden cada vez que un jugador hace click en el NPC
+actions:
+  - type: MESSAGE
+    value: "&b¡Hola, {player}! Soy un NPC de referencia."
+
+  - type: SOUND
+    value: "ENTITY_VILLAGER_AMBIENT,1.0,1.0"
+
+  - type: COMMAND
+    value: "give {player} diamond 1"
+
+  - type: GIVE_ITEM
+    value: "BREAD,4"
+
+  - type: TAKE_ITEM
+    value: "STICK,1"
+
+  - type: TELEPORT
+    value: "world,0,70,0"
+
+  # CONDITIONAL: "condicion;accionSiTrue[;accionSiFalse]" — sub-acciones con "TIPO:valor" (dos puntos, no |)
+  - type: CONDITIONAL
+    value: "HAS_JOB:minero;MESSAGE:Ya eres minero, sigue así!;MESSAGE:¿No quieres unirte a los mineros?"
+
+  # Condiciones combinadas: && (todas) o || (alguna) — no mezclar ambos operadores en la misma expresión
+  - type: CONDITIONAL
+    value: "HAS_JOB:minero && MIN_JOB_LEVEL:minero,20 && HAS_ITEM:IRON_PICKAXE;GIVE_ITEM:DIAMOND,5;MESSAGE:Necesitas ser Minero nivel 20 y llevar un pico de hierro."
+
+  - type: CONDITIONAL
+    value: "MIN_LEVEL:10;MESSAGE:Veo que ya tienes experiencia.;MESSAGE:Vuelve cuando seas más fuerte."
+
+  - type: CONDITIONAL
+    value: "HAS_RACE:elf || HAS_CLASS:mage;MESSAGE:Los arcanos te reconocen.;MESSAGE:No perteneces a los arcanos."
+
+  - type: OPEN_GUI
+    value: "reference_full_menu"
+
+  - type: OPEN_INVENTORY
+    value: "CHEST,Cofre de Referencia"

@@ -1,0 +1,27 @@
+# ============================================================================
+# MÓDULO DE CONTENIDO DE REFERENCIA — usa TODOS los campos que soporta un
+# pack.yml (el manifiesto de un módulo de assets). Documentación ejecutable:
+# no aporta assets reales (no tiene carpeta assets/ propia), solo sirve para
+# que veas la estructura real dentro de plugins/SackResourcePack/content/.
+# Ver la página "SackResourcePack" en la docs.
+# ============================================================================
+
+id: reference_full_example
+name: "Módulo de Referencia"
+version: 1.0.0
+author: Sack
+
+# Namespace usado para las claves de CustomModelData y la carpeta assets/<namespace>/...
+namespace: reference_full_example
+
+# A igualdad de dependencias, menor prioridad se fusiona primero (los de mayor prioridad pueden pisar a los de menor)
+priority: 0
+
+# Ids de módulos obligatorios — si falta alguno, el build reporta un error claro
+depends: []
+
+# Ids de módulos opcionales — si están presentes se ordenan antes; si no, se ignoran sin error
+optional:
+  - rpgroll_core_textures
+
+description: "Módulo de ejemplo que documenta cada campo del manifiesto pack.yml."

@@ -1,0 +1,88 @@
+# ============================================================================
+# ENCANTAMIENTO DE REFERENCIA — usa TODOS los campos que soporta
+# RPGRoll-Enchantments. No pensado para dar en partidas reales tal cual: es
+# documentación ejecutable. Solo "id" es obligatorio, todo lo demás cae a un
+# default seguro si se omite. Ver la página "Encantamientos" en la docs.
+# ============================================================================
+
+id: reference_full_example
+display-name: "&d&lEncantamiento de Referencia"
+
+# COMMON | UNCOMMON | RARE | EPIC | LEGENDARY | MYTHIC | DIVINE — solo cosmético (color en lore/comandos)
+rarity: DIVINE
+
+# Nivel máximo permitido (el jugador/admin puede aplicar hasta este nivel)
+max-level: 5
+
+# A qué tipo de ítem se le puede aplicar — WEAPON, ARMOR, HELMET, CHESTPLATE, LEGGINGS,
+# BOOTS, TOOLS, BOW, CROSSBOW, TRIDENT, FISHING_ROD (una o varias)
+categories:
+  - WEAPON
+  - BOW
+
+# Restringe además a materiales vanilla específicos (opcional, además de "categories")
+allowed-items:
+  - NETHERITE_SWORD
+  - DIAMOND_SWORD
+  - BOW
+
+# ids de otros encantamientos custom que NO pueden coexistir en el mismo ítem
+conflicts:
+  - lifesteal
+  - frost
+
+# Evento que puede disparar los "effects" — uno o varios de:
+# PLAYER_ATTACK, ENTITY_DAMAGE, BLOCK_BREAK, PLAYER_JUMP, PLAYER_MOVE, PLAYER_DEATH, ENTITY_KILL
+trigger:
+  - PLAYER_ATTACK
+  - ENTITY_KILL
+
+# Condiciones adicionales evaluadas antes de disparar (mismo lenguaje de condiciones que Quests/Mobs)
+conditions:
+  - "sneaking"
+  - "health-below:50%"
+
+# Probabilidad de que dispare cada vez que ocurre el trigger — número (0-100) o con "%"
+chance: 35%
+
+# Datos numéricos por nivel — clave = nivel, valores libres que tus "effects" pueden referenciar
+# por convención (ej. "damage", "duration-ticks", "radius") vía placeholders del propio effect
+levels:
+  1:
+    damage: 2
+    duration-ticks: 40
+  2:
+    damage: 4
+    duration-ticks: 60
+  3:
+    damage: 6
+    duration-ticks: 80
+  4:
+    damage: 8
+    duration-ticks: 100
+  5:
+    damage: 12
+    duration-ticks: 140
+
+# Qué pasa cuando dispara — cada entrada puede ser un string simple (sin parámetros) o un
+# mapa con "type" + parámetros. type: DAMAGE | HEAL | LIGHTNING | POTION | FIRE | EXPLOSION |
+# TELEPORT | COMMAND | MESSAGE | PARTICLE | SOUND | PICKUP_ITEMS
+effects:
+  - LIGHTNING # forma simple: sin parámetros
+  - type: DAMAGE
+    amount: "4"
+  - type: POTION
+    potion: WITHER
+    amplifier: "1"
+    duration: "60"
+  - type: FIRE
+    duration: "100"
+  - type: PARTICLE
+    particle: FLAME
+    count: "20"
+  - type: SOUND
+    sound: ENTITY_LIGHTNING_BOLT_THUNDER
+  - type: MESSAGE
+    value: "&d¡El Encantamiento de Referencia se activó!"
+  - type: COMMAND
+    command: "give %player% diamond 1"

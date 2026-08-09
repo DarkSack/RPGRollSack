@@ -1,6 +1,7 @@
 .gradle
 .kotlin
 .vscode
+.claude
 bin
 build
 out

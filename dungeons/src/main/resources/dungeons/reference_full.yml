@@ -1,0 +1,273 @@
+# ============================================================================
+# MAZMORRA DE REFERENCIA — usa TODOS los campos que soporta RPGRoll-Dungeons:
+# todos los tipos de sala, todos los objetivos, oleadas, dificultades,
+# checkpoints/revive, los 5 tipos de loot y los 12 triggers. Documentación
+# ejecutable, no pensada para jugarse tal cual. Ver "Dungeons" en la docs.
+# ============================================================================
+
+id: reference_full_example
+category: dungeon
+display-name: "&5&lMazmorra de Referencia"
+icon: CHISELED_STONE_BRICKS
+description: "Una mazmorra de ejemplo que documenta cada campo disponible."
+
+recommended-level: 30
+estimated-minutes: 25
+min-players: 1
+max-players: 5
+cooldown: "12h"
+repeatable: true
+tags:
+  - reference
+  - dungeon
+
+lobby:
+  world: world
+  x: 0.0
+  y: 70.0
+  z: 0.0
+  yaw: 0.0
+  pitch: 0.0
+
+bounds:
+  world: world
+  min-x: -50.0
+  min-y: 0.0
+  min-z: -50.0
+  max-x: 50.0
+  max-y: 128.0
+  max-z: 50.0
+
+rooms:
+  # ENTRANCE | COMBAT | PUZZLE | REST | TREASURE | BOSS | EVENT | STORY | CINEMATIC
+  - id: entrance
+    type: ENTRANCE
+    entry:
+      world: world
+      x: 0.0
+      y: 70.0
+      z: 5.0
+      yaw: 0.0
+      pitch: 0.0
+    events:
+      ROOM_ENTER:
+        - type: MESSAGE
+          value: "&5Bienvenido a la Mazmorra de Referencia."
+
+  - id: combat_hall
+    type: COMBAT
+    entry:
+      world: world
+      x: 0.0
+      y: 70.0
+      z: 20.0
+    waves:
+      - id: wave_1
+        delay-before: "3s"
+        time-limit: "60s"
+        mobs:
+          - id: forest_goblin
+            amount: 5
+      - id: wave_2
+        delay-before: "5s"
+        time-limit: "90s"
+        mobs:
+          - id: forest_goblin
+            amount: 3
+          - id: reference_full_example
+            amount: 1
+    events:
+      WAVE_START:
+        - type: MESSAGE
+          value: "&c¡Oleada iniciada!"
+      WAVE_CLEAR:
+        - type: MESSAGE
+          value: "&a¡Oleada eliminada!"
+
+  - id: puzzle_room
+    type: PUZZLE
+    entry:
+      world: world
+      x: 0.0
+      y: 70.0
+      z: 40.0
+    objectives:
+      - type: SOLVE_PUZZLE
+        description: "Activa las 4 palancas en orden"
+        amount: 4
+        puzzle-id: lever_sequence
+      - type: ACTIVATE_MECHANISM
+        description: "Activa el mecanismo central"
+        amount: 1
+        mechanism-id: central_gear
+
+  - id: escort_hall
+    type: EVENT
+    entry:
+      world: world
+      x: 0.0
+      y: 70.0
+      z: 60.0
+    objectives:
+      - type: ESCORT
+        description: "Escolta al aldeano hasta la salida"
+        amount: 1
+        npc: guardia
+      - type: SURVIVE_TIME
+        description: "Sobrevive 30 segundos"
+        amount: 1
+        seconds: "30"
+      - type: RESIST_TIME
+        description: "Resiste el asedio"
+        amount: 1
+        seconds: "20"
+      - type: DEFEND
+        description: "Defiende el altar"
+        amount: 1
+        location: "world,0,70,60"
+      - type: DESTROY_BLOCK
+        description: "Destruye la barrera de hielo"
+        amount: 3
+        material: PACKED_ICE
+      - type: COLLECT_ITEM
+        description: "Recolecta 3 fragmentos"
+        amount: 3
+        material: PRISMARINE_SHARD
+      - type: KILL_ENTITY
+        description: "Elimina al líder goblin"
+        amount: 1
+        entity: ZOMBIE
+      - type: ESCAPE
+        description: "Escapa antes de que colapse la sala"
+        amount: 1
+        location: "world,0,70,80"
+
+  - id: treasure_room
+    type: TREASURE
+    entry:
+      world: world
+      x: 0.0
+      y: 70.0
+      z: 80.0
+
+  - id: story_room
+    type: STORY
+    entry:
+      world: world
+      x: 0.0
+      y: 70.0
+      z: 90.0
+
+  - id: cinematic_room
+    type: CINEMATIC
+    entry:
+      world: world
+      x: 0.0
+      y: 70.0
+      z: 100.0
+
+  - id: boss_room
+    type: BOSS
+    entry:
+      world: world
+      x: 0.0
+      y: 70.0
+      z: 120.0
+    boss: reference_full_example # id de un mob de RPGRoll-Mobs
+    events:
+      BOSS_SPAWN:
+        - type: MESSAGE
+          value: "&4¡El jefe ha aparecido!"
+      BOSS_DEFEATED:
+        - type: MESSAGE
+          value: "&6¡Jefe derrotado!"
+
+# Dificultades seleccionables al entrar (multiplican stats/loot y agregan modificadores)
+difficulties:
+  - id: normal
+    display-name: "&aNormal"
+    health-multiplier: 1.0
+    damage-multiplier: 1.0
+    loot-multiplier: 1.0
+    modifiers: []
+  - id: hard
+    display-name: "&cDifícil"
+    health-multiplier: 2.0
+    damage-multiplier: 1.5
+    loot-multiplier: 1.5
+    modifiers:
+      - NO_HEALING
+      - DOUBLE_DAMAGE_TAKEN
+  - id: nightmare
+    display-name: "&4&lPesadilla"
+    health-multiplier: 4.0
+    damage-multiplier: 2.5
+    loot-multiplier: 2.0
+    modifiers:
+      - NO_HEALING
+      - DOUBLE_DAMAGE_TAKEN
+      - CONSTANT_RAIN
+      - PERMANENT_DARKNESS
+      - REDUCED_TIME_LIMIT
+
+checkpoints:
+  mode: REVIVE_AT_CHECKPOINT # REVIVE_AT_CHECKPOINT | RESTART_ROOM | RESTART_DUNGEON
+  shared-lives: true # true = el grupo comparte un pool de vidas, false = cada jugador tiene las suyas
+  max-retries: 3 # -1 = ilimitado
+
+revive:
+  mode: BY_TEAMMATE # NONE | AUTO | BY_TEAMMATE | WITH_ITEM | AFTER_TIMER
+  timer: "20s" # solo aplica con AFTER_TIMER
+  item: TOTEM_OF_UNDYING # solo aplica con WITH_ITEM
+
+loot:
+  - type: ITEM
+    reference: NETHERITE_INGOT
+    amount-min: 1
+    amount-max: 2
+    chance: 100
+    scope: SHARED # SHARED | PER_PLAYER | PER_CONTRIBUTION
+  - type: ITEM
+    reference: reference_full_example
+    amount-min: 1
+    amount-max: 1
+    chance: 10
+    scope: PER_PLAYER
+  - type: MONEY
+    amount-min: 200
+    amount-max: 500
+    chance: 100
+    scope: PER_CONTRIBUTION # reparte proporcional a lo que hizo cada jugador
+  - type: EXPERIENCE
+    amount-min: 300
+    amount-max: 300
+    chance: 100
+    scope: PER_PLAYER
+  - type: COMMAND
+    reference: "lp user %player% permission set rpgroll.dungeon.reference.cleared true"
+    chance: 100
+    scope: PER_PLAYER
+  - type: QUEST
+    reference: reference_full_example
+    chance: 100
+    scope: PER_PLAYER
+
+triggers:
+  DUNGEON_START:
+    - type: MESSAGE
+      value: "&5¡La Mazmorra de Referencia ha comenzado!"
+  DUNGEON_COMPLETE:
+    - type: MESSAGE
+      value: "&6¡Mazmorra completada!"
+  DUNGEON_FAIL:
+    - type: MESSAGE
+      value: "&cFallaron la mazmorra."
+  DUNGEON_ABANDON:
+    - type: MESSAGE
+      value: "&7Abandonaron la mazmorra."
+  PLAYER_DEATH:
+    - type: MESSAGE
+      value: "&c¡Un jugador ha caído!"
+  PLAYER_REVIVE:
+    - type: MESSAGE
+      value: "&a¡Un jugador ha sido revivido!"

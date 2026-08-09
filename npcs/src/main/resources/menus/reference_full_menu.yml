@@ -1,0 +1,53 @@
+# ============================================================================
+# MENÚ (TIENDA) DE REFERENCIA — usa todos los campos de un NpcMenuDefinition,
+# incluyendo el patrón de "compra" de dos condicionales (entregar, luego
+# cobrar) y un ítem de "Cerrar" sin acciones. Ver la página "NPCs" en la docs.
+# ============================================================================
+
+id: reference_full_menu
+title: "&6Tienda de Referencia"
+rows: 3
+
+items:
+  # Patrón de compra: primero el condicional que ENTREGA, después el que COBRA.
+  # Si el cobro fuera primero, el segundo condicional volvería a evaluar
+  # HAS_ITEM ya sin el oro recién descontado y nunca entregaría el ítem.
+  - slot: 10
+    material: IRON_SWORD
+    name: "&fEspada de Hierro"
+    lore:
+      - "&7Precio: &e50 monedas (Lingote de Oro)"
+    actions:
+      - type: CONDITIONAL
+        value: "HAS_ITEM:GOLD_INGOT,50;GIVE_ITEM:IRON_SWORD,1;MESSAGE:No tienes suficiente oro."
+      - type: CONDITIONAL
+        value: "HAS_ITEM:GOLD_INGOT,50;TAKE_ITEM:GOLD_INGOT,50"
+
+  # Ítem simple: una sola acción sin condición (venta "gratis"/de un solo tipo de acción)
+  - slot: 12
+    material: TORCH
+    name: "&fAntorchas"
+    lore:
+      - "&7Precio: &e2 monedas"
+    actions:
+      - type: GIVE_ITEM
+        value: "TORCH,8"
+
+  # Ítem que ejecuta un comando en vez de dar un item directamente
+  - slot: 14
+    material: PAPER
+    name: "&fPermiso Temporal"
+    lore:
+      - "&7Otorga un permiso por 1 día."
+    actions:
+      - type: CONDITIONAL
+        value: "HAS_ITEM:EMERALD,10;COMMAND:lp user {player} permission settemp rpgroll.vip true 1d;MESSAGE:No tienes suficientes esmeraldas."
+      - type: CONDITIONAL
+        value: "HAS_ITEM:EMERALD,10;TAKE_ITEM:EMERALD,10"
+
+  # Ítem decorativo/informativo sin acciones (ej. separador visual)
+  - slot: 16
+    material: BARRIER
+    name: "&cCerrar"
+    lore: []
+    actions: []

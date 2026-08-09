@@ -1,0 +1,146 @@
+# ============================================================================
+# HECHIZO DE REFERENCIA — usa TODOS los campos que soporta un Spell, y los 26
+# tipos de componente del Spell Engine. Documentación ejecutable, no pensado
+# para lanzarse en partidas reales tal cual (el pipeline completo tardaría
+# varios segundos y encadena casi todo lo que existe). Ver "Magic" en la docs.
+# (El addon tiene 4 tipos de contenido más — schools/, runes/, catalysts/,
+# grimoires/ — ver sus propias carpetas de ejemplo para el formato de cada uno.)
+# ============================================================================
+
+id: reference_full_example
+display-name: "&d&lHechizo de Referencia"
+icon: NETHER_STAR
+color: "#54DAF4"
+school: fire # debe existir en schools/
+rarity: LEGENDARY # COMMON | UNCOMMON | RARE | EPIC | LEGENDARY
+level: 10 # nivel mínimo de personaje para aprenderlo
+
+cost:
+  mana: 60
+  health: 5 # opcional — costo adicional de vida
+  experience: 10 # opcional — costo adicional de XP de nivel
+  reagent-material: BLAZE_POWDER # opcional — consume un ítem del inventario al lanzar
+  reagent-amount: 1
+
+cast-time: 20 # ticks de canalización antes de disparar (0 = instantáneo)
+cooldown: 100 # ticks
+
+# LEFT_CLICK | RIGHT_CLICK | HOLD — HOLD requiere quedarse quieto canalizando cast-time
+trigger: RIGHT_CLICK
+
+# Árbol de progresión: este hechizo requiere haber aprendido "tree-parent" antes
+tree-parent: fireball
+tree-tier: 2
+
+tags:
+  - fire
+  - reference
+  - projectile
+
+description: "Un hechizo de ejemplo que encadena los 26 tipos de componente del Spell Engine, uno detrás del otro."
+
+components:
+  # --- Movimiento ---
+  - type: DASH
+    distance: 5
+
+  - type: LEAP
+    forward: 1.5
+    up: 0.6
+
+  - type: TELEPORT
+    mode: to_target # self | to_target
+
+  - type: ORBIT
+    radius: 2
+    duration: 40
+    points: 16
+    particle: WITCH
+
+  # --- Proyectil (único con colisión real, deja el punto/entidad golpeada en el contexto) ---
+  - type: PROJECTILE
+    speed: 1.2
+    max-distance: 30
+    hit-radius: 1.0
+    trail-particle: FLAME
+
+  # --- Daño (escalan con powerMultiplier de escuela/catalizador) ---
+  - type: DAMAGE_DIRECT
+    amount: 12
+    range: 20
+
+  - type: DAMAGE_AREA
+    radius: 4
+    amount: 10
+
+  - type: DAMAGE_LINE
+    range: 10
+    width: 1.0
+    amount: 8
+
+  - type: DAMAGE_CHAIN
+    max-jumps: 3
+    radius: 6
+    amount: 6
+
+  - type: DAMAGE_CONE
+    range: 6
+    angle-degrees: 60
+    amount: 8
+
+  # --- Visual ---
+  - type: PARTICLE
+    particle: FLAME
+    count: 30
+
+  - type: SOUND
+    sound: ENTITY_GENERIC_EXPLODE
+    volume: 1.0
+    pitch: 1.0
+
+  - type: VISUAL
+    effect-id: level_up # id de un efecto de SackEffects, si está instalado
+
+  # --- Mundo ---
+  - type: BREAK_BLOCK
+
+  - type: PLACE_BLOCK
+    material: FIRE
+
+  - type: IGNITE
+    fire-ticks: 100
+
+  - type: FREEZE_WATER
+    radius: 3
+
+  # --- Entidades ---
+  - type: SUMMON
+    entity: BLAZE
+
+  - type: HEAL
+    amount: 10
+    target: self # self | target
+
+  - type: APPLY_EFFECT
+    effect-id: reference_full_example # id de un efecto de RPGRoll-Effects, si está instalado
+    target: target # self | target
+
+  - type: REMOVE_EFFECT
+    effect-id: frozen
+    target: self
+
+  - type: PUSH
+    strength: 1.5
+
+  - type: PULL
+    strength: 1.5
+
+  # --- Control ---
+  - type: DELAY
+    ticks: 20
+
+  - type: MESSAGE
+    text: "&d¡Hechizo de Referencia completado!"
+
+  - type: COMMAND
+    command: "give %player% blaze_powder 1"

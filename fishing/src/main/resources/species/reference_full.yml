@@ -1,0 +1,74 @@
+# ============================================================================
+# ESPECIE DE PEZ DE REFERENCIA — usa TODOS los campos que soporta una
+# FishSpecies. Documentación ejecutable, con requisitos deliberadamente
+# extremos para mostrar cada campo. Ver "Fishing" en la docs.
+# (El addon tiene 5 tipos de contenido más — rods/, baits/, treasures/,
+# junk/, regions/ — ver sus propias carpetas de ejemplo para el formato de
+# cada uno.)
+# ============================================================================
+
+id: reference_full_example
+display-name: "&d&lPez de Referencia"
+icon: PUFFERFISH
+custom-model-data: 200001
+description: "Un pez de ejemplo que documenta cada campo disponible."
+
+# FRESHWATER | SALTWATER | DEEP | TROPICAL | ARCTIC | VOLCANIC | MAGIC | LEGENDARY
+category: MAGIC
+
+# COMMON | UNCOMMON | RARE | EPIC | LEGENDARY
+rarity: LEGENDARY
+
+# RIVER | LAKE | SWAMP | OCEAN | DEEP_OCEAN | LAVA | MAGIC_WATER | CORRUPTED_WATER
+water-types:
+  - MAGIC_WATER
+  - CORRUPTED_WATER
+
+biomes:
+  - swamp
+  - mangrove_swamp
+
+# SURFACE | MID_WATER | BOTTOM | UNDERWATER_CAVE
+depths:
+  - BOTTOM
+  - UNDERWATER_CAVE
+
+min-weight: 5.0
+max-weight: 25.0
+min-length: 80
+max-length: 200
+
+base-price: 500
+base-experience: 100
+
+# SHY | AGGRESSIVE | FAST | SLOW | JUMPER | ELUSIVE — afecta la dificultad del minijuego de forcejeo
+behavior: ELUSIVE
+
+# ids de estaciones de RPGRoll-Seasons en las que puede aparecer (vacío = todas)
+allowed-seasons:
+  - winter
+  - autumn
+
+# SUNNY | RAIN | STORM | SNOW
+allowed-weathers:
+  - STORM
+  - SNOW
+
+# DAY | NIGHT | DAWN | DUSK | NOON | MIDNIGHT
+allowed-times:
+  - MIDNIGHT
+  - DUSK
+
+# Tags de carnada (baits/*.yml define sus propios tags) que aumentan la chance de esta especie
+attracted-by-bait-tags:
+  - magic
+  - rare
+
+# true = solo puede pescarse cumpliendo TODOS los requisitos anteriores + los siguientes campos
+legendary: true
+required-level: 60
+requires-full-moon: true
+required-bait: golden_lure # id de un bait específico obligatorio (además de attracted-by-bait-tags)
+
+catch-effect: level_up # id de un efecto de SackEffects al capturarla, si está instalado
+catch-status-effect: reference_full_example # id de un efecto de RPGRoll-Effects aplicado al pescador al capturarla

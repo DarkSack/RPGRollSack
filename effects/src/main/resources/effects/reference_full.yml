@@ -1,0 +1,159 @@
+# ============================================================================
+# EFECTO DE ESTADO DE REFERENCIA — usa TODOS los campos que soporta
+# RPGRoll-Effects: las 15 condiciones, los 13 tipos de componente, los 14
+# triggers (incluidos los 4 sin listener todavía) y stacking UPGRADE.
+# Documentación ejecutable, no pensado para aplicarse en partidas reales tal
+# cual. Ver la página "Effects" en la docs.
+# ============================================================================
+
+id: reference_full_example
+display-name: "&d&lEfecto de Referencia"
+icon: NETHER_STAR
+color: "#54DAF4"
+description: "Un efecto de estado de ejemplo que documenta cada campo disponible."
+
+# COMBAT | SURVIVAL | MAGIC | ELEMENTAL | PROFESSION | SOCIAL | EVENTS | OTHER
+category: MAGIC
+
+# COMMON | UNCOMMON | RARE | EPIC | LEGENDARY
+rarity: EPIC
+
+duration: 200 # ticks (20 = 1 segundo)
+priority: 10 # mayor prioridad se muestra primero en el HUD/lista de efectos activos
+visible: true # false = efecto "oculto" (no aparece en /rpgeffects list del jugador)
+
+tags:
+  - reference
+  - magic
+
+# ids de otros efectos que se remueven mutuamente al aplicar este
+conflicts:
+  - burning
+  - frozen
+
+stacking:
+  mode: UPGRADE # NONE | INDEPENDENT | REFRESH | UPGRADE
+  max-stacks: 3
+  upgrade-to: reference_full_example_upgraded # otro id de efecto (no incluido acá, es solo referencia)
+
+# Requisitos para que el efecto pueda aplicarse — todas deben cumplirse
+conditions:
+  - type: LEVEL_MIN
+    value: "10"
+  - type: LEVEL_MAX
+    value: "80"
+  - type: RACE
+    value: elf
+  - type: CLASS
+    value: mage
+  - type: JOB
+    value: alchemist
+  - type: WORLD
+    value: world
+  - type: WEATHER
+    value: CLEAR
+  - type: TIME_RANGE
+    value: "0-24000"
+  - type: HEALTH_BELOW
+    value: "80"
+  - type: HEALTH_ABOVE
+    value: "10"
+  - type: MANA_BELOW
+    value: "90"
+  - type: MANA_ABOVE
+    value: "5"
+  - type: GUILD
+    value: orden_arcana
+  - type: TEAM
+    value: "true"
+  - type: PERMISSION
+    value: rpgroll.effects.reference
+
+# Qué hace el efecto — cada componente tiene type + trigger (opcional, default ON_APPLY) + params libres
+components:
+  - type: ATTRIBUTE_MODIFIER
+    trigger: ON_APPLY
+    attribute: GENERIC_ATTACK_DAMAGE
+    amount: "2"
+
+  - type: MOVEMENT_MODIFIER
+    trigger: ON_APPLY
+    amount: "-0.1"
+
+  - type: PERIODIC_DAMAGE
+    trigger: ON_SECOND
+    amount: "2"
+    amount-per-stack: "1"
+
+  - type: PERIODIC_HEAL
+    trigger: ON_SECOND
+    amount: "1"
+
+  - type: POTION_VANILLA
+    trigger: ON_APPLY
+    potion: GLOWING
+    amplifier: "0"
+
+  - type: VISUAL
+    trigger: ON_APPLY
+    effect-id: level_up # id de un efecto de SackEffects, si está instalado
+
+  - type: SOUND
+    trigger: ON_APPLY
+    sound: BLOCK_BEACON_AMBIENT
+
+  - type: MESSAGE
+    trigger: ON_APPLY
+    text: "&d¡Sientes el Efecto de Referencia recorrer tu cuerpo!"
+
+  - type: SHIELD
+    trigger: ON_APPLY
+    amount: "20"
+
+  - type: SILENCE
+    trigger: ON_APPLY
+
+  - type: CONFUSION
+    trigger: ON_APPLY
+
+  - type: AURA
+    trigger: ON_SECOND
+    effect-id: reference_full_example
+    radius: "5"
+
+  - type: COMMAND
+    trigger: ON_EXPIRE
+    command: "lp user %target% permission unset rpgroll.effects.reference.active"
+
+  # Triggers adicionales, mostrados sobre un componente inofensivo (MESSAGE) — ver tabla de triggers en la docs
+  - type: MESSAGE
+    trigger: ON_DAMAGE_TAKEN
+    text: "&7(recibiste daño con el Efecto de Referencia activo)"
+  - type: MESSAGE
+    trigger: ON_DAMAGE_DEALT
+    text: "&7(hiciste daño con el Efecto de Referencia activo)"
+  - type: MESSAGE
+    trigger: ON_DEATH
+    text: "&7(moriste con el Efecto de Referencia activo)"
+  - type: MESSAGE
+    trigger: ON_HEAL
+    text: "&7(te curaste con el Efecto de Referencia activo)"
+  - type: MESSAGE
+    trigger: ON_FOOD_CONSUME
+    text: "&7(comiste con el Efecto de Referencia activo)"
+  - type: MESSAGE
+    trigger: ON_REMOVE
+    text: "&7Se removió el Efecto de Referencia antes de tiempo."
+  # Sin listener propio todavía (ver Callout en la docs) — solo documentales, otro addon puede dispararlos a mano
+  - type: MESSAGE
+    trigger: REGION_ENTER
+    text: "&7(entraste a una región con el Efecto de Referencia activo)"
+  - type: MESSAGE
+    trigger: REGION_EXIT
+    text: "&7(saliste de una región con el Efecto de Referencia activo)"
+  - type: MESSAGE
+    trigger: COMBAT_START
+    text: "&7(empezó combate con el Efecto de Referencia activo)"
+  - type: MESSAGE
+    trigger: SPELL_CAST
+    text: "&7(lanzaste un hechizo con el Efecto de Referencia activo)"

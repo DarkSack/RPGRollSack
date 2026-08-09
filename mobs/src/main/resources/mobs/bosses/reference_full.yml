@@ -1,0 +1,221 @@
+# ============================================================================
+# MOB DE REFERENCIA — usa TODOS los campos que soporta RPGRoll-Mobs,
+# incluyendo fases de jefe, bossbar, diálogo, loot de los 5 tipos y reglas de
+# spawn. Documentación ejecutable, no pensada para dar en partidas reales tal
+# cual (deliberadamente sobrecargado). Ver la página "Mobs y jefes" en la docs.
+# ============================================================================
+
+id: reference_full_example
+base-entity-type: WITHER_SKELETON
+
+# NORMAL | MINI_BOSS | WORLD_BOSS | RAID_BOSS | DUNGEON_BOSS | ELITE | SUMMON |
+# SPIRIT | HOSTILE_PET | NEUTRAL | ARMED_MERCHANT | GUARDIAN | CINEMATIC_BOSS
+category: DUNGEON_BOSS
+
+display-name: "&4&lColoso de Referencia"
+name-color: "&4"
+level: 50
+rarity: MYTHIC # debe existir en rarities/ (mismo pool que Items)
+tags:
+  - boss
+  - reference
+  - fire
+description: "Un jefe de ejemplo que documenta cada campo disponible."
+
+model:
+  scale: 2.5
+  glow: true
+  invisible: false
+  model-engine-id: reference_boss_model # solo si tenés ModelEngine
+  equipment:
+    HEAD: NETHERITE_HELMET
+    CHEST: NETHERITE_CHESTPLATE
+    LEGS: NETHERITE_LEGGINGS
+    FEET: NETHERITE_BOOTS
+    MAIN_HAND: NETHERITE_SWORD
+    OFF_HAND: SHIELD
+
+stats:
+  health: 5000
+  damage: 40
+  armor: 30
+  speed: 0.25
+
+resistances:
+  fire: 100
+  magic: 25
+
+weaknesses:
+  - type: ELEMENT
+    key: ice
+    extra-damage-percent: 50
+  - type: WEAPON_CATEGORY
+    key: BOW
+    extra-damage-percent: 25
+  - type: ENCHANTMENT
+    key: flaming_strike
+    extra-damage-percent: 75
+
+ai:
+  goals:
+    - ATTACK_PLAYERS
+    - GUARD_AREA
+  aggro-range: 32
+  flee-health-percent: 10
+  move-speed: 1.2
+  patrol-points:
+    - "world,100,70,100"
+    - "world,120,70,100"
+    - "world,120,70,120"
+  guard-region: dungeon_boss_room # id de un MobRegion
+
+skills:
+  - id: fire_slam
+    display-name: "&cGolpe Ígneo"
+    trigger: ATTACK
+    cooldown: "15s"
+    chance: 40
+    conditions:
+      - "target.distance <= 4"
+    actions:
+      - type: DAMAGE
+        amount: "30"
+      - type: PARTICLE
+        particle: FLAME
+        count: "40"
+      - type: SOUND
+        sound: ENTITY_GENERIC_EXPLODE
+
+  - id: summon_minions
+    display-name: "&8Invocar Sirvientes"
+    trigger: HEALTH_THRESHOLD
+    cooldown: "60s"
+    chance: 100
+    actions:
+      - type: SUMMON
+        entity: WITHER_SKELETON
+        amount: "3"
+      - type: MESSAGE
+        value: "&4¡El Coloso invoca a sus sirvientes!"
+
+# Triggers -> acciones directas (además de las skills con cooldown/condiciones)
+triggers:
+  SPAWN:
+    - type: MESSAGE
+      value: "&4&l¡El Coloso de Referencia ha despertado!"
+    - type: SOUND
+      sound: ENTITY_ENDER_DRAGON_GROWL
+  DEATH:
+    - type: MESSAGE
+      value: "&4El Coloso de Referencia ha caído."
+    - type: EXPLOSION
+      power: "3"
+  DAMAGED:
+    - type: PARTICLE
+      particle: LAVA
+      count: "5"
+  LOSE_TARGET:
+    - MESSAGE_LOST_TARGET # forma simple, sin parámetros
+  PLAYER_ENTER_RANGE:
+    - type: MESSAGE
+      value: "&c¡El Coloso te ha detectado!"
+
+# Fases de jefe — se activan al bajar del umbral de vida (health-threshold-percent)
+phases:
+  - id: phase_1
+    health-threshold-percent: 100
+    stat-multipliers:
+      damage: 1.0
+      speed: 1.0
+    bossbar-title: "&4Coloso de Referencia &7(Fase 1)"
+    bossbar-color: RED
+    dialogue: "¡Enfréntate a mi poder!"
+    particle: FLAME
+
+  - id: phase_2
+    health-threshold-percent: 50
+    stat-multipliers:
+      damage: 1.5
+      speed: 1.3
+    skills:
+      - id: enrage_slam
+        display-name: "&4Golpe Enfurecido"
+        trigger: ATTACK
+        cooldown: "8s"
+        chance: 60
+        actions:
+          - type: DAMAGE
+            amount: "50"
+    bossbar-title: "&4Coloso de Referencia &7(Fase 2 - ¡Enfurecido!)"
+    bossbar-color: PURPLE
+    dialogue: "¡AHORA VERÁS MI VERDADERO PODER!"
+    particle: LAVA
+
+# Loot al morir — type: ITEM | MONEY | EXPERIENCE | COMMAND | QUEST
+loot:
+  - type: ITEM
+    reference: NETHERITE_INGOT
+    amount-min: 1
+    amount-max: 3
+    chance: 100
+    required-level: 0
+    scope: SHARED # SHARED = un solo drop compartido | PER_PLAYER = cada jugador que participó recibe el suyo
+  - type: ITEM
+    reference: reference_full_example # id de un ítem de RPGRoll-Items, si está instalado
+    amount-min: 1
+    amount-max: 1
+    chance: 5
+    scope: PER_PLAYER
+  - type: MONEY
+    amount-min: 500
+    amount-max: 1000
+    chance: 100
+    scope: PER_PLAYER
+  - type: EXPERIENCE
+    amount-min: 200
+    amount-max: 200
+    chance: 100
+    scope: PER_PLAYER
+  - type: COMMAND
+    reference: "lp user %player% permission set rpgroll.boss.reference.defeated true"
+    chance: 100
+    scope: PER_PLAYER
+  - type: QUEST
+    reference: reference_full_example # completa esta quest automáticamente si está en progreso
+    chance: 100
+    scope: PER_PLAYER
+
+bossbar:
+  enabled: true
+  color: RED # PINK | BLUE | RED | GREEN | YELLOW | PURPLE | WHITE
+  style: SOLID # SOLID | SEGMENTED_6 | SEGMENTED_10 | SEGMENTED_12 | SEGMENTED_20
+  title: "&4&lColoso de Referencia"
+
+dialogues:
+  - trigger: SPAWN
+    text: "¡Al fin, un desafío digno!"
+  - trigger: PHASE_CHANGE
+    phase: phase_2
+    text: "¡No has visto nada aún!"
+  - trigger: DEATH
+    text: "Imposible... derrotado..."
+
+spawn-rules:
+  biomes:
+    - NETHER_WASTES
+    - CRIMSON_FOREST
+  regions:
+    - dungeon_boss_room
+  worlds:
+    - world_nether
+  hour: "0-24" # rango de hora del mundo
+  weather: ANY # CLEAR | RAIN | THUNDER | ANY
+  min-height: 0
+  max-height: 128
+  min-distance-from-players: 10
+  natural-spawn: false # false = solo aparece vía /mobadmin spawn o loot/quest, no en el mundo naturalmente
+  spawn-weight: 1.0
+
+custom-data:
+  arena: "reference_dungeon"
+  music-track: "boss_theme_reference"

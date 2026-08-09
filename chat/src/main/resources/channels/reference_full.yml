@@ -1,0 +1,49 @@
+# ============================================================================
+# CANAL DE REFERENCIA — usa TODOS los campos que soporta un ChatChannel.
+# Documentación ejecutable. Ver la página "Chat" en la docs.
+# (El addon tiene 3 tipos de contenido más — emotes/, languages/, roles/ —
+# ver esas carpetas para el formato de cada uno.)
+# ============================================================================
+
+id: reference_full_example
+display-name: "&d&lCanal de Referencia"
+icon: BEACON
+color: "#54DAF4" # acepta nombre de NamedTextColor o hex
+
+# Prioridad de resolución cuando un jugador escribe sin prefijo de canal — mayor gana
+priority: 5
+
+# GLOBAL | PROXIMITY | WORLD | GUILD | TEAM | STAFF
+scope: PROXIMITY
+
+# Solo aplica si scope: PROXIMITY — radio en bloques
+distance: 50
+
+# Permisos opcionales — null/omitido = cualquiera puede ver/hablar
+view-permission: rpgrollchat.channel.reference.view
+speak-permission: rpgrollchat.channel.reference.speak
+
+# Cooldown entre mensajes en este canal (milisegundos)
+cooldown-millis: 3000
+
+# Formato del mensaje — soporta legacy (&), hex y MiniMessage según "text-format"
+format: "&d[Referencia] &f{player}&7: &f{message}"
+
+# LEGACY | MINIMESSAGE — motor usado para parsear "format" y los mensajes de este canal
+text-format: LEGACY
+
+# Sonido reproducido al unirse al canal (nombre de Sound, opcional)
+join-sound: ENTITY_EXPERIENCE_ORB_PICKUP
+
+filter-profanity: true
+filter-caps: true
+allow-urls: false
+
+# Si el jugador entra automáticamente a este canal al conectarse
+default-joined: false
+
+# Si los mensajes cruzan entre mundos distintos (ignorado si scope: PROXIMITY, que ya es local)
+cross-world: true
+
+# Si además de chat, el mensaje también aparece en el action bar
+also-action-bar: false

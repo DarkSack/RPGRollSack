@@ -1,0 +1,80 @@
+# ============================================================================
+# ESTACIÓN DE REFERENCIA — usa TODOS los campos que soporta una Season,
+# incluyendo sub-estaciones, modificadores de bioma, vegetación, mobs y
+# eventos mundiales asociados. Documentación ejecutable. Ver "Seasons" en la
+# docs. (El addon tiene 3 tipos de contenido más — calendars/, events/,
+# regions/ — ver sus propias carpetas de ejemplo para el formato de cada uno.)
+# ============================================================================
+
+id: reference_full_example
+display-name: "&d&lEstación de Referencia"
+icon: NETHER_STAR
+color: "#54DAF4"
+description: "Una estación de ejemplo que documenta cada campo disponible."
+
+duration-amount: 14
+# REAL_HOURS | REAL_DAYS | REAL_WEEKS | MINECRAFT_DAYS
+duration-unit: MINECRAFT_DAYS
+
+climate:
+  rain-chance: 0.4
+  storm-chance: 0.1
+  snow-chance: 0.05
+  fog-chance: 0.2
+  base-temperature: 18.0
+  temperature-variance: 5.0
+  wind-strength: 0.4
+  humidity: 0.6
+  heatwave-chance: 0.03
+  thunderstorm-chance: 0.04
+
+# Sub-fases dentro de la estación (ej. "principio", "pleno", "final") — cada una puede overridear temperatura
+sub-seasons:
+  - id: early
+    display-name: "&7Comienzo"
+    duration-amount: 5
+    duration-unit: MINECRAFT_DAYS
+    temperature-override: 15.0
+  - id: peak
+    display-name: "&fPleno"
+    duration-amount: 4
+    duration-unit: MINECRAFT_DAYS
+    temperature-override: 22.0
+  - id: late
+    display-name: "&7Final"
+    duration-amount: 5
+    duration-unit: MINECRAFT_DAYS
+    temperature-override: 16.0
+
+# Ajuste de temperatura por bioma (nombre de Biome), sumado a base-temperature
+biome-temperature-modifiers:
+  desert: 10.0
+  taiga: -8.0
+  swamp: 3.0
+
+# SNOW_LAYERS | ICE_LAKES | DRY_GRASS | FALLING_LEAVES | FLOWER_BOOM
+vegetation-effects:
+  - FALLING_LEAVES
+  - FLOWER_BOOM
+
+# Spawn extra de mobs (de RPGRoll-Mobs o vanilla) durante esta estación
+mob-modifiers:
+  - mob-id: reference_full_example
+    extra-spawn-chance: 0.15
+  - mob-id: forest_goblin
+    extra-spawn-chance: 0.3
+
+# Un jefe exclusivo de esta estación (id de RPGRoll-Mobs)
+exclusive-boss: reference_full_example
+
+# Eventos mundiales que pueden dispararse aleatoriamente durante esta estación (ids de events/)
+world-events:
+  - aurora
+  - meteor_shower
+
+# Probabilidad diaria (0.0-1.0) de que se dispare uno de los world-events de arriba
+world-event-daily-chance: 0.1
+
+tags:
+  - reference
+  - temperate

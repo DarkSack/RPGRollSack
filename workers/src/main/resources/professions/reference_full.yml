@@ -1,0 +1,68 @@
+# ============================================================================
+# PROFESIÓN DE REFERENCIA — usa TODOS los campos que soporta una Profession,
+# incluyendo las 10 condiciones y las 9 acciones de IA. Documentación
+# ejecutable — las reglas de más abajo tienen prioridades más altas que
+# "ALWAYS: WORK" así que se evalúan primero. Ver "Workers" en la docs.
+# ============================================================================
+
+id: reference_full_example
+display-name: "&d&lTrabajador de Referencia"
+icon: VILLAGER_SPAWN_EGG
+description: "Un trabajador de ejemplo que documenta cada campo disponible."
+entity-type: VILLAGER
+
+# ids de skills/*.yml que este worker puede aprender/mejorar con el tiempo
+skills:
+  - mining_speed
+  - rare_catch
+
+# id de un archivo en schedules/ (horario diario: bloques de trabajo/descanso)
+schedule: standard_day
+
+wage-amount: 60
+# HOURLY | PER_TASK
+wage-type: HOURLY
+
+# Material de herramienta que este worker necesita tener/usar (opcional)
+tool-material: DIAMOND_PICKAXE
+
+# Reglas de IA: se evalúan en orden de "priority" (menor número = más urgente/primero)
+# condition: HUNGRY | TIRED | SLEEPY | STRESSED | INVENTORY_FULL | RAINING | NIGHT | LOW_HAPPINESS | HAS_TASK | ALWAYS
+# action: SEEK_FOOD | EAT | GO_TO_WAREHOUSE | STORE_ITEMS | SEEK_SHELTER | GO_HOME | SLEEP | WORK | IDLE
+ai-rules:
+  - condition: HUNGRY
+    action: SEEK_FOOD
+    priority: 5
+  - condition: HUNGRY
+    action: EAT
+    priority: 6
+  - condition: TIRED
+    action: SLEEP
+    priority: 10
+  - condition: SLEEPY
+    action: GO_HOME
+    priority: 12
+  - condition: STRESSED
+    action: IDLE
+    priority: 15
+  - condition: INVENTORY_FULL
+    action: GO_TO_WAREHOUSE
+    priority: 20
+  - condition: INVENTORY_FULL
+    action: STORE_ITEMS
+    priority: 21
+  - condition: RAINING
+    action: SEEK_SHELTER
+    priority: 30
+  - condition: NIGHT
+    action: GO_HOME
+    priority: 40
+  - condition: LOW_HAPPINESS
+    action: IDLE
+    priority: 50
+  - condition: HAS_TASK
+    action: WORK
+    priority: 90
+  - condition: ALWAYS
+    action: WORK
+    priority: 100

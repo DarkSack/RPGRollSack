@@ -1,0 +1,65 @@
+# ============================================================================
+# CRATE DE REFERENCIA — usa TODOS los campos que soporta RPGRoll-Crates,
+# incluyendo los 4 tipos de acción de recompensa. Documentación ejecutable,
+# no pensada para dar en partidas reales tal cual. Ver la página "Crates".
+# ============================================================================
+
+id: reference_full_example
+display-name: "&d&lCrate de Referencia"
+gui-title: "&d✦ Crate de Referencia ✦"
+
+# Si es false, cualquiera puede abrirla con solo click derecho, sin gastar llave
+require-key: true
+
+key:
+  material: TRIPWIRE_HOOK
+  name: "&dLlave: Crate de Referencia"
+  lore:
+    - "&7Úsala en la crate para abrirla."
+
+# Líneas de holograma flotante sobre la ubicación física de la crate (requiere DecentHolograms)
+hologram:
+  - "&d&lCrate de Referencia"
+  - "&7Click derecho con la llave"
+
+rewards:
+  - id: common_reward
+    display-name: "&f5 de Hierro"
+    icon: IRON_INGOT
+    weight: 50 # peso relativo para la ruleta — no necesita sumar 100
+    announce: false
+    lore:
+      - "&7Un premio común."
+    actions:
+      - type: GIVE_ITEM
+        value: "IRON_INGOT,5"
+
+  - id: rare_reward
+    display-name: "&b10 de Diamante"
+    icon: DIAMOND
+    weight: 15
+    announce: true # anuncia el premio al servidor entero al ganarlo
+    lore:
+      - "&7Un premio raro."
+    actions:
+      - type: GIVE_ITEM
+        value: "DIAMOND,10"
+      - type: SOUND
+        value: "ENTITY_PLAYER_LEVELUP,1.0,1.0"
+      - type: MESSAGE
+        value: "&b¡Ganaste 10 Diamantes!"
+
+  - id: legendary_reward
+    display-name: "&6Kit Legendario"
+    icon: NETHERITE_INGOT
+    weight: 1 # peso bajo = premio raro
+    announce: true
+    lore:
+      - "&7El premio más raro de esta crate."
+    actions:
+      - type: COMMAND
+        value: "give {player} netherite_ingot 3"
+      - type: SOUND
+        value: "ENTITY_ENDER_DRAGON_GROWL,1.0,1.0"
+      - type: MESSAGE
+        value: "&6&l¡{player} ganó el Kit Legendario!"

@@ -1,0 +1,23 @@
+# ============================================================================
+# MISIÓN DE GUILD DE REFERENCIA — usa todos los campos que soporta un
+# GuildQuestDefinition. Documentación ejecutable. Ver "Guilds" en la docs.
+# ============================================================================
+
+id: reference_full_example
+display-name: "&2&lMisión de Guild de Referencia"
+description: "Una misión de guild de ejemplo que documenta cada campo disponible."
+
+# DEFEAT_BOSS | COMPLETE_DUNGEON | GATHER_RESOURCE | WIN_WAR | BUILD_BASE
+type: GATHER_RESOURCE
+
+# Referencia al objetivo — un id de mob/dungeon/material según el "type" (opcional para WIN_WAR/BUILD_BASE)
+target-reference: IRON_INGOT
+
+# Cuánto hay que acumular/lograr entre todos los miembros de la guild
+target-amount: 500
+
+reward-money: 5000
+reward-xp: 1000
+
+# Nivel mínimo de guild para que esta misión pueda ofrecerse
+min-guild-level: 3
