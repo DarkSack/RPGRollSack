@@ -1,0 +1,26 @@
+name: RPGRoll-Crafting
+version: 1.0.0
+main: com.sack.rpgroll.crafting.CraftingPlugin
+api-version: "1.21"
+author: Sack
+description: Motor de crafteo avanzado — recetas personalizadas con condiciones e ingredientes ricos, sistema de calidad, estaciones de crafteo personalizadas (multi-etapa, combustible, fallos), puente con las estaciones vanilla (mesa de crafteo, hornos, cortadora de piedra, mesa de herrería) y motores dedicados de yunque y de fermentación.
+depend: [RPGRoll]
+softdepend: [RPGRoll-Items, RPGRoll-Economy, RPGRoll-Guilds, RPGRoll-Seasons]
+
+commands:
+  craftingadmin:
+    description: Comandos administrativos de RPGRoll-Crafting (Crafting Studio)
+    usage: /craftingadmin <browser|reload|give> [args]
+    permission: rpgrollcrafting.admin.*
+  crafting:
+    description: Comandos de jugador de RPGRoll-Crafting
+    usage: /crafting <book|discover> [args]
+    permission: rpgrollcrafting.use
+
+permissions:
+  rpgrollcrafting.admin.*:
+    description: Acceso completo a comandos administrativos de Crafting Studio
+    default: op
+  rpgrollcrafting.use:
+    description: Uso básico de crafteo (libro de recetas, estaciones)
+    default: true

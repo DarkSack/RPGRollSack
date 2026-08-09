@@ -1,0 +1,7 @@
+id: charcoal_fuel
+display-name: "Carbón vegetal"
+icon: CHARCOAL
+material-or-item-id: CHARCOAL
+is-custom-item: false
+burn-ticks: 1600
+consume-amount: 1

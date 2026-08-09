@@ -1,0 +1,24 @@
+id: steel_ingot
+display-name: "Lingote de Acero"
+icon: IRON_INGOT
+station-id: iron_forge
+processing-time-ticks: 200
+fuel-per-craft: 2
+xp-amount: 5
+economy-cost: 0
+fail-chance: 0.1
+quality-enabled: true
+result:
+  type: MATERIAL
+  value: IRON_INGOT
+  amount: 1
+ingredients:
+  - type: MATERIAL
+    value: IRON_ORE
+    amount: 2
+  - type: MATERIAL
+    value: COAL
+    amount: 1
+conditions:
+  - type: LEVEL_MIN
+    min-value: 5

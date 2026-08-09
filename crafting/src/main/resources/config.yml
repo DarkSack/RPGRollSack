@@ -1,0 +1,15 @@
+# Configuración de RPGRoll-Crafting
+
+# Cada cuántos ticks el motor de estaciones personalizadas avanza el procesamiento en curso
+# (inicia recetas, consume combustible, entrega resultados).
+station-tick-interval-ticks: 20
+
+# Cada cuántos ticks se persisten a disco las estaciones personalizadas activas (autosave).
+station-autosave-interval-ticks: 6000
+
+# Probabilidad base (0.0-1.0) de fallo de receta cuando la propia receta no define su propio fail-chance.
+default-fail-chance: 0.0
+
+# Si es true, un fallo de receta consume los ingredientes igual (más punitivo). Si es false, se documenta
+# igual como consumidos — hoy no hay devolución automática de ingredientes específicos tras un fallo.
+fail-consumes-ingredients: true

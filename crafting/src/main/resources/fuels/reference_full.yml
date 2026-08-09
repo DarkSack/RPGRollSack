@@ -1,0 +1,10 @@
+# Referencia completa de todos los campos de un FuelDefinition.
+id: reference_full_fuel
+display-name: "Combustible de Referencia"
+icon: COAL
+# Si is-custom-item es false, esto es un Material vanilla; si es true, es un id de
+# ítem personalizado (propio de Crafting o de RPGRoll-Items, ver ItemIdentity).
+material-or-item-id: COAL
+is-custom-item: false
+burn-ticks: 1600
+consume-amount: 1

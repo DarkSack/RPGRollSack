@@ -1,0 +1,16 @@
+id: iron_forge
+display-name: "Forja de Hierro"
+icon: SMITHING_TABLE
+# Bloque del mundo que, al hacer click derecho, abre esta estación.
+trigger-block-material: SMITHING_TABLE
+inventory-size: 27
+# Slots de ingrediente (donde el jugador pone lo que la receta pide).
+ingredient-slots: [0, 1, 2, 3]
+# Slot de combustible — -1 si la estación no necesita combustible.
+fuel-slot: 9
+# Slot donde aparece el resultado terminado.
+output-slot: 26
+requires-fuel: true
+gui-title: "Forja de Hierro"
+# Vacío = acepta cualquier receta cuyo station-id sea "iron_forge".
+allowed-recipe-ids: []

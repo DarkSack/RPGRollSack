@@ -1,0 +1,10 @@
+id: smoked_salmon_deluxe
+type: SMOKER
+ingredients:
+  - SALMON
+cooking-time-ticks: 100
+experience: 1.0
+result:
+  type: MATERIAL
+  value: COOKED_SALMON
+  amount: 2

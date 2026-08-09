@@ -1,0 +1,58 @@
+# Referencia completa de todos los campos de una CustomRecipe, incluyendo
+# todos los tipos posibles de ingrediente y de condición.
+id: reference_full_recipe
+display-name: "Receta de Referencia"
+icon: CRAFTING_TABLE
+station-id: iron_forge
+processing-time-ticks: 100
+fuel-per-craft: 1
+xp-amount: 10
+economy-currency-id: gold
+economy-cost: 0
+# -1 = usar default-fail-chance de config.yml; 0.0-1.0 = probabilidad propia.
+fail-chance: -1
+quality-enabled: true
+
+result:
+  # MATERIAL (material vanilla) o ITEM_ID (ítem propio o de RPGRoll-Items).
+  type: MATERIAL
+  value: DIAMOND
+  amount: 1
+
+ingredients:
+  - type: MATERIAL
+    value: IRON_INGOT
+    amount: 2
+  - type: TAG
+    value: minecraft:planks
+    amount: 4
+  - type: ITEM_ID
+    value: enchanted_gem
+    amount: 1
+    min-quality: STANDARD
+  - type: ANY
+    amount: 1
+
+conditions:
+  - type: LEVEL_MIN
+    min-value: 10
+  - type: RACE
+    value: elf
+  - type: CLASS
+    value: warrior
+  - type: JOB_MIN
+    value: blacksmith
+    min-value: 5
+  - type: PERMISSION
+    value: rpgrollcrafting.recipe.reference
+  - type: WORLD
+    value: world
+  - type: HOUR_RANGE
+    value: "6-18"
+  - type: BIOME
+    value: PLAINS
+  - type: SEASON
+    value: winter
+  - type: GUILD_MEMBER
+  - type: WEATHER
+    value: CLEAR

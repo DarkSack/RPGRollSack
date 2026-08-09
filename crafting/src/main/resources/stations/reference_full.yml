@@ -1,0 +1,12 @@
+# Referencia completa de todos los campos de una CustomStation.
+id: reference_full_station
+display-name: "Estación de Referencia"
+icon: SMITHING_TABLE
+trigger-block-material: SMITHING_TABLE
+inventory-size: 27
+ingredient-slots: [0, 1, 2, 3]
+fuel-slot: 9
+output-slot: 26
+requires-fuel: true
+gui-title: "Estación de Referencia"
+allowed-recipe-ids: []

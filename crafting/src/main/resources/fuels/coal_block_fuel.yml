@@ -1,0 +1,8 @@
+id: coal_block_fuel
+display-name: "Bloque de carbón"
+icon: COAL_BLOCK
+material-or-item-id: COAL_BLOCK
+is-custom-item: false
+# Un bloque de carbón rinde 10x lo que una unidad de carbón — mismo ratio que el horno vanilla.
+burn-ticks: 16000
+consume-amount: 1

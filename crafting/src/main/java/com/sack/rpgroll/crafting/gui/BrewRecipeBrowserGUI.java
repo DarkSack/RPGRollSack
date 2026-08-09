@@ -1,0 +1,80 @@
+package com.sack.rpgroll.crafting.gui;
+
+import com.sack.rpgroll.crafting.brewing.BrewRecipeDefinition;
+import com.sack.rpgroll.crafting.brewing.BrewRecipeManager;
+import com.sack.rpgroll.gui.InventoryGUI;
+import com.sack.rpgroll.gui.util.ItemBuilder;
+
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
+
+import java.util.List;
+
+/** Solo lectura + borrado — se crean/editan en {@code brew-recipes/*.yml} (ingredient+result). */
+public class BrewRecipeBrowserGUI extends InventoryGUI {
+
+    private static final int SIZE = 45;
+    private static final int BACK_SLOT = 44;
+
+    private final BrewRecipeManager recipeManager;
+    private final Runnable onBack;
+    private List<BrewRecipeDefinition> recipes;
+
+    public BrewRecipeBrowserGUI(Player player, BrewRecipeManager recipeManager, Runnable onBack) {
+        super(player, Component.text("Recetas de fermentación", NamedTextColor.GOLD), SIZE);
+        this.recipeManager = recipeManager;
+        this.onBack = onBack;
+        this.recipes = List.copyOf(recipeManager.getAll());
+    }
+
+    @Override
+    public void build() {
+
+        clear();
+
+        for (int slot = 0; slot < SIZE; slot++) {
+            setItem(slot, ItemBuilder.createFiller());
+        }
+
+        for (int i = 0; i < recipes.size() && i < 36; i++) {
+
+            BrewRecipeDefinition recipe = recipes.get(i);
+
+            setItem(i, new ItemBuilder(Material.BREWING_STAND)
+                    .setName(Component.text(recipe.id(), NamedTextColor.YELLOW))
+                    .setLore(Component.text("ingrediente: " + recipe.ingredient().value(), NamedTextColor.GRAY),
+                            Component.text("resultado: " + recipe.result().value(), NamedTextColor.AQUA),
+                            Component.text("Click para eliminar", NamedTextColor.RED))
+                    .build());
+        }
+
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+    }
+
+    @Override
+    public void handleClick(InventoryClickEvent event) {
+
+        event.setCancelled(true);
+        int slot = event.getSlot();
+
+        if (slot < recipes.size() && slot < 36) {
+            recipeManager.delete(recipes.get(slot).id());
+            reopen();
+            return;
+        }
+
+        if (slot == BACK_SLOT) {
+            onBack.run();
+        }
+    }
+
+    private void reopen() {
+        this.recipes = List.copyOf(recipeManager.getAll());
+        open();
+    }
+
+}

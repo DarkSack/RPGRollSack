@@ -1,0 +1,12 @@
+id: elixir_of_vigor
+ingredient:
+  type: MATERIAL
+  value: GLOWSTONE_DUST
+  amount: 1
+result:
+  type: MATERIAL
+  value: POTION
+  amount: 1
+conditions:
+  - type: LEVEL_MIN
+    min-value: 8

@@ -1,0 +1,19 @@
+# Referencia completa de todos los campos de una BrewRecipeDefinition.
+id: reference_full_brew_recipe
+
+ingredient:
+  type: ITEM_ID
+  value: enchanted_gem
+  amount: 1
+  min-quality: FINE
+
+result:
+  type: MATERIAL
+  value: POTION
+  amount: 1
+
+conditions:
+  - type: LEVEL_MIN
+    min-value: 8
+  - type: SEASON
+    value: winter

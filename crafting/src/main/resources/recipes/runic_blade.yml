@@ -1,0 +1,36 @@
+# Ejemplo de resultado ITEM_ID: requiere RPGRoll-Items instalado y un
+# ItemDefinition con id "runic_blade" definido ahí — si no está instalado,
+# el motor lo registra igual pero avisa en consola que no pudo construir el resultado.
+id: runic_blade
+display-name: "Espada Rúnica"
+icon: DIAMOND_SWORD
+station-id: iron_forge
+processing-time-ticks: 400
+fuel-per-craft: 4
+xp-amount: 20
+economy-cost: 50
+economy-currency-id: gold
+fail-chance: 0.2
+quality-enabled: true
+result:
+  type: ITEM_ID
+  value: runic_blade
+  amount: 1
+ingredients:
+  - type: MATERIAL
+    value: IRON_INGOT
+    amount: 4
+  - type: TAG
+    value: minecraft:planks
+    amount: 1
+  - type: ITEM_ID
+    value: enchanted_gem
+    amount: 1
+    min-quality: FINE
+conditions:
+  - type: LEVEL_MIN
+    min-value: 15
+  - type: JOB_MIN
+    value: blacksmith
+    min-value: 3
+  - type: GUILD_MEMBER

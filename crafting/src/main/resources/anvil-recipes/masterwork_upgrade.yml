@@ -1,0 +1,17 @@
+id: masterwork_upgrade
+base:
+  type: MATERIAL
+  value: DIAMOND_SWORD
+  amount: 1
+addition:
+  type: MATERIAL
+  value: NETHERITE_INGOT
+  amount: 1
+result:
+  type: MATERIAL
+  value: NETHERITE_SWORD
+  amount: 1
+repair-cost-levels: 3
+conditions:
+  - type: LEVEL_MIN
+    min-value: 20

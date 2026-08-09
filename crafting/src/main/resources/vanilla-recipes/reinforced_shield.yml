@@ -1,0 +1,16 @@
+id: reinforced_shield
+type: CRAFTING_TABLE_SHAPED
+shape:
+  - "III"
+  - "IWI"
+  - " I "
+key:
+  I: IRON_INGOT
+  W: OAK_PLANKS
+result:
+  type: MATERIAL
+  value: SHIELD
+  amount: 1
+conditions:
+  - type: LEVEL_MIN
+    min-value: 3

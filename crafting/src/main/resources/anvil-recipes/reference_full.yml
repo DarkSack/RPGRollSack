@@ -1,0 +1,26 @@
+# Referencia completa de todos los campos de una AnvilRecipeDefinition.
+id: reference_full_anvil_recipe
+
+base:
+  type: MATERIAL
+  value: DIAMOND_SWORD
+  amount: 1
+  min-quality: STANDARD
+
+addition:
+  type: ITEM_ID
+  value: enchanted_gem
+  amount: 1
+
+result:
+  type: ITEM_ID
+  value: runic_blade
+  amount: 1
+
+repair-cost-levels: 3
+
+conditions:
+  - type: LEVEL_MIN
+    min-value: 20
+  - type: PERMISSION
+    value: rpgrollcrafting.anvil.reference

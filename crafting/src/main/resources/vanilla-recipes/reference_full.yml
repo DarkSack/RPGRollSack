@@ -1,0 +1,37 @@
+# Referencia completa de todos los campos de una VanillaRecipeDefinition.
+# type puede ser: CRAFTING_TABLE_SHAPED, CRAFTING_TABLE_SHAPELESS, FURNACE,
+# BLAST_FURNACE, SMOKER, CAMPFIRE, STONECUTTER, SMITHING_TRANSFORM.
+# Las condiciones solo se aplican a CRAFTING_TABLE_SHAPED/SHAPELESS.
+id: reference_full_vanilla_recipe
+type: CRAFTING_TABLE_SHAPED
+
+# Solo para CRAFTING_TABLE_SHAPED:
+shape:
+  - "III"
+  - "IWI"
+  - " I "
+key:
+  I: IRON_INGOT
+  W: OAK_PLANKS
+
+# Solo para CRAFTING_TABLE_SHAPELESS / FURNACE / BLAST_FURNACE / SMOKER / CAMPFIRE / STONECUTTER
+# (primer elemento) / SMITHING_TRANSFORM (primer elemento = la "adición"):
+ingredients:
+  - IRON_INGOT
+
+# Solo para SMITHING_TRANSFORM:
+template-material: NETHERITE_UPGRADE_SMITHING_TEMPLATE
+base-material: DIAMOND_SWORD
+
+# Solo para la familia de hornos:
+cooking-time-ticks: 200
+experience: 1.0
+
+result:
+  type: MATERIAL
+  value: IRON_INGOT
+  amount: 1
+
+conditions:
+  - type: LEVEL_MIN
+    min-value: 5
