@@ -1,0 +1,7 @@
+id: sales_tax
+display-name: "IVA"
+type: SALE
+rate-percent: 16
+# Vacío = aplica a toda venta (tiendas de jugador, subastas, mercado)
+applies-to: []
+enabled: true

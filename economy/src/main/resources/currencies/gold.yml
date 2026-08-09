@@ -1,0 +1,11 @@
+id: gold
+display-name: "Oro"
+symbol: "g"
+decimals: 2
+icon: SUNFLOWER
+color: GOLD
+min-balance: 0
+max-balance: 0
+permission: null
+exchange-rate-to-base: 1.0
+is-base: true

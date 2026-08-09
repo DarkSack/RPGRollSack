@@ -1,0 +1,19 @@
+# ============================================================================
+# REGLA TRIBUTARIA DE REFERENCIA — usa TODOS los campos que soporta un
+# TaxRule. Documentación ejecutable. Ver la página "Economy" en la docs.
+# ============================================================================
+
+id: reference_full_example
+display-name: "Impuesto de Referencia"
+
+# SALE | INCOME | COMPANY | PROPERTY | COMMERCIAL | LUXURY — solo SALE dispara automáticamente hoy (ver docs)
+type: SALE
+
+rate-percent: 5
+
+# ids de producto o categorías a las que aplica — vacío = aplica a TODO
+applies-to:
+  - mining
+  - IRON_INGOT
+
+enabled: true

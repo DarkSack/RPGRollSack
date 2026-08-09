@@ -1,0 +1,18 @@
+# Id de la moneda usada como puente con Vault (net.milkbowl.vault.economy.Economy) — todo plugin
+# externo que hable Vault (Jobs, tiendas de otros plugins, EssentialsX-style) opera sobre esta moneda.
+default-currency: gold
+
+# Cada cuánto (ticks, 20 = 1 segundo) el precio de mercado se recupera un paso hacia su base-price.
+market-recovery-interval-ticks: 1200
+
+# Cada cuánto (ticks) se recalculan préstamos vencidos / se cobra interés acumulado.
+loan-check-interval-ticks: 12000
+
+# Cada cuánto (ticks) se toma una foto de la masa monetaria total para calcular inflación.
+inflation-snapshot-interval-ticks: 24000
+
+# Cada cuánto (ticks) expiran subastas vencidas y se procesan pagos/devoluciones.
+auction-check-interval-ticks: 200
+
+# Duración por defecto (horas) de una subasta si no se especifica una al crearla.
+auction-default-duration-hours: 48

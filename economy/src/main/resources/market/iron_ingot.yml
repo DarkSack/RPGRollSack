@@ -1,0 +1,12 @@
+id: IRON_INGOT
+display-name: "Lingote de Hierro"
+icon: IRON_INGOT
+currency: gold
+base-price: 10
+min-price: 2
+max-price: 50
+supply-weight: 1.0
+demand-weight: 1.2
+volatility: 0.25
+recovery-rate: 0.02
+category: mining

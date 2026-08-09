@@ -1,0 +1,12 @@
+id: silver
+display-name: "Plata"
+symbol: "s"
+decimals: 0
+icon: IRON_NUGGET
+color: GRAY
+min-balance: 0
+max-balance: 0
+permission: null
+# 100 plata = 1 oro
+exchange-rate-to-base: 0.01
+is-base: false

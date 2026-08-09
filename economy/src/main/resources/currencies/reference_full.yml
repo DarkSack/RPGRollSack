@@ -1,0 +1,26 @@
+# ============================================================================
+# MONEDA DE REFERENCIA — usa TODOS los campos que soporta una Currency.
+# Documentación ejecutable. Ver la página "Economy" en la docs.
+# ============================================================================
+
+id: reference_full_example
+display-name: "Token de Referencia"
+symbol: "★"
+decimals: 0
+
+icon: NETHER_STAR
+color: "#54DAF4"
+
+# 0 = sin tope. Un jugador nunca puede bajar de min-balance ni superar max-balance en esta moneda.
+min-balance: 0
+max-balance: 10000
+
+# Nodo de permiso requerido para PODER tener saldo de esta moneda (null = cualquiera)
+permission: rpgrolleconomy.currency.reference
+
+# Tasa de conversión hacia la moneda marcada is-base: true (para mostrar un "total equivalente")
+exchange-rate-to-base: 0.5
+
+# Solo una moneda del servidor debería tener is-base: true — es la usada por el puente de Vault
+# (ver default-currency en config.yml) y como referencia para exchange-rate-to-base de las demás.
+is-base: false

@@ -1,0 +1,32 @@
+# ============================================================================
+# PRODUCTO DE MERCADO DE REFERENCIA — usa TODOS los campos que soporta un
+# MarketProduct. Documentación ejecutable. Ver la página "Economy" en la
+# docs para la fórmula completa de precio (oferta/demanda/volatilidad).
+# ============================================================================
+
+id: REFERENCE_FULL_EXAMPLE
+display-name: "Producto de Referencia"
+icon: NETHER_STAR
+
+# Si se omite, usa la moneda por defecto del servidor (default-currency en config.yml)
+currency: gold
+
+base-price: 100
+min-price: 10
+max-price: 500
+
+# Cuánto pesa cada unidad VENDIDA al mercado (sube oferta, baja precio) en la fórmula de presión
+supply-weight: 1.0
+
+# Cuánto pesa cada unidad COMPRADA del mercado (sube demanda, sube precio) en la fórmula de presión
+demand-weight: 1.0
+
+# Qué tan fuerte reacciona el precio a la presión neta de oferta/demanda (mayor = más volátil)
+volatility: 0.25
+
+# Fracción de la oferta/demanda acumulada que se decae hacia 0 en cada ciclo de recuperación
+# (ver market-recovery-interval-ticks en config.yml) — mayor = el precio vuelve a la base más rápido
+recovery-rate: 0.02
+
+# Puramente organizativo — usado para filtrar en el navegador y para reglas de impuesto por categoría
+category: reference

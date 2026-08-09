@@ -1,0 +1,12 @@
+id: DIAMOND
+display-name: "Diamante"
+icon: DIAMOND
+currency: gold
+base-price: 250
+min-price: 50
+max-price: 1000
+supply-weight: 0.8
+demand-weight: 1.5
+volatility: 0.2
+recovery-rate: 0.015
+category: mining

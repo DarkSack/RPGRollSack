@@ -25,5 +25,6 @@ include(
     "fishing",
     "sackresourcepack",
     "ranching",
-    "workers"
+    "workers",
+    "economy"
 )

@@ -1,0 +1,12 @@
+id: WHEAT
+display-name: "Trigo"
+icon: WHEAT
+currency: gold
+base-price: 4
+min-price: 0.5
+max-price: 15
+supply-weight: 1.4
+demand-weight: 1.0
+volatility: 0.3
+recovery-rate: 0.03
+category: farming

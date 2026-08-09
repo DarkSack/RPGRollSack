@@ -1,0 +1,14 @@
+# NOTA: por ahora el motor solo dispara reglas de tipo SALE automáticamente
+# (tiendas/mercado/subastas). INCOME/COMPANY/PROPERTY/COMMERCIAL/LUXURY están
+# completamente modeladas y se pueden aplicar a mano vía TaxEngine#apply desde
+# otro addon, pero ningún punto de este addon las dispara todavía — ver "Qué
+# falta" en la documentación.
+id: luxury_tax
+display-name: "Impuesto de Lujo"
+type: LUXURY
+rate-percent: 10
+# Solo aplica a ventas de estos ids/categorías (además de cualquier impuesto SALE general)
+applies-to:
+  - DIAMOND
+  - NETHERITE_INGOT
+enabled: true
