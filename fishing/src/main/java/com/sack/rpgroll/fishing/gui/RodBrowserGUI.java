@@ -99,7 +99,7 @@ public class RodBrowserGUI extends InventoryGUI {
 
     private void reopen() {
         this.rods = List.copyOf(rodManager.getAll());
-        build();
+        open();
     }
 
 }

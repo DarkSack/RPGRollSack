@@ -81,6 +81,7 @@ public class RPGRollNPCs extends JavaPlugin {
             getLogger().severe("✘ El comando 'npc' no está declarado en plugin.yml");
         } else {
             npcCommand.setExecutor(adminCommand);
+            npcCommand.setTabCompleter(adminCommand);
         }
 
         getLogger().info(

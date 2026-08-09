@@ -1,0 +1,26 @@
+id: miner
+display-name: "&7Minero"
+icon: IRON_PICKAXE
+description: "Busca vetas cercanas, evita la lava, y lleva lo extraído al almacén."
+entity-type: VILLAGER
+skills: [mining_speed, vein_detection]
+schedule: standard_day
+wage-amount: 50
+wage-type: PER_TASK
+tool-material: IRON_PICKAXE
+ai-rules:
+  - condition: HUNGRY
+    action: EAT
+    priority: 10
+  - condition: INVENTORY_FULL
+    action: STORE_ITEMS
+    priority: 20
+  - condition: RAINING
+    action: SEEK_SHELTER
+    priority: 30
+  - condition: NIGHT
+    action: GO_HOME
+    priority: 40
+  - condition: ALWAYS
+    action: WORK
+    priority: 100

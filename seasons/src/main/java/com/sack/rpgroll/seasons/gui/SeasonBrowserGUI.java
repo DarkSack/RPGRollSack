@@ -113,7 +113,7 @@ public class SeasonBrowserGUI extends InventoryGUI {
 
     private void reopen() {
         this.seasons = List.copyOf(seasonManager.getAll());
-        build();
+        open();
     }
 
     static Material parseMaterial(String raw) {

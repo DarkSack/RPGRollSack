@@ -163,4 +163,14 @@ public class RaceCommand implements RPGCommand {
         return List.of("raza", "r");
     }
 
+    @Override
+    public List<String> getTabCompletions(CommandSender sender, String[] args) {
+        if (args.length <= 1) {
+            List<String> options = new java.util.ArrayList<>(AVAILABLE_RACES);
+            options.add("list");
+            return options;
+        }
+        return List.of();
+    }
+
 }

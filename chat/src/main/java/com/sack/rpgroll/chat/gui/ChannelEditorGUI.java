@@ -1,5 +1,7 @@
 package com.sack.rpgroll.chat.gui;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.chat.channel.ChannelManager;
@@ -126,7 +128,7 @@ public class ChannelEditorGUI extends InventoryGUI {
 
         setItem(FORMAT_SLOT, new ItemBuilder(Material.WRITABLE_BOOK)
                 .setName(Component.text("Formato", NamedTextColor.YELLOW))
-                .setLore(LegacyComponentSerializer.legacyAmpersand().deserialize(current.format()),
+                .setLore(ComponentUtils.parse(current.format()),
                         Component.text("Click para escribir uno nuevo", NamedTextColor.GRAY))
                 .build());
 

@@ -42,4 +42,9 @@ public record AssetModule(
         return new File(directory, "assets");
     }
 
+    /** Carpeta {@code data/} del módulo (namespaces de datapack: tags, loot tables, recipes, functions...). */
+    public File dataDirectory() {
+        return new File(directory, "data");
+    }
+
 }

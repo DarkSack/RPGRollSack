@@ -1,5 +1,7 @@
 package com.sack.rpgroll.crates.key;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.crates.core.Crate;
 
 import net.kyori.adventure.text.Component;
@@ -25,7 +27,6 @@ import java.util.Optional;
  */
 public class CrateKeyItem {
 
-    private static final LegacyComponentSerializer LEGACY = LegacyComponentSerializer.legacyAmpersand();
 
     private final NamespacedKey crateIdTag;
 
@@ -38,11 +39,11 @@ public class CrateKeyItem {
         ItemStack item = new ItemStack(crate.keyMaterial(), amount);
         ItemMeta meta = item.getItemMeta();
 
-        meta.displayName(LEGACY.deserialize(crate.keyDisplayName()).decorate(TextDecoration.BOLD));
+        meta.displayName(ComponentUtils.parse(crate.keyDisplayName()).decorate(TextDecoration.BOLD));
 
         List<Component> lore = new ArrayList<>();
         for (String line : crate.keyLore()) {
-            lore.add(LEGACY.deserialize(line));
+            lore.add(ComponentUtils.parse(line));
         }
         lore.add(Component.text("Click derecho sobre el crate para abrir.", NamedTextColor.GRAY));
         meta.lore(lore);

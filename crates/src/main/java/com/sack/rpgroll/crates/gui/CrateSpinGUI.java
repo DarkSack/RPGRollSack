@@ -1,5 +1,7 @@
 package com.sack.rpgroll.crates.gui;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.crates.core.Crate;
@@ -50,7 +52,6 @@ public class CrateSpinGUI extends InventoryGUI {
     private static final long REWARD_GRANT_DELAY_TICKS = 20L;
     private static final long AUTO_CLOSE_DELAY_TICKS = 80L;
 
-    private static final LegacyComponentSerializer LEGACY = LegacyComponentSerializer.legacyAmpersand();
 
     private final Plugin plugin;
     private final CrateActionExecutor actionExecutor;
@@ -134,11 +135,11 @@ public class CrateSpinGUI extends InventoryGUI {
 
         List<Component> lore = new ArrayList<>();
         for (String line : reward.lore()) {
-            lore.add(LEGACY.deserialize(line));
+            lore.add(ComponentUtils.parse(line));
         }
 
         return new ItemBuilder(reward.icon())
-                .setName(LEGACY.deserialize(reward.displayName()).decorate(TextDecoration.BOLD))
+                .setName(ComponentUtils.parse(reward.displayName()).decorate(TextDecoration.BOLD))
                 .setLore(lore)
                 .build();
     }
@@ -180,7 +181,7 @@ public class CrateSpinGUI extends InventoryGUI {
         player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.0f);
 
         player.sendMessage(Component.text("¡Ganaste: ", NamedTextColor.GREEN)
-                .append(LEGACY.deserialize(winningReward.displayName()))
+                .append(ComponentUtils.parse(winningReward.displayName()))
                 .append(Component.text("!", NamedTextColor.GREEN)));
 
         // Pequeño delay antes de entregar/cerrar para que el jugador

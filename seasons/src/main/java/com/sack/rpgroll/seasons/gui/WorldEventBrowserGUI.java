@@ -104,7 +104,7 @@ public class WorldEventBrowserGUI extends InventoryGUI {
 
     private void reopen() {
         this.events = List.copyOf(worldEventManager.getAll());
-        build();
+        open();
     }
 
 }

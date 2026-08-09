@@ -12,6 +12,7 @@ import com.sack.rpgroll.dungeons.gui.ChatPromptManager;
 import com.sack.rpgroll.dungeons.gui.DungeonBrowserGUI;
 import com.sack.rpgroll.dungeons.gui.editor.DungeonEditorHubGUI;
 import com.sack.rpgroll.dungeons.gui.editor.DungeonEditorSession;
+import com.sack.rpgroll.util.TabCompleteUtil;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -19,6 +20,7 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
@@ -26,7 +28,9 @@ import java.util.List;
 import java.util.Locale;
 
 /** /dungeonadmin create|reload|forcestop|browser|editor */
-public class DungeonAdminCommand implements CommandExecutor {
+public class DungeonAdminCommand implements CommandExecutor, TabCompleter {
+
+    private static final List<String> SUBCOMMANDS = List.of("create", "reload", "forcestop", "browser", "editor");
 
     private static final String PERMISSION = "rpgrolldungeons.admin.*";
 
@@ -161,6 +165,22 @@ public class DungeonAdminCommand implements CommandExecutor {
 
         new DungeonEditorHubGUI(player, new DungeonEditorSession(definition, dungeonManager, chatPromptManager,
                 plugin)).open();
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+
+        if (args.length == 1) {
+            return TabCompleteUtil.filter(args[0], SUBCOMMANDS);
+        }
+
+        if (args.length == 2
+                && List.of("forcestop", "editor").contains(args[0].toLowerCase(Locale.ROOT))) {
+            return TabCompleteUtil.filter(args[1],
+                    dungeonManager.getAll().stream().map(DungeonDefinition::id).toList());
+        }
+
+        return List.of();
     }
 
 }

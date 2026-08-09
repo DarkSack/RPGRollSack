@@ -9,6 +9,7 @@ import com.sack.rpgroll.magic.gui.ChatPromptManager;
 import com.sack.rpgroll.magic.gui.SpellbookGUI;
 import com.sack.rpgroll.magic.runtime.PlayerSpellbook;
 import com.sack.rpgroll.magic.runtime.SpellbookManager;
+import com.sack.rpgroll.util.TabCompleteUtil;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -16,8 +17,10 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -26,7 +29,9 @@ import java.util.Locale;
  * /magic cast <id>
  * /magic cooldowns
  */
-public class MagicCommand implements CommandExecutor {
+public class MagicCommand implements CommandExecutor, TabCompleter {
+
+    private static final List<String> SUBCOMMANDS = List.of("spellbook", "select", "cast", "cooldowns");
 
     private final SpellManager spellManager;
     private final RuneManager runeManager;
@@ -137,6 +142,21 @@ public class MagicCommand implements CommandExecutor {
             player.sendMessage(Component.text(
                     String.format(Locale.ROOT, "• %s: %.1fs", displayName, secondsLeft), NamedTextColor.WHITE));
         }
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+
+        if (args.length == 1) {
+            return TabCompleteUtil.filter(args[0], SUBCOMMANDS);
+        }
+
+        if (args.length == 2 && List.of("select", "cast").contains(args[0].toLowerCase(Locale.ROOT))
+                && sender instanceof Player player) {
+            return TabCompleteUtil.filter(args[1], spellbookManager.getOrLoad(player).allLearned());
+        }
+
+        return List.of();
     }
 
 }

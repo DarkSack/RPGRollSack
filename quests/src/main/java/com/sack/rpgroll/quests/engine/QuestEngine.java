@@ -1,5 +1,7 @@
 package com.sack.rpgroll.quests.engine;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.api.RPGRollAPI;
 import com.sack.rpgroll.player.RPGPlayer;
 import com.sack.rpgroll.quests.condition.QuestConditionContext;
@@ -41,7 +43,6 @@ import java.util.Optional;
  */
 public class QuestEngine {
 
-    private static final LegacyComponentSerializer LEGACY = LegacyComponentSerializer.legacyAmpersand();
 
     private final Plugin plugin;
     private final QuestManager questManager;
@@ -332,7 +333,7 @@ public class QuestEngine {
                 case PLAYER -> Component.text("[Tú] ", NamedTextColor.AQUA);
             };
 
-            player.sendMessage(prefix.append(LEGACY.deserialize(line.text())));
+            player.sendMessage(prefix.append(ComponentUtils.parse(line.text())));
         }
 
         if (!dialog.hasOptions()) {

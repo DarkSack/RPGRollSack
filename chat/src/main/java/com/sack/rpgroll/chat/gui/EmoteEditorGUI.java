@@ -1,5 +1,7 @@
 package com.sack.rpgroll.chat.gui;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.chat.emote.EmoteDefinition;
@@ -53,13 +55,13 @@ public class EmoteEditorGUI extends InventoryGUI {
 
         setItem(TEMPLATE_SLOT, new ItemBuilder(Material.WRITABLE_BOOK)
                 .setName(Component.text("Mensaje (sin objetivo)", NamedTextColor.YELLOW))
-                .setLore(LegacyComponentSerializer.legacyAmpersand().deserialize(current.template()),
+                .setLore(ComponentUtils.parse(current.template()),
                         Component.text("Usa {player} · Click para escribir uno nuevo", NamedTextColor.GRAY))
                 .build());
 
         setItem(TARGET_TEMPLATE_SLOT, new ItemBuilder(Material.BOOK)
                 .setName(Component.text("Mensaje (con objetivo)", NamedTextColor.YELLOW))
-                .setLore(LegacyComponentSerializer.legacyAmpersand().deserialize(
+                .setLore(ComponentUtils.parse(
                         current.targetTemplate() == null || current.targetTemplate().isBlank()
                                 ? "(no configurado)" : current.targetTemplate()),
                         Component.text("Usa {player} y {target} · Click para escribir uno nuevo",

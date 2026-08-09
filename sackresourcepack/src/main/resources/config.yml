@@ -23,16 +23,32 @@ pack-format: 34
 # entre builds. Este es el primer número que se usa.
 custom-model-data-base: 10000
 
-# Subida a un endpoint remoto genérico (PUT/POST autenticado) además del
-# host embebido — NO implementa firmas específicas de proveedor (ej. AWS
-# SigV4 para S3 directo); pensado para un endpoint propio, un proxy, o
-# cualquier servicio que acepte un PUT/POST con un header de autenticación.
+# Subida a un endpoint remoto además del host embebido.
+# mode: "generic" = PUT/POST autenticado con un header fijo (endpoint
+#                    propio, un proxy, o cualquier servicio que lo acepte).
+# mode: "s3"      = firma un PUT real con AWS Signature V4 (ver la sección
+#                    's3' más abajo) — para hablarle directo a un bucket S3
+#                    o cualquier proveedor S3-compatible (MinIO, R2, B2...).
 remote-upload:
   enabled: false
+  mode: generic
   url: ""
   method: PUT
   auth-header-name: "Authorization"
   auth-header-value: ""
+
+# Solo se usa si remote-upload.mode es "s3".
+s3:
+  # Host del proveedor (ej. "s3.amazonaws.com", "s3.us-west-002.backblazeb2.com", o el host:puerto de un MinIO propio).
+  endpoint: ""
+  bucket: ""
+  region: "us-east-1"
+  object-key: "resourcepack.zip"
+  access-key: ""
+  secret-key: ""
+  # true = https://endpoint/bucket/key (MinIO y varios proveedores no-AWS lo requieren)
+  # false = https://bucket.endpoint/key (estilo "virtual-hosted", el de AWS por defecto)
+  path-style: false
 
 distribution:
   required: false
@@ -42,3 +58,15 @@ distribution:
 # pack automáticamente apenas guardás un cambio. Podés dejarlo prendido
 # siempre, o alternarlo con /srp dev.
 development-mode: false
+
+# Datapack (data/ de cada módulo: tags, loot tables, recipes, functions...)
+# — distinto de un resource pack: vive server-side en
+# <mundo>/datapacks/<name>/, nunca se manda al cliente. "enabled" solo
+# controla si /srp datapack build hace algo; nunca se aplica solo, siempre
+# hace falta /srp datapack reload aparte (ver Server#reloadData()).
+datapack:
+  enabled: false
+  name: sackresourcepack
+  # pack_format de datapack — NO comparte numeración con el pack-format de
+  # resource pack de más arriba, son escalas independientes.
+  pack-format: 48

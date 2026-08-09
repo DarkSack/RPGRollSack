@@ -8,6 +8,7 @@ import com.sack.rpgroll.crates.hologram.DecentHologramsHook;
 import com.sack.rpgroll.crates.key.CrateKeyItem;
 import com.sack.rpgroll.crates.location.PlacedCrate;
 import com.sack.rpgroll.crates.location.PlacedCrateManager;
+import com.sack.rpgroll.util.TabCompleteUtil;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -18,8 +19,10 @@ import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -29,7 +32,10 @@ import java.util.Optional;
  * /crate list
  * /crate reload
  */
-public class CrateAdminCommand implements CommandExecutor {
+public class CrateAdminCommand implements CommandExecutor, TabCompleter {
+
+    private static final List<String> SUBCOMMANDS = List.of("setlocation", "removelocation", "givekey", "list",
+            "reload", "browser");
 
     private static final double HOLOGRAM_Y_OFFSET = 1.6;
     private static final int LOOK_RANGE = 8;
@@ -239,6 +245,34 @@ public class CrateAdminCommand implements CommandExecutor {
                 "✔ Recargado: " + crateManager.count() + " crate(s), " + placedCrateManager.getAll().size()
                         + " ubicación(es).",
                 NamedTextColor.GREEN));
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+
+        if (args.length == 1) {
+            return TabCompleteUtil.filter(args[0], SUBCOMMANDS);
+        }
+
+        String sub = args[0].toLowerCase();
+
+        if (args.length == 2) {
+            return switch (sub) {
+                case "setlocation" -> TabCompleteUtil.filter(args[1], crateIds());
+                case "givekey" -> TabCompleteUtil.onlinePlayerNames(args[1]);
+                default -> List.of();
+            };
+        }
+
+        if (args.length == 3 && "givekey".equals(sub)) {
+            return TabCompleteUtil.filter(args[2], crateIds());
+        }
+
+        return List.of();
+    }
+
+    private List<String> crateIds() {
+        return crateManager.getAll().stream().map(Crate::id).toList();
     }
 
 }

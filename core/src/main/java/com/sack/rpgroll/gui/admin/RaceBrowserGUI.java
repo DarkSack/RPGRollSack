@@ -101,7 +101,7 @@ public class RaceBrowserGUI extends InventoryGUI {
 
     private void reopen() {
         this.races = List.copyOf(raceManager.getAll());
-        build();
+        open();
     }
 
 }

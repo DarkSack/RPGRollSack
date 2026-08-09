@@ -12,6 +12,7 @@ import com.sack.rpgroll.api.playerclass.PlayerClass;
 import com.sack.rpgroll.api.race.Race;
 import com.sack.rpgroll.race.RaceAttributeApplier;
 import com.sack.rpgroll.api.race.RaceManager;
+import com.sack.rpgroll.util.TabCompleteUtil;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -175,6 +176,21 @@ public class AdminSetRaceCommand implements RPGCommand {
 
     @Override
     public List<String> getAliases() {
+        return List.of();
+    }
+
+    @Override
+    public List<String> getTabCompletions(CommandSender sender, String[] args) {
+        if (args.length <= 1) {
+            return TabCompleteUtil.allOnlinePlayerNames();
+        }
+        if (args.length == 2) {
+            RaceManager raceManager = plugin.getBootstrap().getServices().get(RaceManager.class);
+            return raceManager.getAll().stream().map(Race::id).toList();
+        }
+        if (args.length == 3) {
+            return List.of("--recalc");
+        }
         return List.of();
     }
 

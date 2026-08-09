@@ -10,6 +10,7 @@ import com.sack.rpgroll.chat.gui.EmoteBrowserGUI;
 import com.sack.rpgroll.chat.gui.LanguageBrowserGUI;
 import com.sack.rpgroll.chat.language.LanguageManager;
 import com.sack.rpgroll.chat.role.ChatRoleManager;
+import com.sack.rpgroll.util.TabCompleteUtil;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -17,12 +18,17 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
+import java.util.List;
 import java.util.Locale;
 
 /** /chatadmin reload|browser|editor &lt;canal&gt; */
-public class ChatAdminCommand implements CommandExecutor {
+public class ChatAdminCommand implements CommandExecutor, TabCompleter {
+
+    private static final List<String> SUBCOMMANDS = List.of("reload", "browser", "editor");
+    private static final List<String> BROWSER_CATEGORIES = List.of("channel", "language", "role", "emote");
 
     private final ChannelManager channelManager;
     private final LanguageManager languageManager;
@@ -100,6 +106,25 @@ public class ChatAdminCommand implements CommandExecutor {
         sender.sendMessage(Component.text(
                 "Uso: /chatadmin <reload|browser [channel|language|role|emote]|editor <canal>> [args]",
                 NamedTextColor.YELLOW));
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+
+        if (args.length == 1) {
+            return TabCompleteUtil.filter(args[0], SUBCOMMANDS);
+        }
+
+        if (args.length == 2) {
+            return switch (args[0].toLowerCase(Locale.ROOT)) {
+                case "browser" -> TabCompleteUtil.filter(args[1], BROWSER_CATEGORIES);
+                case "editor" -> TabCompleteUtil.filter(args[1],
+                        channelManager.sortedByPriority().stream().map(c -> c.id()).toList());
+                default -> List.of();
+            };
+        }
+
+        return List.of();
     }
 
 }

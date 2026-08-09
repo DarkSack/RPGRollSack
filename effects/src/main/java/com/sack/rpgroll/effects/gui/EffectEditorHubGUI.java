@@ -1,5 +1,7 @@
 package com.sack.rpgroll.effects.gui;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.effects.core.EffectCategory;
 import com.sack.rpgroll.effects.core.EffectDefinition;
 import com.sack.rpgroll.effects.core.EffectManager;
@@ -108,8 +110,7 @@ public class EffectEditorHubGUI extends InventoryGUI {
                 .build());
 
         setItem(NAME_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(LegacyComponentSerializer.legacyAmpersand()
-                        .deserialize("Nombre: " + current.displayName()).colorIfAbsent(NamedTextColor.YELLOW))
+                .setName(ComponentUtils.parse("Nombre: " + current.displayName()).colorIfAbsent(NamedTextColor.YELLOW))
                 .setLore(Component.text("Click para escribir uno nuevo", NamedTextColor.GRAY))
                 .build());
 

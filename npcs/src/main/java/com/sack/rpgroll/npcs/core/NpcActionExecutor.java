@@ -1,5 +1,7 @@
 package com.sack.rpgroll.npcs.core;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -42,7 +44,6 @@ public class NpcActionExecutor {
 
     }
 
-    private static final LegacyComponentSerializer LEGACY = LegacyComponentSerializer.legacyAmpersand();
 
     private void executeOpenGui(Player player, String menuId) {
 
@@ -73,7 +74,7 @@ public class NpcActionExecutor {
 
             case "CHEST" -> {
                 inventory = title != null
-                        ? Bukkit.createInventory(null, 27, LEGACY.deserialize(title))
+                        ? Bukkit.createInventory(null, 27, ComponentUtils.parse(title))
                         : Bukkit.createInventory(null, 27);
             }
 
@@ -96,7 +97,7 @@ public class NpcActionExecutor {
 
     private void executeMessage(Player player, String rawMessage) {
         String parsed = rawMessage.replace("{player}", player.getName());
-        player.sendMessage(LEGACY.deserialize(parsed));
+        player.sendMessage(ComponentUtils.parse(parsed));
     }
 
     private void executeCommand(Player player, String rawCommand) {

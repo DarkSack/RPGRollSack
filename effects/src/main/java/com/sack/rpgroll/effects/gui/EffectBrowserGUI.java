@@ -224,7 +224,7 @@ public class EffectBrowserGUI extends InventoryGUI {
 
     private void reopen() {
         recomputeFiltered();
-        build();
+        open();
     }
 
 }

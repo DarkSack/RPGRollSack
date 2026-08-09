@@ -5,10 +5,13 @@ import com.sack.rpgroll.sackresourcepack.build.BuildEngine;
 import com.sack.rpgroll.sackresourcepack.build.BuildResult;
 import com.sack.rpgroll.sackresourcepack.cmd.CustomModelDataManager;
 import com.sack.rpgroll.sackresourcepack.cmd.SrpCommand;
+import com.sack.rpgroll.sackresourcepack.datapack.DatapackBuildEngine;
 import com.sack.rpgroll.sackresourcepack.dev.DevelopmentModeWatcher;
 import com.sack.rpgroll.sackresourcepack.distribution.DistributionEngine;
 import com.sack.rpgroll.sackresourcepack.distribution.RemoteUploadService;
 import com.sack.rpgroll.sackresourcepack.distribution.ResourcePackHttpServer;
+import com.sack.rpgroll.sackresourcepack.distribution.s3.S3UploadService;
+import com.sack.rpgroll.sackresourcepack.distribution.s3.S3UploadSettings;
 import com.sack.rpgroll.sackresourcepack.gui.listener.GUIListener;
 
 import org.bukkit.plugin.java.JavaPlugin;
@@ -29,15 +32,20 @@ public class SackResourcePackPlugin extends JavaPlugin {
     private DistributionEngine distributionEngine;
     private ResourcePackHttpServer httpServer;
     private RemoteUploadService remoteUploadService;
+    private S3UploadService s3UploadService;
+    private DatapackBuildEngine datapackBuildEngine;
     private DevelopmentModeWatcher developmentModeWatcher;
 
     private boolean remoteUploadEnabled;
+    private String remoteUploadMode;
     private String remoteUploadUrl;
     private String remoteUploadMethod;
     private String remoteAuthHeaderName;
     private String remoteAuthHeaderValue;
+    private S3UploadSettings s3UploadSettings;
     private String httpPublicUrl;
     private boolean httpEnabled;
+    private boolean datapackEnabled;
 
     @Override
     public void onEnable() {
@@ -65,18 +73,34 @@ public class SackResourcePackPlugin extends JavaPlugin {
                 getConfig().getString("http.bind-address", "0.0.0.0"),
                 getConfig().getInt("http.port", 8080),
                 getConfig().getString("http.path", "/resourcepack.zip"),
-                buildEngine::getZipFile);
+                buildEngine::getZipFile,
+                buildEngine::getMergedDirectory);
 
         if (httpEnabled) {
             httpServer.start();
         }
 
         this.remoteUploadService = new RemoteUploadService(this);
+        this.s3UploadService = new S3UploadService(this);
         this.remoteUploadEnabled = getConfig().getBoolean("remote-upload.enabled", false);
+        this.remoteUploadMode = getConfig().getString("remote-upload.mode", "generic");
         this.remoteUploadUrl = getConfig().getString("remote-upload.url", "");
         this.remoteUploadMethod = getConfig().getString("remote-upload.method", "PUT");
         this.remoteAuthHeaderName = getConfig().getString("remote-upload.auth-header-name", "Authorization");
         this.remoteAuthHeaderValue = getConfig().getString("remote-upload.auth-header-value", "");
+        this.s3UploadSettings = new S3UploadSettings(
+                getConfig().getString("s3.endpoint", ""),
+                getConfig().getString("s3.bucket", ""),
+                getConfig().getString("s3.region", "us-east-1"),
+                getConfig().getString("s3.object-key", "resourcepack.zip"),
+                getConfig().getString("s3.access-key", ""),
+                getConfig().getString("s3.secret-key", ""),
+                getConfig().getBoolean("s3.path-style", false));
+
+        this.datapackEnabled = getConfig().getBoolean("datapack.enabled", false);
+        this.datapackBuildEngine = new DatapackBuildEngine(this, contentDirectory,
+                getConfig().getString("datapack.name", "sackresourcepack"),
+                getConfig().getInt("datapack.pack-format", 48));
 
         this.developmentModeWatcher = new DevelopmentModeWatcher(this, contentDirectory.toPath(),
                 () -> getServer().getScheduler().runTask(this, this::rebuildAndDistribute));
@@ -89,7 +113,9 @@ public class SackResourcePackPlugin extends JavaPlugin {
 
         AssetsAPI.init(this, contentDirectory);
 
-        getCommand("srp").setExecutor(new SrpCommand(this));
+        var srpCommand = new SrpCommand(this);
+        getCommand("srp").setExecutor(srpCommand);
+        getCommand("srp").setTabCompleter(srpCommand);
 
         rebuildAndDistribute();
 
@@ -136,7 +162,10 @@ public class SackResourcePackPlugin extends JavaPlugin {
 
         BuildResult result = buildEngine.build(false);
 
-        if (remoteUploadEnabled && !remoteUploadUrl.isBlank()) {
+        if (remoteUploadEnabled && "s3".equalsIgnoreCase(remoteUploadMode) && s3UploadSettings.isConfigured()) {
+            getServer().getScheduler().runTaskAsynchronously(this,
+                    () -> s3UploadService.upload(result.zipFile(), s3UploadSettings));
+        } else if (remoteUploadEnabled && !remoteUploadUrl.isBlank()) {
             getServer().getScheduler().runTaskAsynchronously(this, () -> remoteUploadService.upload(
                     result.zipFile(), remoteUploadUrl, remoteUploadMethod, remoteAuthHeaderName, remoteAuthHeaderValue));
         }
@@ -196,6 +225,14 @@ public class SackResourcePackPlugin extends JavaPlugin {
 
     public DevelopmentModeWatcher getDevelopmentModeWatcher() {
         return developmentModeWatcher;
+    }
+
+    public DatapackBuildEngine getDatapackBuildEngine() {
+        return datapackBuildEngine;
+    }
+
+    public boolean isDatapackEnabled() {
+        return datapackEnabled;
     }
 
 }

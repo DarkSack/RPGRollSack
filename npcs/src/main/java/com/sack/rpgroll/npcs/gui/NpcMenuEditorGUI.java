@@ -1,5 +1,7 @@
 package com.sack.rpgroll.npcs.gui;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.npcs.core.NpcAction;
@@ -65,7 +67,7 @@ public class NpcMenuEditorGUI extends InventoryGUI {
         }
 
         setItem(TITLE_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(LegacyComponentSerializer.legacyAmpersand().deserialize("Título: " + current.title())
+                .setName(ComponentUtils.parse("Título: " + current.title())
                         .colorIfAbsent(NamedTextColor.YELLOW))
                 .setLore(Component.text("Click para escribir uno nuevo", NamedTextColor.GRAY))
                 .build());
@@ -82,8 +84,7 @@ public class NpcMenuEditorGUI extends InventoryGUI {
             NpcMenuItem item = items.get(i);
 
             setItem(9 + i, new ItemBuilder(resolveMaterial(item.material()))
-                    .setName(LegacyComponentSerializer.legacyAmpersand()
-                            .deserialize(item.displayName().isBlank() ? item.material() : item.displayName())
+                    .setName(ComponentUtils.parse(item.displayName().isBlank() ? item.material() : item.displayName())
                             .colorIfAbsent(NamedTextColor.WHITE))
                     .setLore(Component.text("Slot " + item.slot() + " · " + item.actions().size() + " acción(es)",
                             NamedTextColor.GRAY),

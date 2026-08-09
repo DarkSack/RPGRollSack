@@ -10,6 +10,7 @@ import com.sack.rpgroll.guilds.team.matchmaking.TeamMatchmakingQueue;
 import com.sack.rpgroll.guilds.team.ping.PingType;
 import com.sack.rpgroll.guilds.team.ping.TeamPingManager;
 import com.sack.rpgroll.guilds.gui.ChatPromptManager;
+import com.sack.rpgroll.util.TabCompleteUtil;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -18,14 +19,21 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.RayTraceResult;
 
+import java.util.List;
 import java.util.Locale;
 
 /** /team create|invite|accept|decline|leave|kick|promote|info|config|buff|ping|waypoint|chat|queue */
-public class TeamCommand implements CommandExecutor {
+public class TeamCommand implements CommandExecutor, TabCompleter {
+
+    private static final List<String> SUBCOMMANDS = List.of("invite", "accept", "decline", "leave", "kick", "info",
+            "gui", "config", "buff", "ping", "waypoint", "chat", "queue");
+    private static final List<String> PING_TYPES = List.of("enemigo", "objetivo", "loot", "npc", "lugar");
+    private static final List<String> WAYPOINT_SUBCOMMANDS = List.of("set", "list", "tp", "remove");
 
     private final TeamManager teamManager;
     private final TeamMatchmakingQueue matchmakingQueue;
@@ -277,6 +285,38 @@ public class TeamCommand implements CommandExecutor {
                 }
             }
         }
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+
+        if (args.length == 1) {
+            return TabCompleteUtil.filter(args[0], SUBCOMMANDS);
+        }
+
+        String sub = args[0].toLowerCase(Locale.ROOT);
+
+        if (args.length == 2) {
+            return switch (sub) {
+                case "invite", "kick" -> TabCompleteUtil.onlinePlayerNames(args[1]);
+                case "ping" -> TabCompleteUtil.filter(args[1], PING_TYPES);
+                case "waypoint" -> TabCompleteUtil.filter(args[1], WAYPOINT_SUBCOMMANDS);
+                case "queue" -> TabCompleteUtil.filter(args[1], List.of("leave"));
+                default -> List.of();
+            };
+        }
+
+        if (args.length == 3 && "waypoint".equals(sub)
+                && List.of("tp", "remove").contains(args[1].toLowerCase(Locale.ROOT))
+                && sender instanceof Player player) {
+            Team team = teamManager.getTeam(player.getUniqueId()).orElse(null);
+            if (team == null) {
+                return List.of();
+            }
+            return TabCompleteUtil.filter(args[2], team.waypoints().keySet());
+        }
+
+        return List.of();
     }
 
 }

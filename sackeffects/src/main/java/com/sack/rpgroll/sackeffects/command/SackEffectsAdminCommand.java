@@ -6,6 +6,7 @@ import com.sack.rpgroll.sackeffects.engine.EffectContext;
 import com.sack.rpgroll.sackeffects.engine.EffectEngine;
 import com.sack.rpgroll.sackeffects.gui.ChatPromptManager;
 import com.sack.rpgroll.sackeffects.gui.EffectBrowserGUI;
+import com.sack.rpgroll.util.TabCompleteUtil;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -14,8 +15,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -23,7 +26,9 @@ import java.util.Optional;
  * /sackeffects reload
  * /sackeffects test <id> [jugador]
  */
-public class SackEffectsAdminCommand implements CommandExecutor {
+public class SackEffectsAdminCommand implements CommandExecutor, TabCompleter {
+
+    private static final List<String> SUBCOMMANDS = List.of("browser", "reload", "test");
 
     private final EffectManager effectManager;
     private final EffectEngine engine;
@@ -114,6 +119,25 @@ public class SackEffectsAdminCommand implements CommandExecutor {
         engine.play(effectOpt.get(), EffectContext.of(target));
         sender.sendMessage(Component.text("▶ Reproduciendo '" + effectId + "' en " + target.getName() + ".",
                 NamedTextColor.GREEN));
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+
+        if (args.length == 1) {
+            return TabCompleteUtil.filter(args[0], SUBCOMMANDS);
+        }
+
+        if (args.length == 2 && "test".equalsIgnoreCase(args[0])) {
+            return TabCompleteUtil.filter(args[1],
+                    effectManager.getAll().stream().map(EffectDefinition::id).toList());
+        }
+
+        if (args.length == 3 && "test".equalsIgnoreCase(args[0])) {
+            return TabCompleteUtil.onlinePlayerNames(args[2]);
+        }
+
+        return List.of();
     }
 
 }

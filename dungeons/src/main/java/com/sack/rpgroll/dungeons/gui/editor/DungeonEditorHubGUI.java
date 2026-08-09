@@ -1,5 +1,7 @@
 package com.sack.rpgroll.dungeons.gui.editor;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 
@@ -82,7 +84,7 @@ public class DungeonEditorHubGUI extends InventoryGUI {
         }
 
         return new ItemBuilder(material)
-                .setName(LegacyComponentSerializer.legacyAmpersand().deserialize(session.displayName)
+                .setName(ComponentUtils.parse(session.displayName)
                         .colorIfAbsent(NamedTextColor.WHITE))
                 .setLore(Component.text(session.original.id(), NamedTextColor.DARK_GRAY),
                         Component.text(session.rooms.size() + " sala(s)", NamedTextColor.GRAY))

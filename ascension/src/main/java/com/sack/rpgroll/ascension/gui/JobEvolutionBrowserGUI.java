@@ -99,7 +99,7 @@ public class JobEvolutionBrowserGUI extends InventoryGUI {
 
     private void reopen() {
         this.evolutions = List.copyOf(manager.getAll());
-        build();
+        open();
     }
 
 }

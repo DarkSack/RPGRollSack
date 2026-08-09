@@ -1,5 +1,7 @@
 package com.sack.rpgroll.npcs.gui;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.npcs.core.NpcAction;
 import com.sack.rpgroll.npcs.core.NpcActionExecutor;
@@ -25,14 +27,13 @@ import java.util.Map;
  */
 public class NpcMenuGUI extends InventoryGUI {
 
-    private static final LegacyComponentSerializer LEGACY = LegacyComponentSerializer.legacyAmpersand();
 
     private final NpcMenuDefinition menu;
     private final NpcActionExecutor actionExecutor;
     private final Map<Integer, List<NpcAction>> slotToActions = new HashMap<>();
 
     public NpcMenuGUI(Player player, NpcMenuDefinition menu, NpcActionExecutor actionExecutor) {
-        super(player, LEGACY.deserialize(menu.title()), menu.rows() * 9);
+        super(player, ComponentUtils.parse(menu.title()), menu.rows() * 9);
         this.menu = menu;
         this.actionExecutor = actionExecutor;
     }
@@ -61,12 +62,12 @@ public class NpcMenuGUI extends InventoryGUI {
             ItemMeta meta = item.getItemMeta();
 
             if (!menuItem.displayName().isEmpty()) {
-                meta.displayName(LEGACY.deserialize(menuItem.displayName()));
+                meta.displayName(ComponentUtils.parse(menuItem.displayName()));
             }
 
             if (!menuItem.lore().isEmpty()) {
                 List<Component> lore = menuItem.lore().stream()
-                        .<Component>map(LEGACY::deserialize)
+                        .<Component>map(ComponentUtils::parse)
                         .toList();
 
                 meta.lore(lore);
@@ -86,7 +87,7 @@ public class NpcMenuGUI extends InventoryGUI {
 
         List<NpcAction> actions = slotToActions.get(event.getRawSlot());
 
-        if (actions == null || actions.isEmpty()) {
+        if (actions == null) {
             return;
         }
 

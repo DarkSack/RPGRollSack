@@ -1,0 +1,7 @@
+id: crop_quality
+display-name: "Calidad de cultivo"
+description: "Uso eficiente de semillas y calidad de la cosecha."
+profession: farmer
+max-level: 10
+attribute-key: crop_quality
+value-per-level: 1.5

@@ -96,7 +96,7 @@ public class AchievementBrowserGUI extends InventoryGUI {
 
     private void reopen() {
         this.achievements = List.copyOf(manager.getAll());
-        build();
+        open();
     }
 
 }

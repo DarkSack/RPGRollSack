@@ -45,6 +45,7 @@ public class DashboardGUI extends InventoryGUI {
 
     private final Plugin plugin;
     private final BuildEngine buildEngine;
+    private final String assetBaseUrl;
     private final Runnable onRebuild;
     private final Runnable onValidate;
     private final Runnable onPublish;
@@ -53,11 +54,13 @@ public class DashboardGUI extends InventoryGUI {
 
     private int page = 0;
 
-    public DashboardGUI(Player player, Plugin plugin, BuildEngine buildEngine, Runnable onRebuild,
-            Runnable onValidate, Runnable onPublish, Runnable onToggleDevMode, BooleanSupplier devModeActive) {
+    public DashboardGUI(Player player, Plugin plugin, BuildEngine buildEngine, String assetBaseUrl,
+            Runnable onRebuild, Runnable onValidate, Runnable onPublish, Runnable onToggleDevMode,
+            BooleanSupplier devModeActive) {
         super(player, Component.text("SackResourcePack", NamedTextColor.GOLD), SIZE);
         this.plugin = plugin;
         this.buildEngine = buildEngine;
+        this.assetBaseUrl = assetBaseUrl;
         this.onRebuild = onRebuild;
         this.onValidate = onValidate;
         this.onPublish = onPublish;
@@ -173,7 +176,7 @@ public class DashboardGUI extends InventoryGUI {
             onToggleDevMode.run();
             build();
         } else if (slot == BROWSER_SLOT) {
-            new AssetBrowserGUI(player, buildEngine, this::reopen).open();
+            new AssetBrowserGUI(player, buildEngine, assetBaseUrl, this::reopen).open();
         } else if (slot == PREV_SLOT) {
             page--;
             build();

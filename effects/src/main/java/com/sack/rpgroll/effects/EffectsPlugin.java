@@ -48,7 +48,9 @@ public class EffectsPlugin extends JavaPlugin {
         if (effectsCommand == null) {
             getLogger().severe("✘ El comando 'rpgeffects' no está declarado en plugin.yml");
         } else {
-            effectsCommand.setExecutor(new EffectsAdminCommand(effectManager, tracker, chatPromptManager));
+            var effectsAdminCommand = new EffectsAdminCommand(effectManager, tracker, chatPromptManager);
+            effectsCommand.setExecutor(effectsAdminCommand);
+            effectsCommand.setTabCompleter(effectsAdminCommand);
         }
 
         getLogger().info("✔ RPGRoll-Effects habilitado. " + effectManager.count() + " efecto(s) cargado(s).");

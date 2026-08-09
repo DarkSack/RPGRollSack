@@ -1,0 +1,7 @@
+id: vein_detection
+display-name: "Detección de vetas"
+description: "Radio efectivo de búsqueda de minerales."
+profession: miner
+max-level: 10
+attribute-key: vein_detection
+value-per-level: 1.0

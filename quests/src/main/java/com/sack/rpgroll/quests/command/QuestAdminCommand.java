@@ -6,6 +6,7 @@ import com.sack.rpgroll.quests.gui.ChatPromptManager;
 import com.sack.rpgroll.quests.gui.QuestBrowserGUI;
 import com.sack.rpgroll.quests.gui.RegionBrowserGUI;
 import com.sack.rpgroll.quests.region.RegionManager;
+import com.sack.rpgroll.util.TabCompleteUtil;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -14,8 +15,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
+import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
@@ -27,7 +30,9 @@ import java.util.Optional;
  * /questadmin reload                       — recarga los YAML de quests/ y regions/
  * /questadmin browser [quests|regions]     — editor visual (crear/editar)
  */
-public class QuestAdminCommand implements CommandExecutor {
+public class QuestAdminCommand implements CommandExecutor, TabCompleter {
+
+    private static final List<String> SUBCOMMANDS = List.of("give", "complete", "fail", "reset", "reload", "browser");
 
     private static final String PERMISSION = "rpgrollquests.admin.*";
 
@@ -180,6 +185,31 @@ public class QuestAdminCommand implements CommandExecutor {
         engine.getQuestManager().reload();
         sender.sendMessage(Component.text(
                 "✔ Recargado: " + engine.getQuestManager().count() + " misión(es).", NamedTextColor.GREEN));
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+
+        if (args.length == 1) {
+            return TabCompleteUtil.filter(args[0], SUBCOMMANDS);
+        }
+
+        String sub = args[0].toLowerCase();
+
+        if (args.length == 2) {
+            return switch (sub) {
+                case "give", "complete", "fail", "reset" -> TabCompleteUtil.onlinePlayerNames(args[1]);
+                case "browser" -> TabCompleteUtil.filter(args[1], List.of("quests", "regions"));
+                default -> List.of();
+            };
+        }
+
+        if (args.length == 3 && List.of("give", "complete", "fail", "reset").contains(sub)) {
+            List<String> questIds = engine.getQuestManager().getAll().stream().map(Quest::id).toList();
+            return TabCompleteUtil.filter(args[2], questIds);
+        }
+
+        return List.of();
     }
 
 }

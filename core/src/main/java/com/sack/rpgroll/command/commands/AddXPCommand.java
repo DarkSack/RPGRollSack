@@ -4,6 +4,7 @@ import com.sack.rpgroll.RPGRoll;
 import com.sack.rpgroll.command.RPGCommand;
 import com.sack.rpgroll.player.PlayerManager;
 import com.sack.rpgroll.player.RPGPlayer;
+import com.sack.rpgroll.util.TabCompleteUtil;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -115,6 +116,17 @@ public class AddXPCommand implements RPGCommand {
     @Override
     public List<String> getAliases() {
         return List.of("dxp");
+    }
+
+    @Override
+    public List<String> getTabCompletions(CommandSender sender, String[] args) {
+        if (args.length <= 1) {
+            return TabCompleteUtil.allOnlinePlayerNames();
+        }
+        if (args.length == 2) {
+            return List.of("100", "500", "1000");
+        }
+        return List.of();
     }
 
 }

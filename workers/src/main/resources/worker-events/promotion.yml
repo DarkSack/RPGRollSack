@@ -1,0 +1,10 @@
+id: promotion
+display-name: "&6Ascenso"
+description: "Reconocimiento por buen desempeño — sube la moral de golpe."
+type: PROMOTION
+chance: 0
+duration-ticks: 0
+happiness-delta: 20
+energy-delta: 10
+health-delta: 0
+work-speed-multiplier-while-active: 1.0

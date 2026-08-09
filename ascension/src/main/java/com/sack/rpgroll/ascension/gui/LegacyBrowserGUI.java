@@ -96,7 +96,7 @@ public class LegacyBrowserGUI extends InventoryGUI {
 
     private void reopen() {
         this.tiers = List.copyOf(manager.getAll());
-        build();
+        open();
     }
 
 }

@@ -96,7 +96,7 @@ public class FactionBrowserGUI extends InventoryGUI {
 
     private void reopen() {
         this.factions = List.copyOf(manager.getAll());
-        build();
+        open();
     }
 
 }

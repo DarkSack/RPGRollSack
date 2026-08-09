@@ -115,7 +115,7 @@ public class SeasonRegionBrowserGUI extends InventoryGUI {
 
     private void reopen() {
         this.regions = List.copyOf(regionManager.getAll());
-        build();
+        open();
     }
 
 }

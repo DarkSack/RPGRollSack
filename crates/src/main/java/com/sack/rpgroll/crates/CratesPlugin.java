@@ -55,8 +55,10 @@ public class CratesPlugin extends JavaPlugin {
         if (crateCommand == null) {
             getLogger().severe("✘ El comando 'crate' no está declarado en plugin.yml");
         } else {
-            crateCommand.setExecutor(new CrateAdminCommand(crateManager, placedCrateManager, hologramsHook,
-                    crateKeyItem, chatPromptManager));
+            var crateAdminCommand = new CrateAdminCommand(crateManager, placedCrateManager, hologramsHook,
+                    crateKeyItem, chatPromptManager);
+            crateCommand.setExecutor(crateAdminCommand);
+            crateCommand.setTabCompleter(crateAdminCommand);
         }
 
         rebuildHolograms();

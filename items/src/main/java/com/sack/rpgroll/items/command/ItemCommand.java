@@ -6,6 +6,7 @@ import com.sack.rpgroll.items.instance.ItemInstanceService;
 import com.sack.rpgroll.items.skin.SkinService;
 import com.sack.rpgroll.items.socket.SocketService;
 import com.sack.rpgroll.items.upgrade.UpgradeService;
+import com.sack.rpgroll.util.TabCompleteUtil;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -13,9 +14,11 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -24,7 +27,9 @@ import java.util.Optional;
  * /item skin         — cicla su próxima skin
  * /item socket &lt;id&gt; — inserta la gema de tu mano secundaria en ese socket
  */
-public class ItemCommand implements CommandExecutor {
+public class ItemCommand implements CommandExecutor, TabCompleter {
+
+    private static final List<String> SUBCOMMANDS = List.of("info", "upgrade", "skin", "socket");
 
     private final ItemManager itemManager;
     private final ItemInstanceService instanceService;
@@ -164,6 +169,29 @@ public class ItemCommand implements CommandExecutor {
         } else {
             gemStack.setAmount(newAmount);
         }
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+
+        if (args.length == 1) {
+            return TabCompleteUtil.filter(args[0], SUBCOMMANDS);
+        }
+
+        if (args.length == 2 && "socket".equalsIgnoreCase(args[0]) && sender instanceof Player player) {
+
+            ItemStack held = player.getInventory().getItemInMainHand();
+            Optional<ItemDefinition> definitionOpt = instanceService.getId(held).flatMap(itemManager::get);
+
+            if (definitionOpt.isEmpty()) {
+                return List.of();
+            }
+
+            return TabCompleteUtil.filter(args[1],
+                    definitionOpt.get().sockets().stream().map(socket -> socket.id()).toList());
+        }
+
+        return List.of();
     }
 
 }

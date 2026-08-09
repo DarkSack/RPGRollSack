@@ -47,7 +47,9 @@ public class EnchantmentsPlugin extends JavaPlugin {
         if (enchantCommand == null) {
             getLogger().severe("✘ El comando 'renchant' no está declarado en plugin.yml");
         } else {
-            enchantCommand.setExecutor(new EnchantAdminCommand(enchantmentManager, enchantmentItem, chatPromptManager));
+            var enchantAdminCommand = new EnchantAdminCommand(enchantmentManager, enchantmentItem, chatPromptManager);
+            enchantCommand.setExecutor(enchantAdminCommand);
+            enchantCommand.setTabCompleter(enchantAdminCommand);
         }
 
         registerPlaceholders();

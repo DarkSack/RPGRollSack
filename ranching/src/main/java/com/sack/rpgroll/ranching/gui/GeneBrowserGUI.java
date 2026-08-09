@@ -102,7 +102,7 @@ public class GeneBrowserGUI extends InventoryGUI {
 
     private void reopen() {
         this.genes = List.copyOf(geneManager.getAll());
-        build();
+        open();
     }
 
 }

@@ -1,5 +1,7 @@
 package com.sack.rpgroll.dungeons.registry;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.dungeons.integration.MobsIntegration;
 
 import net.kyori.adventure.bossbar.BossBar;
@@ -27,7 +29,6 @@ import java.util.Locale;
  */
 public final class BuiltinDungeonActions {
 
-    private static final LegacyComponentSerializer LEGACY = LegacyComponentSerializer.legacyAmpersand();
 
     private BuiltinDungeonActions() {
     }
@@ -37,7 +38,7 @@ public final class BuiltinDungeonActions {
         registry.register("MESSAGE", (action, ctx) -> {
             String message = action.param("value", "");
             if (!message.isBlank()) {
-                Component component = LEGACY.deserialize(message);
+                Component component = ComponentUtils.parse(message);
                 ctx.players().forEach(player -> player.sendMessage(component));
             }
         });
@@ -77,8 +78,8 @@ public final class BuiltinDungeonActions {
         });
 
         registry.register("TITLE", (action, ctx) -> {
-            Component main = LEGACY.deserialize(action.param("title", ""));
-            Component subtitle = LEGACY.deserialize(action.param("subtitle", ""));
+            Component main = ComponentUtils.parse(action.param("title", ""));
+            Component subtitle = ComponentUtils.parse(action.param("subtitle", ""));
             Title.Times times = Title.Times.times(Duration.ofMillis(500), Duration.ofSeconds(3), Duration.ofMillis(500));
             Title title = Title.title(main, subtitle, times);
             ctx.players().forEach(player -> player.showTitle(title));
@@ -89,7 +90,7 @@ public final class BuiltinDungeonActions {
             String text = action.param("text", "");
             int durationTicks = Integer.parseInt(action.param("duration-ticks", "100"));
 
-            BossBar bossBar = BossBar.bossBar(LEGACY.deserialize(text), 1.0f, BossBar.Color.RED,
+            BossBar bossBar = BossBar.bossBar(ComponentUtils.parse(text), 1.0f, BossBar.Color.RED,
                     BossBar.Overlay.PROGRESS);
 
             ctx.players().forEach(player -> player.showBossBar(bossBar));

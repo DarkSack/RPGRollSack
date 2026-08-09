@@ -104,7 +104,7 @@ public class ClassSpecializationBrowserGUI extends InventoryGUI {
 
     private void reopen() {
         this.specializations = List.copyOf(manager.getAll());
-        build();
+        open();
     }
 
 }

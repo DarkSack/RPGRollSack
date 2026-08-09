@@ -104,7 +104,7 @@ public class CalendarBrowserGUI extends InventoryGUI {
 
     private void reopen() {
         this.calendars = List.copyOf(calendarManager.getAll());
-        build();
+        open();
     }
 
 }

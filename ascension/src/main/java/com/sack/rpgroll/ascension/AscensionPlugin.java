@@ -123,6 +123,10 @@ public class AscensionPlugin extends JavaPlugin {
         }
 
         command.setExecutor(executor);
+
+        if (executor instanceof org.bukkit.command.TabCompleter tabCompleter) {
+            command.setTabCompleter(tabCompleter);
+        }
     }
 
     // ============ API pública para otros addons ============

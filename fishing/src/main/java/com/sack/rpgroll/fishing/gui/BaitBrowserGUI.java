@@ -99,7 +99,7 @@ public class BaitBrowserGUI extends InventoryGUI {
 
     private void reopen() {
         this.baits = List.copyOf(baitManager.getAll());
-        build();
+        open();
     }
 
 }

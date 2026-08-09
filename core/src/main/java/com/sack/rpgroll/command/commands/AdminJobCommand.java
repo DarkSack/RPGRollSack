@@ -8,6 +8,7 @@ import com.sack.rpgroll.player.PlayerManager;
 import com.sack.rpgroll.player.RPGPlayer;
 import com.sack.rpgroll.player.jobs.JobProgress;
 import com.sack.rpgroll.player.jobs.PlayerJobs;
+import com.sack.rpgroll.util.TabCompleteUtil;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -229,6 +230,21 @@ public class AdminJobCommand implements RPGCommand {
 
     @Override
     public List<String> getAliases() {
+        return List.of();
+    }
+
+    @Override
+    public List<String> getTabCompletions(CommandSender sender, String[] args) {
+        if (args.length <= 1) {
+            return List.of("give", "remove", "setlevel");
+        }
+        if (args.length == 2) {
+            return TabCompleteUtil.allOnlinePlayerNames();
+        }
+        if (args.length == 3) {
+            JobManager jobManager = plugin.getBootstrap().getServices().get(JobManager.class);
+            return jobManager.getAll().stream().map(Job::id).toList();
+        }
         return List.of();
     }
 

@@ -14,12 +14,11 @@ import java.nio.file.Files;
 import java.time.Duration;
 
 /**
- * Sube el ZIP a un endpoint remoto genérico vía PUT/POST autenticado —
- * NO implementa firmas específicas de proveedor (ej. AWS SigV4 para
- * hablarle directo a un bucket S3): eso es un algoritmo de firma real,
- * sensible a errores sutiles, e imposible de verificar acá sin
- * credenciales reales. Sirve para un endpoint propio, un proxy, o
- * cualquier servicio que acepte un PUT/POST con un header de auth.
+ * Sube el ZIP a un endpoint remoto genérico vía PUT/POST con un header
+ * de autenticación fijo — pensado para un endpoint propio, un proxy, o
+ * cualquier servicio que acepte eso. Si el destino es un bucket S3 (o
+ * compatible) que exige la firma real de AWS, ver {@code S3UploadService}
+ * en el paquete {@code distribution.s3} en su lugar.
  */
 public class RemoteUploadService {
 

@@ -1,6 +1,7 @@
 package com.sack.rpgroll.seasons.command;
 
 import com.sack.rpgroll.seasons.api.SeasonsAPI;
+import com.sack.rpgroll.util.TabCompleteUtil;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -10,12 +11,14 @@ import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
+import java.util.List;
 import java.util.Locale;
 
 /** /seasons info [mundo] */
-public class SeasonsCommand implements CommandExecutor {
+public class SeasonsCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -69,6 +72,20 @@ public class SeasonsCommand implements CommandExecutor {
             sender.sendMessage(Component.text(
                     String.format(Locale.ROOT, "Temperatura donde estás: %.1f°C", temperature), NamedTextColor.AQUA));
         }
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+
+        if (args.length == 1) {
+            return TabCompleteUtil.filter(args[0], List.of("info"));
+        }
+
+        if (args.length == 2 && "info".equalsIgnoreCase(args[0])) {
+            return TabCompleteUtil.worldNames(args[1]);
+        }
+
+        return List.of();
     }
 
 }

@@ -4,6 +4,7 @@ import com.sack.rpgroll.quests.core.Quest;
 import com.sack.rpgroll.quests.engine.QuestEngine;
 import com.sack.rpgroll.quests.player.ActiveQuestProgress;
 import com.sack.rpgroll.quests.player.QuestPlayerState;
+import com.sack.rpgroll.util.TabCompleteUtil;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -11,8 +12,10 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -23,7 +26,10 @@ import java.util.Optional;
  * /quest active              — tus misiones activas y su progreso
  * /quest completed           — tus misiones completadas
  */
-public class QuestCommand implements CommandExecutor {
+public class QuestCommand implements CommandExecutor, TabCompleter {
+
+    private static final List<String> SUBCOMMANDS = List.of("list", "info", "start", "abandon", "active",
+            "completed");
 
     private final QuestEngine engine;
 
@@ -187,6 +193,21 @@ public class QuestCommand implements CommandExecutor {
         for (String questId : state.allCompleted().keySet()) {
             player.sendMessage(Component.text("• " + questId, NamedTextColor.WHITE));
         }
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+
+        if (args.length == 1) {
+            return TabCompleteUtil.filter(args[0], SUBCOMMANDS);
+        }
+
+        if (args.length == 2 && List.of("info", "start", "abandon").contains(args[0].toLowerCase())) {
+            List<String> questIds = engine.getQuestManager().getAll().stream().map(Quest::id).toList();
+            return TabCompleteUtil.filter(args[1], questIds);
+        }
+
+        return List.of();
     }
 
 }

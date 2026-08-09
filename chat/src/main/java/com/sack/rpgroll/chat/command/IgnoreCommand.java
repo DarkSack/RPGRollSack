@@ -3,6 +3,7 @@ package com.sack.rpgroll.chat.command;
 import com.sack.rpgroll.chat.ignore.IgnoreManager;
 import com.sack.rpgroll.chat.ignore.PlayerIgnoreState;
 import com.sack.rpgroll.guilds.GuildsAPI;
+import com.sack.rpgroll.util.TabCompleteUtil;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -11,13 +12,18 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
+import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
 /** /ignore &lt;player|guild|channel&gt; &lt;add|remove|list&gt; [nombre] */
-public class IgnoreCommand implements CommandExecutor {
+public class IgnoreCommand implements CommandExecutor, TabCompleter {
+
+    private static final List<String> TYPES = List.of("player", "guild", "channel");
+    private static final List<String> ACTIONS = List.of("add", "remove", "list");
 
     private final IgnoreManager ignoreManager;
 
@@ -120,6 +126,24 @@ public class IgnoreCommand implements CommandExecutor {
     private void sendUsage(Player player) {
         player.sendMessage(Component.text("Uso: /ignore <player|guild|channel> <add|remove|list> [nombre]",
                 NamedTextColor.YELLOW));
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+
+        if (args.length == 1) {
+            return TabCompleteUtil.filter(args[0], TYPES);
+        }
+
+        if (args.length == 2) {
+            return TabCompleteUtil.filter(args[1], ACTIONS);
+        }
+
+        if (args.length == 3 && "player".equalsIgnoreCase(args[0])) {
+            return TabCompleteUtil.onlinePlayerNames(args[2]);
+        }
+
+        return List.of();
     }
 
 }

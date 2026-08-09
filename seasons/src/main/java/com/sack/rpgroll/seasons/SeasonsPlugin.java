@@ -103,15 +103,19 @@ public class SeasonsPlugin extends JavaPlugin {
         if (adminCommand == null) {
             getLogger().severe("✘ El comando 'seasonsadmin' no está declarado en plugin.yml");
         } else {
-            adminCommand.setExecutor(new SeasonsAdminCommand(calendarManager, seasonManager, worldEventManager,
-                    regionManager, worldEventEngine, SeasonsAPI.get(), chatPromptManager));
+            var seasonsAdminCommand = new SeasonsAdminCommand(calendarManager, seasonManager, worldEventManager,
+                    regionManager, worldEventEngine, SeasonsAPI.get(), chatPromptManager);
+            adminCommand.setExecutor(seasonsAdminCommand);
+            adminCommand.setTabCompleter(seasonsAdminCommand);
         }
 
         var playerCommand = getCommand("seasons");
         if (playerCommand == null) {
             getLogger().severe("✘ El comando 'seasons' no está declarado en plugin.yml");
         } else {
-            playerCommand.setExecutor(new SeasonsCommand());
+            var seasonsCommand = new SeasonsCommand();
+            playerCommand.setExecutor(seasonsCommand);
+            playerCommand.setTabCompleter(seasonsCommand);
         }
 
         getLogger().info("✔ RPGRoll-Seasons habilitado. " + calendarManager.count() + " calendario(s), "

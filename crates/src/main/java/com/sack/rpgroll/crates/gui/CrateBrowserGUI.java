@@ -110,7 +110,7 @@ public class CrateBrowserGUI extends InventoryGUI {
 
     private void reopen() {
         this.crates = List.copyOf(crateManager.getAll());
-        build();
+        open();
     }
 
 }

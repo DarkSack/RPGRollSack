@@ -1,0 +1,7 @@
+id: rare_catch
+display-name: "Capturas raras"
+description: "Chance de sacar peces poco comunes."
+profession: fisherman
+max-level: 10
+attribute-key: rare_catch
+value-per-level: 1.0

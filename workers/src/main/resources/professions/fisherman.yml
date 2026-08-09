@@ -1,0 +1,26 @@
+id: fisherman
+display-name: "&bPescador"
+icon: FISHING_ROD
+description: "Busca agua cercana y saca peces vanilla mientras espera en la orilla."
+entity-type: VILLAGER
+skills: [rare_catch]
+schedule: standard_day
+wage-amount: 35
+wage-type: PER_TASK
+tool-material: FISHING_ROD
+ai-rules:
+  - condition: HUNGRY
+    action: EAT
+    priority: 10
+  - condition: INVENTORY_FULL
+    action: STORE_ITEMS
+    priority: 20
+  - condition: RAINING
+    action: SEEK_SHELTER
+    priority: 30
+  - condition: NIGHT
+    action: GO_HOME
+    priority: 40
+  - condition: ALWAYS
+    action: WORK
+    priority: 100

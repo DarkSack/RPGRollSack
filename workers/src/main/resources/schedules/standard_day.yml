@@ -1,0 +1,18 @@
+id: standard_day
+display-name: "Jornada Estándar"
+description: "06:00 despertar, 07:00 desayuno, 08:00-13:00 y 14:00-20:00 trabajo, 22:00 dormir."
+entries:
+  - start-tick: 0
+    activity: WAKE
+  - start-tick: 1000
+    activity: EAT
+  - start-tick: 2000
+    activity: WORK
+  - start-tick: 7000
+    activity: EAT
+  - start-tick: 8000
+    activity: WORK
+  - start-tick: 14000
+    activity: REST
+  - start-tick: 16000
+    activity: SLEEP

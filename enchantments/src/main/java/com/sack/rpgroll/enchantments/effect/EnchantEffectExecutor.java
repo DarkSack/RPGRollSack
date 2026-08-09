@@ -1,5 +1,7 @@
 package com.sack.rpgroll.enchantments.effect;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.enchantments.core.EnchantEffect;
 
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
@@ -31,7 +33,6 @@ import java.util.Locale;
  */
 public class EnchantEffectExecutor {
 
-    private static final LegacyComponentSerializer LEGACY = LegacyComponentSerializer.legacyAmpersand();
     private static final double DEFAULT_PICKUP_RADIUS = 6.0;
 
     private final Plugin plugin;
@@ -174,7 +175,7 @@ public class EnchantEffectExecutor {
         }
 
         message = applyPlaceholders(message, context);
-        context.player().sendMessage(LEGACY.deserialize(message));
+        context.player().sendMessage(ComponentUtils.parse(message));
     }
 
     private String applyPlaceholders(String raw, EffectContext context) {

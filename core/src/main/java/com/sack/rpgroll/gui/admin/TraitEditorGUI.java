@@ -1,5 +1,7 @@
 package com.sack.rpgroll.gui.admin;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.gameplay.trait.Trait;
@@ -59,8 +61,7 @@ public class TraitEditorGUI extends InventoryGUI {
         }
 
         setItem(NAME_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(LegacyComponentSerializer.legacyAmpersand()
-                        .deserialize("Nombre: " + current.name()).colorIfAbsent(NamedTextColor.YELLOW))
+                .setName(ComponentUtils.parse("Nombre: " + current.name()).colorIfAbsent(NamedTextColor.YELLOW))
                 .setLore(Component.text("Click para escribir uno nuevo", NamedTextColor.GRAY))
                 .build());
 

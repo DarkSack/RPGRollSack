@@ -1,5 +1,7 @@
 package com.sack.rpgroll.quests.gui;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.quests.core.Quest;
@@ -76,8 +78,7 @@ public class QuestEditorGUI extends InventoryGUI {
         }
 
         setItem(NAME_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(LegacyComponentSerializer.legacyAmpersand()
-                        .deserialize("Nombre: " + current.displayName()).colorIfAbsent(NamedTextColor.YELLOW))
+                .setName(ComponentUtils.parse("Nombre: " + current.displayName()).colorIfAbsent(NamedTextColor.YELLOW))
                 .setLore(Component.text("Click para escribir uno nuevo", NamedTextColor.GRAY))
                 .build());
 

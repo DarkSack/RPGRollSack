@@ -87,4 +87,12 @@ public class AdminContentCommand implements RPGCommand {
         return List.of("acontent");
     }
 
+    @Override
+    public List<String> getTabCompletions(CommandSender sender, String[] args) {
+        if (args.length <= 1) {
+            return List.of("race", "class", "job", "skill", "trait");
+        }
+        return List.of();
+    }
+
 }

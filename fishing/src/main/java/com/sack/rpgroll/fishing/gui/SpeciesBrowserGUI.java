@@ -112,7 +112,7 @@ public class SpeciesBrowserGUI extends InventoryGUI {
 
     private void reopen() {
         this.species = List.copyOf(speciesManager.getAll());
-        build();
+        open();
     }
 
     static Material parseMaterial(String raw) {

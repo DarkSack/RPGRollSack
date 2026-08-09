@@ -3,6 +3,7 @@ package com.sack.rpgroll.sackresourcepack.distribution;
 import com.sack.rpgroll.sackresourcepack.event.PackSentEvent;
 
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 
 import org.bukkit.Bukkit;
@@ -25,6 +26,11 @@ import java.util.UUID;
  * rechaza un pack marcado como obligatorio.
  */
 public class DistributionEngine implements Listener {
+
+    /** Copia local del mismo parser "inteligente" que usa el resto del ecosistema (core no es una dependencia acá). */
+    private static final MiniMessage MINI_MESSAGE = MiniMessage.miniMessage();
+    private static final LegacyComponentSerializer LEGACY = LegacyComponentSerializer.builder()
+            .character('&').hexColors().build();
 
     private final Plugin plugin;
     private final boolean required;
@@ -55,7 +61,7 @@ public class DistributionEngine implements Listener {
             return;
         }
 
-        Component prompt = LegacyComponentSerializer.legacyAmpersand().deserialize(promptMessage);
+        Component prompt = parseMessage(promptMessage);
         player.setResourcePack(currentUrl, currentSha1Bytes, prompt, required);
 
         Bukkit.getPluginManager().callEvent(new PackSentEvent(player));
@@ -80,9 +86,22 @@ public class DistributionEngine implements Listener {
         lastStatus.put(event.getPlayer().getUniqueId(), event.getStatus());
 
         if (required && event.getStatus() == PlayerResourcePackStatusEvent.Status.DECLINED) {
-            event.getPlayer().kick(
-                    LegacyComponentSerializer.legacyAmpersand().deserialize("&cEste servidor requiere aceptar el resource pack."));
+            event.getPlayer().kick(parseMessage("&cEste servidor requiere aceptar el resource pack."));
         }
+    }
+
+    /** Soporta MiniMessage (&lt;gradient:...&gt;, etc.), legacy clásico y legacy hex (&amp;#RRGGBB / &amp;x&amp;R&amp;R...). */
+    private static Component parseMessage(String text) {
+
+        if (text == null || text.isBlank()) {
+            return Component.empty();
+        }
+
+        if (text.indexOf('<') >= 0 && text.indexOf('>') >= 0) {
+            return MINI_MESSAGE.deserialize(text);
+        }
+
+        return LEGACY.deserialize(text);
     }
 
     private byte[] hexToBytes(String hex) {

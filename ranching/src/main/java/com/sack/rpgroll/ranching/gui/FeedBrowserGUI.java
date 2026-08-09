@@ -101,7 +101,7 @@ public class FeedBrowserGUI extends InventoryGUI {
 
     private void reopen() {
         this.feeds = List.copyOf(feedManager.getAll());
-        build();
+        open();
     }
 
 }

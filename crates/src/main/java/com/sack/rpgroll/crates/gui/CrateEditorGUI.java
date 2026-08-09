@@ -1,5 +1,7 @@
 package com.sack.rpgroll.crates.gui;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.crates.core.Crate;
@@ -63,8 +65,7 @@ public class CrateEditorGUI extends InventoryGUI {
         }
 
         setItem(NAME_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(LegacyComponentSerializer.legacyAmpersand()
-                        .deserialize("Nombre: " + current.displayName()).colorIfAbsent(NamedTextColor.YELLOW))
+                .setName(ComponentUtils.parse("Nombre: " + current.displayName()).colorIfAbsent(NamedTextColor.YELLOW))
                 .setLore(Component.text("Click para escribir uno nuevo", NamedTextColor.GRAY))
                 .build());
 
@@ -92,7 +93,7 @@ public class CrateEditorGUI extends InventoryGUI {
             CrateReward reward = rewards.get(i);
 
             setItem(REWARDS_ROW + i, new ItemBuilder(reward.icon())
-                    .setName(LegacyComponentSerializer.legacyAmpersand().deserialize(reward.displayName())
+                    .setName(ComponentUtils.parse(reward.displayName())
                             .colorIfAbsent(NamedTextColor.WHITE))
                     .setLore(Component.text("Peso: " + reward.weight() + " · " + reward.actions().size()
                             + " acción(es)", NamedTextColor.GRAY),

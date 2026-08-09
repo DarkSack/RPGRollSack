@@ -10,6 +10,7 @@ import com.sack.rpgroll.guilds.guild.GuildManager;
 import com.sack.rpgroll.guilds.guild.GuildRole;
 import com.sack.rpgroll.guilds.guild.chat.GuildChatChannel;
 import com.sack.rpgroll.guilds.guild.ranking.GuildRankingManager;
+import com.sack.rpgroll.util.TabCompleteUtil;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -18,6 +19,7 @@ import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -25,7 +27,11 @@ import java.util.List;
 import java.util.Locale;
 
 /** /guild create|disband|invite|accept|decline|leave|kick|info|vault|territory|upgrade|diplomacy|quest|achievements|calendar|ranking|chat|customize */
-public class GuildCommand implements CommandExecutor {
+public class GuildCommand implements CommandExecutor, TabCompleter {
+
+    private static final List<String> SUBCOMMANDS = List.of("create", "disband", "accept", "decline", "leave",
+            "info", "vault", "territory", "upgrade", "diplomacy", "quest", "achievements", "calendar", "customize",
+            "members", "browser", "ranking", "chat");
 
     private final GuildManager guildManager;
     private final GuildServices services;
@@ -286,6 +292,28 @@ public class GuildCommand implements CommandExecutor {
 
         services.guildChatListener().setChannel(player, channel);
         player.sendMessage(Component.text("Chat cambiado a canal: " + channel, NamedTextColor.AQUA));
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+
+        if (args.length == 1) {
+            return TabCompleteUtil.filter(args[0], SUBCOMMANDS);
+        }
+
+        if (args.length == 2) {
+            return switch (args[0].toLowerCase(Locale.ROOT)) {
+                case "accept" -> TabCompleteUtil.filter(args[1],
+                        guildManager.getAll().stream().map(Guild::id).toList());
+                case "ranking" -> TabCompleteUtil.filter(args[1], java.util.Arrays.stream(
+                        GuildRankingManager.Category.values()).map(Enum::name).toList());
+                case "chat" -> TabCompleteUtil.filter(args[1],
+                        java.util.Arrays.stream(GuildChatChannel.values()).map(Enum::name).toList());
+                default -> List.of();
+            };
+        }
+
+        return List.of();
     }
 
 }

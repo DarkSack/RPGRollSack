@@ -19,6 +19,7 @@ import com.sack.rpgroll.ascension.gui.RaceEvolutionBrowserGUI;
 import com.sack.rpgroll.ascension.gui.SecretUnlockBrowserGUI;
 import com.sack.rpgroll.ascension.gui.TitleBrowserGUI;
 import com.sack.rpgroll.ascension.player.AscensionPlayerState;
+import com.sack.rpgroll.util.TabCompleteUtil;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -27,7 +28,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+
+import java.util.List;
 
 /**
  * /ascendadmin achievement grant &lt;jugador&gt; &lt;id&gt;
@@ -36,7 +40,12 @@ import org.bukkit.entity.Player;
  * /ascendadmin browser &lt;evolution|specialization|prestige|affinity|jobevolution|secret|faction|achievement|title|legacy&gt;
  * /ascendadmin reload
  */
-public class AscendAdminCommand implements CommandExecutor {
+public class AscendAdminCommand implements CommandExecutor, TabCompleter {
+
+    private static final List<String> SUBCOMMANDS = List.of("achievement", "title", "reputation", "browser",
+            "reload");
+    private static final List<String> BROWSER_CATEGORIES = List.of("evolution", "specialization", "prestige",
+            "affinity", "jobevolution", "secret", "faction", "achievement", "title", "legacy");
 
     private static final String PERMISSION = "rpgrollascension.admin.*";
 
@@ -220,6 +229,43 @@ public class AscendAdminCommand implements CommandExecutor {
         factionManager.reload();
 
         sender.sendMessage(Component.text("✔ RPGRoll-Ascension recargado.", NamedTextColor.GREEN));
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+
+        if (args.length == 1) {
+            return TabCompleteUtil.filter(args[0], SUBCOMMANDS);
+        }
+
+        String sub = args[0].toLowerCase();
+
+        if (args.length == 2) {
+            return switch (sub) {
+                case "achievement", "title" -> TabCompleteUtil.filter(args[1], List.of("grant"));
+                case "reputation" -> TabCompleteUtil.filter(args[1], List.of("add"));
+                case "browser" -> TabCompleteUtil.filter(args[1], BROWSER_CATEGORIES);
+                default -> List.of();
+            };
+        }
+
+        if (args.length == 3 && List.of("achievement", "title", "reputation").contains(sub)) {
+            return TabCompleteUtil.onlinePlayerNames(args[2]);
+        }
+
+        if (args.length == 4) {
+            return switch (sub) {
+                case "achievement" -> TabCompleteUtil.filter(args[3],
+                        achievementManager.getAll().stream().map(a -> a.id()).toList());
+                case "title" -> TabCompleteUtil.filter(args[3],
+                        titleManager.getAll().stream().map(t -> t.id()).toList());
+                case "reputation" -> TabCompleteUtil.filter(args[3],
+                        factionManager.getAll().stream().map(f -> f.id()).toList());
+                default -> List.of();
+            };
+        }
+
+        return List.of();
     }
 
 }

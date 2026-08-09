@@ -24,5 +24,6 @@ include(
     "seasons",
     "fishing",
     "sackresourcepack",
-    "ranching"
+    "ranching",
+    "workers"
 )

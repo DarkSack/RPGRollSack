@@ -104,6 +104,10 @@ public class QuestsPlugin extends JavaPlugin {
         }
 
         command.setExecutor(executor);
+
+        if (executor instanceof org.bukkit.command.TabCompleter tabCompleter) {
+            command.setTabCompleter(tabCompleter);
+        }
     }
 
     /** API pública: otros plugins/addons pueden registrar quests, tipos de objetivo, condiciones y acciones. */

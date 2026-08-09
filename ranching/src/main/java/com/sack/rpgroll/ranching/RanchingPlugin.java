@@ -93,16 +93,20 @@ public class RanchingPlugin extends JavaPlugin {
         if (adminCommand == null) {
             getLogger().severe("✘ El comando 'ranchingadmin' no está declarado en plugin.yml");
         } else {
-            adminCommand.setExecutor(new RanchingAdminCommand(speciesManager, breedManager, geneManager, feedManager,
-                    diseaseManager, vaccineManager, medicineManager, animalManager, geneticsEngine, pedigreeService,
-                    breedingEngine, chatPromptManager, inbreedingGenerations, this::reloadContent));
+            var ranchingAdminCommand = new RanchingAdminCommand(speciesManager, breedManager, geneManager,
+                    feedManager, diseaseManager, vaccineManager, medicineManager, animalManager, geneticsEngine,
+                    pedigreeService, breedingEngine, chatPromptManager, inbreedingGenerations, this::reloadContent);
+            adminCommand.setExecutor(ranchingAdminCommand);
+            adminCommand.setTabCompleter(ranchingAdminCommand);
         }
 
         var playerCommand = getCommand("ranching");
         if (playerCommand == null) {
             getLogger().severe("✘ El comando 'ranching' no está declarado en plugin.yml");
         } else {
-            playerCommand.setExecutor(new RanchingCommand(animalManager, speciesManager, breedManager));
+            var ranchingCommand = new RanchingCommand(animalManager, speciesManager, breedManager);
+            playerCommand.setExecutor(ranchingCommand);
+            playerCommand.setTabCompleter(ranchingCommand);
         }
 
         getLogger().info("✔ RPGRoll-Ranching habilitado (genética: " + geneticsMode + "). "

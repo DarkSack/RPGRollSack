@@ -1,5 +1,7 @@
 package com.sack.rpgroll.sackeffects.engine;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.sackeffects.core.EffectDefinition;
 import com.sack.rpgroll.sackeffects.core.EffectStep;
 import com.sack.rpgroll.sackeffects.core.EffectTarget;
@@ -37,7 +39,6 @@ import java.util.Locale;
  */
 public class EffectEngine {
 
-    private static final LegacyComponentSerializer LEGACY = LegacyComponentSerializer.legacyAmpersand();
     // Los BossBar de Bukkit (org.bukkit.boss.BossBar, no el de Adventure) todavía
     // toman un String plano con códigos "§" — no aceptan Component. Se resuelve
     // acá una sola vez para no repetir la conversión &->§ en cada uso.
@@ -160,8 +161,8 @@ public class EffectEngine {
         String rawTitle = step.param("title", "");
         String rawSubtitle = step.param("subtitle", "");
 
-        Component titleComponent = rawTitle.isBlank() ? Component.empty() : LEGACY.deserialize(rawTitle);
-        Component subtitleComponent = rawSubtitle.isBlank() ? Component.empty() : LEGACY.deserialize(rawSubtitle);
+        Component titleComponent = rawTitle.isBlank() ? Component.empty() : ComponentUtils.parse(rawTitle);
+        Component subtitleComponent = rawSubtitle.isBlank() ? Component.empty() : ComponentUtils.parse(rawSubtitle);
 
         Title.Times times = Title.Times.times(
                 Duration.ofMillis(step.paramInt("fade-in", 5) * 50L),
@@ -180,7 +181,7 @@ public class EffectEngine {
     private void executeActionBar(EffectStep step, EffectContext context) {
 
         String rawText = step.param("text", "");
-        Component text = rawText.isBlank() ? Component.empty() : LEGACY.deserialize(rawText);
+        Component text = rawText.isBlank() ? Component.empty() : ComponentUtils.parse(rawText);
 
         for (Player player : resolvePlayerRecipients(step, context)) {
             player.sendActionBar(text);
@@ -218,7 +219,7 @@ public class EffectEngine {
         if (raw == null || raw.isBlank()) {
             return " ";
         }
-        return LEGACY_SECTION.serialize(LEGACY.deserialize(raw));
+        return LEGACY_SECTION.serialize(ComponentUtils.parse(raw));
     }
 
     // ============ POTION ============

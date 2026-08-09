@@ -103,7 +103,7 @@ public class JobBrowserGUI extends InventoryGUI {
 
     private void reopen() {
         this.jobs = List.copyOf(jobManager.getAll());
-        build();
+        open();
     }
 
 }

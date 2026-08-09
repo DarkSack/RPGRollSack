@@ -7,6 +7,7 @@ import com.sack.rpgroll.dungeons.ranking.DungeonRunResult;
 import com.sack.rpgroll.dungeons.ranking.RankingPeriod;
 import com.sack.rpgroll.guilds.team.Team;
 import com.sack.rpgroll.guilds.team.TeamManager;
+import com.sack.rpgroll.util.TabCompleteUtil;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -15,6 +16,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
 import java.util.List;
@@ -23,7 +25,10 @@ import java.util.Locale;
 /**
  * /dungeon list|info|invite|accept|decline|leaveparty|enter|leave|revive|ranking
  */
-public class DungeonCommand implements CommandExecutor {
+public class DungeonCommand implements CommandExecutor, TabCompleter {
+
+    private static final List<String> SUBCOMMANDS = List.of("list", "info", "invite", "accept", "decline",
+            "leaveparty", "enter", "leave", "revive", "ranking");
 
     private final DungeonManager dungeonManager;
     private final TeamManager teamManager;
@@ -323,6 +328,44 @@ public class DungeonCommand implements CommandExecutor {
                     + " — " + (run.durationMillis() / 1000) + "s, " + run.deaths() + " muerte(s)",
                     NamedTextColor.GRAY));
         }
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+
+        if (args.length == 1) {
+            return TabCompleteUtil.filter(args[0], SUBCOMMANDS);
+        }
+
+        String sub = args[0].toLowerCase(Locale.ROOT);
+
+        if (args.length == 2) {
+            return switch (sub) {
+                case "info", "enter", "ranking" -> TabCompleteUtil.filter(args[1], dungeonIds());
+                case "invite", "revive" -> TabCompleteUtil.onlinePlayerNames(args[1]);
+                default -> List.of();
+            };
+        }
+
+        if (args.length == 3) {
+            return switch (sub) {
+                case "enter" -> {
+                    DungeonDefinition definition = dungeonManager.get(args[1]).orElse(null);
+                    yield definition == null ? List.of()
+                            : TabCompleteUtil.filter(args[2],
+                                    definition.difficulties().stream().map(d -> d.id()).toList());
+                }
+                case "ranking" -> TabCompleteUtil.filter(args[2], java.util.Arrays.stream(RankingPeriod.values())
+                        .map(Enum::name).toList());
+                default -> List.of();
+            };
+        }
+
+        return List.of();
+    }
+
+    private List<String> dungeonIds() {
+        return dungeonManager.getAll().stream().map(DungeonDefinition::id).toList();
     }
 
 }

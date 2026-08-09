@@ -135,7 +135,7 @@ public class SpellbookGUI extends InventoryGUI {
 
     private void reopen() {
         this.learnedSpells = resolveLearned();
-        build();
+        open();
     }
 
 }

@@ -110,7 +110,7 @@ public class BreedBrowserGUI extends InventoryGUI {
 
     private void reopen() {
         this.breeds = List.copyOf(breedManager.getAll());
-        build();
+        open();
     }
 
 }

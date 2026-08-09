@@ -1,5 +1,7 @@
 package com.sack.rpgroll.items.socket;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -18,7 +20,6 @@ import java.util.Optional;
 /** Crea el ItemStack físico de una gema y lee su id — mismo patrón que CrateKeyItem. */
 public class GemItem {
 
-    private static final LegacyComponentSerializer LEGACY = LegacyComponentSerializer.legacyAmpersand();
 
     private final NamespacedKey gemIdKey;
 
@@ -31,7 +32,7 @@ public class GemItem {
         ItemStack item = new ItemStack(Material.EMERALD);
         ItemMeta meta = item.getItemMeta();
 
-        meta.displayName(LEGACY.deserialize(gem.displayName()).decoration(TextDecoration.ITALIC, false));
+        meta.displayName(ComponentUtils.parse(gem.displayName()).decoration(TextDecoration.ITALIC, false));
         meta.lore(List.of(
                 Component.text("Gema: " + gem.type(), NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false),
                 Component.text("Click derecho en un socket para insertar.", NamedTextColor.DARK_GRAY)

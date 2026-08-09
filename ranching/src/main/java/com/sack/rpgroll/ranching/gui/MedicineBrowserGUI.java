@@ -106,7 +106,7 @@ public class MedicineBrowserGUI extends InventoryGUI {
 
     private void reopen() {
         this.medicines = List.copyOf(medicineManager.getAll());
-        build();
+        open();
     }
 
 }

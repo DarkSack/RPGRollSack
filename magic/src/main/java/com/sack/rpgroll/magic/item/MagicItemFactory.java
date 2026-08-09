@@ -1,5 +1,7 @@
 package com.sack.rpgroll.magic.item;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.magic.core.Grimoire;
 import com.sack.rpgroll.magic.core.SpellCatalyst;
@@ -24,7 +26,6 @@ import java.util.Locale;
  */
 public final class MagicItemFactory {
 
-    private static final LegacyComponentSerializer LEGACY = LegacyComponentSerializer.legacyAmpersand();
 
     private MagicItemFactory() {
     }
@@ -36,7 +37,7 @@ public final class MagicItemFactory {
         List<Component> lore = new ArrayList<>();
 
         if (!catalyst.description().isBlank()) {
-            lore.add(LEGACY.deserialize(catalyst.description()).colorIfAbsent(NamedTextColor.GRAY));
+            lore.add(ComponentUtils.parse(catalyst.description()).colorIfAbsent(NamedTextColor.GRAY));
             lore.add(Component.empty());
         }
 
@@ -59,7 +60,7 @@ public final class MagicItemFactory {
         lore.add(Component.text("Catalizador de RPGRoll-Magic", NamedTextColor.DARK_GRAY));
 
         ItemStack item = new ItemBuilder(material)
-                .setName(LEGACY.deserialize(catalyst.displayName()).colorIfAbsent(NamedTextColor.WHITE))
+                .setName(ComponentUtils.parse(catalyst.displayName()).colorIfAbsent(NamedTextColor.WHITE))
                 .setLore(lore)
                 .build();
 
@@ -73,7 +74,7 @@ public final class MagicItemFactory {
         List<Component> lore = new ArrayList<>();
 
         if (!grimoire.description().isBlank()) {
-            lore.add(LEGACY.deserialize(grimoire.description()).colorIfAbsent(NamedTextColor.GRAY));
+            lore.add(ComponentUtils.parse(grimoire.description()).colorIfAbsent(NamedTextColor.GRAY));
             lore.add(Component.empty());
         }
 
@@ -86,7 +87,7 @@ public final class MagicItemFactory {
         lore.add(Component.text("Click derecho para aprender — se consume al usarse", NamedTextColor.DARK_GRAY));
 
         ItemStack item = new ItemBuilder(material)
-                .setName(LEGACY.deserialize(grimoire.displayName()).colorIfAbsent(NamedTextColor.LIGHT_PURPLE))
+                .setName(ComponentUtils.parse(grimoire.displayName()).colorIfAbsent(NamedTextColor.LIGHT_PURPLE))
                 .setLore(lore)
                 .build();
 

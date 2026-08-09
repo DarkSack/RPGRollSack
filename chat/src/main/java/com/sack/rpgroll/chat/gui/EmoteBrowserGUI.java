@@ -95,7 +95,7 @@ public class EmoteBrowserGUI extends PaginatedGUI {
 
     private void reopen() {
         this.emotes = List.copyOf(emoteManager.getAll());
-        build();
+        open();
     }
 
 }

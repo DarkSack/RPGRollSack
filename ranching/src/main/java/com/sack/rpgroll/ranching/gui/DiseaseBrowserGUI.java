@@ -100,7 +100,7 @@ public class DiseaseBrowserGUI extends InventoryGUI {
 
     private void reopen() {
         this.diseases = List.copyOf(diseaseManager.getAll());
-        build();
+        open();
     }
 
 }

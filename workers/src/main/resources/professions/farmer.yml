@@ -1,0 +1,26 @@
+id: farmer
+display-name: "&aGranjero"
+icon: WHEAT
+description: "Cosecha cultivos maduros cercanos y los replanta al instante."
+entity-type: VILLAGER
+skills: [crop_speed, crop_quality]
+schedule: standard_day
+wage-amount: 40
+wage-type: PER_TASK
+tool-material: null
+ai-rules:
+  - condition: HUNGRY
+    action: EAT
+    priority: 10
+  - condition: INVENTORY_FULL
+    action: STORE_ITEMS
+    priority: 20
+  - condition: RAINING
+    action: SEEK_SHELTER
+    priority: 30
+  - condition: NIGHT
+    action: GO_HOME
+    priority: 40
+  - condition: ALWAYS
+    action: WORK
+    priority: 100

@@ -1,5 +1,7 @@
 package com.sack.rpgroll.crates.core;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
@@ -17,7 +19,6 @@ import org.bukkit.plugin.Plugin;
  */
 public class CrateActionExecutor {
 
-    private static final LegacyComponentSerializer LEGACY = LegacyComponentSerializer.legacyAmpersand();
 
     private final Plugin plugin;
 
@@ -34,7 +35,7 @@ public class CrateActionExecutor {
         if (reward.announceGlobally()) {
             Bukkit.broadcast(Component.text(player.getName(), NamedTextColor.GOLD)
                     .append(Component.text(" ha ganado ", NamedTextColor.YELLOW))
-                    .append(LEGACY.deserialize(reward.displayName()))
+                    .append(ComponentUtils.parse(reward.displayName()))
                     .append(Component.text(" de un crate!", NamedTextColor.YELLOW)));
         }
     }
@@ -50,7 +51,7 @@ public class CrateActionExecutor {
 
     private void executeMessage(Player player, String rawMessage) {
         String parsed = rawMessage.replace("{player}", player.getName());
-        player.sendMessage(LEGACY.deserialize(parsed));
+        player.sendMessage(ComponentUtils.parse(parsed));
     }
 
     private void executeCommand(Player player, String rawCommand) {

@@ -102,7 +102,7 @@ public class RuneBrowserGUI extends InventoryGUI {
 
     private void reopen() {
         this.runes = List.copyOf(runeManager.getAll());
-        build();
+        open();
     }
 
 }

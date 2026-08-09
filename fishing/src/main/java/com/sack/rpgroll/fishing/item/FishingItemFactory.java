@@ -1,5 +1,7 @@
 package com.sack.rpgroll.fishing.item;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.fishing.core.Bait;
 import com.sack.rpgroll.fishing.core.FishingRod;
 import com.sack.rpgroll.fishing.core.Junk;
@@ -29,7 +31,6 @@ import java.util.Locale;
  */
 public final class FishingItemFactory {
 
-    private static final LegacyComponentSerializer LEGACY = LegacyComponentSerializer.legacyAmpersand();
 
     private FishingItemFactory() {
     }
@@ -41,7 +42,7 @@ public final class FishingItemFactory {
         List<Component> lore = new ArrayList<>();
 
         if (!rod.description().isBlank()) {
-            lore.add(LEGACY.deserialize(rod.description()).colorIfAbsent(NamedTextColor.GRAY));
+            lore.add(ComponentUtils.parse(rod.description()).colorIfAbsent(NamedTextColor.GRAY));
             lore.add(Component.empty());
         }
 
@@ -60,7 +61,7 @@ public final class FishingItemFactory {
         lore.add(Component.text("Caña de RPGRoll-Fishing", NamedTextColor.DARK_GRAY));
 
         ItemStack item = new ItemBuilder(material)
-                .setName(LEGACY.deserialize(rod.displayName()).colorIfAbsent(NamedTextColor.WHITE))
+                .setName(ComponentUtils.parse(rod.displayName()).colorIfAbsent(NamedTextColor.WHITE))
                 .setLore(lore)
                 .build();
 
@@ -74,7 +75,7 @@ public final class FishingItemFactory {
         List<Component> lore = new ArrayList<>();
 
         if (!bait.description().isBlank()) {
-            lore.add(LEGACY.deserialize(bait.description()).colorIfAbsent(NamedTextColor.GRAY));
+            lore.add(ComponentUtils.parse(bait.description()).colorIfAbsent(NamedTextColor.GRAY));
             lore.add(Component.empty());
         }
 
@@ -97,7 +98,7 @@ public final class FishingItemFactory {
         lore.add(Component.text("Sostenela en la mano secundaria mientras pescás", NamedTextColor.DARK_GRAY));
 
         ItemStack item = new ItemBuilder(material)
-                .setName(LEGACY.deserialize(bait.displayName()).colorIfAbsent(NamedTextColor.WHITE))
+                .setName(ComponentUtils.parse(bait.displayName()).colorIfAbsent(NamedTextColor.WHITE))
                 .setLore(lore)
                 .build();
 
@@ -127,7 +128,7 @@ public final class FishingItemFactory {
         lore.add(Component.text(String.format(Locale.ROOT, "Valor estimado: %.1f", result.price()), NamedTextColor.GOLD));
 
         var builder = new ItemBuilder(material)
-                .setName(LEGACY.deserialize(species.displayName()).colorIfAbsent(NamedTextColor.WHITE))
+                .setName(ComponentUtils.parse(species.displayName()).colorIfAbsent(NamedTextColor.WHITE))
                 .setLore(lore);
 
         ItemStack item = builder.build();
@@ -150,13 +151,13 @@ public final class FishingItemFactory {
         List<Component> lore = new ArrayList<>();
 
         if (!treasure.description().isBlank()) {
-            lore.add(LEGACY.deserialize(treasure.description()).colorIfAbsent(NamedTextColor.GRAY));
+            lore.add(ComponentUtils.parse(treasure.description()).colorIfAbsent(NamedTextColor.GRAY));
         }
 
         lore.add(Component.text("Tesoro: " + treasure.rarity(), NamedTextColor.GOLD));
 
         return new ItemBuilder(material, treasure.rewardAmount())
-                .setName(LEGACY.deserialize(treasure.displayName()).colorIfAbsent(NamedTextColor.GOLD))
+                .setName(ComponentUtils.parse(treasure.displayName()).colorIfAbsent(NamedTextColor.GOLD))
                 .setLore(lore)
                 .build();
     }
@@ -168,11 +169,11 @@ public final class FishingItemFactory {
         List<Component> lore = new ArrayList<>();
 
         if (!junk.description().isBlank()) {
-            lore.add(LEGACY.deserialize(junk.description()).colorIfAbsent(NamedTextColor.GRAY));
+            lore.add(ComponentUtils.parse(junk.description()).colorIfAbsent(NamedTextColor.GRAY));
         }
 
         return new ItemBuilder(material)
-                .setName(LEGACY.deserialize(junk.displayName()).colorIfAbsent(NamedTextColor.GRAY))
+                .setName(ComponentUtils.parse(junk.displayName()).colorIfAbsent(NamedTextColor.GRAY))
                 .setLore(lore)
                 .build();
     }

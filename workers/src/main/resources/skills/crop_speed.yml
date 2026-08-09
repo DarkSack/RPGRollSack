@@ -1,0 +1,7 @@
+id: crop_speed
+display-name: "Velocidad de cultivo"
+description: "Qué tan rápido cosecha el granjero."
+profession: farmer
+max-level: 20
+attribute-key: crop_speed
+value-per-level: 2.0

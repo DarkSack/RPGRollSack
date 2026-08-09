@@ -119,7 +119,7 @@ public class AnimalBrowserGUI extends InventoryGUI {
 
     private void reopen() {
         this.animals = List.copyOf(animalManager.getAll());
-        build();
+        open();
     }
 
 }

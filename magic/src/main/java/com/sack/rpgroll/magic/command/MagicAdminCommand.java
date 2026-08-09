@@ -8,6 +8,7 @@ import com.sack.rpgroll.magic.core.SpellManager;
 import com.sack.rpgroll.magic.gui.ChatPromptManager;
 import com.sack.rpgroll.magic.gui.MagicBrowserGUI;
 import com.sack.rpgroll.magic.item.MagicItemFactory;
+import com.sack.rpgroll.util.TabCompleteUtil;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -15,7 +16,10 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+
+import java.util.List;
 
 /**
  * /magicadmin browser
@@ -23,7 +27,9 @@ import org.bukkit.entity.Player;
  * /magicadmin givecatalyst <id>
  * /magicadmin givegrimoire <id>
  */
-public class MagicAdminCommand implements CommandExecutor {
+public class MagicAdminCommand implements CommandExecutor, TabCompleter {
+
+    private static final List<String> SUBCOMMANDS = List.of("browser", "reload", "givecatalyst", "givegrimoire");
 
     private final SchoolManager schoolManager;
     private final SpellManager spellManager;
@@ -130,6 +136,26 @@ public class MagicAdminCommand implements CommandExecutor {
 
         player.getInventory().addItem(MagicItemFactory.createGrimoire(grimoireOpt.get()));
         sender.sendMessage(Component.text("✔ Entregado.", NamedTextColor.GREEN));
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+
+        if (args.length == 1) {
+            return TabCompleteUtil.filter(args[0], SUBCOMMANDS);
+        }
+
+        if (args.length == 2) {
+            return switch (args[0].toLowerCase()) {
+                case "givecatalyst" -> TabCompleteUtil.filter(args[1],
+                        catalystManager.getAll().stream().map(c -> c.id()).toList());
+                case "givegrimoire" -> TabCompleteUtil.filter(args[1],
+                        grimoireManager.getAll().stream().map(g -> g.id()).toList());
+                default -> List.of();
+            };
+        }
+
+        return List.of();
     }
 
 }

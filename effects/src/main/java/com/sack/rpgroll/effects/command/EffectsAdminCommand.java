@@ -6,6 +6,7 @@ import com.sack.rpgroll.effects.gui.ChatPromptManager;
 import com.sack.rpgroll.effects.gui.EffectBrowserGUI;
 import com.sack.rpgroll.effects.runtime.ActiveEffect;
 import com.sack.rpgroll.effects.runtime.EffectTracker;
+import com.sack.rpgroll.util.TabCompleteUtil;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -14,7 +15,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+
+import java.util.List;
 
 /**
  * /rpgeffects browser
@@ -23,7 +27,9 @@ import org.bukkit.entity.Player;
  * /rpgeffects remove <id> <jugador>
  * /rpgeffects list [jugador]
  */
-public class EffectsAdminCommand implements CommandExecutor {
+public class EffectsAdminCommand implements CommandExecutor, TabCompleter {
+
+    private static final List<String> SUBCOMMANDS = List.of("browser", "reload", "apply", "remove", "list");
 
     private final EffectManager effectManager;
     private final EffectTracker tracker;
@@ -174,6 +180,31 @@ public class EffectsAdminCommand implements CommandExecutor {
                     + (activeEffect.isPermanent() ? "permanente" : activeEffect.remainingTicks() + " ticks") + ")",
                     NamedTextColor.WHITE));
         }
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+
+        if (args.length == 1) {
+            return TabCompleteUtil.filter(args[0], SUBCOMMANDS);
+        }
+
+        String sub = args[0].toLowerCase();
+
+        if (args.length == 2) {
+            return switch (sub) {
+                case "apply", "remove" -> TabCompleteUtil.filter(args[1], effectManager.getAll().stream()
+                        .map(effect -> effect.id()).toList());
+                case "list" -> TabCompleteUtil.onlinePlayerNames(args[1]);
+                default -> List.of();
+            };
+        }
+
+        if (args.length == 3 && List.of("apply", "remove").contains(sub)) {
+            return TabCompleteUtil.onlinePlayerNames(args[2]);
+        }
+
+        return List.of();
     }
 
 }

@@ -8,7 +8,7 @@ description: Asset Pipeline para resource packs — escaneo de módulos, resoluc
 commands:
   srp:
     description: Comandos de SackResourcePack
-    usage: /srp <reload|rebuild|validate|publish|status|content|conflicts|models|textures|sounds|fonts|cache|dev> [args]
+    usage: /srp <reload|rebuild|validate|publish|status|content|conflicts|models|textures|sounds|fonts|cache|dev|datapack> [args]
     permission: sackresourcepack.admin.*
 
 permissions:

@@ -9,6 +9,7 @@ import com.sack.rpgroll.fishing.core.TreasureManager;
 import com.sack.rpgroll.fishing.gui.ChatPromptManager;
 import com.sack.rpgroll.fishing.gui.FishingBrowserGUI;
 import com.sack.rpgroll.fishing.item.FishingItemFactory;
+import com.sack.rpgroll.util.TabCompleteUtil;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -16,7 +17,10 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+
+import java.util.List;
 
 /**
  * /fishingadmin browser
@@ -24,7 +28,9 @@ import org.bukkit.entity.Player;
  * /fishingadmin giverod <id>
  * /fishingadmin givebait <id>
  */
-public class FishingAdminCommand implements CommandExecutor {
+public class FishingAdminCommand implements CommandExecutor, TabCompleter {
+
+    private static final List<String> SUBCOMMANDS = List.of("browser", "reload", "giverod", "givebait");
 
     private final FishSpeciesManager speciesManager;
     private final FishingRodManager rodManager;
@@ -135,6 +141,26 @@ public class FishingAdminCommand implements CommandExecutor {
 
         player.getInventory().addItem(FishingItemFactory.createBait(baitOpt.get()));
         sender.sendMessage(Component.text("✔ Entregada.", NamedTextColor.GREEN));
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+
+        if (args.length == 1) {
+            return TabCompleteUtil.filter(args[0], SUBCOMMANDS);
+        }
+
+        if (args.length == 2) {
+            return switch (args[0].toLowerCase()) {
+                case "giverod" -> TabCompleteUtil.filter(args[1], rodManager.getAll().stream()
+                        .map(r -> r.id()).toList());
+                case "givebait" -> TabCompleteUtil.filter(args[1], baitManager.getAll().stream()
+                        .map(b -> b.id()).toList());
+                default -> List.of();
+            };
+        }
+
+        return List.of();
     }
 
 }

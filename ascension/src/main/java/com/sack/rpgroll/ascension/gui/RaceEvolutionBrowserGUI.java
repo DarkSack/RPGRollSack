@@ -102,7 +102,7 @@ public class RaceEvolutionBrowserGUI extends InventoryGUI {
 
     private void reopen() {
         this.evolutions = List.copyOf(manager.getAll());
-        build();
+        open();
     }
 
 }

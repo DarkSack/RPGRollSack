@@ -96,7 +96,7 @@ public class PrestigeBrowserGUI extends InventoryGUI {
 
     private void reopen() {
         this.levels = List.copyOf(manager.getAll());
-        build();
+        open();
     }
 
 }

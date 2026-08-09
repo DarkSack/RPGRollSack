@@ -1,5 +1,7 @@
 package com.sack.rpgroll.mobs.registry;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.kyori.adventure.title.Title;
@@ -30,7 +32,6 @@ import java.util.Locale;
  */
 public final class BuiltinMobActions {
 
-    private static final LegacyComponentSerializer LEGACY = LegacyComponentSerializer.legacyAmpersand();
 
     private BuiltinMobActions() {
     }
@@ -41,7 +42,7 @@ public final class BuiltinMobActions {
             Player target = ctx.targetPlayer();
             String message = action.param("value", "");
             if (target != null && !message.isBlank()) {
-                target.sendMessage(LEGACY.deserialize(applyPlaceholders(message, ctx)));
+                target.sendMessage(ComponentUtils.parse(applyPlaceholders(message, ctx)));
             }
         });
 
@@ -194,8 +195,8 @@ public final class BuiltinMobActions {
                 return;
             }
 
-            Component main = LEGACY.deserialize(action.param("title", ""));
-            Component subtitle = LEGACY.deserialize(action.param("subtitle", ""));
+            Component main = ComponentUtils.parse(action.param("title", ""));
+            Component subtitle = ComponentUtils.parse(action.param("subtitle", ""));
             Title.Times times = Title.Times.times(Duration.ofMillis(500), Duration.ofSeconds(3), Duration.ofMillis(500));
 
             target.showTitle(Title.title(main, subtitle, times));

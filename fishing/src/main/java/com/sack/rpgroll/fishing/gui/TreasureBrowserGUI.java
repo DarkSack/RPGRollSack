@@ -100,7 +100,7 @@ public class TreasureBrowserGUI extends InventoryGUI {
 
     private void reopen() {
         this.treasures = List.copyOf(treasureManager.getAll());
-        build();
+        open();
     }
 
 }

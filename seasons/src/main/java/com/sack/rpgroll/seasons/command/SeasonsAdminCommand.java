@@ -7,6 +7,7 @@ import com.sack.rpgroll.seasons.core.WorldEventManager;
 import com.sack.rpgroll.seasons.event.WorldEventEngine;
 import com.sack.rpgroll.seasons.gui.ChatPromptManager;
 import com.sack.rpgroll.seasons.gui.SeasonsBrowserGUI;
+import com.sack.rpgroll.util.TabCompleteUtil;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -16,7 +17,10 @@ import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+
+import java.util.List;
 
 /**
  * /seasonsadmin browser
@@ -25,7 +29,9 @@ import org.bukkit.entity.Player;
  * /seasonsadmin advance <mundo>
  * /seasonsadmin trigger <id> <mundo>
  */
-public class SeasonsAdminCommand implements CommandExecutor {
+public class SeasonsAdminCommand implements CommandExecutor, TabCompleter {
+
+    private static final List<String> SUBCOMMANDS = List.of("browser", "reload", "setseason", "advance", "trigger");
 
     private final CalendarManager calendarManager;
     private final SeasonManager seasonManager;
@@ -164,6 +170,36 @@ public class SeasonsAdminCommand implements CommandExecutor {
         }
 
         sender.sendMessage(Component.text("✔ Evento disparado en " + world.getName() + ".", NamedTextColor.GREEN));
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+
+        if (args.length == 1) {
+            return TabCompleteUtil.filter(args[0], SUBCOMMANDS);
+        }
+
+        String sub = args[0].toLowerCase();
+
+        if (args.length == 2) {
+            return switch (sub) {
+                case "setseason", "advance" -> TabCompleteUtil.worldNames(args[1]);
+                case "trigger" -> TabCompleteUtil.filter(args[1],
+                        worldEventManager.getAll().stream().map(e -> e.id()).toList());
+                default -> List.of();
+            };
+        }
+
+        if (args.length == 3) {
+            return switch (sub) {
+                case "setseason" -> TabCompleteUtil.filter(args[2],
+                        seasonManager.getAll().stream().map(s -> s.id()).toList());
+                case "trigger" -> TabCompleteUtil.worldNames(args[2]);
+                default -> List.of();
+            };
+        }
+
+        return List.of();
     }
 
 }

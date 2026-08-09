@@ -77,16 +77,20 @@ public class MagicPlugin extends JavaPlugin {
         if (adminCommand == null) {
             getLogger().severe("✘ El comando 'magicadmin' no está declarado en plugin.yml");
         } else {
-            adminCommand.setExecutor(new MagicAdminCommand(schoolManager, spellManager, grimoireManager, runeManager,
-                    catalystManager, chatPromptManager));
+            var magicAdminCommand = new MagicAdminCommand(schoolManager, spellManager, grimoireManager, runeManager,
+                    catalystManager, chatPromptManager);
+            adminCommand.setExecutor(magicAdminCommand);
+            adminCommand.setTabCompleter(magicAdminCommand);
         }
 
         var playerCommand = getCommand("magic");
         if (playerCommand == null) {
             getLogger().severe("✘ El comando 'magic' no está declarado en plugin.yml");
         } else {
-            playerCommand.setExecutor(
-                    new MagicCommand(spellManager, runeManager, spellbookManager, engine, chatPromptManager));
+            var magicCommand = new MagicCommand(spellManager, runeManager, spellbookManager, engine,
+                    chatPromptManager);
+            playerCommand.setExecutor(magicCommand);
+            playerCommand.setTabCompleter(magicCommand);
         }
 
         getLogger().info("✔ RPGRoll-Magic habilitado. " + schoolManager.count() + " escuela(s), "

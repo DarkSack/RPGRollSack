@@ -5,6 +5,7 @@ import com.sack.rpgroll.sackeffects.api.SackEffectsAPI;
 import com.sack.rpgroll.seasons.core.WorldEvent;
 import com.sack.rpgroll.seasons.core.WorldEventComponent;
 import com.sack.rpgroll.seasons.integration.MobsIntegration;
+import com.sack.rpgroll.util.ComponentUtils;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -147,8 +148,7 @@ public class WorldEventEngine {
             return;
         }
 
-        Component message = net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacyAmpersand()
-                .deserialize(text).colorIfAbsent(NamedTextColor.WHITE);
+        Component message = ComponentUtils.parse(text).colorIfAbsent(NamedTextColor.WHITE);
 
         world.getPlayers().forEach(player -> player.sendMessage(message));
     }

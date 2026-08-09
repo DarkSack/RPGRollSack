@@ -96,7 +96,7 @@ public class AffinityBrowserGUI extends InventoryGUI {
 
     private void reopen() {
         this.affinities = List.copyOf(manager.getAll());
-        build();
+        open();
     }
 
 }

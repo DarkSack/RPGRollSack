@@ -105,7 +105,7 @@ public class GrimoireBrowserGUI extends InventoryGUI {
 
     private void reopen() {
         this.grimoires = List.copyOf(grimoireManager.getAll());
-        build();
+        open();
     }
 
 }

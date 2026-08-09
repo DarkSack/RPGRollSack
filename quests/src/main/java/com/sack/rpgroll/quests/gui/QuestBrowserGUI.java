@@ -106,7 +106,7 @@ public class QuestBrowserGUI extends InventoryGUI {
 
     private void reopen() {
         this.quests = List.copyOf(questManager.getAll());
-        build();
+        open();
     }
 
 }

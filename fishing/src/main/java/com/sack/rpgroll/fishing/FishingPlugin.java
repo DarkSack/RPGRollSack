@@ -88,15 +88,19 @@ public class FishingPlugin extends JavaPlugin {
         if (adminCommand == null) {
             getLogger().severe("✘ El comando 'fishingadmin' no está declarado en plugin.yml");
         } else {
-            adminCommand.setExecutor(new FishingAdminCommand(speciesManager, rodManager, baitManager, treasureManager,
-                    junkManager, regionManager, chatPromptManager));
+            var fishingAdminCommand = new FishingAdminCommand(speciesManager, rodManager, baitManager,
+                    treasureManager, junkManager, regionManager, chatPromptManager);
+            adminCommand.setExecutor(fishingAdminCommand);
+            adminCommand.setTabCompleter(fishingAdminCommand);
         }
 
         var playerCommand = getCommand("fishing");
         if (playerCommand == null) {
             getLogger().severe("✘ El comando 'fishing' no está declarado en plugin.yml");
         } else {
-            playerCommand.setExecutor(new FishingCommand(speciesManager, profileManager));
+            var fishingCommand = new FishingCommand(speciesManager, profileManager);
+            playerCommand.setExecutor(fishingCommand);
+            playerCommand.setTabCompleter(fishingCommand);
         }
 
         getLogger().info("✔ RPGRoll-Fishing habilitado (modo " + (rpgMode ? "RPG" : "vanilla") + "). "

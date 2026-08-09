@@ -1,5 +1,7 @@
 package com.sack.rpgroll.mobs.engine;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.mobs.api.MobDeathEvent;
 import com.sack.rpgroll.mobs.api.MobSpawnEvent;
 import com.sack.rpgroll.mobs.condition.MobConditionContext;
@@ -33,7 +35,6 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Mob;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EntityEquipment;
 
@@ -52,7 +53,6 @@ import java.util.UUID;
  */
 public class MobEngine {
 
-    private static final LegacyComponentSerializer LEGACY = LegacyComponentSerializer.legacyAmpersand();
 
     private final MobManager mobManager;
     private final MobInstanceService instanceService;
@@ -107,10 +107,6 @@ public class MobEngine {
         applyStats(entity, definition);
         applyEquipment(entity, definition);
 
-        if (entity instanceof Mob mob) {
-            mob.setAware(false);
-        }
-
         ActiveMobState state = new ActiveMobState(entity.getUniqueId(), definition.id(), definition.skills());
         activeMobs.put(entity.getUniqueId(), state);
 
@@ -143,7 +139,7 @@ public class MobEngine {
                 : rarityResolver.resolveColor(definition.rarityId());
 
         Component nameComponent = Component.text().color(baseColor)
-                .append(LEGACY.deserialize(definition.displayName()))
+                .append(ComponentUtils.parse(definition.displayName()))
                 .build();
 
         entity.customName(nameComponent);
@@ -362,7 +358,7 @@ public class MobEngine {
     private void broadcastNearby(LivingEntity entity, String text) {
 
         Component message = Component.text().color(NamedTextColor.GOLD)
-                .append(LEGACY.deserialize(text)).build();
+                .append(ComponentUtils.parse(text)).build();
 
         entity.getWorld().getPlayers().stream()
                 .filter(player -> player.getLocation().distanceSquared(entity.getLocation()) <= 40 * 40)
@@ -472,7 +468,7 @@ public class MobEngine {
     private void createBossBar(LivingEntity entity, MobDefinition definition) {
 
         var def = definition.bossBar();
-        Component title = LEGACY.deserialize(def.title() != null ? def.title() : definition.displayName());
+        Component title = ComponentUtils.parse(def.title() != null ? def.title() : definition.displayName());
 
         BossBar bossBar = BossBar.bossBar(title, 1.0f, parseColor(def.color()), parseStyle(def.style()));
         bossBars.put(entity.getUniqueId(), bossBar);
@@ -511,7 +507,7 @@ public class MobEngine {
             bossBar.color(parseColor(phase.bossBarColor()));
         }
         if (phase.bossBarTitle() != null) {
-            bossBar.name(LEGACY.deserialize(phase.bossBarTitle()));
+            bossBar.name(ComponentUtils.parse(phase.bossBarTitle()));
         }
     }
 

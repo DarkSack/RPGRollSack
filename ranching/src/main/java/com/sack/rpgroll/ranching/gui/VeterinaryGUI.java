@@ -98,7 +98,7 @@ public class VeterinaryGUI extends InventoryGUI {
 
     private void reopen() {
         this.sickAnimals = animalManager.getAll().stream().filter(Animal::isSick).toList();
-        build();
+        open();
     }
 
 }

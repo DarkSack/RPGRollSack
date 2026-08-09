@@ -13,19 +13,26 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+import org.bukkit.util.StringUtil;
 
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
 /**
- * /srp reload|rebuild|validate|publish|status|content|conflicts|models|textures|sounds|fonts|cache|dev
+ * /srp reload|rebuild|validate|publish|status|content|conflicts|models|textures|sounds|fonts|cache|dev|datapack|gui
  * Sin argumentos, si lo ejecuta un jugador, abre el Dashboard.
  */
-public class SrpCommand implements CommandExecutor {
+public class SrpCommand implements CommandExecutor, TabCompleter {
+
+    private static final List<String> SUBCOMMANDS = List.of("reload", "rebuild", "validate", "publish", "status",
+            "content", "conflicts", "models", "textures", "sounds", "fonts", "cache", "dev", "datapack", "gui");
+    private static final List<String> DATAPACK_SUBCOMMANDS = List.of("build", "reload");
 
     private final SackResourcePackPlugin plugin;
 
@@ -66,6 +73,7 @@ public class SrpCommand implements CommandExecutor {
             case "fonts" -> handleAssetType(sender, "font");
             case "cache" -> handleCache(sender);
             case "dev" -> handleDev(sender);
+            case "datapack" -> handleDatapack(sender, args);
             case "gui" -> {
                 if (sender instanceof Player player) {
                     openDashboard(player);
@@ -80,7 +88,7 @@ public class SrpCommand implements CommandExecutor {
     }
 
     private void openDashboard(Player player) {
-        new DashboardGUI(player, plugin, plugin.getBuildEngine(),
+        new DashboardGUI(player, plugin, plugin.getBuildEngine(), plugin.getHttpServer().assetBaseUrl(),
                 () -> handleBuild(player, true),
                 () -> handleBuild(player, false),
                 plugin::publish,
@@ -132,6 +140,8 @@ public class SrpCommand implements CommandExecutor {
         sender.sendMessage(Component.text("Host HTTP: " + (plugin.getHttpServer().isRunning() ? "activo" : "inactivo"),
                 NamedTextColor.WHITE));
         sender.sendMessage(Component.text("Modo desarrollo: " + (plugin.isDevelopmentModeActive() ? "activo" : "inactivo"),
+                NamedTextColor.WHITE));
+        sender.sendMessage(Component.text("Datapack: " + (plugin.isDatapackEnabled() ? "habilitado" : "deshabilitado"),
                 NamedTextColor.WHITE));
     }
 
@@ -208,10 +218,62 @@ public class SrpCommand implements CommandExecutor {
                 NamedTextColor.YELLOW));
     }
 
+    private void handleDatapack(CommandSender sender, String[] args) {
+
+        if (!plugin.isDatapackEnabled()) {
+            sender.sendMessage(Component.text(
+                    "✘ El datapack está deshabilitado — activá 'datapack.enabled' en config.yml.",
+                    NamedTextColor.RED));
+            return;
+        }
+
+        String sub = args.length > 1 ? args[1].toLowerCase() : "";
+
+        switch (sub) {
+            case "build" -> {
+                var result = plugin.getDatapackBuildEngine().build();
+                plugin.getDatapackBuildEngine().distribute();
+                sender.sendMessage(Component.text(
+                        "✔ Datapack fusionado y copiado a datapacks/ — " + result.modules().size()
+                                + " módulo(s). Corré '/srp datapack reload' para aplicarlo.",
+                        result.hasErrors() ? NamedTextColor.YELLOW : NamedTextColor.GREEN));
+                result.resolutionErrors()
+                        .forEach(error -> sender.sendMessage(Component.text("  ✘ " + error, NamedTextColor.RED)));
+            }
+            case "reload" -> {
+                plugin.getDatapackBuildEngine().reload();
+                sender.sendMessage(Component.text(
+                        "✔ Server#reloadData() ejecutado — recetas/loot tables/tags/advancements recargados.",
+                        NamedTextColor.GREEN));
+            }
+            default -> sender.sendMessage(Component.text("Uso: /srp datapack <build|reload>", NamedTextColor.RED));
+        }
+    }
+
     private void sendUsage(CommandSender sender) {
         sender.sendMessage(Component.text(
-                "Uso: /srp <reload|rebuild|validate|publish|status|content|conflicts|models|textures|sounds|fonts|cache|dev|gui>",
+                "Uso: /srp <reload|rebuild|validate|publish|status|content|conflicts|models|textures|sounds|fonts|cache|dev|datapack|gui>",
                 NamedTextColor.RED));
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+
+        if (args.length == 1) {
+            return filter(args[0], SUBCOMMANDS);
+        }
+
+        if (args.length == 2 && "datapack".equalsIgnoreCase(args[0])) {
+            return filter(args[1], DATAPACK_SUBCOMMANDS);
+        }
+
+        return List.of();
+    }
+
+    private List<String> filter(String token, List<String> options) {
+        List<String> result = new ArrayList<>();
+        StringUtil.copyPartialMatches(token, options, result);
+        return result;
     }
 
 }

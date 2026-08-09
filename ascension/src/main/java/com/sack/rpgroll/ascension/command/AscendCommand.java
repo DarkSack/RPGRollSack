@@ -6,6 +6,7 @@ import com.sack.rpgroll.ascension.deferred.FactionManager;
 import com.sack.rpgroll.ascension.deferred.TitleManager;
 import com.sack.rpgroll.ascension.engine.AscensionEngine;
 import com.sack.rpgroll.ascension.player.AscensionPlayerState;
+import com.sack.rpgroll.util.TabCompleteUtil;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -13,8 +14,10 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -28,7 +31,10 @@ import java.util.Optional;
  * /ascend legacy                — legado (reset total por un bono permanente)
  * /ascend info                  — resumen de tu progresión
  */
-public class AscendCommand implements CommandExecutor {
+public class AscendCommand implements CommandExecutor, TabCompleter {
+
+    private static final List<String> SUBCOMMANDS = List.of("race", "specialize", "talent", "prestige", "affinity",
+            "reputation", "title", "legacy", "info");
 
     private final AscensionEngine engine;
     private final FactionManager factionManager;
@@ -229,6 +235,35 @@ public class AscendCommand implements CommandExecutor {
 
         player.sendMessage(Component.text("No se pudo:", NamedTextColor.RED));
         reasons.forEach(reason -> player.sendMessage(Component.text("- " + reason, NamedTextColor.RED)));
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+
+        if (args.length == 1) {
+            return TabCompleteUtil.filter(args[0], SUBCOMMANDS);
+        }
+
+        if (args.length == 2) {
+            return switch (args[0].toLowerCase()) {
+                case "race" -> TabCompleteUtil.filter(args[1],
+                        engine.getEvolutionManager().getAll().stream().map(RaceEvolution::id).toList());
+                case "specialize" -> TabCompleteUtil.filter(args[1],
+                        engine.getSpecializationManager().getAll().stream().map(ClassSpecialization::id).toList());
+                case "title" -> {
+                    if (!(sender instanceof Player player)) {
+                        yield List.of();
+                    }
+                    List<String> options = new java.util.ArrayList<>(
+                            engine.getStateManager().getOrLoad(player).getUnlockedTitles());
+                    options.add("clear");
+                    yield TabCompleteUtil.filter(args[1], options);
+                }
+                default -> List.of();
+            };
+        }
+
+        return List.of();
     }
 
 }

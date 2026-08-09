@@ -4,6 +4,7 @@ import com.sack.rpgroll.ranching.core.animal.AnimalManager;
 import com.sack.rpgroll.ranching.core.breeds.BreedManager;
 import com.sack.rpgroll.ranching.core.species.SpeciesManager;
 import com.sack.rpgroll.ranching.gui.AnimalDetailGUI;
+import com.sack.rpgroll.util.TabCompleteUtil;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -11,11 +12,14 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
+import java.util.List;
+
 /** /ranching inspect — abre la ficha del animal al que estás mirando. */
-public class RanchingCommand implements CommandExecutor {
+public class RanchingCommand implements CommandExecutor, TabCompleter {
 
     private final AnimalManager animalManager;
     private final SpeciesManager speciesManager;
@@ -50,6 +54,16 @@ public class RanchingCommand implements CommandExecutor {
 
         new AnimalDetailGUI(player, animal.get(), speciesManager, breedManager, player::closeInventory).open();
         return true;
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+
+        if (args.length == 1) {
+            return TabCompleteUtil.filter(args[0], List.of("inspect"));
+        }
+
+        return List.of();
     }
 
 }

@@ -1,5 +1,7 @@
 package com.sack.rpgroll.mobs.gui.editor;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 
@@ -104,7 +106,7 @@ public class MobEditorHubGUI extends InventoryGUI {
         }
 
         return new ItemBuilder(egg)
-                .setName(LegacyComponentSerializer.legacyAmpersand().deserialize(session.displayName)
+                .setName(ComponentUtils.parse(session.displayName)
                         .colorIfAbsent(NamedTextColor.WHITE))
                 .setLore(Component.text(session.original.id(), NamedTextColor.DARK_GRAY),
                         Component.text(session.category + " · Nivel " + session.level, NamedTextColor.GRAY))

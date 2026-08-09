@@ -1,0 +1,10 @@
+id: flu
+display-name: "&cGripe"
+description: "El worker se enferma — trabaja a medio ritmo hasta que se recupera."
+type: ILLNESS
+chance: 0
+duration-ticks: 6000
+happiness-delta: -10
+energy-delta: -15
+health-delta: -10
+work-speed-multiplier-while-active: 0.5

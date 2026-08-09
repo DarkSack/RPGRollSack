@@ -161,4 +161,14 @@ public class ClassCommand implements RPGCommand {
         return List.of("clase", "c");
     }
 
+    @Override
+    public List<String> getTabCompletions(CommandSender sender, String[] args) {
+        if (args.length <= 1) {
+            List<String> options = new java.util.ArrayList<>(AVAILABLE_CLASSES);
+            options.add("list");
+            return options;
+        }
+        return List.of();
+    }
+
 }

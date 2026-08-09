@@ -101,7 +101,7 @@ public class NpcMenuBrowserGUI extends InventoryGUI {
 
     private void reopen() {
         this.menus = List.copyOf(menuManager.getAll());
-        build();
+        open();
     }
 
 }

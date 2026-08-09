@@ -1,5 +1,7 @@
 package com.sack.rpgroll.quests.registry;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.api.RPGRollAPI;
 import com.sack.rpgroll.player.RPGPlayer;
 import com.sack.rpgroll.quests.engine.QuestEngine;
@@ -30,7 +32,6 @@ import java.util.Locale;
  */
 public final class BuiltinActions {
 
-    private static final LegacyComponentSerializer LEGACY = LegacyComponentSerializer.legacyAmpersand();
 
     private BuiltinActions() {
     }
@@ -40,7 +41,7 @@ public final class BuiltinActions {
         registry.register("MESSAGE", (action, ctx) -> {
             String message = action.param("value", "");
             if (!message.isBlank()) {
-                ctx.player().sendMessage(LEGACY.deserialize(applyPlaceholders(message, ctx.player())));
+                ctx.player().sendMessage(ComponentUtils.parse(applyPlaceholders(message, ctx.player())));
             }
         });
 
@@ -70,8 +71,8 @@ public final class BuiltinActions {
 
         registry.register("TITLE", (action, ctx) -> {
 
-            Component main = LEGACY.deserialize(action.param("title", ""));
-            Component subtitle = LEGACY.deserialize(action.param("subtitle", ""));
+            Component main = ComponentUtils.parse(action.param("title", ""));
+            Component subtitle = ComponentUtils.parse(action.param("subtitle", ""));
 
             Title.Times times = Title.Times.times(Duration.ofMillis(500), Duration.ofSeconds(3), Duration.ofMillis(500));
             ctx.player().showTitle(Title.title(main, subtitle, times));
@@ -79,7 +80,7 @@ public final class BuiltinActions {
 
         registry.register("BOSSBAR", (action, ctx) -> {
 
-            Component text = LEGACY.deserialize(action.param("text", ""));
+            Component text = ComponentUtils.parse(action.param("text", ""));
             BossBar bossBar = BossBar.bossBar(text, 1.0f, BossBar.Color.PURPLE, BossBar.Overlay.PROGRESS);
 
             ctx.player().showBossBar(bossBar);

@@ -105,7 +105,7 @@ public class EffectBrowserGUI extends InventoryGUI {
 
     private void reopen() {
         this.effects = List.copyOf(effectManager.getAll());
-        build();
+        open();
     }
 
 }

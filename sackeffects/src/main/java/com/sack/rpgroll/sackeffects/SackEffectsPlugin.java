@@ -39,7 +39,9 @@ public class SackEffectsPlugin extends JavaPlugin {
         if (effectsCommand == null) {
             getLogger().severe("✘ El comando 'sackeffects' no está declarado en plugin.yml");
         } else {
-            effectsCommand.setExecutor(new SackEffectsAdminCommand(effectManager, engine, chatPromptManager));
+            var sackEffectsAdminCommand = new SackEffectsAdminCommand(effectManager, engine, chatPromptManager);
+            effectsCommand.setExecutor(sackEffectsAdminCommand);
+            effectsCommand.setTabCompleter(sackEffectsAdminCommand);
         }
 
         getLogger().info("✔ SackEffects habilitado. " + effectManager.count() + " efecto(s) cargado(s).");

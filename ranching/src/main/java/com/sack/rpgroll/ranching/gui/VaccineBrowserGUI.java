@@ -104,7 +104,7 @@ public class VaccineBrowserGUI extends InventoryGUI {
 
     private void reopen() {
         this.vaccines = List.copyOf(vaccineManager.getAll());
-        build();
+        open();
     }
 
 }

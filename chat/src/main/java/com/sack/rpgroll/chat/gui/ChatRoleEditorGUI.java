@@ -1,5 +1,7 @@
 package com.sack.rpgroll.chat.gui;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.chat.role.ChatRole;
@@ -55,14 +57,12 @@ public class ChatRoleEditorGUI extends InventoryGUI {
         }
 
         setItem(PREFIX_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(LegacyComponentSerializer.legacyAmpersand()
-                        .deserialize("Prefijo: " + current.prefix()).colorIfAbsent(NamedTextColor.YELLOW))
+                .setName(ComponentUtils.parse("Prefijo: " + current.prefix()).colorIfAbsent(NamedTextColor.YELLOW))
                 .setLore(Component.text("Click para escribir uno nuevo", NamedTextColor.GRAY))
                 .build());
 
         setItem(SUFFIX_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(LegacyComponentSerializer.legacyAmpersand()
-                        .deserialize("Sufijo: " + current.suffix()).colorIfAbsent(NamedTextColor.YELLOW))
+                .setName(ComponentUtils.parse("Sufijo: " + current.suffix()).colorIfAbsent(NamedTextColor.YELLOW))
                 .setLore(Component.text("Click para escribir uno nuevo", NamedTextColor.GRAY))
                 .build());
 

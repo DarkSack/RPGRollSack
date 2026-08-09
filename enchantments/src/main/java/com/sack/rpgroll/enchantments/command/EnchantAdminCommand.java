@@ -5,6 +5,7 @@ import com.sack.rpgroll.enchantments.core.EnchantmentManager;
 import com.sack.rpgroll.enchantments.gui.ChatPromptManager;
 import com.sack.rpgroll.enchantments.gui.EnchantmentBrowserGUI;
 import com.sack.rpgroll.enchantments.item.EnchantmentItem;
+import com.sack.rpgroll.util.TabCompleteUtil;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -13,9 +14,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -26,7 +29,10 @@ import java.util.Optional;
  * /renchant info <id>                   — detalle de un encantamiento
  * /renchant reload                      — recarga los YAML de enchantments/
  */
-public class EnchantAdminCommand implements CommandExecutor {
+public class EnchantAdminCommand implements CommandExecutor, TabCompleter {
+
+    private static final List<String> SUBCOMMANDS = List.of("apply", "remove", "give", "list", "info", "reload",
+            "browser");
 
     private static final String PERMISSION = "rpgrollenchantments.admin.*";
 
@@ -71,6 +77,32 @@ public class EnchantAdminCommand implements CommandExecutor {
     private void sendUsage(CommandSender sender) {
         sender.sendMessage(Component.text(
                 "Uso: /renchant <apply|remove|give|list|info|reload|browser> [args]", NamedTextColor.RED));
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+
+        if (args.length == 1) {
+            return TabCompleteUtil.filter(args[0], SUBCOMMANDS);
+        }
+
+        if (args.length == 2) {
+            return switch (args[0].toLowerCase()) {
+                case "apply", "remove", "info" -> TabCompleteUtil.filter(args[1], enchantmentIds());
+                case "give" -> TabCompleteUtil.onlinePlayerNames(args[1]);
+                default -> List.of();
+            };
+        }
+
+        if (args.length == 3 && "give".equalsIgnoreCase(args[0])) {
+            return TabCompleteUtil.filter(args[2], enchantmentIds());
+        }
+
+        return List.of();
+    }
+
+    private List<String> enchantmentIds() {
+        return manager.getAll().stream().map(CustomEnchantment::id).toList();
     }
 
     private void handleBrowser(CommandSender sender) {
@@ -161,9 +193,16 @@ public class EnchantAdminCommand implements CommandExecutor {
             return;
         }
 
+        Optional<CustomEnchantment> enchantmentOpt = manager.get(args[1]);
+
+        if (enchantmentOpt.isEmpty()) {
+            player.sendMessage(Component.text("No existe un encantamiento con id: " + args[1], NamedTextColor.RED));
+            return;
+        }
+
         ItemStack item = player.getInventory().getItemInMainHand();
 
-        if (enchantmentItem.remove(item, args[1])) {
+        if (enchantmentItem.remove(item, enchantmentOpt.get().id())) {
             player.sendMessage(Component.text("✔ Encantamiento removido.", NamedTextColor.GREEN));
         } else {
             player.sendMessage(Component.text("Ese ítem no tiene ese encantamiento.", NamedTextColor.RED));

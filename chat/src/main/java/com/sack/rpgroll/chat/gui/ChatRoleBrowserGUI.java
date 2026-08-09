@@ -96,7 +96,7 @@ public class ChatRoleBrowserGUI extends PaginatedGUI {
 
     private void reopen() {
         this.roles = List.copyOf(roleManager.getAll());
-        build();
+        open();
     }
 
 }

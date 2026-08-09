@@ -107,7 +107,7 @@ public class FishingRegionBrowserGUI extends InventoryGUI {
 
     private void reopen() {
         this.regions = List.copyOf(regionManager.getAll());
-        build();
+        open();
     }
 
 }

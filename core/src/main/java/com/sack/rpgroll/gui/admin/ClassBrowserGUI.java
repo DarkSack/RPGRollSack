@@ -101,7 +101,7 @@ public class ClassBrowserGUI extends InventoryGUI {
 
     private void reopen() {
         this.classes = List.copyOf(classManager.getAll());
-        build();
+        open();
     }
 
 }

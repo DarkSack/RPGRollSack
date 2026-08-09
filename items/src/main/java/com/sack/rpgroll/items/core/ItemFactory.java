@@ -1,5 +1,7 @@
 package com.sack.rpgroll.items.core;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.items.instance.ItemInstanceService;
 import com.sack.rpgroll.items.integration.EnchantmentsIntegration;
 import com.sack.rpgroll.items.rarity.Rarity;
@@ -50,7 +52,6 @@ import java.util.UUID;
  */
 public class ItemFactory {
 
-    private static final LegacyComponentSerializer LEGACY = LegacyComponentSerializer.legacyAmpersand();
 
     private final ItemInstanceService instanceService;
     private final RarityManager rarityManager;
@@ -133,7 +134,7 @@ public class ItemFactory {
         int currentDurabilityForName = instanceService.getDurability(item, definition.durability().maxDurability());
 
         Component nameComponent = Component.text().color(rarity.color())
-                .append(LEGACY.deserialize(applyPlaceholders(displayName, upgradeLevel, currentDurabilityForName,
+                .append(ComponentUtils.parse(applyPlaceholders(displayName, upgradeLevel, currentDurabilityForName,
                         definition.durability().maxDurability()) + suffix))
                 .build()
                 .decoration(TextDecoration.ITALIC, false);
@@ -169,7 +170,7 @@ public class ItemFactory {
         for (String line : definition.lore()) {
             String rendered = applyPlaceholders(line, upgradeLevel, currentDurability,
                     definition.durability().maxDurability());
-            lore.add(LEGACY.deserialize(rendered).decoration(TextDecoration.ITALIC, false));
+            lore.add(ComponentUtils.parse(rendered).decoration(TextDecoration.ITALIC, false));
         }
 
         Map<String, Double> stats = combinedStats(definition, upgradeLevel);

@@ -1,5 +1,7 @@
 package com.sack.rpgroll.effects.engine;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.effects.core.EffectComponent;
 import com.sack.rpgroll.effects.core.EffectComponentType;
 import com.sack.rpgroll.effects.core.EffectTriggerType;
@@ -37,7 +39,6 @@ import java.util.Optional;
  */
 public class EffectComponentExecutor {
 
-    private static final LegacyComponentSerializer LEGACY = LegacyComponentSerializer.legacyAmpersand();
 
     private final Plugin plugin;
 
@@ -252,7 +253,7 @@ public class EffectComponentExecutor {
             return;
         }
 
-        Component text = LEGACY.deserialize(raw);
+        Component text = ComponentUtils.parse(raw);
 
         if (component.paramBoolean("actionbar", false)) {
             player.sendActionBar(text);

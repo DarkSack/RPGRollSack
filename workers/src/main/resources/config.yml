@@ -1,0 +1,19 @@
+# Intervalos de tareas periódicas, en ticks (20 ticks = 1 segundo).
+needs-decay-interval-ticks: 200
+ai-tick-interval-ticks: 40
+worker-event-check-interval-ticks: 1200
+wage-payment-interval-ticks: 24000
+
+# Radio (bloques) en el que un worker busca bloques de trabajo (vetas, árboles, cultivos) o un almacén.
+work-search-radius: 16
+warehouse-search-radius: 32
+
+# Cuánto cae cada necesidad por chequeo (0-100, más alto = se descuida más rápido).
+hunger-decay-per-check: 1.0
+energy-decay-per-check: 0.6
+sleep-decay-per-check: 0.4
+stress-gain-per-check: 0.3
+
+# Probabilidad (0-1) por chequeo de que se dispare un WorkerEvent aleatorio si la moral está baja.
+worker-event-base-chance: 0.01
+low-morale-threshold: 30

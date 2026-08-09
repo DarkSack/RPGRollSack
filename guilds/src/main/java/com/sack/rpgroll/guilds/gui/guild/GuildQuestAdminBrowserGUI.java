@@ -104,7 +104,7 @@ public class GuildQuestAdminBrowserGUI extends PaginatedGUI {
 
     private void reopen() {
         this.definitions = List.copyOf(questManager.getAll());
-        build();
+        open();
     }
 
 }

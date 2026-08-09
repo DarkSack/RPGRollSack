@@ -24,9 +24,19 @@ import java.util.UUID;
  * Motor de comportamiento por polling — corre cada {@code MobsPlugin.AI_TICK_INTERVAL}.
  * Bukkit/Paper no expone el sistema real de pathfinding-goals de Minecraft
  * (interno de NMS), así que esto se simula con {@link Mob#getPathfinder()}
- * / {@link Mob#setTarget(LivingEntity)} —API estable— manejados a mano:
- * los mobs corren con {@code setAware(false)} y esta tarea es su única IA.
+ * / {@link Mob#setTarget(LivingEntity)} —API estable— manejados a mano.
  * Los goals se evalúan EN ORDEN, el primero que aplica gana ese tick.
+ * <p>
+ * A propósito NO se llama {@code Mob#setAware(false)} al spawnear: aunque
+ * la idea original era usarlo para que esta tarea fuera la única IA del
+ * mob, en la práctica {@code setAware(false)} también bloquea la
+ * ejecución del {@link Mob#getPathfinder()} (no solo el goal-selector
+ * vanilla) — un mob "unaware" calcula el path pero nunca camina, quedando
+ * parado para siempre. Bukkit/Paper no expone forma de desactivar solo el
+ * goal-selector vanilla sin tocar el pathfinder, así que el trade-off
+ * aceptado acá es: los goals vanilla del mob (wander, buscar objetivo,
+ * etc.) siguen corriendo en paralelo, pero esta tarea reafirma el target
+ * y el movimiento en cada tick, así que en la práctica domina.
  */
 public class MobAITask implements Runnable {
 

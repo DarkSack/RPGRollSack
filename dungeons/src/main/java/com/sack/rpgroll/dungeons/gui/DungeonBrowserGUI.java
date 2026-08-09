@@ -1,5 +1,7 @@
 package com.sack.rpgroll.dungeons.gui;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.dungeons.core.DungeonDefinition;
 import com.sack.rpgroll.dungeons.core.DungeonManager;
@@ -96,7 +98,7 @@ public class DungeonBrowserGUI extends PaginatedGUI {
         Material icon = resolveIcon(definition);
 
         setItem(contentSlot, new ItemBuilder(icon)
-                .setName(LegacyComponentSerializer.legacyAmpersand().deserialize(definition.displayName())
+                .setName(ComponentUtils.parse(definition.displayName())
                         .colorIfAbsent(NamedTextColor.WHITE))
                 .setLore(
                         Component.text(definition.id(), NamedTextColor.DARK_GRAY),

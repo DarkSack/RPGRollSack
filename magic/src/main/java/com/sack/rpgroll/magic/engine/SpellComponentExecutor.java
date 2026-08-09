@@ -3,6 +3,7 @@ package com.sack.rpgroll.magic.engine;
 import com.sack.rpgroll.effects.api.EffectsAPI;
 import com.sack.rpgroll.magic.core.SpellComponent;
 import com.sack.rpgroll.sackeffects.api.SackEffectsAPI;
+import com.sack.rpgroll.util.ComponentUtils;
 
 import net.kyori.adventure.text.format.NamedTextColor;
 
@@ -536,8 +537,7 @@ public class SpellComponentExecutor {
         String text = component.param("text", "");
 
         if (!text.isBlank()) {
-            context.caster().sendMessage(net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer
-                    .legacyAmpersand().deserialize(text).colorIfAbsent(NamedTextColor.WHITE));
+            context.caster().sendMessage(ComponentUtils.parse(text).colorIfAbsent(NamedTextColor.WHITE));
         }
     }
 

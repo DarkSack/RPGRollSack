@@ -4,6 +4,7 @@ import com.sack.rpgroll.fishing.core.FishSpeciesManager;
 import com.sack.rpgroll.fishing.gui.EncyclopediaGUI;
 import com.sack.rpgroll.fishing.runtime.FishingProfileManager;
 import com.sack.rpgroll.fishing.runtime.PlayerFishingProfile;
+import com.sack.rpgroll.util.TabCompleteUtil;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -11,10 +12,15 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
+import java.util.List;
+
 /** /fishing encyclopedia|stats */
-public class FishingCommand implements CommandExecutor {
+public class FishingCommand implements CommandExecutor, TabCompleter {
+
+    private static final List<String> SUBCOMMANDS = List.of("encyclopedia", "stats");
 
     private final FishSpeciesManager speciesManager;
     private final FishingProfileManager profileManager;
@@ -60,6 +66,16 @@ public class FishingCommand implements CommandExecutor {
                 + speciesManager.count(), NamedTextColor.WHITE));
         player.sendMessage(Component.text("Tesoros encontrados: " + profile.totalTreasures(), NamedTextColor.WHITE));
         player.sendMessage(Component.text("Basura sacada: " + profile.totalJunk(), NamedTextColor.WHITE));
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+
+        if (args.length == 1) {
+            return TabCompleteUtil.filter(args[0], SUBCOMMANDS);
+        }
+
+        return List.of();
     }
 
 }

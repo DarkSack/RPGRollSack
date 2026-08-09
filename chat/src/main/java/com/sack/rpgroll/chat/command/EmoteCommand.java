@@ -1,7 +1,10 @@
 package com.sack.rpgroll.chat.command;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.chat.emote.EmoteDefinition;
 import com.sack.rpgroll.chat.emote.EmoteManager;
+import com.sack.rpgroll.util.TabCompleteUtil;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -11,10 +14,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
+import java.util.List;
+
 /** /emote &lt;nombre&gt; [jugador] — spec: /wave, /laugh, /sit, /cry, /dance. */
-public class EmoteCommand implements CommandExecutor {
+public class EmoteCommand implements CommandExecutor, TabCompleter {
 
     private final EmoteManager emoteManager;
 
@@ -58,7 +64,7 @@ public class EmoteCommand implements CommandExecutor {
         String text = template.replace("{player}", player.getName())
                 .replace("{target}", target != null ? target.getName() : "");
 
-        Component message = LegacyComponentSerializer.legacyAmpersand().deserialize(text);
+        Component message = ComponentUtils.parse(text);
 
         for (Player recipient : recipients(player, emote.radius())) {
             recipient.sendMessage(message);
@@ -76,6 +82,27 @@ public class EmoteCommand implements CommandExecutor {
         return emitter.getWorld().getPlayers().stream()
                 .filter(p -> p.getLocation().distance(emitter.getLocation()) <= radius)
                 .toList();
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+
+        boolean generic = alias.equalsIgnoreCase("emote");
+
+        if (generic && args.length == 1) {
+            return TabCompleteUtil.filter(args[0], emoteManager.getAll().stream()
+                    .map(EmoteDefinition::id).toList());
+        }
+
+        if (generic && args.length == 2) {
+            return TabCompleteUtil.onlinePlayerNames(args[1]);
+        }
+
+        if (!generic && args.length == 1) {
+            return TabCompleteUtil.onlinePlayerNames(args[0]);
+        }
+
+        return List.of();
     }
 
 }

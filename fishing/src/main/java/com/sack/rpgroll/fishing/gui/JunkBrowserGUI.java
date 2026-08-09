@@ -98,7 +98,7 @@ public class JunkBrowserGUI extends InventoryGUI {
 
     private void reopen() {
         this.junks = List.copyOf(junkManager.getAll());
-        build();
+        open();
     }
 
 }

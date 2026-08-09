@@ -9,6 +9,7 @@ import com.sack.rpgroll.items.gui.editor.EditorSession;
 import com.sack.rpgroll.items.gui.editor.ItemEditorHubGUI;
 import com.sack.rpgroll.items.rarity.RarityManager;
 import com.sack.rpgroll.items.registry.StatRegistry;
+import com.sack.rpgroll.util.TabCompleteUtil;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -17,10 +18,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -30,7 +33,9 @@ import java.util.Optional;
  * /itemadmin browser        — abre el navegador de ítems (GUI)
  * /itemadmin editor &lt;id&gt; — abre el editor directo de un ítem (GUI)
  */
-public class ItemAdminCommand implements CommandExecutor {
+public class ItemAdminCommand implements CommandExecutor, TabCompleter {
+
+    private static final List<String> SUBCOMMANDS = List.of("give", "list", "reload", "create", "browser", "editor");
 
     private static final String PERMISSION = "rpgrollitems.admin.*";
 
@@ -207,6 +212,34 @@ public class ItemAdminCommand implements CommandExecutor {
                 statRegistry, chatPromptManager, plugin);
 
         new ItemEditorHubGUI(player, session).open();
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+
+        if (args.length == 1) {
+            return TabCompleteUtil.filter(args[0], SUBCOMMANDS);
+        }
+
+        String sub = args[0].toLowerCase();
+
+        if (args.length == 2) {
+            return switch (sub) {
+                case "give" -> TabCompleteUtil.onlinePlayerNames(args[1]);
+                case "editor" -> TabCompleteUtil.filter(args[1], itemIds());
+                default -> List.of();
+            };
+        }
+
+        if (args.length == 3 && "give".equals(sub)) {
+            return TabCompleteUtil.filter(args[2], itemIds());
+        }
+
+        return List.of();
+    }
+
+    private List<String> itemIds() {
+        return itemManager.getAll().stream().map(ItemDefinition::id).toList();
     }
 
 }

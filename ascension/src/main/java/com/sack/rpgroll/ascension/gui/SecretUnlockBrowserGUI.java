@@ -102,7 +102,7 @@ public class SecretUnlockBrowserGUI extends InventoryGUI {
 
     private void reopen() {
         this.unlocks = List.copyOf(manager.getAll());
-        build();
+        open();
     }
 
 }

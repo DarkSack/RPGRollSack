@@ -101,7 +101,7 @@ public class SchoolBrowserGUI extends InventoryGUI {
 
     private void reopen() {
         this.schools = List.copyOf(schoolManager.getAll());
-        build();
+        open();
     }
 
     static Material parseMaterial(String raw) {

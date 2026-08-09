@@ -135,4 +135,12 @@ public class AdminResetStatsCommand implements RPGCommand {
         return List.of();
     }
 
+    @Override
+    public List<String> getTabCompletions(CommandSender sender, String[] args) {
+        if (args.length <= 1) {
+            return com.sack.rpgroll.util.TabCompleteUtil.allOnlinePlayerNames();
+        }
+        return List.of();
+    }
+
 }

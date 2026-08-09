@@ -1,5 +1,7 @@
 package com.sack.rpgroll.ranching.item;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.ranching.core.health.Medicine;
 import com.sack.rpgroll.ranching.core.health.Vaccine;
@@ -22,7 +24,6 @@ import java.util.Locale;
 /** Construye los ItemStacks de alimentos/medicinas/vacunas, etiquetados vía PersistentDataContainer. */
 public final class RanchingItemFactory {
 
-    private static final LegacyComponentSerializer LEGACY = LegacyComponentSerializer.legacyAmpersand();
 
     private RanchingItemFactory() {
     }
@@ -34,7 +35,7 @@ public final class RanchingItemFactory {
         List<Component> lore = new ArrayList<>();
 
         if (!feed.description().isBlank()) {
-            lore.add(LEGACY.deserialize(feed.description()).colorIfAbsent(NamedTextColor.GRAY));
+            lore.add(ComponentUtils.parse(feed.description()).colorIfAbsent(NamedTextColor.GRAY));
             lore.add(Component.empty());
         }
 
@@ -58,7 +59,7 @@ public final class RanchingItemFactory {
         lore.add(Component.text("Click derecho en un animal para alimentarlo", NamedTextColor.DARK_GRAY));
 
         ItemStack item = new ItemBuilder(material)
-                .setName(LEGACY.deserialize(feed.displayName()).colorIfAbsent(NamedTextColor.WHITE))
+                .setName(ComponentUtils.parse(feed.displayName()).colorIfAbsent(NamedTextColor.WHITE))
                 .setLore(lore)
                 .build();
 
@@ -72,7 +73,7 @@ public final class RanchingItemFactory {
         List<Component> lore = new ArrayList<>();
 
         if (!medicine.description().isBlank()) {
-            lore.add(LEGACY.deserialize(medicine.description()).colorIfAbsent(NamedTextColor.GRAY));
+            lore.add(ComponentUtils.parse(medicine.description()).colorIfAbsent(NamedTextColor.GRAY));
             lore.add(Component.empty());
         }
 
@@ -86,7 +87,7 @@ public final class RanchingItemFactory {
         lore.add(Component.text("Click derecho en un animal para tratarlo", NamedTextColor.DARK_GRAY));
 
         ItemStack item = new ItemBuilder(material)
-                .setName(LEGACY.deserialize(medicine.displayName()).colorIfAbsent(NamedTextColor.WHITE))
+                .setName(ComponentUtils.parse(medicine.displayName()).colorIfAbsent(NamedTextColor.WHITE))
                 .setLore(lore)
                 .build();
 
@@ -100,7 +101,7 @@ public final class RanchingItemFactory {
         List<Component> lore = new ArrayList<>();
 
         if (!vaccine.description().isBlank()) {
-            lore.add(LEGACY.deserialize(vaccine.description()).colorIfAbsent(NamedTextColor.GRAY));
+            lore.add(ComponentUtils.parse(vaccine.description()).colorIfAbsent(NamedTextColor.GRAY));
             lore.add(Component.empty());
         }
 
@@ -113,7 +114,7 @@ public final class RanchingItemFactory {
         lore.add(Component.text("Click derecho en un animal para vacunarlo", NamedTextColor.DARK_GRAY));
 
         ItemStack item = new ItemBuilder(material)
-                .setName(LEGACY.deserialize(vaccine.displayName()).colorIfAbsent(NamedTextColor.WHITE))
+                .setName(ComponentUtils.parse(vaccine.displayName()).colorIfAbsent(NamedTextColor.WHITE))
                 .setLore(lore)
                 .build();
 

@@ -99,7 +99,7 @@ public class SkillBrowserGUI extends InventoryGUI {
 
     private void reopen() {
         this.skills = List.copyOf(skillManager.getAll());
-        build();
+        open();
     }
 
 }

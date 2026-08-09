@@ -1,0 +1,7 @@
+id: animal_care
+display-name: "Cuidado animal"
+description: "Qué tan bien alimenta y trata a los animales de Ranching."
+profession: rancher
+max-level: 15
+attribute-key: animal_care
+value-per-level: 1.0

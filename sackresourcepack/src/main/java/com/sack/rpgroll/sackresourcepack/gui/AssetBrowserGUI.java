@@ -22,9 +22,13 @@ import java.util.stream.Stream;
 
 /**
  * Explorador de todos los assets del pack ya fusionado — paginado,
- * filtrable por tipo. No hay preview visual real (Bukkit no puede
- * renderizar un PNG dentro de un item de inventario): cada entrada
- * muestra su información en el lore (ruta, tipo, módulo dueño, tamaño).
+ * filtrable por tipo. Las texturas PNG se muestran como una cabeza de
+ * jugador con esa imagen pintada encima (vía el host HTTP propio +
+ * {@link ItemBuilder#skullFromUrl}) cuando ese host está disponible — es
+ * un preview parcial y no perfecto (ver el javadoc de
+ * {@code skullFromUrl}), no un render fiel del asset; el resto de los
+ * tipos (modelos, sonidos, fuentes...) sigue mostrando solo su
+ * información en el lore, porque Bukkit no tiene forma de previsualizarlos.
  */
 public class AssetBrowserGUI extends InventoryGUI {
 
@@ -46,6 +50,7 @@ public class AssetBrowserGUI extends InventoryGUI {
     }
 
     private final BuildEngine buildEngine;
+    private final String assetBaseUrl;
     private final Runnable onBack;
 
     private List<AssetEntry> allEntries = List.of();
@@ -53,9 +58,11 @@ public class AssetBrowserGUI extends InventoryGUI {
     private TypeFilter filter = TypeFilter.ALL;
     private int page = 0;
 
-    public AssetBrowserGUI(Player player, BuildEngine buildEngine, Runnable onBack) {
+    /** @param assetBaseUrl base para pedir texturas sueltas (ver {@code ResourcePackHttpServer#assetBaseUrl()}), null si no hay host HTTP propio habilitado. */
+    public AssetBrowserGUI(Player player, BuildEngine buildEngine, String assetBaseUrl, Runnable onBack) {
         super(player, Component.text("Explorador de Assets", NamedTextColor.GREEN), SIZE);
         this.buildEngine = buildEngine;
+        this.assetBaseUrl = assetBaseUrl;
         this.onBack = onBack;
     }
 
@@ -171,6 +178,26 @@ public class AssetBrowserGUI extends InventoryGUI {
 
     private ItemStack buildEntryItem(AssetEntry entry) {
 
+        String fileName = entry.relativePath().substring(entry.relativePath().lastIndexOf('/') + 1);
+
+        boolean previewable = assetBaseUrl != null && entry.type().equals(TypeFilter.TEXTURES.name())
+                && entry.relativePath().endsWith(".png");
+
+        if (previewable) {
+
+            String textureUrl = assetBaseUrl + "assets/" + entry.relativePath();
+
+            return ItemBuilder.skullFromUrl(textureUrl, fileName, NamedTextColor.WHITE,
+                    "assets/" + entry.relativePath(),
+                    "tipo: " + entry.type(),
+                    "módulo(s): " + entry.owner(),
+                    "tamaño: " + humanSize(entry.sizeBytes()),
+                    "",
+                    "(preview aproximado — la textura",
+                    "se envuelve sobre una cabeza,",
+                    "no es un render fiel)");
+        }
+
         Material icon = switch (TypeFilter.valueOf(entry.type())) {
             case MODELS -> Material.LEATHER_HELMET;
             case TEXTURES -> Material.PAINTING;
@@ -180,8 +207,6 @@ public class AssetBrowserGUI extends InventoryGUI {
             case PARTICLES -> Material.BLAZE_POWDER;
             default -> Material.PAPER;
         };
-
-        String fileName = entry.relativePath().substring(entry.relativePath().lastIndexOf('/') + 1);
 
         return ItemBuilder.of(icon, fileName, NamedTextColor.WHITE,
                 "assets/" + entry.relativePath(),

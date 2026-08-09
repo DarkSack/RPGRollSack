@@ -1,5 +1,7 @@
 package com.sack.rpgroll.enchantments.item;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.enchantments.core.CustomEnchantment;
 import com.sack.rpgroll.enchantments.core.EnchantCategory;
 import com.sack.rpgroll.enchantments.core.EnchantmentManager;
@@ -31,7 +33,6 @@ import java.util.Optional;
  */
 public class EnchantmentItem {
 
-    private static final LegacyComponentSerializer LEGACY = LegacyComponentSerializer.legacyAmpersand();
     private static final String ENTRY_SEPARATOR = ";";
     private static final String KEY_VALUE_SEPARATOR = ":";
 
@@ -194,7 +195,7 @@ public class EnchantmentItem {
                     .map(CustomEnchantment::displayName)
                     .orElse(entry.getKey());
 
-            block.add(LEGACY.deserialize(displayName)
+            block.add(ComponentUtils.parse(displayName)
                     .append(Component.text(" " + RomanNumerals.of(entry.getValue()), NamedTextColor.GRAY)));
         }
 

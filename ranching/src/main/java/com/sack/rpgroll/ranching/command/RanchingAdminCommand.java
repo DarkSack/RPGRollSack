@@ -16,6 +16,7 @@ import com.sack.rpgroll.ranching.core.species.Species;
 import com.sack.rpgroll.ranching.core.species.SpeciesManager;
 import com.sack.rpgroll.ranching.gui.ChatPromptManager;
 import com.sack.rpgroll.ranching.gui.RanchHubGUI;
+import com.sack.rpgroll.util.TabCompleteUtil;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -24,6 +25,7 @@ import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
@@ -31,7 +33,9 @@ import java.util.List;
 import java.util.Random;
 
 /** /ranchingadmin browser|reload|spawn <especie> [<raza>] */
-public class RanchingAdminCommand implements CommandExecutor {
+public class RanchingAdminCommand implements CommandExecutor, TabCompleter {
+
+    private static final List<String> SUBCOMMANDS = List.of("browser", "reload", "spawn");
 
     private final SpeciesManager speciesManager;
     private final BreedManager breedManager;
@@ -146,6 +150,26 @@ public class RanchingAdminCommand implements CommandExecutor {
     private void sendUsage(CommandSender sender) {
         sender.sendMessage(Component.text("Uso: /ranchingadmin <browser|reload|spawn <especie> [raza]>",
                 NamedTextColor.RED));
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+
+        if (args.length == 1) {
+            return TabCompleteUtil.filter(args[0], SUBCOMMANDS);
+        }
+
+        if (args.length == 2 && "spawn".equalsIgnoreCase(args[0])) {
+            return TabCompleteUtil.filter(args[1], speciesManager.getAll().stream()
+                    .map(Species::id).toList());
+        }
+
+        if (args.length == 3 && "spawn".equalsIgnoreCase(args[0])) {
+            return TabCompleteUtil.filter(args[2], breedManager.getForSpecies(args[1].toLowerCase()).stream()
+                    .map(Breed::id).toList());
+        }
+
+        return List.of();
     }
 
 }

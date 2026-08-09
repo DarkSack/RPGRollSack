@@ -31,7 +31,8 @@ import java.util.UUID;
 public class MobsPlaceholders extends PlaceholderExpansion {
 
     private static final double NEAREST_SEARCH_RADIUS = 64.0;
-    private static final LegacyComponentSerializer LEGACY = LegacyComponentSerializer.legacyAmpersand();
+    private static final LegacyComponentSerializer LEGACY = LegacyComponentSerializer.builder()
+            .character('&').hexColors().build();
 
     private final Plugin plugin;
     private final MobManager mobManager;

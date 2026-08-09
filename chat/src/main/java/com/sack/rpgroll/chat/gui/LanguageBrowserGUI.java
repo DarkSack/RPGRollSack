@@ -97,7 +97,7 @@ public class LanguageBrowserGUI extends PaginatedGUI {
 
     private void reopen() {
         this.languages = List.copyOf(languageManager.getAll());
-        build();
+        open();
     }
 
 }

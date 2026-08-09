@@ -109,7 +109,7 @@ public class EnchantmentBrowserGUI extends InventoryGUI {
 
     private void reopen() {
         this.enchantments = List.copyOf(enchantmentManager.getAll());
-        build();
+        open();
     }
 
 }

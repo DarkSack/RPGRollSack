@@ -8,7 +8,9 @@ import com.sack.rpgroll.mobs.gui.ChatPromptManager;
 import com.sack.rpgroll.mobs.gui.MobBrowserGUI;
 import com.sack.rpgroll.mobs.gui.editor.MobEditorHubGUI;
 import com.sack.rpgroll.mobs.gui.editor.MobEditorSession;
+import com.sack.rpgroll.mobs.core.MobCategory;
 import com.sack.rpgroll.mobs.registry.MobStatRegistry;
+import com.sack.rpgroll.util.TabCompleteUtil;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -17,6 +19,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -35,7 +38,10 @@ import java.util.UUID;
  * /mobadmin browser        — abre el navegador de mobs (GUI)
  * /mobadmin editor &lt;id&gt;  — abre el editor directo de un mob (GUI)
  */
-public class MobAdminCommand implements CommandExecutor {
+public class MobAdminCommand implements CommandExecutor, TabCompleter {
+
+    private static final List<String> SUBCOMMANDS = List.of("spawn", "list", "info", "reload", "killall", "create",
+            "browser", "editor");
 
     private static final String PERMISSION = "rpgrollmobs.admin.*";
 
@@ -256,6 +262,39 @@ public class MobAdminCommand implements CommandExecutor {
         MobEditorSession session = new MobEditorSession(definition, mobManager, statRegistry, chatPromptManager,
                 plugin);
         new MobEditorHubGUI(player, session).open();
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+
+        if (args.length == 1) {
+            return TabCompleteUtil.filter(args[0], SUBCOMMANDS);
+        }
+
+        String sub = args[0].toLowerCase(Locale.ROOT);
+
+        if (args.length == 2) {
+            return switch (sub) {
+                case "spawn", "info", "editor", "killall" -> TabCompleteUtil.filter(args[1], mobIds());
+                case "list" -> TabCompleteUtil.filter(args[1],
+                        java.util.Arrays.stream(MobCategory.values()).map(Enum::name).toList());
+                default -> List.of();
+            };
+        }
+
+        if (args.length == 3) {
+            return switch (sub) {
+                case "spawn" -> TabCompleteUtil.onlinePlayerNames(args[2]);
+                case "create" -> TabCompleteUtil.spawnableEntityTypes(args[2]);
+                default -> List.of();
+            };
+        }
+
+        return List.of();
+    }
+
+    private List<String> mobIds() {
+        return mobManager.getAll().stream().map(MobDefinition::id).toList();
     }
 
 }

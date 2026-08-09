@@ -178,6 +178,13 @@ public class ChatPlugin extends JavaPlugin {
         }
 
         command.setExecutor(executor);
+
+
+        if (executor instanceof org.bukkit.command.TabCompleter tabCompleter) {
+
+            command.setTabCompleter(tabCompleter);
+
+        }
     }
 
     private void registerPlaceholders() {

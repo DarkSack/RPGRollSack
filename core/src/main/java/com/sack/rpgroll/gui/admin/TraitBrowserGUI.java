@@ -100,7 +100,7 @@ public class TraitBrowserGUI extends InventoryGUI {
 
     private void reopen() {
         this.traits = List.copyOf(traitManager.getAll());
-        build();
+        open();
     }
 
 }

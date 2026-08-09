@@ -96,7 +96,7 @@ public class TitleBrowserGUI extends InventoryGUI {
 
     private void reopen() {
         this.titles = List.copyOf(manager.getAll());
-        build();
+        open();
     }
 
 }

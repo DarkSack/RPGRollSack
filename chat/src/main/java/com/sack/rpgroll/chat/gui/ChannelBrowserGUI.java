@@ -123,7 +123,7 @@ public class ChannelBrowserGUI extends PaginatedGUI {
 
     private void reopen() {
         this.channels = channelManager.sortedByPriority();
-        build();
+        open();
     }
 
 }

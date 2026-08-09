@@ -5,6 +5,7 @@ import com.sack.rpgroll.npcs.gui.NpcAdminGUI;
 import com.sack.rpgroll.npcs.gui.NpcMenuBrowserGUI;
 import com.sack.rpgroll.npcs.integration.MineSkinClient;
 import com.sack.rpgroll.npcs.listener.ChatPromptManager;
+import com.sack.rpgroll.util.TabCompleteUtil;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -12,9 +13,15 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
-public class NpcAdminCommand implements CommandExecutor {
+import java.util.List;
+
+public class NpcAdminCommand implements CommandExecutor, TabCompleter {
+
+        private static final List<String> SUBCOMMANDS = List.of("create", "edit", "list", "delete", "reload",
+                        "menus");
 
         private final NpcManager npcManager;
         private final NpcSpawnManager spawnManager;
@@ -268,5 +275,20 @@ public class NpcAdminCommand implements CommandExecutor {
                 }
 
                 return true;
+        }
+
+        @Override
+        public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+
+                if (args.length == 1) {
+                        return TabCompleteUtil.filter(args[0], SUBCOMMANDS);
+                }
+
+                if (args.length == 2 && List.of("edit", "delete").contains(args[0].toLowerCase())) {
+                        return TabCompleteUtil.filter(args[1],
+                                        npcManager.getAll().stream().map(npc -> npc.id()).toList());
+                }
+
+                return List.of();
         }
 }

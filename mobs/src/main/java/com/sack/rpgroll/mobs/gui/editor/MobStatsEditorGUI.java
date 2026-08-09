@@ -164,7 +164,7 @@ public class MobStatsEditorGUI extends InventoryGUI {
         this.statIds.clear();
         this.statIds.addAll(session.statRegistry.all());
         this.statIds.sort(String::compareTo);
-        build();
+        open();
     }
 
 }

@@ -100,7 +100,7 @@ public class CatalystBrowserGUI extends InventoryGUI {
 
     private void reopen() {
         this.catalysts = List.copyOf(catalystManager.getAll());
-        build();
+        open();
     }
 
 }

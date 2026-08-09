@@ -1,0 +1,7 @@
+id: mining_speed
+display-name: "Velocidad de minería"
+description: "Qué tan rápido extrae vetas el minero."
+profession: miner
+max-level: 20
+attribute-key: mining_speed
+value-per-level: 2.0

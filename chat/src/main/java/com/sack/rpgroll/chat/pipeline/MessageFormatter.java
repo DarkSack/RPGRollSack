@@ -22,6 +22,10 @@ import org.bukkit.entity.Player;
  */
 public class MessageFormatter {
 
+    /** {@code .hexColors()} habilita tanto &amp;#RRGGBB como el formato BungeeCord &amp;x&amp;R&amp;R... al deserializar. */
+    private static final LegacyComponentSerializer LEGACY = LegacyComponentSerializer.builder()
+            .character('&').hexColors().build();
+
     private final ChatRoleManager roleManager;
     private final ChatContextResolver contextResolver;
 
@@ -77,7 +81,7 @@ public class MessageFormatter {
     private Component toComponent(String text, ChatTextFormat format) {
         return format == ChatTextFormat.MINIMESSAGE
                 ? MiniMessage.miniMessage().deserialize(text)
-                : LegacyComponentSerializer.legacyAmpersand().deserialize(text);
+                : LEGACY.deserialize(text);
     }
 
 }

@@ -1,0 +1,23 @@
+id: rancher
+display-name: "&6Ganadero"
+icon: HAY_BLOCK
+description: "Busca animales de RPGRoll-Ranching cercanos y los alimenta de verdad."
+entity-type: VILLAGER
+skills: [animal_care]
+schedule: standard_day
+wage-amount: 45
+wage-type: HOURLY
+tool-material: null
+ai-rules:
+  - condition: HUNGRY
+    action: EAT
+    priority: 10
+  - condition: RAINING
+    action: SEEK_SHELTER
+    priority: 30
+  - condition: NIGHT
+    action: GO_HOME
+    priority: 40
+  - condition: ALWAYS
+    action: WORK
+    priority: 100

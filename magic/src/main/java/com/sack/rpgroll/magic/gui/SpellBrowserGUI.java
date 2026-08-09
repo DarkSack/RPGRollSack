@@ -133,7 +133,7 @@ public class SpellBrowserGUI extends InventoryGUI {
 
     private void reopen() {
         this.spells = List.copyOf(spellManager.getAll());
-        build();
+        open();
     }
 
 }

@@ -2,59 +2,106 @@
 
 > **Nombre final pendiente**
 
-Un framework RPG para **Minecraft Java Edition 1.21.1 (Paper)** diseñado para transformar un servidor vanilla en una experiencia de rol completa inspirada en juegos como **Dungeons & Dragons**, MMORPGs clásicos y sistemas RPG modernos.
+Un framework RPG modular para **Minecraft Java Edition 1.21.1 (Paper)** diseñado para transformar un servidor vanilla en una experiencia de rol completa inspirada en juegos como **Dungeons & Dragons**, MMORPGs clásicos y sistemas RPG modernos.
+
+Ya no es un único plugin: es un **ecosistema de 1 core + 18 addons independientes**, cada uno instalable por separado, más un asset pipeline de resource packs (`SackResourcePack`) que no depende de ningún otro módulo.
 
 > ⚠️ **Estado del proyecto:** En desarrollo activo (Alpha)
 
 ---
 
+# 🆕 Novedades recientes
+
+Cambios recientes aplicados en todo el ecosistema (core + los 18 addons):
+
+- 🖱️ **Botones "Volver" arreglados en todas las GUIs** — encantamientos, tiendas de NPCs, chat, crates y SackEffects: el botón `Volver`/`Cerrar` reabría el menú anterior sin cerrar de verdad el inventario activo, dejando la GUI "congelada". Corregido en 59 archivos (el `reopen()` de cada GUI ahora usa `open()` en vez de `build()`).
+- 🧟 **Mobs de RPGRoll-Mobs vuelven a moverse y patrullar** — se removía la IA nativa de Bukkit (`Mob#setAware(false)`) para evitar que interfiriera con el motor de IA propio, pero esa misma llamada también bloquea el sistema de pathfinding de Paper, dejando a los mobs completamente estáticos. Ya no se desactiva.
+- ✏️ **`/renchant remove` corregido** — ahora resuelve el encantamiento por su id real antes de intentar removerlo, en vez de fallar silenciosamente.
+- ⌨️ **Autocompletado (Tab) real en los 19 plugins** — cada comando (`/rpg`, `/rpgeffects`, `/mobadmin`, `/renchant`, etc.) sugiere ahora desde el contenido real registrado: razas, clases, encantamientos, efectos, tipos de entidad, ítems, jugadores online, mundos, etc. — no solo la lista de subcomandos.
+- 🎨 **Colores de texto 100% configurables desde YAML** — todos los módulos soportan ahora los 4 formatos de color en cualquier mensaje configurable: códigos clásicos (`&b&l`), hex por carácter (`&#RRGGBB`), hex estilo BungeeCord (`&x&R&R&G&G&B&B`) y MiniMessage completo, incluyendo gradientes (`<gradient:#54daf4:#545eb6>texto</gradient>`). Antes el color venía parcialmente fijo en el código Java.
+
+---
+
 # ✨ Características
 
-El objetivo del proyecto es proporcionar una base sólida para crear servidores RPG altamente personalizables.
+## Núcleo (`RPGRoll` / core)
 
-## Sistema RPG
-
-- 🎭 Clases
-- 🧬 Razas
+- 🎭 Clases y 🧬 Razas (con bonificaciones, efectos pasivos y habilidades únicas)
 - ⚒️ Trabajos (Jobs)
-- ⭐ Sistema de niveles
-- 📈 Experiencia (XP)
-- ❤️ Estadísticas del jugador
-- 💎 Traits
-- ⚔️ Skills
-- 🎒 Objetos únicos
-- 🛡️ Equipamiento RPG
-- ✨ Encantamientos personalizados
-- 📜 Ítems completamente configurables
-- 🎲 Bonificaciones por raza
-- ⚡ Habilidades especiales por clase
+- ⭐ Niveles y 📈 Experiencia (XP)
+- ❤️ Estadísticas y atributos del jugador (asignables)
+- 💎 Traits y ⚔️ Skills (habilidades activas usables)
+- 🖼️ Editores visuales (GUI) para razas, clases, trabajos, skills y traits
+- 🧩 API pública (módulo `api`) para que otros plugins integren contra RPGRoll
 
-Cada **raza** y cada **clase** otorgarán efectos pasivos, habilidades únicas y modificadores de estadísticas.
+## Ecosistema de addons
+
+Cada addon extiende el core con un sistema completo propio, construido por **componentes/YAML configurables** (no hardcodeado en Java) y con su propio editor visual (GUI "Studio"):
+
+| Addon | Qué agrega |
+| --- | --- |
+| 🧑‍🤝‍🧑 **NPCs** | NPCs interactuables (tiendas, diálogos, menús) vía ProtocolLib |
+| 🎁 **Crates** | Cajas con ruleta de premios, integrables con DecentHolograms |
+| ✨ **Enchantments** | Encantamientos personalizados basados en componentes (triggers/condiciones/efectos) |
+| 📜 **Quests** | Misiones ramificadas por etapas, objetivos, condiciones y eventos |
+| 🎒 **Items** | Ítems personalizados con stats, sockets, skins, mejoras y recetas |
+| 🌟 **Ascension** | Progresión avanzada: evolución de razas, especialización de clases, talentos, prestigio, afinidades |
+| 👹 **Mobs** | Mobs, jefes e invocaciones a medida (componentes, fases, IA propia, loot) |
+| 🏰 **Dungeons** | Mazmorras instanciadas: salas, oleadas, jefes, dificultades, ranking |
+| 🛡️ **Guilds** | Equipos temporales (Teams) y organizaciones permanentes (Guilds) |
+| 💬 **Chat** | Canales, proximidad, idiomas, roles, whisper, antispam, reacciones, logs |
+| 🎆 **SackEffects** | Librería reusable de partículas con formas, sonidos, títulos/actionbar/bossbar |
+| 🌀 **RPGRoll-Effects** | Motor de efectos de estado (buffs/debuffs/auras) aplicable desde cualquier addon |
+| 🪄 **RPGRoll-Magic** | Escuelas de magia, hechizos por componentes, maná, catalizadores, grimorios, runas |
+| 🍂 **RPGRoll-Seasons** | Calendario y estaciones: clima, temperatura por bioma, vegetación dinámica, eventos mundiales |
+| 🎣 **RPGRoll-Fishing** | Pesca como profesión: especies, cañas/carnadas, minijuego, tesoros, enciclopedia de capturas |
+| 🐄 **RPGRoll-Ranching** | Ganadería viva: genética hereditaria, reproducción, nutrición, bienestar, enfermedades/vacunas |
+| 👷 **RPGRoll-Workers** | NPCs trabajadores autónomos con IA por reglas, necesidades, logística y economía |
+| 📦 **SackResourcePack** | Asset pipeline standalone: fusión de resource packs, CustomModelData, build+hash, distribución automática |
+
+Ver el detalle completo de cada uno (comandos, permisos, formato YAML, ejemplos) en el sitio de documentación (`UI/`).
+
+---
+
+# 🧩 Ecosistema de módulos
+
+| Módulo | Comando raíz | Depende de (hard) | Integraciones opcionales |
+| --- | --- | --- | --- |
+| `core` (RPGRoll) | `/rpg` | — | Vault, PlaceholderAPI |
+| NPCs | `/npc` | RPGRoll, ProtocolLib | — |
+| Crates | `/crate` | RPGRoll | DecentHolograms |
+| Enchantments | `/renchant` | RPGRoll | PlaceholderAPI |
+| Quests | `/quest`, `/questadmin` | RPGRoll | PlaceholderAPI |
+| Items | `/item`, `/itemadmin` | RPGRoll | Enchantments, Vault, PlaceholderAPI |
+| Ascension | `/ascend`, `/ascendadmin` | RPGRoll | Enchantments, Quests, PlaceholderAPI |
+| Mobs | `/mobadmin` | RPGRoll | Items, Quests, PlaceholderAPI |
+| Dungeons | `/dungeon`, `/dungeonadmin` | RPGRoll, Mobs, Guilds | Items, Quests, PlaceholderAPI |
+| Guilds | `/guild`, `/team`, `/guildadmin` | RPGRoll | Items, Quests, Vault, PlaceholderAPI |
+| Chat | `/channel`, `/w`, `/language`, `/chatadmin`, ... | RPGRoll | Guilds, PlaceholderAPI |
+| SackEffects | `/sackeffects` | RPGRoll | — |
+| RPGRoll-Effects | `/rpgeffects` | RPGRoll | SackEffects, Guilds |
+| RPGRoll-Magic | `/magic`, `/magicadmin` | RPGRoll | SackEffects, RPGRoll-Effects |
+| RPGRoll-Seasons | `/seasons`, `/seasonsadmin` | RPGRoll | SackEffects, RPGRoll-Effects, Mobs |
+| RPGRoll-Fishing | `/fishing`, `/fishingadmin` | RPGRoll | SackEffects, RPGRoll-Effects, Seasons |
+| RPGRoll-Ranching | `/ranching`, `/ranchingadmin` | RPGRoll | SackEffects, RPGRoll-Effects, Seasons |
+| RPGRoll-Workers | `/workers`, `/workersadmin` | RPGRoll | SackEffects, RPGRoll-Effects, Seasons, Ranching, Fishing, Guilds, Vault |
+| SackResourcePack | `/srp` | *(ninguno, standalone)* | S3 (subida remota) |
+
+Todos los comandos administrativos, de jugador y con contenido dinámico (razas, ítems, encantamientos, especies, entidades, etc.) tienen **autocompletado real por Tab**.
 
 ---
 
 # 🚀 Roadmap
 
-Estas son algunas de las características planeadas para futuras versiones.
+El core y los 18 addons ya están funcionales end-to-end (motor + persistencia + GUI editor + comandos + ejemplos). Lo que queda pendiente es, en su mayoría, **contenido/expansión sobre sistemas ya construidos**, no sistemas nuevos:
 
-- ✅ Sistema de clases
-- ✅ Sistema de razas
-- ✅ Sistema de estadísticas
-- ✅ Sistema de experiencia
-- 🚧 Sistema de trabajos
-- 🚧 Objetos únicos
-- 🚧 Encantamientos personalizados
-- 🚧 Habilidades activas
-- 🚧 Árboles de talentos
-- 🚧 NPCs RPG
-- 🚧 Quests
-- 🚧 Dungeons
-- 🚧 Bosses personalizados
-- 🚧 Economía integrada mediante Vault
-- 🚧 Sistema de profesiones
-- 🚧 Sistema de atributos avanzados
-- 🚧 API pública para desarrolladores
-- 🚧 Compatibilidad con plugins externos
+- 🚧 RPGRoll-Magic: rituales, combos de hechizos, sinergias elementales, sobrecarga (overload), invocación de mobs desde hechizos
+- 🚧 RPGRoll-Seasons: festivales, decoraciones estacionales, migración de animales
+- 🚧 RPGRoll-Fishing: acuarios, mercado de peces, competencias de pesca, cocina con capturas
+- 🚧 RPGRoll-Ranching: subastas, exhibiciones, edificios/instalaciones de granja dedicados
+- 🚧 RPGRoll-Workers: empresas/compañías, equipos de trabajadores, transporte, construcción autónoma
+- 🚧 Economía Vault más profunda (actualmente es soft-depend puntual en Items/Guilds/Workers, no un sistema económico central)
+- 🚧 Empaquetado/distribución final (versionado conjunto, un solo release por versión del ecosistema)
 
 ---
 
@@ -62,29 +109,39 @@ Estas son algunas de las características planeadas para futuras versiones.
 
 | Software  | Versión                |
 | --------- | ---------------------- |
-| Minecraft | **1.21.1**             |
-| Paper     | ✅                     |
+| Minecraft | **1.21.1**              |
+| Paper     | ✅                      |
 | Java      | **21**                 |
-| Vault     | Opcional (Soft Depend) |
+| Vault           | Opcional (Soft Depend) |
+| PlaceholderAPI  | Opcional (Soft Depend) |
+| ProtocolLib     | Requerido por NPCs     |
+| DecentHolograms | Opcional (Soft Depend, Crates) |
 
 ---
 
 # 🔧 Instalación
 
-1. Descarga el archivo `.jar`.
-2. Colócalo dentro de la carpeta:
+1. Compila o descarga los `.jar` de los módulos que quieras usar.
+2. Coloca **siempre `RPGRoll` (core) primero** dentro de `plugins/` — todos los addons dependen de él (excepto `SackResourcePack`, que es standalone).
+3. Agrega los addons que quieras encima, respetando sus dependencias duras (ver tabla de [Ecosistema de módulos](#-ecosistema-de-módulos)) — por ejemplo, `Dungeons` requiere que `Mobs` y `Guilds` ya estén instalados.
+4. Reinicia el servidor.
 
 ```
 plugins/
+├── RPGRoll.jar
+├── RPGRoll-Items.jar
+├── RPGRoll-Enchantments.jar
+├── RPGRoll-Mobs.jar
+├── RPGRoll-Guilds.jar
+├── RPGRoll-Dungeons.jar
+└── ...
 ```
-
-3. Reinicia el servidor.
 
 ---
 
 # 🎮 Comandos
 
-Comando principal:
+Comando principal del core:
 
 ```
 /rpg
@@ -97,36 +154,43 @@ Alias:
 /dnd
 ```
 
----
+Cada addon agrega su propio comando raíz (ver tabla de [Ecosistema de módulos](#-ecosistema-de-módulos)) — por ejemplo `/npc`, `/quest`, `/mobadmin`, `/magic`, `/srp`.
 
-## 👤 Comandos de Jugador
+## 👤 Comandos de Jugador (core)
 
 | Comando        | Descripción                 | Permiso                  |
-| -------------- | --------------------------- | ------------------------ |
-| `/rpg create`  | Crear personaje             | `rpgroll.player.create`  |
-| `/rpg stats`   | Ver estadísticas            | `rpgroll.player.stats`   |
-| `/rpg mystats` | Ver estadísticas detalladas | `rpgroll.player.mystats` |
-| `/rpg level`   | Ver nivel y experiencia     | `rpgroll.player.level`   |
-| `/rpg class`   | Ver o cambiar clase         | `rpgroll.player.class`   |
-| `/rpg race`    | Ver o cambiar raza          | `rpgroll.player.race`    |
-| `/rpg jobs`    | Ver trabajos                | `rpgroll.player.jobs`    |
-| `/rpg skills`  | Ver habilidades             | `rpgroll.player.skills`  |
-| `/rpg traits`  | Ver traits                  | `rpgroll.player.traits`  |
+| -------------- | ---------------------------- | ------------------------ |
+| `/rpg create`  | Crear personaje              | `rpgroll.player.create`  |
+| `/rpg stats`   | Ver estadísticas              | `rpgroll.player.stats`   |
+| `/rpg mystats` | Ver estadísticas detalladas   | `rpgroll.player.mystats` |
+| `/rpg level`   | Ver nivel y experiencia        | `rpgroll.player.level`   |
+| `/rpg class`   | Ver o cambiar clase           | `rpgroll.player.class`   |
+| `/rpg race`    | Ver o cambiar raza            | `rpgroll.player.race`    |
+| `/rpg jobs`    | Ver y gestionar trabajos       | `rpgroll.player.jobs`    |
+| `/rpg skills`  | Ver habilidades                | `rpgroll.player.skills`  |
+| `/rpg traits`  | Ver traits                     | `rpgroll.player.traits`  |
+| `/rpg allocate`| Gastar puntos de estadística   | `rpgroll.player.allocate`|
+| `/rpg useskill`| Usar una habilidad aprendida    | `rpgroll.player.useskill`|
 
----
+## 👑 Comandos de Administrador (core)
 
-## 👑 Comandos de Administrador
-
-| Comando                           | Descripción                      | Permiso                 |
-| --------------------------------- | -------------------------------- | ----------------------- |
-| `/rpg reload`                     | Recargar configuración           | `rpgroll.admin.reload`  |
-| `/rpg addxp <jugador> <cantidad>` | Agregar experiencia              | `rpgroll.admin.addxp`   |
-| `/rpg levelup <jugador>`          | Subir nivel (Debug)              | `rpgroll.admin.levelup` |
-| `/rpg gui`                        | Abrir interfaces en modo preview | `rpgroll.admin.gui`     |
+| Comando                           | Descripción                       | Permiso                    |
+| --------------------------------- | ---------------------------------- | -------------------------- |
+| `/rpg reload`                     | Recargar configuración              | `rpgroll.admin.reload`     |
+| `/rpg addxp <jugador> <cantidad>` | Agregar experiencia                 | `rpgroll.admin.addxp`      |
+| `/rpg levelup <jugador>`          | Subir nivel (Debug)                 | `rpgroll.admin.levelup`    |
+| `/rpg gui`                        | Abrir interfaces en modo preview    | `rpgroll.admin.gui`        |
+| `/rpg setrace <jugador> <raza>`   | Cambiar la raza de un jugador       | `rpgroll.admin.setrace`    |
+| `/rpg setclass <jugador> <clase>` | Cambiar la clase de un jugador      | `rpgroll.admin.setclass`   |
+| `/rpg resetstats <jugador>`       | Reiniciar y reembolsar atributos    | `rpgroll.admin.resetstats` |
+| `/rpg job <sub> <jugador>`        | Gestionar trabajos de jugadores     | `rpgroll.admin.job`        |
+| `/rpg content`                    | Editor visual de razas/clases/etc.  | `rpgroll.admin.content`    |
 
 ---
 
 # 🔐 Permisos
+
+Cada módulo define su propio árbol de permisos con el mismo patrón `rpgroll<addon>.<player|admin>.*` (por ejemplo `rpgrollnpcs.admin.*`, `rpgrollmobs.admin.*`, `rpgrollmagic.use`). El del core es:
 
 ## Jugador
 
@@ -134,19 +198,7 @@ Alias:
 rpgroll.player.*
 ```
 
-Incluye:
-
-- rpgroll.player.create
-- rpgroll.player.stats
-- rpgroll.player.mystats
-- rpgroll.player.level
-- rpgroll.player.class
-- rpgroll.player.race
-- rpgroll.player.jobs
-- rpgroll.player.skills
-- rpgroll.player.traits
-
----
+Incluye: `create`, `stats`, `mystats`, `level`, `class`, `race`, `jobs`, `skills`, `traits`, `allocate`, `useskill`.
 
 ## Administrador
 
@@ -154,14 +206,7 @@ Incluye:
 rpgroll.admin.*
 ```
 
-Incluye:
-
-- rpgroll.admin.reload
-- rpgroll.admin.addxp
-- rpgroll.admin.levelup
-- rpgroll.admin.gui
-
----
+Incluye: `reload`, `addxp`, `levelup`, `gui`, `setrace`, `setclass`, `resetstats`, `job`, `content`.
 
 ## Acceso total
 
@@ -171,24 +216,38 @@ rpgroll.*
 
 ---
 
+# 🎨 Personalización de textos
+
+Todos los mensajes configurables desde YAML aceptan cualquiera de estos 4 formatos de color, elegidos libremente por quien edita el archivo (nunca fijos en el código Java):
+
+- Legacy clásico: `&b&lArquero`
+- Hex por carácter: `&#54DAF4B&#54C8EB...`
+- Hex estilo BungeeCord: `&x&5&4&D&A&F&4...`
+- MiniMessage, incluyendo gradientes: `<gradient:#54daf4:#545eb6>Arquero</gradient>`
+
+---
+
 # 🧩 Integraciones
 
-Actualmente soporta:
+Actualmente soporta (todas opcionales salvo donde se indica):
 
-- Vault (Soft Depend)
-
-En el futuro se planea compatibilidad con múltiples plugins de economía, NPCs y administración.
+- **Vault** — economía (Items, Guilds, Workers)
+- **PlaceholderAPI** — placeholders en casi todos los addons
+- **ProtocolLib** — requerido por NPCs
+- **DecentHolograms** — hologramas en Crates
+- **S3 (SigV4)** — subida remota de resource packs en SackResourcePack
 
 ---
 
 # 🛠️ Tecnologías
 
 - Java 21
-- Gradle
+- Gradle (multi-módulo, con `build-logic` como plugin de convenciones y Shadow)
 - Paper API 1.21.1
-- Adventure API
+- Adventure API (`Component`, MiniMessage, `LegacyComponentSerializer`)
 - SQLite
 - Vault API
+- React + TypeScript (sitio de documentación en `UI/`)
 
 ---
 
@@ -196,7 +255,7 @@ En el futuro se planea compatibilidad con múltiples plugins de economía, NPCs 
 
 RPGRoll no busca ser simplemente un plugin con niveles.
 
-El objetivo es convertirse en un **Framework RPG** que permita a cualquier servidor construir su propio mundo de fantasía mediante sistemas modulares, altamente configurables y fáciles de extender.
+El objetivo es convertirse en un **Framework RPG** que permita a cualquier servidor construir su propio mundo de fantasía mediante sistemas modulares, altamente configurables y fáciles de extender — cada addon es su propio motor basado en componentes/YAML, no una lista fija de opciones.
 
 La idea es que prácticamente cualquier mecánica RPG pueda implementarse utilizando este framework.
 
@@ -204,9 +263,7 @@ La idea es que prácticamente cualquier mecánica RPG pueda implementarse utiliz
 
 # ❤️ Estado del desarrollo
 
-Actualmente el proyecto se encuentra en una fase temprana de desarrollo.
-
-Las APIs internas y algunas funcionalidades pueden cambiar antes de la versión **1.0**.
+El core y los 18 addons descritos arriba están implementados y compilando (motor + GUI + comandos + ejemplos). El proyecto sigue en fase **Alpha**: las APIs internas y algunas funcionalidades pueden cambiar antes de la versión **1.0**, y varios addons todavía tienen expansiones de contenido pendientes (ver [Roadmap](#-roadmap)).
 
 ---
 

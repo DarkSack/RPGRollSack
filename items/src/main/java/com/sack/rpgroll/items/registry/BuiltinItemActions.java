@@ -1,5 +1,7 @@
 package com.sack.rpgroll.items.registry;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
@@ -30,7 +32,6 @@ import java.util.Locale;
  */
 public final class BuiltinItemActions {
 
-    private static final LegacyComponentSerializer LEGACY = LegacyComponentSerializer.legacyAmpersand();
 
     private BuiltinItemActions() {
     }
@@ -40,7 +41,7 @@ public final class BuiltinItemActions {
         registry.register("MESSAGE", (action, ctx) -> {
             String message = action.param("value", "");
             if (!message.isBlank()) {
-                ctx.player().sendMessage(LEGACY.deserialize(applyPlaceholders(message, ctx)));
+                ctx.player().sendMessage(ComponentUtils.parse(applyPlaceholders(message, ctx)));
             }
         });
 
@@ -113,15 +114,15 @@ public final class BuiltinItemActions {
 
         registry.register("TITLE", (action, ctx) -> {
 
-            Component main = LEGACY.deserialize(action.param("title", ""));
-            Component subtitle = LEGACY.deserialize(action.param("subtitle", ""));
+            Component main = ComponentUtils.parse(action.param("title", ""));
+            Component subtitle = ComponentUtils.parse(action.param("subtitle", ""));
             Title.Times times = Title.Times.times(Duration.ofMillis(500), Duration.ofSeconds(3), Duration.ofMillis(500));
             ctx.player().showTitle(Title.title(main, subtitle, times));
         });
 
         registry.register("BOSSBAR", (action, ctx) -> {
 
-            Component text = LEGACY.deserialize(action.param("text", ""));
+            Component text = ComponentUtils.parse(action.param("text", ""));
             BossBar bossBar = BossBar.bossBar(text, 1.0f, BossBar.Color.RED, BossBar.Overlay.PROGRESS);
 
             ctx.player().showBossBar(bossBar);

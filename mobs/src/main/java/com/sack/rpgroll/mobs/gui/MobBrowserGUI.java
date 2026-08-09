@@ -1,5 +1,7 @@
 package com.sack.rpgroll.mobs.gui;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.mobs.core.MobCategory;
 import com.sack.rpgroll.mobs.core.MobDefinition;
@@ -104,7 +106,7 @@ public class MobBrowserGUI extends PaginatedGUI {
         MobDefinition definition = filtered.get(absoluteIndex);
 
         setItem(contentSlot, new ItemBuilder(iconFor(definition))
-                .setName(LegacyComponentSerializer.legacyAmpersand().deserialize(definition.displayName())
+                .setName(ComponentUtils.parse(definition.displayName())
                         .colorIfAbsent(NamedTextColor.WHITE))
                 .setLore(
                         Component.text(definition.id(), NamedTextColor.DARK_GRAY),
