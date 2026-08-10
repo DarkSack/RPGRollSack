@@ -4,6 +4,7 @@ import com.sack.rpgroll.chat.channel.ChannelManager;
 import com.sack.rpgroll.chat.channel.ChatChannel;
 import com.sack.rpgroll.chat.player.PlayerChannelState;
 import com.sack.rpgroll.chat.player.PlayerChannelStateManager;
+import com.sack.rpgroll.util.ComponentUtils;
 import com.sack.rpgroll.util.TabCompleteUtil;
 
 import net.kyori.adventure.text.Component;
@@ -70,8 +71,12 @@ public class ChannelCommand implements CommandExecutor, TabCompleter {
             boolean joined = state.hasJoined(channel.id());
             boolean active = channel.id().equalsIgnoreCase(state.activeChannelId());
 
-            player.sendMessage(Component.text(" - " + channel.displayName() + " (" + channel.id() + ") "
-                    + (active ? "§a[activo]" : joined ? "§7[unido]" : "§8[no unido]"), NamedTextColor.GRAY));
+            player.sendMessage(Component.text(" - ", NamedTextColor.GRAY)
+                    .append(ComponentUtils.parse(channel.displayName()))
+                    .append(Component.text(" (" + channel.id() + ") "))
+                    .append(active ? Component.text("[activo]", NamedTextColor.GREEN)
+                            : joined ? Component.text("[unido]", NamedTextColor.GRAY)
+                            : Component.text("[no unido]", NamedTextColor.DARK_GRAY)));
         }
     }
 
@@ -96,7 +101,9 @@ public class ChannelCommand implements CommandExecutor, TabCompleter {
 
         stateManager.getOrLoad(player).join(channel.id());
         stateManager.save(player.getUniqueId());
-        player.sendMessage(Component.text("✔ Te uniste a " + channel.displayName() + ".", NamedTextColor.GREEN));
+        player.sendMessage(Component.text("✔ Te uniste a ", NamedTextColor.GREEN)
+                .append(ComponentUtils.parse(channel.displayName()))
+                .append(Component.text(".", NamedTextColor.GREEN)));
     }
 
     private void handleLeave(Player player, String[] args) {
@@ -141,7 +148,9 @@ public class ChannelCommand implements CommandExecutor, TabCompleter {
         state.setActiveChannelId(channel.id());
         stateManager.save(player.getUniqueId());
 
-        player.sendMessage(Component.text("✔ Ahora hablás en " + channel.displayName() + ".", NamedTextColor.GREEN));
+        player.sendMessage(Component.text("✔ Ahora hablás en ", NamedTextColor.GREEN)
+                .append(ComponentUtils.parse(channel.displayName()))
+                .append(Component.text(".", NamedTextColor.GREEN)));
     }
 
     private void handleInfo(Player player, String[] args) {
@@ -158,7 +167,9 @@ public class ChannelCommand implements CommandExecutor, TabCompleter {
             return;
         }
 
-        player.sendMessage(Component.text("=== " + channel.displayName() + " ===", NamedTextColor.GOLD));
+        player.sendMessage(Component.text("=== ", NamedTextColor.GOLD)
+                .append(ComponentUtils.parse(channel.displayName()))
+                .append(Component.text(" ===", NamedTextColor.GOLD)));
         player.sendMessage(Component.text("Alcance: " + channel.scope() + " · Prioridad: " + channel.priority(),
                 NamedTextColor.GRAY));
         player.sendMessage(Component.text("Cooldown: " + channel.cooldownMillis() + "ms", NamedTextColor.GRAY));

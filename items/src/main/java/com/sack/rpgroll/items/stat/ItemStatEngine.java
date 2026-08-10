@@ -103,9 +103,9 @@ public class ItemStatEngine {
 
     private void applyToAttributes(Player player, ItemStatSheet sheet) {
 
-        applyAttribute(player, Attribute.GENERIC_MAX_HEALTH, healthModifierKey, sheet.get("health"),
+        applyAttribute(player, Attribute.MAX_HEALTH, healthModifierKey, sheet.get("health"),
                 AttributeModifier.Operation.ADD_NUMBER);
-        applyAttribute(player, Attribute.GENERIC_MOVEMENT_SPEED, speedModifierKey, sheet.get("speed") / 100.0,
+        applyAttribute(player, Attribute.MOVEMENT_SPEED, speedModifierKey, sheet.get("speed") / 100.0,
                 AttributeModifier.Operation.ADD_SCALAR);
     }
 

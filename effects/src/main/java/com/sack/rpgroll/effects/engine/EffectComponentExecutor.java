@@ -107,7 +107,7 @@ public class EffectComponentExecutor {
     private void executeAttributeModifier(LivingEntity target, ActiveEffect activeEffect, EffectComponent component,
             EffectTriggerType trigger) {
 
-        Attribute attribute = parseAttribute(component.param("attribute", "GENERIC_MOVEMENT_SPEED"));
+        Attribute attribute = parseAttribute(component.param("attribute", "MOVEMENT_SPEED"));
         if (attribute == null) {
             return;
         }
@@ -117,7 +117,7 @@ public class EffectComponentExecutor {
 
     private void executeMovementModifier(LivingEntity target, ActiveEffect activeEffect, EffectComponent component,
             EffectTriggerType trigger) {
-        applyOrRemoveAttribute(target, activeEffect, component, Attribute.GENERIC_MOVEMENT_SPEED, trigger);
+        applyOrRemoveAttribute(target, activeEffect, component, Attribute.MOVEMENT_SPEED, trigger);
     }
 
     private void applyOrRemoveAttribute(LivingEntity target, ActiveEffect activeEffect, EffectComponent component,
@@ -186,7 +186,7 @@ public class EffectComponentExecutor {
         double perStack = component.paramDouble("amount-per-stack", 0.0);
         double amount = base + perStack * (activeEffect.stacks() - 1);
 
-        AttributeInstance maxHealthAttribute = target.getAttribute(Attribute.GENERIC_MAX_HEALTH);
+        AttributeInstance maxHealthAttribute = target.getAttribute(Attribute.MAX_HEALTH);
         double maxHealth = maxHealthAttribute != null ? maxHealthAttribute.getValue() : target.getHealth();
 
         target.setHealth(Math.min(maxHealth, target.getHealth() + Math.max(0, amount)));

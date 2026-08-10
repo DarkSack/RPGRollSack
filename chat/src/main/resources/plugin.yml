@@ -1,7 +1,7 @@
 name: RPGRoll-Chat
 version: 1.0.0
 main: com.sack.rpgroll.chat.ChatPlugin
-api-version: "1.21"
+api-version: "26.1.1"
 author: Sack
 description: Motor de chat modular de RPGRoll — canales, proximidad, idiomas, roles, formatos dinámicos, whisper, antispam, reacciones y logs
 depend: [RPGRoll]

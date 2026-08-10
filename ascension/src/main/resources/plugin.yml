@@ -1,7 +1,7 @@
 name: RPGRoll-Ascension
 version: 1.0.0
 main: com.sack.rpgroll.ascension.AscensionPlugin
-api-version: "1.21"
+api-version: "26.1.1"
 author: Sack
 description: Expansión de progresión avanzada (evolución de razas, especialización de clases, talentos, prestigio, afinidades) para RPGRoll
 depend: [RPGRoll]

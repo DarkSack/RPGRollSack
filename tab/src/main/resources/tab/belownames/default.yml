@@ -1,0 +1,5 @@
+# Vanilla solo permite un NÚMERO debajo del nombre — "score" debe resolver
+# a algo numérico, "label" es el texto/ícono junto al número.
+id: default
+score: "{health}"
+label: "&c❤"

@@ -121,6 +121,8 @@ public class ItemAdminCommand implements CommandExecutor, TabCompleter {
         new ItemEditorHubGUI(player, session).open();
     }
 
+    private static final int MAX_GIVE_AMOUNT = 6400;
+
     private void handleGive(CommandSender sender, String[] args) {
 
         if (args.length < 3) {
@@ -144,18 +146,27 @@ public class ItemAdminCommand implements CommandExecutor, TabCompleter {
         if (args.length >= 4) {
             try {
                 amount = Integer.parseInt(args[3]);
-            } catch (NumberFormatException ignored) {
+            } catch (NumberFormatException e) {
+                sender.sendMessage(Component.text("La cantidad debe ser un número válido.", NamedTextColor.RED));
+                return;
             }
         }
 
-        ItemStack item = itemFactory.create(definitionOpt.get());
-        item.setAmount(Math.max(1, amount));
+        if (amount < 1 || amount > MAX_GIVE_AMOUNT) {
+            sender.sendMessage(Component.text(
+                    "La cantidad debe estar entre 1 y " + MAX_GIVE_AMOUNT + ".", NamedTextColor.RED));
+            return;
+        }
 
-        var leftover = target.getInventory().addItem(item);
-        leftover.values().forEach(remaining -> target.getWorld().dropItemNaturally(target.getLocation(), remaining));
+        ItemStack item = itemFactory.create(definitionOpt.get());
+        item.setAmount(amount);
+
+        boolean fullyDelivered = com.sack.rpgroll.util.ItemDeliveryUtil.deliver(target, item);
 
         sender.sendMessage(Component.text(
-                "✔ " + amount + "x '" + args[2] + "' entregado a " + target.getName(), NamedTextColor.GREEN));
+                "✔ " + amount + "x '" + args[2] + "' entregado a " + target.getName()
+                        + (fullyDelivered ? "" : " (inventario lleno — el sobrante cayó al piso)"),
+                NamedTextColor.GREEN));
     }
 
     private void handleList(CommandSender sender) {

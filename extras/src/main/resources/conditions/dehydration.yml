@@ -1,0 +1,12 @@
+# Deshidratación (sección 15) — aplicada automáticamente por thirst.yml al llegar a 0.
+# Duración indefinida (-1): sólo se remueve al recuperar sed vía API/thirst threshold.
+id: dehydration
+duration: -1
+damage: 1
+interval: 60
+effects:
+  - "weakness:1"
+  - "slowness:0"
+on-apply:
+  - type: MESSAGE
+    value: "&4Te estás deshidratando..."

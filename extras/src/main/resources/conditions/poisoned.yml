@@ -1,0 +1,16 @@
+# Envenenado (sección 15) — daño periódico rápido, expira solo tras 300 ticks (15s).
+id: poisoned
+duration: 300
+damage: 1
+interval: 20
+effects:
+  - "nausea:0"
+on-apply:
+  - type: MESSAGE
+    value: "&2¡Estás envenenado!"
+on-tick:
+  - type: PARTICLE
+    value: "SPELL_MOB;0"
+on-expire:
+  - type: MESSAGE
+    value: "&aEl veneno se disipó."

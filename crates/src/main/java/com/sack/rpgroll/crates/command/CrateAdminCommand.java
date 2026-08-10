@@ -179,6 +179,8 @@ public class CrateAdminCommand implements CommandExecutor, TabCompleter {
         player.sendMessage(Component.text("✔ Crate eliminado de este bloque.", NamedTextColor.GREEN));
     }
 
+    private static final int MAX_GIVE_AMOUNT = 6400;
+
     private void handleGiveKey(CommandSender sender, String[] args) {
 
         if (args.length < 3) {
@@ -207,14 +209,24 @@ public class CrateAdminCommand implements CommandExecutor, TabCompleter {
         if (args.length >= 4) {
             try {
                 amount = Integer.parseInt(args[3]);
-            } catch (NumberFormatException ignored) {
+            } catch (NumberFormatException e) {
+                sender.sendMessage(Component.text("La cantidad debe ser un número válido.", NamedTextColor.RED));
+                return;
             }
         }
 
-        target.getInventory().addItem(crateKeyItem.create(crateOpt.get(), amount));
+        if (amount < 1 || amount > MAX_GIVE_AMOUNT) {
+            sender.sendMessage(Component.text(
+                    "La cantidad debe estar entre 1 y " + MAX_GIVE_AMOUNT + ".", NamedTextColor.RED));
+            return;
+        }
+
+        boolean fullyDelivered = com.sack.rpgroll.util.ItemDeliveryUtil.deliver(
+                target, crateKeyItem.create(crateOpt.get(), amount));
 
         sender.sendMessage(Component.text(
-                "✔ " + amount + " llave(s) de '" + crateId + "' entregadas a " + target.getName(),
+                "✔ " + amount + " llave(s) de '" + crateId + "' entregadas a " + target.getName()
+                        + (fullyDelivered ? "" : " (inventario lleno — el sobrante cayó al piso)"),
                 NamedTextColor.GREEN));
     }
 
@@ -233,9 +245,9 @@ public class CrateAdminCommand implements CommandExecutor, TabCompleter {
                     .filter(p -> p.crateId().equals(crate.id()))
                     .count();
 
-            sender.sendMessage(Component.text(
-                    "• " + crate.id() + " (" + crate.displayName() + ") — " + placements + " ubicación(es)",
-                    NamedTextColor.WHITE));
+            sender.sendMessage(Component.text("• " + crate.id() + " (", NamedTextColor.WHITE)
+                    .append(com.sack.rpgroll.util.ComponentUtils.parse(crate.displayName()))
+                    .append(Component.text(") — " + placements + " ubicación(es)", NamedTextColor.WHITE)));
         }
     }
 

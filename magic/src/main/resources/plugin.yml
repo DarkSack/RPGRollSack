@@ -1,7 +1,7 @@
 name: RPGRoll-Magic
 version: 1.0.0
 main: com.sack.rpgroll.magic.MagicPlugin
-api-version: "1.21"
+api-version: "26.1.1"
 author: Sack
 description: Framework de magia modular — escuelas, hechizos construidos por componentes, maná, catalizadores, grimorios, runas y árboles de progresión.
 depend: [RPGRoll]

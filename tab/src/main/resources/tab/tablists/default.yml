@@ -1,0 +1,37 @@
+# Header/footer y formato del playerlist. "header.animation"/"footer.animation"
+# son opcionales — si se omiten, "lines" se muestra tal cual (estático).
+id: default
+
+header:
+  animation: rpgroll_title
+  lines:
+    - "&6&lRPGRoll"
+    - "&7Bienvenido, &f{player}"
+    - ""
+
+footer:
+  lines:
+    - ""
+    - "&7Jugadores: &f{online}&7/&f{max}"
+    - "&7TPS: &a{tps}"
+    - "&6play.example.com"
+
+# {prefix}/{suffix} los rellena el Team activo del jugador (ver teams/).
+# {ping_formatted} usa los tramos definidos en "ping" más abajo.
+# {gamemode_formatted} solo se sustituye si "gamemode.enabled: true".
+player-format: "{prefix}{player}{suffix} &8- {ping_formatted}"
+
+ping:
+  - format: "&a{ping}ms"
+    max: 50
+  - format: "&e{ping}ms"
+    max: 100
+  - format: "&c{ping}ms"
+
+gamemode:
+  enabled: false
+  short-icon: true
+
+# Si no está vacío, esta tablist (y su playerlist) solo se aplica en estos
+# mundos — sirve para "playerlist por mundo" (sección 19). Vacío = sin restricción.
+worlds: []

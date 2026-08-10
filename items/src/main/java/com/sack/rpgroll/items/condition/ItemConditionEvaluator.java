@@ -118,7 +118,7 @@ public class ItemConditionEvaluator {
             return false;
         }
 
-        var maxHealthAttribute = entity.getAttribute(Attribute.GENERIC_MAX_HEALTH);
+        var maxHealthAttribute = entity.getAttribute(Attribute.MAX_HEALTH);
         double maxHealth = maxHealthAttribute != null ? maxHealthAttribute.getValue() : 20.0;
         double currentPercent = maxHealth <= 0 ? 0 : (entity.getHealth() / maxHealth) * 100.0;
 

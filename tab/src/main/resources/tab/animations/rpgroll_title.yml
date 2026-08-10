@@ -1,0 +1,11 @@
+# Animación de tipo FRAME: cicla por una lista de textos completos, uno
+# cada "interval" ticks. Referenciada desde header/footer/scoreboard-title/
+# bossbar-title poniendo su id en el campo "animation".
+id: rpgroll_title
+type: FRAME
+interval: 10
+frames:
+  - "&6&lRPGRoll"
+  - "&e&lRPGRoll"
+  - "&f&lRPGRoll"
+  - "&e&lRPGRoll"

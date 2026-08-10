@@ -45,24 +45,24 @@ public class RaceAttributeApplier {
             return;
         }
 
-        applyIfPresent(player, Attribute.GENERIC_SCALE, scaleKey,
+        applyIfPresent(player, Attribute.SCALE, scaleKey,
                 mods.scale() - 1.0, AttributeModifier.Operation.ADD_NUMBER);
 
-        applyIfPresent(player, Attribute.GENERIC_MOVEMENT_SPEED, speedKey,
+        applyIfPresent(player, Attribute.MOVEMENT_SPEED, speedKey,
                 mods.movementSpeedPercent(), AttributeModifier.Operation.ADD_SCALAR);
 
-        applyIfPresent(player, Attribute.GENERIC_MAX_HEALTH, healthKey,
+        applyIfPresent(player, Attribute.MAX_HEALTH, healthKey,
                 mods.extraHealth(), AttributeModifier.Operation.ADD_NUMBER);
 
-        applyIfPresent(player, Attribute.GENERIC_KNOCKBACK_RESISTANCE, knockbackKey,
+        applyIfPresent(player, Attribute.KNOCKBACK_RESISTANCE, knockbackKey,
                 mods.knockbackResistance(), AttributeModifier.Operation.ADD_NUMBER);
     }
 
     public void clear(Player player) {
-        removeIfPresent(player, Attribute.GENERIC_SCALE, scaleKey);
-        removeIfPresent(player, Attribute.GENERIC_MOVEMENT_SPEED, speedKey);
-        removeIfPresent(player, Attribute.GENERIC_MAX_HEALTH, healthKey);
-        removeIfPresent(player, Attribute.GENERIC_KNOCKBACK_RESISTANCE, knockbackKey);
+        removeIfPresent(player, Attribute.SCALE, scaleKey);
+        removeIfPresent(player, Attribute.MOVEMENT_SPEED, speedKey);
+        removeIfPresent(player, Attribute.MAX_HEALTH, healthKey);
+        removeIfPresent(player, Attribute.KNOCKBACK_RESISTANCE, knockbackKey);
     }
 
     private void applyIfPresent(Player player, Attribute attribute, NamespacedKey key, double amount,

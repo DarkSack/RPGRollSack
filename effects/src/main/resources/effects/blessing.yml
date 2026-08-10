@@ -25,7 +25,7 @@ components:
 
   - type: ATTRIBUTE_MODIFIER
     trigger: ON_APPLY
-    attribute: GENERIC_ARMOR
+    attribute: ARMOR
     amount: 2
     operation: ADD_NUMBER
 

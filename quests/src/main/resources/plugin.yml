@@ -1,7 +1,7 @@
 name: RPGRoll-Quests
 version: 1.0.0
 main: com.sack.rpgroll.quests.QuestsPlugin
-api-version: "1.21"
+api-version: "26.1.1"
 author: Sack
 description: Motor de misiones ramificadas, componible por stages/objetivos/condiciones/eventos para RPGRoll
 depend: [RPGRoll]

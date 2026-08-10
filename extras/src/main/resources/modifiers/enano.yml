@@ -1,0 +1,10 @@
+# Modificador de raza (sección 18) — el id debe coincidir con el id de la raza
+# en RPGRoll-Core (races/enano.yml). Las claves válidas son "<statId>_max" y
+# "<statId>_rate" por cada stat de stats/*.yml — StatEngine las lee como
+# multiplicador (hace 1.0 + valor): -0.2 = los enanos se fatigan un 20% más
+# lento, -0.15 = les baja la sed un 15% más lento (acostumbrados a minas secas).
+id: enano
+type: RACE
+values:
+  fatigue_rate: -0.2
+  thirst_rate: -0.15

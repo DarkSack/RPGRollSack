@@ -1,0 +1,13 @@
+# Sangrado (sección 13) — daño periódico + lentitud, expira solo tras 200 ticks (10s).
+id: bleeding
+duration: 200
+damage: 1
+interval: 40
+effects:
+  - "slowness:0"
+on-apply:
+  - type: MESSAGE
+    value: "&c¡Estás sangrando!"
+on-expire:
+  - type: MESSAGE
+    value: "&aLa hemorragia se detuvo."

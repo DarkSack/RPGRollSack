@@ -1,7 +1,7 @@
 name: RPGRoll-Crates
 version: 1.0.0
 main: com.sack.rpgroll.crates.CratesPlugin
-api-version: "1.21"
+api-version: "26.1.1"
 author: Sack
 description: Crates con ruleta e integración con DecentHolograms para RPGRoll
 depend: [RPGRoll]

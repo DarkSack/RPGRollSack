@@ -1,7 +1,7 @@
 name: RPGRoll
 version: 1.0.0
 main: com.sack.rpgroll.RPGRoll
-api-version: "1.21"
+api-version: "26.1.1"
 author: Sack
 description: DnD RPG Framework para Minecraft Paper
 softdepend: [Vault, PlaceholderAPI]

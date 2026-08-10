@@ -73,7 +73,7 @@ conditions:
 components:
   - type: ATTRIBUTE_MODIFIER
     trigger: ON_APPLY
-    attribute: GENERIC_ATTACK_DAMAGE
+    attribute: ATTACK_DAMAGE
     amount: "2"
 
   - type: MOVEMENT_MODIFIER

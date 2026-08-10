@@ -174,7 +174,7 @@ public class EffectConditionEvaluator {
 
     private double healthPercent(LivingEntity target) {
 
-        AttributeInstance maxHealthAttribute = target.getAttribute(Attribute.GENERIC_MAX_HEALTH);
+        AttributeInstance maxHealthAttribute = target.getAttribute(Attribute.MAX_HEALTH);
         double maxHealth = maxHealthAttribute != null ? maxHealthAttribute.getValue() : 20.0;
 
         return maxHealth <= 0 ? 0 : (target.getHealth() / maxHealth) * 100.0;

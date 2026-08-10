@@ -1,7 +1,7 @@
 name: RPGRoll-Economy
 version: 1.0.0
 main: com.sack.rpgroll.economy.EconomyPlugin
-api-version: "1.21"
+api-version: "26.1.1"
 author: Sack
 description: Sistema económico avanzado — monedas múltiples, wallets, bancos y préstamos, mercado dinámico con oferta/demanda, tiendas de jugador, subastas, empresas, impuestos y libro mayor de transacciones. Provee el servicio Economy de Vault para todo el ecosistema.
 depend: [RPGRoll]

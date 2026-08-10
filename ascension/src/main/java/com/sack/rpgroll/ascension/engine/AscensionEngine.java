@@ -364,14 +364,14 @@ public class AscensionEngine {
             });
         }
 
-        applyAttribute(player, Attribute.GENERIC_MAX_HEALTH, healthModifierKey, combined.getOrDefault("health", 0.0));
-        applyAttribute(player, Attribute.GENERIC_MOVEMENT_SPEED, speedModifierKey,
+        applyAttribute(player, Attribute.MAX_HEALTH, healthModifierKey, combined.getOrDefault("health", 0.0));
+        applyAttribute(player, Attribute.MOVEMENT_SPEED, speedModifierKey,
                 combined.getOrDefault("speed", 0.0) / 100.0);
     }
 
     private void clearAttributeBonuses(Player player) {
-        applyAttribute(player, Attribute.GENERIC_MAX_HEALTH, healthModifierKey, 0);
-        applyAttribute(player, Attribute.GENERIC_MOVEMENT_SPEED, speedModifierKey, 0);
+        applyAttribute(player, Attribute.MAX_HEALTH, healthModifierKey, 0);
+        applyAttribute(player, Attribute.MOVEMENT_SPEED, speedModifierKey, 0);
     }
 
     private void applyAttribute(Player player, Attribute attribute, NamespacedKey key, double amount) {

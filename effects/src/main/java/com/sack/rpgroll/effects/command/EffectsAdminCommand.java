@@ -161,7 +161,9 @@ public class EffectsAdminCommand implements CommandExecutor, TabCompleter {
         } else if (sender instanceof Player senderPlayer) {
             target = senderPlayer;
         } else {
-            sender.sendMessage(Component.text("Especificá un jugador: /rpgeffects list <jugador>", NamedTextColor.RED));
+            sender.sendMessage(Component.text(
+                    "La consola no tiene un jugador por defecto — especificá uno: /rpgeffects list <jugador>",
+                    NamedTextColor.RED));
             return;
         }
 

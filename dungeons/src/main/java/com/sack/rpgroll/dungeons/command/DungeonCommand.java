@@ -7,6 +7,7 @@ import com.sack.rpgroll.dungeons.ranking.DungeonRunResult;
 import com.sack.rpgroll.dungeons.ranking.RankingPeriod;
 import com.sack.rpgroll.guilds.team.Team;
 import com.sack.rpgroll.guilds.team.TeamManager;
+import com.sack.rpgroll.util.ComponentUtils;
 import com.sack.rpgroll.util.TabCompleteUtil;
 
 import net.kyori.adventure.text.Component;
@@ -81,8 +82,12 @@ public class DungeonCommand implements CommandExecutor, TabCompleter {
 
         for (DungeonDefinition definition : dungeons) {
             boolean occupied = engine.getSession(definition.id()).isPresent();
-            sender.sendMessage(Component.text(" - " + definition.id() + " (" + definition.displayName() + ") "
-                    + (occupied ? "§c[ocupada]" : "§a[libre]"), NamedTextColor.GRAY));
+            sender.sendMessage(Component.text(" - " + definition.id() + " (", NamedTextColor.GRAY)
+                    .append(ComponentUtils.parse(definition.displayName()))
+                    .append(Component.text(") "))
+                    .append(occupied
+                            ? Component.text("[ocupada]", NamedTextColor.RED)
+                            : Component.text("[libre]", NamedTextColor.GREEN)));
         }
     }
 
@@ -99,8 +104,9 @@ public class DungeonCommand implements CommandExecutor, TabCompleter {
             return;
         }
 
-        sender.sendMessage(Component.text("=== " + definition.displayName() + " (" + definition.id() + ") ===",
-                NamedTextColor.GOLD));
+        sender.sendMessage(Component.text("=== ", NamedTextColor.GOLD)
+                .append(ComponentUtils.parse(definition.displayName()))
+                .append(Component.text(" (" + definition.id() + ") ===", NamedTextColor.GOLD)));
         sender.sendMessage(Component.text(definition.description(), NamedTextColor.GRAY));
         sender.sendMessage(Component.text("Nivel recomendado: " + definition.recommendedLevel()
                 + " | Jugadores: " + definition.minPlayers() + "-" + definition.maxPlayers()
@@ -314,8 +320,9 @@ public class DungeonCommand implements CommandExecutor, TabCompleter {
 
         List<DungeonRunResult> top = engine.getRankingManager().top(definition.id(), period, 10);
 
-        sender.sendMessage(Component.text("=== Ranking " + definition.displayName() + " (" + period + ") ===",
-                NamedTextColor.GOLD));
+        sender.sendMessage(Component.text("=== Ranking ", NamedTextColor.GOLD)
+                .append(ComponentUtils.parse(definition.displayName()))
+                .append(Component.text(" (" + period + ") ===", NamedTextColor.GOLD)));
 
         if (top.isEmpty()) {
             sender.sendMessage(Component.text("Todavía no hay corridas registradas.", NamedTextColor.GRAY));

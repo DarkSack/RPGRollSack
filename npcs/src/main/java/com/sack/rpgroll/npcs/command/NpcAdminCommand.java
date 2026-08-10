@@ -203,13 +203,12 @@ public class NpcAdminCommand implements CommandExecutor, TabCompleter {
 
                                 npcManager.getAll()
                                                 .forEach(npc -> sender.sendMessage(
-                                                                Component.text(
-                                                                                "• "
-                                                                                                + npc.id()
-                                                                                                + " ("
-                                                                                                + npc.displayName()
-                                                                                                + ")",
-                                                                                NamedTextColor.WHITE)));
+                                                                Component.text("• " + npc.id() + " (",
+                                                                                NamedTextColor.WHITE)
+                                                                        .append(com.sack.rpgroll.util.ComponentUtils
+                                                                                        .parse(npc.displayName()))
+                                                                        .append(Component.text(")",
+                                                                                NamedTextColor.WHITE))));
 
                         }
 
@@ -279,7 +278,7 @@ public class NpcAdminCommand implements CommandExecutor, TabCompleter {
 
                         default -> sender.sendMessage(
                                         Component.text(
-                                                        "Acción inválida.",
+                                                        "Uso: /npc <create|edit|list|delete|reload|menus> [id]",
                                                         NamedTextColor.RED));
 
                 }

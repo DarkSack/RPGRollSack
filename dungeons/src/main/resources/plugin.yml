@@ -1,7 +1,7 @@
 name: RPGRoll-Dungeons
 version: 1.0.0
 main: com.sack.rpgroll.dungeons.DungeonsPlugin
-api-version: "1.21"
+api-version: "26.1.1"
 author: Sack
 description: Motor de mazmorras instanciadas (salas, oleadas, jefes, objetivos, loot, dificultades, ranking) para RPGRoll
 depend: [RPGRoll, RPGRoll-Mobs, RPGRoll-Guilds]

@@ -1,0 +1,17 @@
+# Congelamiento (sección 15) — aplicable por BodyTemperatureEngine en hipotermia severa.
+# Duración indefinida: se remueve al recuperar temperatura corporal.
+id: frostbite
+duration: -1
+damage: 0.5
+interval: 40
+effects:
+  - "slowness:1"
+  - "mining_fatigue:0"
+on-apply:
+  - type: MESSAGE
+    value: "&b¡Sentís que tus extremidades se congelan!"
+  - type: SOUND
+    value: "ENTITY_PLAYER_HURT_FREEZE;1.0;1.0"
+on-expire:
+  - type: MESSAGE
+    value: "&fEl frío ya no te afecta."

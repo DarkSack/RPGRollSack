@@ -1,0 +1,10 @@
+# Ejemplo de referencia (NO está activado por defecto — ningún contexto ni
+# perfil lo referencia todavía). Para usarlo: poné su id en "bossbar" de un
+# TABProfile, o mostralo puntualmente desde otro addon vía
+# TABAPI.get().bossBars() + el evento BossBarCreateEvent/BossBarRemoveEvent.
+id: example_event
+title: "&4&l{player} &7— &cEvento de temporada"
+progress: "100"
+color: RED
+style: SEGMENTED_10
+priority: 10

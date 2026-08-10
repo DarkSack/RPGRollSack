@@ -1,0 +1,24 @@
+# Fatiga (sección 9/10) — distinta de stamina: cansancio ACUMULADO. Sube
+# pasivamente estando despierto (regla sin condición), baja descansando.
+id: fatigue
+enabled: true
+max: 100
+start: 0
+
+regeneration:
+  - amount: 0.5
+  - condition: resting
+    amount: -3
+
+consumption:
+  sprint: 0.2
+  attack: 0.1
+
+thresholds:
+  - condition: ">=80"
+    potions:
+      - type: slowness
+        amplifier: 0
+    actions:
+      - type: MESSAGE
+        value: "&7Estás muy cansado — deberías dormir."

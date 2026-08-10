@@ -1,0 +1,14 @@
+# Prefix/suffix/color aplicados vía Bukkit Scoreboard Team — determina el
+# color del nombre en el mundo/tablist, collision y friendly-fire.
+id: default
+
+prefix: ""
+suffix: ""
+color: white
+
+friendly-fire: true
+see-friendly-invisibles: true
+
+# ALWAYS | NEVER | HIDE_FOR_OTHER_TEAMS | HIDE_FOR_OWN_TEAM
+collision: ALWAYS
+nametag-visibility: ALWAYS

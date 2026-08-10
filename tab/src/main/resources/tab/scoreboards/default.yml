@@ -1,0 +1,7 @@
+# Extiende rpg_template (sección 36): hereda title/lines y solo pisa el
+# placeholder literal "{server}" que el template deja como variable.
+id: default
+extends: rpg_template
+replacements:
+  server: "play.example.com"
+priority: 0

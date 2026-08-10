@@ -1,0 +1,13 @@
+# Ejemplo de override PARCIAL: un jugador con permiso rpgrolltab.vip sigue
+# usando el resto del perfil "default" (scoreboard/nametag/belowname/teams/
+# sorting), pero ve la tablist "vip" en vez de "default".
+id: vip
+priority: 10
+
+conditions:
+  - type: permission
+    value: rpgrolltab.vip
+
+# Al dejar "profile" vacío, NO se reemplaza el perfil entero — solo se
+# aplica el override de abajo sobre el que ya haya resuelto (default).
+tablist: vip

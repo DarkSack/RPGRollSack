@@ -10,6 +10,7 @@ import com.sack.rpgroll.workers.core.worker.PersonalityTrait;
 import com.sack.rpgroll.workers.core.worker.WorkerManager;
 import com.sack.rpgroll.workers.gui.ChatPromptManager;
 import com.sack.rpgroll.workers.gui.WorkerHubGUI;
+import com.sack.rpgroll.util.ComponentUtils;
 import com.sack.rpgroll.util.TabCompleteUtil;
 
 import net.kyori.adventure.text.Component;
@@ -122,8 +123,9 @@ public class WorkersAdminCommand implements CommandExecutor, TabCompleter {
             workerManager.save(worker);
         }
 
-        player.sendMessage(Component.text("✔ Spawneado un/a " + profession.displayName() + " (" + worker.personality()
-                + ").", NamedTextColor.GREEN));
+        player.sendMessage(Component.text("✔ Spawneado un/a ", NamedTextColor.GREEN)
+                .append(ComponentUtils.parse(profession.displayName()))
+                .append(Component.text(" (" + worker.personality() + ").", NamedTextColor.GREEN)));
     }
 
     private void handleDesignator(CommandSender sender) {

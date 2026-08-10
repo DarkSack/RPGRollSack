@@ -1,7 +1,7 @@
 name: RPGRoll-Mobs
 version: 1.0.0
 main: com.sack.rpgroll.mobs.MobsPlugin
-api-version: "1.21"
+api-version: "26.1.1"
 author: Sack
 description: Motor de mobs, jefes e invocaciones personalizados (componentes, fases, IA, loot) para RPGRoll
 depend: [RPGRoll]

@@ -16,6 +16,7 @@ import com.sack.rpgroll.ranching.core.species.Species;
 import com.sack.rpgroll.ranching.core.species.SpeciesManager;
 import com.sack.rpgroll.ranching.gui.ChatPromptManager;
 import com.sack.rpgroll.ranching.gui.RanchHubGUI;
+import com.sack.rpgroll.util.ComponentUtils;
 import com.sack.rpgroll.util.TabCompleteUtil;
 
 import net.kyori.adventure.text.Component;
@@ -143,8 +144,9 @@ public class RanchingAdminCommand implements CommandExecutor, TabCompleter {
         animalManager.registerFounder(entity, species, breed, sex, geneticsEngine,
                 geneManager.getForSpecies(species.id()));
 
-        player.sendMessage(Component.text("✔ Spawneado un/a " + species.displayName() + " (" + sex + ").",
-                NamedTextColor.GREEN));
+        player.sendMessage(Component.text("✔ Spawneado un/a ", NamedTextColor.GREEN)
+                .append(ComponentUtils.parse(species.displayName()))
+                .append(Component.text(" (" + sex + ").", NamedTextColor.GREEN)));
     }
 
     private void sendUsage(CommandSender sender) {

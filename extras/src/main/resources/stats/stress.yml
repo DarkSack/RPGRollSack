@@ -1,0 +1,30 @@
+# Estrés (sección 11) — sube en combate, baja descansando; escala de efectos por umbral.
+id: stress
+enabled: true
+max: 100
+start: 0
+
+regeneration:
+  - condition: combat
+    amount: 5
+  - condition: resting
+    amount: -3
+
+thresholds:
+  - condition: ">=60"
+    potions:
+      - type: mining_fatigue
+        amplifier: 0
+
+  - condition: ">=80"
+    potions:
+      - type: nausea
+        amplifier: 0
+
+  - condition: ">=95"
+    potions:
+      - type: weakness
+        amplifier: 0
+    actions:
+      - type: MESSAGE
+        value: "&4¡Estás al borde del pánico!"

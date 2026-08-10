@@ -2,7 +2,7 @@
 
 > **RPGRoll**
 
-Un framework RPG modular para **Minecraft Java Edition 1.21.1 (Paper)** diseñado para transformar un servidor vanilla en una experiencia de rol completa inspirada en juegos como **Dungeons & Dragons**, MMORPGs clásicos y sistemas RPG modernos.
+Un framework RPG modular para **Minecraft Java Edition 26.1.1 (Paper)** diseñado para transformar un servidor vanilla en una experiencia de rol completa inspirada en juegos como **Dungeons & Dragons**, MMORPGs clásicos y sistemas RPG modernos.
 
 Ya no es un único plugin: es un **ecosistema de 1 core + 20 addons independientes**, cada uno instalable por separado, más un asset pipeline de resource packs (`SackResourcePack`) que no depende de ningún otro módulo.
 
@@ -18,6 +18,7 @@ Ya no es un único plugin: es un **ecosistema de 1 core + 20 addons independient
 
 Cambios recientes aplicados en todo el ecosistema:
 
+- 🚀 **Migración completa a Paper 26.1.1 (Java 25)** — se abandona el soporte a 1.21.1: los 21 módulos (core + 20 addons) ahora compilan contra la nueva API de Paper. Incluye la renombrada de todas las constantes de `Attribute` (se les quitó el prefijo `GENERIC_`/`PLAYER_`/`ZOMBIE_`) y la adaptación a que `Sound` dejó de ser un `Enum` plano
 - 🖱️ **Botones "Volver" arreglados en todas las GUIs** — encantamientos, tiendas de NPCs, chat, crates y SackEffects: el botón `Volver`/`Cerrar` reabría el menú anterior sin cerrar de verdad el inventario activo, dejando la GUI "congelada". Corregido en 59 archivos (el `reopen()` de cada GUI ahora usa `open()` en vez de `build()`)
 - 🧟 **Mobs de RPGRoll-Mobs vuelven a moverse y patrullar** — se removía la IA nativa de Bukkit (`Mob#setAware(false)`) para evitar que interfiriera con el motor de IA propio, pero esa misma llamada también bloquea el sistema de pathfinding de Paper, dejando a los mobs completamente estáticos. Ya no se desactiva
 - ✏️ **`/renchant remove` corregido** — ahora resuelve el encantamiento por su id real antes de intentar removerlo, en vez de fallar silenciosamente
@@ -124,9 +125,9 @@ El core y los 20 addons ya están funcionales end-to-end (motor + persistencia +
 
 | Software        | Versión                        |
 | --------------- | ------------------------------ |
-| Minecraft       | **1.21.1**                     |
+| Minecraft       | **26.1.1**                     |
 | Paper           | ✅                             |
-| Java            | **21**                         |
+| Java            | **25**                         |
 | Vault           | Opcional (Soft Depend)         |
 | PlaceholderAPI  | Opcional (Soft Depend)         |
 | ProtocolLib     | Requerido por NPCs             |
@@ -153,6 +154,8 @@ plugins/
 ├── RPGRoll-Dungeons.jar
 └── ...
 ```
+
+> ⚠️ **No cambies `online-mode` una vez que el servidor tenga personajes creados.** RPGRoll guarda a cada jugador por **UUID** en `players.db` (y en el resto de bases de datos de los addons). Minecraft asigna un UUID distinto al mismo nombre de usuario según el servidor esté en modo online u offline, así que alternar `online-mode` hace que RPGRoll trate esa cuenta como un personaje totalmente nuevo — el original queda huérfano en la base de datos, no se fusiona ni se migra automáticamente. Elegí un modo antes de lanzar el servidor en serio y no lo cambies después.
 
 ---
 
@@ -258,9 +261,9 @@ Actualmente soporta (todas opcionales salvo donde se indica):
 
 # 🛠️ Tecnologías
 
-- Java 21
+- Java 25
 - Gradle (multi-módulo, con `build-logic` como plugin de convenciones y Shadow)
-- Paper API 1.21.1
+- Paper API 26.1.1
 - Adventure API (`Component`, MiniMessage, `LegacyComponentSerializer`)
 - SQLite
 - Vault API

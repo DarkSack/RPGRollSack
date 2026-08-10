@@ -1,0 +1,15 @@
+# Nametag multi-línea (entidades TextDisplay montadas sobre el jugador —
+# no requiere ProtocolLib). La última línea queda más cerca de la cabeza.
+id: default
+
+lines:
+  - "&8[&f{world}&8]"
+  - "{player}"
+
+# Opcional — sección 11 ("nametag por observador"): si el VIEWER tiene este
+# permiso, ve estas líneas en vez de las de arriba para este jugador.
+staff-override:
+  permission: "rpgrolltab.staff"
+  lines:
+    - "&c&l[STAFF]"
+    - "{player}"

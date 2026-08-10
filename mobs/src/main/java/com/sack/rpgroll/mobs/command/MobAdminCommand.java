@@ -151,8 +151,9 @@ public class MobAdminCommand implements CommandExecutor, TabCompleter {
 
         engine.spawnMob(definition, target.getLocation())
                 .ifPresentOrElse(
-                        entity -> sender.sendMessage(Component.text(
-                                "Mob '" + definition.displayName() + "' invocado.", NamedTextColor.GREEN)),
+                        entity -> sender.sendMessage(Component.text("Mob '", NamedTextColor.GREEN)
+                                .append(com.sack.rpgroll.util.ComponentUtils.parse(definition.displayName()))
+                                .append(Component.text("' invocado.", NamedTextColor.GREEN))),
                         () -> sender.sendMessage(Component.text(
                                 "No se pudo invocar (base-entity-type inválido).", NamedTextColor.RED)));
     }
@@ -187,8 +188,9 @@ public class MobAdminCommand implements CommandExecutor, TabCompleter {
             return;
         }
 
-        sender.sendMessage(Component.text("=== " + def.displayName() + " (" + def.id() + ") ===",
-                NamedTextColor.GOLD));
+        sender.sendMessage(Component.text("=== ", NamedTextColor.GOLD)
+                .append(com.sack.rpgroll.util.ComponentUtils.parse(def.displayName()))
+                .append(Component.text(" (" + def.id() + ") ===", NamedTextColor.GOLD)));
         sender.sendMessage(Component.text("Categoría: " + def.category() + " | Nivel: " + def.level()
                 + " | Rareza: " + def.rarityId(), NamedTextColor.GRAY));
         sender.sendMessage(Component.text("Vida: " + def.stat("health") + " | Daño: " + def.stat("damage")

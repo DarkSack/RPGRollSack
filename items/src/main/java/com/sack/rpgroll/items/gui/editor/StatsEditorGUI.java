@@ -26,8 +26,8 @@ public class StatsEditorGUI extends InventoryGUI {
     private static final int SIZE = 54;
 
     private static final String[] VANILLA_ATTRIBUTES = {
-            "GENERIC_MAX_HEALTH", "GENERIC_ATTACK_DAMAGE", "GENERIC_ATTACK_SPEED", "GENERIC_MOVEMENT_SPEED",
-            "GENERIC_ARMOR", "GENERIC_ARMOR_TOUGHNESS", "GENERIC_KNOCKBACK_RESISTANCE", "GENERIC_LUCK"
+            "MAX_HEALTH", "ATTACK_DAMAGE", "ATTACK_SPEED", "MOVEMENT_SPEED",
+            "ARMOR", "ARMOR_TOUGHNESS", "KNOCKBACK_RESISTANCE", "LUCK"
     };
 
     private static final int ADD_CUSTOM_STAT_SLOT = 27;
@@ -230,7 +230,7 @@ public class StatsEditorGUI extends InventoryGUI {
 
     private void promptCustomAttribute() {
         session.chatPromptManager.prompt(player,
-                "Escribí: <ATRIBUTO_VANILLA> <valor> (ej. GENERIC_SCALE 0.5):", value -> {
+                "Escribí: <ATRIBUTO_VANILLA> <valor> (ej. SCALE 0.5):", value -> {
 
                     String[] parts = value.trim().split("\\s+");
 

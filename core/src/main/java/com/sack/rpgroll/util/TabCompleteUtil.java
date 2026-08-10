@@ -53,7 +53,7 @@ public final class TabCompleteUtil {
 
     public static List<String> soundNames(String token) {
         return filter(token, java.util.Arrays.stream(org.bukkit.Sound.values())
-                .map(Enum::name)
+                .map(org.bukkit.Sound::name)
                 .toList());
     }
 

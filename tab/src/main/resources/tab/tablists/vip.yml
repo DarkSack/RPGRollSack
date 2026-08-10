@@ -1,0 +1,31 @@
+# Ejemplo de tablist alternativa, activada por el contexto "vip" (ver
+# contexts/vip.yml) — demuestra que un mismo perfil "default" puede recibir
+# overrides parciales (solo el tablist cambia, scoreboard/nametag siguen igual).
+id: vip
+
+header:
+  lines:
+    - "&d&l✦ VIP ✦"
+    - "&7Gracias por apoyar al servidor"
+    - ""
+
+footer:
+  lines:
+    - ""
+    - "&7Jugadores: &f{online}&7/&f{max}"
+    - "&dplay.example.com"
+
+player-format: "{prefix}{player}{suffix} &8- {ping_formatted}"
+
+ping:
+  - format: "&a{ping}ms"
+    max: 50
+  - format: "&e{ping}ms"
+    max: 100
+  - format: "&c{ping}ms"
+
+gamemode:
+  enabled: false
+  short-icon: true
+
+worlds: []

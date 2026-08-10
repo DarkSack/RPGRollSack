@@ -16,6 +16,7 @@ import com.sack.rpgroll.economy.shop.ShopManager;
 import com.sack.rpgroll.economy.tax.TaxEngine;
 import com.sack.rpgroll.economy.wallet.EconomyResult;
 import com.sack.rpgroll.economy.wallet.WalletService;
+import com.sack.rpgroll.util.ComponentUtils;
 import com.sack.rpgroll.util.TabCompleteUtil;
 
 import net.kyori.adventure.text.Component;
@@ -96,8 +97,9 @@ public class EconomyCommand implements CommandExecutor, TabCompleter {
     private void sendBalance(Player player, String currencyId) {
         var currency = currencyManager.get(currencyId).orElse(currencyManager.defaultCurrency());
         double balance = walletService.balance(player.getUniqueId(), currency.id());
-        player.sendMessage(Component.text("Balance (" + currency.displayName() + "): " + currency.format(balance),
-                NamedTextColor.GOLD));
+        player.sendMessage(Component.text("Balance (", NamedTextColor.GOLD)
+                .append(ComponentUtils.parse(currency.displayName()))
+                .append(Component.text("): " + currency.format(balance), NamedTextColor.GOLD)));
     }
 
     private void handlePay(Player player, String[] args) {

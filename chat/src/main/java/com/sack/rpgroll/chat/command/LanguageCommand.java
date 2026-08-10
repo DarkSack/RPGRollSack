@@ -3,6 +3,7 @@ package com.sack.rpgroll.chat.command;
 import com.sack.rpgroll.chat.language.LanguageManager;
 import com.sack.rpgroll.chat.language.LanguageService;
 import com.sack.rpgroll.chat.language.PlayerLanguageState;
+import com.sack.rpgroll.util.ComponentUtils;
 import com.sack.rpgroll.util.TabCompleteUtil;
 
 import net.kyori.adventure.text.Component;
@@ -61,9 +62,10 @@ public class LanguageCommand implements CommandExecutor, TabCompleter {
         for (var language : languageManager.getAll()) {
             boolean known = state.knows(language.id());
             boolean speaking = language.id().equalsIgnoreCase(state.speakingLanguageId());
-            player.sendMessage(Component.text(" - " + language.displayName() + " ("
-                    + (known ? "conocido" : "desconocido") + (speaking ? ", hablando" : "") + ")",
-                    NamedTextColor.GRAY));
+            player.sendMessage(Component.text(" - ", NamedTextColor.GRAY)
+                    .append(ComponentUtils.parse(language.displayName()))
+                    .append(Component.text(" (" + (known ? "conocido" : "desconocido")
+                            + (speaking ? ", hablando" : "") + ")", NamedTextColor.GRAY)));
         }
     }
 

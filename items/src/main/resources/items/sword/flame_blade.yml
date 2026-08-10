@@ -23,7 +23,7 @@ stats:
 # Atributos vanilla reales (no virtuales) — visibles en el tooltip nativo
 # si no se ocultan con HIDE_ATTRIBUTES arriba.
 attributes:
-  GENERIC_ATTACK_DAMAGE: 2
+  ATTACK_DAMAGE: 2
 
 requirements:
   level: 20

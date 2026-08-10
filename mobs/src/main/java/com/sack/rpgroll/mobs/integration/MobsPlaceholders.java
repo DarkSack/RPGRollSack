@@ -139,7 +139,7 @@ public class MobsPlaceholders extends PlaceholderExpansion {
                     : nearest.getName();
             case "nearest_health" -> formatNumber(nearest.getHealth());
             case "nearest_health_max" -> {
-                var attribute = nearest.getAttribute(Attribute.GENERIC_MAX_HEALTH);
+                var attribute = nearest.getAttribute(Attribute.MAX_HEALTH);
                 yield formatNumber(attribute != null ? attribute.getValue() : 20.0);
             }
             case "nearest_distance" -> formatNumber(Math.sqrt(nearestDistanceSquared));

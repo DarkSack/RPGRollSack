@@ -201,6 +201,11 @@ public class AscendAdminCommand implements CommandExecutor, TabCompleter {
             return;
         }
 
+        if (factionManager.get(args[3]).isEmpty()) {
+            sender.sendMessage(Component.text("No existe una facción con id: " + args[3], NamedTextColor.RED));
+            return;
+        }
+
         int amount;
         try {
             amount = Integer.parseInt(args[4]);

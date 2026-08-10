@@ -170,8 +170,9 @@ public class EnchantAdminCommand implements CommandExecutor, TabCompleter {
         EnchantmentItem.ApplyResult result = enchantmentItem.apply(item, enchantment, level);
 
         switch (result) {
-            case OK -> sender.sendMessage(Component.text(
-                    "✔ " + enchantment.displayName() + " " + level + " aplicado.", NamedTextColor.GREEN));
+            case OK -> sender.sendMessage(Component.text("✔ ", NamedTextColor.GREEN)
+                    .append(com.sack.rpgroll.util.ComponentUtils.parse(enchantment.displayName()))
+                    .append(Component.text(" " + level + " aplicado.", NamedTextColor.GREEN)));
             case LEVEL_TOO_HIGH -> sender.sendMessage(Component.text(
                     "Nivel fuera de rango (máximo " + enchantment.maxLevel() + ").", NamedTextColor.RED));
             case CONFLICT -> sender.sendMessage(Component.text(
@@ -241,7 +242,8 @@ public class EnchantAdminCommand implements CommandExecutor, TabCompleter {
 
         CustomEnchantment enchantment = enchantmentOpt.get();
 
-        sender.sendMessage(Component.text(enchantment.displayName(), enchantment.rarity().color()));
+        sender.sendMessage(com.sack.rpgroll.util.ComponentUtils.parse(enchantment.displayName())
+                .colorIfAbsent(enchantment.rarity().color()));
         sender.sendMessage(Component.text("Rareza: " + enchantment.rarity(), NamedTextColor.GRAY));
         sender.sendMessage(Component.text("Nivel máximo: " + enchantment.maxLevel(), NamedTextColor.GRAY));
         sender.sendMessage(Component.text("Triggers: " + enchantment.triggers(), NamedTextColor.GRAY));

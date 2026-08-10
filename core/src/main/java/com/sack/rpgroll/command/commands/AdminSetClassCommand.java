@@ -11,6 +11,7 @@ import com.sack.rpgroll.api.playerclass.ClassManager;
 import com.sack.rpgroll.api.playerclass.PlayerClass;
 import com.sack.rpgroll.api.race.Race;
 import com.sack.rpgroll.api.race.RaceManager;
+import com.sack.rpgroll.util.ComponentUtils;
 import com.sack.rpgroll.util.TabCompleteUtil;
 
 import net.kyori.adventure.text.Component;
@@ -92,7 +93,7 @@ public class AdminSetClassCommand implements RPGCommand {
             playerManager.savePlayer(rpgPlayer);
 
             sender.sendMessage(Component.text("✔ Clase de " + target.getName() + " cambiada a: ", NamedTextColor.GREEN)
-                    .append(Component.text(playerClass.displayName(), NamedTextColor.GOLD)));
+                    .append(ComponentUtils.parse(playerClass.displayName()).colorIfAbsent(NamedTextColor.GOLD)));
 
             if (recalc) {
                 sender.sendMessage(Component.text("  (stats recalculados desde cero)", NamedTextColor.YELLOW));
@@ -102,7 +103,7 @@ public class AdminSetClassCommand implements RPGCommand {
             }
 
             target.sendMessage(Component.text("Un administrador cambió tu clase a: ", NamedTextColor.YELLOW)
-                    .append(Component.text(playerClass.displayName(), NamedTextColor.GOLD)));
+                    .append(ComponentUtils.parse(playerClass.displayName()).colorIfAbsent(NamedTextColor.GOLD)));
 
         } catch (Exception exception) {
             sender.sendMessage(Component.text("Error al cambiar la clase.", NamedTextColor.RED));

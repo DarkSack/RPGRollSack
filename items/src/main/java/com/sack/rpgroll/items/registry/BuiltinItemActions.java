@@ -99,7 +99,7 @@ public final class BuiltinItemActions {
             double amount = Double.parseDouble(action.param("amount", "1"));
             Player player = ctx.player();
 
-            var maxHealthAttribute = player.getAttribute(org.bukkit.attribute.Attribute.GENERIC_MAX_HEALTH);
+            var maxHealthAttribute = player.getAttribute(org.bukkit.attribute.Attribute.MAX_HEALTH);
             double maxHealth = maxHealthAttribute != null ? maxHealthAttribute.getValue() : 20.0;
 
             player.setHealth(Math.min(maxHealth, player.getHealth() + amount));

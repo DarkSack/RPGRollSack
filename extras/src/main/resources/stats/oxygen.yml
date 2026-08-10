@@ -1,0 +1,16 @@
+# Oxígeno (sección 12) — se recupera respirando aire, se consume bajo el agua.
+id: oxygen
+enabled: true
+max: 100
+start: 100
+
+regeneration:
+  - amount: 10
+  - condition: underwater
+    amount: -8
+
+thresholds:
+  - condition: "<=0"
+    actions:
+      - type: DAMAGE
+        value: "2"

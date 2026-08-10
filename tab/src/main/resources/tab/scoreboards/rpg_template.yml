@@ -1,0 +1,28 @@
+# Template base (sección 36) — no se usa directo, otros scoreboards lo
+# extienden con "extends: rpg_template" y sobreescriben {server} vía
+# "replacements". No hace falta darle priority (los templates puros nunca
+# ganan porque nada los referencia como perfil activo).
+#
+# Todas las líneas usan la forma {text, condition} — "condition" es
+# opcional; sin él, la línea siempre se muestra (sección 25, placeholder
+# conditions).
+id: rpg_template
+
+title: "&6&lRPGRoll"
+
+lines:
+  - text: ""
+  - text: "&7Jugador: &f{player}"
+  - text: "&7Mundo: &f{world}"
+  - text: "&7Ping: &a{ping}ms"
+  - text: ""
+  - text: "&c❤ Vida: &f{health}"
+    condition: "{health} < 10"
+  - text: "&a❤ Vida: &f{health}"
+    condition: "{health} >= 10"
+  - text: ""
+  - text: "&7Jugadores online: &f{online}"
+  - text: ""
+  - text: "&6{server}"
+
+priority: 0

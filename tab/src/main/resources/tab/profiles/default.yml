@@ -1,0 +1,11 @@
+# Perfil aplicado cuando ningún contexto matchea — SIEMPRE debe existir un
+# perfil con id "default" (fallback final del Context Engine).
+id: default
+tablist: default
+scoreboard: default
+nametag: default
+belowname: default
+teams: default
+sorting: default
+# bossbar: (sin bossbar permanente por defecto — ver bossbars/example_event.yml)
+# layout: (sin layout custom — layouts son presets de sorting/teams, ver docs)

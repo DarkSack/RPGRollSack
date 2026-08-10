@@ -1,0 +1,9 @@
+# Modificador de job (sección 18) — el id debe coincidir con el id del job en
+# RPGRoll-Core (jobs/cazador.yml). Ambas claves son multiplicadores
+# (StatEngine hace 1.0 + valor): -0.25 = la fatiga sube un 25% más lento,
+# +0.1 = 110% del máximo de oxígeno.
+id: cazador
+type: JOB
+values:
+  fatigue_rate: -0.25
+  oxygen_max: 0.1

@@ -1,7 +1,7 @@
 name: RPGRoll-Crafting
 version: 1.0.0
 main: com.sack.rpgroll.crafting.CraftingPlugin
-api-version: "1.21"
+api-version: "26.1.1"
 author: Sack
 description: Motor de crafteo avanzado — recetas personalizadas con condiciones e ingredientes ricos, sistema de calidad, estaciones de crafteo personalizadas (multi-etapa, combustible, fallos), puente con las estaciones vanilla (mesa de crafteo, hornos, cortadora de piedra, mesa de herrería) y motores dedicados de yunque y de fermentación.
 depend: [RPGRoll]

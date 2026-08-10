@@ -1,0 +1,27 @@
+# Stamina (sección 3/4) — regeneración condicional por actividad, consumo por acción.
+id: stamina
+enabled: true
+max: 100
+start: 100
+
+regeneration:
+  - condition: resting
+    amount: 8
+  - condition: walking
+    amount: 3
+  - condition: sprinting
+    amount: 0
+  - condition: combat
+    amount: -2
+
+consumption:
+  sprint: 0.5
+  jump: 5
+  attack: 2
+  mining: 1
+
+thresholds:
+  - condition: "<=20"
+    actions:
+      - type: MESSAGE
+        value: "&eEstás agotado."

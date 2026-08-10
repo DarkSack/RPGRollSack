@@ -57,10 +57,10 @@ stats:
   magic_power: 15
   luck: 10
 
-# Atributos vanilla de Minecraft (AttributeModifier reales, afectan al jugador como un ítem vanilla con atributos) — clave = nombre de Attribute (ej. GENERIC_ATTACK_DAMAGE, GENERIC_MAX_HEALTH, GENERIC_MOVEMENT_SPEED, GENERIC_ARMOR)
+# Atributos vanilla de Minecraft (AttributeModifier reales, afectan al jugador como un ítem vanilla con atributos) — clave = nombre de Attribute (ej. ATTACK_DAMAGE, MAX_HEALTH, MOVEMENT_SPEED, ARMOR)
 attributes:
-  GENERIC_MAX_HEALTH: 4
-  GENERIC_MOVEMENT_SPEED: 0.02
+  MAX_HEALTH: 4
+  MOVEMENT_SPEED: 0.02
 
 # Requisitos para poder usar/equipar el ítem — todos opcionales, se evalúan todos los presentes
 requirements:

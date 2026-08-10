@@ -2,6 +2,8 @@ package com.sack.rpgroll.fishing.minigame;
 
 import io.papermc.paper.event.player.PlayerArmSwingEvent;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 
@@ -142,16 +144,16 @@ public class FishingMinigameManager implements Listener {
             boolean inZone = i >= zoneStart && i <= zoneEnd;
 
             if (i == marker) {
-                bar.append("§f▮");
+                bar.append("&f▮");
             } else if (inZone) {
-                bar.append("§a-");
+                bar.append("&a-");
             } else {
-                bar.append("§7-");
+                bar.append("&7-");
             }
         }
 
-        return Component.text("§b[" + bar + "§b] §7Faltan: §f" + Math.max(0, session.requiredHits()) + " §7Fallos: §f"
-                + Math.max(0, session.allowedMisses()));
+        return ComponentUtils.parse("&b[" + bar + "&b] &7Faltan: &f" + Math.max(0, session.requiredHits())
+                + " &7Fallos: &f" + Math.max(0, session.allowedMisses()));
     }
 
 }

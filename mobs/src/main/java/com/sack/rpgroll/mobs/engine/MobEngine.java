@@ -129,7 +129,7 @@ public class MobEngine {
         entity.setGlowing(model.glow());
         entity.setInvisible(model.invisible());
 
-        AttributeInstance scaleAttribute = entity.getAttribute(Attribute.GENERIC_SCALE);
+        AttributeInstance scaleAttribute = entity.getAttribute(Attribute.SCALE);
         if (scaleAttribute != null) {
             scaleAttribute.setBaseValue(model.scale());
         }
@@ -159,18 +159,18 @@ public class MobEngine {
 
     private void applyStats(LivingEntity entity, MobDefinition definition) {
 
-        applyAttribute(entity, Attribute.GENERIC_MAX_HEALTH, definition.stat("health") > 0
-                ? definition.stat("health") : entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
-        entity.setHealth(entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
+        applyAttribute(entity, Attribute.MAX_HEALTH, definition.stat("health") > 0
+                ? definition.stat("health") : entity.getAttribute(Attribute.MAX_HEALTH).getBaseValue());
+        entity.setHealth(entity.getAttribute(Attribute.MAX_HEALTH).getValue());
 
         if (definition.stat("speed") > 0) {
-            applyAttribute(entity, Attribute.GENERIC_MOVEMENT_SPEED, definition.stat("speed") / 100.0);
+            applyAttribute(entity, Attribute.MOVEMENT_SPEED, definition.stat("speed") / 100.0);
         }
         if (definition.stat("armor") > 0) {
-            applyAttribute(entity, Attribute.GENERIC_ARMOR, definition.stat("armor"));
+            applyAttribute(entity, Attribute.ARMOR, definition.stat("armor"));
         }
         if (definition.stat("knockback_resistance") > 0) {
-            applyAttribute(entity, Attribute.GENERIC_KNOCKBACK_RESISTANCE,
+            applyAttribute(entity, Attribute.KNOCKBACK_RESISTANCE,
                     Math.min(1.0, definition.stat("knockback_resistance") / 100.0));
         }
     }
@@ -323,7 +323,7 @@ public class MobEngine {
     private void checkPhaseTransition(LivingEntity entity, MobDefinition definition, ActiveMobState state,
             LivingEntity attacker) {
 
-        var maxHealthAttr = entity.getAttribute(Attribute.GENERIC_MAX_HEALTH);
+        var maxHealthAttr = entity.getAttribute(Attribute.MAX_HEALTH);
         double maxHealth = maxHealthAttr != null ? maxHealthAttr.getValue() : 20.0;
         double healthPercent = maxHealth <= 0 ? 0 : (entity.getHealth() / maxHealth) * 100.0;
 
@@ -481,7 +481,7 @@ public class MobEngine {
             return;
         }
 
-        var maxHealthAttr = entity.getAttribute(Attribute.GENERIC_MAX_HEALTH);
+        var maxHealthAttr = entity.getAttribute(Attribute.MAX_HEALTH);
         double maxHealth = maxHealthAttr != null ? maxHealthAttr.getValue() : 20.0;
         float progress = maxHealth <= 0 ? 0 : (float) Math.max(0, Math.min(1.0, entity.getHealth() / maxHealth));
 

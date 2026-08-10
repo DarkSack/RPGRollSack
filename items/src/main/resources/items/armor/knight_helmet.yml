@@ -16,7 +16,7 @@ stats:
   health: 10
 
 attributes:
-  GENERIC_ARMOR: 3
+  ARMOR: 3
 
 requirements:
   level: 10

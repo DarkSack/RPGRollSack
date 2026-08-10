@@ -1,0 +1,48 @@
+# Configuración global de temperatura corporal (secciones 6-8).
+# exchange-rate: qué fracción de la diferencia (ambiente - corporal) se
+# cierra en cada actualización — más alto = la temperatura corporal sigue
+# a la ambiental más rápido.
+exchange-rate: 0.05
+update-interval: 40
+
+# Rangos de temperatura corporal (°C aproximados) — min inclusivo, max exclusivo.
+states:
+  - id: severe_hypothermia
+    label: "Hipotermia severa"
+    max: 30
+    potions:
+      - type: slowness
+        amplifier: 2
+
+  - id: hypothermia
+    label: "Hipotermia"
+    min: 30
+    max: 33
+    potions:
+      - type: slowness
+        amplifier: 0
+
+  - id: cold
+    label: "Frío"
+    min: 33
+    max: 36
+
+  - id: normal
+    label: "Normal"
+    min: 36
+    max: 39
+
+  - id: overheating
+    label: "Sobrecalentamiento"
+    min: 39
+    max: 42
+    potions:
+      - type: weakness
+        amplifier: 0
+
+  - id: hyperthermia
+    label: "Hipertermia"
+    min: 42
+    potions:
+      - type: weakness
+        amplifier: 1

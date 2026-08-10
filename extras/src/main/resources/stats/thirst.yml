@@ -1,0 +1,31 @@
+# Sed (sección 5) — baja pasivamente, cruzar 30/10 aplica debilidad/lentitud;
+# en 0 aplica la condition "dehydration" (daño periódico) hasta que vuelva a subir.
+id: thirst
+enabled: true
+max: 100
+start: 100
+
+decay:
+  amount: 1
+  interval: 60
+
+consumption:
+  sprint: 0.5
+
+thresholds:
+  - condition: "<=30"
+    potions:
+      - type: weakness
+        amplifier: 0
+    actions:
+      - type: MESSAGE
+        value: "&cTenés sed."
+
+  - condition: "<=10"
+    potions:
+      - type: slowness
+        amplifier: 1
+
+  - condition: "<=0"
+    apply-conditions:
+      - dehydration

@@ -21,6 +21,10 @@ import com.sack.rpgroll.dungeons.ranking.DungeonRankingManager;
 import com.sack.rpgroll.dungeons.ranking.DungeonRunResult;
 import com.sack.rpgroll.dungeons.registry.ActionRegistry;
 import com.sack.rpgroll.dungeons.registry.DungeonActionContext;
+import com.sack.rpgroll.util.ComponentUtils;
+
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -286,7 +290,7 @@ public class DungeonEngine {
             return;
         }
 
-        AttributeInstance attribute = entity.getAttribute(Attribute.GENERIC_MAX_HEALTH);
+        AttributeInstance attribute = entity.getAttribute(Attribute.MAX_HEALTH);
         if (attribute == null) {
             return;
         }
@@ -485,7 +489,7 @@ public class DungeonEngine {
         session.deadPlayers().clear();
 
         for (Player player : onlinePartyMembers(session)) {
-            player.setHealth(Optional.ofNullable(player.getAttribute(Attribute.GENERIC_MAX_HEALTH))
+            player.setHealth(Optional.ofNullable(player.getAttribute(Attribute.MAX_HEALTH))
                     .map(AttributeInstance::getValue).orElse(20.0));
         }
 
@@ -562,7 +566,9 @@ public class DungeonEngine {
         for (UUID memberId : next.team().members()) {
             Player player = Bukkit.getPlayer(memberId);
             if (player != null) {
-                player.sendMessage("§a¡Es el turno de tu grupo para entrar a " + definition.displayName() + "!");
+                player.sendMessage(Component.text("¡Es el turno de tu grupo para entrar a ", NamedTextColor.GREEN)
+                        .append(ComponentUtils.parse(definition.displayName()))
+                        .append(Component.text("!", NamedTextColor.GREEN)));
             }
         }
 

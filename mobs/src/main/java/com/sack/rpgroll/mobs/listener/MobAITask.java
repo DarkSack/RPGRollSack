@@ -151,7 +151,7 @@ public class MobAITask implements Runnable {
             return false;
         }
 
-        var maxHealthAttr = mob.getAttribute(org.bukkit.attribute.Attribute.GENERIC_MAX_HEALTH);
+        var maxHealthAttr = mob.getAttribute(org.bukkit.attribute.Attribute.MAX_HEALTH);
         double maxHealth = maxHealthAttr != null ? maxHealthAttr.getValue() : 20.0;
         double healthPercent = maxHealth <= 0 ? 0 : (mob.getHealth() / maxHealth) * 100.0;
 

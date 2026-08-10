@@ -1,0 +1,9 @@
+# Modificador de clase (sección 18) — el id debe coincidir con el id de la
+# clase en RPGRoll-Core (classes/barbaro.yml). Ambas claves son multiplicadores
+# (StatEngine hace 1.0 + valor): +0.3 = 130% del máximo de stamina,
+# -0.3 = el estrés sube un 30% más lento.
+id: barbaro
+type: CLASS
+values:
+  stamina_max: 0.3
+  stress_rate: -0.3

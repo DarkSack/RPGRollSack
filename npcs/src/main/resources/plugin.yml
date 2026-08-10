@@ -1,7 +1,7 @@
 name: RPGRoll-NPCs
 version: 1.0.0
 main: com.sack.rpgroll.npcs.RPGRollNPCs
-api-version: "1.21"
+api-version: "26.1.1"
 author: Sack
 description: Sistema de NPCs interactuables para RPGRoll
 depend: [RPGRoll, ProtocolLib]

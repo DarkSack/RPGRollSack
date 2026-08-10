@@ -1,0 +1,21 @@
+# HUD por actionbar (secciones 25-27). Deshabilitado por defecto — muchos
+# servidores prefieren mostrar los stats vía RPGRoll-TAB (placeholders
+# {extras_<stat>}) en vez de un actionbar propio.
+enabled: false
+interval: 20
+separator: "  "
+
+lines:
+  - stat: thirst
+    format: "&b💧 {bar} {value}/{max}"
+    bar: true
+    bar-length: 10
+    filled-char: "█"
+    empty-char: "░"
+
+  - stat: stamina
+    format: "&e⚡ {bar} {value}/{max}"
+    bar: true
+    bar-length: 10
+    filled-char: "█"
+    empty-char: "░"

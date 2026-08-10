@@ -27,5 +27,7 @@ include(
     "ranching",
     "workers",
     "economy",
-    "crafting"
+    "crafting",
+    "tab",
+    "extras"
 )

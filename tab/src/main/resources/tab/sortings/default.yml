@@ -1,0 +1,25 @@
+# Forma corta: una palabra por línea, orden natural por defecto
+# (permission/ping/world/online-time descendente, name ascendente).
+# Cualquier otra palabra (level, class, guild, job, ...) se interpreta como
+# el nombre de un placeholder ya registrado por otro addon vía
+# TABPlaceholderRegistry — ej. "guild" intenta usar {guild}.
+id: default
+
+priority:
+  - permission
+  - ping
+  - name
+
+# Forma explícita equivalente (comentada) — permite además "values" para
+# permission (lista de nodos de mayor a menor prioridad) y "numeric"/
+# "placeholder" para reglas custom (sección 8):
+#
+# rules:
+#   - field: permission
+#     values: ["rpgrolltab.staff", "rpgrolltab.vip"]
+#     order: DESC
+#   - placeholder: "{rpgroll_level}"
+#     order: DESC
+#     numeric: true
+#   - field: name
+#     order: ASC

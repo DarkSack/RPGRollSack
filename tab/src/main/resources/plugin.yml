@@ -1,0 +1,19 @@
+name: RPGRoll-TAB
+version: 1.0.0
+main: com.sack.rpgroll.tab.TabPlugin
+api-version: "26.1.1"
+author: Sack
+description: Personalización avanzada de TabList, Scoreboard, Nametags, BelowName y BossBars para RPGRoll
+depend: [RPGRoll]
+softdepend: [ProtocolLib, PlaceholderAPI]
+
+commands:
+  tabadmin:
+    description: Gestiona perfiles, scoreboards, tablist, nametags y bossbars de RPGRoll-TAB
+    usage: /tabadmin <reload|list|profile <jugador> <perfil>> [args]
+    permission: rpgrolltab.admin.*
+
+permissions:
+  rpgrolltab.admin.*:
+    description: Acceso completo a comandos administrativos de RPGRoll-TAB
+    default: op

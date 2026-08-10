@@ -11,7 +11,7 @@ stats:
   evasion: 5
 
 attributes:
-  GENERIC_MOVEMENT_SPEED: 0.03
+  MOVEMENT_SPEED: 0.03
 
 requirements:
   level: 5

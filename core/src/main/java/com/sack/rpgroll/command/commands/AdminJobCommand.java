@@ -8,6 +8,7 @@ import com.sack.rpgroll.player.PlayerManager;
 import com.sack.rpgroll.player.RPGPlayer;
 import com.sack.rpgroll.player.jobs.JobProgress;
 import com.sack.rpgroll.player.jobs.PlayerJobs;
+import com.sack.rpgroll.util.ComponentUtils;
 import com.sack.rpgroll.util.TabCompleteUtil;
 
 import net.kyori.adventure.text.Component;
@@ -104,7 +105,7 @@ public class AdminJobCommand implements RPGCommand {
         playerManager.savePlayer(rpgPlayer.joinJob(jobId));
 
         sender.sendMessage(Component.text("✔ Trabajo asignado: ", NamedTextColor.GREEN)
-                .append(Component.text(jobOpt.get().displayName(), NamedTextColor.GOLD))
+                .append(ComponentUtils.parse(jobOpt.get().displayName()).colorIfAbsent(NamedTextColor.GOLD))
                 .append(Component.text(" a " + target.getName(), NamedTextColor.GREEN)));
     }
 

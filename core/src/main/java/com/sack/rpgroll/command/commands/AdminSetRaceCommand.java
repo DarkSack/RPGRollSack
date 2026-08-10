@@ -12,6 +12,7 @@ import com.sack.rpgroll.api.playerclass.PlayerClass;
 import com.sack.rpgroll.api.race.Race;
 import com.sack.rpgroll.race.RaceAttributeApplier;
 import com.sack.rpgroll.api.race.RaceManager;
+import com.sack.rpgroll.util.ComponentUtils;
 import com.sack.rpgroll.util.TabCompleteUtil;
 
 import net.kyori.adventure.text.Component;
@@ -104,7 +105,7 @@ public class AdminSetRaceCommand implements RPGCommand {
             raceAttributeApplier.apply(target, race);
 
             sender.sendMessage(Component.text("✔ Raza de " + target.getName() + " cambiada a: ", NamedTextColor.GREEN)
-                    .append(Component.text(race.displayName(), NamedTextColor.GOLD)));
+                    .append(ComponentUtils.parse(race.displayName()).colorIfAbsent(NamedTextColor.GOLD)));
 
             if (recalc) {
                 sender.sendMessage(Component.text("  (stats recalculados desde cero)", NamedTextColor.YELLOW));
@@ -114,7 +115,7 @@ public class AdminSetRaceCommand implements RPGCommand {
             }
 
             target.sendMessage(Component.text("Un administrador cambió tu raza a: ", NamedTextColor.YELLOW)
-                    .append(Component.text(race.displayName(), NamedTextColor.GOLD)));
+                    .append(ComponentUtils.parse(race.displayName()).colorIfAbsent(NamedTextColor.GOLD)));
 
         } catch (Exception exception) {
             sender.sendMessage(Component.text("Error al cambiar la raza.", NamedTextColor.RED));

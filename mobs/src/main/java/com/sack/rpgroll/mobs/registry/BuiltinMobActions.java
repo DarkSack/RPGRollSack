@@ -94,7 +94,7 @@ public final class BuiltinMobActions {
                 return;
             }
 
-            var maxHealthAttribute = healed.getAttribute(Attribute.GENERIC_MAX_HEALTH);
+            var maxHealthAttribute = healed.getAttribute(Attribute.MAX_HEALTH);
             double maxHealth = maxHealthAttribute != null ? maxHealthAttribute.getValue() : 20.0;
             healed.setHealth(Math.min(maxHealth, healed.getHealth() + amount));
         });
