@@ -55,6 +55,7 @@ public class CraftingPlugin extends JavaPlugin {
     private StationRuntimeRegistry stationRuntimeRegistry;
     private StationRuntimeStore stationRuntimeStore;
     private StationProcessingEngine stationProcessingEngine;
+    private VanillaRecipeBridge vanillaRecipeBridge;
 
     @Override
     public void onEnable() {
@@ -133,8 +134,8 @@ public class CraftingPlugin extends JavaPlugin {
     }
 
     private void registerVanillaRecipes() {
-        RecipeResultFactory resultFactory = new RecipeResultFactory();
-        new VanillaRecipeBridge(this, resultFactory).registerAll(vanillaRecipeManager);
+        vanillaRecipeBridge = new VanillaRecipeBridge(this, new RecipeResultFactory());
+        vanillaRecipeBridge.registerAll(vanillaRecipeManager);
     }
 
     private void registerCommands(ChatPromptManager chatPromptManager) {
@@ -144,7 +145,7 @@ public class CraftingPlugin extends JavaPlugin {
             getLogger().severe("✘ El comando 'craftingadmin' no está declarado en plugin.yml");
         } else {
             var executor = new CraftingAdminCommand(stationManager, recipeManager, fuelManager, vanillaRecipeManager,
-                    anvilRecipeManager, brewRecipeManager, chatPromptManager, this::reloadContent);
+                    anvilRecipeManager, brewRecipeManager, vanillaRecipeBridge, chatPromptManager, this::reloadContent);
             adminCommand.setExecutor(executor);
             adminCommand.setTabCompleter(executor);
         }
@@ -163,7 +164,9 @@ public class CraftingPlugin extends JavaPlugin {
         stationManager.reload();
         recipeManager.reload();
         fuelManager.reload();
+        vanillaRecipeManager.getAll().forEach(recipe -> vanillaRecipeBridge.unregister(recipe.id()));
         vanillaRecipeManager.reload();
+        vanillaRecipeBridge.registerAll(vanillaRecipeManager);
         anvilRecipeManager.reload();
         brewRecipeManager.reload();
     }

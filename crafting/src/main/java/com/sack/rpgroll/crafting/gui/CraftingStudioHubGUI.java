@@ -5,6 +5,7 @@ import com.sack.rpgroll.crafting.brewing.BrewRecipeManager;
 import com.sack.rpgroll.crafting.fuel.FuelManager;
 import com.sack.rpgroll.crafting.recipe.CustomRecipeManager;
 import com.sack.rpgroll.crafting.station.CustomStationManager;
+import com.sack.rpgroll.crafting.vanilla.VanillaRecipeBridge;
 import com.sack.rpgroll.crafting.vanilla.VanillaRecipeManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
@@ -35,11 +36,13 @@ public class CraftingStudioHubGUI extends InventoryGUI {
     private final VanillaRecipeManager vanillaRecipeManager;
     private final AnvilRecipeManager anvilRecipeManager;
     private final BrewRecipeManager brewRecipeManager;
+    private final VanillaRecipeBridge vanillaRecipeBridge;
     private final ChatPromptManager chatPromptManager;
 
     public CraftingStudioHubGUI(Player player, CustomStationManager stationManager, CustomRecipeManager recipeManager,
             FuelManager fuelManager, VanillaRecipeManager vanillaRecipeManager, AnvilRecipeManager anvilRecipeManager,
-            BrewRecipeManager brewRecipeManager, ChatPromptManager chatPromptManager) {
+            BrewRecipeManager brewRecipeManager, VanillaRecipeBridge vanillaRecipeBridge,
+            ChatPromptManager chatPromptManager) {
         super(player, Component.text("Crafting Studio", NamedTextColor.DARK_AQUA), SIZE);
         this.stationManager = stationManager;
         this.recipeManager = recipeManager;
@@ -47,6 +50,7 @@ public class CraftingStudioHubGUI extends InventoryGUI {
         this.vanillaRecipeManager = vanillaRecipeManager;
         this.anvilRecipeManager = anvilRecipeManager;
         this.brewRecipeManager = brewRecipeManager;
+        this.vanillaRecipeBridge = vanillaRecipeBridge;
         this.chatPromptManager = chatPromptManager;
     }
 
@@ -99,11 +103,12 @@ public class CraftingStudioHubGUI extends InventoryGUI {
         } else if (slot == FUELS_SLOT) {
             new FuelBrowserGUI(player, fuelManager, chatPromptManager, this::reopen).open();
         } else if (slot == VANILLA_RECIPES_SLOT) {
-            new VanillaRecipeBrowserGUI(player, vanillaRecipeManager, this::reopen).open();
+            new VanillaRecipeBrowserGUI(player, vanillaRecipeManager, vanillaRecipeBridge, chatPromptManager,
+                    this::reopen).open();
         } else if (slot == ANVIL_RECIPES_SLOT) {
-            new AnvilRecipeBrowserGUI(player, anvilRecipeManager, this::reopen).open();
+            new AnvilRecipeBrowserGUI(player, anvilRecipeManager, chatPromptManager, this::reopen).open();
         } else if (slot == BREW_RECIPES_SLOT) {
-            new BrewRecipeBrowserGUI(player, brewRecipeManager, this::reopen).open();
+            new BrewRecipeBrowserGUI(player, brewRecipeManager, chatPromptManager, this::reopen).open();
         } else if (slot == CLOSE_SLOT) {
             close();
         }

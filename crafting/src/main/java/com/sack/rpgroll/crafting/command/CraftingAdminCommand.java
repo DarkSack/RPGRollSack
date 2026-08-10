@@ -8,6 +8,7 @@ import com.sack.rpgroll.crafting.gui.CraftingStudioHubGUI;
 import com.sack.rpgroll.crafting.integration.ItemsBridge;
 import com.sack.rpgroll.crafting.recipe.CustomRecipeManager;
 import com.sack.rpgroll.crafting.station.CustomStationManager;
+import com.sack.rpgroll.crafting.vanilla.VanillaRecipeBridge;
 import com.sack.rpgroll.crafting.vanilla.VanillaRecipeManager;
 import com.sack.rpgroll.util.TabCompleteUtil;
 
@@ -35,18 +36,21 @@ public class CraftingAdminCommand implements CommandExecutor, TabCompleter {
     private final VanillaRecipeManager vanillaRecipeManager;
     private final AnvilRecipeManager anvilRecipeManager;
     private final BrewRecipeManager brewRecipeManager;
+    private final VanillaRecipeBridge vanillaRecipeBridge;
     private final ChatPromptManager chatPromptManager;
     private final Runnable onReload;
 
     public CraftingAdminCommand(CustomStationManager stationManager, CustomRecipeManager recipeManager,
             FuelManager fuelManager, VanillaRecipeManager vanillaRecipeManager, AnvilRecipeManager anvilRecipeManager,
-            BrewRecipeManager brewRecipeManager, ChatPromptManager chatPromptManager, Runnable onReload) {
+            BrewRecipeManager brewRecipeManager, VanillaRecipeBridge vanillaRecipeBridge,
+            ChatPromptManager chatPromptManager, Runnable onReload) {
         this.stationManager = stationManager;
         this.recipeManager = recipeManager;
         this.fuelManager = fuelManager;
         this.vanillaRecipeManager = vanillaRecipeManager;
         this.anvilRecipeManager = anvilRecipeManager;
         this.brewRecipeManager = brewRecipeManager;
+        this.vanillaRecipeBridge = vanillaRecipeBridge;
         this.chatPromptManager = chatPromptManager;
         this.onReload = onReload;
     }
@@ -68,7 +72,7 @@ public class CraftingAdminCommand implements CommandExecutor, TabCompleter {
             case "browser" -> {
                 if (sender instanceof Player player) {
                     new CraftingStudioHubGUI(player, stationManager, recipeManager, fuelManager, vanillaRecipeManager,
-                            anvilRecipeManager, brewRecipeManager, chatPromptManager).open();
+                            anvilRecipeManager, brewRecipeManager, vanillaRecipeBridge, chatPromptManager).open();
                 } else {
                     sender.sendMessage(Component.text("Solo un jugador puede abrir el navegador.", NamedTextColor.RED));
                 }

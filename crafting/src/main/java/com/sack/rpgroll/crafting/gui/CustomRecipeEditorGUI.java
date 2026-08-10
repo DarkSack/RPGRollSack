@@ -1,5 +1,7 @@
 package com.sack.rpgroll.crafting.gui;
 
+import com.sack.rpgroll.crafting.condition.RecipeCondition;
+import com.sack.rpgroll.crafting.ingredient.IngredientSpec;
 import com.sack.rpgroll.crafting.recipe.CustomRecipe;
 import com.sack.rpgroll.crafting.recipe.CustomRecipeManager;
 import com.sack.rpgroll.crafting.recipe.RecipeResult;
@@ -15,11 +17,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
-/**
- * Edita los campos escalares de una {@code CustomRecipe} y su
- * {@code result}. {@code ingredients} y {@code conditions} son listas — se
- * editan directamente en el YAML de la receta.
- */
+import java.util.List;
+
+/** Edita todos los campos de una {@code CustomRecipe}, incluyendo sus listas de ingredientes y condiciones. */
 public class CustomRecipeEditorGUI extends InventoryGUI {
 
     private static final int SIZE = 45;
@@ -37,6 +37,8 @@ public class CustomRecipeEditorGUI extends InventoryGUI {
     private static final int RESULT_TYPE_SLOT = 28;
     private static final int RESULT_VALUE_SLOT = 29;
     private static final int RESULT_AMOUNT_SLOT = 30;
+    private static final int INGREDIENTS_SLOT = 32;
+    private static final int CONDITIONS_SLOT = 33;
     private static final int DELETE_SLOT = 31;
     private static final int BACK_SLOT = 40;
 
@@ -119,6 +121,14 @@ public class CustomRecipeEditorGUI extends InventoryGUI {
                 .setName(Component.text("Result. cantidad: " + current.result().amount(), NamedTextColor.AQUA))
                 .setLore(Component.text("Click: +1 · Click derecho: -1", NamedTextColor.GRAY)).build());
 
+        setItem(INGREDIENTS_SLOT, new ItemBuilder(Material.HOPPER)
+                .setName(Component.text("Ingredientes (" + current.ingredients().size() + ")", NamedTextColor.AQUA))
+                .setLore(Component.text("Click para editar la lista", NamedTextColor.GRAY)).build());
+
+        setItem(CONDITIONS_SLOT, new ItemBuilder(Material.COMPARATOR)
+                .setName(Component.text("Condiciones (" + current.conditions().size() + ")", NamedTextColor.AQUA))
+                .setLore(Component.text("Click para editar la lista", NamedTextColor.GRAY)).build());
+
         setItem(DELETE_SLOT, new ItemBuilder(Material.BARRIER)
                 .setName(Component.text("Eliminar receta", NamedTextColor.RED)).build());
 
@@ -164,12 +174,38 @@ public class CustomRecipeEditorGUI extends InventoryGUI {
         } else if (slot == RESULT_AMOUNT_SLOT) {
             replace(withResult(new RecipeResult(current.result().type(), current.result().value(),
                     Math.max(1, current.result().amount() + sign))));
+        } else if (slot == INGREDIENTS_SLOT) {
+            new IngredientListEditorGUI(player, "Ingredientes: " + current.id(), current.ingredients(),
+                    chatPromptManager, this::replaceIngredients, this::reopen).open();
+        } else if (slot == CONDITIONS_SLOT) {
+            new RecipeConditionsEditorGUI(player, "Condiciones: " + current.id(), current.conditions(),
+                    chatPromptManager, this::replaceConditions, this::reopen).open();
         } else if (slot == DELETE_SLOT) {
             recipeManager.delete(current.id());
             onBack.run();
         } else if (slot == BACK_SLOT) {
             onBack.run();
         }
+    }
+
+    private void replaceIngredients(List<IngredientSpec> updated) {
+        current = new CustomRecipe(current.id(), current.displayName(), current.icon(), current.stationId(), updated,
+                current.result(), current.conditions(), current.processingTimeTicks(), current.fuelPerCraft(),
+                current.xpAmount(), current.economyCurrencyId(), current.economyCost(), current.failChance(),
+                current.qualityEnabled());
+        recipeManager.save(current);
+    }
+
+    private void replaceConditions(List<RecipeCondition> updated) {
+        current = new CustomRecipe(current.id(), current.displayName(), current.icon(), current.stationId(),
+                current.ingredients(), current.result(), updated, current.processingTimeTicks(),
+                current.fuelPerCraft(), current.xpAmount(), current.economyCurrencyId(), current.economyCost(),
+                current.failChance(), current.qualityEnabled());
+        recipeManager.save(current);
+    }
+
+    private void reopen() {
+        open();
     }
 
     private CustomRecipe withDisplayName(String v) {

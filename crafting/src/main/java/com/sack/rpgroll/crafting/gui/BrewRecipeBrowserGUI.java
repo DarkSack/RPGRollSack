@@ -2,6 +2,10 @@ package com.sack.rpgroll.crafting.gui;
 
 import com.sack.rpgroll.crafting.brewing.BrewRecipeDefinition;
 import com.sack.rpgroll.crafting.brewing.BrewRecipeManager;
+import com.sack.rpgroll.crafting.ingredient.IngredientSpec;
+import com.sack.rpgroll.crafting.ingredient.IngredientType;
+import com.sack.rpgroll.crafting.recipe.RecipeResult;
+import com.sack.rpgroll.crafting.recipe.RecipeResultType;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 
@@ -13,20 +17,24 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
 import java.util.List;
+import java.util.Locale;
 
-/** Solo lectura + borrado — se crean/editan en {@code brew-recipes/*.yml} (ingredient+result). */
 public class BrewRecipeBrowserGUI extends InventoryGUI {
 
     private static final int SIZE = 45;
+    private static final int NEW_SLOT = 40;
     private static final int BACK_SLOT = 44;
 
     private final BrewRecipeManager recipeManager;
+    private final ChatPromptManager chatPromptManager;
     private final Runnable onBack;
     private List<BrewRecipeDefinition> recipes;
 
-    public BrewRecipeBrowserGUI(Player player, BrewRecipeManager recipeManager, Runnable onBack) {
+    public BrewRecipeBrowserGUI(Player player, BrewRecipeManager recipeManager, ChatPromptManager chatPromptManager,
+            Runnable onBack) {
         super(player, Component.text("Recetas de fermentación", NamedTextColor.GOLD), SIZE);
         this.recipeManager = recipeManager;
+        this.chatPromptManager = chatPromptManager;
         this.onBack = onBack;
         this.recipes = List.copyOf(recipeManager.getAll());
     }
@@ -48,10 +56,12 @@ public class BrewRecipeBrowserGUI extends InventoryGUI {
                     .setName(Component.text(recipe.id(), NamedTextColor.YELLOW))
                     .setLore(Component.text("ingrediente: " + recipe.ingredient().value(), NamedTextColor.GRAY),
                             Component.text("resultado: " + recipe.result().value(), NamedTextColor.AQUA),
-                            Component.text("Click para eliminar", NamedTextColor.RED))
+                            Component.text("Click para editar", NamedTextColor.YELLOW))
                     .build());
         }
 
+        setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)
+                .setName(Component.text("Crear receta de fermentación nueva", NamedTextColor.GREEN)).build());
         setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
     }
 
@@ -62,14 +72,36 @@ public class BrewRecipeBrowserGUI extends InventoryGUI {
         int slot = event.getSlot();
 
         if (slot < recipes.size() && slot < 36) {
-            recipeManager.delete(recipes.get(slot).id());
-            reopen();
+            new BrewRecipeEditorGUI(player, recipes.get(slot), recipeManager, chatPromptManager, this::reopen).open();
+            return;
+        }
+
+        if (slot == NEW_SLOT) {
+            promptNew();
             return;
         }
 
         if (slot == BACK_SLOT) {
             onBack.run();
         }
+    }
+
+    private void promptNew() {
+        chatPromptManager.prompt(player, "Escribí el id de la nueva receta de fermentación:", value -> {
+
+            String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
+
+            if (recipeManager.exists(id)) {
+                player.sendMessage(Component.text("Ya existe una receta de fermentación con ese id.", NamedTextColor.RED));
+                reopen();
+                return;
+            }
+
+            IngredientSpec placeholder = new IngredientSpec(IngredientType.MATERIAL, "PAPER", 1, null);
+            recipeManager.save(new BrewRecipeDefinition(id, placeholder,
+                    new RecipeResult(RecipeResultType.MATERIAL, "POTION", 1), List.of()));
+            reopen();
+        });
     }
 
     private void reopen() {

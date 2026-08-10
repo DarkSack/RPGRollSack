@@ -50,7 +50,23 @@ public class VanillaRecipeBridge {
         plugin.getLogger().info("✔ Recetas vanilla registradas: " + registered);
     }
 
-    private boolean registerOne(VanillaRecipeDefinition recipe) {
+    /** Quita del registro nativo de Bukkit la receta con ese id, si existe (no-op si no estaba registrada). */
+    public void unregister(String id) {
+        Bukkit.removeRecipe(new NamespacedKey(plugin, id));
+    }
+
+    /**
+     * Vuelve a registrar una definición ya editada: como Bukkit no tiene un
+     * "update" para recetas, primero se quita la anterior (misma clave) y
+     * luego se registra la nueva — así una edición por GUI toma efecto de
+     * inmediato, sin esperar a un reinicio del servidor.
+     */
+    public boolean reregister(VanillaRecipeDefinition recipe) {
+        unregister(recipe.id());
+        return registerOne(recipe);
+    }
+
+    public boolean registerOne(VanillaRecipeDefinition recipe) {
 
         ItemStack result = resultFactory.build(recipe.result(), null).orElse(null);
         if (result == null) {
