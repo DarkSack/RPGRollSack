@@ -22,6 +22,7 @@ public class SocialSpyCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
         if (!(sender instanceof Player player)) {
+            sender.sendMessage(Component.text("Este comando solo puede ser usado por jugadores.", NamedTextColor.RED));
             return true;
         }
 

@@ -119,6 +119,11 @@ public class AddXPCommand implements RPGCommand {
     }
 
     @Override
+    public boolean isPlayerOnly() {
+        return false;
+    }
+
+    @Override
     public List<String> getTabCompletions(CommandSender sender, String[] args) {
         if (args.length <= 1) {
             return TabCompleteUtil.allOnlinePlayerNames();

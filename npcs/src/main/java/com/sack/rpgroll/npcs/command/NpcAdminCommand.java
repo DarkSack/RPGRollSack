@@ -56,17 +56,9 @@ public class NpcAdminCommand implements CommandExecutor, TabCompleter {
                         String label,
                         String[] args) {
 
-                if (!(sender instanceof Player player)) {
+                if (!sender.hasPermission("rpgrollnpcs.admin.*")) {
 
                         sender.sendMessage(
-                                        "Solo jugadores pueden usar este comando.");
-
-                        return true;
-                }
-
-                if (!player.hasPermission("rpgrollnpcs.admin.*")) {
-
-                        player.sendMessage(
                                         Component.text(
                                                         "No tienes permiso para usar este comando.",
                                                         NamedTextColor.RED));
@@ -76,7 +68,7 @@ public class NpcAdminCommand implements CommandExecutor, TabCompleter {
 
                 if (args.length < 1) {
 
-                        player.sendMessage(
+                        sender.sendMessage(
                                         Component.text(
                                                         "Uso: /npc <create|edit|list|delete|reload|menus> [id]",
                                                         NamedTextColor.RED));
@@ -86,9 +78,22 @@ public class NpcAdminCommand implements CommandExecutor, TabCompleter {
 
                 switch (args[0].toLowerCase()) {
 
-                        case "menus" -> new NpcMenuBrowserGUI(player, menuManager, chatPromptManager).open();
+                        case "menus" -> {
+
+                                Player player = requirePlayer(sender);
+                                if (player == null) {
+                                        return true;
+                                }
+
+                                new NpcMenuBrowserGUI(player, menuManager, chatPromptManager).open();
+                        }
 
                         case "create" -> {
+
+                                Player player = requirePlayer(sender);
+                                if (player == null) {
+                                        return true;
+                                }
 
                                 if (args.length < 2) {
 
@@ -135,6 +140,11 @@ public class NpcAdminCommand implements CommandExecutor, TabCompleter {
 
                         case "edit" -> {
 
+                                Player player = requirePlayer(sender);
+                                if (player == null) {
+                                        return true;
+                                }
+
                                 if (args.length < 2) {
                                         player.sendMessage(
                                                         Component.text(
@@ -178,7 +188,7 @@ public class NpcAdminCommand implements CommandExecutor, TabCompleter {
 
                                 if (npcManager.count() == 0) {
 
-                                        player.sendMessage(
+                                        sender.sendMessage(
                                                         Component.text(
                                                                         "No hay NPCs creados.",
                                                                         NamedTextColor.GRAY));
@@ -186,13 +196,13 @@ public class NpcAdminCommand implements CommandExecutor, TabCompleter {
                                         return true;
                                 }
 
-                                player.sendMessage(
+                                sender.sendMessage(
                                                 Component.text(
                                                                 "NPCs existentes:",
                                                                 NamedTextColor.GOLD));
 
                                 npcManager.getAll()
-                                                .forEach(npc -> player.sendMessage(
+                                                .forEach(npc -> sender.sendMessage(
                                                                 Component.text(
                                                                                 "• "
                                                                                                 + npc.id()
@@ -206,7 +216,7 @@ public class NpcAdminCommand implements CommandExecutor, TabCompleter {
                         case "delete" -> {
 
                                 if (args.length < 2) {
-                                        player.sendMessage(
+                                        sender.sendMessage(
                                                         Component.text(
                                                                         "Uso: /npc delete <id>",
                                                                         NamedTextColor.RED));
@@ -218,7 +228,7 @@ public class NpcAdminCommand implements CommandExecutor, TabCompleter {
 
                                 if (!npcManager.exists(id)) {
 
-                                        player.sendMessage(
+                                        sender.sendMessage(
                                                         Component.text(
                                                                         "No existe ese NPC.",
                                                                         NamedTextColor.RED));
@@ -240,7 +250,7 @@ public class NpcAdminCommand implements CommandExecutor, TabCompleter {
                                                                 playerOnline,
                                                                 npcManager.getAll()));
 
-                                player.sendMessage(
+                                sender.sendMessage(
                                                 Component.text(
                                                                 "✔ NPC eliminado: " + id,
                                                                 NamedTextColor.GREEN));
@@ -261,13 +271,13 @@ public class NpcAdminCommand implements CommandExecutor, TabCompleter {
                                         spawnManager.updateVisibility(online, npcManager.getAll());
                                 }
 
-                                player.sendMessage(Component.text(
+                                sender.sendMessage(Component.text(
                                                 "✔ Recargado: " + npcManager.count() + " NPC(s), " + menuManager.count()
                                                                 + " menú(s).",
                                                 NamedTextColor.GREEN));
                         }
 
-                        default -> player.sendMessage(
+                        default -> sender.sendMessage(
                                         Component.text(
                                                         "Acción inválida.",
                                                         NamedTextColor.RED));
@@ -275,6 +285,17 @@ public class NpcAdminCommand implements CommandExecutor, TabCompleter {
                 }
 
                 return true;
+        }
+
+        /** @return el sender como Player, o null (ya avisado) si no lo es — usado por los subcomandos que abren una GUI o necesitan una ubicación. */
+        private Player requirePlayer(CommandSender sender) {
+
+                if (sender instanceof Player player) {
+                        return player;
+                }
+
+                sender.sendMessage(Component.text("Este subcomando solo puede ser usado por jugadores.", NamedTextColor.RED));
+                return null;
         }
 
         @Override

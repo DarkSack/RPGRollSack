@@ -81,6 +81,7 @@ public class QuestAdminCommand implements CommandExecutor, TabCompleter {
     private void handleBrowser(CommandSender sender, String[] args) {
 
         if (!(sender instanceof Player player)) {
+            sender.sendMessage(Component.text("Solo un jugador puede abrir el navegador.", NamedTextColor.RED));
             return;
         }
 

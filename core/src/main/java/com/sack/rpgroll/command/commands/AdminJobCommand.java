@@ -234,6 +234,11 @@ public class AdminJobCommand implements RPGCommand {
     }
 
     @Override
+    public boolean isPlayerOnly() {
+        return false;
+    }
+
+    @Override
     public List<String> getTabCompletions(CommandSender sender, String[] args) {
         if (args.length <= 1) {
             return List.of("give", "remove", "setlevel");

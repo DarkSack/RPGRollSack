@@ -63,36 +63,57 @@ public class CrateAdminCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
-        if (!(sender instanceof Player player)) {
-            sender.sendMessage("Solo jugadores pueden usar este comando.");
-            return true;
-        }
-
-        if (!player.hasPermission("rpgrollcrates.admin.*")) {
-            player.sendMessage(Component.text("No tienes permiso para usar este comando.", NamedTextColor.RED));
+        if (!sender.hasPermission("rpgrollcrates.admin.*")) {
+            sender.sendMessage(Component.text("No tienes permiso para usar este comando.", NamedTextColor.RED));
             return true;
         }
 
         if (args.length < 1) {
-            sendUsage(player);
+            sendUsage(sender);
             return true;
         }
 
         switch (args[0].toLowerCase()) {
-            case "setlocation" -> handleSetLocation(player, args);
-            case "removelocation" -> handleRemoveLocation(player);
-            case "givekey" -> handleGiveKey(player, args);
-            case "list" -> handleList(player);
-            case "reload" -> handleReload(player);
-            case "browser" -> new CrateBrowserGUI(player, crateManager, chatPromptManager).open();
-            default -> sendUsage(player);
+            case "setlocation" -> {
+                Player player = requirePlayer(sender);
+                if (player != null) {
+                    handleSetLocation(player, args);
+                }
+            }
+            case "removelocation" -> {
+                Player player = requirePlayer(sender);
+                if (player != null) {
+                    handleRemoveLocation(player);
+                }
+            }
+            case "givekey" -> handleGiveKey(sender, args);
+            case "list" -> handleList(sender);
+            case "reload" -> handleReload(sender);
+            case "browser" -> {
+                Player player = requirePlayer(sender);
+                if (player != null) {
+                    new CrateBrowserGUI(player, crateManager, chatPromptManager).open();
+                }
+            }
+            default -> sendUsage(sender);
         }
 
         return true;
     }
 
-    private void sendUsage(Player player) {
-        player.sendMessage(Component.text(
+    /** @return el sender como Player, o null (ya avisado) si no lo es — usado por los subcomandos que necesitan mirar un bloque o abrir una GUI. */
+    private Player requirePlayer(CommandSender sender) {
+
+        if (sender instanceof Player player) {
+            return player;
+        }
+
+        sender.sendMessage(Component.text("Este subcomando solo puede ser usado por jugadores.", NamedTextColor.RED));
+        return null;
+    }
+
+    private void sendUsage(CommandSender sender) {
+        sender.sendMessage(Component.text(
                 "Uso: /crate <setlocation|removelocation|givekey|list|reload|browser> [args]", NamedTextColor.RED));
     }
 
@@ -158,10 +179,10 @@ public class CrateAdminCommand implements CommandExecutor, TabCompleter {
         player.sendMessage(Component.text("✔ Crate eliminado de este bloque.", NamedTextColor.GREEN));
     }
 
-    private void handleGiveKey(Player player, String[] args) {
+    private void handleGiveKey(CommandSender sender, String[] args) {
 
         if (args.length < 3) {
-            player.sendMessage(Component.text(
+            sender.sendMessage(Component.text(
                     "Uso: /crate givekey <jugador> <crateId> [cantidad]", NamedTextColor.RED));
             return;
         }
@@ -169,7 +190,7 @@ public class CrateAdminCommand implements CommandExecutor, TabCompleter {
         Player target = Bukkit.getPlayerExact(args[1]);
 
         if (target == null) {
-            player.sendMessage(Component.text("Jugador no encontrado: " + args[1], NamedTextColor.RED));
+            sender.sendMessage(Component.text("Jugador no encontrado: " + args[1], NamedTextColor.RED));
             return;
         }
 
@@ -177,7 +198,7 @@ public class CrateAdminCommand implements CommandExecutor, TabCompleter {
         Optional<Crate> crateOpt = crateManager.get(crateId);
 
         if (crateOpt.isEmpty()) {
-            player.sendMessage(Component.text("No existe un crate con id: " + crateId, NamedTextColor.RED));
+            sender.sendMessage(Component.text("No existe un crate con id: " + crateId, NamedTextColor.RED));
             return;
         }
 
@@ -192,19 +213,19 @@ public class CrateAdminCommand implements CommandExecutor, TabCompleter {
 
         target.getInventory().addItem(crateKeyItem.create(crateOpt.get(), amount));
 
-        player.sendMessage(Component.text(
+        sender.sendMessage(Component.text(
                 "✔ " + amount + " llave(s) de '" + crateId + "' entregadas a " + target.getName(),
                 NamedTextColor.GREEN));
     }
 
-    private void handleList(Player player) {
+    private void handleList(CommandSender sender) {
 
         if (crateManager.count() == 0) {
-            player.sendMessage(Component.text("No hay crates definidos.", NamedTextColor.GRAY));
+            sender.sendMessage(Component.text("No hay crates definidos.", NamedTextColor.GRAY));
             return;
         }
 
-        player.sendMessage(Component.text("Crates disponibles:", NamedTextColor.GOLD));
+        sender.sendMessage(Component.text("Crates disponibles:", NamedTextColor.GOLD));
 
         for (Crate crate : crateManager.getAll()) {
 
@@ -212,13 +233,13 @@ public class CrateAdminCommand implements CommandExecutor, TabCompleter {
                     .filter(p -> p.crateId().equals(crate.id()))
                     .count();
 
-            player.sendMessage(Component.text(
+            sender.sendMessage(Component.text(
                     "• " + crate.id() + " (" + crate.displayName() + ") — " + placements + " ubicación(es)",
                     NamedTextColor.WHITE));
         }
     }
 
-    private void handleReload(Player player) {
+    private void handleReload(CommandSender sender) {
 
         crateManager.reload();
 
@@ -241,7 +262,7 @@ public class CrateAdminCommand implements CommandExecutor, TabCompleter {
             hologramsHook.createOrUpdate(placed.hologramName(), hologramLocation, crateOpt.get().hologramLines());
         }
 
-        player.sendMessage(Component.text(
+        sender.sendMessage(Component.text(
                 "✔ Recargado: " + crateManager.count() + " crate(s), " + placedCrateManager.getAll().size()
                         + " ubicación(es).",
                 NamedTextColor.GREEN));

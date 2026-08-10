@@ -55,6 +55,7 @@ public class GuildAdminCommand implements CommandExecutor, TabCompleter {
             case "browser" -> {
 
                 if (!(sender instanceof Player player)) {
+                    sender.sendMessage(Component.text("Solo un jugador puede abrir el navegador.", NamedTextColor.RED));
                     return true;
                 }
 

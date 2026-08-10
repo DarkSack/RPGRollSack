@@ -52,8 +52,8 @@ public class CommandManager implements CommandExecutor, TabCompleter {
             @NotNull String label,
             @NotNull String[] args) {
 
-        // Sin argumentos, mostrar ayuda
-        if (args.length == 0) {
+        // Sin argumentos, o "help" explícito, mostrar ayuda
+        if (args.length == 0 || args[0].equalsIgnoreCase("help")) {
             sendHelp(sender);
             return true;
         }
