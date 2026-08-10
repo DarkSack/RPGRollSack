@@ -1,0 +1,10 @@
+id: boss_arena
+world: world
+min:
+  x: 500
+  y: 60
+  z: 500
+max:
+  x: 560
+  y: 100
+  z: 560

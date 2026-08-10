@@ -1,0 +1,12 @@
+# Región cuboide simple (sin WorldGuard) usada por reglas de spawn y por
+# IA de "proteger región"/"guardián" (ver AIBehaviorDef).
+id: forest_camp
+world: world
+min:
+  x: -200
+  y: 0
+  z: -200
+max:
+  x: 200
+  y: 255
+  z: 200
