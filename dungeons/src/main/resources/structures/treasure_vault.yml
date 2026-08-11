@@ -1,0 +1,41 @@
+# Bóveda pequeña 5x4x5 (X·Y·Z) con un cofre en el centro — pensada como
+# sala de tesoro (DungeonRoomType.TREASURE) al final de una mazmorra.
+id: treasure_vault
+display-name: "Bóveda del Tesoro"
+description: "Cámara pequeña con un cofre central, iluminada desde el techo."
+icon: CHEST
+source: CUSTOM
+
+anchor: { x: 2, y: 0, z: 2 }
+
+palette:
+  '#': DEEPSLATE_BRICKS
+  '.': AIR
+  'C': CHEST
+  'G': GLOWSTONE
+
+layers:
+  - # y=0 — piso sólido
+    - "#####"
+    - "#####"
+    - "#####"
+    - "#####"
+    - "#####"
+  - # y=1 — paredes + cofre central, entrada al sur
+    - "#####"
+    - "#...#"
+    - "#.C.#"
+    - "#...#"
+    - "##.##"
+  - # y=2 — paredes, entrada sigue abierta
+    - "#####"
+    - "#...#"
+    - "#...#"
+    - "#...#"
+    - "##.##"
+  - # y=3 — techo con luz central
+    - "#####"
+    - "#####"
+    - "##G##"
+    - "#####"
+    - "#####"

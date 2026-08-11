@@ -1,0 +1,65 @@
+# Arena de jefe 11x4x11 (X·Y·Z), forma octogonal, sin techo — pensada como
+# sala BOSS al final de la mazmorra (más espacio para esquivar que las
+# salas chicas de arriba). El ancla queda en el centro del piso.
+id: boss_arena_small
+display-name: "Arena de Jefe (chica)"
+description: "Arena octogonal abierta, sin techo, con una luz marcando el centro."
+icon: CHISELED_STONE_BRICKS
+source: CUSTOM
+
+anchor: { x: 5, y: 0, z: 5 }
+
+palette:
+  '#': CHISELED_STONE_BRICKS
+  '.': AIR
+  'G': GLOWSTONE
+
+layers:
+  - # y=0 — piso octogonal sólido
+    - "..#######.."
+    - ".#########."
+    - "###########"
+    - "###########"
+    - "###########"
+    - "###########"
+    - "###########"
+    - "###########"
+    - "###########"
+    - ".#########."
+    - "..#######.."
+  - # y=1 — muro perimetral, interior abierto, marca de invocación al centro
+    - "..#######.."
+    - ".#########."
+    - "#.........#"
+    - "#.........#"
+    - "#.........#"
+    - "#....G....#"
+    - "#.........#"
+    - "#.........#"
+    - "#.........#"
+    - ".#########."
+    - "..#######.."
+  - # y=2 — muro perimetral, interior abierto
+    - "..#######.."
+    - ".#########."
+    - "#.........#"
+    - "#.........#"
+    - "#.........#"
+    - "#.........#"
+    - "#.........#"
+    - "#.........#"
+    - "#.........#"
+    - ".#########."
+    - "..#######.."
+  - # y=3 — muro perimetral, interior abierto (sin techo — cielo visible)
+    - "..#######.."
+    - ".#########."
+    - "#.........#"
+    - "#.........#"
+    - "#.........#"
+    - "#.........#"
+    - "#.........#"
+    - "#.........#"
+    - "#.........#"
+    - ".#########."
+    - "..#######.."

@@ -1,0 +1,47 @@
+# Segmento de corredor recto 3x3x9 (X·Y·Z) — pensado para encadenar varias
+# copias en línea (pegás una, caminás hasta el final, pegás la siguiente)
+# y así armar pasillos largos entre salas sin depender de una sola pieza gigante.
+id: torch_corridor
+display-name: "Corredor con Antorchas"
+description: "Segmento de corredor recto de 9 bloques, techo con luces cada 3 bloques."
+icon: COBBLESTONE
+source: CUSTOM
+
+anchor: { x: 1, y: 0, z: 4 }
+
+palette:
+  '#': COBBLESTONE
+  '.': AIR
+  'G': GLOWSTONE
+
+layers:
+  - # y=0 — piso sólido, 9 de largo
+    - "###"
+    - "###"
+    - "###"
+    - "###"
+    - "###"
+    - "###"
+    - "###"
+    - "###"
+    - "###"
+  - # y=1 — paredes + camino de 1 de ancho
+    - "#.#"
+    - "#.#"
+    - "#.#"
+    - "#.#"
+    - "#.#"
+    - "#.#"
+    - "#.#"
+    - "#.#"
+    - "#.#"
+  - # y=2 — techo, con luces cada 3 bloques
+    - "###"
+    - "#G#"
+    - "###"
+    - "###"
+    - "#G#"
+    - "###"
+    - "###"
+    - "#G#"
+    - "###"

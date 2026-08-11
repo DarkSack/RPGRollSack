@@ -17,6 +17,9 @@ import com.sack.rpgroll.dungeons.player.DungeonPlayerStateManager;
 import com.sack.rpgroll.dungeons.ranking.DungeonRankingManager;
 import com.sack.rpgroll.dungeons.registry.ActionRegistry;
 import com.sack.rpgroll.dungeons.registry.BuiltinDungeonActions;
+import com.sack.rpgroll.dungeons.structure.StructureImportService;
+import com.sack.rpgroll.dungeons.structure.StructureLibrary;
+import com.sack.rpgroll.dungeons.structure.StructurePasteEngine;
 import com.sack.rpgroll.guilds.GuildsAPI;
 import com.sack.rpgroll.guilds.team.TeamManager;
 
@@ -26,7 +29,7 @@ import java.util.List;
 
 public class DungeonsPlugin extends JavaPlugin {
 
-    private static final List<String> DIRECTORIES = List.of("dungeons");
+    private static final List<String> DIRECTORIES = List.of("dungeons", "structures");
     private static final long TICK_INTERVAL = 20L;
 
     private DungeonManager dungeonManager;
@@ -36,6 +39,9 @@ public class DungeonsPlugin extends JavaPlugin {
     private ActionRegistry actionRegistry;
     private DungeonEngine engine;
     private ChatPromptManager chatPromptManager;
+    private StructureLibrary structureLibrary;
+    private StructurePasteEngine structurePasteEngine;
+    private StructureImportService structureImportService;
 
     @Override
     public void onEnable() {
@@ -45,6 +51,11 @@ public class DungeonsPlugin extends JavaPlugin {
 
         dungeonManager = new DungeonManager(this);
         dungeonManager.initialize();
+
+        structureLibrary = new StructureLibrary(this);
+        structureLibrary.initialize();
+        structurePasteEngine = new StructurePasteEngine(this);
+        structureImportService = new StructureImportService(this, structureLibrary);
 
         teamManager = GuildsAPI.getTeamManager();
         stateManager = new DungeonPlayerStateManager(this);
@@ -67,7 +78,8 @@ public class DungeonsPlugin extends JavaPlugin {
         getServer().getScheduler().runTaskTimer(this, new DungeonSessionTask(engine), TICK_INTERVAL, TICK_INTERVAL);
 
         registerCommand("dungeon", new DungeonCommand(dungeonManager, teamManager, engine));
-        registerCommand("dungeonadmin", new DungeonAdminCommand(dungeonManager, engine, chatPromptManager, this));
+        registerCommand("dungeonadmin", new DungeonAdminCommand(dungeonManager, engine, chatPromptManager, this,
+                structureLibrary, structurePasteEngine, structureImportService));
 
         registerPlaceholders();
 
@@ -135,6 +147,14 @@ public class DungeonsPlugin extends JavaPlugin {
 
     public DungeonEngine getEngine() {
         return engine;
+    }
+
+    public StructureLibrary getStructureLibrary() {
+        return structureLibrary;
+    }
+
+    public StructurePasteEngine getStructurePasteEngine() {
+        return structurePasteEngine;
     }
 
 }

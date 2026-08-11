@@ -1,0 +1,57 @@
+# Referencia completa de todos los campos de una StructureDefinition
+# (Biblioteca de Estructuras, sección "estructuras físicas"). Esta es la
+# variante CUSTOM (paleta + capas de texto) — la única que puede generarse
+# sin correr un servidor de Minecraft. Ver el bloque comentado al final
+# para el formato NATIVE (Structure Block).
+
+id: reference_full
+display-name: "Referencia completa"
+description: "Cubo hueco 3x3x3 — solo para mostrar todos los campos posibles."
+icon: STONE_BRICKS          # Material — ícono en la GUI/lista, no afecta el pegado.
+source: CUSTOM               # CUSTOM (paleta+capas, esta) o NATIVE (.nbt de Structure Block).
+
+# Offset dentro de la grilla (x,y,z) que coincide con el punto donde pegás
+# (tu posición si usás la GUI, o las coordenadas que pases a
+# "/dungeonadmin structure paste"). y siempre debería ser 0 si el ancla
+# está al nivel del piso — es el caso normal.
+anchor: { x: 1, y: 0, z: 1 }
+
+# Un carácter → un Material. '.' y ' ' ya son AIR aunque no los declares acá.
+# Evitá materiales con orientación (puertas, escaleras, antorchas de pared,
+# camas...) — el motor los pega con setType() plano, sin BlockData, así que
+# vos tenés que reponer la orientación a mano después de pegar si la necesitás.
+palette:
+  '#': STONE_BRICKS
+  '.': AIR
+  'G': GLOWSTONE
+
+# layers[y] es una lista de filas (una por z), cada fila un string (un
+# carácter por bloque en x). El piso (y=0) va primero — el motor pega capa
+# por capa de abajo hacia arriba, así que cualquier bloque que necesite
+# apoyo (como una antorcha en pie) ya tiene su soporte puesto antes de
+# llegar a esa capa.
+layers:
+  - # y=0 (piso)
+    - "###"
+    - "###"
+    - "###"
+  - # y=1 (paredes, interior hueco)
+    - "###"
+    - "#.#"
+    - "###"
+  - # y=2 (techo, con una luz)
+    - "###"
+    - "#G#"
+    - "###"
+
+# ---------------------------------------------------------------------------
+# Formato NATIVE (no es este archivo — un YAML NATIVE no lleva anchor/
+# palette/layers, y necesita un structures/<id>.nbt real al lado, generado
+# por un Structure Block vanilla o por "/dungeonadmin structure import"):
+#
+# id: mi_estructura_importada
+# display-name: "Sala importada"
+# description: "Construida en survival y traída con Structure Block."
+# icon: MOSSY_COBBLESTONE
+# source: NATIVE
+# ---------------------------------------------------------------------------

@@ -13,7 +13,7 @@ commands:
     usage: /dungeon <list|info|invite|accept|decline|leaveparty|enter|leave|revive|ranking> [args]
   dungeonadmin:
     description: Comandos administrativos de mazmorras
-    usage: /dungeonadmin <create|reload|forcestop|browser|editor> [args]
+    usage: /dungeonadmin <create|reload|forcestop|browser|editor|structure> [args]
     permission: rpgrolldungeons.admin.*
 
 permissions:

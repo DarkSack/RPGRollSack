@@ -1,0 +1,50 @@
+# Cámara de entrada 7x4x7 (X·Y·Z) — sección "estructuras físicas" de la
+# Biblioteca. El ancla (anchor) está en el centro del piso, así que pegarla
+# "en tu posición" te deja parado justo en el medio de la sala.
+id: stone_entrance
+display-name: "Entrada de Piedra"
+description: "Cámara de entrada simple con una sola puerta abierta al sur."
+icon: STONE_BRICKS
+source: CUSTOM
+
+anchor: { x: 3, y: 0, z: 3 }
+
+palette:
+  '#': STONE_BRICKS
+  '.': AIR
+  'T': TORCH
+  'G': GLOWSTONE
+
+layers:
+  - # y=0 — piso sólido
+    - "#######"
+    - "#######"
+    - "#######"
+    - "#######"
+    - "#######"
+    - "#######"
+    - "#######"
+  - # y=1 — paredes, antorchas en las esquinas interiores, entrada abierta al sur
+    - "#######"
+    - "#T...T#"
+    - "#.....#"
+    - "#.....#"
+    - "#.....#"
+    - "#T...T#"
+    - "###.###"
+  - # y=2 — paredes, entrada sigue abierta (2 de alto)
+    - "#######"
+    - "#.....#"
+    - "#.....#"
+    - "#.....#"
+    - "#.....#"
+    - "#.....#"
+    - "###.###"
+  - # y=3 — techo, con una luz central
+    - "#######"
+    - "#######"
+    - "#######"
+    - "###G###"
+    - "#######"
+    - "#######"
+    - "#######"
