@@ -2,6 +2,7 @@ package com.sack.rpgroll.crates.gui;
 
 import com.sack.rpgroll.util.ComponentUtils;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.crates.core.Crate;
@@ -12,7 +13,6 @@ import com.sack.rpgroll.crates.core.CrateRewardSelector;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -55,16 +55,19 @@ public class CrateSpinGUI extends InventoryGUI {
 
     private final Plugin plugin;
     private final CrateActionExecutor actionExecutor;
+    private final LangManager lang;
     private final List<CrateReward> reel;
     private final CrateReward winningReward;
 
     private BukkitTask animationTask;
     private int currentStep = 0;
 
-    public CrateSpinGUI(Plugin plugin, Player player, Crate crate, CrateActionExecutor actionExecutor) {
+    public CrateSpinGUI(Plugin plugin, Player player, Crate crate, CrateActionExecutor actionExecutor,
+            LangManager lang) {
         super(player, Component.text(crate.guiTitle(), NamedTextColor.GOLD).decorate(TextDecoration.BOLD), SIZE);
         this.plugin = plugin;
         this.actionExecutor = actionExecutor;
+        this.lang = lang;
         this.winningReward = CrateRewardSelector.select(crate.rewards());
         this.reel = buildReel(crate.rewards(), winningReward);
     }
@@ -180,9 +183,7 @@ public class CrateSpinGUI extends InventoryGUI {
 
         player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.0f);
 
-        player.sendMessage(Component.text("¡Ganaste: ", NamedTextColor.GREEN)
-                .append(ComponentUtils.parse(winningReward.displayName()))
-                .append(Component.text("!", NamedTextColor.GREEN)));
+        player.sendMessage(lang.component("spin.win_message", "reward", winningReward.displayName()));
 
         // Pequeño delay antes de entregar/cerrar para que el jugador
         // alcance a ver el resultado quieto en el slot central.

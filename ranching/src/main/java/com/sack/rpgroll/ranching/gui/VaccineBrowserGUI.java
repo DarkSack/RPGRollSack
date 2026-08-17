@@ -31,7 +31,7 @@ public class VaccineBrowserGUI extends InventoryGUI {
 
     public VaccineBrowserGUI(Player player, VaccineManager vaccineManager, DiseaseManager diseaseManager,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text("Vacunas", NamedTextColor.GOLD), SIZE);
+        super(player, Component.text(chatPromptManager.lang().raw("gui.hub.vaccines"), NamedTextColor.GOLD), SIZE);
         this.vaccineManager = vaccineManager;
         this.diseaseManager = diseaseManager;
         this.chatPromptManager = chatPromptManager;
@@ -54,14 +54,14 @@ public class VaccineBrowserGUI extends InventoryGUI {
 
             setItem(i, new ItemBuilder(SpeciesBrowserGUI.parseMaterial(vaccine.icon(), Material.POTION))
                     .setName(Component.text(vaccine.displayName(), NamedTextColor.YELLOW))
-                    .setLore(Component.text("id: " + vaccine.id(), NamedTextColor.GRAY),
-                            Component.text("Click para editar", NamedTextColor.YELLOW))
+                    .setLore(Component.text(chatPromptManager.lang().raw("gui.browser.id_line", "id", vaccine.id()), NamedTextColor.GRAY),
+                            Component.text(chatPromptManager.lang().raw("gui.common.click_to_edit"), NamedTextColor.YELLOW))
                     .build());
         }
 
         setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Crear vacuna nueva", NamedTextColor.GREEN)).build());
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+                .setName(Component.text(chatPromptManager.lang().raw("gui.vaccine.browser.new"), NamedTextColor.GREEN)).build());
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(chatPromptManager.lang().raw("gui.common.back")));
     }
 
     @Override
@@ -87,12 +87,12 @@ public class VaccineBrowserGUI extends InventoryGUI {
     }
 
     private void promptNew() {
-        chatPromptManager.prompt(player, "Escribí el id de la nueva vacuna:", value -> {
+        chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.vaccine.browser.prompt_new_id"), value -> {
 
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 
             if (vaccineManager.exists(id)) {
-                player.sendMessage(Component.text("Ya existe una vacuna con ese id.", NamedTextColor.RED));
+                player.sendMessage(Component.text(chatPromptManager.lang().raw("gui.vaccine.browser.already_exists"), NamedTextColor.RED));
                 reopen();
                 return;
             }

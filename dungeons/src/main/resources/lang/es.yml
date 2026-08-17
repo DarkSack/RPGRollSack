@@ -1,0 +1,344 @@
+# Mensajes de RPGRoll-Dungeons (idioma: Español)
+# Editá este archivo libremente — tus cambios se conservan tras un /dungeonadmin reload.
+# Placeholders con {llave} se reemplazan por valores dinámicos donde se indique.
+
+common:
+  yes: "sí"
+  no: "no"
+
+prompt:
+  footer: "&7Escribí en el chat, o '{keyword}' para abortar."
+  cancel_keyword: "cancelar"
+  cancelled: "&cCancelado."
+
+command:
+  dungeon:
+    usage: "&eUso: /dungeon <list|info|invite|accept|decline|leaveparty|enter|leave|revive|ranking> [args]"
+    not_found: "&cNo existe la mazmorra '{id}'."
+    player_not_found: "&cJugador no encontrado."
+    not_in_run: "&cNo estás en ninguna corrida."
+    list:
+      header: "&6=== Mazmorras ({count}) ==="
+      occupied: "&c[ocupada]"
+      free: "&a[libre]"
+    info:
+      usage: "&eUso: /dungeon info <id>"
+      stats: "&7Nivel recomendado: {level} | Jugadores: {min}-{max} | Duración estimada: {minutes} min"
+      rooms: "&7Salas: {rooms} | Repetible: {repeatable}"
+      difficulties: "&7Dificultades: {difficulties}"
+    invite:
+      players_only: "&cSolo un jugador puede invitar."
+      usage: "&eUso: /dungeon invite <jugador>"
+      sent: "&a✔ Invitación enviada a {target}."
+      received: "&e{inviter} te invitó a su grupo de mazmorra — /dungeon accept (60s)"
+      failed: "&cNo se pudo invitar: {result}"
+    accept:
+      ok: "&a✔ Te uniste al grupo."
+      no_invite: "&cNo tenés ninguna invitación pendiente."
+      expired: "&cEsa invitación ya expiró."
+      team_gone: "&cEse grupo ya no existe."
+      team_full: "&cEse grupo ya está lleno."
+    decline:
+      ok: "&7Invitación rechazada."
+    leaveparty:
+      disbanded: "&7Grupo disuelto."
+      left: "&7Saliste del grupo."
+    enter:
+      players_only: "&cSolo un jugador puede entrar a una mazmorra."
+      usage: "&eUso: /dungeon enter <id> [dificultad]"
+      not_leader: "&cSolo el líder del grupo puede iniciar la mazmorra."
+      queued: "&eLa mazmorra está ocupada — tu grupo quedó en cola."
+      already_running: "&cTu grupo ya está en una corrida."
+      party_too_small: "&cSe necesitan al menos {min} jugador(es)."
+      party_too_large: "&cEl grupo excede el máximo de {max} jugador(es)."
+      on_cooldown: "&cAlguien del grupo todavía está en cooldown para esta mazmorra."
+      difficulty_not_found: "&cNo existe la dificultad '{difficulty}'."
+    leave:
+      ok: "&7Abandonaste la mazmorra."
+    revive:
+      usage: "&eUso: /dungeon revive <jugador>"
+      ok: "&a✔ Revivido."
+      not_dead: "&cEse jugador no está muerto en esta corrida."
+    ranking:
+      usage: "&eUso: /dungeon ranking <id> [daily|weekly|monthly|global]"
+      empty: "&7Todavía no hay corridas registradas."
+      entry: "&7{position}. {players} — {seconds}s, {deaths} muerte(s)"
+  dungeonadmin:
+    no_permission: "&cNo tenés permiso para usar este comando."
+    usage: "&eUso: /dungeonadmin <create|reload|forcestop|browser|editor|structure> [args]"
+    players_only: "&cSolo un jugador puede abrir el editor."
+    not_found: "&cNo existe la mazmorra '{id}'."
+    create:
+      usage: "&eUso: /dungeonadmin create <id>"
+      id_taken: "&cYa existe una mazmorra con ese id."
+      ok: "&a✔ Mazmorra '{id}' creada — abrila con /dungeonadmin editor {id} (o /dungeonadmin browser) para configurarla."
+    reload:
+      ok: "&a✔ Recargado: {dungeons} mazmorra(s), {structures} estructura(s)."
+    forcestop:
+      usage: "&eUso: /dungeonadmin forcestop <id>"
+      no_run: "&cEsa mazmorra no tiene ninguna corrida activa."
+      ok: "&a✔ Corrida detenida."
+    editor:
+      usage: "&eUso: /dungeonadmin editor <id>"
+    structure:
+      usage: "&eUso: /dungeonadmin structure <list|info|paste|import|browser> [args]"
+      not_found: "&cNo existe una estructura con id: {id}"
+      list:
+        header: "&6Biblioteca de Estructuras ({count}):"
+        entry: "&f• {id} ({source}) — {name}"
+      info:
+        usage: "&eUso: /dungeonadmin structure info <id>"
+        unreadable_nbt: "(no se pudo leer el .nbt)"
+        source: "&fFuente: {source}"
+        size: "&fTamaño (X·Y·Z): {size}"
+      paste:
+        usage: "&eUso: /dungeonadmin structure paste <id> [mundo x y z] [rotacion]"
+        world_not_found: "&cNo existe el mundo: {world}"
+        invalid_coords: "&cCoordenadas inválidas."
+        console_needs_coords: "&cDesde consola hace falta pasar mundo y coordenadas: structure paste <id> <mundo> <x> <y> <z>"
+        invalid_rotation: "&cRotación inválida — usá NONE, CLOCKWISE_90, CLOCKWISE_180 o COUNTERCLOCKWISE_90."
+        ok: "&a✔ Estructura '{id}' pegada."
+        failed: "&c✘ No se pudo pegar la estructura — revisá la consola."
+      import:
+        usage: "&eUso: /dungeonadmin structure import <nombreVanilla> <nuevoId> [nombre visible...]"
+        usage_hint: "&7nombreVanilla es el nombre que le pusiste al Structure Block al guardar (ej. rpgroll:sala1)."
+        ok: "&a✔ Estructura '{id}' importada a la Biblioteca."
+        id_taken: "&cYa existe una estructura con ese id."
+        vanilla_not_found: "&cNo se encontró ninguna estructura vanilla guardada como '{name}'."
+        io_error: "&cError de I/O al importar — revisá la consola."
+      browser:
+        players_only: "&cSolo un jugador puede abrir la Biblioteca de Estructuras."
+
+engine:
+  queue:
+    your_turn: "&a¡Es el turno de tu grupo para entrar a "
+
+gui:
+  common:
+    previous: "&e« Anterior"
+    next: "&eSiguiente »"
+    close: "Cerrar"
+    back: "Volver"
+    save: "Guardar"
+    cancel: "Cancelar"
+    click_to_change: "&7Click para cambiar"
+  structurelibrary:
+    title: "&6Biblioteca de Estructuras"
+    item:
+      size_at_paste: "Tamaño real al pegar"
+      source_native: "&dFuente: Structure Block"
+      source_custom: "&bFuente: propia (YAML)"
+      click_to_paste: "&eClick para pegar"
+  pasteconfirm:
+    title: "&6Pegar: {id}"
+    centered_on_you: "&eSe pega centrada en tu posición actual"
+    rotation: "&bRotación: {value}"
+    rotate_hint: "&7Click para rotar 90°"
+    mirror_label: "&bEspejo: {value}"
+    mirror:
+      left_right: "Izquierda/Derecha"
+      front_back: "Adelante/Atrás"
+      none: "Ninguno"
+    confirm: "Pegar en mi posición"
+  editor:
+    hub:
+      title: "&6Editando: {id}"
+      save:
+        ok: "&a✔ Mazmorra guardada."
+        error: "&c✘ Error guardando la mazmorra: {error}"
+      info:
+        name: "&eInformación"
+        description: "&7Nombre, categoría, ícono, descripción, nivel, jugadores, cooldown"
+      region:
+        name: "&eRegión y Lobby"
+        description: "&7Esquinas del área física y punto de aparición"
+      rooms:
+        name: "&eSalas"
+        description: "&7Secuencia de habitaciones: objetivos, oleadas, jefe"
+      difficulties:
+        name: "&eDificultades"
+        description: "&7Normal/Hard/Elite/Mythic/Nightmare y sus modificadores"
+      loot:
+        name: "&eLoot"
+        description: "&7Recompensas al completar la mazmorra"
+      triggers:
+        name: "&eTriggers"
+        description: "&7Acciones por evento (inicio, sala, oleada, jefe...)"
+      checkpoints:
+        name: "&eCheckpoints y Revivir"
+        description: "&7Qué pasa al morir el grupo, y cómo se revive"
+    info:
+      title: "&6Información: {id}"
+      name: "&eNombre: {value}"
+      click_to_write: "&7Click para escribir uno nuevo"
+      click_to_write_new: "&7Click para escribir una nueva"
+      category: "&eCategoría: {value}"
+      icon:
+        label: "&eÍcono: {value}"
+        hint: "&7Click para escribir un Material vanilla"
+      description:
+        label: "&eDescripción"
+        empty: "(vacía)"
+      level:
+        label: "&eNivel recomendado: {value}"
+        hint: "&7Click: +1 · Shift-click: +10 · Derecho: -1/-10"
+      min_players: "&eMín. jugadores: {value}"
+      max_players: "&eMáx. jugadores: {value}"
+      click_updown_hint: "&7Click: +1 · Derecho: -1"
+      estimated_minutes:
+        label: "&eDuración estimada: {value} min"
+        hint: "&7Click: +5 · Derecho: -5"
+      cooldown:
+        label: "&eCooldown: {value} min"
+        hint: "&7Click: +30 min · Shift-click: +6h · Derecho: -30 min/-6h"
+      repeatable: "&eRepetible: {value}"
+      click_to_toggle: "&7Click para alternar"
+      tag:
+        remove_hint: "&8Shift-click para quitar"
+        add: "&aAgregar tag"
+      prompt:
+        name: "&eEscribí el nuevo nombre:"
+        category: "&eEscribí la nueva categoría:"
+        icon: "&eEscribí el Material (ej. STONE_BRICKS):"
+        description: "&eEscribí la descripción:"
+        tag: "&eEscribí el nuevo tag:"
+    rooms:
+      title: "&6Salas: {id}"
+      add: "&aAgregar sala"
+      move_up: "&b↑ Mover arriba"
+      move_down: "&b↓ Mover abajo"
+      move_hint: "&7Sobre la sala seleccionada (click derecho en una)"
+      prompt:
+        new_id: "&eEscribí el id de la nueva sala:"
+      item:
+        stats: "objetivos: {objectives} · oleadas: {waves}"
+        boss: " · jefe: {boss}"
+        edit_remove_hint: "&8Click para editar · Shift-click para quitar"
+        select_hint: "&8Click derecho para seleccionar (reordenar con ↑/↓)"
+    roomedit:
+      title: "&6Sala: {id}"
+      id: "&eID: {value}"
+      type:
+        label: "&eTipo: {value}"
+        hint: "&7Click para pasar al siguiente tipo"
+      entry_point:
+        label: "&ePunto de entrada"
+        hint: "&7Click para fijarlo en tu posición actual"
+      boss:
+        label: "&eJefe: {value}"
+        none: "(ninguno)"
+        hint: "&8Id de una definición de RPGRoll-Mobs"
+        click_hint: "&7Click: escribir · Shift-click: quitar"
+      objectives: "&eObjetivos: {value}"
+      waves: "&eOleadas: {value}"
+      events:
+        label: "&eEventos de esta sala"
+        hint: "&7Acciones por trigger, solo para esta sala"
+      prompt:
+        id: "&eEscribí el nuevo id:"
+        boss: "&eEscribí el id del mob jefe (RPGRoll-Mobs):"
+    roomevents:
+      title: "&6Eventos de sala"
+      item:
+        actions: "&7{count} acción(es)"
+    actionlist:
+      title_for: "Acciones: {trigger}"
+      add:
+        label: "&aAgregar acción"
+        hint1: "&7TIPO clave=valor clave2=valor2"
+        hint2: "&8ej. SOUND sound=ENTITY_WITHER_SPAWN"
+      invalid_format: "&cFormato inválido."
+      item:
+        remove_hint: "&8Shift-click para quitar"
+      prompt:
+        add: "&eEscribí: TIPO clave=valor clave2=valor2 (ej. TELEPORT x=100 y=65 z=0):"
+    region:
+      title: "&6Región: {id}"
+      corner1: "&eEsquina 1: {value}"
+      corner2: "&eEsquina 2: {value}"
+      corner:
+        hint: "&7Click para fijarla en tu posición actual"
+      lobby:
+        label: "&eLobby: {value}"
+        hint: "&7Click para fijarlo en tu posición y mirada actual"
+      unset: "(sin fijar)"
+      updated: "&a✔ Región actualizada."
+    waves:
+      title: "&6Oleadas"
+      add: "&aAgregar oleada"
+      format_hint: "id tiempoLimite tiempoAntes mob1:cantidad,mob2:cantidad — ej. wave1 30s 5s skeleton_archer:3,zombie_grunt:2 (0 = sin límite/demora)"
+      item:
+        mobs: "&7mobs: {count}"
+        time_limit: "&7tiempo límite: {seconds}s"
+      prompt:
+        add: "&eEscribí: id tiempoLimite tiempoAntes mob1:cantidad,mob2:cantidad — ej. wave1 30s 5s skeleton_archer:3,zombie_grunt:2 (0 = sin límite/demora)"
+    objectives:
+      title: "&6Objetivos"
+      add: "&aAgregar objetivo"
+      format_hint: "TIPO cantidad clave=valor... — ej. KILL_ENTITY 5 entity=ZOMBIE, COLLECT_ITEM 3 material=DIAMOND, ACTIVATE_MECHANISM 1 x=100 y=65 z=-20"
+      invalid_type: "&cTipo de objetivo inválido."
+      invalid_amount: "&cCantidad numérica inválida."
+      prompt:
+        add: "&eEscribí: TIPO cantidad clave=valor... — ej. KILL_ENTITY 5 entity=ZOMBIE, COLLECT_ITEM 3 material=DIAMOND, ACTIVATE_MECHANISM 1 x=100 y=65 z=-20"
+    triggers:
+      title: "&6Triggers: {id}"
+    checkpointsrevive:
+      title: "&6Checkpoints/Revivir: {id}"
+      mode: "&eAl perder el grupo: {value}"
+      shared_lives:
+        label: "&eVida compartida: {value}"
+        hint: "&7Si está activa, cada muerte individual descuenta del pool de reintentos"
+      max_retries:
+        label: "&eReintentos máximos: {value}"
+        hint: "&7Click: +1 · Derecho: -1 (por debajo de 0 = ilimitado)"
+      unlimited: "ilimitados"
+      revive_mode: "&eRevivir: {value}"
+      revive_timer:
+        label: "&eTemporizador: {seconds}s"
+        hint1: "&8Usado por el modo AFTER_TIMER"
+        hint2: "&7Click: +5s · Shift-click: +30s · Derecho: -5s/-30s"
+      revive_item:
+        label: "&eÍtem requerido: {value}"
+        hint1: "&8Usado por el modo WITH_ITEM"
+      prompt:
+        item: "&eEscribí el Material requerido:"
+    loot:
+      title: "&6Loot: {id}"
+      add: "&aAgregar entrada de loot"
+      format_hint_short: "TIPO referencia cantidadMin cantidadMax probabilidad scope"
+      invalid_field_count: "&cFormato inválido — se esperaban 6 campos."
+      invalid_value: "&cValor inválido en la entrada de loot."
+      item:
+        amount: "&7cantidad: {min}-{max}"
+        chance: "&7probabilidad: {chance}% · {scope}"
+        replace_remove_hint: "&8Click para reemplazar · Shift-click para quitar"
+      prompt:
+        add: "&eEscribí: TIPO referencia cantidadMin cantidadMax probabilidad scope\n&7ej. ITEM ancient_relic 1 1 25 SHARED — tipos: ITEM/MONEY/EXPERIENCE/COMMAND/QUEST — scope: SHARED/PER_PLAYER/PER_CONTRIBUTION"
+        replace: "&eEscribí la entrada reemplazante: TIPO referencia cantidadMin cantidadMax probabilidad scope\n&7ej. ITEM ancient_relic 1 1 25 SHARED — tipos: ITEM/MONEY/EXPERIENCE/COMMAND/QUEST — scope: SHARED/PER_PLAYER/PER_CONTRIBUTION"
+    difficulties:
+      title: "&6Dificultades: {id}"
+      add: "&aAgregar dificultad"
+      prompt:
+        new_id: "&eEscribí el id de la nueva dificultad:"
+      item:
+        multipliers: "&7vida x{health} · daño x{damage} · loot x{loot}"
+        modifiers: "&7modificadores: {count}"
+    difficultyedit:
+      title: "&6Dificultad: {id}"
+      health: "&eMultiplicador de vida: x{value}"
+      damage: "&eMultiplicador de daño: x{value}"
+      loot: "&eMultiplicador de loot: x{value}"
+      multiplier_hint: "&7Click: +0.1 · Shift-click: +0.5 · Derecho: -0.1/-0.5"
+  browser:
+    title: "&6Mazmorras RPGRoll"
+    search:
+      name: "&bBuscar"
+      no_filter: "&7(sin filtro)"
+      filter: "&7Filtro: {text}"
+      prompt: "&eEscribí parte del nombre o id de la mazmorra:"
+    all_categories: "&bTodas las categorías"
+    clear_search: "&cLimpiar búsqueda"
+    item:
+      level_players: "&7Nivel {level} · {min}-{max} jugadores"
+      rooms: "&7{rooms} sala(s)"
+      click_to_edit: "&eClick para editar"

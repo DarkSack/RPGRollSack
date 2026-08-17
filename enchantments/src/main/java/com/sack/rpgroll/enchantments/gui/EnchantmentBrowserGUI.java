@@ -1,5 +1,6 @@
 package com.sack.rpgroll.enchantments.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.enchantments.core.CustomEnchantment;
@@ -27,13 +28,15 @@ public class EnchantmentBrowserGUI extends InventoryGUI {
 
     private final EnchantmentManager enchantmentManager;
     private final ChatPromptManager chatPromptManager;
+    private final LangManager lang;
     private List<CustomEnchantment> enchantments;
 
     public EnchantmentBrowserGUI(Player player, EnchantmentManager enchantmentManager,
             ChatPromptManager chatPromptManager) {
-        super(player, Component.text("Encantamientos RPGRoll", NamedTextColor.GOLD), SIZE);
+        super(player, chatPromptManager.lang().component("enchantment_browser_gui.title"), SIZE);
         this.enchantmentManager = enchantmentManager;
         this.chatPromptManager = chatPromptManager;
+        this.lang = chatPromptManager.lang();
         this.enchantments = List.copyOf(enchantmentManager.getAll());
     }
 
@@ -52,17 +55,17 @@ public class EnchantmentBrowserGUI extends InventoryGUI {
 
             setItem(i, new ItemBuilder(Material.ENCHANTED_BOOK)
                     .setName(Component.text(enchantment.id(), enchantment.rarity().color()))
-                    .setLore(Component.text(enchantment.rarity() + " · Nivel máx. " + enchantment.maxLevel(),
-                            NamedTextColor.GRAY),
-                            Component.text("Click para editar", NamedTextColor.YELLOW))
+                    .setLore(lang.component("enchantment_browser_gui.entry_lore_line1",
+                            "rarity", enchantment.rarity(), "max_level", enchantment.maxLevel()),
+                            lang.component("enchantment_browser_gui.entry_lore_line2"))
                     .build());
         }
 
         setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Crear encantamiento nuevo", NamedTextColor.GREEN))
+                .setName(lang.component("enchantment_browser_gui.create_new"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Cerrar"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("enchantment_browser_gui.close_button")));
     }
 
     @Override
@@ -88,12 +91,12 @@ public class EnchantmentBrowserGUI extends InventoryGUI {
     }
 
     private void promptNew() {
-        chatPromptManager.prompt(player, "Escribí el id del nuevo encantamiento:", value -> {
+        chatPromptManager.prompt(player, lang.raw("enchantment_browser_gui.prompt_new"), value -> {
 
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 
             if (enchantmentManager.exists(id)) {
-                player.sendMessage(Component.text("Ya existe un encantamiento con ese id.", NamedTextColor.RED));
+                lang.send(player, "enchantment_browser_gui.already_exists");
                 reopen();
                 return;
             }

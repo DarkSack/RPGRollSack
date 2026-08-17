@@ -1,7 +1,9 @@
 package com.sack.rpgroll.dungeons.gui.editor;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
+import com.sack.rpgroll.util.ComponentUtils;
 import com.sack.rpgroll.dungeons.core.DungeonObjective;
 import com.sack.rpgroll.dungeons.core.DungeonObjectiveType;
 
@@ -30,20 +32,19 @@ public class ObjectivesEditorGUI extends InventoryGUI {
     private static final int ADD_SLOT = 40;
     private static final int BACK_SLOT = 44;
 
-    private static final String FORMAT_HINT =
-            "TIPO cantidad clave=valor... — ej. KILL_ENTITY 5 entity=ZOMBIE, COLLECT_ITEM 3 material=DIAMOND,"
-                    + " ACTIVATE_MECHANISM 1 x=100 y=65 z=-20";
-
     private final DungeonEditorSession session;
     private final List<DungeonObjective> objectives;
     private final Runnable onBack;
+    private final LangManager lang;
 
     public ObjectivesEditorGUI(Player player, DungeonEditorSession session, List<DungeonObjective> objectives,
             Runnable onBack) {
-        super(player, Component.text("Objetivos", NamedTextColor.GOLD), SIZE);
+        super(player, ComponentUtils.parse(session.chatPromptManager.lang().raw("gui.editor.objectives.title")),
+                SIZE);
         this.session = session;
         this.objectives = objectives;
         this.onBack = onBack;
+        this.lang = session.chatPromptManager.lang();
     }
 
     @Override
@@ -64,16 +65,16 @@ public class ObjectivesEditorGUI extends InventoryGUI {
                     .setLore(
                             Component.text(objective.description(), NamedTextColor.GRAY),
                             Component.text(objective.params().toString(), NamedTextColor.DARK_GRAY),
-                            Component.text("Shift-click para quitar", NamedTextColor.DARK_GRAY))
+                            ComponentUtils.parse(lang.raw("gui.editor.actionlist.item.remove_hint")))
                     .build());
         }
 
         setItem(ADD_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Agregar objetivo", NamedTextColor.GREEN))
-                .setLore(Component.text(FORMAT_HINT, NamedTextColor.GRAY))
+                .setName(ComponentUtils.parse(lang.raw("gui.editor.objectives.add")))
+                .setLore(Component.text(lang.raw("gui.editor.objectives.format_hint"), NamedTextColor.GRAY))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back")));
     }
 
     @Override
@@ -101,12 +102,12 @@ public class ObjectivesEditorGUI extends InventoryGUI {
     }
 
     private void promptAdd() {
-        session.chatPromptManager.prompt(player, "Escribí: " + FORMAT_HINT, value -> {
+        session.chatPromptManager.prompt(player, "gui.editor.objectives.prompt.add", value -> {
 
             String[] tokens = value.trim().split("\\s+");
 
             if (tokens.length < 2) {
-                player.sendMessage(Component.text("Formato inválido.", NamedTextColor.RED));
+                lang.send(player, "gui.editor.actionlist.invalid_format");
                 return;
             }
 
@@ -114,7 +115,7 @@ public class ObjectivesEditorGUI extends InventoryGUI {
             try {
                 type = DungeonObjectiveType.valueOf(tokens[0].toUpperCase(Locale.ROOT));
             } catch (IllegalArgumentException e) {
-                player.sendMessage(Component.text("Tipo de objetivo inválido.", NamedTextColor.RED));
+                lang.send(player, "gui.editor.objectives.invalid_type");
                 return;
             }
 
@@ -122,7 +123,7 @@ public class ObjectivesEditorGUI extends InventoryGUI {
             try {
                 amount = Integer.parseInt(tokens[1]);
             } catch (NumberFormatException e) {
-                player.sendMessage(Component.text("Cantidad numérica inválida.", NamedTextColor.RED));
+                lang.send(player, "gui.editor.objectives.invalid_amount");
                 return;
             }
 

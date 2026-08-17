@@ -10,3 +10,47 @@ output-slot: 26
 requires-fuel: true
 gui-title: "Estación de Referencia"
 allowed-recipe-ids: []
+
+# Bloques exigidos alrededor del disparador (offsets relativos + Material) —
+# vacío = sin estructura, un único bloque alcanza (comportamiento clásico).
+structure-requirements:
+  - dx: -1
+    dy: 0
+    dz: -1
+    material: IRON_BLOCK
+  - dx: 1
+    dy: 0
+    dz: -1
+    material: IRON_BLOCK
+  - dx: -1
+    dy: 0
+    dz: 1
+    material: IRON_BLOCK
+  - dx: 1
+    dy: 0
+    dz: 1
+    material: IRON_BLOCK
+
+# Nivel máximo alcanzable con /crafting upgrade (1 = sin mejoras).
+max-tier: 5
+# Fracción de reducción de processing-time-ticks por cada nivel sobre el 1.
+speed-bonus-per-tier: 0.08
+# Fracción de reducción de fail-chance por cada nivel sobre el 1.
+fail-reduction-per-tier: 0.03
+# Costo de cada salto de nivel (entradas para tier 2..max-tier).
+tier-upgrades:
+  - tier: 2
+    economy-cost: 50
+    economy-currency-id: null
+    cost:
+      - type: MATERIAL
+        value: IRON_INGOT
+        amount: 16
+
+# Categoría de RPGRoll-Crafting Proficiency que progresa al craftear acá
+# (vacío = usa el id de la estación — dos estaciones con la misma categoría
+# comparten el mismo progreso de nivel/calidad).
+skill-category: forjado
+
+# Si /crafting experiment puede usarse en esta estación.
+allow-experimentation: true

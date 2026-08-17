@@ -1,5 +1,6 @@
 package com.sack.rpgroll.quests.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.quests.region.Region;
@@ -24,12 +25,15 @@ public class RegionBrowserGUI extends InventoryGUI {
 
     private final RegionManager regionManager;
     private final ChatPromptManager chatPromptManager;
+    private final LangManager lang;
     private List<Region> regions;
 
-    public RegionBrowserGUI(Player player, RegionManager regionManager, ChatPromptManager chatPromptManager) {
-        super(player, Component.text("Regiones RPGRoll", NamedTextColor.GOLD), SIZE);
+    public RegionBrowserGUI(Player player, RegionManager regionManager, ChatPromptManager chatPromptManager,
+            LangManager lang) {
+        super(player, lang.component("region_browser.title"), SIZE);
         this.regionManager = regionManager;
         this.chatPromptManager = chatPromptManager;
+        this.lang = lang;
         this.regions = List.copyOf(regionManager.getAll());
     }
 
@@ -48,16 +52,16 @@ public class RegionBrowserGUI extends InventoryGUI {
 
             setItem(i, new ItemBuilder(Material.MAP)
                     .setName(Component.text(region.id(), NamedTextColor.YELLOW))
-                    .setLore(Component.text("Mundo: " + region.world(), NamedTextColor.GRAY),
-                            Component.text("Click para editar", NamedTextColor.YELLOW))
+                    .setLore(lang.component("region_browser.world_label", "world", region.world()),
+                            lang.component("region_browser.click_to_edit"))
                     .build());
         }
 
         setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Crear región nueva (acá)", NamedTextColor.GREEN))
+                .setName(lang.component("region_browser.create_new"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Cerrar"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("region_browser.close_button")));
     }
 
     @Override
@@ -67,7 +71,7 @@ public class RegionBrowserGUI extends InventoryGUI {
         int slot = event.getSlot();
 
         if (slot < regions.size() && slot < 36) {
-            new RegionEditorGUI(player, regions.get(slot), regionManager, this::reopen).open();
+            new RegionEditorGUI(player, regions.get(slot), regionManager, this::reopen, lang).open();
             return;
         }
 
@@ -82,12 +86,12 @@ public class RegionBrowserGUI extends InventoryGUI {
     }
 
     private void promptNew() {
-        chatPromptManager.prompt(player, "Escribí el id de la nueva región:", value -> {
+        chatPromptManager.prompt(player, "region_browser.prompt_new_id", value -> {
 
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 
             if (regionManager.exists(id)) {
-                player.sendMessage(Component.text("Ya existe una región con ese id.", NamedTextColor.RED));
+                lang.send(player, "region_browser.id_exists");
                 reopen();
                 return;
             }

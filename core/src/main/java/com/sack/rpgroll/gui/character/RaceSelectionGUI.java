@@ -1,5 +1,6 @@
 package com.sack.rpgroll.gui.character;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.api.race.Race;
@@ -35,21 +36,23 @@ public class RaceSelectionGUI extends InventoryGUI {
         private final Map<Integer, String> slotToRace;
         private final RaceManager raceManager;
         private final boolean mandatory;
+        private final LangManager lang;
 
         /**
          * @param mandatory si es true, no se muestra botón de cancelar y la GUI
          *                  se reabre automáticamente si se cierra sin seleccionar.
          */
         public RaceSelectionGUI(Player player, RaceManager raceManager, Consumer<String> onRaceSelected,
-                        boolean mandatory) {
+                        boolean mandatory, LangManager lang) {
                 super(
                                 player,
-                                Component.text("Selecciona tu Raza", NamedTextColor.GOLD).decorate(TextDecoration.BOLD),
+                                lang.component("race_selection_gui.title").decorate(TextDecoration.BOLD),
                                 27);
 
                 this.raceManager = raceManager;
                 this.onRaceSelected = onRaceSelected;
                 this.mandatory = mandatory;
+                this.lang = lang;
                 this.slotToRace = new HashMap<>();
         }
 
@@ -72,9 +75,8 @@ public class RaceSelectionGUI extends InventoryGUI {
 
                 if (races.isEmpty()) {
                         setItem(13, new ItemBuilder(Material.BARRIER)
-                                        .setName(Component.text("Sin razas disponibles", NamedTextColor.RED))
-                                        .setLore(Component.text("No hay razas cargadas. Contacta a un admin.",
-                                                        NamedTextColor.GRAY))
+                                        .setName(lang.component("race_selection_gui.none_available"))
+                                        .setLore(lang.component("race_selection_gui.none_available_lore"))
                                         .build());
                 } else {
                         for (int i = 0; i < races.size() && i < CONTENT_SLOTS.length; i++) {
@@ -87,7 +89,7 @@ public class RaceSelectionGUI extends InventoryGUI {
                 }
 
                 if (!mandatory) {
-                        setItem(CANCEL_SLOT, ItemBuilder.createCancelButton("Cancelar"));
+                        setItem(CANCEL_SLOT, ItemBuilder.createCancelButton(lang.raw("race_selection_gui.cancel_button")));
                 }
         }
 
@@ -124,7 +126,7 @@ public class RaceSelectionGUI extends InventoryGUI {
 
                 if (!mandatory && slot == CANCEL_SLOT) {
                         close();
-                        player.sendMessage(Component.text("Creación de personaje cancelada.", NamedTextColor.YELLOW));
+                        lang.send(player, "race_selection_gui.cancelled");
                         return;
                 }
 

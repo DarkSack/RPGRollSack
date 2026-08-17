@@ -2,6 +2,7 @@ package com.sack.rpgroll.guilds.gui.guild;
 
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
+import com.sack.rpgroll.guilds.GuildsAPI;
 import com.sack.rpgroll.guilds.guild.Guild;
 import com.sack.rpgroll.guilds.guild.achievement.GuildAchievementDefinition;
 
@@ -21,9 +22,14 @@ public class GuildAchievementsGUI extends InventoryGUI {
     private final Runnable onBack;
 
     public GuildAchievementsGUI(Player player, Guild guild, Runnable onBack) {
-        super(player, Component.text("Logros: " + guild.name(), NamedTextColor.GOLD), SIZE);
+        super(player, Component.text(GuildsAPI.getLangManager().raw("guild.achievements.title", "name", guild.name()),
+                NamedTextColor.GOLD), SIZE);
         this.guild = guild;
         this.onBack = onBack;
+    }
+
+    private static com.sack.rpgroll.common.lang.LangManager lang() {
+        return GuildsAPI.getLangManager();
     }
 
     @Override
@@ -46,12 +52,13 @@ public class GuildAchievementsGUI extends InventoryGUI {
                     .setName(Component.text(definition.displayName(), unlocked ? NamedTextColor.GOLD
                             : NamedTextColor.DARK_GRAY))
                     .setLore(Component.text(definition.description(), NamedTextColor.GRAY),
-                            Component.text(unlocked ? "Desbloqueado" : "Bloqueado",
+                            Component.text(lang().raw(unlocked ? "guild.achievements.unlocked"
+                                    : "guild.achievements.locked"),
                                     unlocked ? NamedTextColor.GREEN : NamedTextColor.RED))
                     .build());
         }
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang().raw("common.back")));
     }
 
     @Override

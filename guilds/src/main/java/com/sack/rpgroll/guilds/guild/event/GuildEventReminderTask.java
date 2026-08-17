@@ -1,10 +1,8 @@
 package com.sack.rpgroll.guilds.guild.event;
 
+import com.sack.rpgroll.guilds.GuildsAPI;
 import com.sack.rpgroll.guilds.guild.Guild;
 import com.sack.rpgroll.guilds.guild.GuildManager;
-
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -48,14 +46,11 @@ public class GuildEventReminderTask implements Runnable {
 
     private void announce(Guild guild, GuildEvent event) {
 
-        Component message = Component.text("📅 Evento de guild: ", NamedTextColor.GOLD)
-                .append(Component.text(event.name(), NamedTextColor.YELLOW))
-                .append(Component.text(" — " + event.description(), NamedTextColor.GRAY));
-
         for (UUID memberId : guild.members().keySet()) {
             Player player = Bukkit.getPlayer(memberId);
             if (player != null) {
-                player.sendMessage(message);
+                GuildsAPI.getLangManager().send(player, "guild.calendar.event_reminder", "name", event.name(),
+                        "description", event.description());
             }
         }
     }

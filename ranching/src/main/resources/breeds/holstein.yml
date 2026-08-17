@@ -7,3 +7,14 @@ weight-multiplier: 1.1
 fertility-multiplier: 1.0
 resistance-multiplier: 0.9
 temperament: "Calmada"
+
+# Reskin visual propio (opcional, sin depender de ModelEngine/BetterModel): monta
+# un ItemDisplay con este material+CMD como pasajero del animal (invisible, ver
+# reskin.material). El material y el custom-model-data los define un resource pack
+# (ver SackResourcePack, carpeta plugins/RPGRoll-Ranching/resourcepack/<namespace>/
+# <textures|models>/item/...). Sin esta sección, el animal se ve vanilla normal.
+# reskin:
+#   material: PAPER
+#   custom-model-data: 200001
+#   scale: 1.0
+#   y-offset: 0.0

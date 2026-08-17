@@ -1,5 +1,6 @@
 package com.sack.rpgroll.magic.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.magic.core.SchoolManager;
@@ -55,16 +56,18 @@ public class SpellEditorHubGUI extends InventoryGUI {
     private final SpellManager spellManager;
     private final SchoolManager schoolManager;
     private final ChatPromptManager chatPromptManager;
+    private final LangManager lang;
     private final Runnable onBack;
     private Spell current;
 
     public SpellEditorHubGUI(Player player, Spell spell, SpellManager spellManager, SchoolManager schoolManager,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text("Hechizo: " + spell.id(), NamedTextColor.GOLD), SIZE);
+        super(player, chatPromptManager.lang().component("gui.spell_editor.title", "id", spell.id()), SIZE);
         this.current = spell;
         this.spellManager = spellManager;
         this.schoolManager = schoolManager;
         this.chatPromptManager = chatPromptManager;
+        this.lang = chatPromptManager.lang();
         this.onBack = onBack;
     }
 
@@ -84,81 +87,81 @@ public class SpellEditorHubGUI extends InventoryGUI {
         }
 
         setItem(NAME_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(Component.text("Nombre: " + current.displayName(), NamedTextColor.YELLOW)).build());
+                .setName(lang.component("gui.common.name_label", "name", current.displayName())).build());
 
         setItem(ICON_SLOT, new ItemBuilder(SchoolBrowserGUI.parseMaterial(current.icon()))
-                .setName(Component.text("Ícono: " + current.icon(), NamedTextColor.YELLOW)).build());
+                .setName(lang.component("gui.common.icon_label", "icon", current.icon())).build());
 
         setItem(COLOR_SLOT, new ItemBuilder(Material.PAPER)
-                .setName(Component.text("Color: " + current.color(), SchoolBrowserGUI.parseColor(current.color())))
+                .setName(Component.text(lang.raw("gui.spell_editor.color_label", "color", current.color()),
+                        SchoolBrowserGUI.parseColor(current.color())))
                 .build());
 
         setItem(SCHOOL_SLOT, new ItemBuilder(Material.ENCHANTED_BOOK)
-                .setName(Component.text("Escuela: " + current.schoolId(), NamedTextColor.AQUA)).build());
+                .setName(lang.component("gui.spell_editor.school_label", "schoolId", current.schoolId())).build());
 
         setItem(RARITY_SLOT, new ItemBuilder(Material.NETHER_STAR)
-                .setName(Component.text("Rareza: " + current.rarity(), NamedTextColor.LIGHT_PURPLE))
-                .setLore(Component.text("Click para pasar a la siguiente", NamedTextColor.GRAY)).build());
+                .setName(lang.component("gui.spell_editor.rarity_label", "rarity", current.rarity()))
+                .setLore(lang.component("gui.common.click_cycle_fem")).build());
 
         setItem(LEVEL_SLOT, new ItemBuilder(Material.EXPERIENCE_BOTTLE)
-                .setName(Component.text("Nivel: " + current.level(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click: +1 · Click derecho: -1", NamedTextColor.GRAY)).build());
+                .setName(lang.component("gui.spell_editor.level_label", "level", current.level()))
+                .setLore(lang.component("gui.common.step_1")).build());
 
         setItem(DESCRIPTION_SLOT, new ItemBuilder(Material.WRITTEN_BOOK)
-                .setName(Component.text("Descripción", NamedTextColor.YELLOW))
+                .setName(lang.component("gui.common.description_title"))
                 .setLore(ItemBuilder.toLoreLines(
-                        current.description().isBlank() ? "(sin descripción)" : current.description()))
+                        current.description().isBlank() ? lang.raw("gui.common.no_description")
+                                : current.description()))
                 .build());
 
         SpellCost cost = current.cost();
 
         setItem(MANA_SLOT, new ItemBuilder(Material.LAPIS_LAZULI)
-                .setName(Component.text("Costo de maná: " + cost.mana(), NamedTextColor.BLUE))
-                .setLore(Component.text("Click: +5 · Click derecho: -5", NamedTextColor.GRAY)).build());
+                .setName(lang.component("gui.spell_editor.mana_cost_label", "value", cost.mana()))
+                .setLore(lang.component("gui.common.step_5")).build());
 
         setItem(HEALTH_COST_SLOT, new ItemBuilder(Material.REDSTONE)
-                .setName(Component.text("Costo de vida: " + cost.health(), NamedTextColor.RED))
-                .setLore(Component.text("Click: +1 · Click derecho: -1", NamedTextColor.GRAY)).build());
+                .setName(lang.component("gui.spell_editor.health_cost_label", "value", cost.health()))
+                .setLore(lang.component("gui.common.step_1")).build());
 
         setItem(XP_COST_SLOT, new ItemBuilder(Material.EXPERIENCE_BOTTLE)
-                .setName(Component.text("Costo de experiencia: " + cost.experience(), NamedTextColor.GREEN))
-                .setLore(Component.text("Click: +5 · Click derecho: -5", NamedTextColor.GRAY)).build());
+                .setName(lang.component("gui.spell_editor.xp_cost_label", "value", cost.experience()))
+                .setLore(lang.component("gui.common.step_5")).build());
 
         setItem(REAGENT_SLOT, new ItemBuilder(Material.NETHER_WART)
-                .setName(Component.text(
-                        "Reactivo: " + (cost.hasReagent() ? cost.reagentAmount() + "x " + cost.reagentMaterial() : "(ninguno)"),
-                        NamedTextColor.YELLOW))
-                .setLore(Component.text("Escribí: MATERIAL,CANTIDAD (o 'ninguno')", NamedTextColor.GRAY)).build());
+                .setName(lang.component("gui.spell_editor.reagent_label", "value",
+                        cost.hasReagent() ? cost.reagentAmount() + "x " + cost.reagentMaterial()
+                                : lang.raw("gui.common.none")))
+                .setLore(lang.component("gui.spell_editor.reagent_lore")).build());
 
         setItem(CAST_TIME_SLOT, new ItemBuilder(Material.CLOCK)
-                .setName(Component.text("Tiempo de canalización: " + current.castTimeTicks() + " ticks",
-                        NamedTextColor.YELLOW))
-                .setLore(Component.text("Solo aplica si el trigger es HOLD", NamedTextColor.GRAY),
-                        Component.text("Click: +20 · Click derecho: -20", NamedTextColor.GRAY)).build());
+                .setName(lang.component("gui.spell_editor.cast_time_label", "ticks", current.castTimeTicks()))
+                .setLore(lang.component("gui.spell_editor.cast_time_lore"),
+                        lang.component("gui.common.step_20")).build());
 
         setItem(COOLDOWN_SLOT, new ItemBuilder(Material.REPEATER)
-                .setName(Component.text("Cooldown: " + current.cooldownTicks() + " ticks", NamedTextColor.YELLOW))
-                .setLore(Component.text("Click: +20 · Click derecho: -20", NamedTextColor.GRAY)).build());
+                .setName(lang.component("gui.spell_editor.cooldown_label", "ticks", current.cooldownTicks()))
+                .setLore(lang.component("gui.common.step_20")).build());
 
         setItem(TRIGGER_SLOT, new ItemBuilder(Material.STICK)
-                .setName(Component.text("Trigger: " + current.trigger(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para pasar al siguiente", NamedTextColor.GRAY)).build());
+                .setName(lang.component("gui.spell_editor.trigger_label", "trigger", current.trigger()))
+                .setLore(lang.component("gui.common.click_cycle_masc")).build());
 
         setItem(TREE_PARENT_SLOT, new ItemBuilder(Material.LADDER)
-                .setName(Component.text(
-                        "Requiere antes: " + (current.treeParentId() == null ? "(ninguno)" : current.treeParentId()),
-                        NamedTextColor.YELLOW))
-                .setLore(Component.text("Escribí el id de otro hechizo (o 'ninguno')", NamedTextColor.GRAY)).build());
+                .setName(lang.component("gui.spell_editor.tree_parent_label", "value",
+                        current.treeParentId() == null ? lang.raw("gui.common.none") : current.treeParentId()))
+                .setLore(lang.component("gui.spell_editor.tree_parent_lore")).build());
 
         setItem(TREE_TIER_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Nivel del árbol: " + current.treeTier(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click: +1 · Click derecho: -1", NamedTextColor.GRAY)).build());
+                .setName(lang.component("gui.spell_editor.tree_tier_label", "tier", current.treeTier()))
+                .setLore(lang.component("gui.common.step_1")).build());
 
         setItem(COMPONENTS_SLOT, new ItemBuilder(Material.COMMAND_BLOCK)
-                .setName(Component.text("▶ Componentes (" + current.components().size() + ")", NamedTextColor.GREEN))
-                .setLore(Component.text("El pipeline que se ejecuta al lanzarlo", NamedTextColor.GRAY)).build());
+                .setName(lang.component("gui.spell_editor.components_label", "count", current.components().size()))
+                .setLore(lang.component("gui.spell_editor.components_lore")).build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back")));
     }
 
     @Override
@@ -170,24 +173,24 @@ public class SpellEditorHubGUI extends InventoryGUI {
         int sign = click == ClickType.RIGHT ? -1 : 1;
 
         if (slot == NAME_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el nuevo nombre:", value -> replace(withDisplayName(value)));
+            chatPromptManager.prompt(player, lang.raw("gui.common.prompt_name"), value -> replace(withDisplayName(value)));
             return;
         }
 
         if (slot == ICON_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el Material del ícono:", this::withIconAndReplace);
+            chatPromptManager.prompt(player, lang.raw("gui.common.prompt_icon"), this::withIconAndReplace);
             return;
         }
 
         if (slot == COLOR_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el color (ej. RED, AQUA):", this::withColorAndReplace);
+            chatPromptManager.prompt(player, lang.raw("gui.spell_editor.prompt_color"), this::withColorAndReplace);
             return;
         }
 
         if (slot == SCHOOL_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el id de la escuela:", value -> {
+            chatPromptManager.prompt(player, lang.raw("gui.spell_editor.prompt_school"), value -> {
                 if (!schoolManager.exists(value.trim().toLowerCase(Locale.ROOT))) {
-                    player.sendMessage(Component.text("No existe esa escuela.", NamedTextColor.RED));
+                    lang.send(player, "gui.spell_editor.unknown_school");
                     return;
                 }
                 withSchoolAndReplace(value.trim().toLowerCase(Locale.ROOT));
@@ -208,7 +211,7 @@ public class SpellEditorHubGUI extends InventoryGUI {
         }
 
         if (slot == DESCRIPTION_SLOT) {
-            chatPromptManager.prompt(player, "Escribí la nueva descripción:", value -> replace(withDescription(value)));
+            chatPromptManager.prompt(player, lang.raw("gui.common.prompt_description"), value -> replace(withDescription(value)));
             return;
         }
 
@@ -234,7 +237,7 @@ public class SpellEditorHubGUI extends InventoryGUI {
         }
 
         if (slot == REAGENT_SLOT) {
-            chatPromptManager.prompt(player, "Escribí: MATERIAL,CANTIDAD (o 'ninguno'):", value -> {
+            chatPromptManager.prompt(player, lang.raw("gui.spell_editor.prompt_reagent"), value -> {
 
                 SpellCost cost = current.cost();
 
@@ -270,7 +273,7 @@ public class SpellEditorHubGUI extends InventoryGUI {
         }
 
         if (slot == TREE_PARENT_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el id del hechizo anterior (o 'ninguno'):",
+            chatPromptManager.prompt(player, lang.raw("gui.spell_editor.prompt_tree_parent"),
                     value -> replace(withTreeParent(value.equalsIgnoreCase("ninguno") ? null : value.trim())));
             return;
         }

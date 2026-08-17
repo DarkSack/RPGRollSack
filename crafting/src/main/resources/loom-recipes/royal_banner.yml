@@ -1,0 +1,14 @@
+id: royal_banner
+banner:
+  type: MATERIAL
+  value: WHITE_BANNER
+  amount: 1
+dye:
+  type: MATERIAL
+  value: PURPLE_DYE
+  amount: 1
+result:
+  type: MATERIAL
+  value: PURPLE_BANNER
+  amount: 1
+conditions: []

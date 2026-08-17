@@ -50,7 +50,7 @@ public class SpeciesEditorGUI extends InventoryGUI {
 
     public SpeciesEditorGUI(Player player, Species species, SpeciesManager speciesManager,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text("Especie: " + species.id(), NamedTextColor.GOLD), SIZE);
+        super(player, Component.text(chatPromptManager.lang().raw("gui.species.editor.title", "id", species.id()), NamedTextColor.GOLD), SIZE);
         this.current = species;
         this.speciesManager = speciesManager;
         this.chatPromptManager = chatPromptManager;
@@ -72,94 +72,96 @@ public class SpeciesEditorGUI extends InventoryGUI {
             setItem(slot, ItemBuilder.createFiller());
         }
 
+        var lang = chatPromptManager.lang();
+
         setItem(NAME_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(Component.text("Nombre: " + current.displayName(), NamedTextColor.YELLOW)).build());
+                .setName(Component.text(lang.raw("gui.editor.name_line", "name", current.displayName()), NamedTextColor.YELLOW)).build());
 
         setItem(ICON_SLOT, new ItemBuilder(SpeciesBrowserGUI.parseMaterial(current.icon(), Material.COW_SPAWN_EGG))
-                .setName(Component.text("Ícono: " + current.icon(), NamedTextColor.YELLOW)).build());
+                .setName(Component.text(lang.raw("gui.editor.icon_line", "icon", current.icon()), NamedTextColor.YELLOW)).build());
 
         setItem(ENTITY_TYPE_SLOT, new ItemBuilder(Material.ARMOR_STAND)
-                .setName(Component.text("Entidad vanilla: " + current.entityType(), NamedTextColor.AQUA))
-                .setLore(Component.text("Nombre de un EntityType (COW, CHICKEN, SHEEP...)", NamedTextColor.GRAY))
+                .setName(Component.text(lang.raw("gui.species.editor.entity_type_line", "entity", current.entityType()), NamedTextColor.AQUA))
+                .setLore(Component.text(lang.raw("gui.species.editor.entity_type_hint"), NamedTextColor.GRAY))
                 .build());
 
         setItem(DESCRIPTION_SLOT, new ItemBuilder(Material.WRITTEN_BOOK)
-                .setName(Component.text("Descripción", NamedTextColor.YELLOW))
-                .setLore(ItemBuilder.toLoreLines(current.description().isBlank() ? "(sin descripción)" : current.description()))
+                .setName(Component.text(lang.raw("gui.editor.description_title"), NamedTextColor.YELLOW))
+                .setLore(ItemBuilder.toLoreLines(current.description().isBlank() ? lang.raw("gui.editor.no_description") : current.description()))
                 .build());
 
         setItem(PRODUCT_TYPES_SLOT, new ItemBuilder(Material.HOPPER)
-                .setName(Component.text("Productos: " + String.join(", ", current.productTypes()), NamedTextColor.GOLD))
-                .setLore(Component.text("Escribí tipos separados por comas (milk, wool, eggs...)", NamedTextColor.GRAY))
+                .setName(Component.text(lang.raw("gui.species.editor.product_types_line", "types", String.join(", ", current.productTypes())), NamedTextColor.GOLD))
+                .setLore(Component.text(lang.raw("gui.species.editor.product_types_hint"), NamedTextColor.GRAY))
                 .build());
 
         setItem(WEIGHT_MIN_SLOT, new ItemBuilder(Material.IRON_INGOT)
-                .setName(Component.text(String.format(Locale.ROOT, "Peso mín.: %.1f kg", current.baseWeightMin()),
-                        NamedTextColor.AQUA))
-                .setLore(Component.text("Click: +10 · Click derecho: -10", NamedTextColor.GRAY)).build());
+                .setName(Component.text(lang.raw("gui.species.editor.weight_min_line", "weight",
+                        String.format(Locale.ROOT, "%.1f", current.baseWeightMin())), NamedTextColor.AQUA))
+                .setLore(Component.text(lang.raw("gui.editor.step10_hint"), NamedTextColor.GRAY)).build());
 
         setItem(WEIGHT_MAX_SLOT, new ItemBuilder(Material.GOLD_INGOT)
-                .setName(Component.text(String.format(Locale.ROOT, "Peso máx.: %.1f kg", current.baseWeightMax()),
-                        NamedTextColor.AQUA))
-                .setLore(Component.text("Click: +10 · Click derecho: -10", NamedTextColor.GRAY)).build());
+                .setName(Component.text(lang.raw("gui.species.editor.weight_max_line", "weight",
+                        String.format(Locale.ROOT, "%.1f", current.baseWeightMax())), NamedTextColor.AQUA))
+                .setLore(Component.text(lang.raw("gui.editor.step10_hint"), NamedTextColor.GRAY)).build());
 
         setItem(BABY_DURATION_SLOT, new ItemBuilder(Material.EGG)
-                .setName(Component.text("Duración cría: " + ticksToMinutes(current.babyStageDurationTicks()),
+                .setName(Component.text(lang.raw("gui.species.editor.baby_duration_line", "duration", ticksToMinutes(current.babyStageDurationTicks())),
                         NamedTextColor.GREEN))
-                .setLore(Component.text("Click: +1 min · Click derecho: -1 min", NamedTextColor.GRAY)).build());
+                .setLore(Component.text(lang.raw("gui.editor.step1min_hint"), NamedTextColor.GRAY)).build());
 
         setItem(JUVENILE_DURATION_SLOT, new ItemBuilder(Material.LEATHER)
-                .setName(Component.text("Duración juvenil: " + ticksToMinutes(current.juvenileStageDurationTicks()),
+                .setName(Component.text(lang.raw("gui.species.editor.juvenile_duration_line", "duration", ticksToMinutes(current.juvenileStageDurationTicks())),
                         NamedTextColor.GREEN))
-                .setLore(Component.text("Click: +1 min · Click derecho: -1 min", NamedTextColor.GRAY)).build());
+                .setLore(Component.text(lang.raw("gui.editor.step1min_hint"), NamedTextColor.GRAY)).build());
 
         setItem(ELDER_THRESHOLD_SLOT, new ItemBuilder(Material.CLOCK)
-                .setName(Component.text("Umbral anciano: " + ticksToMinutes(current.elderThresholdTicks()),
+                .setName(Component.text(lang.raw("gui.species.editor.elder_threshold_line", "duration", ticksToMinutes(current.elderThresholdTicks())),
                         NamedTextColor.GRAY))
-                .setLore(Component.text("Tiempo como adulto antes de ser anciano. Click: +1 min · Click derecho: -1 min",
+                .setLore(Component.text(lang.raw("gui.species.editor.elder_threshold_hint"),
                         NamedTextColor.GRAY)).build());
 
         setItem(GESTATION_SLOT, new ItemBuilder(Material.PINK_DYE)
-                .setName(Component.text("Gestación: " + ticksToMinutes(current.gestationDurationTicks()),
+                .setName(Component.text(lang.raw("gui.species.editor.gestation_line", "duration", ticksToMinutes(current.gestationDurationTicks())),
                         NamedTextColor.LIGHT_PURPLE))
-                .setLore(Component.text("0 = nace directo, sin gestación. Click: +1 min · Click derecho: -1 min",
+                .setLore(Component.text(lang.raw("gui.species.editor.gestation_hint"),
                         NamedTextColor.GRAY)).build());
 
         setItem(MIN_LITTER_SLOT, new ItemBuilder(Material.BREAD)
-                .setName(Component.text("Camada mín.: " + current.minLitterSize(), NamedTextColor.WHITE))
-                .setLore(Component.text("Click: +1 · Click derecho: -1", NamedTextColor.GRAY)).build());
+                .setName(Component.text(lang.raw("gui.species.editor.min_litter_line", "value", current.minLitterSize()), NamedTextColor.WHITE))
+                .setLore(Component.text(lang.raw("gui.editor.step1_hint"), NamedTextColor.GRAY)).build());
 
         setItem(MAX_LITTER_SLOT, new ItemBuilder(Material.CAKE)
-                .setName(Component.text("Camada máx.: " + current.maxLitterSize(), NamedTextColor.WHITE))
-                .setLore(Component.text("Click: +1 · Click derecho: -1", NamedTextColor.GRAY)).build());
+                .setName(Component.text(lang.raw("gui.species.editor.max_litter_line", "value", current.maxLitterSize()), NamedTextColor.WHITE))
+                .setLore(Component.text(lang.raw("gui.editor.step1_hint"), NamedTextColor.GRAY)).build());
 
         setItem(FERTILITY_SLOT, new ItemBuilder(Material.RABBIT_FOOT)
-                .setName(Component.text(String.format(Locale.ROOT, "Fertilidad base: %.0f%%", current.baseFertility() * 100),
-                        NamedTextColor.YELLOW))
-                .setLore(Component.text("Click: +5% · Click derecho: -5%", NamedTextColor.GRAY)).build());
+                .setName(Component.text(lang.raw("gui.species.editor.fertility_line", "value",
+                        String.format(Locale.ROOT, "%.0f", current.baseFertility() * 100)), NamedTextColor.YELLOW))
+                .setLore(Component.text(lang.raw("gui.editor.step5pct_hint"), NamedTextColor.GRAY)).build());
 
         setItem(DIET_TAGS_SLOT, new ItemBuilder(Material.WHEAT)
-                .setName(Component.text("Dieta: " + String.join(", ", current.dietTags()), NamedTextColor.GOLD))
-                .setLore(Component.text("Escribí tags separados por comas — vacío = cualquier alimento", NamedTextColor.GRAY))
+                .setName(Component.text(lang.raw("gui.species.editor.diet_line", "tags", String.join(", ", current.dietTags())), NamedTextColor.GOLD))
+                .setLore(Component.text(lang.raw("gui.species.editor.diet_hint"), NamedTextColor.GRAY))
                 .build());
 
         setItem(BASE_PRODUCTION_SLOT, new ItemBuilder(Material.BUCKET)
-                .setName(Component.text("Producción base", NamedTextColor.AQUA))
+                .setName(Component.text(lang.raw("gui.species.editor.base_production_title"), NamedTextColor.AQUA))
                 .setLore(ItemBuilder.toLoreLines(formatProduction(current.baseProduction())
-                        + "\nEscribí 'clave=valor,clave=valor' (ej. milk=3,leather=1)"))
+                        + "\n" + lang.raw("gui.species.editor.base_production_hint")))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back")));
     }
 
     private String ticksToMinutes(long ticks) {
-        return String.format(Locale.ROOT, "%.1f min (%d ticks)", ticks / 1200.0, ticks);
+        return chatPromptManager.lang().raw("gui.editor.ticks_to_minutes", "minutes", String.format(Locale.ROOT, "%.1f", ticks / 1200.0), "ticks", ticks);
     }
 
     private String formatProduction(Map<String, Double> production) {
 
         if (production.isEmpty()) {
-            return "(sin productos configurados)";
+            return chatPromptManager.lang().raw("gui.species.editor.no_production");
         }
 
         StringBuilder builder = new StringBuilder();
@@ -179,16 +181,16 @@ public class SpeciesEditorGUI extends InventoryGUI {
         int sign = event.getClick() == ClickType.RIGHT ? -1 : 1;
 
         if (slot == NAME_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el nuevo nombre:", value -> replace(withDisplayName(value)));
+            chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.editor.prompt_name"), value -> replace(withDisplayName(value)));
         } else if (slot == ICON_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el Material del ícono:", value -> replace(withIcon(value)));
+            chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.editor.prompt_icon"), value -> replace(withIcon(value)));
         } else if (slot == ENTITY_TYPE_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el EntityType (COW, CHICKEN, SHEEP...):",
+            chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.species.editor.prompt_entity_type"),
                     value -> replace(withEntityType(value)));
         } else if (slot == DESCRIPTION_SLOT) {
-            chatPromptManager.prompt(player, "Escribí la nueva descripción:", value -> replace(withDescription(value)));
+            chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.editor.prompt_description"), value -> replace(withDescription(value)));
         } else if (slot == PRODUCT_TYPES_SLOT) {
-            chatPromptManager.prompt(player, "Escribí los tipos de producto separados por comas:",
+            chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.species.editor.prompt_product_types"),
                     value -> replace(withProductTypes(parseSet(value))));
         } else if (slot == WEIGHT_MIN_SLOT) {
             replace(withWeightMin(current.baseWeightMin() + sign * 10));
@@ -209,10 +211,10 @@ public class SpeciesEditorGUI extends InventoryGUI {
         } else if (slot == FERTILITY_SLOT) {
             replace(withFertility(Math.max(0, Math.min(1, current.baseFertility() + sign * 0.05))));
         } else if (slot == DIET_TAGS_SLOT) {
-            chatPromptManager.prompt(player, "Escribí los tags de dieta separados por comas:",
+            chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.species.editor.prompt_diet_tags"),
                     value -> replace(withDietTags(parseSet(value))));
         } else if (slot == BASE_PRODUCTION_SLOT) {
-            chatPromptManager.prompt(player, "Escribí 'clave=valor,clave=valor':",
+            chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.species.editor.prompt_base_production"),
                     value -> replace(withBaseProduction(parseMap(value))));
         } else if (slot == BACK_SLOT) {
             onBack.run();

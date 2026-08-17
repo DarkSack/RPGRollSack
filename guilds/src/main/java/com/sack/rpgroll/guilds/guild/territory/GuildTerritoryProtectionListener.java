@@ -1,10 +1,8 @@
 package com.sack.rpgroll.guilds.guild.territory;
 
+import com.sack.rpgroll.guilds.GuildsAPI;
 import com.sack.rpgroll.guilds.guild.Guild;
 import com.sack.rpgroll.guilds.guild.GuildManager;
-
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -52,8 +50,7 @@ public class GuildTerritoryProtectionListener implements Listener {
         territoryAt(event.getBlock().getLocation()).ifPresent(territory -> {
             if (territory.protectBlocks() && !isMemberOfOwner(territory, event.getPlayer())) {
                 event.setCancelled(true);
-                event.getPlayer().sendMessage(
-                        Component.text("Este territorio está protegido por una guild.", NamedTextColor.RED));
+                GuildsAPI.getLangManager().send(event.getPlayer(), "guild.territory.protected");
             }
         });
     }
@@ -64,8 +61,7 @@ public class GuildTerritoryProtectionListener implements Listener {
         territoryAt(event.getBlock().getLocation()).ifPresent(territory -> {
             if (territory.protectBlocks() && !isMemberOfOwner(territory, event.getPlayer())) {
                 event.setCancelled(true);
-                event.getPlayer().sendMessage(
-                        Component.text("Este territorio está protegido por una guild.", NamedTextColor.RED));
+                GuildsAPI.getLangManager().send(event.getPlayer(), "guild.territory.protected");
             }
         });
     }
@@ -80,8 +76,7 @@ public class GuildTerritoryProtectionListener implements Listener {
         territoryAt(victim.getLocation()).ifPresent(territory -> {
             if (!territory.allowOutsiderPvp() && !isMemberOfOwner(territory, attacker)) {
                 event.setCancelled(true);
-                attacker.sendMessage(Component.text("No podés atacar jugadores en este territorio.",
-                        NamedTextColor.RED));
+                GuildsAPI.getLangManager().send(attacker, "guild.territory.no_pvp");
             }
         });
     }

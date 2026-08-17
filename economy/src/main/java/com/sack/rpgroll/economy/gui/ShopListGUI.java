@@ -1,5 +1,6 @@
 package com.sack.rpgroll.economy.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.economy.currency.CurrencyManager;
 import com.sack.rpgroll.economy.shop.PlayerShop;
 import com.sack.rpgroll.economy.shop.ShopManager;
@@ -28,15 +29,17 @@ public class ShopListGUI extends InventoryGUI {
     private final CurrencyManager currencyManager;
     private final TaxEngine taxEngine;
     private final ChatPromptManager chatPromptManager;
+    private final LangManager lang;
     private List<PlayerShop> shops;
 
     public ShopListGUI(Player player, ShopManager shopManager, CurrencyManager currencyManager, TaxEngine taxEngine,
             ChatPromptManager chatPromptManager) {
-        super(player, Component.text("Tiendas de jugadores", NamedTextColor.GOLD), SIZE);
+        super(player, Component.text(chatPromptManager.lang().raw("shop.list.title"), NamedTextColor.GOLD), SIZE);
         this.shopManager = shopManager;
         this.currencyManager = currencyManager;
         this.taxEngine = taxEngine;
         this.chatPromptManager = chatPromptManager;
+        this.lang = chatPromptManager.lang();
         this.shops = shopManager.all().stream().filter(PlayerShop::isOpen).toList();
     }
 
@@ -56,15 +59,16 @@ public class ShopListGUI extends InventoryGUI {
 
             setItem(i, new ItemBuilder(Material.VILLAGER_SPAWN_EGG)
                     .setName(Component.text(shop.name(), NamedTextColor.YELLOW))
-                    .setLore(Component.text("dueño: " + (ownerName == null ? "?" : ownerName), NamedTextColor.GRAY),
-                            Component.text(shop.listings().size() + " producto(s) en venta", NamedTextColor.GRAY),
-                            Component.text("Click para entrar", NamedTextColor.GREEN))
+                    .setLore(lang.component("shop.list.lore_owner", "name",
+                                    ownerName == null ? lang.raw("shop.list.unknown_owner") : ownerName),
+                            lang.component("shop.list.lore_products", "count", shop.listings().size()),
+                            lang.component("shop.list.click_enter"))
                     .build());
         }
 
         setItem(MY_SHOP_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Administrar mi tienda", NamedTextColor.GREEN)).build());
-        setItem(CLOSE_SLOT, ItemBuilder.createCancelButton("Cerrar"));
+                .setName(lang.component("shop.list.manage_button")).build());
+        setItem(CLOSE_SLOT, ItemBuilder.createCancelButton(lang.raw("common.close")));
     }
 
     @Override
@@ -74,14 +78,15 @@ public class ShopListGUI extends InventoryGUI {
         int slot = event.getSlot();
 
         if (slot < shops.size() && slot < 36) {
-            new ShopViewGUI(player, shops.get(slot), shopManager, currencyManager, this::reopen).open();
+            new ShopViewGUI(player, shops.get(slot), shopManager, currencyManager, this::reopen, lang).open();
             return;
         }
 
         if (slot == MY_SHOP_SLOT) {
             List<PlayerShop> mine = shopManager.byOwner(player.getUniqueId());
             PlayerShop shop = mine.isEmpty()
-                    ? shopManager.create(player.getUniqueId(), player.getName() + " Shop", currencyManager.defaultCurrency().id())
+                    ? shopManager.create(player.getUniqueId(), lang.raw("shop.list.default_name", "player", player.getName()),
+                            currencyManager.defaultCurrency().id())
                     : mine.get(0);
             new ShopManageGUI(player, shop, shopManager, chatPromptManager, this::reopen).open();
             return;

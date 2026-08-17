@@ -1,5 +1,6 @@
 package com.sack.rpgroll.seasons.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.seasons.core.DurationUnit;
@@ -33,7 +34,7 @@ public class SubSeasonsEditorGUI extends InventoryGUI {
 
     public SubSeasonsEditorGUI(Player player, Season season, SeasonManager seasonManager,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text("Subestaciones: " + season.id(), NamedTextColor.GOLD), SIZE);
+        super(player, chatPromptManager.lang().component("gui.sub_seasons_editor.title", "id", season.id()), SIZE);
         this.current = season;
         this.seasonManager = seasonManager;
         this.chatPromptManager = chatPromptManager;
@@ -59,6 +60,8 @@ public class SubSeasonsEditorGUI extends InventoryGUI {
             setItem(slot, ItemBuilder.createFiller());
         }
 
+        LangManager lang = chatPromptManager.lang();
+
         List<SubSeason> subSeasons = current.subSeasons();
 
         for (int i = 0; i < subSeasons.size() && i < SUB_SEASONS_MAX; i++) {
@@ -66,12 +69,14 @@ public class SubSeasonsEditorGUI extends InventoryGUI {
             SubSeason sub = subSeasons.get(i);
 
             List<Component> lore = new ArrayList<>();
-            lore.add(Component.text("id: " + sub.id(), NamedTextColor.GRAY));
-            lore.add(Component.text("Duración: " + sub.durationAmount() + " " + sub.durationUnit(), NamedTextColor.GRAY));
+            lore.add(lang.component("gui.common.id_label", "id", sub.id()));
+            lore.add(lang.component("gui.sub_seasons_editor.duration_label", "amount", sub.durationAmount(), "unit",
+                    sub.durationUnit()));
             if (sub.temperatureOverride() != null) {
-                lore.add(Component.text("Temperatura fija: " + sub.temperatureOverride() + "°C", NamedTextColor.AQUA));
+                lore.add(lang.component("gui.sub_seasons_editor.temperature_label", "temperature",
+                        sub.temperatureOverride()));
             }
-            lore.add(Component.text("Shift-click para quitar", NamedTextColor.RED));
+            lore.add(lang.component("gui.common.shift_remove"));
 
             setItem(SUB_SEASONS_START + i, new ItemBuilder(Material.BOOK)
                     .setName(Component.text((i + 1) + ". " + sub.displayName(), NamedTextColor.GREEN))
@@ -80,12 +85,12 @@ public class SubSeasonsEditorGUI extends InventoryGUI {
         }
 
         setItem(ADD_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Agregar subestación al final", NamedTextColor.GREEN))
-                .setLore(Component.text("ID NOMBRE CANTIDAD UNIDAD [TEMP]", NamedTextColor.GRAY),
-                        Component.text("ej. temprana Temprana 2 MINECRAFT_DAYS", NamedTextColor.DARK_GRAY))
+                .setName(lang.component("gui.sub_seasons_editor.add"))
+                .setLore(lang.component("gui.sub_seasons_editor.add_lore_1"),
+                        lang.component("gui.sub_seasons_editor.add_lore_2"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back")));
     }
 
     @Override
@@ -104,12 +109,12 @@ public class SubSeasonsEditorGUI extends InventoryGUI {
         }
 
         if (slot == ADD_SLOT) {
-            chatPromptManager.prompt(player, "Escribí: ID NOMBRE CANTIDAD UNIDAD [TEMPERATURA]:", value -> {
+            chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.sub_seasons_editor.prompt_add"), value -> {
 
                 String[] parts = value.trim().split("\\s+");
 
                 if (parts.length < 4) {
-                    player.sendMessage(Component.text("Formato inválido.", NamedTextColor.RED));
+                    chatPromptManager.lang().send(player, "gui.common.invalid_format");
                     return;
                 }
 
@@ -118,7 +123,7 @@ public class SubSeasonsEditorGUI extends InventoryGUI {
                 try {
                     unit = DurationUnit.valueOf(parts[3].trim().toUpperCase(Locale.ROOT));
                 } catch (IllegalArgumentException e) {
-                    player.sendMessage(Component.text("Unidad inválida: " + parts[3], NamedTextColor.RED));
+                    chatPromptManager.lang().send(player, "gui.sub_seasons_editor.invalid_unit", "value", parts[3]);
                     return;
                 }
 

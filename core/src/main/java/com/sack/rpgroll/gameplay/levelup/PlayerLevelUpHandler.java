@@ -1,13 +1,12 @@
 package com.sack.rpgroll.gameplay.levelup;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gameplay.combat.CombatStats;
 import com.sack.rpgroll.gameplay.event.LevelUpEvent;
 import com.sack.rpgroll.player.PlayerManager;
 import com.sack.rpgroll.player.RPGPlayer;
 
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.format.TextDecoration;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -21,10 +20,12 @@ public class PlayerLevelUpHandler {
 
     private final PlayerManager playerManager;
     private final LevelUpRewardsConfig rewardsConfig;
+    private final LangManager lang;
 
-    public PlayerLevelUpHandler(PlayerManager playerManager, LevelUpRewardsConfig rewardsConfig) {
+    public PlayerLevelUpHandler(PlayerManager playerManager, LevelUpRewardsConfig rewardsConfig, LangManager lang) {
         this.playerManager = playerManager;
         this.rewardsConfig = rewardsConfig;
+        this.lang = lang;
     }
 
     /**
@@ -98,47 +99,29 @@ public class PlayerLevelUpHandler {
     private void sendLevelUpMessage(Player player, int newLevel, LevelUpRewards rewards) {
         player.sendMessage(Component.empty());
 
-        player.sendMessage(Component.text("╔════════════════════════════════╗", NamedTextColor.GOLD));
+        player.sendMessage(lang.component("player_level_up_handler.border"));
+        player.sendMessage(lang.component("player_level_up_handler.title"));
+        player.sendMessage(lang.component("player_level_up_handler.border"));
 
-        player.sendMessage(
-                Component.text("╠ ", NamedTextColor.YELLOW)
-                        .append(Component.text("¡SUBISTE DE NIVEL!", NamedTextColor.YELLOW)
-                                .decorate(TextDecoration.BOLD))
-                        .append(Component.text(" ╣", NamedTextColor.YELLOW)));
-
-        player.sendMessage(Component.text("╠════════════════════════════════╣", NamedTextColor.GOLD));
-
-        player.sendMessage(
-                Component.text("╠ Nivel: ", NamedTextColor.GREEN)
-                        .append(Component.text(newLevel, NamedTextColor.WHITE)));
+        player.sendMessage(lang.component("player_level_up_handler.level", "level", newLevel));
 
         if (rewards.statPoints() > 0) {
-            player.sendMessage(
-                    Component.text("╠ +Puntos de Estadística: ", NamedTextColor.AQUA)
-                            .append(Component.text(rewards.statPoints(), NamedTextColor.WHITE)));
+            player.sendMessage(lang.component("player_level_up_handler.stat_points", "points", rewards.statPoints()));
         }
         if (rewards.healthBonus() > 0) {
-            player.sendMessage(
-                    Component.text("╠ +Salud: ", NamedTextColor.RED)
-                            .append(Component.text(rewards.healthBonus(), NamedTextColor.WHITE)));
+            player.sendMessage(lang.component("player_level_up_handler.health", "amount", rewards.healthBonus()));
         }
         if (rewards.manaBonus() > 0) {
-            player.sendMessage(
-                    Component.text("╠ +Maná: ", NamedTextColor.BLUE)
-                            .append(Component.text(rewards.manaBonus(), NamedTextColor.WHITE)));
+            player.sendMessage(lang.component("player_level_up_handler.mana", "amount", rewards.manaBonus()));
         }
         for (String skillId : rewards.unlockedSkills()) {
-            player.sendMessage(
-                    Component.text("╠ ¡Nueva habilidad desbloqueada!: ", NamedTextColor.LIGHT_PURPLE)
-                            .append(Component.text(skillId, NamedTextColor.WHITE)));
+            player.sendMessage(lang.component("player_level_up_handler.skill_unlocked", "skill", skillId));
         }
         for (String traitId : rewards.unlockedTraits()) {
-            player.sendMessage(
-                    Component.text("╠ ¡Nuevo trait desbloqueado!: ", NamedTextColor.LIGHT_PURPLE)
-                            .append(Component.text(traitId, NamedTextColor.WHITE)));
+            player.sendMessage(lang.component("player_level_up_handler.trait_unlocked", "trait", traitId));
         }
 
-        player.sendMessage(Component.text("╚════════════════════════════════╝", NamedTextColor.GOLD));
+        player.sendMessage(lang.component("player_level_up_handler.footer_border"));
         player.sendMessage("");
     }
 

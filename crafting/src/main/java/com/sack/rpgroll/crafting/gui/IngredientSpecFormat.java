@@ -1,5 +1,6 @@
 package com.sack.rpgroll.crafting.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.crafting.ingredient.IngredientSpec;
 import com.sack.rpgroll.crafting.ingredient.IngredientType;
 
@@ -16,20 +17,20 @@ public final class IngredientSpecFormat {
     private IngredientSpecFormat() {
     }
 
-    /** @throws IllegalArgumentException con un mensaje apto para mostrarle al jugador si el texto no es válido. */
-    public static IngredientSpec parse(String raw) {
+    /** @throws IllegalArgumentException con un mensaje (ya traducido vía {@code lang}) apto para mostrarle al jugador si el texto no es válido. */
+    public static IngredientSpec parse(String raw, LangManager lang) {
 
         String[] tokens = raw.trim().split("\\s+");
 
         if (tokens.length < 2) {
-            throw new IllegalArgumentException("Formato: TIPO VALOR CANTIDAD [CALIDAD-MINIMA]");
+            throw new IllegalArgumentException(lang.raw("gui.common.ingredient_format_hint"));
         }
 
         IngredientType type;
         try {
             type = IngredientType.valueOf(tokens[0].trim().toUpperCase(Locale.ROOT));
         } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("Tipo inválido: " + tokens[0]);
+            throw new IllegalArgumentException(lang.raw("gui.common.ingredient_invalid_type", "type", tokens[0]));
         }
 
         String value;
@@ -40,7 +41,7 @@ public final class IngredientSpecFormat {
             amountIndex = 1;
         } else {
             if (tokens.length < 3) {
-                throw new IllegalArgumentException("Formato: TIPO VALOR CANTIDAD [CALIDAD-MINIMA]");
+                throw new IllegalArgumentException(lang.raw("gui.common.ingredient_format_hint"));
             }
             value = tokens[1];
             amountIndex = 2;
@@ -50,7 +51,7 @@ public final class IngredientSpecFormat {
         try {
             amount = Integer.parseInt(tokens[amountIndex]);
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Cantidad inválida: " + tokens[amountIndex]);
+            throw new IllegalArgumentException(lang.raw("gui.common.ingredient_invalid_amount", "value", tokens[amountIndex]));
         }
 
         String minQuality = tokens.length > amountIndex + 1 ? tokens[amountIndex + 1] : null;

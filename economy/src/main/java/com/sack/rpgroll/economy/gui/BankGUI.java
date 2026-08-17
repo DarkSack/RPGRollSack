@@ -1,5 +1,6 @@
 package com.sack.rpgroll.economy.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.economy.bank.BankAccount;
 import com.sack.rpgroll.economy.bank.BankAccountType;
 import com.sack.rpgroll.economy.bank.BankManager;
@@ -28,15 +29,17 @@ public class BankGUI extends InventoryGUI {
     private final CurrencyManager currencyManager;
     private final LoanService loanService;
     private final ChatPromptManager chatPromptManager;
+    private final LangManager lang;
     private List<BankAccount> accounts;
 
     public BankGUI(Player player, BankManager bankManager, CurrencyManager currencyManager, LoanService loanService,
             ChatPromptManager chatPromptManager) {
-        super(player, Component.text("Banco", NamedTextColor.GOLD), SIZE);
+        super(player, Component.text(chatPromptManager.lang().raw("bank.title"), NamedTextColor.GOLD), SIZE);
         this.bankManager = bankManager;
         this.currencyManager = currencyManager;
         this.loanService = loanService;
         this.chatPromptManager = chatPromptManager;
+        this.lang = chatPromptManager.lang();
         this.accounts = bankManager.accountsOf(player.getUniqueId());
     }
 
@@ -63,18 +66,17 @@ public class BankGUI extends InventoryGUI {
 
             setItem(i, new ItemBuilder(icon)
                     .setName(Component.text(account.name(), NamedTextColor.YELLOW))
-                    .setLore(Component.text("tipo: " + account.type(), NamedTextColor.GRAY),
-                            Component.text("saldo: " + currencyManager.defaultCurrency().format(account.balance(defaultCurrencyId)),
-                                    NamedTextColor.GOLD),
-                            Component.text("préstamos activos: " + loanService.activeFor(account.id()).size(),
-                                    NamedTextColor.GRAY),
-                            Component.text("Click para administrar", NamedTextColor.YELLOW))
+                    .setLore(lang.component("bank.lore_type", "type", account.type()),
+                            lang.component("bank.lore_balance", "value",
+                                    currencyManager.defaultCurrency().format(account.balance(defaultCurrencyId))),
+                            lang.component("bank.lore_active_loans", "count", loanService.activeFor(account.id()).size()),
+                            lang.component("common.click_manage"))
                     .build());
         }
 
         setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Abrir cuenta personal nueva", NamedTextColor.GREEN)).build());
-        setItem(CLOSE_SLOT, ItemBuilder.createCancelButton("Cerrar"));
+                .setName(lang.component("bank.new_account")).build());
+        setItem(CLOSE_SLOT, ItemBuilder.createCancelButton(lang.raw("common.close")));
     }
 
     @Override
@@ -90,7 +92,7 @@ public class BankGUI extends InventoryGUI {
         }
 
         if (slot == NEW_SLOT) {
-            chatPromptManager.prompt(player, "Escribí un nombre para tu nueva cuenta personal:", value -> {
+            chatPromptManager.prompt(player, lang.raw("bank.prompt_new_account"), value -> {
                 bankManager.create(BankAccountType.PERSONAL, player.getUniqueId(), value);
                 reopen();
             });

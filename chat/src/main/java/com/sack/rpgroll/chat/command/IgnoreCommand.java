@@ -2,6 +2,7 @@ package com.sack.rpgroll.chat.command;
 
 import com.sack.rpgroll.chat.ignore.IgnoreManager;
 import com.sack.rpgroll.chat.ignore.PlayerIgnoreState;
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.guilds.GuildsAPI;
 import com.sack.rpgroll.util.TabCompleteUtil;
 
@@ -26,16 +27,18 @@ public class IgnoreCommand implements CommandExecutor, TabCompleter {
     private static final List<String> ACTIONS = List.of("add", "remove", "list");
 
     private final IgnoreManager ignoreManager;
+    private final LangManager lang;
 
-    public IgnoreCommand(IgnoreManager ignoreManager) {
+    public IgnoreCommand(IgnoreManager ignoreManager, LangManager lang) {
         this.ignoreManager = ignoreManager;
+        this.lang = lang;
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
         if (!(sender instanceof Player player)) {
-            sender.sendMessage(Component.text("Solo un jugador puede usar este comando.", NamedTextColor.RED));
+            lang.send(sender, "common.players_only");
             return true;
         }
 
@@ -70,13 +73,13 @@ public class IgnoreCommand implements CommandExecutor, TabCompleter {
             case "player" -> togglePlayer(player, state, name, wantAdd);
             case "guild" -> {
                 applyToggle(wantAdd, state.isIgnoringGuild(name), () -> state.toggleGuild(name));
-                player.sendMessage(Component.text((wantAdd ? "✔ Ahora ignorás" : "Dejaste de ignorar")
-                        + " a la guild " + name + ".", NamedTextColor.GRAY));
+                lang.send(player, wantAdd ? "ignore.now_ignoring_guild" : "ignore.stopped_ignoring_guild",
+                        "name", name);
             }
             case "channel" -> {
                 applyToggle(wantAdd, state.isIgnoringChannel(name), () -> state.toggleChannel(name));
-                player.sendMessage(Component.text((wantAdd ? "✔ Ahora ignorás" : "Dejaste de ignorar")
-                        + " el canal " + name + ".", NamedTextColor.GRAY));
+                lang.send(player, wantAdd ? "ignore.now_ignoring_channel" : "ignore.stopped_ignoring_channel",
+                        "name", name);
             }
             default -> sendUsage(player);
         }
@@ -98,13 +101,12 @@ public class IgnoreCommand implements CommandExecutor, TabCompleter {
         UUID targetId = target != null ? target.getUniqueId() : Bukkit.getOfflinePlayer(name).getUniqueId();
 
         applyToggle(wantAdd, state.isIgnoringPlayer(targetId), () -> state.togglePlayer(targetId));
-        player.sendMessage(Component.text((wantAdd ? "✔ Ahora ignorás" : "Dejaste de ignorar") + " a " + name + ".",
-                NamedTextColor.GRAY));
+        lang.send(player, wantAdd ? "ignore.now_ignoring_player" : "ignore.stopped_ignoring_player", "name", name);
     }
 
     private void listIgnored(Player player, PlayerIgnoreState state, String type) {
 
-        player.sendMessage(Component.text("=== Ignorados (" + type + ") ===", NamedTextColor.GOLD));
+        lang.send(player, "ignore.list_header", "type", type);
 
         switch (type) {
             case "player" -> state.ignoredPlayers().forEach(uuid -> {
@@ -124,8 +126,7 @@ public class IgnoreCommand implements CommandExecutor, TabCompleter {
     }
 
     private void sendUsage(Player player) {
-        player.sendMessage(Component.text("Uso: /ignore <player|guild|channel> <add|remove|list> [nombre]",
-                NamedTextColor.YELLOW));
+        lang.send(player, "ignore.usage");
     }
 
     @Override

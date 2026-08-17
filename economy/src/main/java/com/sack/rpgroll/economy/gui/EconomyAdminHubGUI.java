@@ -1,5 +1,6 @@
 package com.sack.rpgroll.economy.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.economy.currency.CurrencyManager;
 import com.sack.rpgroll.economy.market.MarketEngine;
 import com.sack.rpgroll.economy.market.MarketProductManager;
@@ -29,15 +30,17 @@ public class EconomyAdminHubGUI extends InventoryGUI {
     private final MarketEngine marketEngine;
     private final TaxRuleManager taxRuleManager;
     private final ChatPromptManager chatPromptManager;
+    private final LangManager lang;
 
     public EconomyAdminHubGUI(Player player, CurrencyManager currencyManager, MarketProductManager marketProductManager,
             MarketEngine marketEngine, TaxRuleManager taxRuleManager, ChatPromptManager chatPromptManager) {
-        super(player, Component.text("Economy Studio", NamedTextColor.GOLD), SIZE);
+        super(player, Component.text(chatPromptManager.lang().raw("studio.title"), NamedTextColor.GOLD), SIZE);
         this.currencyManager = currencyManager;
         this.marketProductManager = marketProductManager;
         this.marketEngine = marketEngine;
         this.taxRuleManager = taxRuleManager;
         this.chatPromptManager = chatPromptManager;
+        this.lang = chatPromptManager.lang();
     }
 
     @Override
@@ -49,16 +52,16 @@ public class EconomyAdminHubGUI extends InventoryGUI {
             setItem(slot, ItemBuilder.createFiller());
         }
 
-        setItem(CURRENCIES_SLOT, button(Material.SUNFLOWER, "Monedas", currencyManager.count()));
-        setItem(MARKET_SLOT, button(Material.GOLD_INGOT, "Mercado", marketProductManager.count()));
-        setItem(TAX_SLOT, button(Material.GOLD_NUGGET, "Impuestos", taxRuleManager.count()));
-        setItem(CLOSE_SLOT, ItemBuilder.createCancelButton("Cerrar"));
+        setItem(CURRENCIES_SLOT, button(Material.SUNFLOWER, lang.raw("studio.currencies"), currencyManager.count()));
+        setItem(MARKET_SLOT, button(Material.GOLD_INGOT, lang.raw("studio.market"), marketProductManager.count()));
+        setItem(TAX_SLOT, button(Material.GOLD_NUGGET, lang.raw("studio.tax"), taxRuleManager.count()));
+        setItem(CLOSE_SLOT, ItemBuilder.createCancelButton(lang.raw("common.close")));
     }
 
     private org.bukkit.inventory.ItemStack button(Material material, String label, int count) {
         return new ItemBuilder(material)
-                .setName(Component.text(label + " (" + count + ")", NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para administrar", NamedTextColor.GRAY))
+                .setName(Component.text(lang.raw("studio.button_format", "label", label, "count", count), NamedTextColor.YELLOW))
+                .setLore(lang.component("common.click_manage"))
                 .build();
     }
 

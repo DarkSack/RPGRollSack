@@ -1,5 +1,6 @@
 package com.sack.rpgroll.sackeffects.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.sackeffects.core.EffectDefinition;
 import com.sack.rpgroll.sackeffects.core.EffectManager;
 import com.sack.rpgroll.sackeffects.engine.EffectEngine;
@@ -25,14 +26,16 @@ public class EffectBrowserGUI extends InventoryGUI {
     private final EffectManager effectManager;
     private final EffectEngine engine;
     private final ChatPromptManager chatPromptManager;
+    private final LangManager langManager;
     private List<EffectDefinition> effects;
 
     public EffectBrowserGUI(Player player, EffectManager effectManager, EffectEngine engine,
-            ChatPromptManager chatPromptManager) {
-        super(player, Component.text("Efectos RPGRoll", NamedTextColor.GOLD), SIZE);
+            ChatPromptManager chatPromptManager, LangManager langManager) {
+        super(player, langManager.component("browser.title"), SIZE);
         this.effectManager = effectManager;
         this.engine = engine;
         this.chatPromptManager = chatPromptManager;
+        this.langManager = langManager;
         this.effects = List.copyOf(effectManager.getAll());
     }
 
@@ -51,17 +54,17 @@ public class EffectBrowserGUI extends InventoryGUI {
 
             setItem(i, new ItemBuilder(Material.BLAZE_POWDER)
                     .setName(Component.text(effect.displayName(), NamedTextColor.AQUA))
-                    .setLore(Component.text("id: " + effect.id(), NamedTextColor.GRAY),
-                            Component.text(effect.steps().size() + " step(s)", NamedTextColor.GRAY),
-                            Component.text("Click para editar", NamedTextColor.YELLOW))
+                    .setLore(langManager.component("browser.item_lore_id", "id", effect.id()),
+                            langManager.component("browser.item_lore_steps", "count", effect.steps().size()),
+                            langManager.component("browser.item_lore_edit"))
                     .build());
         }
 
         setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Crear efecto nuevo", NamedTextColor.GREEN))
+                .setName(langManager.component("browser.new_effect_name"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Cerrar"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(langManager.raw("browser.close_button")));
     }
 
     @Override
@@ -71,8 +74,8 @@ public class EffectBrowserGUI extends InventoryGUI {
         int slot = event.getSlot();
 
         if (slot < effects.size() && slot < 36) {
-            new EffectEditorGUI(player, effects.get(slot), effectManager, engine, chatPromptManager, this::reopen)
-                    .open();
+            new EffectEditorGUI(player, effects.get(slot), effectManager, engine, chatPromptManager, langManager,
+                    this::reopen).open();
             return;
         }
 
@@ -87,12 +90,12 @@ public class EffectBrowserGUI extends InventoryGUI {
     }
 
     private void promptNew() {
-        chatPromptManager.prompt(player, "Escribí el id del nuevo efecto:", value -> {
+        chatPromptManager.prompt(player, langManager.raw("browser.new_effect_prompt"), value -> {
 
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 
             if (effectManager.exists(id)) {
-                player.sendMessage(Component.text("Ya existe un efecto con ese id.", NamedTextColor.RED));
+                langManager.send(player, "browser.id_exists");
                 reopen();
                 return;
             }

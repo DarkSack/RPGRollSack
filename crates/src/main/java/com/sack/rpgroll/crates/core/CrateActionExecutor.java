@@ -2,9 +2,7 @@ package com.sack.rpgroll.crates.core;
 
 import com.sack.rpgroll.util.ComponentUtils;
 
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import com.sack.rpgroll.common.lang.LangManager;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -21,9 +19,11 @@ public class CrateActionExecutor {
 
 
     private final Plugin plugin;
+    private final LangManager lang;
 
-    public CrateActionExecutor(Plugin plugin) {
+    public CrateActionExecutor(Plugin plugin, LangManager lang) {
         this.plugin = plugin;
+        this.lang = lang;
     }
 
     public void grant(Player player, CrateReward reward) {
@@ -33,10 +33,8 @@ public class CrateActionExecutor {
         }
 
         if (reward.announceGlobally()) {
-            Bukkit.broadcast(Component.text(player.getName(), NamedTextColor.GOLD)
-                    .append(Component.text(" ha ganado ", NamedTextColor.YELLOW))
-                    .append(ComponentUtils.parse(reward.displayName()))
-                    .append(Component.text(" de un crate!", NamedTextColor.YELLOW)));
+            Bukkit.broadcast(lang.component("executor.win_broadcast",
+                    "player", player.getName(), "reward", reward.displayName()));
         }
     }
 

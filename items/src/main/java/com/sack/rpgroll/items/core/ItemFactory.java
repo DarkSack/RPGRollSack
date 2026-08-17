@@ -2,6 +2,7 @@ package com.sack.rpgroll.items.core;
 
 import com.sack.rpgroll.util.ComponentUtils;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.items.instance.ItemInstanceService;
 import com.sack.rpgroll.items.integration.EnchantmentsIntegration;
 import com.sack.rpgroll.items.rarity.Rarity;
@@ -55,10 +56,13 @@ public class ItemFactory {
 
     private final ItemInstanceService instanceService;
     private final RarityManager rarityManager;
+    private final LangManager langManager;
 
-    public ItemFactory(Plugin plugin, ItemInstanceService instanceService, RarityManager rarityManager) {
+    public ItemFactory(Plugin plugin, ItemInstanceService instanceService, RarityManager rarityManager,
+            LangManager langManager) {
         this.instanceService = instanceService;
         this.rarityManager = rarityManager;
+        this.langManager = langManager;
     }
 
     public ItemStack create(ItemDefinition definition) {
@@ -186,9 +190,8 @@ public class ItemFactory {
 
         if (definition.durability().enabled()) {
             lore.add(Component.empty());
-            lore.add(Component.text(
-                            "Durabilidad: " + currentDurability + "/" + definition.durability().maxDurability(),
-                            NamedTextColor.GRAY)
+            lore.add(langManager.component("item.durability_lore", "current", currentDurability, "max",
+                            definition.durability().maxDurability())
                     .decoration(TextDecoration.ITALIC, false));
         }
 
@@ -199,8 +202,8 @@ public class ItemFactory {
                 String gemId = sockets.getOrDefault(socket.id(), "");
 
                 Component line = gemId.isBlank()
-                        ? Component.text("[Socket vacío]", NamedTextColor.DARK_GRAY)
-                        : Component.text("[Gema: " + gemId + "]", NamedTextColor.AQUA);
+                        ? langManager.component("item.socket_empty")
+                        : langManager.component("item.socket_filled", "gem", gemId);
 
                 lore.add(line.decoration(TextDecoration.ITALIC, false));
             }

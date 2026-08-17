@@ -1,7 +1,9 @@
 package com.sack.rpgroll.dungeons.gui.editor;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
+import com.sack.rpgroll.util.ComponentUtils;
 import com.sack.rpgroll.dungeons.core.DungeonAction;
 import com.sack.rpgroll.dungeons.core.DungeonTrigger;
 
@@ -24,12 +26,15 @@ public class DungeonTriggersEditorGUI extends InventoryGUI {
     private final DungeonEditorSession session;
     private final Runnable onBack;
     private final List<DungeonTrigger> triggers;
+    private final LangManager lang;
 
     public DungeonTriggersEditorGUI(Player player, DungeonEditorSession session, Runnable onBack) {
-        super(player, Component.text("Triggers: " + session.original.id(), NamedTextColor.GOLD), SIZE);
+        super(player, ComponentUtils.parse(session.chatPromptManager.lang()
+                .raw("gui.editor.triggers.title", "id", session.original.id())), SIZE);
         this.session = session;
         this.onBack = onBack;
         this.triggers = List.of(DungeonTrigger.values());
+        this.lang = session.chatPromptManager.lang();
     }
 
     @Override
@@ -48,11 +53,11 @@ public class DungeonTriggersEditorGUI extends InventoryGUI {
 
             setItem(i, new ItemBuilder(count > 0 ? Material.COMPARATOR : Material.LEVER)
                     .setName(Component.text(trigger.name(), NamedTextColor.YELLOW))
-                    .setLore(Component.text(count + " acción(es)", NamedTextColor.GRAY))
+                    .setLore(ComponentUtils.parse(lang.raw("gui.editor.roomevents.item.actions", "count", count)))
                     .build());
         }
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back")));
     }
 
     @Override
@@ -67,7 +72,7 @@ public class DungeonTriggersEditorGUI extends InventoryGUI {
             List<DungeonAction> actions = new ArrayList<>(session.triggers.getOrDefault(trigger, List.of()));
             session.triggers.put(trigger, actions);
 
-            new DungeonActionListEditorGUI(player, "Acciones: " + trigger.name(), actions,
+            new DungeonActionListEditorGUI(player, lang.raw("gui.editor.actionlist.title_for", "trigger", trigger.name()), actions,
                     session.chatPromptManager, this::reopen).open();
             return;
         }

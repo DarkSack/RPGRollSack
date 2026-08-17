@@ -1,5 +1,6 @@
 package com.sack.rpgroll.ascension;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.common.resource.DirectoryCreator;
 import com.sack.rpgroll.common.resource.ResourceCopier;
 import com.sack.rpgroll.ascension.command.AscendAdminCommand;
@@ -43,9 +44,15 @@ public class AscensionPlugin extends JavaPlugin {
     private TitleManager titleManager;
     private LegacyManager legacyManager;
     private AscensionEngine engine;
+    private LangManager langManager;
 
     @Override
     public void onEnable() {
+
+        saveDefaultConfig();
+
+        langManager = new LangManager(this, List.of("es", "en", "pt_BR"), "es");
+        langManager.reload(getConfig().getString("language", "es"));
 
         new DirectoryCreator(this).create(DIRECTORIES);
         new ResourceCopier(this).copyDirectories(DIRECTORIES);
@@ -73,21 +80,22 @@ public class AscensionPlugin extends JavaPlugin {
         legacyManager.initialize();
 
         AscensionPlayerStateManager stateManager = new AscensionPlayerStateManager(this);
-        AscensionRequirementChecker requirementChecker = new AscensionRequirementChecker();
+        AscensionRequirementChecker requirementChecker = new AscensionRequirementChecker(langManager);
 
         engine = new AscensionEngine(this, stateManager, evolutionManager, specializationManager, prestigeManager,
-                legacyManager, requirementChecker);
+                legacyManager, requirementChecker, langManager);
 
-        ChatPromptManager chatPromptManager = new ChatPromptManager(this);
+        ChatPromptManager chatPromptManager = new ChatPromptManager(this, langManager);
         getServer().getPluginManager().registerEvents(chatPromptManager, this);
 
         getServer().getPluginManager().registerEvents(new PlayerSessionListener(engine), this);
         getServer().getPluginManager().registerEvents(
                 new AffinityCombatListener(affinityManager, stateManager), this);
 
-        registerCommand("ascend", new AscendCommand(engine, factionManager, titleManager));
+        registerCommand("ascend", new AscendCommand(engine, factionManager, titleManager, langManager));
         registerCommand("ascendadmin", new AscendAdminCommand(engine, achievementManager, titleManager,
-                affinityManager, jobEvolutionManager, secretUnlockManager, factionManager, chatPromptManager));
+                affinityManager, jobEvolutionManager, secretUnlockManager, factionManager, chatPromptManager,
+                langManager, this));
 
         registerPlaceholders();
 
@@ -173,6 +181,10 @@ public class AscensionPlugin extends JavaPlugin {
 
     public LegacyManager getLegacyManager() {
         return legacyManager;
+    }
+
+    public LangManager getLangManager() {
+        return langManager;
     }
 
 }

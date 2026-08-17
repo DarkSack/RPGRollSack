@@ -3,6 +3,7 @@ package com.sack.rpgroll.quests.engine;
 import com.sack.rpgroll.util.ComponentUtils;
 
 import com.sack.rpgroll.api.RPGRollAPI;
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.player.RPGPlayer;
 import com.sack.rpgroll.quests.condition.QuestConditionContext;
 import com.sack.rpgroll.quests.condition.QuestConditionEvaluator;
@@ -50,6 +51,7 @@ public class QuestEngine {
     private final QuestRequirementChecker requirementChecker;
     private final QuestConditionEvaluator conditionEvaluator;
     private final ActionRegistry actionRegistry;
+    private final LangManager lang;
 
     public QuestEngine(
             Plugin plugin,
@@ -57,7 +59,8 @@ public class QuestEngine {
             QuestPlayerStateManager stateManager,
             QuestRequirementChecker requirementChecker,
             QuestConditionEvaluator conditionEvaluator,
-            ActionRegistry actionRegistry) {
+            ActionRegistry actionRegistry,
+            LangManager lang) {
 
         this.plugin = plugin;
         this.questManager = questManager;
@@ -65,6 +68,7 @@ public class QuestEngine {
         this.requirementChecker = requirementChecker;
         this.conditionEvaluator = conditionEvaluator;
         this.actionRegistry = actionRegistry;
+        this.lang = lang;
     }
 
     // ============ Ciclo de vida ============
@@ -75,15 +79,15 @@ public class QuestEngine {
         QuestPlayerState state = stateManager.getOrLoad(player);
 
         if (state.isActive(quest.id())) {
-            return List.of("Ya tenés esta quest activa.");
+            return List.of(lang.raw("engine.already_active"));
         }
 
         if (!quest.repeatable() && state.hasCompleted(quest.id())) {
-            return List.of("Ya completaste esta quest y no es repetible.");
+            return List.of(lang.raw("engine.already_completed_not_repeatable"));
         }
 
         if (quest.repeatable() && isOnCooldown(quest, state)) {
-            return List.of("Esta quest está en cooldown todavía.");
+            return List.of(lang.raw("engine.on_cooldown"));
         }
 
         List<String> reasons = requirementChecker.check(player, quest.requirements(), state);
@@ -329,8 +333,8 @@ public class QuestEngine {
         for (DialogLine line : dialog.lines()) {
 
             Component prefix = switch (line.speaker()) {
-                case NPC -> Component.text("[NPC] ", NamedTextColor.YELLOW);
-                case PLAYER -> Component.text("[Tú] ", NamedTextColor.AQUA);
+                case NPC -> lang.component("engine.dialog_npc_prefix");
+                case PLAYER -> lang.component("engine.dialog_player_prefix");
             };
 
             player.sendMessage(prefix.append(ComponentUtils.parse(line.text())));
@@ -340,7 +344,7 @@ public class QuestEngine {
             return;
         }
 
-        player.sendMessage(Component.text("Elegí una opción:", NamedTextColor.GOLD));
+        lang.send(player, "engine.dialog_choose_option");
 
         int index = 1;
         for (var option : dialog.options()) {
@@ -393,7 +397,7 @@ public class QuestEngine {
 
         actionRegistry.executeAll(rewards.extra(), new QuestActionContext(player, quest, null));
 
-        player.sendMessage(Component.text("✔ Quest completada: " + quest.displayName(), NamedTextColor.GOLD));
+        lang.send(player, "engine.quest_completed", "name", quest.displayName());
     }
 
     // ============ Polling (WAIT / REACH_LOCATION / DISCOVER_REGION) ============

@@ -1,5 +1,6 @@
 package com.sack.rpgroll.effects.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.effects.core.EffectCondition;
 import com.sack.rpgroll.effects.core.EffectConditionType;
 import com.sack.rpgroll.effects.core.EffectDefinition;
@@ -30,15 +31,18 @@ public class EffectConditionsEditorGUI extends InventoryGUI {
 
     private final EffectManager effectManager;
     private final ChatPromptManager chatPromptManager;
+    private final LangManager lang;
     private final Runnable onBack;
     private EffectDefinition current;
 
     public EffectConditionsEditorGUI(Player player, EffectDefinition effect, EffectManager effectManager,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text("Condiciones: " + effect.id(), NamedTextColor.GOLD), SIZE);
+        super(player, Component.text(chatPromptManager.lang().raw("gui.conditions.title", "id", effect.id()),
+                NamedTextColor.GOLD), SIZE);
         this.current = effect;
         this.effectManager = effectManager;
         this.chatPromptManager = chatPromptManager;
+        this.lang = chatPromptManager.lang();
         this.onBack = onBack;
     }
 
@@ -69,19 +73,19 @@ public class EffectConditionsEditorGUI extends InventoryGUI {
             setItem(i, new ItemBuilder(Material.COMPARATOR)
                     .setName(Component.text(condition.type().name(), NamedTextColor.AQUA))
                     .setLore(Component.text(condition.params().toString(), NamedTextColor.GRAY),
-                            Component.text("Shift-click para quitar", NamedTextColor.RED))
+                            lang.component("gui.common.shift_remove"))
                     .build());
         }
 
         setItem(ADD_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Agregar condición", NamedTextColor.GREEN))
-                .setLore(Component.text("TIPO clave=valor,clave2=valor2", NamedTextColor.GRAY),
-                        Component.text("ej. LEVEL_MIN value=10", NamedTextColor.DARK_GRAY),
-                        Component.text("ej. WORLD value=world_nether", NamedTextColor.DARK_GRAY),
-                        Component.text("tipos: " + typeList(), NamedTextColor.DARK_GRAY))
+                .setName(lang.component("gui.conditions.add"))
+                .setLore(lang.component("gui.conditions.add_hint1"),
+                        lang.component("gui.conditions.add_hint2"),
+                        lang.component("gui.conditions.add_hint3"),
+                        lang.component("gui.conditions.add_hint4", "types", typeList()))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back_button")));
     }
 
     private String typeList() {
@@ -121,7 +125,7 @@ public class EffectConditionsEditorGUI extends InventoryGUI {
     }
 
     private void promptAdd() {
-        chatPromptManager.prompt(player, "Escribí: TIPO clave=valor,clave2=valor2", value -> {
+        chatPromptManager.prompt(player, "gui.conditions.prompt_add", value -> {
 
             String[] parts = value.trim().split("\\s+", 2);
 
@@ -130,7 +134,7 @@ public class EffectConditionsEditorGUI extends InventoryGUI {
             try {
                 type = EffectConditionType.valueOf(parts[0].trim().toUpperCase(Locale.ROOT));
             } catch (IllegalArgumentException e) {
-                player.sendMessage(Component.text("Tipo inválido: " + parts[0], NamedTextColor.RED));
+                lang.send(player, "gui.common.invalid_type", "value", parts[0]);
                 return;
             }
 

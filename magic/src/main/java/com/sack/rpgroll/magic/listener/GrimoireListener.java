@@ -1,6 +1,7 @@
 package com.sack.rpgroll.magic.listener;
 
 import com.sack.rpgroll.api.RPGRollAPI;
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.magic.core.Grimoire;
 import com.sack.rpgroll.magic.core.GrimoireManager;
 import com.sack.rpgroll.magic.core.Spell;
@@ -8,9 +9,6 @@ import com.sack.rpgroll.magic.core.SpellManager;
 import com.sack.rpgroll.magic.item.MagicItemFactory;
 import com.sack.rpgroll.magic.runtime.PlayerSpellbook;
 import com.sack.rpgroll.magic.runtime.SpellbookManager;
-
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -33,12 +31,14 @@ public class GrimoireListener implements Listener {
     private final GrimoireManager grimoireManager;
     private final SpellManager spellManager;
     private final SpellbookManager spellbookManager;
+    private final LangManager lang;
 
     public GrimoireListener(GrimoireManager grimoireManager, SpellManager spellManager,
-            SpellbookManager spellbookManager) {
+            SpellbookManager spellbookManager, LangManager lang) {
         this.grimoireManager = grimoireManager;
         this.spellManager = spellManager;
         this.spellbookManager = spellbookManager;
+        this.lang = lang;
     }
 
     @EventHandler
@@ -65,7 +65,7 @@ public class GrimoireListener implements Listener {
         Optional<Grimoire> grimoireOpt = grimoireManager.get(grimoireId);
 
         if (grimoireOpt.isEmpty()) {
-            player.sendMessage(Component.text("Este grimorio ya no existe.", NamedTextColor.RED));
+            lang.send(player, "grimoire_listener.no_longer_exists");
             return;
         }
 
@@ -88,26 +88,23 @@ public class GrimoireListener implements Listener {
             Spell spell = spellOpt.get();
 
             if (spellbook.knows(spellId)) {
-                player.sendMessage(Component.text("Ya sabías '" + spell.displayName() + "'.", NamedTextColor.GRAY));
+                lang.send(player, "grimoire_listener.already_known", "spell", spell.displayName());
                 continue;
             }
 
             if (playerLevel < spell.level()) {
-                player.sendMessage(Component.text(
-                        "Te falta nivel para '" + spell.displayName() + "' (necesitás nivel " + spell.level() + ").",
-                        NamedTextColor.RED));
+                lang.send(player, "grimoire_listener.missing_level", "spell", spell.displayName(),
+                        "level", spell.level());
                 continue;
             }
 
             if (spell.hasTreeParent() && !spellbook.knows(spell.treeParentId())) {
-                player.sendMessage(Component.text(
-                        "Primero necesitás aprender el hechizo anterior del árbol de '" + spell.displayName() + "'.",
-                        NamedTextColor.RED));
+                lang.send(player, "grimoire_listener.missing_tree_parent", "spell", spell.displayName());
                 continue;
             }
 
             spellbook.learn(spellId);
-            player.sendMessage(Component.text("✔ Aprendiste '" + spell.displayName() + "'.", NamedTextColor.GREEN));
+            lang.send(player, "grimoire_listener.learned", "spell", spell.displayName());
             learned++;
         }
 

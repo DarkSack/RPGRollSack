@@ -1,5 +1,6 @@
 package com.sack.rpgroll.fishing.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.fishing.core.FishingRod;
 import com.sack.rpgroll.fishing.core.FishingRodManager;
 import com.sack.rpgroll.fishing.item.FishingItemFactory;
@@ -37,15 +38,17 @@ public class RodEditorGUI extends InventoryGUI {
 
     private final FishingRodManager rodManager;
     private final ChatPromptManager chatPromptManager;
+    private final LangManager lang;
     private final Runnable onBack;
     private FishingRod current;
 
     public RodEditorGUI(Player player, FishingRod rod, FishingRodManager rodManager,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text("Caña: " + rod.id(), NamedTextColor.GOLD), SIZE);
+        super(player, chatPromptManager.lang().component("gui.rod.editor_title", "id", rod.id()), SIZE);
         this.current = rod;
         this.rodManager = rodManager;
         this.chatPromptManager = chatPromptManager;
+        this.lang = chatPromptManager.lang();
         this.onBack = onBack;
     }
 
@@ -65,58 +68,57 @@ public class RodEditorGUI extends InventoryGUI {
         }
 
         setItem(NAME_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(Component.text("Nombre: " + current.displayName(), NamedTextColor.YELLOW)).build());
+                .setName(lang.component("gui.rod.field_name", "name", current.displayName())).build());
 
         setItem(MATERIAL_SLOT, new ItemBuilder(SpeciesBrowserGUI.parseMaterial(current.material()))
-                .setName(Component.text("Material: " + current.material(), NamedTextColor.YELLOW)).build());
+                .setName(lang.component("gui.rod.field_material", "value", current.material())).build());
 
         setItem(DESCRIPTION_SLOT, new ItemBuilder(Material.WRITTEN_BOOK)
-                .setName(Component.text("Descripción", NamedTextColor.YELLOW))
+                .setName(lang.component("gui.common.description_title"))
                 .setLore(ItemBuilder.toLoreLines(
-                        current.description().isBlank() ? "(sin descripción)" : current.description()))
+                        current.description().isBlank() ? lang.raw("gui.common.no_description") : current.description()))
                 .build());
 
         setItem(DURABILITY_SLOT, new ItemBuilder(Material.ANVIL)
-                .setName(Component.text("Durabilidad: " + current.durability(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click: +8 · Click derecho: -8", NamedTextColor.GRAY)).build());
+                .setName(lang.component("gui.rod.field_durability", "value", current.durability()))
+                .setLore(lang.component("gui.common.plusminus_8")).build());
 
         setItem(CAST_POWER_SLOT, new ItemBuilder(Material.FISHING_ROD)
-                .setName(Component.text(String.format(Locale.ROOT, "Alcance: x%.2f", current.castPower()),
-                        NamedTextColor.AQUA))
-                .setLore(Component.text("Click: +0.1 · Click derecho: -0.1", NamedTextColor.GRAY)).build());
+                .setName(lang.component("gui.rod.field_cast_power", "value",
+                        String.format(Locale.ROOT, "%.2f", current.castPower())))
+                .setLore(lang.component("gui.common.plusminus_01")).build());
 
         setItem(REEL_SPEED_SLOT, new ItemBuilder(Material.STRING)
-                .setName(Component.text(String.format(Locale.ROOT, "Velocidad de recogida: x%.2f", current.reelSpeed()),
-                        NamedTextColor.LIGHT_PURPLE))
-                .setLore(Component.text("Click: +0.1 · Click derecho: -0.1", NamedTextColor.GRAY)).build());
+                .setName(lang.component("gui.rod.field_reel_speed", "value",
+                        String.format(Locale.ROOT, "%.2f", current.reelSpeed())))
+                .setLore(lang.component("gui.common.plusminus_01")).build());
 
         setItem(PRECISION_SLOT, new ItemBuilder(Material.SPYGLASS)
-                .setName(Component.text(String.format(Locale.ROOT, "Precisión: +%.1f", current.precision()),
-                        NamedTextColor.AQUA))
-                .setLore(Component.text("Click: +0.5 · Click derecho: -0.5", NamedTextColor.GRAY)).build());
+                .setName(lang.component("gui.rod.field_precision", "value",
+                        String.format(Locale.ROOT, "%.1f", current.precision())))
+                .setLore(lang.component("gui.common.plusminus_05")).build());
 
         setItem(RESISTANCE_SLOT, new ItemBuilder(Material.SHIELD)
-                .setName(Component.text(String.format(Locale.ROOT, "Resistencia: x%.2f", current.resistance()),
-                        NamedTextColor.GREEN))
-                .setLore(Component.text("Más fallos permitidos en el minijuego. Click: +0.1 · Click derecho: -0.1",
-                        NamedTextColor.GRAY))
+                .setName(lang.component("gui.rod.field_resistance", "value",
+                        String.format(Locale.ROOT, "%.2f", current.resistance())))
+                .setLore(lang.component("gui.rod.resistance_hint"))
                 .build());
 
         setItem(LUCK_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text(String.format(Locale.ROOT, "Suerte: x%.2f", current.luckBonus()),
-                        NamedTextColor.YELLOW))
-                .setLore(Component.text("Bono a especies no comunes. Click: +0.1 · Click derecho: -0.1", NamedTextColor.GRAY))
+                .setName(lang.component("gui.rod.field_luck", "value",
+                        String.format(Locale.ROOT, "%.2f", current.luckBonus())))
+                .setLore(lang.component("gui.rod.luck_hint"))
                 .build());
 
         setItem(CATEGORIES_SLOT, new ItemBuilder(Material.TROPICAL_FISH)
-                .setName(Component.text("Especies favoritas: " + String.join(", ", current.preferredCategories()),
-                        NamedTextColor.GOLD))
-                .setLore(Component.text("Escribí categorías separadas por comas", NamedTextColor.GRAY)).build());
+                .setName(lang.component("gui.rod.field_categories", "value",
+                        String.join(", ", current.preferredCategories())))
+                .setLore(lang.component("gui.rod.categories_hint")).build());
 
         setItem(GIVE_SLOT, new ItemBuilder(Material.CHEST)
-                .setName(Component.text("▶ Darme una", NamedTextColor.GREEN)).build());
+                .setName(lang.component("gui.rod.give_button")).build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back")));
     }
 
     @Override
@@ -128,7 +130,7 @@ public class RodEditorGUI extends InventoryGUI {
         int intSign = event.getClick() == ClickType.RIGHT ? -1 : 1;
 
         if (slot == NAME_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el nuevo nombre:", value -> replace(new FishingRod(current.id(),
+            chatPromptManager.prompt(player, lang.raw("gui.rod.prompt_name"), value -> replace(new FishingRod(current.id(),
                     value, current.material(), current.description(), current.durability(), current.castPower(),
                     current.reelSpeed(), current.precision(), current.resistance(), current.luckBonus(),
                     current.preferredCategories())));
@@ -136,7 +138,7 @@ public class RodEditorGUI extends InventoryGUI {
         }
 
         if (slot == MATERIAL_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el Material:", value -> replace(new FishingRod(current.id(),
+            chatPromptManager.prompt(player, lang.raw("gui.rod.prompt_material"), value -> replace(new FishingRod(current.id(),
                     current.displayName(), value, current.description(), current.durability(), current.castPower(),
                     current.reelSpeed(), current.precision(), current.resistance(), current.luckBonus(),
                     current.preferredCategories())));
@@ -144,7 +146,7 @@ public class RodEditorGUI extends InventoryGUI {
         }
 
         if (slot == DESCRIPTION_SLOT) {
-            chatPromptManager.prompt(player, "Escribí la nueva descripción:", value -> replace(new FishingRod(
+            chatPromptManager.prompt(player, lang.raw("gui.rod.prompt_description"), value -> replace(new FishingRod(
                     current.id(), current.displayName(), current.material(), value, current.durability(),
                     current.castPower(), current.reelSpeed(), current.precision(), current.resistance(),
                     current.luckBonus(), current.preferredCategories())));
@@ -195,7 +197,7 @@ public class RodEditorGUI extends InventoryGUI {
         }
 
         if (slot == CATEGORIES_SLOT) {
-            chatPromptManager.prompt(player, "Escribí las categorías favoritas separadas por comas:", value -> {
+            chatPromptManager.prompt(player, lang.raw("gui.rod.prompt_categories"), value -> {
 
                 Set<String> categories = new HashSet<>();
                 for (String entry : value.split(",")) {
@@ -212,8 +214,8 @@ public class RodEditorGUI extends InventoryGUI {
         }
 
         if (slot == GIVE_SLOT) {
-            player.getInventory().addItem(FishingItemFactory.createRod(current));
-            player.sendMessage(Component.text("✔ Te diste una caña '" + current.displayName() + "'.", NamedTextColor.GREEN));
+            player.getInventory().addItem(FishingItemFactory.createRod(current, lang));
+            lang.send(player, "gui.rod.given", "name", current.displayName());
             return;
         }
 

@@ -1,5 +1,6 @@
 package com.sack.rpgroll.quests.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.quests.core.Quest;
@@ -26,12 +27,15 @@ public class QuestBrowserGUI extends InventoryGUI {
 
     private final QuestManager questManager;
     private final ChatPromptManager chatPromptManager;
+    private final LangManager lang;
     private List<Quest> quests;
 
-    public QuestBrowserGUI(Player player, QuestManager questManager, ChatPromptManager chatPromptManager) {
-        super(player, Component.text("Quests RPGRoll", NamedTextColor.GOLD), SIZE);
+    public QuestBrowserGUI(Player player, QuestManager questManager, ChatPromptManager chatPromptManager,
+            LangManager lang) {
+        super(player, lang.component("browser.title"), SIZE);
         this.questManager = questManager;
         this.chatPromptManager = chatPromptManager;
+        this.lang = lang;
         this.quests = List.copyOf(questManager.getAll());
     }
 
@@ -51,16 +55,16 @@ public class QuestBrowserGUI extends InventoryGUI {
             setItem(i, new ItemBuilder(Material.WRITTEN_BOOK)
                     .setName(Component.text(quest.id(), NamedTextColor.YELLOW))
                     .setLore(Component.text(quest.category() + " · " + quest.difficulty(), NamedTextColor.GRAY),
-                            Component.text(quest.stages().size() + " stage(s)", NamedTextColor.GRAY),
-                            Component.text("Click para editar", NamedTextColor.YELLOW))
+                            lang.component("browser.stage_count", "count", quest.stages().size()),
+                            lang.component("browser.click_to_edit"))
                     .build());
         }
 
         setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Crear quest nueva", NamedTextColor.GREEN))
+                .setName(lang.component("browser.create_new"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Cerrar"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("browser.close_button")));
     }
 
     @Override
@@ -70,7 +74,7 @@ public class QuestBrowserGUI extends InventoryGUI {
         int slot = event.getSlot();
 
         if (slot < quests.size() && slot < 36) {
-            new QuestEditorGUI(player, quests.get(slot), questManager, chatPromptManager, this::reopen).open();
+            new QuestEditorGUI(player, quests.get(slot), questManager, chatPromptManager, this::reopen, lang).open();
             return;
         }
 
@@ -85,12 +89,12 @@ public class QuestBrowserGUI extends InventoryGUI {
     }
 
     private void promptNew() {
-        chatPromptManager.prompt(player, "Escribí el id de la nueva quest:", value -> {
+        chatPromptManager.prompt(player, "browser.prompt_new_id", value -> {
 
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 
             if (questManager.exists(id)) {
-                player.sendMessage(Component.text("Ya existe una quest con ese id.", NamedTextColor.RED));
+                lang.send(player, "browser.id_exists");
                 reopen();
                 return;
             }

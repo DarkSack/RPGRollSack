@@ -1,5 +1,6 @@
 package com.sack.rpgroll.items.gui.editor;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.items.core.ItemRecipeDef;
@@ -33,11 +34,13 @@ public class RecipesEditorGUI extends InventoryGUI {
     private static final int BACK_SLOT = 44;
 
     private final EditorSession session;
+    private final LangManager lang;
     private final Runnable onBack;
 
     public RecipesEditorGUI(Player player, EditorSession session, Runnable onBack) {
-        super(player, Component.text("Recetas: " + session.original.id(), NamedTextColor.GOLD), SIZE);
+        super(player, session.chatPromptManager.lang().component("editor.recipes.title", "id", session.original.id()), SIZE);
         this.session = session;
+        this.lang = session.chatPromptManager.lang();
         this.onBack = onBack;
     }
 
@@ -62,20 +65,20 @@ public class RecipesEditorGUI extends InventoryGUI {
             setItem(i, new ItemBuilder(Material.CRAFTING_TABLE)
                     .setName(Component.text(recipe.type().name(), NamedTextColor.YELLOW))
                     .setLore(Component.text(recipeSummary(recipe), NamedTextColor.GRAY),
-                            Component.text("Shift-click para quitar", NamedTextColor.DARK_GRAY))
+                            lang.component("editor.common.shift_click_remove"))
                     .build());
         }
 
         setItem(ADD_SHAPELESS_SLOT, new ItemBuilder(Material.CRAFTING_TABLE)
-                .setName(Component.text("+ Shapeless", NamedTextColor.GREEN)).build());
+                .setName(lang.component("editor.recipes.add_shapeless")).build());
         setItem(ADD_SHAPED_SLOT, new ItemBuilder(Material.CRAFTING_TABLE)
-                .setName(Component.text("+ Shaped", NamedTextColor.GREEN)).build());
+                .setName(lang.component("editor.recipes.add_shaped")).build());
         setItem(ADD_FURNACE_SLOT, new ItemBuilder(Material.FURNACE)
-                .setName(Component.text("+ Furnace", NamedTextColor.GREEN)).build());
+                .setName(lang.component("editor.recipes.add_furnace")).build());
         setItem(ADD_STONECUTTER_SLOT, new ItemBuilder(Material.STONECUTTER)
-                .setName(Component.text("+ Stonecutter", NamedTextColor.GREEN)).build());
+                .setName(lang.component("editor.recipes.add_stonecutter")).build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("editor.common.back")));
     }
 
     private String recipeSummary(ItemRecipeDef recipe) {
@@ -84,7 +87,7 @@ public class RecipesEditorGUI extends InventoryGUI {
             case SHAPED -> String.join("|", recipe.shape());
             case SHAPELESS -> String.join(",", recipe.ingredients());
             case FURNACE, STONECUTTER -> recipe.ingredients().isEmpty() ? "?" : recipe.ingredients().get(0);
-            default -> recipe.sourceId() == null ? "(sin datos)" : recipe.sourceId();
+            default -> recipe.sourceId() == null ? lang.raw("editor.recipes.no_data") : recipe.sourceId();
         };
     }
 
@@ -114,7 +117,7 @@ public class RecipesEditorGUI extends InventoryGUI {
     }
 
     private void promptShapeless() {
-        session.chatPromptManager.prompt(player, "Escribí los ingredientes separados por coma:", value -> {
+        session.chatPromptManager.prompt(player, lang.raw("editor.recipes.prompt_shapeless"), value -> {
 
             List<String> ingredients = List.of(value.split(",")).stream().map(String::trim)
                     .filter(s -> !s.isEmpty()).map(s -> s.toUpperCase(Locale.ROOT)).toList();
@@ -126,35 +129,32 @@ public class RecipesEditorGUI extends InventoryGUI {
     }
 
     private void promptShaped() {
-        session.chatPromptManager.prompt(player,
-                "Escribí las 3 filas separadas por '|' (usa espacio para vacío, ej. ' I | I | S '):", shapeValue -> {
+        session.chatPromptManager.prompt(player, lang.raw("editor.recipes.prompt_shaped_rows"), shapeValue -> {
 
-                    List<String> shape = new ArrayList<>(List.of(shapeValue.split("\\|")));
+            List<String> shape = new ArrayList<>(List.of(shapeValue.split("\\|")));
 
-                    session.chatPromptManager.prompt(player,
-                            "Escribí el mapeo de letras: letra=MATERIAL,letra2=MATERIAL2 (ej. I=IRON_INGOT,S=STICK):",
-                            keyValue -> {
+            session.chatPromptManager.prompt(player, lang.raw("editor.recipes.prompt_shaped_key"), keyValue -> {
 
-                                Map<String, String> key = new HashMap<>();
+                Map<String, String> key = new HashMap<>();
 
-                                for (String pair : keyValue.split(",")) {
+                for (String pair : keyValue.split(",")) {
 
-                                    String[] kv = pair.split("=", 2);
+                    String[] kv = pair.split("=", 2);
 
-                                    if (kv.length == 2) {
-                                        key.put(kv[0].trim(), kv[1].trim().toUpperCase(Locale.ROOT));
-                                    }
-                                }
+                    if (kv.length == 2) {
+                        key.put(kv[0].trim(), kv[1].trim().toUpperCase(Locale.ROOT));
+                    }
+                }
 
-                                session.recipes.add(new ItemRecipeDef(RecipeType.SHAPED, shape, key, List.of(), null,
-                                        200, null));
-                                build();
-                            });
-                });
+                session.recipes.add(new ItemRecipeDef(RecipeType.SHAPED, shape, key, List.of(), null,
+                        200, null));
+                build();
+            });
+        });
     }
 
     private void promptSimple(RecipeType type) {
-        session.chatPromptManager.prompt(player, "Escribí el material de entrada (ej. IRON_ORE):", value -> {
+        session.chatPromptManager.prompt(player, lang.raw("editor.recipes.prompt_simple"), value -> {
 
             String material = value.trim().toUpperCase(Locale.ROOT);
 

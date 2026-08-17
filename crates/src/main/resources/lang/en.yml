@@ -1,0 +1,86 @@
+# Language file: English
+# RPGRoll-Crates - Message system
+
+# General messages
+general:
+  no_permission: "&cYou don't have permission to use this command."
+  player_only: "&cThis subcommand can only be used by players."
+
+# /crate command (admin)
+admin:
+  usage: "&cUsage: /crate <setlocation|removelocation|givekey|list|reload|browser> [args]"
+  setlocation_usage: "&cUsage: /crate setlocation <crateId>"
+  crate_not_found: "&cNo crate exists with id: {id}"
+  must_look_at_block: "&cYou need to be looking at the crate's block."
+  block_already_registered: "&cThat block already has a crate registered."
+  setlocation_success: "&a✔ Crate '{crate}' registered on this block (id: {placement})."
+  block_not_registered: "&cThat block doesn't have a crate registered."
+  removelocation_success: "&a✔ Crate removed from this block."
+  givekey_usage: "&cUsage: /crate givekey <player> <crateId> [amount]"
+  player_not_found: "&cPlayer not found: {player}"
+  invalid_amount: "&cThe amount must be a valid number."
+  amount_out_of_range: "&cThe amount must be between 1 and {max}."
+  givekey_success: "&a✔ {amount} key(s) of '{crate}' given to {player}"
+  givekey_success_overflow: "&a✔ {amount} key(s) of '{crate}' given to {player} (inventory full — the leftover was dropped on the ground)"
+  list_empty: "&7No crates defined."
+  list_header: "&6Available crates:"
+  list_entry: "&f• {id} ({name}&f) — {count} location(s)"
+  reload_success: "&a✔ Reloaded: {crates} crate(s), {locations} location(s)."
+
+# GUI: crate editor
+editor:
+  title: "&6Crate: {id}"
+  name_label: "Name: {name}"
+  click_to_rename: "&7Click to type a new one"
+  require_key_yes: "&aRequires key: yes"
+  require_key_no: "&7Requires key: no"
+  click_to_toggle: "&7Click to toggle"
+  key_material_label: "&eKey material: {material}"
+  click_to_set_material: "&7Click to type a new Material"
+  hologram_label: "&eHologram: {count} line(s)"
+  click_to_set_hologram: "&7Click to type all of them, one per line (separated by ';')"
+  reward_weight_lore: "&7Weight: {weight} · {actions} action(s)"
+  shift_click_remove: "&8Shift-click to remove"
+  add_reward: "&aAdd reward"
+  back_button: "Back"
+  prompt_name: "Type the crate's new name:"
+  prompt_key_material: "Type the name of the key's Material:"
+  invalid_material: "&cInvalid material."
+  prompt_hologram: "Type the hologram lines separated by ';':"
+  reward_min_required: "&cThe crate needs at least one reward."
+  prompt_add_reward: "Type: id;name;material;weight;item-material,amount (e.g. gems;&bGems;EMERALD;20;EMERALD,5):"
+  invalid_format: "&cInvalid format."
+  invalid_icon_material: "&cInvalid icon material."
+  invalid_weight: "&cThe weight must be a number."
+
+# GUI: crate browser
+browser:
+  title: "&6RPGRoll Crates"
+  reward_count: "&7{count} reward(s)"
+  click_to_edit: "&eClick to edit"
+  create_new: "&aCreate new crate"
+  close_button: "Close"
+  prompt_new_id: "Type the id of the new crate:"
+  id_exists: "&cA crate with that id already exists."
+
+# Item: crate key
+key:
+  lore_open_hint: "&7Right-click the crate to open it."
+
+# GUI: opening reel
+spin:
+  win_message: "&aYou won: {reward}&a!"
+
+# Reward execution
+executor:
+  win_broadcast: "&6{player}&e won {reward}&e from a crate!"
+
+# Interacting with a crate's block
+interact:
+  needs_key: "&cYou need this crate's key to open it."
+
+# Chat-prompt system (used by admin GUIs)
+prompt:
+  cancel_keyword: "cancel"
+  footer: "&7Type it in chat, or '{keyword}' to abort."
+  cancelled: "&cCancelled."

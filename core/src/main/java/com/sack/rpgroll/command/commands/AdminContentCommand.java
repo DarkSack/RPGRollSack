@@ -2,6 +2,7 @@ package com.sack.rpgroll.command.commands;
 
 import com.sack.rpgroll.RPGRoll;
 import com.sack.rpgroll.command.RPGCommand;
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gameplay.job.JobManager;
 import com.sack.rpgroll.gameplay.skill.SkillManager;
 import com.sack.rpgroll.gameplay.trait.TraitManager;
@@ -15,9 +16,6 @@ import com.sack.rpgroll.api.playerclass.ClassManager;
 import com.sack.rpgroll.api.race.RaceManager;
 import com.sack.rpgroll.playerclass.ClassManagerImpl;
 import com.sack.rpgroll.race.RaceManagerImpl;
-
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -40,9 +38,10 @@ public class AdminContentCommand implements RPGCommand {
     public void execute(CommandSender sender, String[] args) {
 
         Player player = (Player) sender;
+        LangManager lang = plugin.getBootstrap().getServices().get(LangManager.class);
 
         if (args.length < 1) {
-            player.sendMessage(Component.text("Uso: " + getUsage(), NamedTextColor.RED));
+            lang.send(player, "admin_content_command.usage", "usage", getUsage());
             return;
         }
 
@@ -57,8 +56,7 @@ public class AdminContentCommand implements RPGCommand {
             case "job" -> new JobBrowserGUI(player, services.get(JobManager.class), chatPromptManager).open();
             case "skill" -> new SkillBrowserGUI(player, services.get(SkillManager.class), chatPromptManager).open();
             case "trait" -> new TraitBrowserGUI(player, services.get(TraitManager.class), chatPromptManager).open();
-            default -> player.sendMessage(
-                    Component.text("Opción inválida. Usa: race, class, job, skill o trait", NamedTextColor.RED));
+            default -> lang.send(player, "admin_content_command.invalid_option");
         }
     }
 

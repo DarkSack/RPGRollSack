@@ -1,5 +1,6 @@
 package com.sack.rpgroll.items.gui.editor;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 
@@ -36,12 +37,14 @@ public class StatsEditorGUI extends InventoryGUI {
     private static final int BACK_SLOT = 49;
 
     private final EditorSession session;
+    private final LangManager lang;
     private final Runnable onBack;
     private final List<String> statIds;
 
     public StatsEditorGUI(Player player, EditorSession session, Runnable onBack) {
-        super(player, Component.text("Stats: " + session.original.id(), NamedTextColor.GOLD), SIZE);
+        super(player, session.chatPromptManager.lang().component("editor.stats.title", "id", session.original.id()), SIZE);
         this.session = session;
+        this.lang = session.chatPromptManager.lang();
         this.onBack = onBack;
         this.statIds = new ArrayList<>(session.statRegistry.all());
         this.statIds.sort(String::compareTo);
@@ -60,7 +63,7 @@ public class StatsEditorGUI extends InventoryGUI {
         // fila de control (solo Volver acá).
         for (int slot = 27; slot <= 35; slot++) {
             setItem(slot, new ItemBuilder(Material.ORANGE_STAINED_GLASS_PANE)
-                    .setName(Component.text("Atributos vanilla", NamedTextColor.GRAY)).build());
+                    .setName(lang.component("editor.stats.vanilla_attributes_label")).build());
         }
         for (int slot = 45; slot < SIZE; slot++) {
             setItem(slot, new ItemBuilder(Material.BLACK_STAINED_GLASS_PANE)
@@ -72,8 +75,8 @@ public class StatsEditorGUI extends InventoryGUI {
         }
 
         setItem(ADD_CUSTOM_STAT_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Agregar stat custom", NamedTextColor.GREEN))
-                .setLore(Component.text("Click para escribir uno nuevo por chat", NamedTextColor.GRAY))
+                .setName(lang.component("editor.stats.add_custom_stat"))
+                .setLore(lang.component("editor.stats.click_new_chat"))
                 .build());
 
         for (int i = 0; i < VANILLA_ATTRIBUTES.length; i++) {
@@ -84,26 +87,24 @@ public class StatsEditorGUI extends InventoryGUI {
         }
 
         setItem(ADD_CUSTOM_ATTRIBUTE_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Agregar atributo custom", NamedTextColor.GREEN))
-                .setLore(Component.text("Click para escribir uno nuevo por chat", NamedTextColor.GRAY))
+                .setName(lang.component("editor.stats.add_custom_attribute"))
+                .setLore(lang.component("editor.stats.click_new_chat"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("editor.common.back")));
     }
 
     private org.bukkit.inventory.ItemStack statItem(String statId, double value) {
         return new ItemBuilder(value > 0 ? Material.REDSTONE : Material.GUNPOWDER)
                 .setName(Component.text(formatName(statId) + ": " + formatNumber(value), NamedTextColor.RED))
-                .setLore(Component.text("Click: +1 · Shift-click: +10", NamedTextColor.GRAY),
-                        Component.text("Click derecho: -1 · Shift-click derecho: -10", NamedTextColor.GRAY))
+                .setLore(lang.component("editor.stats.stat_hint1"), lang.component("editor.stats.stat_hint2"))
                 .build();
     }
 
     private org.bukkit.inventory.ItemStack attributeItem(String attribute, double value) {
         return new ItemBuilder(value > 0 ? Material.DIAMOND : Material.FLINT)
                 .setName(Component.text(formatName(attribute) + ": " + formatNumber(value), NamedTextColor.AQUA))
-                .setLore(Component.text("Atributo vanilla (visible en tooltip nativo)", NamedTextColor.DARK_GRAY),
-                        Component.text("Click: +1 · Shift-click: +10 · Derecho: -1/-10", NamedTextColor.GRAY))
+                .setLore(lang.component("editor.stats.attribute_hint1"), lang.component("editor.stats.attribute_hint2"))
                 .build();
     }
 
@@ -206,12 +207,12 @@ public class StatsEditorGUI extends InventoryGUI {
     }
 
     private void promptCustomStat() {
-        session.chatPromptManager.prompt(player, "Escribí: <stat> <valor> (ej. mining_speed 15):", value -> {
+        session.chatPromptManager.prompt(player, lang.raw("editor.stats.prompt_custom_stat"), value -> {
 
             String[] parts = value.trim().split("\\s+");
 
             if (parts.length != 2) {
-                player.sendMessage(Component.text("Formato inválido.", NamedTextColor.RED));
+                lang.send(player, "editor.common.invalid_format");
                 return;
             }
 
@@ -220,7 +221,7 @@ public class StatsEditorGUI extends InventoryGUI {
                 session.stats.put(statId, Double.parseDouble(parts[1]));
                 session.statRegistry.register(statId);
             } catch (NumberFormatException e) {
-                player.sendMessage(Component.text("Valor numérico inválido.", NamedTextColor.RED));
+                lang.send(player, "editor.stats.invalid_value");
                 return;
             }
 
@@ -229,26 +230,25 @@ public class StatsEditorGUI extends InventoryGUI {
     }
 
     private void promptCustomAttribute() {
-        session.chatPromptManager.prompt(player,
-                "Escribí: <ATRIBUTO_VANILLA> <valor> (ej. SCALE 0.5):", value -> {
+        session.chatPromptManager.prompt(player, lang.raw("editor.stats.prompt_custom_attribute"), value -> {
 
-                    String[] parts = value.trim().split("\\s+");
+            String[] parts = value.trim().split("\\s+");
 
-                    if (parts.length != 2) {
-                        player.sendMessage(Component.text("Formato inválido.", NamedTextColor.RED));
-                        return;
-                    }
+            if (parts.length != 2) {
+                lang.send(player, "editor.common.invalid_format");
+                return;
+            }
 
-                    try {
-                        session.attributeModifiers.put(parts[0].toUpperCase(Locale.ROOT),
-                                Double.parseDouble(parts[1]));
-                    } catch (NumberFormatException e) {
-                        player.sendMessage(Component.text("Valor numérico inválido.", NamedTextColor.RED));
-                        return;
-                    }
+            try {
+                session.attributeModifiers.put(parts[0].toUpperCase(Locale.ROOT),
+                        Double.parseDouble(parts[1]));
+            } catch (NumberFormatException e) {
+                lang.send(player, "editor.stats.invalid_value");
+                return;
+            }
 
-                    build();
-                });
+            build();
+        });
     }
 
     private void reopen() {

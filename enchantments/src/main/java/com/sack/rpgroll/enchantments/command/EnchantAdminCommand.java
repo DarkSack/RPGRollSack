@@ -1,14 +1,13 @@
 package com.sack.rpgroll.enchantments.command;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.enchantments.core.CustomEnchantment;
 import com.sack.rpgroll.enchantments.core.EnchantmentManager;
 import com.sack.rpgroll.enchantments.gui.ChatPromptManager;
 import com.sack.rpgroll.enchantments.gui.EnchantmentBrowserGUI;
 import com.sack.rpgroll.enchantments.item.EnchantmentItem;
+import com.sack.rpgroll.util.ComponentUtils;
 import com.sack.rpgroll.util.TabCompleteUtil;
-
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -17,6 +16,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.List;
 import java.util.Optional;
@@ -36,22 +36,26 @@ public class EnchantAdminCommand implements CommandExecutor, TabCompleter {
 
     private static final String PERMISSION = "rpgrollenchantments.admin.*";
 
+    private final JavaPlugin plugin;
     private final EnchantmentManager manager;
     private final EnchantmentItem enchantmentItem;
     private final ChatPromptManager chatPromptManager;
+    private final LangManager lang;
 
-    public EnchantAdminCommand(EnchantmentManager manager, EnchantmentItem enchantmentItem,
+    public EnchantAdminCommand(JavaPlugin plugin, EnchantmentManager manager, EnchantmentItem enchantmentItem,
             ChatPromptManager chatPromptManager) {
+        this.plugin = plugin;
         this.manager = manager;
         this.enchantmentItem = enchantmentItem;
         this.chatPromptManager = chatPromptManager;
+        this.lang = chatPromptManager.lang();
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
         if (!sender.hasPermission(PERMISSION)) {
-            sender.sendMessage(Component.text("No tienes permiso para usar este comando.", NamedTextColor.RED));
+            lang.send(sender, "enchant_admin_command.no_permission");
             return true;
         }
 
@@ -75,8 +79,7 @@ public class EnchantAdminCommand implements CommandExecutor, TabCompleter {
     }
 
     private void sendUsage(CommandSender sender) {
-        sender.sendMessage(Component.text(
-                "Uso: /renchant <apply|remove|give|list|info|reload|browser> [args]", NamedTextColor.RED));
+        lang.send(sender, "enchant_admin_command.usage");
     }
 
     @Override
@@ -115,12 +118,12 @@ public class EnchantAdminCommand implements CommandExecutor, TabCompleter {
     private void handleApply(CommandSender sender, String[] args) {
 
         if (!(sender instanceof Player player)) {
-            sender.sendMessage(Component.text("Solo un jugador puede usar esto.", NamedTextColor.RED));
+            lang.send(sender, "enchant_admin_command.player_only");
             return;
         }
 
         if (args.length < 3) {
-            player.sendMessage(Component.text("Uso: /renchant apply <id> <nivel>", NamedTextColor.RED));
+            lang.send(player, "enchant_admin_command.apply_usage");
             return;
         }
 
@@ -130,14 +133,14 @@ public class EnchantAdminCommand implements CommandExecutor, TabCompleter {
     private void handleGive(CommandSender sender, String[] args) {
 
         if (args.length < 4) {
-            sender.sendMessage(Component.text("Uso: /renchant give <jugador> <id> <nivel>", NamedTextColor.RED));
+            lang.send(sender, "enchant_admin_command.give_usage");
             return;
         }
 
         Player target = Bukkit.getPlayerExact(args[1]);
 
         if (target == null) {
-            sender.sendMessage(Component.text("Jugador no encontrado: " + args[1], NamedTextColor.RED));
+            lang.send(sender, "enchant_admin_command.player_not_found", "player", args[1]);
             return;
         }
 
@@ -147,14 +150,14 @@ public class EnchantAdminCommand implements CommandExecutor, TabCompleter {
     private void applyToItem(CommandSender sender, ItemStack item, String enchantId, String rawLevel) {
 
         if (item == null || item.getType().isAir()) {
-            sender.sendMessage(Component.text("El ítem en mano está vacío.", NamedTextColor.RED));
+            lang.send(sender, "enchant_admin_command.item_empty");
             return;
         }
 
         Optional<CustomEnchantment> enchantmentOpt = manager.get(enchantId);
 
         if (enchantmentOpt.isEmpty()) {
-            sender.sendMessage(Component.text("No existe un encantamiento con id: " + enchantId, NamedTextColor.RED));
+            lang.send(sender, "enchant_admin_command.enchant_not_found", "id", enchantId);
             return;
         }
 
@@ -162,7 +165,7 @@ public class EnchantAdminCommand implements CommandExecutor, TabCompleter {
         try {
             level = Integer.parseInt(rawLevel);
         } catch (NumberFormatException e) {
-            sender.sendMessage(Component.text("Nivel inválido: " + rawLevel, NamedTextColor.RED));
+            lang.send(sender, "enchant_admin_command.invalid_level", "level", rawLevel);
             return;
         }
 
@@ -170,94 +173,92 @@ public class EnchantAdminCommand implements CommandExecutor, TabCompleter {
         EnchantmentItem.ApplyResult result = enchantmentItem.apply(item, enchantment, level);
 
         switch (result) {
-            case OK -> sender.sendMessage(Component.text("✔ ", NamedTextColor.GREEN)
-                    .append(com.sack.rpgroll.util.ComponentUtils.parse(enchantment.displayName()))
-                    .append(Component.text(" " + level + " aplicado.", NamedTextColor.GREEN)));
-            case LEVEL_TOO_HIGH -> sender.sendMessage(Component.text(
-                    "Nivel fuera de rango (máximo " + enchantment.maxLevel() + ").", NamedTextColor.RED));
-            case CONFLICT -> sender.sendMessage(Component.text(
-                    "Ese ítem tiene un encantamiento en conflicto con '" + enchantId + "'.", NamedTextColor.RED));
-            case CATEGORY_NOT_ALLOWED -> sender.sendMessage(Component.text(
-                    "Ese encantamiento no se puede aplicar a este tipo de ítem.", NamedTextColor.RED));
+            case OK -> sender.sendMessage(lang.component("enchant_admin_command.apply_success_prefix")
+                    .append(ComponentUtils.parse(enchantment.displayName()))
+                    .append(lang.component("enchant_admin_command.apply_success_suffix", "level", level)));
+            case LEVEL_TOO_HIGH -> lang.send(sender, "enchant_admin_command.level_too_high",
+                    "max", enchantment.maxLevel());
+            case CONFLICT -> lang.send(sender, "enchant_admin_command.conflict", "id", enchantId);
+            case CATEGORY_NOT_ALLOWED -> lang.send(sender, "enchant_admin_command.category_not_allowed");
         }
     }
 
     private void handleRemove(CommandSender sender, String[] args) {
 
         if (!(sender instanceof Player player)) {
-            sender.sendMessage(Component.text("Solo un jugador puede usar esto.", NamedTextColor.RED));
+            lang.send(sender, "enchant_admin_command.player_only");
             return;
         }
 
         if (args.length < 2) {
-            player.sendMessage(Component.text("Uso: /renchant remove <id>", NamedTextColor.RED));
+            lang.send(player, "enchant_admin_command.remove_usage");
             return;
         }
 
         Optional<CustomEnchantment> enchantmentOpt = manager.get(args[1]);
 
         if (enchantmentOpt.isEmpty()) {
-            player.sendMessage(Component.text("No existe un encantamiento con id: " + args[1], NamedTextColor.RED));
+            lang.send(player, "enchant_admin_command.enchant_not_found", "id", args[1]);
             return;
         }
 
         ItemStack item = player.getInventory().getItemInMainHand();
 
         if (enchantmentItem.remove(item, enchantmentOpt.get().id())) {
-            player.sendMessage(Component.text("✔ Encantamiento removido.", NamedTextColor.GREEN));
+            lang.send(player, "enchant_admin_command.remove_success");
         } else {
-            player.sendMessage(Component.text("Ese ítem no tiene ese encantamiento.", NamedTextColor.RED));
+            lang.send(player, "enchant_admin_command.remove_no_match");
         }
     }
 
     private void handleList(CommandSender sender) {
 
         if (manager.count() == 0) {
-            sender.sendMessage(Component.text("No hay encantamientos definidos.", NamedTextColor.GRAY));
+            lang.send(sender, "enchant_admin_command.list_empty");
             return;
         }
 
-        sender.sendMessage(Component.text("Encantamientos disponibles:", NamedTextColor.GOLD));
+        lang.send(sender, "enchant_admin_command.list_header");
 
         for (CustomEnchantment enchantment : manager.getAll()) {
-            sender.sendMessage(Component.text(
-                    "• " + enchantment.id() + " (" + enchantment.rarity() + ", max " + enchantment.maxLevel() + ")",
-                    NamedTextColor.WHITE));
+            lang.send(sender, "enchant_admin_command.list_entry", "id", enchantment.id(), "rarity",
+                    enchantment.rarity(), "max_level", enchantment.maxLevel());
         }
     }
 
     private void handleInfo(CommandSender sender, String[] args) {
 
         if (args.length < 2) {
-            sender.sendMessage(Component.text("Uso: /renchant info <id>", NamedTextColor.RED));
+            lang.send(sender, "enchant_admin_command.info_usage");
             return;
         }
 
         Optional<CustomEnchantment> enchantmentOpt = manager.get(args[1]);
 
         if (enchantmentOpt.isEmpty()) {
-            sender.sendMessage(Component.text("No existe un encantamiento con id: " + args[1], NamedTextColor.RED));
+            lang.send(sender, "enchant_admin_command.enchant_not_found", "id", args[1]);
             return;
         }
 
         CustomEnchantment enchantment = enchantmentOpt.get();
 
-        sender.sendMessage(com.sack.rpgroll.util.ComponentUtils.parse(enchantment.displayName())
+        sender.sendMessage(ComponentUtils.parse(enchantment.displayName())
                 .colorIfAbsent(enchantment.rarity().color()));
-        sender.sendMessage(Component.text("Rareza: " + enchantment.rarity(), NamedTextColor.GRAY));
-        sender.sendMessage(Component.text("Nivel máximo: " + enchantment.maxLevel(), NamedTextColor.GRAY));
-        sender.sendMessage(Component.text("Triggers: " + enchantment.triggers(), NamedTextColor.GRAY));
-        sender.sendMessage(Component.text("Probabilidad: " + enchantment.chance() + "%", NamedTextColor.GRAY));
+        lang.send(sender, "enchant_admin_command.info_rarity", "rarity", enchantment.rarity());
+        lang.send(sender, "enchant_admin_command.info_max_level", "max_level", enchantment.maxLevel());
+        lang.send(sender, "enchant_admin_command.info_triggers", "triggers", enchantment.triggers());
+        lang.send(sender, "enchant_admin_command.info_chance", "chance", enchantment.chance());
 
         if (!enchantment.conflicts().isEmpty()) {
-            sender.sendMessage(Component.text("Conflictos: " + enchantment.conflicts(), NamedTextColor.GRAY));
+            lang.send(sender, "enchant_admin_command.info_conflicts", "conflicts", enchantment.conflicts());
         }
     }
 
     private void handleReload(CommandSender sender) {
+        plugin.reloadConfig();
+        lang.reload(plugin.getConfig().getString("language", "es"));
         manager.reload();
-        sender.sendMessage(Component.text(
-                "✔ Recargado: " + manager.count() + " encantamiento(s).", NamedTextColor.GREEN));
+        lang.send(sender, "enchant_admin_command.reload_success", "count", manager.count());
     }
 
 }

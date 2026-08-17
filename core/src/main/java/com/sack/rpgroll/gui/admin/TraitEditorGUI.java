@@ -2,6 +2,7 @@ package com.sack.rpgroll.gui.admin;
 
 import com.sack.rpgroll.util.ComponentUtils;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.gameplay.trait.Trait;
@@ -33,15 +34,17 @@ public class TraitEditorGUI extends InventoryGUI {
 
     private final TraitManager traitManager;
     private final ChatPromptManager chatPromptManager;
+    private final LangManager lang;
     private final Runnable onBack;
     private Trait current;
 
     public TraitEditorGUI(Player player, Trait trait, TraitManager traitManager, ChatPromptManager chatPromptManager,
-            Runnable onBack) {
-        super(player, Component.text("Trait: " + trait.id(), NamedTextColor.GOLD), SIZE);
+            LangManager lang, Runnable onBack) {
+        super(player, lang.component("trait_editor_gui.title", "id", trait.id()), SIZE);
         this.current = trait;
         this.traitManager = traitManager;
         this.chatPromptManager = chatPromptManager;
+        this.lang = lang;
         this.onBack = onBack;
     }
 
@@ -61,35 +64,39 @@ public class TraitEditorGUI extends InventoryGUI {
         }
 
         setItem(NAME_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(ComponentUtils.parse("Nombre: " + current.name()).colorIfAbsent(NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para escribir uno nuevo", NamedTextColor.GRAY))
+                .setName(ComponentUtils.parse(lang.raw("trait_editor_gui.name_slot_name", "name", current.name()))
+                        .colorIfAbsent(NamedTextColor.YELLOW))
+                .setLore(lang.component("trait_editor_gui.click_new_value"))
                 .build());
 
         setItem(DESCRIPTION_SLOT, new ItemBuilder(Material.WRITTEN_BOOK)
-                .setName(Component.text("Descripción", NamedTextColor.YELLOW))
-                .setLore(ItemBuilder.toLoreLines(current.description().isBlank() ? "(sin descripción)"
+                .setName(lang.component("trait_editor_gui.description_slot_name"))
+                .setLore(ItemBuilder.toLoreLines(current.description().isBlank()
+                        ? lang.raw("trait_editor_gui.no_description")
                         : current.description()))
                 .build());
 
         setItem(LEVEL_SLOT, new ItemBuilder(Material.EXPERIENCE_BOTTLE)
-                .setName(Component.text("Nivel requerido: " + current.requiredLevel(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click: +1 · Click derecho: -1", NamedTextColor.GRAY))
+                .setName(lang.component("trait_editor_gui.level_slot_name", "level", current.requiredLevel()))
+                .setLore(lang.component("trait_editor_gui.level_slot_lore"))
                 .build());
 
         TraitEffect effect = current.effect();
         setItem(EFFECT_SLOT, new ItemBuilder(Material.POTION)
-                .setName(Component.text("Efecto", NamedTextColor.YELLOW))
-                .setLore(Component.text("STR " + effect.strengthBonus() + " · DEX " + effect.dexterityBonus()
-                        + " · CON " + effect.constitutionBonus(), NamedTextColor.GRAY),
-                        Component.text("INT " + effect.intelligenceBonus() + " · WIS " + effect.wisdomBonus()
-                                + " · CHA " + effect.charismaBonus(), NamedTextColor.GRAY),
-                        Component.text("HP " + effect.healthBonus() + " · MP " + effect.manaBonus() + " · DMG "
-                                + effect.damageBonus() + " · DEF " + effect.defenseBonus(), NamedTextColor.GRAY),
-                        Component.text("Click para escribir todos (str,dex,con,int,wis,cha,hp,mp,dmg,def)",
-                                NamedTextColor.DARK_GRAY))
+                .setName(lang.component("trait_editor_gui.effect_slot_name"))
+                .setLore(lang.component("trait_editor_gui.effect_lore_line1",
+                        "str", effect.strengthBonus(), "dex", effect.dexterityBonus(), "con",
+                        effect.constitutionBonus()),
+                        lang.component("trait_editor_gui.effect_lore_line2",
+                                "int", effect.intelligenceBonus(), "wis", effect.wisdomBonus(), "cha",
+                                effect.charismaBonus()),
+                        lang.component("trait_editor_gui.effect_lore_line3",
+                                "hp", effect.healthBonus(), "mp", effect.manaBonus(), "dmg", effect.damageBonus(),
+                                "def", effect.defenseBonus()),
+                        lang.component("trait_editor_gui.effect_lore_hint"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("trait_editor_gui.back_button")));
     }
 
     @Override
@@ -100,14 +107,14 @@ public class TraitEditorGUI extends InventoryGUI {
         ClickType click = event.getClick();
 
         if (slot == NAME_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el nuevo nombre:", value -> replace(new Trait(current.id(),
-                    value, current.description(), current.requiredLevel(), current.effect())));
+            chatPromptManager.prompt(player, lang.raw("trait_editor_gui.prompt_name"), value -> replace(new Trait(
+                    current.id(), value, current.description(), current.requiredLevel(), current.effect())));
             return;
         }
 
         if (slot == DESCRIPTION_SLOT) {
-            chatPromptManager.prompt(player, "Escribí la nueva descripción:", value -> replace(new Trait(
-                    current.id(), current.name(), value, current.requiredLevel(), current.effect())));
+            chatPromptManager.prompt(player, lang.raw("trait_editor_gui.prompt_description"), value -> replace(
+                    new Trait(current.id(), current.name(), value, current.requiredLevel(), current.effect())));
             return;
         }
 
@@ -119,13 +126,12 @@ public class TraitEditorGUI extends InventoryGUI {
         }
 
         if (slot == EFFECT_SLOT) {
-            chatPromptManager.prompt(player,
-                    "Escribí 10 valores separados por comas (str,dex,con,int,wis,cha,hp,mp,dmg,def):", value -> {
+            chatPromptManager.prompt(player, lang.raw("trait_editor_gui.prompt_effect"), value -> {
 
                         String[] parts = value.split("\\s*,\\s*");
 
                         if (parts.length < 10) {
-                            player.sendMessage(Component.text("Hacen falta 10 valores.", NamedTextColor.RED));
+                            player.sendMessage(lang.component("trait_editor_gui.effect_missing_values"));
                             return;
                         }
 
@@ -140,8 +146,7 @@ public class TraitEditorGUI extends InventoryGUI {
                             replace(new Trait(current.id(), current.name(), current.description(),
                                     current.requiredLevel(), effect));
                         } catch (NumberFormatException e) {
-                            player.sendMessage(Component.text("Todos los valores deben ser numéricos.",
-                                    NamedTextColor.RED));
+                            player.sendMessage(lang.component("trait_editor_gui.effect_values_not_numeric"));
                         }
                     });
             return;

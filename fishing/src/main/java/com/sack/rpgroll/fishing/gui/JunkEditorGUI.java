@@ -1,5 +1,6 @@
 package com.sack.rpgroll.fishing.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.fishing.core.Junk;
 import com.sack.rpgroll.fishing.core.JunkManager;
 import com.sack.rpgroll.gui.InventoryGUI;
@@ -25,15 +26,17 @@ public class JunkEditorGUI extends InventoryGUI {
 
     private final JunkManager junkManager;
     private final ChatPromptManager chatPromptManager;
+    private final LangManager lang;
     private final Runnable onBack;
     private Junk current;
 
     public JunkEditorGUI(Player player, Junk junk, JunkManager junkManager, ChatPromptManager chatPromptManager,
             Runnable onBack) {
-        super(player, Component.text("Basura: " + junk.id(), NamedTextColor.GOLD), SIZE);
+        super(player, chatPromptManager.lang().component("gui.junk.editor_title", "id", junk.id()), SIZE);
         this.current = junk;
         this.junkManager = junkManager;
         this.chatPromptManager = chatPromptManager;
+        this.lang = chatPromptManager.lang();
         this.onBack = onBack;
     }
 
@@ -53,22 +56,22 @@ public class JunkEditorGUI extends InventoryGUI {
         }
 
         setItem(NAME_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(Component.text("Nombre: " + current.displayName(), NamedTextColor.YELLOW)).build());
+                .setName(lang.component("gui.junk.field_name", "name", current.displayName())).build());
 
         setItem(ICON_SLOT, new ItemBuilder(SpeciesBrowserGUI.parseMaterial(current.icon()))
-                .setName(Component.text("Ícono: " + current.icon(), NamedTextColor.YELLOW)).build());
+                .setName(lang.component("gui.junk.field_icon", "icon", current.icon())).build());
 
         setItem(DESCRIPTION_SLOT, new ItemBuilder(Material.WRITTEN_BOOK)
-                .setName(Component.text("Descripción", NamedTextColor.YELLOW))
+                .setName(lang.component("gui.common.description_title"))
                 .setLore(ItemBuilder.toLoreLines(
-                        current.description().isBlank() ? "(sin descripción)" : current.description()))
+                        current.description().isBlank() ? lang.raw("gui.common.no_description") : current.description()))
                 .build());
 
         setItem(WEIGHT_SLOT, new ItemBuilder(Material.GOLD_NUGGET)
-                .setName(Component.text("Peso relativo: " + current.weight(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click: +1 · Click derecho: -1", NamedTextColor.GRAY)).build());
+                .setName(lang.component("gui.junk.field_weight", "value", current.weight()))
+                .setLore(lang.component("gui.common.plusminus_1")).build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back")));
     }
 
     @Override
@@ -79,21 +82,21 @@ public class JunkEditorGUI extends InventoryGUI {
         int sign = event.getClick() == ClickType.RIGHT ? -1 : 1;
 
         if (slot == NAME_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el nuevo nombre:",
+            chatPromptManager.prompt(player, lang.raw("gui.junk.prompt_name"),
                     value -> replace(new Junk(current.id(), value, current.icon(), current.description(),
                             current.weight())));
             return;
         }
 
         if (slot == ICON_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el Material del ícono:",
+            chatPromptManager.prompt(player, lang.raw("gui.junk.prompt_icon"),
                     value -> replace(new Junk(current.id(), current.displayName(), value, current.description(),
                             current.weight())));
             return;
         }
 
         if (slot == DESCRIPTION_SLOT) {
-            chatPromptManager.prompt(player, "Escribí la nueva descripción:",
+            chatPromptManager.prompt(player, lang.raw("gui.junk.prompt_description"),
                     value -> replace(new Junk(current.id(), current.displayName(), current.icon(), value,
                             current.weight())));
             return;

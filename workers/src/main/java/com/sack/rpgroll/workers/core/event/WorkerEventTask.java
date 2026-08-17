@@ -1,5 +1,6 @@
 package com.sack.rpgroll.workers.core.event;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.workers.core.worker.Worker;
 import com.sack.rpgroll.workers.core.worker.WorkerManager;
 
@@ -29,15 +30,17 @@ public class WorkerEventTask extends BukkitRunnable {
     private final long intervalTicks;
     private final double baseChance;
     private final double lowMoraleThreshold;
+    private final LangManager lang;
     private final Random random = new Random();
 
     public WorkerEventTask(WorkerManager workerManager, WorkerEventManager eventManager, long intervalTicks,
-            double baseChance, double lowMoraleThreshold) {
+            double baseChance, double lowMoraleThreshold, LangManager lang) {
         this.workerManager = workerManager;
         this.eventManager = eventManager;
         this.intervalTicks = intervalTicks;
         this.baseChance = baseChance;
         this.lowMoraleThreshold = lowMoraleThreshold;
+        this.lang = lang;
     }
 
     @Override
@@ -102,7 +105,8 @@ public class WorkerEventTask extends BukkitRunnable {
         Player employer = worker.employerId() != null ? Bukkit.getPlayer(worker.employerId()) : null;
 
         if (employer != null) {
-            employer.sendMessage(Component.text("📋 Tu trabajador: " + definition.displayName(), NamedTextColor.GOLD));
+            employer.sendMessage(Component.text(
+                    lang.raw("task.event.notify_employer", "event", definition.displayName()), NamedTextColor.GOLD));
         }
     }
 

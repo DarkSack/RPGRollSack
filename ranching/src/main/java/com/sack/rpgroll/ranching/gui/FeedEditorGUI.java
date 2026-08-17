@@ -42,7 +42,7 @@ public class FeedEditorGUI extends InventoryGUI {
 
     public FeedEditorGUI(Player player, Feed feed, FeedManager feedManager, ChatPromptManager chatPromptManager,
             Runnable onBack) {
-        super(player, Component.text("Alimento: " + feed.id(), NamedTextColor.GOLD), SIZE);
+        super(player, Component.text(chatPromptManager.lang().raw("gui.feed.editor.title", "id", feed.id()), NamedTextColor.GOLD), SIZE);
         this.current = feed;
         this.feedManager = feedManager;
         this.chatPromptManager = chatPromptManager;
@@ -64,45 +64,47 @@ public class FeedEditorGUI extends InventoryGUI {
             setItem(slot, ItemBuilder.createFiller());
         }
 
+        var lang = chatPromptManager.lang();
+
         setItem(NAME_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(Component.text("Nombre: " + current.displayName(), NamedTextColor.YELLOW)).build());
+                .setName(Component.text(lang.raw("gui.editor.name_line", "name", current.displayName()), NamedTextColor.YELLOW)).build());
 
         setItem(ICON_SLOT, new ItemBuilder(SpeciesBrowserGUI.parseMaterial(current.icon(), Material.WHEAT))
-                .setName(Component.text("Ícono: " + current.icon(), NamedTextColor.YELLOW)).build());
+                .setName(Component.text(lang.raw("gui.editor.icon_line", "icon", current.icon()), NamedTextColor.YELLOW)).build());
 
         setItem(DESCRIPTION_SLOT, new ItemBuilder(Material.WRITTEN_BOOK)
-                .setName(Component.text("Descripción", NamedTextColor.YELLOW))
-                .setLore(ItemBuilder.toLoreLines(current.description().isBlank() ? "(sin descripción)" : current.description()))
+                .setName(Component.text(lang.raw("gui.editor.description_title"), NamedTextColor.YELLOW))
+                .setLore(ItemBuilder.toLoreLines(current.description().isBlank() ? lang.raw("gui.editor.no_description") : current.description()))
                 .build());
 
         setItem(QUALITY_SLOT, new ItemBuilder(Material.AMETHYST_SHARD)
-                .setName(Component.text("Calidad: " + current.quality(), NamedTextColor.LIGHT_PURPLE))
-                .setLore(Component.text("Click para rotar", NamedTextColor.GRAY)).build());
+                .setName(Component.text(lang.raw("gui.feed.editor.quality_line", "quality", current.quality()), NamedTextColor.LIGHT_PURPLE))
+                .setLore(Component.text(lang.raw("gui.editor.rotate_hint"), NamedTextColor.GRAY)).build());
 
         setItem(TAGS_SLOT, new ItemBuilder(Material.HOPPER)
-                .setName(Component.text("Tags: " + String.join(", ", current.tags()), NamedTextColor.GOLD))
-                .setLore(Component.text("Escribí tags separados por comas", NamedTextColor.GRAY)).build());
+                .setName(Component.text(lang.raw("gui.feed.editor.tags_line", "tags", String.join(", ", current.tags())), NamedTextColor.GOLD))
+                .setLore(Component.text(lang.raw("gui.editor.prompt_tags_hint"), NamedTextColor.GRAY)).build());
 
         setItem(NUTRITION_SLOT, new ItemBuilder(Material.APPLE)
-                .setName(Component.text("Nutrición: " + current.nutritionValue(), NamedTextColor.AQUA))
-                .setLore(Component.text("Click: +5 · Click derecho: -5", NamedTextColor.GRAY)).build());
+                .setName(Component.text(lang.raw("gui.feed.editor.nutrition_line", "value", current.nutritionValue()), NamedTextColor.AQUA))
+                .setLore(Component.text(lang.raw("gui.editor.step5_hint"), NamedTextColor.GRAY)).build());
 
         setItem(HEALTH_SLOT, new ItemBuilder(Material.GOLDEN_APPLE)
-                .setName(Component.text("Bono de salud: " + current.healthBonus(), NamedTextColor.RED))
-                .setLore(Component.text("Click: +2 · Click derecho: -2", NamedTextColor.GRAY)).build());
+                .setName(Component.text(lang.raw("gui.editor.health_bonus_line", "value", current.healthBonus()), NamedTextColor.RED))
+                .setLore(Component.text(lang.raw("gui.editor.step2_hint"), NamedTextColor.GRAY)).build());
 
         setItem(HAPPINESS_SLOT, new ItemBuilder(Material.CAKE)
-                .setName(Component.text("Bono de felicidad: " + current.happinessBonus(), NamedTextColor.LIGHT_PURPLE))
-                .setLore(Component.text("Click: +2 · Click derecho: -2", NamedTextColor.GRAY)).build());
+                .setName(Component.text(lang.raw("gui.editor.happiness_bonus_line", "value", current.happinessBonus()), NamedTextColor.LIGHT_PURPLE))
+                .setLore(Component.text(lang.raw("gui.editor.step2_hint"), NamedTextColor.GRAY)).build());
 
         setItem(PRODUCTION_SLOT, new ItemBuilder(Material.BUCKET)
-                .setName(Component.text("Bono de producción: " + current.productionBonus(), NamedTextColor.AQUA))
-                .setLore(Component.text("Click: +2 · Click derecho: -2", NamedTextColor.GRAY)).build());
+                .setName(Component.text(lang.raw("gui.feed.editor.production_bonus_line", "value", current.productionBonus()), NamedTextColor.AQUA))
+                .setLore(Component.text(lang.raw("gui.editor.step2_hint"), NamedTextColor.GRAY)).build());
 
         setItem(GIVE_SLOT, new ItemBuilder(Material.CHEST)
-                .setName(Component.text("▶ Darme uno", NamedTextColor.GREEN)).build());
+                .setName(Component.text(lang.raw("gui.editor.give_one"), NamedTextColor.GREEN)).build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back")));
     }
 
     @Override
@@ -113,15 +115,15 @@ public class FeedEditorGUI extends InventoryGUI {
         double sign = event.getClick() == ClickType.RIGHT ? -2 : 2;
 
         if (slot == NAME_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el nuevo nombre:", value -> replace(new Feed(current.id(), value,
+            chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.editor.prompt_name"), value -> replace(new Feed(current.id(), value,
                     current.icon(), current.description(), current.quality(), current.tags(), current.nutritionValue(),
                     current.healthBonus(), current.happinessBonus(), current.productionBonus())));
         } else if (slot == ICON_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el Material del ícono:", value -> replace(new Feed(current.id(),
+            chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.editor.prompt_icon"), value -> replace(new Feed(current.id(),
                     current.displayName(), value, current.description(), current.quality(), current.tags(),
                     current.nutritionValue(), current.healthBonus(), current.happinessBonus(), current.productionBonus())));
         } else if (slot == DESCRIPTION_SLOT) {
-            chatPromptManager.prompt(player, "Escribí la nueva descripción:", value -> replace(new Feed(current.id(),
+            chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.editor.prompt_description"), value -> replace(new Feed(current.id(),
                     current.displayName(), current.icon(), value, current.quality(), current.tags(),
                     current.nutritionValue(), current.healthBonus(), current.happinessBonus(), current.productionBonus())));
         } else if (slot == QUALITY_SLOT) {
@@ -131,7 +133,7 @@ public class FeedEditorGUI extends InventoryGUI {
                     current.tags(), current.nutritionValue(), current.healthBonus(), current.happinessBonus(),
                     current.productionBonus()));
         } else if (slot == TAGS_SLOT) {
-            chatPromptManager.prompt(player, "Escribí tags separados por comas:", value -> {
+            chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.editor.prompt_tags"), value -> {
 
                 Set<String> tags = new HashSet<>();
                 for (String entry : value.split(",")) {
@@ -161,8 +163,8 @@ public class FeedEditorGUI extends InventoryGUI {
                     current.quality(), current.tags(), current.nutritionValue(), current.healthBonus(),
                     current.happinessBonus(), Math.max(0, current.productionBonus() + sign)));
         } else if (slot == GIVE_SLOT) {
-            player.getInventory().addItem(RanchingItemFactory.createFeed(current));
-            player.sendMessage(Component.text("✔ Te diste un alimento '" + current.displayName() + "'.", NamedTextColor.GREEN));
+            player.getInventory().addItem(RanchingItemFactory.createFeed(chatPromptManager.lang(), current));
+            player.sendMessage(Component.text(chatPromptManager.lang().raw("gui.feed.editor.gave_self", "name", current.displayName()), NamedTextColor.GREEN));
         } else if (slot == BACK_SLOT) {
             onBack.run();
         }

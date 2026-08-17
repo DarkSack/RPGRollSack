@@ -2,6 +2,7 @@ package com.sack.rpgroll.crates.gui;
 
 import com.sack.rpgroll.util.ComponentUtils;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.crates.core.Crate;
@@ -11,7 +12,6 @@ import com.sack.rpgroll.crates.core.CrateReward;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -37,15 +37,17 @@ public class CrateEditorGUI extends InventoryGUI {
 
     private final CrateManager crateManager;
     private final ChatPromptManager chatPromptManager;
+    private final LangManager lang;
     private final Runnable onBack;
     private Crate current;
 
     public CrateEditorGUI(Player player, Crate crate, CrateManager crateManager, ChatPromptManager chatPromptManager,
-            Runnable onBack) {
-        super(player, Component.text("Crate: " + crate.id(), NamedTextColor.GOLD), SIZE);
+            Runnable onBack, LangManager lang) {
+        super(player, lang.component("editor.title", "id", crate.id()), SIZE);
         this.current = crate;
         this.crateManager = crateManager;
         this.chatPromptManager = chatPromptManager;
+        this.lang = lang;
         this.onBack = onBack;
     }
 
@@ -65,26 +67,24 @@ public class CrateEditorGUI extends InventoryGUI {
         }
 
         setItem(NAME_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(ComponentUtils.parse("Nombre: " + current.displayName()).colorIfAbsent(NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para escribir uno nuevo", NamedTextColor.GRAY))
+                .setName(lang.component("editor.name_label", "name", current.displayName())
+                        .colorIfAbsent(NamedTextColor.YELLOW))
+                .setLore(lang.component("editor.click_to_rename"))
                 .build());
 
         setItem(REQUIRE_KEY_SLOT, new ItemBuilder(current.requireKey() ? Material.TRIPWIRE_HOOK : Material.BARRIER)
-                .setName(Component.text("Requiere llave: " + (current.requireKey() ? "sí" : "no"),
-                        current.requireKey() ? NamedTextColor.GREEN : NamedTextColor.GRAY))
-                .setLore(Component.text("Click para alternar", NamedTextColor.GRAY))
+                .setName(lang.component(current.requireKey() ? "editor.require_key_yes" : "editor.require_key_no"))
+                .setLore(lang.component("editor.click_to_toggle"))
                 .build());
 
         setItem(KEY_MATERIAL_SLOT, new ItemBuilder(current.keyMaterial())
-                .setName(Component.text("Material de la llave: " + current.keyMaterial(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para escribir un Material nuevo", NamedTextColor.GRAY))
+                .setName(lang.component("editor.key_material_label", "material", current.keyMaterial()))
+                .setLore(lang.component("editor.click_to_set_material"))
                 .build());
 
         setItem(HOLOGRAM_SLOT, new ItemBuilder(Material.PAPER)
-                .setName(Component.text("Holograma: " + current.hologramLines().size() + " línea(s)",
-                        NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para escribir todas, una por línea (separadas por ';')",
-                        NamedTextColor.GRAY))
+                .setName(lang.component("editor.hologram_label", "count", current.hologramLines().size()))
+                .setLore(lang.component("editor.click_to_set_hologram"))
                 .build());
 
         List<CrateReward> rewards = current.rewards();
@@ -95,17 +95,17 @@ public class CrateEditorGUI extends InventoryGUI {
             setItem(REWARDS_ROW + i, new ItemBuilder(reward.icon())
                     .setName(ComponentUtils.parse(reward.displayName())
                             .colorIfAbsent(NamedTextColor.WHITE))
-                    .setLore(Component.text("Peso: " + reward.weight() + " · " + reward.actions().size()
-                            + " acción(es)", NamedTextColor.GRAY),
-                            Component.text("Shift-click para quitar", NamedTextColor.DARK_GRAY))
+                    .setLore(lang.component("editor.reward_weight_lore",
+                            "weight", reward.weight(), "actions", reward.actions().size()),
+                            lang.component("editor.shift_click_remove"))
                     .build());
         }
 
         setItem(ADD_REWARD_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Agregar recompensa", NamedTextColor.GREEN))
+                .setName(lang.component("editor.add_reward"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("editor.back_button")));
     }
 
     @Override
@@ -115,7 +115,7 @@ public class CrateEditorGUI extends InventoryGUI {
         int slot = event.getSlot();
 
         if (slot == NAME_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el nuevo nombre del crate:",
+            chatPromptManager.prompt(player, "editor.prompt_name",
                     value -> replace(new Crate(current.id(), value, current.guiTitle(), current.requireKey(),
                             current.keyMaterial(), current.keyDisplayName(), current.keyLore(),
                             current.hologramLines(), current.rewards())));
@@ -130,12 +130,12 @@ public class CrateEditorGUI extends InventoryGUI {
         }
 
         if (slot == KEY_MATERIAL_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el nombre del Material de la llave:", value -> {
+            chatPromptManager.prompt(player, "editor.prompt_key_material", value -> {
                 Material material;
                 try {
                     material = Material.valueOf(value.trim().toUpperCase(Locale.ROOT));
                 } catch (IllegalArgumentException e) {
-                    player.sendMessage(Component.text("Material inválido.", NamedTextColor.RED));
+                    lang.send(player, "editor.invalid_material");
                     return;
                 }
                 replace(new Crate(current.id(), current.displayName(), current.guiTitle(), current.requireKey(),
@@ -146,7 +146,7 @@ public class CrateEditorGUI extends InventoryGUI {
         }
 
         if (slot == HOLOGRAM_SLOT) {
-            chatPromptManager.prompt(player, "Escribí las líneas del holograma separadas por ';':", value -> {
+            chatPromptManager.prompt(player, "editor.prompt_hologram", value -> {
                 List<String> lines = value.isBlank() ? List.of() : List.of(value.split("\\s*;\\s*"));
                 replace(new Crate(current.id(), current.displayName(), current.guiTitle(), current.requireKey(),
                         current.keyMaterial(), current.keyDisplayName(), current.keyLore(), lines,
@@ -160,8 +160,7 @@ public class CrateEditorGUI extends InventoryGUI {
             if (event.isShiftClick()) {
 
                 if (current.rewards().size() <= 1) {
-                    player.sendMessage(Component.text("El crate necesita al menos una recompensa.",
-                            NamedTextColor.RED));
+                    lang.send(player, "editor.reward_min_required");
                     return;
                 }
 
@@ -185,14 +184,13 @@ public class CrateEditorGUI extends InventoryGUI {
     }
 
     private void promptAddReward() {
-        chatPromptManager.prompt(player,
-                "Escribí: id;nombre;material;peso;item-material,cantidad (ej. gemas;&bGemas;EMERALD;20;EMERALD,5):",
+        chatPromptManager.prompt(player, "editor.prompt_add_reward",
                 value -> {
 
                     String[] parts = value.split(";");
 
                     if (parts.length < 5) {
-                        player.sendMessage(Component.text("Formato inválido.", NamedTextColor.RED));
+                        lang.send(player, "editor.invalid_format");
                         return;
                     }
 
@@ -203,7 +201,7 @@ public class CrateEditorGUI extends InventoryGUI {
                     try {
                         icon = Material.valueOf(parts[2].trim().toUpperCase(Locale.ROOT));
                     } catch (IllegalArgumentException e) {
-                        player.sendMessage(Component.text("Material de ícono inválido.", NamedTextColor.RED));
+                        lang.send(player, "editor.invalid_icon_material");
                         return;
                     }
 
@@ -211,7 +209,7 @@ public class CrateEditorGUI extends InventoryGUI {
                     try {
                         weight = Double.parseDouble(parts[3].trim());
                     } catch (NumberFormatException e) {
-                        player.sendMessage(Component.text("El peso debe ser un número.", NamedTextColor.RED));
+                        lang.send(player, "editor.invalid_weight");
                         return;
                     }
 

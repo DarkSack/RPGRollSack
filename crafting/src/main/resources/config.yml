@@ -1,5 +1,10 @@
 # Configuración de RPGRoll-Crafting
 
+# Idioma de los mensajes (jugador y comandos). Opciones: es, en, pt_BR.
+# Los textos viven en lang/<idioma>.yml dentro de esta carpeta de datos —
+# podés editarlos ahí directamente. Tras cambiar esto, /craftingadmin reload.
+language: es
+
 # Cada cuántos ticks el motor de estaciones personalizadas avanza el procesamiento en curso
 # (inicia recetas, consume combustible, entrega resultados).
 station-tick-interval-ticks: 20
@@ -10,6 +15,18 @@ station-autosave-interval-ticks: 6000
 # Probabilidad base (0.0-1.0) de fallo de receta cuando la propia receta no define su propio fail-chance.
 default-fail-chance: 0.0
 
-# Si es true, un fallo de receta consume los ingredientes igual (más punitivo). Si es false, se documenta
-# igual como consumidos — hoy no hay devolución automática de ingredientes específicos tras un fallo.
+# Si es true, un fallo de receta consume los ingredientes igual (más punitivo).
+# Si es false, exactamente lo que se había consumido al iniciar se devuelve al
+# inventario de la estación (o se tira al piso del bloque si no entra).
 fail-consumes-ingredients: true
+
+# /crafting experiment — solo en estaciones con allow-experimentation: true en su YAML.
+
+# Probabilidad máxima de descubrir la receta más parecida (se multiplica por qué tan cerca estuvo el jugador).
+experimentation-base-chance: 0.35
+
+# Fracción mínima de ingredientes que tienen que coincidir para que el intento cuente (si no, "no pasó nada").
+experimentation-min-overlap: 0.4
+
+# Segundos de espera entre intentos de un mismo jugador (evita spam-clickear el comando).
+experimentation-cooldown-seconds: 5

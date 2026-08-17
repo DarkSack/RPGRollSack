@@ -1,5 +1,6 @@
 package com.sack.rpgroll.effects.command;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.effects.api.EffectsAPI;
 import com.sack.rpgroll.effects.core.EffectManager;
 import com.sack.rpgroll.effects.gui.ChatPromptManager;
@@ -8,15 +9,13 @@ import com.sack.rpgroll.effects.runtime.ActiveEffect;
 import com.sack.rpgroll.effects.runtime.EffectTracker;
 import com.sack.rpgroll.util.TabCompleteUtil;
 
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
-
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 
 import java.util.List;
 
@@ -34,18 +33,23 @@ public class EffectsAdminCommand implements CommandExecutor, TabCompleter {
     private final EffectManager effectManager;
     private final EffectTracker tracker;
     private final ChatPromptManager chatPromptManager;
+    private final LangManager lang;
+    private final Plugin plugin;
 
-    public EffectsAdminCommand(EffectManager effectManager, EffectTracker tracker, ChatPromptManager chatPromptManager) {
+    public EffectsAdminCommand(EffectManager effectManager, EffectTracker tracker, ChatPromptManager chatPromptManager,
+            LangManager lang, Plugin plugin) {
         this.effectManager = effectManager;
         this.tracker = tracker;
         this.chatPromptManager = chatPromptManager;
+        this.lang = lang;
+        this.plugin = plugin;
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
         if (!sender.hasPermission("rpgrolleffects.admin.*")) {
-            sender.sendMessage(Component.text("No tenés permiso para usar este comando.", NamedTextColor.RED));
+            lang.send(sender, "general.no_permission");
             return true;
         }
 
@@ -67,15 +71,13 @@ public class EffectsAdminCommand implements CommandExecutor, TabCompleter {
     }
 
     private void sendUsage(CommandSender sender) {
-        sender.sendMessage(Component.text(
-                "Uso: /rpgeffects <browser|reload|apply <id> <jugador>|remove <id> <jugador>|list [jugador]>",
-                NamedTextColor.RED));
+        lang.send(sender, "command.usage");
     }
 
     private void handleBrowser(CommandSender sender) {
 
         if (!(sender instanceof Player player)) {
-            sender.sendMessage(Component.text("Solo jugadores pueden abrir el Effect Studio.", NamedTextColor.RED));
+            lang.send(sender, "command.browser_player_only");
             return;
         }
 
@@ -84,68 +86,70 @@ public class EffectsAdminCommand implements CommandExecutor, TabCompleter {
 
     private void handleReload(CommandSender sender) {
         effectManager.reload();
-        sender.sendMessage(Component.text("✔ Recargado: " + effectManager.count() + " efecto(s).",
-                NamedTextColor.GREEN));
+        plugin.reloadConfig();
+        lang.reload(plugin.getConfig().getString("language", "es"));
+        lang.send(sender, "command.reload_success", "count", effectManager.count());
     }
 
     private void handleApply(CommandSender sender, String[] args) {
 
         if (args.length < 3) {
-            sender.sendMessage(Component.text("Uso: /rpgeffects apply <id> <jugador>", NamedTextColor.RED));
+            lang.send(sender, "command.apply_usage");
             return;
         }
 
         String effectId = args[1];
 
         if (!effectManager.exists(effectId)) {
-            sender.sendMessage(Component.text("No existe un efecto con id: " + effectId, NamedTextColor.RED));
+            lang.send(sender, "command.effect_not_found", "id", effectId);
             return;
         }
 
         Player target = Bukkit.getPlayerExact(args[2]);
 
         if (target == null) {
-            sender.sendMessage(Component.text("Jugador no encontrado: " + args[2], NamedTextColor.RED));
+            lang.send(sender, "command.player_not_found", "name", args[2]);
             return;
         }
 
         if (!EffectsAPI.isReady()) {
-            sender.sendMessage(Component.text("RPGRoll-Effects todavía no está listo.", NamedTextColor.RED));
+            lang.send(sender, "command.not_ready");
             return;
         }
 
         var reasons = EffectsAPI.get().checkConditions(effectId, target);
 
         if (!reasons.isEmpty()) {
-            sender.sendMessage(Component.text("✘ No se pudo aplicar '" + effectId + "':", NamedTextColor.RED));
-            reasons.forEach(reason -> sender.sendMessage(Component.text("  - " + reason, NamedTextColor.RED)));
+            lang.send(sender, "command.apply_blocked_header", "id", effectId);
+            reasons.forEach(reason -> lang.send(sender, "command.apply_blocked_reason", "reason", reason));
             return;
         }
 
         EffectsAPI.get().apply(effectId, target);
-        sender.sendMessage(Component.text("✔ Aplicado '" + effectId + "' a " + target.getName() + ".",
-                NamedTextColor.GREEN));
+        lang.send(sender, "command.apply_success", "id", effectId, "player", target.getName());
     }
 
     private void handleRemove(CommandSender sender, String[] args) {
 
         if (args.length < 3) {
-            sender.sendMessage(Component.text("Uso: /rpgeffects remove <id> <jugador>", NamedTextColor.RED));
+            lang.send(sender, "command.remove_usage");
             return;
         }
 
         Player target = Bukkit.getPlayerExact(args[2]);
 
         if (target == null) {
-            sender.sendMessage(Component.text("Jugador no encontrado: " + args[2], NamedTextColor.RED));
+            lang.send(sender, "command.player_not_found", "name", args[2]);
             return;
         }
 
         boolean removed = tracker.remove(target, args[1], com.sack.rpgroll.effects.runtime.RemovalReason.MANUAL);
 
-        sender.sendMessage(removed
-                ? Component.text("✔ Removido '" + args[1] + "' de " + target.getName() + ".", NamedTextColor.GREEN)
-                : Component.text(target.getName() + " no tiene ese efecto activo.", NamedTextColor.GRAY));
+        if (removed) {
+            lang.send(sender, "command.remove_success", "id", args[1], "player", target.getName());
+        } else {
+            lang.send(sender, "command.remove_not_active", "player", target.getName());
+        }
     }
 
     private void handleList(CommandSender sender, String[] args) {
@@ -155,32 +159,32 @@ public class EffectsAdminCommand implements CommandExecutor, TabCompleter {
         if (args.length >= 2) {
             target = Bukkit.getPlayerExact(args[1]);
             if (target == null) {
-                sender.sendMessage(Component.text("Jugador no encontrado: " + args[1], NamedTextColor.RED));
+                lang.send(sender, "command.player_not_found", "name", args[1]);
                 return;
             }
         } else if (sender instanceof Player senderPlayer) {
             target = senderPlayer;
         } else {
-            sender.sendMessage(Component.text(
-                    "La consola no tiene un jugador por defecto — especificá uno: /rpgeffects list <jugador>",
-                    NamedTextColor.RED));
+            lang.send(sender, "command.list_console_no_target");
             return;
         }
 
         var active = tracker.getActive(target);
 
         if (active.isEmpty()) {
-            sender.sendMessage(Component.text(target.getName() + " no tiene efectos activos.", NamedTextColor.GRAY));
+            lang.send(sender, "command.list_no_active", "player", target.getName());
             return;
         }
 
-        sender.sendMessage(Component.text("Efectos activos en " + target.getName() + ":", NamedTextColor.GOLD));
+        lang.send(sender, "command.list_header", "player", target.getName());
 
         for (ActiveEffect activeEffect : active) {
-            sender.sendMessage(Component.text("• " + activeEffect.definition().id() + " (stacks: "
-                    + activeEffect.stacks() + ", restante: "
-                    + (activeEffect.isPermanent() ? "permanente" : activeEffect.remainingTicks() + " ticks") + ")",
-                    NamedTextColor.WHITE));
+
+            String remaining = activeEffect.isPermanent() ? lang.raw("command.remaining_permanent")
+                    : lang.raw("command.remaining_ticks", "ticks", activeEffect.remainingTicks());
+
+            lang.send(sender, "command.list_entry", "id", activeEffect.definition().id(), "stacks",
+                    activeEffect.stacks(), "remaining", remaining);
         }
     }
 

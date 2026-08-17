@@ -31,10 +31,15 @@ public class GuildQuestAdminBrowserGUI extends PaginatedGUI {
 
     public GuildQuestAdminBrowserGUI(Player player, GuildQuestManager questManager,
             ChatPromptManager chatPromptManager) {
-        super(player, Component.text("Quests de Guild (admin)", NamedTextColor.GOLD), SIZE, CONTENT_SLOTS);
+        super(player, Component.text(chatPromptManager.lang().raw("guildadmin.quest.browser.title"),
+                NamedTextColor.GOLD), SIZE, CONTENT_SLOTS);
         this.questManager = questManager;
         this.chatPromptManager = chatPromptManager;
         this.definitions = List.copyOf(questManager.getAll());
+    }
+
+    private com.sack.rpgroll.common.lang.LangManager lang() {
+        return chatPromptManager.lang();
     }
 
     @Override
@@ -50,9 +55,9 @@ public class GuildQuestAdminBrowserGUI extends PaginatedGUI {
         setItem(contentSlot, new ItemBuilder(Material.MAP)
                 .setName(Component.text(definition.displayName(), NamedTextColor.YELLOW))
                 .setLore(Component.text(definition.id(), NamedTextColor.DARK_GRAY),
-                        Component.text("Tipo: " + definition.type() + " · Objetivo: " + definition.targetAmount(),
-                                NamedTextColor.GRAY),
-                        Component.text("Click para editar", NamedTextColor.YELLOW))
+                        Component.text(lang().raw("guild.quests.type_target", "type", definition.type(),
+                                "target", definition.targetAmount()), NamedTextColor.GRAY),
+                        Component.text(lang().raw("guildadmin.quest.click_edit"), NamedTextColor.YELLOW))
                 .build());
     }
 
@@ -60,10 +65,10 @@ public class GuildQuestAdminBrowserGUI extends PaginatedGUI {
     protected void renderExtras() {
 
         setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Crear quest de guild nueva", NamedTextColor.GREEN))
+                .setName(Component.text(lang().raw("guildadmin.quest.button.new"), NamedTextColor.GREEN))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Cerrar"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang().raw("common.close")));
     }
 
     @Override
@@ -84,12 +89,12 @@ public class GuildQuestAdminBrowserGUI extends PaginatedGUI {
     }
 
     private void promptNew() {
-        chatPromptManager.prompt(player, "Escribí el id de la nueva quest de guild:", value -> {
+        chatPromptManager.prompt(player, "guildadmin.quest.prompt_new_id", value -> {
 
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 
             if (questManager.exists(id)) {
-                player.sendMessage(Component.text("Ya existe una quest con ese id.", NamedTextColor.RED));
+                lang().send(player, "guildadmin.quest.id_already_exists");
                 reopen();
                 return;
             }

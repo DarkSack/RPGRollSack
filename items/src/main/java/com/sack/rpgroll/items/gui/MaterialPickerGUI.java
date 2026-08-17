@@ -39,7 +39,7 @@ public class MaterialPickerGUI extends PaginatedGUI {
     public MaterialPickerGUI(Player player, ChatPromptManager chatPromptManager, Consumer<Material> onSelect,
             Runnable onBack) {
 
-        super(player, Component.text("Elegí un material", NamedTextColor.GOLD), SIZE, CONTENT_SLOTS);
+        super(player, chatPromptManager.lang().component("gui.material_picker.title"), SIZE, CONTENT_SLOTS);
 
         this.chatPromptManager = chatPromptManager;
         this.onSelect = onSelect;
@@ -85,24 +85,25 @@ public class MaterialPickerGUI extends PaginatedGUI {
     protected void renderExtras() {
 
         setItem(PREV_SLOT, hasPreviousPage()
-                ? new ItemBuilder(Material.ARROW).setName(Component.text("« Anterior", NamedTextColor.YELLOW)).build()
+                ? new ItemBuilder(Material.ARROW).setName(chatPromptManager.lang().component("gui.material_picker.prev")).build()
                 : ItemBuilder.createFiller());
 
         setItem(NEXT_SLOT, hasNextPage()
-                ? new ItemBuilder(Material.ARROW).setName(Component.text("Siguiente »", NamedTextColor.YELLOW)).build()
+                ? new ItemBuilder(Material.ARROW).setName(chatPromptManager.lang().component("gui.material_picker.next")).build()
                 : ItemBuilder.createFiller());
 
         setItem(SEARCH_SLOT, new ItemBuilder(Material.COMPASS)
-                .setName(Component.text("Buscar", NamedTextColor.AQUA))
-                .setLore(Component.text(filterText.isBlank() ? "(sin filtro)" : "Filtro: " + filterText,
-                        NamedTextColor.GRAY))
+                .setName(chatPromptManager.lang().component("gui.material_picker.search"))
+                .setLore(filterText.isBlank()
+                        ? chatPromptManager.lang().component("gui.material_picker.no_filter")
+                        : chatPromptManager.lang().component("gui.material_picker.filter", "text", filterText))
                 .build());
 
         setItem(CLEAR_FILTER_SLOT, new ItemBuilder(Material.BARRIER)
-                .setName(Component.text("Limpiar filtro", NamedTextColor.RED))
+                .setName(chatPromptManager.lang().component("gui.material_picker.clear_filter"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(chatPromptManager.lang().raw("editor.common.back")));
     }
 
     @Override
@@ -128,7 +129,7 @@ public class MaterialPickerGUI extends PaginatedGUI {
     }
 
     private void promptSearch() {
-        chatPromptManager.prompt(player, "Escribí parte del nombre del material (ej. sword):", value -> {
+        chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.material_picker.prompt_search"), value -> {
             filterText = value.trim().toLowerCase();
             applyFilter();
         });

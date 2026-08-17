@@ -57,7 +57,7 @@ public class WorkersAdminCommand implements CommandExecutor, TabCompleter {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
         if (!sender.hasPermission("rpgrollworkers.admin.*")) {
-            sender.sendMessage(Component.text("No tenés permiso para usar este comando.", NamedTextColor.RED));
+            sender.sendMessage(Component.text(chatPromptManager.lang().raw("command.admin.no_permission"), NamedTextColor.RED));
             return true;
         }
 
@@ -80,7 +80,8 @@ public class WorkersAdminCommand implements CommandExecutor, TabCompleter {
     private void handleBrowser(CommandSender sender) {
 
         if (!(sender instanceof Player player)) {
-            sender.sendMessage(Component.text("Solo un jugador puede abrir el Worker Studio.", NamedTextColor.RED));
+            sender.sendMessage(Component.text(chatPromptManager.lang().raw("command.admin.player_only_browser"),
+                    NamedTextColor.RED));
             return;
         }
 
@@ -90,25 +91,27 @@ public class WorkersAdminCommand implements CommandExecutor, TabCompleter {
 
     private void handleReload(CommandSender sender) {
         onReload.run();
-        sender.sendMessage(Component.text("✔ RPGRoll-Workers recargado.", NamedTextColor.GREEN));
+        sender.sendMessage(Component.text(chatPromptManager.lang().raw("command.admin.reloaded"), NamedTextColor.GREEN));
     }
 
     private void handleSpawn(CommandSender sender, String[] args) {
 
         if (!(sender instanceof Player player)) {
-            sender.sendMessage(Component.text("Solo un jugador puede spawnear un worker.", NamedTextColor.RED));
+            sender.sendMessage(Component.text(chatPromptManager.lang().raw("command.admin.player_only_spawn"),
+                    NamedTextColor.RED));
             return;
         }
 
         if (args.length < 2) {
-            player.sendMessage(Component.text("Uso: /workersadmin spawn <profesion> [nombre]", NamedTextColor.RED));
+            player.sendMessage(Component.text(chatPromptManager.lang().raw("command.admin.usage_spawn"), NamedTextColor.RED));
             return;
         }
 
         Profession profession = professionManager.get(args[1].toLowerCase()).orElse(null);
 
         if (profession == null) {
-            player.sendMessage(Component.text("No existe la profesión '" + args[1] + "'.", NamedTextColor.RED));
+            player.sendMessage(Component.text(chatPromptManager.lang().raw("command.admin.unknown_profession", "id", args[1]),
+                    NamedTextColor.RED));
             return;
         }
 
@@ -123,25 +126,27 @@ public class WorkersAdminCommand implements CommandExecutor, TabCompleter {
             workerManager.save(worker);
         }
 
-        player.sendMessage(Component.text("✔ Spawneado un/a ", NamedTextColor.GREEN)
+        player.sendMessage(Component.text(chatPromptManager.lang().raw("command.admin.spawned_prefix"), NamedTextColor.GREEN)
                 .append(ComponentUtils.parse(profession.displayName()))
-                .append(Component.text(" (" + worker.personality() + ").", NamedTextColor.GREEN)));
+                .append(Component.text(chatPromptManager.lang().raw("command.admin.spawned_suffix", "personality",
+                        worker.personality()), NamedTextColor.GREEN)));
     }
 
     private void handleDesignator(CommandSender sender) {
 
         if (!(sender instanceof Player player)) {
-            sender.sendMessage(Component.text("Solo un jugador puede recibir el Designador de Almacén.", NamedTextColor.RED));
+            sender.sendMessage(Component.text(chatPromptManager.lang().raw("command.admin.player_only_designator"),
+                    NamedTextColor.RED));
             return;
         }
 
-        player.getInventory().addItem(com.sack.rpgroll.workers.item.WorkerItemFactory.createWarehouseDesignator());
-        player.sendMessage(Component.text("✔ Te diste el Designador de Almacén.", NamedTextColor.GREEN));
+        player.getInventory().addItem(
+                com.sack.rpgroll.workers.item.WorkerItemFactory.createWarehouseDesignator(chatPromptManager.lang()));
+        player.sendMessage(Component.text(chatPromptManager.lang().raw("command.admin.designator_given"), NamedTextColor.GREEN));
     }
 
     private void sendUsage(CommandSender sender) {
-        sender.sendMessage(Component.text("Uso: /workersadmin <browser|reload|spawn <profesion> [nombre]|designator>",
-                NamedTextColor.RED));
+        sender.sendMessage(Component.text(chatPromptManager.lang().raw("command.admin.usage"), NamedTextColor.RED));
     }
 
     @Override

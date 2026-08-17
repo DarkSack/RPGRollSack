@@ -14,3 +14,57 @@ requires-fuel: true
 gui-title: "Forja de Hierro"
 # Vacío = acepta cualquier receta cuyo station-id sea "iron_forge".
 allowed-recipe-ids: []
+
+# Bloques de hierro en las 4 esquinas alrededor de la mesa de herrería —
+# sin esto puesto, el click derecho avisa que falta la estructura y no abre.
+structure-requirements:
+  - dx: -1
+    dy: 0
+    dz: -1
+    material: IRON_BLOCK
+  - dx: 1
+    dy: 0
+    dz: -1
+    material: IRON_BLOCK
+  - dx: -1
+    dy: 0
+    dz: 1
+    material: IRON_BLOCK
+  - dx: 1
+    dy: 0
+    dz: 1
+    material: IRON_BLOCK
+
+# Forja I-V — /crafting upgrade mientras la tenés abierta.
+max-tier: 5
+speed-bonus-per-tier: 0.08
+fail-reduction-per-tier: 0.03
+tier-upgrades:
+  - tier: 2
+    economy-cost: 0
+    cost:
+      - type: MATERIAL
+        value: IRON_INGOT
+        amount: 16
+  - tier: 3
+    economy-cost: 0
+    cost:
+      - type: MATERIAL
+        value: IRON_BLOCK
+        amount: 4
+  - tier: 4
+    economy-cost: 0
+    cost:
+      - type: MATERIAL
+        value: DIAMOND
+        amount: 4
+  - tier: 5
+    economy-cost: 0
+    cost:
+      - type: MATERIAL
+        value: NETHERITE_INGOT
+        amount: 2
+
+# Todas las estaciones "forja" comparten el mismo progreso de proficiencia.
+skill-category: forjado
+allow-experimentation: true

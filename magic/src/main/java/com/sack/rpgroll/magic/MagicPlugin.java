@@ -1,5 +1,6 @@
 package com.sack.rpgroll.magic;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.common.resource.DirectoryCreator;
 import com.sack.rpgroll.common.resource.ResourceCopier;
 import com.sack.rpgroll.magic.api.MagicAPI;
@@ -32,9 +33,15 @@ public class MagicPlugin extends JavaPlugin {
     private CatalystManager catalystManager;
     private SpellbookManager spellbookManager;
     private SpellCastEngine engine;
+    private LangManager langManager;
 
     @Override
     public void onEnable() {
+
+        saveDefaultConfig();
+
+        langManager = new LangManager(this, List.of("es", "en", "pt_BR"), "es");
+        langManager.reload(getConfig().getString("language", "es"));
 
         new DirectoryCreator(this).create(DIRECTORIES);
         new ResourceCopier(this).copyDirectories(DIRECTORIES);
@@ -56,29 +63,31 @@ public class MagicPlugin extends JavaPlugin {
 
         spellbookManager = new SpellbookManager(this);
 
-        engine = new SpellCastEngine(this, schoolManager, runeManager);
+        engine = new SpellCastEngine(this, schoolManager, runeManager, langManager);
 
         MagicAPI.init(schoolManager, spellManager, grimoireManager, runeManager, catalystManager, spellbookManager,
                 engine);
 
-        ChatPromptManager chatPromptManager = new ChatPromptManager(this);
+        ChatPromptManager chatPromptManager = new ChatPromptManager(this, langManager);
         getServer().getPluginManager().registerEvents(chatPromptManager, this);
 
-        SpellChannelManager channelManager = new SpellChannelManager(this, engine);
+        SpellChannelManager channelManager = new SpellChannelManager(this, engine, langManager);
         getServer().getPluginManager().registerEvents(channelManager, this);
 
         getServer().getPluginManager().registerEvents(
-                new SpellCastListener(spellManager, catalystManager, spellbookManager, engine, channelManager), this);
+                new SpellCastListener(spellManager, catalystManager, spellbookManager, engine, channelManager,
+                        langManager),
+                this);
 
         getServer().getPluginManager().registerEvents(
-                new GrimoireListener(grimoireManager, spellManager, spellbookManager), this);
+                new GrimoireListener(grimoireManager, spellManager, spellbookManager, langManager), this);
 
         var adminCommand = getCommand("magicadmin");
         if (adminCommand == null) {
             getLogger().severe("✘ El comando 'magicadmin' no está declarado en plugin.yml");
         } else {
             var magicAdminCommand = new MagicAdminCommand(schoolManager, spellManager, grimoireManager, runeManager,
-                    catalystManager, chatPromptManager);
+                    catalystManager, chatPromptManager, langManager);
             adminCommand.setExecutor(magicAdminCommand);
             adminCommand.setTabCompleter(magicAdminCommand);
         }
@@ -131,6 +140,10 @@ public class MagicPlugin extends JavaPlugin {
 
     public SpellCastEngine getEngine() {
         return engine;
+    }
+
+    public LangManager getLangManager() {
+        return langManager;
     }
 
 }

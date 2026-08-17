@@ -3,6 +3,7 @@ package com.sack.rpgroll.sackresourcepack.gui;
 import com.sack.rpgroll.sackresourcepack.build.BuildEngine;
 import com.sack.rpgroll.sackresourcepack.build.BuildResult;
 import com.sack.rpgroll.sackresourcepack.gui.util.ItemBuilder;
+import com.sack.rpgroll.sackresourcepack.lang.LangManager;
 import com.sack.rpgroll.sackresourcepack.manifest.AssetModule;
 import com.sack.rpgroll.sackresourcepack.validation.ValidationIssue;
 
@@ -46,6 +47,7 @@ public class DashboardGUI extends InventoryGUI {
     private final Plugin plugin;
     private final BuildEngine buildEngine;
     private final String assetBaseUrl;
+    private final LangManager lang;
     private final Runnable onRebuild;
     private final Runnable onValidate;
     private final Runnable onPublish;
@@ -54,13 +56,14 @@ public class DashboardGUI extends InventoryGUI {
 
     private int page = 0;
 
-    public DashboardGUI(Player player, Plugin plugin, BuildEngine buildEngine, String assetBaseUrl,
+    public DashboardGUI(Player player, Plugin plugin, BuildEngine buildEngine, String assetBaseUrl, LangManager lang,
             Runnable onRebuild, Runnable onValidate, Runnable onPublish, Runnable onToggleDevMode,
             BooleanSupplier devModeActive) {
         super(player, Component.text("SackResourcePack", NamedTextColor.GOLD), SIZE);
         this.plugin = plugin;
         this.buildEngine = buildEngine;
         this.assetBaseUrl = assetBaseUrl;
+        this.lang = lang;
         this.onRebuild = onRebuild;
         this.onValidate = onValidate;
         this.onPublish = onPublish;
@@ -91,32 +94,32 @@ public class DashboardGUI extends InventoryGUI {
             setItem(MODULE_START + i, buildModuleItem(modules.get(start + i)));
         }
 
-        setItem(REBUILD_SLOT, ItemBuilder.of(Material.ANVIL, "Reconstruir", NamedTextColor.YELLOW,
-                "Fuerza un build completo,", "ignorando el caché."));
-        setItem(VALIDATE_SLOT, ItemBuilder.of(Material.WRITABLE_BOOK, "Validar", NamedTextColor.AQUA,
-                "Reconstruye solo si algo", "cambió y muestra los issues."));
-        setItem(PUBLISH_SLOT, ItemBuilder.of(Material.ENDER_EYE, "Publicar", NamedTextColor.LIGHT_PURPLE,
-                "Distribuye el pack actual", "a todos los jugadores conectados."));
+        setItem(REBUILD_SLOT, ItemBuilder.of(Material.ANVIL, lang.raw("gui.dashboard.rebuild-name"), NamedTextColor.YELLOW,
+                lang.raw("gui.dashboard.rebuild-lore-1"), lang.raw("gui.dashboard.rebuild-lore-2")));
+        setItem(VALIDATE_SLOT, ItemBuilder.of(Material.WRITABLE_BOOK, lang.raw("gui.dashboard.validate-name"), NamedTextColor.AQUA,
+                lang.raw("gui.dashboard.validate-lore-1"), lang.raw("gui.dashboard.validate-lore-2")));
+        setItem(PUBLISH_SLOT, ItemBuilder.of(Material.ENDER_EYE, lang.raw("gui.dashboard.publish-name"), NamedTextColor.LIGHT_PURPLE,
+                lang.raw("gui.dashboard.publish-lore-1"), lang.raw("gui.dashboard.publish-lore-2")));
         setItem(DEV_MODE_SLOT, buildDevModeItem());
-        setItem(BROWSER_SLOT, ItemBuilder.of(Material.CHEST, "Explorador de Assets", NamedTextColor.GREEN,
-                "Ver todos los assets", "del pack fusionado."));
+        setItem(BROWSER_SLOT, ItemBuilder.of(Material.CHEST, lang.raw("gui.dashboard.browser-name"), NamedTextColor.GREEN,
+                lang.raw("gui.dashboard.browser-lore-1"), lang.raw("gui.dashboard.browser-lore-2")));
 
         if (page > 0) {
-            setItem(PREV_SLOT, ItemBuilder.of(Material.ARROW, "Página anterior", NamedTextColor.GRAY));
+            setItem(PREV_SLOT, ItemBuilder.of(Material.ARROW, lang.raw("gui.prev-page"), NamedTextColor.GRAY));
         }
 
         if (page < totalPages - 1) {
-            setItem(NEXT_SLOT, ItemBuilder.of(Material.ARROW, "Página siguiente", NamedTextColor.GRAY));
+            setItem(NEXT_SLOT, ItemBuilder.of(Material.ARROW, lang.raw("gui.next-page"), NamedTextColor.GRAY));
         }
 
-        setItem(CLOSE_SLOT, ItemBuilder.of(Material.BARRIER, "Cerrar", NamedTextColor.RED));
+        setItem(CLOSE_SLOT, ItemBuilder.of(Material.BARRIER, lang.raw("gui.dashboard.close"), NamedTextColor.RED));
     }
 
     private ItemStack buildInfoItem(BuildResult result, List<AssetModule> modules) {
 
         if (result == null) {
-            return ItemBuilder.of(Material.PAPER, "Sin build todavía", NamedTextColor.GRAY,
-                    "Usá 'Reconstruir' para generar", "el pack por primera vez.");
+            return ItemBuilder.of(Material.PAPER, lang.raw("gui.dashboard.no-build-name"), NamedTextColor.GRAY,
+                    lang.raw("gui.dashboard.no-build-lore-1"), lang.raw("gui.dashboard.no-build-lore-2"));
         }
 
         long errors = result.issues().stream().filter(i -> i.severity() == ValidationIssue.Severity.ERROR).count()
@@ -130,19 +133,19 @@ public class DashboardGUI extends InventoryGUI {
         String sha1Short = result.sha1() == null || result.sha1().isBlank() ? "—"
                 : result.sha1().substring(0, Math.min(10, result.sha1().length()));
 
-        return ItemBuilder.of(Material.KNOWLEDGE_BOOK, "Estado del pack", color,
-                modules.size() + " módulo(s) cargado(s)",
-                errors + " error(es), " + warnings + " warning(s)",
-                "SHA1: " + sha1Short,
-                result.fromCache() ? "(resultado cacheado)" : "(build recién generado)");
+        return ItemBuilder.of(Material.KNOWLEDGE_BOOK, lang.raw("gui.dashboard.status-name"), color,
+                lang.raw("gui.dashboard.status-modules-loaded", "count", modules.size()),
+                lang.raw("gui.dashboard.status-issues", "errors", errors, "warnings", warnings),
+                lang.raw("gui.dashboard.status-sha1", "sha1", sha1Short),
+                lang.raw(result.fromCache() ? "gui.dashboard.status-cached" : "gui.dashboard.status-fresh"));
     }
 
     private ItemStack buildModuleItem(AssetModule module) {
         return ItemBuilder.of(Material.BOOK, module.name(), NamedTextColor.WHITE,
-                "id: " + module.id(),
-                "versión: " + module.version(),
-                "autor: " + (module.author().isBlank() ? "—" : module.author()),
-                "prioridad: " + module.priority(),
+                lang.raw("gui.dashboard.module-id", "id", module.id()),
+                lang.raw("gui.dashboard.module-version", "version", module.version()),
+                lang.raw("gui.dashboard.module-author", "author", module.author().isBlank() ? "—" : module.author()),
+                lang.raw("gui.dashboard.module-priority", "priority", module.priority()),
                 module.description().isBlank() ? "" : module.description());
     }
 
@@ -151,10 +154,10 @@ public class DashboardGUI extends InventoryGUI {
         boolean active = devModeActive.getAsBoolean();
 
         return ItemBuilder.of(active ? Material.LIME_DYE : Material.GRAY_DYE,
-                active ? "Modo desarrollo: ACTIVO" : "Modo desarrollo: inactivo",
+                lang.raw(active ? "gui.dashboard.devmode-active-name" : "gui.dashboard.devmode-inactive-name"),
                 active ? NamedTextColor.GREEN : NamedTextColor.GRAY,
-                "Click para " + (active ? "desactivar" : "activar") + ".",
-                "Reconstruye solo al detectar", "cambios en content/.");
+                lang.raw(active ? "gui.dashboard.devmode-lore-toggle-deactivate" : "gui.dashboard.devmode-lore-toggle-activate"),
+                lang.raw("gui.dashboard.devmode-lore-1"), lang.raw("gui.dashboard.devmode-lore-2"));
     }
 
     @Override
@@ -176,7 +179,7 @@ public class DashboardGUI extends InventoryGUI {
             onToggleDevMode.run();
             build();
         } else if (slot == BROWSER_SLOT) {
-            new AssetBrowserGUI(player, buildEngine, assetBaseUrl, this::reopen).open();
+            new AssetBrowserGUI(player, buildEngine, assetBaseUrl, lang, this::reopen).open();
         } else if (slot == PREV_SLOT) {
             page--;
             build();

@@ -1,5 +1,6 @@
 package com.sack.rpgroll.mobs.command;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.mobs.core.MobDefinition;
 import com.sack.rpgroll.mobs.core.MobManager;
 import com.sack.rpgroll.mobs.engine.ActiveMobState;
@@ -11,9 +12,6 @@ import com.sack.rpgroll.mobs.gui.editor.MobEditorSession;
 import com.sack.rpgroll.mobs.core.MobCategory;
 import com.sack.rpgroll.mobs.registry.MobStatRegistry;
 import com.sack.rpgroll.util.TabCompleteUtil;
-
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -50,6 +48,7 @@ public class MobAdminCommand implements CommandExecutor, TabCompleter {
     private final MobStatRegistry statRegistry;
     private final ChatPromptManager chatPromptManager;
     private final Plugin plugin;
+    private final LangManager lang;
 
     public MobAdminCommand(MobManager mobManager, MobEngine engine, MobStatRegistry statRegistry,
             ChatPromptManager chatPromptManager, Plugin plugin) {
@@ -58,13 +57,14 @@ public class MobAdminCommand implements CommandExecutor, TabCompleter {
         this.statRegistry = statRegistry;
         this.chatPromptManager = chatPromptManager;
         this.plugin = plugin;
+        this.lang = chatPromptManager.lang();
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
         if (!sender.hasPermission(PERMISSION)) {
-            sender.sendMessage(Component.text("No tenés permiso para usar este comando.", NamedTextColor.RED));
+            lang.send(sender, "general.no_permission");
             return true;
         }
 
@@ -89,26 +89,25 @@ public class MobAdminCommand implements CommandExecutor, TabCompleter {
     }
 
     private void sendUsage(CommandSender sender) {
-        sender.sendMessage(Component.text("Uso: /mobadmin <spawn|list|info|reload|killall|create|browser|editor>",
-                NamedTextColor.YELLOW));
+        lang.send(sender, "command.usage");
     }
 
     private void handleCreate(CommandSender sender, String[] args) {
 
         if (!(sender instanceof Player player)) {
-            sender.sendMessage(Component.text("Solo un jugador puede crear un mob.", NamedTextColor.RED));
+            lang.send(sender, "command.create_player_only");
             return;
         }
 
         if (args.length < 2) {
-            sender.sendMessage(Component.text("Uso: /mobadmin create <id> [tipo-entidad-base]", NamedTextColor.YELLOW));
+            lang.send(sender, "command.create_usage");
             return;
         }
 
         String id = args[1].toLowerCase(Locale.ROOT);
 
         if (mobManager.exists(id)) {
-            sender.sendMessage(Component.text("Ya existe un mob con ese id.", NamedTextColor.RED));
+            lang.send(sender, "command.id_exists");
             return;
         }
 
@@ -121,8 +120,7 @@ public class MobAdminCommand implements CommandExecutor, TabCompleter {
         MobEditorSession session = new MobEditorSession(definition, mobManager, statRegistry, chatPromptManager,
                 plugin);
 
-        sender.sendMessage(Component.text("✔ Mob '" + id + "' creado — configuralo en el editor.",
-                NamedTextColor.GREEN));
+        lang.send(sender, "command.create_success", "id", id);
 
         new MobEditorHubGUI(player, session).open();
     }
@@ -130,13 +128,13 @@ public class MobAdminCommand implements CommandExecutor, TabCompleter {
     private void handleSpawn(CommandSender sender, String[] args) {
 
         if (args.length < 2) {
-            sender.sendMessage(Component.text("Uso: /mobadmin spawn <id> [jugador]", NamedTextColor.YELLOW));
+            lang.send(sender, "command.spawn_usage");
             return;
         }
 
         MobDefinition definition = mobManager.get(args[1]).orElse(null);
         if (definition == null) {
-            sender.sendMessage(Component.text("No existe el mob '" + args[1] + "'.", NamedTextColor.RED));
+            lang.send(sender, "command.not_found", "id", args[1]);
             return;
         }
 
@@ -144,18 +142,14 @@ public class MobAdminCommand implements CommandExecutor, TabCompleter {
                 : (sender instanceof Player player ? player : null);
 
         if (target == null) {
-            sender.sendMessage(Component.text("Especificá un jugador de referencia (consola no tiene ubicación).",
-                    NamedTextColor.RED));
+            lang.send(sender, "command.spawn_need_player");
             return;
         }
 
         engine.spawnMob(definition, target.getLocation())
                 .ifPresentOrElse(
-                        entity -> sender.sendMessage(Component.text("Mob '", NamedTextColor.GREEN)
-                                .append(com.sack.rpgroll.util.ComponentUtils.parse(definition.displayName()))
-                                .append(Component.text("' invocado.", NamedTextColor.GREEN))),
-                        () -> sender.sendMessage(Component.text(
-                                "No se pudo invocar (base-entity-type inválido).", NamedTextColor.RED)));
+                        entity -> lang.send(sender, "command.spawn_success", "name", definition.displayName()),
+                        () -> lang.send(sender, "command.spawn_failed"));
     }
 
     private void handleList(CommandSender sender, String[] args) {
@@ -167,42 +161,40 @@ public class MobAdminCommand implements CommandExecutor, TabCompleter {
                 .sorted((a, b) -> a.id().compareToIgnoreCase(b.id()))
                 .toList();
 
-        sender.sendMessage(Component.text("=== Mobs (" + defs.size() + ") ===", NamedTextColor.GOLD));
+        lang.send(sender, "command.list_header", "count", defs.size());
 
         for (MobDefinition def : defs) {
-            sender.sendMessage(Component.text(" - " + def.id() + " (" + def.category() + ") Lv." + def.level(),
-                    NamedTextColor.GRAY));
+            lang.send(sender, "command.list_entry", "id", def.id(), "category", def.category(),
+                    "level", def.level());
         }
     }
 
     private void handleInfo(CommandSender sender, String[] args) {
 
         if (args.length < 2) {
-            sender.sendMessage(Component.text("Uso: /mobadmin info <id>", NamedTextColor.YELLOW));
+            lang.send(sender, "command.info_usage");
             return;
         }
 
         MobDefinition def = mobManager.get(args[1]).orElse(null);
         if (def == null) {
-            sender.sendMessage(Component.text("No existe el mob '" + args[1] + "'.", NamedTextColor.RED));
+            lang.send(sender, "command.not_found", "id", args[1]);
             return;
         }
 
-        sender.sendMessage(Component.text("=== ", NamedTextColor.GOLD)
-                .append(com.sack.rpgroll.util.ComponentUtils.parse(def.displayName()))
-                .append(Component.text(" (" + def.id() + ") ===", NamedTextColor.GOLD)));
-        sender.sendMessage(Component.text("Categoría: " + def.category() + " | Nivel: " + def.level()
-                + " | Rareza: " + def.rarityId(), NamedTextColor.GRAY));
-        sender.sendMessage(Component.text("Vida: " + def.stat("health") + " | Daño: " + def.stat("damage")
-                + " | Defensa: " + def.stat("defense"), NamedTextColor.GRAY));
-        sender.sendMessage(Component.text("Fases: " + def.phases().size() + " | Skills: " + def.skills().size()
-                + " | Loot: " + def.loot().size(), NamedTextColor.GRAY));
+        lang.send(sender, "command.info_header", "name", def.displayName(), "id", def.id());
+        lang.send(sender, "command.info_category", "category", def.category(), "level", def.level(),
+                "rarity", def.rarityId());
+        lang.send(sender, "command.info_stats", "health", def.stat("health"), "damage", def.stat("damage"),
+                "defense", def.stat("defense"));
+        lang.send(sender, "command.info_counts", "phases", def.phases().size(), "skills", def.skills().size(),
+                "loot", def.loot().size());
     }
 
     private void handleReload(CommandSender sender) {
         mobManager.reload();
-        sender.sendMessage(Component.text(
-                "Mobs recargados: " + mobManager.count() + " definición(es).", NamedTextColor.GREEN));
+        lang.reload(plugin.getConfig().getString("language", "es"));
+        lang.send(sender, "command.reload_success", "count", mobManager.count());
     }
 
     private void handleKillAll(CommandSender sender, String[] args) {
@@ -230,13 +222,13 @@ public class MobAdminCommand implements CommandExecutor, TabCompleter {
             killed++;
         }
 
-        sender.sendMessage(Component.text(killed + " mob(s) eliminado(s).", NamedTextColor.GREEN));
+        lang.send(sender, "command.killall_result", "count", killed);
     }
 
     private void handleBrowser(CommandSender sender) {
 
         if (!(sender instanceof Player player)) {
-            sender.sendMessage(Component.text("Solo un jugador puede abrir el navegador.", NamedTextColor.RED));
+            lang.send(sender, "command.browser_player_only");
             return;
         }
 
@@ -246,18 +238,18 @@ public class MobAdminCommand implements CommandExecutor, TabCompleter {
     private void handleEditor(CommandSender sender, String[] args) {
 
         if (!(sender instanceof Player player)) {
-            sender.sendMessage(Component.text("Solo un jugador puede abrir el editor.", NamedTextColor.RED));
+            lang.send(sender, "command.editor_player_only");
             return;
         }
 
         if (args.length < 2) {
-            sender.sendMessage(Component.text("Uso: /mobadmin editor <id>", NamedTextColor.YELLOW));
+            lang.send(sender, "command.editor_usage");
             return;
         }
 
         MobDefinition definition = mobManager.get(args[1]).orElse(null);
         if (definition == null) {
-            sender.sendMessage(Component.text("No existe el mob '" + args[1] + "'.", NamedTextColor.RED));
+            lang.send(sender, "command.not_found", "id", args[1]);
             return;
         }
 

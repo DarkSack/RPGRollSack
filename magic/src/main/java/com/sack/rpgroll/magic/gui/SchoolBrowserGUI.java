@@ -1,5 +1,6 @@
 package com.sack.rpgroll.magic.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.magic.core.MagicSchool;
@@ -27,7 +28,7 @@ public class SchoolBrowserGUI extends InventoryGUI {
     private List<MagicSchool> schools;
 
     public SchoolBrowserGUI(Player player, SchoolManager schoolManager, ChatPromptManager chatPromptManager) {
-        super(player, Component.text("Escuelas de Magia", NamedTextColor.GOLD), SIZE);
+        super(player, chatPromptManager.lang().component("gui.school_browser.title"), SIZE);
         this.schoolManager = schoolManager;
         this.chatPromptManager = chatPromptManager;
         this.schools = List.copyOf(schoolManager.getAll());
@@ -42,6 +43,8 @@ public class SchoolBrowserGUI extends InventoryGUI {
             setItem(slot, ItemBuilder.createFiller());
         }
 
+        LangManager lang = chatPromptManager.lang();
+
         for (int i = 0; i < schools.size() && i < 36; i++) {
 
             MagicSchool school = schools.get(i);
@@ -49,16 +52,16 @@ public class SchoolBrowserGUI extends InventoryGUI {
 
             setItem(i, new ItemBuilder(parseMaterial(school.icon()))
                     .setName(Component.text(school.displayName(), color))
-                    .setLore(Component.text("id: " + school.id(), NamedTextColor.GRAY),
-                            Component.text("Click para editar", NamedTextColor.YELLOW))
+                    .setLore(lang.component("gui.common.id_label", "id", school.id()),
+                            lang.component("gui.common.click_edit"))
                     .build());
         }
 
         setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Crear escuela nueva", NamedTextColor.GREEN))
+                .setName(lang.component("gui.school_browser.new"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back")));
     }
 
     @Override
@@ -83,12 +86,12 @@ public class SchoolBrowserGUI extends InventoryGUI {
     }
 
     private void promptNew() {
-        chatPromptManager.prompt(player, "Escribí el id de la nueva escuela:", value -> {
+        chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.school_browser.prompt_new_id"), value -> {
 
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 
             if (schoolManager.exists(id)) {
-                player.sendMessage(Component.text("Ya existe una escuela con ese id.", NamedTextColor.RED));
+                chatPromptManager.lang().send(player, "gui.school_browser.already_exists");
                 reopen();
                 return;
             }

@@ -1,5 +1,6 @@
 package com.sack.rpgroll.economy.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.economy.tax.TaxRule;
 import com.sack.rpgroll.economy.tax.TaxRuleManager;
 import com.sack.rpgroll.economy.tax.TaxType;
@@ -32,15 +33,18 @@ public class TaxEditorGUI extends InventoryGUI {
     private final TaxRuleManager taxRuleManager;
     private final ChatPromptManager chatPromptManager;
     private final Runnable onBack;
+    private final LangManager lang;
     private TaxRule current;
 
     public TaxEditorGUI(Player player, TaxRule rule, TaxRuleManager taxRuleManager, ChatPromptManager chatPromptManager,
             Runnable onBack) {
-        super(player, Component.text("Impuesto: " + rule.id(), NamedTextColor.GOLD), SIZE);
+        super(player, Component.text(chatPromptManager.lang().raw("tax.editor.title", "id", rule.id()),
+                NamedTextColor.GOLD), SIZE);
         this.current = rule;
         this.taxRuleManager = taxRuleManager;
         this.chatPromptManager = chatPromptManager;
         this.onBack = onBack;
+        this.lang = chatPromptManager.lang();
     }
 
     private void replace(TaxRule updated) {
@@ -59,31 +63,30 @@ public class TaxEditorGUI extends InventoryGUI {
         }
 
         setItem(NAME_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(Component.text("Nombre: " + current.displayName(), NamedTextColor.YELLOW)).build());
+                .setName(lang.component("common.label_name", "value", current.displayName())).build());
 
         setItem(TYPE_SLOT, new ItemBuilder(Material.COMPARATOR)
-                .setName(Component.text("Tipo: " + current.type(), NamedTextColor.AQUA))
-                .setLore(Component.text("Click para rotar", NamedTextColor.GRAY)).build());
+                .setName(lang.component("tax.editor.type", "value", current.type()))
+                .setLore(lang.component("tax.editor.click_rotate")).build());
 
         setItem(RATE_SLOT, new ItemBuilder(Material.GOLD_NUGGET)
-                .setName(Component.text("Tasa: " + current.ratePercent() + "%", NamedTextColor.GOLD))
-                .setLore(Component.text("Click: +1% · Click derecho: -1%", NamedTextColor.GRAY)).build());
+                .setName(lang.component("tax.editor.rate", "value", current.ratePercent()))
+                .setLore(lang.component("tax.editor.click_rate")).build());
 
         setItem(APPLIES_TO_SLOT, new ItemBuilder(Material.HOPPER)
-                .setName(Component.text("Aplica a: " + (current.appliesTo().isEmpty() ? "todo" : String.join(", ",
-                        current.appliesTo())), NamedTextColor.LIGHT_PURPLE))
-                .setLore(Component.text("Escribí ids/categorías separados por comas", NamedTextColor.GRAY),
-                        Component.text("(vacío = aplica a todo)", NamedTextColor.GRAY))
+                .setName(lang.component("tax.editor.applies_to", "value", current.appliesTo().isEmpty()
+                        ? lang.raw("common.all") : String.join(", ", current.appliesTo())))
+                .setLore(lang.component("tax.editor.applies_hint1"), lang.component("tax.editor.applies_hint2"))
                 .build());
 
         setItem(ENABLED_SLOT, new ItemBuilder(current.enabled() ? Material.LIME_CONCRETE : Material.GRAY_CONCRETE)
-                .setName(Component.text("Activo: " + current.enabled(), NamedTextColor.GOLD))
-                .setLore(Component.text("Click para alternar", NamedTextColor.GRAY)).build());
+                .setName(lang.component("tax.editor.enabled", "value", current.enabled()))
+                .setLore(lang.component("common.click_toggle")).build());
 
         setItem(DELETE_SLOT, new ItemBuilder(Material.BARRIER)
-                .setName(Component.text("Eliminar regla", NamedTextColor.RED)).build());
+                .setName(lang.component("tax.editor.delete")).build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("common.back")));
     }
 
     @Override
@@ -94,7 +97,7 @@ public class TaxEditorGUI extends InventoryGUI {
         double sign = event.getClick() == ClickType.RIGHT ? -1 : 1;
 
         if (slot == NAME_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el nuevo nombre:", value -> replace(new TaxRule(current.id(),
+            chatPromptManager.prompt(player, lang.raw("common.prompt_new_name"), value -> replace(new TaxRule(current.id(),
                     value, current.type(), current.ratePercent(), current.appliesTo(), current.enabled())));
         } else if (slot == TYPE_SLOT) {
             TaxType[] values = TaxType.values();
@@ -105,7 +108,7 @@ public class TaxEditorGUI extends InventoryGUI {
             replace(new TaxRule(current.id(), current.displayName(), current.type(),
                     Math.max(0, Math.min(100, current.ratePercent() + sign)), current.appliesTo(), current.enabled()));
         } else if (slot == APPLIES_TO_SLOT) {
-            chatPromptManager.prompt(player, "Escribí ids/categorías separados por comas (vacío = todo):", value -> {
+            chatPromptManager.prompt(player, lang.raw("tax.editor.prompt_applies_to"), value -> {
 
                 List<String> appliesTo = new ArrayList<>();
                 for (String entry : value.split(",")) {

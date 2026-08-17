@@ -1,5 +1,6 @@
 package com.sack.rpgroll.seasons.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.seasons.core.CalendarManager;
@@ -7,9 +8,6 @@ import com.sack.rpgroll.seasons.core.SeasonManager;
 import com.sack.rpgroll.seasons.core.SeasonRegionManager;
 import com.sack.rpgroll.seasons.core.WorldEventManager;
 import com.sack.rpgroll.seasons.event.WorldEventEngine;
-
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -36,7 +34,7 @@ public class SeasonsBrowserGUI extends InventoryGUI {
     public SeasonsBrowserGUI(Player player, CalendarManager calendarManager, SeasonManager seasonManager,
             WorldEventManager worldEventManager, WorldEventEngine engine, SeasonRegionManager regionManager,
             ChatPromptManager chatPromptManager) {
-        super(player, Component.text("Season Studio", NamedTextColor.GOLD), SIZE);
+        super(player, chatPromptManager.lang().component("gui.studio_hub.title"), SIZE);
         this.calendarManager = calendarManager;
         this.seasonManager = seasonManager;
         this.worldEventManager = worldEventManager;
@@ -54,23 +52,26 @@ public class SeasonsBrowserGUI extends InventoryGUI {
             setItem(slot, ItemBuilder.createFiller());
         }
 
+        LangManager lang = chatPromptManager.lang();
+
         setItem(CALENDARS_SLOT, new ItemBuilder(Material.CLOCK)
-                .setName(Component.text("Calendarios", NamedTextColor.AQUA))
-                .setLore(Component.text(calendarManager.count() + " definido(s)", NamedTextColor.GRAY)).build());
+                .setName(lang.component("gui.studio_hub.calendars"))
+                .setLore(lang.component("gui.studio_hub.calendars_lore", "count", calendarManager.count())).build());
 
         setItem(SEASONS_SLOT, new ItemBuilder(Material.SUNFLOWER)
-                .setName(Component.text("Estaciones", NamedTextColor.GREEN))
-                .setLore(Component.text(seasonManager.count() + " definida(s)", NamedTextColor.GRAY)).build());
+                .setName(lang.component("gui.studio_hub.seasons"))
+                .setLore(lang.component("gui.studio_hub.seasons_lore", "count", seasonManager.count())).build());
 
         setItem(WORLD_EVENTS_SLOT, new ItemBuilder(Material.NETHER_STAR)
-                .setName(Component.text("Eventos Mundiales", NamedTextColor.LIGHT_PURPLE))
-                .setLore(Component.text(worldEventManager.count() + " definido(s)", NamedTextColor.GRAY)).build());
+                .setName(lang.component("gui.studio_hub.world_events"))
+                .setLore(lang.component("gui.studio_hub.world_events_lore", "count", worldEventManager.count()))
+                .build());
 
         setItem(REGIONS_SLOT, new ItemBuilder(Material.MAP)
-                .setName(Component.text("Regiones", NamedTextColor.GOLD))
-                .setLore(Component.text(regionManager.count() + " definida(s)", NamedTextColor.GRAY)).build());
+                .setName(lang.component("gui.studio_hub.regions"))
+                .setLore(lang.component("gui.studio_hub.regions_lore", "count", regionManager.count())).build());
 
-        setItem(CLOSE_SLOT, ItemBuilder.createCancelButton("Cerrar"));
+        setItem(CLOSE_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.close")));
     }
 
     @Override

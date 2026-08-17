@@ -1,5 +1,6 @@
 package com.sack.rpgroll.magic.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.magic.core.CatalystManager;
@@ -26,7 +27,7 @@ public class CatalystBrowserGUI extends InventoryGUI {
     private List<SpellCatalyst> catalysts;
 
     public CatalystBrowserGUI(Player player, CatalystManager catalystManager, ChatPromptManager chatPromptManager) {
-        super(player, Component.text("Catalizadores", NamedTextColor.GOLD), SIZE);
+        super(player, chatPromptManager.lang().component("gui.catalyst_browser.title"), SIZE);
         this.catalystManager = catalystManager;
         this.chatPromptManager = chatPromptManager;
         this.catalysts = List.copyOf(catalystManager.getAll());
@@ -41,22 +42,24 @@ public class CatalystBrowserGUI extends InventoryGUI {
             setItem(slot, ItemBuilder.createFiller());
         }
 
+        LangManager lang = chatPromptManager.lang();
+
         for (int i = 0; i < catalysts.size() && i < 36; i++) {
 
             SpellCatalyst catalyst = catalysts.get(i);
 
             setItem(i, new ItemBuilder(SchoolBrowserGUI.parseMaterial(catalyst.material()))
                     .setName(Component.text(catalyst.displayName(), NamedTextColor.GOLD))
-                    .setLore(Component.text("id: " + catalyst.id(), NamedTextColor.GRAY),
-                            Component.text("Click para editar", NamedTextColor.YELLOW))
+                    .setLore(lang.component("gui.common.id_label", "id", catalyst.id()),
+                            lang.component("gui.common.click_edit"))
                     .build());
         }
 
         setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Crear catalizador nuevo", NamedTextColor.GREEN))
+                .setName(lang.component("gui.catalyst_browser.new"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back")));
     }
 
     @Override
@@ -82,12 +85,12 @@ public class CatalystBrowserGUI extends InventoryGUI {
     }
 
     private void promptNew() {
-        chatPromptManager.prompt(player, "Escribí el id del nuevo catalizador:", value -> {
+        chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.catalyst_browser.prompt_new_id"), value -> {
 
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 
             if (catalystManager.exists(id)) {
-                player.sendMessage(Component.text("Ya existe un catalizador con ese id.", NamedTextColor.RED));
+                chatPromptManager.lang().send(player, "gui.catalyst_browser.already_exists");
                 reopen();
                 return;
             }

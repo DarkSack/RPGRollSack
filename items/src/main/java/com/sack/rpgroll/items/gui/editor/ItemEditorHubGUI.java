@@ -1,5 +1,6 @@
 package com.sack.rpgroll.items.gui.editor;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 
@@ -55,10 +56,12 @@ public class ItemEditorHubGUI extends InventoryGUI {
     private static final int CANCEL_SLOT = 50;
 
     private final EditorSession session;
+    private final LangManager lang;
 
     public ItemEditorHubGUI(Player player, EditorSession session) {
-        super(player, Component.text("Editando: " + session.original.id(), NamedTextColor.GOLD), SIZE);
+        super(player, session.chatPromptManager.lang().component("editor.hub.title", "id", session.original.id()), SIZE);
         this.session = session;
+        this.lang = session.chatPromptManager.lang();
     }
 
     @Override
@@ -70,10 +73,10 @@ public class ItemEditorHubGUI extends InventoryGUI {
             setItem(slot, ItemBuilder.createFiller());
         }
 
-        fillSectionRow(9, IDENTITY_GLASS, "Identidad");
-        fillSectionRow(18, CONTENT_GLASS, "Contenido mágico");
-        fillSectionRow(27, BEHAVIOR_GLASS, "Comportamiento");
-        fillSectionRow(36, EXTRA_GLASS, "Extra");
+        fillSectionRow(9, IDENTITY_GLASS, lang.raw("editor.hub.identity"));
+        fillSectionRow(18, CONTENT_GLASS, lang.raw("editor.hub.content_magic"));
+        fillSectionRow(27, BEHAVIOR_GLASS, lang.raw("editor.hub.behavior"));
+        fillSectionRow(36, EXTRA_GLASS, lang.raw("editor.hub.extra"));
 
         for (int slot = 45; slot < SIZE; slot++) {
             setItem(slot, glass(Material.BLACK_STAINED_GLASS_PANE, " "));
@@ -81,36 +84,36 @@ public class ItemEditorHubGUI extends InventoryGUI {
 
         setItem(PREVIEW_SLOT, session.preview());
 
-        setItem(DISPLAY_SLOT, categoryButton(Material.NAME_TAG, "Apariencia",
-                "Material, nombre, lore, rareza, brillo, flags"));
-        setItem(STATS_SLOT, categoryButton(Material.REDSTONE, "Stats y Atributos",
-                "Estadísticas RPGRoll + atributos vanilla"));
-        setItem(RULES_SLOT, categoryButton(Material.BOOK, "Reglas",
-                "Requisitos, durabilidad y economía"));
+        setItem(DISPLAY_SLOT, categoryButton(Material.NAME_TAG, lang.raw("editor.hub.display_name"),
+                lang.raw("editor.hub.display_desc")));
+        setItem(STATS_SLOT, categoryButton(Material.REDSTONE, lang.raw("editor.hub.stats_name"),
+                lang.raw("editor.hub.stats_desc")));
+        setItem(RULES_SLOT, categoryButton(Material.BOOK, lang.raw("editor.hub.rules_name"),
+                lang.raw("editor.hub.rules_desc")));
 
-        setItem(ENCHANTMENTS_SLOT, categoryButton(Material.ENCHANTED_BOOK, "Encantamientos",
-                "Vanilla + RPGRoll-Enchantments"));
-        setItem(EFFECTS_SLOT, categoryButton(Material.POTION, "Efectos",
-                "Efectos de poción mientras está equipado"));
-        setItem(SOCKETS_SLOT, categoryButton(Material.AMETHYST_SHARD, "Sockets",
-                "Ranuras para gemas"));
-        setItem(SKINS_SLOT, categoryButton(Material.ARMOR_STAND, "Skins",
-                "Apariencias alternativas"));
+        setItem(ENCHANTMENTS_SLOT, categoryButton(Material.ENCHANTED_BOOK, lang.raw("editor.hub.enchantments_name"),
+                lang.raw("editor.hub.enchantments_desc")));
+        setItem(EFFECTS_SLOT, categoryButton(Material.POTION, lang.raw("editor.hub.effects_name"),
+                lang.raw("editor.hub.effects_desc")));
+        setItem(SOCKETS_SLOT, categoryButton(Material.AMETHYST_SHARD, lang.raw("editor.hub.sockets_name"),
+                lang.raw("editor.hub.sockets_desc")));
+        setItem(SKINS_SLOT, categoryButton(Material.ARMOR_STAND, lang.raw("editor.hub.skins_name"),
+                lang.raw("editor.hub.skins_desc")));
 
-        setItem(UPGRADES_SLOT, categoryButton(Material.ANVIL, "Mejoras",
-                "Niveles de mejora (+1, +2, ...)"));
-        setItem(TRIGGERS_SLOT, categoryButton(Material.COMPARATOR, "Comportamiento",
-                "Acciones por trigger (click, ataque, romper bloque, etc.)"));
-        setItem(ABILITIES_SLOT, categoryButton(Material.BLAZE_POWDER, "Habilidades",
-                "Habilidades activas y pasivas"));
+        setItem(UPGRADES_SLOT, categoryButton(Material.ANVIL, lang.raw("editor.hub.upgrades_name"),
+                lang.raw("editor.hub.upgrades_desc")));
+        setItem(TRIGGERS_SLOT, categoryButton(Material.COMPARATOR, lang.raw("editor.hub.triggers_name"),
+                lang.raw("editor.hub.triggers_desc")));
+        setItem(ABILITIES_SLOT, categoryButton(Material.BLAZE_POWDER, lang.raw("editor.hub.abilities_name"),
+                lang.raw("editor.hub.abilities_desc")));
 
-        setItem(RECIPES_SLOT, categoryButton(Material.CRAFTING_TABLE, "Recetas",
-                "Cómo se craftea este ítem"));
-        setItem(CUSTOM_DATA_SLOT, categoryButton(Material.PAPER, "Datos custom",
-                "Pares clave-valor libres para otros addons"));
+        setItem(RECIPES_SLOT, categoryButton(Material.CRAFTING_TABLE, lang.raw("editor.hub.recipes_name"),
+                lang.raw("editor.hub.recipes_desc")));
+        setItem(CUSTOM_DATA_SLOT, categoryButton(Material.PAPER, lang.raw("editor.hub.custom_data_name"),
+                lang.raw("editor.hub.custom_data_desc")));
 
-        setItem(SAVE_SLOT, ItemBuilder.createConfirmButton("Guardar"));
-        setItem(CANCEL_SLOT, ItemBuilder.createCancelButton("Cancelar"));
+        setItem(SAVE_SLOT, ItemBuilder.createConfirmButton(lang.raw("editor.hub.save")));
+        setItem(CANCEL_SLOT, ItemBuilder.createCancelButton(lang.raw("editor.hub.cancel")));
     }
 
     /** Una fila completa (9 slots) pintada con el vidrio de la sección, para que los botones se vean "insertados". */
@@ -166,9 +169,9 @@ public class ItemEditorHubGUI extends InventoryGUI {
 
         try {
             session.save();
-            player.sendMessage(Component.text("✔ Ítem guardado.", NamedTextColor.GREEN));
+            lang.send(player, "editor.hub.saved");
         } catch (IOException e) {
-            player.sendMessage(Component.text("✘ Error guardando el ítem: " + e.getMessage(), NamedTextColor.RED));
+            lang.send(player, "editor.hub.save_error", "error", e.getMessage());
         }
 
         markSelectionMade();

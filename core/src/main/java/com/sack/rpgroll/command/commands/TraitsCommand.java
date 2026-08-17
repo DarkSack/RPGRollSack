@@ -2,11 +2,9 @@ package com.sack.rpgroll.command.commands;
 
 import com.sack.rpgroll.RPGRoll;
 import com.sack.rpgroll.command.RPGCommand;
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.player.PlayerManager;
 import com.sack.rpgroll.player.RPGPlayer;
-
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -30,6 +28,7 @@ public class TraitsCommand implements RPGCommand {
     public void execute(CommandSender sender, String[] args) {
 
         Player player = (Player) sender;
+        LangManager lang = plugin.getBootstrap().getServices().get(LangManager.class);
 
         try {
 
@@ -40,39 +39,39 @@ public class TraitsCommand implements RPGCommand {
             Optional<RPGPlayer> rpgPlayer = playerManager.getPlayer(player.getUniqueId());
 
             if (rpgPlayer.isEmpty()) {
-                player.sendMessage(Component.text("No se pudo encontrar tu perfil de jugador.", NamedTextColor.RED));
-                player.sendMessage(Component.text("Error al cargar tus datos.", NamedTextColor.RED));
+                lang.send(player, "traits_command.not_found");
+                lang.send(player, "error.load_data");
                 return;
             }
 
-            displayTraits(player, rpgPlayer.get());
+            displayTraits(lang, player, rpgPlayer.get());
 
         } catch (Exception exception) {
 
-            player.sendMessage(Component.text("Error al cargar traits.", NamedTextColor.RED));
+            lang.send(player, "traits_command.error");
             exception.printStackTrace();
 
         }
 
     }
 
-    private void displayTraits(Player player, RPGPlayer rpgPlayer) {
+    private void displayTraits(LangManager lang, Player player, RPGPlayer rpgPlayer) {
 
         var traits = rpgPlayer.getTraits();
 
         player.sendMessage("");
-        player.sendMessage(Component.text("============== Tus Traits ==============", NamedTextColor.GOLD));
+        lang.send(player, "traits_command.header");
 
         if (traits.getTraitIds().isEmpty()) {
-            player.sendMessage(Component.text("Aún no tienes traits adquiridos.", NamedTextColor.YELLOW));
+            lang.send(player, "traits_command.none");
         } else {
             for (String traitId : traits.getTraitIds()) {
-                player.sendMessage(Component.text("✦ " + traitId, NamedTextColor.LIGHT_PURPLE));
+                lang.send(player, "traits_command.entry", "trait", traitId);
             }
         }
 
-        player.sendMessage(Component.text("Cantidad total: " + traits.count(), NamedTextColor.GRAY));
-        player.sendMessage(Component.text("========================================", NamedTextColor.GOLD));
+        lang.send(player, "traits_command.count", "count", traits.count());
+        lang.send(player, "traits_command.footer");
         player.sendMessage("");
 
     }

@@ -10,16 +10,15 @@ import com.sack.rpgroll.chat.gui.EmoteBrowserGUI;
 import com.sack.rpgroll.chat.gui.LanguageBrowserGUI;
 import com.sack.rpgroll.chat.language.LanguageManager;
 import com.sack.rpgroll.chat.role.ChatRoleManager;
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.util.TabCompleteUtil;
-
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 
 import java.util.List;
 import java.util.Locale;
@@ -35,14 +34,19 @@ public class ChatAdminCommand implements CommandExecutor, TabCompleter {
     private final ChatRoleManager roleManager;
     private final EmoteManager emoteManager;
     private final ChatPromptManager chatPromptManager;
+    private final LangManager lang;
+    private final Plugin plugin;
 
     public ChatAdminCommand(ChannelManager channelManager, LanguageManager languageManager,
-            ChatRoleManager roleManager, EmoteManager emoteManager, ChatPromptManager chatPromptManager) {
+            ChatRoleManager roleManager, EmoteManager emoteManager, ChatPromptManager chatPromptManager,
+            LangManager lang, Plugin plugin) {
         this.channelManager = channelManager;
         this.languageManager = languageManager;
         this.roleManager = roleManager;
         this.emoteManager = emoteManager;
         this.chatPromptManager = chatPromptManager;
+        this.lang = lang;
+        this.plugin = plugin;
     }
 
     @Override
@@ -60,15 +64,16 @@ public class ChatAdminCommand implements CommandExecutor, TabCompleter {
                 languageManager.reload();
                 roleManager.reload();
                 emoteManager.reload();
-                sender.sendMessage(Component.text("✔ RPGRoll-Chat recargado: " + channelManager.count()
-                        + " canal(es), " + languageManager.count() + " idioma(s), " + roleManager.count()
-                        + " rol(es), " + emoteManager.count() + " emote(s).", NamedTextColor.GREEN));
+                plugin.reloadConfig();
+                lang.reload(plugin.getConfig().getString("language", "es"));
+                lang.send(sender, "admin.reloaded", "channels", channelManager.count(), "languages",
+                        languageManager.count(), "roles", roleManager.count(), "emotes", emoteManager.count());
             }
 
             case "browser" -> {
 
                 if (!(sender instanceof Player player)) {
-                    sender.sendMessage(Component.text("Solo un jugador puede abrir el navegador.", NamedTextColor.RED));
+                    lang.send(sender, "admin.players_only_browser");
                     return true;
                 }
 
@@ -84,18 +89,18 @@ public class ChatAdminCommand implements CommandExecutor, TabCompleter {
 
             case "editor" -> {
                 if (!(sender instanceof Player player)) {
-                    sender.sendMessage(Component.text("Solo un jugador puede abrir el editor.", NamedTextColor.RED));
+                    lang.send(sender, "admin.players_only_editor");
                     return true;
                 }
                 if (args.length < 2) {
-                    sender.sendMessage(Component.text("Uso: /chatadmin editor <canal>", NamedTextColor.YELLOW));
+                    lang.send(sender, "admin.usage_editor");
                     return true;
                 }
                 channelManager.get(args[1]).ifPresentOrElse(
                         channel -> new ChannelEditorGUI(player, channel, channelManager, chatPromptManager,
                                 () -> {
                                 }).open(),
-                        () -> sender.sendMessage(Component.text("No existe ese canal.", NamedTextColor.RED)));
+                        () -> lang.send(sender, "channel.not_found"));
             }
 
             default -> sendUsage(sender);
@@ -105,9 +110,7 @@ public class ChatAdminCommand implements CommandExecutor, TabCompleter {
     }
 
     private void sendUsage(CommandSender sender) {
-        sender.sendMessage(Component.text(
-                "Uso: /chatadmin <reload|browser [channel|language|role|emote]|editor <canal>> [args]",
-                NamedTextColor.YELLOW));
+        lang.send(sender, "admin.usage");
     }
 
     @Override

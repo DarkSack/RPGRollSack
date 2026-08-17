@@ -1,6 +1,7 @@
 package com.sack.rpgroll.ranching.core.breeds;
 
 import com.sack.rpgroll.common.content.RPGContent;
+import com.sack.rpgroll.common.reskin.EntityReskin;
 
 import java.util.Objects;
 
@@ -8,7 +9,9 @@ import java.util.Objects;
  * Una raza siempre pertenece a exactamente una {@code Species} y modifica
  * producción/peso/fertilidad/resistencia como multiplicadores sobre la
  * base de esa especie — la genética individual del animal se aplica
- * encima de esto, no en su lugar.
+ * encima de esto, no en su lugar. {@code reskin} es el reskin visual
+ * propio de esta raza (sin depender de ModelEngine/BetterModel), aplicado
+ * vía {@link com.sack.rpgroll.common.reskin.EntityReskinService}.
  */
 public record Breed(
         String id,
@@ -19,7 +22,8 @@ public record Breed(
         double weightMultiplier,
         double fertilityMultiplier,
         double resistanceMultiplier,
-        String temperament) implements RPGContent {
+        String temperament,
+        EntityReskin reskin) implements RPGContent {
 
     public Breed {
         Objects.requireNonNull(id, "id no puede ser null");
@@ -31,6 +35,7 @@ public record Breed(
         fertilityMultiplier = fertilityMultiplier <= 0 ? 1.0 : fertilityMultiplier;
         resistanceMultiplier = resistanceMultiplier <= 0 ? 1.0 : resistanceMultiplier;
         temperament = temperament == null || temperament.isBlank() ? "Neutral" : temperament;
+        reskin = reskin == null ? EntityReskin.NONE : reskin;
     }
 
 }

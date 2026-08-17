@@ -1,5 +1,6 @@
 package com.sack.rpgroll.dungeons.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.dungeons.structure.StructureDefinition;
 import com.sack.rpgroll.dungeons.structure.StructurePasteEngine;
 import com.sack.rpgroll.gui.InventoryGUI;
@@ -34,16 +35,18 @@ public class StructurePasteConfirmGUI extends InventoryGUI {
 
     private final StructureDefinition definition;
     private final StructurePasteEngine pasteEngine;
+    private final LangManager lang;
     private final Runnable onBack;
 
     private StructureRotation rotation = StructureRotation.NONE;
     private Mirror mirror = Mirror.NONE;
 
     public StructurePasteConfirmGUI(Player player, StructureDefinition definition, StructurePasteEngine pasteEngine,
-            Runnable onBack) {
-        super(player, Component.text("Pegar: " + definition.id(), NamedTextColor.GOLD), SIZE);
+            LangManager lang, Runnable onBack) {
+        super(player, ComponentUtils.parse(lang.raw("gui.pasteconfirm.title", "id", definition.id())), SIZE);
         this.definition = definition;
         this.pasteEngine = pasteEngine;
+        this.lang = lang;
         this.onBack = onBack;
     }
 
@@ -60,21 +63,21 @@ public class StructurePasteConfirmGUI extends InventoryGUI {
                 .setName(ComponentUtils.parse(definition.displayName()).colorIfAbsent(NamedTextColor.WHITE))
                 .setLore(
                         Component.text(definition.description(), NamedTextColor.GRAY),
-                        Component.text("Se pega centrada en tu posición actual", NamedTextColor.YELLOW))
+                        ComponentUtils.parse(lang.raw("gui.pasteconfirm.centered_on_you")))
                 .build());
 
         setItem(ROTATION_SLOT, new ItemBuilder(Material.COMPASS)
-                .setName(Component.text("Rotación: " + rotationLabel(rotation), NamedTextColor.AQUA))
-                .setLore(Component.text("Click para rotar 90°", NamedTextColor.GRAY))
+                .setName(ComponentUtils.parse(lang.raw("gui.pasteconfirm.rotation", "value", rotationLabel(rotation))))
+                .setLore(ComponentUtils.parse(lang.raw("gui.pasteconfirm.rotate_hint")))
                 .build());
 
         setItem(MIRROR_SLOT, new ItemBuilder(Material.GLASS_PANE)
-                .setName(Component.text("Espejo: " + mirrorLabel(mirror), NamedTextColor.AQUA))
-                .setLore(Component.text("Click para cambiar", NamedTextColor.GRAY))
+                .setName(ComponentUtils.parse(lang.raw("gui.pasteconfirm.mirror_label", "value", mirrorLabel(mirror))))
+                .setLore(ComponentUtils.parse(lang.raw("gui.common.click_to_change")))
                 .build());
 
-        setItem(CONFIRM_SLOT, ItemBuilder.createConfirmButton("Pegar en mi posición"));
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(CONFIRM_SLOT, ItemBuilder.createConfirmButton(lang.raw("gui.pasteconfirm.confirm")));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back")));
     }
 
     private String rotationLabel(StructureRotation rotation) {
@@ -88,9 +91,9 @@ public class StructurePasteConfirmGUI extends InventoryGUI {
 
     private String mirrorLabel(Mirror mirror) {
         return switch (mirror) {
-            case LEFT_RIGHT -> "Izquierda/Derecha";
-            case FRONT_BACK -> "Adelante/Atrás";
-            default -> "Ninguno";
+            case LEFT_RIGHT -> lang.raw("gui.pasteconfirm.mirror.left_right");
+            case FRONT_BACK -> lang.raw("gui.pasteconfirm.mirror.front_back");
+            default -> lang.raw("gui.pasteconfirm.mirror.none");
         };
     }
 
@@ -123,9 +126,8 @@ public class StructurePasteConfirmGUI extends InventoryGUI {
 
         if (slot == CONFIRM_SLOT) {
             boolean placed = pasteEngine.place(definition, player.getLocation(), rotation, mirror);
-            player.sendMessage(placed
-                    ? Component.text("✔ Estructura '" + definition.id() + "' pegada.", NamedTextColor.GREEN)
-                    : Component.text("✘ No se pudo pegar la estructura — revisá la consola.", NamedTextColor.RED));
+            lang.send(player, placed ? "command.dungeonadmin.structure.paste.ok"
+                    : "command.dungeonadmin.structure.paste.failed", "id", definition.id());
             markSelectionMade();
             close();
             return;

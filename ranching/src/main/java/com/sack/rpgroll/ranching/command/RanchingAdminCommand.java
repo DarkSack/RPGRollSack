@@ -79,7 +79,7 @@ public class RanchingAdminCommand implements CommandExecutor, TabCompleter {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
         if (!sender.hasPermission("rpgrollranching.admin.*")) {
-            sender.sendMessage(Component.text("No tenés permiso para usar este comando.", NamedTextColor.RED));
+            sender.sendMessage(Component.text(chatPromptManager.lang().raw("command.admin.no_permission"), NamedTextColor.RED));
             return true;
         }
 
@@ -101,7 +101,7 @@ public class RanchingAdminCommand implements CommandExecutor, TabCompleter {
     private void handleBrowser(CommandSender sender) {
 
         if (!(sender instanceof Player player)) {
-            sender.sendMessage(Component.text("Solo un jugador puede abrir el Ranch Studio.", NamedTextColor.RED));
+            sender.sendMessage(Component.text(chatPromptManager.lang().raw("command.admin.player_only_browser"), NamedTextColor.RED));
             return;
         }
 
@@ -112,25 +112,26 @@ public class RanchingAdminCommand implements CommandExecutor, TabCompleter {
 
     private void handleReload(CommandSender sender) {
         onReload.run();
-        sender.sendMessage(Component.text("✔ RPGRoll-Ranching recargado.", NamedTextColor.GREEN));
+        sender.sendMessage(Component.text(chatPromptManager.lang().raw("command.admin.reloaded"), NamedTextColor.GREEN));
     }
 
     private void handleSpawn(CommandSender sender, String[] args) {
 
         if (!(sender instanceof Player player)) {
-            sender.sendMessage(Component.text("Solo un jugador puede spawnear un animal.", NamedTextColor.RED));
+            sender.sendMessage(Component.text(chatPromptManager.lang().raw("command.admin.player_only_spawn"), NamedTextColor.RED));
             return;
         }
 
         if (args.length < 2) {
-            player.sendMessage(Component.text("Uso: /ranchingadmin spawn <especie> [raza]", NamedTextColor.RED));
+            player.sendMessage(Component.text(chatPromptManager.lang().raw("command.admin.usage_spawn"), NamedTextColor.RED));
             return;
         }
 
         Species species = speciesManager.get(args[1].toLowerCase()).orElse(null);
 
         if (species == null) {
-            player.sendMessage(Component.text("No existe la especie '" + args[1] + "'.", NamedTextColor.RED));
+            player.sendMessage(Component.text(chatPromptManager.lang().raw("command.admin.unknown_species", "id", args[1]),
+                    NamedTextColor.RED));
             return;
         }
 
@@ -144,14 +145,14 @@ public class RanchingAdminCommand implements CommandExecutor, TabCompleter {
         animalManager.registerFounder(entity, species, breed, sex, geneticsEngine,
                 geneManager.getForSpecies(species.id()));
 
-        player.sendMessage(Component.text("✔ Spawneado un/a ", NamedTextColor.GREEN)
+        player.sendMessage(Component.text(chatPromptManager.lang().raw("command.admin.spawned_prefix"), NamedTextColor.GREEN)
                 .append(ComponentUtils.parse(species.displayName()))
-                .append(Component.text(" (" + sex + ").", NamedTextColor.GREEN)));
+                .append(Component.text(chatPromptManager.lang().raw("command.admin.spawned_suffix", "sex", sex),
+                        NamedTextColor.GREEN)));
     }
 
     private void sendUsage(CommandSender sender) {
-        sender.sendMessage(Component.text("Uso: /ranchingadmin <browser|reload|spawn <especie> [raza]>",
-                NamedTextColor.RED));
+        sender.sendMessage(Component.text(chatPromptManager.lang().raw("command.admin.usage"), NamedTextColor.RED));
     }
 
     @Override

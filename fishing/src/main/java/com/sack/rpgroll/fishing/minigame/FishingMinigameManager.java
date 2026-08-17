@@ -2,10 +2,9 @@ package com.sack.rpgroll.fishing.minigame;
 
 import io.papermc.paper.event.player.PlayerArmSwingEvent;
 
-import com.sack.rpgroll.util.ComponentUtils;
+import com.sack.rpgroll.common.lang.LangManager;
 
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -36,10 +35,12 @@ public class FishingMinigameManager implements Listener {
     }
 
     private final Plugin plugin;
+    private final LangManager lang;
     private final Map<UUID, ActiveBattle> active = new HashMap<>();
 
-    public FishingMinigameManager(Plugin plugin) {
+    public FishingMinigameManager(Plugin plugin, LangManager lang) {
         this.plugin = plugin;
+        this.lang = lang;
     }
 
     public boolean isFighting(UUID uuid) {
@@ -55,8 +56,7 @@ public class FishingMinigameManager implements Listener {
             return;
         }
 
-        player.sendMessage(Component.text("¡Algo picó! Golpeá (click izquierdo) cuando el indicador esté en la zona.",
-                NamedTextColor.AQUA));
+        lang.send(player, "minigame.hooked");
 
         BukkitTask task = plugin.getServer().getScheduler().runTaskTimer(plugin, () -> tickPlayer(player),
                 1L, TICK_INTERVAL);
@@ -103,11 +103,10 @@ public class FishingMinigameManager implements Listener {
 
         if (session.isInZone(meter)) {
             session.registerHit();
-            player.sendMessage(Component.text("✔ ¡Bien! (" + Math.max(0, session.requiredHits()) + " restantes)",
-                    NamedTextColor.GREEN));
+            lang.send(player, "minigame.hit", "remaining", Math.max(0, session.requiredHits()));
         } else {
             session.registerMiss();
-            player.sendMessage(Component.text("✘ Fallaste...", NamedTextColor.RED));
+            lang.send(player, "minigame.miss");
         }
 
         if (session.isWon()) {
@@ -152,8 +151,8 @@ public class FishingMinigameManager implements Listener {
             }
         }
 
-        return ComponentUtils.parse("&b[" + bar + "&b] &7Faltan: &f" + Math.max(0, session.requiredHits())
-                + " &7Fallos: &f" + Math.max(0, session.allowedMisses()));
+        return lang.component("minigame.bar", "bar", bar.toString(), "remaining",
+                Math.max(0, session.requiredHits()), "misses", Math.max(0, session.allowedMisses()));
     }
 
 }

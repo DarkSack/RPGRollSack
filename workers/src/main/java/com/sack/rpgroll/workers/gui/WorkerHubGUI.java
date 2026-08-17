@@ -37,7 +37,7 @@ public class WorkerHubGUI extends InventoryGUI {
     public WorkerHubGUI(Player player, ProfessionManager professionManager, SkillManager skillManager,
             ScheduleManager scheduleManager, WorkerEventManager eventManager, WorkerManager workerManager,
             ChatPromptManager chatPromptManager) {
-        super(player, Component.text("Worker Studio", NamedTextColor.GOLD), SIZE);
+        super(player, Component.text(chatPromptManager.lang().raw("gui.hub.title"), NamedTextColor.GOLD), SIZE);
         this.professionManager = professionManager;
         this.skillManager = skillManager;
         this.scheduleManager = scheduleManager;
@@ -55,23 +55,27 @@ public class WorkerHubGUI extends InventoryGUI {
             setItem(slot, ItemBuilder.createFiller());
         }
 
-        setItem(PROFESSIONS_SLOT, button(Material.VILLAGER_SPAWN_EGG, "Profesiones", professionManager.count()));
-        setItem(SKILLS_SLOT, button(Material.BOOK, "Habilidades", skillManager.count()));
-        setItem(SCHEDULES_SLOT, button(Material.CLOCK, "Horarios", scheduleManager.count()));
-        setItem(EVENTS_SLOT, button(Material.PAPER, "Eventos", eventManager.count()));
+        setItem(PROFESSIONS_SLOT, button(Material.VILLAGER_SPAWN_EGG,
+                chatPromptManager.lang().raw("gui.hub.professions"), professionManager.count()));
+        setItem(SKILLS_SLOT, button(Material.BOOK, chatPromptManager.lang().raw("gui.hub.skills"), skillManager.count()));
+        setItem(SCHEDULES_SLOT, button(Material.CLOCK, chatPromptManager.lang().raw("gui.hub.schedules"),
+                scheduleManager.count()));
+        setItem(EVENTS_SLOT, button(Material.PAPER, chatPromptManager.lang().raw("gui.hub.events"), eventManager.count()));
 
         setItem(WORKERS_SLOT, new ItemBuilder(Material.CHEST)
-                .setName(Component.text("Explorador de Workers (" + workerManager.getAll().size() + ")",
+                .setName(Component.text(
+                        chatPromptManager.lang().raw("gui.hub.worker_browser", "count", workerManager.getAll().size()),
                         NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para administrar", NamedTextColor.GRAY)).build());
+                .setLore(Component.text(chatPromptManager.lang().raw("gui.common.click_to_manage"), NamedTextColor.GRAY))
+                .build());
 
-        setItem(CLOSE_SLOT, ItemBuilder.createCancelButton("Cerrar"));
+        setItem(CLOSE_SLOT, ItemBuilder.createCancelButton(chatPromptManager.lang().raw("gui.common.close")));
     }
 
     private org.bukkit.inventory.ItemStack button(Material material, String label, int count) {
         return new ItemBuilder(material)
                 .setName(Component.text(label + " (" + count + ")", NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para administrar", NamedTextColor.GRAY))
+                .setLore(Component.text(chatPromptManager.lang().raw("gui.common.click_to_manage"), NamedTextColor.GRAY))
                 .build();
     }
 

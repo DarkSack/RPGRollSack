@@ -1,5 +1,6 @@
 package com.sack.rpgroll.magic.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.magic.core.CatalystManager;
@@ -37,7 +38,7 @@ public class MagicBrowserGUI extends InventoryGUI {
     public MagicBrowserGUI(Player player, SchoolManager schoolManager, SpellManager spellManager,
             GrimoireManager grimoireManager, RuneManager runeManager, CatalystManager catalystManager,
             ChatPromptManager chatPromptManager) {
-        super(player, Component.text("Magic Studio", NamedTextColor.GOLD), SIZE);
+        super(player, chatPromptManager.lang().component("gui.magic_studio.title"), SIZE);
         this.schoolManager = schoolManager;
         this.spellManager = spellManager;
         this.grimoireManager = grimoireManager;
@@ -55,32 +56,34 @@ public class MagicBrowserGUI extends InventoryGUI {
             setItem(slot, ItemBuilder.createFiller());
         }
 
+        LangManager lang = chatPromptManager.lang();
+
         setItem(SCHOOLS_SLOT, new ItemBuilder(Material.ENCHANTED_BOOK)
-                .setName(Component.text("Escuelas", NamedTextColor.AQUA))
-                .setLore(Component.text(schoolManager.count() + " definida(s)", NamedTextColor.GRAY))
+                .setName(lang.component("gui.magic_studio.schools"))
+                .setLore(lang.component("gui.magic_studio.schools_lore", "count", schoolManager.count()))
                 .build());
 
         setItem(SPELLS_SLOT, new ItemBuilder(Material.BLAZE_POWDER)
-                .setName(Component.text("Hechizos", NamedTextColor.LIGHT_PURPLE))
-                .setLore(Component.text(spellManager.count() + " definido(s)", NamedTextColor.GRAY))
+                .setName(lang.component("gui.magic_studio.spells"))
+                .setLore(lang.component("gui.magic_studio.spells_lore", "count", spellManager.count()))
                 .build());
 
         setItem(GRIMOIRES_SLOT, new ItemBuilder(Material.WRITTEN_BOOK)
-                .setName(Component.text("Grimorios", NamedTextColor.YELLOW))
-                .setLore(Component.text(grimoireManager.count() + " definido(s)", NamedTextColor.GRAY))
+                .setName(lang.component("gui.magic_studio.grimoires"))
+                .setLore(lang.component("gui.magic_studio.grimoires_lore", "count", grimoireManager.count()))
                 .build());
 
         setItem(RUNES_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Runas", NamedTextColor.GREEN))
-                .setLore(Component.text(runeManager.count() + " definida(s)", NamedTextColor.GRAY))
+                .setName(lang.component("gui.magic_studio.runes"))
+                .setLore(lang.component("gui.magic_studio.runes_lore", "count", runeManager.count()))
                 .build());
 
         setItem(CATALYSTS_SLOT, new ItemBuilder(Material.BLAZE_ROD)
-                .setName(Component.text("Catalizadores", NamedTextColor.GOLD))
-                .setLore(Component.text(catalystManager.count() + " definido(s)", NamedTextColor.GRAY))
+                .setName(lang.component("gui.magic_studio.catalysts"))
+                .setLore(lang.component("gui.magic_studio.catalysts_lore", "count", catalystManager.count()))
                 .build());
 
-        setItem(CLOSE_SLOT, ItemBuilder.createCancelButton("Cerrar"));
+        setItem(CLOSE_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.close")));
     }
 
     @Override

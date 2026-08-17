@@ -1,5 +1,6 @@
 package com.sack.rpgroll.dungeons.command;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.dungeons.core.DungeonBounds;
 import com.sack.rpgroll.dungeons.core.DungeonCheckpointPolicy;
 import com.sack.rpgroll.dungeons.core.DungeonDefinition;
@@ -54,6 +55,7 @@ public class DungeonAdminCommand implements CommandExecutor, TabCompleter {
     private final StructureLibrary structureLibrary;
     private final StructurePasteEngine structurePasteEngine;
     private final StructureImportService structureImportService;
+    private final LangManager lang;
 
     public DungeonAdminCommand(DungeonManager dungeonManager, DungeonEngine engine,
             ChatPromptManager chatPromptManager, Plugin plugin, StructureLibrary structureLibrary,
@@ -65,13 +67,14 @@ public class DungeonAdminCommand implements CommandExecutor, TabCompleter {
         this.structureLibrary = structureLibrary;
         this.structurePasteEngine = structurePasteEngine;
         this.structureImportService = structureImportService;
+        this.lang = chatPromptManager.lang();
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
         if (!sender.hasPermission(PERMISSION)) {
-            sender.sendMessage(Component.text("No tenés permiso para usar este comando.", NamedTextColor.RED));
+            lang.send(sender, "command.dungeonadmin.no_permission");
             return true;
         }
 
@@ -94,22 +97,20 @@ public class DungeonAdminCommand implements CommandExecutor, TabCompleter {
     }
 
     private void sendUsage(CommandSender sender) {
-        sender.sendMessage(Component.text(
-                "Uso: /dungeonadmin <create|reload|forcestop|browser|editor|structure> [args]",
-                NamedTextColor.YELLOW));
+        lang.send(sender, "command.dungeonadmin.usage");
     }
 
     private void handleCreate(CommandSender sender, String[] args) {
 
         if (args.length < 2) {
-            sender.sendMessage(Component.text("Uso: /dungeonadmin create <id>", NamedTextColor.YELLOW));
+            lang.send(sender, "command.dungeonadmin.create.usage");
             return;
         }
 
         String id = args[1].toLowerCase(Locale.ROOT);
 
         if (dungeonManager.exists(id)) {
-            sender.sendMessage(Component.text("Ya existe una mazmorra con ese id.", NamedTextColor.RED));
+            lang.send(sender, "command.dungeonadmin.create.id_taken");
             return;
         }
 
@@ -119,8 +120,7 @@ public class DungeonAdminCommand implements CommandExecutor, TabCompleter {
                 DungeonReviveConfig.none(), List.of(), java.util.Map.of());
 
         dungeonManager.register(definition);
-        sender.sendMessage(Component.text("✔ Mazmorra '" + id + "' creada — abrila con /dungeonadmin editor " + id
-                + " (o /dungeonadmin browser) para configurarla.", NamedTextColor.GREEN));
+        lang.send(sender, "command.dungeonadmin.create.ok", "id", id);
 
         if (sender instanceof Player player) {
             new DungeonEditorHubGUI(player,
@@ -131,37 +131,38 @@ public class DungeonAdminCommand implements CommandExecutor, TabCompleter {
     private void handleReload(CommandSender sender) {
         dungeonManager.reload();
         structureLibrary.reload();
-        sender.sendMessage(Component.text("✔ Recargado: " + dungeonManager.count() + " mazmorra(s), "
-                + structureLibrary.count() + " estructura(s).", NamedTextColor.GREEN));
+        lang.reload(plugin.getConfig().getString("language", "es"));
+        lang.send(sender, "command.dungeonadmin.reload.ok", "dungeons", dungeonManager.count(),
+                "structures", structureLibrary.count());
     }
 
     private void handleForceStop(CommandSender sender, String[] args) {
 
         if (args.length < 2) {
-            sender.sendMessage(Component.text("Uso: /dungeonadmin forcestop <id>", NamedTextColor.YELLOW));
+            lang.send(sender, "command.dungeonadmin.forcestop.usage");
             return;
         }
 
         DungeonDefinition definition = dungeonManager.get(args[1]).orElse(null);
         if (definition == null) {
-            sender.sendMessage(Component.text("No existe la mazmorra '" + args[1] + "'.", NamedTextColor.RED));
+            lang.send(sender, "command.dungeonadmin.not_found", "id", args[1]);
             return;
         }
 
         var sessionOpt = engine.getSession(definition.id());
         if (sessionOpt.isEmpty()) {
-            sender.sendMessage(Component.text("Esa mazmorra no tiene ninguna corrida activa.", NamedTextColor.RED));
+            lang.send(sender, "command.dungeonadmin.forcestop.no_run");
             return;
         }
 
         engine.abandon(sessionOpt.get(), definition);
-        sender.sendMessage(Component.text("✔ Corrida detenida.", NamedTextColor.GREEN));
+        lang.send(sender, "command.dungeonadmin.forcestop.ok");
     }
 
     private void handleBrowser(CommandSender sender) {
 
         if (!(sender instanceof Player player)) {
-            sender.sendMessage(Component.text("Solo un jugador puede abrir el navegador.", NamedTextColor.RED));
+            lang.send(sender, "command.dungeonadmin.players_only");
             return;
         }
 
@@ -171,18 +172,18 @@ public class DungeonAdminCommand implements CommandExecutor, TabCompleter {
     private void handleEditor(CommandSender sender, String[] args) {
 
         if (!(sender instanceof Player player)) {
-            sender.sendMessage(Component.text("Solo un jugador puede abrir el editor.", NamedTextColor.RED));
+            lang.send(sender, "command.dungeonadmin.players_only");
             return;
         }
 
         if (args.length < 2) {
-            sender.sendMessage(Component.text("Uso: /dungeonadmin editor <id>", NamedTextColor.YELLOW));
+            lang.send(sender, "command.dungeonadmin.editor.usage");
             return;
         }
 
         DungeonDefinition definition = dungeonManager.get(args[1]).orElse(null);
         if (definition == null) {
-            sender.sendMessage(Component.text("No existe la mazmorra '" + args[1] + "'.", NamedTextColor.RED));
+            lang.send(sender, "command.dungeonadmin.not_found", "id", args[1]);
             return;
         }
 
@@ -210,32 +211,30 @@ public class DungeonAdminCommand implements CommandExecutor, TabCompleter {
     }
 
     private void sendStructureUsage(CommandSender sender) {
-        sender.sendMessage(Component.text(
-                "Uso: /dungeonadmin structure <list|info|paste|import|browser> [args]", NamedTextColor.YELLOW));
+        lang.send(sender, "command.dungeonadmin.structure.usage");
     }
 
     private void handleStructureList(CommandSender sender) {
 
-        sender.sendMessage(Component.text("Biblioteca de Estructuras (" + structureLibrary.count() + "):",
-                NamedTextColor.GOLD));
+        lang.send(sender, "command.dungeonadmin.structure.list.header", "count", structureLibrary.count());
 
         for (StructureDefinition def : structureLibrary.getAll()) {
             String source = def.sourceType() == StructureSourceType.NATIVE ? "NATIVE" : "CUSTOM";
-            sender.sendMessage(Component.text("• " + def.id() + " (" + source + ") — " + def.displayName(),
-                    NamedTextColor.WHITE));
+            lang.send(sender, "command.dungeonadmin.structure.list.entry", "id", def.id(), "source", source,
+                    "name", def.displayName());
         }
     }
 
     private void handleStructureInfo(CommandSender sender, String[] args) {
 
         if (args.length < 3) {
-            sender.sendMessage(Component.text("Uso: /dungeonadmin structure info <id>", NamedTextColor.YELLOW));
+            lang.send(sender, "command.dungeonadmin.structure.info.usage");
             return;
         }
 
         StructureDefinition def = structureLibrary.get(args[2]).orElse(null);
         if (def == null) {
-            sender.sendMessage(Component.text("No existe una estructura con id: " + args[2], NamedTextColor.RED));
+            lang.send(sender, "command.dungeonadmin.structure.not_found", "id", args[2]);
             return;
         }
 
@@ -246,28 +245,27 @@ public class DungeonAdminCommand implements CommandExecutor, TabCompleter {
             var vector = structurePasteEngine.nativeSize(def.id());
             size = vector != null
                     ? vector.getBlockX() + "x" + vector.getBlockY() + "x" + vector.getBlockZ()
-                    : "(no se pudo leer el .nbt)";
+                    : lang.raw("command.dungeonadmin.structure.info.unreadable_nbt");
         } else {
             size = def.width() + "x" + def.height() + "x" + def.depth();
         }
 
         sender.sendMessage(Component.text(def.displayName() + " (" + def.id() + ")", NamedTextColor.GOLD));
-        sender.sendMessage(Component.text("Fuente: " + def.sourceType(), NamedTextColor.WHITE));
-        sender.sendMessage(Component.text("Tamaño (X·Y·Z): " + size, NamedTextColor.WHITE));
+        lang.send(sender, "command.dungeonadmin.structure.info.source", "source", def.sourceType());
+        lang.send(sender, "command.dungeonadmin.structure.info.size", "size", size);
         sender.sendMessage(Component.text(def.description(), NamedTextColor.GRAY));
     }
 
     private void handleStructurePaste(CommandSender sender, String[] args) {
 
         if (args.length < 3) {
-            sender.sendMessage(Component.text(
-                    "Uso: /dungeonadmin structure paste <id> [mundo x y z] [rotacion]", NamedTextColor.YELLOW));
+            lang.send(sender, "command.dungeonadmin.structure.paste.usage");
             return;
         }
 
         StructureDefinition def = structureLibrary.get(args[2]).orElse(null);
         if (def == null) {
-            sender.sendMessage(Component.text("No existe una estructura con id: " + args[2], NamedTextColor.RED));
+            lang.send(sender, "command.dungeonadmin.structure.not_found", "id", args[2]);
             return;
         }
 
@@ -278,7 +276,7 @@ public class DungeonAdminCommand implements CommandExecutor, TabCompleter {
 
             World world = Bukkit.getWorld(args[3]);
             if (world == null) {
-                sender.sendMessage(Component.text("No existe el mundo: " + args[3], NamedTextColor.RED));
+                lang.send(sender, "command.dungeonadmin.structure.paste.world_not_found", "world", args[3]);
                 return;
             }
 
@@ -289,16 +287,14 @@ public class DungeonAdminCommand implements CommandExecutor, TabCompleter {
                 origin = new Location(world, x, y, z);
                 nextArg = 7;
             } catch (NumberFormatException e) {
-                sender.sendMessage(Component.text("Coordenadas inválidas.", NamedTextColor.RED));
+                lang.send(sender, "command.dungeonadmin.structure.paste.invalid_coords");
                 return;
             }
 
         } else if (sender instanceof Player player) {
             origin = player.getLocation();
         } else {
-            sender.sendMessage(Component.text(
-                    "Desde consola hace falta pasar mundo y coordenadas: structure paste <id> <mundo> <x> <y> <z>",
-                    NamedTextColor.RED));
+            lang.send(sender, "command.dungeonadmin.structure.paste.console_needs_coords");
             return;
         }
 
@@ -308,28 +304,21 @@ public class DungeonAdminCommand implements CommandExecutor, TabCompleter {
             try {
                 rotation = StructureRotation.valueOf(args[nextArg].toUpperCase(Locale.ROOT));
             } catch (IllegalArgumentException e) {
-                sender.sendMessage(Component.text(
-                        "Rotación inválida — usá NONE, CLOCKWISE_90, CLOCKWISE_180 o COUNTERCLOCKWISE_90.",
-                        NamedTextColor.RED));
+                lang.send(sender, "command.dungeonadmin.structure.paste.invalid_rotation");
                 return;
             }
         }
 
         boolean placed = structurePasteEngine.place(def, origin, rotation, Mirror.NONE);
-        sender.sendMessage(placed
-                ? Component.text("✔ Estructura '" + def.id() + "' pegada.", NamedTextColor.GREEN)
-                : Component.text("✘ No se pudo pegar la estructura — revisá la consola.", NamedTextColor.RED));
+        lang.send(sender, placed ? "command.dungeonadmin.structure.paste.ok"
+                : "command.dungeonadmin.structure.paste.failed", "id", def.id());
     }
 
     private void handleStructureImport(CommandSender sender, String[] args) {
 
         if (args.length < 4) {
-            sender.sendMessage(Component.text(
-                    "Uso: /dungeonadmin structure import <nombreVanilla> <nuevoId> [nombre visible...]",
-                    NamedTextColor.YELLOW));
-            sender.sendMessage(Component.text(
-                    "nombreVanilla es el nombre que le pusiste al Structure Block al guardar (ej. rpgroll:sala1).",
-                    NamedTextColor.GRAY));
+            lang.send(sender, "command.dungeonadmin.structure.import.usage");
+            lang.send(sender, "command.dungeonadmin.structure.import.usage_hint");
             return;
         }
 
@@ -342,27 +331,22 @@ public class DungeonAdminCommand implements CommandExecutor, TabCompleter {
                 structureImportService.importFromVanilla(vanillaName, newId, displayName, requestedBy);
 
         switch (result) {
-            case OK -> sender.sendMessage(Component.text(
-                    "✔ Estructura '" + newId + "' importada a la Biblioteca.", NamedTextColor.GREEN));
-            case ID_TAKEN -> sender.sendMessage(Component.text(
-                    "Ya existe una estructura con ese id.", NamedTextColor.RED));
-            case VANILLA_NOT_FOUND -> sender.sendMessage(Component.text(
-                    "No se encontró ninguna estructura vanilla guardada como '" + vanillaName + "'.",
-                    NamedTextColor.RED));
-            case IO_ERROR -> sender.sendMessage(Component.text(
-                    "Error de I/O al importar — revisá la consola.", NamedTextColor.RED));
+            case OK -> lang.send(sender, "command.dungeonadmin.structure.import.ok", "id", newId);
+            case ID_TAKEN -> lang.send(sender, "command.dungeonadmin.structure.import.id_taken");
+            case VANILLA_NOT_FOUND -> lang.send(sender, "command.dungeonadmin.structure.import.vanilla_not_found",
+                    "name", vanillaName);
+            case IO_ERROR -> lang.send(sender, "command.dungeonadmin.structure.import.io_error");
         }
     }
 
     private void handleStructureBrowser(CommandSender sender) {
 
         if (!(sender instanceof Player player)) {
-            sender.sendMessage(Component.text(
-                    "Solo un jugador puede abrir la Biblioteca de Estructuras.", NamedTextColor.RED));
+            lang.send(sender, "command.dungeonadmin.structure.browser.players_only");
             return;
         }
 
-        new StructureLibraryGUI(player, structureLibrary, structurePasteEngine).open();
+        new StructureLibraryGUI(player, structureLibrary, structurePasteEngine, lang).open();
     }
 
     @Override

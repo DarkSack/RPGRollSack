@@ -1,5 +1,6 @@
 package com.sack.rpgroll.dungeons.command;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.dungeons.core.DungeonDefinition;
 import com.sack.rpgroll.dungeons.core.DungeonManager;
 import com.sack.rpgroll.dungeons.engine.DungeonEngine;
@@ -34,11 +35,14 @@ public class DungeonCommand implements CommandExecutor, TabCompleter {
     private final DungeonManager dungeonManager;
     private final TeamManager teamManager;
     private final DungeonEngine engine;
+    private final LangManager lang;
 
-    public DungeonCommand(DungeonManager dungeonManager, TeamManager teamManager, DungeonEngine engine) {
+    public DungeonCommand(DungeonManager dungeonManager, TeamManager teamManager, DungeonEngine engine,
+            LangManager lang) {
         this.dungeonManager = dungeonManager;
         this.teamManager = teamManager;
         this.engine = engine;
+        this.lang = lang;
     }
 
     @Override
@@ -67,9 +71,7 @@ public class DungeonCommand implements CommandExecutor, TabCompleter {
     }
 
     private void sendUsage(CommandSender sender) {
-        sender.sendMessage(Component.text(
-                "Uso: /dungeon <list|info|invite|accept|decline|leaveparty|enter|leave|revive|ranking> [args]",
-                NamedTextColor.YELLOW));
+        lang.send(sender, "command.dungeon.usage");
     }
 
     private void handleList(CommandSender sender) {
@@ -78,7 +80,7 @@ public class DungeonCommand implements CommandExecutor, TabCompleter {
                 .sorted((a, b) -> a.id().compareToIgnoreCase(b.id()))
                 .toList();
 
-        sender.sendMessage(Component.text("=== Mazmorras (" + dungeons.size() + ") ===", NamedTextColor.GOLD));
+        lang.send(sender, "command.dungeon.list.header", "count", dungeons.size());
 
         for (DungeonDefinition definition : dungeons) {
             boolean occupied = engine.getSession(definition.id()).isPresent();
@@ -86,21 +88,21 @@ public class DungeonCommand implements CommandExecutor, TabCompleter {
                     .append(ComponentUtils.parse(definition.displayName()))
                     .append(Component.text(") "))
                     .append(occupied
-                            ? Component.text("[ocupada]", NamedTextColor.RED)
-                            : Component.text("[libre]", NamedTextColor.GREEN)));
+                            ? ComponentUtils.parse(lang.raw("command.dungeon.list.occupied"))
+                            : ComponentUtils.parse(lang.raw("command.dungeon.list.free"))));
         }
     }
 
     private void handleInfo(CommandSender sender, String[] args) {
 
         if (args.length < 2) {
-            sender.sendMessage(Component.text("Uso: /dungeon info <id>", NamedTextColor.YELLOW));
+            lang.send(sender, "command.dungeon.info.usage");
             return;
         }
 
         DungeonDefinition definition = dungeonManager.get(args[1]).orElse(null);
         if (definition == null) {
-            sender.sendMessage(Component.text("No existe la mazmorra '" + args[1] + "'.", NamedTextColor.RED));
+            lang.send(sender, "command.dungeon.not_found", "id", args[1]);
             return;
         }
 
@@ -108,43 +110,40 @@ public class DungeonCommand implements CommandExecutor, TabCompleter {
                 .append(ComponentUtils.parse(definition.displayName()))
                 .append(Component.text(" (" + definition.id() + ") ===", NamedTextColor.GOLD)));
         sender.sendMessage(Component.text(definition.description(), NamedTextColor.GRAY));
-        sender.sendMessage(Component.text("Nivel recomendado: " + definition.recommendedLevel()
-                + " | Jugadores: " + definition.minPlayers() + "-" + definition.maxPlayers()
-                + " | Duración estimada: " + definition.estimatedMinutes() + " min", NamedTextColor.GRAY));
-        sender.sendMessage(Component.text("Salas: " + definition.rooms().size() + " | Repetible: "
-                + (definition.repeatable() ? "sí" : "no"), NamedTextColor.GRAY));
-        sender.sendMessage(Component.text("Dificultades: "
-                + String.join(", ", definition.difficulties().stream().map(d -> d.displayName()).toList()),
-                NamedTextColor.GRAY));
+        lang.send(sender, "command.dungeon.info.stats", "level", definition.recommendedLevel(),
+                "min", definition.minPlayers(), "max", definition.maxPlayers(),
+                "minutes", definition.estimatedMinutes());
+        lang.send(sender, "command.dungeon.info.rooms", "rooms", definition.rooms().size(),
+                "repeatable", lang.raw(definition.repeatable() ? "common.yes" : "common.no"));
+        lang.send(sender, "command.dungeon.info.difficulties", "difficulties",
+                String.join(", ", definition.difficulties().stream().map(d -> d.displayName()).toList()));
     }
 
     private void handleInvite(CommandSender sender, String[] args) {
 
         if (!(sender instanceof Player player)) {
-            sender.sendMessage(Component.text("Solo un jugador puede invitar.", NamedTextColor.RED));
+            lang.send(sender, "command.dungeon.invite.players_only");
             return;
         }
 
         if (args.length < 2) {
-            sender.sendMessage(Component.text("Uso: /dungeon invite <jugador>", NamedTextColor.YELLOW));
+            lang.send(sender, "command.dungeon.invite.usage");
             return;
         }
 
         Player target = Bukkit.getPlayerExact(args[1]);
         if (target == null) {
-            sender.sendMessage(Component.text("Jugador no encontrado.", NamedTextColor.RED));
+            lang.send(sender, "command.dungeon.player_not_found");
             return;
         }
 
         var result = teamManager.invite(player, target);
 
         if (result == TeamManager.InviteResult.OK) {
-            player.sendMessage(Component.text("✔ Invitación enviada a " + target.getName() + ".",
-                    NamedTextColor.GREEN));
-            target.sendMessage(Component.text(player.getName()
-                    + " te invitó a su grupo de mazmorra — /dungeon accept (60s)", NamedTextColor.YELLOW));
+            lang.send(player, "command.dungeon.invite.sent", "target", target.getName());
+            lang.send(target, "command.dungeon.invite.received", "inviter", player.getName());
         } else {
-            player.sendMessage(Component.text("No se pudo invitar: " + result, NamedTextColor.RED));
+            lang.send(player, "command.dungeon.invite.failed", "result", result);
         }
     }
 
@@ -157,12 +156,11 @@ public class DungeonCommand implements CommandExecutor, TabCompleter {
         var result = teamManager.accept(player);
 
         switch (result) {
-            case OK -> player.sendMessage(Component.text("✔ Te uniste al grupo.", NamedTextColor.GREEN));
-            case NO_INVITE -> player.sendMessage(Component.text("No tenés ninguna invitación pendiente.",
-                    NamedTextColor.RED));
-            case EXPIRED -> player.sendMessage(Component.text("Esa invitación ya expiró.", NamedTextColor.RED));
-            case TEAM_GONE -> player.sendMessage(Component.text("Ese grupo ya no existe.", NamedTextColor.RED));
-            case TEAM_FULL -> player.sendMessage(Component.text("Ese grupo ya está lleno.", NamedTextColor.RED));
+            case OK -> lang.send(player, "command.dungeon.accept.ok");
+            case NO_INVITE -> lang.send(player, "command.dungeon.accept.no_invite");
+            case EXPIRED -> lang.send(player, "command.dungeon.accept.expired");
+            case TEAM_GONE -> lang.send(player, "command.dungeon.accept.team_gone");
+            case TEAM_FULL -> lang.send(player, "command.dungeon.accept.team_full");
         }
     }
 
@@ -170,7 +168,7 @@ public class DungeonCommand implements CommandExecutor, TabCompleter {
 
         if (sender instanceof Player player) {
             teamManager.decline(player.getUniqueId());
-            player.sendMessage(Component.text("Invitación rechazada.", NamedTextColor.GRAY));
+            lang.send(player, "command.dungeon.decline.ok");
         }
     }
 
@@ -181,25 +179,24 @@ public class DungeonCommand implements CommandExecutor, TabCompleter {
         }
 
         boolean disbanded = teamManager.leave(player.getUniqueId());
-        player.sendMessage(Component.text(disbanded ? "Grupo disuelto." : "Saliste del grupo.",
-                NamedTextColor.GRAY));
+        lang.send(player, disbanded ? "command.dungeon.leaveparty.disbanded" : "command.dungeon.leaveparty.left");
     }
 
     private void handleEnter(CommandSender sender, String[] args) {
 
         if (!(sender instanceof Player player)) {
-            sender.sendMessage(Component.text("Solo un jugador puede entrar a una mazmorra.", NamedTextColor.RED));
+            lang.send(sender, "command.dungeon.enter.players_only");
             return;
         }
 
         if (args.length < 2) {
-            sender.sendMessage(Component.text("Uso: /dungeon enter <id> [dificultad]", NamedTextColor.YELLOW));
+            lang.send(sender, "command.dungeon.enter.usage");
             return;
         }
 
         DungeonDefinition definition = dungeonManager.get(args[1]).orElse(null);
         if (definition == null) {
-            player.sendMessage(Component.text("No existe la mazmorra '" + args[1] + "'.", NamedTextColor.RED));
+            lang.send(player, "command.dungeon.not_found", "id", args[1]);
             return;
         }
 
@@ -209,8 +206,7 @@ public class DungeonCommand implements CommandExecutor, TabCompleter {
                 .orElseGet(() -> soloTeam(player));
 
         if (!team.isLeader(player.getUniqueId())) {
-            player.sendMessage(Component.text("Solo el líder del grupo puede iniciar la mazmorra.",
-                    NamedTextColor.RED));
+            lang.send(player, "command.dungeon.enter.not_leader");
             return;
         }
 
@@ -222,20 +218,17 @@ public class DungeonCommand implements CommandExecutor, TabCompleter {
             case OK_QUEUED -> team.members().forEach(memberId -> {
                 Player member = Bukkit.getPlayer(memberId);
                 if (member != null) {
-                    member.sendMessage(Component.text("La mazmorra está ocupada — tu grupo quedó en cola.",
-                            NamedTextColor.YELLOW));
+                    lang.send(member, "command.dungeon.enter.queued");
                 }
             });
-            case ALREADY_RUNNING -> player.sendMessage(Component.text("Tu grupo ya está en una corrida.",
-                    NamedTextColor.RED));
-            case PARTY_TOO_SMALL -> player.sendMessage(Component.text(
-                    "Se necesitan al menos " + definition.minPlayers() + " jugador(es).", NamedTextColor.RED));
-            case PARTY_TOO_LARGE -> player.sendMessage(Component.text(
-                    "El grupo excede el máximo de " + definition.maxPlayers() + " jugador(es).", NamedTextColor.RED));
-            case ON_COOLDOWN -> player.sendMessage(Component.text(
-                    "Alguien del grupo todavía está en cooldown para esta mazmorra.", NamedTextColor.RED));
-            case DIFFICULTY_NOT_FOUND -> player.sendMessage(Component.text(
-                    "No existe la dificultad '" + difficultyId + "'.", NamedTextColor.RED));
+            case ALREADY_RUNNING -> lang.send(player, "command.dungeon.enter.already_running");
+            case PARTY_TOO_SMALL -> lang.send(player, "command.dungeon.enter.party_too_small",
+                    "min", definition.minPlayers());
+            case PARTY_TOO_LARGE -> lang.send(player, "command.dungeon.enter.party_too_large",
+                    "max", definition.maxPlayers());
+            case ON_COOLDOWN -> lang.send(player, "command.dungeon.enter.on_cooldown");
+            case DIFFICULTY_NOT_FOUND -> lang.send(player, "command.dungeon.enter.difficulty_not_found",
+                    "difficulty", difficultyId);
         }
     }
 
@@ -252,7 +245,7 @@ public class DungeonCommand implements CommandExecutor, TabCompleter {
 
         var sessionOpt = engine.findSessionByPlayer(player.getUniqueId());
         if (sessionOpt.isEmpty()) {
-            player.sendMessage(Component.text("No estás en ninguna corrida.", NamedTextColor.RED));
+            lang.send(player, "command.dungeon.not_in_run");
             return;
         }
 
@@ -261,26 +254,26 @@ public class DungeonCommand implements CommandExecutor, TabCompleter {
 
         if (definition != null) {
             engine.abandon(session, definition);
-            player.sendMessage(Component.text("Abandonaste la mazmorra.", NamedTextColor.GRAY));
+            lang.send(player, "command.dungeon.leave.ok");
         }
     }
 
     private void handleRevive(CommandSender sender, String[] args) {
 
         if (!(sender instanceof Player player) || args.length < 2) {
-            sender.sendMessage(Component.text("Uso: /dungeon revive <jugador>", NamedTextColor.YELLOW));
+            lang.send(sender, "command.dungeon.revive.usage");
             return;
         }
 
         var sessionOpt = engine.findSessionByPlayer(player.getUniqueId());
         if (sessionOpt.isEmpty()) {
-            player.sendMessage(Component.text("No estás en ninguna corrida.", NamedTextColor.RED));
+            lang.send(player, "command.dungeon.not_in_run");
             return;
         }
 
         Player target = Bukkit.getPlayerExact(args[1]);
         if (target == null) {
-            player.sendMessage(Component.text("Jugador no encontrado.", NamedTextColor.RED));
+            lang.send(player, "command.dungeon.player_not_found");
             return;
         }
 
@@ -292,21 +285,19 @@ public class DungeonCommand implements CommandExecutor, TabCompleter {
         }
 
         boolean revived = engine.revive(session, definition, target.getUniqueId());
-        player.sendMessage(Component.text(revived ? "✔ Revivido." : "Ese jugador no está muerto en esta corrida.",
-                revived ? NamedTextColor.GREEN : NamedTextColor.RED));
+        lang.send(player, revived ? "command.dungeon.revive.ok" : "command.dungeon.revive.not_dead");
     }
 
     private void handleRanking(CommandSender sender, String[] args) {
 
         if (args.length < 2) {
-            sender.sendMessage(Component.text("Uso: /dungeon ranking <id> [daily|weekly|monthly|global]",
-                    NamedTextColor.YELLOW));
+            lang.send(sender, "command.dungeon.ranking.usage");
             return;
         }
 
         DungeonDefinition definition = dungeonManager.get(args[1]).orElse(null);
         if (definition == null) {
-            sender.sendMessage(Component.text("No existe la mazmorra '" + args[1] + "'.", NamedTextColor.RED));
+            lang.send(sender, "command.dungeon.not_found", "id", args[1]);
             return;
         }
 
@@ -325,15 +316,15 @@ public class DungeonCommand implements CommandExecutor, TabCompleter {
                 .append(Component.text(" (" + period + ") ===", NamedTextColor.GOLD)));
 
         if (top.isEmpty()) {
-            sender.sendMessage(Component.text("Todavía no hay corridas registradas.", NamedTextColor.GRAY));
+            lang.send(sender, "command.dungeon.ranking.empty");
             return;
         }
 
         for (int i = 0; i < top.size(); i++) {
             DungeonRunResult run = top.get(i);
-            sender.sendMessage(Component.text((i + 1) + ". " + String.join(", ", run.playerNames())
-                    + " — " + (run.durationMillis() / 1000) + "s, " + run.deaths() + " muerte(s)",
-                    NamedTextColor.GRAY));
+            lang.send(sender, "command.dungeon.ranking.entry", "position", (i + 1),
+                    "players", String.join(", ", run.playerNames()),
+                    "seconds", (run.durationMillis() / 1000), "deaths", run.deaths());
         }
     }
 

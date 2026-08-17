@@ -1,5 +1,6 @@
 package com.sack.rpgroll.fishing.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.fishing.core.FishingRod;
 import com.sack.rpgroll.fishing.core.FishingRodManager;
 import com.sack.rpgroll.gui.InventoryGUI;
@@ -24,12 +25,14 @@ public class RodBrowserGUI extends InventoryGUI {
 
     private final FishingRodManager rodManager;
     private final ChatPromptManager chatPromptManager;
+    private final LangManager lang;
     private List<FishingRod> rods;
 
     public RodBrowserGUI(Player player, FishingRodManager rodManager, ChatPromptManager chatPromptManager) {
-        super(player, Component.text("Cañas de Pescar", NamedTextColor.GOLD), SIZE);
+        super(player, chatPromptManager.lang().component("gui.rod.browser_title"), SIZE);
         this.rodManager = rodManager;
         this.chatPromptManager = chatPromptManager;
+        this.lang = chatPromptManager.lang();
         this.rods = List.copyOf(rodManager.getAll());
     }
 
@@ -48,16 +51,16 @@ public class RodBrowserGUI extends InventoryGUI {
 
             setItem(i, new ItemBuilder(SpeciesBrowserGUI.parseMaterial(rod.material()))
                     .setName(Component.text(rod.displayName(), NamedTextColor.YELLOW))
-                    .setLore(Component.text("id: " + rod.id(), NamedTextColor.GRAY),
-                            Component.text("Click para editar", NamedTextColor.YELLOW))
+                    .setLore(lang.component("gui.common.id_label", "id", rod.id()),
+                            lang.component("gui.common.click_to_edit"))
                     .build());
         }
 
         setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Crear caña nueva", NamedTextColor.GREEN))
+                .setName(lang.component("gui.rod.new_button"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back")));
     }
 
     @Override
@@ -82,12 +85,12 @@ public class RodBrowserGUI extends InventoryGUI {
     }
 
     private void promptNew() {
-        chatPromptManager.prompt(player, "Escribí el id de la nueva caña:", value -> {
+        chatPromptManager.prompt(player, lang.raw("gui.rod.prompt_new_id"), value -> {
 
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 
             if (rodManager.exists(id)) {
-                player.sendMessage(Component.text("Ya existe una caña con ese id.", NamedTextColor.RED));
+                lang.send(player, "gui.rod.already_exists");
                 reopen();
                 return;
             }

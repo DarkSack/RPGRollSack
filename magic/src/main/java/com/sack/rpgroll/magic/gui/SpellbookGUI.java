@@ -1,5 +1,6 @@
 package com.sack.rpgroll.magic.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.magic.core.RuneManager;
@@ -38,7 +39,7 @@ public class SpellbookGUI extends InventoryGUI {
 
     public SpellbookGUI(Player player, SpellbookManager spellbookManager, SpellManager spellManager,
             RuneManager runeManager, ChatPromptManager chatPromptManager) {
-        super(player, Component.text("Tu Grimorio", NamedTextColor.GOLD), SIZE);
+        super(player, chatPromptManager.lang().component("gui.spellbook.title"), SIZE);
         this.spellbookManager = spellbookManager;
         this.spellManager = spellManager;
         this.runeManager = runeManager;
@@ -68,6 +69,7 @@ public class SpellbookGUI extends InventoryGUI {
         }
 
         PlayerSpellbook spellbook = spellbookManager.getOrLoad(player);
+        LangManager lang = chatPromptManager.lang();
         long now = System.currentTimeMillis();
 
         for (int i = 0; i < learnedSpells.size() && i < SPELLS_MAX; i++) {
@@ -76,23 +78,23 @@ public class SpellbookGUI extends InventoryGUI {
             boolean selected = spell.id().equals(spellbook.selectedSpellId());
 
             List<Component> lore = new ArrayList<>();
-            lore.add(Component.text("Escuela: " + spell.schoolId(), NamedTextColor.GRAY));
-            lore.add(Component.text("Trigger: " + spell.trigger(), NamedTextColor.GRAY));
+            lore.add(lang.component("gui.spellbook.school_label", "schoolId", spell.schoolId()));
+            lore.add(lang.component("gui.spellbook.trigger_label", "trigger", spell.trigger()));
 
             if (spellbook.isOnCooldown(spell.id(), now)) {
                 double secondsLeft = spellbook.remainingCooldownMillis(spell.id(), now) / 1000.0;
-                lore.add(Component.text(String.format(java.util.Locale.ROOT, "En cooldown: %.1fs", secondsLeft),
-                        NamedTextColor.RED));
+                lore.add(lang.component("gui.spellbook.on_cooldown_label", "seconds",
+                        String.format(java.util.Locale.ROOT, "%.1f", secondsLeft)));
             } else {
-                lore.add(Component.text("Listo para lanzar", NamedTextColor.GREEN));
+                lore.add(lang.component("gui.spellbook.ready"));
             }
 
             List<String> runes = spellbook.runesFor(spell.id());
-            lore.add(Component.text("Runas: " + (runes.isEmpty() ? "(ninguna)" : String.join(", ", runes)),
-                    NamedTextColor.LIGHT_PURPLE));
+            lore.add(lang.component("gui.spellbook.runes_label", "value",
+                    runes.isEmpty() ? lang.raw("gui.common.none") : String.join(", ", runes)));
             lore.add(Component.empty());
-            lore.add(Component.text("Click para seleccionar", NamedTextColor.YELLOW));
-            lore.add(Component.text("Shift-click para socketear runas", NamedTextColor.YELLOW));
+            lore.add(lang.component("gui.spellbook.click_select"));
+            lore.add(lang.component("gui.spellbook.shift_click_sockets"));
 
             var builder = new ItemBuilder(SchoolBrowserGUI.parseMaterial(spell.icon()))
                     .setName(Component.text((selected ? "★ " : "") + spell.displayName(),
@@ -103,7 +105,7 @@ public class SpellbookGUI extends InventoryGUI {
             setItem(i, builder.build());
         }
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Cerrar"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.close")));
     }
 
     @Override
@@ -123,7 +125,7 @@ public class SpellbookGUI extends InventoryGUI {
             }
 
             spellbook.select(spell.id());
-            player.sendMessage(Component.text("✔ Seleccionaste '" + spell.displayName() + "'.", NamedTextColor.GREEN));
+            chatPromptManager.lang().send(player, "gui.spellbook.selected", "spell", spell.displayName());
             build();
             return;
         }

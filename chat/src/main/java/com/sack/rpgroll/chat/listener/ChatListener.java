@@ -1,12 +1,9 @@
 package com.sack.rpgroll.chat.listener;
 
 import com.sack.rpgroll.chat.pipeline.ChatMessagePipeline;
+import com.sack.rpgroll.common.lang.LangManager;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
-
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
@@ -14,15 +11,19 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
+
 /** Punto de entrada del chat vanilla — delega toda la lógica a {@link ChatMessagePipeline}. */
 public class ChatListener implements Listener {
 
     private final ChatMessagePipeline pipeline;
     private final Plugin plugin;
+    private final LangManager lang;
 
-    public ChatListener(ChatMessagePipeline pipeline, Plugin plugin) {
+    public ChatListener(ChatMessagePipeline pipeline, Plugin plugin, LangManager lang) {
         this.pipeline = pipeline;
         this.plugin = plugin;
+        this.lang = lang;
     }
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
@@ -40,22 +41,14 @@ public class ChatListener implements Listener {
             switch (result) {
                 case OK -> {
                 }
-                case NO_ACTIVE_CHANNEL -> player.sendMessage(Component.text(
-                        "No tenés un canal activo — usá /channel join <canal>.", NamedTextColor.RED));
-                case NO_PERMISSION -> player.sendMessage(Component.text(
-                        "No tenés permiso para hablar en este canal.", NamedTextColor.RED));
-                case ON_COOLDOWN -> player.sendMessage(Component.text(
-                        "Esperá un momento antes de volver a hablar en este canal.", NamedTextColor.RED));
-                case FLOOD -> player.sendMessage(Component.text(
-                        "Estás enviando mensajes demasiado rápido.", NamedTextColor.RED));
-                case REPETITION -> player.sendMessage(Component.text(
-                        "No repitas el mismo mensaje.", NamedTextColor.RED));
-                case BANNED_WORD -> player.sendMessage(Component.text(
-                        "Tu mensaje contiene una palabra prohibida.", NamedTextColor.RED));
-                case URL_BLOCKED -> player.sendMessage(Component.text(
-                        "No se permiten enlaces en este canal.", NamedTextColor.RED));
-                case EXCESSIVE_CAPS -> player.sendMessage(Component.text(
-                        "Bajá un poco las mayúsculas.", NamedTextColor.RED));
+                case NO_ACTIVE_CHANNEL -> lang.send(player, "channel.no_active");
+                case NO_PERMISSION -> lang.send(player, "channel.no_permission_speak");
+                case ON_COOLDOWN -> lang.send(player, "antispam.on_cooldown");
+                case FLOOD -> lang.send(player, "antispam.flood");
+                case REPETITION -> lang.send(player, "antispam.repetition");
+                case BANNED_WORD -> lang.send(player, "antispam.banned_word");
+                case URL_BLOCKED -> lang.send(player, "antispam.url_blocked");
+                case EXCESSIVE_CAPS -> lang.send(player, "antispam.excessive_caps");
             }
         });
     }

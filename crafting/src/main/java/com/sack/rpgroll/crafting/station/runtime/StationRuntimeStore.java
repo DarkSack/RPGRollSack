@@ -45,12 +45,18 @@ public class StationRuntimeStore {
         config.set("progress-ticks", runtime.progressTicks());
         config.set("fuel-ticks-remaining", runtime.fuelTicksRemaining());
         config.set("last-player-id", runtime.lastPlayerId() != null ? runtime.lastPlayerId().toString() : null);
+        config.set("tier", runtime.tier());
 
         ItemStack[] contents = runtime.inventory().getContents();
         for (int i = 0; i < contents.length; i++) {
             if (contents[i] != null) {
                 config.set("inventory." + i, contents[i]);
             }
+        }
+
+        List<ItemStack> consumed = runtime.consumedForCurrentRecipe();
+        for (int i = 0; i < consumed.size(); i++) {
+            config.set("consumed-for-current-recipe." + i, consumed.get(i));
         }
 
         try {
@@ -104,11 +110,24 @@ public class StationRuntimeStore {
 
             runtime.setLastPlayerId(config.getString("last-player-id") != null
                     ? UUID.fromString(config.getString("last-player-id")) : null);
+            runtime.setTier(config.getInt("tier", 1));
 
             String activeRecipeId = config.getString("active-recipe-id");
             if (activeRecipeId != null) {
                 runtime.startRecipe(activeRecipeId);
                 runtime.setProgressTicks(config.getInt("progress-ticks", 0));
+
+                List<ItemStack> consumed = new ArrayList<>();
+                var consumedSection = config.getConfigurationSection("consumed-for-current-recipe");
+                if (consumedSection != null) {
+                    for (String key : consumedSection.getKeys(false)) {
+                        ItemStack item = config.getItemStack("consumed-for-current-recipe." + key);
+                        if (item != null) {
+                            consumed.add(item);
+                        }
+                    }
+                }
+                runtime.setConsumedForCurrentRecipe(consumed);
             }
 
             runtime.addFuelTicks(config.getInt("fuel-ticks-remaining", 0));

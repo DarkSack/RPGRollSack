@@ -28,6 +28,8 @@ Cambios recientes aplicados en todo el ecosistema:
 - 📚 **Ejemplo de referencia "todos los campos" en cada addon** — cada uno de los addons con contenido YAML incluye un archivo `reference_full.yml` (o equivalente) que documenta absolutamente todas las opciones disponibles para su tipo de contenido principal, espejado en la web de documentación
 - 💰 **Nuevo addon: RPGRoll-Economy** — monedas múltiples, wallets, bancos y préstamos, mercado dinámico con oferta/demanda real, tiendas de jugador, subastas, empresas, impuestos y libro mayor de transacciones. También se registra como proveedor del servicio Economy de Vault, dejando funcional al resto del ecosistema (Jobs, Guilds, Items, Workers) sin tocar esos módulos
 - ⚒️ **Nuevo addon: RPGRoll-Crafting** — recetas personalizadas con ingredientes/condiciones ricas y sistema de calidad, estaciones de crafteo propias (multi-etapa, con combustible), puente con las estaciones vanilla que exponen una API de receta genérica (mesa de crafteo, familia de hornos, cortadora de piedra, mesa de herrería) y motores dedicados de yunque y fermentación
+- 🎭 **Reskin visual de mobs y animales** — RPGRoll-Mobs y RPGRoll-Ranching pueden ahora mostrar un modelo completamente custom (no solo el mob/animal vanilla) sin depender de ModelEngine/BetterModel: la entidad real queda invisible y se le monta una entidad `ItemDisplay` como pasajero, portando un ítem con `CustomModelData` propio. Ranching usa un reskin único por raza; **RPGRoll-Mobs va más allá y soporta una lista de skins por mob** (`model.skins`), sorteada por peso al spawnear y persistida (nunca vuelve a sortear en la vida del mob). Las texturas se sincronizan solas hacia SackResourcePack (si está instalado) desde una carpeta `resourcepack/` en cada plugin — mismo mecanismo que ya usa RPGRoll-Items
+- 🎣 **RPGRoll-Fishing ahora sincroniza sus texturas solo** — las especies ya soportaban `custom-model-data`, pero faltaba conectar esa carpeta `resourcepack/` con SackResourcePack; ahora se sincroniza sola al arrancar el plugin, igual que Items/Mobs/Ranching
 
 ---
 
@@ -55,7 +57,7 @@ Cada addon extiende el core con un sistema completo propio, construido por **com
 | 📜 **Quests**           | Misiones ramificadas por etapas, objetivos, condiciones y eventos                                         |
 | 🎒 **Items**            | Ítems personalizados con stats, sockets, skins, mejoras y recetas                                         |
 | 🌟 **Ascension**        | Progresión avanzada: evolución de razas, especialización de clases, talentos, prestigio, afinidades       |
-| 👹 **Mobs**             | Mobs, jefes e invocaciones a medida (componentes, fases, IA propia, loot)                                 |
+| 👹 **Mobs**             | Mobs, jefes e invocaciones a medida (componentes, fases, IA propia, loot, reskin visual propio)           |
 | 🏰 **Dungeons**         | Mazmorras instanciadas: salas, oleadas, jefes, dificultades, ranking                                      |
 | 🛡️ **Guilds**           | Equipos temporales (Teams) y organizaciones permanentes (Guilds)                                          |
 | 💬 **Chat**             | Canales, proximidad, idiomas, roles, whisper, antispam, reacciones, logs                                  |
@@ -64,7 +66,7 @@ Cada addon extiende el core con un sistema completo propio, construido por **com
 | 🪄 **RPGRoll-Magic**    | Escuelas de magia, hechizos por componentes, maná, catalizadores, grimorios, runas                        |
 | 🍂 **RPGRoll-Seasons**  | Calendario y estaciones: clima, temperatura por bioma, vegetación dinámica, eventos mundiales             |
 | 🎣 **RPGRoll-Fishing**  | Pesca como profesión: especies, cañas/carnadas, minijuego, tesoros, enciclopedia de capturas              |
-| 🐄 **RPGRoll-Ranching** | Ganadería viva: genética hereditaria, reproducción, nutrición, bienestar, enfermedades/vacunas            |
+| 🐄 **RPGRoll-Ranching** | Ganadería viva: genética hereditaria, reproducción, nutrición, bienestar, enfermedades/vacunas, reskin visual por raza |
 | 👷 **RPGRoll-Workers**  | NPCs trabajadores autónomos con IA por reglas, necesidades, logística y economía                          |
 | 📦 **SackResourcePack** | Asset pipeline standalone: fusión de resource packs, CustomModelData, build+hash, distribución automática |
 | 💰 **RPGRoll-Economy**  | Monedas múltiples, wallets, bancos/préstamos, mercado dinámico con oferta/demanda, tiendas, subastas, empresas, impuestos y libro mayor — proveedor del servicio Economy de Vault |
@@ -85,7 +87,7 @@ Ver el detalle completo de cada uno (comandos, permisos, formato YAML, ejemplos)
 | Quests           | `/quest`, `/questadmin`                          | RPGRoll                 | PlaceholderAPI                                                          | **$12**         |
 | Items            | `/item`, `/itemadmin`                            | RPGRoll                 | Enchantments, Vault, PlaceholderAPI                                     | **$15**         |
 | Ascension        | `/ascend`, `/ascendadmin`                        | RPGRoll                 | Enchantments, Quests, PlaceholderAPI                                    | **$16**         |
-| Mobs             | `/mobadmin`                                      | RPGRoll                 | Items, Quests, PlaceholderAPI                                           | **$15**         |
+| Mobs             | `/mobadmin`                                      | RPGRoll                 | Items, Quests, PlaceholderAPI, SackResourcePack                         | **$15**         |
 | Dungeons         | `/dungeon`, `/dungeonadmin`                      | RPGRoll, Mobs, Guilds   | Items, Quests, PlaceholderAPI                                           | **$15**         |
 | Guilds           | `/guild`, `/team`, `/guildadmin`                 | RPGRoll                 | Items, Quests, Vault, PlaceholderAPI                                    | **$12**         |
 | Chat             | `/channel`, `/w`, `/language`, `/chatadmin`, ... | RPGRoll                 | Guilds, PlaceholderAPI                                                  | **$10**         |
@@ -93,8 +95,8 @@ Ver el detalle completo de cada uno (comandos, permisos, formato YAML, ejemplos)
 | RPGRoll-Effects  | `/rpgeffects`                                    | RPGRoll                 | SackEffects, Guilds                                                     | **$10**         |
 | RPGRoll-Magic    | `/magic`, `/magicadmin`                          | RPGRoll                 | SackEffects, RPGRoll-Effects                                            | **$18**         |
 | RPGRoll-Seasons  | `/seasons`, `/seasonsadmin`                      | RPGRoll                 | SackEffects, RPGRoll-Effects, Mobs                                      | **$14**         |
-| RPGRoll-Fishing  | `/fishing`, `/fishingadmin`                      | RPGRoll                 | SackEffects, RPGRoll-Effects, Seasons                                   | **$14**         |
-| RPGRoll-Ranching | `/ranching`, `/ranchingadmin`                    | RPGRoll                 | SackEffects, RPGRoll-Effects, Seasons                                   | **$16**         |
+| RPGRoll-Fishing  | `/fishing`, `/fishingadmin`                      | RPGRoll                 | SackEffects, RPGRoll-Effects, Seasons, SackResourcePack                 | **$14**         |
+| RPGRoll-Ranching | `/ranching`, `/ranchingadmin`                    | RPGRoll                 | SackEffects, RPGRoll-Effects, Seasons, SackResourcePack                 | **$16**         |
 | RPGRoll-Workers  | `/workers`, `/workersadmin`                      | RPGRoll                 | SackEffects, RPGRoll-Effects, Seasons, Ranching, Fishing, Guilds, Vault | **$16**         |
 | SackResourcePack | `/srp`                                           | _(ninguno, standalone)_ | S3 (subida remota)                                                      | **$12**         |
 | RPGRoll-Economy  | `/economy`, `/economyadmin`                      | RPGRoll                 | Vault, PlaceholderAPI, Guilds, Seasons                                  | **$18**         |

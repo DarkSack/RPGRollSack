@@ -1,0 +1,99 @@
+id: flame_blade
+pack: sword
+material: DIAMOND_SWORD
+display-name: "&6Flame Blade"
+lore:
+  - "&7Una espada envuelta en llamas eternas."
+  - "&8Mejora actual: +{upgrade_level}"
+rarity: LEGENDARY
+glow: true
+
+# "flags" reemplaza a "hide-attributes" con una lista general de
+# ItemFlag — cualquier flag vanilla vale acá.
+flags:
+  - HIDE_ATTRIBUTES
+  - HIDE_ENCHANTS
+
+stats:
+  damage: 8
+  critical_chance: 15
+  critical_damage: 50
+  attack_speed: 1.2
+
+# Atributos vanilla reales (no virtuales) — visibles en el tooltip nativo
+# si no se ocultan con HIDE_ATTRIBUTES arriba.
+attributes:
+  ATTACK_DAMAGE: 2
+
+requirements:
+  level: 20
+  class: warrior
+
+durability:
+  max: 500
+  repairable: true
+  degrade-per-use: 1
+
+enchantments:
+  FIRE_ASPECT: 2
+
+custom-enchantments:
+  lifesteal: 3
+
+triggers:
+  ENTITY_HIT:
+    - type: FIRE
+      ticks: 60
+    - type: PARTICLE
+      particle: FLAME
+      count: 8
+
+abilities:
+  - id: fire_dash
+    display-name: "&6Dash Flamígero"
+    passive: false
+    trigger: RIGHT_CLICK
+    cooldown: 10s
+    conditions:
+      - player.level >= 20
+    actions:
+      - type: EXPLOSION
+        power: "1.0"
+        break-blocks: "false"
+      - type: SOUND
+        sound: ENTITY_BLAZE_SHOOT
+
+sockets:
+  - id: socket-1
+    accepted-types: [FIRE, GENERIC]
+
+skins:
+  - id: golden
+    display-name: "&6Flame Blade Dorada"
+    material: GOLDEN_SWORD
+
+upgrades:
+  1:
+    stats:
+      damage: 2
+    cost: 100
+  2:
+    stats:
+      damage: 4
+    cost: 250
+    cost-material: DIAMOND
+    cost-amount: 2
+
+recipes:
+  - type: SHAPED
+    shape:
+      - " I "
+      - " I "
+      - " S "
+    key:
+      I: IRON_INGOT
+      S: STICK
+
+economy:
+  sell: 500
+  buy: 1000

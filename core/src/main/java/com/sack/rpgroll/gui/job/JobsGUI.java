@@ -1,5 +1,6 @@
 package com.sack.rpgroll.gui.job;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gameplay.job.Job;
 import com.sack.rpgroll.gameplay.job.JobManager;
 import com.sack.rpgroll.gui.InventoryGUI;
@@ -11,7 +12,6 @@ import com.sack.rpgroll.player.jobs.PlayerJobs;
 import com.sack.rpgroll.util.ComponentUtils;
 
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 
 import org.bukkit.Material;
@@ -40,12 +40,14 @@ public class JobsGUI extends InventoryGUI {
 
     private final JobManager jobManager;
     private final PlayerManager playerManager;
+    private final LangManager lang;
     private final Map<Integer, String> slotToJob;
 
-    public JobsGUI(Player player, JobManager jobManager, PlayerManager playerManager) {
-        super(player, Component.text("Trabajos", NamedTextColor.GOLD).decorate(TextDecoration.BOLD), 45);
+    public JobsGUI(Player player, JobManager jobManager, PlayerManager playerManager, LangManager lang) {
+        super(player, lang.component("jobs_gui.title").decorate(TextDecoration.BOLD), 45);
         this.jobManager = jobManager;
         this.playerManager = playerManager;
+        this.lang = lang;
         this.slotToJob = new HashMap<>();
     }
 
@@ -66,7 +68,7 @@ public class JobsGUI extends InventoryGUI {
 
         if (rpgPlayerOpt.isEmpty()) {
             setItem(22, new ItemBuilder(Material.BARRIER)
-                    .setName(Component.text("Error al cargar tus datos", NamedTextColor.RED))
+                    .setName(lang.component("error.load_data"))
                     .build());
             return;
         }
@@ -75,17 +77,16 @@ public class JobsGUI extends InventoryGUI {
 
         // Info general en la parte superior
         setItem(4, new ItemBuilder(Material.BOOK)
-                .setName(Component.text("Tus trabajos", NamedTextColor.GOLD).decorate(TextDecoration.BOLD))
-                .setLore(
-                        Component.text("Activos: " + playerJobs.count() + "/" + PlayerJobs.MAX_ACTIVE_JOBS,
-                                NamedTextColor.GRAY))
+                .setName(lang.component("jobs_gui.info_name").decorate(TextDecoration.BOLD))
+                .setLore(lang.component("jobs_gui.info_lore", "count", playerJobs.count(), "max",
+                        PlayerJobs.MAX_ACTIVE_JOBS))
                 .build());
 
         List<Job> jobs = new ArrayList<>(jobManager.getAll());
 
         if (jobs.isEmpty()) {
             setItem(22, new ItemBuilder(Material.BARRIER)
-                    .setName(Component.text("Sin trabajos disponibles", NamedTextColor.RED))
+                    .setName(lang.component("jobs_gui.none_available"))
                     .build());
             return;
         }
@@ -102,7 +103,7 @@ public class JobsGUI extends InventoryGUI {
 
         if (!job.description().isEmpty()) {
             for (String line : job.description().split("\n")) {
-                lore.add(ComponentUtils.parse(line).color(NamedTextColor.GRAY));
+                lore.add(ComponentUtils.parse(line).colorIfAbsent(net.kyori.adventure.text.format.NamedTextColor.GRAY));
             }
         }
 
@@ -113,23 +114,24 @@ public class JobsGUI extends InventoryGUI {
             JobProgress progress = playerJobs.getProgress(job.id()).orElseThrow();
             int expRequired = job.getExpRequiredForLevel(progress.level() + 1);
 
-            lore.add(Component.text("● Activo", NamedTextColor.GREEN).decorate(TextDecoration.BOLD));
-            lore.add(Component.text("Nivel: " + progress.level() + "/" + job.maxLevel(), NamedTextColor.YELLOW));
+            lore.add(lang.component("jobs_gui.active_badge").decorate(TextDecoration.BOLD));
+            lore.add(lang.component("jobs_gui.level_line", "level", progress.level(), "max", job.maxLevel()));
 
             if (progress.level() < job.maxLevel()) {
-                lore.add(Component.text("XP: " + progress.experience() + "/" + expRequired, NamedTextColor.YELLOW));
+                lore.add(lang.component("jobs_gui.xp_line", "current", progress.experience(), "required",
+                        expRequired));
             } else {
-                lore.add(Component.text("¡Nivel máximo!", NamedTextColor.GOLD));
+                lore.add(lang.component("jobs_gui.max_level"));
             }
 
             lore.add(Component.text(""));
-            lore.add(Component.text("Click para abandonar", NamedTextColor.RED));
+            lore.add(lang.component("jobs_gui.click_abandon"));
 
         } else {
 
-            lore.add(Component.text("○ Disponible", NamedTextColor.GRAY));
+            lore.add(lang.component("jobs_gui.available_badge"));
             lore.add(Component.text(""));
-            lore.add(Component.text("Click para unirte", NamedTextColor.GREEN));
+            lore.add(lang.component("jobs_gui.click_join"));
 
         }
 
@@ -169,7 +171,7 @@ public class JobsGUI extends InventoryGUI {
 
         if (playerJobs.isFull()) {
             close();
-            JobAbandonGUI abandonGUI = new JobAbandonGUI(player, jobManager, playerManager, jobId);
+            JobAbandonGUI abandonGUI = new JobAbandonGUI(player, jobManager, playerManager, jobId, lang);
             abandonGUI.open();
             return;
         }
@@ -187,8 +189,7 @@ public class JobsGUI extends InventoryGUI {
         RPGPlayer updated = rpgPlayer.joinJob(jobId);
         playerManager.savePlayer(updated);
 
-        player.sendMessage(Component.text("Te has unido al trabajo: ", NamedTextColor.GREEN)
-                .append(Component.text(jobOpt.get().displayName(), NamedTextColor.GOLD)));
+        lang.send(player, "jobs_gui.joined", "job", jobOpt.get().displayName());
 
         build();
     }
@@ -201,8 +202,7 @@ public class JobsGUI extends InventoryGUI {
         playerManager.savePlayer(updated);
 
         String name = jobOpt.map(Job::displayName).orElse(jobId);
-        player.sendMessage(Component.text("Has abandonado el trabajo: ", NamedTextColor.YELLOW)
-                .append(Component.text(name, NamedTextColor.WHITE)));
+        lang.send(player, "jobs_gui.left", "job", name);
 
         build();
     }

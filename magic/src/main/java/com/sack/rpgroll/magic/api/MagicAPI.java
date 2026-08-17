@@ -76,7 +76,7 @@ public final class MagicAPI {
         var spellOpt = spellManager.get(spellId);
 
         if (spellOpt.isEmpty()) {
-            return CastResult.failure("No existe un hechizo con id: " + spellId);
+            return CastResult.failure(engine.lang().raw("cast.reason.unknown_spell", "id", spellId));
         }
 
         Spell spell = spellOpt.get();

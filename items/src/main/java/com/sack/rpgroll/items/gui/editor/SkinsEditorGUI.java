@@ -1,5 +1,6 @@
 package com.sack.rpgroll.items.gui.editor;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.items.core.ItemSkin;
@@ -21,11 +22,13 @@ public class SkinsEditorGUI extends InventoryGUI {
     private static final int BACK_SLOT = 44;
 
     private final EditorSession session;
+    private final LangManager lang;
     private final Runnable onBack;
 
     public SkinsEditorGUI(Player player, EditorSession session, Runnable onBack) {
-        super(player, Component.text("Skins: " + session.original.id(), NamedTextColor.GOLD), SIZE);
+        super(player, session.chatPromptManager.lang().component("editor.skins.title", "id", session.original.id()), SIZE);
         this.session = session;
+        this.lang = session.chatPromptManager.lang();
         this.onBack = onBack;
     }
 
@@ -50,16 +53,16 @@ public class SkinsEditorGUI extends InventoryGUI {
 
             setItem(i, new ItemBuilder(material)
                     .setName(Component.text(skin.displayName(), NamedTextColor.AQUA))
-                    .setLore(Component.text("id: " + skin.id(), NamedTextColor.GRAY),
-                            Component.text("Shift-click para quitar", NamedTextColor.DARK_GRAY))
+                    .setLore(lang.component("editor.skins.id_lore", "id", skin.id()),
+                            lang.component("editor.common.shift_click_remove"))
                     .build());
         }
 
         setItem(ADD_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Agregar skin", NamedTextColor.GREEN))
+                .setName(lang.component("editor.skins.add"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("editor.common.back")));
     }
 
     private Material parseMaterial(String raw) {
@@ -95,23 +98,22 @@ public class SkinsEditorGUI extends InventoryGUI {
     }
 
     private void promptAdd() {
-        session.chatPromptManager.prompt(player,
-                "Escribí: <id> <nombre> <material> (ej. golden Dorada GOLDEN_SWORD):", value -> {
+        session.chatPromptManager.prompt(player, lang.raw("editor.skins.prompt_add"), value -> {
 
-                    String[] parts = value.trim().split("\\s+");
+            String[] parts = value.trim().split("\\s+");
 
-                    if (parts.length < 3) {
-                        player.sendMessage(Component.text("Formato inválido.", NamedTextColor.RED));
-                        return;
-                    }
+            if (parts.length < 3) {
+                lang.send(player, "editor.common.invalid_format");
+                return;
+            }
 
-                    String id = parts[0];
-                    String material = parts[parts.length - 1];
-                    String displayName = String.join(" ", java.util.Arrays.copyOfRange(parts, 1, parts.length - 1));
+            String id = parts[0];
+            String material = parts[parts.length - 1];
+            String displayName = String.join(" ", java.util.Arrays.copyOfRange(parts, 1, parts.length - 1));
 
-                    session.skins.add(new ItemSkin(id, displayName, material, null));
-                    build();
-                });
+            session.skins.add(new ItemSkin(id, displayName, material, null));
+            build();
+        });
     }
 
 }

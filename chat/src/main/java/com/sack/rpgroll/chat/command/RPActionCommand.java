@@ -3,6 +3,7 @@ package com.sack.rpgroll.chat.command;
 import com.sack.rpgroll.chat.channel.ChatChannel;
 import com.sack.rpgroll.chat.pipeline.ChannelRouter;
 import com.sack.rpgroll.chat.player.PlayerChannelStateManager;
+import com.sack.rpgroll.common.lang.LangManager;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -17,24 +18,27 @@ public class RPActionCommand implements CommandExecutor {
 
     private final PlayerChannelStateManager channelStateManager;
     private final ChannelRouter channelRouter;
+    private final LangManager lang;
 
-    public RPActionCommand(PlayerChannelStateManager channelStateManager, ChannelRouter channelRouter) {
+    public RPActionCommand(PlayerChannelStateManager channelStateManager, ChannelRouter channelRouter,
+            LangManager lang) {
         this.channelStateManager = channelStateManager;
         this.channelRouter = channelRouter;
+        this.lang = lang;
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
         if (!(sender instanceof Player player)) {
-            sender.sendMessage(Component.text("Solo un jugador puede usar este comando.", NamedTextColor.RED));
+            lang.send(sender, "common.players_only");
             return true;
         }
 
         boolean isDo = label.equalsIgnoreCase("do");
 
         if (args.length < 1) {
-            player.sendMessage(Component.text("Uso: /" + label + " <texto>", NamedTextColor.YELLOW));
+            lang.send(player, "rpaction.usage", "label", label);
             return true;
         }
 

@@ -1,6 +1,7 @@
 package com.sack.rpgroll.dungeons.engine;
 
 import com.sack.rpgroll.api.RPGRollAPI;
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.dungeons.core.DungeonAction;
 import com.sack.rpgroll.dungeons.core.DungeonDefinition;
 import com.sack.rpgroll.dungeons.core.DungeonDifficulty;
@@ -60,6 +61,7 @@ public class DungeonEngine {
     private final DungeonPlayerStateManager stateManager;
     private final DungeonRankingManager rankingManager;
     private final ActionRegistry actionRegistry;
+    private final LangManager lang;
 
     private final Map<String, DungeonSession> activeSessions = new HashMap<>();
     private final Map<String, Deque<QueueEntry>> waitingQueues = new HashMap<>();
@@ -79,12 +81,13 @@ public class DungeonEngine {
 
     public DungeonEngine(org.bukkit.plugin.Plugin plugin, DungeonManager dungeonManager,
             DungeonPlayerStateManager stateManager, DungeonRankingManager rankingManager,
-            ActionRegistry actionRegistry) {
+            ActionRegistry actionRegistry, LangManager lang) {
         this.plugin = plugin;
         this.dungeonManager = dungeonManager;
         this.stateManager = stateManager;
         this.rankingManager = rankingManager;
         this.actionRegistry = actionRegistry;
+        this.lang = lang;
 
         actionRegistry.register("PROGRESS_OBJECTIVE", (action, ctx) -> {
 
@@ -566,7 +569,7 @@ public class DungeonEngine {
         for (UUID memberId : next.team().members()) {
             Player player = Bukkit.getPlayer(memberId);
             if (player != null) {
-                player.sendMessage(Component.text("¡Es el turno de tu grupo para entrar a ", NamedTextColor.GREEN)
+                player.sendMessage(ComponentUtils.parse(lang.raw("engine.queue.your_turn"))
                         .append(ComponentUtils.parse(definition.displayName()))
                         .append(Component.text("!", NamedTextColor.GREEN)));
             }

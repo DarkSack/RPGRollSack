@@ -1,3 +1,7 @@
+# Idioma de los mensajes del plugin (es, en, pt_BR). Los archivos de idioma
+# viven en lang/<codigo>.yml dentro de la carpeta de datos del plugin.
+language: es
+
 # Intervalos de tareas periódicas, en ticks (20 ticks = 1 segundo).
 needs-decay-interval-ticks: 200
 ai-tick-interval-ticks: 40

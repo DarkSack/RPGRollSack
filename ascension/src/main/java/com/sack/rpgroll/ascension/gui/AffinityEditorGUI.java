@@ -2,6 +2,7 @@ package com.sack.rpgroll.ascension.gui;
 
 import com.sack.rpgroll.ascension.core.Affinity;
 import com.sack.rpgroll.ascension.core.AffinityManager;
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 
@@ -25,15 +26,17 @@ public class AffinityEditorGUI extends InventoryGUI {
     private final AffinityManager manager;
     private final ChatPromptManager chatPromptManager;
     private final Runnable onBack;
+    private final LangManager lang;
     private Affinity current;
 
     public AffinityEditorGUI(Player player, Affinity affinity, AffinityManager manager,
-            ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text("Afinidad: " + affinity.id(), NamedTextColor.GOLD), SIZE);
+            ChatPromptManager chatPromptManager, Runnable onBack, LangManager lang) {
+        super(player, lang.component("gui.affinity.editor_title", "id", affinity.id()), SIZE);
         this.current = affinity;
         this.manager = manager;
         this.chatPromptManager = chatPromptManager;
         this.onBack = onBack;
+        this.lang = lang;
     }
 
     private void replace(Affinity updated) {
@@ -52,24 +55,24 @@ public class AffinityEditorGUI extends InventoryGUI {
         }
 
         setItem(NAME_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(Component.text("Nombre: " + current.displayName(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para escribir uno nuevo", NamedTextColor.GRAY))
+                .setName(lang.component("gui.common.name_label", "name", current.displayName()))
+                .setLore(lang.component("gui.common.click_new_value"))
                 .build());
 
         setItem(OPPOSING_SLOT, new ItemBuilder(Material.SHIELD)
-                .setName(Component.text("Opuesta: " + (current.opposingId() == null ? "(ninguna)"
-                        : current.opposingId()), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para escribir el id de la afinidad opuesta", NamedTextColor.GRAY))
+                .setName(lang.component("gui.affinity.opposing_label", "value", current.opposingId() == null
+                        ? lang.raw("gui.affinity.opposing_none") : current.opposingId()))
+                .setLore(lang.component("gui.affinity.prompt_opposing_hint"))
                 .build());
 
         setItem(RESIST_SLOT, new ItemBuilder(Material.SHIELD)
-                .setName(Component.text("Causas resistidas: " + current.resistCauses().size(), NamedTextColor.YELLOW))
+                .setName(lang.component("gui.affinity.resist_label", "count", current.resistCauses().size()))
                 .setLore(Component.text(String.join(", ", current.resistCauses()), NamedTextColor.GRAY),
-                        Component.text("Click para escribir lista separada por comas", NamedTextColor.GRAY),
-                        Component.text("(ej. FIRE,LAVA,HOT_FLOOR)", NamedTextColor.DARK_GRAY))
+                        lang.component("gui.affinity.resist_hint"),
+                        lang.component("gui.affinity.resist_example"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back_button")));
     }
 
     @Override
@@ -79,13 +82,13 @@ public class AffinityEditorGUI extends InventoryGUI {
         int slot = event.getSlot();
 
         if (slot == NAME_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el nuevo nombre:", value -> replace(
+            chatPromptManager.prompt(player, "gui.affinity.prompt_new_name", value -> replace(
                     new Affinity(current.id(), value, current.opposingId(), current.resistCauses())));
             return;
         }
 
         if (slot == OPPOSING_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el id de la afinidad opuesta (o '-' para ninguna):", value -> {
+            chatPromptManager.prompt(player, "gui.affinity.prompt_opposing", value -> {
                 String opposing = value.trim().equals("-") ? null : value.trim();
                 replace(new Affinity(current.id(), current.displayName(), opposing, current.resistCauses()));
             });
@@ -93,7 +96,7 @@ public class AffinityEditorGUI extends InventoryGUI {
         }
 
         if (slot == RESIST_SLOT) {
-            chatPromptManager.prompt(player, "Escribí las causas de daño resistidas, separadas por comas:",
+            chatPromptManager.prompt(player, "gui.affinity.prompt_resist",
                     value -> replace(new Affinity(current.id(), current.displayName(), current.opposingId(),
                             List.of(value.trim().toUpperCase().split(",")))));
             return;

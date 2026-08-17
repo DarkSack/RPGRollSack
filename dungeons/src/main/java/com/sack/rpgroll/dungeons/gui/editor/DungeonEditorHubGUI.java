@@ -40,7 +40,8 @@ public class DungeonEditorHubGUI extends InventoryGUI {
     private final DungeonEditorSession session;
 
     public DungeonEditorHubGUI(Player player, DungeonEditorSession session) {
-        super(player, Component.text("Editando: " + session.original.id(), NamedTextColor.GOLD), SIZE);
+        super(player, ComponentUtils.parse(session.chatPromptManager.lang()
+                .raw("gui.editor.hub.title", "id", session.original.id())), SIZE);
         this.session = session;
     }
 
@@ -55,23 +56,25 @@ public class DungeonEditorHubGUI extends InventoryGUI {
 
         setItem(PREVIEW_SLOT, previewIcon());
 
-        setItem(INFO_SLOT, categoryButton(Material.NAME_TAG, "Información",
-                "Nombre, categoría, ícono, descripción, nivel, jugadores, cooldown"));
-        setItem(REGION_SLOT, categoryButton(Material.MAP, "Región y Lobby",
-                "Esquinas del área física y punto de aparición"));
-        setItem(ROOMS_SLOT, categoryButton(Material.OAK_DOOR, "Salas",
-                "Secuencia de habitaciones: objetivos, oleadas, jefe"));
-        setItem(DIFFICULTIES_SLOT, categoryButton(Material.NETHER_STAR, "Dificultades",
-                "Normal/Hard/Elite/Mythic/Nightmare y sus modificadores"));
-        setItem(LOOT_SLOT, categoryButton(Material.CHEST, "Loot",
-                "Recompensas al completar la mazmorra"));
-        setItem(TRIGGERS_SLOT, categoryButton(Material.COMPARATOR, "Triggers",
-                "Acciones por evento (inicio, sala, oleada, jefe...)"));
-        setItem(CHECKPOINTS_SLOT, categoryButton(Material.RESPAWN_ANCHOR, "Checkpoints y Revivir",
-                "Qué pasa al morir el grupo, y cómo se revive"));
+        var lang = session.chatPromptManager.lang();
 
-        setItem(SAVE_SLOT, ItemBuilder.createConfirmButton("Guardar"));
-        setItem(CANCEL_SLOT, ItemBuilder.createCancelButton("Cancelar"));
+        setItem(INFO_SLOT, categoryButton(Material.NAME_TAG, lang.raw("gui.editor.hub.info.name"),
+                lang.raw("gui.editor.hub.info.description")));
+        setItem(REGION_SLOT, categoryButton(Material.MAP, lang.raw("gui.editor.hub.region.name"),
+                lang.raw("gui.editor.hub.region.description")));
+        setItem(ROOMS_SLOT, categoryButton(Material.OAK_DOOR, lang.raw("gui.editor.hub.rooms.name"),
+                lang.raw("gui.editor.hub.rooms.description")));
+        setItem(DIFFICULTIES_SLOT, categoryButton(Material.NETHER_STAR, lang.raw("gui.editor.hub.difficulties.name"),
+                lang.raw("gui.editor.hub.difficulties.description")));
+        setItem(LOOT_SLOT, categoryButton(Material.CHEST, lang.raw("gui.editor.hub.loot.name"),
+                lang.raw("gui.editor.hub.loot.description")));
+        setItem(TRIGGERS_SLOT, categoryButton(Material.COMPARATOR, lang.raw("gui.editor.hub.triggers.name"),
+                lang.raw("gui.editor.hub.triggers.description")));
+        setItem(CHECKPOINTS_SLOT, categoryButton(Material.RESPAWN_ANCHOR, lang.raw("gui.editor.hub.checkpoints.name"),
+                lang.raw("gui.editor.hub.checkpoints.description")));
+
+        setItem(SAVE_SLOT, ItemBuilder.createConfirmButton(lang.raw("gui.common.save")));
+        setItem(CANCEL_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.cancel")));
     }
 
     private ItemStack previewIcon() {
@@ -126,10 +129,9 @@ public class DungeonEditorHubGUI extends InventoryGUI {
 
         try {
             session.save();
-            player.sendMessage(Component.text("✔ Mazmorra guardada.", NamedTextColor.GREEN));
+            session.chatPromptManager.lang().send(player, "gui.editor.hub.save.ok");
         } catch (java.io.IOException e) {
-            player.sendMessage(Component.text("✘ Error guardando la mazmorra: " + e.getMessage(),
-                    NamedTextColor.RED));
+            session.chatPromptManager.lang().send(player, "gui.editor.hub.save.error", "error", e.getMessage());
         }
 
         markSelectionMade();

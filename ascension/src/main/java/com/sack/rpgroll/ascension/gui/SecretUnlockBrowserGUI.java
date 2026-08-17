@@ -4,6 +4,7 @@ import com.sack.rpgroll.ascension.core.AscensionRequirements;
 import com.sack.rpgroll.ascension.deferred.SecretTargetType;
 import com.sack.rpgroll.ascension.deferred.SecretUnlockRequirement;
 import com.sack.rpgroll.ascension.deferred.SecretUnlockManager;
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 
@@ -25,12 +26,15 @@ public class SecretUnlockBrowserGUI extends InventoryGUI {
 
     private final SecretUnlockManager manager;
     private final ChatPromptManager chatPromptManager;
+    private final LangManager lang;
     private List<SecretUnlockRequirement> unlocks;
 
-    public SecretUnlockBrowserGUI(Player player, SecretUnlockManager manager, ChatPromptManager chatPromptManager) {
-        super(player, Component.text("Desbloqueos secretos", NamedTextColor.GOLD), SIZE);
+    public SecretUnlockBrowserGUI(Player player, SecretUnlockManager manager, ChatPromptManager chatPromptManager,
+            LangManager lang) {
+        super(player, lang.component("gui.secret_unlock.browser_title"), SIZE);
         this.manager = manager;
         this.chatPromptManager = chatPromptManager;
+        this.lang = lang;
         this.unlocks = List.copyOf(manager.getAll());
     }
 
@@ -47,16 +51,16 @@ public class SecretUnlockBrowserGUI extends InventoryGUI {
             SecretUnlockRequirement unlock = unlocks.get(i);
             setItem(i, new ItemBuilder(Material.ENDER_EYE)
                     .setName(Component.text(unlock.id(), NamedTextColor.YELLOW))
-                    .setLore(Component.text(unlock.targetType() + ": " + unlock.targetId(), NamedTextColor.GRAY),
-                            Component.text("Click para editar", NamedTextColor.YELLOW))
+                    .setLore(lang.component("gui.secret_unlock.item_target", "type", unlock.targetType(), "target",
+                            unlock.targetId()), lang.component("gui.common.click_to_edit"))
                     .build());
         }
 
         setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Crear desbloqueo nuevo", NamedTextColor.GREEN))
+                .setName(lang.component("gui.secret_unlock.create_new"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Cerrar"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.close_button")));
     }
 
     @Override
@@ -66,7 +70,8 @@ public class SecretUnlockBrowserGUI extends InventoryGUI {
         int slot = event.getSlot();
 
         if (slot < unlocks.size() && slot < 36) {
-            new SecretUnlockEditorGUI(player, unlocks.get(slot), manager, chatPromptManager, this::reopen).open();
+            new SecretUnlockEditorGUI(player, unlocks.get(slot), manager, chatPromptManager, this::reopen, lang)
+                    .open();
             return;
         }
 
@@ -81,17 +86,17 @@ public class SecretUnlockBrowserGUI extends InventoryGUI {
     }
 
     private void promptNew() {
-        chatPromptManager.prompt(player, "Escribí el id del nuevo desbloqueo secreto:", value -> {
+        chatPromptManager.prompt(player, "gui.secret_unlock.prompt_new_id", value -> {
 
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 
             if (manager.exists(id)) {
-                player.sendMessage(Component.text("Ya existe un desbloqueo con ese id.", NamedTextColor.RED));
+                lang.send(player, "gui.secret_unlock.id_exists");
                 reopen();
                 return;
             }
 
-            chatPromptManager.prompt(player, "Escribí el id real del contenido en :core (raza/clase/trait):",
+            chatPromptManager.prompt(player, "gui.secret_unlock.prompt_target_new",
                     targetId -> {
                         manager.save(new SecretUnlockRequirement(id, SecretTargetType.TRAIT, targetId.trim(),
                                 AscensionRequirements.none()));

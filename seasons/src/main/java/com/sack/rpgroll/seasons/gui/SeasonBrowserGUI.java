@@ -1,5 +1,6 @@
 package com.sack.rpgroll.seasons.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.seasons.core.ClimateProfile;
@@ -33,7 +34,7 @@ public class SeasonBrowserGUI extends InventoryGUI {
 
     public SeasonBrowserGUI(Player player, SeasonManager seasonManager, WorldEventManager worldEventManager,
             ChatPromptManager chatPromptManager) {
-        super(player, Component.text("Estaciones", NamedTextColor.GOLD), SIZE);
+        super(player, chatPromptManager.lang().component("gui.season_browser.title"), SIZE);
         this.seasonManager = seasonManager;
         this.worldEventManager = worldEventManager;
         this.chatPromptManager = chatPromptManager;
@@ -49,6 +50,8 @@ public class SeasonBrowserGUI extends InventoryGUI {
             setItem(slot, ItemBuilder.createFiller());
         }
 
+        LangManager lang = chatPromptManager.lang();
+
         for (int i = 0; i < seasons.size() && i < 36; i++) {
 
             Season season = seasons.get(i);
@@ -56,17 +59,18 @@ public class SeasonBrowserGUI extends InventoryGUI {
 
             setItem(i, new ItemBuilder(parseMaterial(season.icon()))
                     .setName(Component.text(season.displayName(), color))
-                    .setLore(Component.text("id: " + season.id(), NamedTextColor.GRAY),
-                            Component.text(season.durationAmount() + " " + season.durationUnit(), NamedTextColor.GRAY),
-                            Component.text("Click para editar", NamedTextColor.YELLOW))
+                    .setLore(lang.component("gui.common.id_label", "id", season.id()),
+                            lang.component("gui.season_browser.duration_label", "amount", season.durationAmount(),
+                                    "unit", season.durationUnit()),
+                            lang.component("gui.common.click_edit"))
                     .build());
         }
 
         setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Crear estación nueva", NamedTextColor.GREEN))
+                .setName(lang.component("gui.season_browser.new"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back")));
     }
 
     @Override
@@ -92,12 +96,12 @@ public class SeasonBrowserGUI extends InventoryGUI {
     }
 
     private void promptNew() {
-        chatPromptManager.prompt(player, "Escribí el id de la nueva estación:", value -> {
+        chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.season_browser.prompt_new_id"), value -> {
 
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 
             if (seasonManager.exists(id)) {
-                player.sendMessage(Component.text("Ya existe una estación con ese id.", NamedTextColor.RED));
+                chatPromptManager.lang().send(player, "gui.season_browser.already_exists");
                 reopen();
                 return;
             }

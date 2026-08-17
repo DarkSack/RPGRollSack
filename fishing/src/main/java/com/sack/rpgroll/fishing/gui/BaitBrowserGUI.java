@@ -1,5 +1,6 @@
 package com.sack.rpgroll.fishing.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.fishing.core.Bait;
 import com.sack.rpgroll.fishing.core.BaitManager;
 import com.sack.rpgroll.gui.InventoryGUI;
@@ -24,12 +25,14 @@ public class BaitBrowserGUI extends InventoryGUI {
 
     private final BaitManager baitManager;
     private final ChatPromptManager chatPromptManager;
+    private final LangManager lang;
     private List<Bait> baits;
 
     public BaitBrowserGUI(Player player, BaitManager baitManager, ChatPromptManager chatPromptManager) {
-        super(player, Component.text("Carnadas", NamedTextColor.GOLD), SIZE);
+        super(player, chatPromptManager.lang().component("gui.bait.browser_title"), SIZE);
         this.baitManager = baitManager;
         this.chatPromptManager = chatPromptManager;
+        this.lang = chatPromptManager.lang();
         this.baits = List.copyOf(baitManager.getAll());
     }
 
@@ -48,16 +51,16 @@ public class BaitBrowserGUI extends InventoryGUI {
 
             setItem(i, new ItemBuilder(SpeciesBrowserGUI.parseMaterial(bait.material()))
                     .setName(Component.text(bait.displayName(), NamedTextColor.GREEN))
-                    .setLore(Component.text("id: " + bait.id(), NamedTextColor.GRAY),
-                            Component.text("Click para editar", NamedTextColor.YELLOW))
+                    .setLore(lang.component("gui.common.id_label", "id", bait.id()),
+                            lang.component("gui.common.click_to_edit"))
                     .build());
         }
 
         setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Crear carnada nueva", NamedTextColor.GREEN))
+                .setName(lang.component("gui.bait.new_button"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back")));
     }
 
     @Override
@@ -82,12 +85,12 @@ public class BaitBrowserGUI extends InventoryGUI {
     }
 
     private void promptNew() {
-        chatPromptManager.prompt(player, "Escribí el id de la nueva carnada:", value -> {
+        chatPromptManager.prompt(player, lang.raw("gui.bait.prompt_new_id"), value -> {
 
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 
             if (baitManager.exists(id)) {
-                player.sendMessage(Component.text("Ya existe una carnada con ese id.", NamedTextColor.RED));
+                lang.send(player, "gui.bait.already_exists");
                 reopen();
                 return;
             }

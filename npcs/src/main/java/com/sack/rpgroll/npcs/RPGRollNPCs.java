@@ -1,5 +1,6 @@
 package com.sack.rpgroll.npcs;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.common.resource.DirectoryCreator;
 import com.sack.rpgroll.common.resource.ResourceCopier;
 import com.sack.rpgroll.npcs.command.NpcAdminCommand;
@@ -25,9 +26,15 @@ public class RPGRollNPCs extends JavaPlugin {
 
     private NpcManager npcManager;
     private NpcSpawnManager spawnManager;
+    private LangManager langManager;
 
     @Override
     public void onEnable() {
+
+        saveDefaultConfig();
+
+        langManager = new LangManager(this, List.of("es", "en", "pt_BR"), "es");
+        langManager.reload(getConfig().getString("language", "es"));
 
         new DirectoryCreator(this).create(DIRECTORIES);
         new ResourceCopier(this).copyDirectories(DIRECTORIES);
@@ -56,7 +63,7 @@ public class RPGRollNPCs extends JavaPlugin {
 
         interactListener.register();
 
-        ChatPromptManager chatPromptManager = new ChatPromptManager(this);
+        ChatPromptManager chatPromptManager = new ChatPromptManager(this, langManager);
 
         getServer().getPluginManager()
                 .registerEvents(chatPromptManager, this);
@@ -68,13 +75,15 @@ public class RPGRollNPCs extends JavaPlugin {
         NpcWriter writer = new NpcWriter(this);
 
         NpcAdminCommand adminCommand = new NpcAdminCommand(
+                this,
                 npcManager,
                 spawnManager,
                 sessionManager,
                 chatPromptManager,
                 mineSkinClient,
                 writer,
-                menuManager);
+                menuManager,
+                langManager);
 
         var npcCommand = getCommand("npc");
         if (npcCommand == null) {
@@ -96,5 +105,9 @@ public class RPGRollNPCs extends JavaPlugin {
 
     public NpcSpawnManager getSpawnManager() {
         return spawnManager;
+    }
+
+    public LangManager getLangManager() {
+        return langManager;
     }
 }

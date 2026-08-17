@@ -1,0 +1,35 @@
+id: knight_helmet
+pack: armor
+material: DIAMOND_HELMET
+display-name: "&bYelmo del Caballero"
+lore:
+  - "&7Protección confiable para todo aventurero."
+rarity: RARE
+
+# Trim de armadura (1.20+) — puramente cosmético, no afecta stats.
+trim:
+  material: REDSTONE
+  pattern: COAST
+
+stats:
+  defense: 6
+  health: 10
+
+attributes:
+  ARMOR: 3
+
+requirements:
+  level: 10
+
+durability:
+  max: 300
+  repairable: true
+  degrade-per-use: 0
+
+effects:
+  - potion: NIGHT_VISION
+    amplifier: 0
+    requires-held: true
+
+economy:
+  sell: 150

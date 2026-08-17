@@ -28,7 +28,7 @@ public class ScheduleBrowserGUI extends InventoryGUI {
 
     public ScheduleBrowserGUI(Player player, ScheduleManager scheduleManager, ChatPromptManager chatPromptManager,
             Runnable onBack) {
-        super(player, Component.text("Horarios", NamedTextColor.GOLD), SIZE);
+        super(player, Component.text(chatPromptManager.lang().raw("gui.schedule.browser.title"), NamedTextColor.GOLD), SIZE);
         this.scheduleManager = scheduleManager;
         this.chatPromptManager = chatPromptManager;
         this.onBack = onBack;
@@ -50,15 +50,18 @@ public class ScheduleBrowserGUI extends InventoryGUI {
 
             setItem(i, new ItemBuilder(Material.CLOCK)
                     .setName(Component.text(schedule.displayName(), NamedTextColor.YELLOW))
-                    .setLore(Component.text("id: " + schedule.id(), NamedTextColor.GRAY),
-                            Component.text("entradas: " + schedule.entries().size(), NamedTextColor.GRAY),
-                            Component.text("Click para editar", NamedTextColor.YELLOW))
+                    .setLore(Component.text(chatPromptManager.lang().raw("gui.profession.browser.id_label", "id",
+                            schedule.id()), NamedTextColor.GRAY),
+                            Component.text(chatPromptManager.lang().raw("gui.schedule.browser.entries_label", "count",
+                                    schedule.entries().size()), NamedTextColor.GRAY),
+                            Component.text(chatPromptManager.lang().raw("gui.common.click_to_edit"), NamedTextColor.YELLOW))
                     .build());
         }
 
         setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Crear horario nuevo", NamedTextColor.GREEN)).build());
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+                .setName(Component.text(chatPromptManager.lang().raw("gui.schedule.browser.new"), NamedTextColor.GREEN))
+                .build());
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(chatPromptManager.lang().raw("gui.common.back")));
     }
 
     @Override
@@ -83,12 +86,13 @@ public class ScheduleBrowserGUI extends InventoryGUI {
     }
 
     private void promptNew() {
-        chatPromptManager.prompt(player, "Escribí el id del nuevo horario:", value -> {
+        chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.schedule.browser.prompt_new_id"), value -> {
 
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 
             if (scheduleManager.exists(id)) {
-                player.sendMessage(Component.text("Ya existe un horario con ese id.", NamedTextColor.RED));
+                player.sendMessage(Component.text(chatPromptManager.lang().raw("gui.schedule.browser.duplicate_id"),
+                        NamedTextColor.RED));
                 reopen();
                 return;
             }

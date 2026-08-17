@@ -1,12 +1,11 @@
 package com.sack.rpgroll.mobs.gui.editor;
 
+import com.sack.rpgroll.common.lang.LangManager;
+
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.mobs.core.MobWeakness;
 import com.sack.rpgroll.mobs.core.MobWeaknessType;
-
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -35,11 +34,14 @@ public class ResistancesEditorGUI extends InventoryGUI {
 
     private final MobEditorSession session;
     private final Runnable onBack;
+    private final LangManager lang;
 
     public ResistancesEditorGUI(Player player, MobEditorSession session, Runnable onBack) {
-        super(player, Component.text("Resistencias: " + session.original.id(), NamedTextColor.GOLD), SIZE);
+        super(player, session.chatPromptManager.lang().component("gui.resistances.title", "id",
+                session.original.id()), SIZE);
         this.session = session;
         this.onBack = onBack;
+        this.lang = session.chatPromptManager.lang();
     }
 
     @Override
@@ -57,16 +59,16 @@ public class ResistancesEditorGUI extends InventoryGUI {
             double value = session.resistances.getOrDefault(element, 0.0);
 
             setItem(i, new ItemBuilder(value > 0 ? Material.SHIELD : Material.IRON_INGOT)
-                    .setName(Component.text(capitalize(element) + ": " + formatNumber(value) + "%",
-                            NamedTextColor.AQUA))
-                    .setLore(Component.text("Click: +5 · Shift-click: +25", NamedTextColor.GRAY),
-                            Component.text("Click derecho: -5 · Shift-click derecho: -25", NamedTextColor.GRAY))
+                    .setName(lang.component("gui.resistances.entry_label", "element", capitalize(element), "value",
+                            formatNumber(value)))
+                    .setLore(lang.component("gui.common.click_plus5_25"),
+                            lang.component("gui.common.click_minus5_25"))
                     .build());
         }
 
         setItem(ADD_CUSTOM_RESISTANCE_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Resistencia custom", NamedTextColor.GREEN))
-                .setLore(Component.text("Click para escribir: elemento porcentaje", NamedTextColor.GRAY))
+                .setName(lang.component("gui.resistances.custom"))
+                .setLore(lang.component("gui.resistances.custom_hint"))
                 .build());
 
         List<MobWeakness> weaknesses = session.weaknesses;
@@ -76,19 +78,19 @@ public class ResistancesEditorGUI extends InventoryGUI {
             MobWeakness weakness = weaknesses.get(i);
 
             setItem(WEAKNESS_START_SLOT + i, new ItemBuilder(Material.TNT)
-                    .setName(Component.text(weakness.type() + " " + weakness.key() + ": +"
-                            + formatNumber(weakness.extraDamagePercent()) + "%", NamedTextColor.RED))
-                    .setLore(Component.text("Shift-click para quitar", NamedTextColor.DARK_GRAY))
+                    .setName(lang.component("gui.resistances.weakness_label", "type", weakness.type(), "key",
+                            weakness.key(), "value", formatNumber(weakness.extraDamagePercent())))
+                    .setLore(lang.component("gui.common.shift_remove_dark"))
                     .build());
         }
 
         setItem(ADD_WEAKNESS_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Agregar debilidad", NamedTextColor.GREEN))
-                .setLore(Component.text("Click para escribir: TIPO clave porcentaje", NamedTextColor.GRAY),
-                        Component.text("ej. ELEMENT fire 50", NamedTextColor.DARK_GRAY))
+                .setName(lang.component("gui.resistances.add_weakness"))
+                .setLore(lang.component("gui.resistances.add_weakness_hint1"),
+                        lang.component("gui.resistances.add_weakness_hint2"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back_button")));
     }
 
     private String capitalize(String value) {
@@ -164,19 +166,19 @@ public class ResistancesEditorGUI extends InventoryGUI {
     }
 
     private void promptCustomResistance() {
-        session.chatPromptManager.prompt(player, "Escribí: <elemento> <porcentaje> (ej. bleed 30):", value -> {
+        session.chatPromptManager.prompt(player, "gui.resistances.prompt_custom", value -> {
 
             String[] parts = value.trim().split("\\s+");
 
             if (parts.length != 2) {
-                player.sendMessage(Component.text("Formato inválido.", NamedTextColor.RED));
+                lang.send(player, "gui.common.invalid_format");
                 return;
             }
 
             try {
                 session.resistances.put(parts[0].toLowerCase(Locale.ROOT), Double.parseDouble(parts[1]));
             } catch (NumberFormatException e) {
-                player.sendMessage(Component.text("Valor numérico inválido.", NamedTextColor.RED));
+                lang.send(player, "gui.common.invalid_number");
                 return;
             }
 
@@ -185,12 +187,12 @@ public class ResistancesEditorGUI extends InventoryGUI {
     }
 
     private void promptAddWeakness() {
-        session.chatPromptManager.prompt(player, "Escribí: TIPO clave porcentaje (ej. ELEMENT fire 50):", value -> {
+        session.chatPromptManager.prompt(player, "gui.resistances.prompt_weakness", value -> {
 
             String[] parts = value.trim().split("\\s+");
 
             if (parts.length != 3) {
-                player.sendMessage(Component.text("Formato inválido.", NamedTextColor.RED));
+                lang.send(player, "gui.common.invalid_format");
                 return;
             }
 
@@ -202,7 +204,7 @@ public class ResistancesEditorGUI extends InventoryGUI {
                 updated.add(new MobWeakness(type, parts[1], percent));
                 session.weaknesses = updated;
             } catch (IllegalArgumentException e) {
-                player.sendMessage(Component.text("Tipo o porcentaje inválido.", NamedTextColor.RED));
+                lang.send(player, "gui.resistances.invalid_type_or_value");
                 return;
             }
 

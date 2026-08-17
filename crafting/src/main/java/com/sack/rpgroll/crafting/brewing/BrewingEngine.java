@@ -19,6 +19,11 @@ import java.util.List;
  * vacía recibe nuestro resultado personalizado en vez de la poción que
  * Bukkit hubiera calculado. Sin coincidencia, la fermentación vanilla sigue
  * intacta.
+ * <p>
+ * {@code amount} en {@code ingredient} exige que la pila tenga al menos esa
+ * cantidad, pero la fermentación vanilla siempre consume 1 unidad de
+ * ingrediente por tanda — un {@code amount} mayor a 1 no hace que se
+ * consuma más que eso. Se recomienda dejarlo en 1 acá.
  */
 public class BrewingEngine implements Listener {
 
@@ -47,7 +52,7 @@ public class BrewingEngine implements Listener {
 
         for (BrewRecipeDefinition recipe : recipeManager.getAll()) {
 
-            if (!ingredientMatcher.matches(ingredient, recipe.ingredient())) {
+            if (!ingredientMatcher.matchesWithAmount(ingredient, recipe.ingredient())) {
                 continue;
             }
 

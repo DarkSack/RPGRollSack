@@ -121,7 +121,7 @@ public class EditorSession {
 
     public ItemDefinition buildDefinition() {
         return new ItemDefinition(
-                original.id(), original.category(), material, displayName, lore, customModelData, rarityId,
+                original.id(), original.pack(), material, displayName, lore, customModelData, rarityId,
                 glowOverride, flags, unbreakable, dyeColor, skullTexture, trim, stats, attributeModifiers,
                 requirements, durability, vanillaEnchantments, customEnchantments, effects, triggers, abilities,
                 sockets, skins, upgrades, recipes, sellPrice, buyPrice, customData);
@@ -136,7 +136,7 @@ public class EditorSession {
         ItemDefinition updated = buildDefinition();
         itemManager.register(updated);
 
-        File file = new File(plugin.getDataFolder(), "items/" + updated.category() + "/" + updated.id() + ".yml");
+        File file = new File(plugin.getDataFolder(), "packs/" + updated.pack() + "/" + updated.id() + ".yml");
         new ItemDefinitionWriter().save(updated, file);
     }
 

@@ -1,5 +1,6 @@
 package com.sack.rpgroll.economy.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.economy.market.MarketProduct;
 import com.sack.rpgroll.economy.market.MarketProductManager;
 import com.sack.rpgroll.gui.InventoryGUI;
@@ -34,15 +35,18 @@ public class MarketEditorGUI extends InventoryGUI {
     private final MarketProductManager productManager;
     private final ChatPromptManager chatPromptManager;
     private final Runnable onBack;
+    private final LangManager lang;
     private MarketProduct current;
 
     public MarketEditorGUI(Player player, MarketProduct product, MarketProductManager productManager,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text("Producto: " + product.id(), NamedTextColor.GOLD), SIZE);
+        super(player, Component.text(chatPromptManager.lang().raw("market.editor.title", "id", product.id()),
+                NamedTextColor.GOLD), SIZE);
         this.current = product;
         this.productManager = productManager;
         this.chatPromptManager = chatPromptManager;
         this.onBack = onBack;
+        this.lang = chatPromptManager.lang();
     }
 
     private void replace(MarketProduct updated) {
@@ -61,51 +65,51 @@ public class MarketEditorGUI extends InventoryGUI {
         }
 
         setItem(NAME_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(Component.text("Nombre: " + current.displayName(), NamedTextColor.YELLOW)).build());
+                .setName(lang.component("common.label_name", "value", current.displayName())).build());
 
         setItem(ICON_SLOT, new ItemBuilder(CurrencyBrowserGUI.parseMaterial(current.icon()))
-                .setName(Component.text("Ícono: " + current.icon(), NamedTextColor.YELLOW)).build());
+                .setName(lang.component("common.label_icon", "value", current.icon())).build());
 
         setItem(CURRENCY_SLOT, new ItemBuilder(Material.SUNFLOWER)
-                .setName(Component.text("Moneda: " + (current.currencyId() == null ? "(por defecto)" : current.currencyId()),
-                        NamedTextColor.GOLD))
+                .setName(lang.component("market.editor.currency", "value", current.currencyId() == null
+                        ? lang.raw("market.editor.currency_default") : current.currencyId()))
                 .build());
 
         setItem(CATEGORY_SLOT, new ItemBuilder(Material.HOPPER)
-                .setName(Component.text("Categoría: " + current.category(), NamedTextColor.AQUA)).build());
+                .setName(lang.component("market.editor.category", "value", current.category())).build());
 
         setItem(BASE_PRICE_SLOT, new ItemBuilder(Material.GOLD_INGOT)
-                .setName(Component.text("Precio base: " + current.basePrice(), NamedTextColor.GOLD))
-                .setLore(Component.text("Click: +1 · Click derecho: -1", NamedTextColor.GRAY)).build());
+                .setName(lang.component("market.editor.base_price", "value", current.basePrice()))
+                .setLore(lang.component("common.click_plus1_minus1")).build());
 
         setItem(MIN_PRICE_SLOT, new ItemBuilder(Material.IRON_NUGGET)
-                .setName(Component.text("Precio mínimo: " + current.minPrice(), NamedTextColor.RED))
-                .setLore(Component.text("Click: +1 · Click derecho: -1", NamedTextColor.GRAY)).build());
+                .setName(lang.component("market.editor.min_price", "value", current.minPrice()))
+                .setLore(lang.component("common.click_plus1_minus1")).build());
 
         setItem(MAX_PRICE_SLOT, new ItemBuilder(Material.DIAMOND)
-                .setName(Component.text("Precio máximo: " + current.maxPrice(), NamedTextColor.AQUA))
-                .setLore(Component.text("Click: +1 · Click derecho: -1", NamedTextColor.GRAY)).build());
+                .setName(lang.component("market.editor.max_price", "value", current.maxPrice()))
+                .setLore(lang.component("common.click_plus1_minus1")).build());
 
         setItem(SUPPLY_WEIGHT_SLOT, new ItemBuilder(Material.HAY_BLOCK)
-                .setName(Component.text("Peso de oferta: " + current.supplyWeight(), NamedTextColor.GREEN))
-                .setLore(Component.text("Click: +0.1 · Click derecho: -0.1", NamedTextColor.GRAY)).build());
+                .setName(lang.component("market.editor.supply_weight", "value", current.supplyWeight()))
+                .setLore(lang.component("common.click_plus01_minus01")).build());
 
         setItem(DEMAND_WEIGHT_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Peso de demanda: " + current.demandWeight(), NamedTextColor.LIGHT_PURPLE))
-                .setLore(Component.text("Click: +0.1 · Click derecho: -0.1", NamedTextColor.GRAY)).build());
+                .setName(lang.component("market.editor.demand_weight", "value", current.demandWeight()))
+                .setLore(lang.component("common.click_plus01_minus01")).build());
 
         setItem(VOLATILITY_SLOT, new ItemBuilder(Material.TNT)
-                .setName(Component.text("Volatilidad: " + current.volatility(), NamedTextColor.RED))
-                .setLore(Component.text("Click: +0.05 · Click derecho: -0.05", NamedTextColor.GRAY)).build());
+                .setName(lang.component("market.editor.volatility", "value", current.volatility()))
+                .setLore(lang.component("market.editor.click_plus005_minus005")).build());
 
         setItem(RECOVERY_RATE_SLOT, new ItemBuilder(Material.CLOCK)
-                .setName(Component.text("Tasa de recuperación: " + current.recoveryRate(), NamedTextColor.AQUA))
-                .setLore(Component.text("Click: +0.01 · Click derecho: -0.01", NamedTextColor.GRAY)).build());
+                .setName(lang.component("market.editor.recovery_rate", "value", current.recoveryRate()))
+                .setLore(lang.component("common.click_plus001_minus001")).build());
 
         setItem(DELETE_SLOT, new ItemBuilder(Material.BARRIER)
-                .setName(Component.text("Eliminar producto", NamedTextColor.RED)).build());
+                .setName(lang.component("market.editor.delete")).build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("common.back")));
     }
 
     @Override
@@ -116,14 +120,14 @@ public class MarketEditorGUI extends InventoryGUI {
         double sign = event.getClick() == ClickType.RIGHT ? -1 : 1;
 
         if (slot == NAME_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el nuevo nombre:", value -> replace(with(current, "name", value)));
+            chatPromptManager.prompt(player, lang.raw("common.prompt_new_name"), value -> replace(with(current, "name", value)));
         } else if (slot == ICON_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el Material del ícono:", value -> replace(with(current, "icon", value)));
+            chatPromptManager.prompt(player, lang.raw("common.prompt_material_icon"), value -> replace(with(current, "icon", value)));
         } else if (slot == CURRENCY_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el id de moneda (o 'default'):", value -> replace(with(current,
-                    "currency", value.equalsIgnoreCase("default") ? null : value)));
+            chatPromptManager.prompt(player, lang.raw("market.editor.prompt_currency"), value -> replace(with(current,
+                    "currency", value.equalsIgnoreCase(lang.raw("common.default_keyword")) ? null : value)));
         } else if (slot == CATEGORY_SLOT) {
-            chatPromptManager.prompt(player, "Escribí la categoría:", value -> replace(with(current, "category", value)));
+            chatPromptManager.prompt(player, lang.raw("market.editor.prompt_category"), value -> replace(with(current, "category", value)));
         } else if (slot == BASE_PRICE_SLOT) {
             replace(withNumber(current.basePrice() + sign, "base"));
         } else if (slot == MIN_PRICE_SLOT) {

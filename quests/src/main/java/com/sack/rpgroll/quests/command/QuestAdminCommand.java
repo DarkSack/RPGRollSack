@@ -1,5 +1,7 @@
 package com.sack.rpgroll.quests.command;
 
+import com.sack.rpgroll.common.lang.LangManager;
+import com.sack.rpgroll.quests.QuestsPlugin;
 import com.sack.rpgroll.quests.core.Quest;
 import com.sack.rpgroll.quests.engine.QuestEngine;
 import com.sack.rpgroll.quests.gui.ChatPromptManager;
@@ -7,9 +9,6 @@ import com.sack.rpgroll.quests.gui.QuestBrowserGUI;
 import com.sack.rpgroll.quests.gui.RegionBrowserGUI;
 import com.sack.rpgroll.quests.region.RegionManager;
 import com.sack.rpgroll.util.TabCompleteUtil;
-
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -36,21 +35,26 @@ public class QuestAdminCommand implements CommandExecutor, TabCompleter {
 
     private static final String PERMISSION = "rpgrollquests.admin.*";
 
+    private final QuestsPlugin plugin;
     private final QuestEngine engine;
     private final RegionManager regionManager;
     private final ChatPromptManager chatPromptManager;
+    private final LangManager lang;
 
-    public QuestAdminCommand(QuestEngine engine, RegionManager regionManager, ChatPromptManager chatPromptManager) {
+    public QuestAdminCommand(QuestsPlugin plugin, QuestEngine engine, RegionManager regionManager,
+            ChatPromptManager chatPromptManager, LangManager lang) {
+        this.plugin = plugin;
         this.engine = engine;
         this.regionManager = regionManager;
         this.chatPromptManager = chatPromptManager;
+        this.lang = lang;
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
         if (!sender.hasPermission(PERMISSION)) {
-            sender.sendMessage(Component.text("No tenés permiso para usar este comando.", NamedTextColor.RED));
+            lang.send(sender, "general.no_permission");
             return true;
         }
 
@@ -73,119 +77,115 @@ public class QuestAdminCommand implements CommandExecutor, TabCompleter {
     }
 
     private void sendUsage(CommandSender sender) {
-        sender.sendMessage(Component.text(
-                "Uso: /questadmin <give|complete|fail|reset|reload|browser [quests|regions]> [jugador] [questId]",
-                NamedTextColor.RED));
+        lang.send(sender, "admin.usage");
     }
 
     private void handleBrowser(CommandSender sender, String[] args) {
 
         if (!(sender instanceof Player player)) {
-            sender.sendMessage(Component.text("Solo un jugador puede abrir el navegador.", NamedTextColor.RED));
+            lang.send(sender, "admin.browser_player_only");
             return;
         }
 
         String target = args.length >= 2 ? args[1].toLowerCase(Locale.ROOT) : "quests";
 
         if (target.equals("regions")) {
-            new RegionBrowserGUI(player, regionManager, chatPromptManager).open();
+            new RegionBrowserGUI(player, regionManager, chatPromptManager, lang).open();
         } else {
-            new QuestBrowserGUI(player, engine.getQuestManager(), chatPromptManager).open();
+            new QuestBrowserGUI(player, engine.getQuestManager(), chatPromptManager, lang).open();
         }
     }
 
     private void handleGive(CommandSender sender, String[] args) {
 
         if (args.length < 3) {
-            sender.sendMessage(Component.text("Uso: /questadmin give <jugador> <questId>", NamedTextColor.RED));
+            lang.send(sender, "admin.give_usage");
             return;
         }
 
         Player target = Bukkit.getPlayerExact(args[1]);
         if (target == null) {
-            sender.sendMessage(Component.text("Jugador no encontrado: " + args[1], NamedTextColor.RED));
+            lang.send(sender, "admin.player_not_found", "player", args[1]);
             return;
         }
 
         Optional<Quest> questOpt = engine.getQuestManager().get(args[2]);
         if (questOpt.isEmpty()) {
-            sender.sendMessage(Component.text("No existe una misión con id: " + args[2], NamedTextColor.RED));
+            lang.send(sender, "admin.quest_not_found", "id", args[2]);
             return;
         }
 
         engine.forceStartQuest(target, questOpt.get());
-        sender.sendMessage(Component.text("✔ Misión '" + args[2] + "' iniciada para " + target.getName(),
-                NamedTextColor.GREEN));
+        lang.send(sender, "admin.give_success", "quest", args[2], "player", target.getName());
     }
 
     private void handleComplete(CommandSender sender, String[] args) {
 
         if (args.length < 3) {
-            sender.sendMessage(Component.text("Uso: /questadmin complete <jugador> <questId>", NamedTextColor.RED));
+            lang.send(sender, "admin.complete_usage");
             return;
         }
 
         Player target = Bukkit.getPlayerExact(args[1]);
         if (target == null) {
-            sender.sendMessage(Component.text("Jugador no encontrado: " + args[1], NamedTextColor.RED));
+            lang.send(sender, "admin.player_not_found", "player", args[1]);
             return;
         }
 
         if (engine.forceCompleteQuest(target, args[2])) {
-            sender.sendMessage(Component.text("✔ Misión '" + args[2] + "' completada para " + target.getName(),
-                    NamedTextColor.GREEN));
+            lang.send(sender, "admin.complete_success", "quest", args[2], "player", target.getName());
         } else {
-            sender.sendMessage(Component.text(
-                    target.getName() + " no tiene esa misión activa.", NamedTextColor.RED));
+            lang.send(sender, "admin.complete_not_active", "player", target.getName());
         }
     }
 
     private void handleFail(CommandSender sender, String[] args) {
 
         if (args.length < 3) {
-            sender.sendMessage(Component.text("Uso: /questadmin fail <jugador> <questId>", NamedTextColor.RED));
+            lang.send(sender, "admin.fail_usage");
             return;
         }
 
         Player target = Bukkit.getPlayerExact(args[1]);
         if (target == null) {
-            sender.sendMessage(Component.text("Jugador no encontrado: " + args[1], NamedTextColor.RED));
+            lang.send(sender, "admin.player_not_found", "player", args[1]);
             return;
         }
 
         Optional<Quest> questOpt = engine.getQuestManager().get(args[2]);
         if (questOpt.isEmpty()) {
-            sender.sendMessage(Component.text("No existe una misión con id: " + args[2], NamedTextColor.RED));
+            lang.send(sender, "admin.quest_not_found", "id", args[2]);
             return;
         }
 
         engine.failQuest(target, questOpt.get());
-        sender.sendMessage(Component.text("✔ Misión '" + args[2] + "' marcada como fallida para " + target.getName(),
-                NamedTextColor.GREEN));
+        lang.send(sender, "admin.fail_success", "quest", args[2], "player", target.getName());
     }
 
     private void handleReset(CommandSender sender, String[] args) {
 
         if (args.length < 3) {
-            sender.sendMessage(Component.text("Uso: /questadmin reset <jugador> <questId>", NamedTextColor.RED));
+            lang.send(sender, "admin.reset_usage");
             return;
         }
 
         Player target = Bukkit.getPlayerExact(args[1]);
         if (target == null) {
-            sender.sendMessage(Component.text("Jugador no encontrado: " + args[1], NamedTextColor.RED));
+            lang.send(sender, "admin.player_not_found", "player", args[1]);
             return;
         }
 
         engine.getStateManager().getOrLoad(target).resetQuest(args[2]);
-        sender.sendMessage(Component.text("✔ Progreso de '" + args[2] + "' reiniciado para " + target.getName(),
-                NamedTextColor.GREEN));
+        lang.send(sender, "admin.reset_success", "quest", args[2], "player", target.getName());
     }
 
     private void handleReload(CommandSender sender) {
+
+        plugin.reloadConfig();
+        lang.reload(plugin.getConfig().getString("language", "es"));
+
         engine.getQuestManager().reload();
-        sender.sendMessage(Component.text(
-                "✔ Recargado: " + engine.getQuestManager().count() + " misión(es).", NamedTextColor.GREEN));
+        lang.send(sender, "admin.reload_success", "count", engine.getQuestManager().count());
     }
 
     @Override

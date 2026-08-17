@@ -1,5 +1,6 @@
 package com.sack.rpgroll.magic.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.magic.core.CatalystManager;
@@ -31,15 +32,17 @@ public class CatalystEditorGUI extends InventoryGUI {
 
     private final CatalystManager catalystManager;
     private final ChatPromptManager chatPromptManager;
+    private final LangManager lang;
     private final Runnable onBack;
     private SpellCatalyst current;
 
     public CatalystEditorGUI(Player player, SpellCatalyst catalyst, CatalystManager catalystManager,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text("Catalizador: " + catalyst.id(), NamedTextColor.GOLD), SIZE);
+        super(player, chatPromptManager.lang().component("gui.catalyst_editor.title", "id", catalyst.id()), SIZE);
         this.current = catalyst;
         this.catalystManager = catalystManager;
         this.chatPromptManager = chatPromptManager;
+        this.lang = chatPromptManager.lang();
         this.onBack = onBack;
     }
 
@@ -59,37 +62,38 @@ public class CatalystEditorGUI extends InventoryGUI {
         }
 
         setItem(NAME_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(Component.text("Nombre: " + current.displayName(), NamedTextColor.YELLOW)).build());
+                .setName(lang.component("gui.common.name_label", "name", current.displayName())).build());
 
         setItem(MATERIAL_SLOT, new ItemBuilder(SchoolBrowserGUI.parseMaterial(current.material()))
-                .setName(Component.text("Material: " + current.material(), NamedTextColor.YELLOW)).build());
+                .setName(lang.component("gui.catalyst_editor.material_label", "material", current.material())).build());
 
         setItem(DESCRIPTION_SLOT, new ItemBuilder(Material.WRITTEN_BOOK)
-                .setName(Component.text("Descripción", NamedTextColor.YELLOW))
+                .setName(lang.component("gui.common.description_title"))
                 .setLore(ItemBuilder.toLoreLines(
-                        current.description().isBlank() ? "(sin descripción)" : current.description()))
+                        current.description().isBlank() ? lang.raw("gui.common.no_description")
+                                : current.description()))
                 .build());
 
         setItem(POWER_SLOT, new ItemBuilder(Material.IRON_SWORD)
-                .setName(Component.text(String.format(Locale.ROOT, "Poder: x%.2f", current.powerMultiplier()),
-                        NamedTextColor.RED))
-                .setLore(Component.text("Click: +0.1 · Click derecho: -0.1", NamedTextColor.GRAY)).build());
+                .setName(lang.component("gui.catalyst_editor.power_label",
+                        "value", String.format(Locale.ROOT, "%.2f", current.powerMultiplier())))
+                .setLore(lang.component("gui.common.step_01")).build());
 
         setItem(COST_SLOT, new ItemBuilder(Material.LAPIS_LAZULI)
-                .setName(Component.text(String.format(Locale.ROOT, "Costo de maná: x%.2f", current.costMultiplier()),
-                        NamedTextColor.BLUE))
-                .setLore(Component.text("Click: +0.1 · Click derecho: -0.1", NamedTextColor.GRAY)).build());
+                .setName(lang.component("gui.catalyst_editor.mana_cost_label",
+                        "value", String.format(Locale.ROOT, "%.2f", current.costMultiplier())))
+                .setLore(lang.component("gui.common.step_01")).build());
 
         setItem(RANGE_SLOT, new ItemBuilder(Material.SPYGLASS)
-                .setName(Component.text(String.format(Locale.ROOT, "Alcance: x%.2f", current.rangeMultiplier()),
-                        NamedTextColor.LIGHT_PURPLE))
-                .setLore(Component.text("Click: +0.1 · Click derecho: -0.1", NamedTextColor.GRAY)).build());
+                .setName(lang.component("gui.catalyst_editor.range_label",
+                        "value", String.format(Locale.ROOT, "%.2f", current.rangeMultiplier())))
+                .setLore(lang.component("gui.common.step_01")).build());
 
         setItem(GIVE_SLOT, new ItemBuilder(Material.CHEST)
-                .setName(Component.text("▶ Darme uno", NamedTextColor.GREEN))
+                .setName(lang.component("gui.catalyst_editor.give"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back")));
     }
 
     @Override
@@ -101,21 +105,21 @@ public class CatalystEditorGUI extends InventoryGUI {
         double sign = click == ClickType.RIGHT ? -0.1 : 0.1;
 
         if (slot == NAME_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el nuevo nombre:", value -> replace(new SpellCatalyst(
+            chatPromptManager.prompt(player, lang.raw("gui.common.prompt_name"), value -> replace(new SpellCatalyst(
                     current.id(), value, current.material(), current.description(), current.powerMultiplier(),
                     current.costMultiplier(), current.rangeMultiplier())));
             return;
         }
 
         if (slot == MATERIAL_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el Material:", value -> replace(new SpellCatalyst(current.id(),
+            chatPromptManager.prompt(player, lang.raw("gui.catalyst_editor.prompt_material"), value -> replace(new SpellCatalyst(current.id(),
                     current.displayName(), value, current.description(), current.powerMultiplier(),
                     current.costMultiplier(), current.rangeMultiplier())));
             return;
         }
 
         if (slot == DESCRIPTION_SLOT) {
-            chatPromptManager.prompt(player, "Escribí la nueva descripción:", value -> replace(new SpellCatalyst(
+            chatPromptManager.prompt(player, lang.raw("gui.common.prompt_description"), value -> replace(new SpellCatalyst(
                     current.id(), current.displayName(), current.material(), value, current.powerMultiplier(),
                     current.costMultiplier(), current.rangeMultiplier())));
             return;
@@ -143,9 +147,8 @@ public class CatalystEditorGUI extends InventoryGUI {
         }
 
         if (slot == GIVE_SLOT) {
-            player.getInventory().addItem(MagicItemFactory.createCatalyst(current));
-            player.sendMessage(Component.text("✔ Te diste un catalizador '" + current.displayName() + "'.",
-                    NamedTextColor.GREEN));
+            player.getInventory().addItem(MagicItemFactory.createCatalyst(current, lang));
+            lang.send(player, "gui.catalyst_editor.given", "name", current.displayName());
             return;
         }
 

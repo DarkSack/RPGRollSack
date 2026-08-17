@@ -1,5 +1,7 @@
 package com.sack.rpgroll.ranching;
 
+import com.sack.rpgroll.common.assets.ModuleAssetSync;
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.common.resource.DirectoryCreator;
 import com.sack.rpgroll.common.resource.ResourceCopier;
 import com.sack.rpgroll.ranching.api.RanchingAPI;
@@ -50,14 +52,20 @@ public class RanchingPlugin extends JavaPlugin {
     private VaccineManager vaccineManager;
     private MedicineManager medicineManager;
     private AnimalManager animalManager;
+    private LangManager langManager;
 
     @Override
     public void onEnable() {
 
         saveDefaultConfig();
 
+        langManager = new LangManager(this, List.of("es", "en", "pt_BR"), "es");
+        langManager.reload(getConfig().getString("language", "es"));
+
         new DirectoryCreator(this).create(DIRECTORIES);
         new ResourceCopier(this).copyDirectories(DIRECTORIES);
+
+        new ModuleAssetSync(this, "ranching").syncAll();
 
         initializeManagers();
 
@@ -72,19 +80,19 @@ public class RanchingPlugin extends JavaPlugin {
         animalManager.loadAll();
 
         BreedingEngine breedingEngine = new BreedingEngine(speciesManager, breedManager, geneManager, geneticsEngine,
-                pedigreeService, animalManager, inbreedingGenerations);
+                pedigreeService, animalManager, inbreedingGenerations, langManager);
 
         RanchingAPI.init(speciesManager, breedManager, geneManager, feedManager, diseaseManager, vaccineManager,
                 medicineManager, animalManager, geneticsEngine, pedigreeService, breedingEngine);
 
-        ChatPromptManager chatPromptManager = new ChatPromptManager(this);
+        ChatPromptManager chatPromptManager = new ChatPromptManager(this, langManager);
         getServer().getPluginManager().registerEvents(chatPromptManager, this);
 
         getServer().getPluginManager().registerEvents(new AnimalCareListener(animalManager, speciesManager,
-                feedManager, medicineManager, vaccineManager, diseaseManager), this);
+                feedManager, medicineManager, vaccineManager, diseaseManager, langManager), this);
         getServer().getPluginManager().registerEvents(new BreedingListener(animalManager, breedingEngine), this);
         getServer().getPluginManager().registerEvents(
-                new ProductionListener(animalManager, speciesManager, breedManager, geneManager, diseaseManager),
+                new ProductionListener(animalManager, speciesManager, breedManager, geneManager, diseaseManager, langManager),
                 this);
 
         startTasks(animalManager, breedingEngine, inbreedingGenerations);
@@ -104,7 +112,7 @@ public class RanchingPlugin extends JavaPlugin {
         if (playerCommand == null) {
             getLogger().severe("✘ El comando 'ranching' no está declarado en plugin.yml");
         } else {
-            var ranchingCommand = new RanchingCommand(animalManager, speciesManager, breedManager);
+            var ranchingCommand = new RanchingCommand(animalManager, speciesManager, breedManager, chatPromptManager);
             playerCommand.setExecutor(ranchingCommand);
             playerCommand.setTabCompleter(ranchingCommand);
         }

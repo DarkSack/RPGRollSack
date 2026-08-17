@@ -1,5 +1,6 @@
 package com.sack.rpgroll.economy.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.economy.market.MarketEngine;
 import com.sack.rpgroll.economy.market.MarketProduct;
 import com.sack.rpgroll.economy.market.MarketProductManager;
@@ -26,15 +27,17 @@ public class MarketBrowserGUI extends InventoryGUI {
     private final MarketEngine marketEngine;
     private final ChatPromptManager chatPromptManager;
     private final Runnable onBack;
+    private final LangManager lang;
     private List<MarketProduct> products;
 
     public MarketBrowserGUI(Player player, MarketProductManager productManager, MarketEngine marketEngine,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text("Mercado", NamedTextColor.GOLD), SIZE);
+        super(player, Component.text(chatPromptManager.lang().raw("market.browser.title"), NamedTextColor.GOLD), SIZE);
         this.productManager = productManager;
         this.marketEngine = marketEngine;
         this.chatPromptManager = chatPromptManager;
         this.onBack = onBack;
+        this.lang = chatPromptManager.lang();
         this.products = List.copyOf(productManager.getAll());
     }
 
@@ -54,16 +57,16 @@ public class MarketBrowserGUI extends InventoryGUI {
 
             setItem(i, new ItemBuilder(CurrencyBrowserGUI.parseMaterial(product.icon()))
                     .setName(Component.text(product.displayName(), NamedTextColor.YELLOW))
-                    .setLore(Component.text("id: " + product.id(), NamedTextColor.GRAY),
-                            Component.text("precio actual: " + String.format("%.2f", price), NamedTextColor.GREEN),
-                            Component.text("base: " + product.basePrice(), NamedTextColor.GRAY),
-                            Component.text("Click para editar", NamedTextColor.YELLOW))
+                    .setLore(lang.component("currency.browser.lore_id", "id", product.id()),
+                            lang.component("market.browser.lore_price", "price", String.format("%.2f", price)),
+                            lang.component("market.browser.lore_base", "price", product.basePrice()),
+                            lang.component("common.click_edit"))
                     .build());
         }
 
         setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Crear producto nuevo", NamedTextColor.GREEN)).build());
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+                .setName(lang.component("market.browser.new_button")).build());
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("common.back")));
     }
 
     @Override
@@ -88,12 +91,12 @@ public class MarketBrowserGUI extends InventoryGUI {
     }
 
     private void promptNew() {
-        chatPromptManager.prompt(player, "Escribí el id del nuevo producto (ej. un Material vanilla):", value -> {
+        chatPromptManager.prompt(player, lang.raw("market.browser.prompt_new_id"), value -> {
 
             String id = value.trim().toUpperCase(Locale.ROOT).replace(' ', '_');
 
             if (productManager.exists(id)) {
-                player.sendMessage(Component.text("Ya existe un producto con ese id.", NamedTextColor.RED));
+                lang.send(player, "market.browser.duplicate_id");
                 reopen();
                 return;
             }

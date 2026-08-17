@@ -33,11 +33,16 @@ public class GuildCustomizationGUI extends InventoryGUI {
 
     public GuildCustomizationGUI(Player player, Guild guild, GuildManager guildManager,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text("Personalización: " + guild.name(), NamedTextColor.GOLD), SIZE);
+        super(player, Component.text(chatPromptManager.lang().raw("guild.customization.title", "name", guild.name()),
+                NamedTextColor.GOLD), SIZE);
         this.guild = guild;
         this.guildManager = guildManager;
         this.chatPromptManager = chatPromptManager;
         this.onBack = onBack;
+    }
+
+    private com.sack.rpgroll.common.lang.LangManager lang() {
+        return chatPromptManager.lang();
     }
 
     @Override
@@ -50,31 +55,36 @@ public class GuildCustomizationGUI extends InventoryGUI {
         }
 
         setItem(NAME_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(Component.text("Nombre: " + guild.name(), NamedTextColor.YELLOW))
+                .setName(Component.text(lang().raw("guild.customization.name_label", "name", guild.name()),
+                        NamedTextColor.YELLOW))
                 .build());
 
         setItem(COLOR_SLOT, new ItemBuilder(Material.WHITE_DYE)
-                .setName(Component.text("Color: " + guild.color(), guild.color()))
-                .setLore(Component.text("Click para cambiar", NamedTextColor.GRAY))
+                .setName(Component.text(lang().raw("guild.customization.color_label", "color", guild.color()),
+                        guild.color()))
+                .setLore(Component.text(lang().raw("guild.customization.lore.click_to_change"), NamedTextColor.GRAY))
                 .build());
 
         setItem(ICON_SLOT, new ItemBuilder(guild.icon())
-                .setName(Component.text("Ícono: " + guild.icon(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para escribir un Material nuevo", NamedTextColor.GRAY))
+                .setName(Component.text(lang().raw("guild.customization.icon_label", "icon", guild.icon()),
+                        NamedTextColor.YELLOW))
+                .setLore(Component.text(lang().raw("guild.customization.lore.click_to_type_material"),
+                        NamedTextColor.GRAY))
                 .build());
 
         setItem(MOTTO_SLOT, new ItemBuilder(Material.BOOK)
-                .setName(Component.text("Lema: " + (guild.motto().isBlank() ? "(sin lema)" : guild.motto()),
+                .setName(Component.text(lang().raw("guild.customization.motto_label", "motto",
+                        guild.motto().isBlank() ? lang().raw("guild.customization.no_motto") : guild.motto()),
                         NamedTextColor.YELLOW))
                 .build());
 
         setItem(DESCRIPTION_SLOT, new ItemBuilder(Material.WRITTEN_BOOK)
-                .setName(Component.text("Descripción", NamedTextColor.YELLOW))
-                .setLore(ItemBuilder.toLoreLines(guild.description().isBlank() ? "(sin descripción)"
-                        : guild.description()))
+                .setName(Component.text(lang().raw("guild.customization.description_label"), NamedTextColor.YELLOW))
+                .setLore(ItemBuilder.toLoreLines(guild.description().isBlank()
+                        ? lang().raw("guild.customization.no_description") : guild.description()))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang().raw("common.back")));
     }
 
     @Override
@@ -83,12 +93,12 @@ public class GuildCustomizationGUI extends InventoryGUI {
         event.setCancelled(true);
 
         if (!guild.roleOf(player.getUniqueId()).canManageSettings() && event.getSlot() != BACK_SLOT) {
-            player.sendMessage(Component.text("No tenés permiso para personalizar la guild.", NamedTextColor.RED));
+            lang().send(player, "guild.customization.no_permission");
             return;
         }
 
         switch (event.getSlot()) {
-            case NAME_SLOT -> chatPromptManager.prompt(player, "Escribí el nuevo nombre de la guild:", value -> {
+            case NAME_SLOT -> chatPromptManager.prompt(player, "guild.customization.prompt_name", value -> {
                 guild.setName(value.trim());
                 save();
                 reopen();
@@ -99,22 +109,22 @@ public class GuildCustomizationGUI extends InventoryGUI {
                 save();
                 build();
             }
-            case ICON_SLOT -> chatPromptManager.prompt(player, "Escribí el nombre del Material (ej. DIAMOND_SWORD):",
+            case ICON_SLOT -> chatPromptManager.prompt(player, "guild.customization.prompt_icon",
                     value -> {
                         try {
                             guild.setIcon(Material.valueOf(value.trim().toUpperCase(java.util.Locale.ROOT)));
                         } catch (IllegalArgumentException e) {
-                            player.sendMessage(Component.text("Material inválido.", NamedTextColor.RED));
+                            lang().send(player, "guild.customization.invalid_material");
                         }
                         save();
                         reopen();
                     });
-            case MOTTO_SLOT -> chatPromptManager.prompt(player, "Escribí el nuevo lema de la guild:", value -> {
+            case MOTTO_SLOT -> chatPromptManager.prompt(player, "guild.customization.prompt_motto", value -> {
                 guild.setMotto(value.trim());
                 save();
                 reopen();
             });
-            case DESCRIPTION_SLOT -> chatPromptManager.prompt(player, "Escribí la nueva descripción de la guild:",
+            case DESCRIPTION_SLOT -> chatPromptManager.prompt(player, "guild.customization.prompt_description",
                     value -> {
                         guild.setDescription(value.trim());
                         save();

@@ -10,6 +10,11 @@
 id: reference_full_example
 display-name: "&d&lPez de Referencia"
 icon: PUFFERFISH
+# El material real que muestra la textura custom es "icon" de arriba; este número
+# de custom-model-data lo resuelve un resource pack real (mismo pipeline que
+# RPGRoll-Items: dejá el modelo/textura en plugins/RPGRoll-Fishing/resourcepack/
+# <namespace>/<textures|models>/item/... — se sincroniza solo hacia SackResourcePack
+# si está instalado). Sin resource pack, el ítem se ve como el "icon" vanilla normal.
 custom-model-data: 200001
 description: "Un pez de ejemplo que documenta cada campo disponible."
 

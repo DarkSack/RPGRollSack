@@ -2,14 +2,12 @@ package com.sack.rpgroll.command.commands;
 
 import com.sack.rpgroll.RPGRoll;
 import com.sack.rpgroll.command.RPGCommand;
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.character.ClassSelectionGUI;
 import com.sack.rpgroll.gui.character.RaceSelectionGUI;
 import com.sack.rpgroll.api.playerclass.ClassManager;
 import com.sack.rpgroll.race.RaceAttributeApplier;
 import com.sack.rpgroll.api.race.RaceManager;
-
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -34,9 +32,10 @@ public class AdminGuiCommand implements RPGCommand {
     public void execute(CommandSender sender, String[] args) {
 
         Player player = (Player) sender;
+        LangManager lang = plugin.getBootstrap().getServices().get(LangManager.class);
 
         if (args.length < 1) {
-            player.sendMessage(Component.text("Uso: " + getUsage(), NamedTextColor.RED));
+            lang.send(player, "admin_gui_command.usage", "usage", getUsage());
             return;
         }
 
@@ -44,39 +43,36 @@ public class AdminGuiCommand implements RPGCommand {
 
         try {
             switch (target) {
-                case "race" -> openRacePreview(player);
-                case "class" -> openClassPreview(player);
-                default -> player.sendMessage(
-                        Component.text("Opción inválida. Usa: race o class", NamedTextColor.RED));
+                case "race" -> openRacePreview(player, lang);
+                case "class" -> openClassPreview(player, lang);
+                default -> lang.send(player, "admin_gui_command.invalid_option");
             }
         } catch (Exception exception) {
-            player.sendMessage(Component.text("Error al abrir la interfaz.", NamedTextColor.RED));
+            lang.send(player, "admin_gui_command.error");
             plugin.getLogger().severe("✘ Error en /rpg admingui: " + exception.getMessage());
         }
     }
 
-    private void openRacePreview(Player player) {
+    private void openRacePreview(Player player, LangManager lang) {
         RaceManager raceManager = plugin.getBootstrap().getServices().get(RaceManager.class);
         RaceAttributeApplier raceAttributeApplier = plugin.getBootstrap().getServices().get(RaceAttributeApplier.class);
 
         RaceSelectionGUI gui = new RaceSelectionGUI(player, raceManager, raceId -> {
-            player.sendMessage(Component.text("[Preview] Raza seleccionada: ", NamedTextColor.AQUA)
-                    .append(Component.text(raceId, NamedTextColor.WHITE)));
+            lang.send(player, "admin_gui_command.race_preview", "race", raceId);
 
             raceManager.get(raceId).ifPresent(race -> raceAttributeApplier.apply(player, race));
 
-        }, false);
+        }, false, lang);
 
         gui.open();
     }
 
-    private void openClassPreview(Player player) {
+    private void openClassPreview(Player player, LangManager lang) {
         ClassManager classManager = plugin.getBootstrap().getServices().get(ClassManager.class);
 
         ClassSelectionGUI gui = new ClassSelectionGUI(player, classManager, "(preview)", playerClass -> {
-            player.sendMessage(Component.text("[Preview] Clase seleccionada: ", NamedTextColor.AQUA)
-                    .append(Component.text(playerClass, NamedTextColor.WHITE)));
-        }, false);
+            lang.send(player, "admin_gui_command.class_preview", "class", playerClass);
+        }, false, lang);
 
         gui.open();
     }

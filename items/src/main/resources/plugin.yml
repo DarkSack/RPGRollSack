@@ -5,7 +5,7 @@ api-version: "26.1.1"
 author: Sack
 description: Motor de ítems personalizados (componentes, stats, sockets, skins, mejoras, recetas) para RPGRoll
 depend: [RPGRoll]
-softdepend: [RPGRoll-Enchantments, Vault, "PlaceholderAPI"]
+softdepend: [RPGRoll-Enchantments, Vault, "PlaceholderAPI", SackResourcePack]
 
 commands:
   itemadmin:

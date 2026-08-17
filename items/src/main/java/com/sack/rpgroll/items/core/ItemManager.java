@@ -15,8 +15,9 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * Carga las definiciones de ítem desde plugins/RPGRoll-Items/items/**\/*.yml
- * (recursivo — admite subcarpetas de categoría como sword/, armor/, etc.)
+ * Carga las definiciones de ítem desde plugins/RPGRoll-Items/packs/**\/*.yml
+ * (recursivo — cada subcarpeta directa de packs/ es un "pack"/colección,
+ * ej. packs/sword/, packs/armor/)
  * y permite además registrar ítems por código —
  * {@code api.items().registerItemType(...)} de la filosofía del addon,
  * expuesto acá como {@link #register(ItemDefinition)}. Sobrevive a
@@ -27,7 +28,7 @@ public class ItemManager extends ContentManager<ItemDefinition> {
     private final Map<String, ItemDefinition> apiItems = new LinkedHashMap<>();
 
     public ItemManager(JavaPlugin itemsPlugin) {
-        super(resolveCoreInstance(), new YamlLoader(itemsPlugin), "items", "ítem", new ItemParser(), true);
+        super(resolveCoreInstance(), new YamlLoader(itemsPlugin), "packs", "ítem", new ItemParser(), true);
     }
 
     public void register(ItemDefinition item) {

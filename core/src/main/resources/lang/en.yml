@@ -1,0 +1,584 @@
+# Language file: English
+# RPGRoll - Message system
+
+# General messages
+general:
+  prefix: "&7[&6RPGRoll&7]&r"
+  no_permission: "&cYou don't have permission to use this command."
+  player_only: "&cThis command can only be used by players."
+  unknown_command: "&cUnknown command. Use &e/rpg help&c to see the available commands."
+  config_reloaded: "&aConfiguration reloaded successfully."
+  reloading: "&eReloading configuration and content..."
+
+# Player system
+player:
+  data_loading: "&eLoading player data..."
+  data_loaded: "&aData loaded successfully!"
+  data_error: "&cError loading data. Please contact an administrator."
+  first_join: "&eWelcome to RPGRoll! Choose your race and class to get started."
+
+# Level system
+level:
+  level_up: "&aCongratulations! You reached level &e{level}&a!"
+  exp_gained: "&a+{exp} EXP"
+  max_level: "&eYou have reached the maximum level."
+  current_level: "&aCurrent level: &e{level}"
+  current_exp: "&aExperience: &e{current}/{required}"
+  exp_to_next: "&aExperience to next level: &e{remaining}"
+
+# Stats system
+stats:
+  view_stats: "&6=== {player}'s Stats ==="
+  strength: "&cStrength: &f{value}"
+  dexterity: "&aDexterity: &f{value}"
+  constitution: "&6Constitution: &f{value}"
+  intelligence: "&9Intelligence: &f{value}"
+  wisdom: "&bWisdom: &f{value}"
+  charisma: "&dCharisma: &f{value}"
+  points_available: "&eAvailable points: &f{points}"
+  stat_increased: "&a{stat} increased to {value}!"
+  stat_max: "&cThis stat is already at its maximum!"
+  no_points: "&cYou don't have any stat points available."
+  invalid_stat: "&cInvalid stat. Use: strength, dexterity, constitution, intelligence, wisdom, charisma"
+  footer: "&6======================================"
+
+# Class system
+class:
+  select: "&aYou selected the class: &e{class}"
+  current: "&aYour current class: &e{class}"
+  no_class: "&cYou haven't selected a class yet."
+  cannot_change: "&cYou can't change your class."
+  min_level: "&cYou need level {level} to select a class."
+  list: "&6Available classes: &e{classes}"
+
+# Race system
+race:
+  select: "&aYou selected the race: &e{race}"
+  current: "&aYour current race: &e{race}"
+  no_race: "&cYou haven't selected a race yet."
+  cannot_change: "&cYou can't change your race."
+  list: "&6Available races: &e{races}"
+
+# Skill system
+skill:
+  activated: "&aSkill &e{skill}&a activated!"
+  cooldown: "&cThis skill is on cooldown. Wait {time} seconds."
+  no_mana: "&cYou don't have enough mana. You need {mana}."
+  in_combat: "&cYou can't use this skill in combat."
+  learned: "&aYou learned the skill &e{skill}&a!"
+  max_level: "&eThis skill is already at its maximum level."
+
+# Profession system
+profession:
+  learned: "&aYou learned the profession: &e{profession}"
+  max_professions: "&cYou already have the maximum number of professions allowed ({max})."
+  dropped: "&eYou dropped the profession: &e{profession}"
+  cannot_drop: "&cYou can't drop professions."
+  exp_gained: "&a+{exp} EXP in {profession}"
+  level_up: "&aYour &e{profession}&a level went up to &e{level}&a!"
+
+# Combat system
+combat:
+  entered: "&cYou entered combat!"
+  exited: "&aYou are no longer in combat."
+  critical_hit: "&eCritical hit! &6{damage} damage"
+  killed_by: "&cYou were killed by {killer}"
+
+# Quest system
+quest:
+  started: "&aYou started the quest: &e{quest}"
+  completed: "&aQuest completed! &e{quest}"
+  failed: "&cQuest failed: &e{quest}"
+  objective_progress: "&e{quest}: &a{current}/{total} {objective}"
+  reward_received: "&aReward received: &e{reward}"
+
+# Errors and warnings
+error:
+  database: "&cDatabase error. Contact an administrator."
+  internal: "&cInternal server error."
+  invalid_player: "&cPlayer not found."
+  command_failed: "&cFailed to execute the command."
+  player_offline: "&cPlayer not found or offline: {player}"
+  no_rpg_data: "&cThat player doesn't have RPG data loaded."
+  load_data: "&cError loading your data."
+
+# /rpg addxp command
+addxp:
+  usage: "&cUsage: /rpg addxp <player> <amount>"
+  invalid_amount: "&cThe XP amount must be a valid number."
+  negative_amount: "&cThe XP amount must be positive."
+  player_not_found: "&cPlayer not found: {player}"
+  data_load_error: "&cError loading player data."
+  success_admin: "&a✔ Added {amount} XP to {player}"
+  notify_target: "&eAn administrator added {amount} XP to you&r&a. Your total XP is now: {total}"
+  summary: "&bTotal XP: {total}&r&b | Level: {level}"
+  error: "&cError adding experience."
+
+# Commands - Help
+help:
+  header: "&6=== RPGRoll Help ==="
+  footer: "&6======================"
+  rpg_stats: "&e/rpg stats &7- View your stats"
+  rpg_level: "&e/rpg level &7- View your level and experience"
+  rpg_class: "&e/rpg class [name] &7- View or change your class"
+  rpg_race: "&e/rpg race [name] &7- View or change your race"
+  rpg_skills: "&e/rpg skills &7- View your skills"
+  rpg_reload: "&e/rpg reload &7- Reload configuration (admin)"
+
+# Central command manager (/rpg <sub>, help, generic errors)
+command_manager:
+  unknown_subcommand: "&cUnknown subcommand: {input}"
+  use_help: "&eUse /rpg help to see the available commands."
+  help_header: "&6========== RPGRoll - Help =========="
+  help_footer: "&6====================================="
+
+# /rpg admin job command
+admin_job:
+  usage: "&cUsage: {usage}"
+  invalid_action: "&cInvalid action: give, remove, setlevel"
+  give_usage: "&cUsage: /rpg job give <player> <jobId>"
+  job_not_found: "&cThat job doesn't exist: {job}"
+  already_has_job: "&eThat player already has that job."
+  jobs_full: "&cThat player already has the maximum number of jobs (3). Use remove first."
+  give_success: "&a✔ Job assigned: &6{job}&a to {player}"
+  remove_usage: "&cUsage: /rpg job remove <player> <jobId>"
+  remove_no_job: "&eThat player doesn't have that job."
+  remove_success: "&a✔ Job removed from {player}"
+  setlevel_usage: "&cUsage: /rpg job setlevel <player> <jobId> <level>"
+  invalid_level_number: "&cLevel must be a number."
+  invalid_level_range: "&cInvalid level. Maximum: {max}"
+  no_active_job: "&cThat player doesn't have that job active."
+  setlevel_success: "&a✔ {job} level for {player} set to {level}"
+
+# /rpg admin setclass command
+admin_setclass:
+  usage: "&cUsage: {usage}"
+  class_not_found: "&cThat class doesn't exist: {class}"
+  success: "&a✔ {player}'s class changed to: &6{class}"
+  stats_recalculated: "&e  (stats recalculated from scratch)"
+  stats_unmodified: "&7  (stats unchanged — use --recalc to recalculate them)"
+  notify_target: "&eAn administrator changed your class to: &6{class}"
+  error: "&cError changing the class."
+
+# /rpg admin setrace command
+admin_setrace:
+  usage: "&cUsage: {usage}"
+  race_not_found: "&cThat race doesn't exist: {race}"
+  success: "&a✔ {player}'s race changed to: &6{race}"
+  notify_target: "&eAn administrator changed your race to: &6{race}"
+  error: "&cError changing the race."
+
+# /rpg admin resetstats command
+admin_resetstats:
+  usage: "&cUsage: {usage}"
+  success: "&a✔ {player}'s stats have been reset. {points} stat point(s) available to reassign."
+  notify_target: "&eAn administrator reset your stats. You have {points} point(s) to reassign with /rpg allocate."
+  error: "&cError resetting the stats."
+
+# /rpg stats command
+stats_command:
+  not_found: "&cCouldn't find your character's data."
+  error: "&cError loading your stats."
+
+# /rpg traits command
+traits_command:
+  not_found: "&cCouldn't find your player profile."
+  error: "&cError loading your traits."
+  header: "&6============== Your Traits =============="
+  none: "&eYou haven't acquired any traits yet."
+  entry: "&d✦ {trait}"
+  count: "&7Total count: {count}"
+  footer: "&6========================================"
+
+# /rpg level command
+level_command:
+  not_found: "&cCouldn't find your player information."
+  error: "&cError loading your level information."
+  header: "&6========== Your Level =========="
+  level: "&aLevel: {level}"
+  experience: "&bExperience: {current}/{required}"
+  next_level: "&eTo next level: {remaining} EXP"
+  max_level: "&6You have reached the maximum level!"
+  footer: "&6=============================="
+
+# /rpg allocate command
+allocate_stat_command:
+  usage: "&cUsage: {usage}"
+  invalid_amount: "&cThe amount must be a number."
+  must_be_positive: "&cThe amount must be greater than 0."
+  invalid_allocation: "&cCouldn't allocate. Check the stat name, that you have enough points ({available} available), and that the final value doesn't exceed {max}."
+  success: "&a✔ Allocated {amount} point(s) to {stat}."
+  remaining: "&bPoints remaining: {points}"
+  error: "&cError allocating the stat point."
+
+# /rpg levelup command (debug, admin)
+levelup_debug_command:
+  no_permission: "&cYou don't have permission to use this command."
+  success: "&a✔ Level up processed successfully."
+  no_xp: "&eYou don't have enough XP to level up."
+  error: "&cError processing the level up."
+
+# /rpg jobs command
+jobs_command:
+  error: "&cError opening your jobs."
+
+# /rpg create command
+create_command:
+  error: "&cError starting character creation."
+
+# /rpg admingui command (race/class preview, admin)
+admin_gui_command:
+  usage: "&cUsage: {usage}"
+  invalid_option: "&cInvalid option. Use: race or class"
+  error: "&cError opening the interface."
+  race_preview: "&b[Preview] Selected race: &f{race}"
+  class_preview: "&b[Preview] Selected class: &f{class}"
+
+# /rpg admincontent command (visual content editor, admin)
+admin_content_command:
+  usage: "&cUsage: {usage}"
+  invalid_option: "&cInvalid option. Use: race, class, job, skill or trait"
+
+# GUI: race browser (admin)
+race_browser_gui:
+  title: "&6RPGRoll Races"
+  attribute_count: "&7{count} base attribute(s)"
+  click_to_edit: "&eClick to edit"
+  create_new: "&aCreate new race"
+  close_button: "Close"
+  prompt_new: "Type the id of the new race:"
+  already_exists: "&cA race with that id already exists."
+
+# GUI: class browser (admin)
+class_browser_gui:
+  title: "&6RPGRoll Classes"
+  attribute_count: "&7{count} base attribute(s)"
+  click_to_edit: "&eClick to edit"
+  create_new: "&aCreate new class"
+  close_button: "Close"
+  prompt_new: "Type the id of the new class:"
+  already_exists: "&cA class with that id already exists."
+
+# GUI: race editor (admin)
+race_editor_gui:
+  title: "&6Race: {id}"
+  name_slot_name: "Name: {name}"
+  click_new_value: "&7Click to type a new one"
+  description_slot_name: "&eDescription"
+  no_description: "(no description)"
+  attributes_slot_name: "&eBase attributes: {attributes}"
+  attributes_slot_lore: "&7Click to type (e.g. STR=3,CON=2)"
+  passive_traits_slot_name: "&ePassive traits: {traits}"
+  passive_traits_slot_lore: "&7Click to type the comma-separated list"
+  lore_slot_name: "&eLore: {count} line(s)"
+  lore_slot_lore: "&7Click to type them all separated by ';'"
+  scale_slot_name: "&eScale: {scale}"
+  scale_slot_lore: "&7Click: +0.1 · Right-click: -0.1"
+  speed_slot_name: "&eSpeed: {percent}%"
+  speed_slot_lore: "&7Click: +5% · Right-click: -5%"
+  back_button: "Back"
+  prompt_name: "Type the new name:"
+  prompt_description: "Type the new description:"
+  prompt_attributes: "Type the comma-separated attributes (e.g. STR=3,CON=2):"
+  prompt_passive_traits: "Type the comma-separated passive trait ids:"
+  prompt_lore: "Type the lore lines separated by ';':"
+
+# GUI: class editor (admin)
+class_editor_gui:
+  title: "&6Class: {id}"
+  name_slot_name: "Name: {name}"
+  click_new_value: "&7Click to type a new one"
+  description_slot_name: "&eDescription"
+  no_description: "(no description)"
+  attributes_slot_name: "&eBase attributes: {attributes}"
+  attributes_slot_lore: "&7Click to type (e.g. STR=3,CON=2)"
+  passive_traits_slot_name: "&ePassive traits: {traits}"
+  passive_traits_slot_lore: "&7Click to type the comma-separated list"
+  lore_slot_name: "&eLore: {count} line(s)"
+  lore_slot_lore: "&7Click to type them all separated by ';'"
+  back_button: "Back"
+  prompt_name: "Type the new name:"
+  prompt_description: "Type the new description:"
+  prompt_attributes: "Type the comma-separated attributes (e.g. STR=3,CON=2):"
+  prompt_passive_traits: "Type the comma-separated passive trait ids:"
+  prompt_lore: "Type the lore lines separated by ';':"
+
+# GUI: job editor (admin)
+job_editor_gui:
+  title: "&6Job: {id}"
+  name_slot_name: "Name: {name}"
+  click_new_value: "&7Click to type a new one"
+  name_slot_note_line1: "&8Note: a new job needs its own Java listener"
+  name_slot_note_line2: "&8to grant XP automatically (see AlquimistaJobListener, etc.)"
+  description_slot_name: "&eDescription"
+  no_description: "(no description)"
+  max_level_slot_name: "&eMax level: {level}"
+  max_level_slot_lore: "&7Click: +5 · Right-click: -5"
+  exp_base_slot_name: "&eBase XP: {exp}"
+  exp_base_slot_lore: "&7Click: +10 · Right-click: -10"
+  exp_mult_slot_name: "&eXP multiplier: {multiplier}"
+  exp_mult_slot_lore: "&7Click: +0.1 · Right-click: -0.1"
+  rewards_slot_name: "&eRewards: {count} target(s)"
+  rewards_slot_lore: "&7Click to add/update (target;money;xp)"
+  exploration_slot_name: "&eExploration: {money} gold/biome, {blocks} blocks"
+  exploration_slot_lore: "&7Click to type (biome-money;biome-xp;blocks;distance-money;distance-xp)"
+  back_button: "Back"
+  prompt_name: "Type the new name:"
+  prompt_description: "Type the new description:"
+  prompt_rewards: "Type: target;money;xp (e.g. DIAMOND_ORE;5;20):"
+  invalid_format: "&cInvalid format."
+  rewards_not_numeric: "&cMoney and XP must be numeric."
+  prompt_exploration: "Type: biome-money;biome-xp;blocks;distance-money;distance-xp (e.g. 50;100;500;10;20):"
+  exploration_missing_values: "&c5 values are required."
+  exploration_not_numeric: "&cAll values must be numeric."
+
+# GUI: skill editor (admin)
+skill_editor_gui:
+  title: "&6Skill: {id}"
+  name_slot_name: "Name: {name}"
+  click_new_value: "&7Click to type a new one"
+  description_slot_name: "&eDescription"
+  no_description: "(no description)"
+  level_slot_name: "&eRequired level: {level}"
+  level_slot_lore: "&7Click: +1 · Right-click: -1"
+  mana_slot_name: "&eMana cost: {mana}"
+  mana_slot_lore: "&7Click: +5 · Right-click: -5"
+  cooldown_slot_name: "&eCooldown: {cooldown}s"
+  cooldown_slot_lore: "&7Click: +1s · Right-click: -1s"
+  damage_slot_name: "&eDamage multiplier: {multiplier}"
+  damage_slot_lore: "&7Click: +0.1 · Right-click: -0.1"
+  back_button: "Back"
+  prompt_name: "Type the new name:"
+  prompt_description: "Type the new description:"
+
+# GUI: trait editor (admin)
+trait_editor_gui:
+  title: "&6Trait: {id}"
+  name_slot_name: "Name: {name}"
+  click_new_value: "&7Click to type a new one"
+  description_slot_name: "&eDescription"
+  no_description: "(no description)"
+  level_slot_name: "&eRequired level: {level}"
+  level_slot_lore: "&7Click: +1 · Right-click: -1"
+  effect_slot_name: "&eEffect"
+  effect_lore_line1: "&7STR {str} · DEX {dex} · CON {con}"
+  effect_lore_line2: "&7INT {int} · WIS {wis} · CHA {cha}"
+  effect_lore_line3: "&7HP {hp} · MP {mp} · DMG {dmg} · DEF {def}"
+  effect_lore_hint: "&8Click to type all of them (str,dex,con,int,wis,cha,hp,mp,dmg,def)"
+  back_button: "Back"
+  prompt_name: "Type the new name:"
+  prompt_description: "Type the new description:"
+  prompt_effect: "Type 10 comma-separated values (str,dex,con,int,wis,cha,hp,mp,dmg,def):"
+  effect_missing_values: "&c10 values are required."
+  effect_values_not_numeric: "&cAll values must be numeric."
+
+# Level up message (banner sent to the player)
+player_level_up_handler:
+  border: "&6╔════════════════════════════════╗"
+  title: "&e╠ &e&lLEVEL UP!&e ╣"
+  footer_border: "&6╚════════════════════════════════╝"
+  level: "&a╠ Level: &f{level}"
+  stat_points: "&b╠ +Stat Points: &f{points}"
+  health: "&c╠ +Health: &f{amount}"
+  mana: "&9╠ +Mana: &f{amount}"
+  skill_unlocked: "&d╠ New skill unlocked!: &f{skill}"
+  trait_unlocked: "&d╠ New trait unlocked!: &f{trait}"
+
+# Character creation flow (race + class)
+character_creation_flow:
+  already_created: "&cYou already have a character created."
+  race_label: "&eRace: &f{race}"
+  class_label: "&eClass: &f{class}"
+  race_selected: "&aYou selected the race: &6{race}"
+  save_error: "&cError creating character."
+  border: "&6════════════════════════════════"
+  success_title: "&a  Character created successfully!"
+  success_race: "&e  Race: &f{race}"
+  success_class: "&e  Class: &f{class}"
+  success_level: "&e  Level: &f1"
+  success_hint: "&7  Use &f/rpg stats&7 to view your stats"
+
+# Main jobs GUI
+jobs_gui:
+  title: "&6Jobs"
+  info_name: "&6Your jobs"
+  info_lore: "&7Active: {count}/{max}"
+  none_available: "&cNo jobs available"
+  active_badge: "&a● Active"
+  level_line: "&eLevel: {level}/{max}"
+  xp_line: "&eXP: {current}/{required}"
+  max_level: "&6Max level!"
+  click_abandon: "&cClick to abandon"
+  available_badge: "&7○ Available"
+  click_join: "&aClick to join"
+  joined: "&aYou joined the job: &6{job}"
+  left: "&eYou abandoned the job: &f{job}"
+
+# GUI to choose which job to abandon (once the 3-job cap is reached)
+job_abandon_gui:
+  title: "&cYou already have 3 jobs"
+  header_name: "&6Choose which one to abandon"
+  header_lore_line1: "&7To join a new job"
+  header_lore_line2: "&7you must first leave one active."
+  level_line: "&eLevel: {level}"
+  click_swap: "&cClick to abandon and join the new job"
+  cancel_button: "Cancel"
+  cancelled: "&eYou didn't join any new job."
+  job_unavailable: "&cThat job is no longer available."
+  joined: "&aYou joined the job: &6{job}"
+
+# Race selection GUI (character creation)
+race_selection_gui:
+  title: "&6Choose your Race"
+  none_available: "&cNo races available"
+  none_available_lore: "&7No races are loaded. Contact an admin."
+  cancel_button: "Cancel"
+  cancelled: "&eCharacter creation cancelled."
+
+# Class selection GUI (character creation)
+class_selection_gui:
+  title: "&6Choose your Class"
+  selected_race_name: "&6Selected race"
+  selected_race_lore: "&7Now choose your class."
+  none_available: "&cNo classes available"
+  none_available_lore: "&7No classes are loaded. Contact an admin."
+  back_button: "Go back"
+  cancelled: "&eCharacter creation cancelled."
+
+# Listener: experience on mob kill
+mob_kill_listener:
+  border: "&6╔════════════════════════════════╗"
+  exp_gained: "&e╠ &e&l+{exp}&6 EXP"
+
+# Listener: global level up announcement
+level_up_listener:
+  border: "&6━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  announcement: "&e✦ &6{player}&e reached level &6{level}&e ✦"
+  rewards: "&bRewards: &f{summary}"
+
+# Job reward service (used by every job listener)
+job_reward_service:
+  feedback_base: "+{exp} XP ({job})"
+  feedback_money: " | +${money}"
+  level_up: "&6🎉 {job} leveled up to {level}!"
+
+# /rpg use <skillId> command
+use_skill_command:
+  usage: "&cUsage: {usage}"
+  data_load_error: "&cError loading your data."
+  unknown_skill: "&cThat skill doesn't exist: {skill}"
+  not_learned: "&cYou haven't learned that skill."
+  insufficient_resources: "&cYou don't have enough mana ({current}/{cost}) or a high enough level (requires level {required})."
+  on_cooldown: "&eThat skill is still on cooldown ({seconds}s remaining)."
+  success_with_target: "&d✔ You used {skill} (-{mana} mana)."
+  success_no_target: "&d✔ You used {skill} (-{mana} mana), but there was no target in range."
+  error: "&cError using the skill."
+
+# ChatPromptManager: captures chat messages for admin content GUIs
+chat_prompt_manager:
+  instructions: "&7Type in chat, or '{keyword}' to cancel."
+  cancel_keyword: "cancel"
+  cancelled: "&cCancelled."
+
+# GUI: job browser (admin)
+job_browser_gui:
+  title: "&6RPGRoll Jobs"
+  summary: "&7Max level {level} · {count} reward(s)"
+  click_to_edit: "&eClick to edit"
+  create_new: "&aCreate new job"
+  create_new_lore: "&8Remember: without its own Java listener, it won't grant XP by itself."
+  close_button: "Close"
+  prompt_new: "Type the id of the new job:"
+  already_exists: "&cA job with that id already exists."
+
+# GUI: skill browser (admin)
+skill_browser_gui:
+  title: "&6RPGRoll Skills"
+  level: "&7Level {level}"
+  click_to_edit: "&eClick to edit"
+  create_new: "&aCreate new skill"
+  close_button: "Close"
+  prompt_new: "Type the id of the new skill:"
+  already_exists: "&cA skill with that id already exists."
+
+# GUI: trait browser (admin)
+trait_browser_gui:
+  title: "&6RPGRoll Traits"
+  level: "&7Level {level}"
+  click_to_edit: "&eClick to edit"
+  create_new: "&aCreate new trait"
+  close_button: "Close"
+  prompt_new: "Type the id of the new trait:"
+  already_exists: "&cA trait with that id already exists."
+
+# /rpg class command
+class_command:
+  profile_load_error: "&cCouldn't load your player profile. Please try again later."
+  data_load_error: "&cError loading your data."
+  process_error: "&cError processing the class command."
+  hint_select: "&7Use /rpg class <name> to select one."
+  hint_list: "&7Use /rpg class list to see the available classes."
+  list_header: "&6========== Available Classes =========="
+  list_entry: "&e• {class}"
+  list_footer: "&6========================================"
+  list_hint: "&7Use /rpg class <name> to select a class."
+  invalid_class: "&cInvalid class: {class}"
+  already_selected: "&cYou already have a class selected."
+  change_not_allowed: "&eClass changing isn't currently allowed."
+
+# /rpg race command
+race_command:
+  profile_load_error: "&cCouldn't load your player profile. Please try again later."
+  data_load_error: "&cError loading your data."
+  process_error: "&cError processing the race command."
+  hint_select: "&7Use /rpg race <name> to select one."
+  hint_list: "&7Use /rpg race list to see the available races."
+  list_header: "&6========== Available Races =========="
+  list_entry: "&e• {race}"
+  list_footer: "&6======================================="
+  list_hint: "&7Use /rpg race <name> to select a race."
+  invalid_race: "&cInvalid race: {race}"
+  already_selected: "&cYou already have a race selected."
+  change_not_allowed: "&eRace changing isn't currently allowed."
+
+# /rpg mystats command
+my_stats_command:
+  profile_load_error: "&cNo stats were found for your character."
+  data_load_error: "&cError loading your data."
+  load_error: "&cError loading your stats."
+  title: "MY STATS"
+  label_level: "Level"
+  label_race: "Race"
+  label_class: "Class"
+  label_unspent_points: "Unspent points"
+  unspent_points_hint: " (use /rpg allocate <stat> <amount>)"
+  section_attributes: "D&D ATTRIBUTES"
+  label_strength: "Strength"
+  label_dexterity: "Dexterity"
+  label_constitution: "Constitution"
+  label_intelligence: "Intelligence"
+  label_wisdom: "Wisdom"
+  label_charisma: "Charisma"
+  section_combat: "COMBAT STATS"
+  label_health: "Health"
+  label_mana: "Mana"
+  label_armor: "Armor"
+  label_evasion: "Evasion"
+  label_critical: "Critical"
+
+# /rpg skills command
+skills_command:
+  profile_load_error: "&cNo player data was found for you."
+  data_load_error: "&cError loading your data."
+  load_error: "&cError loading your skills."
+  header: "&6============ Your Skills ==========="
+  empty: "&eYou haven't learned any skills yet."
+  entry_unknown: "&a• {id} (Level {level})"
+  entry_known: "&a• {name} (Level {level})&7 — {mana} mana, {cooldown}s cooldown — /rpg use {id}"
+  footer: "&6========================================"
+
+# Listener: combat effects (critical hit, evasion, downed)
+combat_effects_listener:
+  critical_hit: "&6Critical hit!"
+  evaded: "&bYou evaded the hit!"
+  downed: "&cYour health hit 0 — you're weakened for a few seconds."

@@ -59,7 +59,7 @@ public class RanchHubGUI extends InventoryGUI {
             VaccineManager vaccineManager, MedicineManager medicineManager, AnimalManager animalManager,
             GeneticsEngine geneticsEngine, PedigreeService pedigreeService, BreedingEngine breedingEngine,
             ChatPromptManager chatPromptManager, int inbreedingGenerations) {
-        super(player, Component.text("Ranch Studio", NamedTextColor.GOLD), SIZE);
+        super(player, Component.text(chatPromptManager.lang().raw("gui.hub.title"), NamedTextColor.GOLD), SIZE);
         this.speciesManager = speciesManager;
         this.breedManager = breedManager;
         this.geneManager = geneManager;
@@ -84,27 +84,27 @@ public class RanchHubGUI extends InventoryGUI {
             setItem(slot, ItemBuilder.createFiller());
         }
 
-        setItem(SPECIES_SLOT, button(Material.COW_SPAWN_EGG, "Especies", speciesManager.count()));
-        setItem(BREEDS_SLOT, button(Material.NAME_TAG, "Razas", breedManager.count()));
-        setItem(GENES_SLOT, button(Material.NETHER_STAR, "Genes", geneManager.count()));
-        setItem(FEEDS_SLOT, button(Material.WHEAT, "Alimentos", feedManager.count()));
-        setItem(DISEASES_SLOT, button(Material.ROTTEN_FLESH, "Enfermedades", diseaseManager.count()));
-        setItem(VACCINES_SLOT, button(Material.POTION, "Vacunas", vaccineManager.count()));
-        setItem(MEDICINES_SLOT, button(Material.SPLASH_POTION, "Medicinas", medicineManager.count()));
+        setItem(SPECIES_SLOT, button(Material.COW_SPAWN_EGG, chatPromptManager.lang().raw("gui.hub.species"), speciesManager.count()));
+        setItem(BREEDS_SLOT, button(Material.NAME_TAG, chatPromptManager.lang().raw("gui.hub.breeds"), breedManager.count()));
+        setItem(GENES_SLOT, button(Material.NETHER_STAR, chatPromptManager.lang().raw("gui.hub.genes"), geneManager.count()));
+        setItem(FEEDS_SLOT, button(Material.WHEAT, chatPromptManager.lang().raw("gui.hub.feeds"), feedManager.count()));
+        setItem(DISEASES_SLOT, button(Material.ROTTEN_FLESH, chatPromptManager.lang().raw("gui.hub.diseases"), diseaseManager.count()));
+        setItem(VACCINES_SLOT, button(Material.POTION, chatPromptManager.lang().raw("gui.hub.vaccines"), vaccineManager.count()));
+        setItem(MEDICINES_SLOT, button(Material.SPLASH_POTION, chatPromptManager.lang().raw("gui.hub.medicines"), medicineManager.count()));
 
-        setItem(ANIMALS_SLOT, button(Material.CHEST, "Explorador de Animales", animalManager.getAll().size()));
+        setItem(ANIMALS_SLOT, button(Material.CHEST, chatPromptManager.lang().raw("gui.hub.animals"), animalManager.getAll().size()));
         setItem(BREEDING_SLOT, new ItemBuilder(Material.HEART_OF_THE_SEA)
-                .setName(Component.text("Planificador de Cría", NamedTextColor.LIGHT_PURPLE)).build());
+                .setName(Component.text(chatPromptManager.lang().raw("gui.hub.breeding"), NamedTextColor.LIGHT_PURPLE)).build());
         setItem(VETERINARY_SLOT, new ItemBuilder(Material.GOLDEN_APPLE)
-                .setName(Component.text("Veterinaria", NamedTextColor.RED)).build());
+                .setName(Component.text(chatPromptManager.lang().raw("gui.hub.veterinary"), NamedTextColor.RED)).build());
 
-        setItem(CLOSE_SLOT, ItemBuilder.createCancelButton("Cerrar"));
+        setItem(CLOSE_SLOT, ItemBuilder.createCancelButton(chatPromptManager.lang().raw("gui.common.close")));
     }
 
     private org.bukkit.inventory.ItemStack button(Material material, String label, int count) {
         return new ItemBuilder(material)
                 .setName(Component.text(label + " (" + count + ")", NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para administrar", NamedTextColor.GRAY))
+                .setLore(Component.text(chatPromptManager.lang().raw("gui.common.manage_hint"), NamedTextColor.GRAY))
                 .build();
     }
 
@@ -129,12 +129,12 @@ public class RanchHubGUI extends InventoryGUI {
         } else if (slot == MEDICINES_SLOT) {
             new MedicineBrowserGUI(player, medicineManager, diseaseManager, chatPromptManager, this::reopen).open();
         } else if (slot == ANIMALS_SLOT) {
-            new AnimalBrowserGUI(player, animalManager, speciesManager, breedManager, this::reopen).open();
+            new AnimalBrowserGUI(player, animalManager, speciesManager, breedManager, chatPromptManager, this::reopen).open();
         } else if (slot == BREEDING_SLOT) {
             new BreedingPlannerGUI(player, animalManager, speciesManager, breedManager, geneManager, geneticsEngine,
-                    pedigreeService, breedingEngine, inbreedingGenerations, this::reopen).open();
+                    pedigreeService, breedingEngine, inbreedingGenerations, chatPromptManager, this::reopen).open();
         } else if (slot == VETERINARY_SLOT) {
-            new VeterinaryGUI(player, animalManager, diseaseManager, speciesManager, this::reopen).open();
+            new VeterinaryGUI(player, animalManager, diseaseManager, speciesManager, chatPromptManager, this::reopen).open();
         } else if (slot == CLOSE_SLOT) {
             close();
         }

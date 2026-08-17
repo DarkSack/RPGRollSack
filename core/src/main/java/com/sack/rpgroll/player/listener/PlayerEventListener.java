@@ -1,6 +1,7 @@
 package com.sack.rpgroll.player.listener;
 
 import com.sack.rpgroll.RPGRoll;
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gameplay.hud.PlayerResourceBar;
 import com.sack.rpgroll.gui.character.CharacterCreationFlow;
 import com.sack.rpgroll.player.PlayerManager;
@@ -27,15 +28,18 @@ public class PlayerEventListener implements Listener {
     private final ClassManager classManager;
     private final RaceAttributeApplier raceAttributeApplier;
     private final PlayerResourceBar resourceBar;
+    private final LangManager lang;
 
     public PlayerEventListener(RPGRoll plugin, PlayerManager playerManager, RaceManager raceManager,
-            ClassManager classManager, RaceAttributeApplier raceAttributeApplier, PlayerResourceBar resourceBar) {
+            ClassManager classManager, RaceAttributeApplier raceAttributeApplier, PlayerResourceBar resourceBar,
+            LangManager lang) {
         this.plugin = plugin;
         this.playerManager = playerManager;
         this.raceManager = raceManager;
         this.classManager = classManager;
         this.raceAttributeApplier = raceAttributeApplier;
         this.resourceBar = resourceBar;
+        this.lang = lang;
     }
 
     @EventHandler
@@ -66,8 +70,8 @@ public class PlayerEventListener implements Listener {
             resourceBar.show(player, rpgPlayer.get());
 
             if (!rpgPlayer.get().isCharacterComplete()) {
-                new CharacterCreationFlow(player, playerManager, raceManager, classManager, raceAttributeApplier)
-                        .start();
+                new CharacterCreationFlow(player, playerManager, raceManager, classManager, raceAttributeApplier,
+                        lang).start();
             }
 
         }, CHARACTER_CREATION_DELAY_TICKS);

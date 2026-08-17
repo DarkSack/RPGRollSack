@@ -4,6 +4,7 @@ import com.sack.rpgroll.ranching.core.animal.AnimalManager;
 import com.sack.rpgroll.ranching.core.breeds.BreedManager;
 import com.sack.rpgroll.ranching.core.species.SpeciesManager;
 import com.sack.rpgroll.ranching.gui.AnimalDetailGUI;
+import com.sack.rpgroll.ranching.gui.ChatPromptManager;
 import com.sack.rpgroll.util.TabCompleteUtil;
 
 import net.kyori.adventure.text.Component;
@@ -24,23 +25,26 @@ public class RanchingCommand implements CommandExecutor, TabCompleter {
     private final AnimalManager animalManager;
     private final SpeciesManager speciesManager;
     private final BreedManager breedManager;
+    private final ChatPromptManager chatPromptManager;
 
-    public RanchingCommand(AnimalManager animalManager, SpeciesManager speciesManager, BreedManager breedManager) {
+    public RanchingCommand(AnimalManager animalManager, SpeciesManager speciesManager, BreedManager breedManager,
+            ChatPromptManager chatPromptManager) {
         this.animalManager = animalManager;
         this.speciesManager = speciesManager;
         this.breedManager = breedManager;
+        this.chatPromptManager = chatPromptManager;
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
         if (!(sender instanceof Player player)) {
-            sender.sendMessage("Solo jugadores pueden usar este comando.");
+            sender.sendMessage(chatPromptManager.lang().raw("command.player_only"));
             return true;
         }
 
         if (args.length < 1 || !args[0].equalsIgnoreCase("inspect")) {
-            player.sendMessage(Component.text("Uso: /ranching inspect", NamedTextColor.RED));
+            player.sendMessage(Component.text(chatPromptManager.lang().raw("command.ranching.usage_inspect"), NamedTextColor.RED));
             return true;
         }
 
@@ -48,11 +52,11 @@ public class RanchingCommand implements CommandExecutor, TabCompleter {
         var animal = target != null ? animalManager.resolve(target) : java.util.Optional.<com.sack.rpgroll.ranching.core.animal.Animal>empty();
 
         if (animal.isEmpty()) {
-            player.sendMessage(Component.text("Mirá directamente a un animal rastreado por Ranching.", NamedTextColor.RED));
+            player.sendMessage(Component.text(chatPromptManager.lang().raw("command.ranching.look_at_animal"), NamedTextColor.RED));
             return true;
         }
 
-        new AnimalDetailGUI(player, animal.get(), speciesManager, breedManager, player::closeInventory).open();
+        new AnimalDetailGUI(player, animal.get(), speciesManager, breedManager, chatPromptManager, player::closeInventory).open();
         return true;
     }
 

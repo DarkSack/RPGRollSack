@@ -1,5 +1,6 @@
 package com.sack.rpgroll.items.gui.editor;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.items.core.ItemAction;
@@ -26,12 +27,14 @@ public class TriggersEditorGUI extends InventoryGUI {
     private static final int BACK_SLOT = 44;
 
     private final EditorSession session;
+    private final LangManager lang;
     private final Runnable onBack;
     private final ItemTrigger[] triggers = ItemTrigger.values();
 
     public TriggersEditorGUI(Player player, EditorSession session, Runnable onBack) {
-        super(player, Component.text("Comportamiento: " + session.original.id(), NamedTextColor.GOLD), SIZE);
+        super(player, session.chatPromptManager.lang().component("editor.triggers.title", "id", session.original.id()), SIZE);
         this.session = session;
+        this.lang = session.chatPromptManager.lang();
         this.onBack = onBack;
     }
 
@@ -56,11 +59,11 @@ public class TriggersEditorGUI extends InventoryGUI {
 
             setItem(i, new ItemBuilder(count > 0 ? Material.COMPARATOR : Material.LEVER)
                     .setName(Component.text(trigger.name(), count > 0 ? NamedTextColor.GREEN : NamedTextColor.GRAY))
-                    .setLore(Component.text(count + " acción(es)", NamedTextColor.GRAY))
+                    .setLore(lang.component("editor.triggers.action_count", "count", count))
                     .build());
         }
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("editor.common.back")));
     }
 
     @Override
@@ -74,8 +77,8 @@ public class TriggersEditorGUI extends InventoryGUI {
             ItemTrigger trigger = triggers[slot];
             List<ItemAction> actions = session.triggers.computeIfAbsent(trigger, t -> new ArrayList<>());
 
-            new ActionListEditorGUI(player, "Acciones de " + trigger.name(), actions, session.chatPromptManager,
-                    this::reopen).open();
+            new ActionListEditorGUI(player, lang.raw("editor.triggers.actions_of", "trigger", trigger.name()),
+                    actions, session.chatPromptManager, this::reopen).open();
             return;
         }
 

@@ -1,3 +1,7 @@
+# Idioma de los mensajes del plugin (es, en, pt_BR). Los archivos de idioma
+# viven en lang/<codigo>.yml dentro de la carpeta de datos del plugin.
+language: es
+
 # Cómo se calculan los genes de una cría a partir de sus padres:
 #   SIMPLE          - promedio de ambos padres +/- una pequeña variación al azar, sin dominancia.
 #   ADVANCED        - dominancia real por alelo (dominante/recesivo/mixto), como un cuadro de Punnett.

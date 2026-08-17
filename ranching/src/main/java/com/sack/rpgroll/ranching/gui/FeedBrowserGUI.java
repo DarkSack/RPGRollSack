@@ -29,7 +29,7 @@ public class FeedBrowserGUI extends InventoryGUI {
     private List<Feed> feeds;
 
     public FeedBrowserGUI(Player player, FeedManager feedManager, ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text("Alimentos", NamedTextColor.GOLD), SIZE);
+        super(player, Component.text(chatPromptManager.lang().raw("gui.hub.feeds"), NamedTextColor.GOLD), SIZE);
         this.feedManager = feedManager;
         this.chatPromptManager = chatPromptManager;
         this.onBack = onBack;
@@ -51,15 +51,15 @@ public class FeedBrowserGUI extends InventoryGUI {
 
             setItem(i, new ItemBuilder(SpeciesBrowserGUI.parseMaterial(feed.icon(), Material.WHEAT))
                     .setName(Component.text(feed.displayName(), NamedTextColor.YELLOW))
-                    .setLore(Component.text("id: " + feed.id(), NamedTextColor.GRAY),
-                            Component.text("calidad: " + feed.quality(), NamedTextColor.GRAY),
-                            Component.text("Click para editar", NamedTextColor.YELLOW))
+                    .setLore(Component.text(chatPromptManager.lang().raw("gui.browser.id_line", "id", feed.id()), NamedTextColor.GRAY),
+                            Component.text(chatPromptManager.lang().raw("gui.feed.browser.quality_line", "quality", feed.quality()), NamedTextColor.GRAY),
+                            Component.text(chatPromptManager.lang().raw("gui.common.click_to_edit"), NamedTextColor.YELLOW))
                     .build());
         }
 
         setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Crear alimento nuevo", NamedTextColor.GREEN)).build());
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+                .setName(Component.text(chatPromptManager.lang().raw("gui.feed.browser.new"), NamedTextColor.GREEN)).build());
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(chatPromptManager.lang().raw("gui.common.back")));
     }
 
     @Override
@@ -84,12 +84,12 @@ public class FeedBrowserGUI extends InventoryGUI {
     }
 
     private void promptNew() {
-        chatPromptManager.prompt(player, "Escribí el id del nuevo alimento:", value -> {
+        chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.feed.browser.prompt_new_id"), value -> {
 
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 
             if (feedManager.exists(id)) {
-                player.sendMessage(Component.text("Ya existe un alimento con ese id.", NamedTextColor.RED));
+                player.sendMessage(Component.text(chatPromptManager.lang().raw("gui.feed.browser.already_exists"), NamedTextColor.RED));
                 reopen();
                 return;
             }

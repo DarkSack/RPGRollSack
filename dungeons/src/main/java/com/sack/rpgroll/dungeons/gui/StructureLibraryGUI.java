@@ -1,5 +1,6 @@
 package com.sack.rpgroll.dungeons.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.dungeons.structure.StructureDefinition;
 import com.sack.rpgroll.dungeons.structure.StructureLibrary;
 import com.sack.rpgroll.dungeons.structure.StructurePasteEngine;
@@ -34,13 +35,16 @@ public class StructureLibraryGUI extends PaginatedGUI {
 
     private final StructureLibrary library;
     private final StructurePasteEngine pasteEngine;
+    private final LangManager lang;
 
     private List<StructureDefinition> entries;
 
-    public StructureLibraryGUI(Player player, StructureLibrary library, StructurePasteEngine pasteEngine) {
-        super(player, Component.text("Biblioteca de Estructuras", NamedTextColor.GOLD), SIZE, CONTENT_SLOTS);
+    public StructureLibraryGUI(Player player, StructureLibrary library, StructurePasteEngine pasteEngine,
+            LangManager lang) {
+        super(player, ComponentUtils.parse(lang.raw("gui.structurelibrary.title")), SIZE, CONTENT_SLOTS);
         this.library = library;
         this.pasteEngine = pasteEngine;
+        this.lang = lang;
         refresh();
     }
 
@@ -63,18 +67,18 @@ public class StructureLibraryGUI extends PaginatedGUI {
         boolean native_ = def.sourceType() == StructureSourceType.NATIVE;
 
         String size = native_
-                ? "Tamaño real al pegar"
+                ? lang.raw("gui.structurelibrary.item.size_at_paste")
                 : def.width() + "x" + def.height() + "x" + def.depth() + " (X·Y·Z)";
 
         setItem(contentSlot, new ItemBuilder(def.icon())
                 .setName(ComponentUtils.parse(def.displayName()).colorIfAbsent(NamedTextColor.WHITE))
                 .setLore(
                         Component.text(def.id(), NamedTextColor.DARK_GRAY),
-                        Component.text(native_ ? "Fuente: Structure Block" : "Fuente: propia (YAML)",
-                                native_ ? NamedTextColor.LIGHT_PURPLE : NamedTextColor.AQUA),
+                        ComponentUtils.parse(lang.raw(native_ ? "gui.structurelibrary.item.source_native"
+                                : "gui.structurelibrary.item.source_custom")),
                         Component.text(size, NamedTextColor.GRAY),
                         Component.text(def.description(), NamedTextColor.GRAY),
-                        Component.text("Click para pegar", NamedTextColor.YELLOW))
+                        ComponentUtils.parse(lang.raw("gui.structurelibrary.item.click_to_paste")))
                 .build());
     }
 
@@ -82,13 +86,13 @@ public class StructureLibraryGUI extends PaginatedGUI {
     protected void renderExtras() {
 
         setItem(PREV_SLOT, hasPreviousPage()
-                ? new ItemBuilder(Material.ARROW).setName(Component.text("« Anterior", NamedTextColor.YELLOW)).build()
+                ? new ItemBuilder(Material.ARROW).setName(ComponentUtils.parse(lang.raw("gui.common.previous"))).build()
                 : ItemBuilder.createFiller());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Cerrar"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.close")));
 
         setItem(NEXT_SLOT, hasNextPage()
-                ? new ItemBuilder(Material.ARROW).setName(Component.text("Siguiente »", NamedTextColor.YELLOW)).build()
+                ? new ItemBuilder(Material.ARROW).setName(ComponentUtils.parse(lang.raw("gui.common.next"))).build()
                 : ItemBuilder.createFiller());
 
         for (int slot = CONTENT_SLOTS; slot < SIZE; slot++) {
@@ -102,7 +106,7 @@ public class StructureLibraryGUI extends PaginatedGUI {
     protected void onItemClick(InventoryClickEvent event, int absoluteIndex) {
 
         StructureDefinition def = entries.get(absoluteIndex);
-        new StructurePasteConfirmGUI(player, def, pasteEngine, () -> {
+        new StructurePasteConfirmGUI(player, def, pasteEngine, lang, () -> {
             refresh();
             open();
         }).open();

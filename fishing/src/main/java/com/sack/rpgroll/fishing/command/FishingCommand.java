@@ -1,13 +1,11 @@
 package com.sack.rpgroll.fishing.command;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.fishing.core.FishSpeciesManager;
 import com.sack.rpgroll.fishing.gui.EncyclopediaGUI;
 import com.sack.rpgroll.fishing.runtime.FishingProfileManager;
 import com.sack.rpgroll.fishing.runtime.PlayerFishingProfile;
 import com.sack.rpgroll.util.TabCompleteUtil;
-
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -24,17 +22,19 @@ public class FishingCommand implements CommandExecutor, TabCompleter {
 
     private final FishSpeciesManager speciesManager;
     private final FishingProfileManager profileManager;
+    private final LangManager lang;
 
-    public FishingCommand(FishSpeciesManager speciesManager, FishingProfileManager profileManager) {
+    public FishingCommand(FishSpeciesManager speciesManager, FishingProfileManager profileManager, LangManager lang) {
         this.speciesManager = speciesManager;
         this.profileManager = profileManager;
+        this.lang = lang;
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
         if (!(sender instanceof Player player)) {
-            sender.sendMessage("Solo jugadores pueden usar este comando.");
+            lang.send(sender, "command.player.players_only");
             return true;
         }
 
@@ -44,7 +44,7 @@ public class FishingCommand implements CommandExecutor, TabCompleter {
         }
 
         switch (args[0].toLowerCase()) {
-            case "encyclopedia" -> new EncyclopediaGUI(player, speciesManager, profileManager).open();
+            case "encyclopedia" -> new EncyclopediaGUI(player, speciesManager, profileManager, lang).open();
             case "stats" -> handleStats(player);
             default -> sendUsage(player);
         }
@@ -53,19 +53,19 @@ public class FishingCommand implements CommandExecutor, TabCompleter {
     }
 
     private void sendUsage(Player player) {
-        player.sendMessage(Component.text("Uso: /fishing <encyclopedia|stats>", NamedTextColor.RED));
+        lang.send(player, "command.player.usage");
     }
 
     private void handleStats(Player player) {
 
         PlayerFishingProfile profile = profileManager.getOrLoad(player);
 
-        player.sendMessage(Component.text("Estadísticas de pesca:", NamedTextColor.GOLD));
-        player.sendMessage(Component.text("Peces capturados: " + profile.totalCaught(), NamedTextColor.WHITE));
-        player.sendMessage(Component.text("Especies descubiertas: " + profile.allRecords().size() + "/"
-                + speciesManager.count(), NamedTextColor.WHITE));
-        player.sendMessage(Component.text("Tesoros encontrados: " + profile.totalTreasures(), NamedTextColor.WHITE));
-        player.sendMessage(Component.text("Basura sacada: " + profile.totalJunk(), NamedTextColor.WHITE));
+        lang.send(player, "command.player.stats_title");
+        lang.send(player, "command.player.stats_caught", "count", profile.totalCaught());
+        lang.send(player, "command.player.stats_species", "discovered", profile.allRecords().size(),
+                "total", speciesManager.count());
+        lang.send(player, "command.player.stats_treasures", "count", profile.totalTreasures());
+        lang.send(player, "command.player.stats_junk", "count", profile.totalJunk());
     }
 
     @Override

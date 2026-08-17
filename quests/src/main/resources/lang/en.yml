@@ -1,0 +1,148 @@
+# Language file: English
+# RPGRoll-Quests - Message system
+
+# General messages
+general:
+  no_permission: "&cYou don't have permission to use this command."
+  player_only: "&cOnly a player can use this command."
+
+# /questadmin command
+admin:
+  usage: "&cUsage: /questadmin <give|complete|fail|reset|reload|browser [quests|regions]> [player] [questId]"
+  browser_player_only: "&cOnly a player can open the browser."
+  give_usage: "&cUsage: /questadmin give <player> <questId>"
+  player_not_found: "&cPlayer not found: {player}"
+  quest_not_found: "&cNo quest exists with id: {id}"
+  give_success: "&a✔ Quest '{quest}' started for {player}"
+  complete_usage: "&cUsage: /questadmin complete <player> <questId>"
+  complete_success: "&a✔ Quest '{quest}' completed for {player}"
+  complete_not_active: "&c{player} doesn't have that quest active."
+  fail_usage: "&cUsage: /questadmin fail <player> <questId>"
+  fail_success: "&a✔ Quest '{quest}' marked as failed for {player}"
+  reset_usage: "&cUsage: /questadmin reset <player> <questId>"
+  reset_success: "&a✔ Progress on '{quest}' reset for {player}"
+  reload_success: "&a✔ Reloaded: {count} quest(s)."
+
+# /quest command (player)
+command:
+  usage: "&cUsage: /quest <list|info|start|abandon|active|completed> [id]"
+  list_empty: "&7No quests defined."
+  list_header: "&6Available quests:"
+  list_entry: "&f• {id} — {name} ({category}, {difficulty})"
+  info_usage: "&cUsage: /quest info <id>"
+  quest_not_found: "&cNo quest exists with id: {id}"
+  info_title: "&6{name}"
+  info_category: "&7Category: {category}"
+  info_difficulty: "&7Difficulty: {difficulty}"
+  info_stages: "&7Stages: {count}"
+  info_repeatable_yes: "&7Repeatable: yes"
+  info_repeatable_no: "&7Repeatable: no"
+  start_usage: "&cUsage: /quest start <id>"
+  start_success: "&a✔ Quest started: {name}"
+  start_denied_header: "&cYou can't start this quest:"
+  start_denied_reason: "&c- {reason}"
+  abandon_usage: "&cUsage: /quest abandon <id>"
+  abandon_success: "&a✔ Quest abandoned."
+  abandon_not_active: "&cYou don't have that quest active."
+  active_empty: "&7You have no active quests."
+  active_header: "&6Active quests:"
+  active_entry: "&f• {name} — stage {current}/{total} ({stageId})"
+  completed_empty: "&7You haven't completed any quest yet."
+  completed_header: "&6Completed quests: {count}"
+  completed_entry: "&f• {id}"
+
+# Quest engine (rejection reasons, dialog, completion messages)
+engine:
+  already_active: "You already have this quest active."
+  already_completed_not_repeatable: "You already completed this quest and it's not repeatable."
+  on_cooldown: "This quest is still on cooldown."
+  dialog_npc_prefix: "&e[NPC] "
+  dialog_player_prefix: "&b[You] "
+  dialog_choose_option: "&6Choose an option:"
+  quest_completed: "&6✔ Quest completed: {name}"
+
+# Rejection reasons when checking whether a player can start a quest
+requirement:
+  level: "You need level {required} (you have {current})."
+  race: "You need to be of the race: {race}"
+  class: "You need to be of the class: {class}"
+  profession: "You need the profession: {profession}"
+  trait: "You need the trait: {trait}"
+  permission: "You don't have the permission required for this quest."
+  money: "You need at least {amount} money."
+  item: "You need {amount}x {material}"
+  completed_quest: "You need to have completed the quest: {quest}"
+  world: "You need to be in the world: {world}"
+  region: "You need to be in the region: {region}"
+  biome: "You need to be in the biome: {biome}"
+  weather: "You need weather: {weather}"
+  time_range: "Only available between {min} and {max} (world time)."
+
+# Objective listener (KILL_ENTITY, BREAK_BLOCK, DELIVER_ITEM, etc.)
+listener:
+  deliver_missing_items: "&cYou need {required}x {material} to deliver."
+
+# GUI: quest browser
+browser:
+  title: "&6RPGRoll Quests"
+  stage_count: "&7{count} stage(s)"
+  click_to_edit: "&eClick to edit"
+  create_new: "&aCreate new quest"
+  close_button: "Close"
+  prompt_new_id: "Type the id of the new quest:"
+  id_exists: "&cA quest with that id already exists."
+
+# GUI: quest editor
+editor:
+  title: "&6Quest: {id}"
+  name_label: "Name: {name}"
+  click_to_rename: "&7Click to type a new one"
+  category_label: "&eCategory: {category}"
+  click_next: "&7Click to move to the next one"
+  difficulty_label: "&eDifficulty: {difficulty}"
+  repeatable_yes: "&aRepeatable: yes"
+  repeatable_no: "&7Repeatable: no"
+  click_to_toggle: "&7Click to toggle"
+  cooldown_label: "&eCooldown: {seconds}s"
+  cooldown_hint: "&7Click: +1h · Right-click: -1h"
+  level_label: "&eRequired level: {level}"
+  click_plus_minus_1: "&7Click: +1 · Right-click: -1"
+  reward_money_label: "&eGold reward: {money}"
+  click_plus_minus_50: "&7Click: +50 · Right-click: -50"
+  reward_xp_label: "&eXP reward: {xp}"
+  stage_entry: "{index}. {id}"
+  stage_objectives: "&7{count} objective(s)"
+  shift_click_remove: "&8Shift-click to remove"
+  stage_yaml_hint: "&8Objectives/dialogue are still edited in the YAML"
+  add_stage: "&aAdd stage (by id)"
+  back_button: "Back"
+  prompt_name: "Type the quest's new name:"
+  prompt_add_stage: "Type the id of the new stage:"
+  stage_min_required: "&cA quest needs at least one stage."
+
+# GUI: region browser
+region_browser:
+  title: "&6RPGRoll Regions"
+  world_label: "&7World: {world}"
+  click_to_edit: "&eClick to edit"
+  create_new: "&aCreate new region (here)"
+  close_button: "Close"
+  prompt_new_id: "Type the id of the new region:"
+  id_exists: "&cA region with that id already exists."
+
+# GUI: region editor
+region_editor:
+  title: "&6Region: {id}"
+  world_label: "&eWorld: {world}"
+  click_use_current_world: "&7Click to use your current world"
+  set_min_corner: "&cSet minimum corner here"
+  set_max_corner: "&aSet maximum corner here"
+  coords: "&7{x}, {y}, {z}"
+  volume_label: "&eVolume: {volume} block(s)³"
+  back_button: "Back"
+
+# Chat-prompt system (used by admin GUIs)
+prompt:
+  cancel_keyword: "cancel"
+  footer: "&7Type it in chat, or '{keyword}' to abort."
+  cancelled: "&cCancelled."

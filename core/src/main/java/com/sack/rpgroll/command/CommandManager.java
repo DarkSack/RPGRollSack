@@ -1,6 +1,7 @@
 package com.sack.rpgroll.command;
 
 import com.sack.rpgroll.RPGRoll;
+import com.sack.rpgroll.common.lang.LangManager;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -58,27 +59,28 @@ public class CommandManager implements CommandExecutor, TabCompleter {
             return true;
         }
 
+        LangManager lang = plugin.getBootstrap().getServices().get(LangManager.class);
+
         // Obtener subcomando
         String subCommandName = args[0].toLowerCase();
         RPGCommand subCommand = getCommand(subCommandName);
 
         if (subCommand == null) {
-            sender.sendMessage(Component.text("Subcomando desconocido: " + args[0], NamedTextColor.RED));
-            sender.sendMessage(
-                    Component.text("Usa /rpg help para ver los comandos disponibles.", NamedTextColor.YELLOW));
+            lang.send(sender, "command_manager.unknown_subcommand", "input", args[0]);
+            lang.send(sender, "command_manager.use_help");
             return true;
         }
 
         // Verificar si es solo para jugadores
         if (subCommand.isPlayerOnly() && !(sender instanceof Player)) {
-            sender.sendMessage(Component.text("Este comando solo puede ser usado por jugadores.", NamedTextColor.RED));
+            lang.send(sender, "general.player_only");
             return true;
         }
 
         // Verificar permisos
         String permission = subCommand.getPermission();
         if (permission != null && !sender.hasPermission(permission)) {
-            sender.sendMessage(Component.text("No tienes permiso para usar este comando.", NamedTextColor.RED));
+            lang.send(sender, "general.no_permission");
             return true;
         }
 
@@ -87,7 +89,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
             String[] subArgs = Arrays.copyOfRange(args, 1, args.length);
             subCommand.execute(sender, subArgs);
         } catch (Exception exception) {
-            sender.sendMessage(Component.text("Error al ejecutar el comando.", NamedTextColor.RED));
+            lang.send(sender, "error.command_failed");
             exception.printStackTrace();
         }
 
@@ -172,7 +174,8 @@ public class CommandManager implements CommandExecutor, TabCompleter {
      * Muestra la ayuda con todos los comandos disponibles.
      */
     private void sendHelp(CommandSender sender) {
-        sender.sendMessage(Component.text("========== RPGRoll - Ayuda ==========", NamedTextColor.GOLD));
+        LangManager lang = plugin.getBootstrap().getServices().get(LangManager.class);
+        lang.send(sender, "command_manager.help_header");
 
         for (RPGCommand cmd : commands.values()) {
 
@@ -188,7 +191,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
                             .append(Component.text(cmd.getDescription(), NamedTextColor.GRAY)));
         }
 
-        sender.sendMessage(Component.text("=====================================", NamedTextColor.GOLD));
+        lang.send(sender, "command_manager.help_footer");
     }
 
     /**

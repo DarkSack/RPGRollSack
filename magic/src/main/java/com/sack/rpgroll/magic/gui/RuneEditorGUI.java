@@ -1,5 +1,6 @@
 package com.sack.rpgroll.magic.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.magic.core.Rune;
@@ -30,15 +31,17 @@ public class RuneEditorGUI extends InventoryGUI {
 
     private final RuneManager runeManager;
     private final ChatPromptManager chatPromptManager;
+    private final LangManager lang;
     private final Runnable onBack;
     private Rune current;
 
     public RuneEditorGUI(Player player, Rune rune, RuneManager runeManager, ChatPromptManager chatPromptManager,
             Runnable onBack) {
-        super(player, Component.text("Runa: " + rune.id(), NamedTextColor.GOLD), SIZE);
+        super(player, chatPromptManager.lang().component("gui.rune_editor.title", "id", rune.id()), SIZE);
         this.current = rune;
         this.runeManager = runeManager;
         this.chatPromptManager = chatPromptManager;
+        this.lang = chatPromptManager.lang();
         this.onBack = onBack;
     }
 
@@ -58,39 +61,40 @@ public class RuneEditorGUI extends InventoryGUI {
         }
 
         setItem(NAME_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(Component.text("Nombre: " + current.displayName(), NamedTextColor.YELLOW)).build());
+                .setName(lang.component("gui.common.name_label", "name", current.displayName())).build());
 
         setItem(ICON_SLOT, new ItemBuilder(SchoolBrowserGUI.parseMaterial(current.icon()))
-                .setName(Component.text("Ícono: " + current.icon(), NamedTextColor.YELLOW)).build());
+                .setName(lang.component("gui.common.icon_label", "icon", current.icon())).build());
 
         setItem(DESCRIPTION_SLOT, new ItemBuilder(Material.WRITTEN_BOOK)
-                .setName(Component.text("Descripción", NamedTextColor.YELLOW))
+                .setName(lang.component("gui.common.description_title"))
                 .setLore(ItemBuilder.toLoreLines(
-                        current.description().isBlank() ? "(sin descripción)" : current.description()))
+                        current.description().isBlank() ? lang.raw("gui.common.no_description")
+                                : current.description()))
                 .build());
 
         setItem(TYPE_SLOT, new ItemBuilder(Material.NETHER_STAR)
-                .setName(Component.text("Tipo: " + current.type(), NamedTextColor.GREEN))
-                .setLore(Component.text("Click para pasar al siguiente", NamedTextColor.GRAY)).build());
+                .setName(lang.component("gui.rune_editor.type_label", "type", current.type()))
+                .setLore(lang.component("gui.common.click_cycle_masc")).build());
 
         setItem(PARAMS_SLOT, new ItemBuilder(Material.COMMAND_BLOCK)
-                .setName(Component.text("Params: " + current.params(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Escribí: clave=valor,clave2=valor2", NamedTextColor.GRAY),
+                .setName(lang.component("gui.rune_editor.params_label", "params", current.params()))
+                .setLore(lang.component("gui.rune_editor.params_lore"),
                         paramsHelpFor(current.type()))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back")));
     }
 
     private Component paramsHelpFor(RuneModifierType type) {
-        String help = switch (type) {
-            case EXTRA_PROJECTILES -> "ej. count=2";
-            case PIERCING -> "ej. max-pierces=3";
-            case EXPLOSIVE -> "ej. radius=3,damage=4";
-            case APPLY_EFFECT -> "ej. effect-id=frozen (id de un efecto de RPGRoll-Effects)";
-            case COST_MODIFIER, COOLDOWN_MODIFIER -> "ej. multiplier=0.5";
+        String key = switch (type) {
+            case EXTRA_PROJECTILES -> "gui.rune_editor.params_help_extra_projectiles";
+            case PIERCING -> "gui.rune_editor.params_help_piercing";
+            case EXPLOSIVE -> "gui.rune_editor.params_help_explosive";
+            case APPLY_EFFECT -> "gui.rune_editor.params_help_apply_effect";
+            case COST_MODIFIER, COOLDOWN_MODIFIER -> "gui.rune_editor.params_help_modifier";
         };
-        return Component.text(help, NamedTextColor.DARK_GRAY);
+        return lang.component(key);
     }
 
     @Override
@@ -100,20 +104,20 @@ public class RuneEditorGUI extends InventoryGUI {
         int slot = event.getSlot();
 
         if (slot == NAME_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el nuevo nombre:", value -> replace(new Rune(current.id(),
+            chatPromptManager.prompt(player, lang.raw("gui.common.prompt_name"), value -> replace(new Rune(current.id(),
                     value, current.icon(), current.description(), current.type(), current.params())));
             return;
         }
 
         if (slot == ICON_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el Material del ícono:", value -> replace(new Rune(
+            chatPromptManager.prompt(player, lang.raw("gui.common.prompt_icon"), value -> replace(new Rune(
                     current.id(), current.displayName(), value, current.description(), current.type(),
                     current.params())));
             return;
         }
 
         if (slot == DESCRIPTION_SLOT) {
-            chatPromptManager.prompt(player, "Escribí la nueva descripción:", value -> replace(new Rune(current.id(),
+            chatPromptManager.prompt(player, lang.raw("gui.common.prompt_description"), value -> replace(new Rune(current.id(),
                     current.displayName(), current.icon(), value, current.type(), current.params())));
             return;
         }
@@ -127,7 +131,7 @@ public class RuneEditorGUI extends InventoryGUI {
         }
 
         if (slot == PARAMS_SLOT) {
-            chatPromptManager.prompt(player, "Escribí: clave=valor,clave2=valor2:", value -> {
+            chatPromptManager.prompt(player, lang.raw("gui.rune_editor.prompt_params"), value -> {
 
                 Map<String, String> params = new LinkedHashMap<>();
 

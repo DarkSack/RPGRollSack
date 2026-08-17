@@ -1,5 +1,6 @@
 package com.sack.rpgroll.gui.character;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.api.playerclass.ClassManager;
@@ -35,16 +36,18 @@ public class ClassSelectionGUI extends InventoryGUI {
         private final Map<Integer, String> slotToClass;
         private final String selectedRace;
         private final boolean mandatory;
+        private final LangManager lang;
 
         public ClassSelectionGUI(Player player, ClassManager classManager, String selectedRace,
-                        Consumer<String> onClassSelected, boolean mandatory) {
-                super(player, Component.text("Selecciona tu Clase", NamedTextColor.GOLD).decorate(TextDecoration.BOLD),
+                        Consumer<String> onClassSelected, boolean mandatory, LangManager lang) {
+                super(player, lang.component("class_selection_gui.title").decorate(TextDecoration.BOLD),
                                 27);
                 this.classManager = classManager;
                 this.onClassSelected = onClassSelected;
                 this.slotToClass = new HashMap<>();
                 this.selectedRace = selectedRace;
                 this.mandatory = mandatory;
+                this.lang = lang;
         }
 
         @Override
@@ -63,20 +66,19 @@ public class ClassSelectionGUI extends InventoryGUI {
                 }
 
                 setItem(4, new ItemBuilder(Material.PAPER)
-                                .setName(Component.text("Raza seleccionada", NamedTextColor.GOLD)
+                                .setName(lang.component("class_selection_gui.selected_race_name")
                                                 .decorate(TextDecoration.BOLD))
                                 .setLore(
                                                 Component.text(selectedRace, NamedTextColor.YELLOW),
-                                                Component.text("Ahora elige tu clase.", NamedTextColor.GRAY))
+                                                lang.component("class_selection_gui.selected_race_lore"))
                                 .build());
 
                 List<PlayerClass> classes = new ArrayList<>(classManager.getAll());
 
                 if (classes.isEmpty()) {
                         setItem(13, new ItemBuilder(Material.BARRIER)
-                                        .setName(Component.text("Sin clases disponibles", NamedTextColor.RED))
-                                        .setLore(Component.text("No hay clases cargadas. Contacta a un admin.",
-                                                        NamedTextColor.GRAY))
+                                        .setName(lang.component("class_selection_gui.none_available"))
+                                        .setLore(lang.component("class_selection_gui.none_available_lore"))
                                         .build());
                 } else {
                         for (int i = 0; i < classes.size() && i < CONTENT_SLOTS.length; i++) {
@@ -89,7 +91,7 @@ public class ClassSelectionGUI extends InventoryGUI {
                 }
 
                 if (!mandatory) {
-                        setItem(CANCEL_SLOT, ItemBuilder.createCancelButton("Volver atrás"));
+                        setItem(CANCEL_SLOT, ItemBuilder.createCancelButton(lang.raw("class_selection_gui.back_button")));
                 }
         }
 
@@ -127,7 +129,7 @@ public class ClassSelectionGUI extends InventoryGUI {
 
                 if (!mandatory && slot == CANCEL_SLOT) {
                         close();
-                        player.sendMessage(Component.text("Creación de personaje cancelada.", NamedTextColor.YELLOW));
+                        lang.send(player, "class_selection_gui.cancelled");
                         return;
                 }
 

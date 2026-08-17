@@ -1,5 +1,6 @@
 package com.sack.rpgroll.economy.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.economy.bank.BankManager;
 import com.sack.rpgroll.economy.company.Company;
 import com.sack.rpgroll.economy.company.CompanyManager;
@@ -28,16 +29,18 @@ public class CompanyListGUI extends InventoryGUI {
     private final BankManager bankManager;
     private final CurrencyManager currencyManager;
     private final ChatPromptManager chatPromptManager;
+    private final LangManager lang;
     private List<Company> companies;
 
     public CompanyListGUI(Player player, CompanyManager companyManager, CompanyService companyService,
             BankManager bankManager, CurrencyManager currencyManager, ChatPromptManager chatPromptManager) {
-        super(player, Component.text("Mis empresas", NamedTextColor.GOLD), SIZE);
+        super(player, Component.text(chatPromptManager.lang().raw("company.list.title"), NamedTextColor.GOLD), SIZE);
         this.companyManager = companyManager;
         this.companyService = companyService;
         this.bankManager = bankManager;
         this.currencyManager = currencyManager;
         this.chatPromptManager = chatPromptManager;
+        this.lang = chatPromptManager.lang();
         this.companies = companyManager.byMember(player.getUniqueId());
     }
 
@@ -56,15 +59,15 @@ public class CompanyListGUI extends InventoryGUI {
 
             setItem(i, new ItemBuilder(Material.EMERALD_BLOCK)
                     .setName(Component.text(company.name(), NamedTextColor.YELLOW))
-                    .setLore(Component.text("rol: " + company.members().get(player.getUniqueId()), NamedTextColor.GRAY),
-                            Component.text("empleados: " + company.members().size(), NamedTextColor.GRAY),
-                            Component.text("Click para administrar", NamedTextColor.GREEN))
+                    .setLore(lang.component("company.list.lore_role", "value", company.members().get(player.getUniqueId())),
+                            lang.component("company.list.lore_employees", "count", company.members().size()),
+                            lang.component("common.click_manage"))
                     .build());
         }
 
         setItem(FOUND_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Fundar empresa nueva", NamedTextColor.GREEN)).build());
-        setItem(CLOSE_SLOT, ItemBuilder.createCancelButton("Cerrar"));
+                .setName(lang.component("company.list.found_button")).build());
+        setItem(CLOSE_SLOT, ItemBuilder.createCancelButton(lang.raw("common.close")));
     }
 
     @Override
@@ -80,12 +83,12 @@ public class CompanyListGUI extends InventoryGUI {
         }
 
         if (slot == FOUND_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el nombre de tu nueva empresa:", value -> {
+            chatPromptManager.prompt(player, lang.raw("company.list.prompt_name"), value -> {
                 if (companyManager.byName(value).isPresent()) {
-                    player.sendMessage(Component.text("Ya existe una empresa con ese nombre.", NamedTextColor.RED));
+                    lang.send(player, "company.list.duplicate_name");
                 } else {
                     companyService.create(value, player.getUniqueId());
-                    player.sendMessage(Component.text("✔ Empresa fundada.", NamedTextColor.GREEN));
+                    lang.send(player, "company.list.founded");
                 }
                 reopen();
             });

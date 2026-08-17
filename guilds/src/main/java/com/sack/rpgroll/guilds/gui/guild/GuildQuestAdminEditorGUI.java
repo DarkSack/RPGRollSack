@@ -36,11 +36,16 @@ public class GuildQuestAdminEditorGUI extends InventoryGUI {
 
     public GuildQuestAdminEditorGUI(Player player, GuildQuestDefinition definition, GuildQuestManager questManager,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text("Quest de Guild: " + definition.id(), NamedTextColor.GOLD), SIZE);
+        super(player, Component.text(chatPromptManager.lang().raw("guildadmin.quest.editor.title", "id",
+                definition.id()), NamedTextColor.GOLD), SIZE);
         this.current = definition;
         this.questManager = questManager;
         this.chatPromptManager = chatPromptManager;
         this.onBack = onBack;
+    }
+
+    private com.sack.rpgroll.common.lang.LangManager lang() {
+        return chatPromptManager.lang();
     }
 
     private void replace(GuildQuestDefinition updated) {
@@ -59,50 +64,57 @@ public class GuildQuestAdminEditorGUI extends InventoryGUI {
         }
 
         setItem(NAME_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(Component.text("Nombre: " + current.displayName(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para escribir uno nuevo", NamedTextColor.GRAY))
+                .setName(Component.text(lang().raw("guildadmin.quest.name_label", "name", current.displayName()),
+                        NamedTextColor.YELLOW))
+                .setLore(Component.text(lang().raw("guildadmin.quest.lore.click_to_type_new"), NamedTextColor.GRAY))
                 .build());
 
         setItem(TYPE_SLOT, new ItemBuilder(Material.COMPASS)
-                .setName(Component.text("Tipo: " + current.type(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para pasar al siguiente", NamedTextColor.GRAY),
-                        Component.text("WIN_WAR no tiene gancho automático (sin motor de guerra)", NamedTextColor.DARK_GRAY))
+                .setName(Component.text(lang().raw("guildadmin.quest.type_label", "type", current.type()),
+                        NamedTextColor.YELLOW))
+                .setLore(Component.text(lang().raw("guildadmin.quest.lore.click_next"), NamedTextColor.GRAY),
+                        Component.text(lang().raw("guildadmin.quest.lore.win_war_note"), NamedTextColor.DARK_GRAY))
                 .build());
 
         setItem(TARGET_REF_SLOT, new ItemBuilder(Material.PAPER)
-                .setName(Component.text("Referencia: " + (current.targetReference() == null ? "(ninguna)"
-                        : current.targetReference()), NamedTextColor.YELLOW))
-                .setLore(Component.text("Ej. id de mob/dungeon/material según el tipo", NamedTextColor.GRAY),
-                        Component.text("Click para escribir una nueva", NamedTextColor.GRAY))
+                .setName(Component.text(lang().raw("guildadmin.quest.reference_label", "reference",
+                        current.targetReference() == null ? lang().raw("guildadmin.quest.reference_none")
+                                : current.targetReference()), NamedTextColor.YELLOW))
+                .setLore(Component.text(lang().raw("guildadmin.quest.lore.reference_example"), NamedTextColor.GRAY),
+                        Component.text(lang().raw("guildadmin.quest.lore.click_to_type_new"), NamedTextColor.GRAY))
                 .build());
 
         setItem(TARGET_AMOUNT_SLOT, new ItemBuilder(Material.TARGET)
-                .setName(Component.text("Cantidad objetivo: " + current.targetAmount(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click: +1 · Shift-click: +10 · Click derecho: -1", NamedTextColor.GRAY))
+                .setName(Component.text(lang().raw("guildadmin.quest.target_amount_label", "amount",
+                        current.targetAmount()), NamedTextColor.YELLOW))
+                .setLore(Component.text(lang().raw("guildadmin.quest.lore.click_increments"), NamedTextColor.GRAY))
                 .build());
 
         setItem(REWARD_MONEY_SLOT, new ItemBuilder(Material.GOLD_INGOT)
-                .setName(Component.text("Recompensa de oro: " + current.rewardMoney(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click: +100 · Click derecho: -100", NamedTextColor.GRAY))
+                .setName(Component.text(lang().raw("guildadmin.quest.reward_money_label", "amount",
+                        current.rewardMoney()), NamedTextColor.YELLOW))
+                .setLore(Component.text(lang().raw("guildadmin.quest.lore.click_100"), NamedTextColor.GRAY))
                 .build());
 
         setItem(REWARD_XP_SLOT, new ItemBuilder(Material.EXPERIENCE_BOTTLE)
-                .setName(Component.text("Recompensa de XP de guild: " + current.rewardXp(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click: +50 · Click derecho: -50", NamedTextColor.GRAY))
+                .setName(Component.text(lang().raw("guildadmin.quest.reward_xp_label", "amount", current.rewardXp()),
+                        NamedTextColor.YELLOW))
+                .setLore(Component.text(lang().raw("guildadmin.quest.lore.click_50"), NamedTextColor.GRAY))
                 .build());
 
         setItem(MIN_LEVEL_SLOT, new ItemBuilder(Material.LADDER)
-                .setName(Component.text("Nivel mínimo de guild: " + current.minGuildLevel(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click: +1 · Click derecho: -1", NamedTextColor.GRAY))
+                .setName(Component.text(lang().raw("guildadmin.quest.min_level_label", "level",
+                        current.minGuildLevel()), NamedTextColor.YELLOW))
+                .setLore(Component.text(lang().raw("guildadmin.quest.lore.click_increments"), NamedTextColor.GRAY))
                 .build());
 
         setItem(DESCRIPTION_SLOT, new ItemBuilder(Material.WRITTEN_BOOK)
-                .setName(Component.text("Descripción", NamedTextColor.YELLOW))
-                .setLore(ItemBuilder.toLoreLines(current.description().isBlank() ? "(sin descripción)"
-                        : current.description()))
+                .setName(Component.text(lang().raw("guildadmin.quest.description_label"), NamedTextColor.YELLOW))
+                .setLore(ItemBuilder.toLoreLines(current.description().isBlank()
+                        ? lang().raw("guild.customization.no_description") : current.description()))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang().raw("common.back")));
     }
 
     @Override
@@ -113,7 +125,7 @@ public class GuildQuestAdminEditorGUI extends InventoryGUI {
         ClickType click = event.getClick();
 
         if (slot == NAME_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el nuevo nombre de la quest:",
+            chatPromptManager.prompt(player, "guildadmin.quest.prompt_name",
                     value -> replace(new GuildQuestDefinition(current.id(), value.trim(), current.description(),
                             current.type(), current.targetReference(), current.targetAmount(), current.rewardMoney(),
                             current.rewardXp(), current.minGuildLevel())));
@@ -130,7 +142,7 @@ public class GuildQuestAdminEditorGUI extends InventoryGUI {
         }
 
         if (slot == TARGET_REF_SLOT) {
-            chatPromptManager.prompt(player, "Escribí la nueva referencia (vacío = ninguna):",
+            chatPromptManager.prompt(player, "guildadmin.quest.prompt_reference",
                     value -> replace(new GuildQuestDefinition(current.id(), current.displayName(),
                             current.description(), current.type(), value.isBlank() ? null : value.trim(),
                             current.targetAmount(), current.rewardMoney(), current.rewardXp(),
@@ -171,7 +183,7 @@ public class GuildQuestAdminEditorGUI extends InventoryGUI {
         }
 
         if (slot == DESCRIPTION_SLOT) {
-            chatPromptManager.prompt(player, "Escribí la nueva descripción:",
+            chatPromptManager.prompt(player, "guildadmin.quest.prompt_description",
                     value -> replace(new GuildQuestDefinition(current.id(), current.displayName(), value,
                             current.type(), current.targetReference(), current.targetAmount(), current.rewardMoney(),
                             current.rewardXp(), current.minGuildLevel())));

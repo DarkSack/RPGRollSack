@@ -1,5 +1,7 @@
 package com.sack.rpgroll.mobs.gui.editor;
 
+import com.sack.rpgroll.common.lang.LangManager;
+
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.mobs.core.MobCategory;
@@ -33,11 +35,14 @@ public class IdentityEditorGUI extends InventoryGUI {
 
     private final MobEditorSession session;
     private final Runnable onBack;
+    private final LangManager lang;
 
     public IdentityEditorGUI(Player player, MobEditorSession session, Runnable onBack) {
-        super(player, Component.text("Identidad: " + session.original.id(), NamedTextColor.GOLD), SIZE);
+        super(player, session.chatPromptManager.lang().component("gui.identity.title", "id",
+                session.original.id()), SIZE);
         this.session = session;
         this.onBack = onBack;
+        this.lang = session.chatPromptManager.lang();
     }
 
     @Override
@@ -50,51 +55,52 @@ public class IdentityEditorGUI extends InventoryGUI {
         }
 
         setItem(NAME_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(Component.text("Nombre: " + session.displayName, NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para escribir uno nuevo (admite &códigos)", NamedTextColor.GRAY))
+                .setName(lang.component("gui.identity.name_label", "name", session.displayName))
+                .setLore(lang.component("gui.identity.name_hint"))
                 .build());
 
         setItem(NAME_COLOR_SLOT, new ItemBuilder(Material.WHITE_DYE)
-                .setName(Component.text("Color de nombre: "
-                        + (session.nameColor != null ? session.nameColor : "(por rareza)"), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click: escribir (ej. gold o #FF8800)", NamedTextColor.GRAY),
-                        Component.text("Shift-click: quitar (usar color de rareza)", NamedTextColor.GRAY))
+                .setName(lang.component("gui.identity.color_label", "value",
+                        session.nameColor != null ? session.nameColor : lang.raw("gui.identity.color_default")))
+                .setLore(lang.component("gui.identity.color_hint1"),
+                        lang.component("gui.identity.color_hint2"))
                 .build());
 
         setItem(CATEGORY_SLOT, new ItemBuilder(Material.ARMOR_STAND)
-                .setName(Component.text("Categoría: " + session.category, NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para pasar a la siguiente", NamedTextColor.GRAY))
+                .setName(lang.component("gui.identity.category_label", "value", session.category))
+                .setLore(lang.component("gui.common.click_next"))
                 .build());
 
         setItem(LEVEL_SLOT, new ItemBuilder(Material.EXPERIENCE_BOTTLE)
-                .setName(Component.text("Nivel: " + session.level, NamedTextColor.YELLOW))
-                .setLore(Component.text("Click: +1 · Shift-click: +10", NamedTextColor.GRAY),
-                        Component.text("Click derecho: -1 · Shift-click derecho: -10", NamedTextColor.GRAY))
+                .setName(lang.component("gui.identity.level_label", "value", session.level))
+                .setLore(lang.component("gui.common.click_plus1_10"),
+                        lang.component("gui.common.click_minus1_10"))
                 .build());
 
         setItem(RARITY_SLOT, new ItemBuilder(Material.NETHER_STAR)
-                .setName(Component.text("Rareza: " + session.rarityId, NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para escribir el id de rareza", NamedTextColor.GRAY))
+                .setName(lang.component("gui.identity.rarity_label", "value", session.rarityId))
+                .setLore(lang.component("gui.identity.rarity_hint"))
                 .build());
 
         setItem(DESCRIPTION_SLOT, new ItemBuilder(Material.BOOK)
-                .setName(Component.text("Descripción", NamedTextColor.YELLOW))
-                .setLore(Component.text(session.description.isBlank() ? "(vacía)" : session.description,
-                        NamedTextColor.GRAY))
+                .setName(lang.component("gui.identity.description_label"))
+                .setLore(session.description.isBlank()
+                        ? lang.component("gui.identity.description_empty")
+                        : Component.text(session.description, NamedTextColor.GRAY))
                 .build());
 
         for (int i = 0; i < session.tags.size() && i < 8; i++) {
             setItem(TAGS_START_SLOT + i, new ItemBuilder(Material.PAPER)
                     .setName(Component.text(session.tags.get(i), NamedTextColor.AQUA))
-                    .setLore(Component.text("Shift-click para quitar", NamedTextColor.DARK_GRAY))
+                    .setLore(lang.component("gui.common.shift_remove_dark"))
                     .build());
         }
 
         setItem(ADD_TAG_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Agregar tag", NamedTextColor.GREEN))
+                .setName(lang.component("gui.identity.add_tag"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back_button")));
     }
 
     @Override
@@ -104,7 +110,7 @@ public class IdentityEditorGUI extends InventoryGUI {
         int slot = event.getSlot();
 
         if (slot == NAME_SLOT) {
-            session.chatPromptManager.prompt(player, "Escribí el nuevo nombre:", value -> {
+            session.chatPromptManager.prompt(player, "gui.common.prompt_new_name", value -> {
                 session.displayName = value;
                 build();
             });
@@ -117,7 +123,7 @@ public class IdentityEditorGUI extends InventoryGUI {
                 build();
                 return;
             }
-            session.chatPromptManager.prompt(player, "Escribí un color (ej. gold, red, #FF8800):", value -> {
+            session.chatPromptManager.prompt(player, "gui.identity.prompt_color", value -> {
                 session.nameColor = value.trim();
                 build();
             });
@@ -138,7 +144,7 @@ public class IdentityEditorGUI extends InventoryGUI {
         }
 
         if (slot == RARITY_SLOT) {
-            session.chatPromptManager.prompt(player, "Escribí el id de rareza:", value -> {
+            session.chatPromptManager.prompt(player, "gui.identity.prompt_rarity", value -> {
                 session.rarityId = value.trim().toLowerCase();
                 build();
             });
@@ -146,7 +152,7 @@ public class IdentityEditorGUI extends InventoryGUI {
         }
 
         if (slot == DESCRIPTION_SLOT) {
-            session.chatPromptManager.prompt(player, "Escribí la descripción:", value -> {
+            session.chatPromptManager.prompt(player, "gui.identity.prompt_description", value -> {
                 session.description = value;
                 build();
             });
@@ -162,7 +168,7 @@ public class IdentityEditorGUI extends InventoryGUI {
         }
 
         if (slot == ADD_TAG_SLOT) {
-            session.chatPromptManager.prompt(player, "Escribí el nuevo tag:", value -> {
+            session.chatPromptManager.prompt(player, "gui.identity.prompt_tag", value -> {
                 List<String> updated = new ArrayList<>(session.tags);
                 updated.add(value.trim());
                 session.tags = updated;

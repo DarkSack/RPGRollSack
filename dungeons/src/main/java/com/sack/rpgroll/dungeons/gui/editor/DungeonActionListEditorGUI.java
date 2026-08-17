@@ -1,7 +1,9 @@
 package com.sack.rpgroll.dungeons.gui.editor;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
+import com.sack.rpgroll.util.ComponentUtils;
 import com.sack.rpgroll.dungeons.core.DungeonAction;
 import com.sack.rpgroll.dungeons.gui.ChatPromptManager;
 
@@ -32,6 +34,7 @@ public class DungeonActionListEditorGUI extends InventoryGUI {
 
     private final List<DungeonAction> actions;
     private final ChatPromptManager chatPromptManager;
+    private final LangManager lang;
     private final Runnable onBack;
 
     public DungeonActionListEditorGUI(Player player, String title, List<DungeonAction> actions,
@@ -39,6 +42,7 @@ public class DungeonActionListEditorGUI extends InventoryGUI {
         super(player, Component.text(title, NamedTextColor.GOLD), SIZE);
         this.actions = actions;
         this.chatPromptManager = chatPromptManager;
+        this.lang = chatPromptManager.lang();
         this.onBack = onBack;
     }
 
@@ -59,7 +63,7 @@ public class DungeonActionListEditorGUI extends InventoryGUI {
             for (var entry : action.params().entrySet()) {
                 lore.add(Component.text(entry.getKey() + "=" + entry.getValue(), NamedTextColor.GRAY));
             }
-            lore.add(Component.text("Shift-click para quitar", NamedTextColor.DARK_GRAY));
+            lore.add(ComponentUtils.parse(lang.raw("gui.editor.actionlist.item.remove_hint")));
 
             setItem(i, new ItemBuilder(Material.COMMAND_BLOCK)
                     .setName(Component.text(action.type(), NamedTextColor.YELLOW))
@@ -68,12 +72,12 @@ public class DungeonActionListEditorGUI extends InventoryGUI {
         }
 
         setItem(ADD_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Agregar acción", NamedTextColor.GREEN))
-                .setLore(Component.text("TIPO clave=valor clave2=valor2", NamedTextColor.GRAY),
-                        Component.text("ej. SOUND sound=ENTITY_WITHER_SPAWN", NamedTextColor.DARK_GRAY))
+                .setName(ComponentUtils.parse(lang.raw("gui.editor.actionlist.add.label")))
+                .setLore(ComponentUtils.parse(lang.raw("gui.editor.actionlist.add.hint1")),
+                        ComponentUtils.parse(lang.raw("gui.editor.actionlist.add.hint2")))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back")));
     }
 
     @Override
@@ -101,13 +105,13 @@ public class DungeonActionListEditorGUI extends InventoryGUI {
     }
 
     private void promptAdd() {
-        chatPromptManager.prompt(player, "Escribí: TIPO clave=valor clave2=valor2 (ej. TELEPORT x=100 y=65 z=0):",
+        chatPromptManager.prompt(player, "gui.editor.actionlist.prompt.add",
                 value -> {
 
                     String[] tokens = value.trim().split("\\s+");
 
                     if (tokens.length == 0 || tokens[0].isBlank()) {
-                        player.sendMessage(Component.text("Formato inválido.", NamedTextColor.RED));
+                        lang.send(player, "gui.editor.actionlist.invalid_format");
                         return;
                     }
 

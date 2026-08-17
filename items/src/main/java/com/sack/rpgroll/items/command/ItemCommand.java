@@ -1,5 +1,6 @@
 package com.sack.rpgroll.items.command;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.items.core.ItemDefinition;
 import com.sack.rpgroll.items.core.ItemManager;
 import com.sack.rpgroll.items.instance.ItemInstanceService;
@@ -36,26 +37,28 @@ public class ItemCommand implements CommandExecutor, TabCompleter {
     private final UpgradeService upgradeService;
     private final SkinService skinService;
     private final SocketService socketService;
+    private final LangManager langManager;
 
     public ItemCommand(ItemManager itemManager, ItemInstanceService instanceService, UpgradeService upgradeService,
-            SkinService skinService, SocketService socketService) {
+            SkinService skinService, SocketService socketService, LangManager langManager) {
         this.itemManager = itemManager;
         this.instanceService = instanceService;
         this.upgradeService = upgradeService;
         this.skinService = skinService;
         this.socketService = socketService;
+        this.langManager = langManager;
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
         if (!(sender instanceof Player player)) {
-            sender.sendMessage("Solo un jugador puede usar este comando.");
+            langManager.send(sender, "command.item.player_only");
             return true;
         }
 
         if (args.length < 1) {
-            player.sendMessage(Component.text("Uso: /item <info|upgrade|skin|socket> [args]", NamedTextColor.RED));
+            langManager.send(player, "command.item.usage");
             return true;
         }
 
@@ -63,7 +66,7 @@ public class ItemCommand implements CommandExecutor, TabCompleter {
         Optional<ItemDefinition> definitionOpt = instanceService.getId(held).flatMap(itemManager::get);
 
         if (definitionOpt.isEmpty()) {
-            player.sendMessage(Component.text("No tenés un ítem de RPGRoll-Items en la mano.", NamedTextColor.RED));
+            langManager.send(player, "command.item.no_item");
             return true;
         }
 
@@ -74,8 +77,7 @@ public class ItemCommand implements CommandExecutor, TabCompleter {
             case "upgrade" -> handleUpgrade(player, held, definition);
             case "skin" -> handleSkin(player, held, definition);
             case "socket" -> handleSocket(player, held, definition, args);
-            default -> player.sendMessage(Component.text(
-                    "Uso: /item <info|upgrade|skin|socket> [args]", NamedTextColor.RED));
+            default -> langManager.send(player, "command.item.usage");
         }
 
         return true;
@@ -84,16 +86,14 @@ public class ItemCommand implements CommandExecutor, TabCompleter {
     private void handleInfo(Player player, ItemStack held, ItemDefinition definition) {
 
         player.sendMessage(Component.text(definition.displayName(), NamedTextColor.GOLD));
-        player.sendMessage(Component.text("Categoría: " + definition.category(), NamedTextColor.GRAY));
-        player.sendMessage(Component.text("Rareza: " + definition.rarityId(), NamedTextColor.GRAY));
-        player.sendMessage(Component.text("Nivel de mejora: " + instanceService.getUpgradeLevel(held),
-                NamedTextColor.GRAY));
+        langManager.send(player, "command.item.info.pack", "pack", definition.pack());
+        langManager.send(player, "command.item.info.rarity", "rarity", definition.rarityId());
+        langManager.send(player, "command.item.info.upgrade_level", "level", instanceService.getUpgradeLevel(held));
 
         if (definition.durability().enabled()) {
-            player.sendMessage(Component.text(
-                    "Durabilidad: " + instanceService.getDurability(held, definition.durability().maxDurability())
-                            + "/" + definition.durability().maxDurability(),
-                    NamedTextColor.GRAY));
+            langManager.send(player, "command.item.info.durability",
+                    "current", instanceService.getDurability(held, definition.durability().maxDurability()),
+                    "max", definition.durability().maxDurability());
         }
     }
 
@@ -102,41 +102,37 @@ public class ItemCommand implements CommandExecutor, TabCompleter {
         UpgradeService.Result result = upgradeService.upgrade(player, held, definition);
 
         switch (result) {
-            case OK -> player.sendMessage(Component.text("✔ Ítem mejorado.", NamedTextColor.GREEN));
-            case MAX_LEVEL -> player.sendMessage(Component.text(
-                    "Este ítem ya está en su nivel máximo.", NamedTextColor.RED));
-            case NO_UPGRADE_DEFINED -> player.sendMessage(Component.text(
-                    "El próximo nivel de mejora no está definido todavía.", NamedTextColor.RED));
-            case CANT_AFFORD_MONEY -> player.sendMessage(Component.text(
-                    "No tenés suficiente dinero para esta mejora.", NamedTextColor.RED));
-            case MISSING_MATERIAL -> player.sendMessage(Component.text(
-                    "Te falta el material requerido para esta mejora.", NamedTextColor.RED));
+            case OK -> langManager.send(player, "command.item.upgrade.ok");
+            case MAX_LEVEL -> langManager.send(player, "command.item.upgrade.max_level");
+            case NO_UPGRADE_DEFINED -> langManager.send(player, "command.item.upgrade.no_upgrade_defined");
+            case CANT_AFFORD_MONEY -> langManager.send(player, "command.item.upgrade.cant_afford_money");
+            case MISSING_MATERIAL -> langManager.send(player, "command.item.upgrade.missing_material");
         }
     }
 
     private void handleSkin(Player player, ItemStack held, ItemDefinition definition) {
 
         if (definition.skins().isEmpty()) {
-            player.sendMessage(Component.text("Este ítem no tiene skins alternativas.", NamedTextColor.RED));
+            langManager.send(player, "command.item.skin.none");
             return;
         }
 
         int newIndex = skinService.cycleSkin(held, definition);
-        String skinName = newIndex == 0 ? "apariencia base" : definition.skins().get(newIndex - 1).displayName();
+        String skinName = newIndex == 0 ? langManager.raw("command.item.skin.base")
+                : definition.skins().get(newIndex - 1).displayName();
 
-        player.sendMessage(Component.text("✔ Skin cambiada a: " + skinName, NamedTextColor.GREEN));
+        langManager.send(player, "command.item.skin.changed", "skin", skinName);
     }
 
     private void handleSocket(Player player, ItemStack held, ItemDefinition definition, String[] args) {
 
         if (definition.sockets().isEmpty()) {
-            player.sendMessage(Component.text("Este ítem no tiene sockets.", NamedTextColor.RED));
+            langManager.send(player, "command.item.socket.none");
             return;
         }
 
         if (args.length < 2) {
-            player.sendMessage(Component.text("Uso: /item socket <id> (con la gema en tu mano secundaria)",
-                    NamedTextColor.RED));
+            langManager.send(player, "command.item.socket.usage");
             return;
         }
 
@@ -147,16 +143,12 @@ public class ItemCommand implements CommandExecutor, TabCompleter {
         switch (result) {
             case OK -> {
                 consumeOne(player, gem);
-                player.sendMessage(Component.text("✔ Gema insertada.", NamedTextColor.GREEN));
+                langManager.send(player, "command.item.socket.ok");
             }
-            case SOCKET_NOT_FOUND -> player.sendMessage(Component.text(
-                    "Ese ítem no tiene un socket con id: " + args[1], NamedTextColor.RED));
-            case ALREADY_FILLED -> player.sendMessage(Component.text(
-                    "Ese socket ya tiene una gema.", NamedTextColor.RED));
-            case TYPE_NOT_ACCEPTED -> player.sendMessage(Component.text(
-                    "Ese socket no acepta este tipo de gema.", NamedTextColor.RED));
-            case GEM_NOT_FOUND -> player.sendMessage(Component.text(
-                    "Necesitás tener una gema válida en tu mano secundaria.", NamedTextColor.RED));
+            case SOCKET_NOT_FOUND -> langManager.send(player, "command.item.socket.not_found", "id", args[1]);
+            case ALREADY_FILLED -> langManager.send(player, "command.item.socket.already_filled");
+            case TYPE_NOT_ACCEPTED -> langManager.send(player, "command.item.socket.type_not_accepted");
+            case GEM_NOT_FOUND -> langManager.send(player, "command.item.socket.gem_not_found");
         }
     }
 

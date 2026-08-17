@@ -1,5 +1,6 @@
 package com.sack.rpgroll.workers.item;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 
 import net.kyori.adventure.text.Component;
@@ -15,13 +16,13 @@ public final class WorkerItemFactory {
     private WorkerItemFactory() {
     }
 
-    public static ItemStack createWarehouseDesignator() {
+    public static ItemStack createWarehouseDesignator(LangManager lang) {
 
         ItemStack item = new ItemBuilder(Material.STICK)
-                .setName(Component.text("Designador de Almacén", NamedTextColor.GOLD))
+                .setName(Component.text(lang.raw("item.warehouse_designator.name"), NamedTextColor.GOLD))
                 .setLore(
-                        Component.text("Click derecho en un cofre/baúl para", NamedTextColor.GRAY),
-                        Component.text("marcarlo (o desmarcarlo) como almacén.", NamedTextColor.GRAY))
+                        Component.text(lang.raw("item.warehouse_designator.lore1"), NamedTextColor.GRAY),
+                        Component.text(lang.raw("item.warehouse_designator.lore2"), NamedTextColor.GRAY))
                 .build();
 
         ItemMeta meta = item.getItemMeta();

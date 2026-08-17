@@ -1,12 +1,12 @@
 package com.sack.rpgroll.npcs.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.npcs.core.NpcEditSession;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.format.TextDecoration;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -21,12 +21,14 @@ public class NpcPoseSelectGUI extends InventoryGUI {
 
     private final NpcEditSession session;
     private final NpcAdminGUI parent;
+    private final LangManager langManager;
     private final Map<Integer, String> slotToPose = new HashMap<>();
 
-    public NpcPoseSelectGUI(Player player, NpcEditSession session, NpcAdminGUI parent) {
-        super(player, Component.text("Selecciona una Pose", NamedTextColor.GOLD).decorate(TextDecoration.BOLD), 27);
+    public NpcPoseSelectGUI(Player player, NpcEditSession session, NpcAdminGUI parent, LangManager langManager) {
+        super(player, langManager.component("pose.title"), 27);
         this.session = session;
         this.parent = parent;
+        this.langManager = langManager;
     }
 
     @Override
@@ -56,7 +58,7 @@ public class NpcPoseSelectGUI extends InventoryGUI {
             setItem(i, ItemBuilder.createFiller());
         }
 
-        setItem(22, ItemBuilder.createCancelButton("Volver"));
+        setItem(22, ItemBuilder.createCancelButton(langManager.raw("pose.back")));
     }
 
     @Override

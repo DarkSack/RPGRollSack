@@ -4,6 +4,7 @@ import com.sack.rpgroll.crafting.discovery.DiscoveryService;
 import com.sack.rpgroll.crafting.recipe.CustomRecipe;
 import com.sack.rpgroll.crafting.recipe.CustomRecipeManager;
 import com.sack.rpgroll.crafting.station.CustomStationManager;
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 
@@ -29,14 +30,16 @@ public class RecipeBookGUI extends InventoryGUI {
     private final CustomRecipeManager recipeManager;
     private final CustomStationManager stationManager;
     private final DiscoveryService discoveryService;
+    private final LangManager lang;
     private final List<CustomRecipe> recipes;
 
     public RecipeBookGUI(Player player, CustomRecipeManager recipeManager, CustomStationManager stationManager,
-            DiscoveryService discoveryService) {
-        super(player, Component.text("Libro de Recetas", NamedTextColor.DARK_AQUA), SIZE);
+            DiscoveryService discoveryService, LangManager lang) {
+        super(player, Component.text(lang.raw("gui.recipe_book.title"), NamedTextColor.DARK_AQUA), SIZE);
         this.recipeManager = recipeManager;
         this.stationManager = stationManager;
         this.discoveryService = discoveryService;
+        this.lang = lang;
         this.recipes = List.copyOf(recipeManager.getAll());
     }
 
@@ -53,8 +56,8 @@ public class RecipeBookGUI extends InventoryGUI {
 
             if (!discovery.hasDiscovered(recipe.id())) {
                 setItem(i, new ItemBuilder(Material.BARRIER)
-                        .setName(Component.text("???", NamedTextColor.DARK_GRAY))
-                        .setLore(Component.text("Receta sin descubrir todavía.", NamedTextColor.GRAY))
+                        .setName(Component.text(lang.raw("gui.recipe_book.undiscovered_name"), NamedTextColor.DARK_GRAY))
+                        .setLore(Component.text(lang.raw("gui.recipe_book.undiscovered_lore"), NamedTextColor.GRAY))
                         .build());
                 continue;
             }
@@ -65,10 +68,11 @@ public class RecipeBookGUI extends InventoryGUI {
 
             setItem(i, new ItemBuilder(parseMaterial(recipe.icon()))
                     .setName(Component.text(recipe.displayName(), NamedTextColor.AQUA))
-                    .setLore(Component.text("Estación: " + stationName, NamedTextColor.GRAY),
-                            Component.text("Resultado: " + recipe.result().value() + " x" + recipe.result().amount(),
-                                    NamedTextColor.YELLOW),
-                            Component.text("Ingredientes: " + recipe.ingredients().size(), NamedTextColor.GRAY))
+                    .setLore(Component.text(lang.raw("gui.recipe_book.station_lore", "value", stationName), NamedTextColor.GRAY),
+                            Component.text(lang.raw("gui.recipe_book.result_lore", "value", recipe.result().value(),
+                                    "amount", recipe.result().amount()), NamedTextColor.YELLOW),
+                            Component.text(lang.raw("gui.recipe_book.ingredients_lore", "count", recipe.ingredients().size()),
+                                    NamedTextColor.GRAY))
                     .build());
         }
     }

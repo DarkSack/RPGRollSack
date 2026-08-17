@@ -19,6 +19,11 @@ import org.bukkit.inventory.ItemStack;
  * calidad, si la receta la habilita) al costo de niveles configurado.
  * Si ninguna receta coincide, el evento no se toca y el yunque vanilla
  * funciona exactamente igual que siempre.
+ * <p>
+ * {@code amount} en {@code baseIngredient}/{@code additionIngredient} exige
+ * que la pila tenga al menos esa cantidad, pero el yunque vanilla solo
+ * consume 1 de cada slot al entregar el resultado — un {@code amount} mayor
+ * a 1 no hace que se consuma más que eso. Se recomienda dejarlo en 1 acá.
  */
 public class AnvilEngine implements Listener {
 
@@ -48,8 +53,8 @@ public class AnvilEngine implements Listener {
 
         for (AnvilRecipeDefinition recipe : recipeManager.getAll()) {
 
-            if (!ingredientMatcher.matches(base, recipe.baseIngredient())
-                    || !ingredientMatcher.matches(addition, recipe.additionIngredient())) {
+            if (!ingredientMatcher.matchesWithAmount(base, recipe.baseIngredient())
+                    || !ingredientMatcher.matchesWithAmount(addition, recipe.additionIngredient())) {
                 continue;
             }
 

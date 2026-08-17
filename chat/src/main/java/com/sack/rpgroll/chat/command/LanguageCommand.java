@@ -3,6 +3,7 @@ package com.sack.rpgroll.chat.command;
 import com.sack.rpgroll.chat.language.LanguageManager;
 import com.sack.rpgroll.chat.language.LanguageService;
 import com.sack.rpgroll.chat.language.PlayerLanguageState;
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.util.ComponentUtils;
 import com.sack.rpgroll.util.TabCompleteUtil;
 
@@ -25,17 +26,19 @@ public class LanguageCommand implements CommandExecutor, TabCompleter {
 
     private final LanguageManager languageManager;
     private final LanguageService languageService;
+    private final LangManager lang;
 
-    public LanguageCommand(LanguageManager languageManager, LanguageService languageService) {
+    public LanguageCommand(LanguageManager languageManager, LanguageService languageService, LangManager lang) {
         this.languageManager = languageManager;
         this.languageService = languageService;
+        this.lang = lang;
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
         if (!(sender instanceof Player player)) {
-            sender.sendMessage(Component.text("Solo un jugador puede usar este comando.", NamedTextColor.RED));
+            lang.send(sender, "common.players_only");
             return true;
         }
 
@@ -57,46 +60,49 @@ public class LanguageCommand implements CommandExecutor, TabCompleter {
 
         PlayerLanguageState state = languageService.resolve(player);
 
-        player.sendMessage(Component.text("=== Idiomas ===", NamedTextColor.GOLD));
+        lang.send(player, "language.list_header");
 
         for (var language : languageManager.getAll()) {
             boolean known = state.knows(language.id());
             boolean speaking = language.id().equalsIgnoreCase(state.speakingLanguageId());
+            String status = lang.raw(known ? "language.status_known" : "language.status_unknown")
+                    + (speaking ? lang.raw("language.status_speaking_suffix") : "");
             player.sendMessage(Component.text(" - ", NamedTextColor.GRAY)
                     .append(ComponentUtils.parse(language.displayName()))
-                    .append(Component.text(" (" + (known ? "conocido" : "desconocido")
-                            + (speaking ? ", hablando" : "") + ")", NamedTextColor.GRAY)));
+                    .append(Component.text(" (" + status + ")", NamedTextColor.GRAY)));
         }
     }
 
     private void handleLearn(Player player, String[] args) {
 
         if (args.length < 2) {
-            player.sendMessage(Component.text("Uso: /language learn <idioma>", NamedTextColor.YELLOW));
+            lang.send(player, "language.usage_learn");
             return;
         }
 
         var result = languageService.learn(player, args[1]);
 
         switch (result) {
-            case OK -> player.sendMessage(Component.text("✔ Aprendiste " + args[1] + ".", NamedTextColor.GREEN));
-            case ALREADY_KNOWN -> player.sendMessage(Component.text("Ya conocés ese idioma.", NamedTextColor.YELLOW));
-            case NOT_FOUND -> player.sendMessage(Component.text("No existe ese idioma.", NamedTextColor.RED));
+            case OK -> lang.send(player, "language.learned", "id", args[1]);
+            case ALREADY_KNOWN -> lang.send(player, "language.already_known");
+            case NOT_FOUND -> lang.send(player, "language.not_found");
         }
     }
 
     private void handleSpeak(Player player, String[] args) {
 
         if (args.length < 2) {
-            player.sendMessage(Component.text("Uso: /language speak <idioma>", NamedTextColor.YELLOW));
+            lang.send(player, "language.usage_speak");
             return;
         }
 
         boolean ok = languageService.setSpeaking(player, args[1]);
 
-        player.sendMessage(ok
-                ? Component.text("✔ Ahora hablás en " + args[1] + ".", NamedTextColor.GREEN)
-                : Component.text("No conocés ese idioma.", NamedTextColor.RED));
+        if (ok) {
+            lang.send(player, "language.now_speaking", "id", args[1]);
+        } else {
+            lang.send(player, "language.dont_know");
+        }
     }
 
     @Override

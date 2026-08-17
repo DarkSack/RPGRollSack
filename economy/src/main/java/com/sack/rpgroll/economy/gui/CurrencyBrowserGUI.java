@@ -1,5 +1,6 @@
 package com.sack.rpgroll.economy.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.economy.currency.Currency;
 import com.sack.rpgroll.economy.currency.CurrencyManager;
 import com.sack.rpgroll.gui.InventoryGUI;
@@ -24,14 +25,16 @@ public class CurrencyBrowserGUI extends InventoryGUI {
     private final CurrencyManager currencyManager;
     private final ChatPromptManager chatPromptManager;
     private final Runnable onBack;
+    private final LangManager lang;
     private List<Currency> currencies;
 
     public CurrencyBrowserGUI(Player player, CurrencyManager currencyManager, ChatPromptManager chatPromptManager,
             Runnable onBack) {
-        super(player, Component.text("Monedas", NamedTextColor.GOLD), SIZE);
+        super(player, Component.text(chatPromptManager.lang().raw("currency.browser.title"), NamedTextColor.GOLD), SIZE);
         this.currencyManager = currencyManager;
         this.chatPromptManager = chatPromptManager;
         this.onBack = onBack;
+        this.lang = chatPromptManager.lang();
         this.currencies = List.copyOf(currencyManager.getAll());
     }
 
@@ -50,16 +53,16 @@ public class CurrencyBrowserGUI extends InventoryGUI {
 
             setItem(i, new ItemBuilder(parseMaterial(currency.icon()))
                     .setName(Component.text(currency.displayName(), NamedTextColor.YELLOW))
-                    .setLore(Component.text("id: " + currency.id(), NamedTextColor.GRAY),
-                            Component.text("símbolo: " + currency.symbol(), NamedTextColor.GRAY),
-                            Component.text(currency.isBase() ? "Moneda base" : "", NamedTextColor.GOLD),
-                            Component.text("Click para editar", NamedTextColor.YELLOW))
+                    .setLore(lang.component("currency.browser.lore_id", "id", currency.id()),
+                            lang.component("currency.browser.lore_symbol", "symbol", currency.symbol()),
+                            currency.isBase() ? lang.component("currency.browser.lore_base") : Component.empty(),
+                            lang.component("common.click_edit"))
                     .build());
         }
 
         setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Crear moneda nueva", NamedTextColor.GREEN)).build());
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+                .setName(lang.component("currency.browser.new_button")).build());
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("common.back")));
     }
 
     @Override
@@ -84,12 +87,12 @@ public class CurrencyBrowserGUI extends InventoryGUI {
     }
 
     private void promptNew() {
-        chatPromptManager.prompt(player, "Escribí el id de la nueva moneda:", value -> {
+        chatPromptManager.prompt(player, lang.raw("currency.browser.prompt_new_id"), value -> {
 
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 
             if (currencyManager.exists(id)) {
-                player.sendMessage(Component.text("Ya existe una moneda con ese id.", NamedTextColor.RED));
+                lang.send(player, "currency.browser.duplicate_id");
                 reopen();
                 return;
             }

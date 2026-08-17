@@ -1,8 +1,12 @@
 package com.sack.rpgroll.ranching.core.animal;
 
+import com.sack.rpgroll.common.reskin.EntityReskin;
+import com.sack.rpgroll.common.reskin.EntityReskinService;
+
 import com.sack.rpgroll.ranching.core.breeds.Breed;
 import com.sack.rpgroll.ranching.core.genetics.GeneticsEngine;
 import com.sack.rpgroll.ranching.core.genetics.Gene;
+import com.sack.rpgroll.ranching.core.species.GrowthStage;
 import com.sack.rpgroll.ranching.core.species.Sex;
 import com.sack.rpgroll.ranching.core.species.Species;
 
@@ -94,9 +98,10 @@ public class AnimalManager {
         Animal animal = new Animal(entity.getUniqueId(), species.id(), breed != null ? breed.id() : null, sex,
                 genotype, phenotype, List.of(), null, null, List.of(), 0, weight, System.currentTimeMillis());
 
-        animal.setStage(com.sack.rpgroll.ranching.core.species.GrowthStage.ADULT);
+        animal.setStage(GrowthStage.ADULT);
         animal.setFertility(species.baseFertility() * (breed != null ? breed.fertilityMultiplier() : 1.0));
 
+        applyAppearance(entity, breed, GrowthStage.ADULT);
         tagEntity(entity, species.id());
         animals.put(animal.id(), animal);
         store.save(animal);
@@ -123,6 +128,39 @@ public class AnimalManager {
 
     public Optional<Animal> resolve(Entity entity) {
         return isTracked(entity) ? get(entity.getUniqueId()) : Optional.empty();
+    }
+
+    /**
+     * Aplica (o remueve) el reskin visual propio de la raza — punto centralizado
+     * que reemplaza la lógica repetida en cada call-site de spawn. La escala del
+     * display se reduce en la etapa BABY, igual que ya hace vanilla vía Ageable.
+     */
+    public void applyAppearance(LivingEntity entity, Breed breed, GrowthStage stage) {
+
+        EntityReskin reskin = breed != null ? breed.reskin() : EntityReskin.NONE;
+
+        if (!reskin.isActive()) {
+            EntityReskinService.apply(plugin, entity, EntityReskin.NONE);
+            return;
+        }
+
+        double scaleFactor = stage == GrowthStage.BABY ? 0.5 : 1.0;
+        EntityReskinService.apply(plugin, entity,
+                new EntityReskin(reskin.material(), reskin.customModelData(), reskin.scale() * scaleFactor, reskin.yOffset()));
+    }
+
+    /** Auto-sanado barato del passenger de reskin — para llamar desde el tick periódico de crecimiento. */
+    public void ensureAppearanceAttached(LivingEntity entity, Breed breed, GrowthStage stage) {
+
+        EntityReskin reskin = breed != null ? breed.reskin() : EntityReskin.NONE;
+
+        if (!reskin.isActive()) {
+            return;
+        }
+
+        double scaleFactor = stage == GrowthStage.BABY ? 0.5 : 1.0;
+        EntityReskinService.ensureAttached(plugin, entity,
+                new EntityReskin(reskin.material(), reskin.customModelData(), reskin.scale() * scaleFactor, reskin.yOffset()));
     }
 
     public EntityType resolveEntityType(Species species) {

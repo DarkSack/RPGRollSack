@@ -1,5 +1,6 @@
 package com.sack.rpgroll.fishing.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.fishing.core.BaitManager;
 import com.sack.rpgroll.fishing.core.DepthRequirement;
 import com.sack.rpgroll.fishing.core.FishBehaviorType;
@@ -71,16 +72,18 @@ public class SpeciesEditorGUI extends InventoryGUI {
     private final FishSpeciesManager speciesManager;
     private final BaitManager baitManager;
     private final ChatPromptManager chatPromptManager;
+    private final LangManager lang;
     private final Runnable onBack;
     private FishSpecies current;
 
     public SpeciesEditorGUI(Player player, FishSpecies species, FishSpeciesManager speciesManager,
             BaitManager baitManager, ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text("Especie: " + species.id(), NamedTextColor.GOLD), SIZE);
+        super(player, chatPromptManager.lang().component("gui.species.editor_title", "id", species.id()), SIZE);
         this.current = species;
         this.speciesManager = speciesManager;
         this.baitManager = baitManager;
         this.chatPromptManager = chatPromptManager;
+        this.lang = chatPromptManager.lang();
         this.onBack = onBack;
     }
 
@@ -171,122 +174,119 @@ public class SpeciesEditorGUI extends InventoryGUI {
         }
 
         setItem(NAME_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(Component.text("Nombre: " + current.displayName(), NamedTextColor.YELLOW)).build());
+                .setName(lang.component("gui.species.field_name", "name", current.displayName())).build());
 
         setItem(ICON_SLOT, new ItemBuilder(SpeciesBrowserGUI.parseMaterial(current.icon()))
-                .setName(Component.text("Ícono: " + current.icon(), NamedTextColor.YELLOW)).build());
+                .setName(lang.component("gui.species.field_icon", "icon", current.icon())).build());
 
         setItem(MODEL_DATA_SLOT, new ItemBuilder(Material.PAPER)
-                .setName(Component.text("Custom Model Data: " + current.customModelData(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click: +1 · Click derecho: -1 · 0 = sin modelo custom", NamedTextColor.GRAY))
+                .setName(lang.component("gui.species.field_model_data", "value", current.customModelData()))
+                .setLore(lang.component("gui.species.model_data_hint"))
                 .build());
 
         setItem(DESCRIPTION_SLOT, new ItemBuilder(Material.WRITTEN_BOOK)
-                .setName(Component.text("Descripción", NamedTextColor.YELLOW))
+                .setName(lang.component("gui.common.description_title"))
                 .setLore(ItemBuilder.toLoreLines(
-                        current.description().isBlank() ? "(sin descripción)" : current.description()))
+                        current.description().isBlank() ? lang.raw("gui.common.no_description") : current.description()))
                 .build());
 
         setItem(CATEGORY_SLOT, new ItemBuilder(Material.TROPICAL_FISH)
-                .setName(Component.text("Categoría: " + current.category(), NamedTextColor.AQUA))
-                .setLore(Component.text("Click para pasar a la siguiente", NamedTextColor.GRAY)).build());
+                .setName(lang.component("gui.species.field_category", "value", current.category()))
+                .setLore(lang.component("gui.common.click_next")).build());
 
         setItem(RARITY_SLOT, new ItemBuilder(Material.NETHER_STAR)
-                .setName(Component.text("Rareza: " + current.rarity(), NamedTextColor.LIGHT_PURPLE))
-                .setLore(Component.text("Click para pasar a la siguiente", NamedTextColor.GRAY)).build());
+                .setName(lang.component("gui.species.field_rarity", "value", current.rarity()))
+                .setLore(lang.component("gui.common.click_next")).build());
 
         setItem(WATER_TYPES_SLOT, new ItemBuilder(Material.WATER_BUCKET)
-                .setName(Component.text("Tipos de agua: " + joinEnum(current.waterTypes()), NamedTextColor.BLUE))
-                .setLore(Component.text("Vacío = cualquiera. Escribí la lista separada por comas.", NamedTextColor.GRAY))
+                .setName(lang.component("gui.species.field_water_types", "value", joinEnum(current.waterTypes())))
+                .setLore(lang.component("gui.common.empty_comma_hint"))
                 .build());
 
         setItem(BIOMES_SLOT, new ItemBuilder(Material.GRASS_BLOCK)
-                .setName(Component.text("Biomas: " + String.join(", ", current.biomes()), NamedTextColor.GREEN))
-                .setLore(Component.text("Vacío = cualquiera. Nombres de Biome de Bukkit.", NamedTextColor.GRAY))
+                .setName(lang.component("gui.species.field_biomes", "value", String.join(", ", current.biomes())))
+                .setLore(lang.component("gui.species.biomes_hint"))
                 .build());
 
         setItem(DEPTHS_SLOT, new ItemBuilder(Material.PRISMARINE_SHARD)
-                .setName(Component.text("Profundidades: " + joinEnum(current.depths()), NamedTextColor.AQUA))
-                .setLore(Component.text("Vacío = cualquiera.", NamedTextColor.GRAY)).build());
+                .setName(lang.component("gui.species.field_depths", "value", joinEnum(current.depths())))
+                .setLore(lang.component("gui.common.empty_any")).build());
 
         setItem(WEIGHT_SLOT, new ItemBuilder(Material.IRON_INGOT)
-                .setName(Component.text(
-                        String.format(Locale.ROOT, "Peso: %.2f - %.2f kg", current.minWeight(), current.maxWeight()),
-                        NamedTextColor.YELLOW))
-                .setLore(Component.text("Escribí: MIN MAX", NamedTextColor.GRAY)).build());
+                .setName(lang.component("gui.species.field_weight", "min",
+                        String.format(Locale.ROOT, "%.2f", current.minWeight()), "max",
+                        String.format(Locale.ROOT, "%.2f", current.maxWeight())))
+                .setLore(lang.component("gui.species.weight_hint")).build());
 
         setItem(LENGTH_SLOT, new ItemBuilder(Material.STICK)
-                .setName(Component.text(
-                        String.format(Locale.ROOT, "Longitud: %.1f - %.1f cm", current.minLength(), current.maxLength()),
-                        NamedTextColor.YELLOW))
-                .setLore(Component.text("Escribí: MIN MAX", NamedTextColor.GRAY)).build());
+                .setName(lang.component("gui.species.field_length", "min",
+                        String.format(Locale.ROOT, "%.1f", current.minLength()), "max",
+                        String.format(Locale.ROOT, "%.1f", current.maxLength())))
+                .setLore(lang.component("gui.species.length_hint")).build());
 
         setItem(PRICE_SLOT, new ItemBuilder(Material.GOLD_NUGGET)
-                .setName(Component.text(String.format(Locale.ROOT, "Precio base: %.1f", current.basePrice()),
-                        NamedTextColor.GOLD))
-                .setLore(Component.text("Click: +1 · Click derecho: -1", NamedTextColor.GRAY)).build());
+                .setName(lang.component("gui.species.field_price", "value",
+                        String.format(Locale.ROOT, "%.1f", current.basePrice())))
+                .setLore(lang.component("gui.common.plusminus_1")).build());
 
         setItem(XP_SLOT, new ItemBuilder(Material.EXPERIENCE_BOTTLE)
-                .setName(Component.text("Experiencia base: " + current.baseExperience(), NamedTextColor.GREEN))
-                .setLore(Component.text("Click: +1 · Click derecho: -1", NamedTextColor.GRAY)).build());
+                .setName(lang.component("gui.species.field_xp", "value", current.baseExperience()))
+                .setLore(lang.component("gui.common.plusminus_1")).build());
 
         setItem(BEHAVIOR_SLOT, new ItemBuilder(Material.SPIDER_EYE)
-                .setName(Component.text("Comportamiento: " + current.behavior(), NamedTextColor.RED))
-                .setLore(Component.text("Click para pasar al siguiente — afecta el minijuego RPG", NamedTextColor.GRAY))
+                .setName(lang.component("gui.species.field_behavior", "value", current.behavior()))
+                .setLore(lang.component("gui.species.behavior_hint"))
                 .build());
 
         setItem(SEASONS_SLOT, new ItemBuilder(Material.SUNFLOWER)
-                .setName(Component.text("Estaciones: " + String.join(", ", current.allowedSeasons()), NamedTextColor.GREEN))
-                .setLore(Component.text("Vacío = cualquiera. Ids de RPGRoll-Seasons.", NamedTextColor.GRAY)).build());
+                .setName(lang.component("gui.species.field_seasons", "value", String.join(", ", current.allowedSeasons())))
+                .setLore(lang.component("gui.species.seasons_hint")).build());
 
         setItem(WEATHERS_SLOT, new ItemBuilder(Material.LIGHTNING_ROD)
-                .setName(Component.text("Climas: " + joinEnum(current.allowedWeathers()), NamedTextColor.AQUA))
-                .setLore(Component.text("Vacío = cualquiera.", NamedTextColor.GRAY)).build());
+                .setName(lang.component("gui.species.field_weathers", "value", joinEnum(current.allowedWeathers())))
+                .setLore(lang.component("gui.common.empty_any")).build());
 
         setItem(TIMES_SLOT, new ItemBuilder(Material.CLOCK)
-                .setName(Component.text("Horas: " + joinEnum(current.allowedTimes()), NamedTextColor.YELLOW))
-                .setLore(Component.text("Vacío = cualquiera.", NamedTextColor.GRAY)).build());
+                .setName(lang.component("gui.species.field_times", "value", joinEnum(current.allowedTimes())))
+                .setLore(lang.component("gui.common.empty_any")).build());
 
         setItem(BAIT_TAGS_SLOT, new ItemBuilder(Material.STRING)
-                .setName(Component.text("Tags de carnada: " + String.join(", ", current.attractedByBaitTags()),
-                        NamedTextColor.LIGHT_PURPLE))
-                .setLore(Component.text("Vacío = cualquier carnada sirve igual.", NamedTextColor.GRAY)).build());
+                .setName(lang.component("gui.species.field_bait_tags", "value",
+                        String.join(", ", current.attractedByBaitTags())))
+                .setLore(lang.component("gui.species.bait_tags_hint")).build());
 
         setItem(LEGENDARY_SLOT, new ItemBuilder(current.legendary() ? Material.DRAGON_EGG : Material.GRAY_DYE)
-                .setName(Component.text("Legendario: " + current.legendary(), NamedTextColor.GOLD))
-                .setLore(Component.text("Click para alternar", NamedTextColor.GRAY)).build());
+                .setName(lang.component("gui.species.field_legendary", "value", current.legendary()))
+                .setLore(lang.component("gui.species.toggle_hint")).build());
 
         setItem(LEVEL_SLOT, new ItemBuilder(Material.EXPERIENCE_BOTTLE)
-                .setName(Component.text("Nivel requerido: " + current.requiredLevel(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Solo aplica si es legendario. Click: +1 · Click derecho: -1", NamedTextColor.GRAY))
+                .setName(lang.component("gui.species.field_level", "value", current.requiredLevel()))
+                .setLore(lang.component("gui.species.level_hint"))
                 .build());
 
         setItem(FULL_MOON_SLOT, new ItemBuilder(current.requiresFullMoon() ? Material.GLOWSTONE : Material.GRAY_DYE)
-                .setName(Component.text("Requiere luna llena: " + current.requiresFullMoon(), NamedTextColor.AQUA))
-                .setLore(Component.text("Solo aplica si es legendario. Click para alternar", NamedTextColor.GRAY))
+                .setName(lang.component("gui.species.field_full_moon", "value", current.requiresFullMoon()))
+                .setLore(lang.component("gui.species.full_moon_hint"))
                 .build());
 
         setItem(REQUIRED_BAIT_SLOT, new ItemBuilder(Material.STRING)
-                .setName(Component.text(
-                        "Carnada requerida: " + (current.requiredBaitId() == null ? "(ninguna)" : current.requiredBaitId()),
-                        NamedTextColor.YELLOW))
-                .setLore(Component.text("Solo aplica si es legendario.", NamedTextColor.GRAY)).build());
+                .setName(lang.component("gui.species.field_required_bait", "value",
+                        current.requiredBaitId() == null ? lang.raw("gui.common.none_fem") : current.requiredBaitId()))
+                .setLore(lang.component("gui.species.required_bait_hint")).build());
 
         setItem(CATCH_EFFECT_SLOT, new ItemBuilder(Material.BLAZE_POWDER)
-                .setName(Component.text(
-                        "Efecto SackEffects: " + (current.catchEffectId() == null ? "(ninguno)" : current.catchEffectId()),
-                        NamedTextColor.YELLOW))
+                .setName(lang.component("gui.species.field_catch_effect", "value",
+                        current.catchEffectId() == null ? lang.raw("gui.common.none_masc") : current.catchEffectId()))
                 .build());
 
         setItem(CATCH_STATUS_EFFECT_SLOT, new ItemBuilder(Material.POTION)
-                .setName(Component.text(
-                        "Efecto de estado: " + (current.catchStatusEffectId() == null ? "(ninguno)" : current.catchStatusEffectId()),
-                        NamedTextColor.YELLOW))
-                .setLore(Component.text("Id de un efecto de RPGRoll-Effects — ej. anguila eléctrica aturde al pescador.",
-                        NamedTextColor.GRAY))
+                .setName(lang.component("gui.species.field_catch_status_effect", "value",
+                        current.catchStatusEffectId() == null ? lang.raw("gui.common.none_masc")
+                                : current.catchStatusEffectId()))
+                .setLore(lang.component("gui.species.catch_status_effect_hint"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back")));
     }
 
     private String joinEnum(Set<? extends Enum<?>> values) {
@@ -302,12 +302,12 @@ public class SpeciesEditorGUI extends InventoryGUI {
         int sign = click == ClickType.RIGHT ? -1 : 1;
 
         if (slot == NAME_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el nuevo nombre:", value -> replace(f -> f.displayName = value));
+            chatPromptManager.prompt(player, lang.raw("gui.species.prompt_name"), value -> replace(f -> f.displayName = value));
             return;
         }
 
         if (slot == ICON_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el Material del ícono:", value -> replace(f -> f.icon = value));
+            chatPromptManager.prompt(player, lang.raw("gui.species.prompt_icon"), value -> replace(f -> f.icon = value));
             return;
         }
 
@@ -317,7 +317,7 @@ public class SpeciesEditorGUI extends InventoryGUI {
         }
 
         if (slot == DESCRIPTION_SLOT) {
-            chatPromptManager.prompt(player, "Escribí la nueva descripción:", value -> replace(f -> f.description = value));
+            chatPromptManager.prompt(player, lang.raw("gui.species.prompt_description"), value -> replace(f -> f.description = value));
             return;
         }
 
@@ -336,25 +336,25 @@ public class SpeciesEditorGUI extends InventoryGUI {
         }
 
         if (slot == WATER_TYPES_SLOT) {
-            chatPromptManager.prompt(player, "Escribí: RIVER,LAKE,SWAMP,OCEAN,DEEP_OCEAN,LAVA,MAGIC_WATER,CORRUPTED_WATER",
+            chatPromptManager.prompt(player, lang.raw("gui.species.prompt_water_types"),
                     value -> replace(f -> f.waterTypes = parseEnumSet(WaterType.class, value)));
             return;
         }
 
         if (slot == BIOMES_SLOT) {
-            chatPromptManager.prompt(player, "Escribí los biomas separados por comas (nombres de Biome de Bukkit):",
+            chatPromptManager.prompt(player, lang.raw("gui.species.prompt_biomes"),
                     value -> replace(f -> f.biomes = parseStringSet(value)));
             return;
         }
 
         if (slot == DEPTHS_SLOT) {
-            chatPromptManager.prompt(player, "Escribí: SURFACE,MID_WATER,BOTTOM,UNDERWATER_CAVE",
+            chatPromptManager.prompt(player, lang.raw("gui.species.prompt_depths"),
                     value -> replace(f -> f.depths = parseEnumSet(DepthRequirement.class, value)));
             return;
         }
 
         if (slot == WEIGHT_SLOT) {
-            chatPromptManager.prompt(player, "Escribí: MIN MAX (kg):", value -> {
+            chatPromptManager.prompt(player, lang.raw("gui.species.prompt_weight"), value -> {
                 double[] range = parseRange(value, current.minWeight(), current.maxWeight());
                 replace(f -> {
                     f.minWeight = range[0];
@@ -365,7 +365,7 @@ public class SpeciesEditorGUI extends InventoryGUI {
         }
 
         if (slot == LENGTH_SLOT) {
-            chatPromptManager.prompt(player, "Escribí: MIN MAX (cm):", value -> {
+            chatPromptManager.prompt(player, lang.raw("gui.species.prompt_length"), value -> {
                 double[] range = parseRange(value, current.minLength(), current.maxLength());
                 replace(f -> {
                     f.minLength = range[0];
@@ -393,25 +393,25 @@ public class SpeciesEditorGUI extends InventoryGUI {
         }
 
         if (slot == SEASONS_SLOT) {
-            chatPromptManager.prompt(player, "Escribí los ids de estación separados por comas (RPGRoll-Seasons):",
+            chatPromptManager.prompt(player, lang.raw("gui.species.prompt_seasons"),
                     value -> replace(f -> f.allowedSeasons = parseStringSet(value)));
             return;
         }
 
         if (slot == WEATHERS_SLOT) {
-            chatPromptManager.prompt(player, "Escribí: SUNNY,RAIN,STORM,SNOW",
+            chatPromptManager.prompt(player, lang.raw("gui.species.prompt_weathers"),
                     value -> replace(f -> f.allowedWeathers = parseEnumSet(WeatherType.class, value)));
             return;
         }
 
         if (slot == TIMES_SLOT) {
-            chatPromptManager.prompt(player, "Escribí: DAY,NIGHT,DAWN,DUSK,NOON,MIDNIGHT",
+            chatPromptManager.prompt(player, lang.raw("gui.species.prompt_times"),
                     value -> replace(f -> f.allowedTimes = parseEnumSet(TimeRequirement.class, value)));
             return;
         }
 
         if (slot == BAIT_TAGS_SLOT) {
-            chatPromptManager.prompt(player, "Escribí los tags de carnada separados por comas:",
+            chatPromptManager.prompt(player, lang.raw("gui.species.prompt_bait_tags"),
                     value -> replace(f -> f.attractedByBaitTags = parseStringSet(value)));
             return;
         }
@@ -432,7 +432,7 @@ public class SpeciesEditorGUI extends InventoryGUI {
         }
 
         if (slot == REQUIRED_BAIT_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el id de la carnada requerida (o 'ninguna'):", value -> {
+            chatPromptManager.prompt(player, lang.raw("gui.species.prompt_required_bait"), value -> {
 
                 if (value.equalsIgnoreCase("ninguna")) {
                     replace(f -> f.requiredBaitId = null);
@@ -440,7 +440,7 @@ public class SpeciesEditorGUI extends InventoryGUI {
                 }
 
                 if (baitManager.get(value.trim().toLowerCase(Locale.ROOT)).isEmpty()) {
-                    player.sendMessage(Component.text("No existe esa carnada.", NamedTextColor.RED));
+                    lang.send(player, "gui.species.unknown_bait");
                     return;
                 }
 
@@ -450,13 +450,13 @@ public class SpeciesEditorGUI extends InventoryGUI {
         }
 
         if (slot == CATCH_EFFECT_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el id del efecto de SackEffects (o 'ninguno'):",
+            chatPromptManager.prompt(player, lang.raw("gui.species.prompt_catch_effect"),
                     value -> replace(f -> f.catchEffectId = value.equalsIgnoreCase("ninguno") ? null : value.trim()));
             return;
         }
 
         if (slot == CATCH_STATUS_EFFECT_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el id del efecto de RPGRoll-Effects (o 'ninguno'):",
+            chatPromptManager.prompt(player, lang.raw("gui.species.prompt_catch_status_effect"),
                     value -> replace(f -> f.catchStatusEffectId = value.equalsIgnoreCase("ninguno") ? null : value.trim()));
             return;
         }

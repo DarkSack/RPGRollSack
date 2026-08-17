@@ -1,5 +1,6 @@
 package com.sack.rpgroll.guilds;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.common.resource.DirectoryCreator;
 import com.sack.rpgroll.common.resource.ResourceCopier;
 
@@ -53,6 +54,7 @@ public class GuildsPlugin extends JavaPlugin {
     private BuffCalculator buffCalculator;
     private ChatPromptManager chatPromptManager;
     private GuildServices services;
+    private LangManager langManager;
 
     @Override
     public void onEnable() {
@@ -63,6 +65,10 @@ public class GuildsPlugin extends JavaPlugin {
 
         new DirectoryCreator(this).create(DIRECTORIES);
         new ResourceCopier(this).copyDirectories(DIRECTORIES);
+
+        // LangManager - Mensajes por idioma (lang/es.yml, en.yml, pt_BR.yml)
+        langManager = new LangManager(this, List.of("es", "en", "pt_BR"), "es");
+        langManager.reload(getConfig().getString("language", "es"));
 
         teamManager = new TeamManager();
         matchmakingQueue = new TeamMatchmakingQueue(teamManager);
@@ -84,12 +90,12 @@ public class GuildsPlugin extends JavaPlugin {
         rankingManager = new GuildRankingManager(guildManager);
         buffCalculator = new BuffCalculator(teamManager, guildManager);
 
-        chatPromptManager = new ChatPromptManager(this);
+        chatPromptManager = new ChatPromptManager(this, langManager);
         getServer().getPluginManager().registerEvents(chatPromptManager, this);
 
         services = new GuildServices(teamManager, matchmakingQueue, pingManager, teamChatListener, guildManager,
                 questManager, questService, diplomacyManager, guildChatListener, rankingManager, buffCalculator,
-                chatPromptManager);
+                chatPromptManager, langManager);
 
         getServer().getPluginManager().registerEvents(
                 new GuildResourceGatherListener(guildManager, questService), this);
@@ -183,6 +189,16 @@ public class GuildsPlugin extends JavaPlugin {
 
     public GuildServices getServices() {
         return services;
+    }
+
+    public LangManager getLangManager() {
+        return langManager;
+    }
+
+    /** Relee "language" de config.yml y recarga el idioma activo — llamado desde /guildadmin reload. */
+    public void reloadLangManager() {
+        reloadConfig();
+        langManager.reload(getConfig().getString("language", "es"));
     }
 
 }

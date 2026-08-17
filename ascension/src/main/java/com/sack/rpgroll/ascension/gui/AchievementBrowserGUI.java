@@ -2,6 +2,7 @@ package com.sack.rpgroll.ascension.gui;
 
 import com.sack.rpgroll.ascension.deferred.Achievement;
 import com.sack.rpgroll.ascension.deferred.AchievementManager;
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 
@@ -23,12 +24,15 @@ public class AchievementBrowserGUI extends InventoryGUI {
 
     private final AchievementManager manager;
     private final ChatPromptManager chatPromptManager;
+    private final LangManager lang;
     private List<Achievement> achievements;
 
-    public AchievementBrowserGUI(Player player, AchievementManager manager, ChatPromptManager chatPromptManager) {
-        super(player, Component.text("Logros RPGRoll-Ascension", NamedTextColor.GOLD), SIZE);
+    public AchievementBrowserGUI(Player player, AchievementManager manager, ChatPromptManager chatPromptManager,
+            LangManager lang) {
+        super(player, lang.component("gui.achievement.browser_title"), SIZE);
         this.manager = manager;
         this.chatPromptManager = chatPromptManager;
+        this.lang = lang;
         this.achievements = List.copyOf(manager.getAll());
     }
 
@@ -46,15 +50,15 @@ public class AchievementBrowserGUI extends InventoryGUI {
             setItem(i, new ItemBuilder(Material.GOLDEN_APPLE)
                     .setName(Component.text(achievement.id(), NamedTextColor.YELLOW))
                     .setLore(Component.text(achievement.displayName(), NamedTextColor.GRAY),
-                            Component.text("Click para editar", NamedTextColor.YELLOW))
+                            lang.component("gui.common.click_to_edit"))
                     .build());
         }
 
         setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Crear logro nuevo", NamedTextColor.GREEN))
+                .setName(lang.component("gui.achievement.create_new"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Cerrar"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.close_button")));
     }
 
     @Override
@@ -64,7 +68,8 @@ public class AchievementBrowserGUI extends InventoryGUI {
         int slot = event.getSlot();
 
         if (slot < achievements.size() && slot < 36) {
-            new AchievementEditorGUI(player, achievements.get(slot), manager, chatPromptManager, this::reopen).open();
+            new AchievementEditorGUI(player, achievements.get(slot), manager, chatPromptManager, this::reopen, lang)
+                    .open();
             return;
         }
 
@@ -79,12 +84,12 @@ public class AchievementBrowserGUI extends InventoryGUI {
     }
 
     private void promptNew() {
-        chatPromptManager.prompt(player, "Escribí el id del nuevo logro:", value -> {
+        chatPromptManager.prompt(player, "gui.achievement.prompt_new_id", value -> {
 
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 
             if (manager.exists(id)) {
-                player.sendMessage(Component.text("Ya existe un logro con ese id.", NamedTextColor.RED));
+                lang.send(player, "gui.achievement.id_exists");
                 reopen();
                 return;
             }

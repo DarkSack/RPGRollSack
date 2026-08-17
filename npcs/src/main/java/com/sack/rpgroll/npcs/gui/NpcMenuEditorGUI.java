@@ -2,6 +2,7 @@ package com.sack.rpgroll.npcs.gui;
 
 import com.sack.rpgroll.util.ComponentUtils;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.npcs.core.NpcAction;
@@ -13,7 +14,6 @@ import com.sack.rpgroll.npcs.listener.ChatPromptManager;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -39,15 +39,17 @@ public class NpcMenuEditorGUI extends InventoryGUI {
 
     private final NpcMenuManager menuManager;
     private final ChatPromptManager chatPromptManager;
+    private final LangManager langManager;
     private final Runnable onBack;
     private NpcMenuDefinition current;
 
     public NpcMenuEditorGUI(Player player, NpcMenuDefinition definition, NpcMenuManager menuManager,
-            ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text("Menú: " + definition.id(), NamedTextColor.GOLD), SIZE);
+            ChatPromptManager chatPromptManager, LangManager langManager, Runnable onBack) {
+        super(player, langManager.component("menu.editor.title", "id", definition.id()), SIZE);
         this.current = definition;
         this.menuManager = menuManager;
         this.chatPromptManager = chatPromptManager;
+        this.langManager = langManager;
         this.onBack = onBack;
     }
 
@@ -67,14 +69,14 @@ public class NpcMenuEditorGUI extends InventoryGUI {
         }
 
         setItem(TITLE_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(ComponentUtils.parse("Título: " + current.title())
+                .setName(ComponentUtils.parse(langManager.raw("menu.editor.title_label", "title", current.title()))
                         .colorIfAbsent(NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para escribir uno nuevo", NamedTextColor.GRAY))
+                .setLore(langManager.component("menu.editor.title_hint"))
                 .build());
 
         setItem(ROWS_SLOT, new ItemBuilder(Material.CHEST)
-                .setName(Component.text("Filas: " + current.rows(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click: +1 · Click derecho: -1 (1-6)", NamedTextColor.GRAY))
+                .setName(langManager.component("menu.editor.rows_label", "rows", current.rows()))
+                .setLore(langManager.component("menu.editor.rows_hint"))
                 .build());
 
         List<NpcMenuItem> items = current.items();
@@ -86,18 +88,17 @@ public class NpcMenuEditorGUI extends InventoryGUI {
             setItem(9 + i, new ItemBuilder(resolveMaterial(item.material()))
                     .setName(ComponentUtils.parse(item.displayName().isBlank() ? item.material() : item.displayName())
                             .colorIfAbsent(NamedTextColor.WHITE))
-                    .setLore(Component.text("Slot " + item.slot() + " · " + item.actions().size() + " acción(es)",
-                            NamedTextColor.GRAY),
-                            Component.text("Click para agregar una acción · Shift-click para quitar",
-                                    NamedTextColor.DARK_GRAY))
+                    .setLore(langManager.component("menu.editor.item_lore",
+                            "slot", item.slot(), "count", item.actions().size()),
+                            langManager.component("menu.editor.item_hint"))
                     .build());
         }
 
         setItem(ADD_ITEM_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Agregar ítem al menú", NamedTextColor.GREEN))
+                .setName(langManager.component("menu.editor.add_item"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(langManager.raw("menu.editor.back")));
     }
 
     private Material resolveMaterial(String name) {
@@ -116,7 +117,7 @@ public class NpcMenuEditorGUI extends InventoryGUI {
         ClickType click = event.getClick();
 
         if (slot == TITLE_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el nuevo título del menú:",
+            chatPromptManager.prompt(player, langManager.raw("menu.editor.prompt_title"),
                     value -> replace(new NpcMenuDefinition(current.id(), value, current.rows(), current.items())));
             return;
         }
@@ -153,12 +154,12 @@ public class NpcMenuEditorGUI extends InventoryGUI {
     }
 
     private void promptAddItem() {
-        chatPromptManager.prompt(player, "Escribí: slot;material;nombre (ej. 11;IRON_SWORD;&fEspada):", value -> {
+        chatPromptManager.prompt(player, langManager.raw("menu.editor.prompt_item"), value -> {
 
             String[] parts = value.split(";", 3);
 
             if (parts.length < 2) {
-                player.sendMessage(Component.text("Formato inválido.", NamedTextColor.RED));
+                langManager.send(player, "menu.editor.invalid_format");
                 reopen();
                 return;
             }
@@ -167,7 +168,7 @@ public class NpcMenuEditorGUI extends InventoryGUI {
             try {
                 slotNumber = Integer.parseInt(parts[0].trim());
             } catch (NumberFormatException e) {
-                player.sendMessage(Component.text("El slot debe ser un número.", NamedTextColor.RED));
+                langManager.send(player, "menu.editor.invalid_slot_number");
                 reopen();
                 return;
             }
@@ -183,14 +184,15 @@ public class NpcMenuEditorGUI extends InventoryGUI {
     }
 
     private void promptAddAction(int itemIndex) {
-        chatPromptManager.prompt(player, "Escribí: TIPO;valor (ej. GIVE_ITEM;SHIELD,1 — tipos: "
-                + String.join(", ", java.util.Arrays.stream(NpcActionType.values()).map(Enum::name).toList()) + "):",
+        chatPromptManager.prompt(player,
+                langManager.raw("menu.editor.prompt_action", "types",
+                        String.join(", ", java.util.Arrays.stream(NpcActionType.values()).map(Enum::name).toList())),
                 value -> {
 
                     String[] parts = value.split(";", 2);
 
                     if (parts.length < 2) {
-                        player.sendMessage(Component.text("Formato inválido.", NamedTextColor.RED));
+                        langManager.send(player, "menu.editor.invalid_format");
                         reopen();
                         return;
                     }
@@ -199,7 +201,7 @@ public class NpcMenuEditorGUI extends InventoryGUI {
                     try {
                         type = NpcActionType.valueOf(parts[0].trim().toUpperCase(Locale.ROOT));
                     } catch (IllegalArgumentException e) {
-                        player.sendMessage(Component.text("Tipo de acción inválido.", NamedTextColor.RED));
+                        langManager.send(player, "menu.editor.invalid_action_type");
                         reopen();
                         return;
                     }
@@ -218,7 +220,7 @@ public class NpcMenuEditorGUI extends InventoryGUI {
     }
 
     private void reopen() {
-        new NpcMenuEditorGUI(player, current, menuManager, chatPromptManager, onBack).open();
+        new NpcMenuEditorGUI(player, current, menuManager, chatPromptManager, langManager, onBack).open();
     }
 
 }

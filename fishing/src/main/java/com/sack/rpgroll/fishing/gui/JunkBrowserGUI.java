@@ -1,5 +1,6 @@
 package com.sack.rpgroll.fishing.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.fishing.core.Junk;
 import com.sack.rpgroll.fishing.core.JunkManager;
 import com.sack.rpgroll.gui.InventoryGUI;
@@ -23,12 +24,14 @@ public class JunkBrowserGUI extends InventoryGUI {
 
     private final JunkManager junkManager;
     private final ChatPromptManager chatPromptManager;
+    private final LangManager lang;
     private List<Junk> junks;
 
     public JunkBrowserGUI(Player player, JunkManager junkManager, ChatPromptManager chatPromptManager) {
-        super(player, Component.text("Basura"), SIZE);
+        super(player, chatPromptManager.lang().component("gui.junk.browser_title"), SIZE);
         this.junkManager = junkManager;
         this.chatPromptManager = chatPromptManager;
+        this.lang = chatPromptManager.lang();
         this.junks = List.copyOf(junkManager.getAll());
     }
 
@@ -47,16 +50,16 @@ public class JunkBrowserGUI extends InventoryGUI {
 
             setItem(i, new ItemBuilder(SpeciesBrowserGUI.parseMaterial(junk.icon()))
                     .setName(Component.text(junk.displayName(), NamedTextColor.GRAY))
-                    .setLore(Component.text("id: " + junk.id(), NamedTextColor.DARK_GRAY),
-                            Component.text("Click para editar", NamedTextColor.YELLOW))
+                    .setLore(lang.component("gui.common.id_label", "id", junk.id()),
+                            lang.component("gui.common.click_to_edit"))
                     .build());
         }
 
         setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Crear basura nueva", NamedTextColor.GREEN))
+                .setName(lang.component("gui.junk.new_button"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back")));
     }
 
     @Override
@@ -81,12 +84,12 @@ public class JunkBrowserGUI extends InventoryGUI {
     }
 
     private void promptNew() {
-        chatPromptManager.prompt(player, "Escribí el id de la nueva basura:", value -> {
+        chatPromptManager.prompt(player, lang.raw("gui.junk.prompt_new_id"), value -> {
 
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 
             if (junkManager.exists(id)) {
-                player.sendMessage(Component.text("Ya existe basura con ese id.", NamedTextColor.RED));
+                lang.send(player, "gui.junk.already_exists");
                 reopen();
                 return;
             }

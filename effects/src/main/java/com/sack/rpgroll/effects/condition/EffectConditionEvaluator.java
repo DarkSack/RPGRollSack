@@ -1,6 +1,7 @@
 package com.sack.rpgroll.effects.condition;
 
 import com.sack.rpgroll.api.RPGRollAPI;
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.effects.core.EffectCondition;
 import com.sack.rpgroll.effects.core.EffectDefinition;
 import com.sack.rpgroll.guilds.GuildsAPI;
@@ -29,6 +30,12 @@ import java.util.List;
  */
 public class EffectConditionEvaluator {
 
+    private final LangManager lang;
+
+    public EffectConditionEvaluator(LangManager lang) {
+        this.lang = lang;
+    }
+
     public List<String> check(LivingEntity target, EffectDefinition effect) {
 
         List<String> reasons = new ArrayList<>();
@@ -54,7 +61,7 @@ public class EffectConditionEvaluator {
                 int min = condition.paramInt("value", 0);
                 int level = rpgPlayer != null ? rpgPlayer.getLevel() : 0;
                 if (rpgPlayer != null && level < min) {
-                    reasons.add("Necesitás nivel " + min + " (tenés " + level + ").");
+                    reasons.add(lang.raw("condition.level_min", "min", min, "level", level));
                 }
             }
 
@@ -62,7 +69,7 @@ public class EffectConditionEvaluator {
                 int max = condition.paramInt("value", Integer.MAX_VALUE);
                 int level = rpgPlayer != null ? rpgPlayer.getLevel() : 0;
                 if (rpgPlayer != null && level > max) {
-                    reasons.add("Nivel máximo permitido: " + max + " (tenés " + level + ").");
+                    reasons.add(lang.raw("condition.level_max", "max", max, "level", level));
                 }
             }
 
@@ -70,7 +77,7 @@ public class EffectConditionEvaluator {
                 String race = condition.param("value", "");
                 if (rpgPlayer != null && !race.isBlank()
                         && !race.equalsIgnoreCase(String.valueOf(rpgPlayer.getRace()))) {
-                    reasons.add("Necesitás ser de la raza: " + race);
+                    reasons.add(lang.raw("condition.race", "value", race));
                 }
             }
 
@@ -78,21 +85,21 @@ public class EffectConditionEvaluator {
                 String playerClass = condition.param("value", "");
                 if (rpgPlayer != null && !playerClass.isBlank()
                         && !playerClass.equalsIgnoreCase(String.valueOf(rpgPlayer.getPlayerClass()))) {
-                    reasons.add("Necesitás ser de la clase: " + playerClass);
+                    reasons.add(lang.raw("condition.class", "value", playerClass));
                 }
             }
 
             case JOB -> {
                 String job = condition.param("value", "");
                 if (rpgPlayer != null && !job.isBlank() && !rpgPlayer.getJobs().hasJob(job)) {
-                    reasons.add("Necesitás la profesión: " + job);
+                    reasons.add(lang.raw("condition.job", "value", job));
                 }
             }
 
             case WORLD -> {
                 String world = condition.param("value", "");
                 if (!world.isBlank() && !target.getWorld().getName().equalsIgnoreCase(world)) {
-                    reasons.add("Tenés que estar en el mundo: " + world);
+                    reasons.add(lang.raw("condition.world", "value", world));
                 }
             }
 
@@ -102,7 +109,7 @@ public class EffectConditionEvaluator {
                     String weather = target.getWorld().isThundering() ? "STORM"
                             : target.getWorld().hasStorm() ? "RAIN" : "CLEAR";
                     if (!weather.equalsIgnoreCase(expected)) {
-                        reasons.add("Necesitás clima: " + expected);
+                        reasons.add(lang.raw("condition.weather", "value", expected));
                     }
                 }
             }
@@ -112,35 +119,35 @@ public class EffectConditionEvaluator {
                 long max = condition.paramInt("max", 24000);
                 long time = target.getWorld().getTime();
                 if (time < min || time > max) {
-                    reasons.add("Solo disponible entre las " + min + " y " + max + " (hora del mundo).");
+                    reasons.add(lang.raw("condition.time_range", "min", min, "max", max));
                 }
             }
 
             case HEALTH_BELOW -> {
                 double percent = condition.paramDouble("percent", 50);
                 if (healthPercent(target) >= percent) {
-                    reasons.add("Necesitás tener menos de " + percent + "% de vida.");
+                    reasons.add(lang.raw("condition.health_below", "percent", percent));
                 }
             }
 
             case HEALTH_ABOVE -> {
                 double percent = condition.paramDouble("percent", 50);
                 if (healthPercent(target) <= percent) {
-                    reasons.add("Necesitás tener más de " + percent + "% de vida.");
+                    reasons.add(lang.raw("condition.health_above", "percent", percent));
                 }
             }
 
             case MANA_BELOW -> {
                 double percent = condition.paramDouble("percent", 50);
                 if (rpgPlayer != null && manaPercent(rpgPlayer) >= percent) {
-                    reasons.add("Necesitás tener menos de " + percent + "% de maná.");
+                    reasons.add(lang.raw("condition.mana_below", "percent", percent));
                 }
             }
 
             case MANA_ABOVE -> {
                 double percent = condition.paramDouble("percent", 50);
                 if (rpgPlayer != null && manaPercent(rpgPlayer) <= percent) {
-                    reasons.add("Necesitás tener más de " + percent + "% de maná.");
+                    reasons.add(lang.raw("condition.mana_above", "percent", percent));
                 }
             }
 
@@ -149,8 +156,9 @@ public class EffectConditionEvaluator {
                     break;
                 }
                 if (!checkGuild(target, condition.param("value", ""))) {
-                    reasons.add("Necesitás pertenecer a un guild"
-                            + (condition.param("value", "").isBlank() ? "." : (": " + condition.param("value", ""))));
+                    String requiredGuild = condition.param("value", "");
+                    reasons.add(requiredGuild.isBlank() ? lang.raw("condition.guild_generic")
+                            : lang.raw("condition.guild_specific", "value", requiredGuild));
                 }
             }
 
@@ -159,14 +167,14 @@ public class EffectConditionEvaluator {
                     break;
                 }
                 if (!checkTeam(target)) {
-                    reasons.add("Necesitás estar en un team.");
+                    reasons.add(lang.raw("condition.team"));
                 }
             }
 
             case PERMISSION -> {
                 String permission = condition.param("value", "");
                 if (!permission.isBlank() && !target.hasPermission(permission)) {
-                    reasons.add("No tenés el permiso requerido.");
+                    reasons.add(lang.raw("condition.permission"));
                 }
             }
         }

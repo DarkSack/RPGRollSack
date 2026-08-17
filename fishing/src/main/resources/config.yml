@@ -1,3 +1,8 @@
+# Idioma de los mensajes (jugador y comandos). Opciones: es, en, pt_BR.
+# Los textos viven en lang/<idioma>.yml dentro de esta carpeta de datos —
+# podés editarlos ahí directamente. Tras cambiar esto, /fishingadmin reload.
+language: es
+
 # true = minijuego RPG (barra de tensión, hay que "reelear" en el momento justo o el pez escapa).
 # false = modo vanilla (se resuelve la captura al instante, sin minijuego, como Minecraft normal).
 rpg-mode: true

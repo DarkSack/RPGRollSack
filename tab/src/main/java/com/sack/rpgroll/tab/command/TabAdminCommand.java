@@ -14,9 +14,7 @@ import com.sack.rpgroll.tab.sorting.SortingManager;
 import com.sack.rpgroll.tab.tablist.TablistManager;
 import com.sack.rpgroll.tab.teams.TeamsManager;
 import com.sack.rpgroll.util.TabCompleteUtil;
-
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
+import com.sack.rpgroll.common.lang.LangManager;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -49,12 +47,13 @@ public class TabAdminCommand implements CommandExecutor, TabCompleter {
     private final AnimationManager animationManager;
     private final PlayerStateManager playerStateManager;
     private final RefreshCoordinator refreshCoordinator;
+    private final LangManager lang;
 
     public TabAdminCommand(ProfileManager profileManager, ContextManager contextManager,
             TablistManager tablistManager, ScoreboardManager scoreboardManager, NametagManager nametagManager,
             BelowNameManager belowNameManager, BossBarManager bossBarManager, SortingManager sortingManager,
             TeamsManager teamsManager, AnimationManager animationManager, PlayerStateManager playerStateManager,
-            RefreshCoordinator refreshCoordinator) {
+            RefreshCoordinator refreshCoordinator, LangManager lang) {
         this.profileManager = profileManager;
         this.contextManager = contextManager;
         this.tablistManager = tablistManager;
@@ -67,13 +66,14 @@ public class TabAdminCommand implements CommandExecutor, TabCompleter {
         this.animationManager = animationManager;
         this.playerStateManager = playerStateManager;
         this.refreshCoordinator = refreshCoordinator;
+        this.lang = lang;
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
         if (!sender.hasPermission(PERMISSION)) {
-            sender.sendMessage(Component.text("No tenés permiso para usar este comando.", NamedTextColor.RED));
+            lang.send(sender, "command.no-permission");
             return true;
         }
 
@@ -93,8 +93,7 @@ public class TabAdminCommand implements CommandExecutor, TabCompleter {
     }
 
     private void sendUsage(CommandSender sender) {
-        sender.sendMessage(Component.text(
-                "Uso: /tabadmin <reload|list|profile <jugador> <perfil>>", NamedTextColor.RED));
+        lang.send(sender, "command.usage");
     }
 
     private void handleReload(CommandSender sender) {
@@ -112,51 +111,48 @@ public class TabAdminCommand implements CommandExecutor, TabCompleter {
 
         refreshCoordinator.refreshAll();
 
-        sender.sendMessage(Component.text(
-                "✔ RPGRoll-TAB recargado: " + profileManager.count() + " perfil(es), "
-                        + contextManager.count() + " contexto(s).",
-                NamedTextColor.GREEN));
+        lang.send(sender, "command.reload.success",
+                "profiles", profileManager.count(), "contexts", contextManager.count());
     }
 
     private void handleList(CommandSender sender) {
 
         if (profileManager.count() == 0) {
-            sender.sendMessage(Component.text("No hay perfiles definidos.", NamedTextColor.GRAY));
+            lang.send(sender, "command.list.empty");
             return;
         }
 
-        sender.sendMessage(Component.text("Perfiles disponibles:", NamedTextColor.GOLD));
+        lang.send(sender, "command.list.header");
 
         for (TABProfile profile : profileManager.getAll()) {
-            sender.sendMessage(Component.text("• " + profile.id(), NamedTextColor.WHITE));
+            lang.send(sender, "command.list.entry", "id", profile.id());
         }
     }
 
     private void handleProfile(CommandSender sender, String[] args) {
 
         if (args.length < 3) {
-            sender.sendMessage(Component.text("Uso: /tabadmin profile <jugador> <perfil>", NamedTextColor.RED));
+            lang.send(sender, "command.profile.usage");
             return;
         }
 
         Player target = Bukkit.getPlayerExact(args[1]);
         if (target == null) {
-            sender.sendMessage(Component.text("Jugador no encontrado: " + args[1], NamedTextColor.RED));
+            lang.send(sender, "command.profile.player-not-found", "player", args[1]);
             return;
         }
 
         String profileId = args[2];
 
         if (profileManager.get(profileId).isEmpty()) {
-            sender.sendMessage(Component.text("No existe un perfil con id: " + profileId, NamedTextColor.RED));
+            lang.send(sender, "command.profile.profile-not-found", "profile", profileId);
             return;
         }
 
         playerStateManager.forceProfile(target, profileManager.get(profileId).orElseThrow());
         refreshCoordinator.applyActiveState(target);
 
-        sender.sendMessage(Component.text(
-                "✔ Perfil de " + target.getName() + " forzado a: " + profileId, NamedTextColor.GREEN));
+        lang.send(sender, "command.profile.success", "player", target.getName(), "profile", profileId);
     }
 
     @Override

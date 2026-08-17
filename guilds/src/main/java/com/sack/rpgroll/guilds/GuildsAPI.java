@@ -1,5 +1,6 @@
 package com.sack.rpgroll.guilds;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.guilds.guild.GuildManager;
 import com.sack.rpgroll.guilds.team.TeamManager;
 import com.sack.rpgroll.guilds.team.matchmaking.TeamMatchmakingQueue;
@@ -34,6 +35,14 @@ public final class GuildsAPI {
 
     public static GuildManager getGuildManager() {
         return instance.getGuildManager();
+    }
+
+    public static LangManager getLangManager() {
+        return instance.getLangManager();
+    }
+
+    public static void reloadLangManager() {
+        instance.reloadLangManager();
     }
 
 }

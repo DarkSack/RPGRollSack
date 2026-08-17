@@ -1,5 +1,6 @@
 package com.sack.rpgroll.ascension.command;
 
+import com.sack.rpgroll.ascension.AscensionPlugin;
 import com.sack.rpgroll.ascension.core.AffinityManager;
 import com.sack.rpgroll.ascension.deferred.AchievementManager;
 import com.sack.rpgroll.ascension.deferred.FactionManager;
@@ -19,10 +20,8 @@ import com.sack.rpgroll.ascension.gui.RaceEvolutionBrowserGUI;
 import com.sack.rpgroll.ascension.gui.SecretUnlockBrowserGUI;
 import com.sack.rpgroll.ascension.gui.TitleBrowserGUI;
 import com.sack.rpgroll.ascension.player.AscensionPlayerState;
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.util.TabCompleteUtil;
-
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -57,11 +56,13 @@ public class AscendAdminCommand implements CommandExecutor, TabCompleter {
     private final SecretUnlockManager secretUnlockManager;
     private final FactionManager factionManager;
     private final ChatPromptManager chatPromptManager;
+    private final LangManager lang;
+    private final AscensionPlugin plugin;
 
     public AscendAdminCommand(AscensionEngine engine, AchievementManager achievementManager,
             TitleManager titleManager, AffinityManager affinityManager, JobEvolutionManager jobEvolutionManager,
             SecretUnlockManager secretUnlockManager, FactionManager factionManager,
-            ChatPromptManager chatPromptManager) {
+            ChatPromptManager chatPromptManager, LangManager lang, AscensionPlugin plugin) {
         this.engine = engine;
         this.achievementManager = achievementManager;
         this.titleManager = titleManager;
@@ -70,13 +71,15 @@ public class AscendAdminCommand implements CommandExecutor, TabCompleter {
         this.secretUnlockManager = secretUnlockManager;
         this.factionManager = factionManager;
         this.chatPromptManager = chatPromptManager;
+        this.lang = lang;
+        this.plugin = plugin;
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
         if (!sender.hasPermission(PERMISSION)) {
-            sender.sendMessage(Component.text("No tenés permiso para usar este comando.", NamedTextColor.RED));
+            lang.send(sender, "admin.no_permission");
             return true;
         }
 
@@ -98,111 +101,107 @@ public class AscendAdminCommand implements CommandExecutor, TabCompleter {
     }
 
     private void sendUsage(CommandSender sender) {
-        sender.sendMessage(Component.text(
-                "Uso: /ascendadmin <achievement|title|reputation|browser|reload> [args]", NamedTextColor.RED));
+        lang.send(sender, "admin.usage");
     }
 
     private void handleBrowser(CommandSender sender, String[] args) {
 
         if (!(sender instanceof Player player)) {
-            sender.sendMessage(Component.text("Solo un jugador puede usar el editor visual.", NamedTextColor.RED));
+            lang.send(sender, "admin.browser_player_only");
             return;
         }
 
         String type = args.length > 1 ? args[1].toLowerCase() : "evolution";
 
         switch (type) {
-            case "evolution" -> new RaceEvolutionBrowserGUI(player, engine.getEvolutionManager(), chatPromptManager)
-                    .open();
+            case "evolution" -> new RaceEvolutionBrowserGUI(player, engine.getEvolutionManager(), chatPromptManager,
+                    lang).open();
             case "specialization" -> new ClassSpecializationBrowserGUI(player, engine.getSpecializationManager(),
-                    chatPromptManager).open();
-            case "prestige" -> new PrestigeBrowserGUI(player, engine.getPrestigeManager(), chatPromptManager).open();
-            case "affinity" -> new AffinityBrowserGUI(player, affinityManager, chatPromptManager).open();
-            case "jobevolution" -> new JobEvolutionBrowserGUI(player, jobEvolutionManager, chatPromptManager).open();
-            case "secret" -> new SecretUnlockBrowserGUI(player, secretUnlockManager, chatPromptManager).open();
-            case "faction" -> new FactionBrowserGUI(player, factionManager, chatPromptManager).open();
-            case "achievement" -> new AchievementBrowserGUI(player, achievementManager, chatPromptManager).open();
-            case "title" -> new TitleBrowserGUI(player, titleManager, chatPromptManager).open();
-            case "legacy" -> new LegacyBrowserGUI(player, engine.getLegacyManager(), chatPromptManager).open();
-            default -> player.sendMessage(Component.text(
-                    "Opción inválida. Usa: evolution, specialization, prestige, affinity, jobevolution, secret, "
-                            + "faction, achievement, title o legacy",
-                    NamedTextColor.RED));
+                    chatPromptManager, lang).open();
+            case "prestige" -> new PrestigeBrowserGUI(player, engine.getPrestigeManager(), chatPromptManager, lang)
+                    .open();
+            case "affinity" -> new AffinityBrowserGUI(player, affinityManager, chatPromptManager, lang).open();
+            case "jobevolution" -> new JobEvolutionBrowserGUI(player, jobEvolutionManager, chatPromptManager, lang)
+                    .open();
+            case "secret" -> new SecretUnlockBrowserGUI(player, secretUnlockManager, chatPromptManager, lang).open();
+            case "faction" -> new FactionBrowserGUI(player, factionManager, chatPromptManager, lang).open();
+            case "achievement" -> new AchievementBrowserGUI(player, achievementManager, chatPromptManager, lang)
+                    .open();
+            case "title" -> new TitleBrowserGUI(player, titleManager, chatPromptManager, lang).open();
+            case "legacy" -> new LegacyBrowserGUI(player, engine.getLegacyManager(), chatPromptManager, lang).open();
+            default -> lang.send(player, "admin.browser_invalid_option");
         }
     }
 
     private void handleAchievement(CommandSender sender, String[] args) {
 
         if (args.length < 4 || !args[1].equalsIgnoreCase("grant")) {
-            sender.sendMessage(Component.text("Uso: /ascendadmin achievement grant <jugador> <id>", NamedTextColor.RED));
+            lang.send(sender, "admin.achievement_usage");
             return;
         }
 
         Player target = Bukkit.getPlayerExact(args[2]);
         if (target == null) {
-            sender.sendMessage(Component.text("Jugador no encontrado: " + args[2], NamedTextColor.RED));
+            lang.send(sender, "admin.achievement_player_not_found", "player", args[2]);
             return;
         }
 
         if (achievementManager.get(args[3]).isEmpty()) {
-            sender.sendMessage(Component.text("No existe un logro con id: " + args[3], NamedTextColor.RED));
+            lang.send(sender, "admin.achievement_not_found", "id", args[3]);
             return;
         }
 
         AscensionPlayerState state = engine.getStateManager().getOrLoad(target);
 
         if (state.unlockAchievement(args[3])) {
-            sender.sendMessage(Component.text("✔ Logro '" + args[3] + "' otorgado a " + target.getName(),
-                    NamedTextColor.GREEN));
+            lang.send(sender, "admin.achievement_granted", "id", args[3], "player", target.getName());
         } else {
-            sender.sendMessage(Component.text(target.getName() + " ya tiene ese logro.", NamedTextColor.RED));
+            lang.send(sender, "admin.achievement_already_has", "player", target.getName());
         }
     }
 
     private void handleTitle(CommandSender sender, String[] args) {
 
         if (args.length < 4 || !args[1].equalsIgnoreCase("grant")) {
-            sender.sendMessage(Component.text("Uso: /ascendadmin title grant <jugador> <id>", NamedTextColor.RED));
+            lang.send(sender, "admin.title_usage");
             return;
         }
 
         Player target = Bukkit.getPlayerExact(args[2]);
         if (target == null) {
-            sender.sendMessage(Component.text("Jugador no encontrado: " + args[2], NamedTextColor.RED));
+            lang.send(sender, "admin.title_player_not_found", "player", args[2]);
             return;
         }
 
         if (titleManager.get(args[3]).isEmpty()) {
-            sender.sendMessage(Component.text("No existe un título con id: " + args[3], NamedTextColor.RED));
+            lang.send(sender, "admin.title_not_found", "id", args[3]);
             return;
         }
 
         AscensionPlayerState state = engine.getStateManager().getOrLoad(target);
 
         if (state.unlockTitle(args[3])) {
-            sender.sendMessage(Component.text("✔ Título '" + args[3] + "' otorgado a " + target.getName(),
-                    NamedTextColor.GREEN));
+            lang.send(sender, "admin.title_granted", "id", args[3], "player", target.getName());
         } else {
-            sender.sendMessage(Component.text(target.getName() + " ya tiene ese título.", NamedTextColor.RED));
+            lang.send(sender, "admin.title_already_has", "player", target.getName());
         }
     }
 
     private void handleReputation(CommandSender sender, String[] args) {
 
         if (args.length < 5 || !args[1].equalsIgnoreCase("add")) {
-            sender.sendMessage(Component.text(
-                    "Uso: /ascendadmin reputation add <jugador> <facción> <cantidad>", NamedTextColor.RED));
+            lang.send(sender, "admin.reputation_usage");
             return;
         }
 
         Player target = Bukkit.getPlayerExact(args[2]);
         if (target == null) {
-            sender.sendMessage(Component.text("Jugador no encontrado: " + args[2], NamedTextColor.RED));
+            lang.send(sender, "admin.reputation_player_not_found", "player", args[2]);
             return;
         }
 
         if (factionManager.get(args[3]).isEmpty()) {
-            sender.sendMessage(Component.text("No existe una facción con id: " + args[3], NamedTextColor.RED));
+            lang.send(sender, "admin.reputation_faction_not_found", "id", args[3]);
             return;
         }
 
@@ -210,17 +209,19 @@ public class AscendAdminCommand implements CommandExecutor, TabCompleter {
         try {
             amount = Integer.parseInt(args[4]);
         } catch (NumberFormatException e) {
-            sender.sendMessage(Component.text("Cantidad inválida: " + args[4], NamedTextColor.RED));
+            lang.send(sender, "admin.reputation_invalid_amount", "amount", args[4]);
             return;
         }
 
         engine.getStateManager().getOrLoad(target).addReputation(args[3], amount);
-        sender.sendMessage(Component.text(
-                "✔ +" + amount + " de reputación con '" + args[3] + "' para " + target.getName(),
-                NamedTextColor.GREEN));
+        lang.send(sender, "admin.reputation_added", "amount", amount, "faction", args[3], "player",
+                target.getName());
     }
 
     private void handleReload(CommandSender sender) {
+
+        plugin.reloadConfig();
+        lang.reload(plugin.getConfig().getString("language", "es"));
 
         engine.getEvolutionManager().reload();
         engine.getSpecializationManager().reload();
@@ -233,7 +234,7 @@ public class AscendAdminCommand implements CommandExecutor, TabCompleter {
         secretUnlockManager.reload();
         factionManager.reload();
 
-        sender.sendMessage(Component.text("✔ RPGRoll-Ascension recargado.", NamedTextColor.GREEN));
+        lang.send(sender, "admin.reload_success");
     }
 
     @Override

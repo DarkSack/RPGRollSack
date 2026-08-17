@@ -56,8 +56,8 @@ public final class ItemBuilder {
         return item;
     }
 
-    public static ItemStack backButton() {
-        return of(Material.ARROW, "Volver", NamedTextColor.RED);
+    public static ItemStack backButton(String label) {
+        return of(Material.ARROW, label, NamedTextColor.RED);
     }
 
     /**

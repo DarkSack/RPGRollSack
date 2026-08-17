@@ -107,11 +107,9 @@ public class ConfigManager {
                 "levelup-rewards.yml",
                 true));
 
-        // Idioma por defecto
-        configFiles.add(new ResourceFile(
-                "lang/es_MX.yml",
-                "lang/es_MX.yml",
-                true));
+        // Los archivos de idioma (lang/es.yml, en.yml, pt_BR.yml) los copia
+        // LangManager directamente vía ResourceCopier.copyDirectories("lang"),
+        // no acá — no son un ResourceFile individual como el resto.
 
     }
 

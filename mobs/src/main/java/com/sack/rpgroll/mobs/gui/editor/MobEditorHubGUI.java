@@ -1,5 +1,6 @@
 package com.sack.rpgroll.mobs.gui.editor;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.util.ComponentUtils;
 
 import com.sack.rpgroll.gui.InventoryGUI;
@@ -7,7 +8,6 @@ import com.sack.rpgroll.gui.util.ItemBuilder;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -47,10 +47,13 @@ public class MobEditorHubGUI extends InventoryGUI {
     private static final int CANCEL_SLOT = 50;
 
     private final MobEditorSession session;
+    private final LangManager lang;
 
     public MobEditorHubGUI(Player player, MobEditorSession session) {
-        super(player, Component.text("Editando: " + session.original.id(), NamedTextColor.GOLD), SIZE);
+        super(player, session.chatPromptManager.lang().component("gui.editor.hub_title", "id",
+                session.original.id()), SIZE);
         this.session = session;
+        this.lang = session.chatPromptManager.lang();
     }
 
     @Override
@@ -64,36 +67,36 @@ public class MobEditorHubGUI extends InventoryGUI {
 
         setItem(PREVIEW_SLOT, previewIcon());
 
-        setItem(IDENTITY_SLOT, categoryButton(Material.NAME_TAG, "Identidad",
-                "Nombre, categoría, nivel, rareza, color, tags, descripción"));
-        setItem(MODEL_SLOT, categoryButton(Material.ARMOR_STAND, "Modelo",
-                "Tipo base, escala, brillo, invisibilidad, equipo"));
-        setItem(STATS_SLOT, categoryButton(Material.REDSTONE, "Stats",
-                "Vida, daño, defensa, velocidad, crítico, esquive..."));
-        setItem(RESIST_SLOT, categoryButton(Material.SHIELD, "Resistencias/Debilidades",
-                "% de reducción o daño extra por elemento"));
-        setItem(AI_SLOT, categoryButton(Material.COMPASS, "Inteligencia artificial",
-                "Objetivos de comportamiento, aggro, huida, patrulla"));
-        setItem(SKILLS_SLOT, categoryButton(Material.BLAZE_POWDER, "Skills",
-                "Habilidades disparadas por trigger, cooldown y condiciones"));
-        setItem(TRIGGERS_SLOT, categoryButton(Material.COMPARATOR, "Triggers",
-                "Acciones directas por evento (spawn, muerte, daño...)"));
+        setItem(IDENTITY_SLOT, categoryButton(Material.NAME_TAG, "gui.editor.identity_name",
+                "gui.editor.identity_desc"));
+        setItem(MODEL_SLOT, categoryButton(Material.ARMOR_STAND, "gui.editor.model_name",
+                "gui.editor.model_desc"));
+        setItem(STATS_SLOT, categoryButton(Material.REDSTONE, "gui.editor.stats_name",
+                "gui.editor.stats_desc"));
+        setItem(RESIST_SLOT, categoryButton(Material.SHIELD, "gui.editor.resist_name",
+                "gui.editor.resist_desc"));
+        setItem(AI_SLOT, categoryButton(Material.COMPASS, "gui.editor.ai_name",
+                "gui.editor.ai_desc"));
+        setItem(SKILLS_SLOT, categoryButton(Material.BLAZE_POWDER, "gui.editor.skills_name",
+                "gui.editor.skills_desc"));
+        setItem(TRIGGERS_SLOT, categoryButton(Material.COMPARATOR, "gui.editor.triggers_name",
+                "gui.editor.triggers_desc"));
 
-        setItem(PHASES_SLOT, categoryButton(Material.NETHER_STAR, "Fases",
-                "Transiciones de jefe por % de vida"));
-        setItem(LOOT_SLOT, categoryButton(Material.CHEST, "Loot",
-                "Tabla de drops con probabilidad"));
-        setItem(BOSSBAR_SLOT, categoryButton(Material.DRAGON_HEAD, "BossBar",
-                "Barra de jefe: color, estilo, título"));
-        setItem(DIALOGUES_SLOT, categoryButton(Material.WRITABLE_BOOK, "Diálogos",
-                "Frases por trigger o por fase"));
-        setItem(SPAWN_RULES_SLOT, categoryButton(Material.GRASS_BLOCK, "Reglas de spawn",
-                "Biomas, mundos, región, altura, hora, clima"));
-        setItem(CUSTOM_DATA_SLOT, categoryButton(Material.NAME_TAG, "Datos custom",
-                "Pares clave-valor libres para otros addons"));
+        setItem(PHASES_SLOT, categoryButton(Material.NETHER_STAR, "gui.editor.phases_name",
+                "gui.editor.phases_desc"));
+        setItem(LOOT_SLOT, categoryButton(Material.CHEST, "gui.editor.loot_name",
+                "gui.editor.loot_desc"));
+        setItem(BOSSBAR_SLOT, categoryButton(Material.DRAGON_HEAD, "gui.editor.bossbar_name",
+                "gui.editor.bossbar_desc"));
+        setItem(DIALOGUES_SLOT, categoryButton(Material.WRITABLE_BOOK, "gui.editor.dialogues_name",
+                "gui.editor.dialogues_desc"));
+        setItem(SPAWN_RULES_SLOT, categoryButton(Material.GRASS_BLOCK, "gui.editor.spawn_rules_name",
+                "gui.editor.spawn_rules_desc"));
+        setItem(CUSTOM_DATA_SLOT, categoryButton(Material.NAME_TAG, "gui.editor.custom_data_name",
+                "gui.editor.custom_data_desc"));
 
-        setItem(SAVE_SLOT, ItemBuilder.createConfirmButton("Guardar"));
-        setItem(CANCEL_SLOT, ItemBuilder.createCancelButton("Cancelar"));
+        setItem(SAVE_SLOT, ItemBuilder.createConfirmButton(lang.raw("gui.common.save_button")));
+        setItem(CANCEL_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.cancel_button")));
     }
 
     private ItemStack previewIcon() {
@@ -109,14 +112,15 @@ public class MobEditorHubGUI extends InventoryGUI {
                 .setName(ComponentUtils.parse(session.displayName)
                         .colorIfAbsent(NamedTextColor.WHITE))
                 .setLore(Component.text(session.original.id(), NamedTextColor.DARK_GRAY),
-                        Component.text(session.category + " · Nivel " + session.level, NamedTextColor.GRAY))
+                        lang.component("gui.browser.item_category_level", "category", session.category,
+                                "level", session.level))
                 .build();
     }
 
-    private ItemStack categoryButton(Material material, String name, String description) {
+    private ItemStack categoryButton(Material material, String nameKey, String descKey) {
         return new ItemBuilder(material)
-                .setName(Component.text(name, NamedTextColor.YELLOW))
-                .setLore(Component.text(description, NamedTextColor.GRAY))
+                .setName(lang.component(nameKey))
+                .setLore(lang.component(descKey))
                 .build();
     }
 
@@ -154,9 +158,9 @@ public class MobEditorHubGUI extends InventoryGUI {
 
         try {
             session.save();
-            player.sendMessage(Component.text("✔ Mob guardado.", NamedTextColor.GREEN));
+            lang.send(player, "gui.editor.save_success");
         } catch (java.io.IOException e) {
-            player.sendMessage(Component.text("✘ Error guardando el mob: " + e.getMessage(), NamedTextColor.RED));
+            lang.send(player, "gui.editor.save_error", "error", e.getMessage());
         }
 
         markSelectionMade();

@@ -2,6 +2,7 @@ package com.sack.rpgroll.chat.command;
 
 import com.sack.rpgroll.chat.log.ChatLogEntry;
 import com.sack.rpgroll.chat.log.ChatLogManager;
+import com.sack.rpgroll.common.lang.LangManager;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -17,9 +18,11 @@ import java.util.Locale;
 public class ChatLogCommand implements CommandExecutor {
 
     private final ChatLogManager logManager;
+    private final LangManager lang;
 
-    public ChatLogCommand(ChatLogManager logManager) {
+    public ChatLogCommand(ChatLogManager logManager, LangManager lang) {
         this.logManager = logManager;
+        this.lang = lang;
     }
 
     @Override
@@ -41,8 +44,7 @@ public class ChatLogCommand implements CommandExecutor {
     }
 
     private void sendUsage(CommandSender sender) {
-        sender.sendMessage(Component.text("Uso: /chatlog <search|export|clear> [canal] [jugador] [fecha yyyy-MM-dd]",
-                NamedTextColor.YELLOW));
+        lang.send(sender, "log.usage");
     }
 
     private String arg(String[] args, int index) {
@@ -57,8 +59,7 @@ public class ChatLogCommand implements CommandExecutor {
 
         List<ChatLogEntry> results = logManager.search(channelId, player, date);
 
-        sender.sendMessage(Component.text("=== Resultados (" + results.size() + ", últimos 20) ===",
-                NamedTextColor.GOLD));
+        lang.send(sender, "log.results_header", "count", results.size());
 
         results.stream().skip(Math.max(0, results.size() - 20)).forEach(entry ->
                 sender.sendMessage(Component.text(entry.formatLine(), NamedTextColor.GRAY)));
@@ -73,14 +74,12 @@ public class ChatLogCommand implements CommandExecutor {
         List<ChatLogEntry> results = logManager.search(channelId, player, date);
         var file = logManager.export(results, sender.getName());
 
-        sender.sendMessage(Component.text("✔ Exportado " + results.size() + " mensaje(s) a " + file.getName(),
-                NamedTextColor.GREEN));
+        lang.send(sender, "log.exported", "count", results.size(), "file", file.getName());
     }
 
     private void handleClear(CommandSender sender) {
         var file = logManager.clearRecent();
-        sender.sendMessage(Component.text("✔ Historial en memoria limpiado (respaldo en " + file.getName() + ").",
-                NamedTextColor.GREEN));
+        lang.send(sender, "log.cleared", "file", file.getName());
     }
 
 }

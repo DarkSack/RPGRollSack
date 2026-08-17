@@ -1,6 +1,7 @@
 package com.sack.rpgroll.magic.engine;
 
 import com.sack.rpgroll.api.RPGRollAPI;
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gameplay.combat.CombatStats;
 import com.sack.rpgroll.magic.core.SpellCost;
 import com.sack.rpgroll.player.RPGPlayer;
@@ -28,7 +29,7 @@ public final class SpellCostChecker {
     private SpellCostChecker() {
     }
 
-    public static List<String> checkOnly(Player player, SpellCost cost, double costMultiplier) {
+    public static List<String> checkOnly(Player player, SpellCost cost, double costMultiplier, LangManager lang) {
 
         List<String> reasons = new ArrayList<>();
 
@@ -39,14 +40,14 @@ public final class SpellCostChecker {
         if (mana > 0 || health > 0 || experience > 0) {
 
             if (!RPGRollAPI.isReady()) {
-                reasons.add("RPGRoll no está listo.");
+                reasons.add(lang.raw("cast.reason.rpgroll_not_ready"));
                 return reasons;
             }
 
             var playerOpt = RPGRollAPI.get().getPlayer(player.getUniqueId());
 
             if (playerOpt.isEmpty()) {
-                reasons.add("No tenés un personaje creado.");
+                reasons.add(lang.raw("cast.reason.no_character"));
                 return reasons;
             }
 
@@ -54,15 +55,15 @@ public final class SpellCostChecker {
             CombatStats stats = rpgPlayer.getCombatStats();
 
             if (mana > 0 && stats.currentMana() < mana) {
-                reasons.add("No tenés suficiente maná (" + stats.currentMana() + "/" + mana + ").");
+                reasons.add(lang.raw("cast.reason.not_enough_mana", "current", stats.currentMana(), "required", mana));
             }
 
             if (health > 0 && stats.currentHealth() <= health) {
-                reasons.add("No tenés suficiente vida para pagar el costo.");
+                reasons.add(lang.raw("cast.reason.not_enough_health"));
             }
 
             if (experience > 0 && rpgPlayer.getExperience() < experience) {
-                reasons.add("No tenés suficiente experiencia.");
+                reasons.add(lang.raw("cast.reason.not_enough_experience"));
             }
         }
 
@@ -71,7 +72,8 @@ public final class SpellCostChecker {
             Material material = parseMaterial(cost.reagentMaterial());
 
             if (!hasReagent(player, material, cost.reagentAmount())) {
-                reasons.add("Te falta el reactivo: " + cost.reagentAmount() + "x " + material.name());
+                reasons.add(lang.raw("cast.reason.missing_reagent", "amount", cost.reagentAmount(), "material",
+                        material.name()));
             }
         }
 

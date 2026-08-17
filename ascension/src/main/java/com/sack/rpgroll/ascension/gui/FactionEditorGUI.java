@@ -2,11 +2,9 @@ package com.sack.rpgroll.ascension.gui;
 
 import com.sack.rpgroll.ascension.deferred.Faction;
 import com.sack.rpgroll.ascension.deferred.FactionManager;
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
-
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -21,15 +19,17 @@ public class FactionEditorGUI extends InventoryGUI {
     private final FactionManager manager;
     private final ChatPromptManager chatPromptManager;
     private final Runnable onBack;
+    private final LangManager lang;
     private Faction current;
 
     public FactionEditorGUI(Player player, Faction faction, FactionManager manager,
-            ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text("Facción: " + faction.id(), NamedTextColor.GOLD), SIZE);
+            ChatPromptManager chatPromptManager, Runnable onBack, LangManager lang) {
+        super(player, lang.component("gui.faction.editor_title", "id", faction.id()), SIZE);
         this.current = faction;
         this.manager = manager;
         this.chatPromptManager = chatPromptManager;
         this.onBack = onBack;
+        this.lang = lang;
     }
 
     private void replace(Faction updated) {
@@ -48,11 +48,11 @@ public class FactionEditorGUI extends InventoryGUI {
         }
 
         setItem(NAME_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(Component.text("Nombre: " + current.displayName(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para escribir uno nuevo", NamedTextColor.GRAY))
+                .setName(lang.component("gui.common.name_label", "name", current.displayName()))
+                .setLore(lang.component("gui.common.click_new_value"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back_button")));
     }
 
     @Override
@@ -62,7 +62,7 @@ public class FactionEditorGUI extends InventoryGUI {
         int slot = event.getSlot();
 
         if (slot == NAME_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el nuevo nombre:",
+            chatPromptManager.prompt(player, "gui.faction.prompt_new_name",
                     value -> replace(new Faction(current.id(), value)));
             return;
         }

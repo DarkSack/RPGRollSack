@@ -26,11 +26,16 @@ public class GuildBrowserGUI extends PaginatedGUI {
     private final List<Guild> guilds;
 
     public GuildBrowserGUI(Player player, GuildServices services) {
-        super(player, Component.text("Guilds del servidor", NamedTextColor.GOLD), SIZE, CONTENT_SLOTS);
+        super(player, Component.text(services.langManager().raw("guild.browser.title"), NamedTextColor.GOLD), SIZE,
+                CONTENT_SLOTS);
         this.services = services;
         this.guilds = services.guildManager().getAll().stream()
                 .sorted((a, b) -> Integer.compare(b.level(), a.level()))
                 .toList();
+    }
+
+    private com.sack.rpgroll.common.lang.LangManager lang() {
+        return services.langManager();
     }
 
     @Override
@@ -45,10 +50,10 @@ public class GuildBrowserGUI extends PaginatedGUI {
 
         setItem(contentSlot, new ItemBuilder(guild.icon())
                 .setName(Component.text(guild.name(), guild.color()))
-                .setLore(Component.text("Nivel " + guild.level() + " · " + guild.memberCount() + " miembro(s)",
-                        NamedTextColor.GRAY),
+                .setLore(Component.text(lang().raw("guild.browser.level_members", "level", guild.level(),
+                        "count", guild.memberCount()), NamedTextColor.GRAY),
                         Component.text(guild.motto(), NamedTextColor.DARK_GRAY),
-                        Component.text("Click para abrir", NamedTextColor.YELLOW))
+                        Component.text(lang().raw("guild.browser.click_open"), NamedTextColor.YELLOW))
                 .build());
     }
 
@@ -56,14 +61,16 @@ public class GuildBrowserGUI extends PaginatedGUI {
     protected void renderExtras() {
 
         setItem(PREV_SLOT, hasPreviousPage()
-                ? new ItemBuilder(Material.ARROW).setName(Component.text("« Anterior", NamedTextColor.YELLOW)).build()
+                ? new ItemBuilder(Material.ARROW).setName(Component.text(lang().raw("common.previous_page"),
+                        NamedTextColor.YELLOW)).build()
                 : ItemBuilder.createFiller());
 
         setItem(NEXT_SLOT, hasNextPage()
-                ? new ItemBuilder(Material.ARROW).setName(Component.text("Siguiente »", NamedTextColor.YELLOW)).build()
+                ? new ItemBuilder(Material.ARROW).setName(Component.text(lang().raw("common.next_page"),
+                        NamedTextColor.YELLOW)).build()
                 : ItemBuilder.createFiller());
 
-        setItem(CLOSE_SLOT, ItemBuilder.createCancelButton("Cerrar"));
+        setItem(CLOSE_SLOT, ItemBuilder.createCancelButton(lang().raw("common.close")));
     }
 
     @Override
@@ -73,8 +80,7 @@ public class GuildBrowserGUI extends PaginatedGUI {
 
         if (!guild.isMember(player.getUniqueId())) {
             player.sendMessage(Component.text("=== " + guild.name() + " ===", guild.color()));
-            player.sendMessage(Component.text("Nivel " + guild.level() + " · " + guild.memberCount() + " miembro(s)",
-                    NamedTextColor.GRAY));
+            lang().send(player, "guild.browser.level_members", "level", guild.level(), "count", guild.memberCount());
             player.sendMessage(Component.text(guild.description(), NamedTextColor.GRAY));
             return;
         }

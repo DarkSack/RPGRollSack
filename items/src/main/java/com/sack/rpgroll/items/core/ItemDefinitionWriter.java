@@ -22,7 +22,7 @@ public class ItemDefinitionWriter {
         YamlConfiguration config = new YamlConfiguration();
 
         config.set("id", definition.id());
-        config.set("category", definition.category());
+        config.set("pack", definition.pack());
         config.set("material", definition.material().name());
         config.set("display-name", definition.displayName());
         config.set("lore", definition.lore());

@@ -1,5 +1,6 @@
 package com.sack.rpgroll.effects.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.effects.core.EffectDefinition;
 import com.sack.rpgroll.effects.core.EffectManager;
 import com.sack.rpgroll.effects.core.EffectStackingMode;
@@ -32,15 +33,18 @@ public class EffectStackingEditorGUI extends InventoryGUI {
 
     private final EffectManager effectManager;
     private final ChatPromptManager chatPromptManager;
+    private final LangManager lang;
     private final Runnable onBack;
     private EffectDefinition current;
 
     public EffectStackingEditorGUI(Player player, EffectDefinition effect, EffectManager effectManager,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text("Stacking: " + effect.id(), NamedTextColor.GOLD), SIZE);
+        super(player, Component.text(chatPromptManager.lang().raw("gui.stacking.title", "id", effect.id()),
+                NamedTextColor.GOLD), SIZE);
         this.current = effect;
         this.effectManager = effectManager;
         this.chatPromptManager = chatPromptManager;
+        this.lang = chatPromptManager.lang();
         this.onBack = onBack;
     }
 
@@ -64,44 +68,42 @@ public class EffectStackingEditorGUI extends InventoryGUI {
         }
 
         setItem(MODE_SLOT, new ItemBuilder(Material.REPEATER)
-                .setName(Component.text("Modo: " + current.stackingMode(), NamedTextColor.YELLOW))
-                .setLore(Component.text("NONE: reaplicar solo refresca la duración", NamedTextColor.GRAY),
-                        Component.text("INDEPENDENT: cada aplicación corre en paralelo", NamedTextColor.GRAY),
-                        Component.text("REFRESH: suma un stack (tope max-stacks)", NamedTextColor.GRAY),
-                        Component.text("UPGRADE: al tope, se reemplaza por otro efecto", NamedTextColor.GRAY),
-                        Component.text("Click para ciclar", NamedTextColor.YELLOW))
+                .setName(lang.component("gui.stacking.mode_label", "mode", current.stackingMode()))
+                .setLore(lang.component("gui.stacking.mode_none"),
+                        lang.component("gui.stacking.mode_independent"),
+                        lang.component("gui.stacking.mode_refresh"),
+                        lang.component("gui.stacking.mode_upgrade"),
+                        lang.component("gui.common.click_cycle"))
                 .build());
 
         setItem(MAX_STACKS_SLOT, new ItemBuilder(Material.SLIME_BALL)
-                .setName(Component.text("Tope de stacks: " + current.maxStacks(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Solo aplica en REFRESH/UPGRADE", NamedTextColor.GRAY),
-                        Component.text("Click: +1 · Click derecho: -1", NamedTextColor.GRAY))
+                .setName(lang.component("gui.stacking.max_stacks_label", "value", current.maxStacks()))
+                .setLore(lang.component("gui.stacking.max_stacks_note"),
+                        lang.component("gui.editor.priority_hint"))
                 .build());
 
         setItem(UPGRADE_TO_SLOT, new ItemBuilder(Material.NETHER_STAR)
-                .setName(Component.text(
-                        "Se transforma en: " + (current.upgradeToEffectId() == null ? "(ninguno)"
-                                : current.upgradeToEffectId()),
-                        NamedTextColor.YELLOW))
-                .setLore(Component.text("Solo aplica en modo UPGRADE", NamedTextColor.GRAY),
-                        Component.text("Click para escribir el id del efecto", NamedTextColor.GRAY))
+                .setName(lang.component("gui.stacking.upgrade_label", "value",
+                        current.upgradeToEffectId() == null ? lang.raw("gui.common.none_label")
+                                : current.upgradeToEffectId()))
+                .setLore(lang.component("gui.stacking.upgrade_note"),
+                        lang.component("gui.stacking.upgrade_hint"))
                 .build());
 
         setItem(TAGS_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(Component.text("Tags: " + String.join(", ", current.tags()), NamedTextColor.YELLOW))
-                .setLore(Component.text("Usadas por inmunidades (ej. fire, curse, poison)", NamedTextColor.GRAY),
-                        Component.text("Click para escribir la lista separada por comas", NamedTextColor.GRAY))
+                .setName(lang.component("gui.stacking.tags_label", "value", String.join(", ", current.tags())))
+                .setLore(lang.component("gui.stacking.tags_note"),
+                        lang.component("gui.common.click_write_list"))
                 .build());
 
         setItem(CONFLICTS_SLOT, new ItemBuilder(Material.BARRIER)
-                .setName(Component.text("Conflictos: " + String.join(", ", current.conflicts()),
-                        NamedTextColor.YELLOW))
-                .setLore(Component.text("Ids de otros efectos que se remueven al aplicar este (y viceversa)",
-                        NamedTextColor.GRAY),
-                        Component.text("Click para escribir la lista separada por comas", NamedTextColor.GRAY))
+                .setName(lang.component("gui.stacking.conflicts_label", "value",
+                        String.join(", ", current.conflicts())))
+                .setLore(lang.component("gui.stacking.conflicts_note"),
+                        lang.component("gui.common.click_write_list"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back_button")));
     }
 
     @Override
@@ -147,7 +149,7 @@ public class EffectStackingEditorGUI extends InventoryGUI {
     }
 
     private void promptUpgradeTo() {
-        chatPromptManager.prompt(player, "Escribí el id del efecto al que se transforma (vacío = ninguno):",
+        chatPromptManager.prompt(player, "gui.stacking.prompt_upgrade",
                 value -> {
                     String upgradeTo = value.isBlank() ? null : value.trim().toLowerCase(Locale.ROOT);
                     replace(current.stackingMode(), current.maxStacks(), upgradeTo, current.tags(),
@@ -156,7 +158,7 @@ public class EffectStackingEditorGUI extends InventoryGUI {
     }
 
     private void promptTags() {
-        chatPromptManager.prompt(player, "Escribí los tags separados por comas (ej. fire,debuff):", value -> {
+        chatPromptManager.prompt(player, "gui.stacking.prompt_tags", value -> {
             Set<String> tags = value.isBlank() ? Set.of()
                     : new LinkedHashSet<>(java.util.List.of(value.toLowerCase(Locale.ROOT).split("\\s*,\\s*")));
             replace(current.stackingMode(), current.maxStacks(), current.upgradeToEffectId(), tags,
@@ -165,7 +167,7 @@ public class EffectStackingEditorGUI extends InventoryGUI {
     }
 
     private void promptConflicts() {
-        chatPromptManager.prompt(player, "Escribí los ids en conflicto separados por comas:", value -> {
+        chatPromptManager.prompt(player, "gui.stacking.prompt_conflicts", value -> {
             Set<String> conflicts = value.isBlank() ? Set.of()
                     : new LinkedHashSet<>(java.util.List.of(value.toLowerCase(Locale.ROOT).split("\\s*,\\s*")));
             replace(current.stackingMode(), current.maxStacks(), current.upgradeToEffectId(), current.tags(),

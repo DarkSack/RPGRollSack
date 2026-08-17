@@ -29,7 +29,7 @@ public class CustomStationBrowserGUI extends InventoryGUI {
 
     public CustomStationBrowserGUI(Player player, CustomStationManager stationManager,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text("Estaciones personalizadas", NamedTextColor.GOLD), SIZE);
+        super(player, Component.text(chatPromptManager.lang().raw("gui.station.browser_title"), NamedTextColor.GOLD), SIZE);
         this.stationManager = stationManager;
         this.chatPromptManager = chatPromptManager;
         this.onBack = onBack;
@@ -51,15 +51,15 @@ public class CustomStationBrowserGUI extends InventoryGUI {
 
             setItem(i, new ItemBuilder(parseMaterial(station.icon()))
                     .setName(Component.text(station.displayName(), NamedTextColor.YELLOW))
-                    .setLore(Component.text("id: " + station.id(), NamedTextColor.GRAY),
-                            Component.text("bloque: " + station.triggerBlockMaterial(), NamedTextColor.AQUA),
-                            Component.text("Click para editar", NamedTextColor.YELLOW))
+                    .setLore(Component.text(chatPromptManager.lang().raw("gui.common.id_lore", "id", station.id()), NamedTextColor.GRAY),
+                            Component.text(chatPromptManager.lang().raw("gui.station.block_lore", "block", station.triggerBlockMaterial()), NamedTextColor.AQUA),
+                            Component.text(chatPromptManager.lang().raw("gui.common.click_edit"), NamedTextColor.YELLOW))
                     .build());
         }
 
         setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Crear estación nueva", NamedTextColor.GREEN)).build());
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+                .setName(Component.text(chatPromptManager.lang().raw("gui.station.create_new"), NamedTextColor.GREEN)).build());
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(chatPromptManager.lang().raw("gui.common.back")));
     }
 
     @Override
@@ -84,18 +84,18 @@ public class CustomStationBrowserGUI extends InventoryGUI {
     }
 
     private void promptNew() {
-        chatPromptManager.prompt(player, "Escribí el id de la nueva estación:", value -> {
+        chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.station.prompt_new_id"), value -> {
 
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 
             if (stationManager.exists(id)) {
-                player.sendMessage(Component.text("Ya existe una estación con ese id.", NamedTextColor.RED));
+                player.sendMessage(Component.text(chatPromptManager.lang().raw("gui.station.already_exists"), NamedTextColor.RED));
                 reopen();
                 return;
             }
 
             stationManager.save(new CustomStation(id, id, "SMITHING_TABLE", "SMITHING_TABLE", 27,
-                    List.of(0, 1, 2, 3), 4, 8, false, id, Set.of()));
+                    List.of(0, 1, 2, 3), 4, 8, false, id, Set.of(), List.of(), 1, List.of(), 0, 0, id, false));
             reopen();
         });
     }

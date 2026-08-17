@@ -1,5 +1,7 @@
 package com.sack.rpgroll.mobs.gui.editor;
 
+import com.sack.rpgroll.common.lang.LangManager;
+
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.mobs.core.MobAction;
@@ -34,6 +36,7 @@ public class MobActionListEditorGUI extends InventoryGUI {
     private final List<MobAction> actions;
     private final ChatPromptManager chatPromptManager;
     private final Runnable onBack;
+    private final LangManager lang;
 
     public MobActionListEditorGUI(Player player, String title, List<MobAction> actions,
             ChatPromptManager chatPromptManager, Runnable onBack) {
@@ -41,6 +44,7 @@ public class MobActionListEditorGUI extends InventoryGUI {
         this.actions = actions;
         this.chatPromptManager = chatPromptManager;
         this.onBack = onBack;
+        this.lang = chatPromptManager.lang();
     }
 
     @Override
@@ -60,7 +64,7 @@ public class MobActionListEditorGUI extends InventoryGUI {
             for (var entry : action.params().entrySet()) {
                 lore.add(Component.text(entry.getKey() + "=" + entry.getValue(), NamedTextColor.GRAY));
             }
-            lore.add(Component.text("Shift-click para quitar", NamedTextColor.DARK_GRAY));
+            lore.add(lang.component("gui.common.shift_remove_dark"));
 
             setItem(i, new ItemBuilder(Material.COMMAND_BLOCK)
                     .setName(Component.text(action.type(), NamedTextColor.YELLOW))
@@ -69,12 +73,12 @@ public class MobActionListEditorGUI extends InventoryGUI {
         }
 
         setItem(ADD_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Agregar acción", NamedTextColor.GREEN))
-                .setLore(Component.text("TIPO clave=valor clave2=valor2", NamedTextColor.GRAY),
-                        Component.text("ej. PARTICLE particle=FLAME count=10", NamedTextColor.DARK_GRAY))
+                .setName(lang.component("gui.action_list.add"))
+                .setLore(lang.component("gui.action_list.add_hint1"),
+                        lang.component("gui.action_list.add_hint2"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back_button")));
     }
 
     @Override
@@ -102,12 +106,12 @@ public class MobActionListEditorGUI extends InventoryGUI {
     }
 
     private void promptAdd() {
-        chatPromptManager.prompt(player, "Escribí: TIPO clave=valor clave2=valor2 (ej. FIRE ticks=60):", value -> {
+        chatPromptManager.prompt(player, "gui.action_list.prompt_add", value -> {
 
             String[] tokens = value.trim().split("\\s+");
 
             if (tokens.length == 0 || tokens[0].isBlank()) {
-                player.sendMessage(Component.text("Formato inválido.", NamedTextColor.RED));
+                lang.send(player, "gui.common.invalid_format");
                 return;
             }
 

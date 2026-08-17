@@ -1,5 +1,6 @@
 package com.sack.rpgroll.fishing.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.fishing.core.BaitManager;
 import com.sack.rpgroll.fishing.core.FishSpecies;
 import com.sack.rpgroll.fishing.core.FishSpeciesManager;
@@ -26,14 +27,16 @@ public class SpeciesBrowserGUI extends InventoryGUI {
     private final FishSpeciesManager speciesManager;
     private final BaitManager baitManager;
     private final ChatPromptManager chatPromptManager;
+    private final LangManager lang;
     private List<FishSpecies> species;
 
     public SpeciesBrowserGUI(Player player, FishSpeciesManager speciesManager, BaitManager baitManager,
             ChatPromptManager chatPromptManager) {
-        super(player, Component.text("Especies de Pesca", NamedTextColor.GOLD), SIZE);
+        super(player, chatPromptManager.lang().component("gui.species.browser_title"), SIZE);
         this.speciesManager = speciesManager;
         this.baitManager = baitManager;
         this.chatPromptManager = chatPromptManager;
+        this.lang = chatPromptManager.lang();
         this.species = List.copyOf(speciesManager.getAll());
     }
 
@@ -53,17 +56,17 @@ public class SpeciesBrowserGUI extends InventoryGUI {
             setItem(i, new ItemBuilder(parseMaterial(fish.icon()))
                     .setName(Component.text((fish.legendary() ? "★ " : "") + fish.displayName(),
                             fish.legendary() ? NamedTextColor.GOLD : NamedTextColor.AQUA))
-                    .setLore(Component.text("id: " + fish.id(), NamedTextColor.GRAY),
+                    .setLore(lang.component("gui.common.id_label", "id", fish.id()),
                             Component.text(fish.category() + " · " + fish.rarity(), NamedTextColor.GRAY),
-                            Component.text("Click para editar", NamedTextColor.YELLOW))
+                            lang.component("gui.common.click_to_edit"))
                     .build());
         }
 
         setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Crear especie nueva", NamedTextColor.GREEN))
+                .setName(lang.component("gui.species.new_button"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back")));
     }
 
     @Override
@@ -89,12 +92,12 @@ public class SpeciesBrowserGUI extends InventoryGUI {
     }
 
     private void promptNew() {
-        chatPromptManager.prompt(player, "Escribí el id de la nueva especie:", value -> {
+        chatPromptManager.prompt(player, lang.raw("gui.species.prompt_new_id"), value -> {
 
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 
             if (speciesManager.exists(id)) {
-                player.sendMessage(Component.text("Ya existe una especie con ese id.", NamedTextColor.RED));
+                lang.send(player, "gui.species.already_exists");
                 reopen();
                 return;
             }

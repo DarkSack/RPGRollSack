@@ -1,5 +1,6 @@
 package com.sack.rpgroll.dungeons;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.common.resource.DirectoryCreator;
 import com.sack.rpgroll.common.resource.ResourceCopier;
 import com.sack.rpgroll.dungeons.command.DungeonAdminCommand;
@@ -42,9 +43,15 @@ public class DungeonsPlugin extends JavaPlugin {
     private StructureLibrary structureLibrary;
     private StructurePasteEngine structurePasteEngine;
     private StructureImportService structureImportService;
+    private LangManager langManager;
 
     @Override
     public void onEnable() {
+
+        saveDefaultConfig();
+
+        langManager = new LangManager(this, List.of("es", "en", "pt_BR"), "es");
+        langManager.reload(getConfig().getString("language", "es"));
 
         new DirectoryCreator(this).create(DIRECTORIES);
         new ResourceCopier(this).copyDirectories(DIRECTORIES);
@@ -64,9 +71,9 @@ public class DungeonsPlugin extends JavaPlugin {
         actionRegistry = new ActionRegistry(this);
         BuiltinDungeonActions.registerAll(actionRegistry, this);
 
-        engine = new DungeonEngine(this, dungeonManager, stateManager, rankingManager, actionRegistry);
+        engine = new DungeonEngine(this, dungeonManager, stateManager, rankingManager, actionRegistry, langManager);
 
-        chatPromptManager = new ChatPromptManager(this);
+        chatPromptManager = new ChatPromptManager(this, langManager);
         getServer().getPluginManager().registerEvents(chatPromptManager, this);
 
         getServer().getPluginManager().registerEvents(new DungeonMobDeathListener(engine), this);
@@ -77,7 +84,7 @@ public class DungeonsPlugin extends JavaPlugin {
 
         getServer().getScheduler().runTaskTimer(this, new DungeonSessionTask(engine), TICK_INTERVAL, TICK_INTERVAL);
 
-        registerCommand("dungeon", new DungeonCommand(dungeonManager, teamManager, engine));
+        registerCommand("dungeon", new DungeonCommand(dungeonManager, teamManager, engine, langManager));
         registerCommand("dungeonadmin", new DungeonAdminCommand(dungeonManager, engine, chatPromptManager, this,
                 structureLibrary, structurePasteEngine, structureImportService));
 
@@ -155,6 +162,10 @@ public class DungeonsPlugin extends JavaPlugin {
 
     public StructurePasteEngine getStructurePasteEngine() {
         return structurePasteEngine;
+    }
+
+    public LangManager getLangManager() {
+        return langManager;
     }
 
 }

@@ -1,5 +1,6 @@
 package com.sack.rpgroll.gui.admin;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.gameplay.skill.Skill;
@@ -23,12 +24,14 @@ public class SkillBrowserGUI extends InventoryGUI {
 
     private final SkillManager skillManager;
     private final ChatPromptManager chatPromptManager;
+    private final LangManager lang;
     private List<Skill> skills;
 
     public SkillBrowserGUI(Player player, SkillManager skillManager, ChatPromptManager chatPromptManager) {
-        super(player, Component.text("Skills RPGRoll", NamedTextColor.GOLD), SIZE);
+        super(player, chatPromptManager.lang().component("skill_browser_gui.title"), SIZE);
         this.skillManager = skillManager;
         this.chatPromptManager = chatPromptManager;
+        this.lang = chatPromptManager.lang();
         this.skills = List.copyOf(skillManager.getAll());
     }
 
@@ -47,16 +50,16 @@ public class SkillBrowserGUI extends InventoryGUI {
 
             setItem(i, new ItemBuilder(Material.BLAZE_POWDER)
                     .setName(Component.text(skill.id(), NamedTextColor.YELLOW))
-                    .setLore(Component.text("Nivel " + skill.requiredLevel(), NamedTextColor.GRAY),
-                            Component.text("Click para editar", NamedTextColor.YELLOW))
+                    .setLore(lang.component("skill_browser_gui.level", "level", skill.requiredLevel()),
+                            lang.component("skill_browser_gui.click_to_edit"))
                     .build());
         }
 
         setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Crear skill nueva", NamedTextColor.GREEN))
+                .setName(lang.component("skill_browser_gui.create_new"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Cerrar"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("skill_browser_gui.close_button")));
     }
 
     @Override
@@ -66,7 +69,7 @@ public class SkillBrowserGUI extends InventoryGUI {
         int slot = event.getSlot();
 
         if (slot < skills.size() && slot < 36) {
-            new SkillEditorGUI(player, skills.get(slot), skillManager, chatPromptManager, this::reopen).open();
+            new SkillEditorGUI(player, skills.get(slot), skillManager, chatPromptManager, lang, this::reopen).open();
             return;
         }
 
@@ -81,12 +84,12 @@ public class SkillBrowserGUI extends InventoryGUI {
     }
 
     private void promptNew() {
-        chatPromptManager.prompt(player, "Escribí el id de la nueva skill:", value -> {
+        chatPromptManager.prompt(player, lang.raw("skill_browser_gui.prompt_new"), value -> {
 
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 
             if (skillManager.exists(id)) {
-                player.sendMessage(Component.text("Ya existe una skill con ese id.", NamedTextColor.RED));
+                lang.send(player, "skill_browser_gui.already_exists");
                 reopen();
                 return;
             }

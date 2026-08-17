@@ -1,10 +1,8 @@
 package com.sack.rpgroll.guilds.team.ping;
 
+import com.sack.rpgroll.guilds.GuildsAPI;
 import com.sack.rpgroll.guilds.team.Team;
 import com.sack.rpgroll.guilds.team.TeamManager;
-
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -35,7 +33,7 @@ public class TeamPingManager {
         Team team = teamManager.getTeam(creator.getUniqueId()).orElse(null);
 
         if (team == null) {
-            creator.sendMessage(Component.text("No estás en ningún equipo.", NamedTextColor.RED));
+            GuildsAPI.getLangManager().send(creator, "team.not_in_team");
             return;
         }
 
@@ -54,8 +52,10 @@ public class TeamPingManager {
             member.playSound(member.getLocation(), Sound.BLOCK_NOTE_BLOCK_BELL, 1f, 1.5f);
 
             if (!memberId.equals(creator.getUniqueId())) {
-                member.sendMessage(Component.text("📍 " + creator.getName() + " marcó " + type.displayName().toLowerCase()
-                        + (label != null && !label.isBlank() ? " (" + label + ")" : ""), type.color()));
+                var lang = GuildsAPI.getLangManager();
+                String key = label != null && !label.isBlank() ? "team.ping.notify_labeled" : "team.ping.notify";
+                lang.send(member, key, "player", creator.getName(),
+                        "type", type.displayName(lang).toLowerCase(java.util.Locale.ROOT), "label", label);
             }
         }
     }

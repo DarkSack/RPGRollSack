@@ -1,5 +1,6 @@
 package com.sack.rpgroll.economy.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.economy.auction.AuctionListing;
 import com.sack.rpgroll.economy.auction.AuctionManager;
 import com.sack.rpgroll.economy.currency.CurrencyManager;
@@ -30,15 +31,17 @@ public class AuctionHouseGUI extends InventoryGUI {
     private final CurrencyManager currencyManager;
     private final ChatPromptManager chatPromptManager;
     private final long defaultDurationMillis;
+    private final LangManager lang;
     private List<AuctionListing> listings;
 
     public AuctionHouseGUI(Player player, AuctionManager auctionManager, CurrencyManager currencyManager,
             ChatPromptManager chatPromptManager, long defaultDurationMillis) {
-        super(player, Component.text("Casa de Subastas", NamedTextColor.GOLD), SIZE);
+        super(player, Component.text(chatPromptManager.lang().raw("auction.title"), NamedTextColor.GOLD), SIZE);
         this.auctionManager = auctionManager;
         this.currencyManager = currencyManager;
         this.chatPromptManager = chatPromptManager;
         this.defaultDurationMillis = defaultDurationMillis;
+        this.lang = chatPromptManager.lang();
         this.listings = auctionManager.active();
     }
 
@@ -60,21 +63,21 @@ public class AuctionHouseGUI extends InventoryGUI {
 
             setItem(i, new ItemBuilder(display.getType())
                     .setName(Component.text(display.getType().name(), NamedTextColor.YELLOW))
-                    .setLore(Component.text("puja actual: " + currency.format(listing.currentBid()), NamedTextColor.GOLD),
+                    .setLore(lang.component("auction.lore_current_bid", "value", currency.format(listing.currentBid())),
                             listing.hasBuyNow()
-                                    ? Component.text("compra ya: " + currency.format(listing.buyNowPrice()), NamedTextColor.GREEN)
-                                    : Component.text("sin compra ya", NamedTextColor.GRAY),
-                            Component.text("Click: pujar · Shift-click: comprar ya", NamedTextColor.AQUA))
+                                    ? lang.component("auction.lore_buy_now", "value", currency.format(listing.buyNowPrice()))
+                                    : lang.component("auction.lore_no_buy_now"),
+                            lang.component("auction.click_hint"))
                     .build());
         }
 
         setItem(SELL_HELD_SLOT, new ItemBuilder(Material.HOPPER)
-                .setName(Component.text("Publicar ítem en mano", NamedTextColor.GREEN)).build());
+                .setName(lang.component("auction.publish_button")).build());
         setItem(COLLECT_SLOT, new ItemBuilder(Material.CHEST)
-                .setName(Component.text("Retirar mis ítems/premios", NamedTextColor.YELLOW))
-                .setLore(Component.text(auctionManager.collectible(player.getUniqueId()).size() + " listo(s)", NamedTextColor.GRAY))
+                .setName(lang.component("auction.collect_button"))
+                .setLore(lang.component("auction.collect_ready", "count", auctionManager.collectible(player.getUniqueId()).size()))
                 .build());
-        setItem(CLOSE_SLOT, ItemBuilder.createCancelButton("Cerrar"));
+        setItem(CLOSE_SLOT, ItemBuilder.createCancelButton(lang.raw("common.close")));
     }
 
     @Override
@@ -90,7 +93,7 @@ public class AuctionHouseGUI extends InventoryGUI {
 
             if (buyNow) {
                 if (!listing.hasBuyNow()) {
-                    player.sendMessage(Component.text("Esta subasta no tiene compra inmediata.", NamedTextColor.RED));
+                    lang.send(player, "auction.no_buy_now");
                     return;
                 }
                 EconomyResult result = auctionManager.buyNow(listing, player.getUniqueId());
@@ -100,12 +103,12 @@ public class AuctionHouseGUI extends InventoryGUI {
             }
 
             double minBid = listing.currentBid() + Math.max(1, listing.currentBid() * 0.05);
-            chatPromptManager.prompt(player, "¿Cuánto querés pujar? (mínimo " + String.format("%.2f", minBid) + ")", value -> {
+            chatPromptManager.prompt(player, lang.raw("auction.prompt_bid", "min", String.format("%.2f", minBid)), value -> {
                 try {
                     double amount = Double.parseDouble(value.trim());
                     notify(auctionManager.bid(listing, player.getUniqueId(), amount));
                 } catch (NumberFormatException e) {
-                    player.sendMessage(Component.text("Monto inválido.", NamedTextColor.RED));
+                    lang.send(player, "common.invalid_money");
                 }
                 reopen();
             });
@@ -116,21 +119,21 @@ public class AuctionHouseGUI extends InventoryGUI {
 
             ItemStack held = player.getInventory().getItemInMainHand();
             if (held.getType().isAir()) {
-                player.sendMessage(Component.text("Tenés que tener un ítem en la mano.", NamedTextColor.RED));
+                lang.send(player, "common.need_item_in_hand");
                 return;
             }
 
-            chatPromptManager.prompt(player, "Escribí el precio inicial de la subasta:", startValue -> {
+            chatPromptManager.prompt(player, lang.raw("auction.prompt_start_price"), startValue -> {
 
                 double start;
                 try {
                     start = Double.parseDouble(startValue.trim());
                 } catch (NumberFormatException e) {
-                    player.sendMessage(Component.text("Precio inválido.", NamedTextColor.RED));
+                    lang.send(player, "common.invalid_price");
                     return;
                 }
 
-                chatPromptManager.prompt(player, "Escribí el precio de compra inmediata (0 = ninguno):", buyNowValue -> {
+                chatPromptManager.prompt(player, lang.raw("auction.prompt_buy_now_price"), buyNowValue -> {
 
                     double buyNow;
                     try {
@@ -142,7 +145,7 @@ public class AuctionHouseGUI extends InventoryGUI {
                     auctionManager.create(player.getUniqueId(), held, start, buyNow <= 0 ? -1 : buyNow,
                             currencyManager.defaultCurrency().id(), defaultDurationMillis);
                     held.setAmount(0);
-                    player.sendMessage(Component.text("✔ Subasta publicada.", NamedTextColor.GREEN));
+                    lang.send(player, "auction.publish_success");
                     reopen();
                 });
             });
@@ -156,7 +159,7 @@ public class AuctionHouseGUI extends InventoryGUI {
                 auctionManager.finalizeCollection(listing);
             }
 
-            player.sendMessage(Component.text("✔ Retiraste tus ítems/premios pendientes.", NamedTextColor.GREEN));
+            lang.send(player, "auction.collect_success");
             reopen();
             return;
         }
@@ -168,9 +171,9 @@ public class AuctionHouseGUI extends InventoryGUI {
 
     private void notify(EconomyResult result) {
         if (result == EconomyResult.SUCCESS) {
-            player.sendMessage(Component.text("✔ Listo.", NamedTextColor.GREEN));
+            lang.send(player, "common.success");
         } else {
-            player.sendMessage(Component.text("✘ " + result, NamedTextColor.RED));
+            lang.send(player, "common.fail_result", "result", result);
         }
     }
 

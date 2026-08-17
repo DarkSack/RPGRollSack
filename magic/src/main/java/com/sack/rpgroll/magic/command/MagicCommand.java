@@ -1,5 +1,6 @@
 package com.sack.rpgroll.magic.command;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.magic.core.RuneManager;
 import com.sack.rpgroll.magic.core.Spell;
 import com.sack.rpgroll.magic.core.SpellManager;
@@ -38,6 +39,7 @@ public class MagicCommand implements CommandExecutor, TabCompleter {
     private final SpellbookManager spellbookManager;
     private final SpellCastEngine engine;
     private final ChatPromptManager chatPromptManager;
+    private final LangManager lang;
 
     public MagicCommand(SpellManager spellManager, RuneManager runeManager, SpellbookManager spellbookManager,
             SpellCastEngine engine, ChatPromptManager chatPromptManager) {
@@ -46,13 +48,14 @@ public class MagicCommand implements CommandExecutor, TabCompleter {
         this.spellbookManager = spellbookManager;
         this.engine = engine;
         this.chatPromptManager = chatPromptManager;
+        this.lang = chatPromptManager.lang();
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
         if (!(sender instanceof Player player)) {
-            sender.sendMessage("Solo jugadores pueden usar este comando.");
+            lang.send(sender, "common.players_only");
             return true;
         }
 
@@ -74,38 +77,37 @@ public class MagicCommand implements CommandExecutor, TabCompleter {
     }
 
     private void sendUsage(Player player) {
-        player.sendMessage(Component.text(
-                "Uso: /magic <spellbook|select <id>|cast <id>|cooldowns>", NamedTextColor.RED));
+        lang.send(player, "command.player.usage");
     }
 
     private void handleSelect(Player player, String[] args) {
 
         if (args.length < 2) {
-            player.sendMessage(Component.text("Uso: /magic select <id>", NamedTextColor.RED));
+            lang.send(player, "command.player.usage_select");
             return;
         }
 
         PlayerSpellbook spellbook = spellbookManager.getOrLoad(player);
 
         if (!spellbook.select(args[1])) {
-            player.sendMessage(Component.text("No sabés ese hechizo todavía.", NamedTextColor.RED));
+            lang.send(player, "command.player.dont_know_spell");
             return;
         }
 
-        player.sendMessage(Component.text("✔ Hechizo seleccionado: " + args[1], NamedTextColor.GREEN));
+        lang.send(player, "command.player.selected", "id", args[1]);
     }
 
     private void handleCast(Player player, String[] args) {
 
         if (args.length < 2) {
-            player.sendMessage(Component.text("Uso: /magic cast <id>", NamedTextColor.RED));
+            lang.send(player, "command.player.usage_cast");
             return;
         }
 
         var spellOpt = spellManager.get(args[1]);
 
         if (spellOpt.isEmpty()) {
-            player.sendMessage(Component.text("No existe un hechizo con id: " + args[1], NamedTextColor.RED));
+            lang.send(player, "command.player.unknown_spell", "id", args[1]);
             return;
         }
 
@@ -127,11 +129,11 @@ public class MagicCommand implements CommandExecutor, TabCompleter {
                 .toList();
 
         if (onCooldown.isEmpty()) {
-            player.sendMessage(Component.text("No tenés ningún hechizo en cooldown.", NamedTextColor.GRAY));
+            lang.send(player, "command.player.no_cooldowns");
             return;
         }
 
-        player.sendMessage(Component.text("Cooldowns activos:", NamedTextColor.GOLD));
+        lang.send(player, "command.player.cooldowns_header");
 
         for (var entry : onCooldown) {
 
@@ -139,8 +141,8 @@ public class MagicCommand implements CommandExecutor, TabCompleter {
             String displayName = spellManager.get(spellId).map(Spell::displayName).orElse(spellId);
             double secondsLeft = (entry.getValue() - now) / 1000.0;
 
-            player.sendMessage(Component.text(
-                    String.format(Locale.ROOT, "• %s: %.1fs", displayName, secondsLeft), NamedTextColor.WHITE));
+            lang.send(player, "command.player.cooldown_line", "name", displayName,
+                    "seconds", String.format(Locale.ROOT, "%.1f", secondsLeft));
         }
     }
 

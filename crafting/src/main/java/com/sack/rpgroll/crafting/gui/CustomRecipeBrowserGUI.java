@@ -30,7 +30,7 @@ public class CustomRecipeBrowserGUI extends InventoryGUI {
 
     public CustomRecipeBrowserGUI(Player player, CustomRecipeManager recipeManager, ChatPromptManager chatPromptManager,
             Runnable onBack) {
-        super(player, Component.text("Recetas personalizadas", NamedTextColor.GOLD), SIZE);
+        super(player, Component.text(chatPromptManager.lang().raw("gui.recipe.browser_title"), NamedTextColor.GOLD), SIZE);
         this.recipeManager = recipeManager;
         this.chatPromptManager = chatPromptManager;
         this.onBack = onBack;
@@ -52,15 +52,15 @@ public class CustomRecipeBrowserGUI extends InventoryGUI {
 
             setItem(i, new ItemBuilder(parseMaterial(recipe.icon()))
                     .setName(Component.text(recipe.displayName(), NamedTextColor.YELLOW))
-                    .setLore(Component.text("id: " + recipe.id(), NamedTextColor.GRAY),
-                            Component.text("estación: " + recipe.stationId(), NamedTextColor.AQUA),
-                            Component.text("Click para editar", NamedTextColor.YELLOW))
+                    .setLore(Component.text(chatPromptManager.lang().raw("gui.common.id_lore", "id", recipe.id()), NamedTextColor.GRAY),
+                            Component.text(chatPromptManager.lang().raw("gui.recipe.station_lore", "station", recipe.stationId()), NamedTextColor.AQUA),
+                            Component.text(chatPromptManager.lang().raw("gui.common.click_edit"), NamedTextColor.YELLOW))
                     .build());
         }
 
         setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Crear receta nueva", NamedTextColor.GREEN)).build());
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+                .setName(Component.text(chatPromptManager.lang().raw("gui.recipe.create_new"), NamedTextColor.GREEN)).build());
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(chatPromptManager.lang().raw("gui.common.back")));
     }
 
     @Override
@@ -85,17 +85,17 @@ public class CustomRecipeBrowserGUI extends InventoryGUI {
     }
 
     private void promptNew() {
-        chatPromptManager.prompt(player, "Escribí el id de la nueva receta:", value -> {
+        chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.recipe.prompt_new_id"), value -> {
 
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 
             if (recipeManager.exists(id)) {
-                player.sendMessage(Component.text("Ya existe una receta con ese id.", NamedTextColor.RED));
+                player.sendMessage(Component.text(chatPromptManager.lang().raw("gui.recipe.already_exists"), NamedTextColor.RED));
                 reopen();
                 return;
             }
 
-            chatPromptManager.prompt(player, "Escribí el id de la estación donde se procesa:", stationId -> {
+            chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.recipe.prompt_new_station_id"), stationId -> {
                 recipeManager.save(new CustomRecipe(id, id, "CRAFTING_TABLE", stationId.trim(), List.of(),
                         new RecipeResult(RecipeResultType.MATERIAL, "PAPER", 1), List.of(), 100, 0, 0, null, 0, -1,
                         false));

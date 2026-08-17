@@ -1,5 +1,6 @@
 package com.sack.rpgroll.effects.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.effects.core.EffectComponent;
 import com.sack.rpgroll.effects.core.EffectComponentType;
 import com.sack.rpgroll.effects.core.EffectDefinition;
@@ -31,15 +32,18 @@ public class EffectComponentsEditorGUI extends InventoryGUI {
 
     private final EffectManager effectManager;
     private final ChatPromptManager chatPromptManager;
+    private final LangManager lang;
     private final Runnable onBack;
     private EffectDefinition current;
 
     public EffectComponentsEditorGUI(Player player, EffectDefinition effect, EffectManager effectManager,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text("Componentes: " + effect.id(), NamedTextColor.GOLD), SIZE);
+        super(player, Component.text(chatPromptManager.lang().raw("gui.components.title", "id", effect.id()),
+                NamedTextColor.GOLD), SIZE);
         this.current = effect;
         this.effectManager = effectManager;
         this.chatPromptManager = chatPromptManager;
+        this.lang = chatPromptManager.lang();
         this.onBack = onBack;
     }
 
@@ -68,23 +72,22 @@ public class EffectComponentsEditorGUI extends InventoryGUI {
             EffectComponent component = components.get(i);
 
             setItem(i, new ItemBuilder(iconFor(component.type()))
-                    .setName(Component.text("#" + (i + 1) + " " + component.type(), NamedTextColor.AQUA))
-                    .setLore(Component.text("Trigger: " + component.trigger(), NamedTextColor.GRAY),
+                    .setName(lang.component("gui.components.entry_label", "index", i + 1, "type", component.type()))
+                    .setLore(lang.component("gui.components.trigger_label", "trigger", component.trigger()),
                             Component.text(component.params().toString(), NamedTextColor.DARK_GRAY),
-                            Component.text("Shift-click para quitar", NamedTextColor.RED))
+                            lang.component("gui.common.shift_remove"))
                     .build());
         }
 
         setItem(ADD_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Agregar componente", NamedTextColor.GREEN))
-                .setLore(Component.text("TIPO TRIGGER clave=valor,clave2=valor2", NamedTextColor.GRAY),
-                        Component.text("ej. PERIODIC_DAMAGE ON_SECOND amount=2,amount-per-stack=1",
-                                NamedTextColor.DARK_GRAY),
-                        Component.text("ej. VISUAL ON_APPLY effect=level_up", NamedTextColor.DARK_GRAY),
-                        Component.text("tipos: " + typeList(), NamedTextColor.DARK_GRAY))
+                .setName(lang.component("gui.components.add"))
+                .setLore(lang.component("gui.components.add_hint1"),
+                        lang.component("gui.components.add_hint2"),
+                        lang.component("gui.components.add_hint3"),
+                        lang.component("gui.components.add_hint4", "types", typeList()))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back_button")));
     }
 
     private Material iconFor(EffectComponentType type) {
@@ -141,13 +144,12 @@ public class EffectComponentsEditorGUI extends InventoryGUI {
     }
 
     private void promptAdd() {
-        chatPromptManager.prompt(player, "Escribí: TIPO TRIGGER clave=valor,clave2=valor2", value -> {
+        chatPromptManager.prompt(player, "gui.components.prompt_add", value -> {
 
             String[] parts = value.trim().split("\\s+", 3);
 
             if (parts.length < 2) {
-                player.sendMessage(Component.text("Formato inválido — hacen falta al menos TIPO y TRIGGER.",
-                        NamedTextColor.RED));
+                lang.send(player, "gui.components.invalid_format");
                 return;
             }
 
@@ -156,7 +158,7 @@ public class EffectComponentsEditorGUI extends InventoryGUI {
             try {
                 type = EffectComponentType.valueOf(parts[0].trim().toUpperCase(Locale.ROOT));
             } catch (IllegalArgumentException e) {
-                player.sendMessage(Component.text("Tipo inválido: " + parts[0], NamedTextColor.RED));
+                lang.send(player, "gui.common.invalid_type", "value", parts[0]);
                 return;
             }
 
@@ -165,7 +167,7 @@ public class EffectComponentsEditorGUI extends InventoryGUI {
             try {
                 trigger = EffectTriggerType.valueOf(parts[1].trim().toUpperCase(Locale.ROOT));
             } catch (IllegalArgumentException e) {
-                player.sendMessage(Component.text("Trigger inválido: " + parts[1], NamedTextColor.RED));
+                lang.send(player, "gui.components.invalid_trigger", "value", parts[1]);
                 return;
             }
 

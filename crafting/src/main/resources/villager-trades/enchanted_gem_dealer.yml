@@ -1,0 +1,18 @@
+id: enchanted_gem_dealer
+display-name: "Gemas Encantadas"
+icon: EMERALD
+costs:
+  - type: MATERIAL
+    value: EMERALD
+    amount: 12
+result:
+  type: ITEM_ID
+  value: enchanted_gem
+  amount: 1
+max-uses: 8
+villager-experience: 5
+rewards-experience: true
+conditions: []
+xp-amount: 0
+economy-cost: 0
+quality-enabled: false

@@ -1,12 +1,12 @@
 package com.sack.rpgroll.mobs.gui.editor;
 
+import com.sack.rpgroll.common.lang.LangManager;
+
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.mobs.core.MobBossBarDef;
 
 import net.kyori.adventure.bossbar.BossBar;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -26,11 +26,14 @@ public class BossBarEditorGUI extends InventoryGUI {
 
     private final MobEditorSession session;
     private final Runnable onBack;
+    private final LangManager lang;
 
     public BossBarEditorGUI(Player player, MobEditorSession session, Runnable onBack) {
-        super(player, Component.text("BossBar: " + session.original.id(), NamedTextColor.GOLD), SIZE);
+        super(player, session.chatPromptManager.lang().component("gui.bossbar.title", "id",
+                session.original.id()), SIZE);
         this.session = session;
         this.onBack = onBack;
+        this.lang = session.chatPromptManager.lang();
     }
 
     @Override
@@ -45,27 +48,27 @@ public class BossBarEditorGUI extends InventoryGUI {
         MobBossBarDef bossBar = session.bossBar;
 
         setItem(ENABLED_SLOT, new ItemBuilder(bossBar.enabled() ? Material.DRAGON_HEAD : Material.SKELETON_SKULL)
-                .setName(Component.text("Habilitada: " + bossBar.enabled(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para alternar", NamedTextColor.GRAY))
+                .setName(lang.component("gui.bossbar.enabled_label", "value", bossBar.enabled()))
+                .setLore(lang.component("gui.common.click_toggle"))
                 .build());
 
         setItem(COLOR_SLOT, new ItemBuilder(Material.RED_DYE)
-                .setName(Component.text("Color: " + bossBar.color(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para pasar al siguiente", NamedTextColor.GRAY))
+                .setName(lang.component("gui.bossbar.color_label", "value", bossBar.color()))
+                .setLore(lang.component("gui.common.click_next"))
                 .build());
 
         setItem(STYLE_SLOT, new ItemBuilder(Material.STRING)
-                .setName(Component.text("Estilo: " + bossBar.style(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para pasar al siguiente", NamedTextColor.GRAY))
+                .setName(lang.component("gui.bossbar.style_label", "value", bossBar.style()))
+                .setLore(lang.component("gui.common.click_next"))
                 .build());
 
         setItem(TITLE_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(Component.text("Título: "
-                        + (bossBar.title() != null ? bossBar.title() : "(nombre del mob)"), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click: escribir · Shift-click: quitar", NamedTextColor.GRAY))
+                .setName(lang.component("gui.bossbar.title_label", "value",
+                        bossBar.title() != null ? bossBar.title() : lang.raw("gui.bossbar.title_default")))
+                .setLore(lang.component("gui.common.click_write_shift_remove"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back_button")));
     }
 
     @Override
@@ -102,7 +105,7 @@ public class BossBarEditorGUI extends InventoryGUI {
                 build();
                 return;
             }
-            session.chatPromptManager.prompt(player, "Escribí el nuevo título:", value -> {
+            session.chatPromptManager.prompt(player, "gui.bossbar.prompt_title", value -> {
                 MobBossBarDef current = session.bossBar;
                 session.bossBar = new MobBossBarDef(current.enabled(), current.color(), current.style(), value);
                 build();

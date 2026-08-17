@@ -1,5 +1,6 @@
 package com.sack.rpgroll.items.gui.editor;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.items.gui.ItemMaterialTraits;
@@ -47,11 +48,13 @@ public class DisplayEditorGUI extends InventoryGUI {
     private static final int BACK_SLOT = 49;
 
     private final EditorSession session;
+    private final LangManager lang;
     private final Runnable onBack;
 
     public DisplayEditorGUI(Player player, EditorSession session, Runnable onBack) {
-        super(player, Component.text("Apariencia: " + session.original.id(), NamedTextColor.GOLD), SIZE);
+        super(player, session.chatPromptManager.lang().component("editor.display.title", "id", session.original.id()), SIZE);
         this.session = session;
+        this.lang = session.chatPromptManager.lang();
         this.onBack = onBack;
     }
 
@@ -77,53 +80,56 @@ public class DisplayEditorGUI extends InventoryGUI {
         setItem(PREVIEW_SLOT, session.preview());
 
         setItem(MATERIAL_SLOT, new ItemBuilder(session.material)
-                .setName(Component.text("Material: " + session.material.name(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para elegir", NamedTextColor.GRAY))
+                .setName(lang.component("editor.display.material_label", "material", session.material.name()))
+                .setLore(lang.component("editor.display.click_to_choose"))
                 .build());
 
         setItem(RENAME_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(Component.text("Renombrar", NamedTextColor.YELLOW))
-                .setLore(Component.text("Actual: " + session.displayName, NamedTextColor.GRAY))
+                .setName(lang.component("editor.display.rename"))
+                .setLore(lang.component("editor.display.current", "value", session.displayName))
                 .build());
 
         setItem(LORE_SLOT, new ItemBuilder(Material.WRITABLE_BOOK)
-                .setName(Component.text("Editar lore", NamedTextColor.YELLOW))
+                .setName(lang.component("editor.display.edit_lore"))
                 .setLore(loreSummary())
                 .build());
 
         setItem(CMD_SLOT, new ItemBuilder(Material.PAPER)
-                .setName(Component.text("Custom Model Data", NamedTextColor.YELLOW))
-                .setLore(Component.text(session.customModelData == null ? "(sin definir)"
+                .setName(lang.component("editor.display.cmd_label"))
+                .setLore(Component.text(session.customModelData == null ? lang.raw("editor.display.cmd_undefined")
                         : String.valueOf(session.customModelData), NamedTextColor.GRAY),
-                        Component.text("Click: definir · Shift-click: borrar", NamedTextColor.DARK_GRAY))
+                        lang.component("editor.display.cmd_hint"))
                 .build());
 
         setItem(RARITY_SLOT, new ItemBuilder(Material.NETHER_STAR)
-                .setName(Component.text("Rareza: " + session.rarityId, NamedTextColor.LIGHT_PURPLE))
-                .setLore(Component.text("Click para elegir", NamedTextColor.GRAY))
+                .setName(lang.component("editor.display.rarity_label", "rarity", session.rarityId))
+                .setLore(lang.component("editor.display.click_to_choose"))
                 .build());
 
         setItem(GLOW_SLOT, new ItemBuilder(glowMaterial())
-                .setName(Component.text("Brillo: " + glowLabel(), NamedTextColor.AQUA))
-                .setLore(Component.text("Click para ciclar (heredar / sí / no)", NamedTextColor.GRAY))
+                .setName(lang.component("editor.display.glow_label", "value", glowLabel()))
+                .setLore(lang.component("editor.display.glow_hint"))
                 .build());
 
         setItem(UNBREAKABLE_SLOT, new ItemBuilder(session.unbreakable ? Material.NETHERITE_INGOT : Material.IRON_INGOT)
-                .setName(Component.text("Irrompible: " + (session.unbreakable ? "SI" : "NO"), NamedTextColor.AQUA))
+                .setName(lang.component("editor.display.unbreakable_label",
+                        "value", session.unbreakable ? "SI" : "NO"))
                 .build());
 
         boolean hasExtras = ItemMaterialTraits.hasAnyMaterialExtras(session.material);
 
         setItem(MATERIAL_EXTRAS_SLOT, new ItemBuilder(hasExtras ? Material.CHEST : Material.BARRIER)
-                .setName(Component.text("Extras de material", hasExtras ? NamedTextColor.YELLOW : NamedTextColor.GRAY))
+                .setName(lang.component("editor.display.material_extras")
+                        .color(hasExtras ? NamedTextColor.YELLOW : NamedTextColor.GRAY))
                 .setLore(hasExtras
-                        ? Component.text("Color / textura de cabeza / trim, según aplique", NamedTextColor.GRAY)
-                        : Component.text(session.material.name() + " no admite ninguno de estos", NamedTextColor.DARK_GRAY))
+                        ? lang.component("editor.display.material_extras_desc")
+                        : lang.component("editor.display.material_extras_unsupported",
+                                "material", session.material.name()))
                 .build());
 
         setItem(FLAGS_LABEL_SLOT, new ItemBuilder(Material.LIGHT_GRAY_STAINED_GLASS_PANE)
-                .setName(Component.text("Flags de tooltip", NamedTextColor.GOLD))
-                .setLore(Component.text("Qué oculta el tooltip nativo del ítem", NamedTextColor.GRAY))
+                .setName(lang.component("editor.display.flags_label"))
+                .setLore(lang.component("editor.display.flags_desc"))
                 .build());
 
         for (int i = 0; i < TOGGLEABLE_FLAGS.length; i++) {
@@ -136,7 +142,7 @@ public class DisplayEditorGUI extends InventoryGUI {
                     .build());
         }
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("editor.common.back")));
     }
 
     private List<Component> loreSummary() {
@@ -144,14 +150,14 @@ public class DisplayEditorGUI extends InventoryGUI {
         List<Component> lore = new ArrayList<>();
 
         if (session.lore.isEmpty()) {
-            lore.add(Component.text("(sin lore)", NamedTextColor.DARK_GRAY));
+            lore.add(lang.component("editor.display.no_lore"));
         } else {
             for (String line : session.lore) {
                 lore.add(Component.text(line, NamedTextColor.GRAY));
             }
         }
 
-        lore.add(Component.text("Click para reemplazar (usa | para saltos)", NamedTextColor.DARK_GRAY));
+        lore.add(lang.component("editor.display.lore_click_replace"));
 
         return lore;
     }
@@ -165,7 +171,7 @@ public class DisplayEditorGUI extends InventoryGUI {
 
     private String glowLabel() {
         if (session.glowOverride == null) {
-            return "Heredar de rareza";
+            return lang.raw("editor.display.glow_inherit");
         }
         return session.glowOverride ? "SI" : "NO";
     }
@@ -216,7 +222,7 @@ public class DisplayEditorGUI extends InventoryGUI {
     }
 
     private void openRarityPicker() {
-        new RarityPickerGUI(player, session.rarityManager, rarityId -> {
+        new RarityPickerGUI(player, session.rarityManager, lang, rarityId -> {
             session.rarityId = rarityId;
             reopen();
         }, this::reopen).open();
@@ -227,14 +233,14 @@ public class DisplayEditorGUI extends InventoryGUI {
     }
 
     private void promptRename() {
-        session.chatPromptManager.prompt(player, "Escribí el nuevo nombre (usa & para colores):", value -> {
+        session.chatPromptManager.prompt(player, lang.raw("editor.display.prompt_rename"), value -> {
             session.displayName = value;
             build();
         });
     }
 
     private void promptLore() {
-        session.chatPromptManager.prompt(player, "Escribí la lore completa (usa | para separar líneas):", value -> {
+        session.chatPromptManager.prompt(player, lang.raw("editor.display.prompt_lore"), value -> {
             session.lore = new ArrayList<>(List.of(value.split("\\|")));
             build();
         });
@@ -248,11 +254,11 @@ public class DisplayEditorGUI extends InventoryGUI {
             return;
         }
 
-        session.chatPromptManager.prompt(player, "Escribí el número de Custom Model Data:", value -> {
+        session.chatPromptManager.prompt(player, lang.raw("editor.display.prompt_cmd"), value -> {
             try {
                 session.customModelData = Integer.parseInt(value.trim());
             } catch (NumberFormatException e) {
-                player.sendMessage(Component.text("Número inválido.", NamedTextColor.RED));
+                lang.send(player, "editor.common.invalid_number");
                 return;
             }
             build();
@@ -275,8 +281,7 @@ public class DisplayEditorGUI extends InventoryGUI {
     private void openMaterialExtras() {
 
         if (!ItemMaterialTraits.hasAnyMaterialExtras(session.material)) {
-            player.sendMessage(Component.text(
-                    session.material.name() + " no admite color, textura de cabeza ni trim.", NamedTextColor.RED));
+            lang.send(player, "editor.display.material_extras_error", "material", session.material.name());
             return;
         }
 

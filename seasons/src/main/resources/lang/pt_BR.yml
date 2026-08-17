@@ -1,0 +1,187 @@
+common:
+  no_permission: "&cVocê não tem permissão para usar este comando."
+
+command:
+  player:
+    usage: "&cUso: /seasons info [mundo]"
+    not_ready: "&cRPGRoll-Seasons ainda não está pronto."
+    unknown_world: "&cO mundo não existe: {world}"
+    specify_world: "&cEspecifique um mundo: /seasons info <mundo>"
+    no_active_season: "&7Não há uma estação ativa configurada para {world}."
+    current_season: "&6Estação atual em {world}: &e{season}"
+    temperature: "&bTemperatura onde você está: {temperature}°C"
+  admin:
+    usage: "&cUso: /seasonsadmin <browser|reload|setseason <mundo> <id>|advance <mundo>|trigger <id> <mundo>>"
+    players_only_studio: "&cSomente jogadores podem abrir o Season Studio."
+    reloaded: "&a✔ Recarregado: {calendars} calendário(s), {seasons} estação(ões), {events} evento(s), {regions} região(ões)."
+    usage_setseason: "&cUso: /seasonsadmin setseason <mundo> <id>"
+    unknown_world: "&cO mundo não existe: {world}"
+    setseason_failed: "&cNão foi possível — a estação não existe ou não está no calendário desse mundo."
+    setseason_success: "&a✔ Estação de {world} forçada para {season}."
+    usage_advance: "&cUso: /seasonsadmin advance <mundo>"
+    advance_success: "&a✔ Estação de {world} avançada."
+    usage_trigger: "&cUso: /seasonsadmin trigger <id> <mundo>"
+    unknown_event: "&cNão existe um evento com id: {id}"
+    trigger_success: "&a✔ Evento disparado em {world}."
+
+event:
+  boss_announce: "&4☠ &cUm inimigo de {season} apareceu..."
+  started: "&6✦ &e{event}&6 começou."
+  ended: "&6✦ &e{event}&7 terminou."
+
+prompt:
+  cancel_keyword: "cancelar"
+  footer: "&7Escreva no chat, ou '{keyword}' para cancelar."
+  cancelled: "&cCancelado."
+
+gui:
+  common:
+    close: "Fechar"
+    back: "Voltar"
+    click_edit: "&eClique para editar"
+    shift_remove: "&cShift-clique para remover"
+    no_description: "(sem descrição)"
+    none_masc: "(nenhum)"
+    none_fem: "(nenhuma)"
+    invalid_format: "&cFormato inválido."
+    id_label: "&7id: {id}"
+    name_label: "&eNome: {name}"
+    icon_label: "&eÍcone: {icon}"
+    color_label: "Cor: {color}"
+    description_title: "&eDescrição"
+    world_label: "&eMundo: {world}"
+    mode_label: "&bModo: {mode}"
+    prompt_name: "Escreva o novo nome:"
+    prompt_icon: "Escreva o Material do ícone:"
+    prompt_description: "Escreva a nova descrição:"
+
+  studio_hub:
+    title: "&6Season Studio"
+    calendars: "&bCalendários"
+    calendars_lore: "&7{count} definido(s)"
+    seasons: "&aEstações"
+    seasons_lore: "&7{count} definida(s)"
+    world_events: "&dEventos Mundiais"
+    world_events_lore: "&7{count} definido(s)"
+    regions: "&6Regiões"
+    regions_lore: "&7{count} definida(s)"
+
+  calendar_browser:
+    title: "&6Calendários"
+    season_count: "&7{count} estação(ões)"
+    new: "&aCriar novo calendário"
+    prompt_new_id: "Escreva o id do novo calendário:"
+    already_exists: "&cJá existe um calendário com esse id."
+
+  calendar_editor:
+    title: "&6Calendário: {id}"
+    add: "&aAdicionar estação ao final"
+    add_lore: "&7Escreva o id de uma estação existente"
+    prompt_add: "Escreva o id da estação a adicionar:"
+    unknown_season: "&cNão existe uma estação com esse id."
+
+  season_browser:
+    title: "&6Estações"
+    duration_label: "&7{amount} {unit}"
+    new: "&aCriar nova estação"
+    prompt_new_id: "Escreva o id da nova estação:"
+    already_exists: "&cJá existe uma estação com esse id."
+
+  season_editor:
+    title: "&6Estação: {id}"
+    duration_label: "&eDuração: {amount} {unit}"
+    duration_lore: "&7Escreva: QUANTIDADE UNIDADE (ex. 7 MINECRAFT_DAYS)"
+    climate_label: "&bClima"
+    climate_lore_1: "&7rain={rain} storm={storm}"
+    climate_lore_2: "&7temp={temperature} snow={snow}"
+    climate_lore_3: "&8Clique para reescrever todos os valores"
+    exclusive_boss_label: "&cChefe exclusivo: {value}"
+    exclusive_boss_lore: "&7Escreva um id de mob do RPGRoll-Mobs (ou 'nenhum')"
+    world_event_chance_label: "&dChance diária de evento mundial: {percent}%"
+    step_5pct: "&7Clique: +5% · Clique direito: -5%"
+    tags_label: "&eTags: {tags}"
+    tags_lore: "&7Escreva a lista separada por vírgulas"
+    biome_modifiers_label: "&eModificadores de bioma: {count}"
+    biome_modifiers_lore: "&7Escreva: bioma=delta,bioma2=delta2 (ex. taiga=-10,desert=5)"
+    vegetation_label: "&aVegetação: {count}"
+    vegetation_lore: "&8Escreva a lista separada por vírgulas (veja os tipos na doc)"
+    sub_seasons_label: "&a▶ Subestações ({count})"
+    mob_modifiers_label: "&a▶ Mobs sazonais ({count})"
+    world_events_label: "&eEventos elegíveis: {count}"
+    world_events_lore: "&7Escreva os ids separados por vírgulas"
+    prompt_color: "Escreva a cor (ex. GREEN, GOLD):"
+    prompt_duration: "Escreva: QUANTIDADE UNIDADE (REAL_HOURS, REAL_DAYS, REAL_WEEKS, MINECRAFT_DAYS):"
+    invalid_unit: "&cUnidade inválida: {value}"
+    prompt_climate: "Escreva: rain-chance=x,storm-chance=x,snow-chance=x,fog-chance=x,base-temperature=x,temperature-variance=x,wind-strength=x,humidity=x,heatwave-chance=x,thunderstorm-chance=x"
+    prompt_exclusive_boss: "Escreva o id do mob chefe (ou 'nenhum'):"
+    prompt_tags: "Escreva as tags separadas por vírgulas:"
+    prompt_biome_modifiers: "Escreva: bioma=delta,bioma2=delta2:"
+    prompt_vegetation: "Escreva: SNOW_LAYERS,ICE_LAKES,DRY_GRASS,FALLING_LEAVES,FLOWER_BOOM (os que se aplicam):"
+    prompt_world_events: "Escreva os ids de eventos elegíveis, separados por vírgulas:"
+
+  sub_seasons_editor:
+    title: "&6Subestações: {id}"
+    duration_label: "&7Duração: {amount} {unit}"
+    temperature_label: "&bTemperatura fixa: {temperature}°C"
+    add: "&aAdicionar subestação ao final"
+    add_lore_1: "&7ID NOME QUANTIDADE UNIDADE [TEMP]"
+    add_lore_2: "&8ex. inicial Inicial 2 MINECRAFT_DAYS"
+    prompt_add: "Escreva: ID NOME QUANTIDADE UNIDADE [TEMPERATURA]:"
+    invalid_unit: "&cUnidade inválida: {value}"
+
+  mob_modifiers_editor:
+    title: "&6Mobs sazonais: {id}"
+    chance_label: "&7Chance extra: {percent}%"
+    add: "&aAdicionar mob sazonal"
+    add_lore: "&7Escreva: id-do-mob chance (ex. winter_yeti 0.05)"
+    prompt_add: "Escreva: id-do-mob chance (0.0-1.0):"
+    invalid_chance: "&cChance inválida: {value}"
+
+  world_event_browser:
+    title: "&6Eventos Mundiais"
+    component_count: "&7{count} componente(s)"
+    new: "&aCriar novo evento"
+    prompt_new_id: "Escreva o id do novo evento:"
+    already_exists: "&cJá existe um evento com esse id."
+
+  world_event_editor:
+    title: "&6Evento: {id}"
+    duration_label: "&eDuração: {ticks} ticks"
+    duration_lore: "&7Clique: +100 · Clique direito: -100"
+    test: "&a▶ Testar no seu mundo"
+    test_unavailable: "&8(não disponível daqui)"
+    test_lore: "&7Dispara o evento no seu mundo atual"
+    components_label: "&a▶ Componentes ({count})"
+
+  world_event_components_editor:
+    title: "&6Componentes: {id}"
+    add: "&aAdicionar componente"
+    add_lore_1: "&7TIPO chave=valor,chave2=valor2"
+    add_lore_2: "&8ex. PARTICLE particle=FLAME,count=30"
+    add_lore_3: "&8ex. SPAWN_MOB mob-id=winter_yeti,chance=0.5"
+    add_lore_4: "&8A ordem importa — executam de cima para baixo"
+    prompt_add: "Escreva: TIPO chave=valor,chave2=valor2:"
+    invalid_type: "&cTipo inválido: {value}"
+
+  region_browser:
+    title: "&6Regiões de Temporada"
+    new: "&aCriar nova região (na sua localização)"
+    prompt_new_id: "Escreva o id da nova região:"
+    already_exists: "&cJá existe uma região com esse id."
+
+  region_editor:
+    title: "&6Região: {id}"
+    bounds_lore: "&7({minX},{minY},{minZ}) até ({maxX},{maxY},{maxZ})"
+    corner_a: "&eFixar canto A (sua posição)"
+    corner_b: "&eFixar canto B (sua posição)"
+    mode_lore: "&7Clique para passar ao próximo"
+    pinned_season_label: "&aEstação fixa: {value}"
+    pinned_season_lore_1: "&7Só se aplica no modo PINNED_SEASON"
+    pinned_season_lore_2: "&7Escreva o id de uma estação (ou 'nenhuma')"
+    pinned_calendar_label: "&bCalendário próprio: {value}"
+    pinned_calendar_lore_1: "&7Só se aplica no modo PINNED_CALENDAR"
+    pinned_calendar_lore_2: "&7Escreva o id de um calendário (ou 'nenhum')"
+    prompt_pinned_season: "Escreva o id da estação fixa (ou 'nenhuma'):"
+    unknown_season: "&cEssa estação não existe."
+    prompt_pinned_calendar: "Escreva o id do calendário próprio (ou 'nenhum'):"
+    unknown_calendar: "&cEsse calendário não existe."

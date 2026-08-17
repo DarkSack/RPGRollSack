@@ -6,6 +6,7 @@ import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.chat.role.ChatRole;
 import com.sack.rpgroll.chat.role.ChatRoleManager;
+import com.sack.rpgroll.common.lang.LangManager;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -34,7 +35,7 @@ public class ChatRoleEditorGUI extends InventoryGUI {
 
     public ChatRoleEditorGUI(Player player, ChatRole role, ChatRoleManager roleManager,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text("Rol: " + role.id(), NamedTextColor.GOLD), SIZE);
+        super(player, chatPromptManager.lang().component("role.editor_title", "id", role.id()), SIZE);
         this.current = role;
         this.roleManager = roleManager;
         this.chatPromptManager = chatPromptManager;
@@ -56,38 +57,47 @@ public class ChatRoleEditorGUI extends InventoryGUI {
             setItem(slot, ItemBuilder.createFiller());
         }
 
+        LangManager lang = chatPromptManager.lang();
+
         setItem(PREFIX_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(ComponentUtils.parse("Prefijo: " + current.prefix()).colorIfAbsent(NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para escribir uno nuevo", NamedTextColor.GRAY))
+                .setName(ComponentUtils.parse(lang.raw("role.label_prefix", "value", current.prefix()))
+                        .colorIfAbsent(NamedTextColor.YELLOW))
+                .setLore(lang.component("gui.click_new").colorIfAbsent(NamedTextColor.GRAY))
                 .build());
 
         setItem(SUFFIX_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(ComponentUtils.parse("Sufijo: " + current.suffix()).colorIfAbsent(NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para escribir uno nuevo", NamedTextColor.GRAY))
+                .setName(ComponentUtils.parse(lang.raw("role.label_suffix", "value", current.suffix()))
+                        .colorIfAbsent(NamedTextColor.YELLOW))
+                .setLore(lang.component("gui.click_new").colorIfAbsent(NamedTextColor.GRAY))
                 .build());
 
         setItem(COLOR_SLOT, new ItemBuilder(Material.WHITE_DYE)
-                .setName(Component.text("Color: " + current.color(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para escribir un color nuevo", NamedTextColor.GRAY))
+                .setName(lang.component("role.label_color", "value", current.color())
+                        .colorIfAbsent(NamedTextColor.YELLOW))
+                .setLore(lang.component("gui.click_new_color").colorIfAbsent(NamedTextColor.GRAY))
                 .build());
 
         setItem(ICON_SLOT, new ItemBuilder(resolveIcon())
-                .setName(Component.text("Ícono: " + current.icon(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para escribir un Material nuevo", NamedTextColor.GRAY))
+                .setName(lang.component("role.label_icon", "value", current.icon())
+                        .colorIfAbsent(NamedTextColor.YELLOW))
+                .setLore(lang.component("gui.click_new_material").colorIfAbsent(NamedTextColor.GRAY))
                 .build());
 
         setItem(PRIORITY_SLOT, new ItemBuilder(Material.COMPARATOR)
-                .setName(Component.text("Prioridad: " + current.priority(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click: +1 · Click derecho: -1", NamedTextColor.GRAY))
+                .setName(lang.component("role.label_priority", "value", current.priority())
+                        .colorIfAbsent(NamedTextColor.YELLOW))
+                .setLore(lang.component("gui.click_priority").colorIfAbsent(NamedTextColor.GRAY))
                 .build());
 
         setItem(PERMISSION_SLOT, new ItemBuilder(Material.PAPER)
-                .setName(Component.text("Permiso: " + (current.permission() == null || current.permission().isBlank()
-                        ? "(ninguno)" : current.permission()), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para escribir uno nuevo (vacío = todos)", NamedTextColor.GRAY))
+                .setName(lang.component("role.label_permission", "value",
+                        current.permission() == null || current.permission().isBlank()
+                                ? lang.raw("gui.none") : current.permission())
+                        .colorIfAbsent(NamedTextColor.YELLOW))
+                .setLore(lang.component("role.lore_permission_hint").colorIfAbsent(NamedTextColor.GRAY))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.back")));
     }
 
     private Material resolveIcon() {
@@ -106,21 +116,21 @@ public class ChatRoleEditorGUI extends InventoryGUI {
         ClickType click = event.getClick();
 
         if (slot == PREFIX_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el nuevo prefijo (podés usar & para colores):",
+            chatPromptManager.prompt(player, chatPromptManager.lang().raw("role.prompt_prefix"),
                     value -> replace(new ChatRole(current.id(), value, current.suffix(), current.color(),
                             current.icon(), current.priority(), current.permission())));
             return;
         }
 
         if (slot == SUFFIX_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el nuevo sufijo (podés usar & para colores):",
+            chatPromptManager.prompt(player, chatPromptManager.lang().raw("role.prompt_suffix"),
                     value -> replace(new ChatRole(current.id(), current.prefix(), value, current.color(),
                             current.icon(), current.priority(), current.permission())));
             return;
         }
 
         if (slot == COLOR_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el nombre del color (ej. GOLD):",
+            chatPromptManager.prompt(player, chatPromptManager.lang().raw("role.prompt_color"),
                     value -> replace(new ChatRole(current.id(), current.prefix(), current.suffix(),
                             value.trim().toUpperCase(java.util.Locale.ROOT), current.icon(), current.priority(),
                             current.permission())));
@@ -128,7 +138,7 @@ public class ChatRoleEditorGUI extends InventoryGUI {
         }
 
         if (slot == ICON_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el nombre del Material (ej. DIAMOND):",
+            chatPromptManager.prompt(player, chatPromptManager.lang().raw("role.prompt_icon"),
                     value -> replace(new ChatRole(current.id(), current.prefix(), current.suffix(), current.color(),
                             value.trim().toUpperCase(java.util.Locale.ROOT), current.priority(),
                             current.permission())));
@@ -143,7 +153,7 @@ public class ChatRoleEditorGUI extends InventoryGUI {
         }
 
         if (slot == PERMISSION_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el permiso (vacío = sin restricción):",
+            chatPromptManager.prompt(player, chatPromptManager.lang().raw("role.prompt_permission"),
                     value -> replace(new ChatRole(current.id(), current.prefix(), current.suffix(), current.color(),
                             current.icon(), current.priority(), value.trim())));
             return;

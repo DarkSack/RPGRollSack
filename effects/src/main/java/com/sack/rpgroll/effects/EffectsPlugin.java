@@ -1,5 +1,6 @@
 package com.sack.rpgroll.effects;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.common.resource.DirectoryCreator;
 import com.sack.rpgroll.common.resource.ResourceCopier;
 import com.sack.rpgroll.effects.api.EffectsAPI;
@@ -22,9 +23,15 @@ public class EffectsPlugin extends JavaPlugin {
 
     private EffectManager effectManager;
     private EffectTracker tracker;
+    private LangManager langManager;
 
     @Override
     public void onEnable() {
+
+        saveDefaultConfig();
+
+        langManager = new LangManager(this, List.of("es", "en", "pt_BR"), "es");
+        langManager.reload(getConfig().getString("language", "es"));
 
         new DirectoryCreator(this).create(DIRECTORIES);
         new ResourceCopier(this).copyDirectories(DIRECTORIES);
@@ -34,11 +41,11 @@ public class EffectsPlugin extends JavaPlugin {
 
         EffectComponentExecutor executor = new EffectComponentExecutor(this);
         tracker = new EffectTracker(executor);
-        EffectConditionEvaluator conditionEvaluator = new EffectConditionEvaluator();
+        EffectConditionEvaluator conditionEvaluator = new EffectConditionEvaluator(langManager);
 
         EffectsAPI.init(effectManager, tracker, executor, conditionEvaluator);
 
-        ChatPromptManager chatPromptManager = new ChatPromptManager(this);
+        ChatPromptManager chatPromptManager = new ChatPromptManager(this, langManager);
         getServer().getPluginManager().registerEvents(chatPromptManager, this);
         getServer().getPluginManager().registerEvents(new EffectTriggerListener(tracker, executor), this);
 
@@ -48,7 +55,8 @@ public class EffectsPlugin extends JavaPlugin {
         if (effectsCommand == null) {
             getLogger().severe("✘ El comando 'rpgeffects' no está declarado en plugin.yml");
         } else {
-            var effectsAdminCommand = new EffectsAdminCommand(effectManager, tracker, chatPromptManager);
+            var effectsAdminCommand = new EffectsAdminCommand(effectManager, tracker, chatPromptManager, langManager,
+                    this);
             effectsCommand.setExecutor(effectsAdminCommand);
             effectsCommand.setTabCompleter(effectsAdminCommand);
         }
@@ -62,6 +70,10 @@ public class EffectsPlugin extends JavaPlugin {
 
     public EffectTracker getTracker() {
         return tracker;
+    }
+
+    public LangManager getLangManager() {
+        return langManager;
     }
 
 }

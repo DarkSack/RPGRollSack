@@ -1,5 +1,6 @@
 package com.sack.rpgroll.seasons.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.seasons.core.CalendarManager;
@@ -29,7 +30,7 @@ public class CalendarBrowserGUI extends InventoryGUI {
 
     public CalendarBrowserGUI(Player player, CalendarManager calendarManager, SeasonManager seasonManager,
             ChatPromptManager chatPromptManager) {
-        super(player, Component.text("Calendarios"), SIZE);
+        super(player, chatPromptManager.lang().component("gui.calendar_browser.title"), SIZE);
         this.calendarManager = calendarManager;
         this.seasonManager = seasonManager;
         this.chatPromptManager = chatPromptManager;
@@ -45,23 +46,25 @@ public class CalendarBrowserGUI extends InventoryGUI {
             setItem(slot, ItemBuilder.createFiller());
         }
 
+        LangManager lang = chatPromptManager.lang();
+
         for (int i = 0; i < calendars.size() && i < 36; i++) {
 
             SeasonCalendar calendar = calendars.get(i);
 
             setItem(i, new ItemBuilder(Material.CLOCK)
                     .setName(Component.text(calendar.displayName(), NamedTextColor.AQUA))
-                    .setLore(Component.text("id: " + calendar.id(), NamedTextColor.GRAY),
-                            Component.text(calendar.seasonIds().size() + " estación(es)", NamedTextColor.GRAY),
-                            Component.text("Click para editar", NamedTextColor.YELLOW))
+                    .setLore(lang.component("gui.common.id_label", "id", calendar.id()),
+                            lang.component("gui.calendar_browser.season_count", "count", calendar.seasonIds().size()),
+                            lang.component("gui.common.click_edit"))
                     .build());
         }
 
         setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Crear calendario nuevo", NamedTextColor.GREEN))
+                .setName(lang.component("gui.calendar_browser.new"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back")));
     }
 
     @Override
@@ -87,12 +90,12 @@ public class CalendarBrowserGUI extends InventoryGUI {
     }
 
     private void promptNew() {
-        chatPromptManager.prompt(player, "Escribí el id del nuevo calendario:", value -> {
+        chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.calendar_browser.prompt_new_id"), value -> {
 
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 
             if (calendarManager.exists(id)) {
-                player.sendMessage(Component.text("Ya existe un calendario con ese id.", NamedTextColor.RED));
+                chatPromptManager.lang().send(player, "gui.calendar_browser.already_exists");
                 reopen();
                 return;
             }

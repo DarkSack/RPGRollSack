@@ -1,0 +1,148 @@
+# Arquivo de idioma: Português (Brasil)
+# RPGRoll-Quests - Sistema de mensagens
+
+# Mensagens gerais
+general:
+  no_permission: "&cVocê não tem permissão para usar este comando."
+  player_only: "&cApenas um jogador pode usar este comando."
+
+# Comando /questadmin
+admin:
+  usage: "&cUso: /questadmin <give|complete|fail|reset|reload|browser [quests|regions]> [jogador] [questId]"
+  browser_player_only: "&cApenas um jogador pode abrir o navegador."
+  give_usage: "&cUso: /questadmin give <jogador> <questId>"
+  player_not_found: "&cJogador não encontrado: {player}"
+  quest_not_found: "&cNão existe uma missão com id: {id}"
+  give_success: "&a✔ Missão '{quest}' iniciada para {player}"
+  complete_usage: "&cUso: /questadmin complete <jogador> <questId>"
+  complete_success: "&a✔ Missão '{quest}' concluída para {player}"
+  complete_not_active: "&c{player} não tem essa missão ativa."
+  fail_usage: "&cUso: /questadmin fail <jogador> <questId>"
+  fail_success: "&a✔ Missão '{quest}' marcada como falha para {player}"
+  reset_usage: "&cUso: /questadmin reset <jogador> <questId>"
+  reset_success: "&a✔ Progresso de '{quest}' reiniciado para {player}"
+  reload_success: "&a✔ Recarregado: {count} missão(ões)."
+
+# Comando /quest (jogador)
+command:
+  usage: "&cUso: /quest <list|info|start|abandon|active|completed> [id]"
+  list_empty: "&7Nenhuma missão definida."
+  list_header: "&6Missões disponíveis:"
+  list_entry: "&f• {id} — {name} ({category}, {difficulty})"
+  info_usage: "&cUso: /quest info <id>"
+  quest_not_found: "&cNão existe uma missão com id: {id}"
+  info_title: "&6{name}"
+  info_category: "&7Categoria: {category}"
+  info_difficulty: "&7Dificuldade: {difficulty}"
+  info_stages: "&7Etapas: {count}"
+  info_repeatable_yes: "&7Repetível: sim"
+  info_repeatable_no: "&7Repetível: não"
+  start_usage: "&cUso: /quest start <id>"
+  start_success: "&a✔ Missão iniciada: {name}"
+  start_denied_header: "&cVocê não pode iniciar essa missão:"
+  start_denied_reason: "&c- {reason}"
+  abandon_usage: "&cUso: /quest abandon <id>"
+  abandon_success: "&a✔ Missão abandonada."
+  abandon_not_active: "&cVocê não tem essa missão ativa."
+  active_empty: "&7Você não tem missões ativas."
+  active_header: "&6Missões ativas:"
+  active_entry: "&f• {name} — stage {current}/{total} ({stageId})"
+  completed_empty: "&7Você ainda não concluiu nenhuma missão."
+  completed_header: "&6Missões concluídas: {count}"
+  completed_entry: "&f• {id}"
+
+# Motor de missões (motivos de rejeição, diálogo, mensagens de conclusão)
+engine:
+  already_active: "Você já tem essa quest ativa."
+  already_completed_not_repeatable: "Você já concluiu essa quest e ela não é repetível."
+  on_cooldown: "Essa quest ainda está em cooldown."
+  dialog_npc_prefix: "&e[NPC] "
+  dialog_player_prefix: "&b[Você] "
+  dialog_choose_option: "&6Escolha uma opção:"
+  quest_completed: "&6✔ Quest concluída: {name}"
+
+# Motivos de rejeição ao checar se um jogador pode iniciar uma quest
+requirement:
+  level: "Você precisa do nível {required} (você tem {current})."
+  race: "Você precisa ser da raça: {race}"
+  class: "Você precisa ser da classe: {class}"
+  profession: "Você precisa da profissão: {profession}"
+  trait: "Você precisa do trait: {trait}"
+  permission: "Você não tem a permissão necessária para essa quest."
+  money: "Você precisa de pelo menos {amount} de dinheiro."
+  item: "Você precisa de {amount}x {material}"
+  completed_quest: "Você precisa ter concluído a quest: {quest}"
+  world: "Você precisa estar no mundo: {world}"
+  region: "Você precisa estar na região: {region}"
+  biome: "Você precisa estar no bioma: {biome}"
+  weather: "Você precisa de clima: {weather}"
+  time_range: "Disponível apenas entre {min} e {max} (hora do mundo)."
+
+# Listener de objetivos (KILL_ENTITY, BREAK_BLOCK, DELIVER_ITEM, etc.)
+listener:
+  deliver_missing_items: "&cVocê precisa de {required}x {material} para entregar."
+
+# GUI: navegador de quests
+browser:
+  title: "&6Quests RPGRoll"
+  stage_count: "&7{count} stage(s)"
+  click_to_edit: "&eClique para editar"
+  create_new: "&aCriar nova quest"
+  close_button: "Fechar"
+  prompt_new_id: "Digite o id da nova quest:"
+  id_exists: "&cJá existe uma quest com esse id."
+
+# GUI: editor de quest
+editor:
+  title: "&6Quest: {id}"
+  name_label: "Nome: {name}"
+  click_to_rename: "&7Clique para digitar um novo"
+  category_label: "&eCategoria: {category}"
+  click_next: "&7Clique para passar para a próxima"
+  difficulty_label: "&eDificuldade: {difficulty}"
+  repeatable_yes: "&aRepetível: sim"
+  repeatable_no: "&7Repetível: não"
+  click_to_toggle: "&7Clique para alternar"
+  cooldown_label: "&eCooldown: {seconds}s"
+  cooldown_hint: "&7Clique: +1h · Clique direito: -1h"
+  level_label: "&eNível necessário: {level}"
+  click_plus_minus_1: "&7Clique: +1 · Clique direito: -1"
+  reward_money_label: "&eRecompensa em ouro: {money}"
+  click_plus_minus_50: "&7Clique: +50 · Clique direito: -50"
+  reward_xp_label: "&eRecompensa de XP: {xp}"
+  stage_entry: "{index}. {id}"
+  stage_objectives: "&7{count} objetivo(s)"
+  shift_click_remove: "&8Shift-click para remover"
+  stage_yaml_hint: "&8Objetivos/diálogo ainda são editados no YAML"
+  add_stage: "&aAdicionar stage (por id)"
+  back_button: "Voltar"
+  prompt_name: "Digite o novo nome da quest:"
+  prompt_add_stage: "Digite o id do novo stage:"
+  stage_min_required: "&cUma quest precisa de pelo menos um stage."
+
+# GUI: navegador de regiões
+region_browser:
+  title: "&6Regiões RPGRoll"
+  world_label: "&7Mundo: {world}"
+  click_to_edit: "&eClique para editar"
+  create_new: "&aCriar nova região (aqui)"
+  close_button: "Fechar"
+  prompt_new_id: "Digite o id da nova região:"
+  id_exists: "&cJá existe uma região com esse id."
+
+# GUI: editor de região
+region_editor:
+  title: "&6Região: {id}"
+  world_label: "&eMundo: {world}"
+  click_use_current_world: "&7Clique para usar seu mundo atual"
+  set_min_corner: "&cDefinir canto mínimo aqui"
+  set_max_corner: "&aDefinir canto máximo aqui"
+  coords: "&7{x}, {y}, {z}"
+  volume_label: "&eVolume: {volume} bloco(s)³"
+  back_button: "Voltar"
+
+# Sistema de perguntas por chat (usado pelas GUIs de admin)
+prompt:
+  cancel_keyword: "cancelar"
+  footer: "&7Digite no chat, ou '{keyword}' para abortar."
+  cancelled: "&cCancelado."

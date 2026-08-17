@@ -1,5 +1,7 @@
 package com.sack.rpgroll.npcs.listener;
 
+import com.sack.rpgroll.common.lang.LangManager;
+
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 
@@ -22,18 +24,22 @@ import java.util.function.Consumer;
 public class ChatPromptManager implements Listener {
 
     private final Plugin plugin;
+    private final LangManager langManager;
     private final Map<UUID, Consumer<String>> pending = new HashMap<>();
 
-    public ChatPromptManager(Plugin plugin) {
+    public ChatPromptManager(Plugin plugin, LangManager langManager) {
         this.plugin = plugin;
+        this.langManager = langManager;
     }
 
+    /**
+     * @param question texto ya resuelto (traducido) por el caller — se
+     *                  muestra tal cual, sin parsear MiniMessage/legacy.
+     */
     public void prompt(Player player, String question, Consumer<String> callback) {
         player.sendMessage(net.kyori.adventure.text.Component.text(question,
                 net.kyori.adventure.text.format.NamedTextColor.YELLOW));
-        player.sendMessage(net.kyori.adventure.text.Component.text(
-                "Escribe en el chat, o 'cancelar' para abortar.",
-                net.kyori.adventure.text.format.NamedTextColor.GRAY));
+        langManager.send(player, "prompt.instructions");
         pending.put(player.getUniqueId(), callback);
     }
 
@@ -53,8 +59,7 @@ public class ChatPromptManager implements Listener {
 
         Bukkit.getScheduler().runTask(plugin, () -> {
             if (message.equalsIgnoreCase("cancelar")) {
-                event.getPlayer().sendMessage(net.kyori.adventure.text.Component.text(
-                        "Cancelado.", net.kyori.adventure.text.format.NamedTextColor.RED));
+                langManager.send(event.getPlayer(), "prompt.cancelled");
                 return;
             }
             callback.accept(message);

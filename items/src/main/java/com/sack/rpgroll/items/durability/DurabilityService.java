@@ -1,11 +1,9 @@
 package com.sack.rpgroll.items.durability;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.items.core.ItemDefinition;
 import com.sack.rpgroll.items.core.ItemFactory;
 import com.sack.rpgroll.items.instance.ItemInstanceService;
-
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -20,10 +18,12 @@ public class DurabilityService {
 
     private final ItemInstanceService instanceService;
     private final ItemFactory itemFactory;
+    private final LangManager langManager;
 
-    public DurabilityService(ItemInstanceService instanceService, ItemFactory itemFactory) {
+    public DurabilityService(ItemInstanceService instanceService, ItemFactory itemFactory, LangManager langManager) {
         this.instanceService = instanceService;
         this.itemFactory = itemFactory;
+        this.langManager = langManager;
     }
 
     /** @return true si el ítem se rompió (el caller debe quitarlo del inventario). */
@@ -40,8 +40,7 @@ public class DurabilityService {
 
         if (updated <= 0) {
             item.setAmount(0);
-            player.sendMessage(Component.text(
-                    "Tu " + definition.displayName() + " se rompió.", NamedTextColor.RED));
+            langManager.send(player, "durability.broken", "item", definition.displayName());
             return true;
         }
 

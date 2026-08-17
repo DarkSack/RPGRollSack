@@ -9,6 +9,8 @@ import org.bukkit.Tag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Inventory;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -48,6 +50,18 @@ public class IngredientMatcher {
         }
 
         return true;
+    }
+
+    /**
+     * Igual que {@link #matches}, pero además exige que la pila alcance
+     * {@code spec.amount()} — para motores que miran UN slot fijo (Yunque,
+     * Fermentación, Amoladora, Cartografía, Telar) en vez de sumar por todo
+     * un inventario como {@link #countAvailable}. {@code matches} por sí solo
+     * nunca mira la cantidad, así que usarlo directo sobre un único slot deja
+     * pasar recetas con {@code amount > 1} aunque la pila tenga menos.
+     */
+    public boolean matchesWithAmount(ItemStack stack, IngredientSpec spec) {
+        return matches(stack, spec) && stack.getAmount() >= spec.amount();
     }
 
     private boolean matchesMaterial(ItemStack stack, String materialName) {
@@ -105,6 +119,46 @@ public class IngredientMatcher {
         }
 
         return true;
+    }
+
+    /**
+     * Igual que {@link #tryConsume}, pero además devuelve una copia exacta de
+     * lo que se sacó (mismo Material/PDC/calidad, en los tamaños de pila
+     * reales que se tomaron) — para poder devolverlo tal cual si hace falta,
+     * ej. un crafteo que falla con {@code fail-consumes-ingredients: false}.
+     * Lista vacía y el inventario intacto si no había suficiente.
+     */
+    public List<ItemStack> tryConsumeAndCapture(Inventory inventory, IngredientSpec spec) {
+
+        if (countAvailable(inventory, spec) < spec.amount()) {
+            return List.of();
+        }
+
+        List<ItemStack> captured = new ArrayList<>();
+        int remaining = spec.amount();
+        ItemStack[] contents = inventory.getContents();
+
+        for (int i = 0; i < contents.length && remaining > 0; i++) {
+
+            ItemStack stack = contents[i];
+            if (!matches(stack, spec)) {
+                continue;
+            }
+
+            int take = Math.min(remaining, stack.getAmount());
+            ItemStack taken = stack.clone();
+            taken.setAmount(take);
+            captured.add(taken);
+
+            stack.setAmount(stack.getAmount() - take);
+            remaining -= take;
+
+            if (stack.getAmount() <= 0) {
+                inventory.setItem(i, null);
+            }
+        }
+
+        return captured;
     }
 
     private Material parseMaterial(String raw) {

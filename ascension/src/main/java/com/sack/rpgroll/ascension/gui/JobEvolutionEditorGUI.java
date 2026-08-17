@@ -2,6 +2,7 @@ package com.sack.rpgroll.ascension.gui;
 
 import com.sack.rpgroll.ascension.deferred.JobEvolution;
 import com.sack.rpgroll.ascension.deferred.JobEvolutionManager;
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 
@@ -30,15 +31,17 @@ public class JobEvolutionEditorGUI extends InventoryGUI {
     private final JobEvolutionManager manager;
     private final ChatPromptManager chatPromptManager;
     private final Runnable onBack;
+    private final LangManager lang;
     private JobEvolution current;
 
     public JobEvolutionEditorGUI(Player player, JobEvolution evolution, JobEvolutionManager manager,
-            ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text("Evolución de job: " + evolution.id(), NamedTextColor.GOLD), SIZE);
+            ChatPromptManager chatPromptManager, Runnable onBack, LangManager lang) {
+        super(player, lang.component("gui.job_evolution.editor_title", "id", evolution.id()), SIZE);
         this.current = evolution;
         this.manager = manager;
         this.chatPromptManager = chatPromptManager;
         this.onBack = onBack;
+        this.lang = lang;
     }
 
     private void replace(JobEvolution updated) {
@@ -57,43 +60,41 @@ public class JobEvolutionEditorGUI extends InventoryGUI {
         }
 
         setItem(BASE_JOB_SLOT, new ItemBuilder(Material.IRON_PICKAXE)
-                .setName(Component.text("Job base: " + current.baseJob(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para cambiarlo", NamedTextColor.GRAY))
+                .setName(lang.component("gui.job_evolution.base_job_label", "job", current.baseJob()))
+                .setLore(lang.component("gui.job_evolution.click_to_change"))
                 .build());
 
         setItem(NAME_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(Component.text("Nombre: " + current.displayName(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para escribir uno nuevo", NamedTextColor.GRAY))
+                .setName(lang.component("gui.common.name_label", "name", current.displayName()))
+                .setLore(lang.component("gui.common.click_new_value"))
                 .build());
 
         setItem(LEVEL_SLOT, new ItemBuilder(Material.EXPERIENCE_BOTTLE)
-                .setName(Component.text("Nivel de job requerido: " + current.requiredJobLevel(),
-                        NamedTextColor.YELLOW))
-                .setLore(Component.text("Click: +5 · Click derecho: -5", NamedTextColor.GRAY))
+                .setName(lang.component("gui.job_evolution.level_label", "level", current.requiredJobLevel()))
+                .setLore(lang.component("gui.job_evolution.click_plusminus5"))
                 .build());
 
         setItem(RECIPES_SLOT, new ItemBuilder(Material.CRAFTING_TABLE)
-                .setName(Component.text("Recetas desbloqueadas: " + current.unlockedRecipes().size(),
-                        NamedTextColor.YELLOW))
+                .setName(lang.component("gui.job_evolution.recipes_label", "count",
+                        current.unlockedRecipes().size()))
                 .setLore(Component.text(String.join(", ", current.unlockedRecipes()), NamedTextColor.GRAY),
-                        Component.text("Click para escribir lista separada por comas", NamedTextColor.GRAY))
+                        lang.component("gui.common.comma_hint"))
                 .build());
 
         setItem(TOOLS_SLOT, new ItemBuilder(Material.IRON_HOE)
-                .setName(Component.text("Herramientas desbloqueadas: " + current.unlockedTools().size(),
-                        NamedTextColor.YELLOW))
+                .setName(lang.component("gui.job_evolution.tools_label", "count", current.unlockedTools().size()))
                 .setLore(Component.text(String.join(", ", current.unlockedTools()), NamedTextColor.GRAY),
-                        Component.text("Click para escribir lista separada por comas", NamedTextColor.GRAY))
+                        lang.component("gui.common.comma_hint"))
                 .build());
 
         setItem(QUESTS_SLOT, new ItemBuilder(Material.WRITTEN_BOOK)
-                .setName(Component.text("Quests desbloqueadas: " + current.unlockedQuests().size(),
-                        NamedTextColor.YELLOW))
+                .setName(lang.component("gui.job_evolution.quests_label", "count",
+                        current.unlockedQuests().size()))
                 .setLore(Component.text(String.join(", ", current.unlockedQuests()), NamedTextColor.GRAY),
-                        Component.text("Click para escribir lista separada por comas", NamedTextColor.GRAY))
+                        lang.component("gui.common.comma_hint"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back_button")));
     }
 
     @Override
@@ -104,7 +105,7 @@ public class JobEvolutionEditorGUI extends InventoryGUI {
         ClickType click = event.getClick();
 
         if (slot == BASE_JOB_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el id del job base:",
+            chatPromptManager.prompt(player, "gui.job_evolution.prompt_base_job",
                     value -> replace(new JobEvolution(current.id(), value.trim().toLowerCase(Locale.ROOT),
                             current.displayName(), current.requiredJobLevel(), current.unlockedRecipes(),
                             current.unlockedTools(), current.unlockedQuests())));
@@ -112,7 +113,7 @@ public class JobEvolutionEditorGUI extends InventoryGUI {
         }
 
         if (slot == NAME_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el nuevo nombre:",
+            chatPromptManager.prompt(player, "gui.job_evolution.prompt_new_name",
                     value -> replace(new JobEvolution(current.id(), current.baseJob(), value,
                             current.requiredJobLevel(), current.unlockedRecipes(), current.unlockedTools(),
                             current.unlockedQuests())));
@@ -128,7 +129,7 @@ public class JobEvolutionEditorGUI extends InventoryGUI {
         }
 
         if (slot == RECIPES_SLOT) {
-            chatPromptManager.prompt(player, "Escribí las recetas desbloqueadas, separadas por comas:",
+            chatPromptManager.prompt(player, "gui.job_evolution.prompt_recipes",
                     value -> replace(new JobEvolution(current.id(), current.baseJob(), current.displayName(),
                             current.requiredJobLevel(), List.of(value.trim().split(",")), current.unlockedTools(),
                             current.unlockedQuests())));
@@ -136,7 +137,7 @@ public class JobEvolutionEditorGUI extends InventoryGUI {
         }
 
         if (slot == TOOLS_SLOT) {
-            chatPromptManager.prompt(player, "Escribí las herramientas desbloqueadas, separadas por comas:",
+            chatPromptManager.prompt(player, "gui.job_evolution.prompt_tools",
                     value -> replace(new JobEvolution(current.id(), current.baseJob(), current.displayName(),
                             current.requiredJobLevel(), current.unlockedRecipes(), List.of(value.trim().split(",")),
                             current.unlockedQuests())));
@@ -144,7 +145,7 @@ public class JobEvolutionEditorGUI extends InventoryGUI {
         }
 
         if (slot == QUESTS_SLOT) {
-            chatPromptManager.prompt(player, "Escribí las quests desbloqueadas, separadas por comas:",
+            chatPromptManager.prompt(player, "gui.job_evolution.prompt_quests",
                     value -> replace(new JobEvolution(current.id(), current.baseJob(), current.displayName(),
                             current.requiredJobLevel(), current.unlockedRecipes(), current.unlockedTools(),
                             List.of(value.trim().split(",")))));

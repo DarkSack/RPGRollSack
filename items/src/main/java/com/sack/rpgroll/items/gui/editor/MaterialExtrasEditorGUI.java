@@ -1,5 +1,6 @@
 package com.sack.rpgroll.items.gui.editor;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.items.core.ArmorTrimDef;
@@ -32,11 +33,13 @@ public class MaterialExtrasEditorGUI extends InventoryGUI {
     private static final int BACK_SLOT = 22;
 
     private final EditorSession session;
+    private final LangManager lang;
     private final Runnable onBack;
 
     public MaterialExtrasEditorGUI(Player player, EditorSession session, Runnable onBack) {
-        super(player, Component.text("Extras de material: " + session.original.id(), NamedTextColor.GOLD), SIZE);
+        super(player, session.chatPromptManager.lang().component("editor.material_extras.title", "id", session.original.id()), SIZE);
         this.session = session;
+        this.lang = session.chatPromptManager.lang();
         this.onBack = onBack;
     }
 
@@ -65,27 +68,28 @@ public class MaterialExtrasEditorGUI extends InventoryGUI {
 
         if (showColor()) {
             setItem(COLOR_SLOT, new ItemBuilder(Material.LEATHER_CHESTPLATE)
-                    .setName(Component.text("Color (cuero/poción)", NamedTextColor.YELLOW))
-                    .setLore(Component.text(session.dyeColor == null ? "(sin definir)" : session.dyeColor,
+                    .setName(lang.component("editor.material_extras.color_label"))
+                    .setLore(Component.text(session.dyeColor == null ? lang.raw("editor.rules.undefined") : session.dyeColor,
                             NamedTextColor.GRAY),
-                            Component.text("Click para escribir", NamedTextColor.DARK_GRAY))
+                            lang.component("editor.material_extras.color_click"))
                     .build());
         }
 
         if (showSkull()) {
             setItem(SKULL_SLOT, new ItemBuilder(Material.PLAYER_HEAD)
-                    .setName(Component.text("Textura de cabeza", NamedTextColor.YELLOW))
-                    .setLore(Component.text(session.skullTexture == null ? "(sin definir)" : "(definida)",
+                    .setName(lang.component("editor.material_extras.skull_label"))
+                    .setLore(Component.text(session.skullTexture == null ? lang.raw("editor.rules.undefined")
+                                    : lang.raw("editor.material_extras.skull_defined"),
                             NamedTextColor.GRAY),
-                            Component.text("Click para pegar la textura", NamedTextColor.DARK_GRAY))
+                            lang.component("editor.material_extras.skull_click"))
                     .build());
         }
 
         if (showTrim()) {
             setItem(TRIM_SLOT, new ItemBuilder(Material.IRON_CHESTPLATE)
-                    .setName(Component.text("Trim de armadura", NamedTextColor.YELLOW))
+                    .setName(lang.component("editor.material_extras.trim_label"))
                     .setLore(session.trim == null
-                            ? Component.text("(sin definir)", NamedTextColor.GRAY)
+                            ? Component.text(lang.raw("editor.rules.undefined"), NamedTextColor.GRAY)
                             : Component.text(session.trim.material() + " / " + session.trim.pattern(),
                                     NamedTextColor.GRAY))
                     .build());
@@ -93,13 +97,12 @@ public class MaterialExtrasEditorGUI extends InventoryGUI {
 
         if (!showColor() && !showSkull() && !showTrim()) {
             setItem(13, new ItemBuilder(Material.BARRIER)
-                    .setName(Component.text("Sin extras para " + session.material.name(), NamedTextColor.RED))
-                    .setLore(Component.text("Este material no admite color, textura de cabeza ni trim.",
-                            NamedTextColor.GRAY))
+                    .setName(lang.component("editor.material_extras.no_extras", "material", session.material.name()))
+                    .setLore(lang.component("editor.material_extras.no_extras_desc"))
                     .build());
         }
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("editor.common.back")));
     }
 
     @Override
@@ -133,41 +136,38 @@ public class MaterialExtrasEditorGUI extends InventoryGUI {
     }
 
     private void promptColor() {
-        session.chatPromptManager.prompt(player,
-                "Escribí el color en hex (ej. FF0000), o 'borrar' para quitarlo:", value -> {
-                    session.dyeColor = value.trim().equalsIgnoreCase("borrar") ? null : value.trim();
-                    reopen();
-                });
+        session.chatPromptManager.prompt(player, lang.raw("editor.material_extras.prompt_color"), value -> {
+            session.dyeColor = value.trim().equalsIgnoreCase("borrar") ? null : value.trim();
+            reopen();
+        });
     }
 
     private void promptSkullTexture() {
-        session.chatPromptManager.prompt(player,
-                "Pegá la textura base64 (de minecraft-heads.com), o 'borrar' para quitarla:", value -> {
-                    session.skullTexture = value.trim().equalsIgnoreCase("borrar") ? null : value.trim();
-                    reopen();
-                });
+        session.chatPromptManager.prompt(player, lang.raw("editor.material_extras.prompt_skull"), value -> {
+            session.skullTexture = value.trim().equalsIgnoreCase("borrar") ? null : value.trim();
+            reopen();
+        });
     }
 
     private void promptTrim() {
-        session.chatPromptManager.prompt(player,
-                "Escribí: <material> <patrón> (ej. REDSTONE COAST), o 'borrar' para quitarlo:", value -> {
+        session.chatPromptManager.prompt(player, lang.raw("editor.material_extras.prompt_trim"), value -> {
 
-                    if (value.trim().equalsIgnoreCase("borrar")) {
-                        session.trim = null;
-                        reopen();
-                        return;
-                    }
+            if (value.trim().equalsIgnoreCase("borrar")) {
+                session.trim = null;
+                reopen();
+                return;
+            }
 
-                    String[] parts = value.trim().split("\\s+");
+            String[] parts = value.trim().split("\\s+");
 
-                    if (parts.length != 2) {
-                        player.sendMessage(Component.text("Formato inválido.", NamedTextColor.RED));
-                        return;
-                    }
+            if (parts.length != 2) {
+                lang.send(player, "editor.common.invalid_format");
+                return;
+            }
 
-                    session.trim = new ArmorTrimDef(parts[0].toUpperCase(), parts[1].toUpperCase());
-                    reopen();
-                });
+            session.trim = new ArmorTrimDef(parts[0].toUpperCase(), parts[1].toUpperCase());
+            reopen();
+        });
     }
 
 }

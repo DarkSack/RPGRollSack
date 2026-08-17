@@ -1,5 +1,6 @@
 package com.sack.rpgroll.guilds;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.guilds.buff.BuffCalculator;
 import com.sack.rpgroll.guilds.gui.ChatPromptManager;
 import com.sack.rpgroll.guilds.guild.GuildManager;
@@ -26,5 +27,6 @@ public record GuildServices(
         GuildChatListener guildChatListener,
         GuildRankingManager rankingManager,
         BuffCalculator buffCalculator,
-        ChatPromptManager chatPromptManager) {
+        ChatPromptManager chatPromptManager,
+        LangManager langManager) {
 }

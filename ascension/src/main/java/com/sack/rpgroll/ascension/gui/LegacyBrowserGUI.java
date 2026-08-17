@@ -2,6 +2,7 @@ package com.sack.rpgroll.ascension.gui;
 
 import com.sack.rpgroll.ascension.deferred.LegacyTier;
 import com.sack.rpgroll.ascension.deferred.LegacyManager;
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 
@@ -23,12 +24,15 @@ public class LegacyBrowserGUI extends InventoryGUI {
 
     private final LegacyManager manager;
     private final ChatPromptManager chatPromptManager;
+    private final LangManager lang;
     private List<LegacyTier> tiers;
 
-    public LegacyBrowserGUI(Player player, LegacyManager manager, ChatPromptManager chatPromptManager) {
-        super(player, Component.text("Legado RPGRoll-Ascension", NamedTextColor.GOLD), SIZE);
+    public LegacyBrowserGUI(Player player, LegacyManager manager, ChatPromptManager chatPromptManager,
+            LangManager lang) {
+        super(player, lang.component("gui.legacy.browser_title"), SIZE);
         this.manager = manager;
         this.chatPromptManager = chatPromptManager;
+        this.lang = lang;
         this.tiers = List.copyOf(manager.getAll());
     }
 
@@ -45,16 +49,16 @@ public class LegacyBrowserGUI extends InventoryGUI {
             LegacyTier tier = tiers.get(i);
             setItem(i, new ItemBuilder(Material.NETHER_STAR)
                     .setName(Component.text(tier.id(), NamedTextColor.YELLOW))
-                    .setLore(Component.text("Prestigio " + tier.requiredPrestige(), NamedTextColor.GRAY),
-                            Component.text("Click para editar", NamedTextColor.YELLOW))
+                    .setLore(lang.component("gui.legacy.item_prestige", "prestige", tier.requiredPrestige()),
+                            lang.component("gui.common.click_to_edit"))
                     .build());
         }
 
         setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Crear tier nuevo", NamedTextColor.GREEN))
+                .setName(lang.component("gui.legacy.create_new"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Cerrar"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.close_button")));
     }
 
     @Override
@@ -64,7 +68,7 @@ public class LegacyBrowserGUI extends InventoryGUI {
         int slot = event.getSlot();
 
         if (slot < tiers.size() && slot < 36) {
-            new LegacyEditorGUI(player, tiers.get(slot), manager, this::reopen).open();
+            new LegacyEditorGUI(player, tiers.get(slot), manager, this::reopen, lang).open();
             return;
         }
 
@@ -79,12 +83,12 @@ public class LegacyBrowserGUI extends InventoryGUI {
     }
 
     private void promptNew() {
-        chatPromptManager.prompt(player, "Escribí el id del nuevo tier (ej. 3):", value -> {
+        chatPromptManager.prompt(player, "gui.legacy.prompt_new_id", value -> {
 
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 
             if (manager.exists(id)) {
-                player.sendMessage(Component.text("Ya existe un tier con ese id.", NamedTextColor.RED));
+                lang.send(player, "gui.legacy.id_exists");
                 reopen();
                 return;
             }

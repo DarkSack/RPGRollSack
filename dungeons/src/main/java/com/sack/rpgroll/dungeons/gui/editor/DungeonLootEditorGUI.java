@@ -1,7 +1,9 @@
 package com.sack.rpgroll.dungeons.gui.editor;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
+import com.sack.rpgroll.util.ComponentUtils;
 import com.sack.rpgroll.dungeons.core.DungeonLootEntry;
 import com.sack.rpgroll.dungeons.core.LootScope;
 import com.sack.rpgroll.dungeons.core.LootType;
@@ -28,18 +30,16 @@ public class DungeonLootEditorGUI extends InventoryGUI {
     private static final int ADD_SLOT = 40;
     private static final int BACK_SLOT = 44;
 
-    private static final String FORMAT_HINT =
-            "TIPO referencia cantidadMin cantidadMax probabilidad scope\n"
-                    + "ej. ITEM ancient_relic 1 1 25 SHARED — tipos: ITEM/MONEY/EXPERIENCE/COMMAND/QUEST"
-                    + " — scope: SHARED/PER_PLAYER/PER_CONTRIBUTION";
-
     private final DungeonEditorSession session;
     private final Runnable onBack;
+    private final LangManager lang;
 
     public DungeonLootEditorGUI(Player player, DungeonEditorSession session, Runnable onBack) {
-        super(player, Component.text("Loot: " + session.original.id(), NamedTextColor.GOLD), SIZE);
+        super(player, ComponentUtils.parse(session.chatPromptManager.lang()
+                .raw("gui.editor.loot.title", "id", session.original.id())), SIZE);
         this.session = session;
         this.onBack = onBack;
+        this.lang = session.chatPromptManager.lang();
     }
 
     @Override
@@ -61,20 +61,20 @@ public class DungeonLootEditorGUI extends InventoryGUI {
                     .setName(Component.text(entry.type() + ": "
                             + (entry.reference() != null ? entry.reference() : "-"), NamedTextColor.YELLOW))
                     .setLore(
-                            Component.text("cantidad: " + entry.amountMin() + "-" + entry.amountMax(),
-                                    NamedTextColor.GRAY),
-                            Component.text("probabilidad: " + entry.chance() + "% · " + entry.scope(),
-                                    NamedTextColor.GRAY),
-                            Component.text("Click para reemplazar · Shift-click para quitar", NamedTextColor.DARK_GRAY))
+                            ComponentUtils.parse(lang.raw("gui.editor.loot.item.amount",
+                                    "min", entry.amountMin(), "max", entry.amountMax())),
+                            ComponentUtils.parse(lang.raw("gui.editor.loot.item.chance",
+                                    "chance", entry.chance(), "scope", entry.scope())),
+                            ComponentUtils.parse(lang.raw("gui.editor.loot.item.replace_remove_hint")))
                     .build());
         }
 
         setItem(ADD_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Agregar entrada de loot", NamedTextColor.GREEN))
-                .setLore(Component.text(FORMAT_HINT.split("\n")[0], NamedTextColor.GRAY))
+                .setName(ComponentUtils.parse(lang.raw("gui.editor.loot.add")))
+                .setLore(Component.text(lang.raw("gui.editor.loot.format_hint_short"), NamedTextColor.GRAY))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back")));
     }
 
     private Material iconFor(LootType type) {
@@ -118,7 +118,7 @@ public class DungeonLootEditorGUI extends InventoryGUI {
     }
 
     private void promptAdd() {
-        session.chatPromptManager.prompt(player, "Escribí: " + FORMAT_HINT, value -> {
+        session.chatPromptManager.prompt(player, "gui.editor.loot.prompt.add", value -> {
 
             DungeonLootEntry entry = parse(value);
             if (entry == null) {
@@ -134,7 +134,7 @@ public class DungeonLootEditorGUI extends InventoryGUI {
     }
 
     private void promptReplace(int index) {
-        session.chatPromptManager.prompt(player, "Escribí la entrada reemplazante: " + FORMAT_HINT, value -> {
+        session.chatPromptManager.prompt(player, "gui.editor.loot.prompt.replace", value -> {
 
             DungeonLootEntry entry = parse(value);
             if (entry == null) {
@@ -154,7 +154,7 @@ public class DungeonLootEditorGUI extends InventoryGUI {
         String[] parts = raw.trim().split("\\s+");
 
         if (parts.length != 6) {
-            player.sendMessage(Component.text("Formato inválido — se esperaban 6 campos.", NamedTextColor.RED));
+            lang.send(player, "gui.editor.loot.invalid_field_count");
             return null;
         }
 
@@ -168,7 +168,7 @@ public class DungeonLootEditorGUI extends InventoryGUI {
 
             return new DungeonLootEntry(type, reference, amountMin, amountMax, chance, scope);
         } catch (IllegalArgumentException e) {
-            player.sendMessage(Component.text("Valor inválido en la entrada de loot.", NamedTextColor.RED));
+            lang.send(player, "gui.editor.loot.invalid_value");
             return null;
         }
     }

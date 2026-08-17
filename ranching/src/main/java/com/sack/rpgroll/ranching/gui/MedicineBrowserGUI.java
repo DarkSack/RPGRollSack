@@ -32,7 +32,7 @@ public class MedicineBrowserGUI extends InventoryGUI {
 
     public MedicineBrowserGUI(Player player, MedicineManager medicineManager, DiseaseManager diseaseManager,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text("Medicinas", NamedTextColor.GOLD), SIZE);
+        super(player, Component.text(chatPromptManager.lang().raw("gui.hub.medicines"), NamedTextColor.GOLD), SIZE);
         this.medicineManager = medicineManager;
         this.diseaseManager = diseaseManager;
         this.chatPromptManager = chatPromptManager;
@@ -55,15 +55,15 @@ public class MedicineBrowserGUI extends InventoryGUI {
 
             setItem(i, new ItemBuilder(SpeciesBrowserGUI.parseMaterial(medicine.icon(), Material.POTION))
                     .setName(Component.text(medicine.displayName(), NamedTextColor.YELLOW))
-                    .setLore(Component.text("id: " + medicine.id(), NamedTextColor.GRAY),
-                            Component.text("tipo: " + medicine.type(), NamedTextColor.GRAY),
-                            Component.text("Click para editar", NamedTextColor.YELLOW))
+                    .setLore(Component.text(chatPromptManager.lang().raw("gui.browser.id_line", "id", medicine.id()), NamedTextColor.GRAY),
+                            Component.text(chatPromptManager.lang().raw("gui.medicine.browser.type_line", "type", medicine.type()), NamedTextColor.GRAY),
+                            Component.text(chatPromptManager.lang().raw("gui.common.click_to_edit"), NamedTextColor.YELLOW))
                     .build());
         }
 
         setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Crear medicina nueva", NamedTextColor.GREEN)).build());
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+                .setName(Component.text(chatPromptManager.lang().raw("gui.medicine.browser.new"), NamedTextColor.GREEN)).build());
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(chatPromptManager.lang().raw("gui.common.back")));
     }
 
     @Override
@@ -89,12 +89,12 @@ public class MedicineBrowserGUI extends InventoryGUI {
     }
 
     private void promptNew() {
-        chatPromptManager.prompt(player, "Escribí el id de la nueva medicina:", value -> {
+        chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.medicine.browser.prompt_new_id"), value -> {
 
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 
             if (medicineManager.exists(id)) {
-                player.sendMessage(Component.text("Ya existe una medicina con ese id.", NamedTextColor.RED));
+                player.sendMessage(Component.text(chatPromptManager.lang().raw("gui.medicine.browser.already_exists"), NamedTextColor.RED));
                 reopen();
                 return;
             }

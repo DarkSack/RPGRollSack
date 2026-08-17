@@ -1,5 +1,6 @@
 package com.sack.rpgroll.dungeons.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.util.ComponentUtils;
 
 import com.sack.rpgroll.gui.util.ItemBuilder;
@@ -41,6 +42,7 @@ public class DungeonBrowserGUI extends PaginatedGUI {
     private final DungeonManager dungeonManager;
     private final ChatPromptManager chatPromptManager;
     private final Plugin plugin;
+    private final LangManager lang;
 
     private List<DungeonDefinition> filtered;
     private List<String> categories;
@@ -50,11 +52,12 @@ public class DungeonBrowserGUI extends PaginatedGUI {
     public DungeonBrowserGUI(Player player, DungeonManager dungeonManager, ChatPromptManager chatPromptManager,
             Plugin plugin) {
 
-        super(player, Component.text("Mazmorras RPGRoll", NamedTextColor.GOLD), SIZE, CONTENT_SLOTS);
+        super(player, ComponentUtils.parse(chatPromptManager.lang().raw("gui.browser.title")), SIZE, CONTENT_SLOTS);
 
         this.dungeonManager = dungeonManager;
         this.chatPromptManager = chatPromptManager;
         this.plugin = plugin;
+        this.lang = chatPromptManager.lang();
 
         recomputeCategories();
         applyFilters();
@@ -102,11 +105,11 @@ public class DungeonBrowserGUI extends PaginatedGUI {
                         .colorIfAbsent(NamedTextColor.WHITE))
                 .setLore(
                         Component.text(definition.id(), NamedTextColor.DARK_GRAY),
-                        Component.text("Nivel " + definition.recommendedLevel() + " · "
-                                + definition.minPlayers() + "-" + definition.maxPlayers() + " jugadores",
-                                NamedTextColor.GRAY),
-                        Component.text(definition.rooms().size() + " sala(s)", NamedTextColor.GRAY),
-                        Component.text("Click para editar", NamedTextColor.YELLOW))
+                        ComponentUtils.parse(lang.raw("gui.browser.item.level_players",
+                                "level", definition.recommendedLevel(), "min", definition.minPlayers(),
+                                "max", definition.maxPlayers())),
+                        ComponentUtils.parse(lang.raw("gui.browser.item.rooms", "rooms", definition.rooms().size())),
+                        ComponentUtils.parse(lang.raw("gui.browser.item.click_to_edit")))
                 .build());
     }
 
@@ -132,25 +135,25 @@ public class DungeonBrowserGUI extends PaginatedGUI {
         }
 
         setItem(PREV_SLOT, hasPreviousPage()
-                ? new ItemBuilder(Material.ARROW).setName(Component.text("« Anterior", NamedTextColor.YELLOW)).build()
+                ? new ItemBuilder(Material.ARROW).setName(ComponentUtils.parse(lang.raw("gui.common.previous"))).build()
                 : ItemBuilder.createFiller());
 
         setItem(NEXT_SLOT, hasNextPage()
-                ? new ItemBuilder(Material.ARROW).setName(Component.text("Siguiente »", NamedTextColor.YELLOW)).build()
+                ? new ItemBuilder(Material.ARROW).setName(ComponentUtils.parse(lang.raw("gui.common.next"))).build()
                 : ItemBuilder.createFiller());
 
         setItem(SEARCH_SLOT, new ItemBuilder(Material.COMPASS)
-                .setName(Component.text("Buscar", NamedTextColor.AQUA))
-                .setLore(Component.text(searchText.isBlank() ? "(sin filtro)" : "Filtro: " + searchText,
-                        NamedTextColor.GRAY))
+                .setName(ComponentUtils.parse(lang.raw("gui.browser.search.name")))
+                .setLore(ComponentUtils.parse(searchText.isBlank() ? lang.raw("gui.browser.search.no_filter")
+                        : lang.raw("gui.browser.search.filter", "text", searchText)))
                 .build());
 
         setItem(ALL_CATEGORIES_SLOT, new ItemBuilder(activeCategory == null ? Material.LIME_DYE : Material.GRAY_DYE)
-                .setName(Component.text("Todas las categorías", NamedTextColor.AQUA))
+                .setName(ComponentUtils.parse(lang.raw("gui.browser.all_categories")))
                 .build());
 
         setItem(CLEAR_SEARCH_SLOT, new ItemBuilder(Material.BARRIER)
-                .setName(Component.text("Limpiar búsqueda", NamedTextColor.RED))
+                .setName(ComponentUtils.parse(lang.raw("gui.browser.clear_search")))
                 .build());
     }
 
@@ -194,7 +197,8 @@ public class DungeonBrowserGUI extends PaginatedGUI {
     }
 
     private void promptSearch() {
-        chatPromptManager.prompt(player, "Escribí parte del nombre o id de la mazmorra:", value -> {
+        chatPromptManager.prompt(player, "gui.browser.search.prompt", value -> {
+
             searchText = value.trim();
             applyFilters();
         });

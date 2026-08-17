@@ -11,6 +11,7 @@ import com.sack.rpgroll.chat.mention.MentionResolver;
 import com.sack.rpgroll.chat.player.PlayerChannelStateManager;
 import com.sack.rpgroll.chat.reaction.ReactionManager;
 import com.sack.rpgroll.chat.reaction.ReactionType;
+import com.sack.rpgroll.common.lang.LangManager;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
@@ -36,11 +37,12 @@ public class ChatMessagePipeline {
     private final MessageFormatter messageFormatter;
     private final ChatLogManager logManager;
     private final ReactionManager reactionManager;
+    private final LangManager lang;
 
     public ChatMessagePipeline(PlayerChannelStateManager channelStateManager, AntiSpamManager antiSpamManager,
             MessageFilter messageFilter, MentionResolver mentionResolver, LanguageService languageService,
             ChannelRouter channelRouter, MessageFormatter messageFormatter, ChatLogManager logManager,
-            ReactionManager reactionManager) {
+            ReactionManager reactionManager, LangManager lang) {
         this.channelStateManager = channelStateManager;
         this.antiSpamManager = antiSpamManager;
         this.messageFilter = messageFilter;
@@ -50,6 +52,7 @@ public class ChatMessagePipeline {
         this.messageFormatter = messageFormatter;
         this.logManager = logManager;
         this.reactionManager = reactionManager;
+        this.lang = lang;
     }
 
     public enum SendResult {
@@ -130,8 +133,7 @@ public class ChatMessagePipeline {
             boolean isMentioned = mentions.mentionsAll() || mentions.mentionedPlayers().contains(recipient);
             if (isMentioned && !recipient.equals(sender)) {
                 recipient.playSound(recipient.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1f, 1.2f);
-                recipient.sendMessage(Component.text("→ Te mencionaron en #" + channel.displayName(),
-                        NamedTextColor.YELLOW));
+                lang.send(recipient, "channel.mentioned", "channel", channel.displayName());
             }
         }
 
@@ -145,7 +147,7 @@ public class ChatMessagePipeline {
         for (ReactionType type : ReactionType.values()) {
 
             Component icon = Component.text(" " + type.symbol(), NamedTextColor.DARK_GRAY)
-                    .hoverEvent(HoverEvent.showText(Component.text("Reaccionar con " + type.symbol())))
+                    .hoverEvent(HoverEvent.showText(lang.component("reaction.hover_react", "symbol", type.symbol())))
                     .clickEvent(ClickEvent.runCommand("/react " + messageId + " " + type.name()));
 
             bar = bar.append(icon);

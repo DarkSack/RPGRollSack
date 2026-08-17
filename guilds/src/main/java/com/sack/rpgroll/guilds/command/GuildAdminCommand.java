@@ -7,9 +7,6 @@ import com.sack.rpgroll.guilds.guild.GuildManager;
 import com.sack.rpgroll.guilds.guild.quest.GuildQuestManager;
 import com.sack.rpgroll.util.TabCompleteUtil;
 
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
-
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -49,13 +46,13 @@ public class GuildAdminCommand implements CommandExecutor, TabCompleter {
         switch (args[0].toLowerCase(Locale.ROOT)) {
             case "reload" -> {
                 questManager.reload();
-                sender.sendMessage(Component.text("✔ Quests de guild recargadas: " + questManager.count(),
-                        NamedTextColor.GREEN));
+                com.sack.rpgroll.guilds.GuildsAPI.reloadLangManager();
+                services.langManager().send(sender, "guildadmin.reload.success", "count", questManager.count());
             }
             case "browser" -> {
 
                 if (!(sender instanceof Player player)) {
-                    sender.sendMessage(Component.text("Solo un jugador puede abrir el navegador.", NamedTextColor.RED));
+                    services.langManager().send(sender, "guildadmin.browser.players_only");
                     return true;
                 }
 
@@ -69,15 +66,15 @@ public class GuildAdminCommand implements CommandExecutor, TabCompleter {
             }
             case "delete" -> {
                 if (args.length < 2) {
-                    sender.sendMessage(Component.text("Uso: /guildadmin delete <id>", NamedTextColor.YELLOW));
+                    services.langManager().send(sender, "guildadmin.delete.usage");
                     return true;
                 }
                 if (!guildManager.exists(args[1])) {
-                    sender.sendMessage(Component.text("No existe esa guild.", NamedTextColor.RED));
+                    services.langManager().send(sender, "guildadmin.delete.not_found");
                     return true;
                 }
                 guildManager.disband(args[1]);
-                sender.sendMessage(Component.text("✔ Guild eliminada.", NamedTextColor.GREEN));
+                services.langManager().send(sender, "guildadmin.delete.success");
             }
             default -> sendUsage(sender);
         }
@@ -86,8 +83,7 @@ public class GuildAdminCommand implements CommandExecutor, TabCompleter {
     }
 
     private void sendUsage(CommandSender sender) {
-        sender.sendMessage(Component.text("Uso: /guildadmin <reload|browser [guilds|quests]|delete> [args]",
-                NamedTextColor.YELLOW));
+        services.langManager().send(sender, "guildadmin.usage");
     }
 
     @Override

@@ -1,7 +1,6 @@
 package com.sack.rpgroll.chat.whisper;
 
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
+import com.sack.rpgroll.common.lang.LangManager;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -16,24 +15,21 @@ public class WhisperManager {
 
     private final Map<UUID, UUID> lastPartner = new ConcurrentHashMap<>();
     private final Set<UUID> socialSpyEnabled = ConcurrentHashMap.newKeySet();
+    private final LangManager lang;
+
+    public WhisperManager(LangManager lang) {
+        this.lang = lang;
+    }
 
     public void send(Player sender, Player target, String message) {
 
-        Component toSender = Component.text("Tú -> " + target.getName() + ": ", NamedTextColor.LIGHT_PURPLE)
-                .append(Component.text(message, NamedTextColor.WHITE));
-        Component toTarget = Component.text(sender.getName() + " -> Tú: ", NamedTextColor.LIGHT_PURPLE)
-                .append(Component.text(message, NamedTextColor.WHITE));
-
-        sender.sendMessage(toSender);
-        target.sendMessage(toTarget);
+        lang.send(sender, "whisper.to_sender", "target", target.getName(), "message", message);
+        lang.send(target, "whisper.to_target", "sender", sender.getName(), "message", message);
 
         lastPartner.put(sender.getUniqueId(), target.getUniqueId());
         lastPartner.put(target.getUniqueId(), sender.getUniqueId());
 
         if (!socialSpyEnabled.isEmpty()) {
-
-            Component spyLine = Component.text("[Spy] " + sender.getName() + " -> " + target.getName() + ": ",
-                    NamedTextColor.DARK_GRAY).append(Component.text(message, NamedTextColor.GRAY));
 
             for (UUID spyId : socialSpyEnabled) {
                 if (spyId.equals(sender.getUniqueId()) || spyId.equals(target.getUniqueId())) {
@@ -41,7 +37,8 @@ public class WhisperManager {
                 }
                 Player spy = Bukkit.getPlayer(spyId);
                 if (spy != null) {
-                    spy.sendMessage(spyLine);
+                    lang.send(spy, "whisper.spy_line", "sender", sender.getName(), "target", target.getName(),
+                            "message", message);
                 }
             }
         }

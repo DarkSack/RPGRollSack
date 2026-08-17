@@ -1,5 +1,7 @@
 package com.sack.rpgroll.fishing;
 
+import com.sack.rpgroll.common.assets.ModuleAssetSync;
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.common.resource.DirectoryCreator;
 import com.sack.rpgroll.common.resource.ResourceCopier;
 import com.sack.rpgroll.fishing.api.FishingAPI;
@@ -34,6 +36,7 @@ public class FishingPlugin extends JavaPlugin {
     private JunkManager junkManager;
     private FishingRegionManager regionManager;
     private FishingProfileManager profileManager;
+    private LangManager langManager;
 
     @Override
     public void onEnable() {
@@ -42,6 +45,11 @@ public class FishingPlugin extends JavaPlugin {
 
         new DirectoryCreator(this).create(DIRECTORIES);
         new ResourceCopier(this).copyDirectories(DIRECTORIES);
+
+        langManager = new LangManager(this, List.of("es", "en", "pt_BR"), "es");
+        langManager.reload(getConfig().getString("language", "es"));
+
+        new ModuleAssetSync(this, "fishing").syncAll();
 
         speciesManager = new FishSpeciesManager(this);
         speciesManager.initialize();
@@ -75,21 +83,21 @@ public class FishingPlugin extends JavaPlugin {
         FishingAPI.init(speciesManager, rodManager, baitManager, treasureManager, junkManager, regionManager,
                 profileManager, catchEngine);
 
-        ChatPromptManager chatPromptManager = new ChatPromptManager(this);
+        ChatPromptManager chatPromptManager = new ChatPromptManager(this, langManager);
         getServer().getPluginManager().registerEvents(chatPromptManager, this);
 
-        FishingMinigameManager minigameManager = new FishingMinigameManager(this);
+        FishingMinigameManager minigameManager = new FishingMinigameManager(this, langManager);
         getServer().getPluginManager().registerEvents(minigameManager, this);
 
         getServer().getPluginManager().registerEvents(new FishingCastListener(rodManager, baitManager, catchEngine,
-                minigameManager, profileManager, rpgMode), this);
+                minigameManager, profileManager, rpgMode, langManager), this);
 
         var adminCommand = getCommand("fishingadmin");
         if (adminCommand == null) {
             getLogger().severe("✘ El comando 'fishingadmin' no está declarado en plugin.yml");
         } else {
             var fishingAdminCommand = new FishingAdminCommand(speciesManager, rodManager, baitManager,
-                    treasureManager, junkManager, regionManager, chatPromptManager);
+                    treasureManager, junkManager, regionManager, chatPromptManager, this);
             adminCommand.setExecutor(fishingAdminCommand);
             adminCommand.setTabCompleter(fishingAdminCommand);
         }
@@ -98,7 +106,7 @@ public class FishingPlugin extends JavaPlugin {
         if (playerCommand == null) {
             getLogger().severe("✘ El comando 'fishing' no está declarado en plugin.yml");
         } else {
-            var fishingCommand = new FishingCommand(speciesManager, profileManager);
+            var fishingCommand = new FishingCommand(speciesManager, profileManager, langManager);
             playerCommand.setExecutor(fishingCommand);
             playerCommand.setTabCompleter(fishingCommand);
         }
@@ -141,6 +149,10 @@ public class FishingPlugin extends JavaPlugin {
 
     public FishingProfileManager getProfileManager() {
         return profileManager;
+    }
+
+    public LangManager getLangManager() {
+        return langManager;
     }
 
 }

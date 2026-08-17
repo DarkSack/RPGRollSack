@@ -1,13 +1,11 @@
 package com.sack.rpgroll.quests.command;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.quests.core.Quest;
 import com.sack.rpgroll.quests.engine.QuestEngine;
 import com.sack.rpgroll.quests.player.ActiveQuestProgress;
 import com.sack.rpgroll.quests.player.QuestPlayerState;
 import com.sack.rpgroll.util.TabCompleteUtil;
-
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -32,16 +30,18 @@ public class QuestCommand implements CommandExecutor, TabCompleter {
             "completed");
 
     private final QuestEngine engine;
+    private final LangManager lang;
 
-    public QuestCommand(QuestEngine engine) {
+    public QuestCommand(QuestEngine engine, LangManager lang) {
         this.engine = engine;
+        this.lang = lang;
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
         if (!(sender instanceof Player player)) {
-            sender.sendMessage("Solo un jugador puede usar este comando.");
+            lang.send(sender, "general.player_only");
             return true;
         }
 
@@ -64,8 +64,7 @@ public class QuestCommand implements CommandExecutor, TabCompleter {
     }
 
     private void sendUsage(Player player) {
-        player.sendMessage(Component.text(
-                "Uso: /quest <list|info|start|abandon|active|completed> [id]", NamedTextColor.RED));
+        lang.send(player, "command.usage");
     }
 
     private void handleList(Player player) {
@@ -73,81 +72,77 @@ public class QuestCommand implements CommandExecutor, TabCompleter {
         var quests = engine.getQuestManager().getAll();
 
         if (quests.isEmpty()) {
-            player.sendMessage(Component.text("No hay misiones definidas.", NamedTextColor.GRAY));
+            lang.send(player, "command.list_empty");
             return;
         }
 
-        player.sendMessage(Component.text("Misiones disponibles:", NamedTextColor.GOLD));
+        lang.send(player, "command.list_header");
 
         for (Quest quest : quests) {
-            player.sendMessage(Component.text(
-                    "• " + quest.id() + " — " + quest.displayName() + " (" + quest.category() + ", "
-                            + quest.difficulty() + ")",
-                    NamedTextColor.WHITE));
+            lang.send(player, "command.list_entry", "id", quest.id(), "name", quest.displayName(),
+                    "category", quest.category(), "difficulty", quest.difficulty());
         }
     }
 
     private void handleInfo(Player player, String[] args) {
 
         if (args.length < 2) {
-            player.sendMessage(Component.text("Uso: /quest info <id>", NamedTextColor.RED));
+            lang.send(player, "command.info_usage");
             return;
         }
 
         Optional<Quest> questOpt = engine.getQuestManager().get(args[1]);
 
         if (questOpt.isEmpty()) {
-            player.sendMessage(Component.text("No existe una misión con id: " + args[1], NamedTextColor.RED));
+            lang.send(player, "command.quest_not_found", "id", args[1]);
             return;
         }
 
         Quest quest = questOpt.get();
 
-        player.sendMessage(Component.text(quest.displayName(), NamedTextColor.GOLD));
-        player.sendMessage(Component.text("Categoría: " + quest.category(), NamedTextColor.GRAY));
-        player.sendMessage(Component.text("Dificultad: " + quest.difficulty(), NamedTextColor.GRAY));
-        player.sendMessage(Component.text("Etapas: " + quest.stages().size(), NamedTextColor.GRAY));
-        player.sendMessage(Component.text(
-                "Repetible: " + (quest.repeatable() ? "sí" : "no"), NamedTextColor.GRAY));
+        lang.send(player, "command.info_title", "name", quest.displayName());
+        lang.send(player, "command.info_category", "category", quest.category());
+        lang.send(player, "command.info_difficulty", "difficulty", quest.difficulty());
+        lang.send(player, "command.info_stages", "count", quest.stages().size());
+        lang.send(player, quest.repeatable() ? "command.info_repeatable_yes" : "command.info_repeatable_no");
     }
 
     private void handleStart(Player player, String[] args) {
 
         if (args.length < 2) {
-            player.sendMessage(Component.text("Uso: /quest start <id>", NamedTextColor.RED));
+            lang.send(player, "command.start_usage");
             return;
         }
 
         Optional<Quest> questOpt = engine.getQuestManager().get(args[1]);
 
         if (questOpt.isEmpty()) {
-            player.sendMessage(Component.text("No existe una misión con id: " + args[1], NamedTextColor.RED));
+            lang.send(player, "command.quest_not_found", "id", args[1]);
             return;
         }
 
         var reasons = engine.startQuest(player, questOpt.get());
 
         if (reasons.isEmpty()) {
-            player.sendMessage(Component.text("✔ Misión iniciada: " + questOpt.get().displayName(),
-                    NamedTextColor.GREEN));
+            lang.send(player, "command.start_success", "name", questOpt.get().displayName());
             return;
         }
 
-        player.sendMessage(Component.text("No podés iniciar esta misión:", NamedTextColor.RED));
-        reasons.forEach(reason -> player.sendMessage(Component.text("- " + reason, NamedTextColor.RED)));
+        lang.send(player, "command.start_denied_header");
+        reasons.forEach(reason -> lang.send(player, "command.start_denied_reason", "reason", reason));
     }
 
     private void handleAbandon(Player player, String[] args) {
 
         if (args.length < 2) {
-            player.sendMessage(Component.text("Uso: /quest abandon <id>", NamedTextColor.RED));
+            lang.send(player, "command.abandon_usage");
             return;
         }
 
         if (engine.abandonQuest(player, args[1])) {
-            player.sendMessage(Component.text("✔ Misión abandonada.", NamedTextColor.GREEN));
+            lang.send(player, "command.abandon_success");
         } else {
-            player.sendMessage(Component.text("No tenés esa misión activa.", NamedTextColor.RED));
+            lang.send(player, "command.abandon_not_active");
         }
     }
 
@@ -156,11 +151,11 @@ public class QuestCommand implements CommandExecutor, TabCompleter {
         QuestPlayerState state = engine.getStateManager().getOrLoad(player);
 
         if (state.allActive().isEmpty()) {
-            player.sendMessage(Component.text("No tenés misiones activas.", NamedTextColor.GRAY));
+            lang.send(player, "command.active_empty");
             return;
         }
 
-        player.sendMessage(Component.text("Misiones activas:", NamedTextColor.GOLD));
+        lang.send(player, "command.active_header");
 
         for (ActiveQuestProgress progress : state.allActive().values()) {
 
@@ -170,10 +165,8 @@ public class QuestCommand implements CommandExecutor, TabCompleter {
                 String stageId = stageOpt.map(s -> s.id()).orElse("?");
                 int totalStages = quest.stages().size();
 
-                player.sendMessage(Component.text(
-                        "• " + quest.displayName() + " — stage " + (progress.stageIndex() + 1) + "/" + totalStages
-                                + " (" + stageId + ")",
-                        NamedTextColor.WHITE));
+                lang.send(player, "command.active_entry", "name", quest.displayName(),
+                        "current", progress.stageIndex() + 1, "total", totalStages, "stageId", stageId);
             });
         }
     }
@@ -183,15 +176,14 @@ public class QuestCommand implements CommandExecutor, TabCompleter {
         QuestPlayerState state = engine.getStateManager().getOrLoad(player);
 
         if (state.allCompleted().isEmpty()) {
-            player.sendMessage(Component.text("Todavía no completaste ninguna misión.", NamedTextColor.GRAY));
+            lang.send(player, "command.completed_empty");
             return;
         }
 
-        player.sendMessage(Component.text("Misiones completadas: " + state.totalCompletedCount(),
-                NamedTextColor.GOLD));
+        lang.send(player, "command.completed_header", "count", state.totalCompletedCount());
 
         for (String questId : state.allCompleted().keySet()) {
-            player.sendMessage(Component.text("• " + questId, NamedTextColor.WHITE));
+            lang.send(player, "command.completed_entry", "id", questId);
         }
     }
 

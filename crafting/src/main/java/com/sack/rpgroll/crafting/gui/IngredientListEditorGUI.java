@@ -58,20 +58,20 @@ public class IngredientListEditorGUI extends InventoryGUI {
 
             setItem(i, new ItemBuilder(Material.HOPPER)
                     .setName(Component.text(IngredientSpecFormat.format(spec), NamedTextColor.AQUA))
-                    .setLore(Component.text("Shift-click para quitar", NamedTextColor.RED))
+                    .setLore(Component.text(chatPromptManager.lang().raw("gui.common.shift_remove"), NamedTextColor.RED))
                     .build());
         }
 
         setItem(ADD_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Agregar ingrediente", NamedTextColor.GREEN))
-                .setLore(Component.text("TIPO VALOR CANTIDAD [CALIDAD-MINIMA]", NamedTextColor.GRAY),
-                        Component.text("ej. MATERIAL IRON_INGOT 2", NamedTextColor.DARK_GRAY),
-                        Component.text("ej. ITEM_ID enchanted_gem 1 FINE", NamedTextColor.DARK_GRAY),
-                        Component.text("ej. TAG minecraft:planks 4", NamedTextColor.DARK_GRAY),
-                        Component.text("ej. ANY 1", NamedTextColor.DARK_GRAY))
+                .setName(Component.text(chatPromptManager.lang().raw("gui.ingredient_list.add"), NamedTextColor.GREEN))
+                .setLore(Component.text(chatPromptManager.lang().raw("gui.ingredient_list.add_lore_1"), NamedTextColor.GRAY),
+                        Component.text(chatPromptManager.lang().raw("gui.ingredient_list.add_lore_2"), NamedTextColor.DARK_GRAY),
+                        Component.text(chatPromptManager.lang().raw("gui.ingredient_list.add_lore_3"), NamedTextColor.DARK_GRAY),
+                        Component.text(chatPromptManager.lang().raw("gui.ingredient_list.add_lore_4"), NamedTextColor.DARK_GRAY),
+                        Component.text(chatPromptManager.lang().raw("gui.ingredient_list.add_lore_5"), NamedTextColor.DARK_GRAY))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(chatPromptManager.lang().raw("gui.common.back")));
     }
 
     @Override
@@ -100,11 +100,11 @@ public class IngredientListEditorGUI extends InventoryGUI {
     }
 
     private void promptAdd() {
-        chatPromptManager.prompt(player, "Escribí: TIPO VALOR CANTIDAD [CALIDAD-MINIMA]", raw -> {
+        chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.ingredient_list.prompt_add"), raw -> {
 
             IngredientSpec spec;
             try {
-                spec = IngredientSpecFormat.parse(raw);
+                spec = IngredientSpecFormat.parse(raw, chatPromptManager.lang());
             } catch (IllegalArgumentException e) {
                 player.sendMessage(Component.text(e.getMessage(), NamedTextColor.RED));
                 return;

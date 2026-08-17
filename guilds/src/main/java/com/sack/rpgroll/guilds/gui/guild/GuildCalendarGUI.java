@@ -33,12 +33,17 @@ public class GuildCalendarGUI extends InventoryGUI {
 
     public GuildCalendarGUI(Player player, Guild guild, GuildManager guildManager,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text("Calendario: " + guild.name(), NamedTextColor.GOLD), SIZE);
+        super(player, Component.text(chatPromptManager.lang().raw("guild.calendar.title", "name", guild.name()),
+                NamedTextColor.GOLD), SIZE);
         this.guild = guild;
         this.guildManager = guildManager;
         this.chatPromptManager = chatPromptManager;
         this.onBack = onBack;
         this.events = guild.calendar();
+    }
+
+    private com.sack.rpgroll.common.lang.LangManager lang() {
+        return chatPromptManager.lang();
     }
 
     @Override
@@ -61,15 +66,15 @@ public class GuildCalendarGUI extends InventoryGUI {
                     .setLore(Component.text(event.type() + " · " + format.format(new Date(event.scheduledAtMillis())),
                             NamedTextColor.GRAY),
                             Component.text(event.description(), NamedTextColor.GRAY),
-                            Component.text("Shift-click para eliminar", NamedTextColor.DARK_GRAY))
+                            Component.text(lang().raw("guild.calendar.lore.shift_click_delete"), NamedTextColor.DARK_GRAY))
                     .build());
         }
 
         setItem(ADD_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Agendar evento", NamedTextColor.GREEN))
+                .setName(Component.text(lang().raw("guild.calendar.button.add"), NamedTextColor.GREEN))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang().raw("common.back")));
     }
 
     @Override
@@ -85,8 +90,7 @@ public class GuildCalendarGUI extends InventoryGUI {
             if (event.isShiftClick()) {
 
                 if (!canManage) {
-                    player.sendMessage(Component.text("No tenés permiso para editar el calendario.",
-                            NamedTextColor.RED));
+                    lang().send(player, "guild.calendar.no_permission_edit");
                     return;
                 }
 
@@ -100,7 +104,7 @@ public class GuildCalendarGUI extends InventoryGUI {
         if (slot == ADD_SLOT) {
 
             if (!canManage) {
-                player.sendMessage(Component.text("No tenés permiso para agendar eventos.", NamedTextColor.RED));
+                lang().send(player, "guild.calendar.no_permission_add");
                 return;
             }
 
@@ -114,13 +118,12 @@ public class GuildCalendarGUI extends InventoryGUI {
     }
 
     private void promptNewEvent() {
-        chatPromptManager.prompt(player,
-                "Escribí: nombre;tipo;minutos-desde-ahora;descripción (ej. Torneo;torneo;60;Torneo semanal)", value -> {
+        chatPromptManager.prompt(player, "guild.calendar.prompt_new_event", value -> {
 
                     String[] parts = value.split(";", 4);
 
                     if (parts.length < 4) {
-                        player.sendMessage(Component.text("Formato inválido.", NamedTextColor.RED));
+                        lang().send(player, "guild.calendar.invalid_format");
                         reopen();
                         return;
                     }
@@ -129,7 +132,7 @@ public class GuildCalendarGUI extends InventoryGUI {
                     try {
                         minutes = Long.parseLong(parts[2].trim());
                     } catch (NumberFormatException e) {
-                        player.sendMessage(Component.text("Los minutos deben ser un número.", NamedTextColor.RED));
+                        lang().send(player, "guild.calendar.minutes_not_a_number");
                         reopen();
                         return;
                     }

@@ -2,6 +2,7 @@ package com.sack.rpgroll.enchantments.gui;
 
 import com.sack.rpgroll.util.ComponentUtils;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.enchantments.core.CustomEnchantment;
@@ -53,15 +54,18 @@ public class EnchantmentEditorGUI extends InventoryGUI {
 
     private final EnchantmentManager enchantmentManager;
     private final ChatPromptManager chatPromptManager;
+    private final LangManager lang;
     private final Runnable onBack;
     private CustomEnchantment current;
 
     public EnchantmentEditorGUI(Player player, CustomEnchantment enchantment, EnchantmentManager enchantmentManager,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text("Encantamiento: " + enchantment.id(), NamedTextColor.GOLD), SIZE);
+        super(player, chatPromptManager.lang().component("enchantment_editor_gui.title", "id", enchantment.id()),
+                SIZE);
         this.current = enchantment;
         this.enchantmentManager = enchantmentManager;
         this.chatPromptManager = chatPromptManager;
+        this.lang = chatPromptManager.lang();
         this.onBack = onBack;
     }
 
@@ -81,33 +85,39 @@ public class EnchantmentEditorGUI extends InventoryGUI {
         }
 
         setItem(NAME_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(ComponentUtils.parse("Nombre: " + current.displayName()).colorIfAbsent(NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para escribir uno nuevo", NamedTextColor.GRAY))
+                .setName(ComponentUtils
+                        .parse(lang.raw("enchantment_editor_gui.name_slot_name", "name", current.displayName()))
+                        .colorIfAbsent(NamedTextColor.YELLOW))
+                .setLore(lang.component("enchantment_editor_gui.click_new_value"))
                 .build());
 
         setItem(RARITY_SLOT, new ItemBuilder(Material.NETHER_STAR)
-                .setName(Component.text("Rareza: " + current.rarity(), current.rarity().color()))
-                .setLore(Component.text("Click para pasar a la siguiente", NamedTextColor.GRAY))
+                .setName(Component.text(lang.raw("enchantment_editor_gui.rarity_slot_name", "rarity",
+                        current.rarity()), current.rarity().color()))
+                .setLore(lang.component("enchantment_editor_gui.rarity_slot_lore"))
                 .build());
 
         setItem(MAX_LEVEL_SLOT, new ItemBuilder(Material.ANVIL)
-                .setName(Component.text("Nivel máximo: " + current.maxLevel(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click: +1 · Click derecho: -1", NamedTextColor.GRAY))
+                .setName(lang.component("enchantment_editor_gui.max_level_slot_name", "max_level",
+                        current.maxLevel()))
+                .setLore(lang.component("enchantment_editor_gui.max_level_slot_lore"))
                 .build());
 
         setItem(CHANCE_SLOT, new ItemBuilder(Material.GOLD_NUGGET)
-                .setName(Component.text("Probabilidad: " + current.chance() + "%", NamedTextColor.YELLOW))
-                .setLore(Component.text("Click: +5 · Click derecho: -5", NamedTextColor.GRAY))
+                .setName(lang.component("enchantment_editor_gui.chance_slot_name", "chance", current.chance()))
+                .setLore(lang.component("enchantment_editor_gui.chance_slot_lore"))
                 .build());
 
         setItem(CONFLICTS_SLOT, new ItemBuilder(Material.BARRIER)
-                .setName(Component.text("Conflictos: " + String.join(", ", current.conflicts()), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para escribir la lista separada por comas", NamedTextColor.GRAY))
+                .setName(lang.component("enchantment_editor_gui.conflicts_slot_name", "conflicts",
+                        String.join(", ", current.conflicts())))
+                .setLore(lang.component("enchantment_editor_gui.conflicts_slot_lore"))
                 .build());
 
         setItem(CONDITIONS_SLOT, new ItemBuilder(Material.BOOK)
-                .setName(Component.text("Condiciones: " + current.conditions().size(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para escribir la lista completa, una por línea", NamedTextColor.GRAY))
+                .setName(lang.component("enchantment_editor_gui.conditions_slot_name", "count",
+                        current.conditions().size()))
+                .setLore(lang.component("enchantment_editor_gui.conditions_slot_lore"))
                 .build());
 
         EnchantCategory[] categories = EnchantCategory.values();
@@ -115,7 +125,7 @@ public class EnchantmentEditorGUI extends InventoryGUI {
             boolean active = current.categories().contains(categories[i]);
             setItem(CATEGORY_ROW + i, new ItemBuilder(active ? Material.LIME_DYE : Material.GRAY_DYE)
                     .setName(Component.text(categories[i].name(), active ? NamedTextColor.GREEN : NamedTextColor.GRAY))
-                    .setLore(Component.text("Click para alternar", NamedTextColor.DARK_GRAY))
+                    .setLore(lang.component("enchantment_editor_gui.toggle_lore"))
                     .build());
         }
 
@@ -124,7 +134,7 @@ public class EnchantmentEditorGUI extends InventoryGUI {
             boolean active = current.triggers().contains(triggers[i]);
             setItem(TRIGGER_ROW + i, new ItemBuilder(active ? Material.LIME_DYE : Material.GRAY_DYE)
                     .setName(Component.text(triggers[i].name(), active ? NamedTextColor.GREEN : NamedTextColor.GRAY))
-                    .setLore(Component.text("Click para alternar", NamedTextColor.DARK_GRAY))
+                    .setLore(lang.component("enchantment_editor_gui.toggle_lore"))
                     .build());
         }
 
@@ -134,15 +144,15 @@ public class EnchantmentEditorGUI extends InventoryGUI {
             setItem(EFFECTS_ROW + i, new ItemBuilder(Material.POTION)
                     .setName(Component.text(effect.type().name(), NamedTextColor.WHITE))
                     .setLore(Component.text(effect.params().toString(), NamedTextColor.GRAY),
-                            Component.text("Shift-click para quitar", NamedTextColor.DARK_GRAY))
+                            lang.component("enchantment_editor_gui.effect_remove_hint"))
                     .build());
         }
 
         setItem(ADD_EFFECT_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Agregar efecto", NamedTextColor.GREEN))
+                .setName(lang.component("enchantment_editor_gui.add_effect_button"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("enchantment_editor_gui.back_button")));
     }
 
     @Override
@@ -153,7 +163,7 @@ public class EnchantmentEditorGUI extends InventoryGUI {
         ClickType click = event.getClick();
 
         if (slot == NAME_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el nuevo nombre:", value -> replace(new CustomEnchantment(
+            chatPromptManager.prompt(player, lang.raw("enchantment_editor_gui.prompt_name"), value -> replace(new CustomEnchantment(
                     current.id(), value, current.rarity(), current.categories(), current.allowedItems(),
                     current.maxLevel(), current.levelData(), current.conflicts(), current.triggers(),
                     current.conditions(), current.chance(), current.effects())));
@@ -188,7 +198,7 @@ public class EnchantmentEditorGUI extends InventoryGUI {
         }
 
         if (slot == CONFLICTS_SLOT) {
-            chatPromptManager.prompt(player, "Escribí los ids en conflicto separados por comas:", value -> {
+            chatPromptManager.prompt(player, lang.raw("enchantment_editor_gui.prompt_conflicts"), value -> {
                 List<String> conflicts = value.isBlank() ? List.of()
                         : List.of(value.toUpperCase(Locale.ROOT).split("\\s*,\\s*"));
                 replace(new CustomEnchantment(current.id(), current.displayName(), current.rarity(),
@@ -199,7 +209,7 @@ public class EnchantmentEditorGUI extends InventoryGUI {
         }
 
         if (slot == CONDITIONS_SLOT) {
-            chatPromptManager.prompt(player, "Escribí las condiciones separadas por ';':", value -> {
+            chatPromptManager.prompt(player, lang.raw("enchantment_editor_gui.prompt_conditions"), value -> {
                 List<String> conditions = value.isBlank() ? List.of() : List.of(value.split("\\s*;\\s*"));
                 replace(new CustomEnchantment(current.id(), current.displayName(), current.rarity(),
                         current.categories(), current.allowedItems(), current.maxLevel(), current.levelData(),
@@ -239,8 +249,7 @@ public class EnchantmentEditorGUI extends InventoryGUI {
             if (event.isShiftClick()) {
 
                 if (current.effects().size() <= 1) {
-                    player.sendMessage(Component.text("El encantamiento necesita al menos un efecto.",
-                            NamedTextColor.RED));
+                    lang.send(player, "enchantment_editor_gui.min_one_effect");
                     return;
                 }
 
@@ -264,9 +273,10 @@ public class EnchantmentEditorGUI extends InventoryGUI {
     }
 
     private void promptAddEffect() {
-        chatPromptManager.prompt(player, "Escribí: TIPO;clave=valor;clave2=valor2 (tipos: "
-                + String.join(", ", java.util.Arrays.stream(EnchantEffectType.values()).map(Enum::name).toList())
-                + "):", value -> {
+        String types = String.join(", ",
+                java.util.Arrays.stream(EnchantEffectType.values()).map(Enum::name).toList());
+        chatPromptManager.prompt(player,
+                lang.raw("enchantment_editor_gui.prompt_add_effect", "types", types), value -> {
 
                     String[] parts = value.split(";");
 
@@ -274,7 +284,7 @@ public class EnchantmentEditorGUI extends InventoryGUI {
                     try {
                         type = EnchantEffectType.valueOf(parts[0].trim().toUpperCase(Locale.ROOT));
                     } catch (IllegalArgumentException e) {
-                        player.sendMessage(Component.text("Tipo de efecto inválido.", NamedTextColor.RED));
+                        lang.send(player, "enchantment_editor_gui.invalid_effect_type");
                         return;
                     }
 

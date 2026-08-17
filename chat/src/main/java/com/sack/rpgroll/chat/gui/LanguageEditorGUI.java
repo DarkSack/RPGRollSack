@@ -4,6 +4,7 @@ import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.chat.language.Language;
 import com.sack.rpgroll.chat.language.LanguageManager;
+import com.sack.rpgroll.common.lang.LangManager;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -31,7 +32,7 @@ public class LanguageEditorGUI extends InventoryGUI {
 
     public LanguageEditorGUI(Player player, Language language, LanguageManager languageManager,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text("Idioma: " + language.id(), NamedTextColor.GOLD), SIZE);
+        super(player, chatPromptManager.lang().component("language.editor_title", "id", language.id()), SIZE);
         this.current = language;
         this.languageManager = languageManager;
         this.chatPromptManager = chatPromptManager;
@@ -53,26 +54,30 @@ public class LanguageEditorGUI extends InventoryGUI {
             setItem(slot, ItemBuilder.createFiller());
         }
 
+        LangManager lang = chatPromptManager.lang();
+
         setItem(NAME_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(Component.text("Nombre: " + current.displayName(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para escribir uno nuevo", NamedTextColor.GRAY))
+                .setName(lang.component("language.label_name", "value", current.displayName())
+                        .colorIfAbsent(NamedTextColor.YELLOW))
+                .setLore(lang.component("gui.click_new").colorIfAbsent(NamedTextColor.GRAY))
                 .build());
 
         setItem(OBFUSCATION_SLOT, new ItemBuilder(Material.BOOK)
-                .setName(Component.text("Carácter de ofuscación: " + current.obfuscationChar(),
-                        NamedTextColor.YELLOW))
-                .setLore(Component.text("Se usa para quien NO conoce el idioma", NamedTextColor.GRAY),
-                        Component.text("Click para escribir uno nuevo", NamedTextColor.GRAY))
+                .setName(lang.component("language.label_obfuscation", "value", current.obfuscationChar())
+                        .colorIfAbsent(NamedTextColor.YELLOW))
+                .setLore(lang.component("language.lore_obfuscation_hint").colorIfAbsent(NamedTextColor.GRAY),
+                        lang.component("gui.click_new").colorIfAbsent(NamedTextColor.GRAY))
                 .build());
 
         setItem(RACES_SLOT, new ItemBuilder(Material.PLAYER_HEAD)
-                .setName(Component.text("Razas por defecto: " + String.join(", ", current.defaultForRaces()),
-                        NamedTextColor.YELLOW))
-                .setLore(Component.text("Vacío = todos lo conocen (idioma universal)", NamedTextColor.GRAY),
-                        Component.text("Click para escribir la lista separada por comas", NamedTextColor.GRAY))
+                .setName(lang.component("language.label_races", "value",
+                                String.join(", ", current.defaultForRaces()))
+                        .colorIfAbsent(NamedTextColor.YELLOW))
+                .setLore(lang.component("language.lore_races_hint").colorIfAbsent(NamedTextColor.GRAY),
+                        lang.component("language.lore_races_prompt").colorIfAbsent(NamedTextColor.GRAY))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.back")));
     }
 
     @Override
@@ -82,14 +87,14 @@ public class LanguageEditorGUI extends InventoryGUI {
         int slot = event.getSlot();
 
         if (slot == NAME_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el nuevo nombre del idioma:",
+            chatPromptManager.prompt(player, chatPromptManager.lang().raw("language.prompt_name"),
                     value -> replace(new Language(current.id(), value.trim(), current.obfuscationChar(),
                             current.defaultForRaces())));
             return;
         }
 
         if (slot == OBFUSCATION_SLOT) {
-            chatPromptManager.prompt(player, "Escribí un solo carácter para la ofuscación (ej. ?):", value -> {
+            chatPromptManager.prompt(player, chatPromptManager.lang().raw("language.prompt_obfuscation"), value -> {
                 char c = value.isBlank() ? '?' : value.trim().charAt(0);
                 replace(new Language(current.id(), current.displayName(), c, current.defaultForRaces()));
             });
@@ -97,7 +102,7 @@ public class LanguageEditorGUI extends InventoryGUI {
         }
 
         if (slot == RACES_SLOT) {
-            chatPromptManager.prompt(player, "Escribí las razas separadas por coma (vacío = universal):", value -> {
+            chatPromptManager.prompt(player, chatPromptManager.lang().raw("language.prompt_races"), value -> {
                 List<String> races = value.isBlank() ? List.of()
                         : new ArrayList<>(List.of(value.split("\\s*,\\s*")));
                 replace(new Language(current.id(), current.displayName(), current.obfuscationChar(), races));

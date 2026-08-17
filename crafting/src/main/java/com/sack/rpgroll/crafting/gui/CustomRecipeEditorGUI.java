@@ -49,7 +49,7 @@ public class CustomRecipeEditorGUI extends InventoryGUI {
 
     public CustomRecipeEditorGUI(Player player, CustomRecipe recipe, CustomRecipeManager recipeManager,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text("Receta: " + recipe.id(), NamedTextColor.GOLD), SIZE);
+        super(player, Component.text(chatPromptManager.lang().raw("gui.recipe.editor_title", "id", recipe.id()), NamedTextColor.GOLD), SIZE);
         this.current = recipe;
         this.recipeManager = recipeManager;
         this.chatPromptManager = chatPromptManager;
@@ -72,67 +72,69 @@ public class CustomRecipeEditorGUI extends InventoryGUI {
         }
 
         setItem(NAME_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(Component.text("Nombre: " + current.displayName(), NamedTextColor.YELLOW)).build());
+                .setName(Component.text(chatPromptManager.lang().raw("gui.common.field_name", "value", current.displayName()), NamedTextColor.YELLOW)).build());
 
         setItem(ICON_SLOT, new ItemBuilder(CustomRecipeBrowserGUI.parseMaterial(current.icon()))
-                .setName(Component.text("Ícono: " + current.icon(), NamedTextColor.YELLOW)).build());
+                .setName(Component.text(chatPromptManager.lang().raw("gui.common.field_icon", "value", current.icon()), NamedTextColor.YELLOW)).build());
 
         setItem(STATION_SLOT, new ItemBuilder(Material.SMITHING_TABLE)
-                .setName(Component.text("Estación: " + current.stationId(), NamedTextColor.AQUA)).build());
+                .setName(Component.text(chatPromptManager.lang().raw("gui.recipe.field_station", "value", current.stationId()), NamedTextColor.AQUA)).build());
 
         setItem(PROCESSING_TIME_SLOT, new ItemBuilder(Material.CLOCK)
-                .setName(Component.text("Tiempo (ticks): " + current.processingTimeTicks(), NamedTextColor.AQUA))
-                .setLore(Component.text("Click: +20 · Click derecho: -20", NamedTextColor.GRAY)).build());
+                .setName(Component.text(chatPromptManager.lang().raw("gui.recipe.field_processing_time", "value", current.processingTimeTicks()), NamedTextColor.AQUA))
+                .setLore(Component.text(chatPromptManager.lang().raw("gui.recipe.time_ticks_hint"), NamedTextColor.GRAY)).build());
 
         setItem(FUEL_PER_CRAFT_SLOT, new ItemBuilder(Material.BLAZE_POWDER)
-                .setName(Component.text("Combustible por crafteo: " + current.fuelPerCraft(), NamedTextColor.GOLD))
-                .setLore(Component.text("Click: +1 · Click derecho: -1", NamedTextColor.GRAY)).build());
+                .setName(Component.text(chatPromptManager.lang().raw("gui.recipe.field_fuel_per_craft", "value", current.fuelPerCraft()), NamedTextColor.GOLD))
+                .setLore(Component.text(chatPromptManager.lang().raw("gui.recipe.plus1_minus1_hint"), NamedTextColor.GRAY)).build());
 
         setItem(XP_SLOT, new ItemBuilder(Material.EXPERIENCE_BOTTLE)
-                .setName(Component.text("XP otorgada: " + current.xpAmount(), NamedTextColor.GREEN))
-                .setLore(Component.text("Click: +5 · Click derecho: -5", NamedTextColor.GRAY)).build());
+                .setName(Component.text(chatPromptManager.lang().raw("gui.recipe.field_xp", "value", current.xpAmount()), NamedTextColor.GREEN))
+                .setLore(Component.text(chatPromptManager.lang().raw("gui.recipe.plus5_minus5_hint"), NamedTextColor.GRAY)).build());
 
         setItem(ECONOMY_COST_SLOT, new ItemBuilder(Material.GOLD_INGOT)
-                .setName(Component.text("Costo económico: " + current.economyCost(), NamedTextColor.GOLD))
-                .setLore(Component.text("Click: +5 · Click derecho: -5", NamedTextColor.GRAY)).build());
+                .setName(Component.text(chatPromptManager.lang().raw("gui.recipe.field_economy_cost", "value", current.economyCost()), NamedTextColor.GOLD))
+                .setLore(Component.text(chatPromptManager.lang().raw("gui.recipe.plus5_minus5_hint"), NamedTextColor.GRAY)).build());
 
         setItem(ECONOMY_CURRENCY_SLOT, new ItemBuilder(Material.SUNFLOWER)
-                .setName(Component.text("Moneda: " + (current.economyCurrencyId() == null ? "(base)" : current.economyCurrencyId()),
+                .setName(Component.text(chatPromptManager.lang().raw("gui.recipe.field_economy_currency", "value",
+                        current.economyCurrencyId() == null ? chatPromptManager.lang().raw("gui.recipe.currency_base") : current.economyCurrencyId()),
                         NamedTextColor.YELLOW)).build());
 
         setItem(FAIL_CHANCE_SLOT, new ItemBuilder(Material.REDSTONE)
-                .setName(Component.text("Prob. de fallo: " + (current.failChance() < 0 ? "(config)" : current.failChance()),
+                .setName(Component.text(chatPromptManager.lang().raw("gui.recipe.field_fail_chance", "value",
+                        current.failChance() < 0 ? chatPromptManager.lang().raw("gui.recipe.fail_chance_config") : current.failChance()),
                         NamedTextColor.RED))
-                .setLore(Component.text("Click: +0.05 · Click derecho: -0.05 (-1 = usar config)", NamedTextColor.GRAY))
+                .setLore(Component.text(chatPromptManager.lang().raw("gui.recipe.fail_chance_hint"), NamedTextColor.GRAY))
                 .build());
 
         setItem(QUALITY_ENABLED_SLOT, new ItemBuilder(current.qualityEnabled() ? Material.LIME_CONCRETE : Material.GRAY_CONCRETE)
-                .setName(Component.text("Calidad habilitada: " + current.qualityEnabled(), NamedTextColor.GOLD))
-                .setLore(Component.text("Click para alternar", NamedTextColor.GRAY)).build());
+                .setName(Component.text(chatPromptManager.lang().raw("gui.recipe.field_quality_enabled", "value", current.qualityEnabled()), NamedTextColor.GOLD))
+                .setLore(Component.text(chatPromptManager.lang().raw("gui.common.click_toggle"), NamedTextColor.GRAY)).build());
 
         setItem(RESULT_TYPE_SLOT, new ItemBuilder(Material.CHEST)
-                .setName(Component.text("Result. tipo: " + current.result().type(), NamedTextColor.AQUA))
-                .setLore(Component.text("Click para alternar MATERIAL/ITEM_ID", NamedTextColor.GRAY)).build());
+                .setName(Component.text(chatPromptManager.lang().raw("gui.common.result_type", "value", current.result().type()), NamedTextColor.AQUA))
+                .setLore(Component.text(chatPromptManager.lang().raw("gui.common.toggle_material_item_hint"), NamedTextColor.GRAY)).build());
 
         setItem(RESULT_VALUE_SLOT, new ItemBuilder(Material.PAPER)
-                .setName(Component.text("Result. valor: " + current.result().value(), NamedTextColor.YELLOW)).build());
+                .setName(Component.text(chatPromptManager.lang().raw("gui.common.result_value", "value", current.result().value()), NamedTextColor.YELLOW)).build());
 
         setItem(RESULT_AMOUNT_SLOT, new ItemBuilder(Material.HOPPER)
-                .setName(Component.text("Result. cantidad: " + current.result().amount(), NamedTextColor.AQUA))
-                .setLore(Component.text("Click: +1 · Click derecho: -1", NamedTextColor.GRAY)).build());
+                .setName(Component.text(chatPromptManager.lang().raw("gui.common.result_amount", "value", current.result().amount()), NamedTextColor.AQUA))
+                .setLore(Component.text(chatPromptManager.lang().raw("gui.common.click_inc_dec", "inc", "+1", "dec", "-1"), NamedTextColor.GRAY)).build());
 
         setItem(INGREDIENTS_SLOT, new ItemBuilder(Material.HOPPER)
-                .setName(Component.text("Ingredientes (" + current.ingredients().size() + ")", NamedTextColor.AQUA))
-                .setLore(Component.text("Click para editar la lista", NamedTextColor.GRAY)).build());
+                .setName(Component.text(chatPromptManager.lang().raw("gui.recipe.ingredients_count", "count", current.ingredients().size()), NamedTextColor.AQUA))
+                .setLore(Component.text(chatPromptManager.lang().raw("gui.common.click_edit_list"), NamedTextColor.GRAY)).build());
 
         setItem(CONDITIONS_SLOT, new ItemBuilder(Material.COMPARATOR)
-                .setName(Component.text("Condiciones (" + current.conditions().size() + ")", NamedTextColor.AQUA))
-                .setLore(Component.text("Click para editar la lista", NamedTextColor.GRAY)).build());
+                .setName(Component.text(chatPromptManager.lang().raw("gui.common.conditions_count", "count", current.conditions().size()), NamedTextColor.AQUA))
+                .setLore(Component.text(chatPromptManager.lang().raw("gui.common.click_edit_list"), NamedTextColor.GRAY)).build());
 
         setItem(DELETE_SLOT, new ItemBuilder(Material.BARRIER)
-                .setName(Component.text("Eliminar receta", NamedTextColor.RED)).build());
+                .setName(Component.text(chatPromptManager.lang().raw("gui.recipe.delete"), NamedTextColor.RED)).build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(chatPromptManager.lang().raw("gui.common.back")));
     }
 
     @Override
@@ -143,11 +145,11 @@ public class CustomRecipeEditorGUI extends InventoryGUI {
         int sign = event.getClick() == ClickType.RIGHT ? -1 : 1;
 
         if (slot == NAME_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el nuevo nombre:", value -> replace(withDisplayName(value)));
+            chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.common.prompt_name"), value -> replace(withDisplayName(value)));
         } else if (slot == ICON_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el Material del ícono:", value -> replace(withIcon(value)));
+            chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.common.prompt_icon"), value -> replace(withIcon(value)));
         } else if (slot == STATION_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el id de la estación:", value -> replace(withStation(value)));
+            chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.recipe.prompt_station"), value -> replace(withStation(value)));
         } else if (slot == PROCESSING_TIME_SLOT) {
             replace(withProcessingTime(Math.max(0, current.processingTimeTicks() + sign * 20)));
         } else if (slot == FUEL_PER_CRAFT_SLOT) {
@@ -157,7 +159,7 @@ public class CustomRecipeEditorGUI extends InventoryGUI {
         } else if (slot == ECONOMY_COST_SLOT) {
             replace(withEconomyCost(Math.max(0, current.economyCost() + sign * 5)));
         } else if (slot == ECONOMY_CURRENCY_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el id de moneda (o 'base'):", value -> replace(
+            chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.recipe.prompt_economy_currency"), value -> replace(
                     withEconomyCurrency(value.equalsIgnoreCase("base") ? null : value)));
         } else if (slot == FAIL_CHANCE_SLOT) {
             double next = current.failChance() < 0 ? 0 : current.failChance() + sign * 0.05;
@@ -169,16 +171,16 @@ public class CustomRecipeEditorGUI extends InventoryGUI {
                     ? RecipeResultType.ITEM_ID : RecipeResultType.MATERIAL;
             replace(withResult(new RecipeResult(next, current.result().value(), current.result().amount())));
         } else if (slot == RESULT_VALUE_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el material o id de ítem del resultado:", value -> replace(
+            chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.common.prompt_result_value"), value -> replace(
                     withResult(new RecipeResult(current.result().type(), value, current.result().amount()))));
         } else if (slot == RESULT_AMOUNT_SLOT) {
             replace(withResult(new RecipeResult(current.result().type(), current.result().value(),
                     Math.max(1, current.result().amount() + sign))));
         } else if (slot == INGREDIENTS_SLOT) {
-            new IngredientListEditorGUI(player, "Ingredientes: " + current.id(), current.ingredients(),
+            new IngredientListEditorGUI(player, chatPromptManager.lang().raw("gui.ingredient_list.title", "id", current.id()), current.ingredients(),
                     chatPromptManager, this::replaceIngredients, this::reopen).open();
         } else if (slot == CONDITIONS_SLOT) {
-            new RecipeConditionsEditorGUI(player, "Condiciones: " + current.id(), current.conditions(),
+            new RecipeConditionsEditorGUI(player, chatPromptManager.lang().raw("gui.conditions.title", "id", current.id()), current.conditions(),
                     chatPromptManager, this::replaceConditions, this::reopen).open();
         } else if (slot == DELETE_SLOT) {
             recipeManager.delete(current.id());

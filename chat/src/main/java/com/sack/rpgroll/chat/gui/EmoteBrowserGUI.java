@@ -3,6 +3,7 @@ package com.sack.rpgroll.chat.gui;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.chat.emote.EmoteDefinition;
 import com.sack.rpgroll.chat.emote.EmoteManager;
+import com.sack.rpgroll.common.lang.LangManager;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -26,7 +27,7 @@ public class EmoteBrowserGUI extends PaginatedGUI {
     private List<EmoteDefinition> emotes;
 
     public EmoteBrowserGUI(Player player, EmoteManager emoteManager, ChatPromptManager chatPromptManager) {
-        super(player, Component.text("Emotes RPGRoll", NamedTextColor.GOLD), SIZE, CONTENT_SLOTS);
+        super(player, chatPromptManager.lang().component("emote.browser_title"), SIZE, CONTENT_SLOTS);
         this.emoteManager = emoteManager;
         this.chatPromptManager = chatPromptManager;
         this.emotes = List.copyOf(emoteManager.getAll());
@@ -41,23 +42,27 @@ public class EmoteBrowserGUI extends PaginatedGUI {
     protected void renderItem(int contentSlot, int absoluteIndex) {
 
         EmoteDefinition emote = emotes.get(absoluteIndex);
+        LangManager lang = chatPromptManager.lang();
 
         setItem(contentSlot, new ItemBuilder(Material.ARMOR_STAND)
                 .setName(Component.text(emote.id(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Radio: " + (emote.radius() <= 0 ? "todo el mundo" : emote.radius()),
-                        NamedTextColor.GRAY),
-                        Component.text("Click para editar", NamedTextColor.YELLOW))
+                .setLore(lang.component("emote.browser_lore_radius", "value",
+                                emote.radius() <= 0 ? lang.raw("emote.radius_world") : emote.radius())
+                        .colorIfAbsent(NamedTextColor.GRAY),
+                        lang.component("gui.click_edit").colorIfAbsent(NamedTextColor.YELLOW))
                 .build());
     }
 
     @Override
     protected void renderExtras() {
 
+        LangManager lang = chatPromptManager.lang();
+
         setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Crear emote nueva", NamedTextColor.GREEN))
+                .setName(lang.component("emote.create_new").colorIfAbsent(NamedTextColor.GREEN))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Cerrar"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.close")));
     }
 
     @Override
@@ -77,12 +82,12 @@ public class EmoteBrowserGUI extends PaginatedGUI {
     }
 
     private void promptNew() {
-        chatPromptManager.prompt(player, "Escribí el id de la nueva emote (ej. /emote <id>):", value -> {
+        chatPromptManager.prompt(player, chatPromptManager.lang().raw("emote.prompt_new_id"), value -> {
 
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 
             if (emoteManager.exists(id)) {
-                player.sendMessage(Component.text("Ya existe una emote con ese id.", NamedTextColor.RED));
+                chatPromptManager.lang().send(player, "emote.already_exists");
                 reopen();
                 return;
             }

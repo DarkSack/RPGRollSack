@@ -1,5 +1,6 @@
 package com.sack.rpgroll.effects.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.effects.core.EffectCategory;
 import com.sack.rpgroll.effects.core.EffectDefinition;
 import com.sack.rpgroll.effects.core.EffectManager;
@@ -36,6 +37,7 @@ public class EffectBrowserGUI extends InventoryGUI {
     private final EffectManager effectManager;
     private final EffectTracker tracker;
     private final ChatPromptManager chatPromptManager;
+    private final LangManager lang;
 
     private String searchQuery = "";
     private EffectCategory filterCategory;
@@ -43,10 +45,11 @@ public class EffectBrowserGUI extends InventoryGUI {
 
     public EffectBrowserGUI(Player player, EffectManager effectManager, EffectTracker tracker,
             ChatPromptManager chatPromptManager) {
-        super(player, Component.text("Effect Studio", NamedTextColor.GOLD), SIZE);
+        super(player, Component.text(chatPromptManager.lang().raw("gui.browser.title"), NamedTextColor.GOLD), SIZE);
         this.effectManager = effectManager;
         this.tracker = tracker;
         this.chatPromptManager = chatPromptManager;
+        this.lang = chatPromptManager.lang();
         recomputeFiltered();
     }
 
@@ -76,32 +79,32 @@ public class EffectBrowserGUI extends InventoryGUI {
 
             setItem(i, new ItemBuilder(icon)
                     .setName(Component.text(effect.displayName(), effect.rarity().color()))
-                    .setLore(Component.text("id: " + effect.id(), NamedTextColor.GRAY),
-                            Component.text(effect.category() + " · " + effect.components().size() + " componente(s)",
-                                    NamedTextColor.GRAY),
-                            Component.text("Click para editar", NamedTextColor.YELLOW),
-                            Component.text("Shift-click para duplicar", NamedTextColor.DARK_GRAY))
+                    .setLore(lang.component("gui.common.id_label", "id", effect.id()),
+                            lang.component("gui.browser.item_category_components", "category", effect.category(),
+                                    "count", effect.components().size()),
+                            lang.component("gui.common.click_to_edit"),
+                            lang.component("gui.browser.shift_duplicate"))
                     .build());
         }
 
         setItem(SEARCH_SLOT, new ItemBuilder(Material.COMPASS)
-                .setName(Component.text("Buscar: " + (searchQuery.isBlank() ? "(ninguna)" : searchQuery),
-                        NamedTextColor.AQUA))
-                .setLore(Component.text("Click para escribir un texto de búsqueda", NamedTextColor.GRAY),
-                        Component.text("Click derecho para limpiar", NamedTextColor.GRAY))
+                .setName(lang.component("gui.browser.search_label", "text",
+                        searchQuery.isBlank() ? lang.raw("gui.browser.search_none") : searchQuery))
+                .setLore(lang.component("gui.browser.search_hint"),
+                        lang.component("gui.browser.clear_hint"))
                 .build());
 
         setItem(FILTER_SLOT, new ItemBuilder(Material.HOPPER)
-                .setName(Component.text("Categoría: " + (filterCategory == null ? "TODAS" : filterCategory),
-                        NamedTextColor.AQUA))
-                .setLore(Component.text("Click para ciclar", NamedTextColor.GRAY))
+                .setName(lang.component("gui.browser.filter_label", "text",
+                        filterCategory == null ? lang.raw("gui.browser.filter_all") : filterCategory))
+                .setLore(lang.component("gui.common.click_cycle"))
                 .build());
 
         setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Crear efecto nuevo", NamedTextColor.GREEN))
+                .setName(lang.component("gui.browser.create_new"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Cerrar"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.close_button")));
     }
 
     private Material parseMaterial(String raw) {
@@ -172,19 +175,19 @@ public class EffectBrowserGUI extends InventoryGUI {
     }
 
     private void promptSearch() {
-        chatPromptManager.prompt(player, "Escribí el texto a buscar:", value -> {
+        chatPromptManager.prompt(player, "gui.browser.prompt_search", value -> {
             searchQuery = value.trim().toLowerCase(Locale.ROOT);
             reopen();
         });
     }
 
     private void promptNew() {
-        chatPromptManager.prompt(player, "Escribí el id del nuevo efecto:", value -> {
+        chatPromptManager.prompt(player, "gui.browser.prompt_new", value -> {
 
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 
             if (effectManager.exists(id)) {
-                player.sendMessage(Component.text("Ya existe un efecto con ese id.", NamedTextColor.RED));
+                lang.send(player, "gui.common.id_exists");
                 reopen();
                 return;
             }
@@ -200,12 +203,12 @@ public class EffectBrowserGUI extends InventoryGUI {
     }
 
     private void promptDuplicate(EffectDefinition original) {
-        chatPromptManager.prompt(player, "Escribí el id para la copia de '" + original.id() + "':", value -> {
+        chatPromptManager.prompt(player, "gui.browser.prompt_duplicate", value -> {
 
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 
             if (effectManager.exists(id)) {
-                player.sendMessage(Component.text("Ya existe un efecto con ese id.", NamedTextColor.RED));
+                lang.send(player, "gui.common.id_exists");
                 reopen();
                 return;
             }
@@ -217,9 +220,9 @@ public class EffectBrowserGUI extends InventoryGUI {
                     original.upgradeToEffectId(), original.components());
 
             effectManager.save(copy);
-            player.sendMessage(Component.text("✔ Duplicado como '" + id + "'.", NamedTextColor.GREEN));
+            lang.send(player, "gui.browser.duplicate_success", "id", id);
             reopen();
-        });
+        }, "id", original.id());
     }
 
     private void reopen() {

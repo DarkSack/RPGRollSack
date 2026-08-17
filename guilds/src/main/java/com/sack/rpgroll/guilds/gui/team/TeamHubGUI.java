@@ -50,10 +50,14 @@ public class TeamHubGUI extends InventoryGUI {
     private final List<UUID> memberOrder;
 
     public TeamHubGUI(Player player, TeamManager teamManager, ChatPromptManager chatPromptManager) {
-        super(player, Component.text("Mi Equipo", NamedTextColor.AQUA), SIZE);
+        super(player, Component.text(chatPromptManager.lang().raw("team.hub.title"), NamedTextColor.AQUA), SIZE);
         this.teamManager = teamManager;
         this.chatPromptManager = chatPromptManager;
         this.memberOrder = team() != null ? List.copyOf(team().members()) : List.of();
+    }
+
+    private com.sack.rpgroll.common.lang.LangManager lang() {
+        return chatPromptManager.lang();
     }
 
     private Team team() {
@@ -78,9 +82,9 @@ public class TeamHubGUI extends InventoryGUI {
 
         if (team == null) {
             setItem(22, new ItemBuilder(Material.BARRIER)
-                    .setName(Component.text("No estás en ningún equipo", NamedTextColor.RED))
+                    .setName(Component.text(lang().raw("team.hub.not_in_team"), NamedTextColor.RED))
                     .build());
-            setItem(CLOSE_SLOT, ItemBuilder.createCancelButton("Cerrar"));
+            setItem(CLOSE_SLOT, ItemBuilder.createCancelButton(lang().raw("common.close")));
             return;
         }
 
@@ -93,37 +97,39 @@ public class TeamHubGUI extends InventoryGUI {
             setItem(MEMBERS_START + i, ItemBuilder.skull(null)
                     .setName(Component.text((offline.getName() != null ? offline.getName() : memberId.toString())
                             + " — " + role, role == TeamRole.LEADER ? NamedTextColor.GOLD : NamedTextColor.YELLOW))
-                    .setLore(Component.text("Click: cambiar rol (si tenés permiso)", NamedTextColor.GRAY),
-                            Component.text("Shift-click: expulsar (si tenés permiso)", NamedTextColor.GRAY))
+                    .setLore(Component.text(lang().raw("team.hub.lore.change_role"), NamedTextColor.GRAY),
+                            Component.text(lang().raw("team.hub.lore.kick"), NamedTextColor.GRAY))
                     .build());
         }
 
         setItem(INVITE_SLOT, new ItemBuilder(Material.PLAYER_HEAD)
-                .setName(Component.text("Invitar jugador", NamedTextColor.GREEN))
+                .setName(Component.text(lang().raw("team.hub.button.invite"), NamedTextColor.GREEN))
                 .build());
 
         setItem(NAME_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(Component.text("Nombre: " + team.name(), NamedTextColor.YELLOW))
+                .setName(Component.text(lang().raw("team.hub.name_label", "name", team.name()), NamedTextColor.YELLOW))
                 .build());
 
         setItem(COLOR_SLOT, new ItemBuilder(Material.WHITE_DYE)
-                .setName(Component.text("Color: " + team.color(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para cambiar", NamedTextColor.GRAY))
+                .setName(Component.text(lang().raw("team.hub.color_label", "color", team.color()), NamedTextColor.YELLOW))
+                .setLore(Component.text(lang().raw("team.hub.lore.click_to_change"), NamedTextColor.GRAY))
                 .build());
 
         setItem(MAX_PLAYERS_SLOT, new ItemBuilder(Material.PLAYER_HEAD)
-                .setName(Component.text("Máx. jugadores: " + team.maxPlayers(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click: +1 · Shift-click derecho: -1", NamedTextColor.GRAY))
+                .setName(Component.text(lang().raw("team.hub.max_players_label", "amount", team.maxPlayers()),
+                        NamedTextColor.YELLOW))
+                .setLore(Component.text(lang().raw("team.hub.lore.plus_minus_one"), NamedTextColor.GRAY))
                 .build());
 
         setItem(MIN_LEVEL_SLOT, new ItemBuilder(Material.EXPERIENCE_BOTTLE)
-                .setName(Component.text("Nivel mínimo: " + team.minLevel(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click: +1 · Click derecho: -1", NamedTextColor.GRAY))
+                .setName(Component.text(lang().raw("team.hub.min_level_label", "level", team.minLevel()),
+                        NamedTextColor.YELLOW))
+                .setLore(Component.text(lang().raw("team.hub.lore.plus_minus_one"), NamedTextColor.GRAY))
                 .build());
 
-        setItem(SHARE_XP_SLOT, toggleItem("Compartir XP", team.shareXp()));
-        setItem(SHARE_LOOT_SLOT, toggleItem("Compartir loot", team.shareLoot()));
-        setItem(SHARE_GOLD_SLOT, toggleItem("Compartir oro", team.shareGold()));
+        setItem(SHARE_XP_SLOT, toggleItem(lang().raw("team.hub.share_xp"), team.shareXp()));
+        setItem(SHARE_LOOT_SLOT, toggleItem(lang().raw("team.hub.share_loot"), team.shareLoot()));
+        setItem(SHARE_GOLD_SLOT, toggleItem(lang().raw("team.hub.share_gold"), team.shareGold()));
 
         setItem(BUFF_XP_SLOT, buffItem(team, TeamBuff.XP_BOOST));
         setItem(BUFF_DAMAGE_SLOT, buffItem(team, TeamBuff.DAMAGE_BOOST));
@@ -131,18 +137,18 @@ public class TeamHubGUI extends InventoryGUI {
         setItem(BUFF_SPEED_SLOT, buffItem(team, TeamBuff.SPEED_BOOST));
 
         setItem(LEAVE_SLOT, new ItemBuilder(Material.REDSTONE_BLOCK)
-                .setName(Component.text(team.size() <= 1 ? "Disolver equipo" : "Salir del equipo",
+                .setName(Component.text(lang().raw(team.size() <= 1 ? "team.hub.button.disband" : "team.hub.button.leave"),
                         NamedTextColor.RED))
                 .build());
 
-        setItem(CLOSE_SLOT, ItemBuilder.createCancelButton("Cerrar"));
+        setItem(CLOSE_SLOT, ItemBuilder.createCancelButton(lang().raw("common.close")));
     }
 
     private org.bukkit.inventory.ItemStack toggleItem(String label, boolean enabled) {
         return new ItemBuilder(enabled ? Material.LIME_DYE : Material.GRAY_DYE)
-                .setName(Component.text(label + ": " + (enabled ? "sí" : "no"),
+                .setName(Component.text(label + ": " + (enabled ? lang().raw("common.yes") : lang().raw("common.no")),
                         enabled ? NamedTextColor.GREEN : NamedTextColor.GRAY))
-                .setLore(Component.text("Click para alternar", NamedTextColor.GRAY))
+                .setLore(Component.text(lang().raw("team.hub.lore.click_to_toggle"), NamedTextColor.GRAY))
                 .build();
     }
 
@@ -168,20 +174,19 @@ public class TeamHubGUI extends InventoryGUI {
 
         if (slot == INVITE_SLOT) {
             if (!myRole().canInvite()) {
-                player.sendMessage(Component.text("No tenés permiso para invitar.", NamedTextColor.RED));
+                lang().send(player, "team.hub.no_permission_invite");
                 return;
             }
-            chatPromptManager.prompt(player, "Escribí el nombre del jugador a invitar:", value -> {
+            chatPromptManager.prompt(player, "team.hub.prompt_invite", value -> {
                 Player target = Bukkit.getPlayerExact(value.trim());
                 if (target == null) {
-                    player.sendMessage(Component.text("Jugador no encontrado.", NamedTextColor.RED));
+                    lang().send(player, "common.player_not_found");
                     return;
                 }
                 var result = teamManager.invite(player, target);
-                player.sendMessage(Component.text("Resultado: " + result, NamedTextColor.GRAY));
+                lang().send(player, "common.result", "result", result);
                 if (result == TeamManager.InviteResult.OK) {
-                    target.sendMessage(Component.text(player.getName() + " te invitó a su equipo — /team accept",
-                            NamedTextColor.YELLOW));
+                    lang().send(target, "team.hub.invite_received", "player", player.getName());
                 }
                 reopen();
             });
@@ -193,13 +198,13 @@ public class TeamHubGUI extends InventoryGUI {
                 && slot != BUFF_XP_SLOT && slot != BUFF_DAMAGE_SLOT && slot != BUFF_REGEN_SLOT
                 && slot != BUFF_SPEED_SLOT) {
             if (slot == NAME_SLOT || slot == COLOR_SLOT || slot == MAX_PLAYERS_SLOT || slot == MIN_LEVEL_SLOT) {
-                player.sendMessage(Component.text("Solo el líder puede editar la configuración.", NamedTextColor.RED));
+                lang().send(player, "team.hub.only_leader_config");
                 return;
             }
         }
 
         if (slot == NAME_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el nuevo nombre del equipo:", value -> {
+            chatPromptManager.prompt(player, "team.hub.prompt_name", value -> {
                 team.setName(value.trim());
                 reopen();
             });
@@ -249,8 +254,7 @@ public class TeamHubGUI extends InventoryGUI {
                 || slot == BUFF_SPEED_SLOT;
 
         if (isBuffSlot && !myRole().canManageBuffs()) {
-            player.sendMessage(Component.text("No tenés permiso para gestionar los buffs del equipo.",
-                    NamedTextColor.RED));
+            lang().send(player, "team.hub.no_permission_buffs");
             return;
         }
 
@@ -280,8 +284,7 @@ public class TeamHubGUI extends InventoryGUI {
 
         if (slot == LEAVE_SLOT) {
             boolean disbanded = teamManager.leave(player.getUniqueId());
-            player.sendMessage(Component.text(disbanded ? "Equipo disuelto." : "Saliste del equipo.",
-                    NamedTextColor.GRAY));
+            lang().send(player, disbanded ? "team.leave.disbanded" : "team.leave.left");
             close();
             return;
         }
@@ -299,7 +302,7 @@ public class TeamHubGUI extends InventoryGUI {
 
         if (event.isShiftClick()) {
             var result = teamManager.kick(player, memberId);
-            player.sendMessage(Component.text("Resultado: " + result, NamedTextColor.GRAY));
+            lang().send(player, "common.result", "result", result);
             reopen();
             return;
         }
@@ -325,9 +328,10 @@ public class TeamHubGUI extends InventoryGUI {
         boolean enabled = team.hasBuff(buff);
 
         return new ItemBuilder(enabled ? Material.LIME_DYE : Material.GRAY_DYE)
-                .setName(Component.text(buff.displayName() + " +" + (int) (buff.percent() * 100) + "%",
+                .setName(Component.text(buff.displayName(lang()) + " +" + (int) (buff.percent() * 100) + "%",
                         enabled ? NamedTextColor.GREEN : NamedTextColor.GRAY))
-                .setLore(Component.text("Click para " + (enabled ? "desactivar" : "activar"), NamedTextColor.GRAY))
+                .setLore(Component.text(lang().raw(enabled ? "team.hub.lore.click_deactivate"
+                        : "team.hub.lore.click_activate"), NamedTextColor.GRAY))
                 .build();
     }
 

@@ -1,0 +1,340 @@
+common:
+  players_only: "&cOnly a player can use this command."
+  player_not_found: "&cPlayer not found."
+  result: "&7Result: {result}"
+  close: "Close"
+  back: "Back"
+  yes: "yes"
+  no: "no"
+  previous_page: "&e« Previous"
+  next_page: "&eNext »"
+
+prompt:
+  footer: "&7Type it in chat, or '{keyword}' to cancel."
+  cancelled: "&cCancelled."
+  cancel_keyword: "cancel"
+
+team:
+  not_in_team: "&cYou're not in any team."
+  usage: "&eUsage: /team <invite|accept|decline|leave|kick|info|ping|waypoint|chat|queue> [args]"
+  decline:
+    success: "&7Invitation declined."
+  invite:
+    usage: "&eUsage: /team invite <player>"
+    sent: "&a✔ Invitation sent to {player}."
+    received: "&e{player} invited you to their team — /team accept (60s)"
+    not_allowed: "&cYou don't have permission to invite."
+    already_teammate: "&cThey're already in your team."
+    target_in_team: "&cThat player is already in a team."
+    team_full: "&cYour team is full."
+  accept:
+    success: "&a✔ You joined the team."
+    no_invite: "&cYou don't have any pending invitation."
+    expired: "&cThat invitation already expired."
+    team_gone: "&cThat team no longer exists."
+    team_full: "&cThat team is already full."
+  leave:
+    disbanded: "&7Team disbanded."
+    left: "&7You left the team."
+  kick:
+    usage: "&eUsage: /team kick <player>"
+  ping:
+    usage: "&eUsage: /team ping <enemy|objective|loot|npc|place> [label]"
+    notify: "&f📍 {player} marked {type}"
+    notify_labeled: "&f📍 {player} marked {type} ({label})"
+  waypoint:
+    not_in_team: "&cYou're not in any team."
+    usage: "&eUsage: /team waypoint <set|list|tp|remove> [name]"
+    set_usage: "&eUsage: /team waypoint set <name>"
+    set_success: "&a✔ Waypoint '{name}' saved."
+    list_header: "&6=== Team waypoints ==="
+    list_entry: "&7 - {name} ({world})"
+    not_found: "&cThat waypoint doesn't exist."
+    removed: "&7Waypoint removed."
+  chat:
+    enabled: "&bTeam chat enabled."
+    disabled: "&bTeam chat disabled."
+    tag: "Team"
+  queue:
+    left: "&7You left the matchmaking queue."
+    joined: "&a✔ You joined the matchmaking queue."
+    joined_for: "&a✔ You joined the matchmaking queue for {dungeon}."
+    formed: "&a✔ Team formed automatically ({size} players)."
+  buff:
+    xp_boost: "Experience"
+    damage_boost: "Damage"
+    regen_boost: "Regeneration"
+    speed_boost: "Speed"
+  pingtype:
+    enemy: "Enemy"
+    objective: "Objective"
+    loot: "Loot"
+    npc: "NPC"
+    place: "Place"
+  hud:
+    offline_suffix: "{name} (offline)"
+  hub:
+    title: "My Team"
+    not_in_team: "You're not in any team"
+    lore:
+      change_role: "&7Click: change role (if you have permission)"
+      kick: "&7Shift-click: kick (if you have permission)"
+      click_to_change: "&7Click to change"
+      click_to_toggle: "&7Click to toggle"
+      plus_minus_one: "&7Click: +1 · Shift-right-click: -1"
+      click_deactivate: "&7Click to deactivate"
+      click_activate: "&7Click to activate"
+    button:
+      invite: "Invite player"
+      disband: "Disband team"
+      leave: "Leave team"
+    name_label: "Name: {name}"
+    color_label: "Color: {color}"
+    max_players_label: "Max. players: {amount}"
+    min_level_label: "Min. level: {level}"
+    share_xp: "Share XP"
+    share_loot: "Share loot"
+    share_gold: "Share gold"
+    no_permission_invite: "&cYou don't have permission to invite."
+    prompt_invite: "&eType the name of the player to invite:"
+    invite_received: "&e{player} invited you to their team — /team accept"
+    only_leader_config: "&cOnly the leader can edit the configuration."
+    prompt_name: "&eType the new team name:"
+    no_permission_buffs: "&cYou don't have permission to manage the team's buffs."
+
+guild:
+  usage: "&eUsage: /guild <create|disband|accept|decline|leave|ranking|chat|gui> [args]"
+  not_in_guild: "&cYou're not in any guild."
+  not_in_guild_browser: "&cYou're not in any guild — use /guild browser."
+  already_in_guild: "&cYou're already in a guild."
+  decline:
+    success: "&7Invitation declined."
+  disband:
+    only_leader: "&cOnly the leader can disband the guild."
+    success: "&7Guild disbanded."
+  leave:
+    is_leader: "&cYou're the leader — transfer leadership or use /guild disband."
+    success: "&7You left the guild."
+  create:
+    usage: "&eUsage: /guild create <name>"
+    invalid_name: "&cThat name isn't valid or a guild with that id already exists."
+    success: "&a✔ Guild '{name}' founded."
+    requires_level: "&cYou need level {level} to found a guild."
+    requires_permission: "&cYou don't have the required permission to found a guild."
+    requires_item: "&cYou need {amount}x {item} to found a guild."
+    requires_money: "&cYou need {amount} money to found a guild."
+    quest_requirement_not_implemented: "&7Notice: this guild requires having completed quest '{quest}', but that check isn't implemented yet — the requirement doesn't apply."
+  accept:
+    usage: "&eUsage: /guild accept <guild-id>"
+    success: "&a✔ You joined the guild."
+    no_invite: "&cYou don't have any pending invitation from that guild."
+    expired: "&cThat invitation already expired."
+    guild_gone: "&cThat guild no longer exists."
+  ranking:
+    header: "&6=== Guild Ranking ({category}) ==="
+    entry: "&7{position}. {name} — {value}"
+  chat:
+    officers_only: "&cOnly officers/leader can use that channel."
+    channel_changed: "&bChat switched to channel: {channel}"
+  branch:
+    bank:
+      name: "Bank"
+      description: "More shared storage space"
+    economy:
+      name: "Economy"
+      description: "Better gold rewards from guild quests"
+    members:
+      name: "Members"
+      description: "More member capacity"
+    buffs:
+      name: "Buffs"
+      description: "More guild buffs active at once"
+    territory:
+      name: "Territory"
+      description: "More claimable regions"
+    events:
+      name: "Events"
+      description: "More concurrent events on the calendar"
+  hub:
+    level_suffix: "Level {level}"
+    member_count: "{count} member(s)"
+    button:
+      members: "Members"
+      vault: "Vault"
+      territory: "Territory"
+      upgrades: "Upgrade Tree"
+      diplomacy: "Diplomacy"
+      quests: "Guild Quests"
+      achievements: "Achievements"
+      calendar: "Calendar"
+      customization: "Customization"
+      disband_leave: "Leave / Disband guild"
+    disband_is_leader: "&cYou're the leader — transfer leadership or kick everyone else before disbanding, or use /guild disband to force it."
+  members:
+    title: "Members: {name}"
+    lore:
+      next_role: "&7Click: next role"
+      kick: "&7Shift-click: kick"
+    button:
+      invite: "Invite player"
+    no_permission_kick: "&cYou don't have permission to kick that member."
+    no_permission_role: "&cYou don't have permission to change roles."
+    no_permission_invite: "&cYou don't have permission to invite."
+    prompt_invite: "&eType the name of the player to invite:"
+    target_already_in_guild: "&cThat player is already in a guild."
+    invite_received: "&e{player} invited you to guild {guild} — /guild accept {id}"
+    invite_sent: "&a✔ Invitation sent."
+  vault:
+    title: "Vault: {name}"
+    button:
+      deposit: "Deposit money"
+      withdraw: "Withdraw money"
+      log: "View history (chat)"
+    lore:
+      requires_bank_permission: "&7Requires bank management permission"
+    balance: "Balance: {amount}"
+    storage_slots: "Storage slots: {count}"
+    prompt_deposit: "&eType how much money to deposit:"
+    prompt_withdraw: "&eType how much money to withdraw:"
+    invalid_amount: "&cInvalid amount."
+    no_permission_withdraw: "&cYou don't have permission to withdraw from the bank."
+    log_header: "&6=== Vault history (last 10) ==="
+    log_entry: "&7 - [{type}] {description} ({actor})"
+    log_system: "system"
+    need_item_in_hand: "&cYou need to hold an item to deposit it."
+    slot_not_free: "&cThat slot isn't free."
+    not_enough_money: "&cYou don't have enough money."
+    insufficient_balance: "&cThe vault doesn't have enough balance."
+    deposited: "&a✔ You deposited {amount}."
+    withdrew: "&a✔ You withdrew {amount}."
+    log:
+      deposited_item: "Deposited {item}"
+      withdrew_item: "Withdrew {item}"
+      deposit_of: "Deposit from {player}"
+      withdraw_of: "Withdrawal by {player}"
+  territory:
+    title: "Territories: {name}"
+    lore:
+      world: "&7World: {world}"
+      block_protection: "&7Block protection: {state}"
+      outsider_pvp: "&7Outsider PvP allowed: {state}"
+      toggle_hint: "&8Click: toggle protection · Right-click: toggle PvP"
+      release_hint: "&8Shift-click: release territory"
+      quota: "&7Slots: {count}/{max} (upgrade the Territory branch for more)"
+    button:
+      claim: "Claim territory here"
+    no_permission_manage: "&cYou don't have permission to manage territories."
+    no_permission_claim: "&cYou don't have permission to claim territory."
+    quota_reached: "&cYou reached the territory limit — upgrade the Territory branch."
+    prompt_claim: "&eType: name;radius (e.g. base;40):"
+    invalid_format: "&cInvalid format."
+    radius_not_a_number: "&cThe radius must be a number."
+    overlaps: "&cThat territory overlaps with one already claimed."
+    claimed: "&a✔ Territory '{name}' claimed."
+    protected: "&cThis territory is protected by a guild."
+    no_pvp: "&cYou can't attack players in this territory."
+  upgrade:
+    title: "Upgrades: {name}"
+    branch_level: "{branch} — Level {level}/{max}"
+    max_level: "&aMax level reached"
+    cost: "&6Cost: {cost}"
+    click_hint: "&bClick to upgrade"
+    no_permission: "&cYou don't have permission to upgrade the guild."
+    insufficient_funds: "&cThe guild vault doesn't have enough funds ({cost})."
+    log:
+      upgrade_of: "Upgrade of {branch}"
+  customization:
+    title: "Customization: {name}"
+    name_label: "Name: {name}"
+    color_label: "Color: {color}"
+    icon_label: "Icon: {icon}"
+    motto_label: "Motto: {motto}"
+    description_label: "Description"
+    no_motto: "(no motto)"
+    no_description: "(no description)"
+    lore:
+      click_to_change: "&7Click to change"
+      click_to_type_material: "&7Click to type a new Material"
+    no_permission: "&cYou don't have permission to customize the guild."
+    prompt_name: "&eType the new guild name:"
+    invalid_material: "&cInvalid material."
+    prompt_icon: "&eType the Material name (e.g. DIAMOND_SWORD):"
+    prompt_motto: "&eType the new guild motto:"
+    prompt_description: "&eType the new guild description:"
+  calendar:
+    title: "Calendar: {name}"
+    lore:
+      shift_click_delete: "&8Shift-click to delete"
+    button:
+      add: "Schedule event"
+    no_permission_edit: "&cYou don't have permission to edit the calendar."
+    no_permission_add: "&cYou don't have permission to schedule events."
+    prompt_new_event: "&eType: name;type;minutes-from-now;description (e.g. Tournament;tournament;60;Weekly tournament)"
+    invalid_format: "&cInvalid format."
+    minutes_not_a_number: "&cThe minutes must be a number."
+    event_reminder: "&6📅 Guild event: &e{name} &7— {description}"
+  achievements:
+    title: "Achievements: {name}"
+    unlocked: "Unlocked"
+    locked: "Locked"
+    unlocked_broadcast: "&6🏆 Achievement unlocked: {name}"
+  quests:
+    title: "Quests: {name}"
+    progress: "&7Progress: {current}/{target}"
+    type_target: "&7Type: {type} · Target: {target}"
+    reward: "&7Reward: {money} gold, {xp} guild XP"
+    click_start: "&aClick to start"
+    no_permission_start: "&cYou don't have permission to start guild quests."
+    completed: "&a✔ Guild quest completed: &e{quest}"
+    log:
+      reward: "Quest reward: {quest}"
+  diplomacy:
+    title: "Diplomacy: {name}"
+    level: "&7Level {level}"
+    click_change: "&eClick to change relation"
+    no_permission: "&cYou don't have permission to manage diplomacy."
+  browser:
+    title: "Server guilds"
+    level_members: "&7Level {level} · {count} member(s)"
+    click_open: "&eClick to open"
+
+guildadmin:
+  usage: "&eUsage: /guildadmin <reload|browser [guilds|quests]|delete> [args]"
+  reload:
+    success: "&a✔ Guild quests reloaded: {count}"
+  browser:
+    players_only: "&cOnly a player can open the browser."
+  delete:
+    usage: "&eUsage: /guildadmin delete <id>"
+    not_found: "&cThat guild doesn't exist."
+    success: "&a✔ Guild deleted."
+  quest:
+    browser:
+      title: "Guild Quests (admin)"
+    click_edit: "&eClick to edit"
+    button:
+      new: "Create new guild quest"
+    prompt_new_id: "&eType the id of the new guild quest:"
+    id_already_exists: "&cA quest with that id already exists."
+    editor:
+      title: "Guild Quest: {id}"
+    name_label: "Name: {name}"
+    type_label: "Type: {type}"
+    reference_label: "Reference: {reference}"
+    reference_none: "(none)"
+    target_amount_label: "Target amount: {amount}"
+    reward_money_label: "Gold reward: {amount}"
+    reward_xp_label: "Guild XP reward: {amount}"
+    min_level_label: "Min. guild level: {level}"
+    description_label: "Description"
+    prompt_name: "&eType the new quest name:"
+    prompt_reference: "&eType the new reference (empty = none):"
+    prompt_description: "&eType the new description:"
+    lore:
+      click_to_type_new: "&7Click to type a new one"
+      click_next: "&7Click to advance to the next"
+      win_war_note: "&8WIN_WAR has no automatic hook (no war engine)"
+      reference_example: "&7E.g. mob/dungeon/material id depending on the type"
+      click_increments: "&7Click: +1 · Shift-click: +10 · Right-click: -1"
+      click_100: "&7Click: +100 · Right-click: -100"
+      click_50: "&7Click: +50 · Right-click: -50"

@@ -2,13 +2,13 @@ package com.sack.rpgroll.command.commands;
 
 import com.sack.rpgroll.RPGRoll;
 import com.sack.rpgroll.command.RPGCommand;
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gameplay.combat.CombatStats;
 import com.sack.rpgroll.player.PlayerManager;
 import com.sack.rpgroll.player.RPGPlayer;
 import com.sack.rpgroll.player.stats.PlayerStats;
 import com.sack.rpgroll.util.MessageUtil;
 
-import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 
 import org.bukkit.command.CommandSender;
@@ -33,6 +33,7 @@ public class MyStatsCommand implements RPGCommand {
         public void execute(CommandSender sender, String[] args) {
 
                 Player player = (Player) sender;
+                LangManager lang = plugin.getBootstrap().getServices().get(LangManager.class);
 
                 try {
 
@@ -43,24 +44,23 @@ public class MyStatsCommand implements RPGCommand {
                         Optional<RPGPlayer> rpgPlayer = playerManager.getPlayer(player.getUniqueId());
 
                         if (rpgPlayer.isEmpty()) {
-                                player.sendMessage(Component.text("No se encontraron estadísticas para tu personaje.",
-                                                NamedTextColor.RED));
-                                player.sendMessage(Component.text("Error al cargar tus datos.", NamedTextColor.RED));
+                                lang.send(player, "my_stats_command.profile_load_error");
+                                lang.send(player, "my_stats_command.data_load_error");
                                 return;
                         }
 
-                        displayDetailedStats(player, rpgPlayer.get());
+                        displayDetailedStats(player, rpgPlayer.get(), lang);
 
                 } catch (Exception exception) {
 
-                        player.sendMessage(Component.text("Error al cargar estadísticas.", NamedTextColor.RED));
+                        lang.send(player, "my_stats_command.load_error");
                         exception.printStackTrace();
 
                 }
 
         }
 
-        private void displayDetailedStats(Player player, RPGPlayer rpgPlayer) {
+        private void displayDetailedStats(Player player, RPGPlayer rpgPlayer, LangManager lang) {
 
                 PlayerStats stats = rpgPlayer.getStats();
                 CombatStats combatStats = rpgPlayer.getCombatStats();
@@ -68,24 +68,24 @@ public class MyStatsCommand implements RPGCommand {
                 player.sendMessage(MessageUtil.blank());
 
                 player.sendMessage(MessageUtil.top());
-                player.sendMessage(MessageUtil.title("MIS ESTADÍSTICAS"));
+                player.sendMessage(MessageUtil.title(lang.raw("my_stats_command.title")));
                 player.sendMessage(MessageUtil.separator());
 
                 // Información básica
 
                 player.sendMessage(MessageUtil.line(
                                 NamedTextColor.AQUA,
-                                "Nivel",
+                                lang.raw("my_stats_command.label_level"),
                                 rpgPlayer.getLevel()));
 
                 player.sendMessage(MessageUtil.line(
                                 NamedTextColor.AQUA,
-                                "Raza",
+                                lang.raw("my_stats_command.label_race"),
                                 rpgPlayer.getRace()));
 
                 player.sendMessage(MessageUtil.line(
                                 NamedTextColor.AQUA,
-                                "Clase",
+                                lang.raw("my_stats_command.label_class"),
                                 rpgPlayer.getPlayerClass()));
 
                 player.sendMessage(MessageUtil.separator());
@@ -93,64 +93,64 @@ public class MyStatsCommand implements RPGCommand {
                 if (rpgPlayer.getUnspentStatPoints() > 0) {
                         player.sendMessage(MessageUtil.line(
                                         NamedTextColor.GREEN,
-                                        "Puntos sin gastar",
-                                        rpgPlayer.getUnspentStatPoints() + " (usa /rpg allocate <atributo> <cantidad>)"));
+                                        lang.raw("my_stats_command.label_unspent_points"),
+                                        rpgPlayer.getUnspentStatPoints() + lang.raw("my_stats_command.unspent_points_hint")));
                         player.sendMessage(MessageUtil.separator());
                 }
 
-                player.sendMessage(MessageUtil.section("ATRIBUTOS D&D"));
+                player.sendMessage(MessageUtil.section(lang.raw("my_stats_command.section_attributes")));
 
                 player.sendMessage(MessageUtil.line(NamedTextColor.RED,
-                                "Fuerza",
+                                lang.raw("my_stats_command.label_strength"),
                                 stats.strength()));
 
                 player.sendMessage(MessageUtil.line(NamedTextColor.GREEN,
-                                "Destreza",
+                                lang.raw("my_stats_command.label_dexterity"),
                                 stats.dexterity()));
 
                 player.sendMessage(MessageUtil.line(NamedTextColor.GOLD,
-                                "Constitución",
+                                lang.raw("my_stats_command.label_constitution"),
                                 stats.constitution()));
 
                 player.sendMessage(MessageUtil.line(NamedTextColor.BLUE,
-                                "Inteligencia",
+                                lang.raw("my_stats_command.label_intelligence"),
                                 stats.intelligence()));
 
                 player.sendMessage(MessageUtil.line(NamedTextColor.AQUA,
-                                "Sabiduría",
+                                lang.raw("my_stats_command.label_wisdom"),
                                 stats.wisdom()));
 
                 player.sendMessage(MessageUtil.line(NamedTextColor.LIGHT_PURPLE,
-                                "Carisma",
+                                lang.raw("my_stats_command.label_charisma"),
                                 stats.charisma()));
 
                 player.sendMessage(MessageUtil.separator());
 
-                player.sendMessage(MessageUtil.section("ESTADÍSTICAS DE COMBATE"));
+                player.sendMessage(MessageUtil.section(lang.raw("my_stats_command.section_combat")));
 
                 player.sendMessage(MessageUtil.line(
                                 NamedTextColor.RED,
-                                "Salud",
+                                lang.raw("my_stats_command.label_health"),
                                 combatStats.currentHealth() + "/" + combatStats.maxHealth()));
 
                 player.sendMessage(MessageUtil.line(
                                 NamedTextColor.BLUE,
-                                "Maná",
+                                lang.raw("my_stats_command.label_mana"),
                                 combatStats.currentMana() + "/" + combatStats.maxMana()));
 
                 player.sendMessage(MessageUtil.line(
                                 NamedTextColor.GRAY,
-                                "Armadura",
+                                lang.raw("my_stats_command.label_armor"),
                                 String.format("%.1f", combatStats.armorRating())));
 
                 player.sendMessage(MessageUtil.line(
                                 NamedTextColor.GRAY,
-                                "Evasión",
+                                lang.raw("my_stats_command.label_evasion"),
                                 String.format("%.1f%%", combatStats.evasionChance() * 100)));
 
                 player.sendMessage(MessageUtil.line(
                                 NamedTextColor.YELLOW,
-                                "Crítico",
+                                lang.raw("my_stats_command.label_critical"),
                                 String.format("%.1f%%", combatStats.criticalChance() * 100)));
 
                 player.sendMessage(MessageUtil.bottom());

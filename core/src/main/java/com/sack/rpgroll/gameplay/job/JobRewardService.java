@@ -1,6 +1,7 @@
 package com.sack.rpgroll.gameplay.job;
 
 import com.sack.rpgroll.RPGRoll;
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.integration.VaultEconomyProvider;
 import com.sack.rpgroll.player.PlayerManager;
 import com.sack.rpgroll.player.RPGPlayer;
@@ -23,13 +24,15 @@ public class JobRewardService {
     private final PlayerManager playerManager;
     private final JobManager jobManager;
     private final VaultEconomyProvider economyProvider;
+    private final LangManager lang;
 
     public JobRewardService(RPGRoll plugin, PlayerManager playerManager, JobManager jobManager,
-            VaultEconomyProvider economyProvider) {
+            VaultEconomyProvider economyProvider, LangManager lang) {
         this.plugin = plugin;
         this.playerManager = playerManager;
         this.jobManager = jobManager;
         this.economyProvider = economyProvider;
+        this.lang = lang;
     }
 
     /**
@@ -77,8 +80,8 @@ public class JobRewardService {
         sendFeedback(bukkitPlayer, job, reward, paid);
 
         if (leveledUp) {
-            bukkitPlayer.sendMessage(Component.text(
-                    "🎉 " + job.displayName() + " subió a nivel " + updated.level() + "!", NamedTextColor.GOLD));
+            bukkitPlayer.sendMessage(lang.component("job_reward_service.level_up", "job", job.displayName(), "level",
+                    updated.level()));
         }
     }
 
@@ -122,8 +125,8 @@ public class JobRewardService {
         sendFeedback(bukkitPlayer, job, reward, paid);
 
         if (leveledUp) {
-            bukkitPlayer.sendMessage(Component.text(
-                    "🎉 " + job.displayName() + " subió a nivel " + updated.level() + "!", NamedTextColor.GOLD));
+            bukkitPlayer.sendMessage(lang.component("job_reward_service.level_up", "job", job.displayName(), "level",
+                    updated.level()));
         }
     }
 
@@ -149,10 +152,11 @@ public class JobRewardService {
 
     private void sendFeedback(Player bukkitPlayer, Job job, JobReward reward, boolean paid) {
 
-        StringBuilder message = new StringBuilder("+" + reward.experience() + " XP (" + job.displayName() + ")");
+        StringBuilder message = new StringBuilder(
+                lang.raw("job_reward_service.feedback_base", "exp", reward.experience(), "job", job.displayName()));
 
         if (paid) {
-            message.append(" | +$").append(reward.money());
+            message.append(lang.raw("job_reward_service.feedback_money", "money", reward.money()));
         }
 
         bukkitPlayer.sendActionBar(Component.text(message.toString(), NamedTextColor.GREEN));

@@ -33,7 +33,7 @@ public class FuelEditorGUI extends InventoryGUI {
 
     public FuelEditorGUI(Player player, FuelDefinition fuel, FuelManager fuelManager,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text("Combustible: " + fuel.id(), NamedTextColor.GOLD), SIZE);
+        super(player, Component.text(chatPromptManager.lang().raw("gui.fuel.editor_title", "id", fuel.id()), NamedTextColor.GOLD), SIZE);
         this.current = fuel;
         this.fuelManager = fuelManager;
         this.chatPromptManager = chatPromptManager;
@@ -56,31 +56,31 @@ public class FuelEditorGUI extends InventoryGUI {
         }
 
         setItem(NAME_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(Component.text("Nombre: " + current.displayName(), NamedTextColor.YELLOW)).build());
+                .setName(Component.text(chatPromptManager.lang().raw("gui.common.field_name", "value", current.displayName()), NamedTextColor.YELLOW)).build());
 
         setItem(ICON_SLOT, new ItemBuilder(FuelBrowserGUI.parseMaterial(current.icon()))
-                .setName(Component.text("Ícono: " + current.icon(), NamedTextColor.YELLOW)).build());
+                .setName(Component.text(chatPromptManager.lang().raw("gui.common.field_icon", "value", current.icon()), NamedTextColor.YELLOW)).build());
 
         setItem(MATERIAL_OR_ITEM_SLOT, new ItemBuilder(Material.PAPER)
-                .setName(Component.text("Material/item-id: " + current.materialOrItemId(), NamedTextColor.AQUA))
+                .setName(Component.text(chatPromptManager.lang().raw("gui.fuel.field_material_or_item", "value", current.materialOrItemId()), NamedTextColor.AQUA))
                 .build());
 
         setItem(IS_CUSTOM_ITEM_SLOT, new ItemBuilder(current.isCustomItem() ? Material.LIME_CONCRETE : Material.GRAY_CONCRETE)
-                .setName(Component.text("Es ítem personalizado: " + current.isCustomItem(), NamedTextColor.GOLD))
-                .setLore(Component.text("Click para alternar", NamedTextColor.GRAY)).build());
+                .setName(Component.text(chatPromptManager.lang().raw("gui.fuel.field_is_custom_item", "value", current.isCustomItem()), NamedTextColor.GOLD))
+                .setLore(Component.text(chatPromptManager.lang().raw("gui.common.click_toggle"), NamedTextColor.GRAY)).build());
 
         setItem(BURN_TICKS_SLOT, new ItemBuilder(Material.CLOCK)
-                .setName(Component.text("Ticks de quemado: " + current.burnTicks(), NamedTextColor.AQUA))
-                .setLore(Component.text("Click: +20 · Click derecho: -20", NamedTextColor.GRAY)).build());
+                .setName(Component.text(chatPromptManager.lang().raw("gui.fuel.field_burn_ticks", "value", current.burnTicks()), NamedTextColor.AQUA))
+                .setLore(Component.text(chatPromptManager.lang().raw("gui.common.click_inc_dec", "inc", "+20", "dec", "-20"), NamedTextColor.GRAY)).build());
 
         setItem(CONSUME_AMOUNT_SLOT, new ItemBuilder(Material.HOPPER)
-                .setName(Component.text("Cantidad consumida: " + current.consumeAmount(), NamedTextColor.AQUA))
-                .setLore(Component.text("Click: +1 · Click derecho: -1", NamedTextColor.GRAY)).build());
+                .setName(Component.text(chatPromptManager.lang().raw("gui.fuel.field_consume_amount", "value", current.consumeAmount()), NamedTextColor.AQUA))
+                .setLore(Component.text(chatPromptManager.lang().raw("gui.common.click_inc_dec", "inc", "+1", "dec", "-1"), NamedTextColor.GRAY)).build());
 
         setItem(DELETE_SLOT, new ItemBuilder(Material.BARRIER)
-                .setName(Component.text("Eliminar combustible", NamedTextColor.RED)).build());
+                .setName(Component.text(chatPromptManager.lang().raw("gui.fuel.delete"), NamedTextColor.RED)).build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(chatPromptManager.lang().raw("gui.common.back")));
     }
 
     @Override
@@ -91,15 +91,15 @@ public class FuelEditorGUI extends InventoryGUI {
         int sign = event.getClick() == ClickType.RIGHT ? -1 : 1;
 
         if (slot == NAME_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el nuevo nombre:", value -> replace(new FuelDefinition(
+            chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.common.prompt_name"), value -> replace(new FuelDefinition(
                     current.id(), value, current.icon(), current.materialOrItemId(), current.isCustomItem(),
                     current.burnTicks(), current.consumeAmount())));
         } else if (slot == ICON_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el Material del ícono:", value -> replace(new FuelDefinition(
+            chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.common.prompt_icon"), value -> replace(new FuelDefinition(
                     current.id(), current.displayName(), value, current.materialOrItemId(), current.isCustomItem(),
                     current.burnTicks(), current.consumeAmount())));
         } else if (slot == MATERIAL_OR_ITEM_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el Material vanilla o el id de ítem personalizado:",
+            chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.fuel.prompt_material_or_item"),
                     value -> replace(new FuelDefinition(current.id(), current.displayName(), current.icon(), value,
                             current.isCustomItem(), current.burnTicks(), current.consumeAmount())));
         } else if (slot == IS_CUSTOM_ITEM_SLOT) {

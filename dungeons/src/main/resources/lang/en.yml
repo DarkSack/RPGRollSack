@@ -1,0 +1,344 @@
+# RPGRoll-Dungeons messages (language: English)
+# Edit this file freely — your changes are preserved across a /dungeonadmin reload.
+# Placeholders with {key} get replaced with dynamic values where noted.
+
+common:
+  yes: "yes"
+  no: "no"
+
+prompt:
+  footer: "&7Type in chat, or '{keyword}' to cancel."
+  cancel_keyword: "cancel"
+  cancelled: "&cCancelled."
+
+command:
+  dungeon:
+    usage: "&eUsage: /dungeon <list|info|invite|accept|decline|leaveparty|enter|leave|revive|ranking> [args]"
+    not_found: "&cDungeon '{id}' doesn't exist."
+    player_not_found: "&cPlayer not found."
+    not_in_run: "&cYou're not in any run."
+    list:
+      header: "&6=== Dungeons ({count}) ==="
+      occupied: "&c[occupied]"
+      free: "&a[free]"
+    info:
+      usage: "&eUsage: /dungeon info <id>"
+      stats: "&7Recommended level: {level} | Players: {min}-{max} | Estimated duration: {minutes} min"
+      rooms: "&7Rooms: {rooms} | Repeatable: {repeatable}"
+      difficulties: "&7Difficulties: {difficulties}"
+    invite:
+      players_only: "&cOnly a player can invite."
+      usage: "&eUsage: /dungeon invite <player>"
+      sent: "&a✔ Invite sent to {target}."
+      received: "&e{inviter} invited you to their dungeon party — /dungeon accept (60s)"
+      failed: "&cCouldn't invite: {result}"
+    accept:
+      ok: "&a✔ You joined the party."
+      no_invite: "&cYou don't have any pending invite."
+      expired: "&cThat invite already expired."
+      team_gone: "&cThat party no longer exists."
+      team_full: "&cThat party is already full."
+    decline:
+      ok: "&7Invite declined."
+    leaveparty:
+      disbanded: "&7Party disbanded."
+      left: "&7You left the party."
+    enter:
+      players_only: "&cOnly a player can enter a dungeon."
+      usage: "&eUsage: /dungeon enter <id> [difficulty]"
+      not_leader: "&cOnly the party leader can start the dungeon."
+      queued: "&eThe dungeon is occupied — your party was queued."
+      already_running: "&cYour party is already in a run."
+      party_too_small: "&cAt least {min} player(s) are needed."
+      party_too_large: "&cThe party exceeds the maximum of {max} player(s)."
+      on_cooldown: "&cSomeone in the party is still on cooldown for this dungeon."
+      difficulty_not_found: "&cDifficulty '{difficulty}' doesn't exist."
+    leave:
+      ok: "&7You abandoned the dungeon."
+    revive:
+      usage: "&eUsage: /dungeon revive <player>"
+      ok: "&a✔ Revived."
+      not_dead: "&cThat player isn't dead in this run."
+    ranking:
+      usage: "&eUsage: /dungeon ranking <id> [daily|weekly|monthly|global]"
+      empty: "&7No runs recorded yet."
+      entry: "&7{position}. {players} — {seconds}s, {deaths} death(s)"
+  dungeonadmin:
+    no_permission: "&cYou don't have permission to use this command."
+    usage: "&eUsage: /dungeonadmin <create|reload|forcestop|browser|editor|structure> [args]"
+    players_only: "&cOnly a player can open the editor."
+    not_found: "&cDungeon '{id}' doesn't exist."
+    create:
+      usage: "&eUsage: /dungeonadmin create <id>"
+      id_taken: "&cA dungeon with that id already exists."
+      ok: "&a✔ Dungeon '{id}' created — open it with /dungeonadmin editor {id} (or /dungeonadmin browser) to set it up."
+    reload:
+      ok: "&a✔ Reloaded: {dungeons} dungeon(s), {structures} structure(s)."
+    forcestop:
+      usage: "&eUsage: /dungeonadmin forcestop <id>"
+      no_run: "&cThat dungeon has no active run."
+      ok: "&a✔ Run stopped."
+    editor:
+      usage: "&eUsage: /dungeonadmin editor <id>"
+    structure:
+      usage: "&eUsage: /dungeonadmin structure <list|info|paste|import|browser> [args]"
+      not_found: "&cNo structure with id: {id}"
+      list:
+        header: "&6Structure Library ({count}):"
+        entry: "&f• {id} ({source}) — {name}"
+      info:
+        usage: "&eUsage: /dungeonadmin structure info <id>"
+        unreadable_nbt: "(couldn't read the .nbt)"
+        source: "&fSource: {source}"
+        size: "&fSize (X·Y·Z): {size}"
+      paste:
+        usage: "&eUsage: /dungeonadmin structure paste <id> [world x y z] [rotation]"
+        world_not_found: "&cWorld doesn't exist: {world}"
+        invalid_coords: "&cInvalid coordinates."
+        console_needs_coords: "&cFrom console you need to pass world and coordinates: structure paste <id> <world> <x> <y> <z>"
+        invalid_rotation: "&cInvalid rotation — use NONE, CLOCKWISE_90, CLOCKWISE_180 or COUNTERCLOCKWISE_90."
+        ok: "&a✔ Structure '{id}' pasted."
+        failed: "&c✘ Couldn't paste the structure — check the console."
+      import:
+        usage: "&eUsage: /dungeonadmin structure import <vanillaName> <newId> [display name...]"
+        usage_hint: "&7vanillaName is the name you gave the Structure Block when saving (e.g. rpgroll:room1)."
+        ok: "&a✔ Structure '{id}' imported into the Library."
+        id_taken: "&cA structure with that id already exists."
+        vanilla_not_found: "&cNo vanilla structure found saved as '{name}'."
+        io_error: "&cI/O error while importing — check the console."
+      browser:
+        players_only: "&cOnly a player can open the Structure Library."
+
+engine:
+  queue:
+    your_turn: "&aIt's your party's turn to enter "
+
+gui:
+  common:
+    previous: "&e« Previous"
+    next: "&eNext »"
+    close: "Close"
+    back: "Back"
+    save: "Save"
+    cancel: "Cancel"
+    click_to_change: "&7Click to change"
+  structurelibrary:
+    title: "&6Structure Library"
+    item:
+      size_at_paste: "Real size on paste"
+      source_native: "&dSource: Structure Block"
+      source_custom: "&bSource: own (YAML)"
+      click_to_paste: "&eClick to paste"
+  pasteconfirm:
+    title: "&6Paste: {id}"
+    centered_on_you: "&eIt's pasted centered on your current position"
+    rotation: "&bRotation: {value}"
+    rotate_hint: "&7Click to rotate 90°"
+    mirror_label: "&bMirror: {value}"
+    mirror:
+      left_right: "Left/Right"
+      front_back: "Front/Back"
+      none: "None"
+    confirm: "Paste at my position"
+  editor:
+    hub:
+      title: "&6Editing: {id}"
+      save:
+        ok: "&a✔ Dungeon saved."
+        error: "&c✘ Error saving the dungeon: {error}"
+      info:
+        name: "&eInfo"
+        description: "&7Name, category, icon, description, level, players, cooldown"
+      region:
+        name: "&eRegion & Lobby"
+        description: "&7Corners of the physical area and spawn point"
+      rooms:
+        name: "&eRooms"
+        description: "&7Sequence of rooms: objectives, waves, boss"
+      difficulties:
+        name: "&eDifficulties"
+        description: "&7Normal/Hard/Elite/Mythic/Nightmare and their modifiers"
+      loot:
+        name: "&eLoot"
+        description: "&7Rewards for completing the dungeon"
+      triggers:
+        name: "&eTriggers"
+        description: "&7Actions per event (start, room, wave, boss...)"
+      checkpoints:
+        name: "&eCheckpoints & Revive"
+        description: "&7What happens when the party wipes, and how reviving works"
+    info:
+      title: "&6Info: {id}"
+      name: "&eName: {value}"
+      click_to_write: "&7Click to type a new one"
+      click_to_write_new: "&7Click to type a new one"
+      category: "&eCategory: {value}"
+      icon:
+        label: "&eIcon: {value}"
+        hint: "&7Click to type a vanilla Material"
+      description:
+        label: "&eDescription"
+        empty: "(empty)"
+      level:
+        label: "&eRecommended level: {value}"
+        hint: "&7Click: +1 · Shift-click: +10 · Right-click: -1/-10"
+      min_players: "&eMin. players: {value}"
+      max_players: "&eMax. players: {value}"
+      click_updown_hint: "&7Click: +1 · Right-click: -1"
+      estimated_minutes:
+        label: "&eEstimated duration: {value} min"
+        hint: "&7Click: +5 · Right-click: -5"
+      cooldown:
+        label: "&eCooldown: {value} min"
+        hint: "&7Click: +30 min · Shift-click: +6h · Right-click: -30 min/-6h"
+      repeatable: "&eRepeatable: {value}"
+      click_to_toggle: "&7Click to toggle"
+      tag:
+        remove_hint: "&8Shift-click to remove"
+        add: "&aAdd tag"
+      prompt:
+        name: "&eType the new name:"
+        category: "&eType the new category:"
+        icon: "&eType the Material (e.g. STONE_BRICKS):"
+        description: "&eType the description:"
+        tag: "&eType the new tag:"
+    rooms:
+      title: "&6Rooms: {id}"
+      add: "&aAdd room"
+      move_up: "&b↑ Move up"
+      move_down: "&b↓ Move down"
+      move_hint: "&7Applies to the selected room (right-click one)"
+      prompt:
+        new_id: "&eType the id of the new room:"
+      item:
+        stats: "objectives: {objectives} · waves: {waves}"
+        boss: " · boss: {boss}"
+        edit_remove_hint: "&8Click to edit · Shift-click to remove"
+        select_hint: "&8Right-click to select (reorder with ↑/↓)"
+    roomedit:
+      title: "&6Room: {id}"
+      id: "&eID: {value}"
+      type:
+        label: "&eType: {value}"
+        hint: "&7Click to move to the next type"
+      entry_point:
+        label: "&eEntry point"
+        hint: "&7Click to set it at your current position"
+      boss:
+        label: "&eBoss: {value}"
+        none: "(none)"
+        hint: "&8Id of an RPGRoll-Mobs definition"
+        click_hint: "&7Click: type it · Shift-click: remove"
+      objectives: "&eObjectives: {value}"
+      waves: "&eWaves: {value}"
+      events:
+        label: "&eThis room's events"
+        hint: "&7Actions per trigger, scoped to this room only"
+      prompt:
+        id: "&eType the new id:"
+        boss: "&eType the boss mob id (RPGRoll-Mobs):"
+    roomevents:
+      title: "&6Room events"
+      item:
+        actions: "&7{count} action(s)"
+    actionlist:
+      title_for: "Actions: {trigger}"
+      add:
+        label: "&aAdd action"
+        hint1: "&7TYPE key=value key2=value2"
+        hint2: "&8e.g. SOUND sound=ENTITY_WITHER_SPAWN"
+      invalid_format: "&cInvalid format."
+      item:
+        remove_hint: "&8Shift-click to remove"
+      prompt:
+        add: "&eType: TYPE key=value key2=value2 (e.g. TELEPORT x=100 y=65 z=0):"
+    region:
+      title: "&6Region: {id}"
+      corner1: "&eCorner 1: {value}"
+      corner2: "&eCorner 2: {value}"
+      corner:
+        hint: "&7Click to set it at your current position"
+      lobby:
+        label: "&eLobby: {value}"
+        hint: "&7Click to set it at your current position and facing"
+      unset: "(not set)"
+      updated: "&a✔ Region updated."
+    waves:
+      title: "&6Waves"
+      add: "&aAdd wave"
+      format_hint: "id timeLimit timeBefore mob1:amount,mob2:amount — e.g. wave1 30s 5s skeleton_archer:3,zombie_grunt:2 (0 = no limit/delay)"
+      item:
+        mobs: "&7mobs: {count}"
+        time_limit: "&7time limit: {seconds}s"
+      prompt:
+        add: "&eType: id timeLimit timeBefore mob1:amount,mob2:amount — e.g. wave1 30s 5s skeleton_archer:3,zombie_grunt:2 (0 = no limit/delay)"
+    objectives:
+      title: "&6Objectives"
+      add: "&aAdd objective"
+      format_hint: "TYPE amount key=value... — e.g. KILL_ENTITY 5 entity=ZOMBIE, COLLECT_ITEM 3 material=DIAMOND, ACTIVATE_MECHANISM 1 x=100 y=65 z=-20"
+      invalid_type: "&cInvalid objective type."
+      invalid_amount: "&cInvalid numeric amount."
+      prompt:
+        add: "&eType: TYPE amount key=value... — e.g. KILL_ENTITY 5 entity=ZOMBIE, COLLECT_ITEM 3 material=DIAMOND, ACTIVATE_MECHANISM 1 x=100 y=65 z=-20"
+    triggers:
+      title: "&6Triggers: {id}"
+    checkpointsrevive:
+      title: "&6Checkpoints/Revive: {id}"
+      mode: "&eOn party wipe: {value}"
+      shared_lives:
+        label: "&eShared life pool: {value}"
+        hint: "&7If enabled, each individual death draws from the retry pool"
+      max_retries:
+        label: "&eMax retries: {value}"
+        hint: "&7Click: +1 · Right-click: -1 (below 0 = unlimited)"
+      unlimited: "unlimited"
+      revive_mode: "&eRevive: {value}"
+      revive_timer:
+        label: "&eTimer: {seconds}s"
+        hint1: "&8Used by AFTER_TIMER mode"
+        hint2: "&7Click: +5s · Shift-click: +30s · Right-click: -5s/-30s"
+      revive_item:
+        label: "&eRequired item: {value}"
+        hint1: "&8Used by WITH_ITEM mode"
+      prompt:
+        item: "&eType the required Material:"
+    loot:
+      title: "&6Loot: {id}"
+      add: "&aAdd loot entry"
+      format_hint_short: "TYPE reference amountMin amountMax chance scope"
+      invalid_field_count: "&cInvalid format — 6 fields were expected."
+      invalid_value: "&cInvalid value in the loot entry."
+      item:
+        amount: "&7amount: {min}-{max}"
+        chance: "&7chance: {chance}% · {scope}"
+        replace_remove_hint: "&8Click to replace · Shift-click to remove"
+      prompt:
+        add: "&eType: TYPE reference amountMin amountMax chance scope\n&7e.g. ITEM ancient_relic 1 1 25 SHARED — types: ITEM/MONEY/EXPERIENCE/COMMAND/QUEST — scope: SHARED/PER_PLAYER/PER_CONTRIBUTION"
+        replace: "&eType the replacement entry: TYPE reference amountMin amountMax chance scope\n&7e.g. ITEM ancient_relic 1 1 25 SHARED — types: ITEM/MONEY/EXPERIENCE/COMMAND/QUEST — scope: SHARED/PER_PLAYER/PER_CONTRIBUTION"
+    difficulties:
+      title: "&6Difficulties: {id}"
+      add: "&aAdd difficulty"
+      prompt:
+        new_id: "&eType the id of the new difficulty:"
+      item:
+        multipliers: "&7health x{health} · damage x{damage} · loot x{loot}"
+        modifiers: "&7modifiers: {count}"
+    difficultyedit:
+      title: "&6Difficulty: {id}"
+      health: "&eHealth multiplier: x{value}"
+      damage: "&eDamage multiplier: x{value}"
+      loot: "&eLoot multiplier: x{value}"
+      multiplier_hint: "&7Click: +0.1 · Shift-click: +0.5 · Right-click: -0.1/-0.5"
+  browser:
+    title: "&6RPGRoll Dungeons"
+    search:
+      name: "&bSearch"
+      no_filter: "&7(no filter)"
+      filter: "&7Filter: {text}"
+      prompt: "&eType part of the dungeon's name or id:"
+    all_categories: "&bAll categories"
+    clear_search: "&cClear search"
+    item:
+      level_players: "&7Level {level} · {min}-{max} players"
+      rooms: "&7{rooms} room(s)"
+      click_to_edit: "&eClick to edit"

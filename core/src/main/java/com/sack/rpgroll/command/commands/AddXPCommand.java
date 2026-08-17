@@ -2,12 +2,10 @@ package com.sack.rpgroll.command.commands;
 
 import com.sack.rpgroll.RPGRoll;
 import com.sack.rpgroll.command.RPGCommand;
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.player.PlayerManager;
 import com.sack.rpgroll.player.RPGPlayer;
 import com.sack.rpgroll.util.TabCompleteUtil;
-
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -31,8 +29,10 @@ public class AddXPCommand implements RPGCommand {
     @Override
     public void execute(CommandSender sender, String[] args) {
 
+        LangManager lang = plugin.getBootstrap().getServices().get(LangManager.class);
+
         if (args.length < 2) {
-            sender.sendMessage(Component.text("Uso: /rpg addxp <jugador> <cantidad>", NamedTextColor.RED));
+            lang.send(sender, "addxp.usage");
             return;
         }
 
@@ -44,19 +44,19 @@ public class AddXPCommand implements RPGCommand {
         try {
             amount = Integer.parseInt(expStr);
         } catch (NumberFormatException e) {
-            sender.sendMessage(Component.text("La cantidad de XP debe ser un número válido.", NamedTextColor.RED));
+            lang.send(sender, "addxp.invalid_amount");
             return;
         }
 
         if (amount < 0) {
-            sender.sendMessage(Component.text("La cantidad de XP debe ser positiva.", NamedTextColor.RED));
+            lang.send(sender, "addxp.negative_amount");
             return;
         }
 
         // Buscar al jugador
         Player targetPlayer = Bukkit.getPlayer(targetName);
         if (targetPlayer == null) {
-            sender.sendMessage(Component.text("Jugador no encontrado: " + targetName, NamedTextColor.RED));
+            lang.send(sender, "addxp.player_not_found", "player", targetName);
             return;
         }
 
@@ -69,7 +69,7 @@ public class AddXPCommand implements RPGCommand {
             Optional<RPGPlayer> rpgPlayer = playerManager.getPlayer(targetPlayer.getUniqueId());
 
             if (rpgPlayer.isEmpty()) {
-                sender.sendMessage(Component.text("Error al cargar datos del jugador.", NamedTextColor.RED));
+                lang.send(sender, "addxp.data_load_error");
                 return;
             }
 
@@ -78,20 +78,16 @@ public class AddXPCommand implements RPGCommand {
             playerManager.savePlayer(updatedPlayer);
 
             // Mensajes
-            sender.sendMessage(Component.text("✔ Se agregaron " + amount + " XP a " + targetPlayer.getName(),
-                    NamedTextColor.GREEN));
+            lang.send(sender, "addxp.success_admin", "amount", amount, "player", targetPlayer.getName());
 
-            targetPlayer.sendMessage(
-                    Component.text("Un administrador te ha agregado " + amount + " XP", NamedTextColor.YELLOW)
-                            .append(Component.text(". Tu XP total ahora es: " + updatedPlayer.getExperience(),
-                                    NamedTextColor.AQUA)));
+            lang.send(targetPlayer, "addxp.notify_target", "amount", amount, "total", updatedPlayer.getExperience());
 
-            targetPlayer.sendMessage(Component.text("XP total: " + updatedPlayer.getExperience(), NamedTextColor.AQUA)
-                    .append(Component.text(" | Nivel: " + updatedPlayer.getLevel(), NamedTextColor.AQUA)));
+            lang.send(targetPlayer, "addxp.summary", "total", updatedPlayer.getExperience(), "level",
+                    updatedPlayer.getLevel());
 
         } catch (Exception exception) {
 
-            sender.sendMessage(Component.text("Error al agregar experiencia.", NamedTextColor.RED));
+            lang.send(sender, "addxp.error");
             exception.printStackTrace();
 
         }

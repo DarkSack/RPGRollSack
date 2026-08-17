@@ -11,6 +11,7 @@ import com.sack.rpgroll.ascension.deferred.LegacyManager;
 import com.sack.rpgroll.ascension.player.AscensionPlayerState;
 import com.sack.rpgroll.ascension.player.AscensionPlayerStateManager;
 import com.sack.rpgroll.ascension.requirement.AscensionRequirementChecker;
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.player.RPGPlayer;
 import com.sack.rpgroll.player.identity.PlayerIdentity;
 import com.sack.rpgroll.player.progression.PlayerProgression;
@@ -43,6 +44,7 @@ public class AscensionEngine {
     private final PrestigeManager prestigeManager;
     private final LegacyManager legacyManager;
     private final AscensionRequirementChecker requirementChecker;
+    private final LangManager lang;
 
     private final NamespacedKey healthModifierKey;
     private final NamespacedKey speedModifierKey;
@@ -54,7 +56,8 @@ public class AscensionEngine {
             ClassSpecializationManager specializationManager,
             PrestigeManager prestigeManager,
             LegacyManager legacyManager,
-            AscensionRequirementChecker requirementChecker) {
+            AscensionRequirementChecker requirementChecker,
+            LangManager lang) {
 
         this.plugin = plugin;
         this.stateManager = stateManager;
@@ -63,6 +66,7 @@ public class AscensionEngine {
         this.prestigeManager = prestigeManager;
         this.legacyManager = legacyManager;
         this.requirementChecker = requirementChecker;
+        this.lang = lang;
         this.healthModifierKey = new NamespacedKey(plugin, "ascension-health-modifier");
         this.speedModifierKey = new NamespacedKey(plugin, "ascension-speed-modifier");
     }
@@ -98,13 +102,13 @@ public class AscensionEngine {
                 : Optional.empty();
 
         if (rpgPlayerOpt.isEmpty()) {
-            return List.of("No se pudo leer tu personaje de RPGRoll.");
+            return List.of(lang.raw("engine.no_rpgroll_character"));
         }
 
         RPGPlayer rpgPlayer = rpgPlayerOpt.get();
 
         if (!evolution.baseRace().equalsIgnoreCase(rpgPlayer.getRace())) {
-            return List.of("Esta evolución no corresponde a tu raza: " + evolution.baseRace());
+            return List.of(lang.raw("engine.evolution_wrong_race", "race", evolution.baseRace()));
         }
 
         List<String> reasons = requirementChecker.check(player, evolution.requirements(), state);
@@ -138,11 +142,11 @@ public class AscensionEngine {
                 : null;
 
         if (rpgPlayer == null) {
-            return List.of("No se pudo leer tu personaje de RPGRoll.");
+            return List.of(lang.raw("engine.no_rpgroll_character"));
         }
 
         if (!specialization.baseClass().equalsIgnoreCase(rpgPlayer.getPlayerClass())) {
-            return List.of("Esta especialización no corresponde a tu clase: " + specialization.baseClass());
+            return List.of(lang.raw("engine.specialization_wrong_class", "class", specialization.baseClass()));
         }
 
         List<String> reasons = requirementChecker.check(player, specialization.requirements(), state);
@@ -245,20 +249,20 @@ public class AscensionEngine {
         AscensionPlayerState state = stateManager.getOrLoad(player);
 
         if (!RPGRollAPI.isReady()) {
-            return List.of("RPGRoll Core todavía no está listo.");
+            return List.of(lang.raw("engine.core_not_ready"));
         }
 
         RPGPlayer rpgPlayer = RPGRollAPI.get().getPlayer(player.getUniqueId()).orElse(null);
         if (rpgPlayer == null) {
-            return List.of("No se pudo leer tu personaje de RPGRoll.");
+            return List.of(lang.raw("engine.no_rpgroll_character"));
         }
 
         int nextPrestige = state.getPrestigeCount() + 1;
         int requiredLevel = prestigeManager.getByNumber(nextPrestige).map(p -> p.requiredLevel()).orElse(100);
 
         if (rpgPlayer.getLevel() < requiredLevel) {
-            return List.of("Necesitás nivel " + requiredLevel + " para prestigiar (tenés "
-                    + rpgPlayer.getLevel() + ").");
+            return List.of(lang.raw("engine.prestige_level_required", "level", requiredLevel, "current",
+                    rpgPlayer.getLevel()));
         }
 
         PlayerIdentity identity = new PlayerIdentity(rpgPlayer.getUUID(), rpgPlayer.getUsername(),
@@ -297,16 +301,16 @@ public class AscensionEngine {
 
         var tier = legacyManager.highestAvailable(state.getPrestigeCount());
         if (tier.isEmpty()) {
-            return List.of("Todavía no alcanzaste el prestigio mínimo para un Legado.");
+            return List.of(lang.raw("engine.legacy_prestige_required"));
         }
 
         if (!RPGRollAPI.isReady()) {
-            return List.of("RPGRoll Core todavía no está listo.");
+            return List.of(lang.raw("engine.core_not_ready"));
         }
 
         RPGPlayer rpgPlayer = RPGRollAPI.get().getPlayer(player.getUniqueId()).orElse(null);
         if (rpgPlayer == null) {
-            return List.of("No se pudo leer tu personaje de RPGRoll.");
+            return List.of(lang.raw("engine.no_rpgroll_character"));
         }
 
         PlayerIdentity identity = new PlayerIdentity(rpgPlayer.getUUID(), rpgPlayer.getUsername(),

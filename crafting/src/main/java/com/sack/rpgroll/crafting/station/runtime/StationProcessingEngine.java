@@ -14,6 +14,7 @@ import com.sack.rpgroll.crafting.ingredient.IngredientMatcher;
 import com.sack.rpgroll.crafting.ingredient.IngredientSpec;
 import com.sack.rpgroll.crafting.integration.CharacterXpBridge;
 import com.sack.rpgroll.crafting.integration.EconomyBridge;
+import com.sack.rpgroll.crafting.proficiency.ProficiencyService;
 import com.sack.rpgroll.crafting.quality.CraftQuality;
 import com.sack.rpgroll.crafting.quality.QualityRoller;
 import com.sack.rpgroll.crafting.recipe.CustomRecipe;
@@ -21,15 +22,21 @@ import com.sack.rpgroll.crafting.recipe.CustomRecipeManager;
 import com.sack.rpgroll.crafting.recipe.RecipeResultFactory;
 import com.sack.rpgroll.crafting.station.CustomStation;
 import com.sack.rpgroll.crafting.station.CustomStationManager;
+import com.sack.rpgroll.common.lang.LangManager;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
+import java.util.UUID;
 import java.util.logging.Logger;
 
 /**
@@ -39,6 +46,14 @@ import java.util.logging.Logger;
  * ingredientes/condiciones/combustible se cumplen, avanza el progreso de la
  * que esté en curso, y entrega el resultado (con calidad, si aplica) al
  * completarse.
+ * <p>
+ * El dueño de la estación ({@code runtime.lastPlayerId()}) NO necesita estar
+ * conectado para que esto siga andando: las condiciones que solo dependen de
+ * su UUID (nivel/raza/clase/job/guild) se evalúan igual offline vía
+ * {@link ConditionEvaluator#evaluateAllOffline}, el cobro de Economy ya
+ * funciona por UUID, y el xp de personaje/proficiencia también. Solo las
+ * condiciones atadas a su posición real (PERMISSION/BIOME) siguen exigiendo
+ * que esté conectado — documentado en {@link ConditionEvaluator}.
  */
 public class StationProcessingEngine {
 
@@ -50,18 +65,20 @@ public class StationProcessingEngine {
     private final ConditionEvaluator conditionEvaluator;
     private final RecipeResultFactory resultFactory;
     private final DiscoveryService discoveryService;
+    private final ProficiencyService proficiencyService;
     private final QualityRoller qualityRoller = new QualityRoller();
     private final Random random = new Random();
     private final Logger logger;
 
     private final double defaultFailChance;
     private final boolean failConsumesIngredients;
+    private final LangManager lang;
 
     public StationProcessingEngine(StationRuntimeRegistry registry, CustomStationManager stationManager,
             CustomRecipeManager recipeManager, FuelManager fuelManager, IngredientMatcher ingredientMatcher,
             ConditionEvaluator conditionEvaluator, RecipeResultFactory resultFactory,
-            DiscoveryService discoveryService, Logger logger,
-            double defaultFailChance, boolean failConsumesIngredients) {
+            DiscoveryService discoveryService, ProficiencyService proficiencyService, Logger logger,
+            double defaultFailChance, boolean failConsumesIngredients, LangManager lang) {
         this.registry = registry;
         this.stationManager = stationManager;
         this.recipeManager = recipeManager;
@@ -70,9 +87,11 @@ public class StationProcessingEngine {
         this.conditionEvaluator = conditionEvaluator;
         this.resultFactory = resultFactory;
         this.discoveryService = discoveryService;
+        this.proficiencyService = proficiencyService;
         this.logger = logger;
         this.defaultFailChance = defaultFailChance;
         this.failConsumesIngredients = failConsumesIngredients;
+        this.lang = lang;
     }
 
     /** Llamado periódicamente por el scheduler del plugin (ver {@code station-tick-interval-ticks}). */
@@ -112,10 +131,11 @@ public class StationProcessingEngine {
             }
 
             CustomRecipe recipe = recipeOpt.get();
+            int requiredTicks = effectiveProcessingTicks(station, runtime.tier(), recipe.processingTimeTicks());
             Bukkit.getPluginManager().callEvent(
-                    new CraftProcessEvent(recipe, runtime.key(), runtime.progressTicks(), recipe.processingTimeTicks()));
+                    new CraftProcessEvent(recipe, runtime.key(), runtime.progressTicks(), requiredTicks));
 
-            if (runtime.progressTicks() >= recipe.processingTimeTicks()) {
+            if (runtime.progressTicks() >= requiredTicks) {
                 complete(runtime, station, recipe);
             }
         }
@@ -147,12 +167,15 @@ public class StationProcessingEngine {
     private void tryStart(StationRuntime runtime, CustomStation station) {
 
         List<CustomRecipe> candidates = recipeManager.byStation(station.id());
-        Player player = runtime.lastPlayerId() != null ? Bukkit.getPlayer(runtime.lastPlayerId()) : null;
+        UUID playerId = runtime.lastPlayerId();
+        Player onlinePlayer = playerId != null ? Bukkit.getPlayer(playerId) : null;
+        World stationWorld = Bukkit.getWorld(runtime.world());
 
         for (CustomRecipe recipe : candidates) {
 
             if (!recipe.conditions().isEmpty()) {
-                if (player == null || !conditionEvaluator.evaluateAll(recipe.conditions(), player)) {
+                if (playerId == null
+                        || !conditionEvaluator.evaluateAllOffline(recipe.conditions(), playerId, onlinePlayer, stationWorld)) {
                     continue;
                 }
             }
@@ -165,22 +188,23 @@ public class StationProcessingEngine {
                 continue;
             }
 
-            CraftPrepareEvent prepareEvent = new CraftPrepareEvent(player, recipe, runtime.key());
+            CraftPrepareEvent prepareEvent = new CraftPrepareEvent(onlinePlayer, recipe, runtime.key());
             Bukkit.getPluginManager().callEvent(prepareEvent);
             if (prepareEvent.isCancelled()) {
                 continue;
             }
 
             if (recipe.economyCost() > 0) {
-                if (player == null || !EconomyBridge.charge(player.getUniqueId(), recipe.economyCurrencyId(),
+                if (playerId == null || !EconomyBridge.charge(playerId, recipe.economyCurrencyId(),
                         recipe.economyCost(), "Crafting: " + recipe.displayName())) {
                     continue;
                 }
             }
 
-            consumeIngredients(runtime.inventory(), recipe.ingredients());
+            List<ItemStack> consumed = consumeIngredients(runtime.inventory(), recipe.ingredients());
             runtime.startRecipe(recipe.id());
-            Bukkit.getPluginManager().callEvent(new CraftStartEvent(player, recipe, runtime.key()));
+            runtime.setConsumedForCurrentRecipe(consumed);
+            Bukkit.getPluginManager().callEvent(new CraftStartEvent(onlinePlayer, recipe, runtime.key()));
             return;
         }
     }
@@ -195,30 +219,44 @@ public class StationProcessingEngine {
         return true;
     }
 
-    private void consumeIngredients(Inventory inventory, List<IngredientSpec> ingredients) {
+    private List<ItemStack> consumeIngredients(Inventory inventory, List<IngredientSpec> ingredients) {
+        List<ItemStack> consumed = new ArrayList<>();
         for (IngredientSpec spec : ingredients) {
-            ingredientMatcher.tryConsume(inventory, spec);
+            consumed.addAll(ingredientMatcher.tryConsumeAndCapture(inventory, spec));
         }
+        return consumed;
+    }
+
+    /** Nivel de estación reduce el tiempo de proceso; nunca por debajo de 1 tick. */
+    private int effectiveProcessingTicks(CustomStation station, int tier, int baseTicks) {
+        double reduction = station.speedBonusPerTier() * (tier - 1);
+        return Math.max(1, (int) Math.round(baseTicks * (1 - Math.min(1, reduction))));
+    }
+
+    /** Nivel de estación reduce la probabilidad de fallo; nunca por debajo de 0. */
+    private double effectiveFailChance(CustomStation station, int tier, double baseChance) {
+        double reduction = station.failReductionPerTier() * (tier - 1);
+        return Math.max(0, baseChance - reduction);
     }
 
     private void complete(StationRuntime runtime, CustomStation station, CustomRecipe recipe) {
 
-        double failChance = recipe.failChance() >= 0 ? recipe.failChance() : defaultFailChance;
+        double baseFailChance = recipe.failChance() >= 0 ? recipe.failChance() : defaultFailChance;
+        double failChance = effectiveFailChance(station, runtime.tier(), baseFailChance);
         boolean failed = failChance > 0 && random.nextDouble() < failChance;
 
         if (failed) {
+            List<ItemStack> consumed = runtime.consumedForCurrentRecipe();
             runtime.clearRecipe();
             if (!failConsumesIngredients) {
-                // Los ingredientes ya se consumieron al iniciar; sin devolución automática
-                // de qué exactamente se consumió, documentar como limitación conocida.
-                logger.fine("Receta '" + recipe.id() + "' falló en " + runtime.key());
+                returnIngredients(runtime, consumed);
             }
             Bukkit.getPluginManager().callEvent(new CraftFailEvent(recipe, runtime.key()));
             return;
         }
 
-        double skillFactor = 0.5;
-        Player player = runtime.lastPlayerId() != null ? Bukkit.getPlayer(runtime.lastPlayerId()) : null;
+        UUID playerId = runtime.lastPlayerId();
+        double skillFactor = proficiencyService.factor(playerId, station.skillCategory());
 
         CraftQuality quality = recipe.qualityEnabled() ? qualityRoller.roll(skillFactor) : null;
         Optional<ItemStack> result = resultFactory.build(recipe.result(), quality);
@@ -235,17 +273,54 @@ public class StationProcessingEngine {
 
         runtime.clearRecipe();
 
-        if (recipe.xpAmount() > 0 && player != null) {
-            CharacterXpBridge.grant(player.getUniqueId(), recipe.xpAmount());
+        if (playerId != null) {
+
+            if (recipe.xpAmount() > 0) {
+                CharacterXpBridge.grant(playerId, recipe.xpAmount());
+            }
+            proficiencyService.grantXp(playerId, station.skillCategory(), Math.max(1, recipe.xpAmount()));
+
+            boolean newlyDiscovered = discoveryService.markDiscovered(playerId, recipe.id());
+
+            Player onlinePlayer = Bukkit.getPlayer(playerId);
+            if (onlinePlayer != null) {
+                Bukkit.getPluginManager().callEvent(new CraftCompleteEvent(onlinePlayer, recipe, result.get(), quality));
+
+                if (newlyDiscovered) {
+                    lang.send(onlinePlayer, "station.recipe_discovered", "recipe", recipe.displayName());
+                    Bukkit.getPluginManager().callEvent(new RecipeDiscoverEvent(onlinePlayer, recipe));
+                }
+            }
+        }
+    }
+
+    /**
+     * Devuelve los ingredientes que se habían consumido al iniciar una receta
+     * que terminó fallando (solo si {@code fail-consumes-ingredients: false}).
+     * Primero intenta acomodarlos en el propio inventario de la estación; lo
+     * que no entre se tira al piso en la ubicación del bloque, para no
+     * perderlo silenciosamente si la estación está llena.
+     */
+    private void returnIngredients(StationRuntime runtime, List<ItemStack> consumed) {
+
+        if (consumed.isEmpty()) {
+            return;
         }
 
-        if (player != null) {
-            Bukkit.getPluginManager().callEvent(new CraftCompleteEvent(player, recipe, result.get(), quality));
+        Map<Integer, ItemStack> leftover = runtime.inventory().addItem(consumed.toArray(new ItemStack[0]));
+        if (leftover.isEmpty()) {
+            return;
+        }
 
-            if (discoveryService.markDiscovered(player.getUniqueId(), recipe.id())) {
-                player.sendMessage("§b§lNueva receta descubierta: §f" + recipe.displayName());
-                Bukkit.getPluginManager().callEvent(new RecipeDiscoverEvent(player, recipe));
-            }
+        World world = Bukkit.getWorld(runtime.world());
+        if (world == null) {
+            logger.warning("✘ No se pudieron devolver ingredientes en " + runtime.key() + ": el mundo no está cargado.");
+            return;
+        }
+
+        Location dropLocation = new Location(world, runtime.x() + 0.5, runtime.y() + 0.5, runtime.z() + 0.5);
+        for (ItemStack item : leftover.values()) {
+            world.dropItemNaturally(dropLocation, item);
         }
     }
 

@@ -30,7 +30,7 @@ public class BreedBrowserGUI extends InventoryGUI {
 
     public BreedBrowserGUI(Player player, BreedManager breedManager, SpeciesManager speciesManager,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text("Razas", NamedTextColor.GOLD), SIZE);
+        super(player, Component.text(chatPromptManager.lang().raw("gui.hub.breeds"), NamedTextColor.GOLD), SIZE);
         this.breedManager = breedManager;
         this.speciesManager = speciesManager;
         this.chatPromptManager = chatPromptManager;
@@ -53,15 +53,15 @@ public class BreedBrowserGUI extends InventoryGUI {
 
             setItem(i, new ItemBuilder(Material.NAME_TAG)
                     .setName(Component.text(breed.displayName(), NamedTextColor.YELLOW))
-                    .setLore(Component.text("id: " + breed.id(), NamedTextColor.GRAY),
-                            Component.text("especie: " + breed.speciesId(), NamedTextColor.GRAY),
-                            Component.text("Click para editar", NamedTextColor.YELLOW))
+                    .setLore(Component.text(chatPromptManager.lang().raw("gui.browser.id_line", "id", breed.id()), NamedTextColor.GRAY),
+                            Component.text(chatPromptManager.lang().raw("gui.breed.browser.species_line", "species", breed.speciesId()), NamedTextColor.GRAY),
+                            Component.text(chatPromptManager.lang().raw("gui.common.click_to_edit"), NamedTextColor.YELLOW))
                     .build());
         }
 
         setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Crear raza nueva", NamedTextColor.GREEN)).build());
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+                .setName(Component.text(chatPromptManager.lang().raw("gui.breed.browser.new"), NamedTextColor.GREEN)).build());
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(chatPromptManager.lang().raw("gui.common.back")));
     }
 
     @Override
@@ -86,24 +86,25 @@ public class BreedBrowserGUI extends InventoryGUI {
     }
 
     private void promptNew() {
-        chatPromptManager.prompt(player, "Escribí el id de la nueva raza:", value -> {
+        chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.breed.browser.prompt_new_id"), value -> {
 
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 
             if (breedManager.exists(id)) {
-                player.sendMessage(Component.text("Ya existe una raza con ese id.", NamedTextColor.RED));
+                player.sendMessage(Component.text(chatPromptManager.lang().raw("gui.breed.browser.already_exists"), NamedTextColor.RED));
                 reopen();
                 return;
             }
 
             if (speciesManager.getAll().isEmpty()) {
-                player.sendMessage(Component.text("Creá al menos una especie primero.", NamedTextColor.RED));
+                player.sendMessage(Component.text(chatPromptManager.lang().raw("gui.breed.browser.need_species_first"), NamedTextColor.RED));
                 reopen();
                 return;
             }
 
             String speciesId = speciesManager.getAll().iterator().next().id();
-            breedManager.save(new Breed(id, id, "", speciesId, 1.0, 1.0, 1.0, 1.0, "Neutral"));
+            breedManager.save(new Breed(id, id, "", speciesId, 1.0, 1.0, 1.0, 1.0, "Neutral",
+                    com.sack.rpgroll.common.reskin.EntityReskin.NONE));
             reopen();
         });
     }

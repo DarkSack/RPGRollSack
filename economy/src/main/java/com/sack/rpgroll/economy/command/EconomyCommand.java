@@ -1,5 +1,6 @@
 package com.sack.rpgroll.economy.command;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.economy.auction.AuctionManager;
 import com.sack.rpgroll.economy.bank.BankManager;
 import com.sack.rpgroll.economy.company.CompanyManager;
@@ -16,11 +17,7 @@ import com.sack.rpgroll.economy.shop.ShopManager;
 import com.sack.rpgroll.economy.tax.TaxEngine;
 import com.sack.rpgroll.economy.wallet.EconomyResult;
 import com.sack.rpgroll.economy.wallet.WalletService;
-import com.sack.rpgroll.util.ComponentUtils;
 import com.sack.rpgroll.util.TabCompleteUtil;
-
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -48,6 +45,7 @@ public class EconomyCommand implements CommandExecutor, TabCompleter {
     private final CompanyService companyService;
     private final ChatPromptManager chatPromptManager;
     private final long auctionDefaultDurationMillis;
+    private final LangManager lang;
 
     public EconomyCommand(CurrencyManager currencyManager, WalletService walletService, BankManager bankManager,
             LoanService loanService, ShopManager shopManager, TaxEngine taxEngine, AuctionManager auctionManager,
@@ -64,13 +62,14 @@ public class EconomyCommand implements CommandExecutor, TabCompleter {
         this.companyService = companyService;
         this.chatPromptManager = chatPromptManager;
         this.auctionDefaultDurationMillis = auctionDefaultDurationMillis;
+        this.lang = chatPromptManager.lang();
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
         if (!(sender instanceof Player player)) {
-            sender.sendMessage(Component.text("Solo un jugador puede usar este comando.", NamedTextColor.RED));
+            lang.send(sender, "common.players_only");
             return true;
         }
 
@@ -88,7 +87,7 @@ public class EconomyCommand implements CommandExecutor, TabCompleter {
                     auctionDefaultDurationMillis).open();
             case "company" -> new CompanyListGUI(player, companyManager, companyService, bankManager, currencyManager,
                     chatPromptManager).open();
-            default -> player.sendMessage(Component.text("Subcomando desconocido.", NamedTextColor.RED));
+            default -> lang.send(player, "common.unknown_subcommand");
         }
 
         return true;
@@ -97,22 +96,20 @@ public class EconomyCommand implements CommandExecutor, TabCompleter {
     private void sendBalance(Player player, String currencyId) {
         var currency = currencyManager.get(currencyId).orElse(currencyManager.defaultCurrency());
         double balance = walletService.balance(player.getUniqueId(), currency.id());
-        player.sendMessage(Component.text("Balance (", NamedTextColor.GOLD)
-                .append(ComponentUtils.parse(currency.displayName()))
-                .append(Component.text("): " + currency.format(balance), NamedTextColor.GOLD)));
+        lang.send(player, "player.balance", "currency", currency.displayName(), "amount", currency.format(balance));
     }
 
     private void handlePay(Player player, String[] args) {
 
         if (args.length < 3) {
-            player.sendMessage(Component.text("Uso: /economy pay <jugador> <cantidad> [moneda]", NamedTextColor.YELLOW));
+            lang.send(player, "player.pay_usage");
             return;
         }
 
         OfflinePlayer target = Bukkit.getOfflinePlayer(args[1]);
 
         if (target.getUniqueId().equals(player.getUniqueId())) {
-            player.sendMessage(Component.text("No podés pagarte a vos mismo.", NamedTextColor.RED));
+            lang.send(player, "player.pay_self");
             return;
         }
 
@@ -120,7 +117,7 @@ public class EconomyCommand implements CommandExecutor, TabCompleter {
         try {
             amount = Double.parseDouble(args[2]);
         } catch (NumberFormatException e) {
-            player.sendMessage(Component.text("Cantidad inválida.", NamedTextColor.RED));
+            lang.send(player, "common.invalid_amount");
             return;
         }
 
@@ -129,9 +126,11 @@ public class EconomyCommand implements CommandExecutor, TabCompleter {
         EconomyResult result = walletService.transfer(player.getUniqueId(), target.getUniqueId(), currencyId, amount,
                 "Pago de " + player.getName() + " a " + target.getName());
 
-        player.sendMessage(result == EconomyResult.SUCCESS
-                ? Component.text("✔ Le pagaste " + amount + " a " + target.getName() + ".", NamedTextColor.GREEN)
-                : Component.text("✘ " + result, NamedTextColor.RED));
+        if (result == EconomyResult.SUCCESS) {
+            lang.send(player, "player.pay_success", "amount", amount, "target", target.getName());
+        } else {
+            lang.send(player, "common.fail_result", "result", result);
+        }
     }
 
     @Override

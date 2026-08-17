@@ -2,17 +2,14 @@ package com.sack.rpgroll.command.commands;
 
 import com.sack.rpgroll.RPGRoll;
 import com.sack.rpgroll.command.RPGCommand;
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gameplay.job.Job;
 import com.sack.rpgroll.gameplay.job.JobManager;
 import com.sack.rpgroll.player.PlayerManager;
 import com.sack.rpgroll.player.RPGPlayer;
 import com.sack.rpgroll.player.jobs.JobProgress;
 import com.sack.rpgroll.player.jobs.PlayerJobs;
-import com.sack.rpgroll.util.ComponentUtils;
 import com.sack.rpgroll.util.TabCompleteUtil;
-
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -39,8 +36,10 @@ public class AdminJobCommand implements RPGCommand {
     @Override
     public void execute(CommandSender sender, String[] args) {
 
+        LangManager lang = plugin.getBootstrap().getServices().get(LangManager.class);
+
         if (args.length < 2) {
-            sender.sendMessage(Component.text("Uso: " + getUsage(), NamedTextColor.RED));
+            lang.send(sender, "admin_job.usage", "usage", getUsage());
             return;
         }
 
@@ -48,26 +47,25 @@ public class AdminJobCommand implements RPGCommand {
 
         try {
             switch (action) {
-                case "give" -> give(sender, args);
-                case "remove" -> remove(sender, args);
-                case "setlevel" -> setLevel(sender, args);
-                default ->
-                    sender.sendMessage(Component.text("Acción inválida: give, remove, setlevel", NamedTextColor.RED));
+                case "give" -> give(sender, args, lang);
+                case "remove" -> remove(sender, args, lang);
+                case "setlevel" -> setLevel(sender, args, lang);
+                default -> lang.send(sender, "admin_job.invalid_action");
             }
         } catch (Exception exception) {
-            sender.sendMessage(Component.text("Error al ejecutar el comando.", NamedTextColor.RED));
+            lang.send(sender, "error.command_failed");
             plugin.getLogger().severe("✘ Error en /rpg admin job: " + exception.getMessage());
         }
     }
 
-    private void give(CommandSender sender, String[] args) {
+    private void give(CommandSender sender, String[] args, LangManager lang) {
 
         if (args.length < 3) {
-            sender.sendMessage(Component.text("Uso: /rpg job give <jugador> <jobId>", NamedTextColor.RED));
+            lang.send(sender, "admin_job.give_usage");
             return;
         }
 
-        Player target = resolveTarget(sender, args[1]);
+        Player target = resolveTarget(sender, args[1], lang);
         if (target == null) {
             return;
         }
@@ -77,7 +75,7 @@ public class AdminJobCommand implements RPGCommand {
         Optional<Job> jobOpt = jobManager.get(jobId);
 
         if (jobOpt.isEmpty()) {
-            sender.sendMessage(Component.text("No existe el trabajo: " + jobId, NamedTextColor.RED));
+            lang.send(sender, "admin_job.job_not_found", "job", jobId);
             return;
         }
 
@@ -85,38 +83,35 @@ public class AdminJobCommand implements RPGCommand {
         Optional<RPGPlayer> rpgPlayerOpt = playerManager.getPlayer(target.getUniqueId());
 
         if (rpgPlayerOpt.isEmpty()) {
-            sender.sendMessage(Component.text("El jugador no tiene datos RPG cargados.", NamedTextColor.RED));
+            lang.send(sender, "error.no_rpg_data");
             return;
         }
 
         RPGPlayer rpgPlayer = rpgPlayerOpt.get();
 
         if (rpgPlayer.getJobs().hasJob(jobId)) {
-            sender.sendMessage(Component.text("El jugador ya tiene ese trabajo.", NamedTextColor.YELLOW));
+            lang.send(sender, "admin_job.already_has_job");
             return;
         }
 
         if (rpgPlayer.getJobs().isFull()) {
-            sender.sendMessage(Component.text(
-                    "El jugador ya tiene el máximo de trabajos (3). Usa remove primero.", NamedTextColor.RED));
+            lang.send(sender, "admin_job.jobs_full");
             return;
         }
 
         playerManager.savePlayer(rpgPlayer.joinJob(jobId));
 
-        sender.sendMessage(Component.text("✔ Trabajo asignado: ", NamedTextColor.GREEN)
-                .append(ComponentUtils.parse(jobOpt.get().displayName()).colorIfAbsent(NamedTextColor.GOLD))
-                .append(Component.text(" a " + target.getName(), NamedTextColor.GREEN)));
+        lang.send(sender, "admin_job.give_success", "job", jobOpt.get().displayName(), "player", target.getName());
     }
 
-    private void remove(CommandSender sender, String[] args) {
+    private void remove(CommandSender sender, String[] args, LangManager lang) {
 
         if (args.length < 3) {
-            sender.sendMessage(Component.text("Uso: /rpg job remove <jugador> <jobId>", NamedTextColor.RED));
+            lang.send(sender, "admin_job.remove_usage");
             return;
         }
 
-        Player target = resolveTarget(sender, args[1]);
+        Player target = resolveTarget(sender, args[1], lang);
         if (target == null) {
             return;
         }
@@ -126,30 +121,30 @@ public class AdminJobCommand implements RPGCommand {
         Optional<RPGPlayer> rpgPlayerOpt = playerManager.getPlayer(target.getUniqueId());
 
         if (rpgPlayerOpt.isEmpty()) {
-            sender.sendMessage(Component.text("El jugador no tiene datos RPG cargados.", NamedTextColor.RED));
+            lang.send(sender, "error.no_rpg_data");
             return;
         }
 
         RPGPlayer rpgPlayer = rpgPlayerOpt.get();
 
         if (!rpgPlayer.getJobs().hasJob(jobId)) {
-            sender.sendMessage(Component.text("El jugador no tiene ese trabajo.", NamedTextColor.YELLOW));
+            lang.send(sender, "admin_job.remove_no_job");
             return;
         }
 
         playerManager.savePlayer(rpgPlayer.leaveJob(jobId));
 
-        sender.sendMessage(Component.text("✔ Trabajo removido de " + target.getName(), NamedTextColor.GREEN));
+        lang.send(sender, "admin_job.remove_success", "player", target.getName());
     }
 
-    private void setLevel(CommandSender sender, String[] args) {
+    private void setLevel(CommandSender sender, String[] args, LangManager lang) {
 
         if (args.length < 4) {
-            sender.sendMessage(Component.text("Uso: /rpg job setlevel <jugador> <jobId> <nivel>", NamedTextColor.RED));
+            lang.send(sender, "admin_job.setlevel_usage");
             return;
         }
 
-        Player target = resolveTarget(sender, args[1]);
+        Player target = resolveTarget(sender, args[1], lang);
         if (target == null) {
             return;
         }
@@ -160,7 +155,7 @@ public class AdminJobCommand implements RPGCommand {
         try {
             level = Integer.parseInt(args[3]);
         } catch (NumberFormatException e) {
-            sender.sendMessage(Component.text("El nivel debe ser un número.", NamedTextColor.RED));
+            lang.send(sender, "admin_job.invalid_level_number");
             return;
         }
 
@@ -168,13 +163,12 @@ public class AdminJobCommand implements RPGCommand {
         Optional<Job> jobOpt = jobManager.get(jobId);
 
         if (jobOpt.isEmpty()) {
-            sender.sendMessage(Component.text("No existe el trabajo: " + jobId, NamedTextColor.RED));
+            lang.send(sender, "admin_job.job_not_found", "job", jobId);
             return;
         }
 
         if (level < 1 || level > jobOpt.get().maxLevel()) {
-            sender.sendMessage(
-                    Component.text("Nivel inválido. Máximo: " + jobOpt.get().maxLevel(), NamedTextColor.RED));
+            lang.send(sender, "admin_job.invalid_level_range", "max", jobOpt.get().maxLevel());
             return;
         }
 
@@ -182,7 +176,7 @@ public class AdminJobCommand implements RPGCommand {
         Optional<RPGPlayer> rpgPlayerOpt = playerManager.getPlayer(target.getUniqueId());
 
         if (rpgPlayerOpt.isEmpty()) {
-            sender.sendMessage(Component.text("El jugador no tiene datos RPG cargados.", NamedTextColor.RED));
+            lang.send(sender, "error.no_rpg_data");
             return;
         }
 
@@ -190,21 +184,20 @@ public class AdminJobCommand implements RPGCommand {
         PlayerJobs jobs = rpgPlayer.getJobs();
 
         if (!jobs.hasJob(jobId)) {
-            sender.sendMessage(Component.text("El jugador no tiene ese trabajo activo.", NamedTextColor.RED));
+            lang.send(sender, "admin_job.no_active_job");
             return;
         }
 
         JobProgress newProgress = new JobProgress(jobId, level, 0);
         playerManager.savePlayer(rpgPlayer.updateJobs(jobs.withProgress(newProgress)));
 
-        sender.sendMessage(Component.text("✔ Nivel de " + jobId + " para " + target.getName()
-                + " establecido en " + level, NamedTextColor.GREEN));
+        lang.send(sender, "admin_job.setlevel_success", "job", jobId, "player", target.getName(), "level", level);
     }
 
-    private Player resolveTarget(CommandSender sender, String name) {
+    private Player resolveTarget(CommandSender sender, String name, LangManager lang) {
         Player target = Bukkit.getPlayerExact(name);
         if (target == null) {
-            sender.sendMessage(Component.text("Jugador no encontrado o desconectado: " + name, NamedTextColor.RED));
+            lang.send(sender, "error.player_offline", "player", name);
         }
         return target;
     }

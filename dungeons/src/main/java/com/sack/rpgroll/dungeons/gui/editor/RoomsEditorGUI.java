@@ -1,9 +1,11 @@
 package com.sack.rpgroll.dungeons.gui.editor;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.dungeons.core.DungeonPoint;
 import com.sack.rpgroll.dungeons.core.DungeonRoom;
+import com.sack.rpgroll.util.ComponentUtils;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -32,12 +34,15 @@ public class RoomsEditorGUI extends InventoryGUI {
 
     private final DungeonEditorSession session;
     private final Runnable onBack;
+    private final LangManager lang;
     private int selectedIndex = -1;
 
     public RoomsEditorGUI(Player player, DungeonEditorSession session, Runnable onBack) {
-        super(player, Component.text("Salas: " + session.original.id(), NamedTextColor.GOLD), SIZE);
+        super(player, ComponentUtils.parse(session.chatPromptManager.lang()
+                .raw("gui.editor.rooms.title", "id", session.original.id())), SIZE);
         this.session = session;
         this.onBack = onBack;
+        this.lang = session.chatPromptManager.lang();
     }
 
     @Override
@@ -56,33 +61,34 @@ public class RoomsEditorGUI extends InventoryGUI {
             DungeonRoom room = rooms.get(i);
             boolean selected = i == selectedIndex;
 
+            String waveAndBoss = lang.raw("gui.editor.rooms.item.stats", "objectives", room.objectives().size(),
+                    "waves", room.waves().size())
+                    + (room.hasBoss() ? lang.raw("gui.editor.rooms.item.boss", "boss", room.bossMobId()) : "");
+
             setItem(i, new ItemBuilder(selected ? Material.LIME_STAINED_GLASS_PANE : iconFor(room))
                     .setName(Component.text((i + 1) + ". " + room.id() + " (" + room.type() + ")",
                             NamedTextColor.YELLOW))
                     .setLore(
-                            Component.text("objetivos: " + room.objectives().size() + " · oleadas: "
-                                    + room.waves().size() + (room.hasBoss() ? " · jefe: " + room.bossMobId() : ""),
-                                    NamedTextColor.GRAY),
-                            Component.text("Click para editar · Shift-click para quitar", NamedTextColor.DARK_GRAY),
-                            Component.text("Click derecho para seleccionar (reordenar con ↑/↓)",
-                                    NamedTextColor.DARK_GRAY))
+                            Component.text(waveAndBoss, NamedTextColor.GRAY),
+                            ComponentUtils.parse(lang.raw("gui.editor.rooms.item.edit_remove_hint")),
+                            ComponentUtils.parse(lang.raw("gui.editor.rooms.item.select_hint")))
                     .build());
         }
 
         setItem(ADD_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Agregar sala", NamedTextColor.GREEN))
+                .setName(ComponentUtils.parse(lang.raw("gui.editor.rooms.add")))
                 .build());
 
         setItem(MOVE_UP_SLOT, new ItemBuilder(Material.ARROW)
-                .setName(Component.text("↑ Mover arriba", NamedTextColor.AQUA))
-                .setLore(Component.text("Sobre la sala seleccionada (click derecho en una)", NamedTextColor.GRAY))
+                .setName(ComponentUtils.parse(lang.raw("gui.editor.rooms.move_up")))
+                .setLore(ComponentUtils.parse(lang.raw("gui.editor.rooms.move_hint")))
                 .build());
 
         setItem(MOVE_DOWN_SLOT, new ItemBuilder(Material.ARROW)
-                .setName(Component.text("↓ Mover abajo", NamedTextColor.AQUA))
+                .setName(ComponentUtils.parse(lang.raw("gui.editor.rooms.move_down")))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back")));
     }
 
     private Material iconFor(DungeonRoom room) {
@@ -169,7 +175,7 @@ public class RoomsEditorGUI extends InventoryGUI {
     }
 
     private void promptAdd() {
-        session.chatPromptManager.prompt(player, "Escribí el id de la nueva sala:", value -> {
+        session.chatPromptManager.prompt(player, "gui.editor.rooms.prompt.new_id", value -> {
 
             String id = value.trim().toLowerCase().replace(' ', '_');
 

@@ -1,5 +1,6 @@
 package com.sack.rpgroll.gui.admin;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.gameplay.job.Job;
@@ -24,12 +25,14 @@ public class JobBrowserGUI extends InventoryGUI {
 
     private final JobManager jobManager;
     private final ChatPromptManager chatPromptManager;
+    private final LangManager lang;
     private List<Job> jobs;
 
     public JobBrowserGUI(Player player, JobManager jobManager, ChatPromptManager chatPromptManager) {
-        super(player, Component.text("Trabajos RPGRoll", NamedTextColor.GOLD), SIZE);
+        super(player, chatPromptManager.lang().component("job_browser_gui.title"), SIZE);
         this.jobManager = jobManager;
         this.chatPromptManager = chatPromptManager;
+        this.lang = chatPromptManager.lang();
         this.jobs = List.copyOf(jobManager.getAll());
     }
 
@@ -48,19 +51,18 @@ public class JobBrowserGUI extends InventoryGUI {
 
             setItem(i, new ItemBuilder(Material.IRON_PICKAXE)
                     .setName(Component.text(job.id(), NamedTextColor.YELLOW))
-                    .setLore(Component.text("Nivel máx. " + job.maxLevel() + " · " + job.rewards().size()
-                            + " recompensa(s)", NamedTextColor.GRAY),
-                            Component.text("Click para editar", NamedTextColor.YELLOW))
+                    .setLore(lang.component("job_browser_gui.summary", "level", job.maxLevel(), "count",
+                            job.rewards().size()),
+                            lang.component("job_browser_gui.click_to_edit"))
                     .build());
         }
 
         setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Crear trabajo nuevo", NamedTextColor.GREEN))
-                .setLore(Component.text("Recordá: sin listener Java propio, no otorgará XP solo.",
-                        NamedTextColor.DARK_GRAY))
+                .setName(lang.component("job_browser_gui.create_new"))
+                .setLore(lang.component("job_browser_gui.create_new_lore"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Cerrar"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("job_browser_gui.close_button")));
     }
 
     @Override
@@ -70,7 +72,7 @@ public class JobBrowserGUI extends InventoryGUI {
         int slot = event.getSlot();
 
         if (slot < jobs.size() && slot < 36) {
-            new JobEditorGUI(player, jobs.get(slot), jobManager, chatPromptManager, this::reopen).open();
+            new JobEditorGUI(player, jobs.get(slot), jobManager, chatPromptManager, lang, this::reopen).open();
             return;
         }
 
@@ -85,12 +87,12 @@ public class JobBrowserGUI extends InventoryGUI {
     }
 
     private void promptNew() {
-        chatPromptManager.prompt(player, "Escribí el id del nuevo trabajo:", value -> {
+        chatPromptManager.prompt(player, lang.raw("job_browser_gui.prompt_new"), value -> {
 
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 
             if (jobManager.exists(id)) {
-                player.sendMessage(Component.text("Ya existe un trabajo con ese id.", NamedTextColor.RED));
+                lang.send(player, "job_browser_gui.already_exists");
                 reopen();
                 return;
             }

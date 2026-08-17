@@ -3,12 +3,10 @@ package com.sack.rpgroll.sackresourcepack.cmd;
 import com.sack.rpgroll.sackresourcepack.SackResourcePackPlugin;
 import com.sack.rpgroll.sackresourcepack.build.BuildResult;
 import com.sack.rpgroll.sackresourcepack.gui.DashboardGUI;
+import com.sack.rpgroll.sackresourcepack.lang.LangManager;
 import com.sack.rpgroll.sackresourcepack.manifest.AssetModule;
 import com.sack.rpgroll.sackresourcepack.merge.OverrideNotice;
 import com.sack.rpgroll.sackresourcepack.validation.ValidationIssue;
-
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -40,11 +38,15 @@ public class SrpCommand implements CommandExecutor, TabCompleter {
         this.plugin = plugin;
     }
 
+    private LangManager lang() {
+        return plugin.lang();
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
         if (!sender.hasPermission("sackresourcepack.admin.*")) {
-            sender.sendMessage(Component.text("No tenés permiso para usar este comando.", NamedTextColor.RED));
+            lang().send(sender, "command.no-permission");
             return true;
         }
 
@@ -78,7 +80,7 @@ public class SrpCommand implements CommandExecutor, TabCompleter {
                 if (sender instanceof Player player) {
                     openDashboard(player);
                 } else {
-                    sender.sendMessage(Component.text("Solo un jugador puede abrir el Dashboard.", NamedTextColor.RED));
+                    lang().send(sender, "command.gui-players-only");
                 }
             }
             default -> sendUsage(sender);
@@ -88,7 +90,7 @@ public class SrpCommand implements CommandExecutor, TabCompleter {
     }
 
     private void openDashboard(Player player) {
-        new DashboardGUI(player, plugin, plugin.getBuildEngine(), plugin.getHttpServer().assetBaseUrl(),
+        new DashboardGUI(player, plugin, plugin.getBuildEngine(), plugin.getHttpServer().assetBaseUrl(), lang(),
                 () -> handleBuild(player, true),
                 () -> handleBuild(player, false),
                 plugin::publish,
@@ -99,9 +101,8 @@ public class SrpCommand implements CommandExecutor, TabCompleter {
 
     private void handleReload(CommandSender sender) {
         plugin.reloadConfig();
-        sender.sendMessage(Component.text(
-                "✔ config.yml recargado. Cambios de puerto HTTP, carpeta de contenido o pack-format requieren reiniciar el plugin.",
-                NamedTextColor.YELLOW));
+        lang().reload(plugin.getConfig().getString("language", "es"));
+        lang().send(sender, "command.reload-done");
     }
 
     private void handleBuild(CommandSender sender, boolean force) {
@@ -112,37 +113,38 @@ public class SrpCommand implements CommandExecutor, TabCompleter {
                 + result.resolutionErrors().size();
         long warnings = result.issues().stream().filter(i -> i.severity() == ValidationIssue.Severity.WARNING).count();
 
-        sender.sendMessage(Component.text(
-                (force ? "Rebuild" : "Validate") + " completo — " + result.modules().size() + " módulo(s), "
-                        + errors + " error(es), " + warnings + " warning(s). SHA1: " + result.sha1(),
-                errors > 0 ? NamedTextColor.RED : warnings > 0 ? NamedTextColor.YELLOW : NamedTextColor.GREEN));
+        String type = lang().raw(force ? "command.build-type-rebuild" : "command.build-type-validate");
 
-        result.resolutionErrors().forEach(error -> sender.sendMessage(Component.text("  ✘ " + error, NamedTextColor.RED)));
+        sender.sendMessage(lang().component("command.build-result",
+                "type", type, "modules", result.modules().size(), "errors", errors, "warnings", warnings,
+                "sha1", result.sha1()));
 
-        result.issues().forEach(issue -> sender.sendMessage(Component.text(
-                "  " + (issue.severity() == ValidationIssue.Severity.ERROR ? "✘ " : "⚠ ") + issue.message(),
-                issue.severity() == ValidationIssue.Severity.ERROR ? NamedTextColor.RED : NamedTextColor.YELLOW)));
+        result.resolutionErrors().forEach(error ->
+                sender.sendMessage(lang().component("command.build-resolution-error", "error", error)));
+
+        result.issues().forEach(issue -> sender.sendMessage(lang().component(
+                issue.severity() == ValidationIssue.Severity.ERROR ? "command.build-issue-error" : "command.build-issue-warning",
+                "message", issue.message())));
     }
 
     private void handlePublish(CommandSender sender) {
         plugin.publish();
-        sender.sendMessage(Component.text("✔ Publicación disparada — ver la consola para el resultado del upload (si aplica).",
-                NamedTextColor.GREEN));
+        lang().send(sender, "command.publish-done");
     }
 
     private void handleStatus(CommandSender sender) {
 
         BuildResult result = plugin.getBuildEngine().getLastResult();
 
-        sender.sendMessage(Component.text("=== Estado de SackResourcePack ===", NamedTextColor.GOLD));
-        sender.sendMessage(Component.text("Módulos: " + (result != null ? result.modules().size() : 0), NamedTextColor.WHITE));
-        sender.sendMessage(Component.text("Último SHA1: " + (result != null ? result.sha1() : "—"), NamedTextColor.WHITE));
-        sender.sendMessage(Component.text("Host HTTP: " + (plugin.getHttpServer().isRunning() ? "activo" : "inactivo"),
-                NamedTextColor.WHITE));
-        sender.sendMessage(Component.text("Modo desarrollo: " + (plugin.isDevelopmentModeActive() ? "activo" : "inactivo"),
-                NamedTextColor.WHITE));
-        sender.sendMessage(Component.text("Datapack: " + (plugin.isDatapackEnabled() ? "habilitado" : "deshabilitado"),
-                NamedTextColor.WHITE));
+        sender.sendMessage(lang().component("command.status-header"));
+        sender.sendMessage(lang().component("command.status-modules", "count", result != null ? result.modules().size() : 0));
+        sender.sendMessage(lang().component("command.status-sha1", "sha1", result != null ? result.sha1() : "—"));
+        sender.sendMessage(lang().component("command.status-http", "state",
+                lang().raw(plugin.getHttpServer().isRunning() ? "command.state-active" : "command.state-inactive")));
+        sender.sendMessage(lang().component("command.status-devmode", "state",
+                lang().raw(plugin.isDevelopmentModeActive() ? "command.state-active" : "command.state-inactive")));
+        sender.sendMessage(lang().component("command.status-datapack", "state",
+                lang().raw(plugin.isDatapackEnabled() ? "command.state-enabled" : "command.state-disabled")));
     }
 
     private void handleContent(CommandSender sender) {
@@ -150,13 +152,12 @@ public class SrpCommand implements CommandExecutor, TabCompleter {
         BuildResult result = plugin.getBuildEngine().getLastResult();
         List<AssetModule> modules = result != null ? result.modules() : List.of();
 
-        sender.sendMessage(Component.text("=== Módulos de contenido (" + modules.size() + ") ===", NamedTextColor.GOLD));
+        sender.sendMessage(lang().component("command.content-header", "count", modules.size()));
 
         for (AssetModule module : modules) {
-            sender.sendMessage(Component.text(
-                    "- " + module.id() + " v" + module.version() + " (" + module.author() + ") prioridad="
-                            + module.priority(),
-                    NamedTextColor.WHITE));
+            sender.sendMessage(lang().component("command.content-line",
+                    "id", module.id(), "version", module.version(), "author", module.author(),
+                    "priority", module.priority()));
         }
     }
 
@@ -165,16 +166,15 @@ public class SrpCommand implements CommandExecutor, TabCompleter {
         var mergeResult = plugin.getBuildEngine().getLastMergeResult();
 
         if (mergeResult == null || mergeResult.overrides().isEmpty()) {
-            sender.sendMessage(Component.text("Sin conflictos registrados en el último build.", NamedTextColor.GREEN));
+            lang().send(sender, "command.conflicts-none");
             return;
         }
 
-        sender.sendMessage(Component.text("=== Conflictos (" + mergeResult.overrides().size() + ") ===", NamedTextColor.GOLD));
+        sender.sendMessage(lang().component("command.conflicts-header", "count", mergeResult.overrides().size()));
 
         for (OverrideNotice notice : mergeResult.overrides()) {
-            sender.sendMessage(Component.text(
-                    "- " + notice.relativePath() + ": " + notice.previousModuleId() + " → " + notice.newModuleId(),
-                    NamedTextColor.YELLOW));
+            sender.sendMessage(lang().component("command.conflicts-line",
+                    "path", notice.relativePath(), "previous", notice.previousModuleId(), "current", notice.newModuleId()));
         }
     }
 
@@ -184,7 +184,7 @@ public class SrpCommand implements CommandExecutor, TabCompleter {
         File assetsRoot = new File(mergedDirectory, "assets");
 
         if (!assetsRoot.isDirectory()) {
-            sender.sendMessage(Component.text("No hay ningún build todavía — corré /srp rebuild.", NamedTextColor.RED));
+            lang().send(sender, "command.assettype-no-build");
             return;
         }
 
@@ -197,33 +197,29 @@ public class SrpCommand implements CommandExecutor, TabCompleter {
                     .sorted()
                     .toList();
         } catch (Exception e) {
-            sender.sendMessage(Component.text("✘ Error recorriendo el pack: " + e.getMessage(), NamedTextColor.RED));
+            sender.sendMessage(lang().component("command.assettype-error", "error", e.getMessage()));
             return;
         }
 
-        sender.sendMessage(Component.text("=== " + folderName + " (" + matches.size() + ") ===", NamedTextColor.GOLD));
-        matches.forEach(match -> sender.sendMessage(Component.text("- " + match, NamedTextColor.WHITE)));
+        sender.sendMessage(lang().component("command.assettype-header", "type", folderName, "count", matches.size()));
+        matches.forEach(match -> sender.sendMessage(lang().component("command.assettype-line", "path", match)));
     }
 
     private void handleCache(CommandSender sender) {
         plugin.getBuildEngine().invalidateCache();
-        sender.sendMessage(Component.text("✔ Caché invalidado — el próximo build (rebuild o validate) va a reconstruir todo desde cero.",
-                NamedTextColor.GREEN));
+        lang().send(sender, "command.cache-done");
     }
 
     private void handleDev(CommandSender sender) {
         plugin.toggleDevelopmentMode();
-        sender.sendMessage(Component.text(
-                "Modo desarrollo ahora: " + (plugin.isDevelopmentModeActive() ? "ACTIVO" : "inactivo"),
-                NamedTextColor.YELLOW));
+        sender.sendMessage(lang().component("command.dev-toggled", "state",
+                lang().raw(plugin.isDevelopmentModeActive() ? "command.dev-state-active" : "command.dev-state-inactive")));
     }
 
     private void handleDatapack(CommandSender sender, String[] args) {
 
         if (!plugin.isDatapackEnabled()) {
-            sender.sendMessage(Component.text(
-                    "✘ El datapack está deshabilitado — activá 'datapack.enabled' en config.yml.",
-                    NamedTextColor.RED));
+            lang().send(sender, "command.datapack-disabled");
             return;
         }
 
@@ -233,27 +229,20 @@ public class SrpCommand implements CommandExecutor, TabCompleter {
             case "build" -> {
                 var result = plugin.getDatapackBuildEngine().build();
                 plugin.getDatapackBuildEngine().distribute();
-                sender.sendMessage(Component.text(
-                        "✔ Datapack fusionado y copiado a datapacks/ — " + result.modules().size()
-                                + " módulo(s). Corré '/srp datapack reload' para aplicarlo.",
-                        result.hasErrors() ? NamedTextColor.YELLOW : NamedTextColor.GREEN));
-                result.resolutionErrors()
-                        .forEach(error -> sender.sendMessage(Component.text("  ✘ " + error, NamedTextColor.RED)));
+                sender.sendMessage(lang().component("command.datapack-build-done", "count", result.modules().size()));
+                result.resolutionErrors().forEach(error ->
+                        sender.sendMessage(lang().component("command.datapack-build-resolution-error", "error", error)));
             }
             case "reload" -> {
                 plugin.getDatapackBuildEngine().reload();
-                sender.sendMessage(Component.text(
-                        "✔ Server#reloadData() ejecutado — recetas/loot tables/tags/advancements recargados.",
-                        NamedTextColor.GREEN));
+                lang().send(sender, "command.datapack-reload-done");
             }
-            default -> sender.sendMessage(Component.text("Uso: /srp datapack <build|reload>", NamedTextColor.RED));
+            default -> lang().send(sender, "command.datapack-usage");
         }
     }
 
     private void sendUsage(CommandSender sender) {
-        sender.sendMessage(Component.text(
-                "Uso: /srp <reload|rebuild|validate|publish|status|content|conflicts|models|textures|sounds|fonts|cache|dev|datapack|gui>",
-                NamedTextColor.RED));
+        lang().send(sender, "command.usage");
     }
 
     @Override

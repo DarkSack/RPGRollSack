@@ -1,5 +1,7 @@
 package com.sack.rpgroll.sackeffects.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
+
 import io.papermc.paper.event.player.AsyncChatEvent;
 
 import net.kyori.adventure.text.Component;
@@ -21,15 +23,18 @@ import java.util.function.Consumer;
 public class ChatPromptManager implements Listener {
 
     private final Plugin plugin;
+    private final LangManager langManager;
     private final Map<UUID, Consumer<String>> pending = new HashMap<>();
 
-    public ChatPromptManager(Plugin plugin) {
+    public ChatPromptManager(Plugin plugin, LangManager langManager) {
         this.plugin = plugin;
+        this.langManager = langManager;
     }
 
+    /** {@code question} ya viene resuelto (traducido) por quien llama, vía {@code langManager.raw(...)}. */
     public void prompt(Player player, String question, Consumer<String> callback) {
         player.sendMessage(Component.text(question, NamedTextColor.YELLOW));
-        player.sendMessage(Component.text("Escribí en el chat, o 'cancelar' para abortar.", NamedTextColor.GRAY));
+        langManager.send(player, "prompt.cancel_hint");
         pending.put(player.getUniqueId(), callback);
     }
 
@@ -48,7 +53,7 @@ public class ChatPromptManager implements Listener {
 
         Bukkit.getScheduler().runTask(plugin, () -> {
             if (message.equalsIgnoreCase("cancelar")) {
-                event.getPlayer().sendMessage(Component.text("Cancelado.", NamedTextColor.RED));
+                langManager.send(event.getPlayer(), "prompt.cancelled");
                 return;
             }
             callback.accept(message);

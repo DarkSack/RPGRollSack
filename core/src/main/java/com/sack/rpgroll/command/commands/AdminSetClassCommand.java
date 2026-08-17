@@ -2,6 +2,7 @@ package com.sack.rpgroll.command.commands;
 
 import com.sack.rpgroll.RPGRoll;
 import com.sack.rpgroll.command.RPGCommand;
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gameplay.combat.CombatStats;
 import com.sack.rpgroll.api.stats.StatType;
 import com.sack.rpgroll.player.PlayerManager;
@@ -11,11 +12,7 @@ import com.sack.rpgroll.api.playerclass.ClassManager;
 import com.sack.rpgroll.api.playerclass.PlayerClass;
 import com.sack.rpgroll.api.race.Race;
 import com.sack.rpgroll.api.race.RaceManager;
-import com.sack.rpgroll.util.ComponentUtils;
 import com.sack.rpgroll.util.TabCompleteUtil;
-
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -41,8 +38,10 @@ public class AdminSetClassCommand implements RPGCommand {
     @Override
     public void execute(CommandSender sender, String[] args) {
 
+        LangManager lang = plugin.getBootstrap().getServices().get(LangManager.class);
+
         if (args.length < 2) {
-            sender.sendMessage(Component.text("Uso: " + getUsage(), NamedTextColor.RED));
+            lang.send(sender, "admin_setclass.usage", "usage", getUsage());
             return;
         }
 
@@ -53,8 +52,7 @@ public class AdminSetClassCommand implements RPGCommand {
         Player target = Bukkit.getPlayerExact(targetName);
 
         if (target == null) {
-            sender.sendMessage(
-                    Component.text("Jugador no encontrado o desconectado: " + targetName, NamedTextColor.RED));
+            lang.send(sender, "error.player_offline", "player", targetName);
             return;
         }
 
@@ -64,7 +62,7 @@ public class AdminSetClassCommand implements RPGCommand {
             Optional<PlayerClass> classOpt = classManager.get(classId);
 
             if (classOpt.isEmpty()) {
-                sender.sendMessage(Component.text("No existe la clase: " + classId, NamedTextColor.RED));
+                lang.send(sender, "admin_setclass.class_not_found", "class", classId);
                 return;
             }
 
@@ -72,7 +70,7 @@ public class AdminSetClassCommand implements RPGCommand {
             Optional<RPGPlayer> rpgPlayerOpt = playerManager.getPlayer(target.getUniqueId());
 
             if (rpgPlayerOpt.isEmpty()) {
-                sender.sendMessage(Component.text("El jugador no tiene datos RPG cargados.", NamedTextColor.RED));
+                lang.send(sender, "error.no_rpg_data");
                 return;
             }
 
@@ -92,21 +90,18 @@ public class AdminSetClassCommand implements RPGCommand {
 
             playerManager.savePlayer(rpgPlayer);
 
-            sender.sendMessage(Component.text("✔ Clase de " + target.getName() + " cambiada a: ", NamedTextColor.GREEN)
-                    .append(ComponentUtils.parse(playerClass.displayName()).colorIfAbsent(NamedTextColor.GOLD)));
+            lang.send(sender, "admin_setclass.success", "player", target.getName(), "class", playerClass.displayName());
 
             if (recalc) {
-                sender.sendMessage(Component.text("  (stats recalculados desde cero)", NamedTextColor.YELLOW));
+                lang.send(sender, "admin_setclass.stats_recalculated");
             } else {
-                sender.sendMessage(Component.text("  (stats sin modificar — usa --recalc para recalcularlos)",
-                        NamedTextColor.GRAY));
+                lang.send(sender, "admin_setclass.stats_unmodified");
             }
 
-            target.sendMessage(Component.text("Un administrador cambió tu clase a: ", NamedTextColor.YELLOW)
-                    .append(ComponentUtils.parse(playerClass.displayName()).colorIfAbsent(NamedTextColor.GOLD)));
+            lang.send(target, "admin_setclass.notify_target", "class", playerClass.displayName());
 
         } catch (Exception exception) {
-            sender.sendMessage(Component.text("Error al cambiar la clase.", NamedTextColor.RED));
+            lang.send(sender, "admin_setclass.error");
             plugin.getLogger().severe("✘ Error en /rpg admin setclass: " + exception.getMessage());
         }
     }

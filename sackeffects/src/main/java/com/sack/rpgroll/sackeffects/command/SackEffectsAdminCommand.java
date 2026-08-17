@@ -1,5 +1,7 @@
 package com.sack.rpgroll.sackeffects.command;
 
+import com.sack.rpgroll.common.lang.LangManager;
+import com.sack.rpgroll.sackeffects.SackEffectsPlugin;
 import com.sack.rpgroll.sackeffects.core.EffectDefinition;
 import com.sack.rpgroll.sackeffects.core.EffectManager;
 import com.sack.rpgroll.sackeffects.engine.EffectContext;
@@ -7,9 +9,6 @@ import com.sack.rpgroll.sackeffects.engine.EffectEngine;
 import com.sack.rpgroll.sackeffects.gui.ChatPromptManager;
 import com.sack.rpgroll.sackeffects.gui.EffectBrowserGUI;
 import com.sack.rpgroll.util.TabCompleteUtil;
-
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -30,21 +29,26 @@ public class SackEffectsAdminCommand implements CommandExecutor, TabCompleter {
 
     private static final List<String> SUBCOMMANDS = List.of("browser", "reload", "test");
 
+    private final SackEffectsPlugin plugin;
     private final EffectManager effectManager;
     private final EffectEngine engine;
     private final ChatPromptManager chatPromptManager;
+    private final LangManager langManager;
 
-    public SackEffectsAdminCommand(EffectManager effectManager, EffectEngine engine, ChatPromptManager chatPromptManager) {
+    public SackEffectsAdminCommand(SackEffectsPlugin plugin, EffectManager effectManager, EffectEngine engine,
+            ChatPromptManager chatPromptManager, LangManager langManager) {
+        this.plugin = plugin;
         this.effectManager = effectManager;
         this.engine = engine;
         this.chatPromptManager = chatPromptManager;
+        this.langManager = langManager;
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
         if (!sender.hasPermission("sackeffects.admin.*")) {
-            sender.sendMessage(Component.text("No tenés permiso para usar este comando.", NamedTextColor.RED));
+            langManager.send(sender, "general.no_permission");
             return true;
         }
 
@@ -64,31 +68,32 @@ public class SackEffectsAdminCommand implements CommandExecutor, TabCompleter {
     }
 
     private void sendUsage(CommandSender sender) {
-        sender.sendMessage(Component.text(
-                "Uso: /sackeffects <browser|reload|test <id> [jugador]>", NamedTextColor.RED));
+        langManager.send(sender, "command.usage");
     }
 
     private void handleBrowser(CommandSender sender) {
 
         if (!(sender instanceof Player player)) {
-            sender.sendMessage(Component.text("Solo jugadores pueden abrir el navegador de efectos.",
-                    NamedTextColor.RED));
+            langManager.send(sender, "command.browser_players_only");
             return;
         }
 
-        new EffectBrowserGUI(player, effectManager, engine, chatPromptManager).open();
+        new EffectBrowserGUI(player, effectManager, engine, chatPromptManager, langManager).open();
     }
 
     private void handleReload(CommandSender sender) {
         effectManager.reload();
-        sender.sendMessage(Component.text("✔ Recargado: " + effectManager.count() + " efecto(s).",
-                NamedTextColor.GREEN));
+
+        plugin.reloadConfig();
+        langManager.reload(plugin.getConfig().getString("language", "es"));
+
+        langManager.send(sender, "command.reload_success", "count", effectManager.count());
     }
 
     private void handleTest(CommandSender sender, String[] args) {
 
         if (args.length < 2) {
-            sender.sendMessage(Component.text("Uso: /sackeffects test <id> [jugador]", NamedTextColor.RED));
+            langManager.send(sender, "command.test_usage");
             return;
         }
 
@@ -96,7 +101,7 @@ public class SackEffectsAdminCommand implements CommandExecutor, TabCompleter {
         Optional<EffectDefinition> effectOpt = effectManager.get(effectId);
 
         if (effectOpt.isEmpty()) {
-            sender.sendMessage(Component.text("No existe un efecto con id: " + effectId, NamedTextColor.RED));
+            langManager.send(sender, "command.test_effect_not_found", "id", effectId);
             return;
         }
 
@@ -105,20 +110,18 @@ public class SackEffectsAdminCommand implements CommandExecutor, TabCompleter {
         if (args.length >= 3) {
             target = Bukkit.getPlayerExact(args[2]);
             if (target == null) {
-                sender.sendMessage(Component.text("Jugador no encontrado: " + args[2], NamedTextColor.RED));
+                langManager.send(sender, "command.test_player_not_found", "player", args[2]);
                 return;
             }
         } else if (sender instanceof Player senderPlayer) {
             target = senderPlayer;
         } else {
-            sender.sendMessage(Component.text("Especificá un jugador: /sackeffects test <id> <jugador>",
-                    NamedTextColor.RED));
+            langManager.send(sender, "command.test_specify_player");
             return;
         }
 
         engine.play(effectOpt.get(), EffectContext.of(target));
-        sender.sendMessage(Component.text("▶ Reproduciendo '" + effectId + "' en " + target.getName() + ".",
-                NamedTextColor.GREEN));
+        langManager.send(sender, "command.test_playing", "id", effectId, "player", target.getName());
     }
 
     @Override

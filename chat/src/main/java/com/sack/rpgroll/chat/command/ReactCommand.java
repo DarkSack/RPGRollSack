@@ -2,6 +2,7 @@ package com.sack.rpgroll.chat.command;
 
 import com.sack.rpgroll.chat.reaction.ReactionManager;
 import com.sack.rpgroll.chat.reaction.ReactionType;
+import com.sack.rpgroll.common.lang.LangManager;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -15,21 +16,23 @@ import org.bukkit.entity.Player;
 public class ReactCommand implements CommandExecutor {
 
     private final ReactionManager reactionManager;
+    private final LangManager lang;
 
-    public ReactCommand(ReactionManager reactionManager) {
+    public ReactCommand(ReactionManager reactionManager, LangManager lang) {
         this.reactionManager = reactionManager;
+        this.lang = lang;
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
         if (!(sender instanceof Player player)) {
-            sender.sendMessage(Component.text("Solo un jugador puede usar este comando.", NamedTextColor.RED));
+            lang.send(sender, "common.players_only");
             return true;
         }
 
         if (args.length < 1) {
-            player.sendMessage(Component.text("Uso: /react <emoji>", NamedTextColor.YELLOW));
+            lang.send(player, "reaction.usage");
             return true;
         }
 
@@ -42,8 +45,7 @@ public class ReactCommand implements CommandExecutor {
         } else {
             Long lastSeen = reactionManager.lastSeen(player.getUniqueId());
             if (lastSeen == null) {
-                player.sendMessage(Component.text("No hay ningún mensaje reciente para reaccionar.",
-                        NamedTextColor.RED));
+                lang.send(player, "reaction.no_recent");
                 return true;
             }
             messageId = lastSeen;
@@ -53,15 +55,14 @@ public class ReactCommand implements CommandExecutor {
         ReactionType type = ReactionType.fromSymbolOrName(typeToken);
 
         if (type == null) {
-            player.sendMessage(Component.text("Reacción inválida. Usá: 👍 ❤ 🔥 😂 ⭐ ⚔", NamedTextColor.RED));
+            lang.send(player, "reaction.invalid");
             return true;
         }
 
         var result = reactionManager.react(player, messageId, type);
 
         if (result == ReactionManager.ReactResult.MESSAGE_NOT_FOUND) {
-            player.sendMessage(Component.text("Ese mensaje ya no está disponible para reaccionar.",
-                    NamedTextColor.RED));
+            lang.send(player, "reaction.unavailable");
         }
 
         return true;

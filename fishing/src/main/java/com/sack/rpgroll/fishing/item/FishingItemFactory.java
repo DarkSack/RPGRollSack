@@ -1,5 +1,6 @@
 package com.sack.rpgroll.fishing.item;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.util.ComponentUtils;
 
 import com.sack.rpgroll.fishing.core.Bait;
@@ -35,7 +36,7 @@ public final class FishingItemFactory {
     private FishingItemFactory() {
     }
 
-    public static ItemStack createRod(FishingRod rod) {
+    public static ItemStack createRod(FishingRod rod, LangManager lang) {
 
         Material material = parseMaterial(rod.material(), Material.FISHING_ROD);
 
@@ -46,19 +47,18 @@ public final class FishingItemFactory {
             lore.add(Component.empty());
         }
 
-        lore.add(Component.text(String.format(Locale.ROOT, "Precisión: +%.1f", rod.precision()), NamedTextColor.AQUA));
-        lore.add(Component.text(String.format(Locale.ROOT, "Suerte: x%.2f", rod.luckBonus()), NamedTextColor.YELLOW));
-        lore.add(Component.text(String.format(Locale.ROOT, "Resistencia: x%.2f", rod.resistance()), NamedTextColor.GREEN));
-        lore.add(Component.text(String.format(Locale.ROOT, "Velocidad de recogida: x%.2f", rod.reelSpeed()),
-                NamedTextColor.LIGHT_PURPLE));
+        lore.add(lang.component("item.rod.precision", "value", String.format(Locale.ROOT, "%.1f", rod.precision())));
+        lore.add(lang.component("item.rod.luck", "value", String.format(Locale.ROOT, "%.2f", rod.luckBonus())));
+        lore.add(lang.component("item.rod.resistance", "value", String.format(Locale.ROOT, "%.2f", rod.resistance())));
+        lore.add(lang.component("item.rod.reel_speed", "value", String.format(Locale.ROOT, "%.2f", rod.reelSpeed())));
 
         if (!rod.preferredCategories().isEmpty()) {
-            lore.add(Component.text("Especies favoritas: " + String.join(", ", rod.preferredCategories()),
-                    NamedTextColor.GOLD));
+            lore.add(lang.component("item.rod.preferred_categories", "value",
+                    String.join(", ", rod.preferredCategories())));
         }
 
         lore.add(Component.empty());
-        lore.add(Component.text("Caña de RPGRoll-Fishing", NamedTextColor.DARK_GRAY));
+        lore.add(lang.component("item.rod.footer"));
 
         ItemStack item = new ItemBuilder(material)
                 .setName(ComponentUtils.parse(rod.displayName()).colorIfAbsent(NamedTextColor.WHITE))
@@ -68,7 +68,7 @@ public final class FishingItemFactory {
         return tag(item, FishingItemKeys.ROD_ID, rod.id());
     }
 
-    public static ItemStack createBait(Bait bait) {
+    public static ItemStack createBait(Bait bait, LangManager lang) {
 
         Material material = parseMaterial(bait.material(), Material.STRING);
 
@@ -80,22 +80,21 @@ public final class FishingItemFactory {
         }
 
         if (!bait.tags().isEmpty()) {
-            lore.add(Component.text("Atrae: " + String.join(", ", bait.tags()), NamedTextColor.AQUA));
+            lore.add(lang.component("item.bait.attracts", "value", String.join(", ", bait.tags())));
         }
 
         if (bait.qualityBonus() > 0) {
-            lore.add(Component.text(String.format(Locale.ROOT, "Bono de calidad: +%.1f", bait.qualityBonus()),
-                    NamedTextColor.YELLOW));
+            lore.add(lang.component("item.bait.quality_bonus", "value",
+                    String.format(Locale.ROOT, "%.1f", bait.qualityBonus())));
         }
 
         if (bait.legendaryWeightMultiplier() != 1.0) {
-            lore.add(Component.text(
-                    String.format(Locale.ROOT, "Chance de legendario: x%.1f", bait.legendaryWeightMultiplier()),
-                    NamedTextColor.LIGHT_PURPLE));
+            lore.add(lang.component("item.bait.legendary_mult", "value",
+                    String.format(Locale.ROOT, "%.1f", bait.legendaryWeightMultiplier())));
         }
 
         lore.add(Component.empty());
-        lore.add(Component.text("Sostenela en la mano secundaria mientras pescás", NamedTextColor.DARK_GRAY));
+        lore.add(lang.component("item.bait.footer"));
 
         ItemStack item = new ItemBuilder(material)
                 .setName(ComponentUtils.parse(bait.displayName()).colorIfAbsent(NamedTextColor.WHITE))
@@ -106,26 +105,26 @@ public final class FishingItemFactory {
     }
 
     /** @return el ItemStack final de una captura resuelta, o null para {@code NOTHING}. */
-    public static ItemStack createCatchItem(CatchResult result) {
+    public static ItemStack createCatchItem(CatchResult result, LangManager lang) {
         return switch (result.outcome()) {
-            case FISH -> createFishItem(result);
-            case TREASURE -> createTreasureItem(result.treasure());
-            case JUNK -> createJunkItem(result.junk());
+            case FISH -> createFishItem(result, lang);
+            case TREASURE -> createTreasureItem(result.treasure(), lang);
+            case JUNK -> createJunkItem(result.junk(), lang);
             case NOTHING -> null;
         };
     }
 
-    private static ItemStack createFishItem(CatchResult result) {
+    private static ItemStack createFishItem(CatchResult result, LangManager lang) {
 
         var species = result.species();
         Material material = parseMaterial(species.icon(), Material.COD);
 
         List<Component> lore = new ArrayList<>();
-        lore.add(Component.text(String.format(Locale.ROOT, "Peso: %.2f kg", result.weight()), NamedTextColor.GRAY));
-        lore.add(Component.text(String.format(Locale.ROOT, "Longitud: %.1f cm", result.length()), NamedTextColor.GRAY));
-        lore.add(Component.text("Calidad: " + result.quality(), NamedTextColor.YELLOW));
-        lore.add(Component.text("Rareza: " + species.rarity(), NamedTextColor.LIGHT_PURPLE));
-        lore.add(Component.text(String.format(Locale.ROOT, "Valor estimado: %.1f", result.price()), NamedTextColor.GOLD));
+        lore.add(lang.component("item.catch.weight", "value", String.format(Locale.ROOT, "%.2f", result.weight())));
+        lore.add(lang.component("item.catch.length", "value", String.format(Locale.ROOT, "%.1f", result.length())));
+        lore.add(lang.component("item.catch.quality", "value", result.quality()));
+        lore.add(lang.component("item.catch.rarity", "value", species.rarity()));
+        lore.add(lang.component("item.catch.price", "value", String.format(Locale.ROOT, "%.1f", result.price())));
 
         var builder = new ItemBuilder(material)
                 .setName(ComponentUtils.parse(species.displayName()).colorIfAbsent(NamedTextColor.WHITE))
@@ -144,7 +143,7 @@ public final class FishingItemFactory {
         return item;
     }
 
-    private static ItemStack createTreasureItem(Treasure treasure) {
+    private static ItemStack createTreasureItem(Treasure treasure, LangManager lang) {
 
         Material material = parseMaterial(treasure.rewardMaterial(), Material.CHEST);
 
@@ -154,7 +153,7 @@ public final class FishingItemFactory {
             lore.add(ComponentUtils.parse(treasure.description()).colorIfAbsent(NamedTextColor.GRAY));
         }
 
-        lore.add(Component.text("Tesoro: " + treasure.rarity(), NamedTextColor.GOLD));
+        lore.add(lang.component("item.treasure.rarity", "value", treasure.rarity()));
 
         return new ItemBuilder(material, treasure.rewardAmount())
                 .setName(ComponentUtils.parse(treasure.displayName()).colorIfAbsent(NamedTextColor.GOLD))
@@ -162,7 +161,7 @@ public final class FishingItemFactory {
                 .build();
     }
 
-    private static ItemStack createJunkItem(Junk junk) {
+    private static ItemStack createJunkItem(Junk junk, LangManager lang) {
 
         Material material = parseMaterial(junk.icon(), Material.LEATHER_BOOTS);
 

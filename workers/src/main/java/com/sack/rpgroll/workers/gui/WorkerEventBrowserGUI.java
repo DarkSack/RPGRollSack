@@ -29,7 +29,7 @@ public class WorkerEventBrowserGUI extends InventoryGUI {
 
     public WorkerEventBrowserGUI(Player player, WorkerEventManager eventManager, ChatPromptManager chatPromptManager,
             Runnable onBack) {
-        super(player, Component.text("Eventos de Worker", NamedTextColor.GOLD), SIZE);
+        super(player, Component.text(chatPromptManager.lang().raw("gui.event.browser.title"), NamedTextColor.GOLD), SIZE);
         this.eventManager = eventManager;
         this.chatPromptManager = chatPromptManager;
         this.onBack = onBack;
@@ -51,15 +51,17 @@ public class WorkerEventBrowserGUI extends InventoryGUI {
 
             setItem(i, new ItemBuilder(Material.PAPER)
                     .setName(Component.text(event.displayName(), NamedTextColor.YELLOW))
-                    .setLore(Component.text("id: " + event.id(), NamedTextColor.GRAY),
-                            Component.text("tipo: " + event.type(), NamedTextColor.GRAY),
-                            Component.text("Click para editar", NamedTextColor.YELLOW))
+                    .setLore(Component.text(chatPromptManager.lang().raw("gui.profession.browser.id_label", "id",
+                            event.id()), NamedTextColor.GRAY),
+                            Component.text(chatPromptManager.lang().raw("gui.event.browser.type_label", "type",
+                                    event.type()), NamedTextColor.GRAY),
+                            Component.text(chatPromptManager.lang().raw("gui.common.click_to_edit"), NamedTextColor.YELLOW))
                     .build());
         }
 
         setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Crear evento nuevo", NamedTextColor.GREEN)).build());
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+                .setName(Component.text(chatPromptManager.lang().raw("gui.event.browser.new"), NamedTextColor.GREEN)).build());
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(chatPromptManager.lang().raw("gui.common.back")));
     }
 
     @Override
@@ -84,12 +86,13 @@ public class WorkerEventBrowserGUI extends InventoryGUI {
     }
 
     private void promptNew() {
-        chatPromptManager.prompt(player, "Escribí el id del nuevo evento:", value -> {
+        chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.event.browser.prompt_new_id"), value -> {
 
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 
             if (eventManager.exists(id)) {
-                player.sendMessage(Component.text("Ya existe un evento con ese id.", NamedTextColor.RED));
+                player.sendMessage(Component.text(chatPromptManager.lang().raw("gui.event.browser.duplicate_id"),
+                        NamedTextColor.RED));
                 reopen();
                 return;
             }

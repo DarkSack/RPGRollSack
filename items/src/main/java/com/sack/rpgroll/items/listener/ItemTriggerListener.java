@@ -2,6 +2,7 @@ package com.sack.rpgroll.items.listener;
 
 import com.destroystokyo.paper.event.player.PlayerJumpEvent;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.items.condition.ItemConditionContext;
 import com.sack.rpgroll.items.condition.ItemConditionEvaluator;
 import com.sack.rpgroll.items.core.ItemAbility;
@@ -13,9 +14,6 @@ import com.sack.rpgroll.items.core.ItemManager;
 import com.sack.rpgroll.items.registry.ActionRegistry;
 import com.sack.rpgroll.items.registry.ItemActionContext;
 import com.sack.rpgroll.items.stat.ItemStatEngine;
-
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -58,6 +56,7 @@ public class ItemTriggerListener implements Listener {
     private final ItemConditionEvaluator conditionEvaluator;
     private final DurabilityService durabilityService;
     private final ItemStatEngine statEngine;
+    private final LangManager langManager;
 
     private final Map<String, Long> abilityCooldowns = new HashMap<>();
 
@@ -67,7 +66,8 @@ public class ItemTriggerListener implements Listener {
             ActionRegistry actionRegistry,
             ItemConditionEvaluator conditionEvaluator,
             DurabilityService durabilityService,
-            ItemStatEngine statEngine) {
+            ItemStatEngine statEngine,
+            LangManager langManager) {
 
         this.itemManager = itemManager;
         this.instanceService = instanceService;
@@ -75,6 +75,7 @@ public class ItemTriggerListener implements Listener {
         this.conditionEvaluator = conditionEvaluator;
         this.durabilityService = durabilityService;
         this.statEngine = statEngine;
+        this.langManager = langManager;
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -265,8 +266,8 @@ public class ItemTriggerListener implements Listener {
 
         if (expiry != null && expiry > now) {
             long remainingSeconds = (expiry - now) / 1000 + 1;
-            player.sendMessage(Component.text(
-                    ability.displayName() + " en cooldown (" + remainingSeconds + "s).", NamedTextColor.RED));
+            langManager.send(player, "ability.cooldown", "ability", ability.displayName(),
+                    "seconds", remainingSeconds);
             return;
         }
 

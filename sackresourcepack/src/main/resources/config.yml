@@ -1,3 +1,6 @@
+# Idioma de los mensajes del plugin (comandos, GUI). Soportados: es, en, pt_BR.
+language: es
+
 # Carpeta (relativa a plugins/SackResourcePack/) donde cada módulo tiene su
 # propio pack.yml + assets/ — ver la documentación para el formato exacto.
 content-directory: content

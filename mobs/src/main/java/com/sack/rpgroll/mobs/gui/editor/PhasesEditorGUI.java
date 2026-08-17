@@ -1,11 +1,10 @@
 package com.sack.rpgroll.mobs.gui.editor;
 
+import com.sack.rpgroll.common.lang.LangManager;
+
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.mobs.core.MobPhase;
-
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -24,11 +23,14 @@ public class PhasesEditorGUI extends InventoryGUI {
 
     private final MobEditorSession session;
     private final Runnable onBack;
+    private final LangManager lang;
 
     public PhasesEditorGUI(Player player, MobEditorSession session, Runnable onBack) {
-        super(player, Component.text("Fases: " + session.original.id(), NamedTextColor.GOLD), SIZE);
+        super(player, session.chatPromptManager.lang().component("gui.phases.title", "id", session.original.id()),
+                SIZE);
         this.session = session;
         this.onBack = onBack;
+        this.lang = session.chatPromptManager.lang();
     }
 
     @Override
@@ -47,20 +49,20 @@ public class PhasesEditorGUI extends InventoryGUI {
             MobPhase phase = phases.get(i);
 
             setItem(i, new ItemBuilder(Material.NETHER_STAR)
-                    .setName(Component.text(phase.id() + " (≤" + phase.healthThresholdPercent() + "% vida)",
-                            NamedTextColor.YELLOW))
+                    .setName(lang.component("gui.phases.entry_label", "id", phase.id(), "threshold",
+                            phase.healthThresholdPercent()))
                     .setLore(
-                            Component.text("skills: " + phase.skills().size() + " · multiplicadores: "
-                                    + phase.statMultipliers().size(), NamedTextColor.GRAY),
-                            Component.text("Click para editar · Shift-click para quitar", NamedTextColor.DARK_GRAY))
+                            lang.component("gui.phases.entry_counts", "skills", phase.skills().size(),
+                                    "multipliers", phase.statMultipliers().size()),
+                            lang.component("gui.common.click_edit_shift_remove"))
                     .build());
         }
 
         setItem(ADD_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Agregar fase", NamedTextColor.GREEN))
+                .setName(lang.component("gui.phases.add"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back_button")));
     }
 
     @Override
@@ -94,7 +96,7 @@ public class PhasesEditorGUI extends InventoryGUI {
     }
 
     private void promptAdd() {
-        session.chatPromptManager.prompt(player, "Escribí el id de la nueva fase:", value -> {
+        session.chatPromptManager.prompt(player, "gui.phases.prompt_add", value -> {
 
             String id = value.trim().toLowerCase().replace(' ', '_');
 

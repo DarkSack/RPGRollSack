@@ -1,5 +1,6 @@
 package com.sack.rpgroll.ranching.item;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.util.ComponentUtils;
 
 import com.sack.rpgroll.gui.util.ItemBuilder;
@@ -28,7 +29,7 @@ public final class RanchingItemFactory {
     private RanchingItemFactory() {
     }
 
-    public static ItemStack createFeed(Feed feed) {
+    public static ItemStack createFeed(LangManager lang, Feed feed) {
 
         Material material = parseMaterial(feed.icon(), Material.WHEAT);
 
@@ -39,24 +40,29 @@ public final class RanchingItemFactory {
             lore.add(Component.empty());
         }
 
-        lore.add(Component.text("Calidad: " + feed.quality(), NamedTextColor.YELLOW));
-        lore.add(Component.text(String.format(Locale.ROOT, "Nutrición: +%.1f", feed.nutritionValue()), NamedTextColor.AQUA));
+        lore.add(Component.text(lang.raw("item.feed.quality", "quality", feed.quality()), NamedTextColor.YELLOW));
+        lore.add(Component.text(
+                lang.raw("item.feed.nutrition", "value", String.format(Locale.ROOT, "%.1f", feed.nutritionValue())),
+                NamedTextColor.AQUA));
 
         if (feed.healthBonus() > 0) {
-            lore.add(Component.text(String.format(Locale.ROOT, "Salud: +%.1f", feed.healthBonus()), NamedTextColor.RED));
+            lore.add(Component.text(
+                    lang.raw("item.feed.health", "value", String.format(Locale.ROOT, "%.1f", feed.healthBonus())),
+                    NamedTextColor.RED));
         }
 
         if (feed.happinessBonus() > 0) {
-            lore.add(Component.text(String.format(Locale.ROOT, "Felicidad: +%.1f", feed.happinessBonus()),
-                    NamedTextColor.LIGHT_PURPLE));
+            lore.add(Component.text(lang.raw("item.feed.happiness", "value",
+                    String.format(Locale.ROOT, "%.1f", feed.happinessBonus())), NamedTextColor.LIGHT_PURPLE));
         }
 
         if (!feed.tags().isEmpty()) {
-            lore.add(Component.text("Tags: " + String.join(", ", feed.tags()), NamedTextColor.DARK_GRAY));
+            lore.add(Component.text(lang.raw("item.feed.tags", "tags", String.join(", ", feed.tags())),
+                    NamedTextColor.DARK_GRAY));
         }
 
         lore.add(Component.empty());
-        lore.add(Component.text("Click derecho en un animal para alimentarlo", NamedTextColor.DARK_GRAY));
+        lore.add(Component.text(lang.raw("item.feed.use_hint"), NamedTextColor.DARK_GRAY));
 
         ItemStack item = new ItemBuilder(material)
                 .setName(ComponentUtils.parse(feed.displayName()).colorIfAbsent(NamedTextColor.WHITE))
@@ -66,7 +72,7 @@ public final class RanchingItemFactory {
         return tag(item, RanchingItemKeys.FEED_ID, feed.id());
     }
 
-    public static ItemStack createMedicine(Medicine medicine) {
+    public static ItemStack createMedicine(LangManager lang, Medicine medicine) {
 
         Material material = parseMaterial(medicine.icon(), Material.POTION);
 
@@ -77,14 +83,16 @@ public final class RanchingItemFactory {
             lore.add(Component.empty());
         }
 
-        lore.add(Component.text("Tipo: " + medicine.type(), NamedTextColor.AQUA));
+        lore.add(Component.text(lang.raw("item.medicine.type", "type", medicine.type()), NamedTextColor.AQUA));
 
         if (!medicine.curesDiseaseIds().isEmpty()) {
-            lore.add(Component.text("Trata: " + String.join(", ", medicine.curesDiseaseIds()), NamedTextColor.GREEN));
+            lore.add(Component.text(
+                    lang.raw("item.medicine.treats", "diseases", String.join(", ", medicine.curesDiseaseIds())),
+                    NamedTextColor.GREEN));
         }
 
         lore.add(Component.empty());
-        lore.add(Component.text("Click derecho en un animal para tratarlo", NamedTextColor.DARK_GRAY));
+        lore.add(Component.text(lang.raw("item.medicine.use_hint"), NamedTextColor.DARK_GRAY));
 
         ItemStack item = new ItemBuilder(material)
                 .setName(ComponentUtils.parse(medicine.displayName()).colorIfAbsent(NamedTextColor.WHITE))
@@ -94,7 +102,7 @@ public final class RanchingItemFactory {
         return tag(item, RanchingItemKeys.MEDICINE_ID, medicine.id());
     }
 
-    public static ItemStack createVaccine(Vaccine vaccine) {
+    public static ItemStack createVaccine(LangManager lang, Vaccine vaccine) {
 
         Material material = parseMaterial(vaccine.icon(), Material.POTION);
 
@@ -106,12 +114,15 @@ public final class RanchingItemFactory {
         }
 
         if (!vaccine.preventsDiseaseIds().isEmpty()) {
-            lore.add(Component.text("Previene: " + String.join(", ", vaccine.preventsDiseaseIds()), NamedTextColor.GREEN));
+            lore.add(Component.text(
+                    lang.raw("item.vaccine.prevents", "diseases", String.join(", ", vaccine.preventsDiseaseIds())),
+                    NamedTextColor.GREEN));
         }
 
-        lore.add(Component.text(vaccine.isPermanent() ? "Inmunidad permanente" : "Inmunidad temporal", NamedTextColor.AQUA));
+        lore.add(Component.text(lang.raw(vaccine.isPermanent() ? "item.vaccine.permanent" : "item.vaccine.temporary"),
+                NamedTextColor.AQUA));
         lore.add(Component.empty());
-        lore.add(Component.text("Click derecho en un animal para vacunarlo", NamedTextColor.DARK_GRAY));
+        lore.add(Component.text(lang.raw("item.vaccine.use_hint"), NamedTextColor.DARK_GRAY));
 
         ItemStack item = new ItemBuilder(material)
                 .setName(ComponentUtils.parse(vaccine.displayName()).colorIfAbsent(NamedTextColor.WHITE))

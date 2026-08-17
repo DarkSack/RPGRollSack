@@ -43,7 +43,8 @@ public class WorkerDetailGUI extends InventoryGUI {
 
     public WorkerDetailGUI(Player player, Worker worker, WorkerManager workerManager,
             ProfessionManager professionManager, ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text("Worker #" + worker.id().toString().substring(0, 8), NamedTextColor.GOLD), SIZE);
+        super(player, Component.text(chatPromptManager.lang().raw("gui.worker.detail.title", "id",
+                worker.id().toString().substring(0, 8)), NamedTextColor.GOLD), SIZE);
         this.worker = worker;
         this.workerManager = workerManager;
         this.professionManager = professionManager;
@@ -65,62 +66,69 @@ public class WorkerDetailGUI extends InventoryGUI {
         setItem(IDENTITY_SLOT, new ItemBuilder(profession != null
                 ? ProfessionBrowserGUI.parseMaterial(profession.icon(), Material.VILLAGER_SPAWN_EGG)
                 : Material.BARRIER)
-                .setName(Component.text("Identidad", NamedTextColor.GOLD))
-                .setLore(ItemBuilder.toLoreLines(
-                        "Nombre: " + (worker.customName() != null ? worker.customName() : "(sin nombre)") + "\n"
-                                + "Profesión: " + (profession != null ? profession.displayName() : worker.professionId())
-                                + "\n" + "Personalidad: " + worker.personality() + "\n" + "Acción actual: "
-                                + worker.currentAction()))
+                .setName(Component.text(chatPromptManager.lang().raw("gui.worker.detail.identity"), NamedTextColor.GOLD))
+                .setLore(ItemBuilder.toLoreLines(chatPromptManager.lang().raw("gui.worker.detail.identity_lore", "name",
+                        worker.customName() != null ? worker.customName()
+                                : chatPromptManager.lang().raw("gui.worker.detail.no_name"),
+                        "profession", profession != null ? profession.displayName() : worker.professionId(),
+                        "personality", worker.personality(), "action", worker.currentAction())))
                 .build());
 
         setItem(NEEDS_SLOT, new ItemBuilder(Material.GOLDEN_APPLE)
-                .setName(Component.text("Necesidades", NamedTextColor.GREEN))
-                .setLore(ItemBuilder.toLoreLines(String.format(Locale.ROOT,
-                        "Hambre: %.0f\nEnergía: %.0f\nSueño: %.0f\nEstrés: %.0f\nMotivación: %.0f\nSalud: %.0f\n"
-                                + "Felicidad: %.0f\nMoral general: %.0f",
-                        worker.hunger(), worker.energy(), worker.sleep(), worker.stress(), worker.motivation(),
-                        worker.health(), worker.happiness(), worker.morale())))
+                .setName(Component.text(chatPromptManager.lang().raw("gui.worker.detail.needs"), NamedTextColor.GREEN))
+                .setLore(ItemBuilder.toLoreLines(chatPromptManager.lang().raw("gui.worker.detail.needs_lore", "hunger",
+                        String.format(Locale.ROOT, "%.0f", worker.hunger()), "energy",
+                        String.format(Locale.ROOT, "%.0f", worker.energy()), "sleep",
+                        String.format(Locale.ROOT, "%.0f", worker.sleep()), "stress",
+                        String.format(Locale.ROOT, "%.0f", worker.stress()), "motivation",
+                        String.format(Locale.ROOT, "%.0f", worker.motivation()), "health",
+                        String.format(Locale.ROOT, "%.0f", worker.health()), "happiness",
+                        String.format(Locale.ROOT, "%.0f", worker.happiness()), "morale",
+                        String.format(Locale.ROOT, "%.0f", worker.morale()))))
                 .build());
 
         setItem(SKILLS_SLOT, new ItemBuilder(Material.BOOK)
-                .setName(Component.text("Habilidades", NamedTextColor.LIGHT_PURPLE))
+                .setName(Component.text(chatPromptManager.lang().raw("gui.worker.detail.skills"), NamedTextColor.LIGHT_PURPLE))
                 .setLore(ItemBuilder.toLoreLines(formatSkills()))
                 .build());
 
         setItem(CONTRACT_SLOT, new ItemBuilder(Material.PAPER)
-                .setName(Component.text("Contrato", NamedTextColor.AQUA))
+                .setName(Component.text(chatPromptManager.lang().raw("gui.worker.detail.contract"), NamedTextColor.AQUA))
                 .setLore(ItemBuilder.toLoreLines(worker.isEmployed()
-                        ? "Empleador: " + shortId(worker.employerId()) + "\nSalario: " + worker.wageAmount() + " ("
-                                + worker.wageType() + ")"
-                        : "Sin empleador"))
+                        ? chatPromptManager.lang().raw("gui.worker.detail.contract_employed", "employer",
+                                shortId(worker.employerId()), "wage", worker.wageAmount(), "type", worker.wageType())
+                        : chatPromptManager.lang().raw("gui.worker.detail.contract_unemployed")))
                 .build());
 
         setItem(RENAME_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(Component.text("Renombrar", NamedTextColor.YELLOW)).build());
+                .setName(Component.text(chatPromptManager.lang().raw("gui.worker.detail.rename"), NamedTextColor.YELLOW))
+                .build());
 
         setItem(HIRE_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("▶ Contratar (salario por defecto de la profesión)", NamedTextColor.GREEN))
+                .setName(Component.text(chatPromptManager.lang().raw("gui.worker.detail.hire"), NamedTextColor.GREEN))
                 .build());
 
         setItem(FIRE_SLOT, new ItemBuilder(Material.BARRIER)
-                .setName(Component.text("Despedir", NamedTextColor.RED)).build());
+                .setName(Component.text(chatPromptManager.lang().raw("gui.worker.detail.fire"), NamedTextColor.RED)).build());
 
         setItem(SET_HOME_SLOT, new ItemBuilder(Material.RED_BED)
-                .setName(Component.text("Fijar hogar en mi ubicación", NamedTextColor.LIGHT_PURPLE)).build());
+                .setName(Component.text(chatPromptManager.lang().raw("gui.worker.detail.set_home"), NamedTextColor.LIGHT_PURPLE))
+                .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(chatPromptManager.lang().raw("gui.common.back")));
     }
 
     private String formatSkills() {
 
         if (worker.skillLevels().isEmpty()) {
-            return "(sin experiencia todavía)";
+            return chatPromptManager.lang().raw("gui.worker.detail.no_skills");
         }
 
         StringBuilder builder = new StringBuilder();
 
         for (var entry : worker.skillLevels().entrySet()) {
-            builder.append(entry.getKey()).append(": nivel ").append(entry.getValue()).append("\n");
+            builder.append(chatPromptManager.lang().raw("gui.worker.detail.skill_level_line", "skill", entry.getKey(),
+                    "level", entry.getValue())).append("\n");
         }
 
         return builder.toString().strip();
@@ -137,7 +145,7 @@ public class WorkerDetailGUI extends InventoryGUI {
         int slot = event.getSlot();
 
         if (slot == RENAME_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el nuevo nombre del worker:", value -> {
+            chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.worker.detail.prompt_rename"), value -> {
                 worker.setCustomName(value);
                 workerManager.save(worker);
                 build();
@@ -145,7 +153,8 @@ public class WorkerDetailGUI extends InventoryGUI {
         } else if (slot == HIRE_SLOT) {
 
             if (!canManage(player)) {
-                player.sendMessage(Component.text("Ya tiene otro empleador.", NamedTextColor.RED));
+                player.sendMessage(Component.text(chatPromptManager.lang().raw("gui.worker.detail.already_employed_other"),
+                        NamedTextColor.RED));
                 return;
             }
 
@@ -155,26 +164,27 @@ public class WorkerDetailGUI extends InventoryGUI {
 
             worker.hire(player.getUniqueId(), wage, wageType);
             workerManager.save(worker);
-            player.sendMessage(Component.text("✔ Contratado.", NamedTextColor.GREEN));
+            player.sendMessage(Component.text(chatPromptManager.lang().raw("gui.worker.detail.hired"), NamedTextColor.GREEN));
             build();
 
         } else if (slot == FIRE_SLOT) {
 
             if (!canManage(player)) {
-                player.sendMessage(Component.text("No podés despedir el worker de otro jugador.", NamedTextColor.RED));
+                player.sendMessage(Component.text(chatPromptManager.lang().raw("gui.worker.detail.cannot_fire_other"),
+                        NamedTextColor.RED));
                 return;
             }
 
             worker.fire();
             workerManager.save(worker);
-            player.sendMessage(Component.text("Despedido.", NamedTextColor.YELLOW));
+            player.sendMessage(Component.text(chatPromptManager.lang().raw("gui.worker.detail.fired"), NamedTextColor.YELLOW));
             build();
 
         } else if (slot == SET_HOME_SLOT) {
 
             worker.setHomeLocation(player.getLocation());
             workerManager.save(worker);
-            player.sendMessage(Component.text("✔ Hogar fijado en tu ubicación.", NamedTextColor.GREEN));
+            player.sendMessage(Component.text(chatPromptManager.lang().raw("gui.worker.detail.home_set"), NamedTextColor.GREEN));
             build();
 
         } else if (slot == BACK_SLOT) {

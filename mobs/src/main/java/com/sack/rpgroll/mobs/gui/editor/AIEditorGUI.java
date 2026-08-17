@@ -1,11 +1,12 @@
 package com.sack.rpgroll.mobs.gui.editor;
 
+import com.sack.rpgroll.common.lang.LangManager;
+
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.mobs.core.AIBehaviorDef;
 
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -41,11 +42,14 @@ public class AIEditorGUI extends InventoryGUI {
 
     private final MobEditorSession session;
     private final Runnable onBack;
+    private final LangManager lang;
 
     public AIEditorGUI(Player player, MobEditorSession session, Runnable onBack) {
-        super(player, Component.text("IA: " + session.original.id(), NamedTextColor.GOLD), SIZE);
+        super(player, session.chatPromptManager.lang().component("gui.ai.title", "id", session.original.id()),
+                SIZE);
         this.session = session;
         this.onBack = onBack;
+        this.lang = session.chatPromptManager.lang();
     }
 
     @Override
@@ -64,53 +68,56 @@ public class AIEditorGUI extends InventoryGUI {
             String goal = AVAILABLE_GOALS[i];
             int priority = ai.goals().indexOf(goal);
 
+            Component name = priority >= 0
+                    ? lang.component("gui.ai.goal_active", "goal", goal, "priority", priority + 1)
+                    : lang.component("gui.ai.goal_inactive", "goal", goal);
+
             setItem(GOALS_START_SLOT + i, new ItemBuilder(priority >= 0 ? Material.COMPASS : Material.GRAY_DYE)
-                    .setName(Component.text(goal + (priority >= 0 ? " (#" + (priority + 1) + ")" : ""),
-                            priority >= 0 ? NamedTextColor.GREEN : NamedTextColor.GRAY))
-                    .setLore(Component.text("Click: agregar al final de la prioridad", NamedTextColor.GRAY),
-                            Component.text("Shift-click: quitar", NamedTextColor.GRAY))
+                    .setName(name)
+                    .setLore(lang.component("gui.ai.goal_hint1"),
+                            lang.component("gui.common.shift_remove_hint"))
                     .build());
         }
 
         setItem(AGGRO_RANGE_SLOT, new ItemBuilder(Material.SPYGLASS)
-                .setName(Component.text("Rango de aggro: " + ai.aggroRange(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click: +1 · Shift-click: +5", NamedTextColor.GRAY),
-                        Component.text("Click derecho: -1 · Shift-click derecho: -5", NamedTextColor.GRAY))
+                .setName(lang.component("gui.ai.aggro_range_label", "value", ai.aggroRange()))
+                .setLore(lang.component("gui.ai.aggro_hint1"),
+                        lang.component("gui.ai.aggro_hint2"))
                 .build());
 
         setItem(FLEE_HEALTH_SLOT, new ItemBuilder(Material.FEATHER)
-                .setName(Component.text("% de vida para huir: " + ai.fleeHealthPercent(), NamedTextColor.YELLOW))
-                .setLore(Component.text("0 = nunca huye", NamedTextColor.DARK_GRAY),
-                        Component.text("Click: +5 · Shift-click: +25 · Derecho: -5/-25", NamedTextColor.GRAY))
+                .setName(lang.component("gui.ai.flee_label", "value", ai.fleeHealthPercent()))
+                .setLore(lang.component("gui.ai.flee_note"),
+                        lang.component("gui.ai.flee_hint"))
                 .build());
 
         setItem(MOVE_SPEED_SLOT, new ItemBuilder(Material.SUGAR)
-                .setName(Component.text("Velocidad: " + ai.moveSpeed(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click: +0.1 · Shift-click: +0.5", NamedTextColor.GRAY),
-                        Component.text("Click derecho: -0.1 · Shift-click derecho: -0.5", NamedTextColor.GRAY))
+                .setName(lang.component("gui.ai.speed_label", "value", ai.moveSpeed()))
+                .setLore(lang.component("gui.ai.speed_hint1"),
+                        lang.component("gui.ai.speed_hint2"))
                 .build());
 
         setItem(GUARD_REGION_SLOT, new ItemBuilder(Material.OAK_FENCE_GATE)
-                .setName(Component.text("Región a proteger: "
-                        + (ai.guardRegionId() != null ? ai.guardRegionId() : "(ninguna)"), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click: escribir el id de región", NamedTextColor.GRAY),
-                        Component.text("Shift-click: quitar", NamedTextColor.GRAY))
+                .setName(lang.component("gui.ai.guard_region_label", "value",
+                        ai.guardRegionId() != null ? ai.guardRegionId() : lang.raw("gui.phase_edit.none_feminine")))
+                .setLore(lang.component("gui.ai.guard_region_hint"),
+                        lang.component("gui.common.shift_remove_hint"))
                 .build());
 
         for (int i = 0; i < ai.patrolPoints().size() && i < 8; i++) {
             setItem(PATROL_START_SLOT + i, new ItemBuilder(Material.MAP)
-                    .setName(Component.text("Punto " + (i + 1) + ": " + ai.patrolPoints().get(i),
-                            NamedTextColor.AQUA))
-                    .setLore(Component.text("Shift-click para quitar", NamedTextColor.DARK_GRAY))
+                    .setName(lang.component("gui.ai.patrol_point_label", "index", i + 1, "point",
+                            ai.patrolPoints().get(i)))
+                    .setLore(lang.component("gui.common.shift_remove_dark"))
                     .build());
         }
 
         setItem(ADD_PATROL_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Agregar punto de patrulla", NamedTextColor.GREEN))
-                .setLore(Component.text("Click para escribir: x,y,z", NamedTextColor.GRAY))
+                .setName(lang.component("gui.ai.add_patrol"))
+                .setLore(lang.component("gui.ai.add_patrol_hint"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back_button")));
     }
 
     @Override
@@ -151,7 +158,7 @@ public class AIEditorGUI extends InventoryGUI {
                 build();
                 return;
             }
-            session.chatPromptManager.prompt(player, "Escribí el id de región:", value -> {
+            session.chatPromptManager.prompt(player, "gui.common.prompt_region_id", value -> {
                 session.ai = withGuardRegionId(session.ai, value.trim());
                 build();
             });
@@ -193,12 +200,12 @@ public class AIEditorGUI extends InventoryGUI {
     }
 
     private void promptAddPatrolPoint() {
-        session.chatPromptManager.prompt(player, "Escribí las coordenadas: x,y,z", value -> {
+        session.chatPromptManager.prompt(player, "gui.ai.prompt_coords", value -> {
 
             String[] parts = value.trim().split(",");
 
             if (parts.length != 3) {
-                player.sendMessage(Component.text("Formato inválido.", NamedTextColor.RED));
+                lang.send(player, "gui.common.invalid_format");
                 return;
             }
 
@@ -207,7 +214,7 @@ public class AIEditorGUI extends InventoryGUI {
                 Double.parseDouble(parts[1].trim());
                 Double.parseDouble(parts[2].trim());
             } catch (NumberFormatException e) {
-                player.sendMessage(Component.text("Coordenadas numéricas inválidas.", NamedTextColor.RED));
+                lang.send(player, "gui.ai.invalid_coords");
                 return;
             }
 

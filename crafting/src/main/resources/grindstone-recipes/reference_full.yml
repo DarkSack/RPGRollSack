@@ -1,0 +1,23 @@
+# Referencia completa de todos los campos de una GrindstoneRecipeDefinition.
+# Bukkit expone PrepareGrindstoneEvent — ver GrindstoneEngine.
+id: reference_full_grindstone_recipe
+
+upper:
+  type: MATERIAL
+  value: DIAMOND_SWORD
+  amount: 1
+  min-quality: STANDARD
+
+lower:
+  type: ITEM_ID
+  value: enchanted_gem
+  amount: 1
+
+result:
+  type: ITEM_ID
+  value: runic_blade
+  amount: 1
+
+conditions:
+  - type: LEVEL_MIN
+    min-value: 10

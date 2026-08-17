@@ -2,6 +2,7 @@ package com.sack.rpgroll.guilds.gui.guild;
 
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
+import com.sack.rpgroll.guilds.GuildsAPI;
 import com.sack.rpgroll.guilds.guild.Guild;
 import com.sack.rpgroll.guilds.guild.GuildManager;
 import com.sack.rpgroll.guilds.guild.quest.GuildQuestDefinition;
@@ -36,7 +37,8 @@ public class GuildQuestsGUI extends InventoryGUI {
 
     public GuildQuestsGUI(Player player, Guild guild, GuildManager guildManager, GuildQuestManager questManager,
             GuildQuestService questService, Runnable onBack) {
-        super(player, Component.text("Quests: " + guild.name(), NamedTextColor.GOLD), SIZE);
+        super(player, Component.text(GuildsAPI.getLangManager().raw("guild.quests.title", "name", guild.name()),
+                NamedTextColor.GOLD), SIZE);
         this.guild = guild;
         this.guildManager = guildManager;
         this.questManager = questManager;
@@ -50,6 +52,10 @@ public class GuildQuestsGUI extends InventoryGUI {
                 .filter(def -> !activeIds.contains(def.id()))
                 .filter(def -> guild.level() >= def.minGuildLevel())
                 .toList());
+    }
+
+    private static com.sack.rpgroll.common.lang.LangManager lang() {
+        return GuildsAPI.getLangManager();
     }
 
     @Override
@@ -70,8 +76,8 @@ public class GuildQuestsGUI extends InventoryGUI {
 
             setItem(i, new ItemBuilder(Material.MAP)
                     .setName(Component.text(name, NamedTextColor.AQUA))
-                    .setLore(Component.text("Progreso: " + progress.currentAmount() + "/" + target,
-                            NamedTextColor.GRAY))
+                    .setLore(Component.text(lang().raw("guild.quests.progress", "current", progress.currentAmount(),
+                            "target", target), NamedTextColor.GRAY))
                     .build());
         }
 
@@ -82,15 +88,15 @@ public class GuildQuestsGUI extends InventoryGUI {
             setItem(18 + i, new ItemBuilder(Material.BOOK)
                     .setName(Component.text(definition.displayName(), NamedTextColor.YELLOW))
                     .setLore(Component.text(definition.description(), NamedTextColor.GRAY),
-                            Component.text("Tipo: " + definition.type() + " · Objetivo: " + definition.targetAmount(),
-                                    NamedTextColor.GRAY),
-                            Component.text("Recompensa: " + definition.rewardMoney() + " oro, "
-                                    + definition.rewardXp() + " XP de guild", NamedTextColor.GRAY),
-                            Component.text("Click para iniciar", NamedTextColor.GREEN))
+                            Component.text(lang().raw("guild.quests.type_target", "type", definition.type(),
+                                    "target", definition.targetAmount()), NamedTextColor.GRAY),
+                            Component.text(lang().raw("guild.quests.reward", "money", definition.rewardMoney(),
+                                    "xp", definition.rewardXp()), NamedTextColor.GRAY),
+                            Component.text(lang().raw("guild.quests.click_start"), NamedTextColor.GREEN))
                     .build());
         }
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang().raw("common.back")));
     }
 
     @Override
@@ -102,14 +108,13 @@ public class GuildQuestsGUI extends InventoryGUI {
         if (slot >= 18 && slot < 18 + available.size() && slot < 36) {
 
             if (!guild.roleOf(player.getUniqueId()).canManageSettings()) {
-                player.sendMessage(Component.text("No tenés permiso para iniciar quests de guild.",
-                        NamedTextColor.RED));
+                lang().send(player, "guild.quests.no_permission_start");
                 return;
             }
 
             GuildQuestDefinition definition = available.get(slot - 18);
             var result = questService.start(guild, definition.id());
-            player.sendMessage(Component.text("Resultado: " + result, NamedTextColor.GRAY));
+            lang().send(player, "common.result", "result", result);
             guildManager.save(guild);
             reopen();
             return;

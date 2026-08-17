@@ -1,6 +1,7 @@
 package com.sack.rpgroll.quests.requirement;
 
 import com.sack.rpgroll.api.RPGRollAPI;
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.player.RPGPlayer;
 import com.sack.rpgroll.quests.core.ItemRequirement;
 import com.sack.rpgroll.quests.core.QuestRequirements;
@@ -22,9 +23,11 @@ import java.util.List;
 public class QuestRequirementChecker {
 
     private final RegionManager regionManager;
+    private final LangManager lang;
 
-    public QuestRequirementChecker(RegionManager regionManager) {
+    public QuestRequirementChecker(RegionManager regionManager, LangManager lang) {
         this.regionManager = regionManager;
+        this.lang = lang;
     }
 
     public List<String> check(Player player, QuestRequirements req, QuestPlayerState state) {
@@ -61,7 +64,7 @@ public class QuestRequirementChecker {
         int level = rpgPlayer != null ? rpgPlayer.getLevel() : 0;
 
         if (level < req.level()) {
-            reasons.add("Necesitas nivel " + req.level() + " (tenés " + level + ").");
+            reasons.add(lang.raw("requirement.level", "required", req.level(), "current", level));
         }
     }
 
@@ -74,7 +77,7 @@ public class QuestRequirementChecker {
         String race = rpgPlayer != null ? rpgPlayer.getRace() : null;
 
         if (race == null || !race.equalsIgnoreCase(req.race())) {
-            reasons.add("Necesitas ser de la raza: " + req.race());
+            reasons.add(lang.raw("requirement.race", "race", req.race()));
         }
     }
 
@@ -87,7 +90,7 @@ public class QuestRequirementChecker {
         String playerClass = rpgPlayer != null ? rpgPlayer.getPlayerClass() : null;
 
         if (playerClass == null || !playerClass.equalsIgnoreCase(req.playerClass())) {
-            reasons.add("Necesitas ser de la clase: " + req.playerClass());
+            reasons.add(lang.raw("requirement.class", "class", req.playerClass()));
         }
     }
 
@@ -100,7 +103,7 @@ public class QuestRequirementChecker {
         boolean hasJob = rpgPlayer != null && rpgPlayer.getJobs().hasJob(req.profession());
 
         if (!hasJob) {
-            reasons.add("Necesitas la profesión: " + req.profession());
+            reasons.add(lang.raw("requirement.profession", "profession", req.profession()));
         }
     }
 
@@ -113,7 +116,7 @@ public class QuestRequirementChecker {
         boolean hasTrait = rpgPlayer != null && rpgPlayer.getTraits().hasTrait(req.trait());
 
         if (!hasTrait) {
-            reasons.add("Necesitas el trait: " + req.trait());
+            reasons.add(lang.raw("requirement.trait", "trait", req.trait()));
         }
     }
 
@@ -124,7 +127,7 @@ public class QuestRequirementChecker {
         }
 
         if (!player.hasPermission(req.permission())) {
-            reasons.add("No tenés el permiso requerido para esta quest.");
+            reasons.add(lang.raw("requirement.permission"));
         }
     }
 
@@ -143,7 +146,7 @@ public class QuestRequirementChecker {
         double balance = economy.getEconomy().map(eco -> eco.getBalance(player)).orElse(0.0);
 
         if (balance < req.money()) {
-            reasons.add("Necesitas al menos " + req.money() + " de dinero.");
+            reasons.add(lang.raw("requirement.money", "amount", req.money()));
         }
     }
 
@@ -158,7 +161,7 @@ public class QuestRequirementChecker {
         for (ItemRequirement item : req.items()) {
             if (inventory.all(item.material()).values().stream().mapToInt(stack -> stack.getAmount())
                     .sum() < item.amount()) {
-                reasons.add("Necesitas " + item.amount() + "x " + item.material());
+                reasons.add(lang.raw("requirement.item", "amount", item.amount(), "material", item.material()));
             }
         }
     }
@@ -167,7 +170,7 @@ public class QuestRequirementChecker {
 
         for (String questId : req.completedQuests()) {
             if (!state.hasCompleted(questId)) {
-                reasons.add("Necesitas haber completado la quest: " + questId);
+                reasons.add(lang.raw("requirement.completed_quest", "quest", questId));
             }
         }
     }
@@ -179,7 +182,7 @@ public class QuestRequirementChecker {
         }
 
         if (!player.getWorld().getName().equalsIgnoreCase(req.world())) {
-            reasons.add("Tenés que estar en el mundo: " + req.world());
+            reasons.add(lang.raw("requirement.world", "world", req.world()));
         }
     }
 
@@ -194,7 +197,7 @@ public class QuestRequirementChecker {
                 .orElse(false);
 
         if (!inRegion) {
-            reasons.add("Tenés que estar en la región: " + req.region());
+            reasons.add(lang.raw("requirement.region", "region", req.region()));
         }
     }
 
@@ -207,7 +210,7 @@ public class QuestRequirementChecker {
         String biome = player.getLocation().getBlock().getBiome().getKey().getKey();
 
         if (!biome.equalsIgnoreCase(req.biome())) {
-            reasons.add("Tenés que estar en el bioma: " + req.biome());
+            reasons.add(lang.raw("requirement.biome", "biome", req.biome()));
         }
     }
 
@@ -221,7 +224,7 @@ public class QuestRequirementChecker {
                 : player.getWorld().hasStorm() ? "RAIN" : "CLEAR";
 
         if (!weather.equalsIgnoreCase(req.weather())) {
-            reasons.add("Necesitás clima: " + req.weather());
+            reasons.add(lang.raw("requirement.weather", "weather", req.weather()));
         }
     }
 
@@ -234,7 +237,7 @@ public class QuestRequirementChecker {
         long time = player.getWorld().getTime();
 
         if (time < req.hourMin() || time > req.hourMax()) {
-            reasons.add("Solo disponible entre las " + req.hourMin() + " y " + req.hourMax() + " (hora del mundo).");
+            reasons.add(lang.raw("requirement.time_range", "min", req.hourMin(), "max", req.hourMax()));
         }
     }
 

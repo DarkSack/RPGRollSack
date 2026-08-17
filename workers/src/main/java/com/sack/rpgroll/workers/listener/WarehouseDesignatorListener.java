@@ -1,5 +1,6 @@
 package com.sack.rpgroll.workers.listener;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.workers.core.logistics.WarehouseManager;
 import com.sack.rpgroll.workers.item.WorkerItemFactory;
 
@@ -18,9 +19,11 @@ import org.bukkit.inventory.EquipmentSlot;
 public class WarehouseDesignatorListener implements Listener {
 
     private final WarehouseManager warehouseManager;
+    private final LangManager lang;
 
-    public WarehouseDesignatorListener(WarehouseManager warehouseManager) {
+    public WarehouseDesignatorListener(WarehouseManager warehouseManager, LangManager lang) {
         this.warehouseManager = warehouseManager;
+        this.lang = lang;
     }
 
     @EventHandler
@@ -44,12 +47,13 @@ public class WarehouseDesignatorListener implements Listener {
         event.setCancelled(true);
 
         if (warehouseManager.remove(block.getLocation())) {
-            event.getPlayer().sendMessage(Component.text("✔ Ya no es un almacén.", NamedTextColor.YELLOW));
+            event.getPlayer().sendMessage(Component.text(lang.raw("listener.warehouse_designator.removed"),
+                    NamedTextColor.YELLOW));
             return;
         }
 
         warehouseManager.designate(block.getLocation(), "");
-        event.getPlayer().sendMessage(Component.text("✔ Marcado como almacén — acepta cualquier recurso.",
+        event.getPlayer().sendMessage(Component.text(lang.raw("listener.warehouse_designator.designated"),
                 NamedTextColor.GREEN));
     }
 

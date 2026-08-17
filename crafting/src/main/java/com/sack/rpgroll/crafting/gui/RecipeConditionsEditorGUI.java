@@ -66,23 +66,24 @@ public class RecipeConditionsEditorGUI extends InventoryGUI {
 
             setItem(i, new ItemBuilder(Material.COMPARATOR)
                     .setName(Component.text(condition.type().name(), NamedTextColor.AQUA))
-                    .setLore(Component.text("valor: " + (condition.value() == null ? "(ninguno)" : condition.value()),
+                    .setLore(Component.text(chatPromptManager.lang().raw("gui.conditions.value_lore", "value",
+                                    condition.value() == null ? chatPromptManager.lang().raw("gui.conditions.value_none") : condition.value()),
                                     NamedTextColor.GRAY),
-                            Component.text("min-value: " + condition.minValue(), NamedTextColor.GRAY),
-                            Component.text("Shift-click para quitar", NamedTextColor.RED))
+                            Component.text(chatPromptManager.lang().raw("gui.conditions.min_value_lore", "value", condition.minValue()), NamedTextColor.GRAY),
+                            Component.text(chatPromptManager.lang().raw("gui.common.shift_remove"), NamedTextColor.RED))
                     .build());
         }
 
         setItem(ADD_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Agregar condición", NamedTextColor.GREEN))
-                .setLore(Component.text("TIPO [valor] [min-value]", NamedTextColor.GRAY),
-                        Component.text("ej. LEVEL_MIN 5", NamedTextColor.DARK_GRAY),
-                        Component.text("ej. JOB_MIN blacksmith 3", NamedTextColor.DARK_GRAY),
-                        Component.text("ej. GUILD_MEMBER", NamedTextColor.DARK_GRAY),
-                        Component.text("tipos: " + typeList(), NamedTextColor.DARK_GRAY))
+                .setName(Component.text(chatPromptManager.lang().raw("gui.conditions.add"), NamedTextColor.GREEN))
+                .setLore(Component.text(chatPromptManager.lang().raw("gui.conditions.add_lore_1"), NamedTextColor.GRAY),
+                        Component.text(chatPromptManager.lang().raw("gui.conditions.add_lore_2"), NamedTextColor.DARK_GRAY),
+                        Component.text(chatPromptManager.lang().raw("gui.conditions.add_lore_3"), NamedTextColor.DARK_GRAY),
+                        Component.text(chatPromptManager.lang().raw("gui.conditions.add_lore_4"), NamedTextColor.DARK_GRAY),
+                        Component.text(chatPromptManager.lang().raw("gui.conditions.add_lore_5", "types", typeList()), NamedTextColor.DARK_GRAY))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(chatPromptManager.lang().raw("gui.common.back")));
     }
 
     private String typeList() {
@@ -122,7 +123,7 @@ public class RecipeConditionsEditorGUI extends InventoryGUI {
     }
 
     private void promptAdd() {
-        chatPromptManager.prompt(player, "Escribí: TIPO [valor] [min-value]", raw -> {
+        chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.conditions.prompt_add"), raw -> {
 
             String[] parts = raw.trim().split("\\s+");
 
@@ -130,7 +131,7 @@ public class RecipeConditionsEditorGUI extends InventoryGUI {
             try {
                 type = ConditionType.valueOf(parts[0].trim().toUpperCase(Locale.ROOT));
             } catch (IllegalArgumentException e) {
-                player.sendMessage(Component.text("Tipo inválido: " + parts[0], NamedTextColor.RED));
+                player.sendMessage(Component.text(chatPromptManager.lang().raw("gui.conditions.invalid_type", "type", parts[0]), NamedTextColor.RED));
                 return;
             }
 

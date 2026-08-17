@@ -1,5 +1,6 @@
 package com.sack.rpgroll.fishing.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.fishing.core.Bait;
 import com.sack.rpgroll.fishing.core.BaitManager;
 import com.sack.rpgroll.fishing.item.FishingItemFactory;
@@ -33,15 +34,17 @@ public class BaitEditorGUI extends InventoryGUI {
 
     private final BaitManager baitManager;
     private final ChatPromptManager chatPromptManager;
+    private final LangManager lang;
     private final Runnable onBack;
     private Bait current;
 
     public BaitEditorGUI(Player player, Bait bait, BaitManager baitManager, ChatPromptManager chatPromptManager,
             Runnable onBack) {
-        super(player, Component.text("Carnada: " + bait.id(), NamedTextColor.GOLD), SIZE);
+        super(player, chatPromptManager.lang().component("gui.bait.editor_title", "id", bait.id()), SIZE);
         this.current = bait;
         this.baitManager = baitManager;
         this.chatPromptManager = chatPromptManager;
+        this.lang = chatPromptManager.lang();
         this.onBack = onBack;
     }
 
@@ -61,35 +64,34 @@ public class BaitEditorGUI extends InventoryGUI {
         }
 
         setItem(NAME_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(Component.text("Nombre: " + current.displayName(), NamedTextColor.YELLOW)).build());
+                .setName(lang.component("gui.bait.field_name", "name", current.displayName())).build());
 
         setItem(MATERIAL_SLOT, new ItemBuilder(SpeciesBrowserGUI.parseMaterial(current.material()))
-                .setName(Component.text("Material: " + current.material(), NamedTextColor.YELLOW)).build());
+                .setName(lang.component("gui.bait.field_material", "value", current.material())).build());
 
         setItem(DESCRIPTION_SLOT, new ItemBuilder(Material.WRITTEN_BOOK)
-                .setName(Component.text("Descripción", NamedTextColor.YELLOW))
+                .setName(lang.component("gui.common.description_title"))
                 .setLore(ItemBuilder.toLoreLines(
-                        current.description().isBlank() ? "(sin descripción)" : current.description()))
+                        current.description().isBlank() ? lang.raw("gui.common.no_description") : current.description()))
                 .build());
 
         setItem(TAGS_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(Component.text("Tags: " + String.join(", ", current.tags()), NamedTextColor.AQUA))
-                .setLore(Component.text("Escribí los tags separados por comas", NamedTextColor.GRAY)).build());
+                .setName(lang.component("gui.bait.field_tags", "value", String.join(", ", current.tags())))
+                .setLore(lang.component("gui.bait.tags_hint")).build());
 
         setItem(QUALITY_BONUS_SLOT, new ItemBuilder(Material.GOLD_NUGGET)
-                .setName(Component.text("Bono de calidad: +" + current.qualityBonus(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click: +0.5 · Click derecho: -0.5", NamedTextColor.GRAY)).build());
+                .setName(lang.component("gui.bait.field_quality_bonus", "value", current.qualityBonus()))
+                .setLore(lang.component("gui.common.plusminus_05")).build());
 
         setItem(LEGENDARY_MULT_SLOT, new ItemBuilder(Material.NETHER_STAR)
-                .setName(Component.text(
-                        String.format(java.util.Locale.ROOT, "Chance de legendario: x%.1f", current.legendaryWeightMultiplier()),
-                        NamedTextColor.LIGHT_PURPLE))
-                .setLore(Component.text("Click: +0.5 · Click derecho: -0.5", NamedTextColor.GRAY)).build());
+                .setName(lang.component("gui.bait.field_legendary_mult", "value",
+                        String.format(java.util.Locale.ROOT, "%.1f", current.legendaryWeightMultiplier())))
+                .setLore(lang.component("gui.common.plusminus_05")).build());
 
         setItem(GIVE_SLOT, new ItemBuilder(Material.CHEST)
-                .setName(Component.text("▶ Darme una", NamedTextColor.GREEN)).build());
+                .setName(lang.component("gui.bait.give_button")).build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back")));
     }
 
     @Override
@@ -100,28 +102,28 @@ public class BaitEditorGUI extends InventoryGUI {
         double sign = event.getClick() == ClickType.RIGHT ? -0.5 : 0.5;
 
         if (slot == NAME_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el nuevo nombre:", value -> replace(new Bait(current.id(),
+            chatPromptManager.prompt(player, lang.raw("gui.bait.prompt_name"), value -> replace(new Bait(current.id(),
                     value, current.material(), current.description(), current.tags(), current.qualityBonus(),
                     current.legendaryWeightMultiplier())));
             return;
         }
 
         if (slot == MATERIAL_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el Material:", value -> replace(new Bait(current.id(),
+            chatPromptManager.prompt(player, lang.raw("gui.bait.prompt_material"), value -> replace(new Bait(current.id(),
                     current.displayName(), value, current.description(), current.tags(), current.qualityBonus(),
                     current.legendaryWeightMultiplier())));
             return;
         }
 
         if (slot == DESCRIPTION_SLOT) {
-            chatPromptManager.prompt(player, "Escribí la nueva descripción:", value -> replace(new Bait(current.id(),
+            chatPromptManager.prompt(player, lang.raw("gui.bait.prompt_description"), value -> replace(new Bait(current.id(),
                     current.displayName(), current.material(), value, current.tags(), current.qualityBonus(),
                     current.legendaryWeightMultiplier())));
             return;
         }
 
         if (slot == TAGS_SLOT) {
-            chatPromptManager.prompt(player, "Escribí los tags separados por comas:", value -> {
+            chatPromptManager.prompt(player, lang.raw("gui.bait.prompt_tags"), value -> {
 
                 Set<String> tags = new HashSet<>();
                 for (String entry : value.split(",")) {
@@ -149,9 +151,8 @@ public class BaitEditorGUI extends InventoryGUI {
         }
 
         if (slot == GIVE_SLOT) {
-            player.getInventory().addItem(FishingItemFactory.createBait(current));
-            player.sendMessage(Component.text("✔ Te diste una carnada '" + current.displayName() + "'.",
-                    NamedTextColor.GREEN));
+            player.getInventory().addItem(FishingItemFactory.createBait(current, lang));
+            lang.send(player, "gui.bait.given", "name", current.displayName());
             return;
         }
 

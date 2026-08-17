@@ -1,5 +1,6 @@
 package com.sack.rpgroll.fishing.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.fishing.core.BaitManager;
 import com.sack.rpgroll.fishing.core.FishSpeciesManager;
 import com.sack.rpgroll.fishing.core.FishingRegionManager;
@@ -8,9 +9,6 @@ import com.sack.rpgroll.fishing.core.JunkManager;
 import com.sack.rpgroll.fishing.core.TreasureManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
-
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -36,11 +34,12 @@ public class FishingBrowserGUI extends InventoryGUI {
     private final JunkManager junkManager;
     private final FishingRegionManager regionManager;
     private final ChatPromptManager chatPromptManager;
+    private final LangManager lang;
 
     public FishingBrowserGUI(Player player, FishSpeciesManager speciesManager, FishingRodManager rodManager,
             BaitManager baitManager, TreasureManager treasureManager, JunkManager junkManager,
             FishingRegionManager regionManager, ChatPromptManager chatPromptManager) {
-        super(player, Component.text("Fishing Studio", NamedTextColor.GOLD), SIZE);
+        super(player, chatPromptManager.lang().component("gui.studio.title"), SIZE);
         this.speciesManager = speciesManager;
         this.rodManager = rodManager;
         this.baitManager = baitManager;
@@ -48,6 +47,7 @@ public class FishingBrowserGUI extends InventoryGUI {
         this.junkManager = junkManager;
         this.regionManager = regionManager;
         this.chatPromptManager = chatPromptManager;
+        this.lang = chatPromptManager.lang();
     }
 
     @Override
@@ -60,30 +60,30 @@ public class FishingBrowserGUI extends InventoryGUI {
         }
 
         setItem(SPECIES_SLOT, new ItemBuilder(Material.TROPICAL_FISH)
-                .setName(Component.text("Especies", NamedTextColor.AQUA))
-                .setLore(Component.text(speciesManager.count() + " definida(s)", NamedTextColor.GRAY)).build());
+                .setName(lang.component("gui.studio.species_name"))
+                .setLore(lang.component("gui.studio.definida_lore", "count", speciesManager.count())).build());
 
         setItem(RODS_SLOT, new ItemBuilder(Material.FISHING_ROD)
-                .setName(Component.text("Cañas", NamedTextColor.YELLOW))
-                .setLore(Component.text(rodManager.count() + " definida(s)", NamedTextColor.GRAY)).build());
+                .setName(lang.component("gui.studio.rods_name"))
+                .setLore(lang.component("gui.studio.definida_lore", "count", rodManager.count())).build());
 
         setItem(BAITS_SLOT, new ItemBuilder(Material.STRING)
-                .setName(Component.text("Carnadas", NamedTextColor.GREEN))
-                .setLore(Component.text(baitManager.count() + " definida(s)", NamedTextColor.GRAY)).build());
+                .setName(lang.component("gui.studio.baits_name"))
+                .setLore(lang.component("gui.studio.definida_lore", "count", baitManager.count())).build());
 
         setItem(TREASURES_SLOT, new ItemBuilder(Material.CHEST)
-                .setName(Component.text("Tesoros", NamedTextColor.GOLD))
-                .setLore(Component.text(treasureManager.count() + " definido(s)", NamedTextColor.GRAY)).build());
+                .setName(lang.component("gui.studio.treasures_name"))
+                .setLore(lang.component("gui.studio.definido_lore", "count", treasureManager.count())).build());
 
         setItem(JUNK_SLOT, new ItemBuilder(Material.LEATHER_BOOTS)
-                .setName(Component.text("Basura", NamedTextColor.GRAY))
-                .setLore(Component.text(junkManager.count() + " definida(s)", NamedTextColor.GRAY)).build());
+                .setName(lang.component("gui.studio.junk_name"))
+                .setLore(lang.component("gui.studio.definida_lore", "count", junkManager.count())).build());
 
         setItem(REGIONS_SLOT, new ItemBuilder(Material.MAP)
-                .setName(Component.text("Regiones de pesca", NamedTextColor.LIGHT_PURPLE))
-                .setLore(Component.text(regionManager.count() + " definida(s)", NamedTextColor.GRAY)).build());
+                .setName(lang.component("gui.studio.regions_name"))
+                .setLore(lang.component("gui.studio.definida_lore", "count", regionManager.count())).build());
 
-        setItem(CLOSE_SLOT, ItemBuilder.createCancelButton("Cerrar"));
+        setItem(CLOSE_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.close")));
     }
 
     @Override

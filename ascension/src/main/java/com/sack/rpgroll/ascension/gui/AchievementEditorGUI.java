@@ -2,11 +2,9 @@ package com.sack.rpgroll.ascension.gui;
 
 import com.sack.rpgroll.ascension.deferred.Achievement;
 import com.sack.rpgroll.ascension.deferred.AchievementManager;
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
-
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -22,15 +20,17 @@ public class AchievementEditorGUI extends InventoryGUI {
     private final AchievementManager manager;
     private final ChatPromptManager chatPromptManager;
     private final Runnable onBack;
+    private final LangManager lang;
     private Achievement current;
 
     public AchievementEditorGUI(Player player, Achievement achievement, AchievementManager manager,
-            ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text("Logro: " + achievement.id(), NamedTextColor.GOLD), SIZE);
+            ChatPromptManager chatPromptManager, Runnable onBack, LangManager lang) {
+        super(player, lang.component("gui.achievement.editor_title", "id", achievement.id()), SIZE);
         this.current = achievement;
         this.manager = manager;
         this.chatPromptManager = chatPromptManager;
         this.onBack = onBack;
+        this.lang = lang;
     }
 
     private void replace(Achievement updated) {
@@ -49,17 +49,18 @@ public class AchievementEditorGUI extends InventoryGUI {
         }
 
         setItem(NAME_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(Component.text("Nombre: " + current.displayName(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para escribir uno nuevo", NamedTextColor.GRAY))
+                .setName(lang.component("gui.common.name_label", "name", current.displayName()))
+                .setLore(lang.component("gui.common.click_new_value"))
                 .build());
 
         setItem(DESCRIPTION_SLOT, new ItemBuilder(Material.WRITTEN_BOOK)
-                .setName(Component.text("Descripción", NamedTextColor.YELLOW))
+                .setName(lang.component("gui.achievement.description_label"))
                 .setLore(ItemBuilder.toLoreLines(
-                        current.description().isBlank() ? "(sin descripción)" : current.description()))
+                        current.description().isBlank() ? lang.raw("gui.achievement.description_empty")
+                                : current.description()))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back_button")));
     }
 
     @Override
@@ -69,13 +70,13 @@ public class AchievementEditorGUI extends InventoryGUI {
         int slot = event.getSlot();
 
         if (slot == NAME_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el nuevo nombre:",
+            chatPromptManager.prompt(player, "gui.achievement.prompt_new_name",
                     value -> replace(new Achievement(current.id(), value, current.description())));
             return;
         }
 
         if (slot == DESCRIPTION_SLOT) {
-            chatPromptManager.prompt(player, "Escribí la nueva descripción:",
+            chatPromptManager.prompt(player, "gui.achievement.prompt_description",
                     value -> replace(new Achievement(current.id(), current.displayName(), value)));
             return;
         }

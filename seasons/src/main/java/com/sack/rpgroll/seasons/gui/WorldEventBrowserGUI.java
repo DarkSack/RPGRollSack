@@ -1,5 +1,6 @@
 package com.sack.rpgroll.seasons.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.seasons.core.WorldEvent;
@@ -29,7 +30,7 @@ public class WorldEventBrowserGUI extends InventoryGUI {
 
     public WorldEventBrowserGUI(Player player, WorldEventManager worldEventManager, WorldEventEngine engine,
             ChatPromptManager chatPromptManager) {
-        super(player, Component.text("Eventos Mundiales", NamedTextColor.GOLD), SIZE);
+        super(player, chatPromptManager.lang().component("gui.world_event_browser.title"), SIZE);
         this.worldEventManager = worldEventManager;
         this.engine = engine;
         this.chatPromptManager = chatPromptManager;
@@ -45,23 +46,26 @@ public class WorldEventBrowserGUI extends InventoryGUI {
             setItem(slot, ItemBuilder.createFiller());
         }
 
+        LangManager lang = chatPromptManager.lang();
+
         for (int i = 0; i < events.size() && i < 36; i++) {
 
             WorldEvent event = events.get(i);
 
             setItem(i, new ItemBuilder(SeasonBrowserGUI.parseMaterial(event.icon()))
                     .setName(Component.text(event.displayName(), NamedTextColor.LIGHT_PURPLE))
-                    .setLore(Component.text("id: " + event.id(), NamedTextColor.GRAY),
-                            Component.text(event.components().size() + " componente(s)", NamedTextColor.GRAY),
-                            Component.text("Click para editar", NamedTextColor.YELLOW))
+                    .setLore(lang.component("gui.common.id_label", "id", event.id()),
+                            lang.component("gui.world_event_browser.component_count", "count",
+                                    event.components().size()),
+                            lang.component("gui.common.click_edit"))
                     .build());
         }
 
         setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Crear evento nuevo", NamedTextColor.GREEN))
+                .setName(lang.component("gui.world_event_browser.new"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back")));
     }
 
     @Override
@@ -87,12 +91,12 @@ public class WorldEventBrowserGUI extends InventoryGUI {
     }
 
     private void promptNew() {
-        chatPromptManager.prompt(player, "Escribí el id del nuevo evento:", value -> {
+        chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.world_event_browser.prompt_new_id"), value -> {
 
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 
             if (worldEventManager.exists(id)) {
-                player.sendMessage(Component.text("Ya existe un evento con ese id.", NamedTextColor.RED));
+                chatPromptManager.lang().send(player, "gui.world_event_browser.already_exists");
                 reopen();
                 return;
             }

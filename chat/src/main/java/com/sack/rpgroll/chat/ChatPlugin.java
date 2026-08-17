@@ -1,5 +1,6 @@
 package com.sack.rpgroll.chat;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.common.resource.DirectoryCreator;
 import com.sack.rpgroll.common.resource.ResourceCopier;
 
@@ -48,6 +49,7 @@ public class ChatPlugin extends JavaPlugin {
 
     private static final List<String> DIRECTORIES = List.of("channels", "languages", "roles", "emotes");
 
+    private LangManager langManager;
     private ChannelManager channelManager;
     private LanguageManager languageManager;
     private ChatRoleManager roleManager;
@@ -67,6 +69,9 @@ public class ChatPlugin extends JavaPlugin {
     public void onEnable() {
 
         saveDefaultConfig();
+
+        langManager = new LangManager(this, List.of("es", "en", "pt_BR"), "es");
+        langManager.reload(getConfig().getString("language", "es"));
 
         new DirectoryCreator(this).create(DIRECTORIES);
         new ResourceCopier(this).copyDirectories(DIRECTORIES);
@@ -88,9 +93,9 @@ public class ChatPlugin extends JavaPlugin {
 
         playerChannelStateManager = new PlayerChannelStateManager(this, channelManager);
         ignoreManager = new IgnoreManager(this);
-        whisperManager = new WhisperManager();
+        whisperManager = new WhisperManager(langManager);
         logManager = new ChatLogManager(this);
-        reactionManager = new ReactionManager();
+        reactionManager = new ReactionManager(langManager);
         channelRouter = new ChannelRouter(ignoreManager);
 
         AntiSpamConfig antiSpamConfig = AntiSpamConfig.fromConfig(getConfig().getConfigurationSection("antispam"));
@@ -101,26 +106,26 @@ public class ChatPlugin extends JavaPlugin {
         MessageFormatter messageFormatter = new MessageFormatter(roleManager, contextResolver);
 
         pipeline = new ChatMessagePipeline(playerChannelStateManager, antiSpamManager, messageFilter, mentionResolver,
-                languageService, channelRouter, messageFormatter, logManager, reactionManager);
+                languageService, channelRouter, messageFormatter, logManager, reactionManager, langManager);
 
-        ChatPromptManager chatPromptManager = new ChatPromptManager(this);
+        ChatPromptManager chatPromptManager = new ChatPromptManager(this, langManager);
         getServer().getPluginManager().registerEvents(chatPromptManager, this);
-        getServer().getPluginManager().registerEvents(new ChatListener(pipeline, this), this);
+        getServer().getPluginManager().registerEvents(new ChatListener(pipeline, this, langManager), this);
         getServer().getPluginManager().registerEvents(
                 new PlayerSessionListener(playerChannelStateManager, ignoreManager, languageService), this);
 
-        registerCommand("channel", new ChannelCommand(channelManager, playerChannelStateManager));
-        registerCommand("ch", new ChannelCommand(channelManager, playerChannelStateManager));
-        registerCommand("w", new WhisperCommand(whisperManager, ignoreManager));
-        registerCommand("r", new WhisperCommand(whisperManager, ignoreManager));
-        registerCommand("socialspy", new SocialSpyCommand(whisperManager));
-        registerCommand("ignore", new IgnoreCommand(ignoreManager));
+        registerCommand("channel", new ChannelCommand(channelManager, playerChannelStateManager, langManager));
+        registerCommand("ch", new ChannelCommand(channelManager, playerChannelStateManager, langManager));
+        registerCommand("w", new WhisperCommand(whisperManager, ignoreManager, langManager));
+        registerCommand("r", new WhisperCommand(whisperManager, ignoreManager, langManager));
+        registerCommand("socialspy", new SocialSpyCommand(whisperManager, langManager));
+        registerCommand("ignore", new IgnoreCommand(ignoreManager, langManager));
 
-        RPActionCommand rpActionCommand = new RPActionCommand(playerChannelStateManager, channelRouter);
+        RPActionCommand rpActionCommand = new RPActionCommand(playerChannelStateManager, channelRouter, langManager);
         registerCommand("me", rpActionCommand);
         registerCommand("do", rpActionCommand);
 
-        EmoteCommand emoteCommand = new EmoteCommand(emoteManager);
+        EmoteCommand emoteCommand = new EmoteCommand(emoteManager, langManager);
         registerCommand("emote", emoteCommand);
         registerCommand("wave", emoteCommand);
         registerCommand("laugh", emoteCommand);
@@ -128,11 +133,11 @@ public class ChatPlugin extends JavaPlugin {
         registerCommand("cry", emoteCommand);
         registerCommand("dance", emoteCommand);
 
-        registerCommand("react", new ReactCommand(reactionManager));
-        registerCommand("chatlog", new ChatLogCommand(logManager));
-        registerCommand("language", new LanguageCommand(languageManager, languageService));
+        registerCommand("react", new ReactCommand(reactionManager, langManager));
+        registerCommand("chatlog", new ChatLogCommand(logManager, langManager));
+        registerCommand("language", new LanguageCommand(languageManager, languageService, langManager));
         registerCommand("chatadmin", new ChatAdminCommand(channelManager, languageManager, roleManager, emoteManager,
-                chatPromptManager));
+                chatPromptManager, langManager, this));
 
         registerPlaceholders();
 
@@ -199,6 +204,10 @@ public class ChatPlugin extends JavaPlugin {
     }
 
     // ============ API pública para otros addons ============
+
+    public LangManager getLangManager() {
+        return langManager;
+    }
 
     public ChannelManager getChannelManager() {
         return channelManager;

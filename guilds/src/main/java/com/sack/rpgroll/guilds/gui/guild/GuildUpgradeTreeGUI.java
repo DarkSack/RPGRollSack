@@ -1,7 +1,9 @@
 package com.sack.rpgroll.guilds.gui.guild;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
+import com.sack.rpgroll.guilds.GuildsAPI;
 import com.sack.rpgroll.guilds.guild.Guild;
 import com.sack.rpgroll.guilds.guild.GuildManager;
 import com.sack.rpgroll.guilds.guild.bank.VaultTransaction;
@@ -25,10 +27,15 @@ public class GuildUpgradeTreeGUI extends InventoryGUI {
     private final Runnable onBack;
 
     public GuildUpgradeTreeGUI(Player player, Guild guild, GuildManager guildManager, Runnable onBack) {
-        super(player, Component.text("Mejoras: " + guild.name(), NamedTextColor.GOLD), SIZE);
+        super(player, Component.text(lang().raw("guild.upgrade.title", "name", guild.name()), NamedTextColor.GOLD),
+                SIZE);
         this.guild = guild;
         this.guildManager = guildManager;
         this.onBack = onBack;
+    }
+
+    private static LangManager lang() {
+        return GuildsAPI.getLangManager();
     }
 
     private Material iconFor(GuildUpgradeBranch branch) {
@@ -61,17 +68,18 @@ public class GuildUpgradeTreeGUI extends InventoryGUI {
             double cost = branch.upgradeCost(level);
 
             setItem(i, new ItemBuilder(iconFor(branch))
-                    .setName(Component.text(branch.displayName() + " — Nivel " + level + "/"
-                            + GuildUpgradeBranch.MAX_LEVEL, NamedTextColor.YELLOW))
+                    .setName(Component.text(lang().raw("guild.upgrade.branch_level", "branch", branch.displayName(lang()),
+                            "level", level, "max", GuildUpgradeBranch.MAX_LEVEL), NamedTextColor.YELLOW))
                     .setLore(
-                            Component.text(branch.description(), NamedTextColor.GRAY),
-                            maxed ? Component.text("Nivel máximo alcanzado", NamedTextColor.GREEN)
-                                    : Component.text("Costo: " + cost, NamedTextColor.GOLD),
-                            maxed ? Component.empty() : Component.text("Click para mejorar", NamedTextColor.AQUA))
+                            Component.text(branch.description(lang()), NamedTextColor.GRAY),
+                            maxed ? Component.text(lang().raw("guild.upgrade.max_level"), NamedTextColor.GREEN)
+                                    : Component.text(lang().raw("guild.upgrade.cost", "cost", cost), NamedTextColor.GOLD),
+                            maxed ? Component.empty() : Component.text(lang().raw("guild.upgrade.click_hint"),
+                                    NamedTextColor.AQUA))
                     .build());
         }
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang().raw("common.back")));
     }
 
     @Override
@@ -92,7 +100,7 @@ public class GuildUpgradeTreeGUI extends InventoryGUI {
         }
 
         if (!guild.roleOf(player.getUniqueId()).canManageSettings()) {
-            player.sendMessage(Component.text("No tenés permiso para mejorar la guild.", NamedTextColor.RED));
+            lang().send(player, "guild.upgrade.no_permission");
             return;
         }
 
@@ -106,9 +114,9 @@ public class GuildUpgradeTreeGUI extends InventoryGUI {
         double cost = branch.upgradeCost(level);
 
         if (!guild.vault().withdraw(cost, VaultTransaction.of(player.getUniqueId(), player.getName(),
-                VaultTransactionType.WITHDRAW_MONEY, cost, "Mejora de " + branch.displayName()))) {
-            player.sendMessage(Component.text("El vault de la guild no tiene fondos suficientes ("
-                    + cost + ").", NamedTextColor.RED));
+                VaultTransactionType.WITHDRAW_MONEY, cost, lang().raw("guild.upgrade.log.upgrade_of",
+                        "branch", branch.displayName(lang()))))) {
+            lang().send(player, "guild.upgrade.insufficient_funds", "cost", cost);
             return;
         }
 

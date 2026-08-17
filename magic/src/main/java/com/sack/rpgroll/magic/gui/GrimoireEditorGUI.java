@@ -1,5 +1,6 @@
 package com.sack.rpgroll.magic.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.magic.core.Grimoire;
@@ -37,16 +38,18 @@ public class GrimoireEditorGUI extends InventoryGUI {
     private final GrimoireManager grimoireManager;
     private final SpellManager spellManager;
     private final ChatPromptManager chatPromptManager;
+    private final LangManager lang;
     private final Runnable onBack;
     private Grimoire current;
 
     public GrimoireEditorGUI(Player player, Grimoire grimoire, GrimoireManager grimoireManager,
             SpellManager spellManager, ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text("Grimorio: " + grimoire.id(), NamedTextColor.GOLD), SIZE);
+        super(player, chatPromptManager.lang().component("gui.grimoire_editor.title", "id", grimoire.id()), SIZE);
         this.current = grimoire;
         this.grimoireManager = grimoireManager;
         this.spellManager = spellManager;
         this.chatPromptManager = chatPromptManager;
+        this.lang = chatPromptManager.lang();
         this.onBack = onBack;
     }
 
@@ -66,26 +69,27 @@ public class GrimoireEditorGUI extends InventoryGUI {
         }
 
         setItem(NAME_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(Component.text("Nombre: " + current.displayName(), NamedTextColor.YELLOW)).build());
+                .setName(lang.component("gui.common.name_label", "name", current.displayName())).build());
 
         setItem(ICON_SLOT, new ItemBuilder(SchoolBrowserGUI.parseMaterial(current.icon()))
-                .setName(Component.text("Ícono: " + current.icon(), NamedTextColor.YELLOW)).build());
+                .setName(lang.component("gui.common.icon_label", "icon", current.icon())).build());
 
         setItem(DESCRIPTION_SLOT, new ItemBuilder(Material.WRITTEN_BOOK)
-                .setName(Component.text("Descripción", NamedTextColor.YELLOW))
+                .setName(lang.component("gui.common.description_title"))
                 .setLore(ItemBuilder.toLoreLines(
-                        current.description().isBlank() ? "(sin descripción)" : current.description()))
+                        current.description().isBlank() ? lang.raw("gui.common.no_description")
+                                : current.description()))
                 .build());
 
         setItem(SCHOOL_SLOT, new ItemBuilder(Material.ENCHANTED_BOOK)
-                .setName(Component.text("Escuela: " + (current.schoolId() == null ? "(cualquiera)" : current.schoolId()),
-                        NamedTextColor.AQUA))
-                .setLore(Component.text("Puramente informativo — escribí 'ninguna' para quitarlo", NamedTextColor.GRAY))
+                .setName(lang.component("gui.grimoire_editor.school_label", "value",
+                        current.schoolId() == null ? lang.raw("gui.grimoire_editor.school_any") : current.schoolId()))
+                .setLore(lang.component("gui.grimoire_editor.school_lore"))
                 .build());
 
         setItem(LEVEL_SLOT, new ItemBuilder(Material.EXPERIENCE_BOTTLE)
-                .setName(Component.text("Nivel requerido: " + current.requiredLevel(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click: +1 · Click derecho: -1", NamedTextColor.GRAY)).build());
+                .setName(lang.component("gui.grimoire_editor.level_label", "level", current.requiredLevel()))
+                .setLore(lang.component("gui.common.step_1")).build());
 
         List<String> spellIds = current.spellIds();
 
@@ -96,20 +100,20 @@ public class GrimoireEditorGUI extends InventoryGUI {
 
             setItem(SPELLS_START + i, new ItemBuilder(Material.BLAZE_POWDER)
                     .setName(Component.text(displayName, NamedTextColor.LIGHT_PURPLE))
-                    .setLore(Component.text("id: " + spellId, NamedTextColor.GRAY),
-                            Component.text("Shift-click para quitar", NamedTextColor.RED))
+                    .setLore(lang.component("gui.common.id_label", "id", spellId),
+                            lang.component("gui.common.shift_remove"))
                     .build());
         }
 
         setItem(GIVE_SLOT, new ItemBuilder(Material.CHEST)
-                .setName(Component.text("▶ Darme uno", NamedTextColor.GREEN))
+                .setName(lang.component("gui.grimoire_editor.give"))
                 .build());
 
         setItem(ADD_SPELL_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Agregar hechizo", NamedTextColor.GREEN))
-                .setLore(Component.text("Escribí el id de un hechizo existente", NamedTextColor.GRAY)).build());
+                .setName(lang.component("gui.grimoire_editor.add_spell"))
+                .setLore(lang.component("gui.grimoire_editor.add_spell_lore")).build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back")));
     }
 
     @Override
@@ -121,28 +125,28 @@ public class GrimoireEditorGUI extends InventoryGUI {
         int sign = click == ClickType.RIGHT ? -1 : 1;
 
         if (slot == NAME_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el nuevo nombre:", value -> replace(new Grimoire(current.id(),
+            chatPromptManager.prompt(player, lang.raw("gui.common.prompt_name"), value -> replace(new Grimoire(current.id(),
                     value, current.icon(), current.description(), current.schoolId(), current.requiredLevel(),
                     current.spellIds())));
             return;
         }
 
         if (slot == ICON_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el Material del ícono:", value -> replace(new Grimoire(
+            chatPromptManager.prompt(player, lang.raw("gui.common.prompt_icon"), value -> replace(new Grimoire(
                     current.id(), current.displayName(), value, current.description(), current.schoolId(),
                     current.requiredLevel(), current.spellIds())));
             return;
         }
 
         if (slot == DESCRIPTION_SLOT) {
-            chatPromptManager.prompt(player, "Escribí la nueva descripción:", value -> replace(new Grimoire(
+            chatPromptManager.prompt(player, lang.raw("gui.common.prompt_description"), value -> replace(new Grimoire(
                     current.id(), current.displayName(), current.icon(), value, current.schoolId(),
                     current.requiredLevel(), current.spellIds())));
             return;
         }
 
         if (slot == SCHOOL_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el id de la escuela (o 'ninguna'):",
+            chatPromptManager.prompt(player, lang.raw("gui.grimoire_editor.prompt_school"),
                     value -> replace(new Grimoire(current.id(), current.displayName(), current.icon(),
                             current.description(), value.equalsIgnoreCase("ninguna") ? null : value.trim(),
                             current.requiredLevel(), current.spellIds())));
@@ -166,24 +170,23 @@ public class GrimoireEditorGUI extends InventoryGUI {
         }
 
         if (slot == GIVE_SLOT) {
-            player.getInventory().addItem(MagicItemFactory.createGrimoire(current));
-            player.sendMessage(Component.text("✔ Te diste un grimorio '" + current.displayName() + "'.",
-                    NamedTextColor.GREEN));
+            player.getInventory().addItem(MagicItemFactory.createGrimoire(current, lang));
+            lang.send(player, "gui.grimoire_editor.given", "name", current.displayName());
             return;
         }
 
         if (slot == ADD_SPELL_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el id del hechizo a agregar:", value -> {
+            chatPromptManager.prompt(player, lang.raw("gui.grimoire_editor.prompt_add_spell"), value -> {
 
                 String spellId = value.trim().toLowerCase(java.util.Locale.ROOT);
 
                 if (!spellManager.exists(spellId)) {
-                    player.sendMessage(Component.text("No existe un hechizo con ese id.", NamedTextColor.RED));
+                    lang.send(player, "gui.grimoire_editor.unknown_spell");
                     return;
                 }
 
                 if (current.spellIds().contains(spellId)) {
-                    player.sendMessage(Component.text("Ese hechizo ya está en el grimorio.", NamedTextColor.RED));
+                    lang.send(player, "gui.grimoire_editor.spell_already_added");
                     return;
                 }
 

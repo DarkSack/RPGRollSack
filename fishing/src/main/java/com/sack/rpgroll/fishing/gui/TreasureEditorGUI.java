@@ -1,5 +1,6 @@
 package com.sack.rpgroll.fishing.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.fishing.core.FishRarity;
 import com.sack.rpgroll.fishing.core.Treasure;
 import com.sack.rpgroll.fishing.core.TreasureManager;
@@ -28,15 +29,17 @@ public class TreasureEditorGUI extends InventoryGUI {
 
     private final TreasureManager treasureManager;
     private final ChatPromptManager chatPromptManager;
+    private final LangManager lang;
     private final Runnable onBack;
     private Treasure current;
 
     public TreasureEditorGUI(Player player, Treasure treasure, TreasureManager treasureManager,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text("Tesoro: " + treasure.id(), NamedTextColor.GOLD), SIZE);
+        super(player, chatPromptManager.lang().component("gui.treasure.editor_title", "id", treasure.id()), SIZE);
         this.current = treasure;
         this.treasureManager = treasureManager;
         this.chatPromptManager = chatPromptManager;
+        this.lang = chatPromptManager.lang();
         this.onBack = onBack;
     }
 
@@ -56,32 +59,32 @@ public class TreasureEditorGUI extends InventoryGUI {
         }
 
         setItem(NAME_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(Component.text("Nombre: " + current.displayName(), NamedTextColor.YELLOW)).build());
+                .setName(lang.component("gui.treasure.field_name", "name", current.displayName())).build());
 
         setItem(ICON_SLOT, new ItemBuilder(SpeciesBrowserGUI.parseMaterial(current.icon()))
-                .setName(Component.text("Ícono: " + current.icon(), NamedTextColor.YELLOW)).build());
+                .setName(lang.component("gui.treasure.field_icon", "icon", current.icon())).build());
 
         setItem(DESCRIPTION_SLOT, new ItemBuilder(Material.WRITTEN_BOOK)
-                .setName(Component.text("Descripción", NamedTextColor.YELLOW))
+                .setName(lang.component("gui.common.description_title"))
                 .setLore(ItemBuilder.toLoreLines(
-                        current.description().isBlank() ? "(sin descripción)" : current.description()))
+                        current.description().isBlank() ? lang.raw("gui.common.no_description") : current.description()))
                 .build());
 
         setItem(RARITY_SLOT, new ItemBuilder(Material.NETHER_STAR)
-                .setName(Component.text("Rareza: " + current.rarity(), NamedTextColor.LIGHT_PURPLE))
-                .setLore(Component.text("Click para pasar a la siguiente", NamedTextColor.GRAY)).build());
+                .setName(lang.component("gui.treasure.field_rarity", "value", current.rarity()))
+                .setLore(lang.component("gui.common.click_next")).build());
 
         setItem(REWARD_SLOT, new ItemBuilder(SpeciesBrowserGUI.parseMaterial(current.rewardMaterial()),
                 current.rewardAmount())
-                .setName(Component.text("Recompensa: " + current.rewardAmount() + "x " + current.rewardMaterial(),
-                        NamedTextColor.GOLD))
-                .setLore(Component.text("Escribí: MATERIAL,CANTIDAD", NamedTextColor.GRAY)).build());
+                .setName(lang.component("gui.treasure.field_reward", "amount", current.rewardAmount(), "material",
+                        current.rewardMaterial()))
+                .setLore(lang.component("gui.treasure.reward_hint")).build());
 
         setItem(WEIGHT_SLOT, new ItemBuilder(Material.GOLD_NUGGET)
-                .setName(Component.text("Peso relativo: " + current.weight(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click: +1 · Click derecho: -1", NamedTextColor.GRAY)).build());
+                .setName(lang.component("gui.treasure.field_weight", "value", current.weight()))
+                .setLore(lang.component("gui.common.plusminus_1")).build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back")));
     }
 
     @Override
@@ -92,21 +95,21 @@ public class TreasureEditorGUI extends InventoryGUI {
         int sign = event.getClick() == ClickType.RIGHT ? -1 : 1;
 
         if (slot == NAME_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el nuevo nombre:", value -> replace(new Treasure(current.id(),
+            chatPromptManager.prompt(player, lang.raw("gui.treasure.prompt_name"), value -> replace(new Treasure(current.id(),
                     value, current.icon(), current.description(), current.rarity(), current.rewardMaterial(),
                     current.rewardAmount(), current.weight())));
             return;
         }
 
         if (slot == ICON_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el Material del ícono:", value -> replace(new Treasure(
+            chatPromptManager.prompt(player, lang.raw("gui.treasure.prompt_icon"), value -> replace(new Treasure(
                     current.id(), current.displayName(), value, current.description(), current.rarity(),
                     current.rewardMaterial(), current.rewardAmount(), current.weight())));
             return;
         }
 
         if (slot == DESCRIPTION_SLOT) {
-            chatPromptManager.prompt(player, "Escribí la nueva descripción:", value -> replace(new Treasure(
+            chatPromptManager.prompt(player, lang.raw("gui.treasure.prompt_description"), value -> replace(new Treasure(
                     current.id(), current.displayName(), current.icon(), value, current.rarity(),
                     current.rewardMaterial(), current.rewardAmount(), current.weight())));
             return;
@@ -121,7 +124,7 @@ public class TreasureEditorGUI extends InventoryGUI {
         }
 
         if (slot == REWARD_SLOT) {
-            chatPromptManager.prompt(player, "Escribí: MATERIAL,CANTIDAD:", value -> {
+            chatPromptManager.prompt(player, lang.raw("gui.treasure.prompt_reward"), value -> {
 
                 String[] parts = value.split(",");
                 String material = parts[0].trim().toUpperCase(java.util.Locale.ROOT);

@@ -6,6 +6,7 @@ import com.sack.rpgroll.command.CommandManager;
 import com.sack.rpgroll.command.commands.*;
 import com.sack.rpgroll.config.ConfigManager;
 import com.sack.rpgroll.common.content.Reloadable;
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.database.DatabaseManager;
 import com.sack.rpgroll.gameplay.combat.CombatTracker;
 import com.sack.rpgroll.gameplay.combat.ResourceRegenTask;
@@ -176,6 +177,14 @@ public class Bootstrap {
         configManager.initialize();
         services.register(ConfigManager.class, configManager);
         plugin.getLogger().info("✔ ConfigManager registrado");
+
+        // 1.1 LangManager - Mensajes por idioma (lang/es.yml, en.yml, pt_BR.yml)
+        LangManager langManager = new LangManager(plugin, List.of("es", "en", "pt_BR"), "es");
+        FileConfiguration mainConfig = configManager.getConfig("config.yml");
+        String configuredLocale = mainConfig != null ? mainConfig.getString("language", "es") : "es";
+        langManager.reload(configuredLocale);
+        services.register(LangManager.class, langManager);
+        plugin.getLogger().info("✔ LangManager registrado (idioma: " + configuredLocale + ")");
 
         // 2. DatabaseManager - Gestión de base de datos
         DatabaseManager dbManager = new DatabaseManager(plugin);
@@ -349,13 +358,15 @@ public class Bootstrap {
         ConfigManager configManager = services.get(ConfigManager.class);
         LevelUpRewardsConfig levelUpRewardsConfig = services.get(LevelUpRewardsConfig.class);
         PlacedBlockTracker placedBlockTracker = services.get(PlacedBlockTracker.class);
+        LangManager langManager = services.get(LangManager.class);
 
         // Clave compartida para marcar entidades nacidas de spawner (anti-farm
         // de Cazador y anti-drop-de-encantamientos en granjas automáticas)
         NamespacedKey fromSpawnerKey = new NamespacedKey(plugin, "from-spawner");
 
         // ===== Listeners de trabajos =====
-        JobRewardService jobRewardService = new JobRewardService(plugin, playerManager, jobManager, economyProvider);
+        JobRewardService jobRewardService = new JobRewardService(plugin, playerManager, jobManager, economyProvider,
+                langManager);
 
         MinerJobListener minerJobListener = new MinerJobListener(jobRewardService, placedBlockTracker);
         Bukkit.getPluginManager().registerEvents(minerJobListener, plugin);
@@ -376,28 +387,29 @@ public class Bootstrap {
         RaceAttributeApplier raceAttributeApplier = services.get(RaceAttributeApplier.class);
         PlayerResourceBar resourceBar = services.get(PlayerResourceBar.class);
         PlayerEventListener playerListener = new PlayerEventListener(plugin, playerManager, raceManager, classManager,
-                raceAttributeApplier, resourceBar);
+                raceAttributeApplier, resourceBar, langManager);
         Bukkit.getPluginManager().registerEvents(playerListener, plugin);
 
         // ===== Listeners de combate (armadura, evasión, crítico, salud) =====
         CombatTracker combatTracker = services.get(CombatTracker.class);
         CombatEffectsListener combatEffectsListener = new CombatEffectsListener(playerManager, combatTracker,
-                resourceBar);
+                resourceBar, langManager);
         Bukkit.getPluginManager().registerEvents(combatEffectsListener, plugin);
 
         // ===== Listeners de GUI =====
         GUIListener guiListener = new GUIListener(plugin);
         Bukkit.getPluginManager().registerEvents(guiListener, plugin);
 
-        ChatPromptManager chatPromptManager = new ChatPromptManager(plugin);
+        ChatPromptManager chatPromptManager = new ChatPromptManager(plugin, langManager);
         Bukkit.getPluginManager().registerEvents(chatPromptManager, plugin);
         services.register(ChatPromptManager.class, chatPromptManager);
 
         // ===== Listeners de gameplay (XP, skills, etc) =====
-        MobKillListener mobKillListener = new MobKillListener(playerManager, configManager, levelUpRewardsConfig);
+        MobKillListener mobKillListener = new MobKillListener(playerManager, configManager, levelUpRewardsConfig,
+                langManager);
         Bukkit.getPluginManager().registerEvents(mobKillListener, plugin);
 
-        LevelUpListener levelUpListener = new LevelUpListener();
+        LevelUpListener levelUpListener = new LevelUpListener(langManager);
         Bukkit.getPluginManager().registerEvents(levelUpListener, plugin);
 
         // ===== Listeners de explorador =====

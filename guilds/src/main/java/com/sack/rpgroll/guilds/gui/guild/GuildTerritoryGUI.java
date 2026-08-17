@@ -36,12 +36,17 @@ public class GuildTerritoryGUI extends InventoryGUI {
 
     public GuildTerritoryGUI(Player player, Guild guild, GuildManager guildManager,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text("Territorios: " + guild.name(), NamedTextColor.GOLD), SIZE);
+        super(player, Component.text(chatPromptManager.lang().raw("guild.territory.title", "name", guild.name()),
+                NamedTextColor.GOLD), SIZE);
         this.guild = guild;
         this.guildManager = guildManager;
         this.chatPromptManager = chatPromptManager;
         this.onBack = onBack;
         this.territories = guild.territories();
+    }
+
+    private com.sack.rpgroll.common.lang.LangManager lang() {
+        return chatPromptManager.lang();
     }
 
     @Override
@@ -59,26 +64,28 @@ public class GuildTerritoryGUI extends InventoryGUI {
 
             setItem(i, new ItemBuilder(Material.GRASS_BLOCK)
                     .setName(Component.text(territory.name(), NamedTextColor.YELLOW))
-                    .setLore(Component.text("Mundo: " + territory.world(), NamedTextColor.GRAY),
-                            Component.text("Protección de bloques: " + (territory.protectBlocks() ? "sí" : "no"),
+                    .setLore(Component.text(lang().raw("guild.territory.lore.world", "world", territory.world()),
+                            NamedTextColor.GRAY),
+                            Component.text(lang().raw("guild.territory.lore.block_protection", "state",
+                                    territory.protectBlocks() ? lang().raw("common.yes") : lang().raw("common.no")),
                                     NamedTextColor.GRAY),
-                            Component.text("PvP externo permitido: " + (territory.allowOutsiderPvp() ? "sí" : "no"),
+                            Component.text(lang().raw("guild.territory.lore.outsider_pvp", "state",
+                                    territory.allowOutsiderPvp() ? lang().raw("common.yes") : lang().raw("common.no")),
                                     NamedTextColor.GRAY),
-                            Component.text("Click: alternar protección · Click derecho: alternar PvP",
-                                    NamedTextColor.DARK_GRAY),
-                            Component.text("Shift-click: liberar territorio", NamedTextColor.DARK_GRAY))
+                            Component.text(lang().raw("guild.territory.lore.toggle_hint"), NamedTextColor.DARK_GRAY),
+                            Component.text(lang().raw("guild.territory.lore.release_hint"), NamedTextColor.DARK_GRAY))
                     .build());
         }
 
         int maxTerritories = guild.upgradeTree().maxTerritories();
 
         setItem(CLAIM_SLOT, new ItemBuilder(territories.size() < maxTerritories ? Material.EMERALD : Material.BARRIER)
-                .setName(Component.text("Reclamar territorio acá", NamedTextColor.GREEN))
-                .setLore(Component.text("Cupo: " + territories.size() + "/" + maxTerritories
-                        + " (mejorá la rama Territorio para más)", NamedTextColor.GRAY))
+                .setName(Component.text(lang().raw("guild.territory.button.claim"), NamedTextColor.GREEN))
+                .setLore(Component.text(lang().raw("guild.territory.lore.quota", "count", territories.size(),
+                        "max", maxTerritories), NamedTextColor.GRAY))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang().raw("common.back")));
     }
 
     @Override
@@ -92,7 +99,7 @@ public class GuildTerritoryGUI extends InventoryGUI {
         if (slot < territories.size() && slot < 36) {
 
             if (!canManage) {
-                player.sendMessage(Component.text("No tenés permiso para gestionar territorios.", NamedTextColor.RED));
+                lang().send(player, "guild.territory.no_permission_manage");
                 return;
             }
 
@@ -119,13 +126,12 @@ public class GuildTerritoryGUI extends InventoryGUI {
         if (slot == CLAIM_SLOT) {
 
             if (!canManage) {
-                player.sendMessage(Component.text("No tenés permiso para reclamar territorio.", NamedTextColor.RED));
+                lang().send(player, "guild.territory.no_permission_claim");
                 return;
             }
 
             if (territories.size() >= guild.upgradeTree().maxTerritories()) {
-                player.sendMessage(Component.text("Alcanzaste el cupo de territorios — mejorá la rama Territorio.",
-                        NamedTextColor.RED));
+                lang().send(player, "guild.territory.quota_reached");
                 return;
             }
 
@@ -139,12 +145,12 @@ public class GuildTerritoryGUI extends InventoryGUI {
     }
 
     private void promptClaim() {
-        chatPromptManager.prompt(player, "Escribí: nombre;radio (ej. base;40):", value -> {
+        chatPromptManager.prompt(player, "guild.territory.prompt_claim", value -> {
 
             String[] parts = value.split(";", 2);
 
             if (parts.length < 2) {
-                player.sendMessage(Component.text("Formato inválido.", NamedTextColor.RED));
+                lang().send(player, "guild.territory.invalid_format");
                 reopen();
                 return;
             }
@@ -153,7 +159,7 @@ public class GuildTerritoryGUI extends InventoryGUI {
             try {
                 radius = Double.parseDouble(parts[1].trim());
             } catch (NumberFormatException e) {
-                player.sendMessage(Component.text("El radio debe ser un número.", NamedTextColor.RED));
+                lang().send(player, "guild.territory.radius_not_a_number");
                 reopen();
                 return;
             }
@@ -171,15 +177,14 @@ public class GuildTerritoryGUI extends InventoryGUI {
                             territory.minZ(), territory.maxX(), territory.maxY(), territory.maxZ()));
 
             if (overlaps) {
-                player.sendMessage(Component.text("Ese territorio se superpone con uno ya reclamado.",
-                        NamedTextColor.RED));
+                lang().send(player, "guild.territory.overlaps");
                 reopen();
                 return;
             }
 
             guild.addTerritory(territory);
             guildManager.save(guild);
-            player.sendMessage(Component.text("✔ Territorio '" + name + "' reclamado.", NamedTextColor.GREEN));
+            lang().send(player, "guild.territory.claimed", "name", name);
             reopen();
         });
     }

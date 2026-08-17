@@ -1,5 +1,6 @@
 package com.sack.rpgroll.economy.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.economy.currency.CurrencyManager;
 import com.sack.rpgroll.economy.shop.PlayerShop;
 import com.sack.rpgroll.economy.shop.ShopListing;
@@ -25,14 +26,16 @@ public class ShopViewGUI extends InventoryGUI {
     private final ShopManager shopManager;
     private final CurrencyManager currencyManager;
     private final Runnable onBack;
+    private final LangManager lang;
 
     public ShopViewGUI(Player player, PlayerShop shop, ShopManager shopManager, CurrencyManager currencyManager,
-            Runnable onBack) {
+            Runnable onBack, LangManager lang) {
         super(player, Component.text(shop.name(), NamedTextColor.GOLD), SIZE);
         this.shop = shop;
         this.shopManager = shopManager;
         this.currencyManager = currencyManager;
         this.onBack = onBack;
+        this.lang = lang;
     }
 
     @Override
@@ -52,14 +55,14 @@ public class ShopViewGUI extends InventoryGUI {
 
             setItem(i, new ItemBuilder(listing.material())
                     .setName(Component.text(listing.displayName(), NamedTextColor.YELLOW))
-                    .setLore(Component.text("precio: " + currency.format(listing.unitPrice()) + " c/u", NamedTextColor.GOLD),
-                            Component.text("stock: " + (listing.isUnlimited() ? "ilimitado" : listing.stock()),
-                                    NamedTextColor.GRAY),
-                            Component.text("Click: comprar 1 · Shift-click: comprar 8", NamedTextColor.GREEN))
+                    .setLore(lang.component("shop.view.lore_price", "value", currency.format(listing.unitPrice())),
+                            lang.component("shop.view.lore_stock", "value",
+                                    listing.isUnlimited() ? lang.raw("common.unlimited") : listing.stock()),
+                            lang.component("shop.view.click_hint"))
                     .build());
         }
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("common.back")));
     }
 
     @Override
@@ -74,11 +77,11 @@ public class ShopViewGUI extends InventoryGUI {
             ShopPurchaseResult result = shopManager.buy(player, shop, shop.listings().get(slot), quantity);
 
             switch (result) {
-                case SUCCESS -> player.sendMessage(Component.text("✔ Compra realizada.", NamedTextColor.GREEN));
-                case OUT_OF_STOCK -> player.sendMessage(Component.text("✘ No hay suficiente stock.", NamedTextColor.RED));
-                case INSUFFICIENT_FUNDS -> player.sendMessage(Component.text("✘ No tenés suficiente dinero.", NamedTextColor.RED));
-                case SHOP_CLOSED -> player.sendMessage(Component.text("✘ Esta tienda está cerrada.", NamedTextColor.RED));
-                case INVENTORY_FULL -> player.sendMessage(Component.text("✘ Tu inventario está lleno.", NamedTextColor.RED));
+                case SUCCESS -> lang.send(player, "shop.view.purchase_success");
+                case OUT_OF_STOCK -> lang.send(player, "shop.view.out_of_stock");
+                case INSUFFICIENT_FUNDS -> lang.send(player, "shop.view.insufficient_funds");
+                case SHOP_CLOSED -> lang.send(player, "shop.view.shop_closed");
+                case INVENTORY_FULL -> lang.send(player, "shop.view.inventory_full");
             }
 
             build();

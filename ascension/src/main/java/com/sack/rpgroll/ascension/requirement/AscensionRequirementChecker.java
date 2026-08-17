@@ -3,6 +3,7 @@ package com.sack.rpgroll.ascension.requirement;
 import com.sack.rpgroll.api.RPGRollAPI;
 import com.sack.rpgroll.ascension.core.AscensionRequirements;
 import com.sack.rpgroll.ascension.player.AscensionPlayerState;
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.player.RPGPlayer;
 import com.sack.rpgroll.quests.QuestsPlugin;
 
@@ -15,6 +16,12 @@ import java.util.List;
 /** Valida {@link AscensionRequirements} contra el jugador y su estado de Ascension. */
 public class AscensionRequirementChecker {
 
+    private final LangManager lang;
+
+    public AscensionRequirementChecker(LangManager lang) {
+        this.lang = lang;
+    }
+
     public List<String> check(Player player, AscensionRequirements req, AscensionPlayerState state) {
 
         List<String> reasons = new ArrayList<>();
@@ -25,21 +32,23 @@ public class AscensionRequirementChecker {
         if (req.level() > 0) {
             int level = rpgPlayer != null ? rpgPlayer.getLevel() : 0;
             if (level < req.level()) {
-                reasons.add("Necesitás nivel " + req.level() + " (tenés " + level + ").");
+                reasons.add(lang.raw("requirement.level", "required", req.level(), "current", level));
             }
         }
 
         if (req.prestige() > 0 && state.getPrestigeCount() < req.prestige()) {
-            reasons.add("Necesitás prestigio " + req.prestige() + " (tenés " + state.getPrestigeCount() + ").");
+            reasons.add(lang.raw("requirement.prestige", "required", req.prestige(), "current",
+                    state.getPrestigeCount()));
         }
 
         if (req.trait() != null && (rpgPlayer == null || !rpgPlayer.getTraits().hasTrait(req.trait()))) {
-            reasons.add("Necesitás el trait: " + req.trait());
+            reasons.add(lang.raw("requirement.trait", "trait", req.trait()));
         }
 
         for (var entry : req.reputation().entrySet()) {
             if (state.getReputation(entry.getKey()) < entry.getValue()) {
-                reasons.add("Necesitás " + entry.getValue() + " de reputación con: " + entry.getKey());
+                reasons.add(lang.raw("requirement.reputation", "amount", entry.getValue(), "faction",
+                        entry.getKey()));
             }
         }
 
@@ -65,7 +74,7 @@ public class AscensionRequirementChecker {
 
         for (String questId : questIds) {
             if (!state.hasCompleted(questId)) {
-                reasons.add("Necesitás haber completado la quest: " + questId);
+                reasons.add(lang.raw("requirement.completed_quest", "quest", questId));
             }
         }
 

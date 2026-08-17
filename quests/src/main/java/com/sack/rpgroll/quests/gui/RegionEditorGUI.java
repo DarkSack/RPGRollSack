@@ -1,12 +1,10 @@
 package com.sack.rpgroll.quests.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.quests.region.Region;
 import com.sack.rpgroll.quests.region.RegionManager;
-
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -24,13 +22,16 @@ public class RegionEditorGUI extends InventoryGUI {
     private static final int BACK_SLOT = 26;
 
     private final RegionManager regionManager;
+    private final LangManager lang;
     private final Runnable onBack;
     private Region current;
 
-    public RegionEditorGUI(Player player, Region region, RegionManager regionManager, Runnable onBack) {
-        super(player, Component.text("Región: " + region.id(), NamedTextColor.GOLD), SIZE);
+    public RegionEditorGUI(Player player, Region region, RegionManager regionManager, Runnable onBack,
+            LangManager lang) {
+        super(player, lang.component("region_editor.title", "id", region.id()), SIZE);
         this.current = region;
         this.regionManager = regionManager;
+        this.lang = lang;
         this.onBack = onBack;
     }
 
@@ -50,32 +51,30 @@ public class RegionEditorGUI extends InventoryGUI {
         }
 
         setItem(WORLD_SLOT, new ItemBuilder(Material.GRASS_BLOCK)
-                .setName(Component.text("Mundo: " + current.world(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para usar tu mundo actual", NamedTextColor.GRAY))
+                .setName(lang.component("region_editor.world_label", "world", current.world()))
+                .setLore(lang.component("region_editor.click_use_current_world"))
                 .build());
 
         setItem(MIN_SLOT, new ItemBuilder(Material.RED_CONCRETE)
-                .setName(Component.text("Fijar esquina mínima acá", NamedTextColor.RED))
-                .setLore(Component.text(format(current.minX(), current.minY(), current.minZ()), NamedTextColor.GRAY))
+                .setName(lang.component("region_editor.set_min_corner"))
+                .setLore(lang.component("region_editor.coords", "x", (int) current.minX(), "y", (int) current.minY(),
+                        "z", (int) current.minZ()))
                 .build());
 
         setItem(MAX_SLOT, new ItemBuilder(Material.LIME_CONCRETE)
-                .setName(Component.text("Fijar esquina máxima acá", NamedTextColor.GREEN))
-                .setLore(Component.text(format(current.maxX(), current.maxY(), current.maxZ()), NamedTextColor.GRAY))
+                .setName(lang.component("region_editor.set_max_corner"))
+                .setLore(lang.component("region_editor.coords", "x", (int) current.maxX(), "y", (int) current.maxY(),
+                        "z", (int) current.maxZ()))
                 .build());
 
         double volume = (current.maxX() - current.minX()) * (current.maxY() - current.minY())
                 * (current.maxZ() - current.minZ());
 
         setItem(INFO_SLOT, new ItemBuilder(Material.MAP)
-                .setName(Component.text("Volumen: " + (long) volume + " bloques³", NamedTextColor.YELLOW))
+                .setName(lang.component("region_editor.volume_label", "volume", (long) volume))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
-    }
-
-    private String format(double x, double y, double z) {
-        return (int) x + ", " + (int) y + ", " + (int) z;
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("region_editor.back_button")));
     }
 
     @Override

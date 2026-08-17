@@ -26,4 +26,10 @@ dependencies {
     }
 
     compileOnly("me.clip:placeholderapi:2.11.5")
+
+    // SackResourcePack es standalone (no depende de RPGRoll) pero expone su
+    // AssetsAPI pública para que otros plugins registren texturas — acá se
+    // usa para sincronizar packs/<nombre>/resourcepack/ automáticamente.
+    // softdepend en plugin.yml, se chequea AssetsAPI.isReady() en runtime.
+    compileOnly(project(":sackresourcepack"))
 }

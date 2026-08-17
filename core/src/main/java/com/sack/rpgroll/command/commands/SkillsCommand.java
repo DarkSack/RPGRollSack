@@ -2,13 +2,11 @@ package com.sack.rpgroll.command.commands;
 
 import com.sack.rpgroll.RPGRoll;
 import com.sack.rpgroll.command.RPGCommand;
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gameplay.skill.Skill;
 import com.sack.rpgroll.gameplay.skill.SkillManager;
 import com.sack.rpgroll.player.PlayerManager;
 import com.sack.rpgroll.player.RPGPlayer;
-
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -32,6 +30,7 @@ public class SkillsCommand implements RPGCommand {
     public void execute(CommandSender sender, String[] args) {
 
         Player player = (Player) sender;
+        LangManager lang = plugin.getBootstrap().getServices().get(LangManager.class);
 
         try {
 
@@ -46,31 +45,31 @@ public class SkillsCommand implements RPGCommand {
             Optional<RPGPlayer> rpgPlayer = playerManager.getPlayer(player.getUniqueId());
 
             if (rpgPlayer.isEmpty()) {
-                player.sendMessage(Component.text("No se encontraron datos de jugador para ti.", NamedTextColor.RED));
-                player.sendMessage(Component.text("Error al cargar tus datos.", NamedTextColor.RED));
+                lang.send(player, "skills_command.profile_load_error");
+                lang.send(player, "skills_command.data_load_error");
                 return;
             }
 
-            displaySkills(player, rpgPlayer.get(), skillManager);
+            displaySkills(player, rpgPlayer.get(), skillManager, lang);
 
         } catch (Exception exception) {
 
-            player.sendMessage(Component.text("Error al cargar habilidades.", NamedTextColor.RED));
+            lang.send(player, "skills_command.load_error");
             exception.printStackTrace();
 
         }
 
     }
 
-    private void displaySkills(Player player, RPGPlayer rpgPlayer, SkillManager skillManager) {
+    private void displaySkills(Player player, RPGPlayer rpgPlayer, SkillManager skillManager, LangManager lang) {
 
         var skills = rpgPlayer.getSkills();
 
         player.sendMessage("");
-        player.sendMessage(Component.text("============ Tus Habilidades ===========", NamedTextColor.GOLD));
+        lang.send(player, "skills_command.header");
 
         if (skills.getLearnedSkillIds().isEmpty()) {
-            player.sendMessage(Component.text("Aún no has aprendido habilidades.", NamedTextColor.YELLOW));
+            lang.send(player, "skills_command.empty");
         } else {
             for (String skillId : skills.getLearnedSkillIds()) {
 
@@ -78,22 +77,21 @@ public class SkillsCommand implements RPGCommand {
                 Optional<Skill> skillOpt = skillManager.get(skillId);
 
                 if (skillOpt.isEmpty()) {
-                    player.sendMessage(
-                            Component.text("• " + skillId + " (Nivel " + level + ")", NamedTextColor.GREEN));
+                    lang.send(player, "skills_command.entry_unknown", "id", skillId, "level", level);
                     continue;
                 }
 
                 Skill skill = skillOpt.get();
-                player.sendMessage(
-                        Component.text("• " + skill.name() + " (Nivel " + level + ")", NamedTextColor.GREEN)
-                                .append(Component.text(
-                                        " — " + skill.manaCost() + " maná, " + skill.cooldownSeconds()
-                                                + "s cooldown — /rpg use " + skill.id(),
-                                        NamedTextColor.GRAY)));
+                lang.send(player, "skills_command.entry_known",
+                        "name", skill.name(),
+                        "level", level,
+                        "mana", skill.manaCost(),
+                        "cooldown", skill.cooldownSeconds(),
+                        "id", skill.id());
             }
         }
 
-        player.sendMessage(Component.text("========================================", NamedTextColor.GOLD));
+        lang.send(player, "skills_command.footer");
         player.sendMessage("");
 
     }

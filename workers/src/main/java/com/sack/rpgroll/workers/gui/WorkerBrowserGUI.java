@@ -35,7 +35,7 @@ public class WorkerBrowserGUI extends InventoryGUI {
 
     public WorkerBrowserGUI(Player player, WorkerManager workerManager, ProfessionManager professionManager,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text("Explorador de Workers", NamedTextColor.GOLD), SIZE);
+        super(player, Component.text(chatPromptManager.lang().raw("gui.worker.browser.title"), NamedTextColor.GOLD), SIZE);
         this.workerManager = workerManager;
         this.professionManager = professionManager;
         this.chatPromptManager = chatPromptManager;
@@ -70,11 +70,15 @@ public class WorkerBrowserGUI extends InventoryGUI {
                                     + worker.id().toString().substring(0, 8),
                             NamedTextColor.YELLOW))
                     .setLore(
-                            Component.text("Personalidad: " + worker.personality(), NamedTextColor.GRAY),
-                            Component.text(String.format(Locale.ROOT, "Moral: %.0f/100", worker.morale()),
+                            Component.text(chatPromptManager.lang().raw("gui.worker.browser.personality", "personality",
+                                    worker.personality()), NamedTextColor.GRAY),
+                            Component.text(chatPromptManager.lang().raw("gui.worker.browser.morale", "morale",
+                                    String.format(Locale.ROOT, "%.0f", worker.morale())),
                                     NamedTextColor.GREEN),
-                            worker.isEmployed() ? Component.text("Empleado", NamedTextColor.AQUA)
-                                    : Component.text("Sin empleador", NamedTextColor.GRAY),
+                            worker.isEmployed() ? Component.text(chatPromptManager.lang().raw("gui.worker.browser.employed"),
+                                    NamedTextColor.AQUA)
+                                    : Component.text(chatPromptManager.lang().raw("gui.worker.browser.unemployed"),
+                                            NamedTextColor.GRAY),
                             worker.hasActiveEvent() ? Component.text("⚠ " + worker.activeWorkerEventId(), NamedTextColor.RED)
                                     : Component.text(""))
                     .build());
@@ -82,15 +86,17 @@ public class WorkerBrowserGUI extends InventoryGUI {
 
         if (page > 0) {
             setItem(PREV_SLOT, new ItemBuilder(Material.ARROW)
-                    .setName(Component.text("Página anterior", NamedTextColor.GRAY)).build());
+                    .setName(Component.text(chatPromptManager.lang().raw("gui.worker.browser.prev_page"), NamedTextColor.GRAY))
+                    .build());
         }
 
         if (page < totalPages - 1) {
             setItem(NEXT_SLOT, new ItemBuilder(Material.ARROW)
-                    .setName(Component.text("Página siguiente", NamedTextColor.GRAY)).build());
+                    .setName(Component.text(chatPromptManager.lang().raw("gui.worker.browser.next_page"), NamedTextColor.GRAY))
+                    .build());
         }
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(chatPromptManager.lang().raw("gui.common.back")));
     }
 
     @Override

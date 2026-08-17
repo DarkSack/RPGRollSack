@@ -3,6 +3,7 @@ package com.sack.rpgroll.chat.gui;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.chat.role.ChatRole;
 import com.sack.rpgroll.chat.role.ChatRoleManager;
+import com.sack.rpgroll.common.lang.LangManager;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -26,7 +27,7 @@ public class ChatRoleBrowserGUI extends PaginatedGUI {
     private List<ChatRole> roles;
 
     public ChatRoleBrowserGUI(Player player, ChatRoleManager roleManager, ChatPromptManager chatPromptManager) {
-        super(player, Component.text("Roles de Chat RPGRoll", NamedTextColor.GOLD), SIZE, CONTENT_SLOTS);
+        super(player, chatPromptManager.lang().component("role.browser_title"), SIZE, CONTENT_SLOTS);
         this.roleManager = roleManager;
         this.chatPromptManager = chatPromptManager;
         this.roles = List.copyOf(roleManager.getAll());
@@ -41,24 +42,30 @@ public class ChatRoleBrowserGUI extends PaginatedGUI {
     protected void renderItem(int contentSlot, int absoluteIndex) {
 
         ChatRole role = roles.get(absoluteIndex);
+        LangManager lang = chatPromptManager.lang();
 
         setItem(contentSlot, new ItemBuilder(Material.NAME_TAG)
                 .setName(Component.text(role.id(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Prioridad: " + role.priority(), NamedTextColor.GRAY),
-                        Component.text("Permiso: " + (role.permission() == null || role.permission().isBlank()
-                                ? "(ninguno)" : role.permission()), NamedTextColor.GRAY),
-                        Component.text("Click para editar", NamedTextColor.YELLOW))
+                .setLore(lang.component("role.browser_lore_priority", "priority", role.priority())
+                                .colorIfAbsent(NamedTextColor.GRAY),
+                        lang.component("role.browser_lore_permission", "value",
+                                role.permission() == null || role.permission().isBlank()
+                                        ? lang.raw("gui.none") : role.permission())
+                                .colorIfAbsent(NamedTextColor.GRAY),
+                        lang.component("gui.click_edit").colorIfAbsent(NamedTextColor.YELLOW))
                 .build());
     }
 
     @Override
     protected void renderExtras() {
 
+        LangManager lang = chatPromptManager.lang();
+
         setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Crear rol nuevo", NamedTextColor.GREEN))
+                .setName(lang.component("role.create_new").colorIfAbsent(NamedTextColor.GREEN))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Cerrar"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.close")));
     }
 
     @Override
@@ -78,12 +85,12 @@ public class ChatRoleBrowserGUI extends PaginatedGUI {
     }
 
     private void promptNew() {
-        chatPromptManager.prompt(player, "Escribí el id del nuevo rol:", value -> {
+        chatPromptManager.prompt(player, chatPromptManager.lang().raw("role.prompt_new_id"), value -> {
 
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 
             if (roleManager.exists(id)) {
-                player.sendMessage(Component.text("Ya existe un rol con ese id.", NamedTextColor.RED));
+                chatPromptManager.lang().send(player, "role.already_exists");
                 reopen();
                 return;
             }

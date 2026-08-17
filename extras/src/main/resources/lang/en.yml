@@ -1,0 +1,30 @@
+# RPGRoll-Extras messages (/extrasadmin command)
+# {placeholder} is substituted dynamically. Legacy (&) color codes preserved.
+
+command:
+  no-permission: "You don't have permission to use this command."
+  usage:
+    main: "Usage: /extrasadmin <reload|list|get|set|add|apply|remove> [args]"
+    get: "Usage: /extrasadmin get <player> <stat>"
+    set: "Usage: /extrasadmin set <player> <stat> <value>"
+    add: "Usage: /extrasadmin add <player> <stat> <amount>"
+    apply: "Usage: /extrasadmin apply <player> <condition>"
+    remove: "Usage: /extrasadmin remove <player> <condition>"
+  reload:
+    success: "✔ RPGRoll-Extras reloaded: {stats} stat(s), {conditions} condition(s)."
+  list:
+    stats-header: "Stats:"
+    conditions-header: "Conditions:"
+  get:
+    result: "{player} → {stat}: {value}"
+  set:
+    success: "✔ {stat} for {player} set to {value}"
+  add:
+    success: "✔ {stat} for {player} adjusted by {amount}"
+  apply:
+    success: "✔ Condition '{condition}' applied to {player}"
+  remove:
+    success: "✔ Condition '{condition}' removed from {player}"
+  condition-not-found: "No condition exists with id: {condition}"
+  player-not-found: "Player not found: {player}"
+  invalid-number: "Invalid numeric value: {value}"

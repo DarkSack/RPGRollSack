@@ -1,5 +1,6 @@
 package com.sack.rpgroll.magic.item;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.util.ComponentUtils;
 
 import com.sack.rpgroll.gui.util.ItemBuilder;
@@ -8,7 +9,6 @@ import com.sack.rpgroll.magic.core.SpellCatalyst;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -30,7 +30,7 @@ public final class MagicItemFactory {
     private MagicItemFactory() {
     }
 
-    public static ItemStack createCatalyst(SpellCatalyst catalyst) {
+    public static ItemStack createCatalyst(SpellCatalyst catalyst, LangManager lang) {
 
         Material material = parseMaterial(catalyst.material(), Material.BLAZE_ROD);
 
@@ -42,22 +42,19 @@ public final class MagicItemFactory {
         }
 
         if (catalyst.powerMultiplier() != 1.0) {
-            lore.add(Component.text(String.format(Locale.ROOT, "Poder: x%.2f", catalyst.powerMultiplier()),
-                    NamedTextColor.YELLOW));
+            lore.add(lang.component("item.power", "value", String.format(Locale.ROOT, "%.2f", catalyst.powerMultiplier())));
         }
 
         if (catalyst.costMultiplier() != 1.0) {
-            lore.add(Component.text(String.format(Locale.ROOT, "Costo de maná: x%.2f", catalyst.costMultiplier()),
-                    NamedTextColor.AQUA));
+            lore.add(lang.component("item.mana_cost", "value", String.format(Locale.ROOT, "%.2f", catalyst.costMultiplier())));
         }
 
         if (catalyst.rangeMultiplier() != 1.0) {
-            lore.add(Component.text(String.format(Locale.ROOT, "Alcance: x%.2f", catalyst.rangeMultiplier()),
-                    NamedTextColor.LIGHT_PURPLE));
+            lore.add(lang.component("item.range", "value", String.format(Locale.ROOT, "%.2f", catalyst.rangeMultiplier())));
         }
 
         lore.add(Component.empty());
-        lore.add(Component.text("Catalizador de RPGRoll-Magic", NamedTextColor.DARK_GRAY));
+        lore.add(lang.component("item.catalyst_footer"));
 
         ItemStack item = new ItemBuilder(material)
                 .setName(ComponentUtils.parse(catalyst.displayName()).colorIfAbsent(NamedTextColor.WHITE))
@@ -67,7 +64,7 @@ public final class MagicItemFactory {
         return tag(item, MagicItemKeys.CATALYST_ID, catalyst.id());
     }
 
-    public static ItemStack createGrimoire(Grimoire grimoire) {
+    public static ItemStack createGrimoire(Grimoire grimoire, LangManager lang) {
 
         Material material = parseMaterial(grimoire.icon(), Material.WRITTEN_BOOK);
 
@@ -79,12 +76,12 @@ public final class MagicItemFactory {
         }
 
         if (grimoire.requiredLevel() > 0) {
-            lore.add(Component.text("Nivel requerido: " + grimoire.requiredLevel(), NamedTextColor.YELLOW));
+            lore.add(lang.component("item.level_required", "level", grimoire.requiredLevel()));
         }
 
-        lore.add(Component.text(grimoire.spellIds().size() + " hechizo(s)", NamedTextColor.AQUA));
+        lore.add(lang.component("item.spell_count", "count", grimoire.spellIds().size()));
         lore.add(Component.empty());
-        lore.add(Component.text("Click derecho para aprender — se consume al usarse", NamedTextColor.DARK_GRAY));
+        lore.add(lang.component("item.grimoire_footer"));
 
         ItemStack item = new ItemBuilder(material)
                 .setName(ComponentUtils.parse(grimoire.displayName()).colorIfAbsent(NamedTextColor.LIGHT_PURPLE))

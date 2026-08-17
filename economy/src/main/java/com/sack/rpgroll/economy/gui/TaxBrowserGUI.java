@@ -1,5 +1,6 @@
 package com.sack.rpgroll.economy.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.economy.tax.TaxRule;
 import com.sack.rpgroll.economy.tax.TaxRuleManager;
 import com.sack.rpgroll.economy.tax.TaxType;
@@ -25,14 +26,16 @@ public class TaxBrowserGUI extends InventoryGUI {
     private final TaxRuleManager taxRuleManager;
     private final ChatPromptManager chatPromptManager;
     private final Runnable onBack;
+    private final LangManager lang;
     private List<TaxRule> rules;
 
     public TaxBrowserGUI(Player player, TaxRuleManager taxRuleManager, ChatPromptManager chatPromptManager,
             Runnable onBack) {
-        super(player, Component.text("Impuestos", NamedTextColor.GOLD), SIZE);
+        super(player, Component.text(chatPromptManager.lang().raw("tax.browser.title"), NamedTextColor.GOLD), SIZE);
         this.taxRuleManager = taxRuleManager;
         this.chatPromptManager = chatPromptManager;
         this.onBack = onBack;
+        this.lang = chatPromptManager.lang();
         this.rules = List.copyOf(taxRuleManager.getAll());
     }
 
@@ -51,18 +54,18 @@ public class TaxBrowserGUI extends InventoryGUI {
 
             setItem(i, new ItemBuilder(rule.enabled() ? Material.GOLD_NUGGET : Material.IRON_NUGGET)
                     .setName(Component.text(rule.displayName(), NamedTextColor.YELLOW))
-                    .setLore(Component.text("id: " + rule.id(), NamedTextColor.GRAY),
-                            Component.text("tipo: " + rule.type(), NamedTextColor.GRAY),
-                            Component.text("tasa: " + rule.ratePercent() + "%", NamedTextColor.GOLD),
-                            Component.text(rule.enabled() ? "Activo" : "Desactivado",
+                    .setLore(lang.component("currency.browser.lore_id", "id", rule.id()),
+                            lang.component("tax.browser.lore_type", "type", rule.type()),
+                            lang.component("tax.browser.lore_rate", "rate", rule.ratePercent()),
+                            Component.text(rule.enabled() ? lang.raw("common.active") : lang.raw("common.inactive"),
                                     rule.enabled() ? NamedTextColor.GREEN : NamedTextColor.RED),
-                            Component.text("Click para editar", NamedTextColor.YELLOW))
+                            lang.component("common.click_edit"))
                     .build());
         }
 
         setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Crear regla nueva", NamedTextColor.GREEN)).build());
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+                .setName(lang.component("tax.browser.new_button")).build());
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("common.back")));
     }
 
     @Override
@@ -87,12 +90,12 @@ public class TaxBrowserGUI extends InventoryGUI {
     }
 
     private void promptNew() {
-        chatPromptManager.prompt(player, "Escribí el id de la nueva regla tributaria:", value -> {
+        chatPromptManager.prompt(player, lang.raw("tax.browser.prompt_new_id"), value -> {
 
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 
             if (taxRuleManager.exists(id)) {
-                player.sendMessage(Component.text("Ya existe una regla con ese id.", NamedTextColor.RED));
+                lang.send(player, "tax.browser.duplicate_id");
                 reopen();
                 return;
             }

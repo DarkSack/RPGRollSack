@@ -18,7 +18,7 @@ import java.util.Objects;
  */
 public record ItemDefinition(
         String id,
-        String category,
+        String pack,
         Material material,
         String displayName,
         List<String> lore,
@@ -55,7 +55,7 @@ public record ItemDefinition(
             throw new IllegalArgumentException("id no puede estar vacío");
         }
 
-        category = category == null || category.isBlank() ? "misc" : category;
+        pack = pack == null || pack.isBlank() ? "misc" : pack;
         displayName = displayName == null ? id : displayName;
         lore = lore == null ? List.of() : List.copyOf(lore);
         rarityId = rarityId == null || rarityId.isBlank() ? "common" : rarityId;

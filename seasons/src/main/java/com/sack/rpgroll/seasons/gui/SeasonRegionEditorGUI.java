@@ -1,5 +1,6 @@
 package com.sack.rpgroll.seasons.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.seasons.core.CalendarManager;
@@ -7,9 +8,6 @@ import com.sack.rpgroll.seasons.core.SeasonManager;
 import com.sack.rpgroll.seasons.core.SeasonRegion;
 import com.sack.rpgroll.seasons.core.SeasonRegionManager;
 import com.sack.rpgroll.seasons.core.SeasonRegionOverrideMode;
-
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -38,7 +36,7 @@ public class SeasonRegionEditorGUI extends InventoryGUI {
     public SeasonRegionEditorGUI(Player player, SeasonRegion region, SeasonRegionManager regionManager,
             SeasonManager seasonManager, CalendarManager calendarManager, ChatPromptManager chatPromptManager,
             Runnable onBack) {
-        super(player, Component.text("Región: " + region.id(), NamedTextColor.GOLD), SIZE);
+        super(player, chatPromptManager.lang().component("gui.region_editor.title", "id", region.id()), SIZE);
         this.current = region;
         this.regionManager = regionManager;
         this.seasonManager = seasonManager;
@@ -62,42 +60,47 @@ public class SeasonRegionEditorGUI extends InventoryGUI {
             setItem(slot, ItemBuilder.createFiller());
         }
 
+        LangManager lang = chatPromptManager.lang();
+
         setItem(BOUNDS_SLOT, new ItemBuilder(Material.MAP)
-                .setName(Component.text("Mundo: " + current.world(), NamedTextColor.YELLOW))
-                .setLore(Component.text(String.format("(%.0f,%.0f,%.0f) a (%.0f,%.0f,%.0f)",
-                        current.minX(), current.minY(), current.minZ(), current.maxX(), current.maxY(), current.maxZ()),
-                        NamedTextColor.GRAY))
+                .setName(lang.component("gui.common.world_label", "world", current.world()))
+                .setLore(lang.component("gui.region_editor.bounds_lore",
+                        "minX", String.format("%.0f", current.minX()),
+                        "minY", String.format("%.0f", current.minY()),
+                        "minZ", String.format("%.0f", current.minZ()),
+                        "maxX", String.format("%.0f", current.maxX()),
+                        "maxY", String.format("%.0f", current.maxY()),
+                        "maxZ", String.format("%.0f", current.maxZ())))
                 .build());
 
         setItem(CORNER_A_SLOT, new ItemBuilder(Material.RED_CONCRETE)
-                .setName(Component.text("Fijar esquina A (tu posición)", NamedTextColor.YELLOW))
+                .setName(lang.component("gui.region_editor.corner_a"))
                 .build());
 
         setItem(CORNER_B_SLOT, new ItemBuilder(Material.BLUE_CONCRETE)
-                .setName(Component.text("Fijar esquina B (tu posición)", NamedTextColor.YELLOW))
+                .setName(lang.component("gui.region_editor.corner_b"))
                 .build());
 
         setItem(MODE_SLOT, new ItemBuilder(Material.COMPASS)
-                .setName(Component.text("Modo: " + current.overrideMode(), NamedTextColor.AQUA))
-                .setLore(Component.text("Click para pasar al siguiente", NamedTextColor.GRAY)).build());
+                .setName(lang.component("gui.common.mode_label", "mode", current.overrideMode()))
+                .setLore(lang.component("gui.region_editor.mode_lore")).build());
 
         setItem(PINNED_SEASON_SLOT, new ItemBuilder(Material.SUNFLOWER)
-                .setName(Component.text(
-                        "Estación fija: " + (current.pinnedSeasonId() == null ? "(ninguna)" : current.pinnedSeasonId()),
-                        NamedTextColor.GREEN))
-                .setLore(Component.text("Solo aplica en modo PINNED_SEASON", NamedTextColor.GRAY),
-                        Component.text("Escribí el id de una estación (o 'ninguna')", NamedTextColor.GRAY))
+                .setName(lang.component("gui.region_editor.pinned_season_label", "value",
+                        current.pinnedSeasonId() == null ? lang.raw("gui.common.none_fem") : current.pinnedSeasonId()))
+                .setLore(lang.component("gui.region_editor.pinned_season_lore_1"),
+                        lang.component("gui.region_editor.pinned_season_lore_2"))
                 .build());
 
         setItem(PINNED_CALENDAR_SLOT, new ItemBuilder(Material.CLOCK)
-                .setName(Component.text(
-                        "Calendario propio: " + (current.pinnedCalendarId() == null ? "(ninguno)" : current.pinnedCalendarId()),
-                        NamedTextColor.AQUA))
-                .setLore(Component.text("Solo aplica en modo PINNED_CALENDAR", NamedTextColor.GRAY),
-                        Component.text("Escribí el id de un calendario (o 'ninguno')", NamedTextColor.GRAY))
+                .setName(lang.component("gui.region_editor.pinned_calendar_label", "value",
+                        current.pinnedCalendarId() == null ? lang.raw("gui.common.none_masc")
+                                : current.pinnedCalendarId()))
+                .setLore(lang.component("gui.region_editor.pinned_calendar_lore_1"),
+                        lang.component("gui.region_editor.pinned_calendar_lore_2"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back")));
     }
 
     @Override
@@ -132,12 +135,12 @@ public class SeasonRegionEditorGUI extends InventoryGUI {
         }
 
         if (slot == PINNED_SEASON_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el id de la estación fija (o 'ninguna'):", value -> {
+            chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.region_editor.prompt_pinned_season"), value -> {
 
                 String seasonId = value.equalsIgnoreCase("ninguna") ? null : value.trim().toLowerCase(java.util.Locale.ROOT);
 
                 if (seasonId != null && !seasonManager.exists(seasonId)) {
-                    player.sendMessage(Component.text("No existe esa estación.", NamedTextColor.RED));
+                    chatPromptManager.lang().send(player, "gui.region_editor.unknown_season");
                     return;
                 }
 
@@ -149,12 +152,12 @@ public class SeasonRegionEditorGUI extends InventoryGUI {
         }
 
         if (slot == PINNED_CALENDAR_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el id del calendario propio (o 'ninguno'):", value -> {
+            chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.region_editor.prompt_pinned_calendar"), value -> {
 
                 String calendarId = value.equalsIgnoreCase("ninguno") ? null : value.trim().toLowerCase(java.util.Locale.ROOT);
 
                 if (calendarId != null && !calendarManager.exists(calendarId)) {
-                    player.sendMessage(Component.text("No existe ese calendario.", NamedTextColor.RED));
+                    chatPromptManager.lang().send(player, "gui.region_editor.unknown_calendar");
                     return;
                 }
 

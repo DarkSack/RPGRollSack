@@ -1,5 +1,6 @@
 package com.sack.rpgroll.npcs.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.npcs.core.NpcEditSession;
@@ -12,7 +13,6 @@ import com.sack.rpgroll.npcs.listener.ChatPromptManager;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.format.TextDecoration;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -44,6 +44,7 @@ public class NpcAdminGUI extends InventoryGUI {
         private final MineSkinClient mineSkinClient;
 
         private final NpcWriter writer;
+        private final LangManager langManager;
 
         public NpcAdminGUI(
                         Player player,
@@ -53,14 +54,12 @@ public class NpcAdminGUI extends InventoryGUI {
                         NpcManager npcManager,
                         NpcSpawnManager spawnManager,
                         MineSkinClient mineSkinClient,
-                        NpcWriter writer) {
+                        NpcWriter writer,
+                        LangManager langManager) {
 
                 super(
                                 player,
-                                Component.text(
-                                                "Editor de NPC: "
-                                                                + session.getId(),
-                                                NamedTextColor.GOLD).decorate(TextDecoration.BOLD),
+                                langManager.component("adminGui.title", "id", session.getId()),
                                 27);
 
                 this.session = session;
@@ -73,6 +72,7 @@ public class NpcAdminGUI extends InventoryGUI {
                 this.mineSkinClient = mineSkinClient;
 
                 this.writer = writer;
+                this.langManager = langManager;
         }
 
         @Override
@@ -97,19 +97,14 @@ public class NpcAdminGUI extends InventoryGUI {
                                 new ItemBuilder(Material.NAME_TAG)
 
                                                 .setName(
-                                                                Component.text(
-                                                                                "Nombre",
-                                                                                NamedTextColor.GOLD)
-                                                                                .decorate(TextDecoration.BOLD))
+                                                                langManager.component("adminGui.name_label"))
 
                                                 .setLore(
                                                                 Component.text(
                                                                                 session.getDisplayName(),
                                                                                 NamedTextColor.WHITE),
 
-                                                                Component.text(
-                                                                                "Click para cambiar",
-                                                                                NamedTextColor.GRAY))
+                                                                langManager.component("adminGui.click_to_change"))
 
                                                 .build());
 
@@ -120,19 +115,12 @@ public class NpcAdminGUI extends InventoryGUI {
                         skinItem = new ItemBuilder(Material.PLAYER_HEAD)
 
                                         .setName(
-                                                        Component.text(
-                                                                        "Skin",
-                                                                        NamedTextColor.GOLD)
-                                                                        .decorate(TextDecoration.BOLD))
+                                                        langManager.component("adminGui.skin_label"))
 
                                         .setLore(
-                                                        Component.text(
-                                                                        "Sin skin custom",
-                                                                        NamedTextColor.GRAY),
+                                                        langManager.component("adminGui.skin_none"),
 
-                                                        Component.text(
-                                                                        "Click para configurar",
-                                                                        NamedTextColor.GRAY))
+                                                        langManager.component("adminGui.skin_click_configure"))
 
                                         .build();
 
@@ -142,19 +130,12 @@ public class NpcAdminGUI extends InventoryGUI {
                                         session.getSkinValue())
 
                                         .setName(
-                                                        Component.text(
-                                                                        "Skin",
-                                                                        NamedTextColor.GOLD)
-                                                                        .decorate(TextDecoration.BOLD))
+                                                        langManager.component("adminGui.skin_label"))
 
                                         .setLore(
-                                                        Component.text(
-                                                                        "Skin configurada ✔",
-                                                                        NamedTextColor.GREEN),
+                                                        langManager.component("adminGui.skin_configured"),
 
-                                                        Component.text(
-                                                                        "Click para cambiar",
-                                                                        NamedTextColor.GRAY))
+                                                        langManager.component("adminGui.click_to_change"))
 
                                         .build();
 
@@ -169,19 +150,14 @@ public class NpcAdminGUI extends InventoryGUI {
                                 new ItemBuilder(Material.ARMOR_STAND)
 
                                                 .setName(
-                                                                Component.text(
-                                                                                "Pose",
-                                                                                NamedTextColor.GOLD)
-                                                                                .decorate(TextDecoration.BOLD))
+                                                                langManager.component("adminGui.pose_label"))
 
                                                 .setLore(
                                                                 Component.text(
                                                                                 session.getPose(),
                                                                                 NamedTextColor.WHITE),
 
-                                                                Component.text(
-                                                                                "Click para cambiar",
-                                                                                NamedTextColor.GRAY))
+                                                                langManager.component("adminGui.click_to_change"))
 
                                                 .build());
 
@@ -204,26 +180,19 @@ public class NpcAdminGUI extends InventoryGUI {
                 } else {
 
                         positionLore.add(
-                                        Component.text(
-                                                        "Sin ubicación asignada",
-                                                        NamedTextColor.RED));
+                                        langManager.component("adminGui.position_none"));
 
                 }
 
                 positionLore.add(
-                                Component.text(
-                                                "Click para usar tu ubicación actual",
-                                                NamedTextColor.GRAY));
+                                langManager.component("adminGui.position_click"));
 
                 setItem(
                                 SLOT_POSITION,
                                 new ItemBuilder(Material.COMPASS)
 
                                                 .setName(
-                                                                Component.text(
-                                                                                "Posición",
-                                                                                NamedTextColor.GOLD)
-                                                                                .decorate(TextDecoration.BOLD))
+                                                                langManager.component("adminGui.position_label"))
 
                                                 .setLore(positionLore)
 
@@ -235,21 +204,14 @@ public class NpcAdminGUI extends InventoryGUI {
                                 new ItemBuilder(Material.BOOK)
 
                                                 .setName(
-                                                                Component.text(
-                                                                                "Acciones",
-                                                                                NamedTextColor.GOLD)
-                                                                                .decorate(TextDecoration.BOLD))
+                                                                langManager.component("adminGui.actions_label"))
 
                                                 .setLore(
 
-                                                                Component.text(
-                                                                                session.getActions().size()
-                                                                                                + " acción(es) configurada(s)",
-                                                                                NamedTextColor.WHITE),
+                                                                langManager.component("adminGui.actions_count",
+                                                                                "count", session.getActions().size()),
 
-                                                                Component.text(
-                                                                                "Click para gestionar",
-                                                                                NamedTextColor.GRAY)
+                                                                langManager.component("adminGui.actions_click_manage")
 
                                                 )
 
@@ -259,13 +221,13 @@ public class NpcAdminGUI extends InventoryGUI {
                                 SLOT_SAVE,
                                 ItemBuilder.createConfirmButton(
                                                 session.isComplete()
-                                                                ? "Guardar"
-                                                                : "Guardar (falta posición o nombre)"));
+                                                                ? langManager.raw("adminGui.save")
+                                                                : langManager.raw("adminGui.save_incomplete")));
 
                 setItem(
                                 SLOT_CANCEL,
                                 ItemBuilder.createCancelButton(
-                                                "Cancelar"));
+                                                langManager.raw("adminGui.cancel")));
 
         }
 
@@ -282,7 +244,7 @@ public class NpcAdminGUI extends InventoryGUI {
 
                                 chatPromptManager.prompt(
                                                 player,
-                                                "Escribe el nuevo nombre para el NPC:",
+                                                langManager.raw("adminGui.prompt_name"),
                                                 input -> {
 
                                                         session.setDisplayName(input);
@@ -299,13 +261,10 @@ public class NpcAdminGUI extends InventoryGUI {
 
                                 chatPromptManager.prompt(
                                                 player,
-                                                "Pega el link o ID de MineSkin:",
+                                                langManager.raw("adminGui.prompt_skin"),
                                                 input -> {
 
-                                                        player.sendMessage(
-                                                                        Component.text(
-                                                                                        "Consultando MineSkin...",
-                                                                                        NamedTextColor.GRAY));
+                                                        langManager.send(player, "adminGui.skin_querying");
 
                                                         mineSkinClient.resolve(
 
@@ -317,10 +276,8 @@ public class NpcAdminGUI extends InventoryGUI {
                                                                                                 value,
                                                                                                 signature);
 
-                                                                                player.sendMessage(
-                                                                                                Component.text(
-                                                                                                                "✔ Skin aplicada.",
-                                                                                                                NamedTextColor.GREEN));
+                                                                                langManager.send(player,
+                                                                                                "adminGui.skin_applied");
 
                                                                                 reopen();
 
@@ -328,10 +285,8 @@ public class NpcAdminGUI extends InventoryGUI {
 
                                                                         () -> {
 
-                                                                                player.sendMessage(
-                                                                                                Component.text(
-                                                                                                                "No se pudo resolver la skin.",
-                                                                                                                NamedTextColor.RED));
+                                                                                langManager.send(player,
+                                                                                                "adminGui.skin_resolve_failed");
 
                                                                                 reopen();
 
@@ -348,10 +303,7 @@ public class NpcAdminGUI extends InventoryGUI {
                                 session.setLocation(
                                                 player.getLocation());
 
-                                player.sendMessage(
-                                                Component.text(
-                                                                "✔ Ubicación asignada.",
-                                                                NamedTextColor.GREEN));
+                                langManager.send(player, "adminGui.location_assigned");
 
                                 build();
                                 reopen();
@@ -365,7 +317,8 @@ public class NpcAdminGUI extends InventoryGUI {
                                 new NpcPoseSelectGUI(
                                                 player,
                                                 session,
-                                                this).open();
+                                                this,
+                                                langManager).open();
 
                         }
 
@@ -377,7 +330,8 @@ public class NpcAdminGUI extends InventoryGUI {
                                                 player,
                                                 session,
                                                 this,
-                                                chatPromptManager).open();
+                                                chatPromptManager,
+                                                langManager).open();
 
                         }
 
@@ -385,10 +339,7 @@ public class NpcAdminGUI extends InventoryGUI {
 
                                 if (!session.isComplete()) {
 
-                                        player.sendMessage(
-                                                        Component.text(
-                                                                        "Falta nombre o posición antes de guardar.",
-                                                                        NamedTextColor.RED));
+                                        langManager.send(player, "adminGui.save_missing_fields");
 
                                         return;
                                 }
@@ -412,18 +363,12 @@ public class NpcAdminGUI extends InventoryGUI {
                                                                                         online,
                                                                                         npcManager.getAll()));
 
-                                        player.sendMessage(
-                                                        Component.text(
-                                                                        "✔ NPC guardado: "
-                                                                                        + session.getId(),
-                                                                        NamedTextColor.GREEN));
+                                        langManager.send(player, "adminGui.save_success",
+                                                        "id", session.getId());
 
                                 } else {
 
-                                        player.sendMessage(
-                                                        Component.text(
-                                                                        "Error al guardar el NPC.",
-                                                                        NamedTextColor.RED));
+                                        langManager.send(player, "adminGui.save_error");
 
                                 }
 
@@ -441,10 +386,7 @@ public class NpcAdminGUI extends InventoryGUI {
 
                                 close();
 
-                                player.sendMessage(
-                                                Component.text(
-                                                                "Edición cancelada.",
-                                                                NamedTextColor.YELLOW));
+                                langManager.send(player, "adminGui.edit_cancelled");
 
                         }
 
@@ -463,7 +405,8 @@ public class NpcAdminGUI extends InventoryGUI {
                                 npcManager,
                                 spawnManager,
                                 mineSkinClient,
-                                writer
+                                writer,
+                                langManager
 
                 ).open();
 

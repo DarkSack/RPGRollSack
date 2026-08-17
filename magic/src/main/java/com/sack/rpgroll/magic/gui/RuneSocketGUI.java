@@ -1,5 +1,6 @@
 package com.sack.rpgroll.magic.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.magic.core.Rune;
@@ -28,15 +29,17 @@ public class RuneSocketGUI extends InventoryGUI {
     private final PlayerSpellbook spellbook;
     private final RuneManager runeManager;
     private final ChatPromptManager chatPromptManager;
+    private final LangManager lang;
     private final Runnable onBack;
 
     public RuneSocketGUI(Player player, Spell spell, PlayerSpellbook spellbook, RuneManager runeManager,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text("Runas: " + spell.displayName(), NamedTextColor.GOLD), SIZE);
+        super(player, chatPromptManager.lang().component("gui.rune_socket.title", "spell", spell.displayName()), SIZE);
         this.spell = spell;
         this.spellbook = spellbook;
         this.runeManager = runeManager;
         this.chatPromptManager = chatPromptManager;
+        this.lang = chatPromptManager.lang();
         this.onBack = onBack;
     }
 
@@ -60,17 +63,17 @@ public class RuneSocketGUI extends InventoryGUI {
 
             setItem(RUNES_START + i, new ItemBuilder(icon)
                     .setName(Component.text(displayName, NamedTextColor.GREEN))
-                    .setLore(Component.text("Shift-click para quitar", NamedTextColor.RED))
+                    .setLore(lang.component("gui.common.shift_remove"))
                     .build());
         }
 
         setItem(ADD_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Socketear runa (" + runeIds.size() + "/" + PlayerSpellbook.MAX_RUNES_PER_SPELL
-                        + ")", NamedTextColor.GREEN))
-                .setLore(Component.text("Escribí el id de una runa existente", NamedTextColor.GRAY))
+                .setName(lang.component("gui.rune_socket.add_label", "count", runeIds.size(),
+                        "max", PlayerSpellbook.MAX_RUNES_PER_SPELL))
+                .setLore(lang.component("gui.rune_socket.add_lore"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back")));
     }
 
     @Override
@@ -91,24 +94,21 @@ public class RuneSocketGUI extends InventoryGUI {
         }
 
         if (slot == ADD_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el id de la runa a socketear:", value -> {
+            chatPromptManager.prompt(player, lang.raw("gui.rune_socket.prompt_add"), value -> {
 
                 String runeId = value.trim().toLowerCase(java.util.Locale.ROOT);
 
                 if (runeManager.get(runeId).isEmpty()) {
-                    player.sendMessage(Component.text("No existe una runa con ese id.", NamedTextColor.RED));
+                    lang.send(player, "gui.rune_socket.unknown_rune");
                     return;
                 }
 
                 if (!spellbook.attachRune(spell.id(), runeId)) {
-                    player.sendMessage(Component.text(
-                            "No se pudo socketear — ¿ya la tenés, o llegaste al tope de "
-                                    + PlayerSpellbook.MAX_RUNES_PER_SPELL + "?",
-                            NamedTextColor.RED));
+                    lang.send(player, "gui.rune_socket.socket_failed", "max", PlayerSpellbook.MAX_RUNES_PER_SPELL);
                     return;
                 }
 
-                player.sendMessage(Component.text("✔ Runa socketeada.", NamedTextColor.GREEN));
+                lang.send(player, "gui.rune_socket.socketed");
                 build();
             });
             return;

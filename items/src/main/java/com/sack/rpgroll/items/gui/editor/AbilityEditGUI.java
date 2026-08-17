@@ -1,5 +1,6 @@
 package com.sack.rpgroll.items.gui.editor;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.items.core.ItemAbility;
@@ -30,12 +31,15 @@ public class AbilityEditGUI extends InventoryGUI {
     private static final int BACK_SLOT = 31;
 
     private final EditorSession session;
+    private final LangManager lang;
     private final int index;
     private final Runnable onBack;
 
     public AbilityEditGUI(Player player, EditorSession session, int index, Runnable onBack) {
-        super(player, Component.text("Habilidad: " + session.abilities.get(index).id(), NamedTextColor.GOLD), SIZE);
+        super(player, session.chatPromptManager.lang().component("editor.ability_edit.title",
+                "id", session.abilities.get(index).id()), SIZE);
         this.session = session;
+        this.lang = session.chatPromptManager.lang();
         this.index = index;
         this.onBack = onBack;
     }
@@ -61,29 +65,30 @@ public class AbilityEditGUI extends InventoryGUI {
         ItemAbility ability = ability();
 
         setItem(RENAME_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(Component.text("Nombre: " + ability.displayName(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para renombrar", NamedTextColor.GRAY))
+                .setName(lang.component("editor.ability_edit.name_label", "name", ability.displayName()))
+                .setLore(lang.component("editor.ability_edit.click_rename"))
                 .build());
 
         setItem(PASSIVE_SLOT, new ItemBuilder(ability.passive() ? Material.BEACON : Material.BLAZE_POWDER)
-                .setName(Component.text("Tipo: " + (ability.passive() ? "Pasiva" : "Activa"), NamedTextColor.AQUA))
-                .setLore(Component.text("Click para alternar", NamedTextColor.GRAY))
+                .setName(lang.component("editor.ability_edit.type_label", "value", ability.passive()
+                        ? lang.raw("editor.ability_edit.type_passive") : lang.raw("editor.ability_edit.type_active")))
+                .setLore(lang.component("editor.ability_edit.click_toggle"))
                 .build());
 
         setItem(TRIGGER_SLOT, new ItemBuilder(Material.COMPARATOR)
-                .setName(Component.text("Trigger: " + (ability.trigger() == null ? "(ninguno)" : ability.trigger()),
-                        NamedTextColor.AQUA))
-                .setLore(Component.text("Click para ciclar (solo activas)", NamedTextColor.GRAY))
+                .setName(lang.component("editor.ability_edit.trigger_label",
+                        "value", ability.trigger() == null ? lang.raw("editor.ability_edit.trigger_none") : ability.trigger()))
+                .setLore(lang.component("editor.ability_edit.trigger_hint"))
                 .build());
 
         setItem(COOLDOWN_SLOT, new ItemBuilder(Material.CLOCK)
-                .setName(Component.text("Cooldown: " + (ability.cooldownMillis() / 1000) + "s", NamedTextColor.AQUA))
-                .setLore(Component.text("Click para escribir", NamedTextColor.GRAY))
+                .setName(lang.component("editor.ability_edit.cooldown_label", "seconds", ability.cooldownMillis() / 1000))
+                .setLore(lang.component("editor.ability_edit.click_write"))
                 .build());
 
         List<Component> conditionsLore = new ArrayList<>();
         if (ability.conditions().isEmpty()) {
-            conditionsLore.add(Component.text("(ninguna)", NamedTextColor.GRAY));
+            conditionsLore.add(lang.component("editor.ability_edit.conditions_none"));
         } else {
             for (String condition : ability.conditions()) {
                 conditionsLore.add(Component.text(condition, NamedTextColor.GRAY));
@@ -91,16 +96,16 @@ public class AbilityEditGUI extends InventoryGUI {
         }
 
         setItem(CONDITIONS_SLOT, new ItemBuilder(Material.BOOK)
-                .setName(Component.text("Condiciones (" + ability.conditions().size() + ")", NamedTextColor.AQUA))
+                .setName(lang.component("editor.ability_edit.conditions_label", "count", ability.conditions().size()))
                 .setLore(conditionsLore)
                 .build());
 
         setItem(ACTIONS_SLOT, new ItemBuilder(Material.COMMAND_BLOCK)
-                .setName(Component.text("Acciones (" + ability.actions().size() + ")", NamedTextColor.GREEN))
-                .setLore(Component.text("Click para editar", NamedTextColor.GRAY))
+                .setName(lang.component("editor.ability_edit.actions_label", "count", ability.actions().size()))
+                .setLore(lang.component("editor.ability_edit.click_edit"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("editor.common.back")));
     }
 
     @Override
@@ -127,7 +132,7 @@ public class AbilityEditGUI extends InventoryGUI {
     }
 
     private void promptRename() {
-        session.chatPromptManager.prompt(player, "Escribí el nuevo nombre de la habilidad:", value -> {
+        session.chatPromptManager.prompt(player, lang.raw("editor.ability_edit.prompt_rename"), value -> {
             ItemAbility a = ability();
             replace(new ItemAbility(a.id(), value, a.passive(), a.trigger(), a.cooldownMillis(), a.conditions(),
                     a.actions()));
@@ -158,7 +163,7 @@ public class AbilityEditGUI extends InventoryGUI {
     }
 
     private void promptCooldown() {
-        session.chatPromptManager.prompt(player, "Escribí el cooldown (ej. 10s, 2m):", value -> {
+        session.chatPromptManager.prompt(player, lang.raw("editor.ability_edit.prompt_cooldown"), value -> {
             ItemAbility a = ability();
             long millis = DurationParser.parseMillis(value.trim());
             replace(new ItemAbility(a.id(), a.displayName(), a.passive(), a.trigger(), millis, a.conditions(),
@@ -167,26 +172,25 @@ public class AbilityEditGUI extends InventoryGUI {
     }
 
     private void promptConditions() {
-        session.chatPromptManager.prompt(player,
-                "Escribí las condiciones separadas por ';' (ej. player.level >= 20):", value -> {
+        session.chatPromptManager.prompt(player, lang.raw("editor.ability_edit.prompt_conditions"), value -> {
 
-                    ItemAbility a = ability();
+            ItemAbility a = ability();
 
-                    List<String> conditions = value.isBlank()
-                            ? List.of()
-                            : List.of(value.split(";")).stream().map(String::trim).filter(s -> !s.isEmpty()).toList();
+            List<String> conditions = value.isBlank()
+                    ? List.of()
+                    : List.of(value.split(";")).stream().map(String::trim).filter(s -> !s.isEmpty()).toList();
 
-                    replace(new ItemAbility(a.id(), a.displayName(), a.passive(), a.trigger(), a.cooldownMillis(),
-                            conditions, a.actions()));
-                });
+            replace(new ItemAbility(a.id(), a.displayName(), a.passive(), a.trigger(), a.cooldownMillis(),
+                    conditions, a.actions()));
+        });
     }
 
     private void openActions() {
 
         List<ItemAction> workingActions = new ArrayList<>(ability().actions());
 
-        new ActionListEditorGUI(player, "Acciones de " + ability().displayName(), workingActions,
-                session.chatPromptManager, () -> {
+        new ActionListEditorGUI(player, lang.raw("editor.ability_edit.actions_of", "ability", ability().displayName()),
+                workingActions, session.chatPromptManager, () -> {
 
                     ItemAbility a = ability();
                     session.abilities.set(index, new ItemAbility(a.id(), a.displayName(), a.passive(), a.trigger(),

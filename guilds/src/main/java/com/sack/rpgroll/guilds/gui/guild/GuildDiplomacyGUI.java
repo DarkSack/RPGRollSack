@@ -4,6 +4,7 @@ import com.sack.rpgroll.guilds.gui.PaginatedGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.guilds.guild.Guild;
 import com.sack.rpgroll.guilds.guild.GuildManager;
+import com.sack.rpgroll.guilds.GuildsAPI;
 import com.sack.rpgroll.guilds.guild.diplomacy.DiplomacyStatus;
 import com.sack.rpgroll.guilds.guild.diplomacy.GuildDiplomacyManager;
 
@@ -30,12 +31,17 @@ public class GuildDiplomacyGUI extends PaginatedGUI {
 
     public GuildDiplomacyGUI(Player player, Guild guild, GuildManager guildManager,
             GuildDiplomacyManager diplomacyManager, Runnable onBack) {
-        super(player, Component.text("Diplomacia: " + guild.name(), NamedTextColor.GOLD), SIZE, CONTENT_SLOTS);
+        super(player, Component.text(GuildsAPI.getLangManager().raw("guild.diplomacy.title", "name", guild.name()),
+                NamedTextColor.GOLD), SIZE, CONTENT_SLOTS);
         this.guild = guild;
         this.guildManager = guildManager;
         this.diplomacyManager = diplomacyManager;
         this.onBack = onBack;
         this.others = guildManager.getAll().stream().filter(g -> !g.id().equals(guild.id())).toList();
+    }
+
+    private static com.sack.rpgroll.common.lang.LangManager lang() {
+        return GuildsAPI.getLangManager();
     }
 
     @Override
@@ -51,8 +57,8 @@ public class GuildDiplomacyGUI extends PaginatedGUI {
 
         setItem(contentSlot, new ItemBuilder(other.icon())
                 .setName(Component.text(other.name() + " — " + status, statusColor(status)))
-                .setLore(Component.text("Nivel " + other.level(), NamedTextColor.GRAY),
-                        Component.text("Click para cambiar relación", NamedTextColor.YELLOW))
+                .setLore(Component.text(lang().raw("guild.diplomacy.level", "level", other.level()), NamedTextColor.GRAY),
+                        Component.text(lang().raw("guild.diplomacy.click_change"), NamedTextColor.YELLOW))
                 .build());
     }
 
@@ -69,13 +75,15 @@ public class GuildDiplomacyGUI extends PaginatedGUI {
     @Override
     protected void renderExtras() {
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang().raw("common.back")));
 
         setItem(45, hasPreviousPage()
-                ? new ItemBuilder(Material.ARROW).setName(Component.text("« Anterior", NamedTextColor.YELLOW)).build()
+                ? new ItemBuilder(Material.ARROW).setName(Component.text(lang().raw("common.previous_page"),
+                        NamedTextColor.YELLOW)).build()
                 : ItemBuilder.createFiller());
         setItem(53 - 1, hasNextPage()
-                ? new ItemBuilder(Material.ARROW).setName(Component.text("Siguiente »", NamedTextColor.YELLOW)).build()
+                ? new ItemBuilder(Material.ARROW).setName(Component.text(lang().raw("common.next_page"),
+                        NamedTextColor.YELLOW)).build()
                 : ItemBuilder.createFiller());
     }
 
@@ -83,7 +91,7 @@ public class GuildDiplomacyGUI extends PaginatedGUI {
     protected void onItemClick(InventoryClickEvent event, int absoluteIndex) {
 
         if (!guild.roleOf(player.getUniqueId()).canManageSettings()) {
-            player.sendMessage(Component.text("No tenés permiso para gestionar diplomacia.", NamedTextColor.RED));
+            lang().send(player, "guild.diplomacy.no_permission");
             return;
         }
 

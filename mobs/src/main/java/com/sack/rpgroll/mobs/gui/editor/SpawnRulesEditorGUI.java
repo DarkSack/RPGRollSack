@@ -1,5 +1,7 @@
 package com.sack.rpgroll.mobs.gui.editor;
 
+import com.sack.rpgroll.common.lang.LangManager;
+
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.mobs.core.SpawnRules;
@@ -41,11 +43,14 @@ public class SpawnRulesEditorGUI extends InventoryGUI {
 
     private final MobEditorSession session;
     private final Runnable onBack;
+    private final LangManager lang;
 
     public SpawnRulesEditorGUI(Player player, MobEditorSession session, Runnable onBack) {
-        super(player, Component.text("Spawn: " + session.original.id(), NamedTextColor.GOLD), SIZE);
+        super(player, session.chatPromptManager.lang().component("gui.spawn_rules.title", "id",
+                session.original.id()), SIZE);
         this.session = session;
         this.onBack = onBack;
+        this.lang = session.chatPromptManager.lang();
     }
 
     @Override
@@ -60,65 +65,65 @@ public class SpawnRulesEditorGUI extends InventoryGUI {
         SpawnRules rules = session.spawnRules;
 
         setItem(NATURAL_SPAWN_SLOT, new ItemBuilder(rules.naturalSpawn() ? Material.GRASS_BLOCK : Material.BARRIER)
-                .setName(Component.text("Spawn natural: " + rules.naturalSpawn(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para alternar", NamedTextColor.GRAY))
+                .setName(lang.component("gui.spawn_rules.natural_label", "value", rules.naturalSpawn()))
+                .setLore(lang.component("gui.common.click_toggle"))
                 .build());
 
         setItem(MIN_HEIGHT_SLOT, new ItemBuilder(Material.LADDER)
-                .setName(Component.text("Altura mínima: " + rules.minHeight(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click: +8 · Shift-click: +32", NamedTextColor.GRAY))
+                .setName(lang.component("gui.spawn_rules.min_height_label", "value", rules.minHeight()))
+                .setLore(lang.component("gui.spawn_rules.height_hint1"))
                 .build());
 
         setItem(MAX_HEIGHT_SLOT, new ItemBuilder(Material.SCAFFOLDING)
-                .setName(Component.text("Altura máxima: " + rules.maxHeight(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click: +8 · Shift-click: +32 · Derecho: -8/-32", NamedTextColor.GRAY))
+                .setName(lang.component("gui.spawn_rules.max_height_label", "value", rules.maxHeight()))
+                .setLore(lang.component("gui.spawn_rules.max_height_hint"))
                 .build());
 
         setItem(HOUR_RANGE_SLOT, new ItemBuilder(Material.CLOCK)
-                .setName(Component.text("Rango horario: " + (rules.hasTimeRange()
-                        ? rules.hourMin() + "-" + rules.hourMax() : "(cualquiera)"), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click: escribir min-max (0-23)", NamedTextColor.GRAY),
-                        Component.text("Shift-click: quitar", NamedTextColor.GRAY))
+                .setName(lang.component("gui.spawn_rules.hour_range_label", "value", rules.hasTimeRange()
+                        ? rules.hourMin() + "-" + rules.hourMax() : lang.raw("gui.spawn_rules.any_label")))
+                .setLore(lang.component("gui.spawn_rules.hour_hint1"),
+                        lang.component("gui.common.shift_remove_hint"))
                 .build());
 
         setItem(WEATHER_SLOT, new ItemBuilder(Material.WATER_BUCKET)
-                .setName(Component.text("Clima: " + (rules.weather() != null ? rules.weather() : "any"),
-                        NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para pasar al siguiente (any/clear/rain/thunder)", NamedTextColor.GRAY))
+                .setName(lang.component("gui.spawn_rules.weather_label", "value",
+                        rules.weather() != null ? rules.weather() : "any"))
+                .setLore(lang.component("gui.spawn_rules.weather_hint"))
                 .build());
 
         setItem(MIN_DISTANCE_SLOT, new ItemBuilder(Material.SPYGLASS)
-                .setName(Component.text("Distancia mínima a jugadores: " + rules.minDistanceFromPlayers(),
-                        NamedTextColor.YELLOW))
-                .setLore(Component.text("Click: +4 · Shift-click: +16 · Derecho: -4/-16", NamedTextColor.GRAY))
+                .setName(lang.component("gui.spawn_rules.min_distance_label", "value",
+                        rules.minDistanceFromPlayers()))
+                .setLore(lang.component("gui.spawn_rules.min_distance_hint"))
                 .build());
 
         setItem(SPAWN_WEIGHT_SLOT, new ItemBuilder(Material.GOLD_NUGGET)
-                .setName(Component.text("Peso de spawn: " + rules.spawnWeight(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Usado para elegir entre varios mobs candidatos", NamedTextColor.DARK_GRAY),
-                        Component.text("Click: +0.5 · Shift-click: +2 · Derecho: -0.5/-2", NamedTextColor.GRAY))
+                .setName(lang.component("gui.spawn_rules.weight_label", "value", rules.spawnWeight()))
+                .setLore(lang.component("gui.spawn_rules.weight_note"),
+                        lang.component("gui.spawn_rules.weight_hint"))
                 .build());
 
         renderList(rules.biomes(), BIOMES_START_SLOT, 4, Material.OAK_SAPLING);
         setItem(ADD_BIOME_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Agregar bioma", NamedTextColor.GREEN)).build());
+                .setName(lang.component("gui.spawn_rules.add_biome")).build());
 
         renderList(rules.worlds(), WORLDS_START_SLOT, 3, Material.GRASS_BLOCK);
         setItem(ADD_WORLD_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Agregar mundo", NamedTextColor.GREEN)).build());
+                .setName(lang.component("gui.spawn_rules.add_world")).build());
 
         renderList(rules.regions(), REGIONS_START_SLOT, 8, Material.OAK_FENCE_GATE);
         setItem(ADD_REGION_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Agregar región", NamedTextColor.GREEN)).build());
+                .setName(lang.component("gui.spawn_rules.add_region")).build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back_button")));
     }
 
     private void renderList(List<String> values, int startSlot, int max, Material material) {
         for (int i = 0; i < values.size() && i < max; i++) {
             setItem(startSlot + i, new ItemBuilder(material)
                     .setName(Component.text(values.get(i), NamedTextColor.AQUA))
-                    .setLore(Component.text("Shift-click para quitar", NamedTextColor.DARK_GRAY))
+                    .setLore(lang.component("gui.common.shift_remove_dark"))
                     .build());
         }
     }
@@ -164,11 +169,11 @@ public class SpawnRulesEditorGUI extends InventoryGUI {
                 build();
                 return;
             }
-            session.chatPromptManager.prompt(player, "Escribí el rango horario (ej. 19-6):", value -> {
+            session.chatPromptManager.prompt(player, "gui.spawn_rules.prompt_hour_range", value -> {
 
                 String[] parts = value.trim().split("-");
                 if (parts.length != 2) {
-                    player.sendMessage(Component.text("Formato inválido.", NamedTextColor.RED));
+                    lang.send(player, "gui.common.invalid_format");
                     return;
                 }
 
@@ -179,7 +184,7 @@ public class SpawnRulesEditorGUI extends InventoryGUI {
                             rules.weather(), rules.minHeight(), rules.maxHeight(), rules.minDistanceFromPlayers(),
                             rules.naturalSpawn(), rules.spawnWeight());
                 } catch (NumberFormatException e) {
-                    player.sendMessage(Component.text("Horas numéricas inválidas.", NamedTextColor.RED));
+                    lang.send(player, "gui.spawn_rules.invalid_hours");
                     return;
                 }
 
@@ -228,7 +233,7 @@ public class SpawnRulesEditorGUI extends InventoryGUI {
         }
 
         if (slot == ADD_BIOME_SLOT) {
-            session.chatPromptManager.prompt(player, "Escribí la key del bioma (ej. plains, dark_forest):", value -> {
+            session.chatPromptManager.prompt(player, "gui.spawn_rules.prompt_biome", value -> {
                 addToList(rules.biomes(), value, updatedList -> with(updatedList, rules.regions(),
                         rules.worlds(), rules.hourMin(), rules.hourMax(), rules.weather(), rules.minHeight(),
                         rules.maxHeight(), rules.minDistanceFromPlayers(), rules.naturalSpawn(), rules.spawnWeight()));
@@ -247,7 +252,7 @@ public class SpawnRulesEditorGUI extends InventoryGUI {
         }
 
         if (slot == ADD_WORLD_SLOT) {
-            session.chatPromptManager.prompt(player, "Escribí el nombre del mundo:", value -> {
+            session.chatPromptManager.prompt(player, "gui.spawn_rules.prompt_world", value -> {
                 addToList(rules.worlds(), value, updatedList -> with(rules.biomes(), rules.regions(),
                         updatedList, rules.hourMin(), rules.hourMax(), rules.weather(), rules.minHeight(),
                         rules.maxHeight(), rules.minDistanceFromPlayers(), rules.naturalSpawn(), rules.spawnWeight()));
@@ -266,7 +271,7 @@ public class SpawnRulesEditorGUI extends InventoryGUI {
         }
 
         if (slot == ADD_REGION_SLOT) {
-            session.chatPromptManager.prompt(player, "Escribí el id de región:", value -> {
+            session.chatPromptManager.prompt(player, "gui.common.prompt_region_id", value -> {
                 addToList(rules.regions(), value, updatedList -> with(rules.biomes(), updatedList,
                         rules.worlds(), rules.hourMin(), rules.hourMax(), rules.weather(), rules.minHeight(),
                         rules.maxHeight(), rules.minDistanceFromPlayers(), rules.naturalSpawn(), rules.spawnWeight()));

@@ -2,9 +2,7 @@ package com.sack.rpgroll.chat.command;
 
 import com.sack.rpgroll.chat.ignore.IgnoreManager;
 import com.sack.rpgroll.chat.whisper.WhisperManager;
-
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
+import com.sack.rpgroll.common.lang.LangManager;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -17,17 +15,19 @@ public class WhisperCommand implements CommandExecutor {
 
     private final WhisperManager whisperManager;
     private final IgnoreManager ignoreManager;
+    private final LangManager lang;
 
-    public WhisperCommand(WhisperManager whisperManager, IgnoreManager ignoreManager) {
+    public WhisperCommand(WhisperManager whisperManager, IgnoreManager ignoreManager, LangManager lang) {
         this.whisperManager = whisperManager;
         this.ignoreManager = ignoreManager;
+        this.lang = lang;
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
         if (!(sender instanceof Player player)) {
-            sender.sendMessage(Component.text("Solo un jugador puede usar este comando.", NamedTextColor.RED));
+            lang.send(sender, "common.players_only");
             return true;
         }
 
@@ -36,7 +36,7 @@ public class WhisperCommand implements CommandExecutor {
         if (isReply) {
 
             if (args.length < 1) {
-                player.sendMessage(Component.text("Uso: /r <mensaje>", NamedTextColor.YELLOW));
+                lang.send(player, "whisper.usage_reply");
                 return true;
             }
 
@@ -44,12 +44,12 @@ public class WhisperCommand implements CommandExecutor {
             Player target = partnerId != null ? Bukkit.getPlayer(partnerId) : null;
 
             if (target == null) {
-                player.sendMessage(Component.text("No tenés a quién responderle.", NamedTextColor.RED));
+                lang.send(player, "whisper.no_target");
                 return true;
             }
 
             if (ignoreManager.getOrLoad(target).isIgnoringPlayer(player.getUniqueId())) {
-                player.sendMessage(Component.text("Ese jugador te está ignorando.", NamedTextColor.RED));
+                lang.send(player, "whisper.target_ignoring");
                 return true;
             }
 
@@ -58,24 +58,24 @@ public class WhisperCommand implements CommandExecutor {
         }
 
         if (args.length < 2) {
-            player.sendMessage(Component.text("Uso: /w <jugador> <mensaje>", NamedTextColor.YELLOW));
+            lang.send(player, "whisper.usage_whisper");
             return true;
         }
 
         Player target = Bukkit.getPlayerExact(args[0]);
 
         if (target == null) {
-            player.sendMessage(Component.text("Jugador no encontrado.", NamedTextColor.RED));
+            lang.send(player, "whisper.player_not_found");
             return true;
         }
 
         if (target.equals(player)) {
-            player.sendMessage(Component.text("No podés susurrarte a vos mismo.", NamedTextColor.RED));
+            lang.send(player, "whisper.cannot_self");
             return true;
         }
 
         if (ignoreManager.getOrLoad(target).isIgnoringPlayer(player.getUniqueId())) {
-            player.sendMessage(Component.text("Ese jugador te está ignorando.", NamedTextColor.RED));
+            lang.send(player, "whisper.target_ignoring");
             return true;
         }
 

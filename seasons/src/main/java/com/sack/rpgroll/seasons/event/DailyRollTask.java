@@ -1,5 +1,6 @@
 package com.sack.rpgroll.seasons.event;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.seasons.core.Season;
 import com.sack.rpgroll.seasons.core.WorldEventManager;
 import com.sack.rpgroll.seasons.integration.MobsIntegration;
@@ -8,7 +9,6 @@ import com.sack.rpgroll.seasons.runtime.RegionSeasonResolver;
 import com.sack.rpgroll.seasons.runtime.SeasonClockManager;
 
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -30,14 +30,16 @@ public class DailyRollTask implements Runnable {
     private final WorldEventManager worldEventManager;
     private final WorldEventEngine worldEventEngine;
     private final String defaultCalendarId;
+    private final LangManager lang;
     private final Random random = new Random();
 
     public DailyRollTask(SeasonClockManager clockManager, WorldEventManager worldEventManager,
-            WorldEventEngine worldEventEngine, String defaultCalendarId) {
+            WorldEventEngine worldEventEngine, String defaultCalendarId, LangManager lang) {
         this.clockManager = clockManager;
         this.worldEventManager = worldEventManager;
         this.worldEventEngine = worldEventEngine;
         this.defaultCalendarId = defaultCalendarId;
+        this.lang = lang;
     }
 
     @Override
@@ -95,9 +97,7 @@ public class DailyRollTask implements Runnable {
 
         MobsIntegration.spawnMob(season.exclusiveBossId(), target.getLocation()).ifPresent(entity -> {
 
-            Component announce = Component.text("☠ ", NamedTextColor.DARK_RED)
-                    .append(Component.text("Un enemigo de " + season.displayName() + " ha aparecido...",
-                            NamedTextColor.RED));
+            Component announce = lang.component("event.boss_announce", "season", season.displayName());
 
             world.getPlayers().forEach(player -> player.sendMessage(announce));
         });

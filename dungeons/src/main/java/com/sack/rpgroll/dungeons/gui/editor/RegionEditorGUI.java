@@ -1,7 +1,9 @@
 package com.sack.rpgroll.dungeons.gui.editor;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
+import com.sack.rpgroll.util.ComponentUtils;
 import com.sack.rpgroll.dungeons.core.DungeonBounds;
 import com.sack.rpgroll.dungeons.core.DungeonPoint;
 
@@ -29,14 +31,17 @@ public class RegionEditorGUI extends InventoryGUI {
 
     private final DungeonEditorSession session;
     private final Runnable onBack;
+    private final LangManager lang;
 
     private Location corner1;
     private Location corner2;
 
     public RegionEditorGUI(Player player, DungeonEditorSession session, Runnable onBack) {
-        super(player, Component.text("Región: " + session.original.id(), NamedTextColor.GOLD), SIZE);
+        super(player, ComponentUtils.parse(session.chatPromptManager.lang()
+                .raw("gui.editor.region.title", "id", session.original.id())), SIZE);
         this.session = session;
         this.onBack = onBack;
+        this.lang = session.chatPromptManager.lang();
 
         DungeonBounds bounds = session.bounds;
         var world = Bukkit.getWorld(bounds.world());
@@ -59,25 +64,26 @@ public class RegionEditorGUI extends InventoryGUI {
         DungeonBounds bounds = session.bounds;
 
         setItem(CORNER1_SLOT, new ItemBuilder(Material.RED_WOOL)
-                .setName(Component.text("Esquina 1: " + coordText(corner1), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para fijarla en tu posición actual", NamedTextColor.GRAY))
+                .setName(ComponentUtils.parse(lang.raw("gui.editor.region.corner1", "value", coordText(corner1))))
+                .setLore(ComponentUtils.parse(lang.raw("gui.editor.region.corner.hint")))
                 .build());
 
         setItem(CORNER2_SLOT, new ItemBuilder(Material.BLUE_WOOL)
-                .setName(Component.text("Esquina 2: " + coordText(corner2), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para fijarla en tu posición actual", NamedTextColor.GRAY))
+                .setName(ComponentUtils.parse(lang.raw("gui.editor.region.corner2", "value", coordText(corner2))))
+                .setLore(ComponentUtils.parse(lang.raw("gui.editor.region.corner.hint")))
                 .build());
 
         setItem(LOBBY_SLOT, new ItemBuilder(Material.BEACON)
-                .setName(Component.text("Lobby: " + pointText(session.lobbyPoint), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para fijarlo en tu posición y mirada actual", NamedTextColor.GRAY))
+                .setName(ComponentUtils.parse(lang.raw("gui.editor.region.lobby.label",
+                        "value", pointText(session.lobbyPoint))))
+                .setLore(ComponentUtils.parse(lang.raw("gui.editor.region.lobby.hint")))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back")));
     }
 
     private String coordText(Location location) {
-        return location == null ? "(sin fijar)"
+        return location == null ? lang.raw("gui.editor.region.unset")
                 : String.format("%.0f, %.0f, %.0f", location.getX(), location.getY(), location.getZ());
     }
 
@@ -126,7 +132,7 @@ public class RegionEditorGUI extends InventoryGUI {
                 corner1.getX(), corner1.getY(), corner1.getZ(),
                 corner2.getX(), corner2.getY(), corner2.getZ());
 
-        player.sendMessage(Component.text("✔ Región actualizada.", NamedTextColor.GREEN));
+        lang.send(player, "gui.editor.region.updated");
     }
 
 }

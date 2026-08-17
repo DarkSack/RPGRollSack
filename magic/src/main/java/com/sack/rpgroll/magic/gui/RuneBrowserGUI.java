@@ -1,5 +1,6 @@
 package com.sack.rpgroll.magic.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.magic.core.Rune;
@@ -28,7 +29,7 @@ public class RuneBrowserGUI extends InventoryGUI {
     private List<Rune> runes;
 
     public RuneBrowserGUI(Player player, RuneManager runeManager, ChatPromptManager chatPromptManager) {
-        super(player, Component.text("Runas"), SIZE);
+        super(player, chatPromptManager.lang().component("gui.rune_browser.title"), SIZE);
         this.runeManager = runeManager;
         this.chatPromptManager = chatPromptManager;
         this.runes = List.copyOf(runeManager.getAll());
@@ -43,23 +44,25 @@ public class RuneBrowserGUI extends InventoryGUI {
             setItem(slot, ItemBuilder.createFiller());
         }
 
+        LangManager lang = chatPromptManager.lang();
+
         for (int i = 0; i < runes.size() && i < 36; i++) {
 
             Rune rune = runes.get(i);
 
             setItem(i, new ItemBuilder(SchoolBrowserGUI.parseMaterial(rune.icon()))
                     .setName(Component.text(rune.displayName(), NamedTextColor.GREEN))
-                    .setLore(Component.text("id: " + rune.id(), NamedTextColor.GRAY),
-                            Component.text("Tipo: " + rune.type(), NamedTextColor.GRAY),
-                            Component.text("Click para editar", NamedTextColor.YELLOW))
+                    .setLore(lang.component("gui.common.id_label", "id", rune.id()),
+                            lang.component("gui.rune_browser.type_label", "type", rune.type()),
+                            lang.component("gui.common.click_edit"))
                     .build());
         }
 
         setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Crear runa nueva", NamedTextColor.GREEN))
+                .setName(lang.component("gui.rune_browser.new"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back")));
     }
 
     @Override
@@ -84,12 +87,12 @@ public class RuneBrowserGUI extends InventoryGUI {
     }
 
     private void promptNew() {
-        chatPromptManager.prompt(player, "Escribí el id de la nueva runa:", value -> {
+        chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.rune_browser.prompt_new_id"), value -> {
 
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 
             if (runeManager.exists(id)) {
-                player.sendMessage(Component.text("Ya existe una runa con ese id.", NamedTextColor.RED));
+                chatPromptManager.lang().send(player, "gui.rune_browser.already_exists");
                 reopen();
                 return;
             }

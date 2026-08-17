@@ -30,7 +30,7 @@ public class SpeciesBrowserGUI extends InventoryGUI {
 
     public SpeciesBrowserGUI(Player player, SpeciesManager speciesManager, ChatPromptManager chatPromptManager,
             Runnable onBack) {
-        super(player, Component.text("Especies", NamedTextColor.GOLD), SIZE);
+        super(player, Component.text(chatPromptManager.lang().raw("gui.hub.species"), NamedTextColor.GOLD), SIZE);
         this.speciesManager = speciesManager;
         this.chatPromptManager = chatPromptManager;
         this.onBack = onBack;
@@ -52,15 +52,15 @@ public class SpeciesBrowserGUI extends InventoryGUI {
 
             setItem(i, new ItemBuilder(parseMaterial(entry.icon(), Material.COW_SPAWN_EGG))
                     .setName(Component.text(entry.displayName(), NamedTextColor.YELLOW))
-                    .setLore(Component.text("id: " + entry.id(), NamedTextColor.GRAY),
-                            Component.text("entidad: " + entry.entityType(), NamedTextColor.GRAY),
-                            Component.text("Click para editar", NamedTextColor.YELLOW))
+                    .setLore(Component.text(chatPromptManager.lang().raw("gui.browser.id_line", "id", entry.id()), NamedTextColor.GRAY),
+                            Component.text(chatPromptManager.lang().raw("gui.species.browser.entity_line", "entity", entry.entityType()), NamedTextColor.GRAY),
+                            Component.text(chatPromptManager.lang().raw("gui.common.click_to_edit"), NamedTextColor.YELLOW))
                     .build());
         }
 
         setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Crear especie nueva", NamedTextColor.GREEN)).build());
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+                .setName(Component.text(chatPromptManager.lang().raw("gui.species.browser.new"), NamedTextColor.GREEN)).build());
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(chatPromptManager.lang().raw("gui.common.back")));
     }
 
     @Override
@@ -85,12 +85,12 @@ public class SpeciesBrowserGUI extends InventoryGUI {
     }
 
     private void promptNew() {
-        chatPromptManager.prompt(player, "Escribí el id de la nueva especie:", value -> {
+        chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.species.browser.prompt_new_id"), value -> {
 
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 
             if (speciesManager.exists(id)) {
-                player.sendMessage(Component.text("Ya existe una especie con ese id.", NamedTextColor.RED));
+                player.sendMessage(Component.text(chatPromptManager.lang().raw("gui.species.browser.already_exists"), NamedTextColor.RED));
                 reopen();
                 return;
             }

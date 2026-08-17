@@ -2,6 +2,7 @@ package com.sack.rpgroll.ascension.gui;
 
 import com.sack.rpgroll.ascension.core.Affinity;
 import com.sack.rpgroll.ascension.core.AffinityManager;
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 
@@ -23,12 +24,15 @@ public class AffinityBrowserGUI extends InventoryGUI {
 
     private final AffinityManager manager;
     private final ChatPromptManager chatPromptManager;
+    private final LangManager lang;
     private List<Affinity> affinities;
 
-    public AffinityBrowserGUI(Player player, AffinityManager manager, ChatPromptManager chatPromptManager) {
-        super(player, Component.text("Afinidades RPGRoll-Ascension", NamedTextColor.GOLD), SIZE);
+    public AffinityBrowserGUI(Player player, AffinityManager manager, ChatPromptManager chatPromptManager,
+            LangManager lang) {
+        super(player, lang.component("gui.affinity.browser_title"), SIZE);
         this.manager = manager;
         this.chatPromptManager = chatPromptManager;
+        this.lang = lang;
         this.affinities = List.copyOf(manager.getAll());
     }
 
@@ -46,15 +50,15 @@ public class AffinityBrowserGUI extends InventoryGUI {
             setItem(i, new ItemBuilder(Material.BLAZE_POWDER)
                     .setName(Component.text(affinity.id(), NamedTextColor.YELLOW))
                     .setLore(Component.text(affinity.displayName(), NamedTextColor.GRAY),
-                            Component.text("Click para editar", NamedTextColor.YELLOW))
+                            lang.component("gui.common.click_to_edit"))
                     .build());
         }
 
         setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Crear afinidad nueva", NamedTextColor.GREEN))
+                .setName(lang.component("gui.affinity.create_new"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Cerrar"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.close_button")));
     }
 
     @Override
@@ -64,7 +68,8 @@ public class AffinityBrowserGUI extends InventoryGUI {
         int slot = event.getSlot();
 
         if (slot < affinities.size() && slot < 36) {
-            new AffinityEditorGUI(player, affinities.get(slot), manager, chatPromptManager, this::reopen).open();
+            new AffinityEditorGUI(player, affinities.get(slot), manager, chatPromptManager, this::reopen, lang)
+                    .open();
             return;
         }
 
@@ -79,12 +84,12 @@ public class AffinityBrowserGUI extends InventoryGUI {
     }
 
     private void promptNew() {
-        chatPromptManager.prompt(player, "Escribí el id de la nueva afinidad:", value -> {
+        chatPromptManager.prompt(player, "gui.affinity.prompt_new_id", value -> {
 
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 
             if (manager.exists(id)) {
-                player.sendMessage(Component.text("Ya existe una afinidad con ese id.", NamedTextColor.RED));
+                lang.send(player, "gui.affinity.id_exists");
                 reopen();
                 return;
             }

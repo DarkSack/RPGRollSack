@@ -27,6 +27,27 @@ model:
   glow: true
   invisible: false
   model-engine-id: reference_boss_model # solo si tenés ModelEngine
+  # Skins propias del motor (sin depender de ModelEngine/BetterModel): al spawnear
+  # se sortea una por peso (weight) y se monta un ItemDisplay con ese material+CMD
+  # como pasajero de la entidad — la elegida queda persistida (no se vuelve a
+  # sortear si el server reinicia o el chunk se recarga). El material y el
+  # custom-model-data los define un resource pack (ver SackResourcePack, carpeta
+  # plugins/RPGRoll-Mobs/resourcepack/<namespace>/<textures|models>/item/...).
+  # Si "invisible" arriba es true, solo se ve la skin, no el mob vanilla.
+  # Lista vacía (o sin esta sección) = sin reskin, mob vanilla normal.
+  skins:
+    - id: molten
+      material: PAPER
+      custom-model-data: 100001
+      scale: 2.5
+      y-offset: 0.0
+      weight: 2.0
+    - id: obsidian
+      material: PAPER
+      custom-model-data: 100002
+      scale: 2.5
+      y-offset: 0.0
+      weight: 1.0
   equipment:
     HEAD: NETHERITE_HELMET
     CHEST: NETHERITE_CHESTPLATE

@@ -1,5 +1,7 @@
 package com.sack.rpgroll.crates.command;
 
+import com.sack.rpgroll.common.lang.LangManager;
+import com.sack.rpgroll.crates.CratesPlugin;
 import com.sack.rpgroll.crates.core.Crate;
 import com.sack.rpgroll.crates.core.CrateManager;
 import com.sack.rpgroll.crates.gui.ChatPromptManager;
@@ -9,9 +11,6 @@ import com.sack.rpgroll.crates.key.CrateKeyItem;
 import com.sack.rpgroll.crates.location.PlacedCrate;
 import com.sack.rpgroll.crates.location.PlacedCrateManager;
 import com.sack.rpgroll.util.TabCompleteUtil;
-
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -40,31 +39,37 @@ public class CrateAdminCommand implements CommandExecutor, TabCompleter {
     private static final double HOLOGRAM_Y_OFFSET = 1.6;
     private static final int LOOK_RANGE = 8;
 
+    private final CratesPlugin plugin;
     private final CrateManager crateManager;
     private final PlacedCrateManager placedCrateManager;
     private final DecentHologramsHook hologramsHook;
     private final CrateKeyItem crateKeyItem;
     private final ChatPromptManager chatPromptManager;
+    private final LangManager lang;
 
     public CrateAdminCommand(
+            CratesPlugin plugin,
             CrateManager crateManager,
             PlacedCrateManager placedCrateManager,
             DecentHologramsHook hologramsHook,
             CrateKeyItem crateKeyItem,
-            ChatPromptManager chatPromptManager) {
+            ChatPromptManager chatPromptManager,
+            LangManager lang) {
 
+        this.plugin = plugin;
         this.crateManager = crateManager;
         this.placedCrateManager = placedCrateManager;
         this.hologramsHook = hologramsHook;
         this.crateKeyItem = crateKeyItem;
         this.chatPromptManager = chatPromptManager;
+        this.lang = lang;
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
         if (!sender.hasPermission("rpgrollcrates.admin.*")) {
-            sender.sendMessage(Component.text("No tienes permiso para usar este comando.", NamedTextColor.RED));
+            lang.send(sender, "general.no_permission");
             return true;
         }
 
@@ -92,7 +97,7 @@ public class CrateAdminCommand implements CommandExecutor, TabCompleter {
             case "browser" -> {
                 Player player = requirePlayer(sender);
                 if (player != null) {
-                    new CrateBrowserGUI(player, crateManager, chatPromptManager).open();
+                    new CrateBrowserGUI(player, crateManager, chatPromptManager, lang).open();
                 }
             }
             default -> sendUsage(sender);
@@ -108,19 +113,18 @@ public class CrateAdminCommand implements CommandExecutor, TabCompleter {
             return player;
         }
 
-        sender.sendMessage(Component.text("Este subcomando solo puede ser usado por jugadores.", NamedTextColor.RED));
+        lang.send(sender, "general.player_only");
         return null;
     }
 
     private void sendUsage(CommandSender sender) {
-        sender.sendMessage(Component.text(
-                "Uso: /crate <setlocation|removelocation|givekey|list|reload|browser> [args]", NamedTextColor.RED));
+        lang.send(sender, "admin.usage");
     }
 
     private void handleSetLocation(Player player, String[] args) {
 
         if (args.length < 2) {
-            player.sendMessage(Component.text("Uso: /crate setlocation <crateId>", NamedTextColor.RED));
+            lang.send(player, "admin.setlocation_usage");
             return;
         }
 
@@ -128,21 +132,21 @@ public class CrateAdminCommand implements CommandExecutor, TabCompleter {
         Optional<Crate> crateOpt = crateManager.get(crateId);
 
         if (crateOpt.isEmpty()) {
-            player.sendMessage(Component.text("No existe un crate con id: " + crateId, NamedTextColor.RED));
+            lang.send(player, "admin.crate_not_found", "id", crateId);
             return;
         }
 
         Block target = player.getTargetBlockExact(LOOK_RANGE);
 
         if (target == null || target.isEmpty()) {
-            player.sendMessage(Component.text("Tenés que estar mirando el bloque del crate.", NamedTextColor.RED));
+            lang.send(player, "admin.must_look_at_block");
             return;
         }
 
         Location blockLocation = target.getLocation();
 
         if (placedCrateManager.findAt(blockLocation).isPresent()) {
-            player.sendMessage(Component.text("Ese bloque ya tiene un crate registrado.", NamedTextColor.RED));
+            lang.send(player, "admin.block_already_registered");
             return;
         }
 
@@ -151,9 +155,7 @@ public class CrateAdminCommand implements CommandExecutor, TabCompleter {
         Location hologramLocation = blockLocation.clone().add(0.5, HOLOGRAM_Y_OFFSET, 0.5);
         hologramsHook.createOrUpdate(placed.hologramName(), hologramLocation, crateOpt.get().hologramLines());
 
-        player.sendMessage(Component.text(
-                "✔ Crate '" + crateId + "' registrado en este bloque (id: " + placed.placementId() + ").",
-                NamedTextColor.GREEN));
+        lang.send(player, "admin.setlocation_success", "crate", crateId, "placement", placed.placementId());
     }
 
     private void handleRemoveLocation(Player player) {
@@ -161,14 +163,14 @@ public class CrateAdminCommand implements CommandExecutor, TabCompleter {
         Block target = player.getTargetBlockExact(LOOK_RANGE);
 
         if (target == null) {
-            player.sendMessage(Component.text("Tenés que estar mirando el bloque del crate.", NamedTextColor.RED));
+            lang.send(player, "admin.must_look_at_block");
             return;
         }
 
         Optional<PlacedCrate> placedOpt = placedCrateManager.findAt(target.getLocation());
 
         if (placedOpt.isEmpty()) {
-            player.sendMessage(Component.text("Ese bloque no tiene un crate registrado.", NamedTextColor.RED));
+            lang.send(player, "admin.block_not_registered");
             return;
         }
 
@@ -176,7 +178,7 @@ public class CrateAdminCommand implements CommandExecutor, TabCompleter {
         hologramsHook.remove(placed.hologramName());
         placedCrateManager.remove(placed.placementId());
 
-        player.sendMessage(Component.text("✔ Crate eliminado de este bloque.", NamedTextColor.GREEN));
+        lang.send(player, "admin.removelocation_success");
     }
 
     private static final int MAX_GIVE_AMOUNT = 6400;
@@ -184,15 +186,14 @@ public class CrateAdminCommand implements CommandExecutor, TabCompleter {
     private void handleGiveKey(CommandSender sender, String[] args) {
 
         if (args.length < 3) {
-            sender.sendMessage(Component.text(
-                    "Uso: /crate givekey <jugador> <crateId> [cantidad]", NamedTextColor.RED));
+            lang.send(sender, "admin.givekey_usage");
             return;
         }
 
         Player target = Bukkit.getPlayerExact(args[1]);
 
         if (target == null) {
-            sender.sendMessage(Component.text("Jugador no encontrado: " + args[1], NamedTextColor.RED));
+            lang.send(sender, "admin.player_not_found", "player", args[1]);
             return;
         }
 
@@ -200,7 +201,7 @@ public class CrateAdminCommand implements CommandExecutor, TabCompleter {
         Optional<Crate> crateOpt = crateManager.get(crateId);
 
         if (crateOpt.isEmpty()) {
-            sender.sendMessage(Component.text("No existe un crate con id: " + crateId, NamedTextColor.RED));
+            lang.send(sender, "admin.crate_not_found", "id", crateId);
             return;
         }
 
@@ -210,34 +211,31 @@ public class CrateAdminCommand implements CommandExecutor, TabCompleter {
             try {
                 amount = Integer.parseInt(args[3]);
             } catch (NumberFormatException e) {
-                sender.sendMessage(Component.text("La cantidad debe ser un número válido.", NamedTextColor.RED));
+                lang.send(sender, "admin.invalid_amount");
                 return;
             }
         }
 
         if (amount < 1 || amount > MAX_GIVE_AMOUNT) {
-            sender.sendMessage(Component.text(
-                    "La cantidad debe estar entre 1 y " + MAX_GIVE_AMOUNT + ".", NamedTextColor.RED));
+            lang.send(sender, "admin.amount_out_of_range", "max", MAX_GIVE_AMOUNT);
             return;
         }
 
         boolean fullyDelivered = com.sack.rpgroll.util.ItemDeliveryUtil.deliver(
                 target, crateKeyItem.create(crateOpt.get(), amount));
 
-        sender.sendMessage(Component.text(
-                "✔ " + amount + " llave(s) de '" + crateId + "' entregadas a " + target.getName()
-                        + (fullyDelivered ? "" : " (inventario lleno — el sobrante cayó al piso)"),
-                NamedTextColor.GREEN));
+        lang.send(sender, fullyDelivered ? "admin.givekey_success" : "admin.givekey_success_overflow",
+                "amount", amount, "crate", crateId, "player", target.getName());
     }
 
     private void handleList(CommandSender sender) {
 
         if (crateManager.count() == 0) {
-            sender.sendMessage(Component.text("No hay crates definidos.", NamedTextColor.GRAY));
+            lang.send(sender, "admin.list_empty");
             return;
         }
 
-        sender.sendMessage(Component.text("Crates disponibles:", NamedTextColor.GOLD));
+        lang.send(sender, "admin.list_header");
 
         for (Crate crate : crateManager.getAll()) {
 
@@ -245,13 +243,15 @@ public class CrateAdminCommand implements CommandExecutor, TabCompleter {
                     .filter(p -> p.crateId().equals(crate.id()))
                     .count();
 
-            sender.sendMessage(Component.text("• " + crate.id() + " (", NamedTextColor.WHITE)
-                    .append(com.sack.rpgroll.util.ComponentUtils.parse(crate.displayName()))
-                    .append(Component.text(") — " + placements + " ubicación(es)", NamedTextColor.WHITE)));
+            lang.send(sender, "admin.list_entry", "id", crate.id(), "name", crate.displayName(),
+                    "count", placements);
         }
     }
 
     private void handleReload(CommandSender sender) {
+
+        plugin.reloadConfig();
+        lang.reload(plugin.getConfig().getString("language", "es"));
 
         crateManager.reload();
 
@@ -274,10 +274,8 @@ public class CrateAdminCommand implements CommandExecutor, TabCompleter {
             hologramsHook.createOrUpdate(placed.hologramName(), hologramLocation, crateOpt.get().hologramLines());
         }
 
-        sender.sendMessage(Component.text(
-                "✔ Recargado: " + crateManager.count() + " crate(s), " + placedCrateManager.getAll().size()
-                        + " ubicación(es).",
-                NamedTextColor.GREEN));
+        lang.send(sender, "admin.reload_success", "crates", crateManager.count(),
+                "locations", placedCrateManager.getAll().size());
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.sack.rpgroll.ascension.gui;
 import com.sack.rpgroll.ascension.core.AscensionRequirements;
 import com.sack.rpgroll.ascension.core.RaceEvolution;
 import com.sack.rpgroll.ascension.core.RaceEvolutionManager;
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 
@@ -25,12 +26,15 @@ public class RaceEvolutionBrowserGUI extends InventoryGUI {
 
     private final RaceEvolutionManager manager;
     private final ChatPromptManager chatPromptManager;
+    private final LangManager lang;
     private List<RaceEvolution> evolutions;
 
-    public RaceEvolutionBrowserGUI(Player player, RaceEvolutionManager manager, ChatPromptManager chatPromptManager) {
-        super(player, Component.text("Evoluciones de raza", NamedTextColor.GOLD), SIZE);
+    public RaceEvolutionBrowserGUI(Player player, RaceEvolutionManager manager, ChatPromptManager chatPromptManager,
+            LangManager lang) {
+        super(player, lang.component("gui.race_evolution.browser_title"), SIZE);
         this.manager = manager;
         this.chatPromptManager = chatPromptManager;
+        this.lang = lang;
         this.evolutions = List.copyOf(manager.getAll());
     }
 
@@ -47,16 +51,16 @@ public class RaceEvolutionBrowserGUI extends InventoryGUI {
             RaceEvolution evolution = evolutions.get(i);
             setItem(i, new ItemBuilder(Material.PLAYER_HEAD)
                     .setName(Component.text(evolution.id(), NamedTextColor.YELLOW))
-                    .setLore(Component.text("Base: " + evolution.baseRace(), NamedTextColor.GRAY),
-                            Component.text("Click para editar", NamedTextColor.YELLOW))
+                    .setLore(lang.component("gui.race_evolution.item_base", "race", evolution.baseRace()),
+                            lang.component("gui.common.click_to_edit"))
                     .build());
         }
 
         setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Crear evolución nueva", NamedTextColor.GREEN))
+                .setName(lang.component("gui.race_evolution.create_new"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Cerrar"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.close_button")));
     }
 
     @Override
@@ -66,7 +70,8 @@ public class RaceEvolutionBrowserGUI extends InventoryGUI {
         int slot = event.getSlot();
 
         if (slot < evolutions.size() && slot < 36) {
-            new RaceEvolutionEditorGUI(player, evolutions.get(slot), manager, chatPromptManager, this::reopen).open();
+            new RaceEvolutionEditorGUI(player, evolutions.get(slot), manager, chatPromptManager, this::reopen, lang)
+                    .open();
             return;
         }
 
@@ -81,17 +86,17 @@ public class RaceEvolutionBrowserGUI extends InventoryGUI {
     }
 
     private void promptNew() {
-        chatPromptManager.prompt(player, "Escribí el id de la nueva evolución:", value -> {
+        chatPromptManager.prompt(player, "gui.race_evolution.prompt_new_id", value -> {
 
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 
             if (manager.exists(id)) {
-                player.sendMessage(Component.text("Ya existe una evolución con ese id.", NamedTextColor.RED));
+                lang.send(player, "gui.race_evolution.id_exists");
                 reopen();
                 return;
             }
 
-            chatPromptManager.prompt(player, "Escribí el id de la raza base:", baseRace -> {
+            chatPromptManager.prompt(player, "gui.race_evolution.prompt_base_race_new", baseRace -> {
                 manager.save(new RaceEvolution(id, baseRace.trim().toLowerCase(Locale.ROOT), id,
                         AscensionRequirements.none(), Map.of(), List.of(), List.of(), Map.of(), Map.of(), Map.of(),
                         List.of()));

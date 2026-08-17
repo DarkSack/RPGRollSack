@@ -2,6 +2,7 @@ package com.sack.rpgroll.command.commands;
 
 import com.sack.rpgroll.RPGRoll;
 import com.sack.rpgroll.command.RPGCommand;
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gameplay.combat.CombatStats;
 import com.sack.rpgroll.api.stats.StatType;
 import com.sack.rpgroll.player.PlayerManager;
@@ -12,11 +13,7 @@ import com.sack.rpgroll.api.playerclass.PlayerClass;
 import com.sack.rpgroll.api.race.Race;
 import com.sack.rpgroll.race.RaceAttributeApplier;
 import com.sack.rpgroll.api.race.RaceManager;
-import com.sack.rpgroll.util.ComponentUtils;
 import com.sack.rpgroll.util.TabCompleteUtil;
-
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -49,8 +46,10 @@ public class AdminSetRaceCommand implements RPGCommand {
     @Override
     public void execute(CommandSender sender, String[] args) {
 
+        LangManager lang = plugin.getBootstrap().getServices().get(LangManager.class);
+
         if (args.length < 2) {
-            sender.sendMessage(Component.text("Uso: " + getUsage(), NamedTextColor.RED));
+            lang.send(sender, "admin_setrace.usage", "usage", getUsage());
             return;
         }
 
@@ -61,8 +60,7 @@ public class AdminSetRaceCommand implements RPGCommand {
         Player target = Bukkit.getPlayerExact(targetName);
 
         if (target == null) {
-            sender.sendMessage(
-                    Component.text("Jugador no encontrado o desconectado: " + targetName, NamedTextColor.RED));
+            lang.send(sender, "error.player_offline", "player", targetName);
             return;
         }
 
@@ -72,7 +70,7 @@ public class AdminSetRaceCommand implements RPGCommand {
             Optional<Race> raceOpt = raceManager.get(raceId);
 
             if (raceOpt.isEmpty()) {
-                sender.sendMessage(Component.text("No existe la raza: " + raceId, NamedTextColor.RED));
+                lang.send(sender, "admin_setrace.race_not_found", "race", raceId);
                 return;
             }
 
@@ -80,7 +78,7 @@ public class AdminSetRaceCommand implements RPGCommand {
             Optional<RPGPlayer> rpgPlayerOpt = playerManager.getPlayer(target.getUniqueId());
 
             if (rpgPlayerOpt.isEmpty()) {
-                sender.sendMessage(Component.text("El jugador no tiene datos RPG cargados.", NamedTextColor.RED));
+                lang.send(sender, "error.no_rpg_data");
                 return;
             }
 
@@ -104,21 +102,18 @@ public class AdminSetRaceCommand implements RPGCommand {
                     .get(RaceAttributeApplier.class);
             raceAttributeApplier.apply(target, race);
 
-            sender.sendMessage(Component.text("✔ Raza de " + target.getName() + " cambiada a: ", NamedTextColor.GREEN)
-                    .append(ComponentUtils.parse(race.displayName()).colorIfAbsent(NamedTextColor.GOLD)));
+            lang.send(sender, "admin_setrace.success", "player", target.getName(), "race", race.displayName());
 
             if (recalc) {
-                sender.sendMessage(Component.text("  (stats recalculados desde cero)", NamedTextColor.YELLOW));
+                lang.send(sender, "admin_setclass.stats_recalculated");
             } else {
-                sender.sendMessage(Component.text("  (stats sin modificar — usa --recalc para recalcularlos)",
-                        NamedTextColor.GRAY));
+                lang.send(sender, "admin_setclass.stats_unmodified");
             }
 
-            target.sendMessage(Component.text("Un administrador cambió tu raza a: ", NamedTextColor.YELLOW)
-                    .append(ComponentUtils.parse(race.displayName()).colorIfAbsent(NamedTextColor.GOLD)));
+            lang.send(target, "admin_setrace.notify_target", "race", race.displayName());
 
         } catch (Exception exception) {
-            sender.sendMessage(Component.text("Error al cambiar la raza.", NamedTextColor.RED));
+            lang.send(sender, "admin_setrace.error");
             plugin.getLogger().severe("✘ Error en /rpg admin setrace: " + exception.getMessage());
         }
     }

@@ -30,16 +30,18 @@ public class AnimalBrowserGUI extends InventoryGUI {
     private final AnimalManager animalManager;
     private final SpeciesManager speciesManager;
     private final BreedManager breedManager;
+    private final ChatPromptManager chatPromptManager;
     private final Runnable onBack;
     private List<Animal> animals;
     private int page;
 
     public AnimalBrowserGUI(Player player, AnimalManager animalManager, SpeciesManager speciesManager,
-            BreedManager breedManager, Runnable onBack) {
-        super(player, Component.text("Explorador de Animales", NamedTextColor.GOLD), SIZE);
+            BreedManager breedManager, ChatPromptManager chatPromptManager, Runnable onBack) {
+        super(player, Component.text(chatPromptManager.lang().raw("gui.hub.animals"), NamedTextColor.GOLD), SIZE);
         this.animalManager = animalManager;
         this.speciesManager = speciesManager;
         this.breedManager = breedManager;
+        this.chatPromptManager = chatPromptManager;
         this.onBack = onBack;
         this.animals = List.copyOf(animalManager.getAll());
     }
@@ -70,31 +72,32 @@ public class AnimalBrowserGUI extends InventoryGUI {
                                     + animal.id().toString().substring(0, 8),
                             NamedTextColor.YELLOW))
                     .setLore(
-                            Component.text("Sexo: " + animal.sex(), NamedTextColor.GRAY),
-                            Component.text("Etapa: " + animal.stage(), NamedTextColor.GRAY),
-                            Component.text("Calidad: " + animal.quality(), NamedTextColor.GOLD),
-                            Component.text("Generación: F" + animal.generation(), NamedTextColor.GRAY),
-                            Component.text(String.format(Locale.ROOT, "Salud: %.0f · Felicidad: %.0f",
-                                    animal.health(), animal.happiness()), NamedTextColor.GREEN),
+                            Component.text(chatPromptManager.lang().raw("gui.animal.sex", "sex", animal.sex()), NamedTextColor.GRAY),
+                            Component.text(chatPromptManager.lang().raw("gui.animal.stage", "stage", animal.stage()), NamedTextColor.GRAY),
+                            Component.text(chatPromptManager.lang().raw("gui.animal.quality", "quality", animal.quality()), NamedTextColor.GOLD),
+                            Component.text(chatPromptManager.lang().raw("gui.animal.generation", "gen", animal.generation()), NamedTextColor.GRAY),
+                            Component.text(chatPromptManager.lang().raw("gui.animal.health_happiness", "health",
+                                    String.format(Locale.ROOT, "%.0f", animal.health()), "happiness",
+                                    String.format(Locale.ROOT, "%.0f", animal.happiness())), NamedTextColor.GREEN),
                             animal.isSick()
-                                    ? Component.text("⚠ Enfermo: " + animal.activeDiseaseId(), NamedTextColor.RED)
-                                    : Component.text("Sano", NamedTextColor.GREEN),
-                            animal.isPregnant() ? Component.text("Preñada", NamedTextColor.LIGHT_PURPLE)
+                                    ? Component.text(chatPromptManager.lang().raw("gui.animal.sick", "disease", animal.activeDiseaseId()), NamedTextColor.RED)
+                                    : Component.text(chatPromptManager.lang().raw("gui.animal.healthy"), NamedTextColor.GREEN),
+                            animal.isPregnant() ? Component.text(chatPromptManager.lang().raw("gui.animal.pregnant"), NamedTextColor.LIGHT_PURPLE)
                                     : Component.text(""))
                     .build());
         }
 
         if (page > 0) {
             setItem(PREV_SLOT, new ItemBuilder(Material.ARROW)
-                    .setName(Component.text("Página anterior", NamedTextColor.GRAY)).build());
+                    .setName(Component.text(chatPromptManager.lang().raw("gui.common.prev_page"), NamedTextColor.GRAY)).build());
         }
 
         if (page < totalPages - 1) {
             setItem(NEXT_SLOT, new ItemBuilder(Material.ARROW)
-                    .setName(Component.text("Página siguiente", NamedTextColor.GRAY)).build());
+                    .setName(Component.text(chatPromptManager.lang().raw("gui.common.next_page"), NamedTextColor.GRAY)).build());
         }
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(chatPromptManager.lang().raw("gui.common.back")));
     }
 
     @Override
@@ -105,7 +108,7 @@ public class AnimalBrowserGUI extends InventoryGUI {
         int index = page * PER_PAGE + slot;
 
         if (slot < PER_PAGE && index < animals.size()) {
-            new AnimalDetailGUI(player, animals.get(index), speciesManager, breedManager, this::reopen).open();
+            new AnimalDetailGUI(player, animals.get(index), speciesManager, breedManager, chatPromptManager, this::reopen).open();
         } else if (slot == PREV_SLOT) {
             page--;
             build();

@@ -1,7 +1,9 @@
 package com.sack.rpgroll.dungeons.gui.editor;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
+import com.sack.rpgroll.util.ComponentUtils;
 import com.sack.rpgroll.dungeons.core.DungeonAction;
 import com.sack.rpgroll.dungeons.core.DungeonTrigger;
 
@@ -26,14 +28,17 @@ public class RoomEventsEditorGUI extends InventoryGUI {
     private final Map<DungeonTrigger, List<DungeonAction>> events;
     private final Runnable onBack;
     private final List<DungeonTrigger> triggers;
+    private final LangManager lang;
 
     public RoomEventsEditorGUI(Player player, DungeonEditorSession session,
             Map<DungeonTrigger, List<DungeonAction>> events, Runnable onBack) {
-        super(player, Component.text("Eventos de sala", NamedTextColor.GOLD), SIZE);
+        super(player, ComponentUtils.parse(session.chatPromptManager.lang().raw("gui.editor.roomevents.title")),
+                SIZE);
         this.session = session;
         this.events = events;
         this.onBack = onBack;
         this.triggers = List.of(DungeonTrigger.values());
+        this.lang = session.chatPromptManager.lang();
     }
 
     @Override
@@ -52,11 +57,11 @@ public class RoomEventsEditorGUI extends InventoryGUI {
 
             setItem(i, new ItemBuilder(count > 0 ? Material.COMPARATOR : Material.LEVER)
                     .setName(Component.text(trigger.name(), NamedTextColor.YELLOW))
-                    .setLore(Component.text(count + " acción(es)", NamedTextColor.GRAY))
+                    .setLore(ComponentUtils.parse(lang.raw("gui.editor.roomevents.item.actions", "count", count)))
                     .build());
         }
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back")));
     }
 
     @Override
@@ -70,7 +75,7 @@ public class RoomEventsEditorGUI extends InventoryGUI {
             DungeonTrigger trigger = triggers.get(slot);
             List<DungeonAction> actions = new ArrayList<>(events.getOrDefault(trigger, List.of()));
 
-            new DungeonActionListEditorGUI(player, "Acciones: " + trigger.name(), actions,
+            new DungeonActionListEditorGUI(player, lang.raw("gui.editor.actionlist.title_for", "trigger", trigger.name()), actions,
                     session.chatPromptManager, () -> {
                         events.put(trigger, actions);
                         reopen();

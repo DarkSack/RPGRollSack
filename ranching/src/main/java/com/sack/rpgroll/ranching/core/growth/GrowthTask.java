@@ -61,7 +61,28 @@ public class GrowthTask extends BukkitRunnable {
 
             if (animal.stage() != previousStage) {
                 syncAgeableModel(animal);
+                applyReskinScale(animal, breed);
+            } else {
+                ensureReskinAttached(animal, breed);
             }
+        }
+    }
+
+    private void applyReskinScale(Animal animal, Breed breed) {
+
+        Entity entity = Bukkit.getEntity(animal.id());
+
+        if (entity instanceof org.bukkit.entity.LivingEntity living) {
+            animalManager.applyAppearance(living, breed, animal.stage());
+        }
+    }
+
+    private void ensureReskinAttached(Animal animal, Breed breed) {
+
+        Entity entity = Bukkit.getEntity(animal.id());
+
+        if (entity instanceof org.bukkit.entity.LivingEntity living) {
+            animalManager.ensureAppearanceAttached(living, breed, animal.stage());
         }
     }
 

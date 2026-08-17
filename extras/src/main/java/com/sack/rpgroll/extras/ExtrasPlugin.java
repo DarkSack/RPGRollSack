@@ -1,5 +1,6 @@
 package com.sack.rpgroll.extras;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.common.resource.DirectoryCreator;
 import com.sack.rpgroll.common.resource.ResourceCopier;
 import com.sack.rpgroll.extras.action.ExtrasActionExecutor;
@@ -36,6 +37,7 @@ public class ExtrasPlugin extends JavaPlugin {
 
     private static final List<String> DIRECTORIES = List.of("stats", "conditions", "modifiers");
 
+    private LangManager langManager;
     private StatManager statManager;
     private StatEngine statEngine;
     private ConditionManager conditionManager;
@@ -48,11 +50,16 @@ public class ExtrasPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
 
+        saveDefaultConfig();
+
         new DirectoryCreator(this).create(DIRECTORIES);
         new ResourceCopier(this).copyDirectories(DIRECTORIES);
         new ResourceCopier(this).copyFiles(List.of(
                 new com.sack.rpgroll.common.resource.ResourceFile("temperature.yml", "temperature.yml", false),
                 new com.sack.rpgroll.common.resource.ResourceFile("hud.yml", "hud.yml", false)));
+
+        langManager = new LangManager(this, List.of("es", "en", "pt_BR"), "es");
+        langManager.reload(getConfig().getString("language", "es"));
 
         loadAndWire();
 
@@ -114,6 +121,9 @@ public class ExtrasPlugin extends JavaPlugin {
 
     private void reload() {
 
+        reloadConfig();
+        langManager.reload(getConfig().getString("language", "es"));
+
         statEngine.stop();
         temperatureEngine.stop();
         hudEngine.stop();
@@ -138,7 +148,8 @@ public class ExtrasPlugin extends JavaPlugin {
             return;
         }
 
-        var executor = new ExtrasAdminCommand(statManager, statEngine, conditionManager, conditionRuntime, this::reload);
+        var executor = new ExtrasAdminCommand(
+                statManager, statEngine, conditionManager, conditionRuntime, this::reload, langManager);
         command.setExecutor(executor);
         command.setTabCompleter(executor);
     }

@@ -1,0 +1,33 @@
+# Referencia completa de todos los campos de una VillagerTradeDefinition.
+# Un comercio no se activa solo — hay que vincular un aldeano puntual con
+# /craftingadmin villager bind (ver VillagerTradeEngine/VillagerBinding).
+id: reference_full_villager_trade
+display-name: "Comercio de Referencia"
+icon: EMERALD
+
+# 1 o 2 costos (igual que un MerchantRecipe vanilla).
+costs:
+  - type: MATERIAL
+    value: EMERALD
+    amount: 8
+  - type: MATERIAL
+    value: GOLD_INGOT
+    amount: 4
+
+result:
+  type: ITEM_ID
+  value: runic_blade
+  amount: 1
+
+max-uses: 12
+villager-experience: 5
+rewards-experience: true
+
+conditions:
+  - type: LEVEL_MIN
+    min-value: 10
+
+xp-amount: 25
+economy-currency-id: null
+economy-cost: 0
+quality-enabled: true

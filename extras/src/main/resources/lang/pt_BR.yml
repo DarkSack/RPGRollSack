@@ -1,0 +1,30 @@
+# Mensagens do RPGRoll-Extras (comando /extrasadmin)
+# {placeholder} é substituído dinamicamente. Códigos de cor legados (&) preservados.
+
+command:
+  no-permission: "Você não tem permissão para usar este comando."
+  usage:
+    main: "Uso: /extrasadmin <reload|list|get|set|add|apply|remove> [args]"
+    get: "Uso: /extrasadmin get <jogador> <stat>"
+    set: "Uso: /extrasadmin set <jogador> <stat> <valor>"
+    add: "Uso: /extrasadmin add <jogador> <stat> <quantidade>"
+    apply: "Uso: /extrasadmin apply <jogador> <condition>"
+    remove: "Uso: /extrasadmin remove <jogador> <condition>"
+  reload:
+    success: "✔ RPGRoll-Extras recarregado: {stats} stat(s), {conditions} condition(s)."
+  list:
+    stats-header: "Stats:"
+    conditions-header: "Conditions:"
+  get:
+    result: "{player} → {stat}: {value}"
+  set:
+    success: "✔ {stat} de {player} definido como {value}"
+  add:
+    success: "✔ {stat} de {player} ajustado em {amount}"
+  apply:
+    success: "✔ Condition '{condition}' aplicada a {player}"
+  remove:
+    success: "✔ Condition '{condition}' removida de {player}"
+  condition-not-found: "Não existe uma condition com id: {condition}"
+  player-not-found: "Jogador não encontrado: {player}"
+  invalid-number: "Valor numérico inválido: {value}"

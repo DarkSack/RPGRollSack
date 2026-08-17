@@ -1,5 +1,6 @@
 package com.sack.rpgroll.items.listener;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.items.core.ItemAbility;
 import com.sack.rpgroll.items.core.ItemDefinition;
 import com.sack.rpgroll.items.core.ItemEffectDef;
@@ -10,9 +11,6 @@ import com.sack.rpgroll.items.registry.ActionRegistry;
 import com.sack.rpgroll.items.registry.ItemActionContext;
 import com.sack.rpgroll.items.requirement.ItemRequirementChecker;
 import com.sack.rpgroll.items.stat.ItemStatEngine;
-
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
@@ -49,16 +47,18 @@ public class ItemEquipTask implements Runnable {
     private final ActionRegistry actionRegistry;
     private final ItemStatEngine statEngine;
     private final ItemRequirementChecker requirementChecker;
+    private final LangManager langManager;
 
     private final Map<UUID, Map<String, String>> lastKnown = new HashMap<>();
 
     public ItemEquipTask(ItemManager itemManager, ItemInstanceService instanceService, ActionRegistry actionRegistry,
-            ItemStatEngine statEngine, ItemRequirementChecker requirementChecker) {
+            ItemStatEngine statEngine, ItemRequirementChecker requirementChecker, LangManager langManager) {
         this.itemManager = itemManager;
         this.instanceService = instanceService;
         this.actionRegistry = actionRegistry;
         this.statEngine = statEngine;
         this.requirementChecker = requirementChecker;
+        this.langManager = langManager;
     }
 
     @Override
@@ -121,9 +121,8 @@ public class ItemEquipTask implements Runnable {
 
         List<String> unmet = requirementChecker.check(player, definition.requirements());
         if (!unmet.isEmpty()) {
-            player.sendMessage(Component.text(
-                    "No cumplís los requisitos de " + definition.displayName() + ":", NamedTextColor.RED));
-            unmet.forEach(reason -> player.sendMessage(Component.text("- " + reason, NamedTextColor.RED)));
+            langManager.send(player, "equip.requirements_header", "item", definition.displayName());
+            unmet.forEach(reason -> langManager.send(player, "equip.requirement_line", "reason", reason));
         }
 
         for (ItemAbility ability : definition.abilities()) {

@@ -1,13 +1,12 @@
 package com.sack.rpgroll.mobs.gui.editor;
 
+import com.sack.rpgroll.common.lang.LangManager;
+
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.mobs.core.LootScope;
 import com.sack.rpgroll.mobs.core.LootType;
 import com.sack.rpgroll.mobs.core.MobLootEntry;
-
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -28,18 +27,16 @@ public class LootEditorGUI extends InventoryGUI {
     private static final int ADD_SLOT = 40;
     private static final int BACK_SLOT = 44;
 
-    private static final String FORMAT_HINT =
-            "TIPO referencia cantidadMin cantidadMax probabilidad nivelMinimo scope\n"
-                    + "ej. ITEM iron_sword 1 1 25 0 SHARED — tipos: ITEM/MONEY/EXPERIENCE/COMMAND/QUEST"
-                    + " — scope: SHARED/PER_PLAYER";
-
     private final MobEditorSession session;
     private final Runnable onBack;
+    private final LangManager lang;
 
     public LootEditorGUI(Player player, MobEditorSession session, Runnable onBack) {
-        super(player, Component.text("Loot: " + session.original.id(), NamedTextColor.GOLD), SIZE);
+        super(player, session.chatPromptManager.lang().component("gui.loot.title", "id", session.original.id()),
+                SIZE);
         this.session = session;
         this.onBack = onBack;
+        this.lang = session.chatPromptManager.lang();
     }
 
     @Override
@@ -58,23 +55,23 @@ public class LootEditorGUI extends InventoryGUI {
             MobLootEntry entry = loot.get(i);
 
             setItem(i, new ItemBuilder(iconFor(entry.type()))
-                    .setName(Component.text(entry.type() + ": "
-                            + (entry.reference() != null ? entry.reference() : "-"), NamedTextColor.YELLOW))
+                    .setName(lang.component("gui.loot.entry_label", "type", entry.type(), "reference",
+                            entry.reference() != null ? entry.reference() : "-"))
                     .setLore(
-                            Component.text("cantidad: " + entry.amountMin() + "-" + entry.amountMax(),
-                                    NamedTextColor.GRAY),
-                            Component.text("probabilidad: " + entry.chance() + "% · nivel mín: "
-                                    + entry.requiredLevel() + " · " + entry.scope(), NamedTextColor.GRAY),
-                            Component.text("Click para reemplazar · Shift-click para quitar", NamedTextColor.DARK_GRAY))
+                            lang.component("gui.loot.entry_amount", "min", entry.amountMin(), "max",
+                                    entry.amountMax()),
+                            lang.component("gui.loot.entry_chance", "chance", entry.chance(), "level",
+                                    entry.requiredLevel(), "scope", entry.scope()),
+                            lang.component("gui.loot.entry_hint"))
                     .build());
         }
 
         setItem(ADD_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Agregar entrada de loot", NamedTextColor.GREEN))
-                .setLore(Component.text(FORMAT_HINT.split("\n")[0], NamedTextColor.GRAY))
+                .setName(lang.component("gui.loot.add"))
+                .setLore(lang.component("gui.loot.format_hint1"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back_button")));
     }
 
     private Material iconFor(LootType type) {
@@ -118,7 +115,7 @@ public class LootEditorGUI extends InventoryGUI {
     }
 
     private void promptAdd() {
-        session.chatPromptManager.prompt(player, "Escribí: " + FORMAT_HINT, value -> {
+        session.chatPromptManager.prompt(player, "gui.loot.prompt_add", value -> {
 
             MobLootEntry entry = parse(value);
             if (entry == null) {
@@ -134,7 +131,7 @@ public class LootEditorGUI extends InventoryGUI {
     }
 
     private void promptReplace(int index) {
-        session.chatPromptManager.prompt(player, "Escribí la entrada reemplazante: " + FORMAT_HINT, value -> {
+        session.chatPromptManager.prompt(player, "gui.loot.prompt_replace", value -> {
 
             MobLootEntry entry = parse(value);
             if (entry == null) {
@@ -154,7 +151,7 @@ public class LootEditorGUI extends InventoryGUI {
         String[] parts = raw.trim().split("\\s+");
 
         if (parts.length != 7) {
-            player.sendMessage(Component.text("Formato inválido — se esperaban 7 campos.", NamedTextColor.RED));
+            lang.send(player, "gui.loot.invalid_fields");
             return null;
         }
 
@@ -169,7 +166,7 @@ public class LootEditorGUI extends InventoryGUI {
 
             return new MobLootEntry(type, reference, amountMin, amountMax, chance, requiredLevel, scope);
         } catch (IllegalArgumentException e) {
-            player.sendMessage(Component.text("Valor inválido en la entrada de loot.", NamedTextColor.RED));
+            lang.send(player, "gui.loot.invalid_value");
             return null;
         }
     }

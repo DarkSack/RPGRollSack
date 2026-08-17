@@ -54,6 +54,7 @@ public class BreedingPlannerGUI extends InventoryGUI {
     private final PedigreeService pedigreeService;
     private final BreedingEngine breedingEngine;
     private final int inbreedingGenerations;
+    private final ChatPromptManager chatPromptManager;
     private final Runnable onBack;
 
     private List<Animal> animals;
@@ -64,8 +65,8 @@ public class BreedingPlannerGUI extends InventoryGUI {
     public BreedingPlannerGUI(Player player, AnimalManager animalManager, SpeciesManager speciesManager,
             BreedManager breedManager, GeneManager geneManager, GeneticsEngine geneticsEngine,
             PedigreeService pedigreeService, BreedingEngine breedingEngine, int inbreedingGenerations,
-            Runnable onBack) {
-        super(player, Component.text("Planificador de Cría", NamedTextColor.LIGHT_PURPLE), SIZE);
+            ChatPromptManager chatPromptManager, Runnable onBack) {
+        super(player, Component.text(chatPromptManager.lang().raw("gui.hub.breeding"), NamedTextColor.LIGHT_PURPLE), SIZE);
         this.animalManager = animalManager;
         this.speciesManager = speciesManager;
         this.breedManager = breedManager;
@@ -74,6 +75,7 @@ public class BreedingPlannerGUI extends InventoryGUI {
         this.pedigreeService = pedigreeService;
         this.breedingEngine = breedingEngine;
         this.inbreedingGenerations = inbreedingGenerations;
+        this.chatPromptManager = chatPromptManager;
         this.onBack = onBack;
         this.animals = List.copyOf(animalManager.getAll());
     }
@@ -87,14 +89,16 @@ public class BreedingPlannerGUI extends InventoryGUI {
             setItem(slot, ItemBuilder.createFiller());
         }
 
-        setItem(SLOT_A, slotFor(selectedA, "Animal A"));
-        setItem(SLOT_B, slotFor(selectedB, "Animal B"));
+        var lang = chatPromptManager.lang();
+
+        setItem(SLOT_A, slotFor(selectedA, lang.raw("gui.planner.animal_a")));
+        setItem(SLOT_B, slotFor(selectedB, lang.raw("gui.planner.animal_b")));
         setItem(PREVIEW_SLOT, new ItemBuilder(Material.HEART_OF_THE_SEA)
-                .setName(Component.text("▶ Previsualizar cruce", NamedTextColor.LIGHT_PURPLE))
-                .setLore(Component.text("Manda el resultado por chat", NamedTextColor.GRAY)).build());
+                .setName(Component.text(lang.raw("gui.planner.preview_button"), NamedTextColor.LIGHT_PURPLE))
+                .setLore(Component.text(lang.raw("gui.planner.preview_hint"), NamedTextColor.GRAY)).build());
         setItem(FORCE_BREED_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("▶ Aparear ahora (admin)", NamedTextColor.GREEN))
-                .setLore(Component.text("Salta el minijuego de alimentar — igual respeta fertilidad/embarazo",
+                .setName(Component.text(lang.raw("gui.planner.force_breed_button"), NamedTextColor.GREEN))
+                .setLore(Component.text(lang.raw("gui.planner.force_breed_hint"),
                         NamedTextColor.GRAY))
                 .build());
 
@@ -114,35 +118,36 @@ public class BreedingPlannerGUI extends InventoryGUI {
                             (species != null ? species.displayName() : animal.speciesId()) + " #"
                                     + animal.id().toString().substring(0, 8),
                             NamedTextColor.YELLOW))
-                    .setLore(Component.text("Sexo: " + animal.sex() + " · " + animal.stage(), NamedTextColor.GRAY),
-                            Component.text("Click para elegir como A o B", NamedTextColor.GRAY))
+                    .setLore(Component.text(chatPromptManager.lang().raw("gui.animal.sex_stage", "sex", animal.sex(), "stage", animal.stage()), NamedTextColor.GRAY),
+                            Component.text(chatPromptManager.lang().raw("gui.planner.pick_hint"), NamedTextColor.GRAY))
                     .build());
         }
 
         if (page > 0) {
-            setItem(PREV_SLOT, new ItemBuilder(Material.ARROW).setName(Component.text("Anterior", NamedTextColor.GRAY)).build());
+            setItem(PREV_SLOT, new ItemBuilder(Material.ARROW).setName(Component.text(chatPromptManager.lang().raw("gui.common.prev"), NamedTextColor.GRAY)).build());
         }
 
         if (page < totalPages - 1) {
-            setItem(NEXT_SLOT, new ItemBuilder(Material.ARROW).setName(Component.text("Siguiente", NamedTextColor.GRAY)).build());
+            setItem(NEXT_SLOT, new ItemBuilder(Material.ARROW).setName(Component.text(chatPromptManager.lang().raw("gui.common.next"), NamedTextColor.GRAY)).build());
         }
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(chatPromptManager.lang().raw("gui.common.back")));
     }
 
     private org.bukkit.inventory.ItemStack slotFor(Animal animal, String label) {
 
         if (animal == null) {
             return new ItemBuilder(Material.GRAY_DYE)
-                    .setName(Component.text(label + ": (sin elegir)", NamedTextColor.GRAY)).build();
+                    .setName(Component.text(chatPromptManager.lang().raw("gui.planner.slot_unselected", "label", label), NamedTextColor.GRAY)).build();
         }
 
         Species species = speciesManager.get(animal.speciesId()).orElse(null);
 
         return new ItemBuilder(species != null ? SpeciesBrowserGUI.parseMaterial(species.icon(), Material.COW_SPAWN_EGG)
                 : Material.BARRIER)
-                .setName(Component.text(label + ": " + animal.id().toString().substring(0, 8), NamedTextColor.YELLOW))
-                .setLore(Component.text(animal.sex() + " · " + animal.stage(), NamedTextColor.GRAY))
+                .setName(Component.text(chatPromptManager.lang().raw("gui.planner.slot_selected", "label", label,
+                        "id", animal.id().toString().substring(0, 8)), NamedTextColor.YELLOW))
+                .setLore(Component.text(chatPromptManager.lang().raw("gui.animal.sex_stage", "sex", animal.sex(), "stage", animal.stage()), NamedTextColor.GRAY))
                 .build();
     }
 
@@ -197,18 +202,20 @@ public class BreedingPlannerGUI extends InventoryGUI {
 
     private void preview() {
 
+        var lang = chatPromptManager.lang();
+
         if (selectedA == null || selectedB == null) {
-            player.sendMessage(Component.text("Elegí dos animales primero.", NamedTextColor.RED));
+            player.sendMessage(Component.text(lang.raw("gui.planner.pick_two_first"), NamedTextColor.RED));
             return;
         }
 
         if (!selectedA.speciesId().equals(selectedB.speciesId())) {
-            player.sendMessage(Component.text("Esos dos no son de la misma especie.", NamedTextColor.RED));
+            player.sendMessage(Component.text(lang.raw("gui.planner.different_species"), NamedTextColor.RED));
             return;
         }
 
         if (selectedA.sex() == selectedB.sex()) {
-            player.sendMessage(Component.text("Esos dos son del mismo sexo.", NamedTextColor.RED));
+            player.sendMessage(Component.text(lang.raw("gui.planner.same_sex"), NamedTextColor.RED));
             return;
         }
 
@@ -219,32 +226,35 @@ public class BreedingPlannerGUI extends InventoryGUI {
         boolean inbred = pedigreeService.isInbred(selectedA.id(), selectedA.ancestors(), selectedB.id(),
                 selectedB.ancestors(), inbreedingGenerations);
 
-        player.sendMessage(Component.text("=== Previsualización de cruce ===", NamedTextColor.LIGHT_PURPLE));
+        player.sendMessage(Component.text(lang.raw("gui.planner.preview_header"), NamedTextColor.LIGHT_PURPLE));
 
         for (GenePreviewStats stat : stats) {
-            player.sendMessage(Component.text(String.format(Locale.ROOT, "%s: %.1f — %.1f (prom. %.1f)",
-                    stat.geneDisplayName(), stat.min(), stat.max(), stat.average()), NamedTextColor.AQUA));
+            player.sendMessage(Component.text(lang.raw("gui.planner.preview_stat_line", "gene", stat.geneDisplayName(),
+                    "min", String.format(Locale.ROOT, "%.1f", stat.min()), "max", String.format(Locale.ROOT, "%.1f", stat.max()),
+                    "average", String.format(Locale.ROOT, "%.1f", stat.average())), NamedTextColor.AQUA));
         }
 
         if (inbred) {
-            player.sendMessage(Component.text("⚠ Estos dos comparten ancestros recientes — riesgo de endogamia.",
+            player.sendMessage(Component.text(lang.raw("gui.planner.inbreeding_warning"),
                     NamedTextColor.RED));
         } else {
-            player.sendMessage(Component.text("Sin parentesco reciente detectado.", NamedTextColor.GREEN));
+            player.sendMessage(Component.text(lang.raw("gui.planner.no_relation"), NamedTextColor.GREEN));
         }
     }
 
     private void forceBreed() {
 
+        var lang = chatPromptManager.lang();
+
         if (selectedA == null || selectedB == null) {
-            player.sendMessage(Component.text("Elegí dos animales primero.", NamedTextColor.RED));
+            player.sendMessage(Component.text(lang.raw("gui.planner.pick_two_first"), NamedTextColor.RED));
             return;
         }
 
         Entity entity = Bukkit.getEntity(selectedA.id());
 
         if (!(entity instanceof LivingEntity livingEntity) || !livingEntity.isValid()) {
-            player.sendMessage(Component.text("El Animal A no está cargado en el mundo ahora mismo.", NamedTextColor.RED));
+            player.sendMessage(Component.text(lang.raw("gui.planner.animal_a_not_loaded"), NamedTextColor.RED));
             return;
         }
 

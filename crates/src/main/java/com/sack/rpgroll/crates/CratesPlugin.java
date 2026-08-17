@@ -1,5 +1,6 @@
 package com.sack.rpgroll.crates;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.common.resource.DirectoryCreator;
 import com.sack.rpgroll.common.resource.ResourceCopier;
 import com.sack.rpgroll.crates.command.CrateAdminCommand;
@@ -27,12 +28,18 @@ public class CratesPlugin extends JavaPlugin {
     private CrateManager crateManager;
     private PlacedCrateManager placedCrateManager;
     private DecentHologramsHook hologramsHook;
+    private LangManager langManager;
 
     @Override
     public void onEnable() {
 
+        saveDefaultConfig();
+
         new DirectoryCreator(this).create(DIRECTORIES);
         new ResourceCopier(this).copyDirectories(DIRECTORIES);
+
+        langManager = new LangManager(this, List.of("es", "en", "pt_BR"), "es");
+        langManager.reload(getConfig().getString("language", "es"));
 
         crateManager = new CrateManager(this);
         crateManager.initialize();
@@ -41,22 +48,23 @@ public class CratesPlugin extends JavaPlugin {
         placedCrateManager.load();
 
         hologramsHook = new DecentHologramsHook(this);
-        CrateKeyItem crateKeyItem = new CrateKeyItem(this);
-        CrateActionExecutor actionExecutor = new CrateActionExecutor(this);
+        CrateKeyItem crateKeyItem = new CrateKeyItem(this, langManager);
+        CrateActionExecutor actionExecutor = new CrateActionExecutor(this, langManager);
 
         getServer().getPluginManager().registerEvents(
-                new CrateInteractListener(this, crateManager, placedCrateManager, crateKeyItem, actionExecutor),
+                new CrateInteractListener(this, crateManager, placedCrateManager, crateKeyItem, actionExecutor,
+                        langManager),
                 this);
 
-        ChatPromptManager chatPromptManager = new ChatPromptManager(this);
+        ChatPromptManager chatPromptManager = new ChatPromptManager(this, langManager);
         getServer().getPluginManager().registerEvents(chatPromptManager, this);
 
         var crateCommand = getCommand("crate");
         if (crateCommand == null) {
             getLogger().severe("✘ El comando 'crate' no está declarado en plugin.yml");
         } else {
-            var crateAdminCommand = new CrateAdminCommand(crateManager, placedCrateManager, hologramsHook,
-                    crateKeyItem, chatPromptManager);
+            var crateAdminCommand = new CrateAdminCommand(this, crateManager, placedCrateManager, hologramsHook,
+                    crateKeyItem, chatPromptManager, langManager);
             crateCommand.setExecutor(crateAdminCommand);
             crateCommand.setTabCompleter(crateAdminCommand);
         }
@@ -99,6 +107,10 @@ public class CratesPlugin extends JavaPlugin {
 
     public DecentHologramsHook getHologramsHook() {
         return hologramsHook;
+    }
+
+    public LangManager getLangManager() {
+        return langManager;
     }
 
 }

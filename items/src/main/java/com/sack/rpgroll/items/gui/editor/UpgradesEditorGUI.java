@@ -1,5 +1,6 @@
 package com.sack.rpgroll.items.gui.editor;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.items.core.UpgradeLevel;
@@ -29,11 +30,13 @@ public class UpgradesEditorGUI extends InventoryGUI {
     private static final int BACK_SLOT = 44;
 
     private final EditorSession session;
+    private final LangManager lang;
     private final Runnable onBack;
 
     public UpgradesEditorGUI(Player player, EditorSession session, Runnable onBack) {
-        super(player, Component.text("Mejoras: " + session.original.id(), NamedTextColor.GOLD), SIZE);
+        super(player, session.chatPromptManager.lang().component("editor.upgrades.title", "id", session.original.id()), SIZE);
         this.session = session;
+        this.lang = session.chatPromptManager.lang();
         this.onBack = onBack;
         session.upgrades.sort((a, b) -> Integer.compare(a.level(), b.level()));
     }
@@ -61,21 +64,21 @@ public class UpgradesEditorGUI extends InventoryGUI {
                 lore.add(Component.text("+ " + entry.getKey() + ": " + entry.getValue(), NamedTextColor.GRAY));
             }
             if (upgrade.cost() > 0) {
-                lore.add(Component.text("Costo: " + upgrade.cost(), NamedTextColor.GOLD));
+                lore.add(lang.component("editor.upgrades.cost", "cost", upgrade.cost()));
             }
-            lore.add(Component.text("Click: agregar/editar stat · Shift-click: quitar nivel", NamedTextColor.DARK_GRAY));
+            lore.add(lang.component("editor.upgrades.hint"));
 
             setItem(i, new ItemBuilder(Material.ANVIL)
-                    .setName(Component.text("Nivel +" + upgrade.level(), NamedTextColor.YELLOW))
+                    .setName(lang.component("editor.upgrades.level_label", "level", upgrade.level()))
                     .setLore(lore)
                     .build());
         }
 
         setItem(ADD_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Agregar nivel de mejora", NamedTextColor.GREEN))
+                .setName(lang.component("editor.upgrades.add"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("editor.common.back")));
     }
 
     @Override
@@ -106,12 +109,12 @@ public class UpgradesEditorGUI extends InventoryGUI {
     }
 
     private void promptNewLevel() {
-        session.chatPromptManager.prompt(player, "Escribí: <nivel> <costo> (ej. 1 100):", value -> {
+        session.chatPromptManager.prompt(player, lang.raw("editor.upgrades.prompt_new"), value -> {
 
             String[] parts = value.trim().split("\\s+");
 
             if (parts.length < 1) {
-                player.sendMessage(Component.text("Formato inválido.", NamedTextColor.RED));
+                lang.send(player, "editor.common.invalid_format");
                 return;
             }
 
@@ -122,7 +125,7 @@ public class UpgradesEditorGUI extends InventoryGUI {
                 session.upgrades.add(new UpgradeLevel(level, Map.of(), null, null, cost, null, 0));
                 session.upgrades.sort((a, b) -> Integer.compare(a.level(), b.level()));
             } catch (NumberFormatException e) {
-                player.sendMessage(Component.text("Número inválido.", NamedTextColor.RED));
+                lang.send(player, "editor.common.invalid_number");
                 return;
             }
 
@@ -131,12 +134,12 @@ public class UpgradesEditorGUI extends InventoryGUI {
     }
 
     private void promptStatBonus(int index) {
-        session.chatPromptManager.prompt(player, "Escribí: <stat> <valor> para agregar a este nivel:", value -> {
+        session.chatPromptManager.prompt(player, lang.raw("editor.upgrades.prompt_stat_bonus"), value -> {
 
             String[] parts = value.trim().split("\\s+");
 
             if (parts.length != 2) {
-                player.sendMessage(Component.text("Formato inválido.", NamedTextColor.RED));
+                lang.send(player, "editor.common.invalid_format");
                 return;
             }
 
@@ -146,7 +149,7 @@ public class UpgradesEditorGUI extends InventoryGUI {
             try {
                 statBonus.put(parts[0].toLowerCase(Locale.ROOT), Double.parseDouble(parts[1]));
             } catch (NumberFormatException e) {
-                player.sendMessage(Component.text("Valor inválido.", NamedTextColor.RED));
+                lang.send(player, "editor.upgrades.invalid_value");
                 return;
             }
 

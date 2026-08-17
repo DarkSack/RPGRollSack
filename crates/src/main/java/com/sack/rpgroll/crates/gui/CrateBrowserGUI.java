@@ -1,5 +1,6 @@
 package com.sack.rpgroll.crates.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.crates.core.Crate;
@@ -25,12 +26,15 @@ public class CrateBrowserGUI extends InventoryGUI {
 
     private final CrateManager crateManager;
     private final ChatPromptManager chatPromptManager;
+    private final LangManager lang;
     private List<Crate> crates;
 
-    public CrateBrowserGUI(Player player, CrateManager crateManager, ChatPromptManager chatPromptManager) {
-        super(player, Component.text("Crates RPGRoll", NamedTextColor.GOLD), SIZE);
+    public CrateBrowserGUI(Player player, CrateManager crateManager, ChatPromptManager chatPromptManager,
+            LangManager lang) {
+        super(player, lang.component("browser.title"), SIZE);
         this.crateManager = crateManager;
         this.chatPromptManager = chatPromptManager;
+        this.lang = lang;
         this.crates = List.copyOf(crateManager.getAll());
     }
 
@@ -49,16 +53,16 @@ public class CrateBrowserGUI extends InventoryGUI {
 
             setItem(i, new ItemBuilder(Material.ENDER_CHEST)
                     .setName(Component.text(crate.id(), NamedTextColor.YELLOW))
-                    .setLore(Component.text(crate.rewards().size() + " recompensa(s)", NamedTextColor.GRAY),
-                            Component.text("Click para editar", NamedTextColor.YELLOW))
+                    .setLore(lang.component("browser.reward_count", "count", crate.rewards().size()),
+                            lang.component("browser.click_to_edit"))
                     .build());
         }
 
         setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Crear crate nuevo", NamedTextColor.GREEN))
+                .setName(lang.component("browser.create_new"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Cerrar"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("browser.close_button")));
     }
 
     @Override
@@ -68,7 +72,7 @@ public class CrateBrowserGUI extends InventoryGUI {
         int slot = event.getSlot();
 
         if (slot < crates.size() && slot < 36) {
-            new CrateEditorGUI(player, crates.get(slot), crateManager, chatPromptManager, this::reopen).open();
+            new CrateEditorGUI(player, crates.get(slot), crateManager, chatPromptManager, this::reopen, lang).open();
             return;
         }
 
@@ -83,12 +87,12 @@ public class CrateBrowserGUI extends InventoryGUI {
     }
 
     private void promptNew() {
-        chatPromptManager.prompt(player, "Escribí el id del nuevo crate:", value -> {
+        chatPromptManager.prompt(player, "browser.prompt_new_id", value -> {
 
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 
             if (crateManager.exists(id)) {
-                player.sendMessage(Component.text("Ya existe un crate con ese id.", NamedTextColor.RED));
+                lang.send(player, "browser.id_exists");
                 reopen();
                 return;
             }

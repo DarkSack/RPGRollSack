@@ -1,5 +1,6 @@
 package com.sack.rpgroll.quests.listener;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.quests.api.NpcTalkEvent;
 import com.sack.rpgroll.quests.core.Quest;
 import com.sack.rpgroll.quests.core.QuestObjective;
@@ -7,9 +8,6 @@ import com.sack.rpgroll.quests.core.QuestStage;
 import com.sack.rpgroll.quests.engine.QuestEngine;
 import com.sack.rpgroll.quests.player.ActiveQuestProgress;
 import com.sack.rpgroll.quests.player.QuestPlayerState;
-
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -37,9 +35,11 @@ import java.util.Optional;
 public class QuestObjectiveListener implements Listener {
 
     private final QuestEngine engine;
+    private final LangManager lang;
 
-    public QuestObjectiveListener(QuestEngine engine) {
+    public QuestObjectiveListener(QuestEngine engine, LangManager lang) {
         this.engine = engine;
+        this.lang = lang;
     }
 
     @EventHandler
@@ -157,8 +157,7 @@ public class QuestObjectiveListener implements Listener {
                 .mapToInt(ItemStack::getAmount).sum();
 
         if (available < required) {
-            player.sendMessage(Component.text(
-                    "Necesitás " + required + "x " + material + " para entregar.", NamedTextColor.RED));
+            lang.send(player, "listener.deliver_missing_items", "required", required, "material", material);
             return;
         }
 

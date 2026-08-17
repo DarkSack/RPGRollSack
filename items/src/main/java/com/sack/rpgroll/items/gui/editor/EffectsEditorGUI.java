@@ -1,5 +1,6 @@
 package com.sack.rpgroll.items.gui.editor;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.items.core.ItemEffectDef;
@@ -21,11 +22,13 @@ public class EffectsEditorGUI extends InventoryGUI {
     private static final int BACK_SLOT = 40 + 4;
 
     private final EditorSession session;
+    private final LangManager lang;
     private final Runnable onBack;
 
     public EffectsEditorGUI(Player player, EditorSession session, Runnable onBack) {
-        super(player, Component.text("Efectos: " + session.original.id(), NamedTextColor.GOLD), SIZE);
+        super(player, session.chatPromptManager.lang().component("editor.effects.title", "id", session.original.id()), SIZE);
         this.session = session;
+        this.lang = session.chatPromptManager.lang();
         this.onBack = onBack;
     }
 
@@ -49,17 +52,17 @@ public class EffectsEditorGUI extends InventoryGUI {
 
             setItem(i, new ItemBuilder(Material.POTION)
                     .setName(Component.text(effect.potion() + " " + effect.amplifier(), NamedTextColor.LIGHT_PURPLE))
-                    .setLore(Component.text("Mientras esté equipado: " + (effect.requiresHeld() ? "sí" : "no"),
-                            NamedTextColor.GRAY),
-                            Component.text("Shift-click para quitar", NamedTextColor.DARK_GRAY))
+                    .setLore(lang.component("editor.effects.while_equipped",
+                                    "value", effect.requiresHeld() ? lang.raw("editor.common.yes") : lang.raw("editor.common.no")),
+                            lang.component("editor.common.shift_click_remove"))
                     .build());
         }
 
         setItem(ADD_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Agregar efecto", NamedTextColor.GREEN))
+                .setName(lang.component("editor.effects.add"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("editor.common.back")));
     }
 
     @Override
@@ -87,29 +90,28 @@ public class EffectsEditorGUI extends InventoryGUI {
     }
 
     private void promptAdd() {
-        session.chatPromptManager.prompt(player,
-                "Escribí: <poción> <amplificador> <si|no equipado> (ej. SPEED 1 si):", value -> {
+        session.chatPromptManager.prompt(player, lang.raw("editor.effects.prompt_add"), value -> {
 
-                    String[] parts = value.trim().split("\\s+");
+            String[] parts = value.trim().split("\\s+");
 
-                    if (parts.length != 3) {
-                        player.sendMessage(Component.text("Formato inválido.", NamedTextColor.RED));
-                        return;
-                    }
+            if (parts.length != 3) {
+                lang.send(player, "editor.common.invalid_format");
+                return;
+            }
 
-                    try {
-                        String potion = parts[0].toUpperCase(Locale.ROOT);
-                        int amplifier = Integer.parseInt(parts[1]);
-                        boolean requiresHeld = parts[2].equalsIgnoreCase("si");
+            try {
+                String potion = parts[0].toUpperCase(Locale.ROOT);
+                int amplifier = Integer.parseInt(parts[1]);
+                boolean requiresHeld = parts[2].equalsIgnoreCase("si");
 
-                        session.effects.add(new ItemEffectDef(potion, amplifier, requiresHeld));
-                    } catch (NumberFormatException e) {
-                        player.sendMessage(Component.text("Amplificador inválido.", NamedTextColor.RED));
-                        return;
-                    }
+                session.effects.add(new ItemEffectDef(potion, amplifier, requiresHeld));
+            } catch (NumberFormatException e) {
+                lang.send(player, "editor.effects.invalid_amplifier");
+                return;
+            }
 
-                    build();
-                });
+            build();
+        });
     }
 
 }

@@ -1,5 +1,6 @@
 package com.sack.rpgroll.sackeffects.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.sackeffects.core.EffectDefinition;
 import com.sack.rpgroll.sackeffects.core.EffectManager;
 import com.sack.rpgroll.sackeffects.core.EffectStep;
@@ -46,16 +47,18 @@ public class EffectEditorGUI extends InventoryGUI {
     private final EffectManager manager;
     private final EffectEngine engine;
     private final ChatPromptManager chatPromptManager;
+    private final LangManager langManager;
     private final Runnable onBack;
     private EffectDefinition current;
 
     public EffectEditorGUI(Player player, EffectDefinition effect, EffectManager manager, EffectEngine engine,
-            ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text("Efecto: " + effect.id(), NamedTextColor.GOLD), SIZE);
+            ChatPromptManager chatPromptManager, LangManager langManager, Runnable onBack) {
+        super(player, langManager.component("editor.title", "id", effect.id()), SIZE);
         this.current = effect;
         this.manager = manager;
         this.engine = engine;
         this.chatPromptManager = chatPromptManager;
+        this.langManager = langManager;
         this.onBack = onBack;
     }
 
@@ -80,19 +83,20 @@ public class EffectEditorGUI extends InventoryGUI {
         }
 
         setItem(DISPLAY_NAME_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(Component.text("Nombre: " + current.displayName(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para escribir uno nuevo", NamedTextColor.GRAY))
+                .setName(langManager.component("editor.name_item", "name", current.displayName()))
+                .setLore(langManager.component("editor.name_lore_hint"))
                 .build());
 
         setItem(DESCRIPTION_SLOT, new ItemBuilder(Material.WRITTEN_BOOK)
-                .setName(Component.text("Descripción", NamedTextColor.YELLOW))
-                .setLore(ItemBuilder.toLoreLines(
-                        current.description().isBlank() ? "(sin descripción)" : current.description()))
+                .setName(langManager.component("editor.description_item"))
+                .setLore(ItemBuilder.toLoreLines(current.description().isBlank()
+                        ? langManager.raw("editor.description_empty")
+                        : current.description()))
                 .build());
 
         setItem(TEST_SLOT, new ItemBuilder(Material.NETHER_STAR)
-                .setName(Component.text("▶ Probar en vos mismo", NamedTextColor.GREEN))
-                .setLore(Component.text(current.steps().size() + " step(s)", NamedTextColor.GRAY))
+                .setName(langManager.component("editor.test_item"))
+                .setLore(langManager.component("editor.item_lore_steps", "count", current.steps().size()))
                 .build());
 
         List<EffectStep> steps = current.steps();
@@ -102,27 +106,25 @@ public class EffectEditorGUI extends InventoryGUI {
         }
 
         setItem(ADD_STEP_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Agregar step", NamedTextColor.GREEN))
-                .setLore(Component.text("TIPO delay clave=valor,clave2=valor2", NamedTextColor.GRAY),
-                        Component.text("ej. PARTICLE 0 particle=FLAME,shape=SPHERE,radius=1.5,points=40",
-                                NamedTextColor.DARK_GRAY),
-                        Component.text("ej. SOUND 5 sound=ENTITY_BLAZE_SHOOT,volume=1,pitch=1.2",
-                                NamedTextColor.DARK_GRAY))
+                .setName(langManager.component("editor.add_step_item"))
+                .setLore(langManager.component("editor.add_step_lore_syntax"),
+                        langManager.component("editor.add_step_lore_example_particle"),
+                        langManager.component("editor.add_step_lore_example_sound"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(langManager.raw("editor.back_button")));
     }
 
     private org.bukkit.inventory.ItemStack stepItem(EffectStep step, int index) {
 
         List<Component> lore = new ArrayList<>();
-        lore.add(Component.text("Delay: " + step.delayTicks() + " ticks", NamedTextColor.GRAY));
+        lore.add(langManager.component("editor.step_delay_lore", "ticks", step.delayTicks()));
 
         for (var entry : step.params().entrySet()) {
             lore.add(Component.text(entry.getKey() + "=" + entry.getValue(), NamedTextColor.DARK_GRAY));
         }
 
-        lore.add(Component.text("Shift-click para quitar", NamedTextColor.RED));
+        lore.add(langManager.component("editor.step_remove_hint"));
 
         return new ItemBuilder(iconFor(step.type()))
                 .setName(Component.text("#" + (index + 1) + " " + step.type(), NamedTextColor.AQUA))
@@ -159,7 +161,7 @@ public class EffectEditorGUI extends InventoryGUI {
 
         if (slot == TEST_SLOT) {
             engine.play(current, EffectContext.of(player));
-            player.sendMessage(Component.text("▶ Reproduciendo '" + current.id() + "'...", NamedTextColor.GREEN));
+            langManager.send(player, "editor.test_playing", "id", current.id());
             return;
         }
 
@@ -182,12 +184,12 @@ public class EffectEditorGUI extends InventoryGUI {
     }
 
     private void promptRename() {
-        chatPromptManager.prompt(player, "Escribí el nuevo nombre:",
+        chatPromptManager.prompt(player, langManager.raw("editor.rename_prompt"),
                 value -> replace(new EffectDefinition(current.id(), value, current.description(), current.steps())));
     }
 
     private void promptDescription() {
-        chatPromptManager.prompt(player, "Escribí la nueva descripción:",
+        chatPromptManager.prompt(player, langManager.raw("editor.description_prompt"),
                 value -> replace(new EffectDefinition(current.id(), current.displayName(), value, current.steps())));
     }
 
@@ -199,14 +201,13 @@ public class EffectEditorGUI extends InventoryGUI {
 
     private void promptAddStep() {
         chatPromptManager.prompt(player,
-                "Escribí: TIPO delay clave=valor,clave2=valor2 (ej. SOUND 0 sound=ENTITY_PLAYER_LEVELUP,volume=1):",
+                langManager.raw("editor.add_step_prompt"),
                 value -> {
 
                     String[] parts = value.trim().split("\\s+", 3);
 
                     if (parts.length < 2) {
-                        player.sendMessage(Component.text("Formato inválido — hacen falta al menos TIPO y delay.",
-                                NamedTextColor.RED));
+                        langManager.send(player, "editor.add_step_invalid_format");
                         return;
                     }
 
@@ -215,8 +216,7 @@ public class EffectEditorGUI extends InventoryGUI {
                     try {
                         type = EffectStepType.valueOf(parts[0].trim().toUpperCase(Locale.ROOT));
                     } catch (IllegalArgumentException e) {
-                        player.sendMessage(Component.text("Tipo inválido: " + parts[0]
-                                + " (usá PARTICLE, SOUND, TITLE, ACTIONBAR, BOSSBAR o POTION).", NamedTextColor.RED));
+                        langManager.send(player, "editor.add_step_invalid_type", "type", parts[0]);
                         return;
                     }
 
@@ -225,7 +225,7 @@ public class EffectEditorGUI extends InventoryGUI {
                     try {
                         delay = Integer.parseInt(parts[1].trim());
                     } catch (NumberFormatException e) {
-                        player.sendMessage(Component.text("Delay inválido: " + parts[1], NamedTextColor.RED));
+                        langManager.send(player, "editor.add_step_invalid_delay", "delay", parts[1]);
                         return;
                     }
 

@@ -1,0 +1,102 @@
+# Language file: English
+# RPGRoll-NPCs - Message system
+
+# General messages
+general:
+  no_permission: "&cYou don't have permission to use this command."
+  player_only: "&cThis subcommand can only be used by players."
+
+# /npc command (admin)
+command:
+  usage: "&cUsage: /npc <create|edit|list|delete|reload|menus> [id]"
+  not_found: "&cThat NPC doesn't exist."
+  create:
+    usage: "&cUsage: /npc create <id>"
+    already_exists: "&cAn NPC with that id already exists."
+  edit:
+    usage: "&cUsage: /npc edit <id>"
+  list:
+    empty: "&7No NPCs have been created."
+    header: "&6Existing NPCs:"
+  delete:
+    usage: "&cUsage: /npc delete <id>"
+    success: "&a✔ NPC deleted: {id}"
+  reload:
+    success: "&a✔ Reloaded: {npcCount} NPC(s), {menuCount} menu(s)."
+
+# Generic prompts from the chat capture system (ChatPromptManager)
+prompt:
+  instructions: "&7Type in chat, or 'cancelar' to abort."
+  cancelled: "&cCancelled."
+
+# "Select a Pose" GUI
+pose:
+  title: "&6&lSelect a Pose"
+  back: "Back"
+
+# NPC Editor GUI (/npc create, /npc edit)
+adminGui:
+  title: "&6&lNPC Editor: {id}"
+  name_label: "&6&lName"
+  click_to_change: "&7Click to change"
+  skin_label: "&6&lSkin"
+  skin_none: "&7No custom skin"
+  skin_click_configure: "&7Click to configure"
+  skin_configured: "&aSkin configured ✔"
+  pose_label: "&6&lPose"
+  position_label: "&6&lPosition"
+  position_none: "&cNo location assigned"
+  position_click: "&7Click to use your current location"
+  actions_label: "&6&lActions"
+  actions_count: "&f{count} action(s) configured"
+  actions_click_manage: "&7Click to manage"
+  save: "Save"
+  save_incomplete: "Save (missing position or name)"
+  cancel: "Cancel"
+  prompt_name: "Type the new name for the NPC:"
+  prompt_skin: "Paste the MineSkin link or ID:"
+  skin_querying: "&7Querying MineSkin..."
+  skin_applied: "&a✔ Skin applied."
+  skin_resolve_failed: "&cCouldn't resolve the skin."
+  location_assigned: "&a✔ Location assigned."
+  save_missing_fields: "&cName or position missing before saving."
+  save_success: "&a✔ NPC saved: {id}"
+  save_error: "&cError saving the NPC."
+  edit_cancelled: "&eEditing cancelled."
+
+# "NPC Actions" GUI
+actions:
+  title: "&6&lNPC Actions"
+  click_to_delete: "&cClick to delete"
+  add: "Add action"
+  back: "Back"
+  prompt_add: "Type: TYPE|value (e.g: MESSAGE|Hello {player}, or COMMAND|give {player} diamond 1)"
+  invalid_format: "&cInvalid format. Use TYPE|value"
+  invalid_type: "&cInvalid type: {type}"
+
+# NPC menu GUIs (browser and editor)
+menu:
+  browser:
+    title: "&6RPGRoll NPC Menus"
+    item_lore: "&7{items} item(s) · {rows} row(s)"
+    click_to_edit: "&eClick to edit"
+    create_new: "&aCreate new menu"
+    close: "Close"
+    prompt_new_id: "Type the id of the new menu:"
+    already_exists: "&cA menu with that id already exists."
+  editor:
+    title: "&6Menu: {id}"
+    title_label: "Title: {title}"
+    title_hint: "&7Click to type a new one"
+    rows_label: "&eRows: {rows}"
+    rows_hint: "&7Click: +1 · Right click: -1 (1-6)"
+    item_lore: "&7Slot {slot} · {count} action(s)"
+    item_hint: "&8Click to add an action · Shift-click to remove"
+    add_item: "&aAdd item to menu"
+    back: "Back"
+    prompt_title: "Type the new title for the menu:"
+    prompt_item: "Type: slot;material;name (e.g. 11;IRON_SWORD;&fSword):"
+    prompt_action: "Type: TYPE;value (e.g. GIVE_ITEM;SHIELD,1 — types: {types}):"
+    invalid_format: "&cInvalid format."
+    invalid_slot_number: "&cThe slot must be a number."
+    invalid_action_type: "&cInvalid action type."

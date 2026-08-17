@@ -1,5 +1,6 @@
 package com.sack.rpgroll.seasons.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.seasons.core.ClimateProfile;
@@ -62,7 +63,7 @@ public class SeasonEditorHubGUI extends InventoryGUI {
 
     public SeasonEditorHubGUI(Player player, Season season, SeasonManager seasonManager,
             WorldEventManager worldEventManager, ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text("Estación: " + season.id(), NamedTextColor.GOLD), SIZE);
+        super(player, chatPromptManager.lang().component("gui.season_editor.title", "id", season.id()), SIZE);
         this.current = season;
         this.seasonManager = seasonManager;
         this.worldEventManager = worldEventManager;
@@ -85,85 +86,88 @@ public class SeasonEditorHubGUI extends InventoryGUI {
             setItem(slot, ItemBuilder.createFiller());
         }
 
+        LangManager lang = chatPromptManager.lang();
+
         setItem(NAME_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(Component.text("Nombre: " + current.displayName(), NamedTextColor.YELLOW)).build());
+                .setName(lang.component("gui.common.name_label", "name", current.displayName())).build());
 
         setItem(ICON_SLOT, new ItemBuilder(SeasonBrowserGUI.parseMaterial(current.icon()))
-                .setName(Component.text("Ícono: " + current.icon(), NamedTextColor.YELLOW)).build());
+                .setName(lang.component("gui.common.icon_label", "icon", current.icon())).build());
 
         setItem(COLOR_SLOT, new ItemBuilder(Material.PAPER)
-                .setName(Component.text("Color: " + current.color(), SeasonBrowserGUI.parseColor(current.color())))
+                .setName(Component.text(lang.raw("gui.common.color_label", "color", current.color()),
+                        SeasonBrowserGUI.parseColor(current.color())))
                 .build());
 
         setItem(DESCRIPTION_SLOT, new ItemBuilder(Material.WRITTEN_BOOK)
-                .setName(Component.text("Descripción", NamedTextColor.YELLOW))
+                .setName(lang.component("gui.common.description_title"))
                 .setLore(ItemBuilder.toLoreLines(
-                        current.description().isBlank() ? "(sin descripción)" : current.description()))
+                        current.description().isBlank() ? lang.raw("gui.common.no_description")
+                                : current.description()))
                 .build());
 
         setItem(DURATION_SLOT, new ItemBuilder(Material.CLOCK)
-                .setName(Component.text("Duración: " + current.durationAmount() + " " + current.durationUnit(),
-                        NamedTextColor.YELLOW))
-                .setLore(Component.text("Escribí: CANTIDAD UNIDAD (ej. 7 MINECRAFT_DAYS)", NamedTextColor.GRAY))
+                .setName(lang.component("gui.season_editor.duration_label", "amount", current.durationAmount(),
+                        "unit", current.durationUnit()))
+                .setLore(lang.component("gui.season_editor.duration_lore"))
                 .build());
 
         ClimateProfile climate = current.climate();
         setItem(CLIMATE_SLOT, new ItemBuilder(Material.WATER_BUCKET)
-                .setName(Component.text("Clima", NamedTextColor.AQUA))
+                .setName(lang.component("gui.season_editor.climate_label"))
                 .setLore(
-                        Component.text("rain=" + climate.rainChance() + " storm=" + climate.stormChance(),
-                                NamedTextColor.GRAY),
-                        Component.text("temp=" + climate.baseTemperature() + " snow=" + climate.snowChance(),
-                                NamedTextColor.GRAY),
-                        Component.text("Click para reescribir todos los valores", NamedTextColor.DARK_GRAY))
+                        lang.component("gui.season_editor.climate_lore_1", "rain", climate.rainChance(), "storm",
+                                climate.stormChance()),
+                        lang.component("gui.season_editor.climate_lore_2", "temperature", climate.baseTemperature(),
+                                "snow", climate.snowChance()),
+                        lang.component("gui.season_editor.climate_lore_3"))
                 .build());
 
         setItem(EXCLUSIVE_BOSS_SLOT, new ItemBuilder(Material.DRAGON_HEAD)
-                .setName(Component.text(
-                        "Jefe exclusivo: " + (current.exclusiveBossId() == null ? "(ninguno)" : current.exclusiveBossId()),
-                        NamedTextColor.RED))
-                .setLore(Component.text("Escribí un id de mob de RPGRoll-Mobs (o 'ninguno')", NamedTextColor.GRAY))
+                .setName(lang.component("gui.season_editor.exclusive_boss_label", "value",
+                        current.exclusiveBossId() == null ? lang.raw("gui.common.none_masc") : current.exclusiveBossId()))
+                .setLore(lang.component("gui.season_editor.exclusive_boss_lore"))
                 .build());
 
         setItem(WORLD_EVENT_CHANCE_SLOT, new ItemBuilder(Material.NETHER_STAR)
-                .setName(Component.text("Chance diaria de evento mundial: "
-                        + Math.round(current.worldEventDailyChance() * 100) + "%", NamedTextColor.LIGHT_PURPLE))
-                .setLore(Component.text("Click: +5% · Click derecho: -5%", NamedTextColor.GRAY)).build());
+                .setName(lang.component("gui.season_editor.world_event_chance_label", "percent",
+                        Math.round(current.worldEventDailyChance() * 100)))
+                .setLore(lang.component("gui.season_editor.step_5pct")).build());
 
         setItem(TAGS_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(Component.text("Tags: " + String.join(", ", current.tags()), NamedTextColor.YELLOW))
-                .setLore(Component.text("Escribí la lista separada por comas", NamedTextColor.GRAY)).build());
+                .setName(lang.component("gui.season_editor.tags_label", "tags", String.join(", ", current.tags())))
+                .setLore(lang.component("gui.season_editor.tags_lore")).build());
 
         setItem(BIOME_MODIFIERS_SLOT, new ItemBuilder(Material.GRASS_BLOCK)
-                .setName(Component.text("Modificadores de bioma: " + current.biomeTemperatureModifiers().size(),
-                        NamedTextColor.YELLOW))
-                .setLore(Component.text("Escribí: bioma=delta,bioma2=delta2 (ej. taiga=-10,desert=5)",
-                        NamedTextColor.GRAY))
+                .setName(lang.component("gui.season_editor.biome_modifiers_label", "count",
+                        current.biomeTemperatureModifiers().size()))
+                .setLore(lang.component("gui.season_editor.biome_modifiers_lore"))
                 .build());
 
         setItem(VEGETATION_SLOT, new ItemBuilder(Material.OAK_SAPLING)
-                .setName(Component.text("Vegetación: " + current.vegetationEffects().size(), NamedTextColor.GREEN))
+                .setName(lang.component("gui.season_editor.vegetation_label", "count",
+                        current.vegetationEffects().size()))
                 .setLore(Component.text(
                         current.vegetationEffects().stream().map(Enum::name).collect(Collectors.joining(", ")),
                         NamedTextColor.GRAY),
-                        Component.text("Escribí la lista separada por comas (ver tipos en la doc)",
-                                NamedTextColor.DARK_GRAY))
+                        lang.component("gui.season_editor.vegetation_lore"))
                 .build());
 
         setItem(SUB_SEASONS_SLOT, new ItemBuilder(Material.BOOK)
-                .setName(Component.text("▶ Subestaciones (" + current.subSeasons().size() + ")", NamedTextColor.GREEN))
+                .setName(lang.component("gui.season_editor.sub_seasons_label", "count", current.subSeasons().size()))
                 .build());
 
         setItem(MOB_MODIFIERS_SLOT, new ItemBuilder(Material.ZOMBIE_HEAD)
-                .setName(Component.text("▶ Mobs de temporada (" + current.mobModifiers().size() + ")",
-                        NamedTextColor.GREEN))
+                .setName(lang.component("gui.season_editor.mob_modifiers_label", "count",
+                        current.mobModifiers().size()))
                 .build());
 
         setItem(WORLD_EVENTS_SLOT, new ItemBuilder(Material.END_CRYSTAL)
-                .setName(Component.text("Eventos elegibles: " + current.worldEventIds().size(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Escribí los ids separados por comas", NamedTextColor.GRAY)).build());
+                .setName(lang.component("gui.season_editor.world_events_label", "count",
+                        current.worldEventIds().size()))
+                .setLore(lang.component("gui.season_editor.world_events_lore")).build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back")));
     }
 
     @Override
@@ -172,35 +176,36 @@ public class SeasonEditorHubGUI extends InventoryGUI {
         event.setCancelled(true);
         int slot = event.getSlot();
         ClickType click = event.getClick();
+        LangManager lang = chatPromptManager.lang();
 
         if (slot == NAME_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el nuevo nombre:", value -> replace(rebuild(b -> b.displayName = value)));
+            chatPromptManager.prompt(player, lang.raw("gui.common.prompt_name"), value -> replace(rebuild(b -> b.displayName = value)));
             return;
         }
 
         if (slot == ICON_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el Material del ícono:", value -> replace(rebuild(b -> b.icon = value)));
+            chatPromptManager.prompt(player, lang.raw("gui.common.prompt_icon"), value -> replace(rebuild(b -> b.icon = value)));
             return;
         }
 
         if (slot == COLOR_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el color (ej. GREEN, GOLD):", value -> replace(rebuild(b -> b.color = value)));
+            chatPromptManager.prompt(player, lang.raw("gui.season_editor.prompt_color"), value -> replace(rebuild(b -> b.color = value)));
             return;
         }
 
         if (slot == DESCRIPTION_SLOT) {
-            chatPromptManager.prompt(player, "Escribí la nueva descripción:", value -> replace(rebuild(b -> b.description = value)));
+            chatPromptManager.prompt(player, lang.raw("gui.common.prompt_description"), value -> replace(rebuild(b -> b.description = value)));
             return;
         }
 
         if (slot == DURATION_SLOT) {
-            chatPromptManager.prompt(player, "Escribí: CANTIDAD UNIDAD (REAL_HOURS, REAL_DAYS, REAL_WEEKS, MINECRAFT_DAYS):",
+            chatPromptManager.prompt(player, lang.raw("gui.season_editor.prompt_duration"),
                     value -> {
 
                         String[] parts = value.trim().split("\\s+", 2);
 
                         if (parts.length < 2) {
-                            player.sendMessage(Component.text("Formato inválido.", NamedTextColor.RED));
+                            lang.send(player, "gui.common.invalid_format");
                             return;
                         }
 
@@ -210,7 +215,7 @@ public class SeasonEditorHubGUI extends InventoryGUI {
                         try {
                             unit = DurationUnit.valueOf(parts[1].trim().toUpperCase(Locale.ROOT));
                         } catch (IllegalArgumentException e) {
-                            player.sendMessage(Component.text("Unidad inválida: " + parts[1], NamedTextColor.RED));
+                            lang.send(player, "gui.season_editor.invalid_unit", "value", parts[1]);
                             return;
                         }
 
@@ -223,15 +228,12 @@ public class SeasonEditorHubGUI extends InventoryGUI {
         }
 
         if (slot == CLIMATE_SLOT) {
-            chatPromptManager.prompt(player,
-                    "Escribí: rain-chance=x,storm-chance=x,snow-chance=x,fog-chance=x,base-temperature=x,"
-                            + "temperature-variance=x,wind-strength=x,humidity=x,heatwave-chance=x,thunderstorm-chance=x",
-                    this::parseAndReplaceClimate);
+            chatPromptManager.prompt(player, lang.raw("gui.season_editor.prompt_climate"), this::parseAndReplaceClimate);
             return;
         }
 
         if (slot == EXCLUSIVE_BOSS_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el id del mob jefe (o 'ninguno'):",
+            chatPromptManager.prompt(player, lang.raw("gui.season_editor.prompt_exclusive_boss"),
                     value -> replace(rebuild(b -> b.exclusiveBossId = value.equalsIgnoreCase("ninguno") ? null : value.trim())));
             return;
         }
@@ -243,20 +245,19 @@ public class SeasonEditorHubGUI extends InventoryGUI {
         }
 
         if (slot == TAGS_SLOT) {
-            chatPromptManager.prompt(player, "Escribí los tags separados por comas:", value -> replace(rebuild(
+            chatPromptManager.prompt(player, lang.raw("gui.season_editor.prompt_tags"), value -> replace(rebuild(
                     b -> b.tags = splitToSet(value))));
             return;
         }
 
         if (slot == BIOME_MODIFIERS_SLOT) {
-            chatPromptManager.prompt(player, "Escribí: bioma=delta,bioma2=delta2:", value -> replace(rebuild(
+            chatPromptManager.prompt(player, lang.raw("gui.season_editor.prompt_biome_modifiers"), value -> replace(rebuild(
                     b -> b.biomeModifiers = parseNumericMap(value))));
             return;
         }
 
         if (slot == VEGETATION_SLOT) {
-            chatPromptManager.prompt(player,
-                    "Escribí: SNOW_LAYERS,ICE_LAKES,DRY_GRASS,FALLING_LEAVES,FLOWER_BOOM (los que apliquen):",
+            chatPromptManager.prompt(player, lang.raw("gui.season_editor.prompt_vegetation"),
                     value -> replace(rebuild(b -> b.vegetationEffects = parseVegetationEffects(value))));
             return;
         }
@@ -272,7 +273,7 @@ public class SeasonEditorHubGUI extends InventoryGUI {
         }
 
         if (slot == WORLD_EVENTS_SLOT) {
-            chatPromptManager.prompt(player, "Escribí los ids de eventos elegibles, separados por comas:", value -> {
+            chatPromptManager.prompt(player, lang.raw("gui.season_editor.prompt_world_events"), value -> {
 
                 List<String> ids = List.of(value.split("\\s*,\\s*")).stream()
                         .filter(id -> !id.isBlank())

@@ -34,7 +34,8 @@ public class SkillEditorGUI extends InventoryGUI {
 
     public SkillEditorGUI(Player player, Skill skill, SkillManager skillManager, ChatPromptManager chatPromptManager,
             Runnable onBack) {
-        super(player, Component.text("Habilidad: " + skill.id(), NamedTextColor.GOLD), SIZE);
+        super(player, Component.text(chatPromptManager.lang().raw("gui.skill.editor.title", "id", skill.id()),
+                NamedTextColor.GOLD), SIZE);
         this.current = skill;
         this.skillManager = skillManager;
         this.chatPromptManager = chatPromptManager;
@@ -57,28 +58,36 @@ public class SkillEditorGUI extends InventoryGUI {
         }
 
         setItem(NAME_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(Component.text("Nombre: " + current.displayName(), NamedTextColor.YELLOW)).build());
+                .setName(Component.text(chatPromptManager.lang().raw("gui.skill.editor.name", "name", current.displayName()),
+                        NamedTextColor.YELLOW)).build());
 
         setItem(PROFESSION_SLOT, new ItemBuilder(Material.VILLAGER_SPAWN_EGG)
-                .setName(Component.text("Profesión: " + current.professionId(), NamedTextColor.AQUA)).build());
+                .setName(Component.text(chatPromptManager.lang().raw("gui.skill.editor.profession", "profession",
+                        current.professionId()), NamedTextColor.AQUA)).build());
 
         setItem(DESCRIPTION_SLOT, new ItemBuilder(Material.WRITTEN_BOOK)
-                .setName(Component.text("Descripción", NamedTextColor.YELLOW))
-                .setLore(ItemBuilder.toLoreLines(current.description().isBlank() ? "(sin descripción)" : current.description()))
+                .setName(Component.text(chatPromptManager.lang().raw("gui.profession.editor.description"), NamedTextColor.YELLOW))
+                .setLore(ItemBuilder.toLoreLines(current.description().isBlank()
+                        ? chatPromptManager.lang().raw("gui.editor.no_description") : current.description()))
                 .build());
 
         setItem(ATTRIBUTE_KEY_SLOT, new ItemBuilder(Material.COMPASS)
-                .setName(Component.text("attribute-key: " + current.attributeKey(), NamedTextColor.GOLD)).build());
+                .setName(Component.text(chatPromptManager.lang().raw("gui.skill.editor.attribute_key", "key",
+                        current.attributeKey()), NamedTextColor.GOLD)).build());
 
         setItem(MAX_LEVEL_SLOT, new ItemBuilder(Material.EXPERIENCE_BOTTLE)
-                .setName(Component.text("Nivel máximo: " + current.maxLevel(), NamedTextColor.GREEN))
-                .setLore(Component.text("Click: +5 · Click derecho: -5", NamedTextColor.GRAY)).build());
+                .setName(Component.text(chatPromptManager.lang().raw("gui.skill.editor.max_level", "level",
+                        current.maxLevel()), NamedTextColor.GREEN))
+                .setLore(Component.text(chatPromptManager.lang().raw("gui.skill.editor.max_level_hint"), NamedTextColor.GRAY))
+                .build());
 
         setItem(VALUE_PER_LEVEL_SLOT, new ItemBuilder(Material.NETHER_STAR)
-                .setName(Component.text("Valor por nivel: " + current.valuePerLevel(), NamedTextColor.LIGHT_PURPLE))
-                .setLore(Component.text("Click: +0.5 · Click derecho: -0.5", NamedTextColor.GRAY)).build());
+                .setName(Component.text(chatPromptManager.lang().raw("gui.skill.editor.value_per_level", "value",
+                        current.valuePerLevel()), NamedTextColor.LIGHT_PURPLE))
+                .setLore(Component.text(chatPromptManager.lang().raw("gui.skill.editor.value_per_level_hint"),
+                        NamedTextColor.GRAY)).build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(chatPromptManager.lang().raw("gui.common.back")));
     }
 
     @Override
@@ -90,19 +99,23 @@ public class SkillEditorGUI extends InventoryGUI {
         double doubleSign = event.getClick() == ClickType.RIGHT ? -0.5 : 0.5;
 
         if (slot == NAME_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el nuevo nombre:", value -> replace(new Skill(current.id(), value,
+            chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.editor.prompt_name"),
+                    value -> replace(new Skill(current.id(), value,
                     current.description(), current.professionId(), current.maxLevel(), current.attributeKey(),
                     current.valuePerLevel())));
         } else if (slot == PROFESSION_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el id de la profesión:", value -> replace(new Skill(current.id(),
+            chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.skill.editor.prompt_profession"),
+                    value -> replace(new Skill(current.id(),
                     current.displayName(), current.description(), value.trim().toLowerCase(Locale.ROOT), current.maxLevel(),
                     current.attributeKey(), current.valuePerLevel())));
         } else if (slot == DESCRIPTION_SLOT) {
-            chatPromptManager.prompt(player, "Escribí la nueva descripción:", value -> replace(new Skill(current.id(),
+            chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.editor.prompt_description"),
+                    value -> replace(new Skill(current.id(),
                     current.displayName(), value, current.professionId(), current.maxLevel(), current.attributeKey(),
                     current.valuePerLevel())));
         } else if (slot == ATTRIBUTE_KEY_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el attribute-key:", value -> replace(new Skill(current.id(),
+            chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.skill.editor.prompt_attribute_key"),
+                    value -> replace(new Skill(current.id(),
                     current.displayName(), current.description(), current.professionId(), current.maxLevel(), value,
                     current.valuePerLevel())));
         } else if (slot == MAX_LEVEL_SLOT) {

@@ -1,0 +1,29 @@
+# Referencia completa de todos los campos de una LoomRecipeDefinition.
+# Layout fijo del telar vanilla: 0=banner, 1=tinte, 2=patrón, 3=resultado —
+# ver LoomEngine (intercepta el click en el slot de resultado).
+id: reference_full_loom_recipe
+
+banner:
+  type: MATERIAL
+  value: WHITE_BANNER
+  amount: 1
+
+dye:
+  type: MATERIAL
+  value: PURPLE_DYE
+  amount: 1
+
+# Opcional — si se omite, cualquier ítem (o ninguno) en el slot de patrón sirve.
+pattern:
+  type: MATERIAL
+  value: FLOWER_BANNER_PATTERN
+  amount: 1
+
+result:
+  type: ITEM_ID
+  value: runic_blade
+  amount: 1
+
+conditions:
+  - type: LEVEL_MIN
+    min-value: 5

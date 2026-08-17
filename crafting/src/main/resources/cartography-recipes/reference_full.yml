@@ -1,0 +1,23 @@
+# Referencia completa de todos los campos de una CartographyRecipeDefinition.
+# Bukkit no expone un evento "prepare" para esta mesa — Paper sí, vía
+# CartographyItemEvent (ver CartographyEngine).
+id: reference_full_cartography_recipe
+
+map:
+  type: MATERIAL
+  value: FILLED_MAP
+  amount: 1
+
+item:
+  type: ITEM_ID
+  value: enchanted_gem
+  amount: 1
+
+result:
+  type: ITEM_ID
+  value: runic_blade
+  amount: 1
+
+conditions:
+  - type: LEVEL_MIN
+    min-value: 5

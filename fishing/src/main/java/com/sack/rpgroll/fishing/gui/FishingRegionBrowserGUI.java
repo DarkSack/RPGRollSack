@@ -1,5 +1,6 @@
 package com.sack.rpgroll.fishing.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.fishing.core.FishingRegion;
 import com.sack.rpgroll.fishing.core.FishingRegionManager;
 import com.sack.rpgroll.fishing.core.WaterType;
@@ -24,13 +25,15 @@ public class FishingRegionBrowserGUI extends InventoryGUI {
 
     private final FishingRegionManager regionManager;
     private final ChatPromptManager chatPromptManager;
+    private final LangManager lang;
     private List<FishingRegion> regions;
 
     public FishingRegionBrowserGUI(Player player, FishingRegionManager regionManager,
             ChatPromptManager chatPromptManager) {
-        super(player, Component.text("Regiones de Pesca", NamedTextColor.GOLD), SIZE);
+        super(player, chatPromptManager.lang().component("gui.region.browser_title"), SIZE);
         this.regionManager = regionManager;
         this.chatPromptManager = chatPromptManager;
+        this.lang = chatPromptManager.lang();
         this.regions = List.copyOf(regionManager.getAll());
     }
 
@@ -49,17 +52,17 @@ public class FishingRegionBrowserGUI extends InventoryGUI {
 
             setItem(i, new ItemBuilder(Material.MAP)
                     .setName(Component.text(region.id(), NamedTextColor.LIGHT_PURPLE))
-                    .setLore(Component.text("Mundo: " + region.world(), NamedTextColor.GRAY),
-                            Component.text("Agua forzada: " + region.forcedWaterType(), NamedTextColor.GRAY),
-                            Component.text("Click para editar", NamedTextColor.YELLOW))
+                    .setLore(lang.component("gui.region.lore_world", "world", region.world()),
+                            lang.component("gui.region.lore_forced_water", "value", region.forcedWaterType()),
+                            lang.component("gui.common.click_to_edit"))
                     .build());
         }
 
         setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Crear región nueva (en tu ubicación)", NamedTextColor.GREEN))
+                .setName(lang.component("gui.region.new_button"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back")));
     }
 
     @Override
@@ -85,12 +88,12 @@ public class FishingRegionBrowserGUI extends InventoryGUI {
     }
 
     private void promptNew() {
-        chatPromptManager.prompt(player, "Escribí el id de la nueva región:", value -> {
+        chatPromptManager.prompt(player, lang.raw("gui.region.prompt_new_id"), value -> {
 
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 
             if (regionManager.exists(id)) {
-                player.sendMessage(Component.text("Ya existe una región con ese id.", NamedTextColor.RED));
+                lang.send(player, "gui.region.already_exists");
                 reopen();
                 return;
             }

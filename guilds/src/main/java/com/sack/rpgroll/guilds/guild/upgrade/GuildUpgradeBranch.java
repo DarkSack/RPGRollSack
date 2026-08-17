@@ -1,31 +1,25 @@
 package com.sack.rpgroll.guilds.guild.upgrade;
 
+import com.sack.rpgroll.common.lang.LangManager;
+
 /** Ramas del árbol de mejoras de guild (spec: "Banco/Economía/Miembros/Buffs/Territorio/Eventos"). */
 public enum GuildUpgradeBranch {
 
-    BANK("Banco", "Más espacio de almacenamiento compartido"),
-    ECONOMY("Economía", "Mejores recompensas de oro en quests de guild"),
-    MEMBERS("Miembros", "Más cupo de integrantes"),
-    BUFFS("Buffs", "Más buffs de guild activos a la vez"),
-    TERRITORY("Territorio", "Más regiones reclamables"),
-    EVENTS("Eventos", "Más eventos concurrentes en el calendario");
+    BANK,
+    ECONOMY,
+    MEMBERS,
+    BUFFS,
+    TERRITORY,
+    EVENTS;
 
     public static final int MAX_LEVEL = 10;
 
-    private final String displayName;
-    private final String description;
-
-    GuildUpgradeBranch(String displayName, String description) {
-        this.displayName = displayName;
-        this.description = description;
+    public String displayName(LangManager lang) {
+        return lang.raw("guild.branch." + name().toLowerCase(java.util.Locale.ROOT) + ".name");
     }
 
-    public String displayName() {
-        return displayName;
-    }
-
-    public String description() {
-        return description;
+    public String description(LangManager lang) {
+        return lang.raw("guild.branch." + name().toLowerCase(java.util.Locale.ROOT) + ".description");
     }
 
     /** Costo en dinero para pasar de {@code currentLevel} a {@code currentLevel + 1}. */

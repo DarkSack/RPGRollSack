@@ -1,8 +1,13 @@
 package com.sack.rpgroll.crafting.station.runtime;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -25,6 +30,8 @@ public class StationRuntime {
     private int progressTicks;
     private int fuelTicksRemaining;
     private UUID lastPlayerId;
+    private int tier = 1;
+    private final List<ItemStack> consumedForCurrentRecipe = new ArrayList<>();
 
     public StationRuntime(String stationDefId, String world, int x, int y, int z, int inventorySize, String guiTitle) {
         this.stationDefId = stationDefId;
@@ -33,7 +40,7 @@ public class StationRuntime {
         this.y = y;
         this.z = z;
         this.key = keyOf(world, x, y, z);
-        this.inventory = Bukkit.createInventory(null, inventorySize, guiTitle);
+        this.inventory = Bukkit.createInventory(null, inventorySize, ComponentUtils.parse(guiTitle));
     }
 
     public static String keyOf(String world, int x, int y, int z) {
@@ -80,6 +87,17 @@ public class StationRuntime {
     public void clearRecipe() {
         this.activeRecipeId = null;
         this.progressTicks = 0;
+        this.consumedForCurrentRecipe.clear();
+    }
+
+    /** Copia de exactamente qué se sacó del inventario para iniciar la receta en curso — para poder devolverlo si falla. */
+    public List<ItemStack> consumedForCurrentRecipe() {
+        return List.copyOf(consumedForCurrentRecipe);
+    }
+
+    public void setConsumedForCurrentRecipe(List<ItemStack> items) {
+        consumedForCurrentRecipe.clear();
+        consumedForCurrentRecipe.addAll(items);
     }
 
     public boolean isProcessing() {
@@ -118,6 +136,14 @@ public class StationRuntime {
 
     public void setLastPlayerId(UUID lastPlayerId) {
         this.lastPlayerId = lastPlayerId;
+    }
+
+    public int tier() {
+        return tier;
+    }
+
+    public void setTier(int tier) {
+        this.tier = Math.max(1, tier);
     }
 
 }

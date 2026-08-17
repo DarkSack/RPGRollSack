@@ -1,5 +1,6 @@
 package com.sack.rpgroll.magic.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.magic.core.Spell;
@@ -37,15 +38,17 @@ public class SpellComponentsEditorGUI extends InventoryGUI {
 
     private final SpellManager spellManager;
     private final ChatPromptManager chatPromptManager;
+    private final LangManager lang;
     private final Runnable onBack;
     private Spell current;
 
     public SpellComponentsEditorGUI(Player player, Spell spell, SpellManager spellManager,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text("Componentes: " + spell.id(), NamedTextColor.GOLD), SIZE);
+        super(player, chatPromptManager.lang().component("gui.spell_components.title", "id", spell.id()), SIZE);
         this.current = spell;
         this.spellManager = spellManager;
         this.chatPromptManager = chatPromptManager;
+        this.lang = chatPromptManager.lang();
         this.onBack = onBack;
     }
 
@@ -74,14 +77,14 @@ public class SpellComponentsEditorGUI extends InventoryGUI {
         }
 
         setItem(ADD_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Agregar componente", NamedTextColor.GREEN))
-                .setLore(Component.text("TIPO clave=valor,clave2=valor2", NamedTextColor.GRAY),
-                        Component.text("ej. PROJECTILE speed=1.2,max-distance=25", NamedTextColor.DARK_GRAY),
-                        Component.text("ej. DAMAGE_DIRECT amount=8", NamedTextColor.DARK_GRAY),
-                        Component.text("Orden importa — se ejecutan de arriba a abajo", NamedTextColor.DARK_GRAY))
+                .setName(lang.component("gui.spell_components.add"))
+                .setLore(lang.component("gui.spell_components.add_lore_1"),
+                        lang.component("gui.spell_components.add_lore_2"),
+                        lang.component("gui.spell_components.add_lore_3"),
+                        lang.component("gui.spell_components.add_lore_4"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back")));
     }
 
     private org.bukkit.inventory.ItemStack componentItem(SpellComponent component, int index) {
@@ -92,10 +95,11 @@ public class SpellComponentsEditorGUI extends InventoryGUI {
             lore.add(Component.text(entry.getKey() + "=" + entry.getValue(), NamedTextColor.DARK_GRAY));
         }
 
-        lore.add(Component.text("Shift-click para quitar", NamedTextColor.RED));
+        lore.add(lang.component("gui.common.shift_remove"));
 
         return new ItemBuilder(iconFor(component.type()))
-                .setName(Component.text("#" + (index + 1) + " " + component.type(), NamedTextColor.AQUA))
+                .setName(lang.component("gui.spell_components.component_label", "index", index + 1,
+                        "type", component.type()))
                 .setLore(lore)
                 .build();
     }
@@ -146,7 +150,7 @@ public class SpellComponentsEditorGUI extends InventoryGUI {
     }
 
     private void promptAddComponent() {
-        chatPromptManager.prompt(player, "Escribí: TIPO clave=valor,clave2=valor2:", value -> {
+        chatPromptManager.prompt(player, lang.raw("gui.spell_components.prompt_add"), value -> {
 
             String[] parts = value.trim().split("\\s+", 2);
             SpellComponentType type;
@@ -154,7 +158,7 @@ public class SpellComponentsEditorGUI extends InventoryGUI {
             try {
                 type = SpellComponentType.valueOf(parts[0].trim().toUpperCase(Locale.ROOT));
             } catch (IllegalArgumentException e) {
-                player.sendMessage(Component.text("Tipo inválido: " + parts[0], NamedTextColor.RED));
+                lang.send(player, "gui.spell_components.invalid_type", "type", parts[0]);
                 return;
             }
 

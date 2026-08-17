@@ -1,5 +1,7 @@
 package com.sack.rpgroll.mobs.gui.editor;
 
+import com.sack.rpgroll.common.lang.LangManager;
+
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.mobs.core.MobAction;
@@ -24,12 +26,15 @@ public class MobTriggersEditorGUI extends InventoryGUI {
     private final MobEditorSession session;
     private final Runnable onBack;
     private final List<MobTrigger> triggers;
+    private final LangManager lang;
 
     public MobTriggersEditorGUI(Player player, MobEditorSession session, Runnable onBack) {
-        super(player, Component.text("Triggers: " + session.original.id(), NamedTextColor.GOLD), SIZE);
+        super(player, session.chatPromptManager.lang().component("gui.triggers.title", "id",
+                session.original.id()), SIZE);
         this.session = session;
         this.onBack = onBack;
         this.triggers = List.of(MobTrigger.values());
+        this.lang = session.chatPromptManager.lang();
     }
 
     @Override
@@ -48,11 +53,11 @@ public class MobTriggersEditorGUI extends InventoryGUI {
 
             setItem(i, new ItemBuilder(count > 0 ? Material.COMPARATOR : Material.LEVER)
                     .setName(Component.text(trigger.name(), NamedTextColor.YELLOW))
-                    .setLore(Component.text(count + " acción(es)", NamedTextColor.GRAY))
+                    .setLore(lang.component("gui.triggers.count_lore", "count", count))
                     .build());
         }
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back_button")));
     }
 
     @Override
@@ -67,8 +72,8 @@ public class MobTriggersEditorGUI extends InventoryGUI {
             List<MobAction> actions = new ArrayList<>(session.triggers.getOrDefault(trigger, List.of()));
             session.triggers.put(trigger, actions);
 
-            new MobActionListEditorGUI(player, "Acciones: " + trigger.name(), actions, session.chatPromptManager,
-                    this::reopen).open();
+            new MobActionListEditorGUI(player, lang.raw("gui.triggers.actions_gui_title", "trigger", trigger.name()),
+                    actions, session.chatPromptManager, this::reopen).open();
             return;
         }
 

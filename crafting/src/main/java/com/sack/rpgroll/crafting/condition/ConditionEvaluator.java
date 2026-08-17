@@ -12,23 +12,48 @@ import org.bukkit.entity.Player;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
+import java.util.UUID;
 
 /**
  * Evalúa las {@link RecipeCondition} de una receta/estación contra un
- * jugador concreto. Cada tipo que depende de otro addon sigue el patrón
- * blando "isReady() -> get()" del ecosistema: si el addon no está instalado,
- * la condición simplemente no se cumple (falla cerrado, no lanza excepción).
+ * jugador. Cada tipo que depende de otro addon sigue el patrón blando
+ * "isReady() -> get()" del ecosistema: si el addon no está instalado, la
+ * condición simplemente no se cumple (falla cerrado, no lanza excepción).
+ * <p>
+ * Las condiciones se dividen en dos grupos: las que solo necesitan el UUID
+ * del jugador (LEVEL_MIN/RACE/CLASS/JOB_MIN/GUILD_MEMBER — leen datos
+ * persistidos vía UUID, funcionan con el jugador offline) y las que
+ * necesitan un {@link Player} en línea de verdad porque dependen de su
+ * posición/permisos en ese instante (PERMISSION/BIOME). WORLD/HOUR_RANGE/
+ * SEASON/WEATHER usan el {@link World} de la estación como referencia en vez
+ * del mundo del jugador — tiene más sentido para una estación fija que para
+ * un jugador que puede haberse ido a otro lado.
  */
 public class ConditionEvaluator {
 
     public boolean evaluateAll(List<RecipeCondition> conditions, Player player) {
+        return evaluateAllOffline(conditions, player.getUniqueId(), player, player.getWorld());
+    }
+
+    public boolean evaluate(RecipeCondition condition, Player player) {
+        return evaluateOffline(condition, player.getUniqueId(), player, player.getWorld());
+    }
+
+    /**
+     * Igual que {@link #evaluateAll(List, Player)} pero sin exigir que el
+     * jugador esté en línea — {@code onlinePlayer} puede ser null (se
+     * evalúan solo las condiciones que no lo necesitan), y {@code fallbackWorld}
+     * reemplaza al mundo del jugador para WORLD/HOUR_RANGE/SEASON/WEATHER.
+     */
+    public boolean evaluateAllOffline(List<RecipeCondition> conditions, UUID playerId, Player onlinePlayer,
+            World fallbackWorld) {
 
         if (conditions == null || conditions.isEmpty()) {
             return true;
         }
 
         for (RecipeCondition condition : conditions) {
-            if (!evaluate(condition, player)) {
+            if (!evaluateOffline(condition, playerId, onlinePlayer, fallbackWorld)) {
                 return false;
             }
         }
@@ -36,33 +61,33 @@ public class ConditionEvaluator {
         return true;
     }
 
-    public boolean evaluate(RecipeCondition condition, Player player) {
+    public boolean evaluateOffline(RecipeCondition condition, UUID playerId, Player onlinePlayer, World fallbackWorld) {
 
         return switch (condition.type()) {
-            case LEVEL_MIN -> rpgPlayer(player).map(p -> p.getLevel() >= condition.minValue()).orElse(false);
-            case RACE -> rpgPlayer(player).map(p -> condition.value().equals(p.getRace())).orElse(false);
-            case CLASS -> rpgPlayer(player).map(p -> condition.value().equals(p.getPlayerClass())).orElse(false);
-            case JOB_MIN -> rpgPlayer(player)
+            case LEVEL_MIN -> rpgPlayer(playerId).map(p -> p.getLevel() >= condition.minValue()).orElse(false);
+            case RACE -> rpgPlayer(playerId).map(p -> condition.value().equals(p.getRace())).orElse(false);
+            case CLASS -> rpgPlayer(playerId).map(p -> condition.value().equals(p.getPlayerClass())).orElse(false);
+            case JOB_MIN -> rpgPlayer(playerId)
                     .map(p -> p.getJobs().hasJob(condition.value())
                             && p.getJobs().getLevel(condition.value()) >= condition.minValue())
                     .orElse(false);
-            case PERMISSION -> player.hasPermission(condition.value());
-            case WORLD -> player.getWorld().getName().equalsIgnoreCase(condition.value());
-            case HOUR_RANGE -> evaluateHourRange(player.getWorld(), condition.value());
-            case BIOME -> evaluateBiome(player, condition.value());
-            case SEASON -> evaluateSeason(player.getWorld(), condition.value());
-            case GUILD_MEMBER -> evaluateGuildMember(player);
-            case WEATHER -> evaluateWeather(player.getWorld(), condition.value());
+            case PERMISSION -> onlinePlayer != null && onlinePlayer.hasPermission(condition.value());
+            case WORLD -> fallbackWorld != null && fallbackWorld.getName().equalsIgnoreCase(condition.value());
+            case HOUR_RANGE -> fallbackWorld != null && evaluateHourRange(fallbackWorld, condition.value());
+            case BIOME -> onlinePlayer != null && evaluateBiome(onlinePlayer, condition.value());
+            case SEASON -> fallbackWorld != null && evaluateSeason(fallbackWorld, condition.value());
+            case GUILD_MEMBER -> evaluateGuildMember(playerId);
+            case WEATHER -> fallbackWorld != null && evaluateWeather(fallbackWorld, condition.value());
         };
     }
 
-    private Optional<RPGPlayer> rpgPlayer(Player player) {
+    private Optional<RPGPlayer> rpgPlayer(UUID playerId) {
 
-        if (!RPGRollAPI.isReady()) {
+        if (playerId == null || !RPGRollAPI.isReady()) {
             return Optional.empty();
         }
 
-        return RPGRollAPI.get().getPlayer(player.getUniqueId());
+        return RPGRollAPI.get().getPlayer(playerId);
     }
 
     private boolean evaluateHourRange(World world, String range) {
@@ -115,13 +140,13 @@ public class ConditionEvaluator {
                 .orElse(false);
     }
 
-    private boolean evaluateGuildMember(Player player) {
+    private boolean evaluateGuildMember(UUID playerId) {
 
-        if (!GuildsAPI.isReady()) {
+        if (playerId == null || !GuildsAPI.isReady()) {
             return false;
         }
 
-        return GuildsAPI.getGuildManager().findByMember(player.getUniqueId()).isPresent();
+        return GuildsAPI.getGuildManager().findByMember(playerId).isPresent();
     }
 
     private boolean evaluateWeather(World world, String weather) {

@@ -1,5 +1,6 @@
 package com.sack.rpgroll.workers;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.common.resource.DirectoryCreator;
 import com.sack.rpgroll.common.resource.ResourceCopier;
 import com.sack.rpgroll.workers.api.WorkersAPI;
@@ -47,11 +48,15 @@ public class WorkersPlugin extends JavaPlugin {
     private WorkerEventManager workerEventManager;
     private WorkerManager workerManager;
     private WarehouseManager warehouseManager;
+    private LangManager langManager;
 
     @Override
     public void onEnable() {
 
         saveDefaultConfig();
+
+        langManager = new LangManager(this, List.of("es", "en", "pt_BR"), "es");
+        langManager.reload(getConfig().getString("language", "es"));
 
         new DirectoryCreator(this).create(DIRECTORIES);
         new ResourceCopier(this).copyDirectories(DIRECTORIES);
@@ -78,9 +83,9 @@ public class WorkersPlugin extends JavaPlugin {
         WorkersAPI.init(professionManager, skillManager, scheduleManager, workerEventManager, workerManager,
                 warehouseManager, behaviorRegistry);
 
-        ChatPromptManager chatPromptManager = new ChatPromptManager(this);
+        ChatPromptManager chatPromptManager = new ChatPromptManager(this, langManager);
         getServer().getPluginManager().registerEvents(chatPromptManager, this);
-        getServer().getPluginManager().registerEvents(new WarehouseDesignatorListener(warehouseManager), this);
+        getServer().getPluginManager().registerEvents(new WarehouseDesignatorListener(warehouseManager, langManager), this);
 
         startTasks(behaviorRegistry, economyService, moraleEngine, workSearchRadius);
 
@@ -135,6 +140,8 @@ public class WorkersPlugin extends JavaPlugin {
     }
 
     private void reloadContent() {
+        reloadConfig();
+        langManager.reload(getConfig().getString("language", "es"));
         professionManager.reload();
         skillManager.reload();
         scheduleManager.reload();
@@ -164,11 +171,11 @@ public class WorkersPlugin extends JavaPlugin {
         new WorkerAiTask(workerManager, professionManager, scheduleManager, warehouseManager, behaviorRegistry,
                 economyService, moraleEngine, warehouseSearchRadius).runTaskTimer(this, aiInterval, aiInterval);
 
-        new WageTask(workerManager, economyService, moraleEngine, wageInterval).runTaskTimer(this, wageInterval,
+        new WageTask(workerManager, economyService, moraleEngine, wageInterval, langManager).runTaskTimer(this, wageInterval,
                 wageInterval);
 
-        new WorkerEventTask(workerManager, workerEventManager, eventInterval, eventBaseChance, lowMoraleThreshold)
-                .runTaskTimer(this, eventInterval, eventInterval);
+        new WorkerEventTask(workerManager, workerEventManager, eventInterval, eventBaseChance, lowMoraleThreshold,
+                langManager).runTaskTimer(this, eventInterval, eventInterval);
     }
 
     public ProfessionManager getProfessionManager() {
@@ -193,6 +200,10 @@ public class WorkersPlugin extends JavaPlugin {
 
     public WarehouseManager getWarehouseManager() {
         return warehouseManager;
+    }
+
+    public LangManager getLangManager() {
+        return langManager;
     }
 
 }

@@ -1,5 +1,7 @@
 package com.sack.rpgroll.fishing.command;
 
+import com.sack.rpgroll.common.lang.LangManager;
+import com.sack.rpgroll.fishing.FishingPlugin;
 import com.sack.rpgroll.fishing.core.BaitManager;
 import com.sack.rpgroll.fishing.core.FishSpeciesManager;
 import com.sack.rpgroll.fishing.core.FishingRegionManager;
@@ -10,9 +12,6 @@ import com.sack.rpgroll.fishing.gui.ChatPromptManager;
 import com.sack.rpgroll.fishing.gui.FishingBrowserGUI;
 import com.sack.rpgroll.fishing.item.FishingItemFactory;
 import com.sack.rpgroll.util.TabCompleteUtil;
-
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -39,10 +38,12 @@ public class FishingAdminCommand implements CommandExecutor, TabCompleter {
     private final JunkManager junkManager;
     private final FishingRegionManager regionManager;
     private final ChatPromptManager chatPromptManager;
+    private final FishingPlugin plugin;
+    private final LangManager lang;
 
     public FishingAdminCommand(FishSpeciesManager speciesManager, FishingRodManager rodManager,
             BaitManager baitManager, TreasureManager treasureManager, JunkManager junkManager,
-            FishingRegionManager regionManager, ChatPromptManager chatPromptManager) {
+            FishingRegionManager regionManager, ChatPromptManager chatPromptManager, FishingPlugin plugin) {
         this.speciesManager = speciesManager;
         this.rodManager = rodManager;
         this.baitManager = baitManager;
@@ -50,13 +51,15 @@ public class FishingAdminCommand implements CommandExecutor, TabCompleter {
         this.junkManager = junkManager;
         this.regionManager = regionManager;
         this.chatPromptManager = chatPromptManager;
+        this.plugin = plugin;
+        this.lang = chatPromptManager.lang();
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
         if (!sender.hasPermission("rpgrollfishing.admin.*")) {
-            sender.sendMessage(Component.text("No tenés permiso para usar este comando.", NamedTextColor.RED));
+            lang.send(sender, "common.no_permission");
             return true;
         }
 
@@ -77,14 +80,13 @@ public class FishingAdminCommand implements CommandExecutor, TabCompleter {
     }
 
     private void sendUsage(CommandSender sender) {
-        sender.sendMessage(Component.text(
-                "Uso: /fishingadmin <browser|reload|giverod <id>|givebait <id>>", NamedTextColor.RED));
+        lang.send(sender, "command.admin.usage");
     }
 
     private void handleBrowser(CommandSender sender) {
 
         if (!(sender instanceof Player player)) {
-            sender.sendMessage(Component.text("Solo jugadores pueden abrir el Fishing Studio.", NamedTextColor.RED));
+            lang.send(sender, "command.admin.players_only_studio");
             return;
         }
 
@@ -101,46 +103,48 @@ public class FishingAdminCommand implements CommandExecutor, TabCompleter {
         junkManager.reload();
         regionManager.reload();
 
-        sender.sendMessage(Component.text("✔ Recargado: " + speciesManager.count() + " especie(s), "
-                + rodManager.count() + " caña(s), " + baitManager.count() + " carnada(s), "
-                + treasureManager.count() + " tesoro(s), " + junkManager.count() + " basura(s), "
-                + regionManager.count() + " región(es).", NamedTextColor.GREEN));
+        plugin.reloadConfig();
+        lang.reload(plugin.getConfig().getString("language", "es"));
+
+        lang.send(sender, "command.admin.reloaded", "species", speciesManager.count(), "rods", rodManager.count(),
+                "baits", baitManager.count(), "treasures", treasureManager.count(), "junk", junkManager.count(),
+                "regions", regionManager.count());
     }
 
     private void handleGiveRod(CommandSender sender, String[] args) {
 
         if (!(sender instanceof Player player) || args.length < 2) {
-            sender.sendMessage(Component.text("Uso: /fishingadmin giverod <id>", NamedTextColor.RED));
+            lang.send(sender, "command.admin.giverod_usage");
             return;
         }
 
         var rodOpt = rodManager.get(args[1]);
 
         if (rodOpt.isEmpty()) {
-            sender.sendMessage(Component.text("No existe una caña con id: " + args[1], NamedTextColor.RED));
+            lang.send(sender, "command.admin.giverod_unknown", "id", args[1]);
             return;
         }
 
-        player.getInventory().addItem(FishingItemFactory.createRod(rodOpt.get()));
-        sender.sendMessage(Component.text("✔ Entregada.", NamedTextColor.GREEN));
+        player.getInventory().addItem(FishingItemFactory.createRod(rodOpt.get(), lang));
+        lang.send(sender, "command.admin.given");
     }
 
     private void handleGiveBait(CommandSender sender, String[] args) {
 
         if (!(sender instanceof Player player) || args.length < 2) {
-            sender.sendMessage(Component.text("Uso: /fishingadmin givebait <id>", NamedTextColor.RED));
+            lang.send(sender, "command.admin.givebait_usage");
             return;
         }
 
         var baitOpt = baitManager.get(args[1]);
 
         if (baitOpt.isEmpty()) {
-            sender.sendMessage(Component.text("No existe una carnada con id: " + args[1], NamedTextColor.RED));
+            lang.send(sender, "command.admin.givebait_unknown", "id", args[1]);
             return;
         }
 
-        player.getInventory().addItem(FishingItemFactory.createBait(baitOpt.get()));
-        sender.sendMessage(Component.text("✔ Entregada.", NamedTextColor.GREEN));
+        player.getInventory().addItem(FishingItemFactory.createBait(baitOpt.get(), lang));
+        lang.send(sender, "command.admin.given");
     }
 
     @Override

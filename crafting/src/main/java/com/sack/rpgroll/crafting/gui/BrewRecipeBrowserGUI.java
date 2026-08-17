@@ -32,7 +32,7 @@ public class BrewRecipeBrowserGUI extends InventoryGUI {
 
     public BrewRecipeBrowserGUI(Player player, BrewRecipeManager recipeManager, ChatPromptManager chatPromptManager,
             Runnable onBack) {
-        super(player, Component.text("Recetas de fermentación", NamedTextColor.GOLD), SIZE);
+        super(player, Component.text(chatPromptManager.lang().raw("gui.brew_recipe.browser_title"), NamedTextColor.GOLD), SIZE);
         this.recipeManager = recipeManager;
         this.chatPromptManager = chatPromptManager;
         this.onBack = onBack;
@@ -54,15 +54,15 @@ public class BrewRecipeBrowserGUI extends InventoryGUI {
 
             setItem(i, new ItemBuilder(Material.BREWING_STAND)
                     .setName(Component.text(recipe.id(), NamedTextColor.YELLOW))
-                    .setLore(Component.text("ingrediente: " + recipe.ingredient().value(), NamedTextColor.GRAY),
-                            Component.text("resultado: " + recipe.result().value(), NamedTextColor.AQUA),
-                            Component.text("Click para editar", NamedTextColor.YELLOW))
+                    .setLore(Component.text(chatPromptManager.lang().raw("gui.brew_recipe.ingredient_lore", "value", recipe.ingredient().value()), NamedTextColor.GRAY),
+                            Component.text(chatPromptManager.lang().raw("gui.brew_recipe.result_lore", "value", recipe.result().value()), NamedTextColor.AQUA),
+                            Component.text(chatPromptManager.lang().raw("gui.common.click_edit"), NamedTextColor.YELLOW))
                     .build());
         }
 
         setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Crear receta de fermentación nueva", NamedTextColor.GREEN)).build());
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+                .setName(Component.text(chatPromptManager.lang().raw("gui.brew_recipe.create_new"), NamedTextColor.GREEN)).build());
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(chatPromptManager.lang().raw("gui.common.back")));
     }
 
     @Override
@@ -87,12 +87,12 @@ public class BrewRecipeBrowserGUI extends InventoryGUI {
     }
 
     private void promptNew() {
-        chatPromptManager.prompt(player, "Escribí el id de la nueva receta de fermentación:", value -> {
+        chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.brew_recipe.prompt_new_id"), value -> {
 
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 
             if (recipeManager.exists(id)) {
-                player.sendMessage(Component.text("Ya existe una receta de fermentación con ese id.", NamedTextColor.RED));
+                player.sendMessage(Component.text(chatPromptManager.lang().raw("gui.brew_recipe.already_exists"), NamedTextColor.RED));
                 reopen();
                 return;
             }

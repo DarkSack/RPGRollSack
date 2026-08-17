@@ -1,0 +1,74 @@
+# Arquivo de idioma: Português (Brasil)
+# RPGRoll-Enchantments - Sistema de mensagens
+
+# ChatPromptManager: captura a próxima mensagem de chat do jogador para as GUIs de admin
+chat_prompt_manager:
+  instructions: "&7Digite no chat, ou '{keyword}' para cancelar."
+  cancel_keyword: "cancelar"
+  cancelled: "&cCancelado."
+
+# Comando /renchant (admin)
+enchant_admin_command:
+  no_permission: "&cVocê não tem permissão para usar este comando."
+  usage: "&cUso: /renchant <apply|remove|give|list|info|reload|browser> [args]"
+  player_only: "&cSomente um jogador pode usar isso."
+  apply_usage: "&cUso: /renchant apply <id> <nível>"
+  give_usage: "&cUso: /renchant give <jogador> <id> <nível>"
+  player_not_found: "&cJogador não encontrado: {player}"
+  item_empty: "&cO item na sua mão está vazio."
+  enchant_not_found: "&cNão existe um encantamento com id: {id}"
+  invalid_level: "&cNível inválido: {level}"
+  apply_success_prefix: "&a✔ "
+  apply_success_suffix: "&a {level} aplicado."
+  level_too_high: "&cNível fora do intervalo (máximo {max})."
+  conflict: "&cEsse item tem um encantamento em conflito com '{id}'."
+  category_not_allowed: "&cEsse encantamento não pode ser aplicado a este tipo de item."
+  remove_usage: "&cUso: /renchant remove <id>"
+  remove_success: "&a✔ Encantamento removido."
+  remove_no_match: "&cEsse item não tem esse encantamento."
+  list_empty: "&7Nenhum encantamento definido."
+  list_header: "&6Encantamentos disponíveis:"
+  list_entry: "&f• {id} ({rarity}, máx {max_level})"
+  info_usage: "&cUso: /renchant info <id>"
+  info_rarity: "&7Raridade: {rarity}"
+  info_max_level: "&7Nível máximo: {max_level}"
+  info_triggers: "&7Gatilhos: {triggers}"
+  info_chance: "&7Chance: {chance}%"
+  info_conflicts: "&7Conflitos: {conflicts}"
+  reload_success: "&a✔ Recarregado: {count} encantamento(s)."
+
+# GUI: navegador de encantamentos (admin)
+enchantment_browser_gui:
+  title: "&6Encantamentos RPGRoll"
+  entry_lore_line1: "&7{rarity} · Nível máx. {max_level}"
+  entry_lore_line2: "&eClique para editar"
+  create_new: "&aCriar novo encantamento"
+  close_button: "Fechar"
+  prompt_new: "Digite o id do novo encantamento:"
+  already_exists: "&cJá existe um encantamento com esse id."
+
+# GUI: editor de um encantamento (admin)
+enchantment_editor_gui:
+  title: "&6Encantamento: {id}"
+  name_slot_name: "Nome: {name}"
+  click_new_value: "&7Clique para digitar um novo"
+  rarity_slot_name: "Raridade: {rarity}"
+  rarity_slot_lore: "&7Clique para passar para a próxima"
+  max_level_slot_name: "&eNível máximo: {max_level}"
+  max_level_slot_lore: "&7Clique: +1 · Clique direito: -1"
+  chance_slot_name: "&eChance: {chance}%"
+  chance_slot_lore: "&7Clique: +5 · Clique direito: -5"
+  conflicts_slot_name: "&eConflitos: {conflicts}"
+  conflicts_slot_lore: "&7Clique para digitar a lista separada por vírgulas"
+  conditions_slot_name: "&eCondições: {count}"
+  conditions_slot_lore: "&7Clique para digitar a lista completa, uma por linha"
+  toggle_lore: "&8Clique para alternar"
+  effect_remove_hint: "&8Shift-clique para remover"
+  add_effect_button: "&aAdicionar efeito"
+  back_button: "Voltar"
+  prompt_name: "Digite o novo nome:"
+  prompt_conflicts: "Digite os ids em conflito separados por vírgulas:"
+  prompt_conditions: "Digite as condições separadas por ';':"
+  min_one_effect: "&cO encantamento precisa de pelo menos um efeito."
+  prompt_add_effect: "Digite: TIPO;chave=valor;chave2=valor2 (tipos: {types}):"
+  invalid_effect_type: "&cTipo de efeito inválido."

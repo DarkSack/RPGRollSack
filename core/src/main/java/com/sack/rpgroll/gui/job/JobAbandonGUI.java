@@ -1,5 +1,6 @@
 package com.sack.rpgroll.gui.job;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gameplay.job.Job;
 import com.sack.rpgroll.gameplay.job.JobManager;
 import com.sack.rpgroll.gui.InventoryGUI;
@@ -11,7 +12,6 @@ import com.sack.rpgroll.player.jobs.PlayerJobs;
 import com.sack.rpgroll.util.ComponentUtils;
 
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 
 import org.bukkit.Material;
@@ -35,15 +35,18 @@ public class JobAbandonGUI extends InventoryGUI {
     private final JobManager jobManager;
     private final PlayerManager playerManager;
     private final String pendingJobId;
+    private final LangManager lang;
     private final Map<Integer, String> slotToJob;
 
-    public JobAbandonGUI(Player player, JobManager jobManager, PlayerManager playerManager, String pendingJobId) {
+    public JobAbandonGUI(Player player, JobManager jobManager, PlayerManager playerManager, String pendingJobId,
+            LangManager lang) {
         super(player,
-                Component.text("Ya tienes 3 trabajos", NamedTextColor.RED).decorate(TextDecoration.BOLD),
+                lang.component("job_abandon_gui.title").decorate(TextDecoration.BOLD),
                 27);
         this.jobManager = jobManager;
         this.playerManager = playerManager;
         this.pendingJobId = pendingJobId;
+        this.lang = lang;
         this.slotToJob = new HashMap<>();
     }
 
@@ -58,10 +61,9 @@ public class JobAbandonGUI extends InventoryGUI {
         }
 
         setItem(4, new ItemBuilder(Material.PAPER)
-                .setName(Component.text("Elige cuál abandonar", NamedTextColor.GOLD).decorate(TextDecoration.BOLD))
-                .setLore(
-                        Component.text("Para unirte a un nuevo trabajo", NamedTextColor.GRAY),
-                        Component.text("primero debes dejar uno activo.", NamedTextColor.GRAY))
+                .setName(lang.component("job_abandon_gui.header_name").decorate(TextDecoration.BOLD))
+                .setLore(lang.component("job_abandon_gui.header_lore_line1"),
+                        lang.component("job_abandon_gui.header_lore_line2"))
                 .build());
 
         Optional<RPGPlayer> rpgPlayerOpt = playerManager.getPlayer(player.getUniqueId());
@@ -88,7 +90,7 @@ public class JobAbandonGUI extends InventoryGUI {
             setItem(i, ItemBuilder.createFiller());
         }
 
-        setItem(CANCEL_SLOT, ItemBuilder.createCancelButton("Cancelar"));
+        setItem(CANCEL_SLOT, ItemBuilder.createCancelButton(lang.raw("job_abandon_gui.cancel_button")));
     }
 
     private void addJob(int slot, Job job, JobProgress progress) {
@@ -97,9 +99,9 @@ public class JobAbandonGUI extends InventoryGUI {
                 .setName(ComponentUtils.parse(job.displayName())
                         .decorate(TextDecoration.BOLD))
                 .setLore(
-                        Component.text("Nivel: " + progress.level(), NamedTextColor.YELLOW),
+                        lang.component("job_abandon_gui.level_line", "level", progress.level()),
                         Component.text(""),
-                        Component.text("Click para abandonar y unirte al nuevo trabajo", NamedTextColor.RED))
+                        lang.component("job_abandon_gui.click_swap"))
                 .build();
 
         setItem(slot, item);
@@ -115,7 +117,7 @@ public class JobAbandonGUI extends InventoryGUI {
 
         if (slot == CANCEL_SLOT) {
             close();
-            player.sendMessage(Component.text("No te uniste a ningún trabajo nuevo.", NamedTextColor.YELLOW));
+            lang.send(player, "job_abandon_gui.cancelled");
             return;
         }
 
@@ -133,7 +135,7 @@ public class JobAbandonGUI extends InventoryGUI {
         Optional<Job> newJobOpt = jobManager.get(pendingJobId);
         if (newJobOpt.isEmpty()) {
             close();
-            player.sendMessage(Component.text("El trabajo ya no está disponible.", NamedTextColor.RED));
+            lang.send(player, "job_abandon_gui.job_unavailable");
             return;
         }
 
@@ -145,8 +147,7 @@ public class JobAbandonGUI extends InventoryGUI {
 
         close();
 
-        player.sendMessage(Component.text("Te has unido al trabajo: ", NamedTextColor.GREEN)
-                .append(Component.text(newJobOpt.get().displayName(), NamedTextColor.GOLD)));
+        lang.send(player, "job_abandon_gui.joined", "job", newJobOpt.get().displayName());
     }
 
 }

@@ -38,7 +38,7 @@ public class DiseaseEditorGUI extends InventoryGUI {
 
     public DiseaseEditorGUI(Player player, Disease disease, DiseaseManager diseaseManager,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text("Enfermedad: " + disease.id(), NamedTextColor.GOLD), SIZE);
+        super(player, Component.text(chatPromptManager.lang().raw("gui.disease.editor.title", "id", disease.id()), NamedTextColor.GOLD), SIZE);
         this.current = disease;
         this.diseaseManager = diseaseManager;
         this.chatPromptManager = chatPromptManager;
@@ -60,45 +60,47 @@ public class DiseaseEditorGUI extends InventoryGUI {
             setItem(slot, ItemBuilder.createFiller());
         }
 
+        var lang = chatPromptManager.lang();
+
         setItem(NAME_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(Component.text("Nombre: " + current.displayName(), NamedTextColor.YELLOW)).build());
+                .setName(Component.text(lang.raw("gui.editor.name_line", "name", current.displayName()), NamedTextColor.YELLOW)).build());
 
         setItem(DESCRIPTION_SLOT, new ItemBuilder(Material.WRITTEN_BOOK)
-                .setName(Component.text("Descripción", NamedTextColor.YELLOW))
-                .setLore(ItemBuilder.toLoreLines(current.description().isBlank() ? "(sin descripción)" : current.description()))
+                .setName(Component.text(lang.raw("gui.editor.description_title"), NamedTextColor.YELLOW))
+                .setLore(ItemBuilder.toLoreLines(current.description().isBlank() ? lang.raw("gui.editor.no_description") : current.description()))
                 .build());
 
         setItem(SYMPTOMS_SLOT, new ItemBuilder(Material.SPIDER_EYE)
-                .setName(Component.text("Síntomas: " + String.join(", ", current.symptoms()), NamedTextColor.GOLD))
-                .setLore(Component.text("Escribí síntomas separados por comas", NamedTextColor.GRAY)).build());
+                .setName(Component.text(lang.raw("gui.disease.editor.symptoms_line", "symptoms", String.join(", ", current.symptoms())), NamedTextColor.GOLD))
+                .setLore(Component.text(lang.raw("gui.disease.editor.prompt_symptoms"), NamedTextColor.GRAY)).build());
 
         setItem(DURATION_SLOT, new ItemBuilder(Material.CLOCK)
-                .setName(Component.text("Duración: " + current.durationTicks() + " ticks", NamedTextColor.WHITE))
-                .setLore(Component.text("Click: +1200 (1 min) · Click derecho: -1200", NamedTextColor.GRAY)).build());
+                .setName(Component.text(lang.raw("gui.disease.editor.duration_line", "ticks", current.durationTicks()), NamedTextColor.WHITE))
+                .setLore(Component.text(lang.raw("gui.editor.step1200_hint"), NamedTextColor.GRAY)).build());
 
         setItem(CONTAGION_SLOT, new ItemBuilder(Material.SLIME_BALL)
                 .setName(Component.text(
-                        String.format(Locale.ROOT, "Contagio: %.0f%%", current.contagionChance() * 100),
+                        lang.raw("gui.disease.editor.contagion_line", "value", String.format(Locale.ROOT, "%.0f", current.contagionChance() * 100)),
                         NamedTextColor.GREEN))
-                .setLore(Component.text("Click: +5% · Click derecho: -5%", NamedTextColor.GRAY)).build());
+                .setLore(Component.text(lang.raw("gui.editor.step5pct_hint"), NamedTextColor.GRAY)).build());
 
         setItem(HEALTH_PENALTY_SLOT, new ItemBuilder(Material.REDSTONE)
-                .setName(Component.text("Penalidad de salud/chequeo: " + current.healthPenaltyPerCheck(),
+                .setName(Component.text(lang.raw("gui.disease.editor.health_penalty_line", "value", current.healthPenaltyPerCheck()),
                         NamedTextColor.RED))
-                .setLore(Component.text("Click: +1 · Click derecho: -1", NamedTextColor.GRAY)).build());
+                .setLore(Component.text(lang.raw("gui.editor.step1_hint"), NamedTextColor.GRAY)).build());
 
         setItem(HAPPINESS_PENALTY_SLOT, new ItemBuilder(Material.GRAY_DYE)
-                .setName(Component.text("Penalidad de felicidad/chequeo: " + current.happinessPenaltyPerCheck(),
+                .setName(Component.text(lang.raw("gui.disease.editor.happiness_penalty_line", "value", current.happinessPenaltyPerCheck()),
                         NamedTextColor.LIGHT_PURPLE))
-                .setLore(Component.text("Click: +1 · Click derecho: -1", NamedTextColor.GRAY)).build());
+                .setLore(Component.text(lang.raw("gui.editor.step1_hint"), NamedTextColor.GRAY)).build());
 
         setItem(PRODUCTION_PENALTY_SLOT, new ItemBuilder(Material.BARRIER)
                 .setName(Component.text(
-                        String.format(Locale.ROOT, "Penalidad de producción: %.0f%%", current.productionPenalty() * 100),
+                        lang.raw("gui.disease.editor.production_penalty_line", "value", String.format(Locale.ROOT, "%.0f", current.productionPenalty() * 100)),
                         NamedTextColor.AQUA))
-                .setLore(Component.text("Click: +10% · Click derecho: -10%", NamedTextColor.GRAY)).build());
+                .setLore(Component.text(lang.raw("gui.editor.step10pct_hint"), NamedTextColor.GRAY)).build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back")));
     }
 
     @Override
@@ -109,17 +111,17 @@ public class DiseaseEditorGUI extends InventoryGUI {
         int sign = event.getClick() == ClickType.RIGHT ? -1 : 1;
 
         if (slot == NAME_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el nuevo nombre:", value -> replace(new Disease(current.id(),
+            chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.editor.prompt_name"), value -> replace(new Disease(current.id(),
                     value, current.description(), current.symptoms(), current.durationTicks(),
                     current.contagionChance(), current.healthPenaltyPerCheck(), current.happinessPenaltyPerCheck(),
                     current.productionPenalty())));
         } else if (slot == DESCRIPTION_SLOT) {
-            chatPromptManager.prompt(player, "Escribí la nueva descripción:", value -> replace(new Disease(
+            chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.editor.prompt_description"), value -> replace(new Disease(
                     current.id(), current.displayName(), value, current.symptoms(), current.durationTicks(),
                     current.contagionChance(), current.healthPenaltyPerCheck(), current.happinessPenaltyPerCheck(),
                     current.productionPenalty())));
         } else if (slot == SYMPTOMS_SLOT) {
-            chatPromptManager.prompt(player, "Escribí los síntomas separados por comas:", value -> {
+            chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.disease.editor.prompt_symptoms"), value -> {
 
                 Set<String> symptoms = new HashSet<>();
                 for (String entry : value.split(",")) {

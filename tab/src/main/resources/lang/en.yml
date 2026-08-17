@@ -1,0 +1,17 @@
+# RPGRoll-TAB messages (/tabadmin command)
+# {placeholder} is replaced dynamically. Legacy (&) color codes preserved.
+
+command:
+  no-permission: "You don't have permission to use this command."
+  usage: "Usage: /tabadmin <reload|list|profile <player> <profile>>"
+  reload:
+    success: "✔ RPGRoll-TAB reloaded: {profiles} profile(s), {contexts} context(s)."
+  list:
+    empty: "No profiles are defined."
+    header: "Available profiles:"
+    entry: "• {id}"
+  profile:
+    usage: "Usage: /tabadmin profile <player> <profile>"
+    player-not-found: "Player not found: {player}"
+    profile-not-found: "No profile exists with id: {profile}"
+    success: "✔ {player}'s profile forced to: {profile}"

@@ -1,5 +1,6 @@
 package com.sack.rpgroll.extras.command;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.extras.condition.ConditionDefinition;
 import com.sack.rpgroll.extras.condition.ConditionManager;
 import com.sack.rpgroll.extras.condition.ConditionRuntime;
@@ -39,21 +40,23 @@ public class ExtrasAdminCommand implements CommandExecutor, TabCompleter {
     private final ConditionManager conditionManager;
     private final ConditionRuntime conditionRuntime;
     private final Runnable reloadCallback;
+    private final LangManager lang;
 
     public ExtrasAdminCommand(StatManager statManager, StatEngine statEngine, ConditionManager conditionManager,
-            ConditionRuntime conditionRuntime, Runnable reloadCallback) {
+            ConditionRuntime conditionRuntime, Runnable reloadCallback, LangManager lang) {
         this.statManager = statManager;
         this.statEngine = statEngine;
         this.conditionManager = conditionManager;
         this.conditionRuntime = conditionRuntime;
         this.reloadCallback = reloadCallback;
+        this.lang = lang;
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
         if (!sender.hasPermission(PERMISSION)) {
-            sender.sendMessage(Component.text("No tenés permiso para usar este comando.", NamedTextColor.RED));
+            lang.send(sender, "command.no-permission");
             return true;
         }
 
@@ -77,26 +80,23 @@ public class ExtrasAdminCommand implements CommandExecutor, TabCompleter {
     }
 
     private void sendUsage(CommandSender sender) {
-        sender.sendMessage(Component.text(
-                "Uso: /extrasadmin <reload|list|get|set|add|apply|remove> [args]", NamedTextColor.RED));
+        lang.send(sender, "command.usage.main");
     }
 
     private void handleReload(CommandSender sender) {
         reloadCallback.run();
-        sender.sendMessage(Component.text(
-                "✔ RPGRoll-Extras recargado: " + statManager.count() + " stat(s), "
-                        + conditionManager.count() + " condition(s).",
-                NamedTextColor.GREEN));
+        lang.send(sender, "command.reload.success",
+                "stats", statManager.count(), "conditions", conditionManager.count());
     }
 
     private void handleList(CommandSender sender) {
 
-        sender.sendMessage(Component.text("Stats:", NamedTextColor.GOLD));
+        lang.send(sender, "command.list.stats-header");
         for (StatDefinition stat : statManager.getAll()) {
             sender.sendMessage(Component.text("• " + stat.id() + " (max " + stat.max() + ")", NamedTextColor.WHITE));
         }
 
-        sender.sendMessage(Component.text("Conditions:", NamedTextColor.GOLD));
+        lang.send(sender, "command.list.conditions-header");
         for (ConditionDefinition condition : conditionManager.getAll()) {
             sender.sendMessage(Component.text("• " + condition.id(), NamedTextColor.WHITE));
         }
@@ -105,7 +105,7 @@ public class ExtrasAdminCommand implements CommandExecutor, TabCompleter {
     private void handleGet(CommandSender sender, String[] args) {
 
         if (args.length < 3) {
-            sender.sendMessage(Component.text("Uso: /extrasadmin get <jugador> <stat>", NamedTextColor.RED));
+            lang.send(sender, "command.usage.get");
             return;
         }
 
@@ -115,14 +115,14 @@ public class ExtrasAdminCommand implements CommandExecutor, TabCompleter {
         }
 
         double value = statEngine.get(target, args[2]);
-        sender.sendMessage(Component.text(
-                target.getName() + " → " + args[2] + ": " + value, NamedTextColor.GREEN));
+        lang.send(sender, "command.get.result",
+                "player", target.getName(), "stat", args[2], "value", value);
     }
 
     private void handleSet(CommandSender sender, String[] args) {
 
         if (args.length < 4) {
-            sender.sendMessage(Component.text("Uso: /extrasadmin set <jugador> <stat> <valor>", NamedTextColor.RED));
+            lang.send(sender, "command.usage.set");
             return;
         }
 
@@ -137,14 +137,14 @@ public class ExtrasAdminCommand implements CommandExecutor, TabCompleter {
         }
 
         statEngine.set(target, args[2], value);
-        sender.sendMessage(Component.text(
-                "✔ " + args[2] + " de " + target.getName() + " establecido en " + value, NamedTextColor.GREEN));
+        lang.send(sender, "command.set.success",
+                "stat", args[2], "player", target.getName(), "value", value);
     }
 
     private void handleAdd(CommandSender sender, String[] args) {
 
         if (args.length < 4) {
-            sender.sendMessage(Component.text("Uso: /extrasadmin add <jugador> <stat> <cantidad>", NamedTextColor.RED));
+            lang.send(sender, "command.usage.add");
             return;
         }
 
@@ -159,14 +159,14 @@ public class ExtrasAdminCommand implements CommandExecutor, TabCompleter {
         }
 
         statEngine.adjust(target, args[2], amount);
-        sender.sendMessage(Component.text(
-                "✔ " + args[2] + " de " + target.getName() + " ajustado en " + amount, NamedTextColor.GREEN));
+        lang.send(sender, "command.add.success",
+                "stat", args[2], "player", target.getName(), "amount", amount);
     }
 
     private void handleApply(CommandSender sender, String[] args) {
 
         if (args.length < 3) {
-            sender.sendMessage(Component.text("Uso: /extrasadmin apply <jugador> <condition>", NamedTextColor.RED));
+            lang.send(sender, "command.usage.apply");
             return;
         }
 
@@ -177,19 +177,18 @@ public class ExtrasAdminCommand implements CommandExecutor, TabCompleter {
 
         var definition = conditionManager.get(args[2]);
         if (definition.isEmpty()) {
-            sender.sendMessage(Component.text("No existe una condition con id: " + args[2], NamedTextColor.RED));
+            lang.send(sender, "command.condition-not-found", "condition", args[2]);
             return;
         }
 
         conditionRuntime.apply(target, definition.get());
-        sender.sendMessage(Component.text(
-                "✔ Condition '" + args[2] + "' aplicada a " + target.getName(), NamedTextColor.GREEN));
+        lang.send(sender, "command.apply.success", "condition", args[2], "player", target.getName());
     }
 
     private void handleRemove(CommandSender sender, String[] args) {
 
         if (args.length < 3) {
-            sender.sendMessage(Component.text("Uso: /extrasadmin remove <jugador> <condition>", NamedTextColor.RED));
+            lang.send(sender, "command.usage.remove");
             return;
         }
 
@@ -199,8 +198,7 @@ public class ExtrasAdminCommand implements CommandExecutor, TabCompleter {
         }
 
         conditionRuntime.remove(target, args[2]);
-        sender.sendMessage(Component.text(
-                "✔ Condition '" + args[2] + "' removida de " + target.getName(), NamedTextColor.GREEN));
+        lang.send(sender, "command.remove.success", "condition", args[2], "player", target.getName());
     }
 
     private Player requireTarget(CommandSender sender, String name) {
@@ -208,7 +206,7 @@ public class ExtrasAdminCommand implements CommandExecutor, TabCompleter {
         Player target = Bukkit.getPlayerExact(name);
 
         if (target == null) {
-            sender.sendMessage(Component.text("Jugador no encontrado: " + name, NamedTextColor.RED));
+            lang.send(sender, "command.player-not-found", "player", name);
         }
 
         return target;
@@ -219,7 +217,7 @@ public class ExtrasAdminCommand implements CommandExecutor, TabCompleter {
         try {
             return Double.parseDouble(raw);
         } catch (NumberFormatException e) {
-            sender.sendMessage(Component.text("Valor numérico inválido: " + raw, NamedTextColor.RED));
+            lang.send(sender, "command.invalid-number", "value", raw);
             return Double.NaN;
         }
     }

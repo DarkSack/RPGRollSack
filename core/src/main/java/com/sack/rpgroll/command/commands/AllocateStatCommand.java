@@ -2,14 +2,12 @@ package com.sack.rpgroll.command.commands;
 
 import com.sack.rpgroll.RPGRoll;
 import com.sack.rpgroll.command.RPGCommand;
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gameplay.combat.CombatStats;
 import com.sack.rpgroll.gameplay.stats.StatPointAllocator;
 import com.sack.rpgroll.player.PlayerManager;
 import com.sack.rpgroll.player.RPGPlayer;
 import com.sack.rpgroll.player.stats.PlayerStats;
-
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -38,9 +36,10 @@ public class AllocateStatCommand implements RPGCommand {
     public void execute(CommandSender sender, String[] args) {
 
         Player player = (Player) sender;
+        LangManager lang = plugin.getBootstrap().getServices().get(LangManager.class);
 
         if (args.length < 2) {
-            player.sendMessage(Component.text("Uso: " + getUsage(), NamedTextColor.RED));
+            lang.send(player, "allocate_stat_command.usage", "usage", getUsage());
             return;
         }
 
@@ -50,12 +49,12 @@ public class AllocateStatCommand implements RPGCommand {
         try {
             amount = Integer.parseInt(args[1]);
         } catch (NumberFormatException exception) {
-            player.sendMessage(Component.text("La cantidad debe ser un número.", NamedTextColor.RED));
+            lang.send(player, "allocate_stat_command.invalid_amount");
             return;
         }
 
         if (amount <= 0) {
-            player.sendMessage(Component.text("La cantidad debe ser mayor a 0.", NamedTextColor.RED));
+            lang.send(player, "allocate_stat_command.must_be_positive");
             return;
         }
 
@@ -65,7 +64,7 @@ public class AllocateStatCommand implements RPGCommand {
             Optional<RPGPlayer> rpgPlayerOpt = playerManager.getPlayer(player.getUniqueId());
 
             if (rpgPlayerOpt.isEmpty()) {
-                player.sendMessage(Component.text("Error al cargar tus datos.", NamedTextColor.RED));
+                lang.send(player, "error.load_data");
                 return;
             }
 
@@ -73,8 +72,7 @@ public class AllocateStatCommand implements RPGCommand {
             int available = rpgPlayer.getUnspentStatPoints();
 
             if (available <= 0) {
-                player.sendMessage(
-                        Component.text("No tienes puntos de estadística disponibles.", NamedTextColor.RED));
+                lang.send(player, "stats.no_points");
                 return;
             }
 
@@ -83,11 +81,8 @@ public class AllocateStatCommand implements RPGCommand {
             StatPointAllocator allocator = new StatPointAllocator(rpgPlayer, available);
 
             if (!allocator.allocate(statInput, amount)) {
-                player.sendMessage(Component.text(
-                        "No se pudo asignar. Verifica el nombre del atributo, que tengas suficientes puntos ("
-                                + available + " disponibles), y que el valor final no supere "
-                                + PlayerStats.MAX_STAT + ".",
-                        NamedTextColor.RED));
+                lang.send(player, "allocate_stat_command.invalid_allocation",
+                        "available", available, "max", PlayerStats.MAX_STAT);
                 return;
             }
 
@@ -122,14 +117,12 @@ public class AllocateStatCommand implements RPGCommand {
 
             playerManager.savePlayer(updatedPlayer);
 
-            player.sendMessage(Component.text(
-                    "✔ Asignaste " + amount + " punto(s) a " + statInput.toUpperCase() + ".", NamedTextColor.GREEN));
-            player.sendMessage(Component.text(
-                    "Puntos restantes: " + updatedPlayer.getUnspentStatPoints(), NamedTextColor.AQUA));
+            lang.send(player, "allocate_stat_command.success", "amount", amount, "stat", statInput.toUpperCase());
+            lang.send(player, "allocate_stat_command.remaining", "points", updatedPlayer.getUnspentStatPoints());
 
         } catch (Exception exception) {
 
-            player.sendMessage(Component.text("Error al asignar el punto de estadística.", NamedTextColor.RED));
+            lang.send(player, "allocate_stat_command.error");
             exception.printStackTrace();
 
         }

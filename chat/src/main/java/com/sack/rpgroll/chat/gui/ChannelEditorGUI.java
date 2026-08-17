@@ -8,6 +8,7 @@ import com.sack.rpgroll.chat.channel.ChannelManager;
 import com.sack.rpgroll.chat.channel.ChannelScope;
 import com.sack.rpgroll.chat.channel.ChatChannel;
 import com.sack.rpgroll.chat.channel.ChatTextFormat;
+import com.sack.rpgroll.common.lang.LangManager;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -55,7 +56,7 @@ public class ChannelEditorGUI extends InventoryGUI {
 
     public ChannelEditorGUI(Player player, ChatChannel channel, ChannelManager channelManager,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text("Canal: " + channel.id(), NamedTextColor.GOLD), SIZE);
+        super(player, chatPromptManager.lang().component("channel.editor_title", "id", channel.id()), SIZE);
         this.current = channel;
         this.channelManager = channelManager;
         this.chatPromptManager = chatPromptManager;
@@ -73,91 +74,104 @@ public class ChannelEditorGUI extends InventoryGUI {
 
         clear();
 
+        LangManager lang = chatPromptManager.lang();
+
         for (int slot = 0; slot < SIZE; slot++) {
             setItem(slot, ItemBuilder.createFiller());
         }
 
         setItem(NAME_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(Component.text("Nombre: " + current.displayName(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para escribir uno nuevo", NamedTextColor.GRAY))
+                .setName(lang.component("channel.label_name", "value", current.displayName())
+                        .colorIfAbsent(NamedTextColor.YELLOW))
+                .setLore(lang.component("gui.click_new").colorIfAbsent(NamedTextColor.GRAY))
                 .build());
 
         setItem(ICON_SLOT, new ItemBuilder(resolveIcon())
-                .setName(Component.text("Ícono: " + current.icon(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para escribir un Material nuevo", NamedTextColor.GRAY))
+                .setName(lang.component("channel.label_icon", "value", current.icon())
+                        .colorIfAbsent(NamedTextColor.YELLOW))
+                .setLore(lang.component("gui.click_new_material").colorIfAbsent(NamedTextColor.GRAY))
                 .build());
 
         setItem(COLOR_SLOT, new ItemBuilder(Material.WHITE_DYE)
-                .setName(Component.text("Color: " + current.color(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para escribir un color nuevo", NamedTextColor.GRAY))
+                .setName(lang.component("channel.label_color", "value", current.color())
+                        .colorIfAbsent(NamedTextColor.YELLOW))
+                .setLore(lang.component("gui.click_new_color").colorIfAbsent(NamedTextColor.GRAY))
                 .build());
 
         setItem(PRIORITY_SLOT, new ItemBuilder(Material.COMPARATOR)
-                .setName(Component.text("Prioridad: " + current.priority(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click: +1 · Click derecho: -1", NamedTextColor.GRAY))
+                .setName(lang.component("channel.label_priority", "value", current.priority())
+                        .colorIfAbsent(NamedTextColor.YELLOW))
+                .setLore(lang.component("gui.click_priority").colorIfAbsent(NamedTextColor.GRAY))
                 .build());
 
         setItem(SCOPE_SLOT, new ItemBuilder(Material.COMPASS)
-                .setName(Component.text("Alcance: " + current.scope(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para pasar al siguiente", NamedTextColor.GRAY))
+                .setName(lang.component("channel.label_scope", "value", current.scope())
+                        .colorIfAbsent(NamedTextColor.YELLOW))
+                .setLore(lang.component("channel.lore_scope_next").colorIfAbsent(NamedTextColor.GRAY))
                 .build());
 
         setItem(DISTANCE_SLOT, new ItemBuilder(Material.SPYGLASS)
-                .setName(Component.text("Distancia (proximidad): " + current.distance(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click: +10 · Click derecho: -10", NamedTextColor.GRAY))
+                .setName(lang.component("channel.label_distance", "value", current.distance())
+                        .colorIfAbsent(NamedTextColor.YELLOW))
+                .setLore(lang.component("channel.lore_distance").colorIfAbsent(NamedTextColor.GRAY))
                 .build());
 
         setItem(VIEW_PERM_SLOT, new ItemBuilder(Material.PAPER)
-                .setName(Component.text("Permiso para ver: "
-                        + (current.requiresViewPermission() ? current.viewPermission() : "(ninguno)"),
-                        NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para escribir uno nuevo (vacío = sin permiso)", NamedTextColor.GRAY))
+                .setName(lang.component("channel.label_view_permission", "value",
+                        current.requiresViewPermission() ? current.viewPermission() : lang.raw("gui.none"))
+                        .colorIfAbsent(NamedTextColor.YELLOW))
+                .setLore(lang.component("channel.lore_permission_hint").colorIfAbsent(NamedTextColor.GRAY))
                 .build());
 
         setItem(SPEAK_PERM_SLOT, new ItemBuilder(Material.PAPER)
-                .setName(Component.text("Permiso para hablar: "
-                        + (current.requiresSpeakPermission() ? current.speakPermission() : "(ninguno)"),
-                        NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para escribir uno nuevo (vacío = sin permiso)", NamedTextColor.GRAY))
+                .setName(lang.component("channel.label_speak_permission", "value",
+                        current.requiresSpeakPermission() ? current.speakPermission() : lang.raw("gui.none"))
+                        .colorIfAbsent(NamedTextColor.YELLOW))
+                .setLore(lang.component("channel.lore_permission_hint").colorIfAbsent(NamedTextColor.GRAY))
                 .build());
 
         setItem(COOLDOWN_SLOT, new ItemBuilder(Material.CLOCK)
-                .setName(Component.text("Cooldown: " + current.cooldownMillis() + "ms", NamedTextColor.YELLOW))
-                .setLore(Component.text("Click: +1000ms · Click derecho: -1000ms", NamedTextColor.GRAY))
+                .setName(lang.component("channel.label_cooldown", "value", current.cooldownMillis())
+                        .colorIfAbsent(NamedTextColor.YELLOW))
+                .setLore(lang.component("channel.lore_cooldown").colorIfAbsent(NamedTextColor.GRAY))
                 .build());
 
         setItem(FORMAT_SLOT, new ItemBuilder(Material.WRITABLE_BOOK)
-                .setName(Component.text("Formato", NamedTextColor.YELLOW))
+                .setName(lang.component("channel.label_format").colorIfAbsent(NamedTextColor.YELLOW))
                 .setLore(ComponentUtils.parse(current.format()),
-                        Component.text("Click para escribir uno nuevo", NamedTextColor.GRAY))
+                        lang.component("gui.click_new").colorIfAbsent(NamedTextColor.GRAY))
                 .build());
 
         setItem(TEXT_FORMAT_SLOT, new ItemBuilder(Material.BOOK)
-                .setName(Component.text("Tipo de texto: " + current.textFormat(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para alternar Legacy/MiniMessage", NamedTextColor.GRAY))
+                .setName(lang.component("channel.label_text_format", "value", current.textFormat())
+                        .colorIfAbsent(NamedTextColor.YELLOW))
+                .setLore(lang.component("channel.lore_text_format_toggle").colorIfAbsent(NamedTextColor.GRAY))
                 .build());
 
         setItem(SOUND_SLOT, new ItemBuilder(Material.NOTE_BLOCK)
-                .setName(Component.text("Sonido: " + (current.joinSound() == null || current.joinSound().isBlank()
-                        ? "(ninguno)" : current.joinSound()), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para escribir un Sound nuevo", NamedTextColor.GRAY))
+                .setName(lang.component("channel.label_sound", "value",
+                        current.joinSound() == null || current.joinSound().isBlank() ? lang.raw("gui.none")
+                                : current.joinSound())
+                        .colorIfAbsent(NamedTextColor.YELLOW))
+                .setLore(lang.component("channel.lore_sound_new").colorIfAbsent(NamedTextColor.GRAY))
                 .build());
 
-        setItem(FILTER_PROFANITY_SLOT, toggleItem("Censura de palabras", current.filterProfanity()));
-        setItem(FILTER_CAPS_SLOT, toggleItem("Filtro de mayúsculas", current.filterCaps()));
-        setItem(ALLOW_URLS_SLOT, toggleItem("Permitir URLs", current.allowUrls()));
-        setItem(DEFAULT_JOINED_SLOT, toggleItem("Unido por defecto", current.defaultJoined()));
-        setItem(CROSS_WORLD_SLOT, toggleItem("Multi-mundo", current.crossWorld()));
-        setItem(ACTION_BAR_SLOT, toggleItem("También en action bar", current.alsoActionBar()));
+        setItem(FILTER_PROFANITY_SLOT, toggleItem(lang, lang.raw("channel.toggle_profanity"), current.filterProfanity()));
+        setItem(FILTER_CAPS_SLOT, toggleItem(lang, lang.raw("channel.toggle_caps"), current.filterCaps()));
+        setItem(ALLOW_URLS_SLOT, toggleItem(lang, lang.raw("channel.toggle_urls"), current.allowUrls()));
+        setItem(DEFAULT_JOINED_SLOT, toggleItem(lang, lang.raw("channel.toggle_default_joined"), current.defaultJoined()));
+        setItem(CROSS_WORLD_SLOT, toggleItem(lang, lang.raw("channel.toggle_cross_world"), current.crossWorld()));
+        setItem(ACTION_BAR_SLOT, toggleItem(lang, lang.raw("channel.toggle_action_bar"), current.alsoActionBar()));
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.back")));
     }
 
-    private org.bukkit.inventory.ItemStack toggleItem(String label, boolean enabled) {
+    private org.bukkit.inventory.ItemStack toggleItem(LangManager lang, String label, boolean enabled) {
         return new ItemBuilder(enabled ? Material.LIME_DYE : Material.GRAY_DYE)
-                .setName(Component.text(label + ": " + (enabled ? "sí" : "no"),
-                        enabled ? NamedTextColor.GREEN : NamedTextColor.GRAY))
-                .setLore(Component.text("Click para alternar", NamedTextColor.GRAY))
+                .setName(lang.component("channel.toggle_name", "label", label,
+                        "value", lang.raw(enabled ? "channel.toggle_yes" : "channel.toggle_no"))
+                        .colorIfAbsent(enabled ? NamedTextColor.GREEN : NamedTextColor.GRAY))
+                .setLore(lang.component("channel.toggle_lore").colorIfAbsent(NamedTextColor.GRAY))
                 .build();
     }
 
@@ -175,21 +189,22 @@ public class ChannelEditorGUI extends InventoryGUI {
         event.setCancelled(true);
         int slot = event.getSlot();
         ClickType click = event.getClick();
+        LangManager lang = chatPromptManager.lang();
 
         if (slot == NAME_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el nuevo nombre del canal:",
+            chatPromptManager.prompt(player, lang.raw("channel.prompt_name"),
                     value -> replace(withDisplayName(value.trim())));
             return;
         }
 
         if (slot == ICON_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el nombre del Material (ej. PAPER):",
+            chatPromptManager.prompt(player, lang.raw("channel.prompt_icon"),
                     value -> replace(withIcon(value.trim().toUpperCase(Locale.ROOT))));
             return;
         }
 
         if (slot == COLOR_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el nombre del color (ej. GOLD):",
+            chatPromptManager.prompt(player, lang.raw("channel.prompt_color"),
                     value -> replace(withColor(value.trim().toUpperCase(Locale.ROOT))));
             return;
         }
@@ -211,13 +226,13 @@ public class ChannelEditorGUI extends InventoryGUI {
         }
 
         if (slot == VIEW_PERM_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el permiso para VER el canal (vacío = ninguno):",
+            chatPromptManager.prompt(player, lang.raw("channel.prompt_view_permission"),
                     value -> replace(withViewPermission(value.trim())));
             return;
         }
 
         if (slot == SPEAK_PERM_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el permiso para HABLAR en el canal (vacío = ninguno):",
+            chatPromptManager.prompt(player, lang.raw("channel.prompt_speak_permission"),
                     value -> replace(withSpeakPermission(value.trim())));
             return;
         }
@@ -229,8 +244,7 @@ public class ChannelEditorGUI extends InventoryGUI {
         }
 
         if (slot == FORMAT_SLOT) {
-            chatPromptManager.prompt(player,
-                    "Escribí el nuevo formato (tokens: {player} {message} {channel} {world} {role_prefix} {role_suffix} {context_prefix}):",
+            chatPromptManager.prompt(player, lang.raw("channel.prompt_format"),
                     value -> replace(withFormat(value)));
             return;
         }
@@ -242,7 +256,7 @@ public class ChannelEditorGUI extends InventoryGUI {
         }
 
         if (slot == SOUND_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el nombre del Sound (vacío = ninguno):",
+            chatPromptManager.prompt(player, lang.raw("channel.prompt_sound"),
                     value -> replace(withJoinSound(value.trim())));
             return;
         }

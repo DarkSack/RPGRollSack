@@ -1,5 +1,6 @@
 package com.sack.rpgroll.fishing.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.fishing.core.FishSpecies;
 import com.sack.rpgroll.fishing.core.FishSpeciesManager;
 import com.sack.rpgroll.fishing.runtime.FishRecord;
@@ -27,12 +28,15 @@ public class EncyclopediaGUI extends InventoryGUI {
 
     private final FishSpeciesManager speciesManager;
     private final FishingProfileManager profileManager;
+    private final LangManager lang;
     private final List<FishSpecies> species;
 
-    public EncyclopediaGUI(Player player, FishSpeciesManager speciesManager, FishingProfileManager profileManager) {
-        super(player, Component.text("Enciclopedia de Pesca", NamedTextColor.GOLD), SIZE);
+    public EncyclopediaGUI(Player player, FishSpeciesManager speciesManager, FishingProfileManager profileManager,
+            LangManager lang) {
+        super(player, lang.component("gui.encyclopedia.title"), SIZE);
         this.speciesManager = speciesManager;
         this.profileManager = profileManager;
+        this.lang = lang;
         this.species = List.copyOf(speciesManager.getAll());
     }
 
@@ -54,8 +58,8 @@ public class EncyclopediaGUI extends InventoryGUI {
 
             if (recordOpt.isEmpty()) {
                 setItem(i, new ItemBuilder(Material.GRAY_DYE)
-                        .setName(Component.text("??? (sin descubrir)", NamedTextColor.DARK_GRAY))
-                        .setLore(Component.text("Pescá uno para desbloquear esta entrada.", NamedTextColor.GRAY))
+                        .setName(lang.component("gui.encyclopedia.undiscovered_name"))
+                        .setLore(lang.component("gui.encyclopedia.undiscovered_lore"))
                         .build());
                 continue;
             }
@@ -67,16 +71,16 @@ public class EncyclopediaGUI extends InventoryGUI {
                             fish.legendary() ? NamedTextColor.GOLD : NamedTextColor.AQUA))
                     .setLore(
                             Component.text(fish.category() + " · " + fish.rarity(), NamedTextColor.GRAY),
-                            Component.text("Capturados: " + record.caughtCount(), NamedTextColor.WHITE),
-                            Component.text(String.format(Locale.ROOT, "Mejor peso: %.2f kg", record.bestWeight()),
-                                    NamedTextColor.WHITE),
-                            Component.text(String.format(Locale.ROOT, "Mejor longitud: %.1f cm", record.bestLength()),
-                                    NamedTextColor.WHITE),
-                            Component.text("Mejor calidad: " + record.bestQuality(), NamedTextColor.YELLOW))
+                            lang.component("gui.encyclopedia.caught", "count", record.caughtCount()),
+                            lang.component("gui.encyclopedia.best_weight", "weight",
+                                    String.format(Locale.ROOT, "%.2f", record.bestWeight())),
+                            lang.component("gui.encyclopedia.best_length", "length",
+                                    String.format(Locale.ROOT, "%.1f", record.bestLength())),
+                            lang.component("gui.encyclopedia.best_quality", "quality", record.bestQuality()))
                     .build());
         }
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Cerrar"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.close")));
     }
 
     @Override

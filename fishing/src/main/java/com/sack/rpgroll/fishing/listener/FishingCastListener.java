@@ -1,5 +1,6 @@
 package com.sack.rpgroll.fishing.listener;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.effects.api.EffectsAPI;
 import com.sack.rpgroll.fishing.core.Bait;
 import com.sack.rpgroll.fishing.core.BaitManager;
@@ -12,9 +13,6 @@ import com.sack.rpgroll.fishing.minigame.FishBattleSession;
 import com.sack.rpgroll.fishing.minigame.FishingMinigameManager;
 import com.sack.rpgroll.fishing.runtime.FishingProfileManager;
 import com.sack.rpgroll.sackeffects.api.SackEffectsAPI;
-
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
@@ -42,18 +40,20 @@ public class FishingCastListener implements Listener {
     private final FishingMinigameManager minigameManager;
     private final FishingProfileManager profileManager;
     private final boolean rpgMode;
+    private final LangManager lang;
 
     private final Map<UUID, Bait> activeBaitByPlayer = new HashMap<>();
 
     public FishingCastListener(FishingRodManager rodManager, BaitManager baitManager,
             FishingCatchEngine catchEngine, FishingMinigameManager minigameManager,
-            FishingProfileManager profileManager, boolean rpgMode) {
+            FishingProfileManager profileManager, boolean rpgMode, LangManager lang) {
         this.rodManager = rodManager;
         this.baitManager = baitManager;
         this.catchEngine = catchEngine;
         this.minigameManager = minigameManager;
         this.profileManager = profileManager;
         this.rpgMode = rpgMode;
+        this.lang = lang;
     }
 
     @EventHandler
@@ -113,7 +113,7 @@ public class FishingCastListener implements Listener {
 
             minigameManager.start(player, session,
                     (winner, session1) -> awardCatch(winner, session1.pendingCatch()),
-                    loser -> loser.sendMessage(Component.text("✘ El pez se escapó...", NamedTextColor.RED)));
+                    loser -> lang.send(loser, "minigame.escaped"));
             return;
         }
 
@@ -122,10 +122,10 @@ public class FishingCastListener implements Listener {
 
     private void awardCatch(Player player, CatchResult result) {
 
-        ItemStack item = FishingItemFactory.createCatchItem(result);
+        ItemStack item = FishingItemFactory.createCatchItem(result, lang);
 
         if (item == null) {
-            player.sendMessage(Component.text("El agua estaba vacía esta vez...", NamedTextColor.GRAY));
+            lang.send(player, "catch.empty_water");
             return;
         }
 
@@ -138,9 +138,7 @@ public class FishingCastListener implements Listener {
 
                 var species = result.species();
 
-                player.sendMessage(Component.text(
-                        "✔ Pescaste: " + species.displayName() + " (" + result.quality() + ")",
-                        NamedTextColor.GREEN));
+                lang.send(player, "catch.fish", "name", species.displayName(), "quality", result.quality());
 
                 profileManager.getOrLoad(player).registerCatch(species.id(), result.weight(), result.length(),
                         result.quality());
@@ -155,13 +153,12 @@ public class FishingCastListener implements Listener {
             }
 
             case TREASURE -> {
-                player.sendMessage(Component.text("✔ ¡Encontraste un tesoro: " + result.treasure().displayName() + "!",
-                        NamedTextColor.GOLD));
+                lang.send(player, "catch.treasure", "name", result.treasure().displayName());
                 profileManager.getOrLoad(player).registerTreasure();
             }
 
             case JUNK -> {
-                player.sendMessage(Component.text("Sacaste basura: " + result.junk().displayName(), NamedTextColor.GRAY));
+                lang.send(player, "catch.junk", "name", result.junk().displayName());
                 profileManager.getOrLoad(player).registerJunk();
             }
 

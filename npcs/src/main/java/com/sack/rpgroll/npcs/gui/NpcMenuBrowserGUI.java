@@ -1,5 +1,6 @@
 package com.sack.rpgroll.npcs.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.npcs.core.NpcMenuDefinition;
@@ -24,12 +25,15 @@ public class NpcMenuBrowserGUI extends InventoryGUI {
 
     private final NpcMenuManager menuManager;
     private final ChatPromptManager chatPromptManager;
+    private final LangManager langManager;
     private List<NpcMenuDefinition> menus;
 
-    public NpcMenuBrowserGUI(Player player, NpcMenuManager menuManager, ChatPromptManager chatPromptManager) {
-        super(player, Component.text("Menús de NPC RPGRoll", NamedTextColor.GOLD), SIZE);
+    public NpcMenuBrowserGUI(Player player, NpcMenuManager menuManager, ChatPromptManager chatPromptManager,
+            LangManager langManager) {
+        super(player, langManager.component("menu.browser.title"), SIZE);
         this.menuManager = menuManager;
         this.chatPromptManager = chatPromptManager;
+        this.langManager = langManager;
         this.menus = List.copyOf(menuManager.getAll());
     }
 
@@ -48,17 +52,17 @@ public class NpcMenuBrowserGUI extends InventoryGUI {
 
             setItem(i, new ItemBuilder(Material.CHEST)
                     .setName(Component.text(menu.id(), NamedTextColor.YELLOW))
-                    .setLore(Component.text(menu.items().size() + " ítem(s) · " + menu.rows() + " fila(s)",
-                            NamedTextColor.GRAY),
-                            Component.text("Click para editar", NamedTextColor.YELLOW))
+                    .setLore(langManager.component("menu.browser.item_lore",
+                            "items", menu.items().size(), "rows", menu.rows()),
+                            langManager.component("menu.browser.click_to_edit"))
                     .build());
         }
 
         setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Crear menú nuevo", NamedTextColor.GREEN))
+                .setName(langManager.component("menu.browser.create_new"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Cerrar"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(langManager.raw("menu.browser.close")));
     }
 
     @Override
@@ -68,7 +72,8 @@ public class NpcMenuBrowserGUI extends InventoryGUI {
         int slot = event.getSlot();
 
         if (slot < menus.size() && slot < 36) {
-            new NpcMenuEditorGUI(player, menus.get(slot), menuManager, chatPromptManager, this::reopen).open();
+            new NpcMenuEditorGUI(player, menus.get(slot), menuManager, chatPromptManager, langManager,
+                    this::reopen).open();
             return;
         }
 
@@ -83,12 +88,12 @@ public class NpcMenuBrowserGUI extends InventoryGUI {
     }
 
     private void promptNew() {
-        chatPromptManager.prompt(player, "Escribí el id del nuevo menú:", value -> {
+        chatPromptManager.prompt(player, langManager.raw("menu.browser.prompt_new_id"), value -> {
 
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 
             if (menuManager.exists(id)) {
-                player.sendMessage(Component.text("Ya existe un menú con ese id.", NamedTextColor.RED));
+                langManager.send(player, "menu.browser.already_exists");
                 reopen();
                 return;
             }

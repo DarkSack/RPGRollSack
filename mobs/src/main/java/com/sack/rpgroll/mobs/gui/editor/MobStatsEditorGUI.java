@@ -1,5 +1,7 @@
 package com.sack.rpgroll.mobs.gui.editor;
 
+import com.sack.rpgroll.common.lang.LangManager;
+
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 
@@ -29,13 +31,16 @@ public class MobStatsEditorGUI extends InventoryGUI {
     private final MobEditorSession session;
     private final Runnable onBack;
     private final List<String> statIds;
+    private final LangManager lang;
 
     public MobStatsEditorGUI(Player player, MobEditorSession session, Runnable onBack) {
-        super(player, Component.text("Stats: " + session.original.id(), NamedTextColor.GOLD), SIZE);
+        super(player, session.chatPromptManager.lang().component("gui.stats.title", "id", session.original.id()),
+                SIZE);
         this.session = session;
         this.onBack = onBack;
         this.statIds = new ArrayList<>(session.statRegistry.all());
         this.statIds.sort(String::compareTo);
+        this.lang = session.chatPromptManager.lang();
     }
 
     @Override
@@ -52,18 +57,18 @@ public class MobStatsEditorGUI extends InventoryGUI {
         }
 
         setItem(ADD_CUSTOM_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Agregar stat custom", NamedTextColor.GREEN))
-                .setLore(Component.text("Click para escribir uno nuevo por chat", NamedTextColor.GRAY))
+                .setName(lang.component("gui.stats.add_custom"))
+                .setLore(lang.component("gui.stats.add_custom_hint"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back_button")));
     }
 
     private org.bukkit.inventory.ItemStack statItem(String statId, double value) {
         return new ItemBuilder(value > 0 ? Material.REDSTONE : Material.GUNPOWDER)
                 .setName(Component.text(formatName(statId) + ": " + formatNumber(value), NamedTextColor.RED))
-                .setLore(Component.text("Click: +1 · Shift-click: +10", NamedTextColor.GRAY),
-                        Component.text("Click derecho: -1 · Shift-click derecho: -10", NamedTextColor.GRAY))
+                .setLore(lang.component("gui.common.click_plus1_10"),
+                        lang.component("gui.common.click_minus1_10"))
                 .build();
     }
 
@@ -138,12 +143,12 @@ public class MobStatsEditorGUI extends InventoryGUI {
     }
 
     private void promptCustomStat() {
-        session.chatPromptManager.prompt(player, "Escribí: <stat> <valor> (ej. magic_damage 15):", value -> {
+        session.chatPromptManager.prompt(player, "gui.stats.prompt_custom", value -> {
 
             String[] parts = value.trim().split("\\s+");
 
             if (parts.length != 2) {
-                player.sendMessage(Component.text("Formato inválido.", NamedTextColor.RED));
+                lang.send(player, "gui.common.invalid_format");
                 return;
             }
 
@@ -152,7 +157,7 @@ public class MobStatsEditorGUI extends InventoryGUI {
                 session.stats.put(statId, Double.parseDouble(parts[1]));
                 session.statRegistry.register(statId);
             } catch (NumberFormatException e) {
-                player.sendMessage(Component.text("Valor numérico inválido.", NamedTextColor.RED));
+                lang.send(player, "gui.common.invalid_number");
                 return;
             }
 

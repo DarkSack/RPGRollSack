@@ -2,10 +2,8 @@ package com.sack.rpgroll.command.commands;
 
 import com.sack.rpgroll.RPGRoll;
 import com.sack.rpgroll.command.RPGCommand;
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.player.RPGPlayer;
-
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 
 import com.sack.rpgroll.player.PlayerManager;
 import org.bukkit.command.CommandSender;
@@ -34,6 +32,7 @@ public class RaceCommand implements RPGCommand {
     public void execute(CommandSender sender, String[] args) {
 
         Player player = (Player) sender;
+        LangManager lang = plugin.getBootstrap().getServices().get(LangManager.class);
 
         try {
 
@@ -44,76 +43,73 @@ public class RaceCommand implements RPGCommand {
             Optional<RPGPlayer> rpgPlayer = playerManager.getPlayer(player.getUniqueId());
 
             if (rpgPlayer.isEmpty()) {
-                player.sendMessage(
-                        Component.text("No se encontraron estadísticas para tu personaje.", NamedTextColor.RED));
-                player.sendMessage(Component.text("Error al cargar tus datos.", NamedTextColor.RED));
+                lang.send(player, "race_command.profile_load_error");
+                lang.send(player, "race_command.data_load_error");
                 return;
             }
 
             // Sin argumentos: mostrar raza actual
             if (args.length == 0) {
-                showCurrentRace(player, rpgPlayer.get());
+                showCurrentRace(player, rpgPlayer.get(), lang);
                 return;
             }
 
             // Con argumento "list": mostrar razas disponibles
             if (args[0].equalsIgnoreCase("list")) {
-                showAvailableRaces(player);
+                showAvailableRaces(player, lang);
                 return;
             }
 
             // Con argumento: cambiar raza
             String newRace = args[0];
-            changeRace(player, playerManager, rpgPlayer.get(), newRace);
+            changeRace(player, playerManager, rpgPlayer.get(), newRace, lang);
 
         } catch (Exception exception) {
 
-            player.sendMessage(Component.text("Error al procesar comando de raza.", NamedTextColor.RED));
+            lang.send(player, "race_command.process_error");
             exception.printStackTrace();
 
         }
 
     }
 
-    private void showCurrentRace(Player player, RPGPlayer rpgPlayer) {
+    private void showCurrentRace(Player player, RPGPlayer rpgPlayer, LangManager lang) {
 
         String playerRace = rpgPlayer.getRace();
 
         if (playerRace == null || playerRace.isEmpty()) {
-            player.sendMessage(Component.text("Aún no has seleccionado una raza.", NamedTextColor.YELLOW));
-            player.sendMessage(Component.text("Usa /rpg race <nombre> para seleccionar una.", NamedTextColor.GRAY));
-            player.sendMessage(
-                    Component.text("Usa /rpg race list para ver las razas disponibles.", NamedTextColor.GRAY));
+            lang.send(player, "race.no_race");
+            lang.send(player, "race_command.hint_select");
+            lang.send(player, "race_command.hint_list");
         } else {
-            player.sendMessage(Component.text("Tu raza actual: " + playerRace, NamedTextColor.GREEN));
+            lang.send(player, "race.current", "race", playerRace);
         }
 
     }
 
-    private void showAvailableRaces(Player player) {
+    private void showAvailableRaces(Player player, LangManager lang) {
 
-        player.sendMessage(Component.text("========== Razas Disponibles ==========", NamedTextColor.GOLD));
+        lang.send(player, "race_command.list_header");
 
         for (String raceName : AVAILABLE_RACES) {
-            player.sendMessage(Component.text("• " + raceName, NamedTextColor.YELLOW));
+            lang.send(player, "race_command.list_entry", "race", raceName);
         }
 
-        player.sendMessage(Component.text("=======================================", NamedTextColor.GOLD));
-        player.sendMessage(
-                Component.text("Usa " + "/rpg race <nombre>" + " para seleccionar una raza.", NamedTextColor.GRAY));
+        lang.send(player, "race_command.list_footer");
+        lang.send(player, "race_command.list_hint");
 
     }
 
-    private void changeRace(Player player, PlayerManager playerManager, RPGPlayer rpgPlayer, String newRace) {
+    private void changeRace(Player player, PlayerManager playerManager, RPGPlayer rpgPlayer, String newRace,
+            LangManager lang) {
 
         // Validar que la raza exista
         boolean validRace = AVAILABLE_RACES.stream()
                 .anyMatch(r -> r.equalsIgnoreCase(newRace));
 
         if (!validRace) {
-            player.sendMessage(Component.text("Raza no válida: " + newRace, NamedTextColor.RED));
-            player.sendMessage(Component.text("Usa " + "/rpg race list" + " para ver las razas disponibles.",
-                    NamedTextColor.GRAY));
+            lang.send(player, "race_command.invalid_race", "race", newRace);
+            lang.send(player, "race_command.hint_list");
             return;
         }
 
@@ -123,9 +119,8 @@ public class RaceCommand implements RPGCommand {
         // Verificar si puede cambiar de raza
         if (currentRace != null && !currentRace.isEmpty()) {
             // TODO: Verificar configuración allow_race_change
-            player.sendMessage(Component.text("Ya tienes una raza seleccionada.", NamedTextColor.RED));
-            player.sendMessage(
-                    Component.text("El cambio de raza no está permitido actualmente.", NamedTextColor.YELLOW));
+            lang.send(player, "race_command.already_selected");
+            lang.send(player, "race_command.change_not_allowed");
             return;
         }
 
@@ -139,7 +134,7 @@ public class RaceCommand implements RPGCommand {
         RPGPlayer updatedPlayer = rpgPlayer.setRace(formattedRace);
         playerManager.savePlayer(updatedPlayer);
 
-        player.sendMessage(Component.text("¡Has seleccionado la raza: " + formattedRace + "!", NamedTextColor.GREEN));
+        lang.send(player, "race.select", "race", formattedRace);
 
     }
 

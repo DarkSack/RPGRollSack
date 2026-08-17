@@ -1,5 +1,6 @@
 package com.sack.rpgroll.magic.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.magic.core.MagicSchool;
@@ -32,15 +33,17 @@ public class SchoolEditorGUI extends InventoryGUI {
 
     private final SchoolManager schoolManager;
     private final ChatPromptManager chatPromptManager;
+    private final LangManager lang;
     private final Runnable onBack;
     private MagicSchool current;
 
     public SchoolEditorGUI(Player player, MagicSchool school, SchoolManager schoolManager,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text("Escuela: " + school.id(), NamedTextColor.GOLD), SIZE);
+        super(player, chatPromptManager.lang().component("gui.school_editor.title", "id", school.id()), SIZE);
         this.current = school;
         this.schoolManager = schoolManager;
         this.chatPromptManager = chatPromptManager;
+        this.lang = chatPromptManager.lang();
         this.onBack = onBack;
     }
 
@@ -60,49 +63,51 @@ public class SchoolEditorGUI extends InventoryGUI {
         }
 
         setItem(NAME_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(Component.text("Nombre: " + current.displayName(), NamedTextColor.YELLOW))
+                .setName(lang.component("gui.common.name_label", "name", current.displayName()))
                 .build());
 
         setItem(COLOR_SLOT, new ItemBuilder(Material.PAPER)
-                .setName(Component.text("Color: " + current.color(), SchoolBrowserGUI.parseColor(current.color())))
-                .setLore(Component.text("Click para escribir uno nuevo (ej. RED, AQUA...)", NamedTextColor.GRAY))
+                .setName(Component.text(lang.raw("gui.school_editor.color_label", "color", current.color()),
+                        SchoolBrowserGUI.parseColor(current.color())))
+                .setLore(lang.component("gui.school_editor.color_lore"))
                 .build());
 
         setItem(ICON_SLOT, new ItemBuilder(SchoolBrowserGUI.parseMaterial(current.icon()))
-                .setName(Component.text("Ícono: " + current.icon(), NamedTextColor.YELLOW))
+                .setName(lang.component("gui.common.icon_label", "icon", current.icon()))
                 .build());
 
         setItem(DESCRIPTION_SLOT, new ItemBuilder(Material.WRITTEN_BOOK)
-                .setName(Component.text("Descripción", NamedTextColor.YELLOW))
+                .setName(lang.component("gui.common.description_title"))
                 .setLore(ItemBuilder.toLoreLines(
-                        current.description().isBlank() ? "(sin descripción)" : current.description()))
+                        current.description().isBlank() ? lang.raw("gui.common.no_description")
+                                : current.description()))
                 .build());
 
         setItem(CAST_SOUND_SLOT, new ItemBuilder(Material.NOTE_BLOCK)
-                .setName(Component.text(
-                        "Sonido al lanzar: " + (current.castSoundOnCast() == null ? "(ninguno)" : current.castSoundOnCast()),
-                        NamedTextColor.YELLOW))
-                .setLore(Component.text("Escribí 'ninguno' para quitarlo", NamedTextColor.GRAY))
+                .setName(lang.component("gui.school_editor.cast_sound_label", "value",
+                        current.castSoundOnCast() == null ? lang.raw("gui.common.none") : current.castSoundOnCast()))
+                .setLore(lang.component("gui.school_editor.cast_sound_lore"))
                 .build());
 
         setItem(CAST_EFFECT_SLOT, new ItemBuilder(Material.BLAZE_POWDER)
-                .setName(Component.text(
-                        "Efecto SackEffects: " + (current.castEffectId() == null ? "(ninguno)" : current.castEffectId()),
-                        NamedTextColor.YELLOW))
-                .setLore(Component.text("Escribí 'ninguno' para quitarlo", NamedTextColor.GRAY))
+                .setName(lang.component("gui.school_editor.cast_effect_label", "value",
+                        current.castEffectId() == null ? lang.raw("gui.common.none") : current.castEffectId()))
+                .setLore(lang.component("gui.school_editor.cast_effect_lore"))
                 .build());
 
         setItem(RACE_AFFINITIES_SLOT, new ItemBuilder(Material.ZOMBIE_HEAD)
-                .setName(Component.text("Afinidades de raza: " + current.raceAffinities().size(), NamedTextColor.YELLOW))
+                .setName(lang.component("gui.school_editor.race_affinities_label", "count",
+                        current.raceAffinities().size()))
                 .setLore(affinityLore(current.raceAffinities()))
                 .build());
 
         setItem(CLASS_AFFINITIES_SLOT, new ItemBuilder(Material.IRON_SWORD)
-                .setName(Component.text("Afinidades de clase: " + current.classAffinities().size(), NamedTextColor.YELLOW))
+                .setName(lang.component("gui.school_editor.class_affinities_label", "count",
+                        current.classAffinities().size()))
                 .setLore(affinityLore(current.classAffinities()))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back")));
     }
 
     private List<Component> affinityLore(Map<String, Double> affinities) {
@@ -110,11 +115,11 @@ public class SchoolEditorGUI extends InventoryGUI {
         List<Component> lore = new java.util.ArrayList<>();
 
         for (var entry : affinities.entrySet()) {
-            lore.add(Component.text(entry.getKey() + ": " + (entry.getValue() >= 0 ? "+" : "")
-                    + Math.round(entry.getValue() * 100) + "%", NamedTextColor.GRAY));
+            lore.add(lang.component("gui.school_editor.affinity_line", "key", entry.getKey(),
+                    "sign", entry.getValue() >= 0 ? "+" : "", "percent", Math.round(entry.getValue() * 100)));
         }
 
-        lore.add(Component.text("Click para reescribir (id=fraccion,id2=fraccion2)", NamedTextColor.DARK_GRAY));
+        lore.add(lang.component("gui.school_editor.affinity_lore"));
 
         return lore;
     }
@@ -126,7 +131,7 @@ public class SchoolEditorGUI extends InventoryGUI {
         int slot = event.getSlot();
 
         if (slot == NAME_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el nuevo nombre:", value -> replace(new MagicSchool(
+            chatPromptManager.prompt(player, lang.raw("gui.common.prompt_name"), value -> replace(new MagicSchool(
                     current.id(), value, current.color(), current.icon(), current.description(),
                     current.castSoundOnCast(), current.castEffectId(), current.raceAffinities(),
                     current.classAffinities())));
@@ -134,7 +139,7 @@ public class SchoolEditorGUI extends InventoryGUI {
         }
 
         if (slot == COLOR_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el color (ej. RED, AQUA, LIGHT_PURPLE):", value -> replace(
+            chatPromptManager.prompt(player, lang.raw("gui.school_editor.prompt_color"), value -> replace(
                     new MagicSchool(current.id(), current.displayName(), value, current.icon(),
                             current.description(), current.castSoundOnCast(), current.castEffectId(),
                             current.raceAffinities(), current.classAffinities())));
@@ -142,7 +147,7 @@ public class SchoolEditorGUI extends InventoryGUI {
         }
 
         if (slot == ICON_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el Material del ícono:", value -> replace(new MagicSchool(
+            chatPromptManager.prompt(player, lang.raw("gui.common.prompt_icon"), value -> replace(new MagicSchool(
                     current.id(), current.displayName(), current.color(), value, current.description(),
                     current.castSoundOnCast(), current.castEffectId(), current.raceAffinities(),
                     current.classAffinities())));
@@ -150,7 +155,7 @@ public class SchoolEditorGUI extends InventoryGUI {
         }
 
         if (slot == DESCRIPTION_SLOT) {
-            chatPromptManager.prompt(player, "Escribí la nueva descripción:", value -> replace(new MagicSchool(
+            chatPromptManager.prompt(player, lang.raw("gui.common.prompt_description"), value -> replace(new MagicSchool(
                     current.id(), current.displayName(), current.color(), current.icon(), value,
                     current.castSoundOnCast(), current.castEffectId(), current.raceAffinities(),
                     current.classAffinities())));
@@ -158,7 +163,7 @@ public class SchoolEditorGUI extends InventoryGUI {
         }
 
         if (slot == CAST_SOUND_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el Sound (o 'ninguno' para quitarlo):", value -> replace(
+            chatPromptManager.prompt(player, lang.raw("gui.school_editor.prompt_cast_sound"), value -> replace(
                     new MagicSchool(current.id(), current.displayName(), current.color(), current.icon(),
                             current.description(), value.equalsIgnoreCase("ninguno") ? null : value,
                             current.castEffectId(), current.raceAffinities(), current.classAffinities())));
@@ -166,7 +171,7 @@ public class SchoolEditorGUI extends InventoryGUI {
         }
 
         if (slot == CAST_EFFECT_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el id del efecto de SackEffects (o 'ninguno'):", value -> replace(
+            chatPromptManager.prompt(player, lang.raw("gui.school_editor.prompt_cast_effect"), value -> replace(
                     new MagicSchool(current.id(), current.displayName(), current.color(), current.icon(),
                             current.description(), current.castSoundOnCast(),
                             value.equalsIgnoreCase("ninguno") ? null : value, current.raceAffinities(),
@@ -175,7 +180,7 @@ public class SchoolEditorGUI extends InventoryGUI {
         }
 
         if (slot == RACE_AFFINITIES_SLOT) {
-            chatPromptManager.prompt(player, "Escribí: raza=fraccion,raza2=fraccion2 (ej. elf=0.25,demon=-0.2):",
+            chatPromptManager.prompt(player, lang.raw("gui.school_editor.prompt_race_affinities"),
                     value -> replace(new MagicSchool(current.id(), current.displayName(), current.color(),
                             current.icon(), current.description(), current.castSoundOnCast(),
                             current.castEffectId(), parseAffinities(value), current.classAffinities())));
@@ -183,7 +188,7 @@ public class SchoolEditorGUI extends InventoryGUI {
         }
 
         if (slot == CLASS_AFFINITIES_SLOT) {
-            chatPromptManager.prompt(player, "Escribí: clase=fraccion,clase2=fraccion2 (ej. paladin=0.3):",
+            chatPromptManager.prompt(player, lang.raw("gui.school_editor.prompt_class_affinities"),
                     value -> replace(new MagicSchool(current.id(), current.displayName(), current.color(),
                             current.icon(), current.description(), current.castSoundOnCast(),
                             current.castEffectId(), current.raceAffinities(), parseAffinities(value))));

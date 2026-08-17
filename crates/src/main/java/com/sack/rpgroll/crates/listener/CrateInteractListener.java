@@ -1,5 +1,6 @@
 package com.sack.rpgroll.crates.listener;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.crates.core.Crate;
 import com.sack.rpgroll.crates.core.CrateActionExecutor;
 import com.sack.rpgroll.crates.core.CrateManager;
@@ -7,9 +8,6 @@ import com.sack.rpgroll.crates.gui.CrateSpinGUI;
 import com.sack.rpgroll.crates.key.CrateKeyItem;
 import com.sack.rpgroll.crates.location.PlacedCrate;
 import com.sack.rpgroll.crates.location.PlacedCrateManager;
-
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -33,19 +31,22 @@ public class CrateInteractListener implements Listener {
     private final PlacedCrateManager placedCrateManager;
     private final CrateKeyItem crateKeyItem;
     private final CrateActionExecutor actionExecutor;
+    private final LangManager lang;
 
     public CrateInteractListener(
             Plugin plugin,
             CrateManager crateManager,
             PlacedCrateManager placedCrateManager,
             CrateKeyItem crateKeyItem,
-            CrateActionExecutor actionExecutor) {
+            CrateActionExecutor actionExecutor,
+            LangManager lang) {
 
         this.plugin = plugin;
         this.crateManager = crateManager;
         this.placedCrateManager = placedCrateManager;
         this.crateKeyItem = crateKeyItem;
         this.actionExecutor = actionExecutor;
+        this.lang = lang;
     }
 
     @EventHandler
@@ -84,15 +85,14 @@ public class CrateInteractListener implements Listener {
             ItemStack inHand = player.getInventory().getItemInMainHand();
 
             if (!crateKeyItem.isKeyFor(inHand, crate.id())) {
-                player.sendMessage(Component.text(
-                        "Necesitas la llave de este crate para abrirlo.", NamedTextColor.RED));
+                lang.send(player, "interact.needs_key");
                 return;
             }
 
             consumeOne(player, inHand);
         }
 
-        new CrateSpinGUI(plugin, player, crate, actionExecutor).open();
+        new CrateSpinGUI(plugin, player, crate, actionExecutor, lang).open();
     }
 
     /**

@@ -1,13 +1,11 @@
 package com.sack.rpgroll.guilds.guild.quest;
 
+import com.sack.rpgroll.guilds.GuildsAPI;
 import com.sack.rpgroll.guilds.guild.Guild;
 import com.sack.rpgroll.guilds.guild.GuildManager;
 import com.sack.rpgroll.guilds.guild.achievement.GuildAchievementChecker;
 import com.sack.rpgroll.guilds.guild.bank.VaultTransaction;
 import com.sack.rpgroll.guilds.guild.bank.VaultTransactionType;
-
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -91,10 +89,13 @@ public class GuildQuestService {
 
     private void complete(Guild guild, GuildQuestDefinition definition) {
 
+        var lang = GuildsAPI.getLangManager();
+
         if (definition.rewardMoney() > 0) {
             guild.vault().deposit(definition.rewardMoney(),
-                    VaultTransaction.of(null, "Sistema", VaultTransactionType.DONATION,
-                            definition.rewardMoney(), "Recompensa de quest: " + definition.displayName()));
+                    VaultTransaction.of(null, lang.raw("guild.vault.log_system"), VaultTransactionType.DONATION,
+                            definition.rewardMoney(), lang.raw("guild.quests.log.reward", "quest",
+                                    definition.displayName())));
         }
 
         if (definition.rewardXp() > 0) {
@@ -105,15 +106,12 @@ public class GuildQuestService {
 
         var unlocked = achievementChecker.check(guild);
 
-        Component message = Component.text("✔ Quest de guild completada: ", NamedTextColor.GREEN)
-                .append(Component.text(definition.displayName(), NamedTextColor.YELLOW));
-
         for (UUID memberId : guild.members().keySet()) {
             Player player = Bukkit.getPlayer(memberId);
             if (player != null) {
-                player.sendMessage(message);
-                unlocked.forEach(achievement -> player.sendMessage(
-                        Component.text("🏆 Logro desbloqueado: " + achievement.displayName(), NamedTextColor.GOLD)));
+                lang.send(player, "guild.quests.completed", "quest", definition.displayName());
+                unlocked.forEach(achievement -> lang.send(player, "guild.achievements.unlocked_broadcast",
+                        "name", achievement.displayName()));
             }
         }
     }

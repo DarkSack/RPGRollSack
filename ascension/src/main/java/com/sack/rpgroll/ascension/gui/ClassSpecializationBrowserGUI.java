@@ -3,6 +3,7 @@ package com.sack.rpgroll.ascension.gui;
 import com.sack.rpgroll.ascension.core.AscensionRequirements;
 import com.sack.rpgroll.ascension.core.ClassSpecialization;
 import com.sack.rpgroll.ascension.core.ClassSpecializationManager;
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 
@@ -25,13 +26,15 @@ public class ClassSpecializationBrowserGUI extends InventoryGUI {
 
     private final ClassSpecializationManager manager;
     private final ChatPromptManager chatPromptManager;
+    private final LangManager lang;
     private List<ClassSpecialization> specializations;
 
     public ClassSpecializationBrowserGUI(Player player, ClassSpecializationManager manager,
-            ChatPromptManager chatPromptManager) {
-        super(player, Component.text("Especializaciones de clase", NamedTextColor.GOLD), SIZE);
+            ChatPromptManager chatPromptManager, LangManager lang) {
+        super(player, lang.component("gui.class_specialization.browser_title"), SIZE);
         this.manager = manager;
         this.chatPromptManager = chatPromptManager;
+        this.lang = lang;
         this.specializations = List.copyOf(manager.getAll());
     }
 
@@ -48,17 +51,19 @@ public class ClassSpecializationBrowserGUI extends InventoryGUI {
             ClassSpecialization specialization = specializations.get(i);
             setItem(i, new ItemBuilder(Material.DIAMOND_SWORD)
                     .setName(Component.text(specialization.id(), NamedTextColor.YELLOW))
-                    .setLore(Component.text("Base: " + specialization.baseClass(), NamedTextColor.GRAY),
-                            Component.text(specialization.talentTree().size() + " talento(s)", NamedTextColor.GRAY),
-                            Component.text("Click para editar", NamedTextColor.YELLOW))
+                    .setLore(lang.component("gui.class_specialization.item_base", "class",
+                            specialization.baseClass()),
+                            lang.component("gui.class_specialization.item_talent_count", "count",
+                                    specialization.talentTree().size()),
+                            lang.component("gui.common.click_to_edit"))
                     .build());
         }
 
         setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Crear especialización nueva", NamedTextColor.GREEN))
+                .setName(lang.component("gui.class_specialization.create_new"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Cerrar"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.close_button")));
     }
 
     @Override
@@ -69,7 +74,7 @@ public class ClassSpecializationBrowserGUI extends InventoryGUI {
 
         if (slot < specializations.size() && slot < 36) {
             new ClassSpecializationEditorGUI(player, specializations.get(slot), manager, chatPromptManager,
-                    this::reopen).open();
+                    this::reopen, lang).open();
             return;
         }
 
@@ -84,17 +89,17 @@ public class ClassSpecializationBrowserGUI extends InventoryGUI {
     }
 
     private void promptNew() {
-        chatPromptManager.prompt(player, "Escribí el id de la nueva especialización:", value -> {
+        chatPromptManager.prompt(player, "gui.class_specialization.prompt_new_id", value -> {
 
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 
             if (manager.exists(id)) {
-                player.sendMessage(Component.text("Ya existe una especialización con ese id.", NamedTextColor.RED));
+                lang.send(player, "gui.class_specialization.id_exists");
                 reopen();
                 return;
             }
 
-            chatPromptManager.prompt(player, "Escribí el id de la clase base:", baseClass -> {
+            chatPromptManager.prompt(player, "gui.class_specialization.prompt_base_class_new", baseClass -> {
                 manager.save(new ClassSpecialization(id, baseClass.trim().toLowerCase(Locale.ROOT), id,
                         AscensionRequirements.none(), Map.of(), List.of(), List.of(), List.of()));
                 reopen();

@@ -1,6 +1,7 @@
 package com.sack.rpgroll.guilds.command;
 
 import com.sack.rpgroll.api.RPGRollAPI;
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.guilds.GuildServices;
 import com.sack.rpgroll.guilds.gui.guild.GuildBrowserGUI;
 import com.sack.rpgroll.guilds.gui.guild.GuildHubGUI;
@@ -12,10 +13,6 @@ import com.sack.rpgroll.guilds.guild.chat.GuildChatChannel;
 import com.sack.rpgroll.guilds.guild.ranking.GuildRankingManager;
 import com.sack.rpgroll.util.TabCompleteUtil;
 
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
-
-import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -43,11 +40,15 @@ public class GuildCommand implements CommandExecutor, TabCompleter {
         this.requirements = requirements;
     }
 
+    private LangManager lang() {
+        return services.langManager();
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
         if (!(sender instanceof Player player)) {
-            sender.sendMessage(Component.text("Solo un jugador puede usar este comando.", NamedTextColor.RED));
+            lang().send(sender, "common.players_only");
             return true;
         }
 
@@ -62,7 +63,7 @@ public class GuildCommand implements CommandExecutor, TabCompleter {
             case "accept" -> handleAccept(player, args);
             case "decline" -> {
                 guildManager.decline(player.getUniqueId());
-                player.sendMessage(Component.text("Invitación rechazada.", NamedTextColor.GRAY));
+                lang().send(player, "guild.decline.success");
             }
             case "leave" -> handleLeave(player);
             case "info", "gui", "vault", "territory", "upgrade", "diplomacy", "quest", "achievements", "calendar",
@@ -78,8 +79,7 @@ public class GuildCommand implements CommandExecutor, TabCompleter {
     }
 
     private void sendUsage(Player player) {
-        player.sendMessage(Component.text(
-                "Uso: /guild <create|disband|accept|decline|leave|ranking|chat|gui> [args]", NamedTextColor.YELLOW));
+        lang().send(player, "guild.usage");
     }
 
     private void openHub(Player player) {
@@ -87,7 +87,7 @@ public class GuildCommand implements CommandExecutor, TabCompleter {
         Guild guild = guildManager.findByMember(player.getUniqueId()).orElse(null);
 
         if (guild == null) {
-            player.sendMessage(Component.text("No estás en ninguna guild — usá /guild browser.", NamedTextColor.RED));
+            lang().send(player, "guild.not_in_guild_browser");
             return;
         }
 
@@ -97,12 +97,12 @@ public class GuildCommand implements CommandExecutor, TabCompleter {
     private void handleCreate(Player player, String[] args) {
 
         if (args.length < 2) {
-            player.sendMessage(Component.text("Uso: /guild create <nombre>", NamedTextColor.YELLOW));
+            lang().send(player, "guild.create.usage");
             return;
         }
 
         if (guildManager.findByMember(player.getUniqueId()).isPresent()) {
-            player.sendMessage(Component.text("Ya estás en una guild.", NamedTextColor.RED));
+            lang().send(player, "guild.already_in_guild");
             return;
         }
 
@@ -110,8 +110,7 @@ public class GuildCommand implements CommandExecutor, TabCompleter {
         String id = name.toLowerCase(Locale.ROOT).replace(' ', '_').replaceAll("[^a-z0-9_]", "");
 
         if (id.isBlank() || guildManager.exists(id)) {
-            player.sendMessage(Component.text("Ese nombre no es válido o ya existe una guild con ese id.",
-                    NamedTextColor.RED));
+            lang().send(player, "guild.create.invalid_name");
             return;
         }
 
@@ -120,7 +119,7 @@ public class GuildCommand implements CommandExecutor, TabCompleter {
         }
 
         Guild guild = guildManager.create(id, name, player.getUniqueId());
-        player.sendMessage(Component.text("✔ Guild '" + guild.name() + "' fundada.", NamedTextColor.GREEN));
+        lang().send(player, "guild.create.success", "name", guild.name());
     }
 
     private boolean checkRequirements(Player player) {
@@ -129,33 +128,29 @@ public class GuildCommand implements CommandExecutor, TabCompleter {
             int level = RPGRollAPI.get().getPlayer(player.getUniqueId()).map(rpgPlayer -> rpgPlayer.getLevel())
                     .orElse(0);
             if (level < requirements.minLevel()) {
-                player.sendMessage(Component.text("Necesitás nivel " + requirements.minLevel()
-                        + " para fundar una guild.", NamedTextColor.RED));
+                lang().send(player, "guild.create.requires_level", "level", requirements.minLevel());
                 return false;
             }
         }
 
         if (requirements.requiredPermission() != null && !requirements.requiredPermission().isBlank()
                 && !player.hasPermission(requirements.requiredPermission())) {
-            player.sendMessage(Component.text("No tenés el permiso necesario para fundar una guild.",
-                    NamedTextColor.RED));
+            lang().send(player, "guild.create.requires_permission");
             return false;
         }
 
         if (requirements.requiredItem() != null && requirements.requiredItemAmount() > 0) {
             ItemStack required = new ItemStack(requirements.requiredItem(), requirements.requiredItemAmount());
             if (!player.getInventory().containsAtLeast(required, requirements.requiredItemAmount())) {
-                player.sendMessage(Component.text("Necesitás " + requirements.requiredItemAmount() + "x "
-                        + requirements.requiredItem() + " para fundar una guild.", NamedTextColor.RED));
+                lang().send(player, "guild.create.requires_item", "amount", requirements.requiredItemAmount(),
+                        "item", requirements.requiredItem());
                 return false;
             }
         }
 
         if (requirements.requiredQuestId() != null && !requirements.requiredQuestId().isBlank()) {
-            player.sendMessage(Component.text(
-                    "Aviso: esta guild requiere haber completado la quest '" + requirements.requiredQuestId()
-                            + "', pero esa verificación todavía no está implementada — el requisito no se aplica.",
-                    NamedTextColor.GRAY));
+            lang().send(player, "guild.create.quest_requirement_not_implemented", "quest",
+                    requirements.requiredQuestId());
         }
 
         if (requirements.moneyCost() > 0) {
@@ -167,8 +162,7 @@ public class GuildCommand implements CommandExecutor, TabCompleter {
             var economy = RPGRollAPI.get().getEconomyProvider().getEconomy().orElseThrow();
 
             if (economy.getBalance(player) < requirements.moneyCost()) {
-                player.sendMessage(Component.text("Necesitás " + requirements.moneyCost()
-                        + " de dinero para fundar una guild.", NamedTextColor.RED));
+                lang().send(player, "guild.create.requires_money", "amount", requirements.moneyCost());
                 return false;
             }
 
@@ -188,35 +182,34 @@ public class GuildCommand implements CommandExecutor, TabCompleter {
         Guild guild = guildManager.findByMember(player.getUniqueId()).orElse(null);
 
         if (guild == null) {
-            player.sendMessage(Component.text("No estás en ninguna guild.", NamedTextColor.RED));
+            lang().send(player, "guild.not_in_guild");
             return;
         }
 
         if (guild.roleOf(player.getUniqueId()) != GuildRole.LEADER) {
-            player.sendMessage(Component.text("Solo el líder puede disolver la guild.", NamedTextColor.RED));
+            lang().send(player, "guild.disband.only_leader");
             return;
         }
 
         guildManager.disband(guild.id());
-        player.sendMessage(Component.text("Guild disuelta.", NamedTextColor.GRAY));
+        lang().send(player, "guild.disband.success");
     }
 
     private void handleAccept(Player player, String[] args) {
 
         if (args.length < 2) {
-            player.sendMessage(Component.text("Uso: /guild accept <id-de-guild>", NamedTextColor.YELLOW));
+            lang().send(player, "guild.accept.usage");
             return;
         }
 
         var result = guildManager.accept(player.getUniqueId(), args[1]);
 
         switch (result) {
-            case OK -> player.sendMessage(Component.text("✔ Te uniste a la guild.", NamedTextColor.GREEN));
-            case NO_INVITE -> player.sendMessage(Component.text("No tenés ninguna invitación pendiente de esa guild.",
-                    NamedTextColor.RED));
-            case EXPIRED -> player.sendMessage(Component.text("Esa invitación ya expiró.", NamedTextColor.RED));
-            case GUILD_GONE -> player.sendMessage(Component.text("Esa guild ya no existe.", NamedTextColor.RED));
-            case ALREADY_IN_GUILD -> player.sendMessage(Component.text("Ya estás en una guild.", NamedTextColor.RED));
+            case OK -> lang().send(player, "guild.accept.success");
+            case NO_INVITE -> lang().send(player, "guild.accept.no_invite");
+            case EXPIRED -> lang().send(player, "guild.accept.expired");
+            case GUILD_GONE -> lang().send(player, "guild.accept.guild_gone");
+            case ALREADY_IN_GUILD -> lang().send(player, "guild.already_in_guild");
         }
     }
 
@@ -225,23 +218,22 @@ public class GuildCommand implements CommandExecutor, TabCompleter {
         Guild guild = guildManager.findByMember(player.getUniqueId()).orElse(null);
 
         if (guild == null) {
-            player.sendMessage(Component.text("No estás en ninguna guild.", NamedTextColor.RED));
+            lang().send(player, "guild.not_in_guild");
             return;
         }
 
         if (guild.roleOf(player.getUniqueId()) == GuildRole.LEADER && guild.memberCount() > 1) {
-            player.sendMessage(Component.text(
-                    "Sos el líder — transferí el liderazgo o usá /guild disband.", NamedTextColor.RED));
+            lang().send(player, "guild.leave.is_leader");
             return;
         }
 
         if (guild.memberCount() <= 1) {
             guildManager.disband(guild.id());
-            player.sendMessage(Component.text("Guild disuelta.", NamedTextColor.GRAY));
+            lang().send(player, "guild.disband.success");
         } else {
             guild.removeMember(player.getUniqueId());
             guildManager.save(guild);
-            player.sendMessage(Component.text("Abandonaste la guild.", NamedTextColor.GRAY));
+            lang().send(player, "guild.leave.success");
         }
     }
 
@@ -258,12 +250,12 @@ public class GuildCommand implements CommandExecutor, TabCompleter {
 
         List<Guild> top = services.rankingManager().top(category, 10);
 
-        player.sendMessage(Component.text("=== Ranking de Guilds (" + category + ") ===", NamedTextColor.GOLD));
+        lang().send(player, "guild.ranking.header", "category", category);
 
         for (int i = 0; i < top.size(); i++) {
             Guild guild = top.get(i);
-            player.sendMessage(Component.text((i + 1) + ". " + guild.name() + " — "
-                    + category.valueOf(guild), NamedTextColor.GRAY));
+            lang().send(player, "guild.ranking.entry", "position", i + 1, "name", guild.name(),
+                    "value", category.valueOf(guild));
         }
     }
 
@@ -272,7 +264,7 @@ public class GuildCommand implements CommandExecutor, TabCompleter {
         Guild guild = guildManager.findByMember(player.getUniqueId()).orElse(null);
 
         if (guild == null) {
-            player.sendMessage(Component.text("No estás en ninguna guild.", NamedTextColor.RED));
+            lang().send(player, "guild.not_in_guild");
             return;
         }
 
@@ -286,12 +278,12 @@ public class GuildCommand implements CommandExecutor, TabCompleter {
         }
 
         if (channel == GuildChatChannel.OFFICERS && !guild.roleOf(player.getUniqueId()).canManageSettings()) {
-            player.sendMessage(Component.text("Solo los oficiales/líder pueden usar ese canal.", NamedTextColor.RED));
+            lang().send(player, "guild.chat.officers_only");
             return;
         }
 
         services.guildChatListener().setChannel(player, channel);
-        player.sendMessage(Component.text("Chat cambiado a canal: " + channel, NamedTextColor.AQUA));
+        lang().send(player, "guild.chat.channel_changed", "channel", channel);
     }
 
     @Override

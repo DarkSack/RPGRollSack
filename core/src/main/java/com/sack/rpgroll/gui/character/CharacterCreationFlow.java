@@ -1,6 +1,7 @@
 package com.sack.rpgroll.gui.character;
 
 import com.sack.rpgroll.api.stats.StatType;
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gameplay.combat.CombatStats;
 import com.sack.rpgroll.player.PlayerManager;
 import com.sack.rpgroll.player.RPGPlayer;
@@ -11,8 +12,6 @@ import com.sack.rpgroll.api.race.Race;
 import com.sack.rpgroll.race.RaceAttributeApplier;
 import com.sack.rpgroll.api.race.RaceManager;
 
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.entity.Player;
 
 import java.util.Map;
@@ -25,17 +24,19 @@ public class CharacterCreationFlow {
     private final RaceManager raceManager;
     private final ClassManager classManager;
     private final RaceAttributeApplier raceAttributeApplier;
+    private final LangManager lang;
 
     private String selectedRace;
     private String selectedClass;
 
     public CharacterCreationFlow(Player player, PlayerManager playerManager, RaceManager raceManager,
-            ClassManager classManager, RaceAttributeApplier raceAttributeApplier) {
+            ClassManager classManager, RaceAttributeApplier raceAttributeApplier, LangManager lang) {
         this.player = player;
         this.playerManager = playerManager;
         this.raceManager = raceManager;
         this.classManager = classManager;
         this.raceAttributeApplier = raceAttributeApplier;
+        this.lang = lang;
     }
 
     public void start() {
@@ -48,11 +49,9 @@ public class CharacterCreationFlow {
             if (rpgPlayer.getRace() != null && !rpgPlayer.getRace().isEmpty() &&
                     rpgPlayer.getPlayerClass() != null && !rpgPlayer.getPlayerClass().isEmpty()) {
 
-                player.sendMessage(Component.text("Ya tienes un personaje creado.", NamedTextColor.RED));
-                player.sendMessage(Component.text("Raza: ", NamedTextColor.YELLOW)
-                        .append(Component.text(rpgPlayer.getRace(), NamedTextColor.WHITE)));
-                player.sendMessage(Component.text("Clase: ", NamedTextColor.YELLOW)
-                        .append(Component.text(rpgPlayer.getPlayerClass(), NamedTextColor.WHITE)));
+                lang.send(player, "character_creation_flow.already_created");
+                lang.send(player, "character_creation_flow.race_label", "race", rpgPlayer.getRace());
+                lang.send(player, "character_creation_flow.class_label", "class", rpgPlayer.getPlayerClass());
                 return;
             }
         }
@@ -61,7 +60,7 @@ public class CharacterCreationFlow {
     }
 
     private void showRaceSelection() {
-        RaceSelectionGUI raceGUI = new RaceSelectionGUI(player, raceManager, this::onRaceSelected, true);
+        RaceSelectionGUI raceGUI = new RaceSelectionGUI(player, raceManager, this::onRaceSelected, true, lang);
         raceGUI.open();
     }
 
@@ -69,15 +68,14 @@ public class CharacterCreationFlow {
         this.selectedRace = race;
 
         raceManager.get(race)
-                .ifPresent(r -> player.sendMessage(Component.text("Has seleccionado la raza: ", NamedTextColor.GREEN)
-                        .append(Component.text(r.displayName(), NamedTextColor.GOLD))));
+                .ifPresent(r -> lang.send(player, "character_creation_flow.race_selected", "race", r.displayName()));
 
         showClassSelection();
     }
 
     private void showClassSelection() {
         ClassSelectionGUI classGUI = new ClassSelectionGUI(player, classManager, selectedRace, this::onClassSelected,
-                true);
+                true, lang);
         classGUI.open();
     }
 
@@ -96,7 +94,7 @@ public class CharacterCreationFlow {
         Optional<RPGPlayer> rpgPlayerOpt = playerManager.getPlayer(player.getUniqueId());
 
         if (rpgPlayerOpt.isEmpty()) {
-            player.sendMessage(Component.text("Error al crear personaje.", NamedTextColor.RED));
+            lang.send(player, "character_creation_flow.save_error");
             return;
         }
 
@@ -125,22 +123,17 @@ public class CharacterCreationFlow {
         String raceName = raceOpt.map(Race::displayName).orElse(selectedRace);
         String className = classOpt.map(PlayerClass::displayName).orElse(selectedClass);
 
-        player.sendMessage(Component.text(""));
-        player.sendMessage(Component.text("════════════════════════════════", NamedTextColor.GOLD));
-        player.sendMessage(Component.text("  ¡Personaje creado con éxito!", NamedTextColor.GREEN));
-        player.sendMessage(Component.text(""));
-        player.sendMessage(Component.text("  Raza: ", NamedTextColor.YELLOW)
-                .append(Component.text(raceName, NamedTextColor.WHITE)));
-        player.sendMessage(Component.text("  Clase: ", NamedTextColor.YELLOW)
-                .append(Component.text(className, NamedTextColor.WHITE)));
-        player.sendMessage(Component.text("  Nivel: ", NamedTextColor.YELLOW)
-                .append(Component.text("1", NamedTextColor.WHITE)));
-        player.sendMessage(Component.text(""));
-        player.sendMessage(Component.text("  Usa ", NamedTextColor.GRAY)
-                .append(Component.text("/rpg stats", NamedTextColor.WHITE))
-                .append(Component.text(" para ver tus estadísticas", NamedTextColor.GRAY)));
-        player.sendMessage(Component.text("════════════════════════════════", NamedTextColor.GOLD));
-        player.sendMessage(Component.text(""));
+        player.sendMessage("");
+        lang.send(player, "character_creation_flow.border");
+        lang.send(player, "character_creation_flow.success_title");
+        player.sendMessage("");
+        lang.send(player, "character_creation_flow.success_race", "race", raceName);
+        lang.send(player, "character_creation_flow.success_class", "class", className);
+        lang.send(player, "character_creation_flow.success_level");
+        player.sendMessage("");
+        lang.send(player, "character_creation_flow.success_hint");
+        lang.send(player, "character_creation_flow.border");
+        player.sendMessage("");
     }
 
     private PlayerStats calculateInitialStats() {

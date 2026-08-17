@@ -44,7 +44,7 @@ public class GeneEditorGUI extends InventoryGUI {
 
     public GeneEditorGUI(Player player, Gene gene, GeneManager geneManager, ChatPromptManager chatPromptManager,
             Runnable onBack) {
-        super(player, Component.text("Gen: " + gene.id(), NamedTextColor.GOLD), SIZE);
+        super(player, Component.text(chatPromptManager.lang().raw("gui.gene.editor.title", "id", gene.id()), NamedTextColor.GOLD), SIZE);
         this.current = gene;
         this.geneManager = geneManager;
         this.chatPromptManager = chatPromptManager;
@@ -66,47 +66,48 @@ public class GeneEditorGUI extends InventoryGUI {
             setItem(slot, ItemBuilder.createFiller());
         }
 
+        var lang = chatPromptManager.lang();
+
         setItem(NAME_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(Component.text("Nombre: " + current.displayName(), NamedTextColor.YELLOW)).build());
+                .setName(Component.text(lang.raw("gui.editor.name_line", "name", current.displayName()), NamedTextColor.YELLOW)).build());
 
         setItem(ATTRIBUTE_KEY_SLOT, new ItemBuilder(Material.COMPASS)
-                .setName(Component.text("attribute-key: " + current.attributeKey(), NamedTextColor.AQUA))
-                .setLore(Component.text("Ej. milk_production, growth_speed, fertility", NamedTextColor.GRAY)).build());
+                .setName(Component.text(lang.raw("gui.gene.editor.attribute_key_line", "key", current.attributeKey()), NamedTextColor.AQUA))
+                .setLore(Component.text(lang.raw("gui.gene.editor.attribute_key_hint"), NamedTextColor.GRAY)).build());
 
         setItem(DESCRIPTION_SLOT, new ItemBuilder(Material.WRITTEN_BOOK)
-                .setName(Component.text("Descripción", NamedTextColor.YELLOW))
-                .setLore(ItemBuilder.toLoreLines(current.description().isBlank() ? "(sin descripción)" : current.description()))
+                .setName(Component.text(lang.raw("gui.editor.description_title"), NamedTextColor.YELLOW))
+                .setLore(ItemBuilder.toLoreLines(current.description().isBlank() ? lang.raw("gui.editor.no_description") : current.description()))
                 .build());
 
         setItem(DOMINANCE_SLOT, new ItemBuilder(Material.REPEATER)
-                .setName(Component.text("Dominancia: " + current.dominance(), NamedTextColor.LIGHT_PURPLE))
-                .setLore(Component.text("Click para rotar: DOMINANT → RECESSIVE → MIXED", NamedTextColor.GRAY)).build());
+                .setName(Component.text(lang.raw("gui.gene.editor.dominance_line", "dominance", current.dominance()), NamedTextColor.LIGHT_PURPLE))
+                .setLore(Component.text(lang.raw("gui.gene.editor.dominance_hint"), NamedTextColor.GRAY)).build());
 
         setItem(MIN_VALUE_SLOT, new ItemBuilder(Material.RED_DYE)
-                .setName(Component.text("Mínimo: " + current.minValue(), NamedTextColor.WHITE))
-                .setLore(Component.text("Click: +5 · Click derecho: -5", NamedTextColor.GRAY)).build());
+                .setName(Component.text(lang.raw("gui.gene.editor.min_value_line", "value", current.minValue()), NamedTextColor.WHITE))
+                .setLore(Component.text(lang.raw("gui.editor.step5_hint"), NamedTextColor.GRAY)).build());
 
         setItem(MAX_VALUE_SLOT, new ItemBuilder(Material.LIME_DYE)
-                .setName(Component.text("Máximo: " + current.maxValue(), NamedTextColor.WHITE))
-                .setLore(Component.text("Click: +5 · Click derecho: -5", NamedTextColor.GRAY)).build());
+                .setName(Component.text(lang.raw("gui.gene.editor.max_value_line", "value", current.maxValue()), NamedTextColor.WHITE))
+                .setLore(Component.text(lang.raw("gui.editor.step5_hint"), NamedTextColor.GRAY)).build());
 
         setItem(SPECIES_SLOT, new ItemBuilder(Material.COW_SPAWN_EGG)
-                .setName(Component.text("Especies: "
-                        + (current.applicableSpecies().isEmpty() ? "cualquiera" : String.join(", ", current.applicableSpecies())),
+                .setName(Component.text(lang.raw("gui.gene.editor.species_line", "species",
+                        current.applicableSpecies().isEmpty() ? lang.raw("gui.gene.editor.any_species") : String.join(", ", current.applicableSpecies())),
                         NamedTextColor.GOLD))
-                .setLore(Component.text("Escribí ids separados por comas — vacío = cualquiera", NamedTextColor.GRAY))
+                .setLore(Component.text(lang.raw("gui.gene.editor.species_hint"), NamedTextColor.GRAY))
                 .build());
 
         setItem(MUTATIONS_SLOT, new ItemBuilder(Material.DRAGON_BREATH)
-                .setName(Component.text("Mutaciones: " + current.mutations().size(), NamedTextColor.LIGHT_PURPLE))
-                .setLore(ItemBuilder.toLoreLines(
-                        "Formato: id;nombre;TIPO;valor;chance\nTIPO: MULTIPLY, OVERRIDE, COSMETIC_TAG\nEscribí para AGREGAR una."))
+                .setName(Component.text(lang.raw("gui.gene.editor.mutations_line", "count", current.mutations().size()), NamedTextColor.LIGHT_PURPLE))
+                .setLore(ItemBuilder.toLoreLines(lang.raw("gui.gene.editor.mutations_hint")))
                 .build());
 
         setItem(CLEAR_MUTATIONS_SLOT, new ItemBuilder(Material.BARRIER)
-                .setName(Component.text("Borrar todas las mutaciones", NamedTextColor.RED)).build());
+                .setName(Component.text(lang.raw("gui.gene.editor.clear_mutations"), NamedTextColor.RED)).build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back")));
     }
 
     @Override
@@ -117,11 +118,11 @@ public class GeneEditorGUI extends InventoryGUI {
         double sign = event.getClick() == ClickType.RIGHT ? -5 : 5;
 
         if (slot == NAME_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el nuevo nombre:", value -> replace(withDisplayName(value)));
+            chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.editor.prompt_name"), value -> replace(withDisplayName(value)));
         } else if (slot == ATTRIBUTE_KEY_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el attribute-key:", value -> replace(withAttributeKey(value)));
+            chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.gene.editor.prompt_attribute_key"), value -> replace(withAttributeKey(value)));
         } else if (slot == DESCRIPTION_SLOT) {
-            chatPromptManager.prompt(player, "Escribí la nueva descripción:", value -> replace(withDescription(value)));
+            chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.editor.prompt_description"), value -> replace(withDescription(value)));
         } else if (slot == DOMINANCE_SLOT) {
             GeneDominance[] values = GeneDominance.values();
             replace(withDominance(values[(current.dominance().ordinal() + 1) % values.length]));
@@ -130,10 +131,10 @@ public class GeneEditorGUI extends InventoryGUI {
         } else if (slot == MAX_VALUE_SLOT) {
             replace(withMaxValue(current.maxValue() + sign));
         } else if (slot == SPECIES_SLOT) {
-            chatPromptManager.prompt(player, "Escribí ids de especie separados por comas (vacío = cualquiera):",
+            chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.gene.editor.prompt_species"),
                     value -> replace(withApplicableSpecies(parseSet(value))));
         } else if (slot == MUTATIONS_SLOT) {
-            chatPromptManager.prompt(player, "Escribí 'id;nombre;TIPO;valor;chance' para agregar una mutación:",
+            chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.gene.editor.prompt_add_mutation"),
                     this::addMutation);
         } else if (slot == CLEAR_MUTATIONS_SLOT) {
             replace(withMutations(List.of()));
@@ -147,7 +148,7 @@ public class GeneEditorGUI extends InventoryGUI {
         String[] parts = raw.split(";");
 
         if (parts.length < 5) {
-            player.sendMessage(Component.text("Formato inválido — necesita 5 partes separadas por ';'.", NamedTextColor.RED));
+            player.sendMessage(Component.text(chatPromptManager.lang().raw("gui.gene.editor.invalid_format"), NamedTextColor.RED));
             build();
             return;
         }
@@ -167,7 +168,7 @@ public class GeneEditorGUI extends InventoryGUI {
             effectValue = Double.parseDouble(parts[3].trim());
             chance = Double.parseDouble(parts[4].trim());
         } catch (NumberFormatException e) {
-            player.sendMessage(Component.text("Valor o chance inválidos.", NamedTextColor.RED));
+            player.sendMessage(Component.text(chatPromptManager.lang().raw("gui.gene.editor.invalid_value"), NamedTextColor.RED));
             build();
             return;
         }

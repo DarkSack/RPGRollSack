@@ -2,6 +2,7 @@ package com.sack.rpgroll.ascension.gui;
 
 import com.sack.rpgroll.ascension.deferred.Title;
 import com.sack.rpgroll.ascension.deferred.TitleManager;
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 
@@ -23,12 +24,15 @@ public class TitleBrowserGUI extends InventoryGUI {
 
     private final TitleManager manager;
     private final ChatPromptManager chatPromptManager;
+    private final LangManager lang;
     private List<Title> titles;
 
-    public TitleBrowserGUI(Player player, TitleManager manager, ChatPromptManager chatPromptManager) {
-        super(player, Component.text("Títulos RPGRoll-Ascension", NamedTextColor.GOLD), SIZE);
+    public TitleBrowserGUI(Player player, TitleManager manager, ChatPromptManager chatPromptManager,
+            LangManager lang) {
+        super(player, lang.component("gui.title.browser_title"), SIZE);
         this.manager = manager;
         this.chatPromptManager = chatPromptManager;
+        this.lang = lang;
         this.titles = List.copyOf(manager.getAll());
     }
 
@@ -46,15 +50,15 @@ public class TitleBrowserGUI extends InventoryGUI {
             setItem(i, new ItemBuilder(Material.NAME_TAG)
                     .setName(Component.text(title.id(), NamedTextColor.YELLOW))
                     .setLore(Component.text(title.displayName(), NamedTextColor.GRAY),
-                            Component.text("Click para editar", NamedTextColor.YELLOW))
+                            lang.component("gui.common.click_to_edit"))
                     .build());
         }
 
         setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Crear título nuevo", NamedTextColor.GREEN))
+                .setName(lang.component("gui.title.create_new"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Cerrar"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.close_button")));
     }
 
     @Override
@@ -64,7 +68,7 @@ public class TitleBrowserGUI extends InventoryGUI {
         int slot = event.getSlot();
 
         if (slot < titles.size() && slot < 36) {
-            new TitleEditorGUI(player, titles.get(slot), manager, chatPromptManager, this::reopen).open();
+            new TitleEditorGUI(player, titles.get(slot), manager, chatPromptManager, this::reopen, lang).open();
             return;
         }
 
@@ -79,12 +83,12 @@ public class TitleBrowserGUI extends InventoryGUI {
     }
 
     private void promptNew() {
-        chatPromptManager.prompt(player, "Escribí el id del nuevo título:", value -> {
+        chatPromptManager.prompt(player, "gui.title.prompt_new_id", value -> {
 
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 
             if (manager.exists(id)) {
-                player.sendMessage(Component.text("Ya existe un título con ese id.", NamedTextColor.RED));
+                lang.send(player, "gui.title.id_exists");
                 reopen();
                 return;
             }

@@ -35,7 +35,7 @@ public class ItemParser implements ContentParser<ItemDefinition> {
             throw new IllegalArgumentException("ítem '" + id + "' tiene un 'material' inválido o ausente");
         }
 
-        String category = config.getString("category", "misc");
+        String pack = config.getString("pack", config.getString("category", "misc"));
         String displayName = config.getString("display-name", id);
         List<String> lore = config.getStringList("lore");
         Integer customModelData = config.contains("custom-model-data") ? config.getInt("custom-model-data") : null;
@@ -68,7 +68,7 @@ public class ItemParser implements ContentParser<ItemDefinition> {
         double buyPrice = config.getDouble("economy.buy", 0);
         Map<String, String> customData = parseStringMap(config.getConfigurationSection("custom-data"));
 
-        return new ItemDefinition(id, category, material, displayName, lore, customModelData, rarityId, glow,
+        return new ItemDefinition(id, pack, material, displayName, lore, customModelData, rarityId, glow,
                 flags, unbreakable, dyeColor, skullTexture, trim, stats, attributeModifiers, requirements,
                 durability, vanillaEnchantments, customEnchantments, effects, triggers, abilities, sockets, skins,
                 upgrades, recipes, sellPrice, buyPrice, customData);

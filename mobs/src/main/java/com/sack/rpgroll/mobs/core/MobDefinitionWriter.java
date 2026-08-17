@@ -1,5 +1,7 @@
 package com.sack.rpgroll.mobs.core;
 
+import com.sack.rpgroll.common.reskin.EntityReskin;
+
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -70,6 +72,35 @@ public class MobDefinitionWriter {
 
         for (var entry : model.equipment().entrySet()) {
             config.set("model.equipment." + entry.getKey(), entry.getValue());
+        }
+
+        writeSkins(config, model.skins());
+    }
+
+    private void writeSkins(YamlConfiguration config, List<MobSkin> skins) {
+
+        List<Map<String, Object>> raw = new ArrayList<>();
+
+        for (MobSkin skin : skins) {
+
+            EntityReskin reskin = skin.reskin();
+            Map<String, Object> map = new HashMap<>();
+            map.put("id", skin.id());
+
+            if (reskin.material() != null) {
+                map.put("material", reskin.material());
+            }
+
+            map.put("custom-model-data", reskin.customModelData());
+            map.put("scale", reskin.scale());
+            map.put("y-offset", reskin.yOffset());
+            map.put("weight", skin.weight());
+
+            raw.add(map);
+        }
+
+        if (!raw.isEmpty()) {
+            config.set("model.skins", raw);
         }
     }
 

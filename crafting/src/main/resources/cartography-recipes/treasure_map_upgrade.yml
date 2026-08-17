@@ -1,0 +1,14 @@
+id: treasure_map_upgrade
+map:
+  type: MATERIAL
+  value: FILLED_MAP
+  amount: 1
+item:
+  type: MATERIAL
+  value: GOLD_NUGGET
+  amount: 8
+result:
+  type: MATERIAL
+  value: FILLED_MAP
+  amount: 1
+conditions: []

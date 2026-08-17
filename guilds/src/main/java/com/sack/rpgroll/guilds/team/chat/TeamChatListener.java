@@ -1,5 +1,6 @@
 package com.sack.rpgroll.guilds.team.chat;
 
+import com.sack.rpgroll.guilds.GuildsAPI;
 import com.sack.rpgroll.guilds.team.Team;
 import com.sack.rpgroll.guilds.team.TeamManager;
 
@@ -60,7 +61,8 @@ public class TeamChatListener implements Listener {
         event.setCancelled(true);
 
         String message = PlainTextComponentSerializer.plainText().serialize(event.message());
-        Component formatted = Component.text("[Equipo] ", NamedTextColor.AQUA)
+        Component formatted = Component.text("[" + GuildsAPI.getLangManager().raw("team.chat.tag") + "] ",
+                        NamedTextColor.AQUA)
                 .append(Component.text(player.getName() + ": ", NamedTextColor.GRAY))
                 .append(Component.text(message, NamedTextColor.WHITE));
 

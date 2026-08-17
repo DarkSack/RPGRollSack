@@ -1,14 +1,11 @@
 package com.sack.rpgroll.gameplay.listener;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.config.ConfigManager;
 import com.sack.rpgroll.gameplay.levelup.LevelUpRewardsConfig;
 import com.sack.rpgroll.gameplay.levelup.PlayerLevelUpHandler;
 import com.sack.rpgroll.player.PlayerManager;
 import com.sack.rpgroll.player.RPGPlayer;
-
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.format.TextDecoration;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.*;
@@ -27,12 +24,14 @@ public class MobKillListener implements Listener {
     private final PlayerManager playerManager;
     private final ConfigManager configManager;
     private final LevelUpRewardsConfig levelUpRewardsConfig;
+    private final LangManager lang;
 
     public MobKillListener(PlayerManager playerManager, ConfigManager configManager,
-            LevelUpRewardsConfig levelUpRewardsConfig) {
+            LevelUpRewardsConfig levelUpRewardsConfig, LangManager lang) {
         this.playerManager = playerManager;
         this.configManager = configManager;
         this.levelUpRewardsConfig = levelUpRewardsConfig;
+        this.lang = lang;
     }
 
     @EventHandler
@@ -69,16 +68,12 @@ public class MobKillListener implements Listener {
             playerManager.savePlayer(updatedPlayer);
 
             // Mostrar mensaje
-            killer.sendMessage(Component.text("╔════════════════════════════════╗", NamedTextColor.GOLD));
-            killer.sendMessage(
-                    Component.text("╠ ", NamedTextColor.YELLOW)
-                            .append(Component.text("+" + xpReward, NamedTextColor.YELLOW)
-                                    .decorate(TextDecoration.BOLD))
-                            .append(Component.text(" EXP", NamedTextColor.GOLD)));
-            killer.sendMessage(Component.text("╚════════════════════════════════╝", NamedTextColor.GOLD));
+            killer.sendMessage(lang.component("mob_kill_listener.border"));
+            killer.sendMessage(lang.component("mob_kill_listener.exp_gained", "exp", xpReward));
+            killer.sendMessage(lang.component("mob_kill_listener.border"));
 
             // Verificar level up automático
-            PlayerLevelUpHandler levelUpHandler = new PlayerLevelUpHandler(playerManager, levelUpRewardsConfig);
+            PlayerLevelUpHandler levelUpHandler = new PlayerLevelUpHandler(playerManager, levelUpRewardsConfig, lang);
             levelUpHandler.tryLevelUp(killer, updatedPlayer);
 
         } catch (Exception e) {

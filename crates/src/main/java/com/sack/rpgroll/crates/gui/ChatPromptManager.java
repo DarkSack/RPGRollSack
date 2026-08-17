@@ -1,9 +1,9 @@
 package com.sack.rpgroll.crates.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
+
 import io.papermc.paper.event.player.AsyncChatEvent;
 
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 
 import org.bukkit.Bukkit;
@@ -21,15 +21,18 @@ import java.util.function.Consumer;
 public class ChatPromptManager implements Listener {
 
     private final Plugin plugin;
+    private final LangManager lang;
     private final Map<UUID, Consumer<String>> pending = new HashMap<>();
 
-    public ChatPromptManager(Plugin plugin) {
+    public ChatPromptManager(Plugin plugin, LangManager lang) {
         this.plugin = plugin;
+        this.lang = lang;
     }
 
-    public void prompt(Player player, String question, Consumer<String> callback) {
-        player.sendMessage(Component.text(question, NamedTextColor.YELLOW));
-        player.sendMessage(Component.text("Escribí en el chat, o 'cancelar' para abortar.", NamedTextColor.GRAY));
+    /** @param questionKey clave de lang.yml con la pregunta a mostrarle al jugador. */
+    public void prompt(Player player, String questionKey, Consumer<String> callback) {
+        lang.send(player, questionKey);
+        lang.send(player, "prompt.footer", "keyword", lang.raw("prompt.cancel_keyword"));
         pending.put(player.getUniqueId(), callback);
     }
 
@@ -47,8 +50,8 @@ public class ChatPromptManager implements Listener {
         String message = PlainTextComponentSerializer.plainText().serialize(event.message());
 
         Bukkit.getScheduler().runTask(plugin, () -> {
-            if (message.equalsIgnoreCase("cancelar")) {
-                event.getPlayer().sendMessage(Component.text("Cancelado.", NamedTextColor.RED));
+            if (message.equalsIgnoreCase(lang.raw("prompt.cancel_keyword"))) {
+                lang.send(event.getPlayer(), "prompt.cancelled");
                 return;
             }
             callback.accept(message);

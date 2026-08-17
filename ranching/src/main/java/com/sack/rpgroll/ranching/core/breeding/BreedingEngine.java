@@ -1,5 +1,6 @@
 package com.sack.rpgroll.ranching.core.breeding;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.ranching.core.animal.Animal;
 import com.sack.rpgroll.ranching.core.animal.AnimalManager;
 import com.sack.rpgroll.ranching.core.animal.PendingOffspring;
@@ -42,11 +43,12 @@ public class BreedingEngine {
     private final PedigreeService pedigreeService;
     private final AnimalManager animalManager;
     private final int inbreedingGenerations;
+    private final LangManager lang;
     private final Random random = new Random();
 
     public BreedingEngine(SpeciesManager speciesManager, BreedManager breedManager, GeneManager geneManager,
             GeneticsEngine geneticsEngine, PedigreeService pedigreeService, AnimalManager animalManager,
-            int inbreedingGenerations) {
+            int inbreedingGenerations, LangManager lang) {
         this.speciesManager = speciesManager;
         this.breedManager = breedManager;
         this.geneManager = geneManager;
@@ -54,37 +56,38 @@ public class BreedingEngine {
         this.pedigreeService = pedigreeService;
         this.animalManager = animalManager;
         this.inbreedingGenerations = inbreedingGenerations;
+        this.lang = lang;
     }
 
     public BreedingAttemptResult attemptConception(Animal first, Animal second, Location location) {
 
         if (!first.speciesId().equals(second.speciesId())) {
-            return BreedingAttemptResult.fail("Esos dos no son de la misma especie.");
+            return BreedingAttemptResult.fail(lang.raw("breeding.fail_species"));
         }
 
         if (first.sex() == second.sex()) {
-            return BreedingAttemptResult.fail("Esos dos son del mismo sexo — no pueden reproducirse.");
+            return BreedingAttemptResult.fail(lang.raw("breeding.fail_sex"));
         }
 
         Animal mother = first.sex() == Sex.FEMALE ? first : second;
         Animal father = first.sex() == Sex.MALE ? first : second;
 
         if (mother.stage() != GrowthStage.ADULT || father.stage() != GrowthStage.ADULT) {
-            return BreedingAttemptResult.fail("Los dos tienen que ser adultos para reproducirse.");
+            return BreedingAttemptResult.fail(lang.raw("breeding.fail_adult"));
         }
 
         if (mother.isPregnant()) {
-            return BreedingAttemptResult.fail("Esa hembra ya está preñada.");
+            return BreedingAttemptResult.fail(lang.raw("breeding.fail_pregnant"));
         }
 
         Species species = speciesManager.get(mother.speciesId()).orElse(null);
 
         if (species == null) {
-            return BreedingAttemptResult.fail("La especie de estos animales ya no existe.");
+            return BreedingAttemptResult.fail(lang.raw("breeding.fail_species_missing"));
         }
 
         if (random.nextDouble() > mother.fertility()) {
-            return BreedingAttemptResult.fail("El apareamiento no prendió esta vez.");
+            return BreedingAttemptResult.fail(lang.raw("breeding.fail_no_conception"));
         }
 
         boolean inbred = pedigreeService.isInbred(mother.id(), mother.ancestors(), father.id(), father.ancestors(),
@@ -112,7 +115,7 @@ public class BreedingEngine {
                     father.id()));
         }
 
-        String inbreedingNote = inbred ? " ⚠ Cría con endogamia — la calidad genética puede resentirse." : "";
+        String inbreedingNote = inbred ? lang.raw("breeding.inbreeding_note") : "";
 
         if (!species.gestates()) {
 
@@ -120,13 +123,13 @@ public class BreedingEngine {
                 spawnOffspring(pending, species, location);
             }
 
-            return BreedingAttemptResult.ok("✔ ¡Nació una cría al instante!" + inbreedingNote);
+            return BreedingAttemptResult.ok(lang.raw("breeding.ok_instant") + inbreedingNote);
         }
 
         mother.startPregnancy(species.gestationDurationTicks(), litter);
         animalManager.save(mother);
 
-        return BreedingAttemptResult.ok("✔ ¡Apareamiento exitoso! Gestación en curso." + inbreedingNote);
+        return BreedingAttemptResult.ok(lang.raw("breeding.ok_gestating") + inbreedingNote);
     }
 
     /** Llamado por {@code PregnancyTask} cuando una gestación llega a término. */
@@ -176,6 +179,7 @@ public class BreedingEngine {
         newborn.setFertility(species.baseFertility() * (breed != null ? breed.fertilityMultiplier() : 1.0));
 
         animalManager.registerNewborn(entity, newborn);
+        animalManager.applyAppearance(entity, breed, GrowthStage.BABY);
     }
 
     private List<String> extractCosmeticTags(PendingOffspring pending) {

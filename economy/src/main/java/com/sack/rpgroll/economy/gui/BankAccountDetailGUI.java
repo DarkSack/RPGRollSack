@@ -1,5 +1,6 @@
 package com.sack.rpgroll.economy.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.economy.bank.BankAccount;
 import com.sack.rpgroll.economy.bank.BankManager;
 import com.sack.rpgroll.economy.currency.Currency;
@@ -36,17 +37,20 @@ public class BankAccountDetailGUI extends InventoryGUI {
     private final LoanService loanService;
     private final ChatPromptManager chatPromptManager;
     private final Runnable onBack;
+    private final LangManager lang;
 
     public BankAccountDetailGUI(Player player, BankAccount account, BankManager bankManager,
             CurrencyManager currencyManager, LoanService loanService, ChatPromptManager chatPromptManager,
             Runnable onBack) {
-        super(player, Component.text("Cuenta: " + account.name(), NamedTextColor.GOLD), SIZE);
+        super(player, Component.text(chatPromptManager.lang().raw("bank.detail.title", "name", account.name()),
+                NamedTextColor.GOLD), SIZE);
         this.account = account;
         this.bankManager = bankManager;
         this.currencyManager = currencyManager;
         this.loanService = loanService;
         this.chatPromptManager = chatPromptManager;
         this.onBack = onBack;
+        this.lang = chatPromptManager.lang();
     }
 
     @Override
@@ -62,28 +66,28 @@ public class BankAccountDetailGUI extends InventoryGUI {
         List<Loan> loans = loanService.activeFor(account.id());
 
         setItem(DEPOSIT_SLOT, new ItemBuilder(Material.LIME_DYE)
-                .setName(Component.text("Depositar", NamedTextColor.GREEN))
-                .setLore(Component.text("Saldo: " + currency.format(account.balance(currency.id())), NamedTextColor.GOLD))
+                .setName(lang.component("bank.detail.deposit"))
+                .setLore(lang.component("bank.detail.balance_lore", "value", currency.format(account.balance(currency.id()))))
                 .build());
 
         setItem(WITHDRAW_SLOT, new ItemBuilder(Material.RED_DYE)
-                .setName(Component.text("Retirar", NamedTextColor.RED)).build());
+                .setName(lang.component("bank.detail.withdraw")).build());
 
         setItem(LOAN_REQUEST_SLOT, new ItemBuilder(Material.PAPER)
-                .setName(Component.text("Pedir préstamo", NamedTextColor.YELLOW))
-                .setLore(Component.text("Préstamos activos: " + loans.size(), NamedTextColor.GRAY)).build());
+                .setName(lang.component("bank.detail.loan_request"))
+                .setLore(lang.component("bank.detail.active_loans", "count", loans.size())).build());
 
         setItem(LOAN_PAY_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Pagar préstamo más antiguo", NamedTextColor.GREEN))
-                .setLore(loans.isEmpty() ? List.of(Component.text("(sin préstamos activos)", NamedTextColor.GRAY))
-                        : List.of(Component.text("Restante: " + currency.format(loans.get(0).remainingBalance()),
-                                NamedTextColor.GOLD)))
+                .setName(lang.component("bank.detail.loan_pay"))
+                .setLore(loans.isEmpty() ? List.of(lang.component("bank.detail.no_loans"))
+                        : List.of(lang.component("bank.detail.remaining", "value",
+                                currency.format(loans.get(0).remainingBalance()))))
                 .build());
 
         setItem(RENAME_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(Component.text("Renombrar cuenta", NamedTextColor.YELLOW)).build());
+                .setName(lang.component("bank.detail.rename")).build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("common.back")));
     }
 
     @Override
@@ -94,7 +98,7 @@ public class BankAccountDetailGUI extends InventoryGUI {
         String currencyId = currencyManager.defaultCurrency().id();
 
         if (slot == DEPOSIT_SLOT) {
-            chatPromptManager.prompt(player, "¿Cuánto querés depositar?", value -> {
+            chatPromptManager.prompt(player, lang.raw("bank.detail.prompt_deposit"), value -> {
                 double amount = parseAmount(value);
                 if (amount > 0) {
                     EconomyResult result = bankManager.depositFromWallet(player.getUniqueId(), account, currencyId, amount);
@@ -103,7 +107,7 @@ public class BankAccountDetailGUI extends InventoryGUI {
                 reopen();
             });
         } else if (slot == WITHDRAW_SLOT) {
-            chatPromptManager.prompt(player, "¿Cuánto querés retirar?", value -> {
+            chatPromptManager.prompt(player, lang.raw("bank.detail.prompt_withdraw"), value -> {
                 double amount = parseAmount(value);
                 if (amount > 0) {
                     EconomyResult result = bankManager.withdrawToWallet(player.getUniqueId(), account, currencyId, amount);
@@ -112,30 +116,30 @@ public class BankAccountDetailGUI extends InventoryGUI {
                 reopen();
             });
         } else if (slot == LOAN_REQUEST_SLOT) {
-            chatPromptManager.prompt(player, "¿Cuánto querés pedir prestado? (interés 8%, 30 días)", value -> {
+            chatPromptManager.prompt(player, lang.raw("bank.detail.prompt_loan_request"), value -> {
                 double amount = parseAmount(value);
                 if (amount > 0) {
                     loanService.issueLoan(account, currencyId, amount, 8.0, 30);
-                    player.sendMessage(Component.text("✔ Préstamo otorgado.", NamedTextColor.GREEN));
+                    lang.send(player, "bank.detail.loan_granted");
                 }
                 reopen();
             });
         } else if (slot == LOAN_PAY_SLOT) {
             List<Loan> loans = loanService.activeFor(account.id());
             if (loans.isEmpty()) {
-                player.sendMessage(Component.text("No tenés préstamos activos en esta cuenta.", NamedTextColor.RED));
+                lang.send(player, "bank.detail.no_active_loans");
                 return;
             }
-            chatPromptManager.prompt(player, "¿Cuánto querés pagar?", value -> {
+            chatPromptManager.prompt(player, lang.raw("bank.detail.prompt_pay_loan"), value -> {
                 double amount = parseAmount(value);
                 if (amount > 0) {
                     loanService.makePayment(loans.get(0), account, amount);
-                    player.sendMessage(Component.text("✔ Pago aplicado.", NamedTextColor.GREEN));
+                    lang.send(player, "bank.detail.payment_applied");
                 }
                 reopen();
             });
         } else if (slot == RENAME_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el nuevo nombre de la cuenta:", value -> {
+            chatPromptManager.prompt(player, lang.raw("bank.detail.prompt_rename"), value -> {
                 account.setName(value);
                 bankManager.save(account);
                 reopen();
@@ -149,16 +153,16 @@ public class BankAccountDetailGUI extends InventoryGUI {
         try {
             return Double.parseDouble(raw.trim());
         } catch (NumberFormatException e) {
-            player.sendMessage(Component.text("Monto inválido.", NamedTextColor.RED));
+            lang.send(player, "common.invalid_money");
             return 0;
         }
     }
 
     private void notifyResult(EconomyResult result) {
         if (result == EconomyResult.SUCCESS) {
-            player.sendMessage(Component.text("✔ Listo.", NamedTextColor.GREEN));
+            lang.send(player, "common.success");
         } else {
-            player.sendMessage(Component.text("✘ " + result, NamedTextColor.RED));
+            lang.send(player, "common.fail_result", "result", result);
         }
     }
 

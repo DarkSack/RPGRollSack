@@ -1,7 +1,9 @@
 package com.sack.rpgroll.dungeons.gui.editor;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
+import com.sack.rpgroll.util.ComponentUtils;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -36,11 +38,14 @@ public class InfoEditorGUI extends InventoryGUI {
 
     private final DungeonEditorSession session;
     private final Runnable onBack;
+    private final LangManager lang;
 
     public InfoEditorGUI(Player player, DungeonEditorSession session, Runnable onBack) {
-        super(player, Component.text("Información: " + session.original.id(), NamedTextColor.GOLD), SIZE);
+        super(player, ComponentUtils.parse(session.chatPromptManager.lang()
+                .raw("gui.editor.info.title", "id", session.original.id())), SIZE);
         this.session = session;
         this.onBack = onBack;
+        this.lang = session.chatPromptManager.lang();
     }
 
     @Override
@@ -53,71 +58,71 @@ public class InfoEditorGUI extends InventoryGUI {
         }
 
         setItem(NAME_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(Component.text("Nombre: " + session.displayName, NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para escribir uno nuevo", NamedTextColor.GRAY))
+                .setName(ComponentUtils.parse(lang.raw("gui.editor.info.name", "value", session.displayName)))
+                .setLore(ComponentUtils.parse(lang.raw("gui.editor.info.click_to_write")))
                 .build());
 
         setItem(CATEGORY_SLOT, new ItemBuilder(Material.CHEST)
-                .setName(Component.text("Categoría: " + session.category, NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para escribir una nueva", NamedTextColor.GRAY))
+                .setName(ComponentUtils.parse(lang.raw("gui.editor.info.category", "value", session.category)))
+                .setLore(ComponentUtils.parse(lang.raw("gui.editor.info.click_to_write_new")))
                 .build());
 
         setItem(ICON_SLOT, new ItemBuilder(Material.ITEM_FRAME)
-                .setName(Component.text("Ícono: " + session.icon, NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para escribir un Material vanilla", NamedTextColor.GRAY))
+                .setName(ComponentUtils.parse(lang.raw("gui.editor.info.icon.label", "value", session.icon)))
+                .setLore(ComponentUtils.parse(lang.raw("gui.editor.info.icon.hint")))
                 .build());
 
         setItem(DESCRIPTION_SLOT, new ItemBuilder(Material.BOOK)
-                .setName(Component.text("Descripción", NamedTextColor.YELLOW))
-                .setLore(Component.text(session.description.isBlank() ? "(vacía)" : session.description,
-                        NamedTextColor.GRAY))
+                .setName(ComponentUtils.parse(lang.raw("gui.editor.info.description.label")))
+                .setLore(Component.text(session.description.isBlank()
+                        ? lang.raw("gui.editor.info.description.empty") : session.description, NamedTextColor.GRAY))
                 .build());
 
         setItem(LEVEL_SLOT, new ItemBuilder(Material.EXPERIENCE_BOTTLE)
-                .setName(Component.text("Nivel recomendado: " + session.recommendedLevel, NamedTextColor.YELLOW))
-                .setLore(Component.text("Click: +1 · Shift-click: +10 · Derecho: -1/-10", NamedTextColor.GRAY))
+                .setName(ComponentUtils.parse(lang.raw("gui.editor.info.level.label",
+                        "value", session.recommendedLevel)))
+                .setLore(ComponentUtils.parse(lang.raw("gui.editor.info.level.hint")))
                 .build());
 
         setItem(MIN_PLAYERS_SLOT, new ItemBuilder(Material.IRON_INGOT)
-                .setName(Component.text("Mín. jugadores: " + session.minPlayers, NamedTextColor.YELLOW))
-                .setLore(Component.text("Click: +1 · Derecho: -1", NamedTextColor.GRAY))
+                .setName(ComponentUtils.parse(lang.raw("gui.editor.info.min_players", "value", session.minPlayers)))
+                .setLore(ComponentUtils.parse(lang.raw("gui.editor.info.click_updown_hint")))
                 .build());
 
         setItem(MAX_PLAYERS_SLOT, new ItemBuilder(Material.GOLD_INGOT)
-                .setName(Component.text("Máx. jugadores: " + session.maxPlayers, NamedTextColor.YELLOW))
-                .setLore(Component.text("Click: +1 · Derecho: -1", NamedTextColor.GRAY))
+                .setName(ComponentUtils.parse(lang.raw("gui.editor.info.max_players", "value", session.maxPlayers)))
+                .setLore(ComponentUtils.parse(lang.raw("gui.editor.info.click_updown_hint")))
                 .build());
 
         setItem(ESTIMATED_MINUTES_SLOT, new ItemBuilder(Material.CLOCK)
-                .setName(Component.text("Duración estimada: " + session.estimatedMinutes + " min",
-                        NamedTextColor.YELLOW))
-                .setLore(Component.text("Click: +5 · Derecho: -5", NamedTextColor.GRAY))
+                .setName(ComponentUtils.parse(lang.raw("gui.editor.info.estimated_minutes.label",
+                        "value", session.estimatedMinutes)))
+                .setLore(ComponentUtils.parse(lang.raw("gui.editor.info.estimated_minutes.hint")))
                 .build());
 
         setItem(COOLDOWN_SLOT, new ItemBuilder(Material.HOPPER)
-                .setName(Component.text("Cooldown: " + (session.cooldownMillis / 60000) + " min",
-                        NamedTextColor.YELLOW))
-                .setLore(Component.text("Click: +30 min · Shift-click: +6h · Derecho: -30 min/-6h",
-                        NamedTextColor.GRAY))
+                .setName(ComponentUtils.parse(lang.raw("gui.editor.info.cooldown.label",
+                        "value", session.cooldownMillis / 60000)))
+                .setLore(ComponentUtils.parse(lang.raw("gui.editor.info.cooldown.hint")))
                 .build());
 
         setItem(REPEATABLE_SLOT, new ItemBuilder(session.repeatable ? Material.LIME_DYE : Material.GRAY_DYE)
-                .setName(Component.text("Repetible: " + session.repeatable, NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para alternar", NamedTextColor.GRAY))
+                .setName(ComponentUtils.parse(lang.raw("gui.editor.info.repeatable", "value", session.repeatable)))
+                .setLore(ComponentUtils.parse(lang.raw("gui.editor.info.click_to_toggle")))
                 .build());
 
         for (int i = 0; i < session.tags.size() && i < 6; i++) {
             setItem(TAGS_START_SLOT + i, new ItemBuilder(Material.PAPER)
                     .setName(Component.text(session.tags.get(i), NamedTextColor.AQUA))
-                    .setLore(Component.text("Shift-click para quitar", NamedTextColor.DARK_GRAY))
+                    .setLore(ComponentUtils.parse(lang.raw("gui.editor.info.tag.remove_hint")))
                     .build());
         }
 
         setItem(ADD_TAG_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Agregar tag", NamedTextColor.GREEN))
+                .setName(ComponentUtils.parse(lang.raw("gui.editor.info.tag.add")))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back")));
     }
 
     private double delta(ClickType click, double small, double large) {
@@ -137,7 +142,7 @@ public class InfoEditorGUI extends InventoryGUI {
         int slot = event.getSlot();
 
         if (slot == NAME_SLOT) {
-            session.chatPromptManager.prompt(player, "Escribí el nuevo nombre:", value -> {
+            session.chatPromptManager.prompt(player, "gui.editor.info.prompt.name", value -> {
                 session.displayName = value;
                 build();
             });
@@ -145,7 +150,7 @@ public class InfoEditorGUI extends InventoryGUI {
         }
 
         if (slot == CATEGORY_SLOT) {
-            session.chatPromptManager.prompt(player, "Escribí la nueva categoría:", value -> {
+            session.chatPromptManager.prompt(player, "gui.editor.info.prompt.category", value -> {
                 session.category = value.trim().toLowerCase();
                 build();
             });
@@ -153,7 +158,7 @@ public class InfoEditorGUI extends InventoryGUI {
         }
 
         if (slot == ICON_SLOT) {
-            session.chatPromptManager.prompt(player, "Escribí el Material (ej. STONE_BRICKS):", value -> {
+            session.chatPromptManager.prompt(player, "gui.editor.info.prompt.icon", value -> {
                 session.icon = value.trim().toUpperCase();
                 build();
             });
@@ -161,7 +166,7 @@ public class InfoEditorGUI extends InventoryGUI {
         }
 
         if (slot == DESCRIPTION_SLOT) {
-            session.chatPromptManager.prompt(player, "Escribí la descripción:", value -> {
+            session.chatPromptManager.prompt(player, "gui.editor.info.prompt.description", value -> {
                 session.description = value;
                 build();
             });
@@ -215,7 +220,7 @@ public class InfoEditorGUI extends InventoryGUI {
         }
 
         if (slot == ADD_TAG_SLOT) {
-            session.chatPromptManager.prompt(player, "Escribí el nuevo tag:", value -> {
+            session.chatPromptManager.prompt(player, "gui.editor.info.prompt.tag", value -> {
                 List<String> updated = new ArrayList<>(session.tags);
                 updated.add(value.trim());
                 session.tags = updated;

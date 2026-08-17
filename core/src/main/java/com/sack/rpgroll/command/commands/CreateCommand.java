@@ -2,12 +2,10 @@ package com.sack.rpgroll.command.commands;
 
 import com.sack.rpgroll.RPGRoll;
 import com.sack.rpgroll.command.RPGCommand;
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.character.CharacterCreationFlow;
 import com.sack.rpgroll.player.PlayerManager;
 import com.sack.rpgroll.api.playerclass.ClassManager;
-
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 
 import com.sack.rpgroll.race.RaceAttributeApplier;
 import com.sack.rpgroll.api.race.RaceManager;
@@ -32,6 +30,7 @@ public class CreateCommand implements RPGCommand {
     public void execute(CommandSender sender, String[] args) {
 
         Player player = (Player) sender;
+        LangManager lang = plugin.getBootstrap().getServices().get(LangManager.class);
 
         try {
 
@@ -42,11 +41,11 @@ public class CreateCommand implements RPGCommand {
                     .get(RaceAttributeApplier.class);
 
             CharacterCreationFlow flow = new CharacterCreationFlow(player, playerManager, raceManager, classManager,
-                    raceAttributeApplier);
+                    raceAttributeApplier, lang);
             flow.start();
 
         } catch (Exception exception) {
-            player.sendMessage(Component.text("Error al iniciar creación de personaje.", NamedTextColor.RED));
+            lang.send(player, "create_command.error");
             exception.printStackTrace();
 
         }

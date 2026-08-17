@@ -1,5 +1,6 @@
 package com.sack.rpgroll.magic.listener;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.magic.core.CatalystManager;
 import com.sack.rpgroll.magic.core.Spell;
 import com.sack.rpgroll.magic.core.SpellCastTrigger;
@@ -37,14 +38,17 @@ public class SpellCastListener implements Listener {
     private final SpellbookManager spellbookManager;
     private final SpellCastEngine engine;
     private final SpellChannelManager channelManager;
+    private final LangManager lang;
 
     public SpellCastListener(SpellManager spellManager, CatalystManager catalystManager,
-            SpellbookManager spellbookManager, SpellCastEngine engine, SpellChannelManager channelManager) {
+            SpellbookManager spellbookManager, SpellCastEngine engine, SpellChannelManager channelManager,
+            LangManager lang) {
         this.spellManager = spellManager;
         this.catalystManager = catalystManager;
         this.spellbookManager = spellbookManager;
         this.engine = engine;
         this.channelManager = channelManager;
+        this.lang = lang;
     }
 
     @EventHandler
@@ -75,8 +79,7 @@ public class SpellCastListener implements Listener {
 
         if (selectedId == null) {
             if (isRight) {
-                player.sendMessage(Component.text(
-                        "No tenés ningún hechizo seleccionado — usá /magic select <id>.", NamedTextColor.RED));
+                lang.send(player, "cast.no_spell_selected");
             }
             return;
         }

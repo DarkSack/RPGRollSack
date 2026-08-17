@@ -86,6 +86,7 @@ public class MobAITask implements Runnable {
 
         ActiveMobState state = stateOpt.get();
 
+        engine.ensureReskinAttached(mob, definition);
         tickPeriodic(mob, definition, state);
         tickPlayerRange(mob, definition, state);
         tickGoals(mob, bukkitMob, definition, state);

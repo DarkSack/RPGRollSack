@@ -2,15 +2,14 @@ package com.sack.rpgroll.gui.admin;
 
 import com.sack.rpgroll.util.ComponentUtils;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.api.playerclass.PlayerClass;
 import com.sack.rpgroll.api.stats.StatType;
 import com.sack.rpgroll.playerclass.ClassManagerImpl;
 
-import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -32,15 +31,17 @@ public class ClassEditorGUI extends InventoryGUI {
 
     private final ClassManagerImpl classManager;
     private final ChatPromptManager chatPromptManager;
+    private final LangManager lang;
     private final Runnable onBack;
     private PlayerClass current;
 
     public ClassEditorGUI(Player player, PlayerClass playerClass, ClassManagerImpl classManager,
-            ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text("Clase: " + playerClass.id(), NamedTextColor.GOLD), SIZE);
+            ChatPromptManager chatPromptManager, LangManager lang, Runnable onBack) {
+        super(player, lang.component("class_editor_gui.title", "id", playerClass.id()), SIZE);
         this.current = playerClass;
         this.classManager = classManager;
         this.chatPromptManager = chatPromptManager;
+        this.lang = lang;
         this.onBack = onBack;
     }
 
@@ -60,33 +61,36 @@ public class ClassEditorGUI extends InventoryGUI {
         }
 
         setItem(NAME_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(ComponentUtils.parse("Nombre: " + current.displayName()).colorIfAbsent(NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para escribir uno nuevo", NamedTextColor.GRAY))
+                .setName(ComponentUtils.parse(lang.raw("class_editor_gui.name_slot_name", "name",
+                        current.displayName())).colorIfAbsent(NamedTextColor.YELLOW))
+                .setLore(lang.component("class_editor_gui.click_new_value"))
                 .build());
 
         setItem(DESCRIPTION_SLOT, new ItemBuilder(Material.WRITTEN_BOOK)
-                .setName(Component.text("Descripción", NamedTextColor.YELLOW))
-                .setLore(ItemBuilder.toLoreLines(current.description().isBlank() ? "(sin descripción)"
+                .setName(lang.component("class_editor_gui.description_slot_name"))
+                .setLore(ItemBuilder.toLoreLines(current.description().isBlank()
+                        ? lang.raw("class_editor_gui.no_description")
                         : current.description()))
                 .build());
 
         setItem(ATTRIBUTES_SLOT, new ItemBuilder(Material.BEACON)
-                .setName(Component.text("Atributos base: " + current.baseAttributes(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para escribir (ej. STR=3,CON=2)", NamedTextColor.GRAY))
+                .setName(lang.component("class_editor_gui.attributes_slot_name", "attributes",
+                        current.baseAttributes()))
+                .setLore(lang.component("class_editor_gui.attributes_slot_lore"))
                 .build());
 
         setItem(PASSIVE_TRAITS_SLOT, new ItemBuilder(Material.BOOK)
-                .setName(Component.text("Traits pasivos: " + String.join(", ", current.passiveTraits()),
-                        NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para escribir la lista separada por comas", NamedTextColor.GRAY))
+                .setName(lang.component("class_editor_gui.passive_traits_slot_name", "traits",
+                        String.join(", ", current.passiveTraits())))
+                .setLore(lang.component("class_editor_gui.passive_traits_slot_lore"))
                 .build());
 
         setItem(LORE_SLOT, new ItemBuilder(Material.PAPER)
-                .setName(Component.text("Lore: " + current.lore().size() + " línea(s)", NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para escribir todas separadas por ';'", NamedTextColor.GRAY))
+                .setName(lang.component("class_editor_gui.lore_slot_name", "count", current.lore().size()))
+                .setLore(lang.component("class_editor_gui.lore_slot_lore"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("class_editor_gui.back_button")));
     }
 
     @Override
@@ -96,21 +100,21 @@ public class ClassEditorGUI extends InventoryGUI {
         int slot = event.getSlot();
 
         if (slot == NAME_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el nuevo nombre:", value -> replace(new PlayerClass(
+            chatPromptManager.prompt(player, lang.raw("class_editor_gui.prompt_name"), value -> replace(new PlayerClass(
                     current.id(), value, current.description(), current.baseAttributes(), current.passiveTraits(),
                     current.icon(), current.lore())));
             return;
         }
 
         if (slot == DESCRIPTION_SLOT) {
-            chatPromptManager.prompt(player, "Escribí la nueva descripción:", value -> replace(new PlayerClass(
+            chatPromptManager.prompt(player, lang.raw("class_editor_gui.prompt_description"), value -> replace(new PlayerClass(
                     current.id(), current.displayName(), value, current.baseAttributes(), current.passiveTraits(),
                     current.icon(), current.lore())));
             return;
         }
 
         if (slot == ATTRIBUTES_SLOT) {
-            chatPromptManager.prompt(player, "Escribí los atributos separados por comas (ej. STR=3,CON=2):",
+            chatPromptManager.prompt(player, lang.raw("class_editor_gui.prompt_attributes"),
                     value -> {
                         Map<StatType, Integer> attributes = parseAttributes(value);
                         replace(new PlayerClass(current.id(), current.displayName(), current.description(),
@@ -120,7 +124,7 @@ public class ClassEditorGUI extends InventoryGUI {
         }
 
         if (slot == PASSIVE_TRAITS_SLOT) {
-            chatPromptManager.prompt(player, "Escribí los ids de traits pasivos separados por comas:", value -> {
+            chatPromptManager.prompt(player, lang.raw("class_editor_gui.prompt_passive_traits"), value -> {
                 List<String> traits = value.isBlank() ? List.of() : List.of(value.split("\\s*,\\s*"));
                 replace(new PlayerClass(current.id(), current.displayName(), current.description(),
                         current.baseAttributes(), traits, current.icon(), current.lore()));
@@ -129,7 +133,7 @@ public class ClassEditorGUI extends InventoryGUI {
         }
 
         if (slot == LORE_SLOT) {
-            chatPromptManager.prompt(player, "Escribí las líneas de lore separadas por ';':", value -> {
+            chatPromptManager.prompt(player, lang.raw("class_editor_gui.prompt_lore"), value -> {
                 List<String> lore = value.isBlank() ? List.of() : List.of(value.split("\\s*;\\s*"));
                 replace(new PlayerClass(current.id(), current.displayName(), current.description(),
                         current.baseAttributes(), current.passiveTraits(), current.icon(), lore));

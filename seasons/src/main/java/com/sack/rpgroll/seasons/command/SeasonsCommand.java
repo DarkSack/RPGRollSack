@@ -1,10 +1,8 @@
 package com.sack.rpgroll.seasons.command;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.seasons.api.SeasonsAPI;
 import com.sack.rpgroll.util.TabCompleteUtil;
-
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -20,6 +18,12 @@ import java.util.Locale;
 /** /seasons info [mundo] */
 public class SeasonsCommand implements CommandExecutor, TabCompleter {
 
+    private final LangManager lang;
+
+    public SeasonsCommand(LangManager lang) {
+        this.lang = lang;
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
@@ -28,14 +32,14 @@ public class SeasonsCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        sender.sendMessage(Component.text("Uso: /seasons info [mundo]", NamedTextColor.RED));
+        lang.send(sender, "command.player.usage");
         return true;
     }
 
     private void handleInfo(CommandSender sender, String[] args) {
 
         if (!SeasonsAPI.isReady()) {
-            sender.sendMessage(Component.text("RPGRoll-Seasons todavía no está listo.", NamedTextColor.RED));
+            lang.send(sender, "command.player.not_ready");
             return;
         }
 
@@ -44,33 +48,31 @@ public class SeasonsCommand implements CommandExecutor, TabCompleter {
         if (args.length >= 2) {
             world = Bukkit.getWorld(args[1]);
             if (world == null) {
-                sender.sendMessage(Component.text("No existe el mundo: " + args[1], NamedTextColor.RED));
+                lang.send(sender, "command.player.unknown_world", "world", args[1]);
                 return;
             }
         } else if (sender instanceof Player player) {
             world = player.getWorld();
         } else {
-            sender.sendMessage(Component.text("Especificá un mundo: /seasons info <mundo>", NamedTextColor.RED));
+            lang.send(sender, "command.player.specify_world");
             return;
         }
 
         var seasonOpt = SeasonsAPI.get().getCurrentSeason(world);
 
         if (seasonOpt.isEmpty()) {
-            sender.sendMessage(Component.text("No hay una estación activa configurada para " + world.getName() + ".",
-                    NamedTextColor.GRAY));
+            lang.send(sender, "command.player.no_active_season", "world", world.getName());
             return;
         }
 
         var season = seasonOpt.get();
 
-        sender.sendMessage(Component.text("Estación actual en " + world.getName() + ": ", NamedTextColor.GOLD)
-                .append(Component.text(season.displayName(), NamedTextColor.YELLOW)));
+        lang.send(sender, "command.player.current_season", "world", world.getName(), "season", season.displayName());
 
         if (sender instanceof Player player) {
             double temperature = SeasonsAPI.get().getTemperature(player.getLocation());
-            sender.sendMessage(Component.text(
-                    String.format(Locale.ROOT, "Temperatura donde estás: %.1f°C", temperature), NamedTextColor.AQUA));
+            lang.send(sender, "command.player.temperature", "temperature",
+                    String.format(Locale.ROOT, "%.1f", temperature));
         }
     }
 

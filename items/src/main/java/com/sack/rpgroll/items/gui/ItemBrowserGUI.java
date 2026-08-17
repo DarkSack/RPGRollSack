@@ -1,11 +1,14 @@
 package com.sack.rpgroll.items.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.items.core.ItemDefinition;
 import com.sack.rpgroll.items.core.ItemFactory;
 import com.sack.rpgroll.items.core.ItemManager;
 import com.sack.rpgroll.items.gui.editor.EditorSession;
 import com.sack.rpgroll.items.gui.editor.ItemEditorHubGUI;
+import com.sack.rpgroll.items.pack.PackManager;
+import com.sack.rpgroll.items.pack.PackSelectorGUI;
 import com.sack.rpgroll.items.rarity.RarityManager;
 import com.sack.rpgroll.items.registry.StatRegistry;
 
@@ -49,7 +52,9 @@ public class ItemBrowserGUI extends PaginatedGUI {
     private final RarityManager rarityManager;
     private final StatRegistry statRegistry;
     private final ChatPromptManager chatPromptManager;
+    private final PackManager packManager;
     private final Plugin plugin;
+    private final LangManager langManager;
 
     private List<ItemDefinition> filtered;
     private List<String> categories;
@@ -58,16 +63,18 @@ public class ItemBrowserGUI extends PaginatedGUI {
 
     public ItemBrowserGUI(Player player, ItemManager itemManager, ItemFactory itemFactory,
             RarityManager rarityManager, StatRegistry statRegistry, ChatPromptManager chatPromptManager,
-            Plugin plugin) {
+            PackManager packManager, Plugin plugin) {
 
-        super(player, Component.text("Ítems RPGRoll", NamedTextColor.GOLD), SIZE, CONTENT_SLOTS);
+        super(player, chatPromptManager.lang().component("gui.browser.title"), SIZE, CONTENT_SLOTS);
 
         this.itemManager = itemManager;
         this.itemFactory = itemFactory;
         this.rarityManager = rarityManager;
         this.statRegistry = statRegistry;
         this.chatPromptManager = chatPromptManager;
+        this.packManager = packManager;
         this.plugin = plugin;
+        this.langManager = chatPromptManager.lang();
 
         recomputeCategories();
         applyFilters();
@@ -77,7 +84,7 @@ public class ItemBrowserGUI extends PaginatedGUI {
 
         Set<String> unique = new LinkedHashSet<>();
         for (ItemDefinition definition : itemManager.getAll()) {
-            unique.add(definition.category());
+            unique.add(definition.pack());
         }
 
         categories = new ArrayList<>(unique);
@@ -88,7 +95,7 @@ public class ItemBrowserGUI extends PaginatedGUI {
         List<ItemDefinition> all = new ArrayList<>(itemManager.getAll());
 
         filtered = all.stream()
-                .filter(def -> activeCategory == null || def.category().equalsIgnoreCase(activeCategory))
+                .filter(def -> activeCategory == null || def.pack().equalsIgnoreCase(activeCategory))
                 .filter(def -> searchText.isBlank()
                         || def.id().toLowerCase().contains(searchText)
                         || def.displayName().toLowerCase().contains(searchText))
@@ -122,29 +129,30 @@ public class ItemBrowserGUI extends PaginatedGUI {
         }
 
         setItem(PREV_SLOT, hasPreviousPage()
-                ? new ItemBuilder(Material.ARROW).setName(Component.text("« Anterior", NamedTextColor.YELLOW)).build()
+                ? new ItemBuilder(Material.ARROW).setName(langManager.component("gui.browser.prev")).build()
                 : ItemBuilder.createFiller());
 
         setItem(NEXT_SLOT, hasNextPage()
-                ? new ItemBuilder(Material.ARROW).setName(Component.text("Siguiente »", NamedTextColor.YELLOW)).build()
+                ? new ItemBuilder(Material.ARROW).setName(langManager.component("gui.browser.next")).build()
                 : ItemBuilder.createFiller());
 
         setItem(SEARCH_SLOT, new ItemBuilder(Material.COMPASS)
-                .setName(Component.text("Buscar", NamedTextColor.AQUA))
-                .setLore(Component.text(searchText.isBlank() ? "(sin filtro)" : "Filtro: " + searchText,
-                        NamedTextColor.GRAY))
+                .setName(langManager.component("gui.browser.search_label"))
+                .setLore(searchText.isBlank()
+                        ? langManager.component("gui.browser.no_filter")
+                        : langManager.component("gui.browser.filter", "text", searchText))
                 .build());
 
         setItem(ALL_CATEGORIES_SLOT, new ItemBuilder(activeCategory == null ? Material.LIME_DYE : Material.GRAY_DYE)
-                .setName(Component.text("Todas las categorías", NamedTextColor.AQUA))
+                .setName(langManager.component("gui.browser.all_categories"))
                 .build());
 
         setItem(CLEAR_SEARCH_SLOT, new ItemBuilder(Material.BARRIER)
-                .setName(Component.text("Limpiar búsqueda", NamedTextColor.RED))
+                .setName(langManager.component("gui.browser.clear_search"))
                 .build());
 
         setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Crear ítem nuevo", NamedTextColor.GREEN))
+                .setName(langManager.component("gui.browser.create_new"))
                 .build());
     }
 
@@ -166,7 +174,7 @@ public class ItemBrowserGUI extends PaginatedGUI {
         var leftover = player.getInventory().addItem(item);
         leftover.values().forEach(remaining -> player.getWorld().dropItemNaturally(player.getLocation(), remaining));
 
-        player.sendMessage(Component.text("✔ Recibiste: " + definition.displayName(), NamedTextColor.GREEN));
+        langManager.send(player, "gui.browser.received", "item", definition.displayName());
     }
 
     @Override
@@ -199,32 +207,33 @@ public class ItemBrowserGUI extends PaginatedGUI {
     }
 
     private void promptSearch() {
-        chatPromptManager.prompt(player, "Escribí parte del nombre o id del ítem:", value -> {
+        chatPromptManager.prompt(player, langManager.raw("gui.browser.prompt_search"), value -> {
             searchText = value.trim().toLowerCase();
             applyFilters();
         });
     }
 
     private void promptNewItem() {
-        chatPromptManager.prompt(player, "Escribí: id;categoria (ej. flame_blade;sword):", value -> {
+        chatPromptManager.prompt(player, langManager.raw("gui.browser.prompt_new_item"), idValue -> {
 
-            String[] parts = value.split(";", 2);
-            String id = parts[0].trim().toLowerCase().replace(' ', '_');
-            String category = parts.length > 1 ? parts[1].trim().toLowerCase() : "misc";
+            String id = idValue.trim().toLowerCase().replace(' ', '_');
 
             if (id.isBlank() || itemManager.exists(id)) {
-                player.sendMessage(Component.text("Id inválido o ya existente.", NamedTextColor.RED));
+                langManager.send(player, "gui.browser.invalid_id");
                 return;
             }
 
-            ItemDefinition definition = new ItemDefinition(id, category, Material.PAPER, id, null, null, null, null,
-                    null, false, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
-                    null, null, 0, 0, null);
+            new PackSelectorGUI(player, packManager, chatPromptManager, pack -> {
 
-            EditorSession session = new EditorSession(definition, itemFactory, itemManager, rarityManager,
-                    statRegistry, chatPromptManager, plugin);
+                ItemDefinition definition = new ItemDefinition(id, pack, Material.PAPER, id, null, null, null, null,
+                        null, false, null, null, null, null, null, null, null, null, null, null, null, null, null,
+                        null, null, null, 0, 0, null);
 
-            new ItemEditorHubGUI(player, session).open();
+                EditorSession session = new EditorSession(definition, itemFactory, itemManager, rarityManager,
+                        statRegistry, chatPromptManager, plugin);
+
+                new ItemEditorHubGUI(player, session).open();
+            }).open();
         });
     }
 

@@ -1,5 +1,6 @@
 package com.sack.rpgroll.seasons.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.seasons.core.WorldEvent;
@@ -35,7 +36,8 @@ public class WorldEventComponentsEditorGUI extends InventoryGUI {
 
     public WorldEventComponentsEditorGUI(Player player, WorldEvent event, WorldEventManager worldEventManager,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text("Componentes: " + event.id(), NamedTextColor.GOLD), SIZE);
+        super(player, chatPromptManager.lang().component("gui.world_event_components_editor.title", "id", event.id()),
+                SIZE);
         this.current = event;
         this.worldEventManager = worldEventManager;
         this.chatPromptManager = chatPromptManager;
@@ -58,6 +60,8 @@ public class WorldEventComponentsEditorGUI extends InventoryGUI {
             setItem(slot, ItemBuilder.createFiller());
         }
 
+        LangManager lang = chatPromptManager.lang();
+
         List<WorldEventComponent> components = current.components();
 
         for (int i = 0; i < components.size() && i < COMPONENTS_MAX; i++) {
@@ -65,14 +69,14 @@ public class WorldEventComponentsEditorGUI extends InventoryGUI {
         }
 
         setItem(ADD_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Agregar componente", NamedTextColor.GREEN))
-                .setLore(Component.text("TIPO clave=valor,clave2=valor2", NamedTextColor.GRAY),
-                        Component.text("ej. PARTICLE particle=FLAME,count=30", NamedTextColor.DARK_GRAY),
-                        Component.text("ej. SPAWN_MOB mob-id=winter_yeti,chance=0.5", NamedTextColor.DARK_GRAY),
-                        Component.text("Orden importa — se ejecutan de arriba a abajo", NamedTextColor.DARK_GRAY))
+                .setName(lang.component("gui.world_event_components_editor.add"))
+                .setLore(lang.component("gui.world_event_components_editor.add_lore_1"),
+                        lang.component("gui.world_event_components_editor.add_lore_2"),
+                        lang.component("gui.world_event_components_editor.add_lore_3"),
+                        lang.component("gui.world_event_components_editor.add_lore_4"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back")));
     }
 
     private org.bukkit.inventory.ItemStack componentItem(WorldEventComponent component, int index) {
@@ -83,7 +87,7 @@ public class WorldEventComponentsEditorGUI extends InventoryGUI {
             lore.add(Component.text(entry.getKey() + "=" + entry.getValue(), NamedTextColor.DARK_GRAY));
         }
 
-        lore.add(Component.text("Shift-click para quitar", NamedTextColor.RED));
+        lore.add(chatPromptManager.lang().component("gui.common.shift_remove"));
 
         return new ItemBuilder(iconFor(component.type()))
                 .setName(Component.text("#" + (index + 1) + " " + component.type(), NamedTextColor.AQUA))
@@ -130,7 +134,7 @@ public class WorldEventComponentsEditorGUI extends InventoryGUI {
     }
 
     private void promptAddComponent() {
-        chatPromptManager.prompt(player, "Escribí: TIPO clave=valor,clave2=valor2:", value -> {
+        chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.world_event_components_editor.prompt_add"), value -> {
 
             String[] parts = value.trim().split("\\s+", 2);
             WorldEventComponentType type;
@@ -138,7 +142,8 @@ public class WorldEventComponentsEditorGUI extends InventoryGUI {
             try {
                 type = WorldEventComponentType.valueOf(parts[0].trim().toUpperCase(Locale.ROOT));
             } catch (IllegalArgumentException e) {
-                player.sendMessage(Component.text("Tipo inválido: " + parts[0], NamedTextColor.RED));
+                chatPromptManager.lang().send(player, "gui.world_event_components_editor.invalid_type", "value",
+                        parts[0]);
                 return;
             }
 

@@ -3,6 +3,7 @@ package com.sack.rpgroll.ascension.gui;
 import com.sack.rpgroll.ascension.core.ClassSpecialization;
 import com.sack.rpgroll.ascension.core.ClassSpecializationManager;
 import com.sack.rpgroll.ascension.core.TalentNode;
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 
@@ -41,15 +42,18 @@ public class ClassSpecializationEditorGUI extends InventoryGUI {
     private final ClassSpecializationManager manager;
     private final ChatPromptManager chatPromptManager;
     private final Runnable onBack;
+    private final LangManager lang;
     private ClassSpecialization current;
 
     public ClassSpecializationEditorGUI(Player player, ClassSpecialization specialization,
-            ClassSpecializationManager manager, ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text("Especialización: " + specialization.id(), NamedTextColor.GOLD), SIZE);
+            ClassSpecializationManager manager, ChatPromptManager chatPromptManager, Runnable onBack,
+            LangManager lang) {
+        super(player, lang.component("gui.class_specialization.editor_title", "id", specialization.id()), SIZE);
         this.current = specialization;
         this.manager = manager;
         this.chatPromptManager = chatPromptManager;
         this.onBack = onBack;
+        this.lang = lang;
     }
 
     private void replace(ClassSpecialization updated) {
@@ -68,65 +72,66 @@ public class ClassSpecializationEditorGUI extends InventoryGUI {
         }
 
         setItem(BASE_CLASS_SLOT, new ItemBuilder(Material.DIAMOND_SWORD)
-                .setName(Component.text("Clase base: " + current.baseClass(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para cambiarla", NamedTextColor.GRAY))
+                .setName(lang.component("gui.class_specialization.base_class_label", "class", current.baseClass()))
+                .setLore(lang.component("gui.class_specialization.click_to_change"))
                 .build());
 
         setItem(NAME_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(Component.text("Nombre: " + current.displayName(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para escribir uno nuevo", NamedTextColor.GRAY))
+                .setName(lang.component("gui.common.name_label", "name", current.displayName()))
+                .setLore(lang.component("gui.common.click_new_value"))
                 .build());
 
         setItem(REQUIREMENTS_SLOT, new ItemBuilder(Material.WRITTEN_BOOK)
-                .setName(Component.text("Requisitos", NamedTextColor.YELLOW))
+                .setName(lang.component("gui.class_specialization.requirements_label"))
                 .setLore(Component.text(RequirementsPrompt.format(current.requirements()), NamedTextColor.GRAY),
-                        Component.text("Click para escribir: nivel;prestigio;trait;quests;facción=rep",
-                                NamedTextColor.DARK_GRAY))
+                        lang.component("gui.class_specialization.requirements_hint"))
                 .build());
 
         setItem(STATS_SLOT, new ItemBuilder(Material.IRON_SWORD)
-                .setName(Component.text("Bono de stats: " + current.statBonus().size(), NamedTextColor.YELLOW))
+                .setName(lang.component("gui.class_specialization.stats_label", "count",
+                        current.statBonus().size()))
                 .setLore(Component.text(NumberMapPrompt.format(current.statBonus()), NamedTextColor.GRAY),
-                        Component.text("Click para escribir: stat=valor,stat2=valor2", NamedTextColor.DARK_GRAY))
+                        lang.component("gui.class_specialization.stats_hint"))
                 .build());
 
         setItem(RESTRICTIONS_SLOT, new ItemBuilder(Material.BARRIER)
-                .setName(Component.text("Restricciones: " + current.restrictions().size(), NamedTextColor.YELLOW))
+                .setName(lang.component("gui.class_specialization.restrictions_label", "count",
+                        current.restrictions().size()))
                 .setLore(Component.text(String.join(", ", current.restrictions()), NamedTextColor.GRAY),
-                        Component.text("Click para escribir lista separada por comas", NamedTextColor.GRAY))
+                        lang.component("gui.common.comma_hint"))
                 .build());
 
         setItem(EQUIPMENT_SLOT, new ItemBuilder(Material.DIAMOND_CHESTPLATE)
-                .setName(Component.text("Equipo exclusivo: " + current.exclusiveEquipment().size(),
-                        NamedTextColor.YELLOW))
+                .setName(lang.component("gui.class_specialization.equipment_label", "count",
+                        current.exclusiveEquipment().size()))
                 .setLore(Component.text(String.join(", ", current.exclusiveEquipment()), NamedTextColor.GRAY),
-                        Component.text("Click para escribir lista separada por comas", NamedTextColor.GRAY))
+                        lang.component("gui.common.comma_hint"))
                 .build());
 
         setItem(TALENT_ADD_SLOT, new ItemBuilder(Material.KNOWLEDGE_BOOK)
-                .setName(Component.text("Talentos: " + current.talentTree().size() + " nodo(s)",
-                        NamedTextColor.YELLOW))
+                .setName(lang.component("gui.class_specialization.talents_label", "count",
+                        current.talentTree().size()))
                 .setLore(joinTalentLore())
                 .build());
 
         setItem(TALENT_REMOVE_SLOT, new ItemBuilder(Material.LAVA_BUCKET)
-                .setName(Component.text("Eliminar un talento", NamedTextColor.RED))
-                .setLore(Component.text("Click para escribir el id del nodo a eliminar", NamedTextColor.GRAY))
+                .setName(lang.component("gui.class_specialization.talents_remove"))
+                .setLore(lang.component("gui.class_specialization.talents_remove_hint"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back_button")));
     }
 
     private List<Component> joinTalentLore() {
 
         List<Component> lore = new ArrayList<>();
-        lore.add(Component.text("Click para agregar/actualizar un nodo:", NamedTextColor.GRAY));
-        lore.add(Component.text("id;nombre;costo;requiere1,requiere2;stat=val;skill;trait;encantamiento",
-                NamedTextColor.DARK_GRAY));
-        lore.add(Component.text("(usá '-' para dejar un campo vacío)", NamedTextColor.DARK_GRAY));
+        lore.add(lang.component("gui.class_specialization.talents_add_hint"));
+        lore.add(lang.component("gui.class_specialization.talents_format_hint"));
+        lore.add(lang.component("gui.class_specialization.talents_dash_hint"));
 
         for (TalentNode node : current.talentTree()) {
-            lore.add(Component.text("- " + node.id() + " (" + node.cost() + " pts)", NamedTextColor.AQUA));
+            lore.add(lang.component("gui.class_specialization.talents_node_entry", "id", node.id(), "cost",
+                    node.cost()));
         }
 
         return lore;
@@ -139,7 +144,7 @@ public class ClassSpecializationEditorGUI extends InventoryGUI {
         int slot = event.getSlot();
 
         if (slot == BASE_CLASS_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el id de la clase base:",
+            chatPromptManager.prompt(player, "gui.class_specialization.prompt_base_class",
                     value -> replace(new ClassSpecialization(current.id(), value.trim().toLowerCase(Locale.ROOT),
                             current.displayName(), current.requirements(), current.statBonus(),
                             current.restrictions(), current.exclusiveEquipment(), current.talentTree())));
@@ -147,7 +152,7 @@ public class ClassSpecializationEditorGUI extends InventoryGUI {
         }
 
         if (slot == NAME_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el nuevo nombre:",
+            chatPromptManager.prompt(player, "gui.class_specialization.prompt_new_name",
                     value -> replace(new ClassSpecialization(current.id(), current.baseClass(), value,
                             current.requirements(), current.statBonus(), current.restrictions(),
                             current.exclusiveEquipment(), current.talentTree())));
@@ -155,34 +160,33 @@ public class ClassSpecializationEditorGUI extends InventoryGUI {
         }
 
         if (slot == REQUIREMENTS_SLOT) {
-            chatPromptManager.prompt(player,
-                    "Escribí: nivel;prestigio;trait;quest1,quest2;facción=rep (ej. 20;0;-;;reino=50):", value -> {
+            chatPromptManager.prompt(player, "gui.class_specialization.prompt_requirements", value -> {
                         try {
                             replace(new ClassSpecialization(current.id(), current.baseClass(), current.displayName(),
                                     RequirementsPrompt.parse(value), current.statBonus(), current.restrictions(),
                                     current.exclusiveEquipment(), current.talentTree()));
                         } catch (NumberFormatException e) {
-                            player.sendMessage(Component.text("Formato inválido.", NamedTextColor.RED));
+                            lang.send(player, "gui.common.invalid_format");
                         }
                     });
             return;
         }
 
         if (slot == STATS_SLOT) {
-            chatPromptManager.prompt(player, "Escribí: stat=valor,stat2=valor2:", value -> {
+            chatPromptManager.prompt(player, "gui.class_specialization.prompt_stats", value -> {
                 try {
                     replace(new ClassSpecialization(current.id(), current.baseClass(), current.displayName(),
                             current.requirements(), NumberMapPrompt.parse(value), current.restrictions(),
                             current.exclusiveEquipment(), current.talentTree()));
                 } catch (NumberFormatException e) {
-                    player.sendMessage(Component.text("Formato inválido.", NamedTextColor.RED));
+                    lang.send(player, "gui.common.invalid_format");
                 }
             });
             return;
         }
 
         if (slot == RESTRICTIONS_SLOT) {
-            chatPromptManager.prompt(player, "Escribí las restricciones, separadas por comas:",
+            chatPromptManager.prompt(player, "gui.class_specialization.prompt_restrictions",
                     value -> replace(new ClassSpecialization(current.id(), current.baseClass(), current.displayName(),
                             current.requirements(), current.statBonus(), List.of(value.trim().split(",")),
                             current.exclusiveEquipment(), current.talentTree())));
@@ -190,7 +194,7 @@ public class ClassSpecializationEditorGUI extends InventoryGUI {
         }
 
         if (slot == EQUIPMENT_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el equipo exclusivo, separado por comas:",
+            chatPromptManager.prompt(player, "gui.class_specialization.prompt_equipment",
                     value -> replace(new ClassSpecialization(current.id(), current.baseClass(), current.displayName(),
                             current.requirements(), current.statBonus(), current.restrictions(),
                             List.of(value.trim().split(",")), current.talentTree())));
@@ -198,8 +202,7 @@ public class ClassSpecializationEditorGUI extends InventoryGUI {
         }
 
         if (slot == TALENT_ADD_SLOT) {
-            chatPromptManager.prompt(player,
-                    "Escribí: id;nombre;costo;requiere1,requiere2;stat=val;skill;trait;encantamiento", value -> {
+            chatPromptManager.prompt(player, "gui.class_specialization.prompt_talent_add", value -> {
                         try {
                             TalentNode node = parseTalentNode(value);
                             List<TalentNode> nodes = new ArrayList<>(current.talentTree());
@@ -209,20 +212,20 @@ public class ClassSpecializationEditorGUI extends InventoryGUI {
                                     current.requirements(), current.statBonus(), current.restrictions(),
                                     current.exclusiveEquipment(), nodes));
                         } catch (RuntimeException e) {
-                            player.sendMessage(Component.text("Formato inválido.", NamedTextColor.RED));
+                            lang.send(player, "gui.common.invalid_format");
                         }
                     });
             return;
         }
 
         if (slot == TALENT_REMOVE_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el id del nodo a eliminar:", value -> {
+            chatPromptManager.prompt(player, "gui.class_specialization.prompt_talent_remove", value -> {
 
                 List<TalentNode> nodes = new ArrayList<>(current.talentTree());
                 boolean removed = nodes.removeIf(node -> node.id().equalsIgnoreCase(value.trim()));
 
                 if (!removed) {
-                    player.sendMessage(Component.text("No se encontró ese nodo.", NamedTextColor.RED));
+                    lang.send(player, "gui.common.node_not_found");
                     return;
                 }
 

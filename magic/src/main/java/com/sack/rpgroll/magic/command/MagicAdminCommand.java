@@ -1,5 +1,6 @@
 package com.sack.rpgroll.magic.command;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.magic.core.CatalystManager;
 import com.sack.rpgroll.magic.core.GrimoireManager;
 import com.sack.rpgroll.magic.core.RuneManager;
@@ -9,9 +10,6 @@ import com.sack.rpgroll.magic.gui.ChatPromptManager;
 import com.sack.rpgroll.magic.gui.MagicBrowserGUI;
 import com.sack.rpgroll.magic.item.MagicItemFactory;
 import com.sack.rpgroll.util.TabCompleteUtil;
-
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -37,22 +35,25 @@ public class MagicAdminCommand implements CommandExecutor, TabCompleter {
     private final RuneManager runeManager;
     private final CatalystManager catalystManager;
     private final ChatPromptManager chatPromptManager;
+    private final LangManager lang;
 
     public MagicAdminCommand(SchoolManager schoolManager, SpellManager spellManager, GrimoireManager grimoireManager,
-            RuneManager runeManager, CatalystManager catalystManager, ChatPromptManager chatPromptManager) {
+            RuneManager runeManager, CatalystManager catalystManager, ChatPromptManager chatPromptManager,
+            LangManager lang) {
         this.schoolManager = schoolManager;
         this.spellManager = spellManager;
         this.grimoireManager = grimoireManager;
         this.runeManager = runeManager;
         this.catalystManager = catalystManager;
         this.chatPromptManager = chatPromptManager;
+        this.lang = lang;
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
         if (!sender.hasPermission("rpgrollmagic.admin.*")) {
-            sender.sendMessage(Component.text("No tenés permiso para usar este comando.", NamedTextColor.RED));
+            lang.send(sender, "common.no_permission");
             return true;
         }
 
@@ -73,14 +74,13 @@ public class MagicAdminCommand implements CommandExecutor, TabCompleter {
     }
 
     private void sendUsage(CommandSender sender) {
-        sender.sendMessage(Component.text(
-                "Uso: /magicadmin <browser|reload|givecatalyst <id>|givegrimoire <id>>", NamedTextColor.RED));
+        lang.send(sender, "command.admin.usage");
     }
 
     private void handleBrowser(CommandSender sender) {
 
         if (!(sender instanceof Player player)) {
-            sender.sendMessage(Component.text("Solo jugadores pueden abrir el Magic Studio.", NamedTextColor.RED));
+            lang.send(sender, "command.admin.players_only_studio");
             return;
         }
 
@@ -96,46 +96,48 @@ public class MagicAdminCommand implements CommandExecutor, TabCompleter {
         runeManager.reload();
         catalystManager.reload();
 
-        sender.sendMessage(Component.text("✔ Recargado: " + schoolManager.count() + " escuela(s), "
-                + spellManager.count() + " hechizo(s), " + grimoireManager.count() + " grimorio(s), "
-                + runeManager.count() + " runa(s), " + catalystManager.count() + " catalizador(es).",
-                NamedTextColor.GREEN));
+        lang.send(sender, "command.admin.reloaded",
+                "schools", schoolManager.count(),
+                "spells", spellManager.count(),
+                "grimoires", grimoireManager.count(),
+                "runes", runeManager.count(),
+                "catalysts", catalystManager.count());
     }
 
     private void handleGiveCatalyst(CommandSender sender, String[] args) {
 
         if (!(sender instanceof Player player) || args.length < 2) {
-            sender.sendMessage(Component.text("Uso: /magicadmin givecatalyst <id>", NamedTextColor.RED));
+            lang.send(sender, "command.admin.usage_givecatalyst");
             return;
         }
 
         var catalystOpt = catalystManager.get(args[1]);
 
         if (catalystOpt.isEmpty()) {
-            sender.sendMessage(Component.text("No existe un catalizador con id: " + args[1], NamedTextColor.RED));
+            lang.send(sender, "command.admin.unknown_catalyst", "id", args[1]);
             return;
         }
 
-        player.getInventory().addItem(MagicItemFactory.createCatalyst(catalystOpt.get()));
-        sender.sendMessage(Component.text("✔ Entregado.", NamedTextColor.GREEN));
+        player.getInventory().addItem(MagicItemFactory.createCatalyst(catalystOpt.get(), lang));
+        lang.send(sender, "command.admin.given");
     }
 
     private void handleGiveGrimoire(CommandSender sender, String[] args) {
 
         if (!(sender instanceof Player player) || args.length < 2) {
-            sender.sendMessage(Component.text("Uso: /magicadmin givegrimoire <id>", NamedTextColor.RED));
+            lang.send(sender, "command.admin.usage_givegrimoire");
             return;
         }
 
         var grimoireOpt = grimoireManager.get(args[1]);
 
         if (grimoireOpt.isEmpty()) {
-            sender.sendMessage(Component.text("No existe un grimorio con id: " + args[1], NamedTextColor.RED));
+            lang.send(sender, "command.admin.unknown_grimoire", "id", args[1]);
             return;
         }
 
-        player.getInventory().addItem(MagicItemFactory.createGrimoire(grimoireOpt.get()));
-        sender.sendMessage(Component.text("✔ Entregado.", NamedTextColor.GREEN));
+        player.getInventory().addItem(MagicItemFactory.createGrimoire(grimoireOpt.get(), lang));
+        lang.send(sender, "command.admin.given");
     }
 
     @Override

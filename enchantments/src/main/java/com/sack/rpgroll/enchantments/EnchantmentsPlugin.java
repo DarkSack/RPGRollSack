@@ -1,5 +1,6 @@
 package com.sack.rpgroll.enchantments;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.common.resource.DirectoryCreator;
 import com.sack.rpgroll.common.resource.ResourceCopier;
 import com.sack.rpgroll.enchantments.command.EnchantAdminCommand;
@@ -21,12 +22,18 @@ public class EnchantmentsPlugin extends JavaPlugin {
 
     private EnchantmentManager enchantmentManager;
     private EnchantmentItem enchantmentItem;
+    private LangManager langManager;
 
     @Override
     public void onEnable() {
 
+        saveDefaultConfig();
+
         new DirectoryCreator(this).create(DIRECTORIES);
         new ResourceCopier(this).copyDirectories(DIRECTORIES);
+
+        langManager = new LangManager(this, List.of("es", "en", "pt_BR"), "es");
+        langManager.reload(getConfig().getString("language", "es"));
 
         enchantmentManager = new EnchantmentManager(this);
         enchantmentManager.initialize();
@@ -40,14 +47,15 @@ public class EnchantmentsPlugin extends JavaPlugin {
                 new EnchantmentTriggerListener(enchantmentManager, enchantmentItem, conditionEvaluator, effectExecutor),
                 this);
 
-        ChatPromptManager chatPromptManager = new ChatPromptManager(this);
+        ChatPromptManager chatPromptManager = new ChatPromptManager(this, langManager);
         getServer().getPluginManager().registerEvents(chatPromptManager, this);
 
         var enchantCommand = getCommand("renchant");
         if (enchantCommand == null) {
             getLogger().severe("✘ El comando 'renchant' no está declarado en plugin.yml");
         } else {
-            var enchantAdminCommand = new EnchantAdminCommand(enchantmentManager, enchantmentItem, chatPromptManager);
+            var enchantAdminCommand = new EnchantAdminCommand(this, enchantmentManager, enchantmentItem,
+                    chatPromptManager);
             enchantCommand.setExecutor(enchantAdminCommand);
             enchantCommand.setTabCompleter(enchantAdminCommand);
         }
@@ -75,6 +83,10 @@ public class EnchantmentsPlugin extends JavaPlugin {
 
     public EnchantmentItem getEnchantmentItem() {
         return enchantmentItem;
+    }
+
+    public LangManager getLangManager() {
+        return langManager;
     }
 
 }

@@ -1,5 +1,6 @@
 package com.sack.rpgroll.seasons.event;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.effects.api.EffectsAPI;
 import com.sack.rpgroll.sackeffects.api.SackEffectsAPI;
 import com.sack.rpgroll.seasons.core.WorldEvent;
@@ -28,16 +29,16 @@ import java.util.Locale;
 public class WorldEventEngine {
 
     private final Plugin plugin;
+    private final LangManager lang;
 
-    public WorldEventEngine(Plugin plugin) {
+    public WorldEventEngine(Plugin plugin, LangManager lang) {
         this.plugin = plugin;
+        this.lang = lang;
     }
 
     public void trigger(WorldEvent event, World world) {
 
-        Component announce = Component.text("✦ ", NamedTextColor.GOLD)
-                .append(Component.text(event.displayName(), NamedTextColor.YELLOW))
-                .append(Component.text(" ha comenzado.", NamedTextColor.GOLD));
+        Component announce = lang.component("event.started", "event", event.displayName());
 
         world.getPlayers().forEach(player -> player.sendMessage(announce));
 
@@ -47,9 +48,7 @@ public class WorldEventEngine {
 
         if (event.durationTicks() > 0) {
             Bukkit.getScheduler().runTaskLater(plugin, () -> {
-                Component end = Component.text("✦ ", NamedTextColor.GOLD)
-                        .append(Component.text(event.displayName(), NamedTextColor.YELLOW))
-                        .append(Component.text(" ha terminado.", NamedTextColor.GRAY));
+                Component end = lang.component("event.ended", "event", event.displayName());
                 world.getPlayers().forEach(player -> player.sendMessage(end));
             }, event.durationTicks());
         }

@@ -1,5 +1,6 @@
 package com.sack.rpgroll.gameplay.listener;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gameplay.combat.CombatStats;
 import com.sack.rpgroll.gameplay.combat.CombatTracker;
 import com.sack.rpgroll.gameplay.hud.PlayerResourceBar;
@@ -37,12 +38,14 @@ public class CombatEffectsListener implements Listener {
     private final PlayerManager playerManager;
     private final CombatTracker combatTracker;
     private final PlayerResourceBar resourceBar;
+    private final LangManager lang;
 
     public CombatEffectsListener(PlayerManager playerManager, CombatTracker combatTracker,
-            PlayerResourceBar resourceBar) {
+            PlayerResourceBar resourceBar, LangManager lang) {
         this.playerManager = playerManager;
         this.combatTracker = combatTracker;
         this.resourceBar = resourceBar;
+        this.lang = lang;
     }
 
     /**
@@ -70,7 +73,7 @@ public class CombatEffectsListener implements Listener {
 
         if (ThreadLocalRandom.current().nextDouble() < stats.criticalChance()) {
             event.setDamage(event.getDamage() * stats.criticalMultiplier());
-            attacker.sendActionBar(Component.text("¡Golpe crítico!", NamedTextColor.GOLD));
+            attacker.sendActionBar(lang.component("combat_effects_listener.critical_hit"));
         }
 
     }
@@ -102,7 +105,7 @@ public class CombatEffectsListener implements Listener {
 
         if (ThreadLocalRandom.current().nextDouble() < stats.evasionChance()) {
             event.setCancelled(true);
-            victim.sendActionBar(Component.text("¡Evadiste el golpe!", NamedTextColor.AQUA));
+            victim.sendActionBar(lang.component("combat_effects_listener.evaded"));
             return;
         }
 
@@ -119,8 +122,7 @@ public class CombatEffectsListener implements Listener {
                     PotionEffectType.SLOWNESS, DOWNED_EFFECT_DURATION_TICKS, 1));
             victim.addPotionEffect(new PotionEffect(
                     PotionEffectType.WEAKNESS, DOWNED_EFFECT_DURATION_TICKS, 1));
-            victim.sendMessage(Component.text(
-                    "Tu salud llegó a 0 — estás debilitado por unos segundos.", NamedTextColor.RED));
+            victim.sendMessage(lang.component("combat_effects_listener.downed"));
         } else {
             updatedStats = stats.withHealth(newHealth);
         }

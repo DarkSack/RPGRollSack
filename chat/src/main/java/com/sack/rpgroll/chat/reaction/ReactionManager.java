@@ -1,7 +1,6 @@
 package com.sack.rpgroll.chat.reaction;
 
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
+import com.sack.rpgroll.common.lang.LangManager;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -25,6 +24,11 @@ public class ReactionManager {
 
     private final Map<Long, TrackedMessage> tracked = new LinkedHashMap<>();
     private final Map<UUID, Long> lastSeenMessageId = new ConcurrentHashMap<>();
+    private final LangManager lang;
+
+    public ReactionManager(LangManager lang) {
+        this.lang = lang;
+    }
 
     public synchronized void registerMessage(long messageId, UUID senderId, String channelId) {
 
@@ -68,18 +72,17 @@ public class ReactionManager {
 
     private void notifyReaction(Player reactor, TrackedMessage message, ReactionType type, boolean added) {
 
-        Component notice = Component.text(type.symbol() + " ", NamedTextColor.GOLD)
-                .append(Component.text(reactor.getName(), NamedTextColor.YELLOW))
-                .append(Component.text((added ? " reaccionó a " : " quitó su reacción a ") + message.senderName()
-                        + " (" + message.countOf(type) + " " + type.symbol() + ")", NamedTextColor.GRAY));
+        String key = added ? "reaction.notify_added" : "reaction.notify_removed";
+        Object[] placeholders = {"symbol", type.symbol(), "reactor", reactor.getName(), "sender",
+                message.senderName(), "count", message.countOf(type)};
 
         Player sender = Bukkit.getPlayer(message.senderId());
         if (sender != null) {
-            sender.sendMessage(notice);
+            lang.send(sender, key, placeholders);
         }
 
         if (!reactor.getUniqueId().equals(message.senderId())) {
-            reactor.sendMessage(notice);
+            lang.send(reactor, key, placeholders);
         }
     }
 

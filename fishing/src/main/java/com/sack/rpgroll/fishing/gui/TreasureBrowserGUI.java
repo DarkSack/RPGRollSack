@@ -1,5 +1,6 @@
 package com.sack.rpgroll.fishing.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.fishing.core.FishRarity;
 import com.sack.rpgroll.fishing.core.Treasure;
 import com.sack.rpgroll.fishing.core.TreasureManager;
@@ -24,12 +25,14 @@ public class TreasureBrowserGUI extends InventoryGUI {
 
     private final TreasureManager treasureManager;
     private final ChatPromptManager chatPromptManager;
+    private final LangManager lang;
     private List<Treasure> treasures;
 
     public TreasureBrowserGUI(Player player, TreasureManager treasureManager, ChatPromptManager chatPromptManager) {
-        super(player, Component.text("Tesoros"), SIZE);
+        super(player, chatPromptManager.lang().component("gui.treasure.browser_title"), SIZE);
         this.treasureManager = treasureManager;
         this.chatPromptManager = chatPromptManager;
+        this.lang = chatPromptManager.lang();
         this.treasures = List.copyOf(treasureManager.getAll());
     }
 
@@ -48,16 +51,16 @@ public class TreasureBrowserGUI extends InventoryGUI {
 
             setItem(i, new ItemBuilder(SpeciesBrowserGUI.parseMaterial(treasure.icon()))
                     .setName(Component.text(treasure.displayName(), NamedTextColor.GOLD))
-                    .setLore(Component.text("id: " + treasure.id(), NamedTextColor.GRAY),
-                            Component.text("Click para editar", NamedTextColor.YELLOW))
+                    .setLore(lang.component("gui.common.id_label", "id", treasure.id()),
+                            lang.component("gui.common.click_to_edit"))
                     .build());
         }
 
         setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Crear tesoro nuevo", NamedTextColor.GREEN))
+                .setName(lang.component("gui.treasure.new_button"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back")));
     }
 
     @Override
@@ -83,12 +86,12 @@ public class TreasureBrowserGUI extends InventoryGUI {
     }
 
     private void promptNew() {
-        chatPromptManager.prompt(player, "Escribí el id del nuevo tesoro:", value -> {
+        chatPromptManager.prompt(player, lang.raw("gui.treasure.prompt_new_id"), value -> {
 
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 
             if (treasureManager.exists(id)) {
-                player.sendMessage(Component.text("Ya existe un tesoro con ese id.", NamedTextColor.RED));
+                lang.send(player, "gui.treasure.already_exists");
                 reopen();
                 return;
             }

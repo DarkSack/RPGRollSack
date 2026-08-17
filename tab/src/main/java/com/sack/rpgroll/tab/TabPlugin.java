@@ -1,5 +1,6 @@
 package com.sack.rpgroll.tab;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.common.resource.DirectoryCreator;
 import com.sack.rpgroll.common.resource.ResourceCopier;
 import com.sack.rpgroll.tab.animation.AnimationEngine;
@@ -45,6 +46,8 @@ public class TabPlugin extends JavaPlugin {
 
     private static final long ANIMATION_REFRESH_TICKS = 10L;
 
+    private LangManager langManager;
+
     private PlaceholderEngine placeholderEngine;
     private AnimationEngine animationEngine;
     private AnimationManager animationManager;
@@ -78,8 +81,13 @@ public class TabPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
 
+        saveDefaultConfig();
+
         new DirectoryCreator(this).create(DIRECTORIES);
         new ResourceCopier(this).copyDirectories(DIRECTORIES);
+
+        langManager = new LangManager(this, List.of("es", "en", "pt_BR"), "es");
+        langManager.reload(getConfig().getString("language", "es"));
 
         placeholderEngine = new PlaceholderEngine(this);
 
@@ -170,7 +178,7 @@ public class TabPlugin extends JavaPlugin {
 
         var executor = new TabAdminCommand(profileManager, contextManager, tablistManager, scoreboardManager,
                 nametagManager, belowNameManager, bossBarManager, sortingManager, teamsManager, animationManager,
-                playerStateManager, refreshCoordinator);
+                playerStateManager, refreshCoordinator, langManager);
 
         tabCommand.setExecutor(executor);
         tabCommand.setTabCompleter(executor);

@@ -1,5 +1,7 @@
 package com.sack.rpgroll.mobs;
 
+import com.sack.rpgroll.common.assets.ModuleAssetSync;
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.common.resource.DirectoryCreator;
 import com.sack.rpgroll.common.resource.ResourceCopier;
 import com.sack.rpgroll.mobs.command.MobAdminCommand;
@@ -38,9 +40,15 @@ public class MobsPlugin extends JavaPlugin {
     private MobRarityResolver rarityResolver;
     private MobEngine engine;
     private ChatPromptManager chatPromptManager;
+    private LangManager langManager;
 
     @Override
     public void onEnable() {
+
+        saveDefaultConfig();
+
+        langManager = new LangManager(this, List.of("es", "en", "pt_BR"), "es");
+        langManager.reload(getConfig().getString("language", "es"));
 
         new DirectoryCreator(this).create(DIRECTORIES);
         new ResourceCopier(this).copyDirectories(DIRECTORIES);
@@ -60,9 +68,11 @@ public class MobsPlugin extends JavaPlugin {
         actionRegistry = new ActionRegistry(this);
         BuiltinMobActions.registerAll(actionRegistry, this);
 
-        engine = new MobEngine(mobManager, instanceService, actionRegistry, conditionEvaluator, rarityResolver);
+        engine = new MobEngine(this, mobManager, instanceService, actionRegistry, conditionEvaluator, rarityResolver);
 
-        chatPromptManager = new ChatPromptManager(this);
+        new ModuleAssetSync(this, "mobs").syncAll();
+
+        chatPromptManager = new ChatPromptManager(this, langManager);
         getServer().getPluginManager().registerEvents(chatPromptManager, this);
 
         MobCombatListener combatListener = new MobCombatListener(engine, instanceService, mobManager, this);
@@ -140,6 +150,10 @@ public class MobsPlugin extends JavaPlugin {
 
     public MobEngine getEngine() {
         return engine;
+    }
+
+    public LangManager getLangManager() {
+        return langManager;
     }
 
 }

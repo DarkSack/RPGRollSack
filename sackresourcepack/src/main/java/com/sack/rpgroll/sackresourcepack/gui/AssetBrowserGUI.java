@@ -2,6 +2,7 @@ package com.sack.rpgroll.sackresourcepack.gui;
 
 import com.sack.rpgroll.sackresourcepack.build.BuildEngine;
 import com.sack.rpgroll.sackresourcepack.gui.util.ItemBuilder;
+import com.sack.rpgroll.sackresourcepack.lang.LangManager;
 import com.sack.rpgroll.sackresourcepack.merge.MergeResult;
 
 import net.kyori.adventure.text.Component;
@@ -51,6 +52,7 @@ public class AssetBrowserGUI extends InventoryGUI {
 
     private final BuildEngine buildEngine;
     private final String assetBaseUrl;
+    private final LangManager lang;
     private final Runnable onBack;
 
     private List<AssetEntry> allEntries = List.of();
@@ -59,10 +61,11 @@ public class AssetBrowserGUI extends InventoryGUI {
     private int page = 0;
 
     /** @param assetBaseUrl base para pedir texturas sueltas (ver {@code ResourcePackHttpServer#assetBaseUrl()}), null si no hay host HTTP propio habilitado. */
-    public AssetBrowserGUI(Player player, BuildEngine buildEngine, String assetBaseUrl, Runnable onBack) {
-        super(player, Component.text("Explorador de Assets", NamedTextColor.GREEN), SIZE);
+    public AssetBrowserGUI(Player player, BuildEngine buildEngine, String assetBaseUrl, LangManager lang, Runnable onBack) {
+        super(player, Component.text(lang.raw("gui.asset-browser.title"), NamedTextColor.GREEN), SIZE);
         this.buildEngine = buildEngine;
         this.assetBaseUrl = assetBaseUrl;
+        this.lang = lang;
         this.onBack = onBack;
     }
 
@@ -90,19 +93,20 @@ public class AssetBrowserGUI extends InventoryGUI {
             setItem(GRID_START + i, buildEntryItem(filteredEntries.get(start + i)));
         }
 
-        setItem(FILTER_SLOT, ItemBuilder.of(Material.HOPPER, "Filtro: " + filter.name(), NamedTextColor.YELLOW,
-                "Click para pasar al", "siguiente tipo.",
-                filteredEntries.size() + " asset(s) con este filtro."));
+        setItem(FILTER_SLOT, ItemBuilder.of(Material.HOPPER,
+                lang.raw("gui.asset-browser.filter-name", "filter", filter.name()), NamedTextColor.YELLOW,
+                lang.raw("gui.asset-browser.filter-lore-1"), lang.raw("gui.asset-browser.filter-lore-2"),
+                lang.raw("gui.asset-browser.filter-count", "count", filteredEntries.size())));
 
         if (page > 0) {
-            setItem(PREV_SLOT, ItemBuilder.of(Material.ARROW, "Página anterior", NamedTextColor.GRAY));
+            setItem(PREV_SLOT, ItemBuilder.of(Material.ARROW, lang.raw("gui.prev-page"), NamedTextColor.GRAY));
         }
 
         if (page < totalPages - 1) {
-            setItem(NEXT_SLOT, ItemBuilder.of(Material.ARROW, "Página siguiente", NamedTextColor.GRAY));
+            setItem(NEXT_SLOT, ItemBuilder.of(Material.ARROW, lang.raw("gui.next-page"), NamedTextColor.GRAY));
         }
 
-        setItem(BACK_SLOT, ItemBuilder.backButton());
+        setItem(BACK_SLOT, ItemBuilder.backButton(lang.raw("gui.back")));
     }
 
     private void applyFilter() {
@@ -188,14 +192,14 @@ public class AssetBrowserGUI extends InventoryGUI {
             String textureUrl = assetBaseUrl + "assets/" + entry.relativePath();
 
             return ItemBuilder.skullFromUrl(textureUrl, fileName, NamedTextColor.WHITE,
-                    "assets/" + entry.relativePath(),
-                    "tipo: " + entry.type(),
-                    "módulo(s): " + entry.owner(),
-                    "tamaño: " + humanSize(entry.sizeBytes()),
+                    lang.raw("gui.asset-browser.entry-path", "path", entry.relativePath()),
+                    lang.raw("gui.asset-browser.entry-type", "type", entry.type()),
+                    lang.raw("gui.asset-browser.entry-owner", "owner", entry.owner()),
+                    lang.raw("gui.asset-browser.entry-size", "size", humanSize(entry.sizeBytes())),
                     "",
-                    "(preview aproximado — la textura",
-                    "se envuelve sobre una cabeza,",
-                    "no es un render fiel)");
+                    lang.raw("gui.asset-browser.preview-note-1"),
+                    lang.raw("gui.asset-browser.preview-note-2"),
+                    lang.raw("gui.asset-browser.preview-note-3"));
         }
 
         Material icon = switch (TypeFilter.valueOf(entry.type())) {
@@ -209,10 +213,10 @@ public class AssetBrowserGUI extends InventoryGUI {
         };
 
         return ItemBuilder.of(icon, fileName, NamedTextColor.WHITE,
-                "assets/" + entry.relativePath(),
-                "tipo: " + entry.type(),
-                "módulo(s): " + entry.owner(),
-                "tamaño: " + humanSize(entry.sizeBytes()));
+                lang.raw("gui.asset-browser.entry-path", "path", entry.relativePath()),
+                lang.raw("gui.asset-browser.entry-type", "type", entry.type()),
+                lang.raw("gui.asset-browser.entry-owner", "owner", entry.owner()),
+                lang.raw("gui.asset-browser.entry-size", "size", humanSize(entry.sizeBytes())));
     }
 
     private String humanSize(long bytes) {

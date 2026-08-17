@@ -1,5 +1,6 @@
 package com.sack.rpgroll.ranching.listener;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.ranching.core.animal.Animal;
 import com.sack.rpgroll.ranching.core.animal.AnimalManager;
 import com.sack.rpgroll.ranching.core.health.Disease;
@@ -41,16 +42,19 @@ public class AnimalCareListener implements Listener {
     private final MedicineManager medicineManager;
     private final VaccineManager vaccineManager;
     private final DiseaseManager diseaseManager;
+    private final LangManager lang;
     private final Random random = new Random();
 
     public AnimalCareListener(AnimalManager animalManager, SpeciesManager speciesManager, FeedManager feedManager,
-            MedicineManager medicineManager, VaccineManager vaccineManager, DiseaseManager diseaseManager) {
+            MedicineManager medicineManager, VaccineManager vaccineManager, DiseaseManager diseaseManager,
+            LangManager lang) {
         this.animalManager = animalManager;
         this.speciesManager = speciesManager;
         this.feedManager = feedManager;
         this.medicineManager = medicineManager;
         this.vaccineManager = vaccineManager;
         this.diseaseManager = diseaseManager;
+        this.lang = lang;
     }
 
     @EventHandler
@@ -104,8 +108,7 @@ public class AnimalCareListener implements Listener {
         consumeOne(item);
 
         player.sendMessage(Component.text(
-                matchesDiet ? "✔ Alimentado con " + feed.displayName() + "."
-                        : "Alimentado con " + feed.displayName() + " — no es lo que más le gusta a esta especie.",
+                lang.raw(matchesDiet ? "listener.care.fed_match" : "listener.care.fed_mismatch", "feed", feed.displayName()),
                 matchesDiet ? NamedTextColor.GREEN : NamedTextColor.YELLOW));
     }
 
@@ -116,14 +119,12 @@ public class AnimalCareListener implements Listener {
         consumeOne(item);
 
         if (!animal.isSick()) {
-            player.sendMessage(Component.text("Este animal no está enfermo — igual recibió los bonos de la medicina.",
-                    NamedTextColor.GRAY));
+            player.sendMessage(Component.text(lang.raw("listener.care.medicine_not_sick"), NamedTextColor.GRAY));
             return;
         }
 
         if (!medicine.curesDiseaseIds().contains(animal.activeDiseaseId())) {
-            player.sendMessage(Component.text("Esta medicina no trata la enfermedad que tiene este animal.",
-                    NamedTextColor.YELLOW));
+            player.sendMessage(Component.text(lang.raw("listener.care.medicine_wrong_disease"), NamedTextColor.YELLOW));
             return;
         }
 
@@ -132,15 +133,14 @@ public class AnimalCareListener implements Listener {
             Disease disease = diseaseManager.get(animal.activeDiseaseId()).orElse(null);
             animal.cure();
 
-            player.sendMessage(Component.text(
-                    "✔ ¡Curado! " + (disease != null ? disease.displayName() : "La enfermedad") + " fue tratada.",
+            player.sendMessage(Component.text(lang.raw("listener.care.medicine_cured", "disease",
+                    disease != null ? disease.displayName() : lang.raw("listener.care.unknown_disease")),
                     NamedTextColor.GREEN));
 
         } else {
 
             animal.reduceDiseaseDuration(medicine.recoveryBoostTicks());
-            player.sendMessage(Component.text("El tratamiento no curó del todo, pero acortó la recuperación.",
-                    NamedTextColor.YELLOW));
+            player.sendMessage(Component.text(lang.raw("listener.care.medicine_partial"), NamedTextColor.YELLOW));
         }
     }
 
@@ -152,7 +152,8 @@ public class AnimalCareListener implements Listener {
 
         consumeOne(item);
 
-        player.sendMessage(Component.text("✔ Vacunado con " + vaccine.displayName() + ".", NamedTextColor.GREEN));
+        player.sendMessage(Component.text(lang.raw("listener.care.vaccinated", "vaccine", vaccine.displayName()),
+                NamedTextColor.GREEN));
     }
 
     private void consumeOne(ItemStack item) {

@@ -5,7 +5,7 @@ api-version: "26.1.1"
 author: Sack
 description: Ganadería como simulación viva — genética hereditaria con linajes, reproducción, nutrición, bienestar animal, enfermedades/vacunas y producción con calidad.
 depend: [RPGRoll]
-softdepend: [SackEffects, RPGRoll-Effects, RPGRoll-Seasons]
+softdepend: [SackEffects, RPGRoll-Effects, RPGRoll-Seasons, SackResourcePack]
 
 commands:
   ranchingadmin:

@@ -1,6 +1,7 @@
 package com.sack.rpgroll.mobs.core;
 
 import com.sack.rpgroll.common.content.ContentParser;
+import com.sack.rpgroll.common.reskin.EntityReskin;
 import com.sack.rpgroll.mobs.util.DurationParser;
 
 import org.bukkit.configuration.ConfigurationSection;
@@ -148,7 +149,34 @@ public class MobParser implements ContentParser<MobDefinition> {
             }
         }
 
-        return new MobModel(baseEntityType.toUpperCase(Locale.ROOT), scale, glow, invisible, equipment, modelEngineId);
+        return new MobModel(baseEntityType.toUpperCase(Locale.ROOT), scale, glow, invisible, equipment, modelEngineId,
+                parseSkins(section));
+    }
+
+    private List<MobSkin> parseSkins(ConfigurationSection section) {
+
+        List<Map<?, ?>> rawSkins = section.getMapList("skins");
+        List<MobSkin> skins = new ArrayList<>();
+
+        for (Map<?, ?> raw : rawSkins) {
+
+            Object idValue = raw.get("id");
+            if (idValue == null) {
+                continue;
+            }
+
+            String material = raw.get("material") != null ? raw.get("material").toString() : null;
+            int customModelData = raw.get("custom-model-data") != null
+                    ? parseInt(raw.get("custom-model-data"), 0) : 0;
+            double scale = raw.get("scale") != null ? parseDouble(raw.get("scale"), 1.0) : 1.0;
+            double yOffset = raw.get("y-offset") != null ? parseDouble(raw.get("y-offset"), 0.0) : 0.0;
+            double weight = raw.get("weight") != null ? parseDouble(raw.get("weight"), 1.0) : 1.0;
+
+            skins.add(new MobSkin(idValue.toString(), new EntityReskin(material, customModelData, scale, yOffset),
+                    weight));
+        }
+
+        return skins;
     }
 
     // ============ Weaknesses ============

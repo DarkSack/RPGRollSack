@@ -1,5 +1,6 @@
 package com.sack.rpgroll.magic.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.magic.core.Grimoire;
@@ -29,7 +30,7 @@ public class GrimoireBrowserGUI extends InventoryGUI {
 
     public GrimoireBrowserGUI(Player player, GrimoireManager grimoireManager, SpellManager spellManager,
             ChatPromptManager chatPromptManager) {
-        super(player, Component.text("Grimorios", NamedTextColor.GOLD), SIZE);
+        super(player, chatPromptManager.lang().component("gui.grimoire_browser.title"), SIZE);
         this.grimoireManager = grimoireManager;
         this.spellManager = spellManager;
         this.chatPromptManager = chatPromptManager;
@@ -45,23 +46,25 @@ public class GrimoireBrowserGUI extends InventoryGUI {
             setItem(slot, ItemBuilder.createFiller());
         }
 
+        LangManager lang = chatPromptManager.lang();
+
         for (int i = 0; i < grimoires.size() && i < 36; i++) {
 
             Grimoire grimoire = grimoires.get(i);
 
             setItem(i, new ItemBuilder(SchoolBrowserGUI.parseMaterial(grimoire.icon()))
                     .setName(Component.text(grimoire.displayName(), NamedTextColor.LIGHT_PURPLE))
-                    .setLore(Component.text("id: " + grimoire.id(), NamedTextColor.GRAY),
-                            Component.text(grimoire.spellIds().size() + " hechizo(s)", NamedTextColor.GRAY),
-                            Component.text("Click para editar", NamedTextColor.YELLOW))
+                    .setLore(lang.component("gui.common.id_label", "id", grimoire.id()),
+                            lang.component("gui.grimoire_browser.spell_count_lore", "count", grimoire.spellIds().size()),
+                            lang.component("gui.common.click_edit"))
                     .build());
         }
 
         setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Crear grimorio nuevo", NamedTextColor.GREEN))
+                .setName(lang.component("gui.grimoire_browser.new"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back")));
     }
 
     @Override
@@ -87,12 +90,12 @@ public class GrimoireBrowserGUI extends InventoryGUI {
     }
 
     private void promptNew() {
-        chatPromptManager.prompt(player, "Escribí el id del nuevo grimorio:", value -> {
+        chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.grimoire_browser.prompt_new_id"), value -> {
 
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 
             if (grimoireManager.exists(id)) {
-                player.sendMessage(Component.text("Ya existe un grimorio con ese id.", NamedTextColor.RED));
+                chatPromptManager.lang().send(player, "gui.grimoire_browser.already_exists");
                 reopen();
                 return;
             }

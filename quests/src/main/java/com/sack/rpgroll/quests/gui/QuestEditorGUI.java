@@ -1,7 +1,6 @@
 package com.sack.rpgroll.quests.gui;
 
-import com.sack.rpgroll.util.ComponentUtils;
-
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.quests.core.Quest;
@@ -14,7 +13,6 @@ import com.sack.rpgroll.quests.core.QuestStage;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -50,15 +48,17 @@ public class QuestEditorGUI extends InventoryGUI {
 
     private final QuestManager questManager;
     private final ChatPromptManager chatPromptManager;
+    private final LangManager lang;
     private final Runnable onBack;
     private Quest current;
 
     public QuestEditorGUI(Player player, Quest quest, QuestManager questManager,
-            ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text("Quest: " + quest.id(), NamedTextColor.GOLD), SIZE);
+            ChatPromptManager chatPromptManager, Runnable onBack, LangManager lang) {
+        super(player, lang.component("editor.title", "id", quest.id()), SIZE);
         this.current = quest;
         this.questManager = questManager;
         this.chatPromptManager = chatPromptManager;
+        this.lang = lang;
         this.onBack = onBack;
     }
 
@@ -78,62 +78,63 @@ public class QuestEditorGUI extends InventoryGUI {
         }
 
         setItem(NAME_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(ComponentUtils.parse("Nombre: " + current.displayName()).colorIfAbsent(NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para escribir uno nuevo", NamedTextColor.GRAY))
+                .setName(lang.component("editor.name_label", "name", current.displayName())
+                        .colorIfAbsent(NamedTextColor.YELLOW))
+                .setLore(lang.component("editor.click_to_rename"))
                 .build());
 
         setItem(CATEGORY_SLOT, new ItemBuilder(Material.BOOK)
-                .setName(Component.text("Categoría: " + current.category(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para pasar a la siguiente", NamedTextColor.GRAY))
+                .setName(lang.component("editor.category_label", "category", current.category()))
+                .setLore(lang.component("editor.click_next"))
                 .build());
 
         setItem(DIFFICULTY_SLOT, new ItemBuilder(Material.IRON_SWORD)
-                .setName(Component.text("Dificultad: " + current.difficulty(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para pasar a la siguiente", NamedTextColor.GRAY))
+                .setName(lang.component("editor.difficulty_label", "difficulty", current.difficulty()))
+                .setLore(lang.component("editor.click_next"))
                 .build());
 
         setItem(REPEATABLE_SLOT, new ItemBuilder(current.repeatable() ? Material.LIME_DYE : Material.GRAY_DYE)
-                .setName(Component.text("Repetible: " + (current.repeatable() ? "sí" : "no"),
-                        current.repeatable() ? NamedTextColor.GREEN : NamedTextColor.GRAY))
-                .setLore(Component.text("Click para alternar", NamedTextColor.GRAY))
+                .setName(lang.component(current.repeatable() ? "editor.repeatable_yes" : "editor.repeatable_no"))
+                .setLore(lang.component("editor.click_to_toggle"))
                 .build());
 
         setItem(COOLDOWN_SLOT, new ItemBuilder(Material.CLOCK)
-                .setName(Component.text("Cooldown: " + (current.cooldownMillis() / 1000) + "s", NamedTextColor.YELLOW))
-                .setLore(Component.text("Click: +1h · Click derecho: -1h", NamedTextColor.GRAY))
+                .setName(lang.component("editor.cooldown_label", "seconds", current.cooldownMillis() / 1000))
+                .setLore(lang.component("editor.cooldown_hint"))
                 .build());
 
         setItem(LEVEL_REQ_SLOT, new ItemBuilder(Material.EXPERIENCE_BOTTLE)
-                .setName(Component.text("Nivel requerido: " + current.requirements().level(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click: +1 · Click derecho: -1", NamedTextColor.GRAY))
+                .setName(lang.component("editor.level_label", "level", current.requirements().level()))
+                .setLore(lang.component("editor.click_plus_minus_1"))
                 .build());
 
         setItem(REWARD_MONEY_SLOT, new ItemBuilder(Material.GOLD_INGOT)
-                .setName(Component.text("Recompensa de oro: " + current.rewards().money(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click: +50 · Click derecho: -50", NamedTextColor.GRAY))
+                .setName(lang.component("editor.reward_money_label", "money", current.rewards().money()))
+                .setLore(lang.component("editor.click_plus_minus_50"))
                 .build());
 
         setItem(REWARD_XP_SLOT, new ItemBuilder(Material.EXPERIENCE_BOTTLE)
-                .setName(Component.text("Recompensa de XP: " + current.rewards().experience(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click: +50 · Click derecho: -50", NamedTextColor.GRAY))
+                .setName(lang.component("editor.reward_xp_label", "xp", current.rewards().experience()))
+                .setLore(lang.component("editor.click_plus_minus_50"))
                 .build());
 
         List<QuestStage> stages = current.stages();
 
         for (int i = 0; i < stages.size() && i < 9; i++) {
             setItem(STAGES_START + i, new ItemBuilder(Material.MAP)
-                    .setName(Component.text((i + 1) + ". " + stages.get(i).id(), NamedTextColor.WHITE))
-                    .setLore(Component.text(stages.get(i).objectives().size() + " objetivo(s)", NamedTextColor.GRAY),
-                            Component.text("Shift-click para quitar", NamedTextColor.DARK_GRAY),
-                            Component.text("Los objetivos/diálogo se editan en el YAML", NamedTextColor.DARK_GRAY))
+                    .setName(lang.component("editor.stage_entry", "index", i + 1, "id", stages.get(i).id())
+                            .colorIfAbsent(NamedTextColor.WHITE))
+                    .setLore(lang.component("editor.stage_objectives", "count", stages.get(i).objectives().size()),
+                            lang.component("editor.shift_click_remove"),
+                            lang.component("editor.stage_yaml_hint"))
                     .build());
         }
 
         setItem(ADD_STAGE_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Agregar stage (por id)", NamedTextColor.GREEN))
+                .setName(lang.component("editor.add_stage"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("editor.back_button")));
     }
 
     @Override
@@ -144,7 +145,7 @@ public class QuestEditorGUI extends InventoryGUI {
         ClickType click = event.getClick();
 
         if (slot == NAME_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el nuevo nombre de la quest:",
+            chatPromptManager.prompt(player, "editor.prompt_name",
                     value -> replace(new Quest(current.id(), value, current.category(), current.difficulty(),
                             current.repeatable(), current.cooldownMillis(), current.requirements(), current.stages(),
                             current.rewards(), current.events())));
@@ -225,7 +226,7 @@ public class QuestEditorGUI extends InventoryGUI {
             if (event.isShiftClick()) {
 
                 if (current.stages().size() <= 1) {
-                    player.sendMessage(Component.text("Una quest necesita al menos un stage.", NamedTextColor.RED));
+                    lang.send(player, "editor.stage_min_required");
                     return;
                 }
 
@@ -239,7 +240,7 @@ public class QuestEditorGUI extends InventoryGUI {
         }
 
         if (slot == ADD_STAGE_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el id del nuevo stage:", value -> {
+            chatPromptManager.prompt(player, "editor.prompt_add_stage", value -> {
 
                 String stageId = value.trim().toLowerCase().replace(' ', '_');
                 List<QuestStage> updated = new ArrayList<>(current.stages());

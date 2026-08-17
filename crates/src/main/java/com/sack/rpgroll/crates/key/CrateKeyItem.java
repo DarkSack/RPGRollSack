@@ -2,12 +2,11 @@ package com.sack.rpgroll.crates.key;
 
 import com.sack.rpgroll.util.ComponentUtils;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.crates.core.Crate;
 
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
@@ -29,9 +28,11 @@ public class CrateKeyItem {
 
 
     private final NamespacedKey crateIdTag;
+    private final LangManager lang;
 
-    public CrateKeyItem(Plugin plugin) {
+    public CrateKeyItem(Plugin plugin, LangManager lang) {
         this.crateIdTag = new NamespacedKey(plugin, "crate-key-id");
+        this.lang = lang;
     }
 
     public ItemStack create(Crate crate, int amount) {
@@ -45,7 +46,7 @@ public class CrateKeyItem {
         for (String line : crate.keyLore()) {
             lore.add(ComponentUtils.parse(line));
         }
-        lore.add(Component.text("Click derecho sobre el crate para abrir.", NamedTextColor.GRAY));
+        lore.add(lang.component("key.lore_open_hint"));
         meta.lore(lore);
 
         meta.getPersistentDataContainer().set(crateIdTag, PersistentDataType.STRING, crate.id());

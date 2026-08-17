@@ -1,5 +1,6 @@
 package com.sack.rpgroll.quests;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.common.resource.DirectoryCreator;
 import com.sack.rpgroll.common.resource.ResourceCopier;
 import com.sack.rpgroll.quests.command.QuestAdminCommand;
@@ -34,9 +35,15 @@ public class QuestsPlugin extends JavaPlugin {
     private ActionRegistry actionRegistry;
     private ConditionRegistry conditionRegistry;
     private QuestEngine questEngine;
+    private LangManager langManager;
 
     @Override
     public void onEnable() {
+
+        saveDefaultConfig();
+
+        langManager = new LangManager(this, List.of("es", "en", "pt_BR"), "es");
+        langManager.reload(getConfig().getString("language", "es"));
 
         new DirectoryCreator(this).create(DIRECTORIES);
         new ResourceCopier(this).copyDirectories(DIRECTORIES);
@@ -51,24 +58,25 @@ public class QuestsPlugin extends JavaPlugin {
         questManager.initialize();
 
         QuestPlayerStateManager stateManager = new QuestPlayerStateManager(this);
-        QuestRequirementChecker requirementChecker = new QuestRequirementChecker(regionManager);
+        QuestRequirementChecker requirementChecker = new QuestRequirementChecker(regionManager, langManager);
         QuestConditionEvaluator conditionEvaluator = new QuestConditionEvaluator(conditionRegistry);
 
         questEngine = new QuestEngine(this, questManager, stateManager, requirementChecker, conditionEvaluator,
-                actionRegistry);
+                actionRegistry, langManager);
 
         BuiltinActions.registerAll(actionRegistry, this, questEngine);
 
-        getServer().getPluginManager().registerEvents(new QuestObjectiveListener(questEngine), this);
+        getServer().getPluginManager().registerEvents(new QuestObjectiveListener(questEngine, langManager), this);
 
         getServer().getScheduler().runTaskTimer(this, new QuestPollingTask(questEngine, regionManager),
                 POLL_INTERVAL_TICKS, POLL_INTERVAL_TICKS);
 
-        ChatPromptManager chatPromptManager = new ChatPromptManager(this);
+        ChatPromptManager chatPromptManager = new ChatPromptManager(this, langManager);
         getServer().getPluginManager().registerEvents(chatPromptManager, this);
 
-        registerCommand("quest", new QuestCommand(questEngine));
-        registerCommand("questadmin", new QuestAdminCommand(questEngine, regionManager, chatPromptManager));
+        registerCommand("quest", new QuestCommand(questEngine, langManager));
+        registerCommand("questadmin",
+                new QuestAdminCommand(this, questEngine, regionManager, chatPromptManager, langManager));
 
         registerPlaceholders(stateManager);
 
@@ -133,6 +141,10 @@ public class QuestsPlugin extends JavaPlugin {
 
     public QuestEngine getQuestEngine() {
         return questEngine;
+    }
+
+    public LangManager getLangManager() {
+        return langManager;
     }
 
 }

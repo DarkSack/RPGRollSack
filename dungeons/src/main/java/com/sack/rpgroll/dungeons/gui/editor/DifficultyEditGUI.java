@@ -1,7 +1,9 @@
 package com.sack.rpgroll.dungeons.gui.editor;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
+import com.sack.rpgroll.util.ComponentUtils;
 import com.sack.rpgroll.dungeons.core.DungeonDifficulty;
 import com.sack.rpgroll.dungeons.core.DungeonModifierType;
 
@@ -33,13 +35,15 @@ public class DifficultyEditGUI extends InventoryGUI {
     private final int index;
     private final Runnable onBack;
     private final List<DungeonModifierType> allModifiers = List.of(DungeonModifierType.values());
+    private final LangManager lang;
 
     public DifficultyEditGUI(Player player, DungeonEditorSession session, int index, Runnable onBack) {
-        super(player, Component.text("Dificultad: " + session.difficulties.get(index).id(), NamedTextColor.GOLD),
-                SIZE);
+        super(player, ComponentUtils.parse(session.chatPromptManager.lang()
+                .raw("gui.editor.difficultyedit.title", "id", session.difficulties.get(index).id())), SIZE);
         this.session = session;
         this.index = index;
         this.onBack = onBack;
+        this.lang = session.chatPromptManager.lang();
     }
 
     private DungeonDifficulty difficulty() {
@@ -64,26 +68,26 @@ public class DifficultyEditGUI extends InventoryGUI {
         DungeonDifficulty difficulty = difficulty();
 
         setItem(NAME_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(Component.text("Nombre: " + difficulty.displayName(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para escribir uno nuevo", NamedTextColor.GRAY))
+                .setName(ComponentUtils.parse(lang.raw("gui.editor.info.name", "value", difficulty.displayName())))
+                .setLore(ComponentUtils.parse(lang.raw("gui.editor.info.click_to_write")))
                 .build());
 
         setItem(HEALTH_SLOT, new ItemBuilder(Material.REDSTONE)
-                .setName(Component.text("Multiplicador de vida: x" + round(difficulty.healthMultiplier()),
-                        NamedTextColor.YELLOW))
-                .setLore(Component.text("Click: +0.1 · Shift-click: +0.5 · Derecho: -0.1/-0.5", NamedTextColor.GRAY))
+                .setName(ComponentUtils.parse(lang.raw("gui.editor.difficultyedit.health",
+                        "value", round(difficulty.healthMultiplier()))))
+                .setLore(ComponentUtils.parse(lang.raw("gui.editor.difficultyedit.multiplier_hint")))
                 .build());
 
         setItem(DAMAGE_SLOT, new ItemBuilder(Material.IRON_SWORD)
-                .setName(Component.text("Multiplicador de daño: x" + round(difficulty.damageMultiplier()),
-                        NamedTextColor.YELLOW))
-                .setLore(Component.text("Click: +0.1 · Shift-click: +0.5 · Derecho: -0.1/-0.5", NamedTextColor.GRAY))
+                .setName(ComponentUtils.parse(lang.raw("gui.editor.difficultyedit.damage",
+                        "value", round(difficulty.damageMultiplier()))))
+                .setLore(ComponentUtils.parse(lang.raw("gui.editor.difficultyedit.multiplier_hint")))
                 .build());
 
         setItem(LOOT_SLOT, new ItemBuilder(Material.GOLD_NUGGET)
-                .setName(Component.text("Multiplicador de loot: x" + round(difficulty.lootMultiplier()),
-                        NamedTextColor.YELLOW))
-                .setLore(Component.text("Click: +0.1 · Shift-click: +0.5 · Derecho: -0.1/-0.5", NamedTextColor.GRAY))
+                .setName(ComponentUtils.parse(lang.raw("gui.editor.difficultyedit.loot",
+                        "value", round(difficulty.lootMultiplier()))))
+                .setLore(ComponentUtils.parse(lang.raw("gui.editor.difficultyedit.multiplier_hint")))
                 .build());
 
         for (int i = 0; i < allModifiers.size(); i++) {
@@ -93,11 +97,11 @@ public class DifficultyEditGUI extends InventoryGUI {
 
             setItem(MODIFIERS_START_SLOT + i, new ItemBuilder(active ? Material.SOUL_TORCH : Material.TORCH)
                     .setName(Component.text(modifier.name(), active ? NamedTextColor.GREEN : NamedTextColor.GRAY))
-                    .setLore(Component.text("Click para alternar", NamedTextColor.DARK_GRAY))
+                    .setLore(ComponentUtils.parse(lang.raw("gui.editor.info.click_to_toggle")))
                     .build());
         }
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back")));
     }
 
     private double round(double value) {
@@ -121,7 +125,7 @@ public class DifficultyEditGUI extends InventoryGUI {
         int slot = event.getSlot();
 
         if (slot == NAME_SLOT) {
-            session.chatPromptManager.prompt(player, "Escribí el nuevo nombre:", value -> {
+            session.chatPromptManager.prompt(player, "gui.editor.info.prompt.name", value -> {
                 replace(withName(difficulty(), value));
                 build();
             });

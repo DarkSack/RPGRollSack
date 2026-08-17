@@ -1,0 +1,57 @@
+# Archivo de idioma: Español
+# SackEffects - Sistema de mensajes
+
+# Mensajes generales
+general:
+  no_permission: "&cNo tenés permiso para usar este comando."
+
+# /sackeffects <browser|reload|test>
+command:
+  usage: "&cUso: /sackeffects <browser|reload|test <id> [jugador]>"
+  browser_players_only: "&cSolo jugadores pueden abrir el navegador de efectos."
+  reload_success: "&a✔ Recargado: {count} efecto(s)."
+  test_usage: "&cUso: /sackeffects test <id> [jugador]"
+  test_effect_not_found: "&cNo existe un efecto con id: {id}"
+  test_player_not_found: "&cJugador no encontrado: {player}"
+  test_specify_player: "&cEspecificá un jugador: /sackeffects test <id> <jugador>"
+  test_playing: "&a▶ Reproduciendo '{id}' en {player}."
+
+# Prompts de chat compartidos (usados por las GUIs de admin)
+prompt:
+  cancel_hint: "&7Escribí en el chat, o 'cancelar' para abortar."
+  cancelled: "&cCancelado."
+
+# EffectBrowserGUI
+browser:
+  title: "&6Efectos RPGRoll"
+  item_lore_id: "&7id: {id}"
+  item_lore_steps: "&7{count} step(s)"
+  item_lore_edit: "&eClick para editar"
+  new_effect_name: "&aCrear efecto nuevo"
+  close_button: "Cerrar"
+  new_effect_prompt: "Escribí el id del nuevo efecto:"
+  id_exists: "&cYa existe un efecto con ese id."
+
+# EffectEditorGUI
+editor:
+  title: "&6Efecto: {id}"
+  name_item: "&eNombre: {name}"
+  name_lore_hint: "&7Click para escribir uno nuevo"
+  description_item: "&eDescripción"
+  description_empty: "(sin descripción)"
+  test_item: "&a▶ Probar en vos mismo"
+  item_lore_steps: "&7{count} step(s)"
+  add_step_item: "&aAgregar step"
+  add_step_lore_syntax: "&7TIPO delay clave=valor,clave2=valor2"
+  add_step_lore_example_particle: "&8ej. PARTICLE 0 particle=FLAME,shape=SPHERE,radius=1.5,points=40"
+  add_step_lore_example_sound: "&8ej. SOUND 5 sound=ENTITY_BLAZE_SHOOT,volume=1,pitch=1.2"
+  back_button: "Volver"
+  step_delay_lore: "&7Delay: {ticks} ticks"
+  step_remove_hint: "&cShift-click para quitar"
+  test_playing: "&a▶ Reproduciendo '{id}'..."
+  rename_prompt: "Escribí el nuevo nombre:"
+  description_prompt: "Escribí la nueva descripción:"
+  add_step_prompt: "Escribí: TIPO delay clave=valor,clave2=valor2 (ej. SOUND 0 sound=ENTITY_PLAYER_LEVELUP,volume=1):"
+  add_step_invalid_format: "&cFormato inválido — hacen falta al menos TIPO y delay."
+  add_step_invalid_type: "&cTipo inválido: {type} (usá PARTICLE, SOUND, TITLE, ACTIONBAR, BOSSBAR o POTION)."
+  add_step_invalid_delay: "&cDelay inválido: {delay}"

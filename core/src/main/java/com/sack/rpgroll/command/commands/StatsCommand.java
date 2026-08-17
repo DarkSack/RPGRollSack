@@ -2,10 +2,8 @@ package com.sack.rpgroll.command.commands;
 
 import com.sack.rpgroll.RPGRoll;
 import com.sack.rpgroll.command.RPGCommand;
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.player.RPGPlayer;
-
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 
 import com.sack.rpgroll.player.PlayerManager;
 import org.bukkit.command.CommandSender;
@@ -30,6 +28,7 @@ public class StatsCommand implements RPGCommand {
     public void execute(CommandSender sender, String[] args) {
 
         Player player = (Player) sender;
+        LangManager lang = plugin.getBootstrap().getServices().get(LangManager.class);
 
         try {
 
@@ -40,34 +39,34 @@ public class StatsCommand implements RPGCommand {
             Optional<RPGPlayer> rpgPlayer = playerManager.getPlayer(player.getUniqueId());
 
             if (rpgPlayer.isEmpty()) {
-                player.sendMessage(Component.text("No se encontraron datos de tu personaje.", NamedTextColor.RED));
-                player.sendMessage(Component.text("Error al cargar tus datos.", NamedTextColor.RED));
+                lang.send(player, "stats_command.not_found");
+                lang.send(player, "error.load_data");
                 return;
             }
 
-            displayStats(player, rpgPlayer.get());
+            displayStats(lang, player, rpgPlayer.get());
 
         } catch (Exception exception) {
 
-            player.sendMessage(Component.text("Error al cargar estadísticas.", NamedTextColor.RED));
+            lang.send(player, "stats_command.error");
             exception.printStackTrace();
 
         }
 
     }
 
-    private void displayStats(Player player, RPGPlayer rpgPlayer) {
+    private void displayStats(LangManager lang, Player player, RPGPlayer rpgPlayer) {
 
         var stats = rpgPlayer.getStats();
 
-        player.sendMessage(Component.text("========== Tus Estadísticas ==========", NamedTextColor.GOLD));
-        player.sendMessage(Component.text("Fuerza: " + stats.strength(), NamedTextColor.RED));
-        player.sendMessage(Component.text("Destreza: " + stats.dexterity(), NamedTextColor.GREEN));
-        player.sendMessage(Component.text("Constitución: " + stats.constitution(), NamedTextColor.GOLD));
-        player.sendMessage(Component.text("Inteligencia: " + stats.intelligence(), NamedTextColor.BLUE));
-        player.sendMessage(Component.text("Sabiduría: " + stats.wisdom(), NamedTextColor.AQUA));
-        player.sendMessage(Component.text("Carisma: " + stats.charisma(), NamedTextColor.LIGHT_PURPLE));
-        player.sendMessage(Component.text("======================================", NamedTextColor.GOLD));
+        lang.send(player, "stats.view_stats", "player", player.getName());
+        lang.send(player, "stats.strength", "value", stats.strength());
+        lang.send(player, "stats.dexterity", "value", stats.dexterity());
+        lang.send(player, "stats.constitution", "value", stats.constitution());
+        lang.send(player, "stats.intelligence", "value", stats.intelligence());
+        lang.send(player, "stats.wisdom", "value", stats.wisdom());
+        lang.send(player, "stats.charisma", "value", stats.charisma());
+        lang.send(player, "stats.footer");
 
     }
 

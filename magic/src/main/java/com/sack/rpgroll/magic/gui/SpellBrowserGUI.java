@@ -1,5 +1,6 @@
 package com.sack.rpgroll.magic.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.magic.core.Spell;
@@ -32,7 +33,7 @@ public class SpellBrowserGUI extends InventoryGUI {
 
     public SpellBrowserGUI(Player player, SpellManager spellManager, SchoolManager schoolManager,
             ChatPromptManager chatPromptManager) {
-        super(player, Component.text("Hechizos", NamedTextColor.GOLD), SIZE);
+        super(player, chatPromptManager.lang().component("gui.spell_browser.title"), SIZE);
         this.spellManager = spellManager;
         this.schoolManager = schoolManager;
         this.chatPromptManager = chatPromptManager;
@@ -48,6 +49,8 @@ public class SpellBrowserGUI extends InventoryGUI {
             setItem(slot, ItemBuilder.createFiller());
         }
 
+        LangManager lang = chatPromptManager.lang();
+
         for (int i = 0; i < spells.size() && i < 36; i++) {
 
             Spell spell = spells.get(i);
@@ -55,19 +58,21 @@ public class SpellBrowserGUI extends InventoryGUI {
 
             setItem(i, new ItemBuilder(SchoolBrowserGUI.parseMaterial(spell.icon()))
                     .setName(Component.text(spell.displayName(), color))
-                    .setLore(Component.text("id: " + spell.id(), NamedTextColor.GRAY),
-                            Component.text("Escuela: " + spell.schoolId(), NamedTextColor.GRAY),
-                            Component.text(spell.rarity() + " · Nivel " + spell.level(), NamedTextColor.GRAY),
-                            Component.text(spell.components().size() + " componente(s)", NamedTextColor.GRAY),
-                            Component.text("Click para editar", NamedTextColor.YELLOW))
+                    .setLore(lang.component("gui.common.id_label", "id", spell.id()),
+                            lang.component("gui.spell_browser.school_label", "schoolId", spell.schoolId()),
+                            lang.component("gui.spell_browser.rarity_level_label", "rarity", spell.rarity(),
+                                    "level", spell.level()),
+                            lang.component("gui.spell_browser.component_count_label", "count",
+                                    spell.components().size()),
+                            lang.component("gui.common.click_edit"))
                     .build());
         }
 
         setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Crear hechizo nuevo", NamedTextColor.GREEN))
+                .setName(lang.component("gui.spell_browser.new"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back")));
     }
 
     @Override
@@ -94,17 +99,19 @@ public class SpellBrowserGUI extends InventoryGUI {
 
     private void promptNew() {
 
+        LangManager lang = chatPromptManager.lang();
+
         if (schoolManager.count() == 0) {
-            player.sendMessage(Component.text("Primero creá al menos una escuela.", NamedTextColor.RED));
+            lang.send(player, "gui.spell_browser.need_school_first");
             return;
         }
 
-        chatPromptManager.prompt(player, "Escribí: id escuela (ej. fireball fire):", value -> {
+        chatPromptManager.prompt(player, lang.raw("gui.spell_browser.prompt_new"), value -> {
 
             String[] parts = value.trim().split("\\s+", 2);
 
             if (parts.length < 2) {
-                player.sendMessage(Component.text("Formato inválido — hacen falta id y escuela.", NamedTextColor.RED));
+                lang.send(player, "gui.spell_browser.invalid_format");
                 return;
             }
 
@@ -112,13 +119,13 @@ public class SpellBrowserGUI extends InventoryGUI {
             String schoolId = parts[1].toLowerCase(Locale.ROOT);
 
             if (spellManager.exists(id)) {
-                player.sendMessage(Component.text("Ya existe un hechizo con ese id.", NamedTextColor.RED));
+                lang.send(player, "gui.spell_browser.already_exists");
                 reopen();
                 return;
             }
 
             if (!schoolManager.exists(schoolId)) {
-                player.sendMessage(Component.text("No existe una escuela con id: " + schoolId, NamedTextColor.RED));
+                lang.send(player, "gui.spell_browser.unknown_school", "id", schoolId);
                 reopen();
                 return;
             }

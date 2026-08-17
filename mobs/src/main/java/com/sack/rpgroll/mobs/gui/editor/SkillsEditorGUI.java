@@ -1,5 +1,7 @@
 package com.sack.rpgroll.mobs.gui.editor;
 
+import com.sack.rpgroll.common.lang.LangManager;
+
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.mobs.core.MobSkill;
@@ -23,11 +25,14 @@ public class SkillsEditorGUI extends InventoryGUI {
 
     private final MobEditorSession session;
     private final Runnable onBack;
+    private final LangManager lang;
 
     public SkillsEditorGUI(Player player, MobEditorSession session, Runnable onBack) {
-        super(player, Component.text("Skills: " + session.original.id(), NamedTextColor.GOLD), SIZE);
+        super(player, session.chatPromptManager.lang().component("gui.skills.title", "id", session.original.id()),
+                SIZE);
         this.session = session;
         this.onBack = onBack;
+        this.lang = session.chatPromptManager.lang();
     }
 
     @Override
@@ -48,21 +53,21 @@ public class SkillsEditorGUI extends InventoryGUI {
             setItem(i, new ItemBuilder(Material.BLAZE_POWDER)
                     .setName(Component.text(skill.displayName(), NamedTextColor.YELLOW))
                     .setLore(
-                            Component.text("id: " + skill.id(), NamedTextColor.DARK_GRAY),
-                            Component.text("trigger: " + (skill.trigger() != null ? skill.trigger() : "(pasiva)"),
-                                    NamedTextColor.GRAY),
-                            Component.text("cooldown: " + (skill.cooldownMillis() / 1000) + "s · chance: "
-                                    + skill.chance() + "%", NamedTextColor.GRAY),
-                            Component.text("acciones: " + skill.actions().size(), NamedTextColor.GRAY),
-                            Component.text("Click para editar · Shift-click para quitar", NamedTextColor.DARK_GRAY))
+                            lang.component("gui.skills.id_lore", "id", skill.id()),
+                            lang.component("gui.skills.trigger_lore", "trigger",
+                                    skill.trigger() != null ? skill.trigger() : lang.raw("gui.skill_edit.passive")),
+                            lang.component("gui.skills.cooldown_chance_lore", "seconds",
+                                    skill.cooldownMillis() / 1000, "chance", skill.chance()),
+                            lang.component("gui.skills.actions_lore", "count", skill.actions().size()),
+                            lang.component("gui.common.click_edit_shift_remove"))
                     .build());
         }
 
         setItem(ADD_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Agregar skill", NamedTextColor.GREEN))
+                .setName(lang.component("gui.skills.add"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back_button")));
     }
 
     @Override
@@ -96,7 +101,7 @@ public class SkillsEditorGUI extends InventoryGUI {
     }
 
     private void promptAdd() {
-        session.chatPromptManager.prompt(player, "Escribí el id de la nueva skill:", value -> {
+        session.chatPromptManager.prompt(player, "gui.skills.prompt_add", value -> {
 
             String id = value.trim().toLowerCase().replace(' ', '_');
 

@@ -1,5 +1,6 @@
 package com.sack.rpgroll.economy;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.common.resource.DirectoryCreator;
 import com.sack.rpgroll.common.resource.ResourceCopier;
 import com.sack.rpgroll.economy.api.EconomyAPI;
@@ -49,6 +50,8 @@ public class EconomyPlugin extends JavaPlugin {
 
     private static final List<String> DIRECTORIES = List.of("currencies", "market", "tax");
 
+    private LangManager langManager;
+
     private CurrencyManager currencyManager;
     private MarketProductManager marketProductManager;
     private TaxRuleManager taxRuleManager;
@@ -72,6 +75,9 @@ public class EconomyPlugin extends JavaPlugin {
     public void onEnable() {
 
         saveDefaultConfig();
+
+        langManager = new LangManager(this, List.of("es", "en", "pt_BR"), "es");
+        langManager.reload(getConfig().getString("language", "es"));
 
         new DirectoryCreator(this).create(DIRECTORIES);
         new ResourceCopier(this).copyDirectories(DIRECTORIES);
@@ -131,7 +137,7 @@ public class EconomyPlugin extends JavaPlugin {
         registerVault();
         registerPlaceholders();
 
-        ChatPromptManager chatPromptManager = new ChatPromptManager(this);
+        ChatPromptManager chatPromptManager = new ChatPromptManager(this, langManager);
         getServer().getPluginManager().registerEvents(chatPromptManager, this);
 
         registerCommands(chatPromptManager);
@@ -215,6 +221,8 @@ public class EconomyPlugin extends JavaPlugin {
     }
 
     private void reloadContent() {
+        reloadConfig();
+        langManager.reload(getConfig().getString("language", "es"));
         currencyManager.reload();
         marketProductManager.reload();
         taxRuleManager.reload();

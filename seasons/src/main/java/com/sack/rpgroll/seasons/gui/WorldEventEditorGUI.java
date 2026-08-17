@@ -1,13 +1,11 @@
 package com.sack.rpgroll.seasons.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.seasons.core.WorldEvent;
 import com.sack.rpgroll.seasons.core.WorldEventManager;
 import com.sack.rpgroll.seasons.event.WorldEventEngine;
-
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -39,7 +37,7 @@ public class WorldEventEditorGUI extends InventoryGUI {
 
     public WorldEventEditorGUI(Player player, WorldEvent event, WorldEventManager worldEventManager,
             WorldEventEngine engine, ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text("Evento: " + event.id(), NamedTextColor.GOLD), SIZE);
+        super(player, chatPromptManager.lang().component("gui.world_event_editor.title", "id", event.id()), SIZE);
         this.current = event;
         this.worldEventManager = worldEventManager;
         this.engine = engine;
@@ -62,34 +60,38 @@ public class WorldEventEditorGUI extends InventoryGUI {
             setItem(slot, ItemBuilder.createFiller());
         }
 
+        LangManager lang = chatPromptManager.lang();
+
         setItem(NAME_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(Component.text("Nombre: " + current.displayName(), NamedTextColor.YELLOW)).build());
+                .setName(lang.component("gui.common.name_label", "name", current.displayName())).build());
 
         setItem(ICON_SLOT, new ItemBuilder(SeasonBrowserGUI.parseMaterial(current.icon()))
-                .setName(Component.text("Ícono: " + current.icon(), NamedTextColor.YELLOW)).build());
+                .setName(lang.component("gui.common.icon_label", "icon", current.icon())).build());
 
         setItem(DESCRIPTION_SLOT, new ItemBuilder(Material.WRITTEN_BOOK)
-                .setName(Component.text("Descripción", NamedTextColor.YELLOW))
+                .setName(lang.component("gui.common.description_title"))
                 .setLore(ItemBuilder.toLoreLines(
-                        current.description().isBlank() ? "(sin descripción)" : current.description()))
+                        current.description().isBlank() ? lang.raw("gui.common.no_description")
+                                : current.description()))
                 .build());
 
         setItem(DURATION_SLOT, new ItemBuilder(Material.CLOCK)
-                .setName(Component.text("Duración: " + current.durationTicks() + " ticks", NamedTextColor.YELLOW))
-                .setLore(Component.text("Click: +100 · Click derecho: -100", NamedTextColor.GRAY)).build());
+                .setName(lang.component("gui.world_event_editor.duration_label", "ticks", current.durationTicks()))
+                .setLore(lang.component("gui.world_event_editor.duration_lore")).build());
 
         setItem(TEST_SLOT, new ItemBuilder(Material.NETHER_STAR)
-                .setName(Component.text("▶ Probar en tu mundo", NamedTextColor.GREEN))
+                .setName(lang.component("gui.world_event_editor.test"))
                 .setLore(engine == null
-                        ? Component.text("(no disponible desde acá)", NamedTextColor.DARK_GRAY)
-                        : Component.text("Dispara el evento en tu mundo actual", NamedTextColor.GRAY))
+                        ? lang.component("gui.world_event_editor.test_unavailable")
+                        : lang.component("gui.world_event_editor.test_lore"))
                 .build());
 
         setItem(COMPONENTS_SLOT, new ItemBuilder(Material.COMMAND_BLOCK)
-                .setName(Component.text("▶ Componentes (" + current.components().size() + ")", NamedTextColor.GREEN))
+                .setName(lang.component("gui.world_event_editor.components_label", "count",
+                        current.components().size()))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back")));
     }
 
     @Override
@@ -100,21 +102,21 @@ public class WorldEventEditorGUI extends InventoryGUI {
         int sign = event.getClick() == ClickType.RIGHT ? -1 : 1;
 
         if (slot == NAME_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el nuevo nombre:", value -> replace(
+            chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.common.prompt_name"), value -> replace(
                     new WorldEvent(current.id(), value, current.icon(), current.description(),
                             current.durationTicks(), current.components())));
             return;
         }
 
         if (slot == ICON_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el Material del ícono:", value -> replace(
+            chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.common.prompt_icon"), value -> replace(
                     new WorldEvent(current.id(), current.displayName(), value, current.description(),
                             current.durationTicks(), current.components())));
             return;
         }
 
         if (slot == DESCRIPTION_SLOT) {
-            chatPromptManager.prompt(player, "Escribí la nueva descripción:", value -> replace(
+            chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.common.prompt_description"), value -> replace(
                     new WorldEvent(current.id(), current.displayName(), current.icon(), value,
                             current.durationTicks(), current.components())));
             return;

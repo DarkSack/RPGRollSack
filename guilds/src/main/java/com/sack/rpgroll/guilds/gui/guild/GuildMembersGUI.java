@@ -31,12 +31,17 @@ public class GuildMembersGUI extends InventoryGUI {
 
     public GuildMembersGUI(Player player, Guild guild, GuildManager guildManager, ChatPromptManager chatPromptManager,
             Runnable onBack) {
-        super(player, Component.text("Miembros: " + guild.name(), NamedTextColor.GOLD), SIZE);
+        super(player, Component.text(chatPromptManager.lang().raw("guild.members.title", "name", guild.name()),
+                NamedTextColor.GOLD), SIZE);
         this.guild = guild;
         this.guildManager = guildManager;
         this.chatPromptManager = chatPromptManager;
         this.onBack = onBack;
         this.memberOrder = List.copyOf(guild.members().keySet());
+    }
+
+    private com.sack.rpgroll.common.lang.LangManager lang() {
+        return chatPromptManager.lang();
     }
 
     @Override
@@ -57,16 +62,16 @@ public class GuildMembersGUI extends InventoryGUI {
             setItem(i, ItemBuilder.skull(null)
                     .setName(Component.text((offline.getName() != null ? offline.getName() : memberId.toString())
                             + " — " + role, role == GuildRole.LEADER ? NamedTextColor.GOLD : NamedTextColor.YELLOW))
-                    .setLore(Component.text("Click: siguiente rol", NamedTextColor.GRAY),
-                            Component.text("Shift-click: expulsar", NamedTextColor.GRAY))
+                    .setLore(Component.text(lang().raw("guild.members.lore.next_role"), NamedTextColor.GRAY),
+                            Component.text(lang().raw("guild.members.lore.kick"), NamedTextColor.GRAY))
                     .build());
         }
 
         setItem(INVITE_SLOT, new ItemBuilder(org.bukkit.Material.PLAYER_HEAD)
-                .setName(Component.text("Invitar jugador", NamedTextColor.GREEN))
+                .setName(Component.text(lang().raw("guild.members.button.invite"), NamedTextColor.GREEN))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang().raw("common.back")));
     }
 
     @Override
@@ -88,8 +93,7 @@ public class GuildMembersGUI extends InventoryGUI {
 
             if (event.isShiftClick()) {
                 if (!myRole.canKick() || !myRole.outranks(targetRole)) {
-                    player.sendMessage(Component.text("No tenés permiso para expulsar a ese miembro.",
-                            NamedTextColor.RED));
+                    lang().send(player, "guild.members.no_permission_kick");
                     return;
                 }
                 guild.removeMember(targetId);
@@ -99,7 +103,7 @@ public class GuildMembersGUI extends InventoryGUI {
             }
 
             if (!myRole.canManageSettings() && myRole != GuildRole.LEADER) {
-                player.sendMessage(Component.text("No tenés permiso para cambiar roles.", NamedTextColor.RED));
+                lang().send(player, "guild.members.no_permission_role");
                 return;
             }
 
@@ -120,24 +124,24 @@ public class GuildMembersGUI extends InventoryGUI {
         if (slot == INVITE_SLOT) {
 
             if (!myRole.canInvite()) {
-                player.sendMessage(Component.text("No tenés permiso para invitar.", NamedTextColor.RED));
+                lang().send(player, "guild.members.no_permission_invite");
                 return;
             }
 
-            chatPromptManager.prompt(player, "Escribí el nombre del jugador a invitar:", value -> {
+            chatPromptManager.prompt(player, "guild.members.prompt_invite", value -> {
                 Player target = Bukkit.getPlayerExact(value.trim());
                 if (target == null) {
-                    player.sendMessage(Component.text("Jugador no encontrado.", NamedTextColor.RED));
+                    lang().send(player, "common.player_not_found");
                     return;
                 }
                 if (guildManager.findByMember(target.getUniqueId()).isPresent()) {
-                    player.sendMessage(Component.text("Ese jugador ya está en una guild.", NamedTextColor.RED));
+                    lang().send(player, "guild.members.target_already_in_guild");
                     return;
                 }
                 guildManager.invite(player.getUniqueId(), guild.id(), target.getUniqueId());
-                target.sendMessage(Component.text(player.getName() + " te invitó a la guild " + guild.name()
-                        + " — /guild accept " + guild.id(), NamedTextColor.YELLOW));
-                player.sendMessage(Component.text("✔ Invitación enviada.", NamedTextColor.GREEN));
+                lang().send(target, "guild.members.invite_received", "player", player.getName(),
+                        "guild", guild.name(), "id", guild.id());
+                lang().send(player, "guild.members.invite_sent");
             });
             return;
         }

@@ -1,5 +1,7 @@
 package com.sack.rpgroll.mobs.gui.editor;
 
+import com.sack.rpgroll.common.lang.LangManager;
+
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.mobs.core.MobAction;
@@ -36,12 +38,15 @@ public class SkillEditGUI extends InventoryGUI {
     private final MobEditorSession session;
     private final int index;
     private final Runnable onBack;
+    private final LangManager lang;
 
     public SkillEditGUI(Player player, MobEditorSession session, int index, Runnable onBack) {
-        super(player, Component.text("Skill: " + session.skills.get(index).id(), NamedTextColor.GOLD), SIZE);
+        super(player, session.chatPromptManager.lang().component("gui.skill_edit.title", "id",
+                session.skills.get(index).id()), SIZE);
         this.session = session;
         this.index = index;
         this.onBack = onBack;
+        this.lang = session.chatPromptManager.lang();
     }
 
     private MobSkill skill() {
@@ -66,45 +71,44 @@ public class SkillEditGUI extends InventoryGUI {
         MobSkill skill = skill();
 
         setItem(NAME_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(Component.text("Nombre: " + skill.displayName(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para escribir uno nuevo", NamedTextColor.GRAY))
+                .setName(lang.component("gui.skill_edit.name_label", "name", skill.displayName()))
+                .setLore(lang.component("gui.common.click_new_value"))
                 .build());
 
         setItem(ID_SLOT, new ItemBuilder(Material.PAPER)
-                .setName(Component.text("ID: " + skill.id(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para escribir uno nuevo", NamedTextColor.GRAY))
+                .setName(lang.component("gui.skill_edit.id_label", "id", skill.id()))
+                .setLore(lang.component("gui.common.click_new_value"))
                 .build());
 
         setItem(TRIGGER_SLOT, new ItemBuilder(Material.COMPARATOR)
-                .setName(Component.text("Trigger: " + (skill.trigger() != null ? skill.trigger() : "(pasiva)"),
-                        NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para pasar al siguiente", NamedTextColor.GRAY))
+                .setName(lang.component("gui.skill_edit.trigger_label", "trigger",
+                        skill.trigger() != null ? skill.trigger() : lang.raw("gui.skill_edit.passive")))
+                .setLore(lang.component("gui.common.click_next"))
                 .build());
 
         setItem(COOLDOWN_SLOT, new ItemBuilder(Material.CLOCK)
-                .setName(Component.text("Cooldown: " + (skill.cooldownMillis() / 1000) + "s", NamedTextColor.YELLOW))
-                .setLore(Component.text("Click: +1s · Shift-click: +10s", NamedTextColor.GRAY),
-                        Component.text("Click derecho: -1s · Shift-click derecho: -10s", NamedTextColor.GRAY))
+                .setName(lang.component("gui.skill_edit.cooldown_label", "seconds", skill.cooldownMillis() / 1000))
+                .setLore(lang.component("gui.skill_edit.cooldown_hint1"),
+                        lang.component("gui.skill_edit.cooldown_hint2"))
                 .build());
 
         setItem(CHANCE_SLOT, new ItemBuilder(Material.GOLD_NUGGET)
-                .setName(Component.text("Probabilidad: " + skill.chance() + "%", NamedTextColor.YELLOW))
-                .setLore(Component.text("Click: +5% · Shift-click: +25%", NamedTextColor.GRAY),
-                        Component.text("Click derecho: -5% · Shift-click derecho: -25%", NamedTextColor.GRAY))
+                .setName(lang.component("gui.skill_edit.chance_label", "chance", skill.chance()))
+                .setLore(lang.component("gui.skill_edit.chance_hint1"),
+                        lang.component("gui.skill_edit.chance_hint2"))
                 .build());
 
         setItem(CONDITIONS_SLOT, new ItemBuilder(Material.BOOK)
-                .setName(Component.text("Condiciones: " + skill.conditions().size(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para escribir la lista completa, una por línea",
-                        NamedTextColor.GRAY))
+                .setName(lang.component("gui.skill_edit.conditions_label", "count", skill.conditions().size()))
+                .setLore(lang.component("gui.skill_edit.conditions_hint"))
                 .build());
 
         setItem(ACTIONS_SLOT, new ItemBuilder(Material.COMMAND_BLOCK)
-                .setName(Component.text("Acciones: " + skill.actions().size(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para abrir el editor de acciones", NamedTextColor.GRAY))
+                .setName(lang.component("gui.skill_edit.actions_label", "count", skill.actions().size()))
+                .setLore(lang.component("gui.skill_edit.actions_hint"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back_button")));
     }
 
     @Override
@@ -114,7 +118,7 @@ public class SkillEditGUI extends InventoryGUI {
         int slot = event.getSlot();
 
         if (slot == NAME_SLOT) {
-            session.chatPromptManager.prompt(player, "Escribí el nuevo nombre:", value -> {
+            session.chatPromptManager.prompt(player, "gui.common.prompt_new_name", value -> {
                 replace(withName(skill(), value));
                 build();
             });
@@ -122,7 +126,7 @@ public class SkillEditGUI extends InventoryGUI {
         }
 
         if (slot == ID_SLOT) {
-            session.chatPromptManager.prompt(player, "Escribí el nuevo id:", value -> {
+            session.chatPromptManager.prompt(player, "gui.common.prompt_new_id_generic", value -> {
                 replace(withId(skill(), value.trim().toLowerCase().replace(' ', '_')));
                 build();
             });
@@ -155,8 +159,7 @@ public class SkillEditGUI extends InventoryGUI {
 
         if (slot == CONDITIONS_SLOT) {
             String current = String.join("\n", skill().conditions());
-            session.chatPromptManager.prompt(player,
-                    "Escribí las condiciones separadas por ';' (ej. mob.health < 50%; night == true):", value -> {
+            session.chatPromptManager.prompt(player, "gui.skill_edit.prompt_conditions", value -> {
                         List<String> conditions = value.isBlank() ? List.of()
                                 : List.of(value.split("\\s*;\\s*"));
                         replace(withConditions(skill(), conditions));
@@ -168,7 +171,8 @@ public class SkillEditGUI extends InventoryGUI {
         if (slot == ACTIONS_SLOT) {
             List<MobAction> actions = new ArrayList<>(skill().actions());
 
-            new MobActionListEditorGUI(player, "Acciones: " + skill().displayName(), actions,
+            new MobActionListEditorGUI(player,
+                    lang.raw("gui.skill_edit.actions_gui_title", "name", skill().displayName()), actions,
                     session.chatPromptManager, () -> {
                         replace(withActions(skill(), actions));
                         reopen();

@@ -1,13 +1,11 @@
 package com.sack.rpgroll.fishing.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.fishing.core.FishingRegion;
 import com.sack.rpgroll.fishing.core.FishingRegionManager;
 import com.sack.rpgroll.fishing.core.WaterType;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
-
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -25,14 +23,16 @@ public class FishingRegionEditorGUI extends InventoryGUI {
     private static final int BACK_SLOT = 40;
 
     private final FishingRegionManager regionManager;
+    private final LangManager lang;
     private final Runnable onBack;
     private FishingRegion current;
 
     public FishingRegionEditorGUI(Player player, FishingRegion region, FishingRegionManager regionManager,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text("Región: " + region.id(), NamedTextColor.GOLD), SIZE);
+        super(player, chatPromptManager.lang().component("gui.region.editor_title", "id", region.id()), SIZE);
         this.current = region;
         this.regionManager = regionManager;
+        this.lang = chatPromptManager.lang();
         this.onBack = onBack;
     }
 
@@ -52,23 +52,23 @@ public class FishingRegionEditorGUI extends InventoryGUI {
         }
 
         setItem(BOUNDS_SLOT, new ItemBuilder(Material.MAP)
-                .setName(Component.text("Mundo: " + current.world(), NamedTextColor.YELLOW))
-                .setLore(Component.text(String.format("(%.0f,%.0f,%.0f) a (%.0f,%.0f,%.0f)",
-                        current.minX(), current.minY(), current.minZ(), current.maxX(), current.maxY(), current.maxZ()),
-                        NamedTextColor.GRAY))
+                .setName(lang.component("gui.region.field_world", "world", current.world()))
+                .setLore(lang.component("gui.region.bounds_lore", "bounds", String.format(
+                        "(%.0f,%.0f,%.0f) a (%.0f,%.0f,%.0f)",
+                        current.minX(), current.minY(), current.minZ(), current.maxX(), current.maxY(), current.maxZ())))
                 .build());
 
         setItem(CORNER_A_SLOT, new ItemBuilder(Material.RED_CONCRETE)
-                .setName(Component.text("Fijar esquina A (tu posición)", NamedTextColor.YELLOW)).build());
+                .setName(lang.component("gui.region.corner_a")).build());
 
         setItem(CORNER_B_SLOT, new ItemBuilder(Material.BLUE_CONCRETE)
-                .setName(Component.text("Fijar esquina B (tu posición)", NamedTextColor.YELLOW)).build());
+                .setName(lang.component("gui.region.corner_b")).build());
 
         setItem(WATER_TYPE_SLOT, new ItemBuilder(Material.WATER_BUCKET)
-                .setName(Component.text("Agua forzada: " + current.forcedWaterType(), NamedTextColor.AQUA))
-                .setLore(Component.text("Click para pasar a la siguiente", NamedTextColor.GRAY)).build());
+                .setName(lang.component("gui.region.field_forced_water", "value", current.forcedWaterType()))
+                .setLore(lang.component("gui.common.click_next")).build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back")));
     }
 
     @Override

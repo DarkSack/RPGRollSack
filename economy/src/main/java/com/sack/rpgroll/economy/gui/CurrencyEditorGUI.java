@@ -1,5 +1,6 @@
 package com.sack.rpgroll.economy.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.economy.currency.Currency;
 import com.sack.rpgroll.economy.currency.CurrencyManager;
 import com.sack.rpgroll.gui.InventoryGUI;
@@ -33,15 +34,18 @@ public class CurrencyEditorGUI extends InventoryGUI {
     private final CurrencyManager currencyManager;
     private final ChatPromptManager chatPromptManager;
     private final Runnable onBack;
+    private final LangManager lang;
     private Currency current;
 
     public CurrencyEditorGUI(Player player, Currency currency, CurrencyManager currencyManager,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text("Moneda: " + currency.id(), NamedTextColor.GOLD), SIZE);
+        super(player, Component.text(chatPromptManager.lang().raw("currency.editor.title", "id", currency.id()),
+                NamedTextColor.GOLD), SIZE);
         this.current = currency;
         this.currencyManager = currencyManager;
         this.chatPromptManager = chatPromptManager;
         this.onBack = onBack;
+        this.lang = chatPromptManager.lang();
     }
 
     private void replace(Currency updated) {
@@ -60,47 +64,47 @@ public class CurrencyEditorGUI extends InventoryGUI {
         }
 
         setItem(NAME_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(Component.text("Nombre: " + current.displayName(), NamedTextColor.YELLOW)).build());
+                .setName(lang.component("common.label_name", "value", current.displayName())).build());
 
         setItem(SYMBOL_SLOT, new ItemBuilder(Material.PAPER)
-                .setName(Component.text("Símbolo: " + current.symbol(), NamedTextColor.YELLOW)).build());
+                .setName(lang.component("currency.editor.symbol", "value", current.symbol())).build());
 
         setItem(DECIMALS_SLOT, new ItemBuilder(Material.CLOCK)
-                .setName(Component.text("Decimales: " + current.decimals(), NamedTextColor.AQUA))
-                .setLore(Component.text("Click: +1 · Click derecho: -1", NamedTextColor.GRAY)).build());
+                .setName(lang.component("currency.editor.decimals", "value", current.decimals()))
+                .setLore(lang.component("common.click_plus1_minus1")).build());
 
         setItem(ICON_SLOT, new ItemBuilder(CurrencyBrowserGUI.parseMaterial(current.icon()))
-                .setName(Component.text("Ícono: " + current.icon(), NamedTextColor.YELLOW)).build());
+                .setName(lang.component("common.label_icon", "value", current.icon())).build());
 
         setItem(COLOR_SLOT, new ItemBuilder(Material.LIME_DYE)
-                .setName(Component.text("Color: " + current.color(), NamedTextColor.YELLOW)).build());
+                .setName(lang.component("currency.editor.color", "value", current.color())).build());
 
         setItem(MIN_BALANCE_SLOT, new ItemBuilder(Material.RED_DYE)
-                .setName(Component.text("Balance mínimo: " + current.minBalance(), NamedTextColor.RED))
-                .setLore(Component.text("Click: +10 · Click derecho: -10", NamedTextColor.GRAY)).build());
+                .setName(lang.component("currency.editor.min_balance", "value", current.minBalance()))
+                .setLore(lang.component("common.click_plus10_minus10")).build());
 
         setItem(MAX_BALANCE_SLOT, new ItemBuilder(Material.GOLD_INGOT)
-                .setName(Component.text("Balance máximo: " + current.maxBalance(), NamedTextColor.GOLD))
-                .setLore(Component.text("Click: +1000 · Click derecho: -1000 (0 = sin tope)", NamedTextColor.GRAY))
+                .setName(lang.component("currency.editor.max_balance", "value", current.maxBalance()))
+                .setLore(lang.component("currency.editor.max_balance_hint"))
                 .build());
 
         setItem(PERMISSION_SLOT, new ItemBuilder(Material.TRIPWIRE_HOOK)
-                .setName(Component.text("Permiso: " + (current.permission() == null ? "(ninguno)" : current.permission()),
-                        NamedTextColor.LIGHT_PURPLE))
+                .setName(lang.component("currency.editor.permission", "value",
+                        current.permission() == null ? lang.raw("common.none") : current.permission()))
                 .build());
 
         setItem(EXCHANGE_RATE_SLOT, new ItemBuilder(Material.COMPARATOR)
-                .setName(Component.text("Tasa de cambio a base: " + current.exchangeRateToBase(), NamedTextColor.AQUA))
-                .setLore(Component.text("Click: +0.1 · Click derecho: -0.1", NamedTextColor.GRAY)).build());
+                .setName(lang.component("currency.editor.exchange_rate", "value", current.exchangeRateToBase()))
+                .setLore(lang.component("common.click_plus01_minus01")).build());
 
         setItem(IS_BASE_SLOT, new ItemBuilder(current.isBase() ? Material.LIME_CONCRETE : Material.GRAY_CONCRETE)
-                .setName(Component.text("Moneda base: " + current.isBase(), NamedTextColor.GOLD))
-                .setLore(Component.text("Click para alternar", NamedTextColor.GRAY)).build());
+                .setName(lang.component("currency.editor.is_base", "value", current.isBase()))
+                .setLore(lang.component("common.click_toggle")).build());
 
         setItem(DELETE_SLOT, new ItemBuilder(Material.BARRIER)
-                .setName(Component.text("Eliminar moneda", NamedTextColor.RED)).build());
+                .setName(lang.component("currency.editor.delete")).build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("common.back")));
     }
 
     @Override
@@ -111,23 +115,23 @@ public class CurrencyEditorGUI extends InventoryGUI {
         double sign = event.getClick() == ClickType.RIGHT ? -1 : 1;
 
         if (slot == NAME_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el nuevo nombre:", value -> replace(withName(value)));
+            chatPromptManager.prompt(player, lang.raw("common.prompt_new_name"), value -> replace(withName(value)));
         } else if (slot == SYMBOL_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el nuevo símbolo:", value -> replace(withSymbol(value)));
+            chatPromptManager.prompt(player, lang.raw("currency.editor.prompt_symbol"), value -> replace(withSymbol(value)));
         } else if (slot == DECIMALS_SLOT) {
             replace(withDecimals(Math.max(0, current.decimals() + (int) sign)));
         } else if (slot == ICON_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el Material del ícono:", value -> replace(withIcon(value)));
+            chatPromptManager.prompt(player, lang.raw("common.prompt_material_icon"), value -> replace(withIcon(value)));
         } else if (slot == COLOR_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el color (NamedTextColor o #hex):", value -> replace(withColor(value)));
+            chatPromptManager.prompt(player, lang.raw("currency.editor.prompt_color"), value -> replace(withColor(value)));
         } else if (slot == MIN_BALANCE_SLOT) {
             replace(withMinBalance(current.minBalance() + sign * 10));
         } else if (slot == MAX_BALANCE_SLOT) {
             replace(withMaxBalance(Math.max(0, current.maxBalance() == Double.MAX_VALUE ? 0
                     : current.maxBalance() + sign * 1000)));
         } else if (slot == PERMISSION_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el nodo de permiso (o 'ninguno'):", value -> replace(
-                    withPermission(value.equalsIgnoreCase("ninguno") ? null : value)));
+            chatPromptManager.prompt(player, lang.raw("currency.editor.prompt_permission"), value -> replace(
+                    withPermission(value.equalsIgnoreCase(lang.raw("common.none_keyword")) ? null : value)));
         } else if (slot == EXCHANGE_RATE_SLOT) {
             replace(withExchangeRate(Math.max(0.1, current.exchangeRateToBase() + sign * 0.1)));
         } else if (slot == IS_BASE_SLOT) {

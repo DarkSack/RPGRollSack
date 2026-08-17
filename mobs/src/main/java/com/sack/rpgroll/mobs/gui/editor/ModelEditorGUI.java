@@ -1,11 +1,11 @@
 package com.sack.rpgroll.mobs.gui.editor;
 
+import com.sack.rpgroll.common.lang.LangManager;
+
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.mobs.core.MobModel;
-
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
+import com.sack.rpgroll.mobs.core.MobSkin;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -16,7 +16,7 @@ import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
 
-/** Editor de apariencia: tipo base, escala, brillo, invisibilidad, ModelEngine id y equipo visible. */
+/** Editor de apariencia: tipo base, escala, brillo, invisibilidad, ModelEngine id, equipo visible y skins. */
 public class ModelEditorGUI extends InventoryGUI {
 
     private static final int SIZE = 36;
@@ -27,6 +27,8 @@ public class ModelEditorGUI extends InventoryGUI {
     private static final int INVISIBLE_SLOT = 13;
     private static final int MODEL_ENGINE_SLOT = 14;
 
+    private static final int SKINS_SLOT = 15;
+
     private static final int EQUIPMENT_START_SLOT = 18;
     private static final String[] EQUIPMENT_SLOTS = {"HAND", "OFFHAND", "HEAD", "CHEST", "LEGS", "FEET"};
 
@@ -34,11 +36,14 @@ public class ModelEditorGUI extends InventoryGUI {
 
     private final MobEditorSession session;
     private final Runnable onBack;
+    private final LangManager lang;
 
     public ModelEditorGUI(Player player, MobEditorSession session, Runnable onBack) {
-        super(player, Component.text("Modelo: " + session.original.id(), NamedTextColor.GOLD), SIZE);
+        super(player, session.chatPromptManager.lang().component("gui.model.title", "id", session.original.id()),
+                SIZE);
         this.session = session;
         this.onBack = onBack;
+        this.lang = session.chatPromptManager.lang();
     }
 
     @Override
@@ -53,34 +58,37 @@ public class ModelEditorGUI extends InventoryGUI {
         MobModel model = session.model;
 
         setItem(BASE_TYPE_SLOT, new ItemBuilder(Material.SPAWNER)
-                .setName(Component.text("Tipo base: " + model.baseEntityType(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para escribir un EntityType vanilla", NamedTextColor.GRAY))
+                .setName(lang.component("gui.model.base_type_label", "value", model.baseEntityType()))
+                .setLore(lang.component("gui.model.base_type_hint"))
                 .build());
 
         setItem(SCALE_SLOT, new ItemBuilder(Material.SLIME_BALL)
-                .setName(Component.text("Escala: " + model.scale(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click: +0.1 · Shift-click: +1", NamedTextColor.GRAY),
-                        Component.text("Click derecho: -0.1 · Shift-click derecho: -1", NamedTextColor.GRAY))
+                .setName(lang.component("gui.model.scale_label", "value", model.scale()))
+                .setLore(lang.component("gui.model.scale_hint1"),
+                        lang.component("gui.model.scale_hint2"))
                 .build());
 
         setItem(GLOW_SLOT, new ItemBuilder(model.glow() ? Material.GLOWSTONE_DUST : Material.GUNPOWDER)
-                .setName(Component.text("Brillo: " + model.glow(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para alternar", NamedTextColor.GRAY))
+                .setName(lang.component("gui.model.glow_label", "value", model.glow()))
+                .setLore(lang.component("gui.common.click_toggle"))
                 .build());
 
         setItem(INVISIBLE_SLOT, new ItemBuilder(model.invisible() ? Material.GLASS : Material.STONE)
-                .setName(Component.text("Invisible: " + model.invisible(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para alternar", NamedTextColor.GRAY))
+                .setName(lang.component("gui.model.invisible_label", "value", model.invisible()))
+                .setLore(lang.component("gui.common.click_toggle"))
                 .build());
 
         setItem(MODEL_ENGINE_SLOT, new ItemBuilder(Material.ARMOR_STAND)
-                .setName(Component.text("ModelEngine id: "
-                        + (model.modelEngineId() != null ? model.modelEngineId() : "(ninguno)"),
-                        NamedTextColor.YELLOW))
+                .setName(lang.component("gui.model.modelengine_label", "value",
+                        model.modelEngineId() != null ? model.modelEngineId() : lang.raw("gui.common.none_label")))
                 .setLore(
-                        Component.text("Punto de extensión — requiere el plugin ModelEngine/BetterModel",
-                                NamedTextColor.DARK_GRAY),
-                        Component.text("Click: escribir · Shift-click: quitar", NamedTextColor.GRAY))
+                        lang.component("gui.model.modelengine_note"),
+                        lang.component("gui.common.click_write_shift_remove"))
+                .build());
+
+        setItem(SKINS_SLOT, new ItemBuilder(Material.ARMOR_STAND)
+                .setName(lang.component("gui.model.skins_label", "count", model.skins().size()))
+                .setLore(lang.component("gui.model.skins_hint"))
                 .build());
 
         for (int i = 0; i < EQUIPMENT_SLOTS.length; i++) {
@@ -90,15 +98,14 @@ public class ModelEditorGUI extends InventoryGUI {
 
             setItem(EQUIPMENT_START_SLOT + i, new ItemBuilder(reference != null ? Material.IRON_CHESTPLATE
                     : Material.BARRIER)
-                    .setName(Component.text(key + ": " + (reference != null ? reference : "(vacío)"),
-                            NamedTextColor.YELLOW))
-                    .setLore(Component.text("Click: escribir referencia (item de Items o Material)",
-                            NamedTextColor.GRAY),
-                            Component.text("Shift-click: quitar", NamedTextColor.GRAY))
+                    .setName(lang.component("gui.model.equipment_label", "slot", key, "value",
+                            reference != null ? reference : lang.raw("gui.model.empty_label")))
+                    .setLore(lang.component("gui.model.equipment_hint"),
+                            lang.component("gui.common.shift_remove_hint"))
                     .build());
         }
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back_button")));
     }
 
     @Override
@@ -108,7 +115,7 @@ public class ModelEditorGUI extends InventoryGUI {
         int slot = event.getSlot();
 
         if (slot == BASE_TYPE_SLOT) {
-            session.chatPromptManager.prompt(player, "Escribí el EntityType vanilla (ej. ZOMBIE, WITHER_SKELETON):",
+            session.chatPromptManager.prompt(player, "gui.model.prompt_base_type",
                     value -> {
                         session.model = withBaseType(session.model, value.trim().toUpperCase(Locale.ROOT));
                         build();
@@ -141,10 +148,15 @@ public class ModelEditorGUI extends InventoryGUI {
                 build();
                 return;
             }
-            session.chatPromptManager.prompt(player, "Escribí el id de modelo (ModelEngine/BetterModel):", value -> {
+            session.chatPromptManager.prompt(player, "gui.model.prompt_modelengine", value -> {
                 session.model = withModelEngineId(session.model, value.trim());
                 build();
             });
+            return;
+        }
+
+        if (slot == SKINS_SLOT) {
+            new MobSkinsEditorGUI(player, session, this::reopen).open();
             return;
         }
 
@@ -160,12 +172,12 @@ public class ModelEditorGUI extends InventoryGUI {
                 return;
             }
 
-            session.chatPromptManager.prompt(player, "Escribí la referencia de ítem para " + key + ":", value -> {
+            session.chatPromptManager.prompt(player, "gui.model.prompt_equipment", value -> {
                 Map<String, String> equipment = new LinkedHashMap<>(session.model.equipment());
                 equipment.put(key, value.trim());
                 session.model = withEquipment(session.model, equipment);
                 build();
-            });
+            }, "slot", key);
             return;
         }
 
@@ -174,34 +186,38 @@ public class ModelEditorGUI extends InventoryGUI {
         }
     }
 
+    private void reopen() {
+        new ModelEditorGUI(player, session, onBack).open();
+    }
+
     private MobModel withBaseType(MobModel model, String baseType) {
         return new MobModel(baseType, model.scale(), model.glow(), model.invisible(), model.equipment(),
-                model.modelEngineId());
+                model.modelEngineId(), model.skins());
     }
 
     private MobModel withScale(MobModel model, double scale) {
         return new MobModel(model.baseEntityType(), scale, model.glow(), model.invisible(), model.equipment(),
-                model.modelEngineId());
+                model.modelEngineId(), model.skins());
     }
 
     private MobModel withGlow(MobModel model, boolean glow) {
         return new MobModel(model.baseEntityType(), model.scale(), glow, model.invisible(), model.equipment(),
-                model.modelEngineId());
+                model.modelEngineId(), model.skins());
     }
 
     private MobModel withInvisible(MobModel model, boolean invisible) {
         return new MobModel(model.baseEntityType(), model.scale(), model.glow(), invisible, model.equipment(),
-                model.modelEngineId());
+                model.modelEngineId(), model.skins());
     }
 
     private MobModel withModelEngineId(MobModel model, String modelEngineId) {
         return new MobModel(model.baseEntityType(), model.scale(), model.glow(), model.invisible(),
-                model.equipment(), modelEngineId);
+                model.equipment(), modelEngineId, model.skins());
     }
 
     private MobModel withEquipment(MobModel model, Map<String, String> equipment) {
         return new MobModel(model.baseEntityType(), model.scale(), model.glow(), model.invisible(), equipment,
-                model.modelEngineId());
+                model.modelEngineId(), model.skins());
     }
 
     private double delta(ClickType click) {

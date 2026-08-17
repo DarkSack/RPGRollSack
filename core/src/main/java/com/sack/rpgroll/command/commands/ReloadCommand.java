@@ -4,12 +4,11 @@ import com.sack.rpgroll.RPGRoll;
 import com.sack.rpgroll.command.RPGCommand;
 import com.sack.rpgroll.config.ConfigManager;
 import com.sack.rpgroll.common.content.Reloadable;
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gameplay.levelup.LevelUpRewardsConfig;
 
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
-
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
 
 /**
  * Comando para recargar la configuración y el contenido del plugin.
@@ -26,13 +25,18 @@ public class ReloadCommand implements RPGCommand {
 
     @Override
     public void execute(CommandSender sender, String[] args) {
-        sender.sendMessage(Component.text("Recargando configuración y contenido...", NamedTextColor.YELLOW));
+        var services = plugin.getBootstrap().getServices();
+        LangManager lang = services.get(LangManager.class);
+
+        lang.send(sender, "general.reloading");
 
         try {
-            var services = plugin.getBootstrap().getServices();
-
-            services.get(ConfigManager.class).initialize();
+            ConfigManager configManager = services.get(ConfigManager.class);
+            configManager.initialize();
             services.get(LevelUpRewardsConfig.class).load();
+
+            FileConfiguration mainConfig = configManager.getConfig("config.yml");
+            lang.reload(mainConfig != null ? mainConfig.getString("language", "es") : "es");
 
             // Recarga genérica: cualquier contenido futuro se suma solo
             // agregándose a reloadableContent en Bootstrap, sin tocar este archivo.
@@ -40,8 +44,10 @@ public class ReloadCommand implements RPGCommand {
                 content.reload();
             }
 
+            lang.send(sender, "general.config_reloaded");
+
         } catch (Exception exception) {
-            sender.sendMessage(Component.text("Error al recargar la configuración.", NamedTextColor.RED));
+            lang.send(sender, "error.command_failed");
             plugin.getLogger().severe("✘ Error en /rpg reload: " + exception.getMessage());
         }
     }

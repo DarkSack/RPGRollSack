@@ -1,5 +1,6 @@
 package com.sack.rpgroll.magic.listener;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.magic.core.Spell;
 import com.sack.rpgroll.magic.core.SpellCatalyst;
 import com.sack.rpgroll.magic.engine.CastResult;
@@ -35,11 +36,13 @@ public class SpellChannelManager implements Listener {
 
     private final Plugin plugin;
     private final SpellCastEngine engine;
+    private final LangManager lang;
     private final Map<UUID, BukkitTask> channeling = new HashMap<>();
 
-    public SpellChannelManager(Plugin plugin, SpellCastEngine engine) {
+    public SpellChannelManager(Plugin plugin, SpellCastEngine engine, LangManager lang) {
         this.plugin = plugin;
         this.engine = engine;
+        this.lang = lang;
     }
 
     public boolean isChanneling(UUID uuid) {
@@ -55,8 +58,7 @@ public class SpellChannelManager implements Listener {
         Location startLocation = player.getLocation();
         int totalTicks = Math.max(1, spell.castTimeTicks());
 
-        player.sendMessage(Component.text("Canalizando '" + spell.displayName() + "'... no te muevas.",
-                NamedTextColor.LIGHT_PURPLE));
+        lang.send(player, "channel.starting", "spell", spell.displayName());
 
         BukkitTask task = new org.bukkit.scheduler.BukkitRunnable() {
 
@@ -71,14 +73,14 @@ public class SpellChannelManager implements Listener {
                 }
 
                 if (player.getLocation().distanceSquared(startLocation) > CANCEL_MOVE_DISTANCE_SQUARED) {
-                    player.sendMessage(Component.text("✘ Canalización cancelada — te moviste.", NamedTextColor.RED));
+                    lang.send(player, "channel.cancelled_move");
                     cancelChannel(player.getUniqueId());
                     return;
                 }
 
                 elapsed++;
                 int percent = (int) (100.0 * elapsed / totalTicks);
-                player.sendActionBar(Component.text("Canalizando... " + percent + "%", NamedTextColor.LIGHT_PURPLE));
+                player.sendActionBar(lang.component("channel.progress", "percent", percent));
 
                 if (elapsed >= totalTicks) {
 
@@ -103,7 +105,7 @@ public class SpellChannelManager implements Listener {
             return;
         }
 
-        player.sendMessage(Component.text("✘ Canalización cancelada — recibiste daño.", NamedTextColor.RED));
+        lang.send(player, "channel.cancelled_damage");
         cancelChannel(player.getUniqueId());
     }
 

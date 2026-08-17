@@ -1,5 +1,6 @@
 package com.sack.rpgroll.items.gui.editor;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 
@@ -30,13 +31,15 @@ public class EnchantmentsEditorGUI extends InventoryGUI {
     private static final int BACK_SLOT = 49;
 
     private final EditorSession session;
+    private final LangManager lang;
     private final Runnable onBack;
     private List<String> vanillaKeys;
     private List<String> customKeys;
 
     public EnchantmentsEditorGUI(Player player, EditorSession session, Runnable onBack) {
-        super(player, Component.text("Encantamientos: " + session.original.id(), NamedTextColor.GOLD), SIZE);
+        super(player, session.chatPromptManager.lang().component("editor.enchantments.title", "id", session.original.id()), SIZE);
         this.session = session;
+        this.lang = session.chatPromptManager.lang();
         this.onBack = onBack;
         refreshKeys();
     }
@@ -59,7 +62,7 @@ public class EnchantmentsEditorGUI extends InventoryGUI {
         // fila de control (solo Volver acá).
         for (int slot = 18; slot <= 26; slot++) {
             setItem(slot, new ItemBuilder(Material.PURPLE_STAINED_GLASS_PANE)
-                    .setName(Component.text("RPGRoll-Enchantments", NamedTextColor.GRAY)).build());
+                    .setName(lang.component("editor.enchantments.custom_section")).build());
         }
         for (int slot = 45; slot < SIZE; slot++) {
             setItem(slot, new ItemBuilder(Material.BLACK_STAINED_GLASS_PANE)
@@ -73,12 +76,12 @@ public class EnchantmentsEditorGUI extends InventoryGUI {
 
             setItem(VANILLA_START + i, new ItemBuilder(Material.ENCHANTED_BOOK)
                     .setName(Component.text(key + " " + level, NamedTextColor.AQUA))
-                    .setLore(Component.text("Shift-click para quitar", NamedTextColor.GRAY))
+                    .setLore(lang.component("editor.common.shift_click_remove"))
                     .build());
         }
 
         setItem(ADD_VANILLA_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Agregar encantamiento vanilla", NamedTextColor.GREEN))
+                .setName(lang.component("editor.enchantments.add_vanilla"))
                 .build());
 
         for (int i = 0; i < customKeys.size() && i < CUSTOM_ROWS_SLOTS; i++) {
@@ -88,16 +91,16 @@ public class EnchantmentsEditorGUI extends InventoryGUI {
 
             setItem(CUSTOM_START + i, new ItemBuilder(Material.BOOK)
                     .setName(Component.text(key + " " + level, NamedTextColor.LIGHT_PURPLE))
-                    .setLore(Component.text("RPGRoll-Enchantments", NamedTextColor.DARK_GRAY),
-                            Component.text("Shift-click para quitar", NamedTextColor.GRAY))
+                    .setLore(lang.component("editor.enchantments.custom_section").color(NamedTextColor.DARK_GRAY),
+                            lang.component("editor.common.shift_click_remove"))
                     .build());
         }
 
         setItem(ADD_CUSTOM_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Agregar encantamiento custom", NamedTextColor.GREEN))
+                .setName(lang.component("editor.enchantments.add_custom"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("editor.common.back")));
     }
 
     @Override
@@ -143,12 +146,15 @@ public class EnchantmentsEditorGUI extends InventoryGUI {
 
     private void promptAdd(boolean vanilla) {
         session.chatPromptManager.prompt(player,
-                "Escribí: <id> <nivel> (ej. " + (vanilla ? "sharpness 3" : "lifesteal 2") + "):", value -> {
+                lang.raw("editor.enchantments.prompt_add", "example", vanilla
+                        ? lang.raw("editor.enchantments.example_vanilla")
+                        : lang.raw("editor.enchantments.example_custom")),
+                value -> {
 
                     String[] parts = value.trim().split("\\s+");
 
                     if (parts.length != 2) {
-                        player.sendMessage(Component.text("Formato inválido.", NamedTextColor.RED));
+                        lang.send(player, "editor.common.invalid_format");
                         return;
                     }
 
@@ -158,7 +164,7 @@ public class EnchantmentsEditorGUI extends InventoryGUI {
                         target.put(vanilla ? parts[0].toUpperCase(Locale.ROOT) : parts[0].toLowerCase(Locale.ROOT),
                                 level);
                     } catch (NumberFormatException e) {
-                        player.sendMessage(Component.text("Nivel inválido.", NamedTextColor.RED));
+                        lang.send(player, "editor.enchantments.invalid_level");
                         return;
                     }
 

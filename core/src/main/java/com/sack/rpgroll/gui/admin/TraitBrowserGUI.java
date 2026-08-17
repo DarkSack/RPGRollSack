@@ -1,5 +1,6 @@
 package com.sack.rpgroll.gui.admin;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.gameplay.trait.Trait;
@@ -24,12 +25,14 @@ public class TraitBrowserGUI extends InventoryGUI {
 
     private final TraitManager traitManager;
     private final ChatPromptManager chatPromptManager;
+    private final LangManager lang;
     private List<Trait> traits;
 
     public TraitBrowserGUI(Player player, TraitManager traitManager, ChatPromptManager chatPromptManager) {
-        super(player, Component.text("Traits RPGRoll", NamedTextColor.GOLD), SIZE);
+        super(player, chatPromptManager.lang().component("trait_browser_gui.title"), SIZE);
         this.traitManager = traitManager;
         this.chatPromptManager = chatPromptManager;
+        this.lang = chatPromptManager.lang();
         this.traits = List.copyOf(traitManager.getAll());
     }
 
@@ -48,16 +51,16 @@ public class TraitBrowserGUI extends InventoryGUI {
 
             setItem(i, new ItemBuilder(Material.NETHER_STAR)
                     .setName(Component.text(trait.id(), NamedTextColor.YELLOW))
-                    .setLore(Component.text("Nivel " + trait.requiredLevel(), NamedTextColor.GRAY),
-                            Component.text("Click para editar", NamedTextColor.YELLOW))
+                    .setLore(lang.component("trait_browser_gui.level", "level", trait.requiredLevel()),
+                            lang.component("trait_browser_gui.click_to_edit"))
                     .build());
         }
 
         setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Crear trait nuevo", NamedTextColor.GREEN))
+                .setName(lang.component("trait_browser_gui.create_new"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Cerrar"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("trait_browser_gui.close_button")));
     }
 
     @Override
@@ -67,7 +70,7 @@ public class TraitBrowserGUI extends InventoryGUI {
         int slot = event.getSlot();
 
         if (slot < traits.size() && slot < 36) {
-            new TraitEditorGUI(player, traits.get(slot), traitManager, chatPromptManager, this::reopen).open();
+            new TraitEditorGUI(player, traits.get(slot), traitManager, chatPromptManager, lang, this::reopen).open();
             return;
         }
 
@@ -82,12 +85,12 @@ public class TraitBrowserGUI extends InventoryGUI {
     }
 
     private void promptNew() {
-        chatPromptManager.prompt(player, "Escribí el id del nuevo trait:", value -> {
+        chatPromptManager.prompt(player, lang.raw("trait_browser_gui.prompt_new"), value -> {
 
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 
             if (traitManager.exists(id)) {
-                player.sendMessage(Component.text("Ya existe un trait con ese id.", NamedTextColor.RED));
+                lang.send(player, "trait_browser_gui.already_exists");
                 reopen();
                 return;
             }

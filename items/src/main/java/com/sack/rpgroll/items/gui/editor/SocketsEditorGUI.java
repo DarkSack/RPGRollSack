@@ -1,5 +1,6 @@
 package com.sack.rpgroll.items.gui.editor;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.items.core.SocketDefinition;
@@ -22,11 +23,13 @@ public class SocketsEditorGUI extends InventoryGUI {
     private static final int BACK_SLOT = 44;
 
     private final EditorSession session;
+    private final LangManager lang;
     private final Runnable onBack;
 
     public SocketsEditorGUI(Player player, EditorSession session, Runnable onBack) {
-        super(player, Component.text("Sockets: " + session.original.id(), NamedTextColor.GOLD), SIZE);
+        super(player, session.chatPromptManager.lang().component("editor.sockets.title", "id", session.original.id()), SIZE);
         this.session = session;
+        this.lang = session.chatPromptManager.lang();
         this.onBack = onBack;
     }
 
@@ -50,17 +53,19 @@ public class SocketsEditorGUI extends InventoryGUI {
 
             setItem(i, new ItemBuilder(Material.AMETHYST_SHARD)
                     .setName(Component.text(socket.id(), NamedTextColor.AQUA))
-                    .setLore(Component.text("Tipos aceptados: " + (socket.acceptedTypes().isEmpty()
-                            ? "cualquiera" : String.join(", ", socket.acceptedTypes())), NamedTextColor.GRAY),
-                            Component.text("Shift-click para quitar", NamedTextColor.DARK_GRAY))
+                    .setLore(lang.component("editor.sockets.accepted_types",
+                                    "types", socket.acceptedTypes().isEmpty()
+                                            ? lang.raw("editor.sockets.any_type")
+                                            : String.join(", ", socket.acceptedTypes())),
+                            lang.component("editor.common.shift_click_remove"))
                     .build());
         }
 
         setItem(ADD_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Agregar socket", NamedTextColor.GREEN))
+                .setName(lang.component("editor.sockets.add"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("editor.common.back")));
     }
 
     @Override
@@ -88,23 +93,22 @@ public class SocketsEditorGUI extends InventoryGUI {
     }
 
     private void promptAdd() {
-        session.chatPromptManager.prompt(player,
-                "Escribí: <id> <tipos separados por coma o 'cualquiera'> (ej. socket-1 FIRE,GENERIC):", value -> {
+        session.chatPromptManager.prompt(player, lang.raw("editor.sockets.prompt_add"), value -> {
 
-                    String[] parts = value.trim().split("\\s+", 2);
+            String[] parts = value.trim().split("\\s+", 2);
 
-                    if (parts.length < 1 || parts[0].isBlank()) {
-                        player.sendMessage(Component.text("Formato inválido.", NamedTextColor.RED));
-                        return;
-                    }
+            if (parts.length < 1 || parts[0].isBlank()) {
+                lang.send(player, "editor.common.invalid_format");
+                return;
+            }
 
-                    List<String> types = parts.length < 2 || parts[1].equalsIgnoreCase("cualquiera")
-                            ? List.of()
-                            : Arrays.stream(parts[1].split(",")).map(String::trim).filter(s -> !s.isEmpty()).toList();
+            List<String> types = parts.length < 2 || parts[1].equalsIgnoreCase("cualquiera")
+                    ? List.of()
+                    : Arrays.stream(parts[1].split(",")).map(String::trim).filter(s -> !s.isEmpty()).toList();
 
-                    session.sockets.add(new SocketDefinition(parts[0], types));
-                    build();
-                });
+            session.sockets.add(new SocketDefinition(parts[0], types));
+            build();
+        });
     }
 
 }

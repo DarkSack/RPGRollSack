@@ -13,10 +13,12 @@ import com.sack.rpgroll.sackresourcepack.distribution.ResourcePackHttpServer;
 import com.sack.rpgroll.sackresourcepack.distribution.s3.S3UploadService;
 import com.sack.rpgroll.sackresourcepack.distribution.s3.S3UploadSettings;
 import com.sack.rpgroll.sackresourcepack.gui.listener.GUIListener;
+import com.sack.rpgroll.sackresourcepack.lang.LangManager;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.util.List;
 
 /**
  * Punto de entrada de SackResourcePack — cablea todos los motores
@@ -27,6 +29,7 @@ import java.io.File;
  */
 public class SackResourcePackPlugin extends JavaPlugin {
 
+    private LangManager lang;
     private BuildEngine buildEngine;
     private CustomModelDataManager customModelDataManager;
     private DistributionEngine distributionEngine;
@@ -51,6 +54,9 @@ public class SackResourcePackPlugin extends JavaPlugin {
     public void onEnable() {
 
         saveDefaultConfig();
+
+        this.lang = new LangManager(this, List.of("es", "en", "pt_BR"), "es");
+        lang.reload(getConfig().getString("language", "es"));
 
         File contentDirectory = new File(getDataFolder(), getConfig().getString("content-directory", "content"));
         contentDirectory.mkdirs();
@@ -233,6 +239,10 @@ public class SackResourcePackPlugin extends JavaPlugin {
 
     public boolean isDatapackEnabled() {
         return datapackEnabled;
+    }
+
+    public LangManager lang() {
+        return lang;
     }
 
 }

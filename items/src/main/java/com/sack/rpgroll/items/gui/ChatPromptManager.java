@@ -1,5 +1,7 @@
 package com.sack.rpgroll.items.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
+
 import io.papermc.paper.event.player.AsyncChatEvent;
 
 import net.kyori.adventure.text.Component;
@@ -21,20 +23,28 @@ import java.util.function.Consumer;
  * Captura el próximo mensaje de chat de un jugador y lo entrega a un
  * callback en vez de dejarlo pasar como chat normal — usado por
  * {@link ItemEditorGUI} para pedir nombre/lore/stats sin un teclado en
- * pantalla.
+ * pantalla. También carga el {@link LangManager} del addon — expuesto vía
+ * {@link #lang()} para que las GUIs que ya reciben esta instancia no
+ * necesiten un parámetro de constructor extra.
  */
 public class ChatPromptManager implements Listener {
 
     private final Plugin plugin;
+    private final LangManager langManager;
     private final Map<UUID, Consumer<String>> pending = new HashMap<>();
 
-    public ChatPromptManager(Plugin plugin) {
+    public ChatPromptManager(Plugin plugin, LangManager langManager) {
         this.plugin = plugin;
+        this.langManager = langManager;
+    }
+
+    public LangManager lang() {
+        return langManager;
     }
 
     public void prompt(Player player, String question, Consumer<String> callback) {
         player.sendMessage(Component.text(question, NamedTextColor.YELLOW));
-        player.sendMessage(Component.text("Escribí en el chat, o 'cancelar' para abortar.", NamedTextColor.GRAY));
+        langManager.send(player, "prompt.instructions");
         pending.put(player.getUniqueId(), callback);
     }
 
@@ -53,7 +63,7 @@ public class ChatPromptManager implements Listener {
 
         Bukkit.getScheduler().runTask(plugin, () -> {
             if (message.equalsIgnoreCase("cancelar")) {
-                event.getPlayer().sendMessage(Component.text("Cancelado.", NamedTextColor.RED));
+                langManager.send(event.getPlayer(), "prompt.cancelled");
                 return;
             }
             callback.accept(message);

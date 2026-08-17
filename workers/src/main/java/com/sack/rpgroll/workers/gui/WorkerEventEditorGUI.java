@@ -38,7 +38,8 @@ public class WorkerEventEditorGUI extends InventoryGUI {
 
     public WorkerEventEditorGUI(Player player, WorkerEventDefinition event, WorkerEventManager eventManager,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text("Evento: " + event.id(), NamedTextColor.GOLD), SIZE);
+        super(player, Component.text(chatPromptManager.lang().raw("gui.event.editor.title", "id", event.id()),
+                NamedTextColor.GOLD), SIZE);
         this.current = event;
         this.eventManager = eventManager;
         this.chatPromptManager = chatPromptManager;
@@ -61,49 +62,62 @@ public class WorkerEventEditorGUI extends InventoryGUI {
         }
 
         setItem(NAME_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(Component.text("Nombre: " + current.displayName(), NamedTextColor.YELLOW)).build());
+                .setName(Component.text(chatPromptManager.lang().raw("gui.skill.editor.name", "name", current.displayName()),
+                        NamedTextColor.YELLOW)).build());
 
         setItem(DESCRIPTION_SLOT, new ItemBuilder(Material.WRITTEN_BOOK)
-                .setName(Component.text("Descripción", NamedTextColor.YELLOW))
-                .setLore(ItemBuilder.toLoreLines(current.description().isBlank() ? "(sin descripción)" : current.description()))
+                .setName(Component.text(chatPromptManager.lang().raw("gui.profession.editor.description"), NamedTextColor.YELLOW))
+                .setLore(ItemBuilder.toLoreLines(current.description().isBlank()
+                        ? chatPromptManager.lang().raw("gui.editor.no_description") : current.description()))
                 .build());
 
         setItem(TYPE_SLOT, new ItemBuilder(Material.COMPARATOR)
-                .setName(Component.text("Tipo: " + current.type(), NamedTextColor.LIGHT_PURPLE))
-                .setLore(Component.text("Click para rotar", NamedTextColor.GRAY)).build());
+                .setName(Component.text(chatPromptManager.lang().raw("gui.event.editor.type", "type", current.type()),
+                        NamedTextColor.LIGHT_PURPLE))
+                .setLore(Component.text(chatPromptManager.lang().raw("gui.profession.editor.rotate_hint"), NamedTextColor.GRAY))
+                .build());
 
         setItem(CHANCE_SLOT, new ItemBuilder(Material.SLIME_BALL)
                 .setName(Component.text(current.chance() > 0
-                        ? String.format(Locale.ROOT, "Chance propia: %.1f%%", current.chance() * 100)
-                        : "Chance propia: (usa la global)", NamedTextColor.GREEN))
-                .setLore(Component.text("Click: +5% · Click derecho: -5% (0 = usar la global)", NamedTextColor.GRAY))
+                        ? chatPromptManager.lang().raw("gui.event.editor.chance_own", "percent",
+                                String.format(Locale.ROOT, "%.1f", current.chance() * 100))
+                        : chatPromptManager.lang().raw("gui.event.editor.chance_global"), NamedTextColor.GREEN))
+                .setLore(Component.text(chatPromptManager.lang().raw("gui.event.editor.chance_hint"), NamedTextColor.GRAY))
                 .build());
 
         setItem(DURATION_SLOT, new ItemBuilder(Material.CLOCK)
-                .setName(Component.text("Duración: " + current.durationTicks() + " ticks", NamedTextColor.WHITE))
-                .setLore(Component.text("Click: +1200 · Click derecho: -1200", NamedTextColor.GRAY)).build());
+                .setName(Component.text(chatPromptManager.lang().raw("gui.event.editor.duration", "ticks",
+                        current.durationTicks()), NamedTextColor.WHITE))
+                .setLore(Component.text(chatPromptManager.lang().raw("gui.event.editor.duration_hint"), NamedTextColor.GRAY))
+                .build());
 
         setItem(HAPPINESS_SLOT, new ItemBuilder(Material.MAGENTA_DYE)
-                .setName(Component.text("Δ Felicidad: " + current.happinessDelta(), NamedTextColor.LIGHT_PURPLE))
-                .setLore(Component.text("Click: +5 · Click derecho: -5", NamedTextColor.GRAY)).build());
+                .setName(Component.text(chatPromptManager.lang().raw("gui.event.editor.happiness", "value",
+                        current.happinessDelta()), NamedTextColor.LIGHT_PURPLE))
+                .setLore(Component.text(chatPromptManager.lang().raw("gui.event.editor.stat_hint"), NamedTextColor.GRAY))
+                .build());
 
         setItem(ENERGY_SLOT, new ItemBuilder(Material.SUGAR)
-                .setName(Component.text("Δ Energía: " + current.energyDelta(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click: +5 · Click derecho: -5", NamedTextColor.GRAY)).build());
+                .setName(Component.text(chatPromptManager.lang().raw("gui.event.editor.energy", "value",
+                        current.energyDelta()), NamedTextColor.YELLOW))
+                .setLore(Component.text(chatPromptManager.lang().raw("gui.event.editor.stat_hint"), NamedTextColor.GRAY))
+                .build());
 
         setItem(HEALTH_SLOT, new ItemBuilder(Material.GOLDEN_APPLE)
-                .setName(Component.text("Δ Salud: " + current.healthDelta(), NamedTextColor.RED))
-                .setLore(Component.text("Click: +5 · Click derecho: -5", NamedTextColor.GRAY)).build());
+                .setName(Component.text(chatPromptManager.lang().raw("gui.event.editor.health", "value",
+                        current.healthDelta()), NamedTextColor.RED))
+                .setLore(Component.text(chatPromptManager.lang().raw("gui.event.editor.stat_hint"), NamedTextColor.GRAY))
+                .build());
 
         setItem(SPEED_SLOT, new ItemBuilder(Material.FEATHER)
                 .setName(Component.text(
-                        String.format(Locale.ROOT, "Velocidad de trabajo activo: %.0f%%",
-                                current.workSpeedMultiplierWhileActive() * 100),
+                        chatPromptManager.lang().raw("gui.event.editor.speed", "percent",
+                                String.format(Locale.ROOT, "%.0f", current.workSpeedMultiplierWhileActive() * 100)),
                         NamedTextColor.AQUA))
-                .setLore(Component.text("0% = no trabaja nada (huelga/vacaciones). Click: +10% · Click derecho: -10%",
+                .setLore(Component.text(chatPromptManager.lang().raw("gui.event.editor.speed_hint"),
                         NamedTextColor.GRAY)).build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(chatPromptManager.lang().raw("gui.common.back")));
     }
 
     @Override
@@ -114,12 +128,14 @@ public class WorkerEventEditorGUI extends InventoryGUI {
         int sign = event.getClick() == ClickType.RIGHT ? -1 : 1;
 
         if (slot == NAME_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el nuevo nombre:", value -> replace(new WorkerEventDefinition(
+            chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.editor.prompt_name"),
+                    value -> replace(new WorkerEventDefinition(
                     current.id(), value, current.description(), current.type(), current.chance(),
                     current.durationTicks(), current.happinessDelta(), current.energyDelta(), current.healthDelta(),
                     current.workSpeedMultiplierWhileActive())));
         } else if (slot == DESCRIPTION_SLOT) {
-            chatPromptManager.prompt(player, "Escribí la nueva descripción:", value -> replace(new WorkerEventDefinition(
+            chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.editor.prompt_description"),
+                    value -> replace(new WorkerEventDefinition(
                     current.id(), current.displayName(), value, current.type(), current.chance(),
                     current.durationTicks(), current.happinessDelta(), current.energyDelta(), current.healthDelta(),
                     current.workSpeedMultiplierWhileActive())));

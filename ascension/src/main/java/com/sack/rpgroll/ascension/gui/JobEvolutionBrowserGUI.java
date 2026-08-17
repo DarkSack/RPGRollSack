@@ -2,6 +2,7 @@ package com.sack.rpgroll.ascension.gui;
 
 import com.sack.rpgroll.ascension.deferred.JobEvolution;
 import com.sack.rpgroll.ascension.deferred.JobEvolutionManager;
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 
@@ -23,12 +24,15 @@ public class JobEvolutionBrowserGUI extends InventoryGUI {
 
     private final JobEvolutionManager manager;
     private final ChatPromptManager chatPromptManager;
+    private final LangManager lang;
     private List<JobEvolution> evolutions;
 
-    public JobEvolutionBrowserGUI(Player player, JobEvolutionManager manager, ChatPromptManager chatPromptManager) {
-        super(player, Component.text("Evoluciones de job", NamedTextColor.GOLD), SIZE);
+    public JobEvolutionBrowserGUI(Player player, JobEvolutionManager manager, ChatPromptManager chatPromptManager,
+            LangManager lang) {
+        super(player, lang.component("gui.job_evolution.browser_title"), SIZE);
         this.manager = manager;
         this.chatPromptManager = chatPromptManager;
+        this.lang = lang;
         this.evolutions = List.copyOf(manager.getAll());
     }
 
@@ -45,16 +49,16 @@ public class JobEvolutionBrowserGUI extends InventoryGUI {
             JobEvolution evolution = evolutions.get(i);
             setItem(i, new ItemBuilder(Material.IRON_PICKAXE)
                     .setName(Component.text(evolution.id(), NamedTextColor.YELLOW))
-                    .setLore(Component.text("Base: " + evolution.baseJob(), NamedTextColor.GRAY),
-                            Component.text("Click para editar", NamedTextColor.YELLOW))
+                    .setLore(lang.component("gui.job_evolution.item_base", "job", evolution.baseJob()),
+                            lang.component("gui.common.click_to_edit"))
                     .build());
         }
 
         setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Crear evolución nueva", NamedTextColor.GREEN))
+                .setName(lang.component("gui.job_evolution.create_new"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Cerrar"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.close_button")));
     }
 
     @Override
@@ -64,7 +68,8 @@ public class JobEvolutionBrowserGUI extends InventoryGUI {
         int slot = event.getSlot();
 
         if (slot < evolutions.size() && slot < 36) {
-            new JobEvolutionEditorGUI(player, evolutions.get(slot), manager, chatPromptManager, this::reopen).open();
+            new JobEvolutionEditorGUI(player, evolutions.get(slot), manager, chatPromptManager, this::reopen, lang)
+                    .open();
             return;
         }
 
@@ -79,17 +84,17 @@ public class JobEvolutionBrowserGUI extends InventoryGUI {
     }
 
     private void promptNew() {
-        chatPromptManager.prompt(player, "Escribí el id de la nueva evolución:", value -> {
+        chatPromptManager.prompt(player, "gui.job_evolution.prompt_new_id", value -> {
 
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 
             if (manager.exists(id)) {
-                player.sendMessage(Component.text("Ya existe una evolución de job con ese id.", NamedTextColor.RED));
+                lang.send(player, "gui.job_evolution.id_exists");
                 reopen();
                 return;
             }
 
-            chatPromptManager.prompt(player, "Escribí el id del job base:", baseJob -> {
+            chatPromptManager.prompt(player, "gui.job_evolution.prompt_base_job_new", baseJob -> {
                 manager.save(new JobEvolution(id, baseJob.trim().toLowerCase(Locale.ROOT), id, 0, List.of(),
                         List.of(), List.of()));
                 reopen();

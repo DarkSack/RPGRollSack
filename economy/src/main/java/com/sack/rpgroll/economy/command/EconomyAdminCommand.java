@@ -1,5 +1,6 @@
 package com.sack.rpgroll.economy.command;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.economy.currency.CurrencyManager;
 import com.sack.rpgroll.economy.gui.ChatPromptManager;
 import com.sack.rpgroll.economy.gui.EconomyAdminHubGUI;
@@ -11,9 +12,6 @@ import com.sack.rpgroll.economy.tax.TaxRuleManager;
 import com.sack.rpgroll.economy.wallet.EconomyResult;
 import com.sack.rpgroll.economy.wallet.WalletService;
 import com.sack.rpgroll.util.TabCompleteUtil;
-
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -38,6 +36,7 @@ public class EconomyAdminCommand implements CommandExecutor, TabCompleter {
     private final InflationTracker inflationTracker;
     private final ChatPromptManager chatPromptManager;
     private final Runnable onReload;
+    private final LangManager lang;
 
     public EconomyAdminCommand(CurrencyManager currencyManager, MarketProductManager marketProductManager,
             MarketEngine marketEngine, TaxRuleManager taxRuleManager, WalletService walletService,
@@ -50,19 +49,19 @@ public class EconomyAdminCommand implements CommandExecutor, TabCompleter {
         this.inflationTracker = inflationTracker;
         this.chatPromptManager = chatPromptManager;
         this.onReload = onReload;
+        this.lang = chatPromptManager.lang();
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
         if (!sender.hasPermission("rpgrolleconomy.admin.*")) {
-            sender.sendMessage(Component.text("No tenés permiso.", NamedTextColor.RED));
+            lang.send(sender, "common.no_permission");
             return true;
         }
 
         if (args.length == 0) {
-            sender.sendMessage(Component.text("Uso: /economyadmin <browser|reload|give|take|setbalance|inflation>",
-                    NamedTextColor.YELLOW));
+            lang.send(sender, "admin.usage");
             return true;
         }
 
@@ -72,12 +71,12 @@ public class EconomyAdminCommand implements CommandExecutor, TabCompleter {
                     new EconomyAdminHubGUI(player, currencyManager, marketProductManager, marketEngine, taxRuleManager,
                             chatPromptManager).open();
                 } else {
-                    sender.sendMessage(Component.text("Solo un jugador puede abrir el navegador.", NamedTextColor.RED));
+                    lang.send(sender, "admin.browser_players_only");
                 }
             }
             case "reload" -> {
                 onReload.run();
-                sender.sendMessage(Component.text("✔ RPGRoll-Economy recargado.", NamedTextColor.GREEN));
+                lang.send(sender, "admin.reload_done");
             }
             case "give" -> handleAdjust(sender, args, true);
             case "take" -> handleAdjust(sender, args, false);
@@ -85,9 +84,9 @@ public class EconomyAdminCommand implements CommandExecutor, TabCompleter {
             case "inflation" -> handleInflation(sender);
             case "snapshot" -> {
                 inflationTracker.takeSnapshot();
-                sender.sendMessage(Component.text("✔ Foto de masa monetaria tomada.", NamedTextColor.GREEN));
+                lang.send(sender, "admin.snapshot_done");
             }
-            default -> sender.sendMessage(Component.text("Subcomando desconocido.", NamedTextColor.RED));
+            default -> lang.send(sender, "common.unknown_subcommand");
         }
 
         return true;
@@ -96,8 +95,7 @@ public class EconomyAdminCommand implements CommandExecutor, TabCompleter {
     private void handleAdjust(CommandSender sender, String[] args, boolean give) {
 
         if (args.length < 4) {
-            sender.sendMessage(Component.text("Uso: /economyadmin " + args[0] + " <jugador> <moneda> <cantidad>",
-                    NamedTextColor.YELLOW));
+            lang.send(sender, "admin.adjust_usage", "sub", args[0]);
             return;
         }
 
@@ -106,7 +104,7 @@ public class EconomyAdminCommand implements CommandExecutor, TabCompleter {
         double amount = parseDouble(args[3]);
 
         if (amount <= 0) {
-            sender.sendMessage(Component.text("Cantidad inválida.", NamedTextColor.RED));
+            lang.send(sender, "common.invalid_amount");
             return;
         }
 
@@ -114,16 +112,17 @@ public class EconomyAdminCommand implements CommandExecutor, TabCompleter {
                 ? walletService.deposit(target.getUniqueId(), currencyId, amount, TransactionType.ADMIN, "Comando admin")
                 : walletService.withdraw(target.getUniqueId(), currencyId, amount, TransactionType.ADMIN, "Comando admin");
 
-        sender.sendMessage(result == EconomyResult.SUCCESS
-                ? Component.text("✔ Listo.", NamedTextColor.GREEN)
-                : Component.text("✘ " + result, NamedTextColor.RED));
+        if (result == EconomyResult.SUCCESS) {
+            lang.send(sender, "common.success");
+        } else {
+            lang.send(sender, "common.fail_result", "result", result);
+        }
     }
 
     private void handleSetBalance(CommandSender sender, String[] args) {
 
         if (args.length < 4) {
-            sender.sendMessage(Component.text("Uso: /economyadmin setbalance <jugador> <moneda> <cantidad>",
-                    NamedTextColor.YELLOW));
+            lang.send(sender, "admin.setbalance_usage");
             return;
         }
 
@@ -138,9 +137,11 @@ public class EconomyAdminCommand implements CommandExecutor, TabCompleter {
                 ? walletService.deposit(target.getUniqueId(), currencyId, delta, TransactionType.ADMIN, "Comando admin: setbalance")
                 : walletService.withdraw(target.getUniqueId(), currencyId, -delta, TransactionType.ADMIN, "Comando admin: setbalance");
 
-        sender.sendMessage(result == EconomyResult.SUCCESS
-                ? Component.text("✔ Balance ajustado a " + amount + ".", NamedTextColor.GREEN)
-                : Component.text("✘ " + result, NamedTextColor.RED));
+        if (result == EconomyResult.SUCCESS) {
+            lang.send(sender, "admin.setbalance_success", "amount", amount);
+        } else {
+            lang.send(sender, "common.fail_result", "result", result);
+        }
     }
 
     private void handleInflation(CommandSender sender) {
@@ -148,15 +149,16 @@ public class EconomyAdminCommand implements CommandExecutor, TabCompleter {
         var latest = inflationTracker.latest();
 
         if (latest == null) {
-            sender.sendMessage(Component.text("Todavía no hay ninguna foto de masa monetaria.", NamedTextColor.YELLOW));
+            lang.send(sender, "admin.inflation_none");
             return;
         }
 
-        sender.sendMessage(Component.text("=== Inflación ===", NamedTextColor.GOLD));
+        lang.send(sender, "admin.inflation_header");
         for (var entry : latest.totalSupplyByCurrency().entrySet()) {
             double change = inflationTracker.changePercent(entry.getKey());
-            sender.sendMessage(Component.text(entry.getKey() + ": " + String.format("%,.2f", entry.getValue())
-                    + " (" + (change >= 0 ? "+" : "") + String.format("%.2f", change) + "%)", NamedTextColor.YELLOW));
+            lang.send(sender, "admin.inflation_line", "currency", entry.getKey(),
+                    "amount", String.format("%,.2f", entry.getValue()),
+                    "sign", change >= 0 ? "+" : "", "change", String.format("%.2f", change));
         }
     }
 

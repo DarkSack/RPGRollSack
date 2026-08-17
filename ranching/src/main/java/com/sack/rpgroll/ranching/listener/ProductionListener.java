@@ -1,5 +1,6 @@
 package com.sack.rpgroll.ranching.listener;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.ranching.core.animal.Animal;
 import com.sack.rpgroll.ranching.core.animal.AnimalManager;
 import com.sack.rpgroll.ranching.core.breeds.Breed;
@@ -52,15 +53,17 @@ public class ProductionListener implements Listener {
     private final BreedManager breedManager;
     private final GeneManager geneManager;
     private final DiseaseManager diseaseManager;
+    private final LangManager lang;
     private final ProductionEngine productionEngine = new ProductionEngine();
 
     public ProductionListener(AnimalManager animalManager, SpeciesManager speciesManager, BreedManager breedManager,
-            GeneManager geneManager, DiseaseManager diseaseManager) {
+            GeneManager geneManager, DiseaseManager diseaseManager, LangManager lang) {
         this.animalManager = animalManager;
         this.speciesManager = speciesManager;
         this.breedManager = breedManager;
         this.geneManager = geneManager;
         this.diseaseManager = diseaseManager;
+        this.lang = lang;
     }
 
     @EventHandler
@@ -95,7 +98,8 @@ public class ProductionListener implements Listener {
         event.getPlayer().getInventory().addItem(milk).values()
                 .forEach(leftover -> event.getPlayer().getWorld().dropItemNaturally(event.getPlayer().getLocation(), leftover));
 
-        event.getPlayer().sendMessage(Component.text("✔ Leche " + result.get().quality() + " obtenida.", NamedTextColor.GREEN));
+        event.getPlayer().sendMessage(Component.text(
+                lang.raw("listener.production.milk_obtained", "quality", result.get().quality()), NamedTextColor.GREEN));
     }
 
     @EventHandler
@@ -127,7 +131,8 @@ public class ProductionListener implements Listener {
         }
 
         event.getEntity().getWorld().dropItemNaturally(event.getEntity().getLocation(), wool);
-        event.getPlayer().sendMessage(Component.text("✔ Lana " + result.get().quality() + " obtenida.", NamedTextColor.GREEN));
+        event.getPlayer().sendMessage(Component.text(
+                lang.raw("listener.production.wool_obtained", "quality", result.get().quality()), NamedTextColor.GREEN));
     }
 
     @EventHandler
@@ -184,6 +189,9 @@ public class ProductionListener implements Listener {
                 }
             });
         }
+
+        com.sack.rpgroll.common.reskin.EntityReskinService.remove(event.getEntity());
+        animalManager.remove(animal.id());
     }
 
     private Optional<ProductionResult> resolve(Animal animal, org.bukkit.Location location, String productType) {
@@ -215,7 +223,8 @@ public class ProductionListener implements Listener {
         meta.getPersistentDataContainer().set(ProductKeys.PRODUCT_TYPE, org.bukkit.persistence.PersistentDataType.STRING,
                 result.productType());
 
-        meta.lore(List.of(Component.text("Calidad: " + result.quality(), qualityColor(result.quality()))));
+        meta.lore(List.of(Component.text(lang.raw("item.feed.quality", "quality", result.quality()),
+                qualityColor(result.quality()))));
         item.setItemMeta(meta);
 
         return item;

@@ -42,7 +42,7 @@ public class WorkersCommand implements CommandExecutor, TabCompleter {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
         if (!(sender instanceof Player player)) {
-            sender.sendMessage("Solo jugadores pueden usar este comando.");
+            sender.sendMessage(Component.text(chatPromptManager.lang().raw("command.player_only"), NamedTextColor.RED));
             return true;
         }
 
@@ -63,14 +63,15 @@ public class WorkersCommand implements CommandExecutor, TabCompleter {
     }
 
     private void sendUsage(Player player) {
-        player.sendMessage(Component.text("Uso: /workers <inspect|hire|fire|list>", NamedTextColor.RED));
+        player.sendMessage(Component.text(chatPromptManager.lang().raw("command.workers.usage"), NamedTextColor.RED));
     }
 
     private void handleInspect(Player player) {
         targetWorker(player).ifPresentOrElse(
                 worker -> new WorkerDetailGUI(player, worker, workerManager, professionManager, chatPromptManager,
                         player::closeInventory).open(),
-                () -> player.sendMessage(Component.text("Mirá directamente a un worker rastreado.", NamedTextColor.RED)));
+                () -> player.sendMessage(Component.text(chatPromptManager.lang().raw("command.workers.look_at_worker"),
+                        NamedTextColor.RED)));
     }
 
     private void handleHire(Player player) {
@@ -78,7 +79,8 @@ public class WorkersCommand implements CommandExecutor, TabCompleter {
         targetWorker(player).ifPresentOrElse(worker -> {
 
             if (worker.isEmployed()) {
-                player.sendMessage(Component.text("Ya tiene un empleador.", NamedTextColor.RED));
+                player.sendMessage(Component.text(chatPromptManager.lang().raw("command.workers.already_employed"),
+                        NamedTextColor.RED));
                 return;
             }
 
@@ -88,9 +90,10 @@ public class WorkersCommand implements CommandExecutor, TabCompleter {
 
             worker.hire(player.getUniqueId(), wage, wageType);
             workerManager.save(worker);
-            player.sendMessage(Component.text("✔ Contratado.", NamedTextColor.GREEN));
+            player.sendMessage(Component.text(chatPromptManager.lang().raw("command.workers.hired"), NamedTextColor.GREEN));
 
-        }, () -> player.sendMessage(Component.text("Mirá directamente a un worker rastreado.", NamedTextColor.RED)));
+        }, () -> player.sendMessage(Component.text(chatPromptManager.lang().raw("command.workers.look_at_worker"),
+                NamedTextColor.RED)));
     }
 
     private void handleFire(Player player) {
@@ -101,27 +104,31 @@ public class WorkersCommand implements CommandExecutor, TabCompleter {
                     || GuildsIntegration.sameGuild(worker.employerId(), player.getUniqueId()));
 
             if (!canManage) {
-                player.sendMessage(Component.text("No podés despedir el worker de otro jugador.", NamedTextColor.RED));
+                player.sendMessage(Component.text(chatPromptManager.lang().raw("command.workers.cannot_fire_other"),
+                        NamedTextColor.RED));
                 return;
             }
 
             worker.fire();
             workerManager.save(worker);
-            player.sendMessage(Component.text("Despedido.", NamedTextColor.YELLOW));
+            player.sendMessage(Component.text(chatPromptManager.lang().raw("command.workers.fired"), NamedTextColor.YELLOW));
 
-        }, () -> player.sendMessage(Component.text("Mirá directamente a un worker rastreado.", NamedTextColor.RED)));
+        }, () -> player.sendMessage(Component.text(chatPromptManager.lang().raw("command.workers.look_at_worker"),
+                NamedTextColor.RED)));
     }
 
     private void handleList(Player player) {
 
         var employed = workerManager.getAll().stream().filter(w -> player.getUniqueId().equals(w.employerId())).toList();
 
-        player.sendMessage(Component.text("=== Tus trabajadores (" + employed.size() + ") ===", NamedTextColor.GOLD));
+        player.sendMessage(Component.text(
+                chatPromptManager.lang().raw("command.workers.list_header", "count", employed.size()), NamedTextColor.GOLD));
 
         for (Worker worker : employed) {
             Profession profession = professionManager.get(worker.professionId()).orElse(null);
-            player.sendMessage(Component.text("- " + (profession != null ? profession.displayName() : worker.professionId())
-                    + " #" + worker.id().toString().substring(0, 8), NamedTextColor.WHITE));
+            player.sendMessage(Component.text(chatPromptManager.lang().raw("command.workers.list_entry", "profession",
+                    profession != null ? profession.displayName() : worker.professionId(), "id",
+                    worker.id().toString().substring(0, 8)), NamedTextColor.WHITE));
         }
     }
 

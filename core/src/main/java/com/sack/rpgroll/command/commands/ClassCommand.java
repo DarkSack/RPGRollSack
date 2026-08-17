@@ -2,10 +2,8 @@ package com.sack.rpgroll.command.commands;
 
 import com.sack.rpgroll.RPGRoll;
 import com.sack.rpgroll.command.RPGCommand;
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.player.RPGPlayer;
-
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 
 import com.sack.rpgroll.player.PlayerManager;
 import org.bukkit.command.CommandSender;
@@ -34,6 +32,7 @@ public class ClassCommand implements RPGCommand {
     public void execute(CommandSender sender, String[] args) {
 
         Player player = (Player) sender;
+        LangManager lang = plugin.getBootstrap().getServices().get(LangManager.class);
 
         try {
 
@@ -44,86 +43,80 @@ public class ClassCommand implements RPGCommand {
             Optional<RPGPlayer> rpgPlayer = playerManager.getPlayer(player.getUniqueId());
 
             if (rpgPlayer.isEmpty()) {
-                player.sendMessage(Component
-                        .text("No se pudo cargar tu perfil de jugador. Por favor, inténtalo de nuevo más tarde.")
-                        .color(NamedTextColor.RED));
-                player.sendMessage(Component.text("Error al cargar tus datos.", NamedTextColor.RED));
+                lang.send(player, "class_command.profile_load_error");
+                lang.send(player, "class_command.data_load_error");
                 return;
             }
 
             // Sin argumentos: mostrar clase actual
             if (args.length == 0) {
-                showCurrentClass(player, rpgPlayer.get());
+                showCurrentClass(player, rpgPlayer.get(), lang);
                 return;
             }
 
             // Con argumento "list": mostrar clases disponibles
             if (args[0].equalsIgnoreCase("list")) {
-                showAvailableClasses(player);
+                showAvailableClasses(player, lang);
                 return;
             }
 
             // Con argumento: cambiar clase
             String newClass = args[0];
-            changeClass(player, playerManager, rpgPlayer.get(), newClass);
+            changeClass(player, playerManager, rpgPlayer.get(), newClass, lang);
 
         } catch (Exception exception) {
 
-            player.sendMessage(Component.text("Error al procesar comando de clase.", NamedTextColor.RED));
+            lang.send(player, "class_command.process_error");
             exception.printStackTrace();
 
         }
 
     }
 
-    private void showCurrentClass(Player player, RPGPlayer rpgPlayer) {
+    private void showCurrentClass(Player player, RPGPlayer rpgPlayer, LangManager lang) {
 
         String playerClass = rpgPlayer.getPlayerClass();
 
         if (playerClass == null || playerClass.isEmpty()) {
-            player.sendMessage(Component.text("Aún no has seleccionado una clase.", NamedTextColor.YELLOW));
-            player.sendMessage(Component.text("Usa " + "/rpg class <nombre>" +
-                    " para seleccionar una.", NamedTextColor.GRAY));
-            player.sendMessage(Component.text("Usa " + "/rpg class list" +
-                    " para ver las clases disponibles.", NamedTextColor.GRAY));
+            lang.send(player, "class.no_class");
+            lang.send(player, "class_command.hint_select");
+            lang.send(player, "class_command.hint_list");
         } else {
-            player.sendMessage(Component.text("Tu clase actual: " + playerClass, NamedTextColor.GREEN));
+            lang.send(player, "class.current", "class", playerClass);
         }
 
     }
 
-    private void showAvailableClasses(Player player) {
+    private void showAvailableClasses(Player player, LangManager lang) {
 
-        player.sendMessage(Component.text("========== Clases Disponibles ==========", NamedTextColor.GOLD));
+        lang.send(player, "class_command.list_header");
 
         for (String className : AVAILABLE_CLASSES) {
-            player.sendMessage(Component.text("• " + className, NamedTextColor.YELLOW));
+            lang.send(player, "class_command.list_entry", "class", className);
         }
 
-        player.sendMessage(Component.text("========================================", NamedTextColor.GOLD));
-        player.sendMessage(Component.text("Usa " + "/rpg class <nombre>" +
-                " para seleccionar una clase.", NamedTextColor.GRAY));
+        lang.send(player, "class_command.list_footer");
+        lang.send(player, "class_command.list_hint");
 
     }
 
-    private void changeClass(Player player, PlayerManager playerManager, RPGPlayer rpgPlayer, String newClass) {
+    private void changeClass(Player player, PlayerManager playerManager, RPGPlayer rpgPlayer, String newClass,
+            LangManager lang) {
 
         // Validar que la clase exista
         boolean validClass = AVAILABLE_CLASSES.stream()
                 .anyMatch(c -> c.equalsIgnoreCase(newClass));
 
         if (!validClass) {
-            player.sendMessage(Component.text("Clase no válida: " + newClass, NamedTextColor.RED));
-            player.sendMessage(Component.text("Usa " + "/rpg class list" +
-                    " para ver las clases disponibles.", NamedTextColor.GRAY));
+            lang.send(player, "class_command.invalid_class", "class", newClass);
+            lang.send(player, "class_command.hint_list");
             return;
         }
 
         // Verificar si ya tiene clase
         if (rpgPlayer.getPlayerClass() != null && !rpgPlayer.getPlayerClass().isEmpty()) {
-            player.sendMessage(Component.text("Ya tienes una clase seleccionada.", NamedTextColor.RED));
-            player.sendMessage(
-                    Component.text("El cambio de clase no está permitido actualmente.", NamedTextColor.YELLOW));
+            lang.send(player, "class_command.already_selected");
+            lang.send(player, "class_command.change_not_allowed");
             return;
         }
 
@@ -137,7 +130,7 @@ public class ClassCommand implements RPGCommand {
         RPGPlayer updatedPlayer = rpgPlayer.setClass(formattedClass);
         playerManager.savePlayer(updatedPlayer);
 
-        player.sendMessage(Component.text("¡Has seleccionado la clase: " + formattedClass + "!", NamedTextColor.GREEN));
+        lang.send(player, "class.select", "class", formattedClass);
 
     }
 

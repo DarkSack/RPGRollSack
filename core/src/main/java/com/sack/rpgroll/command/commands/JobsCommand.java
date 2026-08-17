@@ -2,12 +2,10 @@ package com.sack.rpgroll.command.commands;
 
 import com.sack.rpgroll.RPGRoll;
 import com.sack.rpgroll.command.RPGCommand;
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gameplay.job.JobManager;
 import com.sack.rpgroll.gui.job.JobsGUI;
 import com.sack.rpgroll.player.PlayerManager;
-
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -30,17 +28,18 @@ public class JobsCommand implements RPGCommand {
     public void execute(CommandSender sender, String[] args) {
 
         Player player = (Player) sender;
+        LangManager lang = plugin.getBootstrap().getServices().get(LangManager.class);
 
         try {
 
             JobManager jobManager = plugin.getBootstrap().getServices().get(JobManager.class);
             PlayerManager playerManager = plugin.getBootstrap().getServices().get(PlayerManager.class);
 
-            JobsGUI gui = new JobsGUI(player, jobManager, playerManager);
+            JobsGUI gui = new JobsGUI(player, jobManager, playerManager, lang);
             gui.open();
 
         } catch (Exception exception) {
-            player.sendMessage(Component.text("Error al abrir tus trabajos.", NamedTextColor.RED));
+            lang.send(player, "jobs_command.error");
             plugin.getLogger().severe("✘ Error en /rpg jobs: " + exception.getMessage());
         }
 

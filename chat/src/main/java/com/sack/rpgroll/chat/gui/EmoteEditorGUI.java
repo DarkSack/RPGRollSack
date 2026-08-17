@@ -6,6 +6,7 @@ import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.chat.emote.EmoteDefinition;
 import com.sack.rpgroll.chat.emote.EmoteManager;
+import com.sack.rpgroll.common.lang.LangManager;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -31,7 +32,7 @@ public class EmoteEditorGUI extends InventoryGUI {
 
     public EmoteEditorGUI(Player player, EmoteDefinition emote, EmoteManager emoteManager,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text("Emote: " + emote.id(), NamedTextColor.GOLD), SIZE);
+        super(player, chatPromptManager.lang().component("emote.editor_title", "id", emote.id()), SIZE);
         this.current = emote;
         this.emoteManager = emoteManager;
         this.chatPromptManager = chatPromptManager;
@@ -53,28 +54,30 @@ public class EmoteEditorGUI extends InventoryGUI {
             setItem(slot, ItemBuilder.createFiller());
         }
 
+        LangManager lang = chatPromptManager.lang();
+
         setItem(TEMPLATE_SLOT, new ItemBuilder(Material.WRITABLE_BOOK)
-                .setName(Component.text("Mensaje (sin objetivo)", NamedTextColor.YELLOW))
+                .setName(lang.component("emote.label_message").colorIfAbsent(NamedTextColor.YELLOW))
                 .setLore(ComponentUtils.parse(current.template()),
-                        Component.text("Usa {player} · Click para escribir uno nuevo", NamedTextColor.GRAY))
+                        lang.component("emote.lore_message_hint").colorIfAbsent(NamedTextColor.GRAY))
                 .build());
 
         setItem(TARGET_TEMPLATE_SLOT, new ItemBuilder(Material.BOOK)
-                .setName(Component.text("Mensaje (con objetivo)", NamedTextColor.YELLOW))
+                .setName(lang.component("emote.label_target_message").colorIfAbsent(NamedTextColor.YELLOW))
                 .setLore(ComponentUtils.parse(
                         current.targetTemplate() == null || current.targetTemplate().isBlank()
-                                ? "(no configurado)" : current.targetTemplate()),
-                        Component.text("Usa {player} y {target} · Click para escribir uno nuevo",
-                                NamedTextColor.GRAY))
+                                ? lang.raw("emote.target_not_set") : current.targetTemplate()),
+                        lang.component("emote.lore_target_hint").colorIfAbsent(NamedTextColor.GRAY))
                 .build());
 
         setItem(RADIUS_SLOT, new ItemBuilder(Material.SPYGLASS)
-                .setName(Component.text("Radio: " + (current.radius() <= 0 ? "todo el mundo" : current.radius()),
-                        NamedTextColor.YELLOW))
-                .setLore(Component.text("Click: +10 · Click derecho: -10 (0 = todo el mundo)", NamedTextColor.GRAY))
+                .setName(lang.component("emote.label_radius", "value",
+                                current.radius() <= 0 ? lang.raw("emote.radius_world") : current.radius())
+                        .colorIfAbsent(NamedTextColor.YELLOW))
+                .setLore(lang.component("emote.lore_radius").colorIfAbsent(NamedTextColor.GRAY))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.back")));
     }
 
     @Override
@@ -85,14 +88,14 @@ public class EmoteEditorGUI extends InventoryGUI {
         ClickType click = event.getClick();
 
         if (slot == TEMPLATE_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el nuevo mensaje (usa {player}):",
+            chatPromptManager.prompt(player, chatPromptManager.lang().raw("emote.prompt_message"),
                     value -> replace(new EmoteDefinition(current.id(), value, current.targetTemplate(),
                             current.radius())));
             return;
         }
 
         if (slot == TARGET_TEMPLATE_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el nuevo mensaje con objetivo (usa {player} y {target}):",
+            chatPromptManager.prompt(player, chatPromptManager.lang().raw("emote.prompt_target_message"),
                     value -> replace(new EmoteDefinition(current.id(), current.template(), value, current.radius())));
             return;
         }

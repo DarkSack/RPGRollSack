@@ -1,6 +1,7 @@
 package com.sack.rpgroll.guilds.team.hud;
 
 import com.sack.rpgroll.api.RPGRollAPI;
+import com.sack.rpgroll.guilds.GuildsAPI;
 import com.sack.rpgroll.guilds.team.Team;
 import com.sack.rpgroll.guilds.team.TeamManager;
 
@@ -111,7 +112,8 @@ public class TeamHudTask implements Runnable {
 
     private String offlineName(UUID memberId) {
         var offline = Bukkit.getOfflinePlayer(memberId);
-        return (offline.getName() != null ? offline.getName() : memberId.toString()) + " (desconectado)";
+        return GuildsAPI.getLangManager().raw("team.hud.offline_suffix",
+                "name", offline.getName() != null ? offline.getName() : memberId.toString());
     }
 
 }

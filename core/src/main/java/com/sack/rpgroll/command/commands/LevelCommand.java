@@ -2,10 +2,8 @@ package com.sack.rpgroll.command.commands;
 
 import com.sack.rpgroll.RPGRoll;
 import com.sack.rpgroll.command.RPGCommand;
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.player.RPGPlayer;
-
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 
 import com.sack.rpgroll.player.PlayerManager;
 import org.bukkit.command.CommandSender;
@@ -30,6 +28,7 @@ public class LevelCommand implements RPGCommand {
     public void execute(CommandSender sender, String[] args) {
 
         Player player = (Player) sender;
+        LangManager lang = plugin.getBootstrap().getServices().get(LangManager.class);
 
         try {
 
@@ -40,24 +39,23 @@ public class LevelCommand implements RPGCommand {
             Optional<RPGPlayer> rpgPlayer = playerManager.getPlayer(player.getUniqueId());
 
             if (rpgPlayer.isEmpty()) {
-                player.sendMessage(
-                        Component.text("No se pudo encontrar tu información de jugador.").color(NamedTextColor.RED));
-                player.sendMessage(Component.text("Error al cargar tus datos.", NamedTextColor.RED));
+                lang.send(player, "level_command.not_found");
+                lang.send(player, "error.load_data");
                 return;
             }
 
-            displayLevel(player, rpgPlayer.get());
+            displayLevel(lang, player, rpgPlayer.get());
 
         } catch (Exception exception) {
 
-            player.sendMessage(Component.text("Error al cargar información de nivel.", NamedTextColor.RED));
+            lang.send(player, "level_command.error");
             exception.printStackTrace();
 
         }
 
     }
 
-    private void displayLevel(Player player, RPGPlayer rpgPlayer) {
+    private void displayLevel(LangManager lang, Player player, RPGPlayer rpgPlayer) {
 
         var progression = rpgPlayer.getProgression();
 
@@ -66,19 +64,17 @@ public class LevelCommand implements RPGCommand {
         int requiredExp = progression.getRequiredExpForNextLevel();
         int remaining = progression.getExpToNextLevel();
 
-        player.sendMessage(Component.text("========== Tu Nivel ==========", NamedTextColor.GOLD));
-        player.sendMessage(Component.text("Nivel: " + level, NamedTextColor.GREEN));
-        player.sendMessage(
-                Component.text("Experiencia: " + experience + "/" + requiredExp, NamedTextColor.AQUA));
+        lang.send(player, "level_command.header");
+        lang.send(player, "level_command.level", "level", level);
+        lang.send(player, "level_command.experience", "current", experience, "required", requiredExp);
 
         if (level < 100) {
-            player.sendMessage(
-                    Component.text("Para siguiente nivel: " + remaining + " EXP", NamedTextColor.YELLOW));
+            lang.send(player, "level_command.next_level", "remaining", remaining);
         } else {
-            player.sendMessage(Component.text("¡Has alcanzado el nivel máximo!", NamedTextColor.GOLD));
+            lang.send(player, "level_command.max_level");
         }
 
-        player.sendMessage(Component.text("==============================", NamedTextColor.GOLD));
+        lang.send(player, "level_command.footer");
 
     }
 

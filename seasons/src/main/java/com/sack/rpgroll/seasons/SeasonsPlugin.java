@@ -1,5 +1,6 @@
 package com.sack.rpgroll.seasons;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.common.resource.DirectoryCreator;
 import com.sack.rpgroll.common.resource.ResourceCopier;
 import com.sack.rpgroll.common.resource.ResourceFile;
@@ -46,9 +47,15 @@ public class SeasonsPlugin extends JavaPlugin {
     private SeasonRegionManager regionManager;
     private SeasonClockManager clockManager;
     private SeasonStateStore stateStore;
+    private LangManager langManager;
 
     @Override
     public void onEnable() {
+
+        saveDefaultConfig();
+
+        langManager = new LangManager(this, List.of("es", "en", "pt_BR"), "es");
+        langManager.reload(getConfig().getString("language", "es"));
 
         new DirectoryCreator(this).create(DIRECTORIES);
         new ResourceCopier(this).copyDirectories(DIRECTORIES);
@@ -77,12 +84,12 @@ public class SeasonsPlugin extends JavaPlugin {
         BiomeTemperatureTable biomeTemperatureTable = new BiomeTemperatureTable(this);
         ClimateManager climateManager = new ClimateManager(regionResolver, clockManager, biomeTemperatureTable);
 
-        WorldEventEngine worldEventEngine = new WorldEventEngine(this);
+        WorldEventEngine worldEventEngine = new WorldEventEngine(this, langManager);
 
         SeasonsAPI.init(seasonManager, calendarManager, worldEventManager, regionManager, clockManager,
                 regionResolver, climateManager, worldEventEngine, DEFAULT_CALENDAR_ID);
 
-        ChatPromptManager chatPromptManager = new ChatPromptManager(this);
+        ChatPromptManager chatPromptManager = new ChatPromptManager(this, langManager);
         getServer().getPluginManager().registerEvents(chatPromptManager, this);
 
         Bukkit.getScheduler().runTaskTimer(this, () -> clockManager.tick(CLOCK_TICK_INTERVAL), CLOCK_TICK_INTERVAL,
@@ -94,7 +101,7 @@ public class SeasonsPlugin extends JavaPlugin {
         Bukkit.getScheduler().runTaskTimer(this, new SeasonMobSpawnTask(regionResolver), MOB_SPAWN_TICK_INTERVAL,
                 MOB_SPAWN_TICK_INTERVAL);
         Bukkit.getScheduler().runTaskTimer(this,
-                new DailyRollTask(clockManager, worldEventManager, worldEventEngine, DEFAULT_CALENDAR_ID),
+                new DailyRollTask(clockManager, worldEventManager, worldEventEngine, DEFAULT_CALENDAR_ID, langManager),
                 DAILY_ROLL_TICK_INTERVAL, DAILY_ROLL_TICK_INTERVAL);
         Bukkit.getScheduler().runTaskTimer(this, () -> stateStore.save(clockManager), AUTOSAVE_TICK_INTERVAL,
                 AUTOSAVE_TICK_INTERVAL);
@@ -103,7 +110,7 @@ public class SeasonsPlugin extends JavaPlugin {
         if (adminCommand == null) {
             getLogger().severe("✘ El comando 'seasonsadmin' no está declarado en plugin.yml");
         } else {
-            var seasonsAdminCommand = new SeasonsAdminCommand(calendarManager, seasonManager, worldEventManager,
+            var seasonsAdminCommand = new SeasonsAdminCommand(this, calendarManager, seasonManager, worldEventManager,
                     regionManager, worldEventEngine, SeasonsAPI.get(), chatPromptManager);
             adminCommand.setExecutor(seasonsAdminCommand);
             adminCommand.setTabCompleter(seasonsAdminCommand);
@@ -113,7 +120,7 @@ public class SeasonsPlugin extends JavaPlugin {
         if (playerCommand == null) {
             getLogger().severe("✘ El comando 'seasons' no está declarado en plugin.yml");
         } else {
-            var seasonsCommand = new SeasonsCommand();
+            var seasonsCommand = new SeasonsCommand(langManager);
             playerCommand.setExecutor(seasonsCommand);
             playerCommand.setTabCompleter(seasonsCommand);
         }
@@ -148,6 +155,10 @@ public class SeasonsPlugin extends JavaPlugin {
 
     public SeasonClockManager getClockManager() {
         return clockManager;
+    }
+
+    public LangManager getLangManager() {
+        return langManager;
     }
 
 }

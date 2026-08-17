@@ -4,6 +4,7 @@ import com.sack.rpgroll.chat.channel.ChannelManager;
 import com.sack.rpgroll.chat.channel.ChatChannel;
 import com.sack.rpgroll.chat.player.PlayerChannelState;
 import com.sack.rpgroll.chat.player.PlayerChannelStateManager;
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.util.ComponentUtils;
 import com.sack.rpgroll.util.TabCompleteUtil;
 
@@ -26,17 +27,19 @@ public class ChannelCommand implements CommandExecutor, TabCompleter {
 
     private final ChannelManager channelManager;
     private final PlayerChannelStateManager stateManager;
+    private final LangManager lang;
 
-    public ChannelCommand(ChannelManager channelManager, PlayerChannelStateManager stateManager) {
+    public ChannelCommand(ChannelManager channelManager, PlayerChannelStateManager stateManager, LangManager lang) {
         this.channelManager = channelManager;
         this.stateManager = stateManager;
+        this.lang = lang;
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
         if (!(sender instanceof Player player)) {
-            sender.sendMessage(Component.text("Solo un jugador puede usar este comando.", NamedTextColor.RED));
+            lang.send(sender, "common.players_only");
             return true;
         }
 
@@ -60,7 +63,7 @@ public class ChannelCommand implements CommandExecutor, TabCompleter {
 
         PlayerChannelState state = stateManager.getOrLoad(player);
 
-        player.sendMessage(Component.text("=== Canales ===", NamedTextColor.GOLD));
+        lang.send(player, "channel.list_header");
 
         for (ChatChannel channel : channelManager.sortedByPriority()) {
 
@@ -74,42 +77,41 @@ public class ChannelCommand implements CommandExecutor, TabCompleter {
             player.sendMessage(Component.text(" - ", NamedTextColor.GRAY)
                     .append(ComponentUtils.parse(channel.displayName()))
                     .append(Component.text(" (" + channel.id() + ") "))
-                    .append(active ? Component.text("[activo]", NamedTextColor.GREEN)
-                            : joined ? Component.text("[unido]", NamedTextColor.GRAY)
-                            : Component.text("[no unido]", NamedTextColor.DARK_GRAY)));
+                    .append(active ? lang.component("channel.tag_active")
+                            : joined ? lang.component("channel.tag_joined")
+                            : lang.component("channel.tag_not_joined")));
         }
     }
 
     private void handleJoin(Player player, String[] args) {
 
         if (args.length < 2) {
-            player.sendMessage(Component.text("Uso: /channel join <canal>", NamedTextColor.YELLOW));
+            lang.send(player, "channel.usage_join");
             return;
         }
 
         ChatChannel channel = channelManager.get(args[1]).orElse(null);
 
         if (channel == null) {
-            player.sendMessage(Component.text("No existe ese canal.", NamedTextColor.RED));
+            lang.send(player, "channel.not_found");
             return;
         }
 
         if (channel.requiresViewPermission() && !player.hasPermission(channel.viewPermission())) {
-            player.sendMessage(Component.text("No tenés permiso para ver ese canal.", NamedTextColor.RED));
+            lang.send(player, "channel.no_permission_view");
             return;
         }
 
         stateManager.getOrLoad(player).join(channel.id());
         stateManager.save(player.getUniqueId());
-        player.sendMessage(Component.text("✔ Te uniste a ", NamedTextColor.GREEN)
-                .append(ComponentUtils.parse(channel.displayName()))
-                .append(Component.text(".", NamedTextColor.GREEN)));
+        player.sendMessage(lang.component("channel.joined", "channel", channel.displayName())
+                .colorIfAbsent(NamedTextColor.GREEN));
     }
 
     private void handleLeave(Player player, String[] args) {
 
         if (args.length < 2) {
-            player.sendMessage(Component.text("Uso: /channel leave <canal>", NamedTextColor.YELLOW));
+            lang.send(player, "channel.usage_leave");
             return;
         }
 
@@ -121,25 +123,25 @@ public class ChannelCommand implements CommandExecutor, TabCompleter {
         }
 
         stateManager.save(player.getUniqueId());
-        player.sendMessage(Component.text("Saliste del canal.", NamedTextColor.GRAY));
+        lang.send(player, "channel.left");
     }
 
     private void handleSwitch(Player player, String[] args) {
 
         if (args.length < 2) {
-            player.sendMessage(Component.text("Uso: /channel switch <canal>", NamedTextColor.YELLOW));
+            lang.send(player, "channel.usage_switch");
             return;
         }
 
         ChatChannel channel = channelManager.get(args[1]).orElse(null);
 
         if (channel == null) {
-            player.sendMessage(Component.text("No existe ese canal.", NamedTextColor.RED));
+            lang.send(player, "channel.not_found");
             return;
         }
 
         if (channel.requiresViewPermission() && !player.hasPermission(channel.viewPermission())) {
-            player.sendMessage(Component.text("No tenés permiso para ver ese canal.", NamedTextColor.RED));
+            lang.send(player, "channel.no_permission_view");
             return;
         }
 
@@ -148,31 +150,29 @@ public class ChannelCommand implements CommandExecutor, TabCompleter {
         state.setActiveChannelId(channel.id());
         stateManager.save(player.getUniqueId());
 
-        player.sendMessage(Component.text("✔ Ahora hablás en ", NamedTextColor.GREEN)
-                .append(ComponentUtils.parse(channel.displayName()))
-                .append(Component.text(".", NamedTextColor.GREEN)));
+        player.sendMessage(lang.component("channel.switched", "channel", channel.displayName())
+                .colorIfAbsent(NamedTextColor.GREEN));
     }
 
     private void handleInfo(Player player, String[] args) {
 
         if (args.length < 2) {
-            player.sendMessage(Component.text("Uso: /channel info <canal>", NamedTextColor.YELLOW));
+            lang.send(player, "channel.usage_info");
             return;
         }
 
         ChatChannel channel = channelManager.get(args[1]).orElse(null);
 
         if (channel == null) {
-            player.sendMessage(Component.text("No existe ese canal.", NamedTextColor.RED));
+            lang.send(player, "channel.not_found");
             return;
         }
 
         player.sendMessage(Component.text("=== ", NamedTextColor.GOLD)
                 .append(ComponentUtils.parse(channel.displayName()))
                 .append(Component.text(" ===", NamedTextColor.GOLD)));
-        player.sendMessage(Component.text("Alcance: " + channel.scope() + " · Prioridad: " + channel.priority(),
-                NamedTextColor.GRAY));
-        player.sendMessage(Component.text("Cooldown: " + channel.cooldownMillis() + "ms", NamedTextColor.GRAY));
+        lang.send(player, "channel.info_scope", "scope", channel.scope(), "priority", channel.priority());
+        lang.send(player, "channel.info_cooldown", "cooldown", channel.cooldownMillis());
     }
 
     @Override

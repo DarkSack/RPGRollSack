@@ -1,0 +1,187 @@
+common:
+  no_permission: "&cYou don't have permission to use this command."
+
+command:
+  player:
+    usage: "&cUsage: /seasons info [world]"
+    not_ready: "&cRPGRoll-Seasons isn't ready yet."
+    unknown_world: "&cNo such world: {world}"
+    specify_world: "&cSpecify a world: /seasons info <world>"
+    no_active_season: "&7There's no active season configured for {world}."
+    current_season: "&6Current season in {world}: &e{season}"
+    temperature: "&bTemperature where you are: {temperature}°C"
+  admin:
+    usage: "&cUsage: /seasonsadmin <browser|reload|setseason <world> <id>|advance <world>|trigger <id> <world>>"
+    players_only_studio: "&cOnly players can open the Season Studio."
+    reloaded: "&a✔ Reloaded: {calendars} calendar(s), {seasons} season(s), {events} event(s), {regions} region(s)."
+    usage_setseason: "&cUsage: /seasonsadmin setseason <world> <id>"
+    unknown_world: "&cNo such world: {world}"
+    setseason_failed: "&cCouldn't do it — the season doesn't exist or isn't in that world's calendar."
+    setseason_success: "&a✔ Forced {world}'s season to {season}."
+    usage_advance: "&cUsage: /seasonsadmin advance <world>"
+    advance_success: "&a✔ Advanced {world}'s season."
+    usage_trigger: "&cUsage: /seasonsadmin trigger <id> <world>"
+    unknown_event: "&cNo event with id: {id}"
+    trigger_success: "&a✔ Event triggered in {world}."
+
+event:
+  boss_announce: "&4☠ &cA {season} enemy has appeared..."
+  started: "&6✦ &e{event}&6 has begun."
+  ended: "&6✦ &e{event}&7 has ended."
+
+prompt:
+  cancel_keyword: "cancel"
+  footer: "&7Type in chat, or '{keyword}' to abort."
+  cancelled: "&cCancelled."
+
+gui:
+  common:
+    close: "Close"
+    back: "Back"
+    click_edit: "&eClick to edit"
+    shift_remove: "&cShift-click to remove"
+    no_description: "(no description)"
+    none_masc: "(none)"
+    none_fem: "(none)"
+    invalid_format: "&cInvalid format."
+    id_label: "&7id: {id}"
+    name_label: "&eName: {name}"
+    icon_label: "&eIcon: {icon}"
+    color_label: "Color: {color}"
+    description_title: "&eDescription"
+    world_label: "&eWorld: {world}"
+    mode_label: "&bMode: {mode}"
+    prompt_name: "Type the new name:"
+    prompt_icon: "Type the icon Material:"
+    prompt_description: "Type the new description:"
+
+  studio_hub:
+    title: "&6Season Studio"
+    calendars: "&bCalendars"
+    calendars_lore: "&7{count} defined"
+    seasons: "&aSeasons"
+    seasons_lore: "&7{count} defined"
+    world_events: "&dWorld Events"
+    world_events_lore: "&7{count} defined"
+    regions: "&6Regions"
+    regions_lore: "&7{count} defined"
+
+  calendar_browser:
+    title: "&6Calendars"
+    season_count: "&7{count} season(s)"
+    new: "&aCreate new calendar"
+    prompt_new_id: "Type the id for the new calendar:"
+    already_exists: "&cA calendar with that id already exists."
+
+  calendar_editor:
+    title: "&6Calendar: {id}"
+    add: "&aAdd season at the end"
+    add_lore: "&7Type the id of an existing season"
+    prompt_add: "Type the id of the season to add:"
+    unknown_season: "&cNo season with that id exists."
+
+  season_browser:
+    title: "&6Seasons"
+    duration_label: "&7{amount} {unit}"
+    new: "&aCreate new season"
+    prompt_new_id: "Type the id for the new season:"
+    already_exists: "&cA season with that id already exists."
+
+  season_editor:
+    title: "&6Season: {id}"
+    duration_label: "&eDuration: {amount} {unit}"
+    duration_lore: "&7Type: AMOUNT UNIT (e.g. 7 MINECRAFT_DAYS)"
+    climate_label: "&bClimate"
+    climate_lore_1: "&7rain={rain} storm={storm}"
+    climate_lore_2: "&7temp={temperature} snow={snow}"
+    climate_lore_3: "&8Click to rewrite all the values"
+    exclusive_boss_label: "&cExclusive boss: {value}"
+    exclusive_boss_lore: "&7Type an RPGRoll-Mobs mob id (or 'none')"
+    world_event_chance_label: "&dDaily world event chance: {percent}%"
+    step_5pct: "&7Click: +5% · Right-click: -5%"
+    tags_label: "&eTags: {tags}"
+    tags_lore: "&7Type the comma-separated list"
+    biome_modifiers_label: "&eBiome modifiers: {count}"
+    biome_modifiers_lore: "&7Type: biome=delta,biome2=delta2 (e.g. taiga=-10,desert=5)"
+    vegetation_label: "&aVegetation: {count}"
+    vegetation_lore: "&8Type the comma-separated list (see types in the docs)"
+    sub_seasons_label: "&a▶ Sub-seasons ({count})"
+    mob_modifiers_label: "&a▶ Seasonal mobs ({count})"
+    world_events_label: "&eEligible events: {count}"
+    world_events_lore: "&7Type the comma-separated ids"
+    prompt_color: "Type the color (e.g. GREEN, GOLD):"
+    prompt_duration: "Type: AMOUNT UNIT (REAL_HOURS, REAL_DAYS, REAL_WEEKS, MINECRAFT_DAYS):"
+    invalid_unit: "&cInvalid unit: {value}"
+    prompt_climate: "Type: rain-chance=x,storm-chance=x,snow-chance=x,fog-chance=x,base-temperature=x,temperature-variance=x,wind-strength=x,humidity=x,heatwave-chance=x,thunderstorm-chance=x"
+    prompt_exclusive_boss: "Type the boss mob's id (or 'none'):"
+    prompt_tags: "Type the comma-separated tags:"
+    prompt_biome_modifiers: "Type: biome=delta,biome2=delta2:"
+    prompt_vegetation: "Type: SNOW_LAYERS,ICE_LAKES,DRY_GRASS,FALLING_LEAVES,FLOWER_BOOM (whichever apply):"
+    prompt_world_events: "Type the comma-separated ids of eligible events:"
+
+  sub_seasons_editor:
+    title: "&6Sub-seasons: {id}"
+    duration_label: "&7Duration: {amount} {unit}"
+    temperature_label: "&bFixed temperature: {temperature}°C"
+    add: "&aAdd sub-season at the end"
+    add_lore_1: "&7ID NAME AMOUNT UNIT [TEMP]"
+    add_lore_2: "&8e.g. early Early 2 MINECRAFT_DAYS"
+    prompt_add: "Type: ID NAME AMOUNT UNIT [TEMPERATURE]:"
+    invalid_unit: "&cInvalid unit: {value}"
+
+  mob_modifiers_editor:
+    title: "&6Seasonal mobs: {id}"
+    chance_label: "&7Extra chance: {percent}%"
+    add: "&aAdd seasonal mob"
+    add_lore: "&7Type: mob-id chance (e.g. winter_yeti 0.05)"
+    prompt_add: "Type: mob-id chance (0.0-1.0):"
+    invalid_chance: "&cInvalid chance: {value}"
+
+  world_event_browser:
+    title: "&6World Events"
+    component_count: "&7{count} component(s)"
+    new: "&aCreate new event"
+    prompt_new_id: "Type the id for the new event:"
+    already_exists: "&cAn event with that id already exists."
+
+  world_event_editor:
+    title: "&6Event: {id}"
+    duration_label: "&eDuration: {ticks} ticks"
+    duration_lore: "&7Click: +100 · Right-click: -100"
+    test: "&a▶ Test in your world"
+    test_unavailable: "&8(not available from here)"
+    test_lore: "&7Triggers the event in your current world"
+    components_label: "&a▶ Components ({count})"
+
+  world_event_components_editor:
+    title: "&6Components: {id}"
+    add: "&aAdd component"
+    add_lore_1: "&7TYPE key=value,key2=value2"
+    add_lore_2: "&8e.g. PARTICLE particle=FLAME,count=30"
+    add_lore_3: "&8e.g. SPAWN_MOB mob-id=winter_yeti,chance=0.5"
+    add_lore_4: "&8Order matters — they run top to bottom"
+    prompt_add: "Type: TYPE key=value,key2=value2:"
+    invalid_type: "&cInvalid type: {value}"
+
+  region_browser:
+    title: "&6Season Regions"
+    new: "&aCreate new region (at your location)"
+    prompt_new_id: "Type the id for the new region:"
+    already_exists: "&cA region with that id already exists."
+
+  region_editor:
+    title: "&6Region: {id}"
+    bounds_lore: "&7({minX},{minY},{minZ}) to ({maxX},{maxY},{maxZ})"
+    corner_a: "&eSet corner A (your position)"
+    corner_b: "&eSet corner B (your position)"
+    mode_lore: "&7Click to cycle to the next one"
+    pinned_season_label: "&aFixed season: {value}"
+    pinned_season_lore_1: "&7Only applies in PINNED_SEASON mode"
+    pinned_season_lore_2: "&7Type the id of a season (or 'none')"
+    pinned_calendar_label: "&bOwn calendar: {value}"
+    pinned_calendar_lore_1: "&7Only applies in PINNED_CALENDAR mode"
+    pinned_calendar_lore_2: "&7Type the id of a calendar (or 'none')"
+    prompt_pinned_season: "Type the id of the fixed season (or 'none'):"
+    unknown_season: "&cThat season doesn't exist."
+    prompt_pinned_calendar: "Type the id of the own calendar (or 'none'):"
+    unknown_calendar: "&cThat calendar doesn't exist."

@@ -1,5 +1,6 @@
 package com.sack.rpgroll.items;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.common.resource.DirectoryCreator;
 import com.sack.rpgroll.common.resource.ResourceCopier;
 import com.sack.rpgroll.items.command.ItemAdminCommand;
@@ -15,6 +16,8 @@ import com.sack.rpgroll.items.listener.AutoRepairTask;
 import com.sack.rpgroll.items.listener.ItemEquipTask;
 import com.sack.rpgroll.items.listener.ItemTriggerListener;
 import com.sack.rpgroll.items.listener.PlayerSessionListener;
+import com.sack.rpgroll.items.pack.PackAssetSync;
+import com.sack.rpgroll.items.pack.PackManager;
 import com.sack.rpgroll.items.rarity.RarityManager;
 import com.sack.rpgroll.items.recipe.CustomRecipeRegistry;
 import com.sack.rpgroll.items.recipe.RecipeRegistrar;
@@ -36,7 +39,7 @@ import java.util.List;
 
 public class ItemsPlugin extends JavaPlugin {
 
-    private static final List<String> DIRECTORIES = List.of("items", "rarities", "gems");
+    private static final List<String> DIRECTORIES = List.of("packs", "rarities", "gems");
     private static final long EQUIP_POLL_TICKS = 10L;
     private static final long AUTO_REPAIR_TICKS = 1200L;
 
@@ -54,12 +57,24 @@ public class ItemsPlugin extends JavaPlugin {
     private SkinService skinService;
     private DurabilityService durabilityService;
     private CustomRecipeRegistry customRecipeRegistry;
+    private LangManager langManager;
+    private PackManager packManager;
 
     @Override
     public void onEnable() {
 
+        saveDefaultConfig();
+
+        langManager = new LangManager(this, List.of("es", "en", "pt_BR"), "es");
+        langManager.reload(getConfig().getString("language", "es"));
+
+        packManager = new PackManager(this);
+        packManager.migrateLegacyItemsFolder();
+
         new DirectoryCreator(this).create(DIRECTORIES);
         new ResourceCopier(this).copyDirectories(DIRECTORIES);
+
+        new PackAssetSync(this, packManager).syncAll();
 
         rarityManager = new RarityManager(this);
         gemManager = new GemManager(this);
@@ -70,7 +85,7 @@ public class ItemsPlugin extends JavaPlugin {
         itemManager.initialize();
 
         instanceService = new ItemInstanceService(this);
-        itemFactory = new ItemFactory(this, instanceService, rarityManager);
+        itemFactory = new ItemFactory(this, instanceService, rarityManager, langManager);
 
         statRegistry = new StatRegistry();
         conditionRegistry = new ConditionRegistry();
@@ -79,28 +94,28 @@ public class ItemsPlugin extends JavaPlugin {
 
         ItemConditionEvaluator conditionEvaluator = new ItemConditionEvaluator(conditionRegistry);
 
-        GemItem gemItem = new GemItem(this);
+        GemItem gemItem = new GemItem(this, langManager);
         socketService = new SocketService(instanceService, itemFactory, gemManager, gemItem);
         upgradeService = new UpgradeService(instanceService, itemFactory);
         skinService = new SkinService(instanceService, itemFactory);
-        durabilityService = new DurabilityService(instanceService, itemFactory);
+        durabilityService = new DurabilityService(instanceService, itemFactory, langManager);
 
         statEngine = new ItemStatEngine(this, itemManager, itemFactory, instanceService, socketService);
 
         customRecipeRegistry = new CustomRecipeRegistry();
         new RecipeRegistrar(this, itemFactory).registerAll(itemManager);
 
-        ItemRequirementChecker requirementChecker = new ItemRequirementChecker();
+        ItemRequirementChecker requirementChecker = new ItemRequirementChecker(langManager);
 
-        ChatPromptManager chatPromptManager = new ChatPromptManager(this);
+        ChatPromptManager chatPromptManager = new ChatPromptManager(this, langManager);
         getServer().getPluginManager().registerEvents(chatPromptManager, this);
 
         ItemTriggerListener triggerListener = new ItemTriggerListener(itemManager, instanceService, actionRegistry,
-                conditionEvaluator, durabilityService, statEngine);
+                conditionEvaluator, durabilityService, statEngine, langManager);
         getServer().getPluginManager().registerEvents(triggerListener, this);
 
         ItemEquipTask equipTask = new ItemEquipTask(itemManager, instanceService, actionRegistry, statEngine,
-                requirementChecker);
+                requirementChecker, langManager);
         getServer().getScheduler().runTaskTimer(this, equipTask, EQUIP_POLL_TICKS, EQUIP_POLL_TICKS);
 
         getServer().getPluginManager().registerEvents(new PlayerSessionListener(equipTask), this);
@@ -109,9 +124,9 @@ public class ItemsPlugin extends JavaPlugin {
         getServer().getScheduler().runTaskTimer(this, autoRepairTask, AUTO_REPAIR_TICKS, AUTO_REPAIR_TICKS);
 
         registerCommand("itemadmin", new ItemAdminCommand(itemManager, itemFactory, rarityManager, statRegistry,
-                chatPromptManager, this));
+                chatPromptManager, packManager, this));
         registerCommand("item", new ItemCommand(itemManager, instanceService, upgradeService, skinService,
-                socketService));
+                socketService, langManager));
 
         registerPlaceholders();
 
@@ -188,6 +203,14 @@ public class ItemsPlugin extends JavaPlugin {
 
     public CustomRecipeRegistry getCustomRecipeRegistry() {
         return customRecipeRegistry;
+    }
+
+    public LangManager getLangManager() {
+        return langManager;
+    }
+
+    public PackManager getPackManager() {
+        return packManager;
     }
 
 }

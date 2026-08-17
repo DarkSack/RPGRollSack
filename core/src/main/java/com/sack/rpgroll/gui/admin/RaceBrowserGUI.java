@@ -1,5 +1,6 @@
 package com.sack.rpgroll.gui.admin;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.api.race.Race;
@@ -25,12 +26,14 @@ public class RaceBrowserGUI extends InventoryGUI {
 
     private final RaceManagerImpl raceManager;
     private final ChatPromptManager chatPromptManager;
+    private final LangManager lang;
     private List<Race> races;
 
     public RaceBrowserGUI(Player player, RaceManagerImpl raceManager, ChatPromptManager chatPromptManager) {
-        super(player, Component.text("Razas RPGRoll", NamedTextColor.GOLD), SIZE);
+        super(player, chatPromptManager.lang().component("race_browser_gui.title"), SIZE);
         this.raceManager = raceManager;
         this.chatPromptManager = chatPromptManager;
+        this.lang = chatPromptManager.lang();
         this.races = List.copyOf(raceManager.getAll());
     }
 
@@ -49,16 +52,16 @@ public class RaceBrowserGUI extends InventoryGUI {
 
             setItem(i, new ItemBuilder(Material.PLAYER_HEAD)
                     .setName(Component.text(race.id(), NamedTextColor.YELLOW))
-                    .setLore(Component.text(race.baseAttributes().size() + " atributo(s) base", NamedTextColor.GRAY),
-                            Component.text("Click para editar", NamedTextColor.YELLOW))
+                    .setLore(lang.component("race_browser_gui.attribute_count", "count", race.baseAttributes().size()),
+                            lang.component("race_browser_gui.click_to_edit"))
                     .build());
         }
 
         setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Crear raza nueva", NamedTextColor.GREEN))
+                .setName(lang.component("race_browser_gui.create_new"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Cerrar"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("race_browser_gui.close_button")));
     }
 
     @Override
@@ -68,7 +71,7 @@ public class RaceBrowserGUI extends InventoryGUI {
         int slot = event.getSlot();
 
         if (slot < races.size() && slot < 36) {
-            new RaceEditorGUI(player, races.get(slot), raceManager, chatPromptManager, this::reopen).open();
+            new RaceEditorGUI(player, races.get(slot), raceManager, chatPromptManager, lang, this::reopen).open();
             return;
         }
 
@@ -83,12 +86,12 @@ public class RaceBrowserGUI extends InventoryGUI {
     }
 
     private void promptNew() {
-        chatPromptManager.prompt(player, "Escribí el id de la nueva raza:", value -> {
+        chatPromptManager.prompt(player, lang.raw("race_browser_gui.prompt_new"), value -> {
 
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 
             if (raceManager.exists(id)) {
-                player.sendMessage(Component.text("Ya existe una raza con ese id.", NamedTextColor.RED));
+                lang.send(player, "race_browser_gui.already_exists");
                 reopen();
                 return;
             }

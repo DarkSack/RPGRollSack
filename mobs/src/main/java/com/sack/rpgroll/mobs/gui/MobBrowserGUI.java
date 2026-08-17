@@ -1,5 +1,6 @@
 package com.sack.rpgroll.mobs.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.util.ComponentUtils;
 
 import com.sack.rpgroll.gui.util.ItemBuilder;
@@ -12,12 +13,10 @@ import com.sack.rpgroll.mobs.registry.MobStatRegistry;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
@@ -49,6 +48,7 @@ public class MobBrowserGUI extends PaginatedGUI {
     private final MobStatRegistry statRegistry;
     private final ChatPromptManager chatPromptManager;
     private final Plugin plugin;
+    private final LangManager lang;
 
     private List<MobDefinition> filtered;
     private List<MobCategory> categories;
@@ -58,12 +58,13 @@ public class MobBrowserGUI extends PaginatedGUI {
     public MobBrowserGUI(Player player, MobManager mobManager, MobStatRegistry statRegistry,
             ChatPromptManager chatPromptManager, Plugin plugin) {
 
-        super(player, Component.text("Mobs RPGRoll", NamedTextColor.GOLD), SIZE, CONTENT_SLOTS);
+        super(player, chatPromptManager.lang().component("gui.browser.title"), SIZE, CONTENT_SLOTS);
 
         this.mobManager = mobManager;
         this.statRegistry = statRegistry;
         this.chatPromptManager = chatPromptManager;
         this.plugin = plugin;
+        this.lang = chatPromptManager.lang();
 
         recomputeCategories();
         applyFilters();
@@ -110,9 +111,9 @@ public class MobBrowserGUI extends PaginatedGUI {
                         .colorIfAbsent(NamedTextColor.WHITE))
                 .setLore(
                         Component.text(definition.id(), NamedTextColor.DARK_GRAY),
-                        Component.text(definition.category() + " · Nivel " + definition.level(),
-                                NamedTextColor.GRAY),
-                        Component.text("Click para editar", NamedTextColor.YELLOW))
+                        lang.component("gui.browser.item_category_level", "category", definition.category(),
+                                "level", definition.level()),
+                        lang.component("gui.common.click_to_edit"))
                 .build());
     }
 
@@ -141,29 +142,29 @@ public class MobBrowserGUI extends PaginatedGUI {
         }
 
         setItem(PREV_SLOT, hasPreviousPage()
-                ? new ItemBuilder(Material.ARROW).setName(Component.text("« Anterior", NamedTextColor.YELLOW)).build()
+                ? new ItemBuilder(Material.ARROW).setName(lang.component("gui.common.prev_page")).build()
                 : ItemBuilder.createFiller());
 
         setItem(NEXT_SLOT, hasNextPage()
-                ? new ItemBuilder(Material.ARROW).setName(Component.text("Siguiente »", NamedTextColor.YELLOW)).build()
+                ? new ItemBuilder(Material.ARROW).setName(lang.component("gui.common.next_page")).build()
                 : ItemBuilder.createFiller());
 
         setItem(SEARCH_SLOT, new ItemBuilder(Material.COMPASS)
-                .setName(Component.text("Buscar", NamedTextColor.AQUA))
-                .setLore(Component.text(searchText.isBlank() ? "(sin filtro)" : "Filtro: " + searchText,
-                        NamedTextColor.GRAY))
+                .setName(lang.component("gui.browser.search_button"))
+                .setLore(searchText.isBlank() ? lang.component("gui.browser.no_filter")
+                        : lang.component("gui.browser.filter_label", "text", searchText))
                 .build());
 
         setItem(ALL_CATEGORIES_SLOT, new ItemBuilder(activeCategory == null ? Material.LIME_DYE : Material.GRAY_DYE)
-                .setName(Component.text("Todas las categorías", NamedTextColor.AQUA))
+                .setName(lang.component("gui.browser.all_categories"))
                 .build());
 
         setItem(CLEAR_SEARCH_SLOT, new ItemBuilder(Material.BARRIER)
-                .setName(Component.text("Limpiar búsqueda", NamedTextColor.RED))
+                .setName(lang.component("gui.browser.clear_search"))
                 .build());
 
         setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Crear mob nuevo", NamedTextColor.GREEN))
+                .setName(lang.component("gui.browser.create_new"))
                 .build());
     }
 
@@ -208,21 +209,21 @@ public class MobBrowserGUI extends PaginatedGUI {
     }
 
     private void promptSearch() {
-        chatPromptManager.prompt(player, "Escribí parte del nombre o id del mob:", value -> {
+        chatPromptManager.prompt(player, "gui.browser.prompt_search", value -> {
             searchText = value.trim();
             applyFilters();
         });
     }
 
     private void promptNewMob() {
-        chatPromptManager.prompt(player, "Escribí: id;tipo-entidad-base (ej. cave_troll;ZOMBIE):", value -> {
+        chatPromptManager.prompt(player, "gui.browser.prompt_new_mob", value -> {
 
             String[] parts = value.split(";", 2);
             String id = parts[0].trim().toLowerCase(Locale.ROOT).replace(' ', '_');
             String baseEntityType = parts.length > 1 ? parts[1].trim().toUpperCase(Locale.ROOT) : "ZOMBIE";
 
             if (id.isBlank() || mobManager.exists(id)) {
-                player.sendMessage(Component.text("Id inválido o ya existente.", NamedTextColor.RED));
+                lang.send(player, "gui.browser.invalid_id");
                 return;
             }
 

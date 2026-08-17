@@ -2,6 +2,7 @@ package com.sack.rpgroll.command.commands;
 
 import com.sack.rpgroll.RPGRoll;
 import com.sack.rpgroll.command.RPGCommand;
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.config.ConfigManager;
 import com.sack.rpgroll.gameplay.combat.CombatStats;
 import com.sack.rpgroll.gameplay.combat.CombatTracker;
@@ -12,9 +13,6 @@ import com.sack.rpgroll.gameplay.skill.SkillManager;
 import com.sack.rpgroll.player.PlayerManager;
 import com.sack.rpgroll.player.RPGPlayer;
 
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
-
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.LivingEntity;
@@ -22,6 +20,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.RayTraceResult;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 /**
@@ -47,9 +46,10 @@ public class UseSkillCommand implements RPGCommand {
     public void execute(CommandSender sender, String[] args) {
 
         Player player = (Player) sender;
+        LangManager lang = plugin.getBootstrap().getServices().get(LangManager.class);
 
         if (args.length < 1) {
-            player.sendMessage(Component.text("Uso: " + getUsage(), NamedTextColor.RED));
+            lang.send(player, "use_skill_command.usage", "usage", getUsage());
             return;
         }
 
@@ -67,7 +67,7 @@ public class UseSkillCommand implements RPGCommand {
 
             Optional<RPGPlayer> rpgPlayerOpt = playerManager.getPlayer(player.getUniqueId());
             if (rpgPlayerOpt.isEmpty()) {
-                player.sendMessage(Component.text("Error al cargar tus datos.", NamedTextColor.RED));
+                lang.send(player, "use_skill_command.data_load_error");
                 return;
             }
 
@@ -75,14 +75,14 @@ public class UseSkillCommand implements RPGCommand {
 
             Optional<Skill> skillOpt = skillManager.get(skillId);
             if (skillOpt.isEmpty()) {
-                player.sendMessage(Component.text("No existe la habilidad: " + skillId, NamedTextColor.RED));
+                lang.send(player, "use_skill_command.unknown_skill", "skill", skillId);
                 return;
             }
 
             Skill skill = skillOpt.get();
 
             if (!rpgPlayer.getSkills().hasSkill(skill.id())) {
-                player.sendMessage(Component.text("No has aprendido esa habilidad.", NamedTextColor.RED));
+                lang.send(player, "use_skill_command.not_learned");
                 return;
             }
 
@@ -94,18 +94,17 @@ public class UseSkillCommand implements RPGCommand {
             int combatDuration = gameplayConfig != null ? gameplayConfig.getInt("combat.combat_duration", 10) : 10;
 
             if (!allowInCombat && combatTracker.isInCombat(player.getUniqueId(), combatDuration)) {
-                player.sendMessage(Component.text("No puedes usar habilidades mientras estás en combate.",
-                        NamedTextColor.RED));
+                lang.send(player, "skill.in_combat");
                 return;
             }
 
             CombatStats combatStats = rpgPlayer.getCombatStats();
 
             if (!skill.canUse(rpgPlayer.getLevel(), combatStats.currentMana())) {
-                player.sendMessage(Component.text(
-                        "No tienes suficiente maná (" + combatStats.currentMana() + "/" + skill.manaCost()
-                                + ") o nivel suficiente (requiere nivel " + skill.requiredLevel() + ").",
-                        NamedTextColor.RED));
+                lang.send(player, "use_skill_command.insufficient_resources",
+                        "current", combatStats.currentMana(),
+                        "cost", skill.manaCost(),
+                        "required", skill.requiredLevel());
                 return;
             }
 
@@ -113,9 +112,8 @@ public class UseSkillCommand implements RPGCommand {
                     player.getUniqueId(), skill.id(), skill.cooldownSeconds(), globalCooldown);
 
             if (remainingCooldown > 0) {
-                player.sendMessage(Component.text(
-                        String.format("Esa habilidad todavía está en cooldown (%.1fs restantes).", remainingCooldown),
-                        NamedTextColor.YELLOW));
+                lang.send(player, "use_skill_command.on_cooldown",
+                        "seconds", String.format(Locale.ROOT, "%.1f", remainingCooldown));
                 return;
             }
 
@@ -139,13 +137,11 @@ public class UseSkillCommand implements RPGCommand {
                     combatTracker.markInCombat(targetPlayer.getUniqueId());
                 }
 
-                player.sendMessage(Component.text(
-                        "✔ Usaste " + skill.name() + " (-" + skill.manaCost() + " maná).", NamedTextColor.LIGHT_PURPLE));
+                lang.send(player, "use_skill_command.success_with_target",
+                        "skill", skill.name(), "mana", skill.manaCost());
             } else {
-                player.sendMessage(Component.text(
-                        "✔ Usaste " + skill.name() + " (-" + skill.manaCost()
-                                + " maná), pero no había objetivo en rango.",
-                        NamedTextColor.LIGHT_PURPLE));
+                lang.send(player, "use_skill_command.success_no_target",
+                        "skill", skill.name(), "mana", skill.manaCost());
             }
 
             playerManager.getCache().update(updatedPlayer);
@@ -153,7 +149,7 @@ public class UseSkillCommand implements RPGCommand {
 
         } catch (Exception exception) {
 
-            player.sendMessage(Component.text("Error al usar la habilidad.", NamedTextColor.RED));
+            lang.send(player, "use_skill_command.error");
             exception.printStackTrace();
 
         }

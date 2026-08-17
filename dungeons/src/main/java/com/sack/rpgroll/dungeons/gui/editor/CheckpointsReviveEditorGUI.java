@@ -1,7 +1,9 @@
 package com.sack.rpgroll.dungeons.gui.editor;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
+import com.sack.rpgroll.util.ComponentUtils;
 import com.sack.rpgroll.dungeons.core.CheckpointMode;
 import com.sack.rpgroll.dungeons.core.DungeonCheckpointPolicy;
 import com.sack.rpgroll.dungeons.core.DungeonReviveConfig;
@@ -32,11 +34,14 @@ public class CheckpointsReviveEditorGUI extends InventoryGUI {
 
     private final DungeonEditorSession session;
     private final Runnable onBack;
+    private final LangManager lang;
 
     public CheckpointsReviveEditorGUI(Player player, DungeonEditorSession session, Runnable onBack) {
-        super(player, Component.text("Checkpoints/Revivir: " + session.original.id(), NamedTextColor.GOLD), SIZE);
+        super(player, ComponentUtils.parse(session.chatPromptManager.lang()
+                .raw("gui.editor.checkpointsrevive.title", "id", session.original.id())), SIZE);
         this.session = session;
         this.onBack = onBack;
+        this.lang = session.chatPromptManager.lang();
     }
 
     @Override
@@ -52,43 +57,46 @@ public class CheckpointsReviveEditorGUI extends InventoryGUI {
         DungeonReviveConfig revive = session.reviveConfig;
 
         setItem(CHECKPOINT_MODE_SLOT, new ItemBuilder(Material.RESPAWN_ANCHOR)
-                .setName(Component.text("Al perder el grupo: " + policy.mode(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para pasar al siguiente modo", NamedTextColor.GRAY))
+                .setName(ComponentUtils.parse(lang.raw("gui.editor.checkpointsrevive.mode", "value", policy.mode())))
+                .setLore(ComponentUtils.parse(lang.raw("gui.editor.roomedit.type.hint")))
                 .build());
 
         setItem(SHARED_LIVES_SLOT, new ItemBuilder(policy.sharedLives() ? Material.TOTEM_OF_UNDYING : Material.BONE)
-                .setName(Component.text("Vida compartida: " + policy.sharedLives(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Si está activa, cada muerte individual descuenta del pool de reintentos",
-                        NamedTextColor.GRAY),
-                        Component.text("Click para alternar", NamedTextColor.GRAY))
+                .setName(ComponentUtils.parse(lang.raw("gui.editor.checkpointsrevive.shared_lives.label",
+                        "value", policy.sharedLives())))
+                .setLore(ComponentUtils.parse(lang.raw("gui.editor.checkpointsrevive.shared_lives.hint")),
+                        ComponentUtils.parse(lang.raw("gui.editor.info.click_to_toggle")))
                 .build());
 
         setItem(MAX_RETRIES_SLOT, new ItemBuilder(Material.CLOCK)
-                .setName(Component.text("Reintentos máximos: "
-                        + (policy.unlimitedRetries() ? "ilimitados" : policy.maxRetries()), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click: +1 · Derecho: -1 (por debajo de 0 = ilimitado)", NamedTextColor.GRAY))
+                .setName(ComponentUtils.parse(lang.raw("gui.editor.checkpointsrevive.max_retries.label", "value",
+                        policy.unlimitedRetries() ? lang.raw("gui.editor.checkpointsrevive.unlimited")
+                                : String.valueOf(policy.maxRetries()))))
+                .setLore(ComponentUtils.parse(lang.raw("gui.editor.checkpointsrevive.max_retries.hint")))
                 .build());
 
         setItem(REVIVE_MODE_SLOT, new ItemBuilder(Material.GOLDEN_APPLE)
-                .setName(Component.text("Revivir: " + revive.mode(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para pasar al siguiente modo", NamedTextColor.GRAY))
+                .setName(ComponentUtils.parse(lang.raw("gui.editor.checkpointsrevive.revive_mode",
+                        "value", revive.mode())))
+                .setLore(ComponentUtils.parse(lang.raw("gui.editor.roomedit.type.hint")))
                 .build());
 
         setItem(REVIVE_TIMER_SLOT, new ItemBuilder(Material.CLOCK)
-                .setName(Component.text("Temporizador: " + (revive.reviveTimerMillis() / 1000) + "s",
-                        NamedTextColor.YELLOW))
-                .setLore(Component.text("Usado por el modo AFTER_TIMER", NamedTextColor.DARK_GRAY),
-                        Component.text("Click: +5s · Shift-click: +30s · Derecho: -5s/-30s", NamedTextColor.GRAY))
+                .setName(ComponentUtils.parse(lang.raw("gui.editor.checkpointsrevive.revive_timer.label",
+                        "seconds", revive.reviveTimerMillis() / 1000)))
+                .setLore(ComponentUtils.parse(lang.raw("gui.editor.checkpointsrevive.revive_timer.hint1")),
+                        ComponentUtils.parse(lang.raw("gui.editor.checkpointsrevive.revive_timer.hint2")))
                 .build());
 
         setItem(REVIVE_ITEM_SLOT, new ItemBuilder(Material.TOTEM_OF_UNDYING)
-                .setName(Component.text("Ítem requerido: "
-                        + (revive.itemMaterial() != null ? revive.itemMaterial() : "(ninguno)"), NamedTextColor.YELLOW))
-                .setLore(Component.text("Usado por el modo WITH_ITEM", NamedTextColor.DARK_GRAY),
-                        Component.text("Click: escribir · Shift-click: quitar", NamedTextColor.GRAY))
+                .setName(ComponentUtils.parse(lang.raw("gui.editor.checkpointsrevive.revive_item.label", "value",
+                        revive.itemMaterial() != null ? revive.itemMaterial()
+                                : lang.raw("gui.editor.roomedit.boss.none"))))
+                .setLore(ComponentUtils.parse(lang.raw("gui.editor.checkpointsrevive.revive_item.hint1")),
+                        ComponentUtils.parse(lang.raw("gui.editor.roomedit.boss.click_hint")))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back")));
     }
 
     @Override
@@ -142,7 +150,7 @@ public class CheckpointsReviveEditorGUI extends InventoryGUI {
                 build();
                 return;
             }
-            session.chatPromptManager.prompt(player, "Escribí el Material requerido:", value -> {
+            session.chatPromptManager.prompt(player, "gui.editor.checkpointsrevive.prompt.item", value -> {
                 DungeonReviveConfig current = session.reviveConfig;
                 session.reviveConfig = new DungeonReviveConfig(current.mode(), current.reviveTimerMillis(),
                         value.trim().toUpperCase());

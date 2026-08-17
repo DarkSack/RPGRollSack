@@ -1,5 +1,7 @@
 package com.sack.rpgroll.seasons.command;
 
+import com.sack.rpgroll.common.lang.LangManager;
+import com.sack.rpgroll.seasons.SeasonsPlugin;
 import com.sack.rpgroll.seasons.core.CalendarManager;
 import com.sack.rpgroll.seasons.core.SeasonManager;
 import com.sack.rpgroll.seasons.core.SeasonRegionManager;
@@ -8,9 +10,6 @@ import com.sack.rpgroll.seasons.event.WorldEventEngine;
 import com.sack.rpgroll.seasons.gui.ChatPromptManager;
 import com.sack.rpgroll.seasons.gui.SeasonsBrowserGUI;
 import com.sack.rpgroll.util.TabCompleteUtil;
-
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -33,6 +32,7 @@ public class SeasonsAdminCommand implements CommandExecutor, TabCompleter {
 
     private static final List<String> SUBCOMMANDS = List.of("browser", "reload", "setseason", "advance", "trigger");
 
+    private final SeasonsPlugin plugin;
     private final CalendarManager calendarManager;
     private final SeasonManager seasonManager;
     private final WorldEventManager worldEventManager;
@@ -40,11 +40,13 @@ public class SeasonsAdminCommand implements CommandExecutor, TabCompleter {
     private final WorldEventEngine worldEventEngine;
     private final com.sack.rpgroll.seasons.api.SeasonsAPI api;
     private final ChatPromptManager chatPromptManager;
+    private final LangManager lang;
 
-    public SeasonsAdminCommand(CalendarManager calendarManager, SeasonManager seasonManager,
+    public SeasonsAdminCommand(SeasonsPlugin plugin, CalendarManager calendarManager, SeasonManager seasonManager,
             WorldEventManager worldEventManager, SeasonRegionManager regionManager,
             WorldEventEngine worldEventEngine, com.sack.rpgroll.seasons.api.SeasonsAPI api,
             ChatPromptManager chatPromptManager) {
+        this.plugin = plugin;
         this.calendarManager = calendarManager;
         this.seasonManager = seasonManager;
         this.worldEventManager = worldEventManager;
@@ -52,13 +54,14 @@ public class SeasonsAdminCommand implements CommandExecutor, TabCompleter {
         this.worldEventEngine = worldEventEngine;
         this.api = api;
         this.chatPromptManager = chatPromptManager;
+        this.lang = chatPromptManager.lang();
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
         if (!sender.hasPermission("rpgrollseasons.admin.*")) {
-            sender.sendMessage(Component.text("No tenés permiso para usar este comando.", NamedTextColor.RED));
+            lang.send(sender, "common.no_permission");
             return true;
         }
 
@@ -80,15 +83,13 @@ public class SeasonsAdminCommand implements CommandExecutor, TabCompleter {
     }
 
     private void sendUsage(CommandSender sender) {
-        sender.sendMessage(Component.text(
-                "Uso: /seasonsadmin <browser|reload|setseason <mundo> <id>|advance <mundo>|trigger <id> <mundo>>",
-                NamedTextColor.RED));
+        lang.send(sender, "command.admin.usage");
     }
 
     private void handleBrowser(CommandSender sender) {
 
         if (!(sender instanceof Player player)) {
-            sender.sendMessage(Component.text("Solo jugadores pueden abrir el Season Studio.", NamedTextColor.RED));
+            lang.send(sender, "command.admin.players_only_studio");
             return;
         }
 
@@ -98,78 +99,81 @@ public class SeasonsAdminCommand implements CommandExecutor, TabCompleter {
 
     private void handleReload(CommandSender sender) {
 
+        plugin.reloadConfig();
+        lang.reload(plugin.getConfig().getString("language", "es"));
+
         calendarManager.reload();
         seasonManager.reload();
         worldEventManager.reload();
         regionManager.reload();
 
-        sender.sendMessage(Component.text("✔ Recargado: " + calendarManager.count() + " calendario(s), "
-                + seasonManager.count() + " estación(es), " + worldEventManager.count() + " evento(s), "
-                + regionManager.count() + " región(es).", NamedTextColor.GREEN));
+        lang.send(sender, "command.admin.reloaded",
+                "calendars", calendarManager.count(),
+                "seasons", seasonManager.count(),
+                "events", worldEventManager.count(),
+                "regions", regionManager.count());
     }
 
     private void handleSetSeason(CommandSender sender, String[] args) {
 
         if (args.length < 3) {
-            sender.sendMessage(Component.text("Uso: /seasonsadmin setseason <mundo> <id>", NamedTextColor.RED));
+            lang.send(sender, "command.admin.usage_setseason");
             return;
         }
 
         World world = Bukkit.getWorld(args[1]);
 
         if (world == null) {
-            sender.sendMessage(Component.text("No existe el mundo: " + args[1], NamedTextColor.RED));
+            lang.send(sender, "command.admin.unknown_world", "world", args[1]);
             return;
         }
 
         if (!api.setSeason(world, args[2])) {
-            sender.sendMessage(Component.text(
-                    "No se pudo — la estación no existe o no está en el calendario de ese mundo.", NamedTextColor.RED));
+            lang.send(sender, "command.admin.setseason_failed");
             return;
         }
 
-        sender.sendMessage(Component.text("✔ Estación de " + world.getName() + " forzada a " + args[2] + ".",
-                NamedTextColor.GREEN));
+        lang.send(sender, "command.admin.setseason_success", "world", world.getName(), "season", args[2]);
     }
 
     private void handleAdvance(CommandSender sender, String[] args) {
 
         if (args.length < 2) {
-            sender.sendMessage(Component.text("Uso: /seasonsadmin advance <mundo>", NamedTextColor.RED));
+            lang.send(sender, "command.admin.usage_advance");
             return;
         }
 
         World world = Bukkit.getWorld(args[1]);
 
         if (world == null) {
-            sender.sendMessage(Component.text("No existe el mundo: " + args[1], NamedTextColor.RED));
+            lang.send(sender, "command.admin.unknown_world", "world", args[1]);
             return;
         }
 
         api.advanceSeason(world);
-        sender.sendMessage(Component.text("✔ Avanzada la estación de " + world.getName() + ".", NamedTextColor.GREEN));
+        lang.send(sender, "command.admin.advance_success", "world", world.getName());
     }
 
     private void handleTrigger(CommandSender sender, String[] args) {
 
         if (args.length < 3) {
-            sender.sendMessage(Component.text("Uso: /seasonsadmin trigger <id> <mundo>", NamedTextColor.RED));
+            lang.send(sender, "command.admin.usage_trigger");
             return;
         }
 
         World world = Bukkit.getWorld(args[2]);
 
         if (world == null) {
-            sender.sendMessage(Component.text("No existe el mundo: " + args[2], NamedTextColor.RED));
+            lang.send(sender, "command.admin.unknown_world", "world", args[2]);
             return;
         }
 
         if (!api.triggerWorldEvent(args[1], world)) {
-            sender.sendMessage(Component.text("No existe un evento con id: " + args[1], NamedTextColor.RED));
+            lang.send(sender, "command.admin.unknown_event", "id", args[1]);
             return;
         }
 
-        sender.sendMessage(Component.text("✔ Evento disparado en " + world.getName() + ".", NamedTextColor.GREEN));
+        lang.send(sender, "command.admin.trigger_success", "world", world.getName());
     }
 
     @Override

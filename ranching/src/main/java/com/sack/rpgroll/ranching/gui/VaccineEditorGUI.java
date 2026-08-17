@@ -40,7 +40,7 @@ public class VaccineEditorGUI extends InventoryGUI {
 
     public VaccineEditorGUI(Player player, Vaccine vaccine, VaccineManager vaccineManager,
             DiseaseManager diseaseManager, ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text("Vacuna: " + vaccine.id(), NamedTextColor.GOLD), SIZE);
+        super(player, Component.text(chatPromptManager.lang().raw("gui.vaccine.editor.title", "id", vaccine.id()), NamedTextColor.GOLD), SIZE);
         this.current = vaccine;
         this.vaccineManager = vaccineManager;
         this.diseaseManager = diseaseManager;
@@ -63,38 +63,40 @@ public class VaccineEditorGUI extends InventoryGUI {
             setItem(slot, ItemBuilder.createFiller());
         }
 
+        var lang = chatPromptManager.lang();
+
         setItem(NAME_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(Component.text("Nombre: " + current.displayName(), NamedTextColor.YELLOW)).build());
+                .setName(Component.text(lang.raw("gui.editor.name_line", "name", current.displayName()), NamedTextColor.YELLOW)).build());
 
         setItem(ICON_SLOT, new ItemBuilder(SpeciesBrowserGUI.parseMaterial(current.icon(), Material.POTION))
-                .setName(Component.text("Ícono: " + current.icon(), NamedTextColor.YELLOW)).build());
+                .setName(Component.text(lang.raw("gui.editor.icon_line", "icon", current.icon()), NamedTextColor.YELLOW)).build());
 
         setItem(DESCRIPTION_SLOT, new ItemBuilder(Material.WRITTEN_BOOK)
-                .setName(Component.text("Descripción", NamedTextColor.YELLOW))
-                .setLore(ItemBuilder.toLoreLines(current.description().isBlank() ? "(sin descripción)" : current.description()))
+                .setName(Component.text(lang.raw("gui.editor.description_title"), NamedTextColor.YELLOW))
+                .setLore(ItemBuilder.toLoreLines(current.description().isBlank() ? lang.raw("gui.editor.no_description") : current.description()))
                 .build());
 
         setItem(DISEASES_SLOT, new ItemBuilder(Material.ROTTEN_FLESH)
-                .setName(Component.text("Previene: " + String.join(", ", current.preventsDiseaseIds()), NamedTextColor.GREEN))
-                .setLore(ItemBuilder.toLoreLines("Enfermedades conocidas: "
-                        + String.join(", ", diseaseManager.getAll().stream().map(d -> d.id()).toList())
-                        + "\nEscribí ids separados por comas")).build());
+                .setName(Component.text(lang.raw("item.vaccine.prevents", "diseases", String.join(", ", current.preventsDiseaseIds())), NamedTextColor.GREEN))
+                .setLore(ItemBuilder.toLoreLines(lang.raw("gui.editor.known_diseases", "diseases",
+                        String.join(", ", diseaseManager.getAll().stream().map(d -> d.id()).toList()))
+                        + "\n" + lang.raw("gui.editor.prompt_disease_ids"))).build());
 
         setItem(RISK_REDUCTION_SLOT, new ItemBuilder(Material.SHIELD)
-                .setName(Component.text(String.format(Locale.ROOT, "Reducción de riesgo: %.0f%%", current.riskReduction() * 100),
+                .setName(Component.text(lang.raw("gui.vaccine.editor.risk_reduction_line", "value", String.format(Locale.ROOT, "%.0f", current.riskReduction() * 100)),
                         NamedTextColor.AQUA))
-                .setLore(Component.text("Click: +10% · Click derecho: -10%", NamedTextColor.GRAY)).build());
+                .setLore(Component.text(lang.raw("gui.editor.step10pct_hint"), NamedTextColor.GRAY)).build());
 
         setItem(DURATION_SLOT, new ItemBuilder(Material.CLOCK)
-                .setName(Component.text(current.isPermanent() ? "Duración: permanente"
-                        : "Duración: " + current.immunityDurationTicks() + " ticks", NamedTextColor.WHITE))
-                .setLore(Component.text("Click: +1200 (1 min) · Click derecho: -1200 (0 = permanente)", NamedTextColor.GRAY))
+                .setName(Component.text(current.isPermanent() ? lang.raw("gui.vaccine.editor.duration_permanent")
+                        : lang.raw("gui.vaccine.editor.duration_line", "ticks", current.immunityDurationTicks()), NamedTextColor.WHITE))
+                .setLore(Component.text(lang.raw("gui.vaccine.editor.duration_hint"), NamedTextColor.GRAY))
                 .build());
 
         setItem(GIVE_SLOT, new ItemBuilder(Material.CHEST)
-                .setName(Component.text("▶ Darme una", NamedTextColor.GREEN)).build());
+                .setName(Component.text(lang.raw("gui.editor.give_one_female"), NamedTextColor.GREEN)).build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back")));
     }
 
     @Override
@@ -105,19 +107,19 @@ public class VaccineEditorGUI extends InventoryGUI {
         int sign = event.getClick() == ClickType.RIGHT ? -1 : 1;
 
         if (slot == NAME_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el nuevo nombre:", value -> replace(new Vaccine(current.id(),
+            chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.editor.prompt_name"), value -> replace(new Vaccine(current.id(),
                     value, current.icon(), current.description(), current.preventsDiseaseIds(), current.riskReduction(),
                     current.immunityDurationTicks())));
         } else if (slot == ICON_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el Material del ícono:", value -> replace(new Vaccine(
+            chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.editor.prompt_icon"), value -> replace(new Vaccine(
                     current.id(), current.displayName(), value, current.description(), current.preventsDiseaseIds(),
                     current.riskReduction(), current.immunityDurationTicks())));
         } else if (slot == DESCRIPTION_SLOT) {
-            chatPromptManager.prompt(player, "Escribí la nueva descripción:", value -> replace(new Vaccine(
+            chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.editor.prompt_description"), value -> replace(new Vaccine(
                     current.id(), current.displayName(), current.icon(), value, current.preventsDiseaseIds(),
                     current.riskReduction(), current.immunityDurationTicks())));
         } else if (slot == DISEASES_SLOT) {
-            chatPromptManager.prompt(player, "Escribí ids de enfermedad separados por comas:", value -> {
+            chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.editor.prompt_disease_ids"), value -> {
 
                 Set<String> diseases = new HashSet<>();
                 for (String entry : value.split(",")) {
@@ -138,8 +140,8 @@ public class VaccineEditorGUI extends InventoryGUI {
                     current.preventsDiseaseIds(), current.riskReduction(),
                     Math.max(0, current.immunityDurationTicks() + sign * 1200L)));
         } else if (slot == GIVE_SLOT) {
-            player.getInventory().addItem(RanchingItemFactory.createVaccine(current));
-            player.sendMessage(Component.text("✔ Te diste una vacuna '" + current.displayName() + "'.", NamedTextColor.GREEN));
+            player.getInventory().addItem(RanchingItemFactory.createVaccine(chatPromptManager.lang(), current));
+            player.sendMessage(Component.text(chatPromptManager.lang().raw("gui.vaccine.editor.gave_self", "name", current.displayName()), NamedTextColor.GREEN));
         } else if (slot == BACK_SLOT) {
             onBack.run();
         }

@@ -2,10 +2,9 @@ package com.sack.rpgroll.items.socket;
 
 import com.sack.rpgroll.util.ComponentUtils;
 
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
+import com.sack.rpgroll.common.lang.LangManager;
+
 import net.kyori.adventure.text.format.TextDecoration;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -22,9 +21,11 @@ public class GemItem {
 
 
     private final NamespacedKey gemIdKey;
+    private final LangManager langManager;
 
-    public GemItem(Plugin plugin) {
+    public GemItem(Plugin plugin, LangManager langManager) {
         this.gemIdKey = new NamespacedKey(plugin, "gem-id");
+        this.langManager = langManager;
     }
 
     public ItemStack create(Gem gem) {
@@ -34,9 +35,8 @@ public class GemItem {
 
         meta.displayName(ComponentUtils.parse(gem.displayName()).decoration(TextDecoration.ITALIC, false));
         meta.lore(List.of(
-                Component.text("Gema: " + gem.type(), NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false),
-                Component.text("Click derecho en un socket para insertar.", NamedTextColor.DARK_GRAY)
-                        .decoration(TextDecoration.ITALIC, false)));
+                langManager.component("gem.lore_type", "type", gem.type()).decoration(TextDecoration.ITALIC, false),
+                langManager.component("gem.lore_instructions").decoration(TextDecoration.ITALIC, false)));
 
         meta.getPersistentDataContainer().set(gemIdKey, PersistentDataType.STRING, gem.id());
 

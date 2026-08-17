@@ -2,6 +2,9 @@ package com.sack.rpgroll.mobs.engine;
 
 import com.sack.rpgroll.util.ComponentUtils;
 
+import com.sack.rpgroll.common.reskin.EntityReskin;
+import com.sack.rpgroll.common.reskin.EntityReskinService;
+
 import com.sack.rpgroll.mobs.api.MobDeathEvent;
 import com.sack.rpgroll.mobs.api.MobSpawnEvent;
 import com.sack.rpgroll.mobs.condition.MobConditionContext;
@@ -11,8 +14,10 @@ import com.sack.rpgroll.mobs.core.MobAction;
 import com.sack.rpgroll.mobs.core.MobDefinition;
 import com.sack.rpgroll.mobs.core.MobLootEntry;
 import com.sack.rpgroll.mobs.core.MobManager;
+import com.sack.rpgroll.mobs.core.MobModel;
 import com.sack.rpgroll.mobs.core.MobPhase;
 import com.sack.rpgroll.mobs.core.MobSkill;
+import com.sack.rpgroll.mobs.core.MobSkin;
 import com.sack.rpgroll.mobs.core.MobTrigger;
 import com.sack.rpgroll.mobs.instance.MobInstanceService;
 import com.sack.rpgroll.mobs.integration.ItemsIntegration;
@@ -37,6 +42,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EntityEquipment;
+import org.bukkit.plugin.Plugin;
 
 import java.util.HashMap;
 import java.util.List;
@@ -44,6 +50,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Orquesta el ciclo de vida completo de un mob: creación, daño/fases,
@@ -54,6 +61,7 @@ import java.util.UUID;
 public class MobEngine {
 
 
+    private final Plugin plugin;
     private final MobManager mobManager;
     private final MobInstanceService instanceService;
     private final ActionRegistry actionRegistry;
@@ -64,12 +72,14 @@ public class MobEngine {
     private final Map<UUID, BossBar> bossBars = new HashMap<>();
 
     public MobEngine(
+            Plugin plugin,
             MobManager mobManager,
             MobInstanceService instanceService,
             ActionRegistry actionRegistry,
             MobConditionEvaluator conditionEvaluator,
             MobRarityResolver rarityResolver) {
 
+        this.plugin = plugin;
         this.mobManager = mobManager;
         this.instanceService = instanceService;
         this.actionRegistry = actionRegistry;
@@ -83,6 +93,49 @@ public class MobEngine {
 
     public Optional<ActiveMobState> getState(UUID entityId) {
         return Optional.ofNullable(activeMobs.get(entityId));
+    }
+
+    /**
+     * Auto-sanado barato del passenger de reskin — para llamar desde el tick
+     * periódico de IA. Resuelve la skin ya sorteada al spawnear (persistida
+     * en el PDC de la entidad) en vez de volver a sortear — así el
+     * auto-sanado nunca le cambia la apariencia a un mob ya vivo.
+     */
+    public void ensureReskinAttached(LivingEntity entity, MobDefinition definition) {
+
+        EntityReskin reskin = resolveActiveReskin(entity, definition.model());
+        EntityReskinService.ensureAttached(plugin, entity, reskin);
+    }
+
+    private EntityReskin resolveActiveReskin(LivingEntity entity, MobModel model) {
+
+        String skinId = instanceService.getSkinId(entity).orElse(null);
+
+        if (skinId == null) {
+            return EntityReskin.NONE;
+        }
+
+        return model.skins().stream()
+                .filter(skin -> skin.id().equals(skinId))
+                .findFirst()
+                .map(MobSkin::reskin)
+                .orElse(EntityReskin.NONE);
+    }
+
+    private MobSkin rollSkin(List<MobSkin> skins) {
+
+        double totalWeight = skins.stream().mapToDouble(MobSkin::weight).sum();
+        double roll = ThreadLocalRandom.current().nextDouble(totalWeight);
+        double cumulative = 0;
+
+        for (MobSkin skin : skins) {
+            cumulative += skin.weight();
+            if (roll < cumulative) {
+                return skin;
+            }
+        }
+
+        return skins.get(skins.size() - 1);
     }
 
     // ============ Spawn ============
@@ -144,6 +197,20 @@ public class MobEngine {
 
         entity.customName(nameComponent);
         entity.setCustomNameVisible(true);
+
+        applyRandomSkin(entity, model);
+    }
+
+    private void applyRandomSkin(LivingEntity entity, MobModel model) {
+
+        if (model.skins().isEmpty()) {
+            EntityReskinService.apply(plugin, entity, EntityReskin.NONE);
+            return;
+        }
+
+        MobSkin chosen = rollSkin(model.skins());
+        instanceService.setSkinId(entity, chosen.id());
+        EntityReskinService.apply(plugin, entity, chosen.reskin());
     }
 
     private TextColor parseNameColor(String raw) {
@@ -398,6 +465,7 @@ public class MobEngine {
     public void onMobDeath(LivingEntity entity, MobDefinition definition, Player killer) {
 
         ActiveMobState state = activeMobs.remove(entity.getUniqueId());
+        EntityReskinService.remove(entity);
 
         actionRegistry.executeAll(definition.actionsFor(MobTrigger.DEATH),
                 new MobActionContext(entity, definition, killer));

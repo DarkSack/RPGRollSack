@@ -2,6 +2,7 @@ package com.sack.rpgroll.gui.admin;
 
 import com.sack.rpgroll.util.ComponentUtils;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.gameplay.job.Job;
@@ -40,15 +41,17 @@ public class JobEditorGUI extends InventoryGUI {
 
     private final JobManager jobManager;
     private final ChatPromptManager chatPromptManager;
+    private final LangManager lang;
     private final Runnable onBack;
     private Job current;
 
     public JobEditorGUI(Player player, Job job, JobManager jobManager, ChatPromptManager chatPromptManager,
-            Runnable onBack) {
-        super(player, Component.text("Trabajo: " + job.id(), NamedTextColor.GOLD), SIZE);
+            LangManager lang, Runnable onBack) {
+        super(player, lang.component("job_editor_gui.title", "id", job.id()), SIZE);
         this.current = job;
         this.jobManager = jobManager;
         this.chatPromptManager = chatPromptManager;
+        this.lang = lang;
         this.onBack = onBack;
     }
 
@@ -68,49 +71,48 @@ public class JobEditorGUI extends InventoryGUI {
         }
 
         setItem(NAME_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(ComponentUtils.parse("Nombre: " + current.displayName()).colorIfAbsent(NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para escribir uno nuevo", NamedTextColor.GRAY),
-                        Component.text("Nota: un trabajo nuevo necesita su propio listener Java",
-                                NamedTextColor.DARK_GRAY),
-                        Component.text("para otorgar XP automáticamente (ver AlquimistaJobListener, etc.)",
-                                NamedTextColor.DARK_GRAY))
+                .setName(ComponentUtils.parse(lang.raw("job_editor_gui.name_slot_name", "name",
+                        current.displayName())).colorIfAbsent(NamedTextColor.YELLOW))
+                .setLore(lang.component("job_editor_gui.click_new_value"),
+                        lang.component("job_editor_gui.name_slot_note_line1"),
+                        lang.component("job_editor_gui.name_slot_note_line2"))
                 .build());
 
         setItem(DESCRIPTION_SLOT, new ItemBuilder(Material.WRITTEN_BOOK)
-                .setName(Component.text("Descripción", NamedTextColor.YELLOW))
-                .setLore(ItemBuilder.toLoreLines(current.description().isBlank() ? "(sin descripción)"
+                .setName(lang.component("job_editor_gui.description_slot_name"))
+                .setLore(ItemBuilder.toLoreLines(current.description().isBlank()
+                        ? lang.raw("job_editor_gui.no_description")
                         : current.description()))
                 .build());
 
         setItem(MAX_LEVEL_SLOT, new ItemBuilder(Material.EXPERIENCE_BOTTLE)
-                .setName(Component.text("Nivel máximo: " + current.maxLevel(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click: +5 · Click derecho: -5", NamedTextColor.GRAY))
+                .setName(lang.component("job_editor_gui.max_level_slot_name", "level", current.maxLevel()))
+                .setLore(lang.component("job_editor_gui.max_level_slot_lore"))
                 .build());
 
         setItem(EXP_BASE_SLOT, new ItemBuilder(Material.GOLD_NUGGET)
-                .setName(Component.text("XP base: " + current.expBase(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click: +10 · Click derecho: -10", NamedTextColor.GRAY))
+                .setName(lang.component("job_editor_gui.exp_base_slot_name", "exp", current.expBase()))
+                .setLore(lang.component("job_editor_gui.exp_base_slot_lore"))
                 .build());
 
         setItem(EXP_MULT_SLOT, new ItemBuilder(Material.NETHER_STAR)
-                .setName(Component.text("Multiplicador de XP: " + current.expMultiplier(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click: +0.1 · Click derecho: -0.1", NamedTextColor.GRAY))
+                .setName(lang.component("job_editor_gui.exp_mult_slot_name", "multiplier",
+                        current.expMultiplier()))
+                .setLore(lang.component("job_editor_gui.exp_mult_slot_lore"))
                 .build());
 
         setItem(REWARDS_SLOT, new ItemBuilder(Material.CHEST)
-                .setName(Component.text("Recompensas: " + current.rewards().size() + " target(s)",
-                        NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para agregar/actualizar (target;oro;xp)", NamedTextColor.GRAY))
+                .setName(lang.component("job_editor_gui.rewards_slot_name", "count", current.rewards().size()))
+                .setLore(lang.component("job_editor_gui.rewards_slot_lore"))
                 .build());
 
         setItem(EXPLORATION_SLOT, new ItemBuilder(Material.MAP)
-                .setName(Component.text("Exploración: " + current.newBiomeMoney() + " oro/bioma, "
-                        + current.distanceBlocks() + " bloques", NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para escribir (oro-bioma;xp-bioma;bloques;oro-dist;xp-dist)",
-                        NamedTextColor.GRAY))
+                .setName(lang.component("job_editor_gui.exploration_slot_name", "money", current.newBiomeMoney(),
+                        "blocks", current.distanceBlocks()))
+                .setLore(lang.component("job_editor_gui.exploration_slot_lore"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("job_editor_gui.back_button")));
     }
 
     @Override
@@ -121,8 +123,8 @@ public class JobEditorGUI extends InventoryGUI {
         ClickType click = event.getClick();
 
         if (slot == NAME_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el nuevo nombre:", value -> replace(new Job(current.id(),
-                    value, current.description(), current.icon(), current.lore(), current.maxLevel(),
+            chatPromptManager.prompt(player, lang.raw("job_editor_gui.prompt_name"), value -> replace(new Job(
+                    current.id(), value, current.description(), current.icon(), current.lore(), current.maxLevel(),
                     current.expBase(), current.expMultiplier(), current.rewards(), current.newBiomeMoney(),
                     current.newBiomeExperience(), current.distanceBlocks(), current.distanceMoney(),
                     current.distanceExperience())));
@@ -130,11 +132,11 @@ public class JobEditorGUI extends InventoryGUI {
         }
 
         if (slot == DESCRIPTION_SLOT) {
-            chatPromptManager.prompt(player, "Escribí la nueva descripción:", value -> replace(new Job(current.id(),
-                    current.displayName(), value, current.icon(), current.lore(), current.maxLevel(),
-                    current.expBase(), current.expMultiplier(), current.rewards(), current.newBiomeMoney(),
-                    current.newBiomeExperience(), current.distanceBlocks(), current.distanceMoney(),
-                    current.distanceExperience())));
+            chatPromptManager.prompt(player, lang.raw("job_editor_gui.prompt_description"), value -> replace(
+                    new Job(current.id(), current.displayName(), value, current.icon(), current.lore(),
+                            current.maxLevel(), current.expBase(), current.expMultiplier(), current.rewards(),
+                            current.newBiomeMoney(), current.newBiomeExperience(), current.distanceBlocks(),
+                            current.distanceMoney(), current.distanceExperience())));
             return;
         }
 
@@ -169,12 +171,12 @@ public class JobEditorGUI extends InventoryGUI {
         }
 
         if (slot == REWARDS_SLOT) {
-            chatPromptManager.prompt(player, "Escribí: target;oro;xp (ej. DIAMOND_ORE;5;20):", value -> {
+            chatPromptManager.prompt(player, lang.raw("job_editor_gui.prompt_rewards"), value -> {
 
                 String[] parts = value.split(";");
 
                 if (parts.length < 3) {
-                    player.sendMessage(Component.text("Formato inválido.", NamedTextColor.RED));
+                    player.sendMessage(lang.component("job_editor_gui.invalid_format"));
                     return;
                 }
 
@@ -188,21 +190,20 @@ public class JobEditorGUI extends InventoryGUI {
                             current.newBiomeMoney(), current.newBiomeExperience(), current.distanceBlocks(),
                             current.distanceMoney(), current.distanceExperience()));
                 } catch (NumberFormatException e) {
-                    player.sendMessage(Component.text("Oro y XP deben ser numéricos.", NamedTextColor.RED));
+                    player.sendMessage(lang.component("job_editor_gui.rewards_not_numeric"));
                 }
             });
             return;
         }
 
         if (slot == EXPLORATION_SLOT) {
-            chatPromptManager.prompt(player,
-                    "Escribí: oro-bioma;xp-bioma;bloques;oro-distancia;xp-distancia (ej. 50;100;500;10;20):",
+            chatPromptManager.prompt(player, lang.raw("job_editor_gui.prompt_exploration"),
                     value -> {
 
                         String[] parts = value.split(";");
 
                         if (parts.length < 5) {
-                            player.sendMessage(Component.text("Hacen falta 5 valores.", NamedTextColor.RED));
+                            player.sendMessage(lang.component("job_editor_gui.exploration_missing_values"));
                             return;
                         }
 
@@ -214,8 +215,7 @@ public class JobEditorGUI extends InventoryGUI {
                                     Integer.parseInt(parts[2].trim()), Double.parseDouble(parts[3].trim()),
                                     Integer.parseInt(parts[4].trim())));
                         } catch (NumberFormatException e) {
-                            player.sendMessage(Component.text("Todos los valores deben ser numéricos.",
-                                    NamedTextColor.RED));
+                            player.sendMessage(lang.component("job_editor_gui.exploration_not_numeric"));
                         }
                     });
             return;

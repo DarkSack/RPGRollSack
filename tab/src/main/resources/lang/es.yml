@@ -1,0 +1,17 @@
+# Mensajes de RPGRoll-TAB (comando /tabadmin)
+# {placeholder} se reemplaza dinámicamente. Códigos de color legacy (&) preservados.
+
+command:
+  no-permission: "No tenés permiso para usar este comando."
+  usage: "Uso: /tabadmin <reload|list|profile <jugador> <perfil>>"
+  reload:
+    success: "✔ RPGRoll-TAB recargado: {profiles} perfil(es), {contexts} contexto(s)."
+  list:
+    empty: "No hay perfiles definidos."
+    header: "Perfiles disponibles:"
+    entry: "• {id}"
+  profile:
+    usage: "Uso: /tabadmin profile <jugador> <perfil>"
+    player-not-found: "Jugador no encontrado: {player}"
+    profile-not-found: "No existe un perfil con id: {profile}"
+    success: "✔ Perfil de {player} forzado a: {profile}"

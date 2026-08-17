@@ -4,6 +4,7 @@ import com.sack.rpgroll.util.ComponentUtils;
 
 import com.sack.rpgroll.chat.emote.EmoteDefinition;
 import com.sack.rpgroll.chat.emote.EmoteManager;
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.util.TabCompleteUtil;
 
 import net.kyori.adventure.text.Component;
@@ -23,16 +24,18 @@ import java.util.List;
 public class EmoteCommand implements CommandExecutor, TabCompleter {
 
     private final EmoteManager emoteManager;
+    private final LangManager lang;
 
-    public EmoteCommand(EmoteManager emoteManager) {
+    public EmoteCommand(EmoteManager emoteManager, LangManager lang) {
         this.emoteManager = emoteManager;
+        this.lang = lang;
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
         if (!(sender instanceof Player player)) {
-            sender.sendMessage(Component.text("Solo un jugador puede usar este comando.", NamedTextColor.RED));
+            lang.send(sender, "common.players_only");
             return true;
         }
 
@@ -41,14 +44,14 @@ public class EmoteCommand implements CommandExecutor, TabCompleter {
                 : label;
 
         if (emoteId == null) {
-            player.sendMessage(Component.text("Uso: /emote <nombre> [jugador]", NamedTextColor.YELLOW));
+            lang.send(player, "emote.usage");
             return true;
         }
 
         EmoteDefinition emote = emoteManager.get(emoteId).orElse(null);
 
         if (emote == null) {
-            player.sendMessage(Component.text("No existe esa emote.", NamedTextColor.RED));
+            lang.send(player, "emote.not_found");
             return true;
         }
 

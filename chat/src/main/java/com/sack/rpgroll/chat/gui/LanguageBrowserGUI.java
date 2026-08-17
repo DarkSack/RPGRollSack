@@ -3,6 +3,7 @@ package com.sack.rpgroll.chat.gui;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.chat.language.Language;
 import com.sack.rpgroll.chat.language.LanguageManager;
+import com.sack.rpgroll.common.lang.LangManager;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -26,7 +27,7 @@ public class LanguageBrowserGUI extends PaginatedGUI {
     private List<Language> languages;
 
     public LanguageBrowserGUI(Player player, LanguageManager languageManager, ChatPromptManager chatPromptManager) {
-        super(player, Component.text("Idiomas RPGRoll", NamedTextColor.GOLD), SIZE, CONTENT_SLOTS);
+        super(player, chatPromptManager.lang().component("language.browser_title"), SIZE, CONTENT_SLOTS);
         this.languageManager = languageManager;
         this.chatPromptManager = chatPromptManager;
         this.languages = List.copyOf(languageManager.getAll());
@@ -41,24 +42,29 @@ public class LanguageBrowserGUI extends PaginatedGUI {
     protected void renderItem(int contentSlot, int absoluteIndex) {
 
         Language language = languages.get(absoluteIndex);
+        LangManager lang = chatPromptManager.lang();
 
         setItem(contentSlot, new ItemBuilder(Material.WRITABLE_BOOK)
                 .setName(Component.text(language.displayName(), NamedTextColor.YELLOW))
                 .setLore(Component.text(language.id(), NamedTextColor.DARK_GRAY),
-                        Component.text("Razas: " + (language.defaultForRaces().isEmpty() ? "(universal)"
-                                : String.join(", ", language.defaultForRaces())), NamedTextColor.GRAY),
-                        Component.text("Click para editar", NamedTextColor.YELLOW))
+                        lang.component("language.browser_lore_races", "value",
+                                        language.defaultForRaces().isEmpty() ? lang.raw("language.races_universal")
+                                                : String.join(", ", language.defaultForRaces()))
+                                .colorIfAbsent(NamedTextColor.GRAY),
+                        lang.component("gui.click_edit").colorIfAbsent(NamedTextColor.YELLOW))
                 .build());
     }
 
     @Override
     protected void renderExtras() {
 
+        LangManager lang = chatPromptManager.lang();
+
         setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Crear idioma nuevo", NamedTextColor.GREEN))
+                .setName(lang.component("language.create_new").colorIfAbsent(NamedTextColor.GREEN))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Cerrar"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.close")));
     }
 
     @Override
@@ -79,12 +85,12 @@ public class LanguageBrowserGUI extends PaginatedGUI {
     }
 
     private void promptNew() {
-        chatPromptManager.prompt(player, "Escribí el id del nuevo idioma:", value -> {
+        chatPromptManager.prompt(player, chatPromptManager.lang().raw("language.prompt_new_id"), value -> {
 
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 
             if (languageManager.exists(id)) {
-                player.sendMessage(Component.text("Ya existe un idioma con ese id.", NamedTextColor.RED));
+                chatPromptManager.lang().send(player, "language.already_exists");
                 reopen();
                 return;
             }

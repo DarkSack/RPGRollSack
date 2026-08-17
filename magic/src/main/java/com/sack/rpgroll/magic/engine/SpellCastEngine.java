@@ -1,5 +1,6 @@
 package com.sack.rpgroll.magic.engine;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.magic.affinity.AffinityResolver;
 import com.sack.rpgroll.magic.core.MagicSchool;
 import com.sack.rpgroll.magic.core.Rune;
@@ -41,12 +42,18 @@ public class SpellCastEngine {
     private final SchoolManager schoolManager;
     private final RuneManager runeManager;
     private final SpellComponentExecutor executor;
+    private final LangManager lang;
 
-    public SpellCastEngine(Plugin plugin, SchoolManager schoolManager, RuneManager runeManager) {
+    public SpellCastEngine(Plugin plugin, SchoolManager schoolManager, RuneManager runeManager, LangManager lang) {
         this.plugin = plugin;
         this.schoolManager = schoolManager;
         this.runeManager = runeManager;
         this.executor = new SpellComponentExecutor(plugin);
+        this.lang = lang;
+    }
+
+    public LangManager lang() {
+        return lang;
     }
 
     public CastResult cast(Spell spell, Player caster, PlayerSpellbook spellbook, SpellCatalyst catalyst) {
@@ -54,7 +61,7 @@ public class SpellCastEngine {
         Optional<MagicSchool> schoolOpt = schoolManager.get(spell.schoolId());
 
         if (schoolOpt.isEmpty()) {
-            return CastResult.failure("La escuela '" + spell.schoolId() + "' no existe.");
+            return CastResult.failure(lang.raw("cast.reason.school_missing", "school", spell.schoolId()));
         }
 
         MagicSchool school = schoolOpt.get();
@@ -71,11 +78,12 @@ public class SpellCastEngine {
 
         if (spellbook.isOnCooldown(spell.id(), now)) {
             double secondsLeft = spellbook.remainingCooldownMillis(spell.id(), now) / 1000.0;
-            return CastResult.failure(String.format(Locale.ROOT, "En cooldown (%.1fs restantes).", secondsLeft));
+            return CastResult.failure(lang.raw("cast.reason.on_cooldown", "seconds",
+                    String.format(Locale.ROOT, "%.1f", secondsLeft)));
         }
 
         double costMultiplier = (catalyst != null ? catalyst.costMultiplier() : 1.0) * costCooldownMods.costMultiplier();
-        List<String> reasons = SpellCostChecker.checkOnly(caster, spell.cost(), costMultiplier);
+        List<String> reasons = SpellCostChecker.checkOnly(caster, spell.cost(), costMultiplier, lang);
 
         if (!reasons.isEmpty()) {
             return CastResult.failure(reasons);

@@ -1,5 +1,6 @@
 package com.sack.rpgroll.items.gui.editor;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.items.core.ItemAbility;
@@ -21,11 +22,13 @@ public class AbilitiesEditorGUI extends InventoryGUI {
     private static final int BACK_SLOT = 44;
 
     private final EditorSession session;
+    private final LangManager lang;
     private final Runnable onBack;
 
     public AbilitiesEditorGUI(Player player, EditorSession session, Runnable onBack) {
-        super(player, Component.text("Habilidades: " + session.original.id(), NamedTextColor.GOLD), SIZE);
+        super(player, session.chatPromptManager.lang().component("editor.abilities.title", "id", session.original.id()), SIZE);
         this.session = session;
+        this.lang = session.chatPromptManager.lang();
         this.onBack = onBack;
     }
 
@@ -49,18 +52,19 @@ public class AbilitiesEditorGUI extends InventoryGUI {
 
             setItem(i, new ItemBuilder(ability.passive() ? Material.BEACON : Material.BLAZE_POWDER)
                     .setName(Component.text(ability.displayName(), NamedTextColor.YELLOW))
-                    .setLore(Component.text(ability.passive() ? "Pasiva" : "Activa (" + ability.trigger() + ")",
-                            NamedTextColor.GRAY),
-                            Component.text(ability.actions().size() + " acción(es)", NamedTextColor.GRAY),
-                            Component.text("Click: editar · Shift-click: quitar", NamedTextColor.DARK_GRAY))
+                    .setLore(ability.passive()
+                                    ? lang.component("editor.abilities.passive")
+                                    : lang.component("editor.abilities.active", "trigger", ability.trigger()),
+                            lang.component("editor.abilities.action_count", "count", ability.actions().size()),
+                            lang.component("editor.abilities.hint"))
                     .build());
         }
 
         setItem(ADD_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Agregar habilidad", NamedTextColor.GREEN))
+                .setName(lang.component("editor.abilities.add"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("editor.common.back")));
     }
 
     @Override
@@ -91,11 +95,11 @@ public class AbilitiesEditorGUI extends InventoryGUI {
     }
 
     private void promptNew() {
-        session.chatPromptManager.prompt(player, "Escribí el id de la nueva habilidad:", value -> {
+        session.chatPromptManager.prompt(player, lang.raw("editor.abilities.prompt_new"), value -> {
 
             String id = value.trim();
             if (id.isBlank()) {
-                player.sendMessage(Component.text("Id inválido.", NamedTextColor.RED));
+                lang.send(player, "editor.abilities.invalid_id");
                 return;
             }
 

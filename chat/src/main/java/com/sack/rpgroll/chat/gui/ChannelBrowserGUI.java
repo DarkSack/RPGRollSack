@@ -3,6 +3,7 @@ package com.sack.rpgroll.chat.gui;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.chat.channel.ChannelManager;
 import com.sack.rpgroll.chat.channel.ChatChannel;
+import com.sack.rpgroll.common.lang.LangManager;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -28,7 +29,7 @@ public class ChannelBrowserGUI extends PaginatedGUI {
     private List<ChatChannel> channels;
 
     public ChannelBrowserGUI(Player player, ChannelManager channelManager, ChatPromptManager chatPromptManager) {
-        super(player, Component.text("Canales RPGRoll", NamedTextColor.GOLD), SIZE, CONTENT_SLOTS);
+        super(player, chatPromptManager.lang().component("channel.browser_title"), SIZE, CONTENT_SLOTS);
         this.channelManager = channelManager;
         this.chatPromptManager = chatPromptManager;
         this.channels = channelManager.sortedByPriority();
@@ -44,12 +45,14 @@ public class ChannelBrowserGUI extends PaginatedGUI {
 
         ChatChannel channel = channels.get(absoluteIndex);
 
+        LangManager lang = chatPromptManager.lang();
+
         setItem(contentSlot, new ItemBuilder(resolveIcon(channel))
                 .setName(Component.text(channel.displayName(), resolveColor(channel)))
                 .setLore(Component.text(channel.id(), NamedTextColor.DARK_GRAY),
-                        Component.text("Alcance: " + channel.scope() + " · Prioridad: " + channel.priority(),
-                                NamedTextColor.GRAY),
-                        Component.text("Click para editar", NamedTextColor.YELLOW))
+                        lang.component("channel.browser_lore_scope", "scope", channel.scope(), "priority",
+                                channel.priority()).colorIfAbsent(NamedTextColor.GRAY),
+                        lang.component("gui.click_edit").colorIfAbsent(NamedTextColor.YELLOW))
                 .build());
     }
 
@@ -69,16 +72,20 @@ public class ChannelBrowserGUI extends PaginatedGUI {
     @Override
     protected void renderExtras() {
 
+        LangManager lang = chatPromptManager.lang();
+
         setItem(PREV_SLOT, hasPreviousPage()
-                ? new ItemBuilder(Material.ARROW).setName(Component.text("« Anterior", NamedTextColor.YELLOW)).build()
+                ? new ItemBuilder(Material.ARROW)
+                        .setName(lang.component("channel.prev_page").colorIfAbsent(NamedTextColor.YELLOW)).build()
                 : ItemBuilder.createFiller());
 
         setItem(NEXT_SLOT, hasNextPage()
-                ? new ItemBuilder(Material.ARROW).setName(Component.text("Siguiente »", NamedTextColor.YELLOW)).build()
+                ? new ItemBuilder(Material.ARROW)
+                        .setName(lang.component("channel.next_page").colorIfAbsent(NamedTextColor.YELLOW)).build()
                 : ItemBuilder.createFiller());
 
         setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Crear canal nuevo", NamedTextColor.GREEN))
+                .setName(lang.component("channel.create_new").colorIfAbsent(NamedTextColor.GREEN))
                 .build());
     }
 
@@ -101,12 +108,12 @@ public class ChannelBrowserGUI extends PaginatedGUI {
     }
 
     private void promptNewChannel() {
-        chatPromptManager.prompt(player, "Escribí el id del nuevo canal:", value -> {
+        chatPromptManager.prompt(player, chatPromptManager.lang().raw("channel.prompt_new_id"), value -> {
 
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 
             if (channelManager.exists(id)) {
-                player.sendMessage(Component.text("Ya existe un canal con ese id.", NamedTextColor.RED));
+                chatPromptManager.lang().send(player, "channel.already_exists");
                 reopen();
                 return;
             }

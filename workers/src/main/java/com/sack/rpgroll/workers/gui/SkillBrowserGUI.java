@@ -30,7 +30,7 @@ public class SkillBrowserGUI extends InventoryGUI {
 
     public SkillBrowserGUI(Player player, SkillManager skillManager, ProfessionManager professionManager,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text("Habilidades", NamedTextColor.GOLD), SIZE);
+        super(player, Component.text(chatPromptManager.lang().raw("gui.skill.browser.title"), NamedTextColor.GOLD), SIZE);
         this.skillManager = skillManager;
         this.professionManager = professionManager;
         this.chatPromptManager = chatPromptManager;
@@ -53,15 +53,17 @@ public class SkillBrowserGUI extends InventoryGUI {
 
             setItem(i, new ItemBuilder(Material.BOOK)
                     .setName(Component.text(skill.displayName(), NamedTextColor.YELLOW))
-                    .setLore(Component.text("id: " + skill.id(), NamedTextColor.GRAY),
-                            Component.text("profesión: " + skill.professionId(), NamedTextColor.GRAY),
-                            Component.text("Click para editar", NamedTextColor.YELLOW))
+                    .setLore(Component.text(chatPromptManager.lang().raw("gui.profession.browser.id_label", "id",
+                            skill.id()), NamedTextColor.GRAY),
+                            Component.text(chatPromptManager.lang().raw("gui.skill.browser.profession_label", "profession",
+                                    skill.professionId()), NamedTextColor.GRAY),
+                            Component.text(chatPromptManager.lang().raw("gui.common.click_to_edit"), NamedTextColor.YELLOW))
                     .build());
         }
 
         setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Crear habilidad nueva", NamedTextColor.GREEN)).build());
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+                .setName(Component.text(chatPromptManager.lang().raw("gui.skill.browser.new"), NamedTextColor.GREEN)).build());
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(chatPromptManager.lang().raw("gui.common.back")));
     }
 
     @Override
@@ -86,18 +88,20 @@ public class SkillBrowserGUI extends InventoryGUI {
     }
 
     private void promptNew() {
-        chatPromptManager.prompt(player, "Escribí el id de la nueva habilidad:", value -> {
+        chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.skill.browser.prompt_new_id"), value -> {
 
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 
             if (skillManager.exists(id)) {
-                player.sendMessage(Component.text("Ya existe una habilidad con ese id.", NamedTextColor.RED));
+                player.sendMessage(Component.text(chatPromptManager.lang().raw("gui.skill.browser.duplicate_id"),
+                        NamedTextColor.RED));
                 reopen();
                 return;
             }
 
             if (professionManager.getAll().isEmpty()) {
-                player.sendMessage(Component.text("Creá al menos una profesión primero.", NamedTextColor.RED));
+                player.sendMessage(Component.text(chatPromptManager.lang().raw("gui.skill.browser.need_profession"),
+                        NamedTextColor.RED));
                 reopen();
                 return;
             }

@@ -1,0 +1,102 @@
+# Archivo de idioma: Español
+# RPGRoll-NPCs - Sistema de mensajes
+
+# Mensajes generales
+general:
+  no_permission: "&cNo tienes permiso para usar este comando."
+  player_only: "&cEste subcomando solo puede ser usado por jugadores."
+
+# Comando /npc (admin)
+command:
+  usage: "&cUso: /npc <create|edit|list|delete|reload|menus> [id]"
+  not_found: "&cNo existe ese NPC."
+  create:
+    usage: "&cUso: /npc create <id>"
+    already_exists: "&cYa existe un NPC con ese id."
+  edit:
+    usage: "&cUso: /npc edit <id>"
+  list:
+    empty: "&7No hay NPCs creados."
+    header: "&6NPCs existentes:"
+  delete:
+    usage: "&cUso: /npc delete <id>"
+    success: "&a✔ NPC eliminado: {id}"
+  reload:
+    success: "&a✔ Recargado: {npcCount} NPC(s), {menuCount} menú(s)."
+
+# Prompts genéricos del sistema de captura de chat (ChatPromptManager)
+prompt:
+  instructions: "&7Escribe en el chat, o 'cancelar' para abortar."
+  cancelled: "&cCancelado."
+
+# GUI "Selecciona una Pose"
+pose:
+  title: "&6&lSelecciona una Pose"
+  back: "Volver"
+
+# GUI Editor de NPC (/npc create, /npc edit)
+adminGui:
+  title: "&6&lEditor de NPC: {id}"
+  name_label: "&6&lNombre"
+  click_to_change: "&7Click para cambiar"
+  skin_label: "&6&lSkin"
+  skin_none: "&7Sin skin custom"
+  skin_click_configure: "&7Click para configurar"
+  skin_configured: "&aSkin configurada ✔"
+  pose_label: "&6&lPose"
+  position_label: "&6&lPosición"
+  position_none: "&cSin ubicación asignada"
+  position_click: "&7Click para usar tu ubicación actual"
+  actions_label: "&6&lAcciones"
+  actions_count: "&f{count} acción(es) configurada(s)"
+  actions_click_manage: "&7Click para gestionar"
+  save: "Guardar"
+  save_incomplete: "Guardar (falta posición o nombre)"
+  cancel: "Cancelar"
+  prompt_name: "Escribe el nuevo nombre para el NPC:"
+  prompt_skin: "Pega el link o ID de MineSkin:"
+  skin_querying: "&7Consultando MineSkin..."
+  skin_applied: "&a✔ Skin aplicada."
+  skin_resolve_failed: "&cNo se pudo resolver la skin."
+  location_assigned: "&a✔ Ubicación asignada."
+  save_missing_fields: "&cFalta nombre o posición antes de guardar."
+  save_success: "&a✔ NPC guardado: {id}"
+  save_error: "&cError al guardar el NPC."
+  edit_cancelled: "&eEdición cancelada."
+
+# GUI "Acciones del NPC"
+actions:
+  title: "&6&lAcciones del NPC"
+  click_to_delete: "&cClick para eliminar"
+  add: "Agregar acción"
+  back: "Volver"
+  prompt_add: "Escribe: TIPO|valor (ej: MESSAGE|Hola {player}, o COMMAND|give {player} diamond 1)"
+  invalid_format: "&cFormato inválido. Usa TIPO|valor"
+  invalid_type: "&cTipo inválido: {type}"
+
+# GUIs de menús de NPC (browser y editor)
+menu:
+  browser:
+    title: "&6Menús de NPC RPGRoll"
+    item_lore: "&7{items} ítem(s) · {rows} fila(s)"
+    click_to_edit: "&eClick para editar"
+    create_new: "&aCrear menú nuevo"
+    close: "Cerrar"
+    prompt_new_id: "Escribí el id del nuevo menú:"
+    already_exists: "&cYa existe un menú con ese id."
+  editor:
+    title: "&6Menú: {id}"
+    title_label: "Título: {title}"
+    title_hint: "&7Click para escribir uno nuevo"
+    rows_label: "&eFilas: {rows}"
+    rows_hint: "&7Click: +1 · Click derecho: -1 (1-6)"
+    item_lore: "&7Slot {slot} · {count} acción(es)"
+    item_hint: "&8Click para agregar una acción · Shift-click para quitar"
+    add_item: "&aAgregar ítem al menú"
+    back: "Volver"
+    prompt_title: "Escribí el nuevo título del menú:"
+    prompt_item: "Escribí: slot;material;nombre (ej. 11;IRON_SWORD;&fEspada):"
+    prompt_action: "Escribí: TIPO;valor (ej. GIVE_ITEM;SHIELD,1 — tipos: {types}):"
+    invalid_format: "&cFormato inválido."
+    invalid_slot_number: "&cEl slot debe ser un número."
+    invalid_action_type: "&cTipo de acción inválido."

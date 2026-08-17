@@ -1,0 +1,340 @@
+common:
+  players_only: "&cSolo un jugador puede usar este comando."
+  player_not_found: "&cJugador no encontrado."
+  result: "&7Resultado: {result}"
+  close: "Cerrar"
+  back: "Volver"
+  yes: "sí"
+  no: "no"
+  previous_page: "&e« Anterior"
+  next_page: "&eSiguiente »"
+
+prompt:
+  footer: "&7Escribí en el chat, o '{keyword}' para abortar."
+  cancelled: "&cCancelado."
+  cancel_keyword: "cancelar"
+
+team:
+  not_in_team: "&cNo estás en ningún equipo."
+  usage: "&eUso: /team <invite|accept|decline|leave|kick|info|ping|waypoint|chat|queue> [args]"
+  decline:
+    success: "&7Invitación rechazada."
+  invite:
+    usage: "&eUso: /team invite <jugador>"
+    sent: "&a✔ Invitación enviada a {player}."
+    received: "&e{player} te invitó a su equipo — /team accept (60s)"
+    not_allowed: "&cNo tenés permiso para invitar."
+    already_teammate: "&cYa está en tu equipo."
+    target_in_team: "&cEse jugador ya está en un equipo."
+    team_full: "&cTu equipo está lleno."
+  accept:
+    success: "&a✔ Te uniste al equipo."
+    no_invite: "&cNo tenés ninguna invitación pendiente."
+    expired: "&cEsa invitación ya expiró."
+    team_gone: "&cEse equipo ya no existe."
+    team_full: "&cEse equipo ya está lleno."
+  leave:
+    disbanded: "&7Equipo disuelto."
+    left: "&7Saliste del equipo."
+  kick:
+    usage: "&eUso: /team kick <jugador>"
+  ping:
+    usage: "&eUso: /team ping <enemigo|objetivo|loot|npc|lugar> [etiqueta]"
+    notify: "&f📍 {player} marcó {type}"
+    notify_labeled: "&f📍 {player} marcó {type} ({label})"
+  waypoint:
+    not_in_team: "&cNo estás en ningún equipo."
+    usage: "&eUso: /team waypoint <set|list|tp|remove> [nombre]"
+    set_usage: "&eUso: /team waypoint set <nombre>"
+    set_success: "&a✔ Waypoint '{name}' guardado."
+    list_header: "&6=== Waypoints del equipo ==="
+    list_entry: "&7 - {name} ({world})"
+    not_found: "&cNo existe ese waypoint."
+    removed: "&7Waypoint eliminado."
+  chat:
+    enabled: "&bChat de equipo activado."
+    disabled: "&bChat de equipo desactivado."
+    tag: "Equipo"
+  queue:
+    left: "&7Saliste de la cola de emparejamiento."
+    joined: "&a✔ Ingresaste a la cola de emparejamiento."
+    joined_for: "&a✔ Ingresaste a la cola de emparejamiento para {dungeon}."
+    formed: "&a✔ Equipo formado automáticamente ({size} jugadores)."
+  buff:
+    xp_boost: "Experiencia"
+    damage_boost: "Daño"
+    regen_boost: "Regeneración"
+    speed_boost: "Velocidad"
+  pingtype:
+    enemy: "Enemigo"
+    objective: "Objetivo"
+    loot: "Botín"
+    npc: "NPC"
+    place: "Lugar"
+  hud:
+    offline_suffix: "{name} (desconectado)"
+  hub:
+    title: "Mi Equipo"
+    not_in_team: "No estás en ningún equipo"
+    lore:
+      change_role: "&7Click: cambiar rol (si tenés permiso)"
+      kick: "&7Shift-click: expulsar (si tenés permiso)"
+      click_to_change: "&7Click para cambiar"
+      click_to_toggle: "&7Click para alternar"
+      plus_minus_one: "&7Click: +1 · Shift-click derecho: -1"
+      click_deactivate: "&7Click para desactivar"
+      click_activate: "&7Click para activar"
+    button:
+      invite: "Invitar jugador"
+      disband: "Disolver equipo"
+      leave: "Salir del equipo"
+    name_label: "Nombre: {name}"
+    color_label: "Color: {color}"
+    max_players_label: "Máx. jugadores: {amount}"
+    min_level_label: "Nivel mínimo: {level}"
+    share_xp: "Compartir XP"
+    share_loot: "Compartir loot"
+    share_gold: "Compartir oro"
+    no_permission_invite: "&cNo tenés permiso para invitar."
+    prompt_invite: "&eEscribí el nombre del jugador a invitar:"
+    invite_received: "&e{player} te invitó a su equipo — /team accept"
+    only_leader_config: "&cSolo el líder puede editar la configuración."
+    prompt_name: "&eEscribí el nuevo nombre del equipo:"
+    no_permission_buffs: "&cNo tenés permiso para gestionar los buffs del equipo."
+
+guild:
+  usage: "&eUso: /guild <create|disband|accept|decline|leave|ranking|chat|gui> [args]"
+  not_in_guild: "&cNo estás en ninguna guild."
+  not_in_guild_browser: "&cNo estás en ninguna guild — usá /guild browser."
+  already_in_guild: "&cYa estás en una guild."
+  decline:
+    success: "&7Invitación rechazada."
+  disband:
+    only_leader: "&cSolo el líder puede disolver la guild."
+    success: "&7Guild disuelta."
+  leave:
+    is_leader: "&cSos el líder — transferí el liderazgo o usá /guild disband."
+    success: "&7Abandonaste la guild."
+  create:
+    usage: "&eUso: /guild create <nombre>"
+    invalid_name: "&cEse nombre no es válido o ya existe una guild con ese id."
+    success: "&a✔ Guild '{name}' fundada."
+    requires_level: "&cNecesitás nivel {level} para fundar una guild."
+    requires_permission: "&cNo tenés el permiso necesario para fundar una guild."
+    requires_item: "&cNecesitás {amount}x {item} para fundar una guild."
+    requires_money: "&cNecesitás {amount} de dinero para fundar una guild."
+    quest_requirement_not_implemented: "&7Aviso: esta guild requiere haber completado la quest '{quest}', pero esa verificación todavía no está implementada — el requisito no se aplica."
+  accept:
+    usage: "&eUso: /guild accept <id-de-guild>"
+    success: "&a✔ Te uniste a la guild."
+    no_invite: "&cNo tenés ninguna invitación pendiente de esa guild."
+    expired: "&cEsa invitación ya expiró."
+    guild_gone: "&cEsa guild ya no existe."
+  ranking:
+    header: "&6=== Ranking de Guilds ({category}) ==="
+    entry: "&7{position}. {name} — {value}"
+  chat:
+    officers_only: "&cSolo los oficiales/líder pueden usar ese canal."
+    channel_changed: "&bChat cambiado a canal: {channel}"
+  branch:
+    bank:
+      name: "Banco"
+      description: "Más espacio de almacenamiento compartido"
+    economy:
+      name: "Economía"
+      description: "Mejores recompensas de oro en quests de guild"
+    members:
+      name: "Miembros"
+      description: "Más cupo de integrantes"
+    buffs:
+      name: "Buffs"
+      description: "Más buffs de guild activos a la vez"
+    territory:
+      name: "Territorio"
+      description: "Más regiones reclamables"
+    events:
+      name: "Eventos"
+      description: "Más eventos concurrentes en el calendario"
+  hub:
+    level_suffix: "Nivel {level}"
+    member_count: "{count} miembro(s)"
+    button:
+      members: "Miembros"
+      vault: "Vault"
+      territory: "Territorio"
+      upgrades: "Árbol de Mejoras"
+      diplomacy: "Diplomacia"
+      quests: "Quests de Guild"
+      achievements: "Logros"
+      calendar: "Calendario"
+      customization: "Personalización"
+      disband_leave: "Abandonar / Disolver guild"
+    disband_is_leader: "&cSos el líder — transferí el liderazgo o expulsá al resto antes de disolver, o usá /guild disband para forzarlo."
+  members:
+    title: "Miembros: {name}"
+    lore:
+      next_role: "&7Click: siguiente rol"
+      kick: "&7Shift-click: expulsar"
+    button:
+      invite: "Invitar jugador"
+    no_permission_kick: "&cNo tenés permiso para expulsar a ese miembro."
+    no_permission_role: "&cNo tenés permiso para cambiar roles."
+    no_permission_invite: "&cNo tenés permiso para invitar."
+    prompt_invite: "&eEscribí el nombre del jugador a invitar:"
+    target_already_in_guild: "&cEse jugador ya está en una guild."
+    invite_received: "&e{player} te invitó a la guild {guild} — /guild accept {id}"
+    invite_sent: "&a✔ Invitación enviada."
+  vault:
+    title: "Vault: {name}"
+    button:
+      deposit: "Depositar dinero"
+      withdraw: "Retirar dinero"
+      log: "Ver historial (chat)"
+    lore:
+      requires_bank_permission: "&7Requiere permiso de gestión de banco"
+    balance: "Saldo: {amount}"
+    storage_slots: "Espacios de almacenamiento: {count}"
+    prompt_deposit: "&eEscribí cuánto dinero depositar:"
+    prompt_withdraw: "&eEscribí cuánto dinero retirar:"
+    invalid_amount: "&cMonto inválido."
+    no_permission_withdraw: "&cNo tenés permiso para retirar del banco."
+    log_header: "&6=== Historial del vault (últimos 10) ==="
+    log_entry: "&7 - [{type}] {description} ({actor})"
+    log_system: "sistema"
+    need_item_in_hand: "&cTenés que tener un ítem en la mano para depositar."
+    slot_not_free: "&cEse espacio no está libre."
+    not_enough_money: "&cNo tenés suficiente dinero."
+    insufficient_balance: "&cNo hay saldo suficiente en el vault."
+    deposited: "&a✔ Depositaste {amount}."
+    withdrew: "&a✔ Retiraste {amount}."
+    log:
+      deposited_item: "Depositó {item}"
+      withdrew_item: "Retiró {item}"
+      deposit_of: "Depósito de {player}"
+      withdraw_of: "Retiro de {player}"
+  territory:
+    title: "Territorios: {name}"
+    lore:
+      world: "&7Mundo: {world}"
+      block_protection: "&7Protección de bloques: {state}"
+      outsider_pvp: "&7PvP externo permitido: {state}"
+      toggle_hint: "&8Click: alternar protección · Click derecho: alternar PvP"
+      release_hint: "&8Shift-click: liberar territorio"
+      quota: "&7Cupo: {count}/{max} (mejorá la rama Territorio para más)"
+    button:
+      claim: "Reclamar territorio acá"
+    no_permission_manage: "&cNo tenés permiso para gestionar territorios."
+    no_permission_claim: "&cNo tenés permiso para reclamar territorio."
+    quota_reached: "&cAlcanzaste el cupo de territorios — mejorá la rama Territorio."
+    prompt_claim: "&eEscribí: nombre;radio (ej. base;40):"
+    invalid_format: "&cFormato inválido."
+    radius_not_a_number: "&cEl radio debe ser un número."
+    overlaps: "&cEse territorio se superpone con uno ya reclamado."
+    claimed: "&a✔ Territorio '{name}' reclamado."
+    protected: "&cEste territorio está protegido por una guild."
+    no_pvp: "&cNo podés atacar jugadores en este territorio."
+  upgrade:
+    title: "Mejoras: {name}"
+    branch_level: "{branch} — Nivel {level}/{max}"
+    max_level: "&aNivel máximo alcanzado"
+    cost: "&6Costo: {cost}"
+    click_hint: "&bClick para mejorar"
+    no_permission: "&cNo tenés permiso para mejorar la guild."
+    insufficient_funds: "&cEl vault de la guild no tiene fondos suficientes ({cost})."
+    log:
+      upgrade_of: "Mejora de {branch}"
+  customization:
+    title: "Personalización: {name}"
+    name_label: "Nombre: {name}"
+    color_label: "Color: {color}"
+    icon_label: "Ícono: {icon}"
+    motto_label: "Lema: {motto}"
+    description_label: "Descripción"
+    no_motto: "(sin lema)"
+    no_description: "(sin descripción)"
+    lore:
+      click_to_change: "&7Click para cambiar"
+      click_to_type_material: "&7Click para escribir un Material nuevo"
+    no_permission: "&cNo tenés permiso para personalizar la guild."
+    prompt_name: "&eEscribí el nuevo nombre de la guild:"
+    invalid_material: "&cMaterial inválido."
+    prompt_icon: "&eEscribí el nombre del Material (ej. DIAMOND_SWORD):"
+    prompt_motto: "&eEscribí el nuevo lema de la guild:"
+    prompt_description: "&eEscribí la nueva descripción de la guild:"
+  calendar:
+    title: "Calendario: {name}"
+    lore:
+      shift_click_delete: "&8Shift-click para eliminar"
+    button:
+      add: "Agendar evento"
+    no_permission_edit: "&cNo tenés permiso para editar el calendario."
+    no_permission_add: "&cNo tenés permiso para agendar eventos."
+    prompt_new_event: "&eEscribí: nombre;tipo;minutos-desde-ahora;descripción (ej. Torneo;torneo;60;Torneo semanal)"
+    invalid_format: "&cFormato inválido."
+    minutes_not_a_number: "&cLos minutos deben ser un número."
+    event_reminder: "&6📅 Evento de guild: &e{name} &7— {description}"
+  achievements:
+    title: "Logros: {name}"
+    unlocked: "Desbloqueado"
+    locked: "Bloqueado"
+    unlocked_broadcast: "&6🏆 Logro desbloqueado: {name}"
+  quests:
+    title: "Quests: {name}"
+    progress: "&7Progreso: {current}/{target}"
+    type_target: "&7Tipo: {type} · Objetivo: {target}"
+    reward: "&7Recompensa: {money} oro, {xp} XP de guild"
+    click_start: "&aClick para iniciar"
+    no_permission_start: "&cNo tenés permiso para iniciar quests de guild."
+    completed: "&a✔ Quest de guild completada: &e{quest}"
+    log:
+      reward: "Recompensa de quest: {quest}"
+  diplomacy:
+    title: "Diplomacia: {name}"
+    level: "&7Nivel {level}"
+    click_change: "&eClick para cambiar relación"
+    no_permission: "&cNo tenés permiso para gestionar diplomacia."
+  browser:
+    title: "Guilds del servidor"
+    level_members: "&7Nivel {level} · {count} miembro(s)"
+    click_open: "&eClick para abrir"
+
+guildadmin:
+  usage: "&eUso: /guildadmin <reload|browser [guilds|quests]|delete> [args]"
+  reload:
+    success: "&a✔ Quests de guild recargadas: {count}"
+  browser:
+    players_only: "&cSolo un jugador puede abrir el navegador."
+  delete:
+    usage: "&eUso: /guildadmin delete <id>"
+    not_found: "&cNo existe esa guild."
+    success: "&a✔ Guild eliminada."
+  quest:
+    browser:
+      title: "Quests de Guild (admin)"
+    click_edit: "&eClick para editar"
+    button:
+      new: "Crear quest de guild nueva"
+    prompt_new_id: "&eEscribí el id de la nueva quest de guild:"
+    id_already_exists: "&cYa existe una quest con ese id."
+    editor:
+      title: "Quest de Guild: {id}"
+    name_label: "Nombre: {name}"
+    type_label: "Tipo: {type}"
+    reference_label: "Referencia: {reference}"
+    reference_none: "(ninguna)"
+    target_amount_label: "Cantidad objetivo: {amount}"
+    reward_money_label: "Recompensa de oro: {amount}"
+    reward_xp_label: "Recompensa de XP de guild: {amount}"
+    min_level_label: "Nivel mínimo de guild: {level}"
+    description_label: "Descripción"
+    prompt_name: "&eEscribí el nuevo nombre de la quest:"
+    prompt_reference: "&eEscribí la nueva referencia (vacío = ninguna):"
+    prompt_description: "&eEscribí la nueva descripción:"
+    lore:
+      click_to_type_new: "&7Click para escribir uno nuevo"
+      click_next: "&7Click para pasar al siguiente"
+      win_war_note: "&8WIN_WAR no tiene gancho automático (sin motor de guerra)"
+      reference_example: "&7Ej. id de mob/dungeon/material según el tipo"
+      click_increments: "&7Click: +1 · Shift-click: +10 · Click derecho: -1"
+      click_100: "&7Click: +100 · Click derecho: -100"
+      click_50: "&7Click: +50 · Click derecho: -50"

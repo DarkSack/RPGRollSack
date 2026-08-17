@@ -35,7 +35,8 @@ public class ScheduleEditorGUI extends InventoryGUI {
 
     public ScheduleEditorGUI(Player player, Schedule schedule, ScheduleManager scheduleManager,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text("Horario: " + schedule.id(), NamedTextColor.GOLD), SIZE);
+        super(player, Component.text(chatPromptManager.lang().raw("gui.schedule.editor.title", "id", schedule.id()),
+                NamedTextColor.GOLD), SIZE);
         this.current = schedule;
         this.scheduleManager = scheduleManager;
         this.chatPromptManager = chatPromptManager;
@@ -58,31 +59,33 @@ public class ScheduleEditorGUI extends InventoryGUI {
         }
 
         setItem(NAME_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(Component.text("Nombre: " + current.displayName(), NamedTextColor.YELLOW)).build());
+                .setName(Component.text(chatPromptManager.lang().raw("gui.schedule.editor.name", "name",
+                        current.displayName()), NamedTextColor.YELLOW)).build());
 
         setItem(DESCRIPTION_SLOT, new ItemBuilder(Material.WRITTEN_BOOK)
-                .setName(Component.text("Descripción", NamedTextColor.YELLOW))
-                .setLore(ItemBuilder.toLoreLines(current.description().isBlank() ? "(sin descripción)" : current.description()))
+                .setName(Component.text(chatPromptManager.lang().raw("gui.profession.editor.description"), NamedTextColor.YELLOW))
+                .setLore(ItemBuilder.toLoreLines(current.description().isBlank()
+                        ? chatPromptManager.lang().raw("gui.editor.no_description") : current.description()))
                 .build());
 
         setItem(ENTRIES_SLOT, new ItemBuilder(Material.CLOCK)
-                .setName(Component.text("Entradas: " + current.entries().size(), NamedTextColor.AQUA))
-                .setLore(ItemBuilder.toLoreLines(formatEntries()
-                        + "\nFormato: tick;ACTIVIDAD (0-24000, 0=amanecer)\n"
-                        + "Actividades: " + java.util.Arrays.toString(ScheduleActivity.values())
-                        + "\nEscribí para AGREGAR una."))
+                .setName(Component.text(chatPromptManager.lang().raw("gui.schedule.editor.entries", "count",
+                        current.entries().size()), NamedTextColor.AQUA))
+                .setLore(ItemBuilder.toLoreLines(chatPromptManager.lang().raw("gui.schedule.editor.entries_lore", "entries",
+                        formatEntries(), "activities", java.util.Arrays.toString(ScheduleActivity.values()))))
                 .build());
 
         setItem(CLEAR_SLOT, new ItemBuilder(Material.BARRIER)
-                .setName(Component.text("Borrar todas las entradas", NamedTextColor.RED)).build());
+                .setName(Component.text(chatPromptManager.lang().raw("gui.schedule.editor.clear_entries"), NamedTextColor.RED))
+                .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(chatPromptManager.lang().raw("gui.common.back")));
     }
 
     private String formatEntries() {
 
         if (current.entries().isEmpty()) {
-            return "(sin entradas)";
+            return chatPromptManager.lang().raw("gui.schedule.editor.no_entries");
         }
 
         StringBuilder builder = new StringBuilder();
@@ -101,13 +104,13 @@ public class ScheduleEditorGUI extends InventoryGUI {
         int slot = event.getSlot();
 
         if (slot == NAME_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el nuevo nombre:",
+            chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.editor.prompt_name"),
                     value -> replace(new Schedule(current.id(), value, current.description(), current.entries())));
         } else if (slot == DESCRIPTION_SLOT) {
-            chatPromptManager.prompt(player, "Escribí la nueva descripción:",
+            chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.editor.prompt_description"),
                     value -> replace(new Schedule(current.id(), current.displayName(), value, current.entries())));
         } else if (slot == ENTRIES_SLOT) {
-            chatPromptManager.prompt(player, "Escribí 'tick;ACTIVIDAD' para agregar una entrada:", this::addEntry);
+            chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.schedule.editor.prompt_entry"), this::addEntry);
         } else if (slot == CLEAR_SLOT) {
             replace(new Schedule(current.id(), current.displayName(), current.description(), List.of()));
         } else if (slot == BACK_SLOT) {
@@ -120,7 +123,8 @@ public class ScheduleEditorGUI extends InventoryGUI {
         String[] parts = raw.split(";");
 
         if (parts.length < 2) {
-            player.sendMessage(Component.text("Formato inválido — necesita 2 partes separadas por ';'.", NamedTextColor.RED));
+            player.sendMessage(Component.text(chatPromptManager.lang().raw("gui.schedule.editor.invalid_entry_format"),
+                    NamedTextColor.RED));
             build();
             return;
         }
@@ -132,7 +136,8 @@ public class ScheduleEditorGUI extends InventoryGUI {
             tick = Long.parseLong(parts[0].trim());
             activity = ScheduleActivity.valueOf(parts[1].trim().toUpperCase(Locale.ROOT));
         } catch (Exception e) {
-            player.sendMessage(Component.text("Tick o actividad inválidos.", NamedTextColor.RED));
+            player.sendMessage(Component.text(chatPromptManager.lang().raw("gui.schedule.editor.invalid_entry_values"),
+                    NamedTextColor.RED));
             build();
             return;
         }

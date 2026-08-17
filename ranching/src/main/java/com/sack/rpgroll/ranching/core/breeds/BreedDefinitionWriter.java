@@ -1,5 +1,7 @@
 package com.sack.rpgroll.ranching.core.breeds;
 
+import com.sack.rpgroll.common.reskin.EntityReskinYaml;
+
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -25,6 +27,7 @@ public class BreedDefinitionWriter {
         config.set("fertility-multiplier", breed.fertilityMultiplier());
         config.set("resistance-multiplier", breed.resistanceMultiplier());
         config.set("temperament", breed.temperament());
+        EntityReskinYaml.write(config, breed.reskin());
 
         try {
             folder.mkdirs();

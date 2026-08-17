@@ -2,6 +2,7 @@ package com.sack.rpgroll.ascension.gui;
 
 import com.sack.rpgroll.ascension.core.PrestigeLevel;
 import com.sack.rpgroll.ascension.core.PrestigeManager;
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 
@@ -26,15 +27,17 @@ public class PrestigeEditorGUI extends InventoryGUI {
     private final PrestigeManager manager;
     private final ChatPromptManager chatPromptManager;
     private final Runnable onBack;
+    private final LangManager lang;
     private PrestigeLevel current;
 
     public PrestigeEditorGUI(Player player, PrestigeLevel level, PrestigeManager manager,
-            ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text("Prestigio: " + level.id(), NamedTextColor.GOLD), SIZE);
+            ChatPromptManager chatPromptManager, Runnable onBack, LangManager lang) {
+        super(player, lang.component("gui.prestige.editor_title", "id", level.id()), SIZE);
         this.current = level;
         this.manager = manager;
         this.chatPromptManager = chatPromptManager;
         this.onBack = onBack;
+        this.lang = lang;
     }
 
     private void replace(PrestigeLevel updated) {
@@ -53,22 +56,22 @@ public class PrestigeEditorGUI extends InventoryGUI {
         }
 
         setItem(LEVEL_SLOT, new ItemBuilder(Material.EXPERIENCE_BOTTLE)
-                .setName(Component.text("Nivel requerido: " + current.requiredLevel(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click: +10 · Click derecho: -10", NamedTextColor.GRAY))
+                .setName(lang.component("gui.prestige.level_label", "level", current.requiredLevel()))
+                .setLore(lang.component("gui.prestige.click_plusminus10"))
                 .build());
 
         setItem(BONUS_SLOT, new ItemBuilder(Material.NETHER_STAR)
-                .setName(Component.text("Bono de XP: " + current.expBonusPercent() + "%", NamedTextColor.YELLOW))
-                .setLore(Component.text("Click: +1 · Click derecho: -1", NamedTextColor.GRAY))
+                .setName(lang.component("gui.prestige.bonus_label", "percent", current.expBonusPercent()))
+                .setLore(lang.component("gui.common.click_plusminus1"))
                 .build());
 
         setItem(SKILLS_SLOT, new ItemBuilder(Material.BOOK)
-                .setName(Component.text("Skills otorgadas: " + current.grantedSkills().size(), NamedTextColor.YELLOW))
+                .setName(lang.component("gui.prestige.skills_label", "count", current.grantedSkills().size()))
                 .setLore(Component.text(String.join(", ", current.grantedSkills()), NamedTextColor.GRAY),
-                        Component.text("Click para escribir lista separada por comas", NamedTextColor.GRAY))
+                        lang.component("gui.common.comma_hint"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back_button")));
     }
 
     @Override
@@ -93,7 +96,7 @@ public class PrestigeEditorGUI extends InventoryGUI {
         }
 
         if (slot == SKILLS_SLOT) {
-            chatPromptManager.prompt(player, "Escribí las skills otorgadas, separadas por comas:",
+            chatPromptManager.prompt(player, "gui.prestige.prompt_skills",
                     value -> replace(new PrestigeLevel(current.id(), current.requiredLevel(),
                             current.expBonusPercent(), List.of(value.trim().split(",")))));
             return;

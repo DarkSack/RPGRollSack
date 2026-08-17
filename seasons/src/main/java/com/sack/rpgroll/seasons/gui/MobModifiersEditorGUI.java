@@ -1,5 +1,6 @@
 package com.sack.rpgroll.seasons.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.seasons.core.Season;
@@ -31,7 +32,7 @@ public class MobModifiersEditorGUI extends InventoryGUI {
 
     public MobModifiersEditorGUI(Player player, Season season, SeasonManager seasonManager,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text("Mobs de temporada: " + season.id(), NamedTextColor.GOLD), SIZE);
+        super(player, chatPromptManager.lang().component("gui.mob_modifiers_editor.title", "id", season.id()), SIZE);
         this.current = season;
         this.seasonManager = seasonManager;
         this.chatPromptManager = chatPromptManager;
@@ -57,6 +58,8 @@ public class MobModifiersEditorGUI extends InventoryGUI {
             setItem(slot, ItemBuilder.createFiller());
         }
 
+        LangManager lang = chatPromptManager.lang();
+
         List<SeasonMobModifier> modifiers = current.mobModifiers();
 
         for (int i = 0; i < modifiers.size() && i < MODIFIERS_MAX; i++) {
@@ -65,18 +68,18 @@ public class MobModifiersEditorGUI extends InventoryGUI {
 
             setItem(MODIFIERS_START + i, new ItemBuilder(Material.ZOMBIE_HEAD)
                     .setName(Component.text(modifier.mobId(), NamedTextColor.GREEN))
-                    .setLore(Component.text("Chance extra: " + Math.round(modifier.extraSpawnChance() * 100) + "%",
-                            NamedTextColor.GRAY),
-                            Component.text("Shift-click para quitar", NamedTextColor.RED))
+                    .setLore(lang.component("gui.mob_modifiers_editor.chance_label", "percent",
+                            Math.round(modifier.extraSpawnChance() * 100)),
+                            lang.component("gui.common.shift_remove"))
                     .build());
         }
 
         setItem(ADD_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Agregar mob de temporada", NamedTextColor.GREEN))
-                .setLore(Component.text("Escribí: id-de-mob chance (ej. winter_yeti 0.05)", NamedTextColor.GRAY))
+                .setName(lang.component("gui.mob_modifiers_editor.add"))
+                .setLore(lang.component("gui.mob_modifiers_editor.add_lore"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back")));
     }
 
     @Override
@@ -95,12 +98,12 @@ public class MobModifiersEditorGUI extends InventoryGUI {
         }
 
         if (slot == ADD_SLOT) {
-            chatPromptManager.prompt(player, "Escribí: id-de-mob chance (0.0-1.0):", value -> {
+            chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.mob_modifiers_editor.prompt_add"), value -> {
 
                 String[] parts = value.trim().split("\\s+");
 
                 if (parts.length < 2) {
-                    player.sendMessage(Component.text("Formato inválido.", NamedTextColor.RED));
+                    chatPromptManager.lang().send(player, "gui.common.invalid_format");
                     return;
                 }
 
@@ -109,7 +112,7 @@ public class MobModifiersEditorGUI extends InventoryGUI {
                 try {
                     chance = Double.parseDouble(parts[1]);
                 } catch (NumberFormatException e) {
-                    player.sendMessage(Component.text("Chance inválida: " + parts[1], NamedTextColor.RED));
+                    chatPromptManager.lang().send(player, "gui.mob_modifiers_editor.invalid_chance", "value", parts[1]);
                     return;
                 }
 

@@ -38,6 +38,10 @@ public class GuildHubGUI extends InventoryGUI {
         this.services = services;
     }
 
+    private com.sack.rpgroll.common.lang.LangManager lang() {
+        return services.langManager();
+    }
+
     @Override
     public void build() {
 
@@ -48,26 +52,33 @@ public class GuildHubGUI extends InventoryGUI {
         }
 
         setItem(4, new ItemBuilder(guild.icon())
-                .setName(Component.text(guild.name() + " — Nivel " + guild.level(), guild.color()))
-                .setLore(Component.text(guild.memberCount() + " miembro(s)", NamedTextColor.GRAY),
+                .setName(Component.text(guild.name() + " — " + lang().raw("guild.hub.level_suffix", "level",
+                        guild.level()), guild.color()))
+                .setLore(Component.text(lang().raw("guild.hub.member_count", "count", guild.memberCount()),
+                        NamedTextColor.GRAY),
                         Component.text(guild.motto(), NamedTextColor.GRAY))
                 .build());
 
-        setItem(MEMBERS_SLOT, button(Material.PLAYER_HEAD, "Miembros", NamedTextColor.YELLOW));
-        setItem(VAULT_SLOT, button(Material.CHEST, "Vault", NamedTextColor.GOLD));
-        setItem(TERRITORY_SLOT, button(Material.GRASS_BLOCK, "Territorio", NamedTextColor.GREEN));
-        setItem(UPGRADES_SLOT, button(Material.NETHER_STAR, "Árbol de Mejoras", NamedTextColor.LIGHT_PURPLE));
-        setItem(DIPLOMACY_SLOT, button(Material.WHITE_BANNER, "Diplomacia", NamedTextColor.AQUA));
-        setItem(QUESTS_SLOT, button(Material.MAP, "Quests de Guild", NamedTextColor.YELLOW));
-        setItem(ACHIEVEMENTS_SLOT, button(Material.GOLD_INGOT, "Logros", NamedTextColor.GOLD));
-        setItem(CALENDAR_SLOT, button(Material.CLOCK, "Calendario", NamedTextColor.AQUA));
-        setItem(CUSTOMIZATION_SLOT, button(Material.NAME_TAG, "Personalización", NamedTextColor.WHITE));
+        setItem(MEMBERS_SLOT, button(Material.PLAYER_HEAD, lang().raw("guild.hub.button.members"), NamedTextColor.YELLOW));
+        setItem(VAULT_SLOT, button(Material.CHEST, lang().raw("guild.hub.button.vault"), NamedTextColor.GOLD));
+        setItem(TERRITORY_SLOT, button(Material.GRASS_BLOCK, lang().raw("guild.hub.button.territory"),
+                NamedTextColor.GREEN));
+        setItem(UPGRADES_SLOT, button(Material.NETHER_STAR, lang().raw("guild.hub.button.upgrades"),
+                NamedTextColor.LIGHT_PURPLE));
+        setItem(DIPLOMACY_SLOT, button(Material.WHITE_BANNER, lang().raw("guild.hub.button.diplomacy"),
+                NamedTextColor.AQUA));
+        setItem(QUESTS_SLOT, button(Material.MAP, lang().raw("guild.hub.button.quests"), NamedTextColor.YELLOW));
+        setItem(ACHIEVEMENTS_SLOT, button(Material.GOLD_INGOT, lang().raw("guild.hub.button.achievements"),
+                NamedTextColor.GOLD));
+        setItem(CALENDAR_SLOT, button(Material.CLOCK, lang().raw("guild.hub.button.calendar"), NamedTextColor.AQUA));
+        setItem(CUSTOMIZATION_SLOT, button(Material.NAME_TAG, lang().raw("guild.hub.button.customization"),
+                NamedTextColor.WHITE));
 
         setItem(DISBAND_SLOT, new ItemBuilder(Material.REDSTONE_BLOCK)
-                .setName(Component.text("Abandonar / Disolver guild", NamedTextColor.RED))
+                .setName(Component.text(lang().raw("guild.hub.button.disband_leave"), NamedTextColor.RED))
                 .build());
 
-        setItem(CLOSE_SLOT, ItemBuilder.createCancelButton("Cerrar"));
+        setItem(CLOSE_SLOT, ItemBuilder.createCancelButton(lang().raw("common.close")));
     }
 
     private org.bukkit.inventory.ItemStack button(Material material, String name, NamedTextColor color) {
@@ -107,19 +118,17 @@ public class GuildHubGUI extends InventoryGUI {
 
         if (guild.roleOf(player.getUniqueId()) == com.sack.rpgroll.guilds.guild.GuildRole.LEADER
                 && guild.memberCount() > 1) {
-            player.sendMessage(Component.text(
-                    "Sos el líder — transferí el liderazgo o expulsá al resto antes de disolver, o usá /guild disband para forzarlo.",
-                    NamedTextColor.RED));
+            lang().send(player, "guild.hub.disband_is_leader");
             return;
         }
 
         if (guild.memberCount() <= 1) {
             services.guildManager().disband(guild.id());
-            player.sendMessage(Component.text("Guild disuelta.", NamedTextColor.GRAY));
+            lang().send(player, "guild.disband.success");
         } else {
             guild.removeMember(player.getUniqueId());
             services.guildManager().save(guild);
-            player.sendMessage(Component.text("Abandonaste la guild.", NamedTextColor.GRAY));
+            lang().send(player, "guild.leave.success");
         }
 
         close();

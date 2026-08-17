@@ -1,7 +1,9 @@
 package com.sack.rpgroll.dungeons.gui.editor;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
+import com.sack.rpgroll.util.ComponentUtils;
 import com.sack.rpgroll.dungeons.core.DungeonAction;
 import com.sack.rpgroll.dungeons.core.DungeonObjective;
 import com.sack.rpgroll.dungeons.core.DungeonPoint;
@@ -39,12 +41,15 @@ public class RoomEditGUI extends InventoryGUI {
     private final DungeonEditorSession session;
     private final int index;
     private final Runnable onBack;
+    private final LangManager lang;
 
     public RoomEditGUI(Player player, DungeonEditorSession session, int index, Runnable onBack) {
-        super(player, Component.text("Sala: " + session.rooms.get(index).id(), NamedTextColor.GOLD), SIZE);
+        super(player, ComponentUtils.parse(session.chatPromptManager.lang()
+                .raw("gui.editor.roomedit.title", "id", session.rooms.get(index).id())), SIZE);
         this.session = session;
         this.index = index;
         this.onBack = onBack;
+        this.lang = session.chatPromptManager.lang();
     }
 
     private DungeonRoom room() {
@@ -69,42 +74,43 @@ public class RoomEditGUI extends InventoryGUI {
         DungeonRoom room = room();
 
         setItem(ID_SLOT, new ItemBuilder(Material.PAPER)
-                .setName(Component.text("ID: " + room.id(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para escribir uno nuevo", NamedTextColor.GRAY))
+                .setName(ComponentUtils.parse(lang.raw("gui.editor.roomedit.id", "value", room.id())))
+                .setLore(ComponentUtils.parse(lang.raw("gui.editor.info.click_to_write")))
                 .build());
 
         setItem(TYPE_SLOT, new ItemBuilder(Material.COMPARATOR)
-                .setName(Component.text("Tipo: " + room.type(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para pasar al siguiente tipo", NamedTextColor.GRAY))
+                .setName(ComponentUtils.parse(lang.raw("gui.editor.roomedit.type.label", "value", room.type())))
+                .setLore(ComponentUtils.parse(lang.raw("gui.editor.roomedit.type.hint")))
                 .build());
 
         setItem(ENTRY_POINT_SLOT, new ItemBuilder(Material.MAP)
-                .setName(Component.text("Punto de entrada", NamedTextColor.YELLOW))
+                .setName(ComponentUtils.parse(lang.raw("gui.editor.roomedit.entry_point.label")))
                 .setLore(Component.text(pointText(room.entryPoint()), NamedTextColor.GRAY),
-                        Component.text("Click para fijarlo en tu posición actual", NamedTextColor.GRAY))
+                        ComponentUtils.parse(lang.raw("gui.editor.roomedit.entry_point.hint")))
                 .build());
 
         setItem(BOSS_SLOT, new ItemBuilder(Material.WITHER_SKELETON_SKULL)
-                .setName(Component.text("Jefe: " + (room.hasBoss() ? room.bossMobId() : "(ninguno)"),
-                        NamedTextColor.YELLOW))
-                .setLore(Component.text("Id de una definición de RPGRoll-Mobs", NamedTextColor.DARK_GRAY),
-                        Component.text("Click: escribir · Shift-click: quitar", NamedTextColor.GRAY))
+                .setName(ComponentUtils.parse(lang.raw("gui.editor.roomedit.boss.label", "value",
+                        room.hasBoss() ? room.bossMobId() : lang.raw("gui.editor.roomedit.boss.none"))))
+                .setLore(ComponentUtils.parse(lang.raw("gui.editor.roomedit.boss.hint")),
+                        ComponentUtils.parse(lang.raw("gui.editor.roomedit.boss.click_hint")))
                 .build());
 
         setItem(OBJECTIVES_SLOT, new ItemBuilder(Material.TARGET)
-                .setName(Component.text("Objetivos: " + room.objectives().size(), NamedTextColor.YELLOW))
+                .setName(ComponentUtils.parse(lang.raw("gui.editor.roomedit.objectives",
+                        "value", room.objectives().size())))
                 .build());
 
         setItem(WAVES_SLOT, new ItemBuilder(Material.SPAWNER)
-                .setName(Component.text("Oleadas: " + room.waves().size(), NamedTextColor.YELLOW))
+                .setName(ComponentUtils.parse(lang.raw("gui.editor.roomedit.waves", "value", room.waves().size())))
                 .build());
 
         setItem(EVENTS_SLOT, new ItemBuilder(Material.REDSTONE_TORCH)
-                .setName(Component.text("Eventos de esta sala", NamedTextColor.YELLOW))
-                .setLore(Component.text("Acciones por trigger, solo para esta sala", NamedTextColor.GRAY))
+                .setName(ComponentUtils.parse(lang.raw("gui.editor.roomedit.events.label")))
+                .setLore(ComponentUtils.parse(lang.raw("gui.editor.roomedit.events.hint")))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back")));
     }
 
     private String pointText(DungeonPoint point) {
@@ -118,7 +124,7 @@ public class RoomEditGUI extends InventoryGUI {
         int slot = event.getSlot();
 
         if (slot == ID_SLOT) {
-            session.chatPromptManager.prompt(player, "Escribí el nuevo id:", value -> {
+            session.chatPromptManager.prompt(player, "gui.editor.roomedit.prompt.id", value -> {
                 replace(withId(room(), value.trim().toLowerCase().replace(' ', '_')));
                 build();
             });
@@ -144,7 +150,7 @@ public class RoomEditGUI extends InventoryGUI {
                 build();
                 return;
             }
-            session.chatPromptManager.prompt(player, "Escribí el id del mob jefe (RPGRoll-Mobs):", value -> {
+            session.chatPromptManager.prompt(player, "gui.editor.roomedit.prompt.boss", value -> {
                 replace(withBoss(room(), value.trim()));
                 build();
             });

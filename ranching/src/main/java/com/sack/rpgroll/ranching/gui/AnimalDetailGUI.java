@@ -33,14 +33,17 @@ public class AnimalDetailGUI extends InventoryGUI {
     private final Animal animal;
     private final SpeciesManager speciesManager;
     private final BreedManager breedManager;
+    private final ChatPromptManager chatPromptManager;
     private final Runnable onBack;
 
     public AnimalDetailGUI(Player player, Animal animal, SpeciesManager speciesManager, BreedManager breedManager,
-            Runnable onBack) {
-        super(player, Component.text("Animal #" + animal.id().toString().substring(0, 8), NamedTextColor.GOLD), SIZE);
+            ChatPromptManager chatPromptManager, Runnable onBack) {
+        super(player, Component.text(chatPromptManager.lang().raw("gui.animal.detail_title",
+                "id", animal.id().toString().substring(0, 8)), NamedTextColor.GOLD), SIZE);
         this.animal = animal;
         this.speciesManager = speciesManager;
         this.breedManager = breedManager;
+        this.chatPromptManager = chatPromptManager;
         this.onBack = onBack;
     }
 
@@ -56,53 +59,55 @@ public class AnimalDetailGUI extends InventoryGUI {
         Species species = speciesManager.get(animal.speciesId()).orElse(null);
         Breed breed = animal.breedId() != null ? breedManager.get(animal.breedId()).orElse(null) : null;
 
+        var lang = chatPromptManager.lang();
+
         setItem(IDENTITY_SLOT, new ItemBuilder(species != null
                 ? SpeciesBrowserGUI.parseMaterial(species.icon(), Material.COW_SPAWN_EGG)
                 : Material.BARRIER)
-                .setName(Component.text("Identidad", NamedTextColor.GOLD))
+                .setName(Component.text(lang.raw("gui.animal.detail.identity_title"), NamedTextColor.GOLD))
                 .setLore(ItemBuilder.toLoreLines(
-                        "Especie: " + (species != null ? species.displayName() : animal.speciesId()) + "\n"
-                                + "Raza: " + (breed != null ? breed.displayName() : "(sin raza)") + "\n"
-                                + "Sexo: " + animal.sex() + "\n"
-                                + "Etapa: " + animal.stage() + "\n"
-                                + String.format(Locale.ROOT, "Peso: %.1f kg", animal.weight()) + "\n"
-                                + "Generación: F" + animal.generation() + "\n"
-                                + "Calidad: " + animal.quality()
+                        lang.raw("gui.animal.detail.species", "species", species != null ? species.displayName() : animal.speciesId()) + "\n"
+                                + lang.raw("gui.animal.detail.breed", "breed", breed != null ? breed.displayName() : lang.raw("gui.animal.detail.no_breed")) + "\n"
+                                + lang.raw("gui.animal.sex", "sex", animal.sex()) + "\n"
+                                + lang.raw("gui.animal.stage", "stage", animal.stage()) + "\n"
+                                + lang.raw("gui.animal.detail.weight", "weight", String.format(Locale.ROOT, "%.1f", animal.weight())) + "\n"
+                                + lang.raw("gui.animal.generation", "gen", animal.generation()) + "\n"
+                                + lang.raw("gui.animal.quality", "quality", animal.quality())
                                 + (!animal.mutationTags().isEmpty()
-                                        ? "\nMutaciones: " + String.join(", ", animal.mutationTags())
+                                        ? "\n" + lang.raw("gui.animal.detail.mutations", "mutations", String.join(", ", animal.mutationTags()))
                                         : "")))
                 .build());
 
         setItem(GENETICS_SLOT, new ItemBuilder(Material.NETHER_STAR)
-                .setName(Component.text("Genética expresada", NamedTextColor.LIGHT_PURPLE))
+                .setName(Component.text(lang.raw("gui.animal.detail.genetics_title"), NamedTextColor.LIGHT_PURPLE))
                 .setLore(ItemBuilder.toLoreLines(formatPhenotype()))
                 .build());
 
         setItem(LINEAGE_SLOT, new ItemBuilder(Material.BOOK)
-                .setName(Component.text("Linaje", NamedTextColor.AQUA))
+                .setName(Component.text(lang.raw("gui.animal.detail.lineage_title"), NamedTextColor.AQUA))
                 .setLore(ItemBuilder.toLoreLines(formatLineage()))
                 .build());
 
         setItem(STATUS_SLOT, new ItemBuilder(Material.GOLDEN_APPLE)
-                .setName(Component.text("Estado", NamedTextColor.GREEN))
+                .setName(Component.text(lang.raw("gui.animal.detail.status_title"), NamedTextColor.GREEN))
                 .setLore(ItemBuilder.toLoreLines(
-                        String.format(Locale.ROOT, "Salud: %.0f/100\n", animal.health())
-                                + String.format(Locale.ROOT, "Felicidad: %.0f/100\n", animal.happiness())
-                                + String.format(Locale.ROOT, "Fertilidad: %.0f%%\n", animal.fertility() * 100)
+                        lang.raw("gui.animal.detail.health_line", "health", String.format(Locale.ROOT, "%.0f", animal.health())) + "\n"
+                                + lang.raw("gui.animal.detail.happiness_line", "happiness", String.format(Locale.ROOT, "%.0f", animal.happiness())) + "\n"
+                                + lang.raw("gui.animal.detail.fertility_line", "fertility", String.format(Locale.ROOT, "%.0f", animal.fertility() * 100)) + "\n"
                                 + (animal.isPregnant()
-                                        ? "Preñada — faltan " + Math.max(0, animal.pregnancyRemainingTicks()) + " ticks\n"
+                                        ? lang.raw("gui.animal.detail.pregnant_line", "ticks", Math.max(0, animal.pregnancyRemainingTicks())) + "\n"
                                         : "")
-                                + (animal.isSick() ? "⚠ Enferma: " + animal.activeDiseaseId() + " ("
-                                        + animal.diseaseRemainingTicks() + " ticks restantes)" : "Sana")))
+                                + (animal.isSick() ? lang.raw("gui.animal.detail.sick_line", "disease", animal.activeDiseaseId(),
+                                        "ticks", animal.diseaseRemainingTicks()) : lang.raw("gui.animal.detail.healthy"))))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back")));
     }
 
     private String formatPhenotype() {
 
         if (animal.phenotype().isEmpty()) {
-            return "(sin genes registrados)";
+            return chatPromptManager.lang().raw("gui.animal.detail.no_genes");
         }
 
         StringBuilder builder = new StringBuilder();
@@ -117,22 +122,24 @@ public class AnimalDetailGUI extends InventoryGUI {
 
     private String formatLineage() {
 
+        var lang = chatPromptManager.lang();
+
         if (animal.isFounder()) {
-            return "Fundador de línea (sin padres registrados).";
+            return lang.raw("gui.animal.detail.founder");
         }
 
         List<AncestorRef> ancestors = animal.ancestors();
 
         if (ancestors.isEmpty()) {
-            return "(sin linaje registrado)";
+            return lang.raw("gui.animal.detail.no_lineage");
         }
 
         StringBuilder builder = new StringBuilder();
 
         for (int i = 0; i < ancestors.size() && i < 10; i++) {
             AncestorRef ref = ancestors.get(i);
-            builder.append(i < 2 ? (i == 0 ? "Madre: " : "Padre: ") : "Ancestro: ").append(ref.displayName())
-                    .append("\n");
+            String key = i < 2 ? (i == 0 ? "gui.animal.detail.mother" : "gui.animal.detail.father") : "gui.animal.detail.ancestor";
+            builder.append(lang.raw(key, "name", ref.displayName())).append("\n");
         }
 
         return builder.toString().strip();

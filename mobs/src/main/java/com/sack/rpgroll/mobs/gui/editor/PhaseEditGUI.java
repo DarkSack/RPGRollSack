@@ -1,12 +1,11 @@
 package com.sack.rpgroll.mobs.gui.editor;
 
+import com.sack.rpgroll.common.lang.LangManager;
+
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.mobs.core.MobPhase;
 import com.sack.rpgroll.mobs.core.MobSkill;
-
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -46,12 +45,15 @@ public class PhaseEditGUI extends InventoryGUI {
     private final MobEditorSession session;
     private final int index;
     private final Runnable onBack;
+    private final LangManager lang;
 
     public PhaseEditGUI(Player player, MobEditorSession session, int index, Runnable onBack) {
-        super(player, Component.text("Fase: " + session.phases.get(index).id(), NamedTextColor.GOLD), SIZE);
+        super(player, session.chatPromptManager.lang().component("gui.phase_edit.title", "id",
+                session.phases.get(index).id()), SIZE);
         this.session = session;
         this.index = index;
         this.onBack = onBack;
+        this.lang = session.chatPromptManager.lang();
     }
 
     private MobPhase phase() {
@@ -76,43 +78,40 @@ public class PhaseEditGUI extends InventoryGUI {
         MobPhase phase = phase();
 
         setItem(ID_SLOT, new ItemBuilder(Material.PAPER)
-                .setName(Component.text("ID: " + phase.id(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para escribir uno nuevo", NamedTextColor.GRAY))
+                .setName(lang.component("gui.common.id_label", "id", phase.id()))
+                .setLore(lang.component("gui.common.click_new_value"))
                 .build());
 
         setItem(THRESHOLD_SLOT, new ItemBuilder(Material.NETHER_STAR)
-                .setName(Component.text("Umbral de vida: " + phase.healthThresholdPercent() + "%",
-                        NamedTextColor.YELLOW))
-                .setLore(Component.text("Click: +5 · Shift-click: +25", NamedTextColor.GRAY),
-                        Component.text("Click derecho: -5 · Shift-click derecho: -25", NamedTextColor.GRAY))
+                .setName(lang.component("gui.phase_edit.threshold_label", "value", phase.healthThresholdPercent()))
+                .setLore(lang.component("gui.common.click_plus5_25"),
+                        lang.component("gui.common.click_minus5_25"))
                 .build());
 
         setItem(BOSSBAR_COLOR_SLOT, new ItemBuilder(Material.DRAGON_HEAD)
-                .setName(Component.text("Color bossbar: "
-                        + (phase.bossBarColor() != null ? phase.bossBarColor() : "(sin cambio)"),
-                        NamedTextColor.YELLOW))
-                .setLore(Component.text("Click: escribir · Shift-click: quitar", NamedTextColor.GRAY))
+                .setName(lang.component("gui.phase_edit.bossbar_color_label", "value",
+                        phase.bossBarColor() != null ? phase.bossBarColor() : lang.raw("gui.phase_edit.no_change")))
+                .setLore(lang.component("gui.common.click_write_shift_remove"))
                 .build());
 
         setItem(BOSSBAR_TITLE_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(Component.text("Título bossbar: "
-                        + (phase.bossBarTitle() != null ? phase.bossBarTitle() : "(sin cambio)"),
-                        NamedTextColor.YELLOW))
-                .setLore(Component.text("Click: escribir · Shift-click: quitar", NamedTextColor.GRAY))
+                .setName(lang.component("gui.phase_edit.bossbar_title_label", "value",
+                        phase.bossBarTitle() != null ? phase.bossBarTitle() : lang.raw("gui.phase_edit.no_change")))
+                .setLore(lang.component("gui.common.click_write_shift_remove"))
                 .build());
 
         setItem(DIALOGUE_SLOT, new ItemBuilder(Material.WRITABLE_BOOK)
-                .setName(Component.text("Diálogo al entrar: "
-                        + (phase.dialogueLine() != null ? phase.dialogueLine() : "(ninguno)"), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click: escribir · Shift-click: quitar", NamedTextColor.GRAY))
+                .setName(lang.component("gui.phase_edit.dialogue_label", "value",
+                        phase.dialogueLine() != null ? phase.dialogueLine() : lang.raw("gui.common.none_label")))
+                .setLore(lang.component("gui.common.click_write_shift_remove"))
                 .build());
 
         setItem(PARTICLE_SLOT, new ItemBuilder(Material.BLAZE_POWDER)
-                .setName(Component.text("Partícula de aura: "
-                        + (phase.particleEffect() != null ? phase.particleEffect() : "(ninguna)"),
-                        NamedTextColor.YELLOW))
-                .setLore(Component.text("Click: escribir (org.bukkit.Particle)", NamedTextColor.GRAY),
-                        Component.text("Shift-click: quitar", NamedTextColor.GRAY))
+                .setName(lang.component("gui.phase_edit.particle_label", "value",
+                        phase.particleEffect() != null ? phase.particleEffect()
+                                : lang.raw("gui.phase_edit.none_feminine")))
+                .setLore(lang.component("gui.phase_edit.particle_hint"),
+                        lang.component("gui.common.shift_remove_hint"))
                 .build());
 
         int i = 0;
@@ -121,31 +120,32 @@ public class PhaseEditGUI extends InventoryGUI {
                 break;
             }
             setItem(MULTIPLIERS_START_SLOT + i, new ItemBuilder(Material.REDSTONE)
-                    .setName(Component.text(entry.getKey() + " x" + entry.getValue(), NamedTextColor.RED))
-                    .setLore(Component.text("Shift-click para quitar", NamedTextColor.DARK_GRAY))
+                    .setName(lang.component("gui.phase_edit.multiplier_label", "stat", entry.getKey(), "value",
+                            entry.getValue()))
+                    .setLore(lang.component("gui.common.shift_remove_dark"))
                     .build());
             i++;
         }
 
         setItem(ADD_MULTIPLIER_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Agregar multiplicador", NamedTextColor.GREEN))
-                .setLore(Component.text("Click para escribir: stat multiplicador (ej. damage 1.5)",
-                        NamedTextColor.GRAY))
+                .setName(lang.component("gui.phase_edit.add_multiplier"))
+                .setLore(lang.component("gui.phase_edit.add_multiplier_hint"))
                 .build());
 
         for (int s = 0; s < phase.skills().size() && s < 8; s++) {
             setItem(SKILLS_START_SLOT + s, new ItemBuilder(Material.BLAZE_ROD)
-                    .setName(Component.text(phase.skills().get(s).id(), NamedTextColor.YELLOW))
-                    .setLore(Component.text("Shift-click para quitar", NamedTextColor.DARK_GRAY))
+                    .setName(net.kyori.adventure.text.Component.text(phase.skills().get(s).id(),
+                            net.kyori.adventure.text.format.NamedTextColor.YELLOW))
+                    .setLore(lang.component("gui.common.shift_remove_dark"))
                     .build());
         }
 
         setItem(ADD_SKILL_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Agregar skill existente", NamedTextColor.GREEN))
-                .setLore(Component.text("Click para escribir el id de una skill ya creada", NamedTextColor.GRAY))
+                .setName(lang.component("gui.phase_edit.add_skill"))
+                .setLore(lang.component("gui.phase_edit.add_skill_hint"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back_button")));
     }
 
     @Override
@@ -155,7 +155,7 @@ public class PhaseEditGUI extends InventoryGUI {
         int slot = event.getSlot();
 
         if (slot == ID_SLOT) {
-            session.chatPromptManager.prompt(player, "Escribí el nuevo id:", value -> {
+            session.chatPromptManager.prompt(player, "gui.common.prompt_new_id_generic", value -> {
                 replace(withId(phase(), value.trim().toLowerCase().replace(' ', '_')));
                 build();
             });
@@ -175,7 +175,7 @@ public class PhaseEditGUI extends InventoryGUI {
                 build();
                 return;
             }
-            session.chatPromptManager.prompt(player, "Escribí el color (ej. RED, PURPLE):", value -> {
+            session.chatPromptManager.prompt(player, "gui.phase_edit.prompt_bossbar_color", value -> {
                 replace(withBossBarColor(phase(), value.trim().toUpperCase(Locale.ROOT)));
                 build();
             });
@@ -188,7 +188,7 @@ public class PhaseEditGUI extends InventoryGUI {
                 build();
                 return;
             }
-            session.chatPromptManager.prompt(player, "Escribí el nuevo título:", value -> {
+            session.chatPromptManager.prompt(player, "gui.bossbar.prompt_title", value -> {
                 replace(withBossBarTitle(phase(), value));
                 build();
             });
@@ -201,7 +201,7 @@ public class PhaseEditGUI extends InventoryGUI {
                 build();
                 return;
             }
-            session.chatPromptManager.prompt(player, "Escribí la línea de diálogo:", value -> {
+            session.chatPromptManager.prompt(player, "gui.phase_edit.prompt_dialogue", value -> {
                 replace(withDialogue(phase(), value));
                 build();
             });
@@ -214,7 +214,7 @@ public class PhaseEditGUI extends InventoryGUI {
                 build();
                 return;
             }
-            session.chatPromptManager.prompt(player, "Escribí el nombre de la partícula:", value -> {
+            session.chatPromptManager.prompt(player, "gui.phase_edit.prompt_particle", value -> {
                 replace(withParticle(phase(), value.trim().toUpperCase(Locale.ROOT)));
                 build();
             });
@@ -259,12 +259,12 @@ public class PhaseEditGUI extends InventoryGUI {
     }
 
     private void promptAddMultiplier() {
-        session.chatPromptManager.prompt(player, "Escribí: <stat> <multiplicador> (ej. damage 1.5):", value -> {
+        session.chatPromptManager.prompt(player, "gui.phase_edit.prompt_add_multiplier", value -> {
 
             String[] parts = value.trim().split("\\s+");
 
             if (parts.length != 2) {
-                player.sendMessage(Component.text("Formato inválido.", NamedTextColor.RED));
+                lang.send(player, "gui.common.invalid_format");
                 return;
             }
 
@@ -273,7 +273,7 @@ public class PhaseEditGUI extends InventoryGUI {
                 updated.put(parts[0].toLowerCase(Locale.ROOT), Double.parseDouble(parts[1]));
                 replace(withMultipliers(phase(), updated));
             } catch (NumberFormatException e) {
-                player.sendMessage(Component.text("Valor numérico inválido.", NamedTextColor.RED));
+                lang.send(player, "gui.common.invalid_number");
                 return;
             }
 
@@ -282,7 +282,7 @@ public class PhaseEditGUI extends InventoryGUI {
     }
 
     private void promptAddSkill() {
-        session.chatPromptManager.prompt(player, "Escribí el id de una skill ya definida en Skills:", value -> {
+        session.chatPromptManager.prompt(player, "gui.phase_edit.prompt_add_skill", value -> {
 
             String skillId = value.trim().toLowerCase();
 
@@ -291,8 +291,7 @@ public class PhaseEditGUI extends InventoryGUI {
                     .findFirst().orElse(null);
 
             if (match == null) {
-                player.sendMessage(Component.text("No existe esa skill — creala primero en Skills.",
-                        NamedTextColor.RED));
+                lang.send(player, "gui.phase_edit.skill_not_found");
                 return;
             }
 

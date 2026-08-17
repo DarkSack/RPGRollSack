@@ -2,6 +2,7 @@ package com.sack.rpgroll.gui.admin;
 
 import com.sack.rpgroll.util.ComponentUtils;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.gameplay.skill.Skill;
@@ -29,15 +30,17 @@ public class SkillEditorGUI extends InventoryGUI {
 
     private final SkillManager skillManager;
     private final ChatPromptManager chatPromptManager;
+    private final LangManager lang;
     private final Runnable onBack;
     private Skill current;
 
     public SkillEditorGUI(Player player, Skill skill, SkillManager skillManager, ChatPromptManager chatPromptManager,
-            Runnable onBack) {
-        super(player, Component.text("Skill: " + skill.id(), NamedTextColor.GOLD), SIZE);
+            LangManager lang, Runnable onBack) {
+        super(player, lang.component("skill_editor_gui.title", "id", skill.id()), SIZE);
         this.current = skill;
         this.skillManager = skillManager;
         this.chatPromptManager = chatPromptManager;
+        this.lang = lang;
         this.onBack = onBack;
     }
 
@@ -57,38 +60,40 @@ public class SkillEditorGUI extends InventoryGUI {
         }
 
         setItem(NAME_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(ComponentUtils.parse("Nombre: " + current.name()).colorIfAbsent(NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para escribir uno nuevo", NamedTextColor.GRAY))
+                .setName(ComponentUtils.parse(lang.raw("skill_editor_gui.name_slot_name", "name", current.name()))
+                        .colorIfAbsent(NamedTextColor.YELLOW))
+                .setLore(lang.component("skill_editor_gui.click_new_value"))
                 .build());
 
         setItem(DESCRIPTION_SLOT, new ItemBuilder(Material.WRITTEN_BOOK)
-                .setName(Component.text("Descripción", NamedTextColor.YELLOW))
-                .setLore(ItemBuilder.toLoreLines(current.description().isBlank() ? "(sin descripción)"
+                .setName(lang.component("skill_editor_gui.description_slot_name"))
+                .setLore(ItemBuilder.toLoreLines(current.description().isBlank()
+                        ? lang.raw("skill_editor_gui.no_description")
                         : current.description()))
                 .build());
 
         setItem(LEVEL_SLOT, new ItemBuilder(Material.EXPERIENCE_BOTTLE)
-                .setName(Component.text("Nivel requerido: " + current.requiredLevel(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click: +1 · Click derecho: -1", NamedTextColor.GRAY))
+                .setName(lang.component("skill_editor_gui.level_slot_name", "level", current.requiredLevel()))
+                .setLore(lang.component("skill_editor_gui.level_slot_lore"))
                 .build());
 
         setItem(MANA_SLOT, new ItemBuilder(Material.LAPIS_LAZULI)
-                .setName(Component.text("Costo de maná: " + current.manaCost(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click: +5 · Click derecho: -5", NamedTextColor.GRAY))
+                .setName(lang.component("skill_editor_gui.mana_slot_name", "mana", current.manaCost()))
+                .setLore(lang.component("skill_editor_gui.mana_slot_lore"))
                 .build());
 
         setItem(COOLDOWN_SLOT, new ItemBuilder(Material.CLOCK)
-                .setName(Component.text("Cooldown: " + current.cooldownSeconds() + "s", NamedTextColor.YELLOW))
-                .setLore(Component.text("Click: +1s · Click derecho: -1s", NamedTextColor.GRAY))
+                .setName(lang.component("skill_editor_gui.cooldown_slot_name", "cooldown", current.cooldownSeconds()))
+                .setLore(lang.component("skill_editor_gui.cooldown_slot_lore"))
                 .build());
 
         setItem(DAMAGE_SLOT, new ItemBuilder(Material.DIAMOND_SWORD)
-                .setName(Component.text("Multiplicador de daño: " + current.damageMultiplier(),
-                        NamedTextColor.YELLOW))
-                .setLore(Component.text("Click: +0.1 · Click derecho: -0.1", NamedTextColor.GRAY))
+                .setName(lang.component("skill_editor_gui.damage_slot_name", "multiplier",
+                        current.damageMultiplier()))
+                .setLore(lang.component("skill_editor_gui.damage_slot_lore"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("skill_editor_gui.back_button")));
     }
 
     @Override
@@ -99,16 +104,16 @@ public class SkillEditorGUI extends InventoryGUI {
         ClickType click = event.getClick();
 
         if (slot == NAME_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el nuevo nombre:", value -> replace(new Skill(current.id(),
-                    value, current.description(), current.requiredLevel(), current.manaCost(),
+            chatPromptManager.prompt(player, lang.raw("skill_editor_gui.prompt_name"), value -> replace(new Skill(
+                    current.id(), value, current.description(), current.requiredLevel(), current.manaCost(),
                     current.cooldownSeconds(), current.damageMultiplier())));
             return;
         }
 
         if (slot == DESCRIPTION_SLOT) {
-            chatPromptManager.prompt(player, "Escribí la nueva descripción:", value -> replace(new Skill(
-                    current.id(), current.name(), value, current.requiredLevel(), current.manaCost(),
-                    current.cooldownSeconds(), current.damageMultiplier())));
+            chatPromptManager.prompt(player, lang.raw("skill_editor_gui.prompt_description"), value -> replace(
+                    new Skill(current.id(), current.name(), value, current.requiredLevel(), current.manaCost(),
+                            current.cooldownSeconds(), current.damageMultiplier())));
             return;
         }
 

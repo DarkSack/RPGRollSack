@@ -1,7 +1,9 @@
 package com.sack.rpgroll.dungeons.gui.editor;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
+import com.sack.rpgroll.util.ComponentUtils;
 import com.sack.rpgroll.dungeons.core.DungeonDifficulty;
 
 import net.kyori.adventure.text.Component;
@@ -23,11 +25,14 @@ public class DifficultiesEditorGUI extends InventoryGUI {
 
     private final DungeonEditorSession session;
     private final Runnable onBack;
+    private final LangManager lang;
 
     public DifficultiesEditorGUI(Player player, DungeonEditorSession session, Runnable onBack) {
-        super(player, Component.text("Dificultades: " + session.original.id(), NamedTextColor.GOLD), SIZE);
+        super(player, ComponentUtils.parse(session.chatPromptManager.lang()
+                .raw("gui.editor.difficulties.title", "id", session.original.id())), SIZE);
         this.session = session;
         this.onBack = onBack;
+        this.lang = session.chatPromptManager.lang();
     }
 
     @Override
@@ -48,19 +53,20 @@ public class DifficultiesEditorGUI extends InventoryGUI {
             setItem(i, new ItemBuilder(Material.NETHER_STAR)
                     .setName(Component.text(difficulty.displayName(), NamedTextColor.YELLOW))
                     .setLore(
-                            Component.text("vida x" + difficulty.healthMultiplier() + " · daño x"
-                                    + difficulty.damageMultiplier() + " · loot x" + difficulty.lootMultiplier(),
-                                    NamedTextColor.GRAY),
-                            Component.text("modificadores: " + difficulty.modifiers().size(), NamedTextColor.GRAY),
-                            Component.text("Click para editar · Shift-click para quitar", NamedTextColor.DARK_GRAY))
+                            ComponentUtils.parse(lang.raw("gui.editor.difficulties.item.multipliers",
+                                    "health", difficulty.healthMultiplier(), "damage", difficulty.damageMultiplier(),
+                                    "loot", difficulty.lootMultiplier())),
+                            ComponentUtils.parse(lang.raw("gui.editor.difficulties.item.modifiers",
+                                    "count", difficulty.modifiers().size())),
+                            ComponentUtils.parse(lang.raw("gui.editor.rooms.item.edit_remove_hint")))
                     .build());
         }
 
         setItem(ADD_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Agregar dificultad", NamedTextColor.GREEN))
+                .setName(ComponentUtils.parse(lang.raw("gui.editor.difficulties.add")))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back")));
     }
 
     @Override
@@ -94,7 +100,7 @@ public class DifficultiesEditorGUI extends InventoryGUI {
     }
 
     private void promptAdd() {
-        session.chatPromptManager.prompt(player, "Escribí el id de la nueva dificultad:", value -> {
+        session.chatPromptManager.prompt(player, "gui.editor.difficulties.prompt.new_id", value -> {
 
             String id = value.trim().toLowerCase().replace(' ', '_');
 

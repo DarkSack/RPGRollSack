@@ -1,5 +1,6 @@
 package com.sack.rpgroll.seasons.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.seasons.core.CalendarManager;
@@ -32,7 +33,7 @@ public class SeasonRegionBrowserGUI extends InventoryGUI {
 
     public SeasonRegionBrowserGUI(Player player, SeasonRegionManager regionManager, SeasonManager seasonManager,
             CalendarManager calendarManager, ChatPromptManager chatPromptManager) {
-        super(player, Component.text("Regiones de Temporada", NamedTextColor.GOLD), SIZE);
+        super(player, chatPromptManager.lang().component("gui.region_browser.title"), SIZE);
         this.regionManager = regionManager;
         this.seasonManager = seasonManager;
         this.calendarManager = calendarManager;
@@ -49,23 +50,25 @@ public class SeasonRegionBrowserGUI extends InventoryGUI {
             setItem(slot, ItemBuilder.createFiller());
         }
 
+        LangManager lang = chatPromptManager.lang();
+
         for (int i = 0; i < regions.size() && i < 36; i++) {
 
             SeasonRegion region = regions.get(i);
 
             setItem(i, new ItemBuilder(Material.MAP)
                     .setName(Component.text(region.id(), NamedTextColor.GOLD))
-                    .setLore(Component.text("Mundo: " + region.world(), NamedTextColor.GRAY),
-                            Component.text("Modo: " + region.overrideMode(), NamedTextColor.GRAY),
-                            Component.text("Click para editar", NamedTextColor.YELLOW))
+                    .setLore(lang.component("gui.common.world_label", "world", region.world()),
+                            lang.component("gui.common.mode_label", "mode", region.overrideMode()),
+                            lang.component("gui.common.click_edit"))
                     .build());
         }
 
         setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Crear región nueva (en tu ubicación)", NamedTextColor.GREEN))
+                .setName(lang.component("gui.region_browser.new"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back")));
     }
 
     @Override
@@ -91,12 +94,12 @@ public class SeasonRegionBrowserGUI extends InventoryGUI {
     }
 
     private void promptNew() {
-        chatPromptManager.prompt(player, "Escribí el id de la nueva región:", value -> {
+        chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.region_browser.prompt_new_id"), value -> {
 
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 
             if (regionManager.exists(id)) {
-                player.sendMessage(Component.text("Ya existe una región con ese id.", NamedTextColor.RED));
+                chatPromptManager.lang().send(player, "gui.region_browser.already_exists");
                 reopen();
                 return;
             }

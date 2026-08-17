@@ -1,0 +1,14 @@
+id: reinforced_repair
+upper:
+  type: MATERIAL
+  value: NETHERITE_CHESTPLATE
+  amount: 1
+lower:
+  type: MATERIAL
+  value: NETHERITE_INGOT
+  amount: 2
+result:
+  type: MATERIAL
+  value: NETHERITE_CHESTPLATE
+  amount: 1
+conditions: []

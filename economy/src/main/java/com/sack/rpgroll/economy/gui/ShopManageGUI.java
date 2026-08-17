@@ -1,5 +1,6 @@
 package com.sack.rpgroll.economy.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.economy.shop.PlayerShop;
 import com.sack.rpgroll.economy.shop.ShopListing;
 import com.sack.rpgroll.economy.shop.ShopManager;
@@ -27,14 +28,17 @@ public class ShopManageGUI extends InventoryGUI {
     private final ShopManager shopManager;
     private final ChatPromptManager chatPromptManager;
     private final Runnable onBack;
+    private final LangManager lang;
 
     public ShopManageGUI(Player player, PlayerShop shop, ShopManager shopManager, ChatPromptManager chatPromptManager,
             Runnable onBack) {
-        super(player, Component.text("Mi tienda: " + shop.name(), NamedTextColor.GOLD), SIZE);
+        super(player, Component.text(chatPromptManager.lang().raw("shop.manage.title", "name", shop.name()),
+                NamedTextColor.GOLD), SIZE);
         this.shop = shop;
         this.shopManager = shopManager;
         this.chatPromptManager = chatPromptManager;
         this.onBack = onBack;
+        this.lang = chatPromptManager.lang();
     }
 
     @Override
@@ -52,27 +56,26 @@ public class ShopManageGUI extends InventoryGUI {
 
             setItem(i, new ItemBuilder(listing.material())
                     .setName(Component.text(listing.displayName(), NamedTextColor.YELLOW))
-                    .setLore(Component.text("precio: " + listing.unitPrice(), NamedTextColor.GOLD),
-                            Component.text("stock: " + (listing.isUnlimited() ? "ilimitado" : listing.stock()),
-                                    NamedTextColor.GRAY),
-                            Component.text("Click para quitar", NamedTextColor.RED))
+                    .setLore(lang.component("shop.manage.lore_price", "value", listing.unitPrice()),
+                            lang.component("shop.manage.lore_stock", "value",
+                                    listing.isUnlimited() ? lang.raw("common.unlimited") : listing.stock()),
+                            lang.component("shop.manage.click_remove"))
                     .build());
         }
 
         setItem(ADD_HELD_SLOT, new ItemBuilder(Material.HOPPER)
-                .setName(Component.text("Agregar ítem en mano", NamedTextColor.GREEN))
-                .setLore(Component.text("Te va a preguntar precio y stock (-1 = ilimitado)", NamedTextColor.GRAY))
+                .setName(lang.component("shop.manage.add_held"))
+                .setLore(lang.component("shop.manage.add_held_hint"))
                 .build());
 
         setItem(RENAME_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(Component.text("Renombrar tienda", NamedTextColor.YELLOW)).build());
+                .setName(lang.component("shop.manage.rename")).build());
 
         setItem(TOGGLE_OPEN_SLOT, new ItemBuilder(shop.isOpen() ? Material.LIME_CONCRETE : Material.RED_CONCRETE)
-                .setName(Component.text(shop.isOpen() ? "Abierta (click para cerrar)" : "Cerrada (click para abrir)",
-                        NamedTextColor.GOLD))
+                .setName(lang.component(shop.isOpen() ? "shop.manage.state_open" : "shop.manage.state_closed"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("common.back")));
     }
 
     @Override
@@ -93,22 +96,22 @@ public class ShopManageGUI extends InventoryGUI {
             ItemStack held = player.getInventory().getItemInMainHand();
 
             if (held.getType().isAir()) {
-                player.sendMessage(Component.text("Tenés que tener un ítem en la mano.", NamedTextColor.RED));
+                lang.send(player, "common.need_item_in_hand");
                 return;
             }
 
-            chatPromptManager.prompt(player, "Escribí el precio unitario:", priceValue -> {
+            chatPromptManager.prompt(player, lang.raw("shop.manage.prompt_price"), priceValue -> {
 
                 double price;
                 try {
                     price = Double.parseDouble(priceValue.trim());
                 } catch (NumberFormatException e) {
-                    player.sendMessage(Component.text("Precio inválido.", NamedTextColor.RED));
+                    lang.send(player, "common.invalid_price");
                     build();
                     return;
                 }
 
-                chatPromptManager.prompt(player, "Escribí el stock (-1 = ilimitado):", stockValue -> {
+                chatPromptManager.prompt(player, lang.raw("shop.manage.prompt_stock"), stockValue -> {
 
                     int stock;
                     try {
@@ -129,7 +132,7 @@ public class ShopManageGUI extends InventoryGUI {
         }
 
         if (slot == RENAME_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el nuevo nombre de tu tienda:", value -> {
+            chatPromptManager.prompt(player, lang.raw("shop.manage.prompt_rename"), value -> {
                 shop.setName(value);
                 shopManager.save(shop);
                 build();

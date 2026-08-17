@@ -1,5 +1,6 @@
 package com.sack.rpgroll.workers.core.economy;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.workers.core.worker.Worker;
 import com.sack.rpgroll.workers.core.worker.WorkerManager;
 
@@ -24,13 +25,15 @@ public class WageTask extends BukkitRunnable {
     private final EconomyService economyService;
     private final MoraleEngine moraleEngine;
     private final long intervalTicks;
+    private final LangManager lang;
 
     public WageTask(WorkerManager workerManager, EconomyService economyService, MoraleEngine moraleEngine,
-            long intervalTicks) {
+            long intervalTicks, LangManager lang) {
         this.workerManager = workerManager;
         this.economyService = economyService;
         this.moraleEngine = moraleEngine;
         this.intervalTicks = intervalTicks;
+        this.lang = lang;
     }
 
     @Override
@@ -56,24 +59,24 @@ public class WageTask extends BukkitRunnable {
                     } else {
                         worker.setHappiness(worker.happiness() - 10);
                         worker.setMotivation(worker.motivation() - 10);
-                        notifyEmployer(worker, "no tiene fondos suficientes para pagarle a su empleado.");
+                        notifyEmployer(worker, "task.wage.insufficient_funds");
                     }
                 }
             }
 
             if (moraleEngine.shouldQuit(worker)) {
-                notifyEmployer(worker, "renunció por mala moral.");
+                notifyEmployer(worker, "task.wage.quit");
                 worker.fire();
             }
         }
     }
 
-    private void notifyEmployer(Worker worker, String suffix) {
+    private void notifyEmployer(Worker worker, String key) {
 
         Player employer = worker.employerId() != null ? Bukkit.getPlayer(worker.employerId()) : null;
 
         if (employer != null) {
-            employer.sendMessage(Component.text("⚠ Tu trabajador " + suffix, NamedTextColor.YELLOW));
+            employer.sendMessage(Component.text(lang.raw(key), NamedTextColor.YELLOW));
         }
     }
 

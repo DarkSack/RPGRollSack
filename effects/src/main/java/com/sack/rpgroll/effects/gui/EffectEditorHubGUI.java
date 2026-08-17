@@ -1,5 +1,6 @@
 package com.sack.rpgroll.effects.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.util.ComponentUtils;
 
 import com.sack.rpgroll.effects.core.EffectCategory;
@@ -12,7 +13,6 @@ import com.sack.rpgroll.gui.util.ItemBuilder;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -52,16 +52,19 @@ public class EffectEditorHubGUI extends InventoryGUI {
     private final EffectManager effectManager;
     private final EffectTracker tracker;
     private final ChatPromptManager chatPromptManager;
+    private final LangManager lang;
     private final Runnable onBack;
     private EffectDefinition current;
 
     public EffectEditorHubGUI(Player player, EffectDefinition effect, EffectManager effectManager,
             EffectTracker tracker, ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text("Efecto: " + effect.id(), NamedTextColor.GOLD), SIZE);
+        super(player, Component.text(chatPromptManager.lang().raw("gui.editor.title", "id", effect.id()),
+                NamedTextColor.GOLD), SIZE);
         this.current = effect;
         this.effectManager = effectManager;
         this.tracker = tracker;
         this.chatPromptManager = chatPromptManager;
+        this.lang = chatPromptManager.lang();
         this.onBack = onBack;
     }
 
@@ -90,82 +93,88 @@ public class EffectEditorHubGUI extends InventoryGUI {
         }
 
         setItem(ICON_SLOT, new ItemBuilder(parseMaterial(current.icon()))
-                .setName(Component.text("Ícono: " + current.icon(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para escribir un Material nuevo", NamedTextColor.GRAY))
+                .setName(lang.component("gui.editor.icon_label", "icon", current.icon()))
+                .setLore(lang.component("gui.editor.icon_hint"))
                 .build());
 
         setItem(COLOR_SLOT, new ItemBuilder(Material.LIME_DYE)
-                .setName(Component.text("Color: " + current.color(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para escribir un color nuevo (ej. RED, #55FF55)", NamedTextColor.GRAY))
+                .setName(lang.component("gui.editor.color_label", "color", current.color()))
+                .setLore(lang.component("gui.editor.color_hint"))
                 .build());
 
         setItem(CATEGORY_SLOT, new ItemBuilder(Material.HOPPER)
-                .setName(Component.text("Categoría: " + current.category(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para ciclar", NamedTextColor.GRAY))
+                .setName(lang.component("gui.editor.category_label", "category", current.category()))
+                .setLore(lang.component("gui.common.click_cycle"))
                 .build());
 
         setItem(RARITY_SLOT, new ItemBuilder(Material.NETHER_STAR)
-                .setName(Component.text("Rareza: " + current.rarity(), current.rarity().color()))
-                .setLore(Component.text("Click para ciclar", NamedTextColor.GRAY))
+                .setName(Component.text(lang.raw("gui.editor.rarity_label", "rarity", current.rarity()),
+                        current.rarity().color()))
+                .setLore(lang.component("gui.common.click_cycle"))
                 .build());
 
         setItem(NAME_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(ComponentUtils.parse("Nombre: " + current.displayName()).colorIfAbsent(NamedTextColor.YELLOW))
-                .setLore(Component.text("Click para escribir uno nuevo", NamedTextColor.GRAY))
+                .setName(ComponentUtils.parse(lang.raw("gui.editor.name_label", "name", current.displayName()))
+                        .colorIfAbsent(NamedTextColor.YELLOW))
+                .setLore(lang.component("gui.common.click_new_value"))
                 .build());
 
         setItem(DESCRIPTION_SLOT, new ItemBuilder(Material.WRITTEN_BOOK)
-                .setName(Component.text("Descripción", NamedTextColor.YELLOW))
+                .setName(lang.component("gui.editor.description_title"))
                 .setLore(ItemBuilder.toLoreLines(
-                        current.description().isBlank() ? "(sin descripción)" : current.description()))
+                        current.description().isBlank() ? lang.raw("gui.editor.description_empty")
+                                : current.description()))
                 .build());
 
+        String durationValue = current.durationTicks() <= 0 ? lang.raw("gui.editor.duration_permanent")
+                : lang.raw("gui.editor.duration_ticks", "ticks", current.durationTicks());
+
         setItem(DURATION_SLOT, new ItemBuilder(Material.CLOCK)
-                .setName(Component.text(
-                        "Duración: " + (current.durationTicks() <= 0 ? "Permanente" : current.durationTicks() + " ticks"),
-                        NamedTextColor.YELLOW))
-                .setLore(Component.text("Click: +20 · Shift-click: +200", NamedTextColor.GRAY),
-                        Component.text("Click derecho: -20 · Shift-click derecho: -200", NamedTextColor.GRAY),
-                        Component.text("(0 = permanente)", NamedTextColor.DARK_GRAY))
+                .setName(lang.component("gui.editor.duration_label", "value", durationValue))
+                .setLore(lang.component("gui.editor.duration_hint1"),
+                        lang.component("gui.editor.duration_hint2"),
+                        lang.component("gui.editor.duration_note"))
                 .build());
 
         setItem(PRIORITY_SLOT, new ItemBuilder(Material.LADDER)
-                .setName(Component.text("Prioridad: " + current.priority(), NamedTextColor.YELLOW))
-                .setLore(Component.text("Click: +1 · Click derecho: -1", NamedTextColor.GRAY))
+                .setName(lang.component("gui.editor.priority_label", "value", current.priority()))
+                .setLore(lang.component("gui.editor.priority_hint"))
                 .build());
 
         setItem(VISIBLE_SLOT, new ItemBuilder(current.visible() ? Material.LIME_DYE : Material.GRAY_DYE)
-                .setName(Component.text("Visible en HUD: " + (current.visible() ? "Sí" : "No"),
+                .setName(Component.text(
+                        lang.raw("gui.editor.visible_label", "value",
+                                current.visible() ? lang.raw("gui.common.yes_label") : lang.raw("gui.common.no_label")),
                         current.visible() ? NamedTextColor.GREEN : NamedTextColor.GRAY))
-                .setLore(Component.text("Click para alternar", NamedTextColor.GRAY))
+                .setLore(lang.component("gui.common.click_toggle"))
                 .build());
 
         setItem(CONDITIONS_SLOT, new ItemBuilder(Material.BOOK)
-                .setName(Component.text("Condiciones", NamedTextColor.LIGHT_PURPLE))
-                .setLore(Component.text(current.conditions().size() + " condición(es)", NamedTextColor.GRAY),
-                        Component.text("Click para editar", NamedTextColor.YELLOW))
+                .setName(lang.component("gui.editor.conditions_name"))
+                .setLore(lang.component("gui.editor.conditions_count", "count", current.conditions().size()),
+                        lang.component("gui.common.click_to_edit"))
                 .build());
 
         setItem(COMPONENTS_SLOT, new ItemBuilder(Material.BLAZE_POWDER)
-                .setName(Component.text("Componentes", NamedTextColor.LIGHT_PURPLE))
-                .setLore(Component.text(current.components().size() + " componente(s)", NamedTextColor.GRAY),
-                        Component.text("Click para editar", NamedTextColor.YELLOW))
+                .setName(lang.component("gui.editor.components_name"))
+                .setLore(lang.component("gui.editor.components_count", "count", current.components().size()),
+                        lang.component("gui.common.click_to_edit"))
                 .build());
 
         setItem(STACKING_SLOT, new ItemBuilder(Material.CHEST)
-                .setName(Component.text("Stacking / Tags / Conflictos", NamedTextColor.LIGHT_PURPLE))
-                .setLore(Component.text("Modo: " + current.stackingMode(), NamedTextColor.GRAY),
-                        Component.text(current.tags().size() + " tag(s), " + current.conflicts().size()
-                                + " conflicto(s)", NamedTextColor.GRAY),
-                        Component.text("Click para editar", NamedTextColor.YELLOW))
+                .setName(lang.component("gui.editor.stacking_name"))
+                .setLore(lang.component("gui.editor.stacking_mode_label", "mode", current.stackingMode()),
+                        lang.component("gui.editor.stacking_counts", "tags", current.tags().size(), "conflicts",
+                                current.conflicts().size()),
+                        lang.component("gui.common.click_to_edit"))
                 .build());
 
         setItem(TEST_SLOT, new ItemBuilder(Material.FIREWORK_ROCKET)
-                .setName(Component.text("▶ Probar en vos mismo", NamedTextColor.GREEN))
-                .setLore(Component.text("Ignora las condiciones — solo para previsualizar", NamedTextColor.GRAY))
+                .setName(lang.component("gui.editor.test_button"))
+                .setLore(lang.component("gui.editor.test_hint"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back_button")));
     }
 
     private org.bukkit.inventory.ItemStack sectionGlass() {
@@ -220,15 +229,15 @@ public class EffectEditorHubGUI extends InventoryGUI {
 
     private void testFire() {
         tracker.apply(player, current, player);
-        player.sendMessage(Component.text("▶ Probando '" + current.id() + "' en vos mismo...", NamedTextColor.GREEN));
+        lang.send(player, "gui.editor.test_message", "id", current.id());
     }
 
     private void promptIcon() {
-        chatPromptManager.prompt(player, "Escribí el Material del ícono (ej. NETHER_STAR):", value -> {
+        chatPromptManager.prompt(player, "gui.editor.prompt_icon", value -> {
             try {
                 Material.valueOf(value.trim().toUpperCase(Locale.ROOT));
             } catch (IllegalArgumentException e) {
-                player.sendMessage(Component.text("Material inválido: " + value, NamedTextColor.RED));
+                lang.send(player, "gui.common.invalid_material", "value", value);
                 build();
                 return;
             }
@@ -241,7 +250,7 @@ public class EffectEditorHubGUI extends InventoryGUI {
     }
 
     private void promptColor() {
-        chatPromptManager.prompt(player, "Escribí el color (nombre o #hex):",
+        chatPromptManager.prompt(player, "gui.editor.prompt_color",
                 value -> replace(new EffectDefinition(current.id(), current.displayName(), current.icon(), value,
                         current.category(), current.rarity(), current.description(), current.durationTicks(),
                         current.priority(), current.visible(), current.conditions(), current.tags(),
@@ -268,7 +277,7 @@ public class EffectEditorHubGUI extends InventoryGUI {
     }
 
     private void promptName() {
-        chatPromptManager.prompt(player, "Escribí el nuevo nombre:",
+        chatPromptManager.prompt(player, "gui.common.prompt_new_name",
                 value -> replace(new EffectDefinition(current.id(), value, current.icon(), current.color(),
                         current.category(), current.rarity(), current.description(), current.durationTicks(),
                         current.priority(), current.visible(), current.conditions(), current.tags(),
@@ -277,7 +286,7 @@ public class EffectEditorHubGUI extends InventoryGUI {
     }
 
     private void promptDescription() {
-        chatPromptManager.prompt(player, "Escribí la nueva descripción:",
+        chatPromptManager.prompt(player, "gui.editor.prompt_description",
                 value -> replace(new EffectDefinition(current.id(), current.displayName(), current.icon(),
                         current.color(), current.category(), current.rarity(), value, current.durationTicks(),
                         current.priority(), current.visible(), current.conditions(), current.tags(),

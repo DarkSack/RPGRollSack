@@ -1,10 +1,13 @@
 package com.sack.rpgroll.npcs.command;
 
+import com.sack.rpgroll.common.lang.LangManager;
+import com.sack.rpgroll.npcs.RPGRollNPCs;
 import com.sack.rpgroll.npcs.core.*;
 import com.sack.rpgroll.npcs.gui.NpcAdminGUI;
 import com.sack.rpgroll.npcs.gui.NpcMenuBrowserGUI;
 import com.sack.rpgroll.npcs.integration.MineSkinClient;
 import com.sack.rpgroll.npcs.listener.ChatPromptManager;
+import com.sack.rpgroll.util.ComponentUtils;
 import com.sack.rpgroll.util.TabCompleteUtil;
 
 import net.kyori.adventure.text.Component;
@@ -23,6 +26,7 @@ public class NpcAdminCommand implements CommandExecutor, TabCompleter {
         private static final List<String> SUBCOMMANDS = List.of("create", "edit", "list", "delete", "reload",
                         "menus");
 
+        private final RPGRollNPCs plugin;
         private final NpcManager npcManager;
         private final NpcSpawnManager spawnManager;
         private final NpcSessionManager sessionManager;
@@ -30,16 +34,20 @@ public class NpcAdminCommand implements CommandExecutor, TabCompleter {
         private final NpcWriter writer;
         private final MineSkinClient mineSkinClient;
         private final NpcMenuManager menuManager;
+        private final LangManager langManager;
 
         public NpcAdminCommand(
+                        RPGRollNPCs plugin,
                         NpcManager npcManager,
                         NpcSpawnManager spawnManager,
                         NpcSessionManager sessionManager,
                         ChatPromptManager chatPromptManager,
                         MineSkinClient mineSkinClient,
                         NpcWriter writer,
-                        NpcMenuManager menuManager) {
+                        NpcMenuManager menuManager,
+                        LangManager langManager) {
 
+                this.plugin = plugin;
                 this.npcManager = npcManager;
                 this.spawnManager = spawnManager;
                 this.sessionManager = sessionManager;
@@ -47,6 +55,7 @@ public class NpcAdminCommand implements CommandExecutor, TabCompleter {
                 this.mineSkinClient = mineSkinClient;
                 this.writer = writer;
                 this.menuManager = menuManager;
+                this.langManager = langManager;
         }
 
         @Override
@@ -58,20 +67,14 @@ public class NpcAdminCommand implements CommandExecutor, TabCompleter {
 
                 if (!sender.hasPermission("rpgrollnpcs.admin.*")) {
 
-                        sender.sendMessage(
-                                        Component.text(
-                                                        "No tienes permiso para usar este comando.",
-                                                        NamedTextColor.RED));
+                        langManager.send(sender, "general.no_permission");
 
                         return true;
                 }
 
                 if (args.length < 1) {
 
-                        sender.sendMessage(
-                                        Component.text(
-                                                        "Uso: /npc <create|edit|list|delete|reload|menus> [id]",
-                                                        NamedTextColor.RED));
+                        langManager.send(sender, "command.usage");
 
                         return true;
                 }
@@ -85,7 +88,7 @@ public class NpcAdminCommand implements CommandExecutor, TabCompleter {
                                         return true;
                                 }
 
-                                new NpcMenuBrowserGUI(player, menuManager, chatPromptManager).open();
+                                new NpcMenuBrowserGUI(player, menuManager, chatPromptManager, langManager).open();
                         }
 
                         case "create" -> {
@@ -97,10 +100,7 @@ public class NpcAdminCommand implements CommandExecutor, TabCompleter {
 
                                 if (args.length < 2) {
 
-                                        player.sendMessage(
-                                                        Component.text(
-                                                                        "Uso: /npc create <id>",
-                                                                        NamedTextColor.RED));
+                                        langManager.send(player, "command.create.usage");
 
                                         return true;
                                 }
@@ -109,10 +109,7 @@ public class NpcAdminCommand implements CommandExecutor, TabCompleter {
 
                                 if (npcManager.exists(id)) {
 
-                                        player.sendMessage(
-                                                        Component.text(
-                                                                        "Ya existe un NPC con ese id.",
-                                                                        NamedTextColor.RED));
+                                        langManager.send(player, "command.create.already_exists");
 
                                         return true;
                                 }
@@ -134,7 +131,8 @@ public class NpcAdminCommand implements CommandExecutor, TabCompleter {
                                                 npcManager,
                                                 spawnManager,
                                                 mineSkinClient,
-                                                writer).open();
+                                                writer,
+                                                langManager).open();
 
                         }
 
@@ -146,10 +144,7 @@ public class NpcAdminCommand implements CommandExecutor, TabCompleter {
                                 }
 
                                 if (args.length < 2) {
-                                        player.sendMessage(
-                                                        Component.text(
-                                                                        "Uso: /npc edit <id>",
-                                                                        NamedTextColor.RED));
+                                        langManager.send(player, "command.edit.usage");
                                         return true;
                                 }
 
@@ -157,10 +152,7 @@ public class NpcAdminCommand implements CommandExecutor, TabCompleter {
 
                                 if (npc.isEmpty()) {
 
-                                        player.sendMessage(
-                                                        Component.text(
-                                                                        "No existe ese NPC.",
-                                                                        NamedTextColor.RED));
+                                        langManager.send(player, "command.not_found");
 
                                         return true;
                                 }
@@ -180,7 +172,8 @@ public class NpcAdminCommand implements CommandExecutor, TabCompleter {
                                                 npcManager,
                                                 spawnManager,
                                                 mineSkinClient,
-                                                writer).open();
+                                                writer,
+                                                langManager).open();
 
                         }
 
@@ -188,24 +181,18 @@ public class NpcAdminCommand implements CommandExecutor, TabCompleter {
 
                                 if (npcManager.count() == 0) {
 
-                                        sender.sendMessage(
-                                                        Component.text(
-                                                                        "No hay NPCs creados.",
-                                                                        NamedTextColor.GRAY));
+                                        langManager.send(sender, "command.list.empty");
 
                                         return true;
                                 }
 
-                                sender.sendMessage(
-                                                Component.text(
-                                                                "NPCs existentes:",
-                                                                NamedTextColor.GOLD));
+                                langManager.send(sender, "command.list.header");
 
                                 npcManager.getAll()
                                                 .forEach(npc -> sender.sendMessage(
                                                                 Component.text("• " + npc.id() + " (",
                                                                                 NamedTextColor.WHITE)
-                                                                        .append(com.sack.rpgroll.util.ComponentUtils
+                                                                        .append(ComponentUtils
                                                                                         .parse(npc.displayName()))
                                                                         .append(Component.text(")",
                                                                                 NamedTextColor.WHITE))));
@@ -215,10 +202,7 @@ public class NpcAdminCommand implements CommandExecutor, TabCompleter {
                         case "delete" -> {
 
                                 if (args.length < 2) {
-                                        sender.sendMessage(
-                                                        Component.text(
-                                                                        "Uso: /npc delete <id>",
-                                                                        NamedTextColor.RED));
+                                        langManager.send(sender, "command.delete.usage");
 
                                         return true;
                                 }
@@ -227,10 +211,7 @@ public class NpcAdminCommand implements CommandExecutor, TabCompleter {
 
                                 if (!npcManager.exists(id)) {
 
-                                        sender.sendMessage(
-                                                        Component.text(
-                                                                        "No existe ese NPC.",
-                                                                        NamedTextColor.RED));
+                                        langManager.send(sender, "command.not_found");
 
                                         return true;
                                 }
@@ -249,13 +230,13 @@ public class NpcAdminCommand implements CommandExecutor, TabCompleter {
                                                                 playerOnline,
                                                                 npcManager.getAll()));
 
-                                sender.sendMessage(
-                                                Component.text(
-                                                                "✔ NPC eliminado: " + id,
-                                                                NamedTextColor.GREEN));
+                                langManager.send(sender, "command.delete.success", "id", id);
 
                         }
                         case "reload" -> {
+
+                                plugin.reloadConfig();
+                                langManager.reload(plugin.getConfig().getString("language", "es"));
 
                                 npcManager.reload();
                                 menuManager.reload();
@@ -270,16 +251,12 @@ public class NpcAdminCommand implements CommandExecutor, TabCompleter {
                                         spawnManager.updateVisibility(online, npcManager.getAll());
                                 }
 
-                                sender.sendMessage(Component.text(
-                                                "✔ Recargado: " + npcManager.count() + " NPC(s), " + menuManager.count()
-                                                                + " menú(s).",
-                                                NamedTextColor.GREEN));
+                                langManager.send(sender, "command.reload.success",
+                                                "npcCount", npcManager.count(),
+                                                "menuCount", menuManager.count());
                         }
 
-                        default -> sender.sendMessage(
-                                        Component.text(
-                                                        "Uso: /npc <create|edit|list|delete|reload|menus> [id]",
-                                                        NamedTextColor.RED));
+                        default -> langManager.send(sender, "command.usage");
 
                 }
 
@@ -293,7 +270,7 @@ public class NpcAdminCommand implements CommandExecutor, TabCompleter {
                         return player;
                 }
 
-                sender.sendMessage(Component.text("Este subcomando solo puede ser usado por jugadores.", NamedTextColor.RED));
+                langManager.send(sender, "general.player_only");
                 return null;
         }
 

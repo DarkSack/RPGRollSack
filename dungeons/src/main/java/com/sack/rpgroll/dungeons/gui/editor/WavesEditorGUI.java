@@ -1,7 +1,9 @@
 package com.sack.rpgroll.dungeons.gui.editor;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
+import com.sack.rpgroll.util.ComponentUtils;
 import com.sack.rpgroll.dungeons.core.DungeonWave;
 import com.sack.rpgroll.dungeons.core.DungeonWaveMob;
 import com.sack.rpgroll.dungeons.util.DurationParser;
@@ -29,19 +31,17 @@ public class WavesEditorGUI extends InventoryGUI {
     private static final int ADD_SLOT = 40;
     private static final int BACK_SLOT = 44;
 
-    private static final String FORMAT_HINT =
-            "id tiempoLimite tiempoAntes mob1:cantidad,mob2:cantidad — ej. wave1 30s 5s skeleton_archer:3,zombie_grunt:2"
-                    + " (0 = sin límite/demora)";
-
     private final DungeonEditorSession session;
     private final List<DungeonWave> waves;
     private final Runnable onBack;
+    private final LangManager lang;
 
     public WavesEditorGUI(Player player, DungeonEditorSession session, List<DungeonWave> waves, Runnable onBack) {
-        super(player, Component.text("Oleadas", NamedTextColor.GOLD), SIZE);
+        super(player, ComponentUtils.parse(session.chatPromptManager.lang().raw("gui.editor.waves.title")), SIZE);
         this.session = session;
         this.waves = waves;
         this.onBack = onBack;
+        this.lang = session.chatPromptManager.lang();
     }
 
     @Override
@@ -58,12 +58,13 @@ public class WavesEditorGUI extends InventoryGUI {
             DungeonWave wave = waves.get(i);
 
             List<Component> lore = new ArrayList<>();
-            lore.add(Component.text("mobs: " + wave.totalMobCount(), NamedTextColor.GRAY));
+            lore.add(ComponentUtils.parse(lang.raw("gui.editor.waves.item.mobs", "count", wave.totalMobCount())));
             for (DungeonWaveMob mob : wave.mobs()) {
                 lore.add(Component.text("  " + mob.mobId() + " x" + mob.amount(), NamedTextColor.DARK_GRAY));
             }
-            lore.add(Component.text("tiempo límite: " + (wave.timeLimitMillis() / 1000) + "s", NamedTextColor.GRAY));
-            lore.add(Component.text("Shift-click para quitar", NamedTextColor.DARK_GRAY));
+            lore.add(ComponentUtils.parse(lang.raw("gui.editor.waves.item.time_limit",
+                    "seconds", wave.timeLimitMillis() / 1000)));
+            lore.add(ComponentUtils.parse(lang.raw("gui.editor.actionlist.item.remove_hint")));
 
             setItem(i, new ItemBuilder(Material.SPAWNER)
                     .setName(Component.text(wave.id(), NamedTextColor.YELLOW))
@@ -72,11 +73,11 @@ public class WavesEditorGUI extends InventoryGUI {
         }
 
         setItem(ADD_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Agregar oleada", NamedTextColor.GREEN))
-                .setLore(Component.text(FORMAT_HINT, NamedTextColor.GRAY))
+                .setName(ComponentUtils.parse(lang.raw("gui.editor.waves.add")))
+                .setLore(Component.text(lang.raw("gui.editor.waves.format_hint"), NamedTextColor.GRAY))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back")));
     }
 
     @Override
@@ -104,12 +105,12 @@ public class WavesEditorGUI extends InventoryGUI {
     }
 
     private void promptAdd() {
-        session.chatPromptManager.prompt(player, "Escribí: " + FORMAT_HINT, value -> {
+        session.chatPromptManager.prompt(player, "gui.editor.waves.prompt.add", value -> {
 
             String[] tokens = value.trim().split("\\s+");
 
             if (tokens.length < 3) {
-                player.sendMessage(Component.text("Formato inválido.", NamedTextColor.RED));
+                lang.send(player, "gui.editor.actionlist.invalid_format");
                 return;
             }
 

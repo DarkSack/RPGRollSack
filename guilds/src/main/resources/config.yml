@@ -1,3 +1,8 @@
+# Idioma de los mensajes (jugador y comandos). Opciones: es, en, pt_BR.
+# Los textos viven en lang/<idioma>.yml dentro de esta carpeta de datos —
+# podés editarlos ahí directamente. Tras cambiar esto, /guildadmin reload.
+language: es
+
 guild-creation:
   money-cost: 5000
   min-level: 5

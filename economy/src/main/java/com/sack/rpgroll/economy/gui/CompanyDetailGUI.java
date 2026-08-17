@@ -1,5 +1,6 @@
 package com.sack.rpgroll.economy.gui;
 
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.economy.bank.BankManager;
 import com.sack.rpgroll.economy.company.Company;
 import com.sack.rpgroll.economy.company.CompanyManager;
@@ -38,11 +39,13 @@ public class CompanyDetailGUI extends InventoryGUI {
     private final CurrencyManager currencyManager;
     private final ChatPromptManager chatPromptManager;
     private final Runnable onBack;
+    private final LangManager lang;
 
     public CompanyDetailGUI(Player player, Company company, CompanyManager companyManager,
             CompanyService companyService, BankManager bankManager, CurrencyManager currencyManager,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text("Empresa: " + company.name(), NamedTextColor.GOLD), SIZE);
+        super(player, Component.text(chatPromptManager.lang().raw("company.detail.title", "name", company.name()),
+                NamedTextColor.GOLD), SIZE);
         this.company = company;
         this.companyManager = companyManager;
         this.companyService = companyService;
@@ -50,6 +53,7 @@ public class CompanyDetailGUI extends InventoryGUI {
         this.currencyManager = currencyManager;
         this.chatPromptManager = chatPromptManager;
         this.onBack = onBack;
+        this.lang = chatPromptManager.lang();
     }
 
     @Override
@@ -66,31 +70,30 @@ public class CompanyDetailGUI extends InventoryGUI {
         boolean canManage = company.canManage(player.getUniqueId());
 
         setItem(DEPOSIT_SLOT, new ItemBuilder(Material.LIME_DYE)
-                .setName(Component.text("Depositar en tesorería", NamedTextColor.GREEN))
-                .setLore(Component.text("Tesorería: " + currency.format(treasury), NamedTextColor.GOLD)).build());
+                .setName(lang.component("company.detail.deposit"))
+                .setLore(lang.component("company.detail.treasury_lore", "value", currency.format(treasury))).build());
 
         setItem(WITHDRAW_SLOT, new ItemBuilder(Material.RED_DYE)
-                .setName(Component.text("Retirar de tesorería", NamedTextColor.RED))
-                .setLore(Component.text(canManage ? "Requiere OWNER/MANAGER" : "No tenés permiso", NamedTextColor.GRAY))
+                .setName(lang.component("company.detail.withdraw"))
+                .setLore(lang.component(canManage ? "company.detail.requires_manager" : "company.detail.no_permission_lore"))
                 .build());
 
         setItem(HIRE_SLOT, new ItemBuilder(Material.PLAYER_HEAD)
-                .setName(Component.text("Contratar empleado", NamedTextColor.YELLOW))
-                .setLore(Component.text("empleados: " + company.members().size(), NamedTextColor.GRAY)).build());
+                .setName(lang.component("company.detail.hire"))
+                .setLore(lang.component("company.list.lore_employees", "count", company.members().size())).build());
 
         setItem(FIRE_SLOT, new ItemBuilder(Material.BARRIER)
-                .setName(Component.text("Despedir empleado", NamedTextColor.RED)).build());
+                .setName(lang.component("company.detail.fire")).build());
 
         setItem(PAY_SALARIES_SLOT, new ItemBuilder(Material.GOLD_INGOT)
-                .setName(Component.text("Pagar salarios ahora", NamedTextColor.GOLD)).build());
+                .setName(lang.component("company.detail.pay_salaries")).build());
 
         setItem(DISBAND_SLOT, new ItemBuilder(Material.TNT)
-                .setName(Component.text("Disolver empresa", NamedTextColor.DARK_RED))
-                .setLore(Component.text(company.ownerId().equals(player.getUniqueId()) ? "Solo el dueño puede hacerlo"
-                        : "Solo el dueño puede hacerlo", NamedTextColor.GRAY))
+                .setName(lang.component("company.detail.disband"))
+                .setLore(lang.component("company.detail.owner_only_lore"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Volver"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("common.back")));
     }
 
     @Override
@@ -101,43 +104,43 @@ public class CompanyDetailGUI extends InventoryGUI {
         String currencyId = currencyManager.defaultCurrency().id();
 
         if (slot == DEPOSIT_SLOT) {
-            chatPromptManager.prompt(player, "¿Cuánto querés depositar en la tesorería?", value -> {
+            chatPromptManager.prompt(player, lang.raw("company.detail.prompt_deposit"), value -> {
                 notify(companyService.depositTreasury(player.getUniqueId(), company, currencyId, parseAmount(value)));
                 build();
             });
         } else if (slot == WITHDRAW_SLOT) {
-            chatPromptManager.prompt(player, "¿Cuánto querés retirar de la tesorería?", value -> {
+            chatPromptManager.prompt(player, lang.raw("company.detail.prompt_withdraw"), value -> {
                 notify(companyService.withdrawTreasury(player.getUniqueId(), company, currencyId, parseAmount(value)));
                 build();
             });
         } else if (slot == HIRE_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el nombre del jugador a contratar:", name -> {
+            chatPromptManager.prompt(player, lang.raw("company.detail.prompt_hire_name"), name -> {
 
                 OfflinePlayer target = Bukkit.getOfflinePlayer(name);
 
-                chatPromptManager.prompt(player, "Escribí el salario para " + name + ":", wageValue -> {
+                chatPromptManager.prompt(player, lang.raw("company.detail.prompt_wage", "name", name), wageValue -> {
                     companyService.hire(company, target.getUniqueId(), CompanyRole.EMPLOYEE, parseAmount(wageValue));
-                    player.sendMessage(Component.text("✔ " + name + " contratado.", NamedTextColor.GREEN));
+                    lang.send(player, "company.detail.hired", "name", name);
                     build();
                 });
             });
         } else if (slot == FIRE_SLOT) {
-            chatPromptManager.prompt(player, "Escribí el nombre del jugador a despedir:", name -> {
+            chatPromptManager.prompt(player, lang.raw("company.detail.prompt_fire_name"), name -> {
                 companyService.fire(company, Bukkit.getOfflinePlayer(name).getUniqueId());
-                player.sendMessage(Component.text("✔ " + name + " despedido.", NamedTextColor.GREEN));
+                lang.send(player, "company.detail.fired", "name", name);
                 build();
             });
         } else if (slot == PAY_SALARIES_SLOT) {
             int paid = companyService.paySalaries(company, currencyId);
-            player.sendMessage(Component.text("✔ Se pagó a " + paid + " empleado(s).", NamedTextColor.GREEN));
+            lang.send(player, "company.detail.salaries_paid", "count", paid);
             build();
         } else if (slot == DISBAND_SLOT) {
             if (company.ownerId().equals(player.getUniqueId())) {
                 companyService.disband(company);
-                player.sendMessage(Component.text("✔ Empresa disuelta.", NamedTextColor.GREEN));
+                lang.send(player, "company.detail.disbanded");
                 onBack.run();
             } else {
-                player.sendMessage(Component.text("Solo el dueño puede disolver la empresa.", NamedTextColor.RED));
+                lang.send(player, "company.detail.owner_only_disband");
             }
         } else if (slot == BACK_SLOT) {
             onBack.run();
@@ -154,9 +157,9 @@ public class CompanyDetailGUI extends InventoryGUI {
 
     private void notify(EconomyResult result) {
         if (result == EconomyResult.SUCCESS) {
-            player.sendMessage(Component.text("✔ Listo.", NamedTextColor.GREEN));
+            lang.send(player, "common.success");
         } else {
-            player.sendMessage(Component.text("✘ " + result, NamedTextColor.RED));
+            lang.send(player, "common.fail_result", "result", result);
         }
     }
 

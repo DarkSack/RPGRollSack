@@ -2,6 +2,7 @@ package com.sack.rpgroll.ascension.gui;
 
 import com.sack.rpgroll.ascension.deferred.Faction;
 import com.sack.rpgroll.ascension.deferred.FactionManager;
+import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 
@@ -23,12 +24,15 @@ public class FactionBrowserGUI extends InventoryGUI {
 
     private final FactionManager manager;
     private final ChatPromptManager chatPromptManager;
+    private final LangManager lang;
     private List<Faction> factions;
 
-    public FactionBrowserGUI(Player player, FactionManager manager, ChatPromptManager chatPromptManager) {
-        super(player, Component.text("Facciones RPGRoll-Ascension", NamedTextColor.GOLD), SIZE);
+    public FactionBrowserGUI(Player player, FactionManager manager, ChatPromptManager chatPromptManager,
+            LangManager lang) {
+        super(player, lang.component("gui.faction.browser_title"), SIZE);
         this.manager = manager;
         this.chatPromptManager = chatPromptManager;
+        this.lang = lang;
         this.factions = List.copyOf(manager.getAll());
     }
 
@@ -46,15 +50,15 @@ public class FactionBrowserGUI extends InventoryGUI {
             setItem(i, new ItemBuilder(Material.WHITE_BANNER)
                     .setName(Component.text(faction.id(), NamedTextColor.YELLOW))
                     .setLore(Component.text(faction.displayName(), NamedTextColor.GRAY),
-                            Component.text("Click para editar", NamedTextColor.YELLOW))
+                            lang.component("gui.common.click_to_edit"))
                     .build());
         }
 
         setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text("Crear facción nueva", NamedTextColor.GREEN))
+                .setName(lang.component("gui.faction.create_new"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton("Cerrar"));
+        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.close_button")));
     }
 
     @Override
@@ -64,7 +68,7 @@ public class FactionBrowserGUI extends InventoryGUI {
         int slot = event.getSlot();
 
         if (slot < factions.size() && slot < 36) {
-            new FactionEditorGUI(player, factions.get(slot), manager, chatPromptManager, this::reopen).open();
+            new FactionEditorGUI(player, factions.get(slot), manager, chatPromptManager, this::reopen, lang).open();
             return;
         }
 
@@ -79,12 +83,12 @@ public class FactionBrowserGUI extends InventoryGUI {
     }
 
     private void promptNew() {
-        chatPromptManager.prompt(player, "Escribí el id de la nueva facción:", value -> {
+        chatPromptManager.prompt(player, "gui.faction.prompt_new_id", value -> {
 
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 
             if (manager.exists(id)) {
-                player.sendMessage(Component.text("Ya existe una facción con ese id.", NamedTextColor.RED));
+                lang.send(player, "gui.faction.id_exists");
                 reopen();
                 return;
             }
