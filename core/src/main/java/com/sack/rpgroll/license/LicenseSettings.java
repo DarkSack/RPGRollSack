@@ -33,8 +33,9 @@ final class LicenseSettings {
     static final String RESOURCE_ID = "0";
 
     /**
-     * URL del servidor de licencias propio, para las ventas directas
-     * (Ko-fi, Patreon). Ver {@code license-server/README.md}.
+     * URL del servicio de verificación propio, para las ventas directas
+     * (Ko-fi, Patreon) — la función {@code /api/verify} desplegada desde el
+     * repositorio privado {@code verification-web} (Vercel + Supabase).
      */
     static final String SELF_HOSTED_ENDPOINT = "";
 

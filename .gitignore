@@ -11,12 +11,6 @@ UI
 # sí van al repo. Se ignora solo una carpeta test/ suelta en la raíz.
 /test
 
-# Base de licencias emitidas: datos de compradores y claves reales.
-# Nunca va al repo — es la única fuente de verdad de quién compró qué,
-# así que respaldala por fuera.
-license-server/licenses.json
-license-server/licenses.json.tmp
-
 .idea
 .vscode
 .Trash-1000
