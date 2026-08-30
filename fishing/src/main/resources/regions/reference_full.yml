@@ -1,0 +1,42 @@
+# ============================================================================
+# REGIÓN DE PESCA DE REFERENCIA — usa TODOS los campos que soporta una
+# FishingRegion. Documentación ejecutable. Ver "Fishing" en la docs.
+#
+# Una región es simplemente una caja (AABB) que FUERZA un tipo de agua dentro
+# de sus límites. Solo hace falta para MAGIC_WATER y CORRUPTED_WATER: el resto
+# de los tipos (RIVER, LAKE, SWAMP, OCEAN, DEEP_OCEAN) se deducen solos del
+# bioma donde cae el anzuelo, sin necesidad de definir nada acá.
+#
+# No usa WorldGuard: los límites son coordenadas planas, igual que las
+# regiones de RPGRoll-Seasons.
+# ============================================================================
+
+# Identificador único de la región. Obligatorio.
+id: reference_full_example
+
+# Mundo donde aplica, por nombre exacto. Obligatorio.
+world: world
+
+# Esquinas opuestas de la caja. El orden no importa: min-x puede ser mayor que
+# max-x y la región se normaliza sola. Los tres ejes se comparan de forma
+# inclusiva (un anzuelo justo en el borde cuenta como adentro).
+min-x: -120.0
+min-y: 50.0
+min-z: -120.0
+max-x: -40.0
+max-y: 90.0
+max-z: -40.0
+
+# Tipo de agua que se fuerza dentro de la caja.
+#
+# Valores posibles: RIVER, LAKE, SWAMP, OCEAN, DEEP_OCEAN, MAGIC_WATER,
+# CORRUPTED_WATER.
+#
+# En la práctica solo tiene sentido usar MAGIC_WATER o CORRUPTED_WATER, que son
+# los dos que ningún bioma vanilla produce por su cuenta — para eso existen las
+# regiones. Si se omite o el valor no se reconoce, se usa MAGIC_WATER.
+#
+# LAVA existe en el enum pero NO se puede pescar: el addon reutiliza el
+# PlayerFishEvent de Bukkit tal cual, y vanilla nunca genera una mordida con el
+# anzuelo en lava.
+forced-water-type: MAGIC_WATER

@@ -91,6 +91,18 @@ public class YamlLoader {
      * @return lista de YamlConfiguration cargadas, vacía si la carpeta no existe o
      *         no tiene .yml
      */
+    /**
+     * Un archivo cuenta como contenido si es .yml y NO empieza con "_". El
+     * guion bajo marca archivos internos del propio plugin que viven en la
+     * misma carpeta que el contenido (ej. {@code market/_state.yml}, donde
+     * RPGRoll-Economy persiste la oferta/demanda): sin este filtro, el loader
+     * intenta parsearlos como definiciones y avisa en cada arranque que les
+     * falta el campo 'id'.
+     */
+    private static boolean isContentFile(String fileName) {
+        return fileName.toLowerCase().endsWith(".yml") && !fileName.startsWith("_");
+    }
+
     public List<YamlConfiguration> loadAllInFolder(String relativeFolder) {
 
         File folder = new File(plugin.getDataFolder(), relativeFolder);
@@ -99,7 +111,7 @@ public class YamlLoader {
             return List.of();
         }
 
-        File[] files = folder.listFiles((dir, name) -> name.toLowerCase().endsWith(".yml"));
+        File[] files = folder.listFiles((dir, name) -> isContentFile(name));
 
         if (files == null || files.length == 0) {
             return List.of();
@@ -161,7 +173,7 @@ public class YamlLoader {
                 continue;
             }
 
-            if (!file.getName().toLowerCase().endsWith(".yml")) {
+            if (!isContentFile(file.getName())) {
                 continue;
             }
 
@@ -193,7 +205,7 @@ public class YamlLoader {
             return Map.of();
         }
 
-        File[] files = folder.listFiles((dir, name) -> name.toLowerCase().endsWith(".yml"));
+        File[] files = folder.listFiles((dir, name) -> isContentFile(name));
 
         if (files == null || files.length == 0) {
             return Map.of();
