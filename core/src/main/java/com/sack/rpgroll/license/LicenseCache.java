@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.Optional;
 
 /**
- * Recuerda la última validación exitosa en disco. Si Polymart no responde
+ * Recuerda la última validación exitosa en disco. Si el proveedor no responde
  * (caída temporal, sin internet un instante), se le da al comprador un
  * período de gracia en vez de bloquear el plugin — pero si pasa
  * {@link #GRACE_PERIOD_MILLIS} sin poder revalidar, se vuelve a exigir una

@@ -154,6 +154,16 @@ No corre como parte de `./gradlew build` — es completamente opt-in.
 
 > ⚠️ Los módulos de RPGRoll son de **pago** — se deben comprar en [voxel.shop](https://voxel.shop) para obtener el `.jar` de cada uno.
 
+**Licencia.** Si compraste en voxel.shop no tienes que hacer nada: el `.jar` que descargas desde tu panel de compras ya trae tu clave incrustada. Si fue una **venta directa** (Ko-fi, Patreon), abre `plugins/RPGRoll/license.yml` y pega la clave que te pasó el vendedor:
+
+```yaml
+provider: self-hosted
+key: 'RPGR-XXXXX-XXXXX-XXXXX-XXXXX'
+endpoint: 'https://licencias.del-vendedor.com/verify'
+```
+
+Si el servicio de licencias no responde, el plugin **no** te bloquea: se apoya en la última validación correcta durante 7 días.
+
 1. Descarga los `.jar` de los módulos que quieras usar.
 2. Coloca **siempre `RPGRoll` (core) primero** dentro de `plugins/` — todos los addons dependen de él (excepto `SackResourcePack`, que es standalone).
 3. Agrega los addons que quieras encima, respetando sus dependencias duras (ver tabla de [Ecosistema de módulos](#-ecosistema-de-módulos)) — por ejemplo, `Dungeons` requiere que `Mobs` y `Guilds` ya estén instalados.

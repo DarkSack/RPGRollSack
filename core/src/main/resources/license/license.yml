@@ -1,15 +1,46 @@
-# No edites este archivo a mano.
+# No edites este archivo a mano, SALVO que hayas comprado por una venta
+# directa (ver "provider: self-hosted" más abajo).
 #
-# Si compraste RPGRoll en Polymart, la clave de abajo ya viene
-# reemplazada automáticamente en tu descarga por tu clave real de
-# comprador — no necesitás hacer nada.
+# ---------------------------------------------------------------------------
+# provider: de dónde viene tu compra.
 #
-# Si ves el texto "%%__LICENSE__%%" tal cual (sin reemplazar), significa
-# que esta copia NO fue descargada desde Polymart y el plugin no va a
-# arrancar.
+#   voxel-shop   (por defecto) — compraste en voxel.shop. No tenés que tocar
+#                nada: la clave de abajo ya viene reemplazada automáticamente
+#                en tu descarga por tu clave real de comprador.
+#
+#   self-hosted  — venta directa (Ko-fi, Patreon, etc.). El vendedor te pasó
+#                una clave a mano: pegala en "key" y dejá el "endpoint" tal
+#                como te lo haya indicado.
+#
+# ("polymart" también se acepta como sinónimo de voxel-shop: es el mismo
+# marketplace, renombrado.)
+# ---------------------------------------------------------------------------
+provider: voxel-shop
+
+# Tu clave de licencia.
+#
+# Con provider: voxel-shop, si ves el texto "%%__LICENSE__%%" tal cual (sin
+# reemplazar), significa que esta copia NO fue descargada desde voxel.shop y
+# el plugin no va a arrancar.
+#
+# Con provider: self-hosted, pegá acá la clave que te dio el vendedor.
 key: '%%__LICENSE__%%'
 
-# ID público de tu recurso en Polymart (el número al final de la URL de
-# tu listing, ej. https://polymart.org/resource/rpgroll.1234 -> 1234).
+# ID público de tu recurso en voxel.shop (el número al final de la URL del
+# listing, ej. https://voxel.shop/resource/rpgroll.1234 -> 1234).
 # No es un dato sensible, pero configuralo con tu ID real antes de publicar.
+#
+# Con provider: self-hosted esto identifica QUÉ producto se está validando
+# (útil porque el ecosistema son 24 módulos vendidos por separado).
 resource-id: '0'
+
+# Solo se usa con provider: self-hosted — URL del servidor de licencias del
+# vendedor. Se ignora por completo con voxel-shop.
+#
+# Debe responder JSON a un POST con los campos "license" y "resource":
+#   { "valid": true,  "status": "active" }
+#   { "valid": false, "status": "revoked" }
+#
+# Si el servidor no responde, el plugin NO bloquea al comprador: usa el
+# período de gracia de la última validación exitosa (7 días).
+endpoint: ''

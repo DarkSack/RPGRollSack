@@ -21,6 +21,10 @@ dependencies {
     // Gson ya viene embebido en el server de Paper/Spigot en tiempo de
     // ejecución — compileOnly alcanza, no hace falta empaquetarlo.
     compileOnly("com.google.code.gson:gson:2.11.0")
+
+    // compileOnly no se propaga al source set de test, y los tests de
+    // licencia sí parsean JSON real.
+    testImplementation("com.google.code.gson:gson:2.11.0")
 }
 
 tasks.shadowJar {

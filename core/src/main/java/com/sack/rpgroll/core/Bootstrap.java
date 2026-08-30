@@ -112,8 +112,11 @@ public class Bootstrap {
         plugin.getLogger().severe("==================================");
         plugin.getLogger().severe("✘ RPGRoll no pudo verificar tu licencia:");
         plugin.getLogger().severe("  " + result.message());
-        plugin.getLogger().severe("  El plugin se va a deshabilitar. Si compraste RPGRoll,");
-        plugin.getLogger().severe("  asegurate de haberlo descargado desde tu panel de Polymart.");
+        plugin.getLogger().severe("  El plugin se va a deshabilitar.");
+        plugin.getLogger().severe("  Si compraste en voxel.shop, descargá el jar desde tu panel de compras");
+        plugin.getLogger().severe("  (la copia que baja de ahí ya trae tu clave incrustada).");
+        plugin.getLogger().severe("  Si fue una venta directa, revisá 'provider', 'key' y 'endpoint'");
+        plugin.getLogger().severe("  en plugins/RPGRoll/license.yml.");
         plugin.getLogger().severe("==================================");
 
         return false;
