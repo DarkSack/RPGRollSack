@@ -15,6 +15,13 @@ repositories {
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:26.1.1.build.29-alpha")
+
+    testImplementation("io.papermc.paper:paper-api:26.1.1.build.29-alpha")
+    testImplementation(platform("org.junit:junit-bom:5.11.4"))
+    testImplementation("org.junit.jupiter:junit-jupiter")
+    testImplementation("org.mockito:mockito-core:5.15.2")
+    testImplementation("org.mockito:mockito-junit-jupiter:5.15.2")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
 java {
@@ -25,4 +32,12 @@ java {
 
 tasks.processResources {
     filteringCharset = "UTF-8"
+}
+
+tasks.test {
+    useJUnitPlatform()
+
+    // Byte Buddy (usado por Mockito) todavía no reconoce el bytecode de Java 25 como estable;
+    // sin esto, cualquier mock() falla con "Java 25 (69) is not supported".
+    jvmArgs("-Dnet.bytebuddy.experimental=true")
 }

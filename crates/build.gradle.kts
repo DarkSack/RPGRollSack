@@ -17,4 +17,6 @@ dependencies {
     // (el holograma real, no una copia embebida) — por eso compileOnly, nunca se
     // empaqueta. El repositorio de JitPack ya está declarado en rpgroll.plugin-conventions.
     compileOnly("com.github.decentsoftware-eu.DecentHolograms:decentholograms:2.10.1")
+
+    // Visibilidad en tests para ContentParser/RPGContent (:common) — compileOnly
 }

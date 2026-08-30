@@ -13,6 +13,8 @@ dependencies {
     // framework de GUIs compartido.
     compileOnly(project(":core"))
 
+    // Tests necesitan las clases reales de :common (RPGContent/EntityReskin) en el classpath.
+
     // Integraciones blandas (softdepend en plugin.yml, chequeadas en runtime):
     // el ganadero de verdad cuida animales de Ranching, el pescador de verdad
     // pesca vía Fishing, el clima/estación real de Seasons modula la IA, los

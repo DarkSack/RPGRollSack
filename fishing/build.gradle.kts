@@ -12,6 +12,10 @@ dependencies {
     // :core es para RPGRollAPI (nivel del jugador) y el framework de GUIs compartido.
     compileOnly(project(":core"))
 
+    // compileOnly no se propaga al source set de test (:api/:common ya los aporta
+    // rpgroll.addon-conventions; :core hace falta declararlo acá).
+    testImplementation(project(":core"))
+
     // Integraciones blandas (softdepend en plugin.yml, chequeadas en runtime):
     // capturas pueden disparar partículas/sonidos de SackEffects, aplicar efectos
     // de estado de RPGRoll-Effects (ej. una anguila eléctrica que aturde), y las

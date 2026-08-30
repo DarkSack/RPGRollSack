@@ -24,4 +24,6 @@ dependencies {
     // registrados por otros addons (Economy, Ascension, Mobs, etc.) sin
     // depender de esos módulos directamente.
     compileOnly("me.clip:placeholderapi:2.11.5")
+
+    // Visibilidad en tests para RPGContent (:common) — compileOnly no expone
 }

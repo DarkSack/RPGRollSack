@@ -8,9 +8,7 @@ Ya no es un único plugin: es un **ecosistema de 1 core + 23 addons independient
 
 📖 **Documentación completa:** [rpg-roll-docs.vercel.app](https://rpg-roll-docs.vercel.app/)
 
-☕ **¿Te gusta el proyecto?** Podés apoyarlo con una donación en [Ko-fi](https://ko-fi.com/sackito).
-
-> ⚠️ **Estado del proyecto:** En desarrollo activo (Alpha)
+☕ **¿Te gusta el proyecto?** Puedes apoyarlo con una donación en [Ko-fi](https://ko-fi.com/sackito).
 
 ---
 
@@ -114,21 +112,7 @@ Ver el detalle completo de cada uno (comandos, permisos, formato YAML, ejemplos)
 
 Todos los comandos administrativos, de jugador y con contenido dinámico (razas, ítems, encantamientos, especies, entidades, etc.) tienen **autocompletado real por Tab**.
 
-Los precios son estimados (USD) en función de la complejidad de cada módulo — todavía no hay un canal de venta público (ver [Instalación](#-instalación)); se ajustarán al momento de publicarse.
-
----
-
-# 🚀 Roadmap
-
-El core y los 23 addons ya están funcionales end-to-end (motor + persistencia + GUI editor o herramienta web + comandos + ejemplos). Lo que queda pendiente es, en su mayoría, **contenido/expansión sobre sistemas ya construidos**, no sistemas nuevos:
-
-- 🚧 RPGRoll-Magic: rituales, combos de hechizos, sinergias elementales, sobrecarga (overload), invocación de mobs desde hechizos
-- 🚧 RPGRoll-Seasons: festivales, decoraciones estacionales, migración de animales
-- 🚧 RPGRoll-Fishing: acuarios, mercado de peces, competencias de pesca, cocina con capturas
-- 🚧 RPGRoll-Ranching: subastas, exhibiciones, edificios/instalaciones de granja dedicados
-- 🚧 RPGRoll-Workers: empresas/compañías, equipos de trabajadores, transporte, construcción autónoma
-- 🚧 RPGRoll-Economy: acciones/bolsa de valores, contratos entre jugadores y NPC merchants con IA de mercado (economías regionales y la integración activa con Guilds/Seasons ya están hechas)
-- 🚧 RPGRoll-Mobs / RPGRoll-Workers: integración real con ModelEngine/BetterModel para los reskins (hoy el reskin propio vía `ItemDisplay` ya funciona sin esos plugins; la integración con ellos queda documentada pero sin aplicar, para no depender de una API externa sin JAR público)
+Los precios son estimados (USD) en función de la complejidad de cada módulo — el canal de venta es [voxel.shop](https://voxel.shop).
 
 ---
 
@@ -168,7 +152,7 @@ No corre como parte de `./gradlew build` — es completamente opt-in.
 
 # 🔧 Instalación
 
-> ⚠️ Los módulos de RPGRoll son de **pago** — se deben comprar para obtener el `.jar` de cada uno. El canal de venta todavía no está publicado; por ahora no hay forma pública de adquirirlos.
+> ⚠️ Los módulos de RPGRoll son de **pago** — se deben comprar en [voxel.shop](https://voxel.shop) para obtener el `.jar` de cada uno.
 
 1. Descarga los `.jar` de los módulos que quieras usar.
 2. Coloca **siempre `RPGRoll` (core) primero** dentro de `plugins/` — todos los addons dependen de él (excepto `SackResourcePack`, que es standalone).
@@ -186,7 +170,7 @@ plugins/
 └── ...
 ```
 
-> ⚠️ **No cambies `online-mode` una vez que el servidor tenga personajes creados.** RPGRoll guarda a cada jugador por **UUID** en `players.db` (y en el resto de bases de datos de los addons). Minecraft asigna un UUID distinto al mismo nombre de usuario según el servidor esté en modo online u offline, así que alternar `online-mode` hace que RPGRoll trate esa cuenta como un personaje totalmente nuevo — el original queda huérfano en la base de datos, no se fusiona ni se migra automáticamente. Elegí un modo antes de lanzar el servidor en serio y no lo cambies después.
+> ⚠️ **No cambies `online-mode` una vez que el servidor tenga personajes creados.** RPGRoll guarda a cada jugador por **UUID** en `players.db` (y en el resto de bases de datos de los addons). Minecraft asigna un UUID distinto al mismo nombre de usuario según el servidor esté en modo online u offline, así que alternar `online-mode` hace que RPGRoll trate esa cuenta como un personaje totalmente nuevo — el original queda huérfano en la base de datos, no se fusiona ni se migra automáticamente. Elige un modo antes de lanzar el servidor en serio y no lo cambies después.
 
 ---
 
@@ -314,13 +298,13 @@ La idea es que prácticamente cualquier mecánica RPG pueda implementarse utiliz
 
 # ❤️ Estado del desarrollo
 
-El core y los 23 addons descritos arriba están implementados y compilando (motor + GUI + comandos + ejemplos). El proyecto sigue en fase **Alpha**: las APIs internas y algunas funcionalidades pueden cambiar antes de la versión **1.0**, y varios addons todavía tienen expansiones de contenido pendientes (ver [Roadmap](#-roadmap)).
+El core y los 23 addons descritos arriba están implementados, compilando y en la versión **1.0.0**.
 
 ---
 
-# ☕ Apoyá el proyecto
+# ☕ Apoya el proyecto
 
-Los módulos todavía no están a la venta (ver [Instalación](#-instalación)), pero si querés bancar el desarrollo mientras tanto, podés donar en [Ko-fi](https://ko-fi.com/sackito). Cualquier aporte ayuda a que el proyecto siga avanzando.
+Puedes comprar los módulos en [voxel.shop](https://voxel.shop), o si quieres apoyar el desarrollo, puedes donar en [Ko-fi](https://ko-fi.com/sackito). Cualquier aporte ayuda a que el proyecto siga avanzando.
 
 ---
 

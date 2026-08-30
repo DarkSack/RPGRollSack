@@ -32,4 +32,8 @@ dependencies {
     // usa para sincronizar packs/<nombre>/resourcepack/ automáticamente.
     // softdepend en plugin.yml, se chequea AssetsAPI.isReady() en runtime.
     compileOnly(project(":sackresourcepack"))
+
+    // rpgroll.addon-conventions declara :api y :common como compileOnly, lo
+    // que no se propaga al classpath de test — hace falta repetirlos acá
+    // para que los tests unitarios puedan referenciar sus tipos (ej.
 }

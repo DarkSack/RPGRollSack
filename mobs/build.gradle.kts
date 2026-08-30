@@ -19,6 +19,16 @@ dependencies {
     compileOnly(project(":items"))
     compileOnly(project(":quests"))
 
+    // :common trae ContentParser/RPGContent/EntityReskin usados por los parsers y
+    // definiciones que se testean acá; compileOnly no alcanza para compilar los tests.
+
+    // rpgroll.plugin-conventions fija mockito-core/mockito-junit-jupiter en 5.15.2, cuya
+    // versión de ByteBuddy no soporta instrumentar interfaces de Bukkit en el JDK 25 del
+    // toolchain (falla "Could not modify all classes ..."); Gradle resuelve por versión más
+    // alta entre coordenadas iguales, así que forzamos una versión más nueva solo acá.
+    testImplementation("org.mockito:mockito-core:5.23.0")
+    testImplementation("org.mockito:mockito-junit-jupiter:5.23.0")
+
     // VaultAPI es compileOnly en :core (no se propaga transitivamente) — hace falta
     // repetirlo acá porque el tipo Economy se referencia directamente (loot de dinero
     // vía RPGRollAPI.getEconomyProvider().getEconomy()) en MobEngine.

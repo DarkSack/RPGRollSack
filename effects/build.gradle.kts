@@ -17,4 +17,6 @@ dependencies {
     // Solo para las condiciones GUILD/TEAM — softdepend real (isReady() se
     // chequea siempre antes de tocar GuildsAPI, ver EffectConditionEvaluator).
     compileOnly(project(":guilds"))
+
+    // compileOnly no se hereda al test source set — los tests necesitan estas
 }

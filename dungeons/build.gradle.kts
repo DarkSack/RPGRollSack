@@ -44,4 +44,13 @@ dependencies {
     compileOnly("com.sk89q.worldedit:worldedit-bukkit:7.4.5") {
         exclude(group = "org.bukkit", module = "bukkit")
     }
+
+    // :common trae ContentParser/RPGContent usados por los parsers/definiciones testeadas.
+
+    // rpgroll.plugin-conventions fija mockito-core/mockito-junit-jupiter en 5.15.2, cuya
+    // versión de ByteBuddy no soporta instrumentar interfaces de Bukkit en el JDK 25 del
+    // toolchain (falla "Could not modify all classes ..."); Gradle resuelve por versión más
+    // alta entre coordenadas iguales, así que forzamos una versión más nueva solo acá.
+    testImplementation("org.mockito:mockito-core:5.23.0")
+    testImplementation("org.mockito:mockito-junit-jupiter:5.23.0")
 }

@@ -22,4 +22,8 @@ dependencies {
     // nunca se empaqueta, y todo acceso está guardeado por presencia real
     // del plugin en runtime (mismo patrón que PlaceholderApiBridge).
     compileOnly(project(":tab"))
+
+    // compileOnly no se propaga al source set de test (:api/:common ya los aporta
+    // rpgroll.addon-conventions; :core hace falta declararlo acá).
+    testImplementation(project(":core"))
 }

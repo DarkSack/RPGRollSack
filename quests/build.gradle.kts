@@ -21,4 +21,8 @@ dependencies {
     }
 
     compileOnly("me.clip:placeholderapi:2.11.5")
+
+    // compileOnly no se propaga al source set de test (:api/:common ya los aporta
+    // rpgroll.addon-conventions; :core hace falta declararlo acá).
+    testImplementation(project(":core"))
 }

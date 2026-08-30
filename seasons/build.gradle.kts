@@ -12,6 +12,8 @@ dependencies {
     // :core es para el framework de GUIs compartido (InventoryGUI/ItemBuilder).
     compileOnly(project(":core"))
 
+    // Tests necesitan las clases reales de :common (RPGContent/ContentManager) en el classpath.
+
     // Integraciones blandas (softdepend en plugin.yml, chequeadas en runtime):
     // clima/eventos pueden disparar partículas/sonidos de SackEffects, aplicar
     // efectos de estado de RPGRoll-Effects, y hacer spawnear mobs/jefes de

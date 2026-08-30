@@ -12,6 +12,8 @@ dependencies {
     // :core es para RPGRollAPI (nivel del jugador) y el framework de GUIs compartido.
     compileOnly(project(":core"))
 
+    // Tests necesitan las clases reales de :common (RPGContent) en el classpath.
+
     // Integraciones blandas (softdepend en plugin.yml, chequeadas en runtime):
     // el bienestar/producción puede disparar partículas/sonidos de SackEffects,
     // enfermedades/curas pueden aplicar efectos de estado de RPGRoll-Effects, y

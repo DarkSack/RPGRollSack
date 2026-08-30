@@ -27,6 +27,15 @@ dependencies {
 
     // OkHttp: NO viene con el servidor, se empaqueta y reubica en el shadow jar.
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
+
+    // :common trae ContentParser/RPGContent usados por los parsers/definiciones testeadas.
+
+    // rpgroll.plugin-conventions fija mockito-core/mockito-junit-jupiter en 5.15.2, cuya
+    // versión de ByteBuddy no soporta instrumentar interfaces de Bukkit en el JDK 25 del
+    // toolchain (falla "Could not modify all classes ..."); Gradle resuelve por versión más
+    // alta entre coordenadas iguales, así que forzamos una versión más nueva solo acá.
+    testImplementation("org.mockito:mockito-core:5.23.0")
+    testImplementation("org.mockito:mockito-junit-jupiter:5.23.0")
 }
 
 tasks.shadowJar {

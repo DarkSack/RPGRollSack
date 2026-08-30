@@ -61,12 +61,15 @@ public class AntiSpamManager {
 
         String normalized = message.trim().toLowerCase(Locale.ROOT);
         if (normalized.equals(lastMessageContent.get(uuid))) {
+            // El contador cuenta mensajes idénticos totales (no "repeticiones extra"): con
+            // repetition-threshold: 3, el 3er mensaje igual ya dispara. Arrancar en 0 acá hacía
+            // falta un 4to mensaje para llegar al umbral — un off-by-one contra lo documentado.
             int count = repeatCount.merge(uuid, 1, Integer::sum);
             if (count >= config.repetitionThreshold()) {
                 return Result.REPETITION;
             }
         } else {
-            repeatCount.put(uuid, 0);
+            repeatCount.put(uuid, 1);
         }
 
         if (!channel.allowUrls() && containsUrl(normalized)) {

@@ -23,4 +23,6 @@ dependencies {
     // Torretas: reconocer mobs custom de RPGRoll-Mobs como objetivo hostil
     // (ver traps/integration/MobsIntegration.java) — softdepend igual criterio.
     compileOnly(project(":mobs"))
+
+    // Visibilidad en tests para ContentParser/RPGContent (:common) — compileOnly
 }

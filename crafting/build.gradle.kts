@@ -20,4 +20,8 @@ dependencies {
     // :guilds y :seasons para condiciones de receta (gremio, estación climática).
     compileOnly(project(":guilds"))
     compileOnly(project(":seasons"))
+
+    // rpgroll.addon-conventions declara :api y :common como compileOnly, lo
+    // que no se propaga al classpath de test — hace falta repetirlos acá
+    // para que los tests unitarios puedan referenciar sus tipos (ej.
 }

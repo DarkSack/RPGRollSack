@@ -6,7 +6,10 @@ bin
 build
 out
 UI
-test
+
+# "test" a secas ignoraba también todos los src/test/** — los tests unitarios
+# sí van al repo. Se ignora solo una carpeta test/ suelta en la raíz.
+/test
 
 .idea
 .vscode

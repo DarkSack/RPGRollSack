@@ -14,4 +14,8 @@ base.archivesName.set("RPGRoll-Enchantments")
 dependencies {
     compileOnly(project(":core"))
     compileOnly("me.clip:placeholderapi:2.11.5")
+
+    // rpgroll.addon-conventions declara :api y :common como compileOnly, lo
+    // que no se propaga al classpath de test — hace falta repetirlos acá
+    // para que los tests unitarios puedan referenciar sus tipos (ej.
 }
