@@ -9,23 +9,26 @@ import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Verifica que el servidor esté corriendo una copia legítimamente
  * comprada de RPGRoll antes de que el resto del plugin arranque.
  * <p>
- * Soporta dos canales de venta, elegidos con el campo {@code provider} de
- * {@code license.yml}:
+ * <b>Lo único que aporta el comprador es la clave.</b> A qué servicio se
+ * consulta y qué producto se valida son constantes de compilación
+ * ({@link LicenseSettings}) — si fueran configurables, alcanzaría con
+ * editar un YAML para apuntar la verificación a un servidor complaciente.
+ * <p>
+ * Soporta los dos canales de venta con un mismo jar, distinguiéndolos por
+ * la forma de la clave:
  * <ul>
- *   <li>{@code voxel-shop} (por defecto) — el marketplace sustituye el
- *       placeholder {@code %%__LICENSE__%%} por la clave del comprador al
- *       descargar, así que la clave NUNCA vive en el repositorio. Si el
- *       placeholder sigue intacto, es una descarga directa/no comprada.</li>
- *   <li>{@code self-hosted} — ventas propias (Ko-fi, Patreon, directas),
- *       validadas contra el servidor de licencias del vendedor. Acá la clave
- *       se la pasa el vendedor al comprador y este la pega a mano, así que
- *       el placeholder no aplica.</li>
+ *   <li>voxel.shop sustituye el placeholder {@code %%__LICENSE__%%} por la
+ *       clave del comprador al momento de la descarga. Si el placeholder
+ *       sigue intacto, es una descarga directa/no comprada.</li>
+ *   <li>Las ventas propias (Ko-fi, Patreon) usan claves emitidas por el
+ *       servidor propio, reconocibles por su prefijo
+ *       {@link LicenseSettings#SELF_HOSTED_KEY_PREFIX}, que el comprador
+ *       pega a mano.</li>
  * </ul>
  */
 public class LicenseManager {
@@ -40,7 +43,7 @@ public class LicenseManager {
         this(plugin, null);
     }
 
-    /** Constructor para tests o para forzar un proveedor sin tocar license.yml. */
+    /** Constructor para tests o para forzar un proveedor concreto. */
     public LicenseManager(Plugin plugin, LicenseProvider providerOverride) {
         this.plugin = plugin;
         this.providerOverride = providerOverride;
@@ -53,32 +56,23 @@ public class LicenseManager {
         YamlConfiguration config = YamlConfiguration.loadConfiguration(licenseFile);
 
         String key = config.getString("key", PLACEHOLDER);
-        String resourceId = config.getString("resource-id", "0");
-        String providerId = config.getString("provider", "voxel-shop").trim().toLowerCase(Locale.ROOT);
-
-        LicenseProvider provider = providerOverride != null
-                ? providerOverride
-                : resolveProvider(providerId, config.getString("endpoint"));
-
-        if (provider == null) {
-            return LicenseResult.invalid("El campo 'provider' de license.yml no reconoce el valor '"
-                    + providerId + "' — valores válidos: voxel-shop, self-hosted.");
-        }
 
         if (key == null || key.isBlank()) {
             return LicenseResult.invalid("license.yml no tiene ninguna clave en el campo 'key'.");
         }
 
-        // El placeholder solo lo sustituye el marketplace: en ventas propias
-        // la clave se pega a mano, así que ahí no significa nada.
+        key = key.trim();
+
         if (key.equals(PLACEHOLDER)) {
             return LicenseResult.invalid(
                     "No se detectó una licencia — esta parece ser una descarga directa, no una compra verificada.");
         }
 
+        LicenseProvider provider = providerOverride != null ? providerOverride : resolveProvider(key);
+
         plugin.getLogger().info("Verificando licencia contra " + provider.name() + "...");
 
-        LicenseResult result = provider.validate(key, resourceId);
+        LicenseResult result = provider.validate(key, LicenseSettings.RESOURCE_ID);
 
         return switch (result.status()) {
 
@@ -96,12 +90,11 @@ public class LicenseManager {
         };
     }
 
-    private LicenseProvider resolveProvider(String providerId, String endpoint) {
-        return switch (providerId) {
-            case "voxel-shop", "polymart" -> new VoxelShopLicenseProvider();
-            case "self-hosted" -> new SelfHostedLicenseProvider(endpoint);
-            default -> null;
-        };
+    /** El canal lo dice la clave, no la configuración — ver {@link LicenseSettings}. */
+    private LicenseProvider resolveProvider(String key) {
+        return key.startsWith(LicenseSettings.SELF_HOSTED_KEY_PREFIX)
+                ? new SelfHostedLicenseProvider(LicenseSettings.SELF_HOSTED_ENDPOINT)
+                : new VoxelShopLicenseProvider();
     }
 
     private LicenseResult handleUnknown(LicenseResult networkFailure) {

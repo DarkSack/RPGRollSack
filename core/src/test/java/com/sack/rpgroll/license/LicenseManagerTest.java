@@ -12,6 +12,8 @@ import java.nio.file.Files;
 import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -65,63 +67,87 @@ class LicenseManagerTest {
 
     @Test
     void untouchedMarketplacePlaceholderIsRejectedWithoutCallingTheProvider() throws Exception {
-        writeLicense("provider: voxel-shop\nkey: '%%__LICENSE__%%'\nresource-id: '1'\n");
+        writeLicense("key: '%%__LICENSE__%%'\n");
         StubProvider provider = new StubProvider(LicenseResult.valid("no debería llamarse"));
 
         LicenseResult result = new LicenseManager(plugin, provider).check();
 
         assertEquals(LicenseResult.Status.INVALID, result.status());
-        assertEquals(null, provider.seenKey);
+        assertNull(provider.seenKey);
     }
 
     @Test
     void blankKeyIsRejected() throws Exception {
-        writeLicense("provider: voxel-shop\nkey: ''\nresource-id: '1'\n");
+        writeLicense("key: ''\n");
 
         assertEquals(LicenseResult.Status.INVALID, new LicenseManager(plugin).check().status());
     }
 
     @Test
-    void keyAndResourceIdReachTheProvider() throws Exception {
-        writeLicense("provider: voxel-shop\nkey: 'REAL-KEY'\nresource-id: '4321'\n");
+    void missingKeyIsRejected() throws Exception {
+        writeLicense("# sin campo key\n");
+
+        assertEquals(LicenseResult.Status.INVALID, new LicenseManager(plugin).check().status());
+    }
+
+    @Test
+    void surroundingWhitespaceInTheKeyIsTolerated() throws Exception {
+        writeLicense("key: '  REAL-KEY  '\n");
         StubProvider provider = new StubProvider(LicenseResult.valid("ok"));
 
         new LicenseManager(plugin, provider).check();
 
         assertEquals("REAL-KEY", provider.seenKey);
-        assertEquals("4321", provider.seenResourceId);
     }
 
+    // El id de producto es constante de compilación: si saliera del YAML, alguien
+    // que compró un módulo podría validar otro cambiando una línea.
     @Test
-    void unknownProviderNameIsRejectedWithAnActionableMessage() throws Exception {
-        writeLicense("provider: mercadolibre\nkey: 'REAL-KEY'\n");
-
-        LicenseResult result = new LicenseManager(plugin).check();
-
-        assertEquals(LicenseResult.Status.INVALID, result.status());
-        assertTrue(result.message().contains("voxel-shop"));
-    }
-
-    @Test
-    void selfHostedWithoutEndpointIsRejected() throws Exception {
-        writeLicense("provider: self-hosted\nkey: 'KOFI-KEY'\nendpoint: ''\n");
-
-        LicenseResult result = new LicenseManager(plugin).check();
-
-        assertEquals(LicenseResult.Status.INVALID, result.status());
-        assertTrue(result.message().contains("endpoint"));
-    }
-
-    // Con venta directa la clave se pega a mano, así que el placeholder del
-    // marketplace no debe seguir siendo un caso especial más allá de rechazarlo.
-    @Test
-    void selfHostedAcceptsAManuallyPastedKey() throws Exception {
-        writeLicense("provider: self-hosted\nkey: 'KOFI-KEY'\nendpoint: 'http://example.invalid/verify'\n");
+    void resourceIdComesFromBuildSettingsNotFromTheYaml() throws Exception {
+        writeLicense("key: 'REAL-KEY'\nresource-id: 'producto-que-no-compre'\n");
         StubProvider provider = new StubProvider(LicenseResult.valid("ok"));
 
         new LicenseManager(plugin, provider).check();
 
-        assertEquals("KOFI-KEY", provider.seenKey);
+        assertEquals(LicenseSettings.RESOURCE_ID, provider.seenResourceId);
+    }
+
+    // Mismo motivo: el canal lo decide la forma de la clave, no un campo editable.
+    // Un 'provider'/'endpoint' en el YAML no debe tener ningún efecto.
+    @Test
+    void providerAndEndpointFieldsInTheYamlAreIgnored() throws Exception {
+        writeLicense("""
+                key: 'REAL-KEY'
+                provider: self-hosted
+                endpoint: 'http://servidor-del-pirata.example/verify'
+                """);
+        StubProvider provider = new StubProvider(LicenseResult.valid("ok"));
+
+        LicenseResult result = new LicenseManager(plugin, provider).check();
+
+        // Llega al stub tal cual, sin que el YAML haya podido redirigir nada.
+        assertEquals("REAL-KEY", provider.seenKey);
+        assertEquals(LicenseResult.Status.VALID, result.status());
+    }
+
+    @Test
+    void selfHostedKeyPrefixSelectsTheSelfHostedProvider() throws Exception {
+        writeLicense("key: '" + LicenseSettings.SELF_HOSTED_KEY_PREFIX + "AAAAA-BBBBB'\n");
+
+        LicenseResult result = new LicenseManager(plugin).check();
+
+        // Sin endpoint configurado en el build, el proveedor propio rechaza
+        // pidiendo justamente eso — prueba de que se eligió ese camino.
+        assertTrue(result.message().contains("endpoint"));
+    }
+
+    @Test
+    void aNonPrefixedKeyGoesToVoxelShop() throws Exception {
+        writeLicense("key: 'VOXEL-STYLE-KEY'\n");
+
+        LicenseResult result = new LicenseManager(plugin).check();
+
+        assertFalse(result.message().contains("endpoint"));
     }
 
     @Test
@@ -168,7 +194,7 @@ class LicenseManagerTest {
     // Una revocación NO debe poder rescatarse con el caché de gracia.
     @Test
     void revocationIsNotRescuedByTheGracePeriodCache() throws Exception {
-        writeLicense("provider: self-hosted\nkey: 'KOFI-KEY'\nendpoint: 'http://example.invalid/verify'\n");
+        writeLicense("key: 'RPGR-KOFI-KEY'\n");
         writeCache(true, System.currentTimeMillis());
 
         LicenseResult result = new LicenseManager(plugin,
@@ -177,14 +203,18 @@ class LicenseManagerTest {
         assertEquals(LicenseResult.Status.INVALID, result.status());
     }
 
+    // Un rechazo invalida el caché, para que no quede una gracia utilizable
+    // en el próximo arranque si el servidor pasa a estar inalcanzable.
     @Test
-    void polymartIsAcceptedAsAnAliasOfVoxelShop() throws Exception {
-        writeLicense("provider: polymart\nkey: 'REAL-KEY'\nresource-id: '1'\n");
+    void rejectionOverwritesTheCacheAsInvalid() throws Exception {
+        writeLicense("key: 'REAL-KEY'\n");
+        writeCache(true, System.currentTimeMillis());
 
-        // Sin override llega al proveedor real; basta con que NO sea el rechazo
-        // por nombre desconocido para confirmar que el alias se resolvió.
-        LicenseResult result = new LicenseManager(plugin).check();
+        new LicenseManager(plugin, new StubProvider(LicenseResult.invalid("revocada"))).check();
 
-        assertTrue(!result.message().contains("no reconoce el valor"));
+        LicenseResult afterOutage = new LicenseManager(plugin,
+                new StubProvider(LicenseResult.unknown("servidor caído"))).check();
+
+        assertEquals(LicenseResult.Status.INVALID, afterOutage.status());
     }
 }
