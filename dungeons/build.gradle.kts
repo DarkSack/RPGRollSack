@@ -36,4 +36,12 @@ dependencies {
     }
 
     compileOnly("me.clip:placeholderapi:2.11.5")
+
+    // WorldEdit — softdepend (ver plugin.yml), solo para importar schematics .schem.
+    // compileOnly a propósito: todo el código que toca sus clases vive aislado en
+    // SchematicBridge, nunca referenciado salvo detrás de un chequeo en runtime de
+    // que el plugin WorldEdit esté cargado (así el addon sigue funcionando sin él).
+    compileOnly("com.sk89q.worldedit:worldedit-bukkit:7.4.5") {
+        exclude(group = "org.bukkit", module = "bukkit")
+    }
 }

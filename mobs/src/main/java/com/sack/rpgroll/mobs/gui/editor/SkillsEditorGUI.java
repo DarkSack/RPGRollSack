@@ -5,6 +5,7 @@ import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.mobs.core.MobSkill;
+import com.sack.rpgroll.util.ComponentUtils;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -51,7 +52,7 @@ public class SkillsEditorGUI extends InventoryGUI {
             MobSkill skill = skills.get(i);
 
             setItem(i, new ItemBuilder(Material.BLAZE_POWDER)
-                    .setName(Component.text(skill.displayName(), NamedTextColor.YELLOW))
+                    .setName(ComponentUtils.parse(skill.displayName()))
                     .setLore(
                             lang.component("gui.skills.id_lore", "id", skill.id()),
                             lang.component("gui.skills.trigger_lore", "trigger",

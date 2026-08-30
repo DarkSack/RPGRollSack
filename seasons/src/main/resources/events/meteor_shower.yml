@@ -1,7 +1,7 @@
 id: meteor_shower
 display-name: "&6&lLluvia de Meteoritos"
 icon: FIRE_CHARGE
-description: "El cielo se llena de fuego durante un rato — puramente ambiental por ahora, sin daño real."
+description: "El cielo se llena de fuego — a cielo abierto te prende fuego de verdad (efecto 'burning' de RPGRoll-Effects, si está instalado)."
 duration: 400
 
 components:
@@ -16,3 +16,9 @@ components:
     sound: ENTITY_GENERIC_EXPLODE
     volume: 0.6
     pitch: 1.5
+
+  # Consecuencia jugable real: quemadura (daño periódico) vía RPGRoll-Effects.
+  # Si el addon no está instalado, este componente simplemente no hace nada (ver
+  # WorldEventEngine#executeApplyEffect) — el resto del evento sigue funcionando.
+  - type: APPLY_EFFECT
+    effect-id: burning

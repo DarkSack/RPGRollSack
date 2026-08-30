@@ -44,8 +44,7 @@ public class CompanyDetailGUI extends InventoryGUI {
     public CompanyDetailGUI(Player player, Company company, CompanyManager companyManager,
             CompanyService companyService, BankManager bankManager, CurrencyManager currencyManager,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text(chatPromptManager.lang().raw("company.detail.title", "name", company.name()),
-                NamedTextColor.GOLD), SIZE);
+        super(player, chatPromptManager.lang().component("company.detail.title", "name", company.name()), SIZE);
         this.company = company;
         this.companyManager = companyManager;
         this.companyService = companyService;

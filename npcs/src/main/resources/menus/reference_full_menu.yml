@@ -45,6 +45,18 @@ items:
       - type: CONDITIONAL
         value: "HAS_ITEM:EMERALD,10;TAKE_ITEM:EMERALD,10"
 
+  # Ítem que dispara un comando propio de RPGRoll (necesita sender jugador, ej. /quest, /magic...) —
+  # COMMAND_AS_PLAYER corre como el jugador, a diferencia de COMMAND (corre como consola, para
+  # comandos tipo /give o LuckPerms que no necesitan que el sender sea el jugador).
+  - slot: 15
+    material: WRITTEN_BOOK
+    name: "&aAceptar misión"
+    lore:
+      - "&7Empezá 'village_intro'."
+    actions:
+      - type: COMMAND_AS_PLAYER
+        value: "quest start village_intro"
+
   # Ítem decorativo/informativo sin acciones (ej. separador visual)
   - slot: 16
     material: BARRIER

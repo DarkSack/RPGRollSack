@@ -273,7 +273,7 @@ public class Bootstrap {
         SkillCooldownTracker skillCooldownTracker = new SkillCooldownTracker();
         services.register(SkillCooldownTracker.class, skillCooldownTracker);
 
-        PlayerResourceBar resourceBar = new PlayerResourceBar();
+        PlayerResourceBar resourceBar = new PlayerResourceBar(plugin);
         services.register(PlayerResourceBar.class, resourceBar);
         plugin.getLogger().info("✔ CombatTracker, SkillCooldownTracker y PlayerResourceBar registrados");
 

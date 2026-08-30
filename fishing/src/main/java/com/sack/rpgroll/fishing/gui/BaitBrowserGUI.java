@@ -5,6 +5,7 @@ import com.sack.rpgroll.fishing.core.Bait;
 import com.sack.rpgroll.fishing.core.BaitManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
+import com.sack.rpgroll.util.ComponentUtils;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -50,7 +51,7 @@ public class BaitBrowserGUI extends InventoryGUI {
             Bait bait = baits.get(i);
 
             setItem(i, new ItemBuilder(SpeciesBrowserGUI.parseMaterial(bait.material()))
-                    .setName(Component.text(bait.displayName(), NamedTextColor.GREEN))
+                    .setName(ComponentUtils.parse(bait.displayName()))
                     .setLore(lang.component("gui.common.id_label", "id", bait.id()),
                             lang.component("gui.common.click_to_edit"))
                     .build());

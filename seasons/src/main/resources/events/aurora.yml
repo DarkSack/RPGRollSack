@@ -1,7 +1,7 @@
 id: aurora
 display-name: "&d&lAurora"
 icon: END_ROD
-description: "Luces de colores danzan en el cielo nocturno."
+description: "Luces de colores danzan en el cielo nocturno — bendice a todos los jugadores presentes (efecto 'blessing' de RPGRoll-Effects, si está instalado)."
 duration: 600
 
 components:
@@ -16,3 +16,9 @@ components:
     sound: AMBIENT_CAVE
     volume: 0.5
     pitch: 1.2
+
+  # Consecuencia jugable real: curación periódica + armadura extra vía RPGRoll-Effects.
+  # Si el addon no está instalado, este componente simplemente no hace nada (ver
+  # WorldEventEngine#executeApplyEffect) — el resto del evento sigue funcionando.
+  - type: APPLY_EFFECT
+    effect-id: blessing

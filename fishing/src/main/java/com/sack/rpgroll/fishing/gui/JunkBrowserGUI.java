@@ -5,6 +5,7 @@ import com.sack.rpgroll.fishing.core.Junk;
 import com.sack.rpgroll.fishing.core.JunkManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
+import com.sack.rpgroll.util.ComponentUtils;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -49,7 +50,7 @@ public class JunkBrowserGUI extends InventoryGUI {
             Junk junk = junks.get(i);
 
             setItem(i, new ItemBuilder(SpeciesBrowserGUI.parseMaterial(junk.icon()))
-                    .setName(Component.text(junk.displayName(), NamedTextColor.GRAY))
+                    .setName(ComponentUtils.parse(junk.displayName()))
                     .setLore(lang.component("gui.common.id_label", "id", junk.id()),
                             lang.component("gui.common.click_to_edit"))
                     .build());

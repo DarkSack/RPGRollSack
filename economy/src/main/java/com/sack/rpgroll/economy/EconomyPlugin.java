@@ -21,8 +21,10 @@ import com.sack.rpgroll.economy.integration.EconomyVaultProvider;
 import com.sack.rpgroll.economy.ledger.TransactionLedger;
 import com.sack.rpgroll.economy.loan.LoanService;
 import com.sack.rpgroll.economy.loan.LoanStore;
+import com.sack.rpgroll.economy.integration.GuildTerritoryTaxTask;
 import com.sack.rpgroll.economy.market.MarketEngine;
 import com.sack.rpgroll.economy.market.MarketProductManager;
+import com.sack.rpgroll.economy.market.MarketRegionManager;
 import com.sack.rpgroll.economy.market.MarketStateStore;
 import com.sack.rpgroll.economy.shop.ShopManager;
 import com.sack.rpgroll.economy.shop.ShopStore;
@@ -48,12 +50,13 @@ import java.util.List;
  */
 public class EconomyPlugin extends JavaPlugin {
 
-    private static final List<String> DIRECTORIES = List.of("currencies", "market", "tax");
+    private static final List<String> DIRECTORIES = List.of("currencies", "market", "market-regions", "tax");
 
     private LangManager langManager;
 
     private CurrencyManager currencyManager;
     private MarketProductManager marketProductManager;
+    private MarketRegionManager marketRegionManager;
     private TaxRuleManager taxRuleManager;
 
     private WalletManager walletManager;
@@ -90,6 +93,9 @@ public class EconomyPlugin extends JavaPlugin {
         marketProductManager = new MarketProductManager(this);
         marketProductManager.initialize();
 
+        marketRegionManager = new MarketRegionManager(this);
+        marketRegionManager.initialize();
+
         taxRuleManager = new TaxRuleManager(this);
         taxRuleManager.initialize();
 
@@ -109,7 +115,7 @@ public class EconomyPlugin extends JavaPlugin {
         taxEngine = new TaxEngine(taxRuleManager, ledger);
 
         MarketStateStore marketStateStore = new MarketStateStore(getDataFolder());
-        marketEngine = new MarketEngine(marketProductManager, marketStateStore);
+        marketEngine = new MarketEngine(marketProductManager, marketStateStore, marketRegionManager);
         marketEngine.loadAll();
 
         ShopStore shopStore = new ShopStore(getDataFolder());
@@ -130,9 +136,9 @@ public class EconomyPlugin extends JavaPlugin {
 
         auctionDefaultDurationMillis = getConfig().getLong("auction-default-duration-hours", 48) * 60L * 60 * 1000;
 
-        EconomyAPI.init(currencyManager, marketProductManager, taxRuleManager, walletService, ledger, bankManager,
-                loanService, taxEngine, marketEngine, shopManager, auctionManager, companyManager, companyService,
-                inflationTracker);
+        EconomyAPI.init(currencyManager, marketProductManager, marketRegionManager, taxRuleManager, walletService,
+                ledger, bankManager, loanService, taxEngine, marketEngine, shopManager, auctionManager,
+                companyManager, companyService, inflationTracker);
 
         registerVault();
         registerPlaceholders();
@@ -225,6 +231,7 @@ public class EconomyPlugin extends JavaPlugin {
         langManager.reload(getConfig().getString("language", "es"));
         currencyManager.reload();
         marketProductManager.reload();
+        marketRegionManager.reload();
         taxRuleManager.reload();
     }
 
@@ -240,6 +247,14 @@ public class EconomyPlugin extends JavaPlugin {
         getServer().getScheduler().runTaskTimer(this, inflationTracker::takeSnapshot, inflationInterval, inflationInterval);
         getServer().getScheduler().runTaskTimer(this, auctionManager::processExpired, auctionInterval, auctionInterval);
         getServer().getScheduler().runTaskTimer(this, ledger::flush, 600, 600);
+
+        long guildTaxInterval = getConfig().getLong("guild-territory-tax-interval-ticks", 24000);
+        double guildTaxPerTerritory = getConfig().getDouble("guild-territory-tax-per-territory", 50.0);
+        String defaultCurrencyId = currencyManager.defaultCurrency().id();
+
+        GuildTerritoryTaxTask guildTerritoryTaxTask = new GuildTerritoryTaxTask(this, taxEngine, guildTaxPerTerritory,
+                defaultCurrencyId);
+        getServer().getScheduler().runTaskTimer(this, guildTerritoryTaxTask::run, guildTaxInterval, guildTaxInterval);
     }
 
 }

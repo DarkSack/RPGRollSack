@@ -137,8 +137,8 @@ editor:
     invalid_format: "&cFormato inválido."
     invalid_number: "&cNúmero inválido."
     shift_click_remove: "&8Shift-click para remover"
-    yes: "sim"
-    no: "não"
+    "yes": "sim"
+    "no": "não"
   hub:
     title: "&6Editando: {id}"
     identity: "Identidade"

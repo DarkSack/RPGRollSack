@@ -1,6 +1,8 @@
 package com.sack.rpgroll.command.commands;
 
 import com.sack.rpgroll.RPGRoll;
+import com.sack.rpgroll.api.playerclass.ClassManager;
+import com.sack.rpgroll.api.playerclass.PlayerClass;
 import com.sack.rpgroll.command.RPGCommand;
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.player.RPGPlayer;
@@ -20,12 +22,12 @@ public class ClassCommand implements RPGCommand {
 
     private final RPGRoll plugin;
 
-    // Clases disponibles por ahora (placeholder hasta implementar sistema completo)
-    private static final List<String> AVAILABLE_CLASSES = List.of(
-            "Guerrero", "Mago", "Pícaro", "Clérigo", "Paladín", "Druida");
-
     public ClassCommand(RPGRoll plugin) {
         this.plugin = plugin;
+    }
+
+    private ClassManager classManager() {
+        return plugin.getBootstrap().getServices().get(ClassManager.class);
     }
 
     @Override
@@ -75,14 +77,16 @@ public class ClassCommand implements RPGCommand {
 
     private void showCurrentClass(Player player, RPGPlayer rpgPlayer, LangManager lang) {
 
-        String playerClass = rpgPlayer.getPlayerClass();
+        String playerClassId = rpgPlayer.getPlayerClass();
 
-        if (playerClass == null || playerClass.isEmpty()) {
+        if (playerClassId == null || playerClassId.isEmpty()) {
             lang.send(player, "class.no_class");
             lang.send(player, "class_command.hint_select");
             lang.send(player, "class_command.hint_list");
         } else {
-            lang.send(player, "class.current", "class", playerClass);
+            String displayName = classManager().get(playerClassId).map(PlayerClass::displayName)
+                    .orElse(playerClassId);
+            lang.send(player, "class.current", "class", displayName);
         }
 
     }
@@ -91,8 +95,8 @@ public class ClassCommand implements RPGCommand {
 
         lang.send(player, "class_command.list_header");
 
-        for (String className : AVAILABLE_CLASSES) {
-            lang.send(player, "class_command.list_entry", "class", className);
+        for (PlayerClass playerClass : classManager().getAll()) {
+            lang.send(player, "class_command.list_entry", "class", playerClass.displayName());
         }
 
         lang.send(player, "class_command.list_footer");
@@ -100,15 +104,13 @@ public class ClassCommand implements RPGCommand {
 
     }
 
-    private void changeClass(Player player, PlayerManager playerManager, RPGPlayer rpgPlayer, String newClass,
+    private void changeClass(Player player, PlayerManager playerManager, RPGPlayer rpgPlayer, String newClassId,
             LangManager lang) {
 
-        // Validar que la clase exista
-        boolean validClass = AVAILABLE_CLASSES.stream()
-                .anyMatch(c -> c.equalsIgnoreCase(newClass));
+        Optional<PlayerClass> classOpt = classManager().get(newClassId);
 
-        if (!validClass) {
-            lang.send(player, "class_command.invalid_class", "class", newClass);
+        if (classOpt.isEmpty()) {
+            lang.send(player, "class_command.invalid_class", "class", newClassId);
             lang.send(player, "class_command.hint_list");
             return;
         }
@@ -120,17 +122,13 @@ public class ClassCommand implements RPGCommand {
             return;
         }
 
-        // Capitalizar correctamente el nombre de la clase
-        String formattedClass = AVAILABLE_CLASSES.stream()
-                .filter(c -> c.equalsIgnoreCase(newClass))
-                .findFirst()
-                .orElse(newClass);
+        PlayerClass playerClass = classOpt.get();
 
-        // Actualizar y guardar
-        RPGPlayer updatedPlayer = rpgPlayer.setClass(formattedClass);
+        // Actualizar y guardar — se persiste el id (mismo criterio que CharacterCreationFlow/AdminSetClassCommand).
+        RPGPlayer updatedPlayer = rpgPlayer.setClass(playerClass.id());
         playerManager.savePlayer(updatedPlayer);
 
-        lang.send(player, "class.select", "class", formattedClass);
+        lang.send(player, "class.select", "class", playerClass.displayName());
 
     }
 
@@ -157,11 +155,17 @@ public class ClassCommand implements RPGCommand {
     @Override
     public List<String> getTabCompletions(CommandSender sender, String[] args) {
         if (args.length <= 1) {
-            List<String> options = new java.util.ArrayList<>(AVAILABLE_CLASSES);
+            List<String> options = new java.util.ArrayList<>(
+                    classManager().getAll().stream().map(PlayerClass::id).toList());
             options.add("list");
             return options;
         }
         return List.of();
+    }
+
+    @Override
+    public String getPermission() {
+        return "rpgroll.player.class";
     }
 
 }

@@ -1,0 +1,24 @@
+# Torreta de vigilancia: dispara a jugadores enemigos y mobs hostiles dentro del radio.
+id: sentry_turret
+display-name: "&cTorreta de Vigilancia"
+description: "Dispara flechas automáticamente a cualquier amenaza dentro de su radio."
+
+radius: 12.0
+target-players: true
+target-hostile-mobs: true
+fire-interval-ticks: 20
+
+conditions: []
+
+# "impact" es la acción (misma que puede usar cualquier trampa en su "actions:") que se
+# ejecuta contra el objetivo en cada disparo — acá una flecha simple, pero podría ser
+# cualquier otro tipo registrado (CUSTOM_PROJECTILE con otro projectile-type, SONIC_BOOM,
+# EFFECT, DAMAGE...). Ver turrets/warden_turret.yml para un ejemplo no-flecha.
+impact:
+  type: CUSTOM_PROJECTILE
+  params:
+    projectile-type: ARROW
+    speed: "2.5"
+
+model:
+  material: CROSSBOW

@@ -6,6 +6,7 @@ import com.sack.rpgroll.ranching.core.health.DiseaseManager;
 import com.sack.rpgroll.ranching.core.health.Medicine;
 import com.sack.rpgroll.ranching.core.health.MedicineManager;
 import com.sack.rpgroll.ranching.core.health.MedicineType;
+import com.sack.rpgroll.util.ComponentUtils;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -54,7 +55,7 @@ public class MedicineBrowserGUI extends InventoryGUI {
             Medicine medicine = medicines.get(i);
 
             setItem(i, new ItemBuilder(SpeciesBrowserGUI.parseMaterial(medicine.icon(), Material.POTION))
-                    .setName(Component.text(medicine.displayName(), NamedTextColor.YELLOW))
+                    .setName(ComponentUtils.parse(medicine.displayName()))
                     .setLore(Component.text(chatPromptManager.lang().raw("gui.browser.id_line", "id", medicine.id()), NamedTextColor.GRAY),
                             Component.text(chatPromptManager.lang().raw("gui.medicine.browser.type_line", "type", medicine.type()), NamedTextColor.GRAY),
                             Component.text(chatPromptManager.lang().raw("gui.common.click_to_edit"), NamedTextColor.YELLOW))

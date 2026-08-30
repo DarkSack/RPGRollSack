@@ -28,6 +28,7 @@ public class MarketProductDefinitionWriter {
         config.set("volatility", product.volatility());
         config.set("recovery-rate", product.recoveryRate());
         config.set("category", product.category());
+        product.seasonTagModifiers().forEach((tag, value) -> config.set("season-modifiers." + tag, value));
 
         try {
             folder.mkdirs();

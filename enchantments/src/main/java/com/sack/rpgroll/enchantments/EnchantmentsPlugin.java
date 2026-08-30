@@ -10,6 +10,7 @@ import com.sack.rpgroll.enchantments.effect.EnchantEffectExecutor;
 import com.sack.rpgroll.enchantments.gui.ChatPromptManager;
 import com.sack.rpgroll.enchantments.integration.EnchantmentsPlaceholders;
 import com.sack.rpgroll.enchantments.item.EnchantmentItem;
+import com.sack.rpgroll.enchantments.listener.AnvilEnchantListener;
 import com.sack.rpgroll.enchantments.listener.EnchantmentTriggerListener;
 
 import org.bukkit.plugin.java.JavaPlugin;
@@ -46,6 +47,8 @@ public class EnchantmentsPlugin extends JavaPlugin {
         getServer().getPluginManager().registerEvents(
                 new EnchantmentTriggerListener(enchantmentManager, enchantmentItem, conditionEvaluator, effectExecutor),
                 this);
+
+        getServer().getPluginManager().registerEvents(new AnvilEnchantListener(enchantmentManager, enchantmentItem), this);
 
         ChatPromptManager chatPromptManager = new ChatPromptManager(this, langManager);
         getServer().getPluginManager().registerEvents(chatPromptManager, this);

@@ -1,5 +1,7 @@
 package com.sack.rpgroll.dungeons.structure;
 
+import com.sack.rpgroll.dungeons.structure.schematic.SchematicBridge;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -19,7 +21,9 @@ import java.util.Random;
  * Pega una {@link StructureDefinition} en el mundo. Para CUSTOM recorre
  * paleta+capas bloque a bloque (con rotación/espejo propios); para NATIVE
  * delega enteramente en la API nativa de Structure Blocks de Paper
- * ({@link StructureManager}), que ya resuelve rotación/espejo/entidades.
+ * ({@link StructureManager}), que ya resuelve rotación/espejo/entidades;
+ * para SCHEMATIC delega en {@link SchematicBridge} (WorldEdit), que a su
+ * vez solo se toca si WorldEdit está instalado en el server.
  */
 public class StructurePasteEngine {
 
@@ -35,9 +39,11 @@ public class StructurePasteEngine {
             return false;
         }
 
-        return definition.sourceType() == StructureSourceType.NATIVE
-                ? placeNative(definition, origin, rotation, mirror)
-                : placeCustom(definition, origin, rotation, mirror);
+        return switch (definition.sourceType()) {
+            case NATIVE -> placeNative(definition, origin, rotation, mirror);
+            case SCHEMATIC -> placeSchematic(definition, origin, rotation, mirror);
+            case CUSTOM -> placeCustom(definition, origin, rotation, mirror);
+        };
     }
 
     private boolean placeCustom(StructureDefinition def, Location origin, StructureRotation rotation, Mirror mirror) {
@@ -110,6 +116,57 @@ public class StructurePasteEngine {
     public BlockVector nativeSize(String id) {
         Structure structure = loadNative(id);
         return structure != null ? structure.getSize() : null;
+    }
+
+    private boolean placeSchematic(StructureDefinition def, Location origin, StructureRotation rotation,
+            Mirror mirror) {
+
+        if (!SchematicBridge.isAvailable()) {
+            dungeonsPlugin.getLogger().warning("✘ No se puede pegar la structure '" + def.id()
+                    + "' (SCHEMATIC): WorldEdit no está instalado/habilitado.");
+            return false;
+        }
+
+        File file = schematicFile(def.id());
+
+        if (!file.isFile()) {
+            return false;
+        }
+
+        try {
+            SchematicBridge.pasteFromFile(file, origin.getWorld(), origin, rotation, mirror);
+            return true;
+        } catch (Exception e) {
+            dungeonsPlugin.getLogger().warning("✘ Error pegando schematic '" + def.id() + "': " + e.getMessage());
+            return false;
+        }
+    }
+
+    /** Tamaño real de una estructura SCHEMATIC — solo se conoce tras leer su .schem. Requiere WorldEdit. */
+    public BlockVector schematicSize(String id) {
+
+        if (!SchematicBridge.isAvailable()) {
+            return null;
+        }
+
+        File file = schematicFile(id);
+
+        if (!file.isFile()) {
+            return null;
+        }
+
+        try {
+            int[] size = SchematicBridge.readSize(file);
+            return new BlockVector(size[0], size[1], size[2]);
+        } catch (IOException e) {
+            dungeonsPlugin.getLogger()
+                    .warning("✘ No se pudo leer el schematic '" + id + "': " + e.getMessage());
+            return null;
+        }
+    }
+
+    public File schematicFile(String id) {
+        return new File(dungeonsPlugin.getDataFolder(), "structures/" + id + ".schem");
     }
 
     private Structure loadNative(String id) {

@@ -1,0 +1,36 @@
+# Puerta reforzada con llave: el trigger BLOCK_BREAK nunca llega a dispararse en la práctica porque
+# block.breakable=false + required-item-id la protegen (ver TrapBlockProtectionListener) — se abre por
+# interacción (click derecho) con la llave correcta, alternando el bloque real vía TOGGLE_BLOCKS.
+id: reinforced_vault_door
+display-name: "&6Puerta Blindada de la Bóveda"
+description: "Requiere la llave de la bóveda para abrirse."
+icon: IRON_DOOR
+
+trigger:
+  type: INTERACTION
+
+radius: 1.0
+conditions: []
+
+actions:
+  - type: SOUND
+    params:
+      sound: BLOCK_IRON_DOOR_OPEN
+  - type: TOGGLE_BLOCKS
+    params:
+      coords: "0,0,0;0,1,0"
+      open: "true"
+      open-material: AIR
+      closed-material: IRON_DOOR
+      animation: SLIDE
+
+cooldown-millis: 2000
+charges: -1
+chain: []
+
+block:
+  material: IRON_DOOR
+  breakable: false
+  required-item-id: "vault_key"
+  explosion-immune: true
+  piston-immune: true

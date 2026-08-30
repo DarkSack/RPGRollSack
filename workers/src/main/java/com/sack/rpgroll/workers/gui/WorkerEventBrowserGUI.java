@@ -5,6 +5,7 @@ import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.workers.core.event.WorkerEventDefinition;
 import com.sack.rpgroll.workers.core.event.WorkerEventManager;
 import com.sack.rpgroll.workers.core.event.WorkerEventType;
+import com.sack.rpgroll.util.ComponentUtils;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -50,7 +51,7 @@ public class WorkerEventBrowserGUI extends InventoryGUI {
             WorkerEventDefinition event = events.get(i);
 
             setItem(i, new ItemBuilder(Material.PAPER)
-                    .setName(Component.text(event.displayName(), NamedTextColor.YELLOW))
+                    .setName(ComponentUtils.parse(event.displayName()))
                     .setLore(Component.text(chatPromptManager.lang().raw("gui.profession.browser.id_label", "id",
                             event.id()), NamedTextColor.GRAY),
                             Component.text(chatPromptManager.lang().raw("gui.event.browser.type_label", "type",

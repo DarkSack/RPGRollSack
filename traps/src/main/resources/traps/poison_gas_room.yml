@@ -1,0 +1,28 @@
+# Sala de gas: trampa de ZONA (se coloca con /trapadmin place poison_gas_room zone) que se re-evalúa en
+# cada tick del motor (TIMER) mientras esté ARMED, aplicando veneno a quien esté dentro de la sala.
+id: poison_gas_room
+display-name: "&2Sala de Gas Venenoso"
+description: "Envenena a quien permanezca dentro de la sala mientras esté armada."
+icon: BREWING_STAND
+
+trigger:
+  type: TIMER
+  params:
+    interval-seconds: "5"
+
+radius: 6.0
+conditions: []
+
+actions:
+  - type: PARTICLE
+    params:
+      particle: SNEEZE
+      count: "40"
+  - type: EFFECT
+    params:
+      effect-id: "poison"
+
+# El propio cooldown define el período real del TIMER (ver comentario de diseño en TrapEngine).
+cooldown-millis: 5000
+charges: -1
+chain: []

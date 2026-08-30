@@ -116,4 +116,9 @@ public class SkillsCommand implements RPGCommand {
         return List.of("habilidades", "hab");
     }
 
+    @Override
+    public String getPermission() {
+        return "rpgroll.player.skills";
+    }
+
 }

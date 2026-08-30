@@ -1,0 +1,30 @@
+# Mina de presión: al pisar el bloque exacto, explota y aplica un efecto de estado (si RPGRoll-Effects está instalado).
+id: landmine
+display-name: "&cMina Terrestre"
+description: "Explota al pisarla."
+icon: TNT
+
+trigger:
+  type: PRESSURE
+
+radius: 0.5
+conditions: []
+
+actions:
+  - type: SOUND
+    params:
+      sound: ENTITY_TNT_PRIMED
+      volume: "1.0"
+      pitch: "0.8"
+  - type: EXPLOSION
+    params:
+      power: "2.5"
+      fire: "false"
+      break-blocks: "false"
+  - type: EFFECT
+    params:
+      effect-id: "burning"
+
+cooldown-millis: 10000
+charges: 1
+chain: []

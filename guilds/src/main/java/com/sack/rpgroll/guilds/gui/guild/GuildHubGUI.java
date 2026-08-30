@@ -4,6 +4,7 @@ import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.guilds.GuildServices;
 import com.sack.rpgroll.guilds.guild.Guild;
+import com.sack.rpgroll.util.ComponentUtils;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -33,7 +34,7 @@ public class GuildHubGUI extends InventoryGUI {
     private final GuildServices services;
 
     public GuildHubGUI(Player player, Guild guild, GuildServices services) {
-        super(player, Component.text(guild.name(), NamedTextColor.GOLD), SIZE);
+        super(player, ComponentUtils.parse(guild.name()), SIZE);
         this.guild = guild;
         this.services = services;
     }

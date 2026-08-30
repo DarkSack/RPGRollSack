@@ -7,6 +7,7 @@ import com.sack.rpgroll.crafting.station.CustomStationManager;
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
+import com.sack.rpgroll.util.ComponentUtils;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -67,7 +68,7 @@ public class RecipeBookGUI extends InventoryGUI {
                     .orElse(recipe.stationId());
 
             setItem(i, new ItemBuilder(parseMaterial(recipe.icon()))
-                    .setName(Component.text(recipe.displayName(), NamedTextColor.AQUA))
+                    .setName(ComponentUtils.parse(recipe.displayName()))
                     .setLore(Component.text(lang.raw("gui.recipe_book.station_lore", "value", stationName), NamedTextColor.GRAY),
                             Component.text(lang.raw("gui.recipe_book.result_lore", "value", recipe.result().value(),
                                     "amount", recipe.result().amount()), NamedTextColor.YELLOW),

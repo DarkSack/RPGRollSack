@@ -35,7 +35,7 @@ common:
   prompt_material_icon: "Type the icon's Material:"
 
 admin:
-  usage: "&eUsage: /economyadmin <browser|reload|give|take|setbalance|inflation>"
+  usage: "&eUsage: /economyadmin <browser|reload|give|take|setbalance|inflation|snapshot>"
   browser_players_only: "&cOnly a player can open the browser."
   reload_done: "&a✔ RPGRoll-Economy reloaded."
   adjust_usage: "&eUsage: /economyadmin {sub} <player> <currency> <amount>"

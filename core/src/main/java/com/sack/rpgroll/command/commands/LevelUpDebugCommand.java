@@ -31,11 +31,6 @@ public class LevelUpDebugCommand implements RPGCommand {
 
         LangManager lang = plugin.getBootstrap().getServices().get(LangManager.class);
 
-        if (!sender.hasPermission("rpgroll.admin.*") && !sender.hasPermission("rpgroll.admin.reload")) {
-            lang.send(sender, "levelup_debug_command.no_permission");
-            return;
-        }
-
         Player player = (Player) sender;
 
         try {
@@ -90,6 +85,11 @@ public class LevelUpDebugCommand implements RPGCommand {
     @Override
     public List<String> getAliases() {
         return List.of("lvlup", "testlvl");
+    }
+
+    @Override
+    public String getPermission() {
+        return "rpgroll.admin.levelup";
     }
 
 }

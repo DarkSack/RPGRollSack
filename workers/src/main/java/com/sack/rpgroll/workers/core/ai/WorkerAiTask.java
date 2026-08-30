@@ -83,6 +83,8 @@ public class WorkerAiTask extends BukkitRunnable {
                 continue;
             }
 
+            workerManager.ensureAppearanceAttached(living, profession);
+
             if (worker.hasActiveEvent() && worker.eventWorkSpeedMultiplier() <= 0) {
                 worker.setCurrentAction(AiAction.IDLE);
                 MovementUtil.stop(living);

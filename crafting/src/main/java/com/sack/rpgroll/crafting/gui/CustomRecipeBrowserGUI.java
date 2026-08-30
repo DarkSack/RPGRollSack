@@ -6,6 +6,7 @@ import com.sack.rpgroll.crafting.recipe.RecipeResult;
 import com.sack.rpgroll.crafting.recipe.RecipeResultType;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
+import com.sack.rpgroll.util.ComponentUtils;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -51,7 +52,7 @@ public class CustomRecipeBrowserGUI extends InventoryGUI {
             CustomRecipe recipe = recipes.get(i);
 
             setItem(i, new ItemBuilder(parseMaterial(recipe.icon()))
-                    .setName(Component.text(recipe.displayName(), NamedTextColor.YELLOW))
+                    .setName(ComponentUtils.parse(recipe.displayName()))
                     .setLore(Component.text(chatPromptManager.lang().raw("gui.common.id_lore", "id", recipe.id()), NamedTextColor.GRAY),
                             Component.text(chatPromptManager.lang().raw("gui.recipe.station_lore", "station", recipe.stationId()), NamedTextColor.AQUA),
                             Component.text(chatPromptManager.lang().raw("gui.common.click_edit"), NamedTextColor.YELLOW))

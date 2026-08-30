@@ -96,4 +96,9 @@ public class TraitsCommand implements RPGCommand {
         return List.of("rasgos", "trt");
     }
 
+    @Override
+    public String getPermission() {
+        return "rpgroll.player.traits";
+    }
+
 }

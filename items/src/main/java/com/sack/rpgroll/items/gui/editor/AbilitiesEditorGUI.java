@@ -4,6 +4,7 @@ import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.items.core.ItemAbility;
+import com.sack.rpgroll.util.ComponentUtils;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -51,7 +52,7 @@ public class AbilitiesEditorGUI extends InventoryGUI {
             ItemAbility ability = session.abilities.get(i);
 
             setItem(i, new ItemBuilder(ability.passive() ? Material.BEACON : Material.BLAZE_POWDER)
-                    .setName(Component.text(ability.displayName(), NamedTextColor.YELLOW))
+                    .setName(ComponentUtils.parse(ability.displayName()))
                     .setLore(ability.passive()
                                     ? lang.component("editor.abilities.passive")
                                     : lang.component("editor.abilities.active", "trigger", ability.trigger()),

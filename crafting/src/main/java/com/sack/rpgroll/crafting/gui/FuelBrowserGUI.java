@@ -4,6 +4,7 @@ import com.sack.rpgroll.crafting.fuel.FuelDefinition;
 import com.sack.rpgroll.crafting.fuel.FuelManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
+import com.sack.rpgroll.util.ComponentUtils;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -48,7 +49,7 @@ public class FuelBrowserGUI extends InventoryGUI {
             FuelDefinition fuel = fuels.get(i);
 
             setItem(i, new ItemBuilder(parseMaterial(fuel.icon()))
-                    .setName(Component.text(fuel.displayName(), NamedTextColor.YELLOW))
+                    .setName(ComponentUtils.parse(fuel.displayName()))
                     .setLore(Component.text(chatPromptManager.lang().raw("gui.common.id_lore", "id", fuel.id()), NamedTextColor.GRAY),
                             Component.text(chatPromptManager.lang().raw("gui.fuel.burn_ticks_lore", "value", fuel.burnTicks()), NamedTextColor.AQUA),
                             Component.text(chatPromptManager.lang().raw("gui.common.click_edit"), NamedTextColor.YELLOW))

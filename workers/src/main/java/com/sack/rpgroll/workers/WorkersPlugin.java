@@ -1,5 +1,6 @@
 package com.sack.rpgroll.workers;
 
+import com.sack.rpgroll.common.assets.ModuleAssetSync;
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.common.resource.DirectoryCreator;
 import com.sack.rpgroll.common.resource.ResourceCopier;
@@ -26,6 +27,7 @@ import com.sack.rpgroll.workers.core.skill.SkillManager;
 import com.sack.rpgroll.workers.core.worker.WorkerManager;
 import com.sack.rpgroll.workers.gui.ChatPromptManager;
 import com.sack.rpgroll.workers.listener.WarehouseDesignatorListener;
+import com.sack.rpgroll.workers.listener.WorkerDeathListener;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -61,6 +63,8 @@ public class WorkersPlugin extends JavaPlugin {
         new DirectoryCreator(this).create(DIRECTORIES);
         new ResourceCopier(this).copyDirectories(DIRECTORIES);
 
+        new ModuleAssetSync(this, "workers").syncAll();
+
         initializeManagers();
 
         warehouseManager = new WarehouseManager(this);
@@ -86,6 +90,7 @@ public class WorkersPlugin extends JavaPlugin {
         ChatPromptManager chatPromptManager = new ChatPromptManager(this, langManager);
         getServer().getPluginManager().registerEvents(chatPromptManager, this);
         getServer().getPluginManager().registerEvents(new WarehouseDesignatorListener(warehouseManager, langManager), this);
+        getServer().getPluginManager().registerEvents(new WorkerDeathListener(workerManager), this);
 
         startTasks(behaviorRegistry, economyService, moraleEngine, workSearchRadius);
 

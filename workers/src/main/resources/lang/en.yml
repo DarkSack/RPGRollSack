@@ -84,6 +84,14 @@ gui:
       prompt_tool: "Type a tool Material (or '{keyword}'):"
       invalid_rule_format: "Invalid format — needs 3 parts separated by ';'."
       invalid_rule_values: "Invalid condition or action."
+      reskin_material: "&dReskin — material: {value}"
+      reskin_cmd: "&dReskin — custom model data: {value}"
+      reskin_scale: "&dReskin — scale: {value}"
+      reskin_none: "(none)"
+      reskin_hint: "Built-in reskin (no ModelEngine needed) — mounts a custom model on the worker. Shift-click: remove."
+      reskin_scale_hint: "Click: +0.1 · Right-click: -0.1"
+      prompt_reskin_material: "Type the base Material for the reskin item (e.g. PAPER):"
+      prompt_reskin_cmd: "Type the reskin's custom-model-data (integer):"
   skill:
     browser:
       title: "Skills"

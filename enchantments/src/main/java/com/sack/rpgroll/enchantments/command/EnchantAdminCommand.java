@@ -7,6 +7,7 @@ import com.sack.rpgroll.enchantments.gui.ChatPromptManager;
 import com.sack.rpgroll.enchantments.gui.EnchantmentBrowserGUI;
 import com.sack.rpgroll.enchantments.item.EnchantmentItem;
 import com.sack.rpgroll.util.ComponentUtils;
+import com.sack.rpgroll.util.ItemDeliveryUtil;
 import com.sack.rpgroll.util.TabCompleteUtil;
 
 import org.bukkit.Bukkit;
@@ -24,7 +25,7 @@ import java.util.Optional;
 /**
  * /renchant apply <id> <nivel>          — aplica al ítem en tu mano
  * /renchant remove <id>                 — quita del ítem en tu mano
- * /renchant give <jugador> <id> <nivel> — aplica al ítem en la mano de otro jugador
+ * /renchant give <jugador> <id> <nivel> — le da un libro encantado (combinar en yunque para aplicar)
  * /renchant list                        — lista todos los encantamientos definidos
  * /renchant info <id>                   — detalle de un encantamiento
  * /renchant reload                      — recarga los YAML de enchantments/
@@ -130,6 +131,7 @@ public class EnchantAdminCommand implements CommandExecutor, TabCompleter {
         applyToItem(player, player.getInventory().getItemInMainHand(), args[1], args[2]);
     }
 
+    /** Da un libro encantado "portador" (no aplica nada solo) — combinarlo en un yunque con un ítem compatible es lo que lo aplica de verdad, ver {@code AnvilEnchantListener}. */
     private void handleGive(CommandSender sender, String[] args) {
 
         if (args.length < 4) {
@@ -144,7 +146,32 @@ public class EnchantAdminCommand implements CommandExecutor, TabCompleter {
             return;
         }
 
-        applyToItem(sender, target.getInventory().getItemInMainHand(), args[2], args[3]);
+        Optional<CustomEnchantment> enchantmentOpt = manager.get(args[2]);
+
+        if (enchantmentOpt.isEmpty()) {
+            lang.send(sender, "enchant_admin_command.enchant_not_found", "id", args[2]);
+            return;
+        }
+
+        int level;
+        try {
+            level = Integer.parseInt(args[3]);
+        } catch (NumberFormatException e) {
+            lang.send(sender, "enchant_admin_command.invalid_level", "level", args[3]);
+            return;
+        }
+
+        CustomEnchantment enchantment = enchantmentOpt.get();
+
+        if (level < 1 || level > enchantment.maxLevel()) {
+            lang.send(sender, "enchant_admin_command.level_too_high", "max", enchantment.maxLevel());
+            return;
+        }
+
+        ItemDeliveryUtil.deliver(target, enchantmentItem.createBook(enchantment, level));
+
+        lang.send(sender, "enchant_admin_command.give_success", "player", target.getName(), "id", enchantment.id(),
+                "level", level);
     }
 
     private void applyToItem(CommandSender sender, ItemStack item, String enchantId, String rawLevel) {

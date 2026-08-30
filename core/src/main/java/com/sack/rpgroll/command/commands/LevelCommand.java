@@ -98,4 +98,9 @@ public class LevelCommand implements RPGCommand {
         return List.of("nivel", "lvl", "exp");
     }
 
+    @Override
+    public String getPermission() {
+        return "rpgroll.player.level";
+    }
+
 }

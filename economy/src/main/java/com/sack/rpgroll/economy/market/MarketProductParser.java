@@ -2,7 +2,11 @@ package com.sack.rpgroll.economy.market;
 
 import com.sack.rpgroll.common.content.ContentParser;
 
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class MarketProductParser implements ContentParser<MarketProduct> {
 
@@ -26,7 +30,22 @@ public class MarketProductParser implements ContentParser<MarketProduct> {
                 config.getDouble("demand-weight", 1.0),
                 config.getDouble("volatility", 0.1),
                 config.getDouble("recovery-rate", 0.02),
-                config.getString("category", "misc"));
+                config.getString("category", "misc"),
+                parseSeasonModifiers(config));
+    }
+
+    private Map<String, Double> parseSeasonModifiers(YamlConfiguration config) {
+
+        ConfigurationSection section = config.getConfigurationSection("season-modifiers");
+        if (section == null) {
+            return Map.of();
+        }
+
+        Map<String, Double> result = new LinkedHashMap<>();
+        for (String tag : section.getKeys(false)) {
+            result.put(tag, section.getDouble(tag));
+        }
+        return result;
     }
 
 }

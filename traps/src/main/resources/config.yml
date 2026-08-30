@@ -1,0 +1,15 @@
+# Configuración de RPGRoll-Traps.
+
+# Idioma activo — debe coincidir con un archivo lang/<codigo>.yml (es, en, pt_BR).
+language: es
+
+engine:
+  # Cada cuántos ticks el motor re-evalúa los triggers sin evento vanilla
+  # (PROXIMITY, LINE_OF_SIGHT, TIMER) y expira los cooldowns vencidos.
+  # 20 ticks = 1 segundo. Bajarlo hace las trampas más "responsivas" a costa
+  # de más carga por tick; server chicos pueden dejarlo en 20 sin problema.
+  tick-interval-ticks: 20
+
+  # Cada cuántos ticks el motor de torretas reevalúa objetivo/rotación/disparo.
+  # Más bajo = apuntado más fluido, a costa de más carga por tick.
+  turret-tick-interval-ticks: 5

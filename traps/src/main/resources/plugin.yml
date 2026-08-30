@@ -1,0 +1,19 @@
+name: RPGRoll-Traps
+version: 1.0.0
+main: com.sack.rpgroll.traps.TrapsPlugin
+api-version: "26.1.1"
+author: Sack
+description: Motor genérico de trampas/mecanismos configurable por YAML para RPGRoll
+depend: [RPGRoll]
+softdepend: [RPGRoll-Items, RPGRoll-Effects, RPGRoll-Mobs, PlaceholderAPI]
+
+commands:
+  trapadmin:
+    description: Gestiona trampas/mecanismos
+    usage: /trapadmin <create|edit|browser|reload|place|remove|list|info|forcetrigger|turret> [args]
+    permission: rpgrolltraps.admin.*
+
+permissions:
+  rpgrolltraps.admin.*:
+    description: Acceso completo a comandos de trampas
+    default: op

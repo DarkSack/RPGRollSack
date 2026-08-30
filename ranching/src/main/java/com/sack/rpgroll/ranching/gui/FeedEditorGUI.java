@@ -67,7 +67,7 @@ public class FeedEditorGUI extends InventoryGUI {
         var lang = chatPromptManager.lang();
 
         setItem(NAME_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(Component.text(lang.raw("gui.editor.name_line", "name", current.displayName()), NamedTextColor.YELLOW)).build());
+                .setName(lang.component("gui.editor.name_line", "name", current.displayName())).build());
 
         setItem(ICON_SLOT, new ItemBuilder(SpeciesBrowserGUI.parseMaterial(current.icon(), Material.WHEAT))
                 .setName(Component.text(lang.raw("gui.editor.icon_line", "icon", current.icon()), NamedTextColor.YELLOW)).build());
@@ -164,7 +164,7 @@ public class FeedEditorGUI extends InventoryGUI {
                     current.happinessBonus(), Math.max(0, current.productionBonus() + sign)));
         } else if (slot == GIVE_SLOT) {
             player.getInventory().addItem(RanchingItemFactory.createFeed(chatPromptManager.lang(), current));
-            player.sendMessage(Component.text(chatPromptManager.lang().raw("gui.feed.editor.gave_self", "name", current.displayName()), NamedTextColor.GREEN));
+            player.sendMessage(chatPromptManager.lang().component("gui.feed.editor.gave_self", "name", current.displayName()));
         } else if (slot == BACK_SLOT) {
             onBack.run();
         }

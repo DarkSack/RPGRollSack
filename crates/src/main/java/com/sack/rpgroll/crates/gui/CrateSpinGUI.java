@@ -52,6 +52,15 @@ public class CrateSpinGUI extends InventoryGUI {
     private static final long REWARD_GRANT_DELAY_TICKS = 20L;
     private static final long AUTO_CLOSE_DELAY_TICKS = 80L;
 
+    /** Paleta de paneles de colores para los slots decorativos (todo menos la reel y los punteros) — sin gris/negro. */
+    private static final Material[] FILLER_PALETTE = {
+            Material.RED_STAINED_GLASS_PANE, Material.ORANGE_STAINED_GLASS_PANE,
+            Material.YELLOW_STAINED_GLASS_PANE, Material.LIME_STAINED_GLASS_PANE,
+            Material.CYAN_STAINED_GLASS_PANE, Material.LIGHT_BLUE_STAINED_GLASS_PANE,
+            Material.BLUE_STAINED_GLASS_PANE, Material.PURPLE_STAINED_GLASS_PANE,
+            Material.MAGENTA_STAINED_GLASS_PANE, Material.PINK_STAINED_GLASS_PANE,
+    };
+
 
     private final Plugin plugin;
     private final CrateActionExecutor actionExecutor;
@@ -102,11 +111,7 @@ public class CrateSpinGUI extends InventoryGUI {
 
         clear();
 
-        for (int i = 0; i < SIZE; i++) {
-            if (!isReelSlot(i)) {
-                setItem(i, ItemBuilder.createFiller());
-            }
-        }
+        renderFillers(0);
 
         setItem(POINTER_TOP_SLOT, new ItemBuilder(Material.YELLOW_STAINED_GLASS_PANE)
                 .setName(Component.text("▼", NamedTextColor.YELLOW).decorate(TextDecoration.BOLD))
@@ -117,6 +122,24 @@ public class CrateSpinGUI extends InventoryGUI {
                 .build());
 
         renderWindow(0);
+    }
+
+    /**
+     * Pinta los slots decorativos (todo lo que no es la reel ni los punteros fijos) con un
+     * arcoíris de paneles de colores que va rotando en cada paso de la animación — antes eran
+     * paneles grises fijos. Los punteros de arriba/abajo quedan siempre amarillos, sin tocar.
+     */
+    private void renderFillers(int step) {
+
+        for (int i = 0; i < SIZE; i++) {
+
+            if (isReelSlot(i) || i == POINTER_TOP_SLOT || i == POINTER_BOTTOM_SLOT) {
+                continue;
+            }
+
+            Material color = FILLER_PALETTE[Math.floorMod(i + step, FILLER_PALETTE.length)];
+            setItem(i, new ItemBuilder(color).setName(Component.text(" ")).build());
+        }
     }
 
     private boolean isReelSlot(int slot) {
@@ -155,6 +178,7 @@ public class CrateSpinGUI extends InventoryGUI {
 
             currentStep++;
             renderWindow(currentStep);
+            renderFillers(currentStep);
 
             player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.6f, 1.2f);
 

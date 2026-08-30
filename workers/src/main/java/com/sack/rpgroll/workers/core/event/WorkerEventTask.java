@@ -105,8 +105,7 @@ public class WorkerEventTask extends BukkitRunnable {
         Player employer = worker.employerId() != null ? Bukkit.getPlayer(worker.employerId()) : null;
 
         if (employer != null) {
-            employer.sendMessage(Component.text(
-                    lang.raw("task.event.notify_employer", "event", definition.displayName()), NamedTextColor.GOLD));
+            employer.sendMessage(lang.component("task.event.notify_employer", "event", definition.displayName()));
         }
     }
 

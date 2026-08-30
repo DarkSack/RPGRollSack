@@ -8,6 +8,7 @@ import com.sack.rpgroll.economy.shop.ShopManager;
 import com.sack.rpgroll.economy.shop.ShopPurchaseResult;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
+import com.sack.rpgroll.util.ComponentUtils;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -30,7 +31,7 @@ public class ShopViewGUI extends InventoryGUI {
 
     public ShopViewGUI(Player player, PlayerShop shop, ShopManager shopManager, CurrencyManager currencyManager,
             Runnable onBack, LangManager lang) {
-        super(player, Component.text(shop.name(), NamedTextColor.GOLD), SIZE);
+        super(player, ComponentUtils.parse(shop.name()), SIZE);
         this.shop = shop;
         this.shopManager = shopManager;
         this.currencyManager = currencyManager;
@@ -54,7 +55,7 @@ public class ShopViewGUI extends InventoryGUI {
             ShopListing listing = shop.listings().get(i);
 
             setItem(i, new ItemBuilder(listing.material())
-                    .setName(Component.text(listing.displayName(), NamedTextColor.YELLOW))
+                    .setName(ComponentUtils.parse(listing.displayName()))
                     .setLore(lang.component("shop.view.lore_price", "value", currency.format(listing.unitPrice())),
                             lang.component("shop.view.lore_stock", "value",
                                     listing.isUnlimited() ? lang.raw("common.unlimited") : listing.stock()),

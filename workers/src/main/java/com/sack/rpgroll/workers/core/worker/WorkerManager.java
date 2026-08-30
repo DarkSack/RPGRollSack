@@ -1,5 +1,8 @@
 package com.sack.rpgroll.workers.core.worker;
 
+import com.sack.rpgroll.common.reskin.EntityReskin;
+import com.sack.rpgroll.common.reskin.EntityReskinService;
+
 import com.sack.rpgroll.workers.core.profession.Profession;
 
 import org.bukkit.entity.Entity;
@@ -73,10 +76,27 @@ public class WorkerManager {
                 personality != null ? personality : randomPersonality());
 
         tagEntity(entity, profession.id());
+        applyAppearance(entity, profession);
         workers.put(worker.id(), worker);
         store.save(worker);
 
         return worker;
+    }
+
+    /** Aplica (o remueve) el reskin visual propio de la profesión al spawnear. */
+    public void applyAppearance(LivingEntity entity, Profession profession) {
+        EntityReskin reskin = profession != null ? profession.reskin() : EntityReskin.NONE;
+        EntityReskinService.apply(plugin, entity, reskin);
+    }
+
+    /** Auto-sanado barato del passenger de reskin — para llamar desde el tick periódico de IA. */
+    public void ensureAppearanceAttached(LivingEntity entity, Profession profession) {
+
+        if (profession == null || !profession.reskin().isActive()) {
+            return;
+        }
+
+        EntityReskinService.ensureAttached(plugin, entity, profession.reskin());
     }
 
     public PersonalityTrait randomPersonality() {

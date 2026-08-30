@@ -1,0 +1,25 @@
+# Torreta "alquimista": dispara pociones arrojadizas reales (ThrownPotion) en vez de una
+# flecha — al estallar aplican efectos de poción vanilla (Lentitud + Debilidad) pero NO
+# hacen daño de impacto (una poción arrojadiza vanilla nunca daña al pegar, solo por sus
+# propios efectos — y ninguno de los dos elegidos acá es dañino). Cambiá "effects" por
+# cualquier PotionEffectType vanilla (ej. POISON o WITHER si SÍ querés que dañen con el tiempo).
+id: alchemist_turret
+display-name: "&dTorreta Alquimista"
+description: "Lanza pociones que no dañan, pero ralentizan y debilitan al objetivo."
+
+radius: 10.0
+target-players: true
+target-hostile-mobs: true
+fire-interval-ticks: 60
+
+conditions: []
+
+impact:
+  type: CUSTOM_PROJECTILE
+  params:
+    projectile-type: POTION
+    speed: "1.5"
+    effects: "SLOWNESS:200:1;WEAKNESS:200:0"
+
+model:
+  material: BREWING_STAND

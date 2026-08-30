@@ -10,7 +10,7 @@ softdepend: [Vault, PlaceholderAPI, RPGRoll-Guilds, RPGRoll-Seasons]
 commands:
   economyadmin:
     description: Comandos administrativos de RPGRoll-Economy (Economy Studio)
-    usage: /economyadmin <browser|reload|give|take|setbalance|inflation> [args]
+    usage: /economyadmin <browser|reload|give|take|setbalance|inflation|snapshot> [args]
     permission: rpgrolleconomy.admin.*
   economy:
     description: Comandos de jugador de RPGRoll-Economy

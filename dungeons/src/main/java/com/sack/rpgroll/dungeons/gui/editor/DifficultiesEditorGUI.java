@@ -51,7 +51,7 @@ public class DifficultiesEditorGUI extends InventoryGUI {
             DungeonDifficulty difficulty = difficulties.get(i);
 
             setItem(i, new ItemBuilder(Material.NETHER_STAR)
-                    .setName(Component.text(difficulty.displayName(), NamedTextColor.YELLOW))
+                    .setName(ComponentUtils.parse(difficulty.displayName()))
                     .setLore(
                             ComponentUtils.parse(lang.raw("gui.editor.difficulties.item.multipliers",
                                     "health", difficulty.healthMultiplier(), "damage", difficulty.damageMultiplier(),

@@ -10,6 +10,7 @@ repositories {
     maven("https://repo.dmulloy2.net/repository/public/") // ProtocolLib
     maven("https://jitpack.io/")                            // Vault, DecentHolograms
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/") // PlaceholderAPI
+    maven("https://maven.enginehub.org/repo/") // WorldEdit (import de schematics en Dungeons)
 }
 
 dependencies {

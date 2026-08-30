@@ -5,6 +5,7 @@ import com.sack.rpgroll.ascension.core.AffinityManager;
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
+import com.sack.rpgroll.util.ComponentUtils;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -49,7 +50,7 @@ public class AffinityBrowserGUI extends InventoryGUI {
             Affinity affinity = affinities.get(i);
             setItem(i, new ItemBuilder(Material.BLAZE_POWDER)
                     .setName(Component.text(affinity.id(), NamedTextColor.YELLOW))
-                    .setLore(Component.text(affinity.displayName(), NamedTextColor.GRAY),
+                    .setLore(ComponentUtils.parse(affinity.displayName()),
                             lang.component("gui.common.click_to_edit"))
                     .build());
         }

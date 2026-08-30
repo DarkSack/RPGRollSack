@@ -81,7 +81,13 @@ public class PlayerStateManager {
         TABProfile resolved = context.map(c -> applyOverrides(base, c)).orElse(base);
 
         activeProfiles.put(player.getUniqueId(), resolved);
-        activeContextIds.put(player.getUniqueId(), context.map(ContextDefinition::id).orElse(null));
+
+        Optional<String> contextId = context.map(ContextDefinition::id);
+        if (contextId.isPresent()) {
+            activeContextIds.put(player.getUniqueId(), contextId.get());
+        } else {
+            activeContextIds.remove(player.getUniqueId());
+        }
 
         return resolved;
     }

@@ -5,6 +5,7 @@ import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.workers.core.economy.WageType;
 import com.sack.rpgroll.workers.core.profession.Profession;
 import com.sack.rpgroll.workers.core.profession.ProfessionManager;
+import com.sack.rpgroll.util.ComponentUtils;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -59,7 +60,7 @@ public class ProfessionBrowserGUI extends InventoryGUI {
             Profession profession = professions.get(i);
 
             setItem(i, new ItemBuilder(parseMaterial(profession.icon(), Material.VILLAGER_SPAWN_EGG))
-                    .setName(Component.text(profession.displayName(), NamedTextColor.YELLOW))
+                    .setName(ComponentUtils.parse(profession.displayName()))
                     .setLore(Component.text(chatPromptManager.lang().raw("gui.profession.browser.id_label", "id",
                             profession.id()), NamedTextColor.GRAY),
                             Component.text(chatPromptManager.lang().raw("gui.profession.browser.entity_label", "entity",
@@ -110,7 +111,7 @@ public class ProfessionBrowserGUI extends InventoryGUI {
             }
 
             professionManager.save(new Profession(id, id, "VILLAGER_SPAWN_EGG", "", "VILLAGER", Set.of(), List.of(),
-                    null, 0, WageType.PER_TASK, null));
+                    null, 0, WageType.PER_TASK, null, com.sack.rpgroll.common.reskin.EntityReskin.NONE));
             reopen();
         });
     }

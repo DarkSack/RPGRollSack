@@ -9,6 +9,7 @@ import com.sack.rpgroll.guilds.guild.quest.GuildQuestDefinition;
 import com.sack.rpgroll.guilds.guild.quest.GuildQuestManager;
 import com.sack.rpgroll.guilds.guild.quest.GuildQuestProgress;
 import com.sack.rpgroll.guilds.guild.quest.GuildQuestService;
+import com.sack.rpgroll.util.ComponentUtils;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -37,8 +38,7 @@ public class GuildQuestsGUI extends InventoryGUI {
 
     public GuildQuestsGUI(Player player, Guild guild, GuildManager guildManager, GuildQuestManager questManager,
             GuildQuestService questService, Runnable onBack) {
-        super(player, Component.text(GuildsAPI.getLangManager().raw("guild.quests.title", "name", guild.name()),
-                NamedTextColor.GOLD), SIZE);
+        super(player, GuildsAPI.getLangManager().component("guild.quests.title", "name", guild.name()), SIZE);
         this.guild = guild;
         this.guildManager = guildManager;
         this.questManager = questManager;
@@ -75,7 +75,7 @@ public class GuildQuestsGUI extends InventoryGUI {
             int target = definition != null ? definition.targetAmount() : 1;
 
             setItem(i, new ItemBuilder(Material.MAP)
-                    .setName(Component.text(name, NamedTextColor.AQUA))
+                    .setName(ComponentUtils.parse(name))
                     .setLore(Component.text(lang().raw("guild.quests.progress", "current", progress.currentAmount(),
                             "target", target), NamedTextColor.GRAY))
                     .build());
@@ -86,7 +86,7 @@ public class GuildQuestsGUI extends InventoryGUI {
             GuildQuestDefinition definition = available.get(i);
 
             setItem(18 + i, new ItemBuilder(Material.BOOK)
-                    .setName(Component.text(definition.displayName(), NamedTextColor.YELLOW))
+                    .setName(ComponentUtils.parse(definition.displayName()))
                     .setLore(Component.text(definition.description(), NamedTextColor.GRAY),
                             Component.text(lang().raw("guild.quests.type_target", "type", definition.type(),
                                     "target", definition.targetAmount()), NamedTextColor.GRAY),

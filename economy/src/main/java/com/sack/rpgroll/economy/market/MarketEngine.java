@@ -1,6 +1,11 @@
 package com.sack.rpgroll.economy.market;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+
 import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -25,11 +30,13 @@ public class MarketEngine {
 
     private final MarketProductManager productManager;
     private final MarketStateStore stateStore;
+    private final MarketRegionManager regionManager;
     private final Map<String, MarketState> states = new ConcurrentHashMap<>();
 
-    public MarketEngine(MarketProductManager productManager, MarketStateStore stateStore) {
+    public MarketEngine(MarketProductManager productManager, MarketStateStore stateStore, MarketRegionManager regionManager) {
         this.productManager = productManager;
         this.stateStore = stateStore;
+        this.regionManager = regionManager;
     }
 
     public void loadAll() {
@@ -56,6 +63,24 @@ public class MarketEngine {
     }
 
     public double price(MarketProduct product) {
+        return price(product, null);
+    }
+
+    /**
+     * Igual que {@link #price(MarketProduct)} pero, si se pasa una ubicación, aplica además
+     * dos multiplicadores opcionales sobre el precio de oferta/demanda ya calculado:
+     * <ol>
+     *   <li>La {@link MarketRegion} que contiene esa ubicación (si hay una definida) — su
+     *   {@code categoryModifiers}/{@code productModifiers}, ej. "el mineral es más barato en
+     *   esta ciudad minera".</li>
+     *   <li>Si RPGRoll-Seasons está instalado, la estación actual de ese mundo — el
+     *   {@code season-modifiers} del producto, buscado por cada tag de la estación activa
+     *   (ej. "harvest" -&gt; los cultivos bajan de precio).</li>
+     * </ol>
+     * Sin ubicación (o sin región/Seasons), el resultado es idéntico al método de un solo
+     * argumento — no rompe ningún llamador existente.
+     */
+    public double price(MarketProduct product, Location location) {
 
         MarketState state = stateFor(product.id());
 
@@ -63,7 +88,53 @@ public class MarketEngine {
                 - state.supplyAccumulator() * product.supplyWeight()) / REFERENCE_VOLUME;
 
         double price = product.basePrice() * (1 + pressure * product.volatility());
+
+        if (location != null) {
+            price *= regionModifier(product, location);
+            price *= seasonModifier(product, location);
+        }
+
         return Math.max(product.minPrice(), Math.min(product.maxPrice(), price));
+    }
+
+    private double regionModifier(MarketProduct product, Location location) {
+
+        if (regionManager == null || location.getWorld() == null) {
+            return 1.0;
+        }
+
+        Optional<MarketRegion> region = regionManager.resolve(location.getWorld().getName(),
+                location.getX(), location.getY(), location.getZ());
+
+        return region.map(r -> r.modifierFor(product)).orElse(1.0);
+    }
+
+    private double seasonModifier(MarketProduct product, Location location) {
+
+        if (product.seasonTagModifiers().isEmpty()
+                || Bukkit.getPluginManager().getPlugin("RPGRoll-Seasons") == null
+                || !com.sack.rpgroll.seasons.api.SeasonsAPI.isReady()) {
+            return 1.0;
+        }
+
+        Optional<com.sack.rpgroll.seasons.core.Season> season = com.sack.rpgroll.seasons.api.SeasonsAPI.get()
+                .getCurrentSeason(location);
+
+        if (season.isEmpty()) {
+            return 1.0;
+        }
+
+        Set<String> tags = season.get().tags();
+        double modifier = 1.0;
+
+        for (String tag : tags) {
+            Double tagModifier = product.seasonTagModifiers().get(tag);
+            if (tagModifier != null) {
+                modifier *= tagModifier;
+            }
+        }
+
+        return modifier;
     }
 
     /** Un jugador vendió {@code units} de este producto AL mercado — sube la oferta, baja el precio. */

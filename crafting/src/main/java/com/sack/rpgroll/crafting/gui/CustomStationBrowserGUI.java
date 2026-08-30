@@ -4,6 +4,7 @@ import com.sack.rpgroll.crafting.station.CustomStation;
 import com.sack.rpgroll.crafting.station.CustomStationManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
+import com.sack.rpgroll.util.ComponentUtils;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -50,7 +51,7 @@ public class CustomStationBrowserGUI extends InventoryGUI {
             CustomStation station = stations.get(i);
 
             setItem(i, new ItemBuilder(parseMaterial(station.icon()))
-                    .setName(Component.text(station.displayName(), NamedTextColor.YELLOW))
+                    .setName(ComponentUtils.parse(station.displayName()))
                     .setLore(Component.text(chatPromptManager.lang().raw("gui.common.id_lore", "id", station.id()), NamedTextColor.GRAY),
                             Component.text(chatPromptManager.lang().raw("gui.station.block_lore", "block", station.triggerBlockMaterial()), NamedTextColor.AQUA),
                             Component.text(chatPromptManager.lang().raw("gui.common.click_edit"), NamedTextColor.YELLOW))

@@ -2,6 +2,7 @@ package com.sack.rpgroll.economy.market;
 
 import com.sack.rpgroll.common.content.RPGContent;
 
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -22,7 +23,8 @@ public record MarketProduct(
         double demandWeight,
         double volatility,
         double recoveryRate,
-        String category) implements RPGContent {
+        String category,
+        Map<String, Double> seasonTagModifiers) implements RPGContent {
 
     public MarketProduct {
         Objects.requireNonNull(id, "id no puede ser null");
@@ -42,6 +44,7 @@ public record MarketProduct(
         volatility = volatility <= 0 ? 0.1 : volatility;
         recoveryRate = recoveryRate <= 0 ? 0.02 : recoveryRate;
         category = category == null || category.isBlank() ? "misc" : category;
+        seasonTagModifiers = seasonTagModifiers == null ? Map.of() : Map.copyOf(seasonTagModifiers);
     }
 
 }

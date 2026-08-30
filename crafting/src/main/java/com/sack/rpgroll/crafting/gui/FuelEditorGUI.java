@@ -56,7 +56,7 @@ public class FuelEditorGUI extends InventoryGUI {
         }
 
         setItem(NAME_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.common.field_name", "value", current.displayName()), NamedTextColor.YELLOW)).build());
+                .setName(chatPromptManager.lang().component("gui.common.field_name", "value", current.displayName())).build());
 
         setItem(ICON_SLOT, new ItemBuilder(FuelBrowserGUI.parseMaterial(current.icon()))
                 .setName(Component.text(chatPromptManager.lang().raw("gui.common.field_icon", "value", current.icon()), NamedTextColor.YELLOW)).build());

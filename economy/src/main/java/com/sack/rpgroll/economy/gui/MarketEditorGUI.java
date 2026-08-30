@@ -154,16 +154,16 @@ public class MarketEditorGUI extends InventoryGUI {
         return switch (field) {
             case "name" -> new MarketProduct(base.id(), value, base.icon(), base.currencyId(), base.basePrice(),
                     base.minPrice(), base.maxPrice(), base.supplyWeight(), base.demandWeight(), base.volatility(),
-                    base.recoveryRate(), base.category());
+                    base.recoveryRate(), base.category(), base.seasonTagModifiers());
             case "icon" -> new MarketProduct(base.id(), base.displayName(), value, base.currencyId(), base.basePrice(),
                     base.minPrice(), base.maxPrice(), base.supplyWeight(), base.demandWeight(), base.volatility(),
-                    base.recoveryRate(), base.category());
+                    base.recoveryRate(), base.category(), base.seasonTagModifiers());
             case "currency" -> new MarketProduct(base.id(), base.displayName(), base.icon(), value, base.basePrice(),
                     base.minPrice(), base.maxPrice(), base.supplyWeight(), base.demandWeight(), base.volatility(),
-                    base.recoveryRate(), base.category());
+                    base.recoveryRate(), base.category(), base.seasonTagModifiers());
             case "category" -> new MarketProduct(base.id(), base.displayName(), base.icon(), base.currencyId(),
                     base.basePrice(), base.minPrice(), base.maxPrice(), base.supplyWeight(), base.demandWeight(),
-                    base.volatility(), base.recoveryRate(), value);
+                    base.volatility(), base.recoveryRate(), value, base.seasonTagModifiers());
             default -> base;
         };
     }
@@ -172,25 +172,27 @@ public class MarketEditorGUI extends InventoryGUI {
         return switch (field) {
             case "base" -> new MarketProduct(current.id(), current.displayName(), current.icon(), current.currencyId(),
                     value, current.minPrice(), current.maxPrice(), current.supplyWeight(), current.demandWeight(),
-                    current.volatility(), current.recoveryRate(), current.category());
+                    current.volatility(), current.recoveryRate(), current.category(), current.seasonTagModifiers());
             case "min" -> new MarketProduct(current.id(), current.displayName(), current.icon(), current.currencyId(),
                     current.basePrice(), value, current.maxPrice(), current.supplyWeight(), current.demandWeight(),
-                    current.volatility(), current.recoveryRate(), current.category());
+                    current.volatility(), current.recoveryRate(), current.category(), current.seasonTagModifiers());
             case "max" -> new MarketProduct(current.id(), current.displayName(), current.icon(), current.currencyId(),
                     current.basePrice(), current.minPrice(), value, current.supplyWeight(), current.demandWeight(),
-                    current.volatility(), current.recoveryRate(), current.category());
+                    current.volatility(), current.recoveryRate(), current.category(), current.seasonTagModifiers());
             case "supply" -> new MarketProduct(current.id(), current.displayName(), current.icon(), current.currencyId(),
                     current.basePrice(), current.minPrice(), current.maxPrice(), value, current.demandWeight(),
-                    current.volatility(), current.recoveryRate(), current.category());
+                    current.volatility(), current.recoveryRate(), current.category(), current.seasonTagModifiers());
             case "demand" -> new MarketProduct(current.id(), current.displayName(), current.icon(), current.currencyId(),
                     current.basePrice(), current.minPrice(), current.maxPrice(), current.supplyWeight(), value,
-                    current.volatility(), current.recoveryRate(), current.category());
+                    current.volatility(), current.recoveryRate(), current.category(), current.seasonTagModifiers());
             case "volatility" -> new MarketProduct(current.id(), current.displayName(), current.icon(),
                     current.currencyId(), current.basePrice(), current.minPrice(), current.maxPrice(),
-                    current.supplyWeight(), current.demandWeight(), value, current.recoveryRate(), current.category());
+                    current.supplyWeight(), current.demandWeight(), value, current.recoveryRate(), current.category(),
+                    current.seasonTagModifiers());
             case "recovery" -> new MarketProduct(current.id(), current.displayName(), current.icon(),
                     current.currencyId(), current.basePrice(), current.minPrice(), current.maxPrice(),
-                    current.supplyWeight(), current.demandWeight(), current.volatility(), value, current.category());
+                    current.supplyWeight(), current.demandWeight(), current.volatility(), value, current.category(),
+                    current.seasonTagModifiers());
             default -> current;
         };
     }

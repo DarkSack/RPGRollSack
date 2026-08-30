@@ -33,8 +33,7 @@ public class GuildCustomizationGUI extends InventoryGUI {
 
     public GuildCustomizationGUI(Player player, Guild guild, GuildManager guildManager,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text(chatPromptManager.lang().raw("guild.customization.title", "name", guild.name()),
-                NamedTextColor.GOLD), SIZE);
+        super(player, chatPromptManager.lang().component("guild.customization.title", "name", guild.name()), SIZE);
         this.guild = guild;
         this.guildManager = guildManager;
         this.chatPromptManager = chatPromptManager;
@@ -55,8 +54,7 @@ public class GuildCustomizationGUI extends InventoryGUI {
         }
 
         setItem(NAME_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(Component.text(lang().raw("guild.customization.name_label", "name", guild.name()),
-                        NamedTextColor.YELLOW))
+                .setName(lang().component("guild.customization.name_label", "name", guild.name()))
                 .build());
 
         setItem(COLOR_SLOT, new ItemBuilder(Material.WHITE_DYE)

@@ -30,3 +30,11 @@ recovery-rate: 0.02
 
 # Puramente organizativo — usado para filtrar en el navegador y para reglas de impuesto por categoría
 category: reference
+
+# Multiplicadores opcionales por tag de estación activa (requiere RPGRoll-Seasons instalado; si no está,
+# esta sección se ignora sin error). Se buscan por CADA tag de la Season actual en esa ubicación — si
+# varios tags de la estación matchean, los multiplicadores se acumulan (se multiplican entre sí). Ver
+# "tags" en la definición de Season de RPGRoll-Seasons.
+season-modifiers:
+  harvest: 0.8
+  scarcity: 1.3

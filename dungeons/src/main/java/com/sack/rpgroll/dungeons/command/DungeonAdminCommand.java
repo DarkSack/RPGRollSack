@@ -44,7 +44,8 @@ public class DungeonAdminCommand implements CommandExecutor, TabCompleter {
 
     private static final List<String> SUBCOMMANDS =
             List.of("create", "reload", "forcestop", "browser", "editor", "structure");
-    private static final List<String> STRUCTURE_SUBCOMMANDS = List.of("list", "info", "paste", "import", "browser");
+    private static final List<String> STRUCTURE_SUBCOMMANDS =
+            List.of("list", "info", "paste", "import", "importschem", "browser");
 
     private static final String PERMISSION = "rpgrolldungeons.admin.*";
 
@@ -205,6 +206,7 @@ public class DungeonAdminCommand implements CommandExecutor, TabCompleter {
             case "info" -> handleStructureInfo(sender, args);
             case "paste" -> handleStructurePaste(sender, args);
             case "import" -> handleStructureImport(sender, args);
+            case "importschem" -> handleStructureImportSchem(sender, args);
             case "browser" -> handleStructureBrowser(sender);
             default -> sendStructureUsage(sender);
         }
@@ -219,9 +221,8 @@ public class DungeonAdminCommand implements CommandExecutor, TabCompleter {
         lang.send(sender, "command.dungeonadmin.structure.list.header", "count", structureLibrary.count());
 
         for (StructureDefinition def : structureLibrary.getAll()) {
-            String source = def.sourceType() == StructureSourceType.NATIVE ? "NATIVE" : "CUSTOM";
-            lang.send(sender, "command.dungeonadmin.structure.list.entry", "id", def.id(), "source", source,
-                    "name", def.displayName());
+            lang.send(sender, "command.dungeonadmin.structure.list.entry", "id", def.id(),
+                    "source", def.sourceType().name(), "name", def.displayName());
         }
     }
 
@@ -238,17 +239,21 @@ public class DungeonAdminCommand implements CommandExecutor, TabCompleter {
             return;
         }
 
-        boolean native_ = def.sourceType() == StructureSourceType.NATIVE;
-        String size;
-
-        if (native_) {
-            var vector = structurePasteEngine.nativeSize(def.id());
-            size = vector != null
-                    ? vector.getBlockX() + "x" + vector.getBlockY() + "x" + vector.getBlockZ()
-                    : lang.raw("command.dungeonadmin.structure.info.unreadable_nbt");
-        } else {
-            size = def.width() + "x" + def.height() + "x" + def.depth();
-        }
+        String size = switch (def.sourceType()) {
+            case NATIVE -> {
+                var vector = structurePasteEngine.nativeSize(def.id());
+                yield vector != null
+                        ? vector.getBlockX() + "x" + vector.getBlockY() + "x" + vector.getBlockZ()
+                        : lang.raw("command.dungeonadmin.structure.info.unreadable_nbt");
+            }
+            case SCHEMATIC -> {
+                var vector = structurePasteEngine.schematicSize(def.id());
+                yield vector != null
+                        ? vector.getBlockX() + "x" + vector.getBlockY() + "x" + vector.getBlockZ()
+                        : lang.raw("command.dungeonadmin.structure.info.unreadable_nbt");
+            }
+            case CUSTOM -> def.width() + "x" + def.height() + "x" + def.depth();
+        };
 
         sender.sendMessage(Component.text(def.displayName() + " (" + def.id() + ")", NamedTextColor.GOLD));
         lang.send(sender, "command.dungeonadmin.structure.info.source", "source", def.sourceType());
@@ -339,6 +344,33 @@ public class DungeonAdminCommand implements CommandExecutor, TabCompleter {
         }
     }
 
+    private void handleStructureImportSchem(CommandSender sender, String[] args) {
+
+        if (args.length < 4) {
+            lang.send(sender, "command.dungeonadmin.structure.importschem.usage");
+            lang.send(sender, "command.dungeonadmin.structure.importschem.usage_hint");
+            return;
+        }
+
+        String fileName = args[2];
+        String newId = args[3].toLowerCase(Locale.ROOT);
+        String displayName = args.length > 4 ? String.join(" ", List.of(args).subList(4, args.length)) : newId;
+        Player requestedBy = sender instanceof Player player ? player : null;
+
+        StructureImportService.Result result =
+                structureImportService.importFromSchematic(fileName, newId, displayName, requestedBy);
+
+        switch (result) {
+            case OK -> lang.send(sender, "command.dungeonadmin.structure.importschem.ok", "id", newId);
+            case ID_TAKEN -> lang.send(sender, "command.dungeonadmin.structure.importschem.id_taken");
+            case WORLDEDIT_MISSING -> lang.send(sender, "command.dungeonadmin.structure.importschem.worldedit_missing");
+            case FILE_NOT_FOUND -> lang.send(sender, "command.dungeonadmin.structure.importschem.file_not_found",
+                    "file", fileName);
+            case IO_ERROR -> lang.send(sender, "command.dungeonadmin.structure.importschem.io_error");
+            case VANILLA_NOT_FOUND -> throw new IllegalStateException("importFromSchematic never returns VANILLA_NOT_FOUND");
+        }
+    }
+
     private void handleStructureBrowser(CommandSender sender) {
 
         if (!(sender instanceof Player player)) {
@@ -383,11 +415,34 @@ public class DungeonAdminCommand implements CommandExecutor, TabCompleter {
                     structureLibrary.getAll().stream().map(StructureDefinition::id).toList());
         }
 
+        if (args.length == 3 && structureSub.equals("importschem")) {
+            return TabCompleteUtil.filter(args[2], availableSchematicNames());
+        }
+
         if (args.length == 4 && structureSub.equals("paste")) {
             return TabCompleteUtil.worldNames(args[3]);
         }
 
         return List.of();
+    }
+
+    /** Nombres (sin extensión) de los .schem en la carpeta schematics/ de WorldEdit, si está instalado. */
+    private List<String> availableSchematicNames() {
+
+        Plugin worldEdit = Bukkit.getPluginManager().getPlugin("WorldEdit");
+
+        if (worldEdit == null) {
+            return List.of();
+        }
+
+        java.io.File folder = new java.io.File(worldEdit.getDataFolder(), "schematics");
+        String[] files = folder.list((dir, name) -> name.toLowerCase(Locale.ROOT).endsWith(".schem"));
+
+        if (files == null) {
+            return List.of();
+        }
+
+        return java.util.Arrays.stream(files).map(name -> name.substring(0, name.length() - ".schem".length())).toList();
     }
 
 }

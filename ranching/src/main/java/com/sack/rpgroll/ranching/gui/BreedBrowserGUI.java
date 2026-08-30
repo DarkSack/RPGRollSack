@@ -5,6 +5,7 @@ import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.ranching.core.breeds.Breed;
 import com.sack.rpgroll.ranching.core.breeds.BreedManager;
 import com.sack.rpgroll.ranching.core.species.SpeciesManager;
+import com.sack.rpgroll.util.ComponentUtils;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -52,7 +53,7 @@ public class BreedBrowserGUI extends InventoryGUI {
             Breed breed = breeds.get(i);
 
             setItem(i, new ItemBuilder(Material.NAME_TAG)
-                    .setName(Component.text(breed.displayName(), NamedTextColor.YELLOW))
+                    .setName(ComponentUtils.parse(breed.displayName()))
                     .setLore(Component.text(chatPromptManager.lang().raw("gui.browser.id_line", "id", breed.id()), NamedTextColor.GRAY),
                             Component.text(chatPromptManager.lang().raw("gui.breed.browser.species_line", "species", breed.speciesId()), NamedTextColor.GRAY),
                             Component.text(chatPromptManager.lang().raw("gui.common.click_to_edit"), NamedTextColor.YELLOW))

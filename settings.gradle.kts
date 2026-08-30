@@ -29,5 +29,6 @@ include(
     "economy",
     "crafting",
     "tab",
-    "extras"
+    "extras",
+    "traps"
 )

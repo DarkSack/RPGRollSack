@@ -21,7 +21,7 @@ import java.util.List;
 
 public class CratesPlugin extends JavaPlugin {
 
-    private static final double HOLOGRAM_Y_OFFSET = 1.6;
+    private static final double HOLOGRAM_Y_OFFSET = 2.0;
 
     private static final List<String> DIRECTORIES = List.of("crates");
 

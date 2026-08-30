@@ -31,8 +31,8 @@ public class GuildDiplomacyGUI extends PaginatedGUI {
 
     public GuildDiplomacyGUI(Player player, Guild guild, GuildManager guildManager,
             GuildDiplomacyManager diplomacyManager, Runnable onBack) {
-        super(player, Component.text(GuildsAPI.getLangManager().raw("guild.diplomacy.title", "name", guild.name()),
-                NamedTextColor.GOLD), SIZE, CONTENT_SLOTS);
+        super(player, GuildsAPI.getLangManager().component("guild.diplomacy.title", "name", guild.name()), SIZE,
+                CONTENT_SLOTS);
         this.guild = guild;
         this.guildManager = guildManager;
         this.diplomacyManager = diplomacyManager;

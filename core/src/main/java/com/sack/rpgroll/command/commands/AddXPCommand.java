@@ -120,6 +120,11 @@ public class AddXPCommand implements RPGCommand {
     }
 
     @Override
+    public String getPermission() {
+        return "rpgroll.admin.addxp";
+    }
+
+    @Override
     public List<String> getTabCompletions(CommandSender sender, String[] args) {
         if (args.length <= 1) {
             return TabCompleteUtil.allOnlinePlayerNames();

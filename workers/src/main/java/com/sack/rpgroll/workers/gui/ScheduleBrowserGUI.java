@@ -4,6 +4,7 @@ import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.workers.core.schedule.Schedule;
 import com.sack.rpgroll.workers.core.schedule.ScheduleManager;
+import com.sack.rpgroll.util.ComponentUtils;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -49,7 +50,7 @@ public class ScheduleBrowserGUI extends InventoryGUI {
             Schedule schedule = schedules.get(i);
 
             setItem(i, new ItemBuilder(Material.CLOCK)
-                    .setName(Component.text(schedule.displayName(), NamedTextColor.YELLOW))
+                    .setName(ComponentUtils.parse(schedule.displayName()))
                     .setLore(Component.text(chatPromptManager.lang().raw("gui.profession.browser.id_label", "id",
                             schedule.id()), NamedTextColor.GRAY),
                             Component.text(chatPromptManager.lang().raw("gui.schedule.browser.entries_label", "count",

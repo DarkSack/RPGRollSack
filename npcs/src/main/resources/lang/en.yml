@@ -70,7 +70,7 @@ actions:
   click_to_delete: "&cClick to delete"
   add: "Add action"
   back: "Back"
-  prompt_add: "Type: TYPE|value (e.g: MESSAGE|Hello {player}, or COMMAND|give {player} diamond 1)"
+  prompt_add: "Type: TYPE|value (e.g: MESSAGE|Hello {player}, COMMAND|give {player} diamond 1 [console], or COMMAND_AS_PLAYER|quest start x [as the player])"
   invalid_format: "&cInvalid format. Use TYPE|value"
   invalid_type: "&cInvalid type: {type}"
 

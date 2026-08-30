@@ -1,0 +1,9 @@
+# Impuesto territorial de guilds — integración activa con RPGRoll-Guilds (softdepend). Deshabilitado
+# por defecto: activalo (enabled: true) solo si querés que las guilds paguen por su territorio.
+id: guild_territory_tax
+display-name: "Impuesto Territorial"
+type: PROPERTY
+rate-percent: 10
+applies-to:
+  - guild-territory
+enabled: false

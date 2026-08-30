@@ -10,6 +10,7 @@ import com.sack.rpgroll.economy.ledger.TransactionLedger;
 import com.sack.rpgroll.economy.loan.LoanService;
 import com.sack.rpgroll.economy.market.MarketEngine;
 import com.sack.rpgroll.economy.market.MarketProductManager;
+import com.sack.rpgroll.economy.market.MarketRegionManager;
 import com.sack.rpgroll.economy.shop.ShopManager;
 import com.sack.rpgroll.economy.tax.TaxEngine;
 import com.sack.rpgroll.economy.tax.TaxRuleManager;
@@ -29,6 +30,7 @@ public final class EconomyAPI {
 
     private final CurrencyManager currencyManager;
     private final MarketProductManager marketProductManager;
+    private final MarketRegionManager marketRegionManager;
     private final TaxRuleManager taxRuleManager;
     private final WalletService walletService;
     private final TransactionLedger ledger;
@@ -43,12 +45,13 @@ public final class EconomyAPI {
     private final InflationTracker inflationTracker;
 
     private EconomyAPI(CurrencyManager currencyManager, MarketProductManager marketProductManager,
-            TaxRuleManager taxRuleManager, WalletService walletService, TransactionLedger ledger,
-            BankManager bankManager, LoanService loanService, TaxEngine taxEngine, MarketEngine marketEngine,
-            ShopManager shopManager, AuctionManager auctionManager, CompanyManager companyManager,
-            CompanyService companyService, InflationTracker inflationTracker) {
+            MarketRegionManager marketRegionManager, TaxRuleManager taxRuleManager, WalletService walletService,
+            TransactionLedger ledger, BankManager bankManager, LoanService loanService, TaxEngine taxEngine,
+            MarketEngine marketEngine, ShopManager shopManager, AuctionManager auctionManager,
+            CompanyManager companyManager, CompanyService companyService, InflationTracker inflationTracker) {
         this.currencyManager = currencyManager;
         this.marketProductManager = marketProductManager;
+        this.marketRegionManager = marketRegionManager;
         this.taxRuleManager = taxRuleManager;
         this.walletService = walletService;
         this.ledger = ledger;
@@ -64,13 +67,13 @@ public final class EconomyAPI {
     }
 
     public static void init(CurrencyManager currencyManager, MarketProductManager marketProductManager,
-            TaxRuleManager taxRuleManager, WalletService walletService, TransactionLedger ledger,
-            BankManager bankManager, LoanService loanService, TaxEngine taxEngine, MarketEngine marketEngine,
-            ShopManager shopManager, AuctionManager auctionManager, CompanyManager companyManager,
-            CompanyService companyService, InflationTracker inflationTracker) {
-        instance = new EconomyAPI(currencyManager, marketProductManager, taxRuleManager, walletService, ledger,
-                bankManager, loanService, taxEngine, marketEngine, shopManager, auctionManager, companyManager,
-                companyService, inflationTracker);
+            MarketRegionManager marketRegionManager, TaxRuleManager taxRuleManager, WalletService walletService,
+            TransactionLedger ledger, BankManager bankManager, LoanService loanService, TaxEngine taxEngine,
+            MarketEngine marketEngine, ShopManager shopManager, AuctionManager auctionManager,
+            CompanyManager companyManager, CompanyService companyService, InflationTracker inflationTracker) {
+        instance = new EconomyAPI(currencyManager, marketProductManager, marketRegionManager, taxRuleManager,
+                walletService, ledger, bankManager, loanService, taxEngine, marketEngine, shopManager,
+                auctionManager, companyManager, companyService, inflationTracker);
     }
 
     public static boolean isReady() {
@@ -93,6 +96,10 @@ public final class EconomyAPI {
 
     public MarketProductManager market() {
         return marketProductManager;
+    }
+
+    public MarketRegionManager marketRegions() {
+        return marketRegionManager;
     }
 
     public MarketEngine marketEngine() {

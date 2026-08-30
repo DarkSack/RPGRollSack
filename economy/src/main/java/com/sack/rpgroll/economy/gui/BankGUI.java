@@ -8,6 +8,7 @@ import com.sack.rpgroll.economy.currency.CurrencyManager;
 import com.sack.rpgroll.economy.loan.LoanService;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
+import com.sack.rpgroll.util.ComponentUtils;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -65,7 +66,7 @@ public class BankGUI extends InventoryGUI {
             };
 
             setItem(i, new ItemBuilder(icon)
-                    .setName(Component.text(account.name(), NamedTextColor.YELLOW))
+                    .setName(ComponentUtils.parse(account.name()))
                     .setLore(lang.component("bank.lore_type", "type", account.type()),
                             lang.component("bank.lore_balance", "value",
                                     currencyManager.defaultCurrency().format(account.balance(defaultCurrencyId))),

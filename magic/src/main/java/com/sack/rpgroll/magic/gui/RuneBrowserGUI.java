@@ -6,6 +6,7 @@ import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.magic.core.Rune;
 import com.sack.rpgroll.magic.core.RuneManager;
 import com.sack.rpgroll.magic.core.RuneModifierType;
+import com.sack.rpgroll.util.ComponentUtils;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -51,7 +52,7 @@ public class RuneBrowserGUI extends InventoryGUI {
             Rune rune = runes.get(i);
 
             setItem(i, new ItemBuilder(SchoolBrowserGUI.parseMaterial(rune.icon()))
-                    .setName(Component.text(rune.displayName(), NamedTextColor.GREEN))
+                    .setName(ComponentUtils.parse(rune.displayName()))
                     .setLore(lang.component("gui.common.id_label", "id", rune.id()),
                             lang.component("gui.rune_browser.type_label", "type", rune.type()),
                             lang.component("gui.common.click_edit"))

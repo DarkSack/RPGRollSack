@@ -5,6 +5,7 @@ import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.ranching.core.genetics.Gene;
 import com.sack.rpgroll.ranching.core.genetics.GeneDominance;
 import com.sack.rpgroll.ranching.core.genetics.GeneManager;
+import com.sack.rpgroll.util.ComponentUtils;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -50,7 +51,7 @@ public class GeneBrowserGUI extends InventoryGUI {
             Gene gene = genes.get(i);
 
             setItem(i, new ItemBuilder(Material.NETHER_STAR)
-                    .setName(Component.text(gene.displayName(), NamedTextColor.YELLOW))
+                    .setName(ComponentUtils.parse(gene.displayName()))
                     .setLore(Component.text(chatPromptManager.lang().raw("gui.browser.id_line", "id", gene.id()), NamedTextColor.GRAY),
                             Component.text(chatPromptManager.lang().raw("gui.gene.browser.attribute_key_line", "key", gene.attributeKey()), NamedTextColor.GRAY),
                             Component.text(chatPromptManager.lang().raw("gui.gene.browser.dominance_line", "dominance", gene.dominance()), NamedTextColor.GRAY),

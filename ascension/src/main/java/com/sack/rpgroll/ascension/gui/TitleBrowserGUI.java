@@ -5,6 +5,7 @@ import com.sack.rpgroll.ascension.deferred.TitleManager;
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
+import com.sack.rpgroll.util.ComponentUtils;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -49,7 +50,7 @@ public class TitleBrowserGUI extends InventoryGUI {
             Title title = titles.get(i);
             setItem(i, new ItemBuilder(Material.NAME_TAG)
                     .setName(Component.text(title.id(), NamedTextColor.YELLOW))
-                    .setLore(Component.text(title.displayName(), NamedTextColor.GRAY),
+                    .setLore(ComponentUtils.parse(title.displayName()),
                             lang.component("gui.common.click_to_edit"))
                     .build());
         }

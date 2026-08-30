@@ -27,8 +27,8 @@ import java.util.Locale;
 public class GuildCommand implements CommandExecutor, TabCompleter {
 
     private static final List<String> SUBCOMMANDS = List.of("create", "disband", "accept", "decline", "leave",
-            "info", "vault", "territory", "upgrade", "diplomacy", "quest", "achievements", "calendar", "customize",
-            "members", "browser", "ranking", "chat");
+            "info", "gui", "vault", "territory", "upgrade", "diplomacy", "quest", "achievements", "calendar",
+            "customize", "members", "browser", "ranking", "chat");
 
     private final GuildManager guildManager;
     private final GuildServices services;

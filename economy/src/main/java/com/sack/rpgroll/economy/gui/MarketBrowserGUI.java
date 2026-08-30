@@ -6,6 +6,7 @@ import com.sack.rpgroll.economy.market.MarketProduct;
 import com.sack.rpgroll.economy.market.MarketProductManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
+import com.sack.rpgroll.util.ComponentUtils;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -56,7 +57,7 @@ public class MarketBrowserGUI extends InventoryGUI {
             double price = marketEngine.price(product);
 
             setItem(i, new ItemBuilder(CurrencyBrowserGUI.parseMaterial(product.icon()))
-                    .setName(Component.text(product.displayName(), NamedTextColor.YELLOW))
+                    .setName(ComponentUtils.parse(product.displayName()))
                     .setLore(lang.component("currency.browser.lore_id", "id", product.id()),
                             lang.component("market.browser.lore_price", "price", String.format("%.2f", price)),
                             lang.component("market.browser.lore_base", "price", product.basePrice()),
@@ -101,7 +102,8 @@ public class MarketBrowserGUI extends InventoryGUI {
                 return;
             }
 
-            productManager.save(new MarketProduct(id, id, "PAPER", null, 10, 0, 0, 1.0, 1.0, 0.25, 0.02, "misc"));
+            productManager.save(new MarketProduct(id, id, "PAPER", null, 10, 0, 0, 1.0, 1.0, 0.25, 0.02, "misc",
+                    java.util.Map.of()));
             reopen();
         });
     }

@@ -8,7 +8,10 @@ public record NpcAction(NpcActionType type, String value) {
 
     public enum NpcActionType {
         MESSAGE,
+        /** Corre como CONSOLE — pensado para comandos que no necesitan al jugador logueado (/give, LuckPerms...). */
         COMMAND,
+        /** Corre como el jugador que clickeó — necesario para comandos propios de RPGRoll (ej. "quest start x"), que exigen un sender jugador. */
+        COMMAND_AS_PLAYER,
         GIVE_ITEM,
         TAKE_ITEM,
         SOUND,

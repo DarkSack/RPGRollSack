@@ -5,6 +5,7 @@ import com.sack.rpgroll.ascension.deferred.AchievementManager;
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
+import com.sack.rpgroll.util.ComponentUtils;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -49,7 +50,7 @@ public class AchievementBrowserGUI extends InventoryGUI {
             Achievement achievement = achievements.get(i);
             setItem(i, new ItemBuilder(Material.GOLDEN_APPLE)
                     .setName(Component.text(achievement.id(), NamedTextColor.YELLOW))
-                    .setLore(Component.text(achievement.displayName(), NamedTextColor.GRAY),
+                    .setLore(ComponentUtils.parse(achievement.displayName()),
                             lang.component("gui.common.click_to_edit"))
                     .build());
         }

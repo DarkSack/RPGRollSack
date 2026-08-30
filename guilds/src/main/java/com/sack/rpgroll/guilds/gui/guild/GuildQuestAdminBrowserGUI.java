@@ -6,6 +6,7 @@ import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.guilds.guild.quest.GuildQuestDefinition;
 import com.sack.rpgroll.guilds.guild.quest.GuildQuestManager;
 import com.sack.rpgroll.guilds.guild.quest.GuildQuestType;
+import com.sack.rpgroll.util.ComponentUtils;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -53,7 +54,7 @@ public class GuildQuestAdminBrowserGUI extends PaginatedGUI {
         GuildQuestDefinition definition = definitions.get(absoluteIndex);
 
         setItem(contentSlot, new ItemBuilder(Material.MAP)
-                .setName(Component.text(definition.displayName(), NamedTextColor.YELLOW))
+                .setName(ComponentUtils.parse(definition.displayName()))
                 .setLore(Component.text(definition.id(), NamedTextColor.DARK_GRAY),
                         Component.text(lang().raw("guild.quests.type_target", "type", definition.type(),
                                 "target", definition.targetAmount()), NamedTextColor.GRAY),

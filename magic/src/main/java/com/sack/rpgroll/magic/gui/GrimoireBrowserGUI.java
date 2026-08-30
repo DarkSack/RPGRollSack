@@ -6,6 +6,7 @@ import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.magic.core.Grimoire;
 import com.sack.rpgroll.magic.core.GrimoireManager;
 import com.sack.rpgroll.magic.core.SpellManager;
+import com.sack.rpgroll.util.ComponentUtils;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -53,7 +54,7 @@ public class GrimoireBrowserGUI extends InventoryGUI {
             Grimoire grimoire = grimoires.get(i);
 
             setItem(i, new ItemBuilder(SchoolBrowserGUI.parseMaterial(grimoire.icon()))
-                    .setName(Component.text(grimoire.displayName(), NamedTextColor.LIGHT_PURPLE))
+                    .setName(ComponentUtils.parse(grimoire.displayName()))
                     .setLore(lang.component("gui.common.id_label", "id", grimoire.id()),
                             lang.component("gui.grimoire_browser.spell_count_lore", "count", grimoire.spellIds().size()),
                             lang.component("gui.common.click_edit"))

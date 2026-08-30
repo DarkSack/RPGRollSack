@@ -3,8 +3,8 @@
 # Placeholders with {key} get replaced with dynamic values where noted.
 
 common:
-  yes: "yes"
-  no: "no"
+  "yes": "yes"
+  "no": "no"
 
 prompt:
   footer: "&7Type in chat, or '{keyword}' to cancel."
@@ -81,14 +81,14 @@ command:
     editor:
       usage: "&eUsage: /dungeonadmin editor <id>"
     structure:
-      usage: "&eUsage: /dungeonadmin structure <list|info|paste|import|browser> [args]"
+      usage: "&eUsage: /dungeonadmin structure <list|info|paste|import|importschem|browser> [args]"
       not_found: "&cNo structure with id: {id}"
       list:
         header: "&6Structure Library ({count}):"
         entry: "&f• {id} ({source}) — {name}"
       info:
         usage: "&eUsage: /dungeonadmin structure info <id>"
-        unreadable_nbt: "(couldn't read the .nbt)"
+        unreadable_nbt: "(couldn't read the file)"
         source: "&fSource: {source}"
         size: "&fSize (X·Y·Z): {size}"
       paste:
@@ -106,6 +106,14 @@ command:
         id_taken: "&cA structure with that id already exists."
         vanilla_not_found: "&cNo vanilla structure found saved as '{name}'."
         io_error: "&cI/O error while importing — check the console."
+      importschem:
+        usage: "&eUsage: /dungeonadmin structure importschem <file.schem> <newId> [display name...]"
+        usage_hint: "&7file is the .schem name in WorldEdit's schematics/ folder (the same one from //schematic save)."
+        ok: "&a✔ Schematic imported as structure '{id}'."
+        id_taken: "&cA structure with that id already exists."
+        worldedit_missing: "&cThis requires WorldEdit installed and enabled on the server."
+        file_not_found: "&cSchematic '{file}' not found in WorldEdit's schematics/ folder."
+        io_error: "&cI/O error while importing the schematic — check the console."
       browser:
         players_only: "&cOnly a player can open the Structure Library."
 

@@ -5,6 +5,7 @@ import com.sack.rpgroll.economy.currency.Currency;
 import com.sack.rpgroll.economy.currency.CurrencyManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
+import com.sack.rpgroll.util.ComponentUtils;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -52,7 +53,7 @@ public class CurrencyBrowserGUI extends InventoryGUI {
             Currency currency = currencies.get(i);
 
             setItem(i, new ItemBuilder(parseMaterial(currency.icon()))
-                    .setName(Component.text(currency.displayName(), NamedTextColor.YELLOW))
+                    .setName(ComponentUtils.parse(currency.displayName()))
                     .setLore(lang.component("currency.browser.lore_id", "id", currency.id()),
                             lang.component("currency.browser.lore_symbol", "symbol", currency.symbol()),
                             currency.isBase() ? lang.component("currency.browser.lore_base") : Component.empty(),

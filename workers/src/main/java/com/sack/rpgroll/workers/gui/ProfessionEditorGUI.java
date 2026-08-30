@@ -1,5 +1,7 @@
 package com.sack.rpgroll.workers.gui;
 
+import com.sack.rpgroll.common.reskin.EntityReskin;
+
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.workers.core.ai.AiAction;
@@ -38,6 +40,11 @@ public class ProfessionEditorGUI extends InventoryGUI {
     private static final int WAGE_AMOUNT_SLOT = 19;
     private static final int WAGE_TYPE_SLOT = 20;
     private static final int TOOL_SLOT = 21;
+
+    private static final int RESKIN_MATERIAL_SLOT = 22;
+    private static final int RESKIN_CMD_SLOT = 23;
+    private static final int RESKIN_SCALE_SLOT = 24;
+
     private static final int BACK_SLOT = 40;
 
     private final ProfessionManager professionManager;
@@ -136,6 +143,27 @@ public class ProfessionEditorGUI extends InventoryGUI {
                         chatPromptManager.lang().raw("gui.profession.editor.tool_none_keyword")), NamedTextColor.GRAY))
                 .build());
 
+        EntityReskin reskin = current.reskin();
+
+        setItem(RESKIN_MATERIAL_SLOT, new ItemBuilder(Material.ARMOR_STAND)
+                .setName(Component.text(chatPromptManager.lang().raw("gui.profession.editor.reskin_material",
+                        "value", reskin.material() != null ? reskin.material()
+                                : chatPromptManager.lang().raw("gui.profession.editor.reskin_none")),
+                        NamedTextColor.LIGHT_PURPLE))
+                .setLore(ItemBuilder.toLoreLines(chatPromptManager.lang().raw("gui.profession.editor.reskin_hint")))
+                .build());
+
+        setItem(RESKIN_CMD_SLOT, new ItemBuilder(Material.NAME_TAG)
+                .setName(Component.text(chatPromptManager.lang().raw("gui.profession.editor.reskin_cmd", "value",
+                        reskin.customModelData()), NamedTextColor.LIGHT_PURPLE))
+                .build());
+
+        setItem(RESKIN_SCALE_SLOT, new ItemBuilder(Material.SLIME_BALL)
+                .setName(Component.text(chatPromptManager.lang().raw("gui.profession.editor.reskin_scale", "value",
+                        reskin.scale()), NamedTextColor.LIGHT_PURPLE))
+                .setLore(Component.text(chatPromptManager.lang().raw("gui.profession.editor.reskin_scale_hint"), NamedTextColor.GRAY))
+                .build());
+
         setItem(BACK_SLOT, ItemBuilder.createCancelButton(chatPromptManager.lang().raw("gui.common.back")));
     }
 
@@ -181,6 +209,33 @@ public class ProfessionEditorGUI extends InventoryGUI {
             chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.profession.editor.prompt_tool", "keyword",
                     noneKeyword), value -> replace(withField(
                     f -> f.toolMaterial = value.equalsIgnoreCase(noneKeyword) ? null : value)));
+        } else if (slot == RESKIN_MATERIAL_SLOT) {
+            if (event.isShiftClick()) {
+                EntityReskin r = current.reskin();
+                replace(withField(f -> f.reskin = new EntityReskin(null, r.customModelData(), r.scale(), r.yOffset())));
+                return;
+            }
+            chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.profession.editor.prompt_reskin_material"),
+                    value -> {
+                        EntityReskin r = current.reskin();
+                        replace(withField(f -> f.reskin = new EntityReskin(value.trim().toUpperCase(Locale.ROOT),
+                                r.customModelData(), r.scale(), r.yOffset())));
+                    });
+        } else if (slot == RESKIN_CMD_SLOT) {
+            chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.profession.editor.prompt_reskin_cmd"),
+                    value -> {
+                        try {
+                            EntityReskin r = current.reskin();
+                            int cmd = Integer.parseInt(value.trim());
+                            replace(withField(f -> f.reskin = new EntityReskin(r.material(), cmd, r.scale(), r.yOffset())));
+                        } catch (NumberFormatException ignored) {
+                            // valor inválido, se ignora
+                        }
+                    });
+        } else if (slot == RESKIN_SCALE_SLOT) {
+            EntityReskin r = current.reskin();
+            double newScale = Math.max(0.1, r.scale() + sign / 10.0);
+            replace(withField(f -> f.reskin = new EntityReskin(r.material(), r.customModelData(), newScale, r.yOffset())));
         } else if (slot == BACK_SLOT) {
             onBack.run();
         }
@@ -248,6 +303,7 @@ public class ProfessionEditorGUI extends InventoryGUI {
         double wageAmount;
         WageType wageType;
         String toolMaterial;
+        EntityReskin reskin;
     }
 
     private Profession withField(java.util.function.Consumer<Fields> mutator) {
@@ -263,12 +319,13 @@ public class ProfessionEditorGUI extends InventoryGUI {
         fields.wageAmount = current.wageAmount();
         fields.wageType = current.wageType();
         fields.toolMaterial = current.toolMaterial();
+        fields.reskin = current.reskin();
 
         mutator.accept(fields);
 
         return new Profession(current.id(), fields.name, fields.icon, fields.description, fields.entityType,
                 fields.skillIds, fields.aiRules, fields.scheduleId, fields.wageAmount, fields.wageType,
-                fields.toolMaterial);
+                fields.toolMaterial, fields.reskin);
     }
 
 }

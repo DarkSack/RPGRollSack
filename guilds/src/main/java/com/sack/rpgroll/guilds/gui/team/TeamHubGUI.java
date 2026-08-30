@@ -50,7 +50,7 @@ public class TeamHubGUI extends InventoryGUI {
     private final List<UUID> memberOrder;
 
     public TeamHubGUI(Player player, TeamManager teamManager, ChatPromptManager chatPromptManager) {
-        super(player, Component.text(chatPromptManager.lang().raw("team.hub.title"), NamedTextColor.AQUA), SIZE);
+        super(player, chatPromptManager.lang().component("team.hub.title"), SIZE);
         this.teamManager = teamManager;
         this.chatPromptManager = chatPromptManager;
         this.memberOrder = team() != null ? List.copyOf(team().members()) : List.of();
@@ -107,7 +107,7 @@ public class TeamHubGUI extends InventoryGUI {
                 .build());
 
         setItem(NAME_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(Component.text(lang().raw("team.hub.name_label", "name", team.name()), NamedTextColor.YELLOW))
+                .setName(lang().component("team.hub.name_label", "name", team.name()))
                 .build());
 
         setItem(COLOR_SLOT, new ItemBuilder(Material.WHITE_DYE)

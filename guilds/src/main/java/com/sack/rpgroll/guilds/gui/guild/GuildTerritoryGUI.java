@@ -6,6 +6,7 @@ import com.sack.rpgroll.guilds.gui.ChatPromptManager;
 import com.sack.rpgroll.guilds.guild.Guild;
 import com.sack.rpgroll.guilds.guild.GuildManager;
 import com.sack.rpgroll.guilds.guild.territory.GuildTerritory;
+import com.sack.rpgroll.util.ComponentUtils;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -36,8 +37,7 @@ public class GuildTerritoryGUI extends InventoryGUI {
 
     public GuildTerritoryGUI(Player player, Guild guild, GuildManager guildManager,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text(chatPromptManager.lang().raw("guild.territory.title", "name", guild.name()),
-                NamedTextColor.GOLD), SIZE);
+        super(player, chatPromptManager.lang().component("guild.territory.title", "name", guild.name()), SIZE);
         this.guild = guild;
         this.guildManager = guildManager;
         this.chatPromptManager = chatPromptManager;
@@ -63,7 +63,7 @@ public class GuildTerritoryGUI extends InventoryGUI {
             GuildTerritory territory = territories.get(i);
 
             setItem(i, new ItemBuilder(Material.GRASS_BLOCK)
-                    .setName(Component.text(territory.name(), NamedTextColor.YELLOW))
+                    .setName(ComponentUtils.parse(territory.name()))
                     .setLore(Component.text(lang().raw("guild.territory.lore.world", "world", territory.world()),
                             NamedTextColor.GRAY),
                             Component.text(lang().raw("guild.territory.lore.block_protection", "state",

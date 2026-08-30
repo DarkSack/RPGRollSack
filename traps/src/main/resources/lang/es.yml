@@ -1,0 +1,174 @@
+# Mensajes de RPGRoll-Traps (idioma: Español)
+# Editá este archivo libremente — tus cambios se conservan tras un /trapadmin reload.
+# Placeholders con {llave} se reemplazan por valores dinámicos donde se indique.
+
+general:
+  no_permission: "&cNo tenés permiso para usar este comando."
+  player_only: "&cSolo un jugador puede hacer esto."
+
+prompt:
+  footer: "&7Escribí en el chat, o '{keyword}' para abortar."
+  cancel_keyword: "cancelar"
+  cancelled: "&cCancelado."
+
+admin:
+  usage: "&eUso: /trapadmin <create|edit|browser|reload|place|remove|list|info|forcetrigger|turret> [args]"
+  trap_not_found: "&cNo existe la trampa '{id}'."
+  must_look_at_block: "&cTenés que estar mirando un bloque."
+  create:
+    usage: "&eUso: /trapadmin create <id>"
+    id_taken: "&cYa existe una trampa con ese id."
+    ok: "&a✔ Trampa '{id}' creada — editala con /trapadmin edit {id} (o /trapadmin browser)."
+  edit:
+    usage: "&eUso: /trapadmin edit <id>"
+  reload:
+    ok: "&a✔ Recargado: {traps} trampa(s), {locations} instancia(s) colocada(s)."
+  place:
+    usage: "&eUso: /trapadmin place <id> [zone]"
+    ok: "&a✔ Trampa '{trap}' colocada — id de instancia: {placement}"
+  remove:
+    usage: "&eUso: /trapadmin remove <placementId>"
+    ok: "&a✔ Instancia '{placement}' eliminada."
+    not_found: "&cNo existe la instancia '{placement}'."
+  list:
+    empty: "&7Todavía no hay ninguna trampa colocada."
+    header: "&6=== Trampas colocadas ({count}) ==="
+    entry: "&f• {placement} — tipo: {trap} — estado: {state}"
+  info:
+    usage: "&eUso: /trapadmin info <placementId>"
+    header: "&6=== Instancia {placement} ({trap}) ==="
+    state: "&7Estado: {state}"
+    charges: "&7Cargas restantes: {value}"
+    position: "&7Posición: {world} ({x}, {y}, {z})"
+  forcetrigger:
+    usage: "&eUso: /trapadmin forcetrigger <placementId>"
+    ok: "&a✔ Instancia '{placement}' disparada."
+    failed: "&cNo se pudo disparar '{placement}' (no existe, no está ARMED, o no cumple condiciones)."
+  turret:
+    usage: "&eUso: /trapadmin turret <create|edit|browser|place|remove|list> [args]"
+    not_found: "&cNo existe la torreta '{id}'."
+    create:
+      usage: "&eUso: /trapadmin turret create <id>"
+      id_taken: "&cYa existe una torreta con ese id."
+      ok: "&a✔ Torreta '{id}' creada — editala con /trapadmin turret edit {id} (o /trapadmin turret browser)."
+    edit:
+      usage: "&eUso: /trapadmin turret edit <id>"
+    place:
+      usage: "&eUso: /trapadmin turret place <id>"
+      ok: "&a✔ Torreta '{turret}' colocada — id de instancia: {placement}"
+    remove:
+      usage: "&eUso: /trapadmin turret remove <placementId>"
+      ok: "&a✔ Torreta '{placement}' eliminada."
+      not_found: "&cNo existe la torreta colocada '{placement}'."
+    list:
+      empty: "&7Todavía no hay ninguna torreta colocada."
+      header: "&6=== Torretas colocadas ({count}) ==="
+      entry: "&f• {placement} — tipo: {turret}"
+
+protection:
+  not_breakable: "&cEse bloque está protegido por una trampa — no se puede romper."
+  missing_key: "&cNecesitás la llave correcta para romper ese bloque."
+
+gui:
+  common:
+    back: "Volver"
+    close: "Cerrar"
+    click_to_write: "&7Click para escribir"
+    click_to_toggle: "&7Click para alternar"
+    "yes": "Sí"
+    "no": "No"
+  stringlist:
+    shift_remove: "&8Shift-click para quitar"
+    add: "&aAgregar"
+  actionlist:
+    shift_remove: "&8Shift-click para quitar"
+    add: "&aAgregar acción"
+    add_hint: "&7TIPO clave=valor clave2=valor2"
+    prompt_add: "&eEscribí: TIPO clave=valor clave2=valor2 (ej. EXPLOSION power=2.5 break-blocks=false):"
+    invalid_format: "&cFormato inválido."
+  conditions:
+    prompt_add: "&eEscribí la condición (ej. player.level >= 30, player.sneaking == true):"
+  chain:
+    prompt_add: "&eEscribí el id de la trampa a encadenar:"
+  hub:
+    title: "&6Editando: {id}"
+    info: "&eInformación"
+    info_desc: "&7Nombre, ícono, trigger, radio, cooldown, cargas"
+    actions: "&eAcciones"
+    actions_desc: "&7{count} acción(es)"
+    conditions: "&eCondiciones"
+    conditions_desc: "&7{count} condición(es)"
+    block: "&eBloque / Llave"
+    block_desc: "&7Bloque protegido, rompible, llave requerida"
+    disguise: "&eCamuflaje"
+    disguise_desc: "&7Swap de bloque real (visible/revelado)"
+    chain: "&eCadena"
+    chain_desc: "&7{count} trampa(s) encadenada(s)"
+  info:
+    title: "&6Información: {id}"
+    name: "&eNombre: {value}"
+    icon: "&eÍcono: {value}"
+    trigger: "&eTrigger: {value}"
+    trigger_hint: "&7Click para pasar al siguiente tipo"
+    radius: "&eRadio: {value}"
+    updown_hint: "&7Click: +1 · Shift-click: +varios · Derecho: -1"
+    cooldown: "&eCooldown: {value}s"
+    cooldown_hint: "&7Click: +1s · Shift-click: +30s · Derecho: -1s/-30s"
+    charges: "&eCargas: {value}"
+    charges_infinite: "∞"
+    prompt_name: "&eEscribí el nuevo nombre:"
+    prompt_icon: "&eEscribí el Material (ej. TRIPWIRE_HOOK):"
+    invalid_material: "&cMaterial inválido."
+  block:
+    title: "&6Bloque / Llave"
+    material: "&eMaterial: {value}"
+    material_none: "(sin configurar)"
+    breakable: "&eRompible: {value}"
+    key: "&eLlave requerida: {value}"
+    key_none: "(ninguna)"
+    key_shift_clear: "&8Shift-click para quitar la llave"
+    break_time: "&eTiempo de rotura: {value}s"
+    explosion_immune: "&eInmune a explosiones: {value}"
+    piston_immune: "&eInmune a pistones: {value}"
+    prompt_material: "&eEscribí el Material del bloque:"
+    prompt_key: "&eEscribí el id de ítem (RPGRoll-Items) o Material vanilla requerido:"
+  disguise:
+    title: "&6Camuflaje"
+    mode: "&eModo: {value}"
+    visible: "&eMaterial visible: {value}"
+    revealed: "&eMaterial revelado: {value}"
+    prompt_visible: "&eEscribí el Material visible mientras está armada:"
+    prompt_revealed: "&eEscribí el Material al dispararse:"
+  browser:
+    title: "&6Trampas RPGRoll"
+    trigger: "&7Trigger: {value}"
+    click_to_edit: "&eClick para editar"
+    create_new: "&aCrear nueva"
+    prompt_new_id: "&eEscribí el id de la nueva trampa:"
+    id_exists: "&cYa existe una trampa con ese id."
+  zone:
+    title: "&6Zona: {id}"
+    corner_a: "&eEsquina A: {value}"
+    corner_b: "&eEsquina B: {value}"
+    corner_hint: "&7Click para fijarla en tu posición actual"
+    confirm: "Confirmar zona"
+    unset: "(sin fijar)"
+    missing_corners: "&cFijá las dos esquinas antes de confirmar."
+    created: "&a✔ Zona creada — id de instancia: {placement}"
+  turret:
+    title: "&6Torreta: {id}"
+    name: "&eNombre: {value}"
+    model: "&eModelo: {value}"
+    radius: "&eRadio: {value}"
+    target_players: "&eApunta a jugadores: {value}"
+    target_hostile_mobs: "&eApunta a mobs hostiles: {value}"
+    fire_interval: "&eIntervalo de disparo: {value} ticks"
+    impact: "&eImpacto: {value}"
+    impact_hint: "&7Click para reescribir (TIPO clave=valor clave2=valor2)"
+    updown_hint: "&7Click: +paso · Shift-click: +paso grande · Derecho: -paso"
+    prompt_name: "&eEscribí el nuevo nombre:"
+    prompt_model: "&eEscribí el Material del modelo (ej. CROSSBOW):"
+    prompt_impact: "&eEscribí: TIPO clave=valor clave2=valor2 (ej. CUSTOM_PROJECTILE projectile-type=FIREBALL, o SONIC_BOOM damage=12):"
+    browser:
+      title: "&6Torretas RPGRoll"
+      radius: "&7Radio: {value}"

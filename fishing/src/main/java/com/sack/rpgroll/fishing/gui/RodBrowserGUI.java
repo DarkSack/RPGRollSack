@@ -5,6 +5,7 @@ import com.sack.rpgroll.fishing.core.FishingRod;
 import com.sack.rpgroll.fishing.core.FishingRodManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
+import com.sack.rpgroll.util.ComponentUtils;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -50,7 +51,7 @@ public class RodBrowserGUI extends InventoryGUI {
             FishingRod rod = rods.get(i);
 
             setItem(i, new ItemBuilder(SpeciesBrowserGUI.parseMaterial(rod.material()))
-                    .setName(Component.text(rod.displayName(), NamedTextColor.YELLOW))
+                    .setName(ComponentUtils.parse(rod.displayName()))
                     .setLore(lang.component("gui.common.id_label", "id", rod.id()),
                             lang.component("gui.common.click_to_edit"))
                     .build());

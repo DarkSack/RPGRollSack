@@ -6,6 +6,7 @@ import com.sack.rpgroll.fishing.core.Treasure;
 import com.sack.rpgroll.fishing.core.TreasureManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
+import com.sack.rpgroll.util.ComponentUtils;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -50,7 +51,7 @@ public class TreasureBrowserGUI extends InventoryGUI {
             Treasure treasure = treasures.get(i);
 
             setItem(i, new ItemBuilder(SpeciesBrowserGUI.parseMaterial(treasure.icon()))
-                    .setName(Component.text(treasure.displayName(), NamedTextColor.GOLD))
+                    .setName(ComponentUtils.parse(treasure.displayName()))
                     .setLore(lang.component("gui.common.id_label", "id", treasure.id()),
                             lang.component("gui.common.click_to_edit"))
                     .build());

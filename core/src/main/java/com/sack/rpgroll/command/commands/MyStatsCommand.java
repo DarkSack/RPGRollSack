@@ -1,6 +1,10 @@
 package com.sack.rpgroll.command.commands;
 
 import com.sack.rpgroll.RPGRoll;
+import com.sack.rpgroll.api.playerclass.ClassManager;
+import com.sack.rpgroll.api.playerclass.PlayerClass;
+import com.sack.rpgroll.api.race.Race;
+import com.sack.rpgroll.api.race.RaceManager;
 import com.sack.rpgroll.command.RPGCommand;
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gameplay.combat.CombatStats;
@@ -65,6 +69,16 @@ public class MyStatsCommand implements RPGCommand {
                 PlayerStats stats = rpgPlayer.getStats();
                 CombatStats combatStats = rpgPlayer.getCombatStats();
 
+                RaceManager raceManager = plugin.getBootstrap().getServices().get(RaceManager.class);
+                ClassManager classManager = plugin.getBootstrap().getServices().get(ClassManager.class);
+
+                String raceDisplay = raceManager.get(rpgPlayer.getRace())
+                                .map(Race::displayName)
+                                .orElse(rpgPlayer.getRace());
+                String classDisplay = classManager.get(rpgPlayer.getPlayerClass())
+                                .map(PlayerClass::displayName)
+                                .orElse(rpgPlayer.getPlayerClass());
+
                 player.sendMessage(MessageUtil.blank());
 
                 player.sendMessage(MessageUtil.top());
@@ -81,12 +95,12 @@ public class MyStatsCommand implements RPGCommand {
                 player.sendMessage(MessageUtil.line(
                                 NamedTextColor.AQUA,
                                 lang.raw("my_stats_command.label_race"),
-                                rpgPlayer.getRace()));
+                                raceDisplay));
 
                 player.sendMessage(MessageUtil.line(
                                 NamedTextColor.AQUA,
                                 lang.raw("my_stats_command.label_class"),
-                                rpgPlayer.getPlayerClass()));
+                                classDisplay));
 
                 player.sendMessage(MessageUtil.separator());
 
@@ -176,6 +190,11 @@ public class MyStatsCommand implements RPGCommand {
         @Override
         public List<String> getAliases() {
                 return List.of("detailed", "detalles");
+        }
+
+        @Override
+        public String getPermission() {
+                return "rpgroll.player.mystats";
         }
 
 }

@@ -1,0 +1,22 @@
+# Torreta que cura en vez de dañar: apunta solo a jugadores (target-hostile-mobs: false)
+# y les restaura vida directamente cada disparo, vía la acción HEAL (misma familia que
+# DAMAGE, pero suma en vez de restar). Como el sistema no distingue aliado/enemigo entre
+# jugadores, colocala en zonas donde solo entren los tuyos (ej. dentro de tu base/guild hall).
+id: healing_turret
+display-name: "&aTorreta de Sanación"
+description: "Restaura vida periódicamente a cualquier jugador dentro de su radio."
+
+radius: 8.0
+target-players: true
+target-hostile-mobs: false
+fire-interval-ticks: 40
+
+conditions: []
+
+impact:
+  type: HEAL
+  params:
+    amount: "4"
+
+model:
+  material: BEACON

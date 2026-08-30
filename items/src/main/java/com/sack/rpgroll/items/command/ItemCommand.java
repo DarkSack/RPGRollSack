@@ -7,6 +7,7 @@ import com.sack.rpgroll.items.instance.ItemInstanceService;
 import com.sack.rpgroll.items.skin.SkinService;
 import com.sack.rpgroll.items.socket.SocketService;
 import com.sack.rpgroll.items.upgrade.UpgradeService;
+import com.sack.rpgroll.util.ComponentUtils;
 import com.sack.rpgroll.util.TabCompleteUtil;
 
 import net.kyori.adventure.text.Component;
@@ -85,7 +86,7 @@ public class ItemCommand implements CommandExecutor, TabCompleter {
 
     private void handleInfo(Player player, ItemStack held, ItemDefinition definition) {
 
-        player.sendMessage(Component.text(definition.displayName(), NamedTextColor.GOLD));
+        player.sendMessage(ComponentUtils.parse(definition.displayName()));
         langManager.send(player, "command.item.info.pack", "pack", definition.pack());
         langManager.send(player, "command.item.info.rarity", "rarity", definition.rarityId());
         langManager.send(player, "command.item.info.upgrade_level", "level", instanceService.getUpgradeLevel(held));

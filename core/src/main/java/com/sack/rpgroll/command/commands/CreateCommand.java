@@ -72,4 +72,9 @@ public class CreateCommand implements RPGCommand {
         return List.of("crear", "nuevo");
     }
 
+    @Override
+    public String getPermission() {
+        return "rpgroll.player.create";
+    }
+
 }

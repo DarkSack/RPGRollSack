@@ -5,7 +5,7 @@ api-version: "26.1.1"
 author: Sack
 description: Motor de mazmorras instanciadas (salas, oleadas, jefes, objetivos, loot, dificultades, ranking) para RPGRoll
 depend: [RPGRoll, RPGRoll-Mobs, RPGRoll-Guilds]
-softdepend: [RPGRoll-Items, RPGRoll-Quests, PlaceholderAPI]
+softdepend: [RPGRoll-Items, RPGRoll-Quests, PlaceholderAPI, WorldEdit]
 
 commands:
   dungeon:

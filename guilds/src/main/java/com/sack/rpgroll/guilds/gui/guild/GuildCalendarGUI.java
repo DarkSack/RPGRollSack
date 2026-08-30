@@ -6,6 +6,7 @@ import com.sack.rpgroll.guilds.gui.ChatPromptManager;
 import com.sack.rpgroll.guilds.guild.Guild;
 import com.sack.rpgroll.guilds.guild.GuildManager;
 import com.sack.rpgroll.guilds.guild.event.GuildEvent;
+import com.sack.rpgroll.util.ComponentUtils;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -33,8 +34,7 @@ public class GuildCalendarGUI extends InventoryGUI {
 
     public GuildCalendarGUI(Player player, Guild guild, GuildManager guildManager,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text(chatPromptManager.lang().raw("guild.calendar.title", "name", guild.name()),
-                NamedTextColor.GOLD), SIZE);
+        super(player, chatPromptManager.lang().component("guild.calendar.title", "name", guild.name()), SIZE);
         this.guild = guild;
         this.guildManager = guildManager;
         this.chatPromptManager = chatPromptManager;
@@ -62,7 +62,7 @@ public class GuildCalendarGUI extends InventoryGUI {
             GuildEvent event = events.get(i);
 
             setItem(i, new ItemBuilder(Material.CLOCK)
-                    .setName(Component.text(event.name(), NamedTextColor.YELLOW))
+                    .setName(ComponentUtils.parse(event.name()))
                     .setLore(Component.text(event.type() + " · " + format.format(new Date(event.scheduledAtMillis())),
                             NamedTextColor.GRAY),
                             Component.text(event.description(), NamedTextColor.GRAY),

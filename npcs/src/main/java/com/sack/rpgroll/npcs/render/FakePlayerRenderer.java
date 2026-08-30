@@ -64,7 +64,7 @@ public class FakePlayerRenderer {
                             npc.skinSignature()));
         }
 
-        sendPlayerInfoAdd(viewer, profile, npc.displayName());
+        sendPlayerInfoAdd(viewer, profile, npcUuid, npc.displayName());
         sendNamedEntitySpawn(viewer, npc, npcUuid, entityId);
         applyPose(viewer, npc, entityId);
 
@@ -76,16 +76,22 @@ public class FakePlayerRenderer {
         sendEntityDestroy(viewer, entityId);
     }
 
-    private void sendPlayerInfoAdd(Player viewer, WrappedGameProfile profile, String displayName) {
+    private void sendPlayerInfoAdd(Player viewer, WrappedGameProfile profile, UUID npcUuid, String displayName) {
 
         PacketContainer packet = protocolManager.createPacket(PacketType.Play.Server.PLAYER_INFO);
 
         packet.getPlayerInfoActions().write(0, EnumSet.of(EnumWrappers.PlayerInfoAction.ADD_PLAYER));
 
+        // El overload de 4 args (profile, latency, gameMode, displayName) resuelve el UUID internamente
+        // llamando a profile.getUUID(), que en este build de Paper tira "Unsupported getId() method" (la
+        // reflexión de ProtocolLib para leer el id del GameProfile de Mojang no encuentra el accessor
+        // esperado). Este overload recibe el UUID directo — ya lo tenemos como npcUuid — y lo evita.
         PlayerInfoData data = new PlayerInfoData(
-                profile,
+                npcUuid,
                 0,
+                true,
                 EnumWrappers.NativeGameMode.SURVIVAL,
+                profile,
                 WrappedChatComponent.fromText(displayName));
 
         packet.getPlayerInfoDataLists().write(1, List.of(data));

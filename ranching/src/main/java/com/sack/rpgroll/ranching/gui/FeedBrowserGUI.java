@@ -5,6 +5,7 @@ import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.ranching.core.nutrition.Feed;
 import com.sack.rpgroll.ranching.core.nutrition.FeedManager;
 import com.sack.rpgroll.ranching.core.nutrition.FeedQuality;
+import com.sack.rpgroll.util.ComponentUtils;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -50,7 +51,7 @@ public class FeedBrowserGUI extends InventoryGUI {
             Feed feed = feeds.get(i);
 
             setItem(i, new ItemBuilder(SpeciesBrowserGUI.parseMaterial(feed.icon(), Material.WHEAT))
-                    .setName(Component.text(feed.displayName(), NamedTextColor.YELLOW))
+                    .setName(ComponentUtils.parse(feed.displayName()))
                     .setLore(Component.text(chatPromptManager.lang().raw("gui.browser.id_line", "id", feed.id()), NamedTextColor.GRAY),
                             Component.text(chatPromptManager.lang().raw("gui.feed.browser.quality_line", "quality", feed.quality()), NamedTextColor.GRAY),
                             Component.text(chatPromptManager.lang().raw("gui.common.click_to_edit"), NamedTextColor.YELLOW))

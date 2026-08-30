@@ -5,6 +5,7 @@ import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.workers.core.profession.ProfessionManager;
 import com.sack.rpgroll.workers.core.skill.Skill;
 import com.sack.rpgroll.workers.core.skill.SkillManager;
+import com.sack.rpgroll.util.ComponentUtils;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -52,7 +53,7 @@ public class SkillBrowserGUI extends InventoryGUI {
             Skill skill = skills.get(i);
 
             setItem(i, new ItemBuilder(Material.BOOK)
-                    .setName(Component.text(skill.displayName(), NamedTextColor.YELLOW))
+                    .setName(ComponentUtils.parse(skill.displayName()))
                     .setLore(Component.text(chatPromptManager.lang().raw("gui.profession.browser.id_label", "id",
                             skill.id()), NamedTextColor.GRAY),
                             Component.text(chatPromptManager.lang().raw("gui.skill.browser.profession_label", "profession",

@@ -4,8 +4,8 @@ common:
   result: "&7Result: {result}"
   close: "Close"
   back: "Back"
-  yes: "yes"
-  no: "no"
+  "yes": "yes"
+  "no": "no"
   previous_page: "&e« Previous"
   next_page: "&eNext »"
 

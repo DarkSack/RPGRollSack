@@ -63,7 +63,7 @@ public class DiseaseEditorGUI extends InventoryGUI {
         var lang = chatPromptManager.lang();
 
         setItem(NAME_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(Component.text(lang.raw("gui.editor.name_line", "name", current.displayName()), NamedTextColor.YELLOW)).build());
+                .setName(lang.component("gui.editor.name_line", "name", current.displayName())).build());
 
         setItem(DESCRIPTION_SLOT, new ItemBuilder(Material.WRITTEN_BOOK)
                 .setName(Component.text(lang.raw("gui.editor.description_title"), NamedTextColor.YELLOW))

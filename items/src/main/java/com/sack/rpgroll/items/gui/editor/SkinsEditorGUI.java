@@ -4,6 +4,7 @@ import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.items.core.ItemSkin;
+import com.sack.rpgroll.util.ComponentUtils;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -52,7 +53,7 @@ public class SkinsEditorGUI extends InventoryGUI {
             Material material = skin.material() != null ? parseMaterial(skin.material()) : Material.ARMOR_STAND;
 
             setItem(i, new ItemBuilder(material)
-                    .setName(Component.text(skin.displayName(), NamedTextColor.AQUA))
+                    .setName(ComponentUtils.parse(skin.displayName()))
                     .setLore(lang.component("editor.skins.id_lore", "id", skin.id()),
                             lang.component("editor.common.shift_click_remove"))
                     .build());

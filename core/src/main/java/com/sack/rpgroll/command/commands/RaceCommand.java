@@ -1,6 +1,8 @@
 package com.sack.rpgroll.command.commands;
 
 import com.sack.rpgroll.RPGRoll;
+import com.sack.rpgroll.api.race.Race;
+import com.sack.rpgroll.api.race.RaceManager;
 import com.sack.rpgroll.command.RPGCommand;
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.player.RPGPlayer;
@@ -20,12 +22,12 @@ public class RaceCommand implements RPGCommand {
 
     private final RPGRoll plugin;
 
-    // Razas disponibles por ahora (placeholder hasta implementar sistema completo)
-    private static final List<String> AVAILABLE_RACES = List.of(
-            "Humano", "Elfo", "Enano", "Orco", "Halfling", "Tiefling", "Dracónido");
-
     public RaceCommand(RPGRoll plugin) {
         this.plugin = plugin;
+    }
+
+    private RaceManager raceManager() {
+        return plugin.getBootstrap().getServices().get(RaceManager.class);
     }
 
     @Override
@@ -75,14 +77,15 @@ public class RaceCommand implements RPGCommand {
 
     private void showCurrentRace(Player player, RPGPlayer rpgPlayer, LangManager lang) {
 
-        String playerRace = rpgPlayer.getRace();
+        String playerRaceId = rpgPlayer.getRace();
 
-        if (playerRace == null || playerRace.isEmpty()) {
+        if (playerRaceId == null || playerRaceId.isEmpty()) {
             lang.send(player, "race.no_race");
             lang.send(player, "race_command.hint_select");
             lang.send(player, "race_command.hint_list");
         } else {
-            lang.send(player, "race.current", "race", playerRace);
+            String displayName = raceManager().get(playerRaceId).map(Race::displayName).orElse(playerRaceId);
+            lang.send(player, "race.current", "race", displayName);
         }
 
     }
@@ -91,8 +94,8 @@ public class RaceCommand implements RPGCommand {
 
         lang.send(player, "race_command.list_header");
 
-        for (String raceName : AVAILABLE_RACES) {
-            lang.send(player, "race_command.list_entry", "race", raceName);
+        for (Race race : raceManager().getAll()) {
+            lang.send(player, "race_command.list_entry", "race", race.displayName());
         }
 
         lang.send(player, "race_command.list_footer");
@@ -100,23 +103,20 @@ public class RaceCommand implements RPGCommand {
 
     }
 
-    private void changeRace(Player player, PlayerManager playerManager, RPGPlayer rpgPlayer, String newRace,
+    private void changeRace(Player player, PlayerManager playerManager, RPGPlayer rpgPlayer, String newRaceId,
             LangManager lang) {
 
-        // Validar que la raza exista
-        boolean validRace = AVAILABLE_RACES.stream()
-                .anyMatch(r -> r.equalsIgnoreCase(newRace));
+        Optional<Race> raceOpt = raceManager().get(newRaceId);
 
-        if (!validRace) {
-            lang.send(player, "race_command.invalid_race", "race", newRace);
+        if (raceOpt.isEmpty()) {
+            lang.send(player, "race_command.invalid_race", "race", newRaceId);
             lang.send(player, "race_command.hint_list");
             return;
         }
 
-        // Verificar si ya tiene raza
+        // Verificar si puede cambiar de raza
         String currentRace = rpgPlayer.getRace();
 
-        // Verificar si puede cambiar de raza
         if (currentRace != null && !currentRace.isEmpty()) {
             // TODO: Verificar configuración allow_race_change
             lang.send(player, "race_command.already_selected");
@@ -124,17 +124,14 @@ public class RaceCommand implements RPGCommand {
             return;
         }
 
-        // Capitalizar correctamente el nombre de la raza
-        String formattedRace = AVAILABLE_RACES.stream()
-                .filter(r -> r.equalsIgnoreCase(newRace))
-                .findFirst()
-                .orElse(newRace);
+        Race race = raceOpt.get();
 
-        // Actualizar y guardar
-        RPGPlayer updatedPlayer = rpgPlayer.setRace(formattedRace);
+        // Actualizar y guardar — se persiste el id (mismo criterio que CharacterCreationFlow/AdminSetRaceCommand),
+        // no el nombre visible, para que raceManager.get(rpgPlayer.getRace()) siga resolviendo en cualquier lado.
+        RPGPlayer updatedPlayer = rpgPlayer.setRace(race.id());
         playerManager.savePlayer(updatedPlayer);
 
-        lang.send(player, "race.select", "race", formattedRace);
+        lang.send(player, "race.select", "race", race.displayName());
 
     }
 
@@ -161,11 +158,16 @@ public class RaceCommand implements RPGCommand {
     @Override
     public List<String> getTabCompletions(CommandSender sender, String[] args) {
         if (args.length <= 1) {
-            List<String> options = new java.util.ArrayList<>(AVAILABLE_RACES);
+            List<String> options = new java.util.ArrayList<>(raceManager().getAll().stream().map(Race::id).toList());
             options.add("list");
             return options;
         }
         return List.of();
+    }
+
+    @Override
+    public String getPermission() {
+        return "rpgroll.player.race";
     }
 
 }

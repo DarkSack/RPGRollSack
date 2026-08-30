@@ -133,9 +133,8 @@ public class AnimalCareListener implements Listener {
             Disease disease = diseaseManager.get(animal.activeDiseaseId()).orElse(null);
             animal.cure();
 
-            player.sendMessage(Component.text(lang.raw("listener.care.medicine_cured", "disease",
-                    disease != null ? disease.displayName() : lang.raw("listener.care.unknown_disease")),
-                    NamedTextColor.GREEN));
+            player.sendMessage(lang.component("listener.care.medicine_cured", "disease",
+                    disease != null ? disease.displayName() : lang.raw("listener.care.unknown_disease")));
 
         } else {
 
@@ -152,8 +151,7 @@ public class AnimalCareListener implements Listener {
 
         consumeOne(item);
 
-        player.sendMessage(Component.text(lang.raw("listener.care.vaccinated", "vaccine", vaccine.displayName()),
-                NamedTextColor.GREEN));
+        player.sendMessage(lang.component("listener.care.vaccinated", "vaccine", vaccine.displayName()));
     }
 
     private void consumeOne(ItemStack item) {

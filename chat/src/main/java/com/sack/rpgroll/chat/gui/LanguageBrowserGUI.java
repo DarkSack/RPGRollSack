@@ -4,6 +4,7 @@ import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.chat.language.Language;
 import com.sack.rpgroll.chat.language.LanguageManager;
 import com.sack.rpgroll.common.lang.LangManager;
+import com.sack.rpgroll.util.ComponentUtils;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -45,7 +46,7 @@ public class LanguageBrowserGUI extends PaginatedGUI {
         LangManager lang = chatPromptManager.lang();
 
         setItem(contentSlot, new ItemBuilder(Material.WRITABLE_BOOK)
-                .setName(Component.text(language.displayName(), NamedTextColor.YELLOW))
+                .setName(ComponentUtils.parse(language.displayName()))
                 .setLore(Component.text(language.id(), NamedTextColor.DARK_GRAY),
                         lang.component("language.browser_lore_races", "value",
                                         language.defaultForRaces().isEmpty() ? lang.raw("language.races_universal")

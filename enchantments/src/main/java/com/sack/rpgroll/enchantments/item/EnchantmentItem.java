@@ -11,6 +11,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -39,11 +40,61 @@ public class EnchantmentItem {
     private final EnchantmentManager manager;
     private final NamespacedKey dataKey;
     private final NamespacedKey loreCountKey;
+    private final NamespacedKey bookIdKey;
+    private final NamespacedKey bookLevelKey;
 
     public EnchantmentItem(Plugin plugin, EnchantmentManager manager) {
         this.manager = manager;
         this.dataKey = new NamespacedKey(plugin, "custom-enchantments");
         this.loreCountKey = new NamespacedKey(plugin, "custom-enchantments-lore-count");
+        this.bookIdKey = new NamespacedKey(plugin, "custom-enchant-book-id");
+        this.bookLevelKey = new NamespacedKey(plugin, "custom-enchant-book-level");
+    }
+
+    /**
+     * Libro encantado "portador" — no aplica nada él mismo, solo guarda qué encantamiento/nivel
+     * ofrece en su PDC. Combinarlo con un ítem compatible en un yunque ({@code AnvilEnchantListener})
+     * es lo que efectivamente llama a {@link #apply}.
+     */
+    public ItemStack createBook(CustomEnchantment enchantment, int level) {
+
+        ItemStack book = new ItemStack(Material.ENCHANTED_BOOK);
+        ItemMeta meta = book.getItemMeta();
+
+        meta.displayName(ComponentUtils.parse(enchantment.displayName())
+                .append(net.kyori.adventure.text.Component.text(" " + RomanNumerals.of(level), NamedTextColor.GRAY)));
+
+        meta.getPersistentDataContainer().set(bookIdKey, PersistentDataType.STRING, enchantment.id());
+        meta.getPersistentDataContainer().set(bookLevelKey, PersistentDataType.INTEGER, level);
+
+        book.setItemMeta(meta);
+        return book;
+    }
+
+    public boolean isBook(ItemStack item) {
+        return item != null && item.hasItemMeta()
+                && item.getItemMeta().getPersistentDataContainer().has(bookIdKey, PersistentDataType.STRING);
+    }
+
+    /** @return el {id, nivel} guardado en el libro, o vacío si {@code item} no es uno de estos libros. */
+    public Optional<BookContents> readBook(ItemStack item) {
+
+        if (!isBook(item)) {
+            return Optional.empty();
+        }
+
+        var pdc = item.getItemMeta().getPersistentDataContainer();
+        String id = pdc.get(bookIdKey, PersistentDataType.STRING);
+        Integer level = pdc.get(bookLevelKey, PersistentDataType.INTEGER);
+
+        if (id == null || level == null) {
+            return Optional.empty();
+        }
+
+        return Optional.of(new BookContents(id, level));
+    }
+
+    public record BookContents(String enchantId, int level) {
     }
 
     public enum ApplyResult {

@@ -1,6 +1,7 @@
 package com.sack.rpgroll.workers.core.profession;
 
 import com.sack.rpgroll.common.content.ContentParser;
+import com.sack.rpgroll.common.reskin.EntityReskinYaml;
 import com.sack.rpgroll.workers.core.ai.AiAction;
 import com.sack.rpgroll.workers.core.ai.AiCondition;
 import com.sack.rpgroll.workers.core.economy.WageType;
@@ -39,7 +40,8 @@ public class ProfessionParser implements ContentParser<Profession> {
                 config.getString("schedule"),
                 config.getDouble("wage-amount", 0),
                 parseWageType(config.getString("wage-type")),
-                config.getString("tool-material"));
+                config.getString("tool-material"),
+                EntityReskinYaml.parse(config));
     }
 
     private WageType parseWageType(String raw) {

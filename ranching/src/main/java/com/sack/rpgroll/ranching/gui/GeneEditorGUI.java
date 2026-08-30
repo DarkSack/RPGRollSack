@@ -69,7 +69,7 @@ public class GeneEditorGUI extends InventoryGUI {
         var lang = chatPromptManager.lang();
 
         setItem(NAME_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(Component.text(lang.raw("gui.editor.name_line", "name", current.displayName()), NamedTextColor.YELLOW)).build());
+                .setName(lang.component("gui.editor.name_line", "name", current.displayName())).build());
 
         setItem(ATTRIBUTE_KEY_SLOT, new ItemBuilder(Material.COMPASS)
                 .setName(Component.text(lang.raw("gui.gene.editor.attribute_key_line", "key", current.attributeKey()), NamedTextColor.AQUA))

@@ -10,3 +10,5 @@ demand-weight: 1.0
 volatility: 0.3
 recovery-rate: 0.03
 category: farming
+season-modifiers:
+  harvest: 0.75

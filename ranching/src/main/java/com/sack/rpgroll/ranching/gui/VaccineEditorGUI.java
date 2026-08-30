@@ -66,7 +66,7 @@ public class VaccineEditorGUI extends InventoryGUI {
         var lang = chatPromptManager.lang();
 
         setItem(NAME_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(Component.text(lang.raw("gui.editor.name_line", "name", current.displayName()), NamedTextColor.YELLOW)).build());
+                .setName(lang.component("gui.editor.name_line", "name", current.displayName())).build());
 
         setItem(ICON_SLOT, new ItemBuilder(SpeciesBrowserGUI.parseMaterial(current.icon(), Material.POTION))
                 .setName(Component.text(lang.raw("gui.editor.icon_line", "icon", current.icon()), NamedTextColor.YELLOW)).build());
@@ -141,7 +141,7 @@ public class VaccineEditorGUI extends InventoryGUI {
                     Math.max(0, current.immunityDurationTicks() + sign * 1200L)));
         } else if (slot == GIVE_SLOT) {
             player.getInventory().addItem(RanchingItemFactory.createVaccine(chatPromptManager.lang(), current));
-            player.sendMessage(Component.text(chatPromptManager.lang().raw("gui.vaccine.editor.gave_self", "name", current.displayName()), NamedTextColor.GREEN));
+            player.sendMessage(chatPromptManager.lang().component("gui.vaccine.editor.gave_self", "name", current.displayName()));
         } else if (slot == BACK_SLOT) {
             onBack.run();
         }

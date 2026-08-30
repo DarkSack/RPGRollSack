@@ -7,6 +7,7 @@ import com.sack.rpgroll.economy.shop.ShopManager;
 import com.sack.rpgroll.economy.tax.TaxEngine;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
+import com.sack.rpgroll.util.ComponentUtils;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -58,7 +59,7 @@ public class ShopListGUI extends InventoryGUI {
             String ownerName = Bukkit.getOfflinePlayer(shop.ownerId()).getName();
 
             setItem(i, new ItemBuilder(Material.VILLAGER_SPAWN_EGG)
-                    .setName(Component.text(shop.name(), NamedTextColor.YELLOW))
+                    .setName(ComponentUtils.parse(shop.name()))
                     .setLore(lang.component("shop.list.lore_owner", "name",
                                     ownerName == null ? lang.raw("shop.list.unknown_owner") : ownerName),
                             lang.component("shop.list.lore_products", "count", shop.listings().size()),

@@ -21,3 +21,10 @@ auction-check-interval-ticks: 200
 
 # Duración por defecto (horas) de una subasta si no se especifica una al crearla.
 auction-default-duration-hours: 48
+
+# Integración activa con RPGRoll-Guilds (softdepend — sin nada si no está instalado): cada guild paga
+# un impuesto PROPERTY periódico por cada GuildTerritory que tenga reclamada, descontado de su vault.
+# El monto real depende de que exista una TaxRule tipo PROPERTY con appliesTo: [guild-territory] (o
+# appliesTo vacío) — sin esa regla el impuesto es 0 y esta tarea no hace nada.
+guild-territory-tax-interval-ticks: 24000
+guild-territory-tax-per-territory: 50.0

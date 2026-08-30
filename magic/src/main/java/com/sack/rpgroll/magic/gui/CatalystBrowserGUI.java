@@ -5,6 +5,7 @@ import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.magic.core.CatalystManager;
 import com.sack.rpgroll.magic.core.SpellCatalyst;
+import com.sack.rpgroll.util.ComponentUtils;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -49,7 +50,7 @@ public class CatalystBrowserGUI extends InventoryGUI {
             SpellCatalyst catalyst = catalysts.get(i);
 
             setItem(i, new ItemBuilder(SchoolBrowserGUI.parseMaterial(catalyst.material()))
-                    .setName(Component.text(catalyst.displayName(), NamedTextColor.GOLD))
+                    .setName(ComponentUtils.parse(catalyst.displayName()))
                     .setLore(lang.component("gui.common.id_label", "id", catalyst.id()),
                             lang.component("gui.common.click_edit"))
                     .build());

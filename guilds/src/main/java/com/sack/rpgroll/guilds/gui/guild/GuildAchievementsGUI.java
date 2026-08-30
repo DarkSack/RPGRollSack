@@ -22,8 +22,7 @@ public class GuildAchievementsGUI extends InventoryGUI {
     private final Runnable onBack;
 
     public GuildAchievementsGUI(Player player, Guild guild, Runnable onBack) {
-        super(player, Component.text(GuildsAPI.getLangManager().raw("guild.achievements.title", "name", guild.name()),
-                NamedTextColor.GOLD), SIZE);
+        super(player, GuildsAPI.getLangManager().component("guild.achievements.title", "name", guild.name()), SIZE);
         this.guild = guild;
         this.onBack = onBack;
     }

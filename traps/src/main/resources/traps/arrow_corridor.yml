@@ -1,0 +1,28 @@
+# Corredor de flechas: al interactuar con el mecanismo (ej. una palanca disfrazada), dispara una ráfaga
+# de proyectiles y encadena una segunda trampa (arrow_corridor_second_volley) para una segunda oleada.
+id: arrow_corridor
+display-name: "&eCorredor de Flechas"
+description: "Dispara una ráfaga de flechas al activarse, y encadena una segunda oleada."
+icon: BOW
+
+trigger:
+  type: INTERACTION
+
+radius: 1.0
+conditions: []
+
+actions:
+  - type: SOUND
+    params:
+      sound: ENTITY_ARROW_SHOOT
+  - type: PROJECTILE
+    params:
+      amount: "5"
+      spread: "0.15"
+      interval-ticks: "3"
+      speed: "1.8"
+
+cooldown-millis: 8000
+charges: -1
+chain:
+  - arrow_corridor_second_volley

@@ -90,4 +90,9 @@ public class StatsCommand implements RPGCommand {
         return List.of("estadisticas", "est");
     }
 
+    @Override
+    public String getPermission() {
+        return "rpgroll.player.stats";
+    }
+
 }

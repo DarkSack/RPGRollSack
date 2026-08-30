@@ -1,0 +1,66 @@
+# ============================================================================
+# TRAMPA DE REFERENCIA — usa TODOS los campos que soporta un TrapDefinition.
+# Documentación ejecutable (mismo criterio que economy/market/reference_full.yml
+# e items/.../reference_full.yml) — para trampas de verdad, ver landmine.yml,
+# spike_corridor.yml, reinforced_vault_door.yml, arrow_corridor.yml y
+# poison_gas_room.yml en esta misma carpeta.
+# ============================================================================
+
+id: REFERENCE_FULL_EXAMPLE
+display-name: "Trampa de Referencia"
+description: "Ejemplo con todos los campos posibles de una trampa."
+icon: TRIPWIRE_HOOK
+
+trigger:
+  type: PRESSURE   # PRESSURE, MOVEMENT, PROXIMITY, LINE_OF_SIGHT, INTERACTION, BLOCK_BREAK,
+                    # BLOCK_PLACE, PROJECTILE, ENTITY, REDSTONE, TIMER, COMMAND, CUSTOM_EVENT
+  params:
+    # Config libre específica del trigger — ej. TIMER usa interval-seconds como
+    # documentación (el período real lo da cooldown-millis, ver TrapEngine).
+    interval-seconds: "30"
+
+# Radio en bloques usado por PRESSURE/MOVEMENT/PROXIMITY/LINE_OF_SIGHT.
+radius: 1.5
+
+# Se evalúan TODAS antes de disparar (AND). Mismo lenguaje que otros evaluadores del repo.
+conditions:
+  - "player.level >= 1"
+  - "player.sneaking == false"
+
+# Se ejecutan en orden al disparar. Ver BuiltinTrapActions para todos los tipos.
+actions:
+  - type: MESSAGE
+    params:
+      value: "&c¡Activaste una trampa!"
+  - type: SOUND
+    params:
+      sound: ENTITY_TNT_PRIMED
+      volume: "1.0"
+      pitch: "1.0"
+  - type: DAMAGE
+    params:
+      amount: "4"
+
+# 0 = sin cooldown (vuelve a ARMED al instante); en milisegundos.
+cooldown-millis: 5000
+
+# -1 = cargas infinitas; en 0 la instancia cae en DEPLETED.
+charges: -1
+
+# Ids de otras trampas a forzar-disparar en cadena cuando esta se dispara.
+chain: []
+
+# Bloque protegido opcional (puertas reforzadas, muros con llave).
+block:
+  material: IRON_DOOR
+  breakable: true
+  required-item-id: "ancient_key"   # id de RPGRoll-Items, o un Material vanilla si ese addon no está
+  break-time-seconds: 5
+  explosion-immune: true
+  piston-immune: true
+
+# Camuflaje v1: swap de bloque REAL (visible para todos, no per-jugador — ver plan/README).
+disguise:
+  mode: BLOCK_SWAP   # NONE o BLOCK_SWAP
+  visible-material: STONE
+  revealed-material: COBWEB

@@ -4,6 +4,7 @@ import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.ranching.core.health.Disease;
 import com.sack.rpgroll.ranching.core.health.DiseaseManager;
+import com.sack.rpgroll.util.ComponentUtils;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -50,7 +51,7 @@ public class DiseaseBrowserGUI extends InventoryGUI {
             Disease disease = diseases.get(i);
 
             setItem(i, new ItemBuilder(Material.ROTTEN_FLESH)
-                    .setName(Component.text(disease.displayName(), NamedTextColor.YELLOW))
+                    .setName(ComponentUtils.parse(disease.displayName()))
                     .setLore(Component.text(chatPromptManager.lang().raw("gui.browser.id_line", "id", disease.id()), NamedTextColor.GRAY),
                             Component.text(chatPromptManager.lang().raw("gui.common.click_to_edit"), NamedTextColor.YELLOW))
                     .build());

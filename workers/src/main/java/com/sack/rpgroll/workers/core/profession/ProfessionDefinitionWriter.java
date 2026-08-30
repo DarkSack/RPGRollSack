@@ -1,5 +1,7 @@
 package com.sack.rpgroll.workers.core.profession;
 
+import com.sack.rpgroll.common.reskin.EntityReskinYaml;
+
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -29,6 +31,7 @@ public class ProfessionDefinitionWriter {
         config.set("wage-amount", profession.wageAmount());
         config.set("wage-type", profession.wageType().name());
         config.set("tool-material", profession.toolMaterial());
+        EntityReskinYaml.write(config, profession.reskin());
 
         List<Map<String, Object>> rules = new java.util.ArrayList<>();
 

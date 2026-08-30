@@ -1,0 +1,29 @@
+# ============================================================================
+# REGIÓN DE MERCADO DE REFERENCIA — usa TODOS los campos que soporta un
+# MarketRegion. Documentación ejecutable. Ver la página "Economy" en la
+# docs, sección "Economías regionales".
+# ============================================================================
+
+id: reference_full_example
+display-name: "Región de Referencia"
+world: world
+
+# Caja (AABB, sin WorldGuard — mismo estilo que SeasonRegion/FishingRegion). Sin superposición
+# entre regiones: si dos contienen el mismo punto, gana la que se cargó primero (orden alfabético
+# del nombre de archivo).
+bounds:
+  min-x: -200
+  min-y: 0
+  min-z: -200
+  max-x: 200
+  max-y: 255
+  max-z: 200
+
+# Multiplicador de precio por categoría de MarketProduct dentro de esta región (1.0 = sin efecto)
+category-modifiers:
+  mineral: 0.7
+  luxury: 1.4
+
+# Multiplicador por id de producto exacto — tiene prioridad sobre category-modifiers si ambos aplican
+product-modifiers:
+  DIAMOND: 0.6

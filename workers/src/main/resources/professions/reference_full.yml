@@ -26,6 +26,17 @@ wage-type: HOURLY
 # Material de herramienta que este worker necesita tener/usar (opcional)
 tool-material: DIAMOND_PICKAXE
 
+# Reskin visual propio (opcional, sin depender de ModelEngine/BetterModel): monta
+# un ItemDisplay con este material+CMD como pasajero del worker. El material y el
+# custom-model-data los define un resource pack (ver SackResourcePack, carpeta
+# plugins/RPGRoll-Workers/resourcepack/<namespace>/<textures|models>/item/...).
+# Sin esta sección, el worker se ve con su entity-type vanilla normal.
+reskin:
+  material: PAPER
+  custom-model-data: 100001
+  scale: 1.0
+  y-offset: 0.0
+
 # Reglas de IA: se evalúan en orden de "priority" (menor número = más urgente/primero)
 # condition: HUNGRY | TIRED | SLEEPY | STRESSED | INVENTORY_FULL | RAINING | NIGHT | LOW_HAPPINESS | HAS_TASK | ALWAYS
 # action: SEEK_FOOD | EAT | GO_TO_WAREHOUSE | STORE_ITEMS | SEEK_SHELTER | GO_HOME | SLEEP | WORK | IDLE

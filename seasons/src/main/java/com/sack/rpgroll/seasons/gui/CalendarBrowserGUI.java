@@ -6,6 +6,7 @@ import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.seasons.core.CalendarManager;
 import com.sack.rpgroll.seasons.core.SeasonCalendar;
 import com.sack.rpgroll.seasons.core.SeasonManager;
+import com.sack.rpgroll.util.ComponentUtils;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -53,7 +54,7 @@ public class CalendarBrowserGUI extends InventoryGUI {
             SeasonCalendar calendar = calendars.get(i);
 
             setItem(i, new ItemBuilder(Material.CLOCK)
-                    .setName(Component.text(calendar.displayName(), NamedTextColor.AQUA))
+                    .setName(ComponentUtils.parse(calendar.displayName()))
                     .setLore(lang.component("gui.common.id_label", "id", calendar.id()),
                             lang.component("gui.calendar_browser.season_count", "count", calendar.seasonIds().size()),
                             lang.component("gui.common.click_edit"))

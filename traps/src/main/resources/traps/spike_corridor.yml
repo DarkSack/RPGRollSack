@@ -1,0 +1,31 @@
+# Corredor de pinchos: dispara al detectar un jugador dentro del radio (sin necesitar pisar un bloque exacto),
+# hace daño y aplica sangrado si RPGRoll-Effects está disponible.
+id: spike_corridor
+display-name: "&4Corredor de Pinchos"
+description: "Se activa cuando alguien se acerca demasiado."
+icon: IRON_SWORD
+
+trigger:
+  type: PROXIMITY
+
+radius: 2.0
+conditions: []
+
+actions:
+  - type: PARTICLE
+    params:
+      particle: DAMAGE_INDICATOR
+      count: "10"
+  - type: SOUND
+    params:
+      sound: ENTITY_PLAYER_HURT
+  - type: DAMAGE
+    params:
+      amount: "6"
+  - type: EFFECT
+    params:
+      effect-id: "bleeding"
+
+cooldown-millis: 3000
+charges: -1
+chain: []

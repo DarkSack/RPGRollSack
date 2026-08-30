@@ -6,7 +6,9 @@
 id: reference_full_example
 display-name: "Impuesto de Referencia"
 
-# SALE | INCOME | COMPANY | PROPERTY | COMMERCIAL | LUXURY — solo SALE dispara automáticamente hoy (ver docs)
+# SALE | INCOME | COMPANY | PROPERTY | COMMERCIAL | LUXURY — SALE dispara en /economy shop y subastas;
+# PROPERTY con applies-to: [guild-territory] dispara la tarea de impuesto territorial de guilds (ver
+# guild-territory-tax-interval-ticks en config.yml); el resto son solo consultables vía API por ahora.
 type: SALE
 
 rate-percent: 5

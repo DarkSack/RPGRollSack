@@ -64,8 +64,7 @@ public class GuildQuestAdminEditorGUI extends InventoryGUI {
         }
 
         setItem(NAME_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(Component.text(lang().raw("guildadmin.quest.name_label", "name", current.displayName()),
-                        NamedTextColor.YELLOW))
+                .setName(lang().component("guildadmin.quest.name_label", "name", current.displayName()))
                 .setLore(Component.text(lang().raw("guildadmin.quest.lore.click_to_type_new"), NamedTextColor.GRAY))
                 .build());
 

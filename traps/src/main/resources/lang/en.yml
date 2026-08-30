@@ -1,0 +1,174 @@
+# RPGRoll-Traps messages (language: English)
+# Edit this file freely — your changes survive a /trapadmin reload.
+# Placeholders like {key} get replaced with dynamic values where noted.
+
+general:
+  no_permission: "&cYou don't have permission to use this command."
+  player_only: "&cOnly a player can do this."
+
+prompt:
+  footer: "&7Type in chat, or '{keyword}' to cancel."
+  cancel_keyword: "cancel"
+  cancelled: "&cCancelled."
+
+admin:
+  usage: "&eUsage: /trapadmin <create|edit|browser|reload|place|remove|list|info|forcetrigger|turret> [args]"
+  trap_not_found: "&cThere is no trap '{id}'."
+  must_look_at_block: "&cYou need to be looking at a block."
+  create:
+    usage: "&eUsage: /trapadmin create <id>"
+    id_taken: "&cA trap with that id already exists."
+    ok: "&a✔ Trap '{id}' created — edit it with /trapadmin edit {id} (or /trapadmin browser)."
+  edit:
+    usage: "&eUsage: /trapadmin edit <id>"
+  reload:
+    ok: "&a✔ Reloaded: {traps} trap(s), {locations} placed instance(s)."
+  place:
+    usage: "&eUsage: /trapadmin place <id> [zone]"
+    ok: "&a✔ Trap '{trap}' placed — instance id: {placement}"
+  remove:
+    usage: "&eUsage: /trapadmin remove <placementId>"
+    ok: "&a✔ Instance '{placement}' removed."
+    not_found: "&cThere is no instance '{placement}'."
+  list:
+    empty: "&7No trap has been placed yet."
+    header: "&6=== Placed traps ({count}) ==="
+    entry: "&f• {placement} — type: {trap} — state: {state}"
+  info:
+    usage: "&eUsage: /trapadmin info <placementId>"
+    header: "&6=== Instance {placement} ({trap}) ==="
+    state: "&7State: {state}"
+    charges: "&7Charges remaining: {value}"
+    position: "&7Position: {world} ({x}, {y}, {z})"
+  forcetrigger:
+    usage: "&eUsage: /trapadmin forcetrigger <placementId>"
+    ok: "&a✔ Instance '{placement}' triggered."
+    failed: "&cCouldn't trigger '{placement}' (doesn't exist, not ARMED, or conditions not met)."
+  turret:
+    usage: "&eUsage: /trapadmin turret <create|edit|browser|place|remove|list> [args]"
+    not_found: "&cThere is no turret '{id}'."
+    create:
+      usage: "&eUsage: /trapadmin turret create <id>"
+      id_taken: "&cA turret with that id already exists."
+      ok: "&a✔ Turret '{id}' created — edit it with /trapadmin turret edit {id} (or /trapadmin turret browser)."
+    edit:
+      usage: "&eUsage: /trapadmin turret edit <id>"
+    place:
+      usage: "&eUsage: /trapadmin turret place <id>"
+      ok: "&a✔ Turret '{turret}' placed — instance id: {placement}"
+    remove:
+      usage: "&eUsage: /trapadmin turret remove <placementId>"
+      ok: "&a✔ Turret '{placement}' removed."
+      not_found: "&cThere is no placed turret '{placement}'."
+    list:
+      empty: "&7No turret has been placed yet."
+      header: "&6=== Placed turrets ({count}) ==="
+      entry: "&f• {placement} — type: {turret}"
+
+protection:
+  not_breakable: "&cThat block is protected by a trap — it can't be broken."
+  missing_key: "&cYou need the right key to break that block."
+
+gui:
+  common:
+    back: "Back"
+    close: "Close"
+    click_to_write: "&7Click to type"
+    click_to_toggle: "&7Click to toggle"
+    "yes": "Yes"
+    "no": "No"
+  stringlist:
+    shift_remove: "&8Shift-click to remove"
+    add: "&aAdd"
+  actionlist:
+    shift_remove: "&8Shift-click to remove"
+    add: "&aAdd action"
+    add_hint: "&7TYPE key=value key2=value2"
+    prompt_add: "&eType: TYPE key=value key2=value2 (e.g. EXPLOSION power=2.5 break-blocks=false):"
+    invalid_format: "&cInvalid format."
+  conditions:
+    prompt_add: "&eType the condition (e.g. player.level >= 30, player.sneaking == true):"
+  chain:
+    prompt_add: "&eType the trap id to chain:"
+  hub:
+    title: "&6Editing: {id}"
+    info: "&eInfo"
+    info_desc: "&7Name, icon, trigger, radius, cooldown, charges"
+    actions: "&eActions"
+    actions_desc: "&7{count} action(s)"
+    conditions: "&eConditions"
+    conditions_desc: "&7{count} condition(s)"
+    block: "&eBlock / Key"
+    block_desc: "&7Protected block, breakable, required key"
+    disguise: "&eDisguise"
+    disguise_desc: "&7Real block swap (visible/revealed)"
+    chain: "&eChain"
+    chain_desc: "&7{count} chained trap(s)"
+  info:
+    title: "&6Info: {id}"
+    name: "&eName: {value}"
+    icon: "&eIcon: {value}"
+    trigger: "&eTrigger: {value}"
+    trigger_hint: "&7Click to cycle to the next type"
+    radius: "&eRadius: {value}"
+    updown_hint: "&7Click: +1 · Shift-click: +several · Right-click: -1"
+    cooldown: "&eCooldown: {value}s"
+    cooldown_hint: "&7Click: +1s · Shift-click: +30s · Right-click: -1s/-30s"
+    charges: "&eCharges: {value}"
+    charges_infinite: "∞"
+    prompt_name: "&eType the new name:"
+    prompt_icon: "&eType the Material (e.g. TRIPWIRE_HOOK):"
+    invalid_material: "&cInvalid material."
+  block:
+    title: "&6Block / Key"
+    material: "&eMaterial: {value}"
+    material_none: "(not set)"
+    breakable: "&eBreakable: {value}"
+    key: "&eRequired key: {value}"
+    key_none: "(none)"
+    key_shift_clear: "&8Shift-click to clear the key"
+    break_time: "&eBreak time: {value}s"
+    explosion_immune: "&eExplosion immune: {value}"
+    piston_immune: "&ePiston immune: {value}"
+    prompt_material: "&eType the block's Material:"
+    prompt_key: "&eType the required item id (RPGRoll-Items) or vanilla Material:"
+  disguise:
+    title: "&6Disguise"
+    mode: "&eMode: {value}"
+    visible: "&eVisible material: {value}"
+    revealed: "&eRevealed material: {value}"
+    prompt_visible: "&eType the Material shown while armed:"
+    prompt_revealed: "&eType the Material shown when triggered:"
+  browser:
+    title: "&6RPGRoll Traps"
+    trigger: "&7Trigger: {value}"
+    click_to_edit: "&eClick to edit"
+    create_new: "&aCreate new"
+    prompt_new_id: "&eType the id for the new trap:"
+    id_exists: "&cA trap with that id already exists."
+  zone:
+    title: "&6Zone: {id}"
+    corner_a: "&eCorner A: {value}"
+    corner_b: "&eCorner B: {value}"
+    corner_hint: "&7Click to set it at your current position"
+    confirm: "Confirm zone"
+    unset: "(not set)"
+    missing_corners: "&cSet both corners before confirming."
+    created: "&a✔ Zone created — instance id: {placement}"
+  turret:
+    title: "&6Turret: {id}"
+    name: "&eName: {value}"
+    model: "&eModel: {value}"
+    radius: "&eRadius: {value}"
+    target_players: "&eTargets players: {value}"
+    target_hostile_mobs: "&eTargets hostile mobs: {value}"
+    fire_interval: "&eFire interval: {value} ticks"
+    impact: "&eImpact: {value}"
+    impact_hint: "&7Click to rewrite (TYPE key=value key2=value2)"
+    updown_hint: "&7Click: +step · Shift-click: +big step · Right-click: -step"
+    prompt_name: "&eType the new name:"
+    prompt_model: "&eType the model's Material (e.g. CROSSBOW):"
+    prompt_impact: "&eType: TYPE key=value key2=value2 (e.g. CUSTOM_PROJECTILE projectile-type=FIREBALL, or SONIC_BOOM damage=12):"
+    browser:
+      title: "&6RPGRoll Turrets"
+      radius: "&7Radius: {value}"

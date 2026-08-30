@@ -5,6 +5,7 @@ import com.sack.rpgroll.ascension.deferred.FactionManager;
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
+import com.sack.rpgroll.util.ComponentUtils;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -49,7 +50,7 @@ public class FactionBrowserGUI extends InventoryGUI {
             Faction faction = factions.get(i);
             setItem(i, new ItemBuilder(Material.WHITE_BANNER)
                     .setName(Component.text(faction.id(), NamedTextColor.YELLOW))
-                    .setLore(Component.text(faction.displayName(), NamedTextColor.GRAY),
+                    .setLore(ComponentUtils.parse(faction.displayName()),
                             lang.component("gui.common.click_to_edit"))
                     .build());
         }

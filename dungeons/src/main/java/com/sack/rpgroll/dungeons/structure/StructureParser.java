@@ -27,7 +27,7 @@ public class StructureParser implements ContentParser<StructureDefinition> {
         Material icon = parseMaterial(config.getString("icon"), Material.STONE_BRICKS);
         StructureSourceType sourceType = parseSourceType(config.getString("source", "CUSTOM"));
 
-        if (sourceType == StructureSourceType.NATIVE) {
+        if (sourceType == StructureSourceType.NATIVE || sourceType == StructureSourceType.SCHEMATIC) {
             return new StructureDefinition(id, displayName, description, icon, sourceType,
                     0, 0, 0, 0, 0, 0, Map.of(), List.of());
         }

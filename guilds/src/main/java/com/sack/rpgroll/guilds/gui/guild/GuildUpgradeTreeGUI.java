@@ -27,8 +27,7 @@ public class GuildUpgradeTreeGUI extends InventoryGUI {
     private final Runnable onBack;
 
     public GuildUpgradeTreeGUI(Player player, Guild guild, GuildManager guildManager, Runnable onBack) {
-        super(player, Component.text(lang().raw("guild.upgrade.title", "name", guild.name()), NamedTextColor.GOLD),
-                SIZE);
+        super(player, lang().component("guild.upgrade.title", "name", guild.name()), SIZE);
         this.guild = guild;
         this.guildManager = guildManager;
         this.onBack = onBack;

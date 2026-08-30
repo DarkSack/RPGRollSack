@@ -75,7 +75,7 @@ public class SpeciesEditorGUI extends InventoryGUI {
         var lang = chatPromptManager.lang();
 
         setItem(NAME_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(Component.text(lang.raw("gui.editor.name_line", "name", current.displayName()), NamedTextColor.YELLOW)).build());
+                .setName(lang.component("gui.editor.name_line", "name", current.displayName())).build());
 
         setItem(ICON_SLOT, new ItemBuilder(SpeciesBrowserGUI.parseMaterial(current.icon(), Material.COW_SPAWN_EGG))
                 .setName(Component.text(lang.raw("gui.editor.icon_line", "icon", current.icon()), NamedTextColor.YELLOW)).build());

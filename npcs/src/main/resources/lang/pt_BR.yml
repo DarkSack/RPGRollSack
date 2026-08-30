@@ -70,7 +70,7 @@ actions:
   click_to_delete: "&cClique para remover"
   add: "Adicionar ação"
   back: "Voltar"
-  prompt_add: "Digite: TIPO|valor (ex: MESSAGE|Olá {player}, ou COMMAND|give {player} diamond 1)"
+  prompt_add: "Digite: TIPO|valor (ex: MESSAGE|Olá {player}, COMMAND|give {player} diamond 1 [console], ou COMMAND_AS_PLAYER|quest start x [como o jogador])"
   invalid_format: "&cFormato inválido. Use TIPO|valor"
   invalid_type: "&cTipo inválido: {type}"
 

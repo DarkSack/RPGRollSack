@@ -58,8 +58,7 @@ public class SkillEditorGUI extends InventoryGUI {
         }
 
         setItem(NAME_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.skill.editor.name", "name", current.displayName()),
-                        NamedTextColor.YELLOW)).build());
+                .setName(chatPromptManager.lang().component("gui.skill.editor.name", "name", current.displayName())).build());
 
         setItem(PROFESSION_SLOT, new ItemBuilder(Material.VILLAGER_SPAWN_EGG)
                 .setName(Component.text(chatPromptManager.lang().raw("gui.skill.editor.profession", "profession",

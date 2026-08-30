@@ -8,6 +8,7 @@ import com.sack.rpgroll.economy.company.CompanyService;
 import com.sack.rpgroll.economy.currency.CurrencyManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
+import com.sack.rpgroll.util.ComponentUtils;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -58,7 +59,7 @@ public class CompanyListGUI extends InventoryGUI {
             Company company = companies.get(i);
 
             setItem(i, new ItemBuilder(Material.EMERALD_BLOCK)
-                    .setName(Component.text(company.name(), NamedTextColor.YELLOW))
+                    .setName(ComponentUtils.parse(company.name()))
                     .setLore(lang.component("company.list.lore_role", "value", company.members().get(player.getUniqueId())),
                             lang.component("company.list.lore_employees", "count", company.members().size()),
                             lang.component("common.click_manage"))

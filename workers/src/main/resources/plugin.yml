@@ -5,7 +5,7 @@ api-version: "26.1.1"
 author: Sack
 description: Trabajadores autónomos con IA por reglas, necesidades, personalidad, horarios, logística, economía y eventos — habitantes del mundo, no minions.
 depend: [RPGRoll]
-softdepend: [SackEffects, RPGRoll-Effects, RPGRoll-Seasons, RPGRoll-Ranching, RPGRoll-Fishing, RPGRoll-Guilds, Vault]
+softdepend: [SackEffects, RPGRoll-Effects, RPGRoll-Seasons, RPGRoll-Ranching, RPGRoll-Fishing, RPGRoll-Guilds, Vault, SackResourcePack]
 
 commands:
   workersadmin:

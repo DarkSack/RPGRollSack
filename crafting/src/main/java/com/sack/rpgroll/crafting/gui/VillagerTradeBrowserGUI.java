@@ -6,6 +6,7 @@ import com.sack.rpgroll.crafting.villager.VillagerTradeDefinition;
 import com.sack.rpgroll.crafting.villager.VillagerTradeManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
+import com.sack.rpgroll.util.ComponentUtils;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -51,7 +52,7 @@ public class VillagerTradeBrowserGUI extends InventoryGUI {
             VillagerTradeDefinition trade = trades.get(i);
 
             setItem(i, new ItemBuilder(CustomStationBrowserGUI.parseMaterial(trade.icon()))
-                    .setName(Component.text(trade.displayName(), NamedTextColor.YELLOW))
+                    .setName(ComponentUtils.parse(trade.displayName()))
                     .setLore(Component.text(chatPromptManager.lang().raw("gui.common.id_lore", "id", trade.id()), NamedTextColor.GRAY),
                             Component.text(chatPromptManager.lang().raw("gui.villager_trade.cost_lore", "value", trade.costs().get(0).value()), NamedTextColor.GRAY),
                             Component.text(chatPromptManager.lang().raw("gui.villager_trade.result_lore", "value", trade.result().value()), NamedTextColor.AQUA),

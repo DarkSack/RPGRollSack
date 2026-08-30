@@ -6,6 +6,7 @@ import com.sack.rpgroll.economy.tax.TaxRuleManager;
 import com.sack.rpgroll.economy.tax.TaxType;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
+import com.sack.rpgroll.util.ComponentUtils;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -53,7 +54,7 @@ public class TaxBrowserGUI extends InventoryGUI {
             TaxRule rule = rules.get(i);
 
             setItem(i, new ItemBuilder(rule.enabled() ? Material.GOLD_NUGGET : Material.IRON_NUGGET)
-                    .setName(Component.text(rule.displayName(), NamedTextColor.YELLOW))
+                    .setName(ComponentUtils.parse(rule.displayName()))
                     .setLore(lang.component("currency.browser.lore_id", "id", rule.id()),
                             lang.component("tax.browser.lore_type", "type", rule.type()),
                             lang.component("tax.browser.lore_rate", "rate", rule.ratePercent()),

@@ -1,0 +1,22 @@
+# Torreta que simula el ataque a distancia del Warden — daño instantáneo + partícula/sonido
+# de sonic boom, en vez de un proyectil que viaja. Es una aproximación (ver TrapActionContext y
+# BuiltinTrapActions#SONIC_BOOM): no reimplementa el hitbox-piercing real del Warden, que vive
+# en código de servidor no expuesto por la API pública de Paper.
+id: warden_turret
+display-name: "&5Torreta del Vacío"
+description: "Emite un sonic boom instantáneo contra la amenaza más cercana."
+
+radius: 16.0
+target-players: true
+target-hostile-mobs: true
+fire-interval-ticks: 40
+
+conditions: []
+
+impact:
+  type: SONIC_BOOM
+  params:
+    damage: "12"
+
+model:
+  material: SCULK_SENSOR

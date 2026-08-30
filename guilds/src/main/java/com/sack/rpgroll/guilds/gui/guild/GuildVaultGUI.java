@@ -37,8 +37,7 @@ public class GuildVaultGUI extends InventoryGUI {
 
     public GuildVaultGUI(Player player, Guild guild, GuildManager guildManager, ChatPromptManager chatPromptManager,
             Runnable onBack) {
-        super(player, Component.text(chatPromptManager.lang().raw("guild.vault.title", "name", guild.name()),
-                NamedTextColor.GOLD), SIZE);
+        super(player, chatPromptManager.lang().component("guild.vault.title", "name", guild.name()), SIZE);
         this.guild = guild;
         this.guildManager = guildManager;
         this.chatPromptManager = chatPromptManager;

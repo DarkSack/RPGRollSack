@@ -36,7 +36,7 @@ public class CrateAdminCommand implements CommandExecutor, TabCompleter {
     private static final List<String> SUBCOMMANDS = List.of("setlocation", "removelocation", "givekey", "list",
             "reload", "browser");
 
-    private static final double HOLOGRAM_Y_OFFSET = 1.6;
+    private static final double HOLOGRAM_Y_OFFSET = 2.0;
     private static final int LOOK_RANGE = 8;
 
     private final CratesPlugin plugin;

@@ -6,6 +6,7 @@ import com.sack.rpgroll.sackeffects.core.EffectManager;
 import com.sack.rpgroll.sackeffects.engine.EffectEngine;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
+import com.sack.rpgroll.util.ComponentUtils;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -53,7 +54,7 @@ public class EffectBrowserGUI extends InventoryGUI {
             EffectDefinition effect = effects.get(i);
 
             setItem(i, new ItemBuilder(Material.BLAZE_POWDER)
-                    .setName(Component.text(effect.displayName(), NamedTextColor.AQUA))
+                    .setName(ComponentUtils.parse(effect.displayName()))
                     .setLore(langManager.component("browser.item_lore_id", "id", effect.id()),
                             langManager.component("browser.item_lore_steps", "count", effect.steps().size()),
                             langManager.component("browser.item_lore_edit"))

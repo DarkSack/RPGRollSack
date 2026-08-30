@@ -74,7 +74,7 @@ public class BreedEditorGUI extends InventoryGUI {
         var lang = chatPromptManager.lang();
 
         setItem(NAME_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(Component.text(lang.raw("gui.editor.name_line", "name", current.displayName()), NamedTextColor.YELLOW)).build());
+                .setName(lang.component("gui.editor.name_line", "name", current.displayName())).build());
 
         setItem(SPECIES_SLOT, new ItemBuilder(Material.COW_SPAWN_EGG)
                 .setName(Component.text(lang.raw("gui.breed.editor.species_line", "species", current.speciesId()), NamedTextColor.AQUA)).build());

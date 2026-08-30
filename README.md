@@ -4,7 +4,7 @@
 
 Un framework RPG modular para **Minecraft Java Edition 26.1.1 (Paper)** diseñado para transformar un servidor vanilla en una experiencia de rol completa inspirada en juegos como **Dungeons & Dragons**, MMORPGs clásicos y sistemas RPG modernos.
 
-Ya no es un único plugin: es un **ecosistema de 1 core + 20 addons independientes**, cada uno instalable por separado, más un asset pipeline de resource packs (`SackResourcePack`) que no depende de ningún otro módulo.
+Ya no es un único plugin: es un **ecosistema de 1 core + 23 addons independientes**, cada uno instalable por separado — incluye un asset pipeline de resource packs (`SackResourcePack`) que no depende de ningún otro módulo.
 
 📖 **Documentación completa:** [rpg-roll-docs.vercel.app](https://rpg-roll-docs.vercel.app/)
 
@@ -30,6 +30,10 @@ Cambios recientes aplicados en todo el ecosistema:
 - ⚒️ **Nuevo addon: RPGRoll-Crafting** — recetas personalizadas con ingredientes/condiciones ricas y sistema de calidad, estaciones de crafteo propias (multi-etapa, con combustible), puente con las estaciones vanilla que exponen una API de receta genérica (mesa de crafteo, familia de hornos, cortadora de piedra, mesa de herrería) y motores dedicados de yunque y fermentación
 - 🎭 **Reskin visual de mobs y animales** — RPGRoll-Mobs y RPGRoll-Ranching pueden ahora mostrar un modelo completamente custom (no solo el mob/animal vanilla) sin depender de ModelEngine/BetterModel: la entidad real queda invisible y se le monta una entidad `ItemDisplay` como pasajero, portando un ítem con `CustomModelData` propio. Ranching usa un reskin único por raza; **RPGRoll-Mobs va más allá y soporta una lista de skins por mob** (`model.skins`), sorteada por peso al spawnear y persistida (nunca vuelve a sortear en la vida del mob). Las texturas se sincronizan solas hacia SackResourcePack (si está instalado) desde una carpeta `resourcepack/` en cada plugin — mismo mecanismo que ya usa RPGRoll-Items
 - 🎣 **RPGRoll-Fishing ahora sincroniza sus texturas solo** — las especies ya soportaban `custom-model-data`, pero faltaba conectar esa carpeta `resourcepack/` con SackResourcePack; ahora se sincroniza sola al arrancar el plugin, igual que Items/Mobs/Ranching
+- 👷 **RPGRoll-Workers ahora también soporta reskin visual por profesión** — mismo mecanismo (`ItemDisplay` pasajero) que Ranching: un minero, granjero, etc. puede mostrar un modelo completamente custom en vez del `entity-type` vanilla. De paso se corrigió un leak preexistente: el worker nunca se limpiaba de memoria/disco al morir su entidad
+- 🌍 **RPGRoll-Economy: economías regionales + integración activa con Guilds/Seasons** — `MarketEngine.price(producto, ubicación)` aplica ahora un multiplicador por `MarketRegion` (caja AABB con precios distintos por zona, ej. "el mineral es más barato en esta ciudad minera") y otro por estación activa (`season-modifiers` del producto, ej. las cosechas bajan de precio en `harvest`) si RPGRoll-Seasons está instalado. Además, una tarea periódica cobra un impuesto `PROPERTY` a cada guild por cada `GuildTerritory` que tenga reclamada (descontado de su `GuildVault` real vía `GuildsAPI`) — antes Guilds/Seasons solo eran dependencias de compilación, sin ningún código en runtime usándolas
+- 📀 **Empaquetado/distribución final** — `./gradlew release` arma un único `.zip` versionado con los 24 jars del ecosistema (core + 23 addons), fallando la build si algún módulo quedó en una versión distinta al resto. Core y NPCs (los únicos dos que shadean dependencias propias) resuelven solos su jar final vía `shadowJar`, el resto vía `jar` — ver la sección "Distribución" más abajo
+- 🧰 **Nueva herramienta web: Diseñador de TAB** — RPGRoll-TAB es el único addon sin GUI Studio dentro del juego, así que en su lugar la web de documentación suma un tool 100% en el navegador (como el Diseñador de Salas de Dungeons) que arma con formularios los 10 tipos de contenido de TAB — perfiles, contextos, scoreboards, tablists, nametags, belowname, bossbars, sorting, teams y animaciones — y genera el YAML exacto que lee cada `*Parser.java`, listo para copiar o descargar
 
 ---
 
@@ -58,7 +62,7 @@ Cada addon extiende el core con un sistema completo propio, construido por **com
 | 🎒 **Items**            | Ítems personalizados con stats, sockets, skins, mejoras y recetas                                         |
 | 🌟 **Ascension**        | Progresión avanzada: evolución de razas, especialización de clases, talentos, prestigio, afinidades       |
 | 👹 **Mobs**             | Mobs, jefes e invocaciones a medida (componentes, fases, IA propia, loot, reskin visual propio)           |
-| 🏰 **Dungeons**         | Mazmorras instanciadas: salas, oleadas, jefes, dificultades, ranking                                      |
+| 🏰 **Dungeons**         | Mazmorras instanciadas: salas, oleadas, jefes, dificultades, ranking; estructuras NATIVE/CUSTOM y schematics de WorldEdit (opcional) |
 | 🛡️ **Guilds**           | Equipos temporales (Teams) y organizaciones permanentes (Guilds)                                          |
 | 💬 **Chat**             | Canales, proximidad, idiomas, roles, whisper, antispam, reacciones, logs                                  |
 | 🎆 **SackEffects**      | Librería reusable de partículas con formas, sonidos, títulos/actionbar/bossbar                            |
@@ -67,10 +71,13 @@ Cada addon extiende el core con un sistema completo propio, construido por **com
 | 🍂 **RPGRoll-Seasons**  | Calendario y estaciones: clima, temperatura por bioma, vegetación dinámica, eventos mundiales             |
 | 🎣 **RPGRoll-Fishing**  | Pesca como profesión: especies, cañas/carnadas, minijuego, tesoros, enciclopedia de capturas              |
 | 🐄 **RPGRoll-Ranching** | Ganadería viva: genética hereditaria, reproducción, nutrición, bienestar, enfermedades/vacunas, reskin visual por raza |
-| 👷 **RPGRoll-Workers**  | NPCs trabajadores autónomos con IA por reglas, necesidades, logística y economía                          |
+| 👷 **RPGRoll-Workers**  | NPCs trabajadores autónomos con IA por reglas, necesidades, logística, economía y reskin visual propio    |
 | 📦 **SackResourcePack** | Asset pipeline standalone: fusión de resource packs, CustomModelData, build+hash, distribución automática |
 | 💰 **RPGRoll-Economy**  | Monedas múltiples, wallets, bancos/préstamos, mercado dinámico con oferta/demanda, tiendas, subastas, empresas, impuestos y libro mayor — proveedor del servicio Economy de Vault |
 | ⚒️ **RPGRoll-Crafting** | Recetas personalizadas (ingredientes/condiciones ricas, calidad), estaciones de crafteo propias, puente con estaciones vanilla y motores de yunque/fermentación |
+| 📋 **RPGRoll-TAB**      | TabList, Scoreboard, Nametags, BelowName y BossBars 100% personalizables por placeholders — perfiles, contextos y animaciones por YAML (o el Diseñador de TAB en la web) |
+| 🌡️ **RPGRoll-Extras**  | Necesidades y condiciones de supervivencia configurables (sed, stamina, fatiga, temperatura, oxígeno, estrés) con umbrales que aplican efectos |
+| 🪤 **RPGRoll-Traps**    | Motor de trampas/mecanismos por YAML: triggers/condiciones/acciones/cadenas, bloques reforzados con llave, puertas secretas, y torretas autónomas que apuntan y disparan a jugadores/mobs hostiles |
 
 Ver el detalle completo de cada uno (comandos, permisos, formato YAML, ejemplos) en el sitio de documentación (`UI/`).
 
@@ -88,7 +95,7 @@ Ver el detalle completo de cada uno (comandos, permisos, formato YAML, ejemplos)
 | Items            | `/item`, `/itemadmin`                            | RPGRoll                 | Enchantments, Vault, PlaceholderAPI                                     | **$15**         |
 | Ascension        | `/ascend`, `/ascendadmin`                        | RPGRoll                 | Enchantments, Quests, PlaceholderAPI                                    | **$16**         |
 | Mobs             | `/mobadmin`                                      | RPGRoll                 | Items, Quests, PlaceholderAPI, SackResourcePack                         | **$15**         |
-| Dungeons         | `/dungeon`, `/dungeonadmin`                      | RPGRoll, Mobs, Guilds   | Items, Quests, PlaceholderAPI                                           | **$15**         |
+| Dungeons         | `/dungeon`, `/dungeonadmin`                      | RPGRoll, Mobs, Guilds   | Items, Quests, PlaceholderAPI, WorldEdit                                | **$15**         |
 | Guilds           | `/guild`, `/team`, `/guildadmin`                 | RPGRoll                 | Items, Quests, Vault, PlaceholderAPI                                    | **$12**         |
 | Chat             | `/channel`, `/w`, `/language`, `/chatadmin`, ... | RPGRoll                 | Guilds, PlaceholderAPI                                                  | **$10**         |
 | SackEffects      | `/sackeffects`                                   | RPGRoll                 | —                                                                       | **$6**          |
@@ -97,10 +104,13 @@ Ver el detalle completo de cada uno (comandos, permisos, formato YAML, ejemplos)
 | RPGRoll-Seasons  | `/seasons`, `/seasonsadmin`                      | RPGRoll                 | SackEffects, RPGRoll-Effects, Mobs                                      | **$14**         |
 | RPGRoll-Fishing  | `/fishing`, `/fishingadmin`                      | RPGRoll                 | SackEffects, RPGRoll-Effects, Seasons, SackResourcePack                 | **$14**         |
 | RPGRoll-Ranching | `/ranching`, `/ranchingadmin`                    | RPGRoll                 | SackEffects, RPGRoll-Effects, Seasons, SackResourcePack                 | **$16**         |
-| RPGRoll-Workers  | `/workers`, `/workersadmin`                      | RPGRoll                 | SackEffects, RPGRoll-Effects, Seasons, Ranching, Fishing, Guilds, Vault | **$16**         |
+| RPGRoll-Workers  | `/workers`, `/workersadmin`                      | RPGRoll                 | SackEffects, RPGRoll-Effects, Seasons, Ranching, Fishing, Guilds, Vault, SackResourcePack | **$16**         |
 | SackResourcePack | `/srp`                                           | _(ninguno, standalone)_ | S3 (subida remota)                                                      | **$12**         |
 | RPGRoll-Economy  | `/economy`, `/economyadmin`                      | RPGRoll                 | Vault, PlaceholderAPI, Guilds, Seasons                                  | **$18**         |
 | RPGRoll-Crafting | `/crafting`, `/craftingadmin`                    | RPGRoll                 | Items, Economy, Guilds, Seasons                                         | **$17**         |
+| RPGRoll-TAB      | `/tabadmin`                                      | RPGRoll                 | ProtocolLib, PlaceholderAPI                                             | **$19**         |
+| RPGRoll-Extras   | `/extrasadmin`                                   | RPGRoll                 | RPGRoll-TAB, RPGRoll-Seasons, PlaceholderAPI, Vault                     | **$13**         |
+| RPGRoll-Traps    | `/trapadmin`                                     | RPGRoll                 | Items, RPGRoll-Effects, Mobs, PlaceholderAPI                            | **$14**         |
 
 Todos los comandos administrativos, de jugador y con contenido dinámico (razas, ítems, encantamientos, especies, entidades, etc.) tienen **autocompletado real por Tab**.
 
@@ -110,16 +120,15 @@ Los precios son estimados (USD) en función de la complejidad de cada módulo �
 
 # 🚀 Roadmap
 
-El core y los 20 addons ya están funcionales end-to-end (motor + persistencia + GUI editor + comandos + ejemplos). Lo que queda pendiente es, en su mayoría, **contenido/expansión sobre sistemas ya construidos**, no sistemas nuevos:
+El core y los 23 addons ya están funcionales end-to-end (motor + persistencia + GUI editor o herramienta web + comandos + ejemplos). Lo que queda pendiente es, en su mayoría, **contenido/expansión sobre sistemas ya construidos**, no sistemas nuevos:
 
 - 🚧 RPGRoll-Magic: rituales, combos de hechizos, sinergias elementales, sobrecarga (overload), invocación de mobs desde hechizos
 - 🚧 RPGRoll-Seasons: festivales, decoraciones estacionales, migración de animales
 - 🚧 RPGRoll-Fishing: acuarios, mercado de peces, competencias de pesca, cocina con capturas
 - 🚧 RPGRoll-Ranching: subastas, exhibiciones, edificios/instalaciones de granja dedicados
 - 🚧 RPGRoll-Workers: empresas/compañías, equipos de trabajadores, transporte, construcción autónoma
-- 🚧 RPGRoll-Economy: acciones/bolsa de valores para empresas, contratos entre jugadores, NPC merchants con IA de mercado, economías regionales, eventos económicos, integración activa con Guilds/Seasons (hoy solo dependencias de compilación)
-- 🚧 RPGRoll-Crafting: estructuras multibloque para estaciones, mejoras/niveles de estación, recetas para Telar/Cartografía/Amolar/Comercio de Aldeanos/Crafter, auto-descubrimiento por experimentación, modelos 3D vía SackResourcePack
-- 🚧 Empaquetado/distribución final (versionado conjunto, un solo release por versión del ecosistema)
+- 🚧 RPGRoll-Economy: acciones/bolsa de valores, contratos entre jugadores y NPC merchants con IA de mercado (economías regionales y la integración activa con Guilds/Seasons ya están hechas)
+- 🚧 RPGRoll-Mobs / RPGRoll-Workers: integración real con ModelEngine/BetterModel para los reskins (hoy el reskin propio vía `ItemDisplay` ya funciona sin esos plugins; la integración con ellos queda documentada pero sin aplicar, para no depender de una API externa sin JAR público)
 
 ---
 
@@ -134,6 +143,26 @@ El core y los 20 addons ya están funcionales end-to-end (motor + persistencia +
 | PlaceholderAPI  | Opcional (Soft Depend)         |
 | ProtocolLib     | Requerido por NPCs             |
 | DecentHolograms | Opcional (Soft Depend, Crates) |
+
+---
+
+# 📀 Distribución (para quien mantiene el repo)
+
+Todos los módulos comparten un único número de versión (`1.0.0` hoy, en cada `build.gradle.kts`). Para armar
+el paquete de release completo del ecosistema:
+
+```bash
+./gradlew release
+```
+
+Esto arma `build/distributions/RPGRoll-Ecosystem-<versión>.zip` con el `.jar` final de los 23 addons + el
+core (24 en total) más un `MANIFEST.txt` con la lista. Antes de copiar los jars, `checkReleaseVersions` falla
+la build si algún módulo quedó en una versión distinta al resto — evita publicar un release con addons
+desincronizados. Los dos módulos que empaquetan dependencias propias (`core` shadea `:api`/`:common`; `npcs`
+shadea y reubica OkHttp) usan su `shadowJar`, no el jar plano — la tarea ya lo resuelve sola por módulo, no
+hace falta tocar nada al agregar un addon nuevo mientras siga la convención `rpgroll.addon-conventions`.
+
+No corre como parte de `./gradlew build` — es completamente opt-in.
 
 ---
 
@@ -285,7 +314,7 @@ La idea es que prácticamente cualquier mecánica RPG pueda implementarse utiliz
 
 # ❤️ Estado del desarrollo
 
-El core y los 20 addons descritos arriba están implementados y compilando (motor + GUI + comandos + ejemplos). El proyecto sigue en fase **Alpha**: las APIs internas y algunas funcionalidades pueden cambiar antes de la versión **1.0**, y varios addons todavía tienen expansiones de contenido pendientes (ver [Roadmap](#-roadmap)).
+El core y los 23 addons descritos arriba están implementados y compilando (motor + GUI + comandos + ejemplos). El proyecto sigue en fase **Alpha**: las APIs internas y algunas funcionalidades pueden cambiar antes de la versión **1.0**, y varios addons todavía tienen expansiones de contenido pendientes (ver [Roadmap](#-roadmap)).
 
 ---
 

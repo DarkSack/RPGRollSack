@@ -1,6 +1,7 @@
 package com.sack.rpgroll.workers.core.profession;
 
 import com.sack.rpgroll.common.content.RPGContent;
+import com.sack.rpgroll.common.reskin.EntityReskin;
 import com.sack.rpgroll.workers.core.economy.WageType;
 
 import java.util.List;
@@ -33,7 +34,8 @@ public record Profession(
         String scheduleId,
         double wageAmount,
         WageType wageType,
-        String toolMaterial) implements RPGContent {
+        String toolMaterial,
+        EntityReskin reskin) implements RPGContent {
 
     public Profession {
         Objects.requireNonNull(id, "id no puede ser null");
@@ -47,6 +49,7 @@ public record Profession(
         wageAmount = Math.max(0, wageAmount);
         wageType = wageType == null ? WageType.PER_TASK : wageType;
         toolMaterial = toolMaterial == null || toolMaterial.isBlank() ? null : toolMaterial.toUpperCase(java.util.Locale.ROOT);
+        reskin = reskin == null ? EntityReskin.NONE : reskin;
     }
 
     /** Reglas ya ordenadas por prioridad ascendente — la primera que matchee gana. */

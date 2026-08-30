@@ -42,8 +42,7 @@ public class BankAccountDetailGUI extends InventoryGUI {
     public BankAccountDetailGUI(Player player, BankAccount account, BankManager bankManager,
             CurrencyManager currencyManager, LoanService loanService, ChatPromptManager chatPromptManager,
             Runnable onBack) {
-        super(player, Component.text(chatPromptManager.lang().raw("bank.detail.title", "name", account.name()),
-                NamedTextColor.GOLD), SIZE);
+        super(player, chatPromptManager.lang().component("bank.detail.title", "name", account.name()), SIZE);
         this.account = account;
         this.bankManager = bankManager;
         this.currencyManager = currencyManager;

@@ -6,6 +6,7 @@ import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.seasons.core.WorldEvent;
 import com.sack.rpgroll.seasons.core.WorldEventManager;
 import com.sack.rpgroll.seasons.event.WorldEventEngine;
+import com.sack.rpgroll.util.ComponentUtils;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -53,7 +54,7 @@ public class WorldEventBrowserGUI extends InventoryGUI {
             WorldEvent event = events.get(i);
 
             setItem(i, new ItemBuilder(SeasonBrowserGUI.parseMaterial(event.icon()))
-                    .setName(Component.text(event.displayName(), NamedTextColor.LIGHT_PURPLE))
+                    .setName(ComponentUtils.parse(event.displayName()))
                     .setLore(lang.component("gui.common.id_label", "id", event.id()),
                             lang.component("gui.world_event_browser.component_count", "count",
                                     event.components().size()),

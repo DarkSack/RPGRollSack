@@ -62,8 +62,7 @@ public class WorkerEventEditorGUI extends InventoryGUI {
         }
 
         setItem(NAME_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.skill.editor.name", "name", current.displayName()),
-                        NamedTextColor.YELLOW)).build());
+                .setName(chatPromptManager.lang().component("gui.skill.editor.name", "name", current.displayName())).build());
 
         setItem(DESCRIPTION_SLOT, new ItemBuilder(Material.WRITTEN_BOOK)
                 .setName(Component.text(chatPromptManager.lang().raw("gui.profession.editor.description"), NamedTextColor.YELLOW))

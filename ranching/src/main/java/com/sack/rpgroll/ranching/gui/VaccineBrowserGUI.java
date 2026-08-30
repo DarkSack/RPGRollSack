@@ -5,6 +5,7 @@ import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.ranching.core.health.DiseaseManager;
 import com.sack.rpgroll.ranching.core.health.Vaccine;
 import com.sack.rpgroll.ranching.core.health.VaccineManager;
+import com.sack.rpgroll.util.ComponentUtils;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -53,7 +54,7 @@ public class VaccineBrowserGUI extends InventoryGUI {
             Vaccine vaccine = vaccines.get(i);
 
             setItem(i, new ItemBuilder(SpeciesBrowserGUI.parseMaterial(vaccine.icon(), Material.POTION))
-                    .setName(Component.text(vaccine.displayName(), NamedTextColor.YELLOW))
+                    .setName(ComponentUtils.parse(vaccine.displayName()))
                     .setLore(Component.text(chatPromptManager.lang().raw("gui.browser.id_line", "id", vaccine.id()), NamedTextColor.GRAY),
                             Component.text(chatPromptManager.lang().raw("gui.common.click_to_edit"), NamedTextColor.YELLOW))
                     .build());

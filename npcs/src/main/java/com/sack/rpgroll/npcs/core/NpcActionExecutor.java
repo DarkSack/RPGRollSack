@@ -33,6 +33,7 @@ public class NpcActionExecutor {
         switch (action.type()) {
             case MESSAGE -> executeMessage(player, action.value());
             case COMMAND -> executeCommand(player, action.value());
+            case COMMAND_AS_PLAYER -> executeCommandAsPlayer(player, action.value());
             case GIVE_ITEM -> executeGiveItem(player, action.value());
             case TAKE_ITEM -> executeTakeItem(player, action.value());
             case SOUND -> executeSound(player, action.value());
@@ -103,6 +104,16 @@ public class NpcActionExecutor {
     private void executeCommand(Player player, String rawCommand) {
         String parsed = rawCommand.replace("{player}", player.getName());
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), parsed);
+    }
+
+    /**
+     * A diferencia de {@link #executeCommand}, corre el comando con el jugador como sender real —
+     * necesario para comandos propios de RPGRoll (ej. "quest start x", que exigen
+     * {@code sender instanceof Player} y fallan en silencio si se disparan por consola).
+     */
+    private void executeCommandAsPlayer(Player player, String rawCommand) {
+        String parsed = rawCommand.replace("{player}", player.getName());
+        Bukkit.dispatchCommand(player, parsed);
     }
 
     private void executeGiveItem(Player player, String value) {
