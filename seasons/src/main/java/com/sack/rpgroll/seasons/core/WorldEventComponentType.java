@@ -10,7 +10,7 @@ public enum WorldEventComponentType {
     PARTICLE,
     /** Sonido vanilla para cada jugador. */
     SOUND,
-    /** Efecto completo de SackEffects por id, sobre cada jugador. */
+    /** Efecto completo de RPGRoll-Particles por id, sobre cada jugador. */
     VISUAL,
     /** Aplica un efecto de RPGRoll-Effects por id a cada jugador. */
     APPLY_EFFECT,

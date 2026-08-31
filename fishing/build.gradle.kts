@@ -17,7 +17,7 @@ dependencies {
     testImplementation(project(":core"))
 
     // Integraciones blandas (softdepend en plugin.yml, chequeadas en runtime):
-    // capturas pueden disparar partículas/sonidos de SackEffects, aplicar efectos
+    // capturas pueden disparar partículas/sonidos de RPGRoll-Particles, aplicar efectos
     // de estado de RPGRoll-Effects (ej. una anguila eléctrica que aturde), y las
     // condiciones de especie pueden filtrar por la estación real de RPGRoll-Seasons.
     compileOnly(project(":sackeffects"))

@@ -1,19 +1,19 @@
 # Language file: English
-# SackEffects - Message system
+# RPGRoll-Particles - Message system
 
 # General messages
 general:
   no_permission: "&cYou don't have permission to use this command."
 
-# /sackeffects <browser|reload|test>
+# /rpgparticles <browser|reload|test>
 command:
-  usage: "&cUsage: /sackeffects <browser|reload|test <id> [player]>"
+  usage: "&cUsage: /rpgparticles <browser|reload|test <id> [player]>"
   browser_players_only: "&cOnly players can open the effects browser."
   reload_success: "&a✔ Reloaded: {count} effect(s)."
-  test_usage: "&cUsage: /sackeffects test <id> [player]"
+  test_usage: "&cUsage: /rpgparticles test <id> [player]"
   test_effect_not_found: "&cNo effect exists with id: {id}"
   test_player_not_found: "&cPlayer not found: {player}"
-  test_specify_player: "&cSpecify a player: /sackeffects test <id> <player>"
+  test_specify_player: "&cSpecify a player: /rpgparticles test <id> <player>"
   test_playing: "&a▶ Playing '{id}' on {player}."
 
 # Shared chat prompts (used by the admin GUIs)

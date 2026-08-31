@@ -96,7 +96,7 @@ components:
 
   - type: VISUAL
     trigger: ON_APPLY
-    effect-id: level_up # id de un efecto de SackEffects, si está instalado
+    effect-id: level_up # id de un efecto de RPGRoll-Particles, si está instalado
 
   - type: SOUND
     trigger: ON_APPLY

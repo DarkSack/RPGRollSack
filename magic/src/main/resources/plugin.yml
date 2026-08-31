@@ -5,7 +5,7 @@ api-version: "26.1.1"
 author: Sack
 description: Framework de magia modular — escuelas, hechizos construidos por componentes, maná, catalizadores, grimorios, runas y árboles de progresión.
 depend: [RPGRoll]
-softdepend: [SackEffects, RPGRoll-Effects]
+softdepend: [RPGRoll-Particles, RPGRoll-Effects]
 
 commands:
   magicadmin:

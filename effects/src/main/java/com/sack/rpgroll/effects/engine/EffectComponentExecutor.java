@@ -33,7 +33,7 @@ import java.util.Optional;
  * los demás componentes ni al resto del efecto.
  * <p>
  * VISUAL/SOUND delegan en {@code SackEffectsAPI} (dependencia blanda — si
- * SackEffects no está instalado, esos componentes simplemente no hacen
+ * RPGRoll-Particles no está instalado, esos componentes simplemente no hacen
  * nada) y solo tienen efecto sobre {@link Player}, ya que esa API solo
  * acepta un Player como "caster".
  */
@@ -62,7 +62,7 @@ public class EffectComponentExecutor {
                 execute(target, activeEffect, component, trigger);
             } catch (Throwable e) {
                 // Throwable (no solo Exception) a propósito: VISUAL/AURA dependen de otros
-                // plugins vía softdepend (SackEffects) — si no están instalados, resolver esa
+                // plugins vía softdepend (RPGRoll-Particles) — si no están instalados, resolver esa
                 // clase lanza NoClassDefFoundError, no una Exception normal.
                 plugin.getLogger().warning("✘ Error ejecutando componente " + component.type() + " del efecto '"
                         + activeEffect.definition().id() + "': " + e.getMessage());
@@ -209,7 +209,7 @@ public class EffectComponentExecutor {
         target.addPotionEffect(new PotionEffect(type, durationTicks, amplifier, false, true));
     }
 
-    // ============ VISUAL / SOUND (delega en SackEffects) ============
+    // ============ VISUAL / SOUND (delega en RPGRoll-Particles) ============
 
     private void executeVisual(LivingEntity target, EffectComponent component) {
 

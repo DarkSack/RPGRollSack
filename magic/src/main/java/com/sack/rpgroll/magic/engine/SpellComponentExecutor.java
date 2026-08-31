@@ -31,7 +31,7 @@ import java.util.Locale;
  * {@code SpellCastEngine} maneja directamente porque necesitan pausar el
  * pipeline entre ticks. Un error en un componente solo loguea un warning y
  * no interrumpe el resto, mismo criterio que EffectComponentExecutor/
- * SackEffects EffectEngine.
+ * RPGRoll-Particles EffectEngine.
  */
 public class SpellComponentExecutor {
 

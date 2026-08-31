@@ -15,7 +15,7 @@ dependencies {
     // Tests necesitan las clases reales de :common (RPGContent) en el classpath.
 
     // Integraciones blandas (softdepend en plugin.yml, chequeadas en runtime):
-    // el bienestar/producción puede disparar partículas/sonidos de SackEffects,
+    // el bienestar/producción puede disparar partículas/sonidos de RPGRoll-Particles,
     // enfermedades/curas pueden aplicar efectos de estado de RPGRoll-Effects, y
     // la estación real de RPGRoll-Seasons modula reproducción/fertilidad/enfermedad/producción.
     compileOnly(project(":sackeffects"))

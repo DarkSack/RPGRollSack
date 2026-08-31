@@ -1,7 +1,7 @@
 # ============================================================================
 # EFECTO DE REFERENCIA — usa los 6 tipos de paso, las 8 formas de partícula y
-# los 4 targets que soporta SackEffects. Documentación ejecutable, pensada
-# para copiar/pegar pasos sueltos. Ver "SackEffects" en la docs.
+# los 4 targets que soporta RPGRoll-Particles. Documentación ejecutable, pensada
+# para copiar/pegar pasos sueltos. Ver "RPGRoll-Particles" en la docs.
 # ============================================================================
 
 id: reference_full_example

@@ -16,9 +16,9 @@ public enum EffectComponentType {
     MOVEMENT_MODIFIER,
     /** Aplica un PotionEffect vanilla real (para que se vea el ícono clásico en el HUD de Minecraft). */
     POTION_VANILLA,
-    /** Dispara un efecto de SackEffects (partículas/sonido/título/bossbar) por su id. */
+    /** Dispara un efecto de RPGRoll-Particles (partículas/sonido/título/bossbar) por su id. */
     VISUAL,
-    /** Sonido suelto sin necesitar un efecto de SackEffects declarado aparte. */
+    /** Sonido suelto sin necesitar un efecto de RPGRoll-Particles declarado aparte. */
     SOUND,
     /** Mensaje de chat/actionbar al titular del efecto. */
     MESSAGE,

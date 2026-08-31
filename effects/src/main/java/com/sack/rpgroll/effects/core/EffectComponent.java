@@ -6,7 +6,7 @@ import java.util.Objects;
 /**
  * Un componente dentro de una {@link EffectDefinition} — mismo patrón "tipo
  * + params libres" que {@code ItemAction}/{@code MobAction}/{@code
- * EffectStep} de SackEffects, más un {@link EffectTriggerType} propio (cada
+ * EffectStep} de RPGRoll-Particles, más un {@link EffectTriggerType} propio (cada
  * componente decide en qué momento dispara, no el efecto entero).
  */
 public record EffectComponent(EffectComponentType type, EffectTriggerType trigger, Map<String, String> params) {

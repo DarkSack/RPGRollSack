@@ -34,12 +34,12 @@ public enum SpellComponentType {
     /** Daño a las entidades dentro de un cono en la dirección que mira el caster. */
     DAMAGE_CONE,
 
-    // ============ Visual (delegan en SackEffects si está instalado) ============
-    /** Partícula vanilla suelta, sin necesitar SackEffects. */
+    // ============ Visual (delegan en RPGRoll-Particles si está instalado) ============
+    /** Partícula vanilla suelta, sin necesitar RPGRoll-Particles. */
     PARTICLE,
-    /** Sonido vanilla suelto, sin necesitar SackEffects. */
+    /** Sonido vanilla suelto, sin necesitar RPGRoll-Particles. */
     SOUND,
-    /** Dispara un efecto completo de SackEffects por id (partículas+sonido+título+bossbar combinados). */
+    /** Dispara un efecto completo de RPGRoll-Particles por id (partículas+sonido+título+bossbar combinados). */
     VISUAL,
 
     // ============ Mundo ============

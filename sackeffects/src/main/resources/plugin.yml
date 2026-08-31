@@ -1,4 +1,4 @@
-name: SackEffects
+name: RPGRoll-Particles
 version: 1.0.0
 main: com.sack.rpgroll.sackeffects.SackEffectsPlugin
 api-version: "26.1.1"
@@ -7,12 +7,12 @@ description: Librería de efectos (partículas con formas, sonidos, títulos/act
 depend: [RPGRoll]
 
 commands:
-  sackeffects:
-    description: Comandos administrativos de SackEffects
-    usage: /sackeffects <browser|reload|test <id> [jugador]> [args]
-    permission: sackeffects.admin.*
+  rpgparticles:
+    description: Comandos administrativos de RPGRoll-Particles
+    usage: /rpgparticles <browser|reload|test <id> [jugador]> [args]
+    permission: rpgrollparticles.admin.*
 
 permissions:
-  sackeffects.admin.*:
-    description: Acceso completo a comandos administrativos de SackEffects
+  rpgrollparticles.admin.*:
+    description: Acceso completo a comandos administrativos de RPGRoll-Particles
     default: op

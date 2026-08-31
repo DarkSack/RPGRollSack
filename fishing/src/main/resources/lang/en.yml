@@ -101,7 +101,7 @@ gui:
     full_moon_hint: "&7Only applies if legendary. Click to toggle"
     field_required_bait: "&eRequired bait: {value}"
     required_bait_hint: "&7Only applies if legendary."
-    field_catch_effect: "&eSackEffects effect: {value}"
+    field_catch_effect: "&eRPGRoll-Particles effect: {value}"
     field_catch_status_effect: "&eStatus effect: {value}"
     catch_status_effect_hint: "&7Id of an RPGRoll-Effects effect — e.g. an electric eel stuns the angler."
     prompt_name: "Type the new name:"
@@ -118,7 +118,7 @@ gui:
     prompt_bait_tags: "Type the bait tags separated by commas:"
     prompt_required_bait: "Type the required bait's id (or 'none'):"
     unknown_bait: "&cThat bait doesn't exist."
-    prompt_catch_effect: "Type the SackEffects effect id (or 'none'):"
+    prompt_catch_effect: "Type the RPGRoll-Particles effect id (or 'none'):"
     prompt_catch_status_effect: "Type the RPGRoll-Effects effect id (or 'none'):"
 
   rod:

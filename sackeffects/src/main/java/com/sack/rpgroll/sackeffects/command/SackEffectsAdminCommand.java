@@ -47,7 +47,7 @@ public class SackEffectsAdminCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
-        if (!sender.hasPermission("sackeffects.admin.*")) {
+        if (!sender.hasPermission("rpgrollparticles.admin.*")) {
             langManager.send(sender, "general.no_permission");
             return true;
         }

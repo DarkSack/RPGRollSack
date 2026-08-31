@@ -5,7 +5,7 @@ api-version: "26.1.1"
 author: Sack
 description: Calendario y estaciones 100% personalizables — clima, temperatura por bioma, vegetación dinámica, mobs/jefes de temporada y eventos mundiales.
 depend: [RPGRoll]
-softdepend: [SackEffects, RPGRoll-Effects, RPGRoll-Mobs]
+softdepend: [RPGRoll-Particles, RPGRoll-Effects, RPGRoll-Mobs]
 
 commands:
   seasonsadmin:

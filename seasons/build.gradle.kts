@@ -15,7 +15,7 @@ dependencies {
     // Tests necesitan las clases reales de :common (RPGContent/ContentManager) en el classpath.
 
     // Integraciones blandas (softdepend en plugin.yml, chequeadas en runtime):
-    // clima/eventos pueden disparar partículas/sonidos de SackEffects, aplicar
+    // clima/eventos pueden disparar partículas/sonidos de RPGRoll-Particles, aplicar
     // efectos de estado de RPGRoll-Effects, y hacer spawnear mobs/jefes de
     // temporada reusando definiciones de RPGRoll-Mobs.
     compileOnly(project(":sackeffects"))

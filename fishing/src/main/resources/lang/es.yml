@@ -101,7 +101,7 @@ gui:
     full_moon_hint: "&7Solo aplica si es legendario. Click para alternar"
     field_required_bait: "&eCarnada requerida: {value}"
     required_bait_hint: "&7Solo aplica si es legendario."
-    field_catch_effect: "&eEfecto SackEffects: {value}"
+    field_catch_effect: "&eEfecto RPGRoll-Particles: {value}"
     field_catch_status_effect: "&eEfecto de estado: {value}"
     catch_status_effect_hint: "&7Id de un efecto de RPGRoll-Effects — ej. anguila eléctrica aturde al pescador."
     prompt_name: "Escribí el nuevo nombre:"
@@ -118,7 +118,7 @@ gui:
     prompt_bait_tags: "Escribí los tags de carnada separados por comas:"
     prompt_required_bait: "Escribí el id de la carnada requerida (o 'ninguna'):"
     unknown_bait: "&cNo existe esa carnada."
-    prompt_catch_effect: "Escribí el id del efecto de SackEffects (o 'ninguno'):"
+    prompt_catch_effect: "Escribí el id del efecto de RPGRoll-Particles (o 'ninguno'):"
     prompt_catch_status_effect: "Escribí el id del efecto de RPGRoll-Effects (o 'ninguno'):"
 
   rod:

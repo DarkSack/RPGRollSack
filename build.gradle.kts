@@ -44,6 +44,13 @@ val collectRelease by tasks.registering(Copy::class) {
 
     dependsOn(checkReleaseVersions)
 
+    // Copy no borra lo que ya esté en el destino: sin esto, el jar de un módulo
+    // renombrado (o eliminado) sobrevive en build/release y se cuela en el zip.
+    // El comprador terminaría instalando el plugin viejo y el nuevo a la vez.
+    doFirst {
+        delete(releaseDir)
+    }
+
     into(releaseDir)
 
     addonProjects.forEach { addon ->

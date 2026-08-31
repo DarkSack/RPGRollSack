@@ -9,7 +9,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 /**
- * Punto de entrada público de SackEffects para cualquier otro plugin
+ * Punto de entrada público de RPGRoll-Particles para cualquier otro plugin
  * (de RPGRoll o no). Dos formas de usarla:
  * <ul>
  * <li>{@link #play(String, Player)} y sus variantes — dispara un efecto ya
@@ -40,15 +40,15 @@ public final class SackEffectsAPI {
     }
 
     /**
-     * @throws IllegalStateException si SackEffects todavía no terminó de
+     * @throws IllegalStateException si RPGRoll-Particles todavía no terminó de
      *                                arrancar. No debería ocurrir si tu plugin
      *                                declaró {@code depend/softdepend:
-     *                                [SackEffects]}.
+     *                                [RPGRoll-Particles]}.
      */
     public static SackEffectsAPI get() {
 
         if (instance == null) {
-            throw new IllegalStateException("SackEffects todavía no está listo.");
+            throw new IllegalStateException("RPGRoll-Particles todavía no está listo.");
         }
 
         return instance;

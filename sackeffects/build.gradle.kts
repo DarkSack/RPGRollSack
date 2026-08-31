@@ -5,7 +5,7 @@ plugins {
 group = "com.sack"
 version = "1.0.0"
 
-base.archivesName.set("SackEffects")
+base.archivesName.set("RPGRoll-Particles")
 
 dependencies {
     // rpgroll.addon-conventions ya agrega compileOnly(:api) y compileOnly(:common).

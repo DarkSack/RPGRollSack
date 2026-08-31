@@ -44,7 +44,7 @@ public class SackEffectsPlugin extends JavaPlugin {
         ChatPromptManager chatPromptManager = new ChatPromptManager(this, langManager);
         getServer().getPluginManager().registerEvents(chatPromptManager, this);
 
-        var effectsCommand = getCommand("sackeffects");
+        var effectsCommand = getCommand("rpgparticles");
         if (effectsCommand == null) {
             getLogger().severe("✘ El comando 'sackeffects' no está declarado en plugin.yml");
         } else {
@@ -54,7 +54,7 @@ public class SackEffectsPlugin extends JavaPlugin {
             effectsCommand.setTabCompleter(sackEffectsAdminCommand);
         }
 
-        getLogger().info("✔ SackEffects habilitado. " + effectManager.count() + " efecto(s) cargado(s).");
+        getLogger().info("✔ RPGRoll-Particles habilitado. " + effectManager.count() + " efecto(s) cargado(s).");
     }
 
     public LangManager getLangManager() {

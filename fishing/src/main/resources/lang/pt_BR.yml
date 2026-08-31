@@ -101,7 +101,7 @@ gui:
     full_moon_hint: "&7Só se aplica se for lendário. Clique para alternar"
     field_required_bait: "&eIsca necessária: {value}"
     required_bait_hint: "&7Só se aplica se for lendário."
-    field_catch_effect: "&eEfeito SackEffects: {value}"
+    field_catch_effect: "&eEfeito RPGRoll-Particles: {value}"
     field_catch_status_effect: "&eEfeito de status: {value}"
     catch_status_effect_hint: "&7Id de um efeito do RPGRoll-Effects — ex. uma enguia elétrica atordoa o pescador."
     prompt_name: "Digite o novo nome:"
@@ -118,7 +118,7 @@ gui:
     prompt_bait_tags: "Digite as tags de isca separadas por vírgulas:"
     prompt_required_bait: "Digite o id da isca necessária (ou 'nenhuma'):"
     unknown_bait: "&cEssa isca não existe."
-    prompt_catch_effect: "Digite o id do efeito do SackEffects (ou 'nenhum'):"
+    prompt_catch_effect: "Digite o id do efeito do RPGRoll-Particles (ou 'nenhum'):"
     prompt_catch_status_effect: "Digite o id do efeito do RPGRoll-Effects (ou 'nenhum'):"
 
   rod:
