@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
@@ -130,24 +131,29 @@ class LicenseManagerTest {
         assertEquals(LicenseResult.Status.VALID, result.status());
     }
 
+    // El enrutamiento se comprueba sobre el proveedor elegido, no disparando una
+    // verificación real: un test unitario no debe depender de la red ni del
+    // endpoint que tenga configurado el build.
     @Test
-    void selfHostedKeyPrefixSelectsTheSelfHostedProvider() throws Exception {
-        writeLicense("key: '" + LicenseSettings.SELF_HOSTED_KEY_PREFIX + "AAAAA-BBBBB'\n");
+    void selfHostedKeyPrefixSelectsTheSelfHostedProvider() {
+        LicenseProvider provider = new LicenseManager(plugin)
+                .resolveProvider(LicenseSettings.SELF_HOSTED_KEY_PREFIX + "AAAAA-BBBBB");
 
-        LicenseResult result = new LicenseManager(plugin).check();
-
-        // Sin endpoint configurado en el build, el proveedor propio rechaza
-        // pidiendo justamente eso — prueba de que se eligió ese camino.
-        assertTrue(result.message().contains("endpoint"));
+        assertInstanceOf(SelfHostedLicenseProvider.class, provider);
     }
 
     @Test
-    void aNonPrefixedKeyGoesToVoxelShop() throws Exception {
-        writeLicense("key: 'VOXEL-STYLE-KEY'\n");
+    void aNonPrefixedKeyGoesToVoxelShop() {
+        LicenseProvider provider = new LicenseManager(plugin).resolveProvider("VOXEL-STYLE-KEY");
 
-        LicenseResult result = new LicenseManager(plugin).check();
+        assertInstanceOf(VoxelShopLicenseProvider.class, provider);
+    }
 
-        assertFalse(result.message().contains("endpoint"));
+    @Test
+    void theSelfHostedEndpointIsConfiguredInTheBuild() {
+        // Si queda vacío, toda venta directa falla al arrancar el servidor.
+        assertFalse(LicenseSettings.SELF_HOSTED_ENDPOINT.isBlank(),
+                "SELF_HOSTED_ENDPOINT sin configurar en LicenseSettings");
     }
 
     @Test

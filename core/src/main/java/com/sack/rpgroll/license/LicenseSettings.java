@@ -37,7 +37,7 @@ final class LicenseSettings {
      * (Ko-fi, Patreon) — la función {@code /api/verify} desplegada desde el
      * repositorio privado {@code verification-web} (Vercel + Supabase).
      */
-    static final String SELF_HOSTED_ENDPOINT = "";
+    static final String SELF_HOSTED_ENDPOINT = "https://verification-web-murex.vercel.app/api/verify";
 
     /**
      * Prefijo de las claves que emite el servidor propio ({@code issue} las

@@ -91,8 +91,12 @@ public class LicenseManager {
         };
     }
 
-    /** El canal lo dice la clave, no la configuración — ver {@link LicenseSettings}. */
-    private LicenseProvider resolveProvider(String key) {
+    /**
+     * El canal lo dice la clave, no la configuración — ver {@link LicenseSettings}.
+     * Visible para los tests: comprobar a qué proveedor enruta una clave no
+     * debería exigir una llamada de red real.
+     */
+    LicenseProvider resolveProvider(String key) {
 
         if (!key.startsWith(LicenseSettings.SELF_HOSTED_KEY_PREFIX)) {
             return new VoxelShopLicenseProvider();
