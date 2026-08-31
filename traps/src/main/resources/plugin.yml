@@ -10,7 +10,7 @@ softdepend: [RPGRoll-Items, RPGRoll-Effects, RPGRoll-Mobs, PlaceholderAPI]
 commands:
   trapadmin:
     description: Gestiona trampas/mecanismos
-    usage: /trapadmin <create|edit|browser|reload|place|remove|list|info|forcetrigger|turret> [args]
+    usage: /trapadmin <create|edit|browser|reload|place|remove|list|info|forcetrigger|turret|give> [args]
     permission: rpgrolltraps.admin.*
 
 permissions:

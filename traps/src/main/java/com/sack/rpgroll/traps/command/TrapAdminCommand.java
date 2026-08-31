@@ -1,5 +1,9 @@
 package com.sack.rpgroll.traps.command;
 
+import org.bukkit.Bukkit;
+
+import com.sack.rpgroll.traps.turret.TurretItem;
+
 import com.sack.rpgroll.common.command.Senders;
 
 import com.sack.rpgroll.common.lang.LangManager;
@@ -284,6 +288,7 @@ public class TrapAdminCommand implements CommandExecutor, TabCompleter {
             case "browser" -> handleTurretBrowser(sender);
             case "place" -> handleTurretPlace(sender, args);
             case "remove" -> handleTurretRemove(sender, args);
+            case "give" -> handleTurretGive(sender, args);
             case "list" -> handleTurretList(sender);
             default -> lang.send(sender, "admin.turret.usage");
         }
@@ -366,6 +371,62 @@ public class TrapAdminCommand implements CommandExecutor, TabCompleter {
 
         PlacedTurret placed = placedTurretManager.add(turretId, target.getLocation().add(0, 1, 0));
         lang.send(player, "admin.turret.place.ok", "turret", turretId, "placement", placed.placementId());
+    }
+
+    /**
+     * /trapadmin turret give &lt;id&gt; [jugador] [cantidad]
+     * <p>
+     * Sin jugador se lo da a quien ejecuta, así que desde consola hay que
+     * nombrarlo — por eso los dos chequeos están separados y no fundidos en
+     * un solo mensaje de uso.
+     */
+    private void handleTurretGive(CommandSender sender, String[] args) {
+
+        if (args.length < 3) {
+            lang.send(sender, "admin.turret.give_usage");
+            return;
+        }
+
+        var definitionOpt = turretManager.get(args[2]);
+
+        if (definitionOpt.isEmpty()) {
+            lang.send(sender, "admin.turret.not_found", "id", args[2]);
+            return;
+        }
+
+        Player target;
+
+        if (args.length >= 4) {
+            target = Bukkit.getPlayerExact(args[3]);
+
+            if (target == null) {
+                lang.send(sender, "admin.turret.player_not_found", "player", args[3]);
+                return;
+            }
+        } else {
+            target = Senders.asPlayer(sender);
+
+            if (target == null) {
+                lang.send(sender, "admin.turret.give_needs_player");
+                return;
+            }
+        }
+
+        int amount = 1;
+
+        if (args.length >= 5) {
+            try {
+                amount = Math.max(1, Integer.parseInt(args[4]));
+            } catch (NumberFormatException e) {
+                lang.send(sender, "admin.turret.invalid_amount", "value", args[4]);
+                return;
+            }
+        }
+
+        target.getInventory().addItem(TurretItem.create(plugin, definitionOpt.get(), lang, amount));
+
+        lang.send(sender, "admin.turret.given",
+                "amount", amount, "id", args[2], "player", target.getName());
     }
 
     private void handleTurretRemove(CommandSender sender, String[] args) {

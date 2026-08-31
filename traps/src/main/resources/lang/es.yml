@@ -56,7 +56,25 @@ admin:
     ok: "&a✔ Instancia '{placement}' disparada."
     failed: "&cNo se pudo disparar '{placement}' (no existe, no está ARMED, o no cumple condiciones)."
   turret:
-    usage: "&eUso: /trapadmin turret <create|edit|browser|place|remove|list> [args]"
+    give_usage: "&eUso: /trapadmin turret give <id> [jugador] [cantidad]"
+    give_needs_player: "&cDesde consola debes indicar el jugador: /trapadmin turret give <id> <jugador>"
+    given: "&a✔ {amount}x '{id}' entregada a {player}."
+    player_not_found: "&cJugador no encontrado: {player}"
+    invalid_amount: "&cCantidad inválida: {value}"
+    placed_by_item: "&a✔ Torreta '{id}' colocada ({placementId}). Solo tú puedes retirarla."
+    removed_by_break: "&a✔ Torreta retirada ({placementId}); te devolvimos el ítem."
+    not_owner: "&cEsta torreta no es tuya, no puedes retirarla."
+    item_lore_place: "&7Colócala donde quieras"
+    item_lore_owner: "&8Solo tú podrás retirarla"
+    usage: |-
+      &eUso: /trapadmin turret
+      &7 • &fcreate
+      &7 • &fedit
+      &7 • &fbrowser
+      &7 • &fgive
+      &7 • &fplace
+      &7 • &fremove
+      &7 • &flist
     not_found: "&cNo existe la torreta '{id}'."
     create:
       usage: "&eUso: /trapadmin turret create <id>"

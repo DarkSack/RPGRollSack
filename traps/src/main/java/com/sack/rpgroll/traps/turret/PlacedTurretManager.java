@@ -58,7 +58,10 @@ public class PlacedTurretManager {
                         entry.getString("world"),
                         entry.getInt("x"),
                         entry.getInt("y"),
-                        entry.getInt("z"));
+                        entry.getInt("z"),
+                        entry.getString("owner") == null
+                                ? null
+                                : UUID.fromString(entry.getString("owner")));
 
                 placements.put(placementId, placed);
 
@@ -84,6 +87,10 @@ public class PlacedTurretManager {
             config.set(path + ".x", placed.x());
             config.set(path + ".y", placed.y());
             config.set(path + ".z", placed.z());
+
+            if (placed.owner() != null) {
+                config.set(path + ".owner", placed.owner().toString());
+            }
         }
 
         try {
@@ -101,12 +108,17 @@ public class PlacedTurretManager {
     }
 
     public PlacedTurret add(String turretId, Location location) {
+        return add(turretId, location, null);
+    }
+
+    /** @param owner quién la coloca; null si viene de un comando de admin. */
+    public PlacedTurret add(String turretId, Location location, UUID owner) {
 
         String placementId = UUID.randomUUID().toString().substring(0, 8);
 
         PlacedTurret placed = new PlacedTurret(
                 placementId, turretId, location.getWorld().getName(),
-                location.getBlockX(), location.getBlockY(), location.getBlockZ());
+                location.getBlockX(), location.getBlockY(), location.getBlockZ(), owner);
 
         placements.put(placementId, placed);
         save();

@@ -13,6 +13,7 @@ import com.sack.rpgroll.traps.core.TrapManager;
 import com.sack.rpgroll.traps.engine.TrapEngine;
 import com.sack.rpgroll.traps.gui.ChatPromptManager;
 import com.sack.rpgroll.traps.listener.TrapBlockProtectionListener;
+import com.sack.rpgroll.traps.listener.TurretPlacementListener;
 import com.sack.rpgroll.traps.listener.TrapTriggerListener;
 import com.sack.rpgroll.traps.location.PlacedTrapManager;
 import com.sack.rpgroll.traps.registry.BuiltinTrapActions;
@@ -91,6 +92,11 @@ public class TrapsPlugin extends JavaPlugin {
 
         ChatPromptManager chatPromptManager = new ChatPromptManager(this, langManager);
         getServer().getPluginManager().registerEvents(chatPromptManager, this);
+
+        // Coloca/retira torretas como bloques; solo el dueño puede sacarlas.
+        getServer().getPluginManager().registerEvents(
+                new TurretPlacementListener(this, turretManager, placedTurretManager, turretEngine, langManager),
+                this);
 
         var trapAdminCommand = getCommand("trapadmin");
         if (trapAdminCommand == null) {

@@ -11,8 +11,15 @@ import java.util.Objects;
  * está "armada"; su objetivo/cooldown de disparo es estado de runtime en
  * memoria, ver {@link TurretEngine}, no algo que valga la pena persistir).
  */
-public record PlacedTurret(String placementId, String turretId, String world, int x, int y, int z) {
+public record PlacedTurret(String placementId, String turretId, String world, int x, int y, int z,
+        java.util.UUID owner) {
 
+    /**
+     * @param owner quién la colocó. Solo esa persona (o un admin) puede
+     *              retirarla. Null en las colocadas por comando antes de que
+     *              existiera el ítem: esas quedan sin dueño y solo las puede
+     *              sacar un admin.
+     */
     public PlacedTurret {
         Objects.requireNonNull(placementId, "placementId no puede ser null");
         Objects.requireNonNull(turretId, "turretId no puede ser null");

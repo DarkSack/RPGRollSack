@@ -56,7 +56,25 @@ admin:
     ok: "&a✔ Instance '{placement}' triggered."
     failed: "&cCouldn't trigger '{placement}' (doesn't exist, not ARMED, or conditions not met)."
   turret:
-    usage: "&eUsage: /trapadmin turret <create|edit|browser|place|remove|list> [args]"
+    give_usage: "&eUsage: /trapadmin turret give <id> [player] [amount]"
+    give_needs_player: "&cFrom console you must name the player: /trapadmin turret give <id> <player>"
+    given: "&a✔ {amount}x '{id}' given to {player}."
+    player_not_found: "&cPlayer not found: {player}"
+    invalid_amount: "&cInvalid amount: {value}"
+    placed_by_item: "&a✔ Turret '{id}' placed ({placementId}). Only you can remove it."
+    removed_by_break: "&a✔ Turret removed ({placementId}); the item was returned to you."
+    not_owner: "&cThis turret isn't yours, you can't remove it."
+    item_lore_place: "&7Place it wherever you want"
+    item_lore_owner: "&8Only you will be able to remove it"
+    usage: |-
+      &eUsage: /trapadmin turret
+      &7 • &fcreate
+      &7 • &fedit
+      &7 • &fbrowser
+      &7 • &fgive
+      &7 • &fplace
+      &7 • &fremove
+      &7 • &flist
     not_found: "&cThere is no turret '{id}'."
     create:
       usage: "&eUsage: /trapadmin turret create <id>"
