@@ -43,7 +43,7 @@ public class ContentManager<T extends RPGContent> implements Reloadable {
      */
     public void initialize() {
 
-        plugin.getLogger().info("Cargando " + label + "s...");
+        plugin.getLogger().info("Cargando contenido · " + label);
 
         registry.clear();
 
