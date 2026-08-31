@@ -106,7 +106,7 @@ public class SelfHostedLicenseProvider implements LicenseProvider {
                     .POST(HttpRequest.BodyPublishers.ofString(body.toString()))
                     .build();
 
-            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+            HttpResponse<String> response = send(request);
 
             if (response.statusCode() / 100 != 2) {
                 return LicenseResult.unknown(
@@ -124,8 +124,44 @@ public class SelfHostedLicenseProvider implements LicenseProvider {
                 Thread.currentThread().interrupt();
             }
 
-            return LicenseResult.unknown("No se pudo contactar al servidor de licencias: " + e.getMessage());
+            return LicenseResult.unknown("No se pudo contactar al servidor de licencias: " + describe(e));
         }
+    }
+
+    /**
+     * Un fallo al validar la cadena de certificados casi siempre viene del
+     * almacén del propio servidor, no del servicio: se reintenta una vez
+     * contra el almacén del sistema operativo antes de dar por perdida la
+     * verificación. Ver {@link LicenseHttp}.
+     */
+    private HttpResponse<String> send(HttpRequest request) throws IOException, InterruptedException {
+
+        try {
+            return httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+        } catch (IOException e) {
+
+            if (!LicenseHttp.isTrustFailure(e)) {
+                throw e;
+            }
+
+            HttpClient fallback = LicenseHttp.platformTrustClient().orElseThrow(() -> e);
+
+            return fallback.send(request, HttpResponse.BodyHandlers.ofString());
+        }
+    }
+
+    /** Mensaje accionable en vez de un volcado de PKIX que no dice qué hacer. */
+    private String describe(Exception e) {
+
+        if (e instanceof IOException io && LicenseHttp.isTrustFailure(io)) {
+            return "el Java de este servidor no pudo validar el certificado del servicio."
+                    + " Suele ser un cacerts vacío o desactualizado en la instalación de Java,"
+                    + " o un antivirus interceptando HTTPS. Probá actualizar Java o arrancar con"
+                    + " -Djavax.net.ssl.trustStoreType=Windows-ROOT (Windows).";
+        }
+
+        return e.getMessage();
     }
 
     /** Igual que en voxel.shop: una respuesta rara es UNKNOWN, nunca INVALID. */

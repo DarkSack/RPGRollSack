@@ -78,9 +78,7 @@ public class VoxelShopLicenseProvider implements LicenseProvider {
                     .POST(HttpRequest.BodyPublishers.ofString(body))
                     .build();
 
-            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-
-            return parse(response.body());
+            return parse(send(request).body());
 
         } catch (IOException | InterruptedException e) {
 
@@ -88,8 +86,38 @@ public class VoxelShopLicenseProvider implements LicenseProvider {
                 Thread.currentThread().interrupt();
             }
 
-            return LicenseResult.unknown("No se pudo contactar a voxel.shop: " + e.getMessage());
+            return LicenseResult.unknown("No se pudo contactar a voxel.shop: " + describe(e));
         }
+    }
+
+    /** Mismo reintento que en el canal propio — ver {@link LicenseHttp}. */
+    private HttpResponse<String> send(HttpRequest request) throws IOException, InterruptedException {
+
+        try {
+            return httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+        } catch (IOException e) {
+
+            if (!LicenseHttp.isTrustFailure(e)) {
+                throw e;
+            }
+
+            HttpClient fallback = LicenseHttp.platformTrustClient().orElseThrow(() -> e);
+
+            return fallback.send(request, HttpResponse.BodyHandlers.ofString());
+        }
+    }
+
+    private String describe(Exception e) {
+
+        if (e instanceof IOException io && LicenseHttp.isTrustFailure(io)) {
+            return "el Java de este servidor no pudo validar el certificado de voxel.shop."
+                    + " Suele ser un cacerts vacío o desactualizado en la instalación de Java,"
+                    + " o un antivirus interceptando HTTPS. Probá actualizar Java o arrancar con"
+                    + " -Djavax.net.ssl.trustStoreType=Windows-ROOT (Windows).";
+        }
+
+        return e.getMessage();
     }
 
     /**
