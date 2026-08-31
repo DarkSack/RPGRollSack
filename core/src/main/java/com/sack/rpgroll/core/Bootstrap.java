@@ -33,8 +33,8 @@ import com.sack.rpgroll.gui.admin.ChatPromptManager;
 import com.sack.rpgroll.gui.listener.GUIListener;
 import com.sack.rpgroll.integration.RPGRollPlaceholders;
 import com.sack.rpgroll.integration.VaultEconomyProvider;
-import com.sack.rpgroll.license.LicenseManager;
-import com.sack.rpgroll.license.LicenseResult;
+import com.sack.rpgroll.licensing.LicenseGate;
+import com.sack.rpgroll.license.identity.LicenseIdentity;
 import com.sack.rpgroll.player.PlayerManager;
 import com.sack.rpgroll.player.listener.PlayerEventListener;
 import com.sack.rpgroll.api.playerclass.ClassManager;
@@ -96,30 +96,7 @@ public class Bootstrap {
      *         deshabilitar el plugin.
      */
     private boolean verifyLicense() {
-
-        if (Boolean.getBoolean("rpgroll.devmode")) {
-            plugin.getLogger().warning("✔ Chequeo de licencia OMITIDO (-Drpgroll.devmode=true) — NO usar en producción.");
-            return true;
-        }
-
-        LicenseResult result = new LicenseManager(plugin).check();
-
-        if (result.isValid()) {
-            plugin.getLogger().info("✔ Licencia verificada: " + result.message());
-            return true;
-        }
-
-        plugin.getLogger().severe("==================================");
-        plugin.getLogger().severe("✘ RPGRoll no pudo verificar tu licencia:");
-        plugin.getLogger().severe("  " + result.message());
-        plugin.getLogger().severe("  El plugin se va a deshabilitar.");
-        plugin.getLogger().severe("  Si compraste en voxel.shop, descargá el jar desde tu panel de compras");
-        plugin.getLogger().severe("  (la copia que baja de ahí ya trae tu clave incrustada).");
-        plugin.getLogger().severe("  Si fue una venta directa, revisá 'provider', 'key' y 'endpoint'");
-        plugin.getLogger().severe("  en plugins/RPGRoll/license.yml.");
-        plugin.getLogger().severe("==================================");
-
-        return false;
+        return LicenseGate.verify(plugin, LicenseIdentity.RESOURCE_ID);
     }
 
     /**

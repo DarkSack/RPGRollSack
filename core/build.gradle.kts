@@ -11,6 +11,7 @@ base.archivesName.set("RPGRoll")
 dependencies {
     implementation(project(":api"))
     implementation(project(":common"))
+    implementation(project(":licensing"))
 
     compileOnly("com.github.MilkBowl:VaultAPI:1.7.1") {
         exclude(group = "org.bukkit", module = "bukkit")

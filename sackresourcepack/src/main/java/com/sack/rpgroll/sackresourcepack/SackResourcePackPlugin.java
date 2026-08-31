@@ -1,5 +1,8 @@
 package com.sack.rpgroll.sackresourcepack;
 
+import com.sack.rpgroll.licensing.LicenseGate;
+import com.sack.rpgroll.license.identity.LicenseIdentity;
+
 import com.sack.rpgroll.sackresourcepack.api.AssetsAPI;
 import com.sack.rpgroll.sackresourcepack.build.BuildEngine;
 import com.sack.rpgroll.sackresourcepack.build.BuildResult;
@@ -52,6 +55,11 @@ public class SackResourcePackPlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        if (!LicenseGate.verify(this, LicenseIdentity.RESOURCE_ID)) {
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
+
 
         saveDefaultConfig();
 

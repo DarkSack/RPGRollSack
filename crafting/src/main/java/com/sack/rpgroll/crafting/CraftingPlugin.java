@@ -1,5 +1,8 @@
 package com.sack.rpgroll.crafting;
 
+import com.sack.rpgroll.licensing.LicenseGate;
+import com.sack.rpgroll.license.identity.LicenseIdentity;
+
 import com.sack.rpgroll.common.resource.DirectoryCreator;
 import com.sack.rpgroll.common.resource.ResourceCopier;
 import com.sack.rpgroll.crafting.anvil.AnvilEngine;
@@ -83,6 +86,11 @@ public class CraftingPlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        if (!LicenseGate.verify(this, LicenseIdentity.RESOURCE_ID)) {
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
+
 
         saveDefaultConfig();
 

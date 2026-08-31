@@ -2,17 +2,26 @@
 #
 # Alcance deliberadamente conservador: TODO el árbol de paquetes
 # com.sack.rpgroll.** se mantiene con sus nombres intactos, EXCEPTO
-# com.sack.rpgroll.license.** — porque los demás addons (npcs, crates,
+# com.sack.rpgroll.licensing.** — porque los demás addons (npcs, crates,
 # enchantments, quests, items, ascension) referencian directamente en
 # tiempo de compilación decenas de clases internas de :core (RPGPlayer,
 # InventoryGUI, ItemBuilder, RPGRollAPI, etc., no solo :api). Ofuscar esas
 # clases rompería toda la ecosistema en runtime con NoSuchMethodError.
 #
-# El sistema de licencias (com.sack.rpgroll.license.*) es autocontenido —
-# nada fuera de Bootstrap lo usa — así que es el único lugar donde
-# ofuscar aporta valor real (dificulta parchear/bypassear la validación)
-# sin ningún riesgo de romper otro módulo.
--keep class !com.sack.rpgroll.license.**,com.sack.rpgroll.** {
+# El sistema de licencias (com.sack.rpgroll.licensing.*) es autocontenido:
+# los plugins solo lo tocan por LicenseGate.verify(...), así que es el
+# único lugar donde ofuscar aporta valor real (dificulta parchear la
+# validación) sin riesgo de romper otro módulo.
+#
+# OJO: este patrón tiene que seguir al paquete. Cuando el código pasó de
+# com.sack.rpgroll.license a com.sack.rpgroll.licensing, la regla vieja
+# dejó de excluir nada y la licencia quedó SIN ofuscar sin que fallara
+# ninguna build — un cambio de nombre acá se rompe en silencio.
+# Las dos exclusiones van en UNA sola regla: los -keep se suman entre sí, así
+# que una segunda regla que no excluyera licensing.** volvería a preservarlo y
+# anularía la primera. LicenseIdentity entra acá porque su id ya queda
+# inlineado en los call sites — la clase en sí no hace falta legible.
+-keep class !com.sack.rpgroll.licensing.**,!com.sack.rpgroll.license.identity.**,com.sack.rpgroll.** {
     *;
 }
 

@@ -1,5 +1,8 @@
 package com.sack.rpgroll.fishing;
 
+import com.sack.rpgroll.licensing.LicenseGate;
+import com.sack.rpgroll.license.identity.LicenseIdentity;
+
 import com.sack.rpgroll.common.assets.ModuleAssetSync;
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.common.resource.DirectoryCreator;
@@ -40,6 +43,11 @@ public class FishingPlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        if (!LicenseGate.verify(this, LicenseIdentity.RESOURCE_ID)) {
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
+
 
         saveDefaultConfig();
 

@@ -1,0 +1,14 @@
+# Tu clave de licencia de RPGRoll-Particles. Es lo único que va en este archivo.
+#
+#   Si compraste en voxel.shop, NO tenés que tocar nada: el .jar que
+#   descargás desde tu panel de compras ya viene con tu clave puesta acá.
+#   Si ves el texto "%%__LICENSE__%%" tal cual (sin reemplazar), significa
+#   que esta copia no se descargó desde voxel.shop y el plugin no va a
+#   arrancar.
+#
+#   Si fue una venta directa (Ko-fi, Patreon), pegá acá la clave que te
+#   pasó el vendedor — empieza con "RPGR-".
+#
+# Cada módulo se compra por separado y por lo tanto lleva su propia clave:
+# la de RPGRoll-Particles no sirve para otro plugin del ecosistema.
+key: '%%__LICENSE__%%'

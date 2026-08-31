@@ -22,11 +22,21 @@ val embeddedCommon: Configuration by configurations.creating {
     isTransitive = false
 }
 
+// :licensing va embebido igual que :common — cada módulo verifica su propia
+// compra, así que necesita el código de licencia dentro de su jar.
+val embeddedLicensing: Configuration by configurations.creating {
+    isCanBeConsumed = false
+    isTransitive = false
+}
+
 dependencies {
     compileOnly(project(":api"))
     compileOnly(project(":common"))
 
     embeddedCommon(project(":common"))
+
+    compileOnly(project(":licensing"))
+    embeddedLicensing(project(":licensing"))
 
     // compileOnly no se propaga al source set de test, y los tests unitarios sí
     // referencian estos tipos (RPGContent, ContentParser, LangManager...).
@@ -38,6 +48,10 @@ tasks.named<Jar>("jar") {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 
     from(embeddedCommon.elements.map { elements -> elements.map { zipTree(it.asFile) } }) {
+        exclude("META-INF/**")
+    }
+
+    from(embeddedLicensing.elements.map { elements -> elements.map { zipTree(it.asFile) } }) {
         exclude("META-INF/**")
     }
 }
