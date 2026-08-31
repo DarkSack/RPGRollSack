@@ -50,13 +50,26 @@ public class SelfHostedLicenseProvider implements LicenseProvider {
     private static final Duration TIMEOUT = Duration.ofSeconds(8);
 
     private final String endpoint;
+    private final String serverId;
+    private final String serverName;
 
     private final HttpClient httpClient = HttpClient.newBuilder()
             .connectTimeout(TIMEOUT)
             .build();
 
     public SelfHostedLicenseProvider(String endpoint) {
+        this(endpoint, null, null);
+    }
+
+    /**
+     * @param serverId   id estable de este servidor (ver {@link ServerIdentity}),
+     *                   para contar en cuántos servidores corre la licencia
+     * @param serverName nombre legible del servidor, solo para mostrarlo en el panel
+     */
+    public SelfHostedLicenseProvider(String endpoint, String serverId, String serverName) {
         this.endpoint = endpoint;
+        this.serverId = serverId;
+        this.serverName = serverName;
     }
 
     @Override
@@ -73,14 +86,24 @@ public class SelfHostedLicenseProvider implements LicenseProvider {
         }
 
         try {
-            String body = "license=" + urlEncode(licenseKey) + "&resource=" + urlEncode(resourceId);
+            StringBuilder body = new StringBuilder()
+                    .append("license=").append(urlEncode(licenseKey))
+                    .append("&resource=").append(urlEncode(resourceId));
+
+            if (serverId != null && !serverId.isBlank()) {
+                body.append("&server=").append(urlEncode(serverId));
+            }
+
+            if (serverName != null && !serverName.isBlank()) {
+                body.append("&server_name=").append(urlEncode(serverName));
+            }
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(endpoint))
                     .timeout(TIMEOUT)
                     .header("Content-Type", "application/x-www-form-urlencoded")
                     .header("User-Agent", "RPGRoll-License-Check/1.0")
-                    .POST(HttpRequest.BodyPublishers.ofString(body))
+                    .POST(HttpRequest.BodyPublishers.ofString(body.toString()))
                     .build();
 
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());

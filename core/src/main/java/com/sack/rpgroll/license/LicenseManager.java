@@ -4,6 +4,7 @@ import com.sack.rpgroll.common.resource.DirectoryCreator;
 import com.sack.rpgroll.common.resource.ResourceCopier;
 import com.sack.rpgroll.common.resource.ResourceFile;
 
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 
@@ -92,9 +93,27 @@ public class LicenseManager {
 
     /** El canal lo dice la clave, no la configuración — ver {@link LicenseSettings}. */
     private LicenseProvider resolveProvider(String key) {
-        return key.startsWith(LicenseSettings.SELF_HOSTED_KEY_PREFIX)
-                ? new SelfHostedLicenseProvider(LicenseSettings.SELF_HOSTED_ENDPOINT)
-                : new VoxelShopLicenseProvider();
+
+        if (!key.startsWith(LicenseSettings.SELF_HOSTED_KEY_PREFIX)) {
+            return new VoxelShopLicenseProvider();
+        }
+
+        // Solo el canal propio reporta en qué servidor corre: voxel.shop no
+        // expone nada donde guardarlo, y no tiene sentido mandárselo.
+        return new SelfHostedLicenseProvider(
+                LicenseSettings.SELF_HOSTED_ENDPOINT,
+                ServerIdentity.resolve(plugin),
+                serverName());
+    }
+
+    /** Nombre legible del servidor, solo para distinguirlo en el panel. */
+    private String serverName() {
+        try {
+            return Bukkit.getServer().getName() + " " + Bukkit.getServer().getPort();
+        } catch (RuntimeException e) {
+            // En tests no hay un Server montado; no es motivo para fallar.
+            return null;
+        }
     }
 
     private LicenseResult handleUnknown(LicenseResult networkFailure) {

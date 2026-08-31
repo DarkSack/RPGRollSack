@@ -50,6 +50,28 @@ class SelfHostedLicenseProviderTest {
         }
     }
 
+    @Test
+    void serverIdAndNameAreSentWhenKnown() throws Exception {
+        try (LicenseHttpFixture fixture = LicenseHttpFixture.responding(200, "{\"valid\":true}")) {
+
+            new SelfHostedLicenseProvider(fixture.endpoint(), "srv-123", "Servidor de Pepe")
+                    .validate("KOFI-9", "rpgroll");
+
+            assertEquals("license=KOFI-9&resource=rpgroll&server=srv-123&server_name=Servidor+de+Pepe",
+                    fixture.lastRequestBody());
+        }
+    }
+
+    @Test
+    void telemetryFieldsAreOmittedWhenAbsent() throws Exception {
+        try (LicenseHttpFixture fixture = LicenseHttpFixture.responding(200, "{\"valid\":true}")) {
+
+            new SelfHostedLicenseProvider(fixture.endpoint(), null, "  ").validate("KOFI-9", "rpgroll");
+
+            assertEquals("license=KOFI-9&resource=rpgroll", fixture.lastRequestBody());
+        }
+    }
+
     @ParameterizedTest
     @ValueSource(ints = {500, 502, 404, 403})
     void serverErrorsAreUnknownSoBuyersAreNotBlockedByAnOutage(int statusCode) throws Exception {
