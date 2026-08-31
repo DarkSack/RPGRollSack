@@ -3,7 +3,7 @@ Copyright (c) 2026 Sack (DarkSack). Todos los derechos reservados.
 
 Este software (el "Software") — incluyendo, sin limitarse a, el núcleo RPGRoll,
 todos sus addons (NPCs, Crates, Enchantments, Quests, Items, Ascension, Mobs,
-Dungeons, Guilds, Chat, SackEffects, RPGRoll-Effects, RPGRoll-Magic,
+Dungeons, Guilds, Chat, RPGRoll-Particles, RPGRoll-Effects, RPGRoll-Magic,
 RPGRoll-Seasons, RPGRoll-Fishing, RPGRoll-Ranching, RPGRoll-Workers,
 SackResourcePack), su código fuente, documentación, assets y archivos de
 configuración de ejemplo — es propiedad exclusiva del autor. NO es software de
@@ -35,7 +35,7 @@ Apache, GPL, etc.).
         de autoría presentes en el Software.
      e) Usar el Software, o cualquier parte de él, como base para un producto
         competidor que se ofrezca comercialmente a terceros.
-     f) Usar el nombre "RPGRoll", "SackResourcePack", "SackEffects" ni el
+     f) Usar el nombre "RPGRoll", "SackResourcePack", "RPGRoll-Particles" ni el
         nombre o marca del autor para promocionar productos derivados sin
         autorización.
 

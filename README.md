@@ -320,7 +320,11 @@ Puedes comprar los módulos en [voxel.shop](https://voxel.shop), o si quieres ap
 
 # 📄 Licencia
 
-Software propietario — todos los derechos reservados. No es código abierto: el uso está sujeto a los términos de la [Licencia de Uso Comercial (EULA)](LICENSE), que permite instalar y ejecutar los módulos comprados en tus propios servidores, pero prohíbe redistribuirlos, revenderlos o publicar el código fuente.
+Software propietario — todos los derechos reservados. **El código es visible, pero no es libre.**
+
+Este repositorio es público para que se pueda leer y auditar el trabajo, no para reutilizarlo. El uso está sujeto a los términos de la [Licencia de Uso Comercial (EULA)](LICENSE): podés instalar y ejecutar en tus propios servidores los módulos que hayas comprado, pero no redistribuirlos, revenderlos, ni publicar builds derivadas.
+
+Que el código esté a la vista no lo convierte en código abierto: no hay permiso de uso, copia ni modificación más allá de lo que dice el EULA.
 
 ---
 

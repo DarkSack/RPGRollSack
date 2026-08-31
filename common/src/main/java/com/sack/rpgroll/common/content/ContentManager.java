@@ -60,16 +60,22 @@ public class ContentManager<T extends RPGContent> implements Reloadable {
             }
         }
 
-        plugin.getLogger().info("✔ " + label + "s leídas desde disco: " + loaded.size());
-        plugin.getLogger().info("✔ " + label + "s registradas: " + registered);
+        // Los mensajes evitan a propósito pluralizar el label y concordar
+        // adjetivos con él. Antes se concatenaba una "s" y se asumía femenino,
+        // lo que producía "animacións registradas", "perfils" u "ordens" en la
+        // consola del comprador. Un pluralizador correcto tampoco alcanzaría:
+        // varios labels son frases ("producto de mercado", "evento mundial")
+        // donde el plural va en el núcleo y el adjetivo concuerda. Con este
+        // formato el label se usa siempre tal cual, en singular.
+        plugin.getLogger().info("✔ " + label + " · en disco: " + loaded.size() + " · registrado: " + registered);
 
         if (duplicates > 0) {
-            plugin.getLogger().warning("✘ " + label + "s duplicadas ignoradas: " + duplicates);
+            plugin.getLogger().warning("✘ " + label + " · ids repetidos, se ignoraron: " + duplicates);
         }
 
         if (registered == 0) {
-            plugin.getLogger().warning(
-                    "✘ No se registró ningún(a) " + label + ". El contenido podría no estar disponible en el juego.");
+            plugin.getLogger().warning("✘ " + label
+                    + " · sin contenido registrado. Podría no estar disponible en el juego.");
         }
     }
 
