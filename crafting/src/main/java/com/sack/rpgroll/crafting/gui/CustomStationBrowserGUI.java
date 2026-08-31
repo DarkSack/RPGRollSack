@@ -30,7 +30,7 @@ public class CustomStationBrowserGUI extends InventoryGUI {
 
     public CustomStationBrowserGUI(Player player, CustomStationManager stationManager,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text(chatPromptManager.lang().raw("gui.station.browser_title"), NamedTextColor.GOLD), SIZE);
+        super(player, ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.station.browser_title"), NamedTextColor.GOLD), SIZE);
         this.stationManager = stationManager;
         this.chatPromptManager = chatPromptManager;
         this.onBack = onBack;
@@ -52,14 +52,14 @@ public class CustomStationBrowserGUI extends InventoryGUI {
 
             setItem(i, new ItemBuilder(parseMaterial(station.icon()))
                     .setName(ComponentUtils.parse(station.displayName()))
-                    .setLore(Component.text(chatPromptManager.lang().raw("gui.common.id_lore", "id", station.id()), NamedTextColor.GRAY),
-                            Component.text(chatPromptManager.lang().raw("gui.station.block_lore", "block", station.triggerBlockMaterial()), NamedTextColor.AQUA),
-                            Component.text(chatPromptManager.lang().raw("gui.common.click_edit"), NamedTextColor.YELLOW))
+                    .setLore(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.common.id_lore", "id", station.id()), NamedTextColor.GRAY),
+                            ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.station.block_lore", "block", station.triggerBlockMaterial()), NamedTextColor.AQUA),
+                            ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.common.click_edit"), NamedTextColor.YELLOW))
                     .build());
         }
 
         setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.station.create_new"), NamedTextColor.GREEN)).build());
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.station.create_new"), NamedTextColor.GREEN)).build());
         setItem(BACK_SLOT, ItemBuilder.createCancelButton(chatPromptManager.lang().raw("gui.common.back")));
     }
 
@@ -90,7 +90,7 @@ public class CustomStationBrowserGUI extends InventoryGUI {
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 
             if (stationManager.exists(id)) {
-                player.sendMessage(Component.text(chatPromptManager.lang().raw("gui.station.already_exists"), NamedTextColor.RED));
+                player.sendMessage(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.station.already_exists"), NamedTextColor.RED));
                 reopen();
                 return;
             }

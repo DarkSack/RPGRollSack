@@ -1,5 +1,7 @@
 package com.sack.rpgroll.command.commands;
 
+import com.sack.rpgroll.common.command.Senders;
+
 import com.sack.rpgroll.RPGRoll;
 import com.sack.rpgroll.command.RPGCommand;
 import com.sack.rpgroll.common.lang.LangManager;
@@ -200,7 +202,7 @@ public class UseSkillCommand implements RPGCommand {
     @Override
     public List<String> getTabCompletions(CommandSender sender, String[] args) {
 
-        if (args.length > 1 || !(sender instanceof Player player)) {
+        if (args.length > 1 || !(Senders.asPlayer(sender) instanceof Player player)) {
             return List.of();
         }
 

@@ -1,5 +1,7 @@
 package com.sack.rpgroll.chat.command;
 
+import com.sack.rpgroll.common.command.Senders;
+
 import com.sack.rpgroll.chat.channel.ChannelManager;
 import com.sack.rpgroll.chat.emote.EmoteManager;
 import com.sack.rpgroll.chat.gui.ChannelBrowserGUI;
@@ -72,7 +74,7 @@ public class ChatAdminCommand implements CommandExecutor, TabCompleter {
 
             case "browser" -> {
 
-                if (!(sender instanceof Player player)) {
+                if (!(Senders.asPlayer(sender) instanceof Player player)) {
                     lang.send(sender, "admin.players_only_browser");
                     return true;
                 }
@@ -88,7 +90,7 @@ public class ChatAdminCommand implements CommandExecutor, TabCompleter {
             }
 
             case "editor" -> {
-                if (!(sender instanceof Player player)) {
+                if (!(Senders.asPlayer(sender) instanceof Player player)) {
                     lang.send(sender, "admin.players_only_editor");
                     return true;
                 }

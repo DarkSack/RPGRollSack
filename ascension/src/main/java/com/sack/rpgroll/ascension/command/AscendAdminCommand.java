@@ -1,5 +1,7 @@
 package com.sack.rpgroll.ascension.command;
 
+import com.sack.rpgroll.common.command.Senders;
+
 import com.sack.rpgroll.ascension.AscensionPlugin;
 import com.sack.rpgroll.ascension.core.AffinityManager;
 import com.sack.rpgroll.ascension.deferred.AchievementManager;
@@ -106,7 +108,7 @@ public class AscendAdminCommand implements CommandExecutor, TabCompleter {
 
     private void handleBrowser(CommandSender sender, String[] args) {
 
-        if (!(sender instanceof Player player)) {
+        if (!(Senders.asPlayer(sender) instanceof Player player)) {
             lang.send(sender, "admin.browser_player_only");
             return;
         }

@@ -1,5 +1,7 @@
 package com.sack.rpgroll.dungeons.command;
 
+import com.sack.rpgroll.common.command.Senders;
+
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.dungeons.core.DungeonDefinition;
 import com.sack.rpgroll.dungeons.core.DungeonManager;
@@ -121,7 +123,7 @@ public class DungeonCommand implements CommandExecutor, TabCompleter {
 
     private void handleInvite(CommandSender sender, String[] args) {
 
-        if (!(sender instanceof Player player)) {
+        if (!(Senders.asPlayer(sender) instanceof Player player)) {
             lang.send(sender, "command.dungeon.invite.players_only");
             return;
         }
@@ -149,7 +151,7 @@ public class DungeonCommand implements CommandExecutor, TabCompleter {
 
     private void handleAccept(CommandSender sender) {
 
-        if (!(sender instanceof Player player)) {
+        if (!(Senders.asPlayer(sender) instanceof Player player)) {
             return;
         }
 
@@ -166,7 +168,7 @@ public class DungeonCommand implements CommandExecutor, TabCompleter {
 
     private void handleDecline(CommandSender sender) {
 
-        if (sender instanceof Player player) {
+        if (Senders.asPlayer(sender) instanceof Player player) {
             teamManager.decline(player.getUniqueId());
             lang.send(player, "command.dungeon.decline.ok");
         }
@@ -174,7 +176,7 @@ public class DungeonCommand implements CommandExecutor, TabCompleter {
 
     private void handleLeaveParty(CommandSender sender) {
 
-        if (!(sender instanceof Player player)) {
+        if (!(Senders.asPlayer(sender) instanceof Player player)) {
             return;
         }
 
@@ -184,7 +186,7 @@ public class DungeonCommand implements CommandExecutor, TabCompleter {
 
     private void handleEnter(CommandSender sender, String[] args) {
 
-        if (!(sender instanceof Player player)) {
+        if (!(Senders.asPlayer(sender) instanceof Player player)) {
             lang.send(sender, "command.dungeon.enter.players_only");
             return;
         }
@@ -239,7 +241,7 @@ public class DungeonCommand implements CommandExecutor, TabCompleter {
 
     private void handleLeave(CommandSender sender) {
 
-        if (!(sender instanceof Player player)) {
+        if (!(Senders.asPlayer(sender) instanceof Player player)) {
             return;
         }
 
@@ -260,7 +262,12 @@ public class DungeonCommand implements CommandExecutor, TabCompleter {
 
     private void handleRevive(CommandSender sender, String[] args) {
 
-        if (!(sender instanceof Player player) || args.length < 2) {
+        if (!(Senders.asPlayer(sender) instanceof Player player)) {
+            lang.send(sender, "command.dungeon.revive.players_only");
+            return;
+        }
+
+        if (args.length < 2) {
             lang.send(sender, "command.dungeon.revive.usage");
             return;
         }

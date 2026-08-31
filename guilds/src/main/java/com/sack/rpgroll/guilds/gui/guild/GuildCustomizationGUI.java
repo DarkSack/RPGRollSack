@@ -1,5 +1,7 @@
 package com.sack.rpgroll.guilds.gui.guild;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.guilds.gui.ChatPromptManager;
@@ -60,24 +62,21 @@ public class GuildCustomizationGUI extends InventoryGUI {
         setItem(COLOR_SLOT, new ItemBuilder(Material.WHITE_DYE)
                 .setName(Component.text(lang().raw("guild.customization.color_label", "color", guild.color()),
                         guild.color()))
-                .setLore(Component.text(lang().raw("guild.customization.lore.click_to_change"), NamedTextColor.GRAY))
+                .setLore(ComponentUtils.parseWithDefault(lang().raw("guild.customization.lore.click_to_change"), NamedTextColor.GRAY))
                 .build());
 
         setItem(ICON_SLOT, new ItemBuilder(guild.icon())
-                .setName(Component.text(lang().raw("guild.customization.icon_label", "icon", guild.icon()),
-                        NamedTextColor.YELLOW))
-                .setLore(Component.text(lang().raw("guild.customization.lore.click_to_type_material"),
-                        NamedTextColor.GRAY))
+                .setName(ComponentUtils.parseWithDefault(lang().raw("guild.customization.icon_label", "icon", guild.icon()), NamedTextColor.YELLOW))
+                .setLore(ComponentUtils.parseWithDefault(lang().raw("guild.customization.lore.click_to_type_material"), NamedTextColor.GRAY))
                 .build());
 
         setItem(MOTTO_SLOT, new ItemBuilder(Material.BOOK)
-                .setName(Component.text(lang().raw("guild.customization.motto_label", "motto",
-                        guild.motto().isBlank() ? lang().raw("guild.customization.no_motto") : guild.motto()),
-                        NamedTextColor.YELLOW))
+                .setName(ComponentUtils.parseWithDefault(lang().raw("guild.customization.motto_label", "motto",
+                        guild.motto().isBlank() ? lang().raw("guild.customization.no_motto") : guild.motto()), NamedTextColor.YELLOW))
                 .build());
 
         setItem(DESCRIPTION_SLOT, new ItemBuilder(Material.WRITTEN_BOOK)
-                .setName(Component.text(lang().raw("guild.customization.description_label"), NamedTextColor.YELLOW))
+                .setName(ComponentUtils.parseWithDefault(lang().raw("guild.customization.description_label"), NamedTextColor.YELLOW))
                 .setLore(ItemBuilder.toLoreLines(guild.description().isBlank()
                         ? lang().raw("guild.customization.no_description") : guild.description()))
                 .build());

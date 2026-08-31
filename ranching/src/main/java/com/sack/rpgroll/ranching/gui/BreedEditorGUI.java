@@ -1,5 +1,7 @@
 package com.sack.rpgroll.ranching.gui;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.common.reskin.EntityReskin;
 
 import com.sack.rpgroll.gui.InventoryGUI;
@@ -43,7 +45,7 @@ public class BreedEditorGUI extends InventoryGUI {
 
     public BreedEditorGUI(Player player, Breed breed, BreedManager breedManager, ChatPromptManager chatPromptManager,
             Runnable onBack) {
-        super(player, Component.text(chatPromptManager.lang().raw("gui.breed.editor.title", "id", breed.id()), NamedTextColor.GOLD), SIZE);
+        super(player, ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.breed.editor.title", "id", breed.id()), NamedTextColor.GOLD), SIZE);
         this.current = breed;
         this.breedManager = breedManager;
         this.chatPromptManager = chatPromptManager;
@@ -77,52 +79,52 @@ public class BreedEditorGUI extends InventoryGUI {
                 .setName(lang.component("gui.editor.name_line", "name", current.displayName())).build());
 
         setItem(SPECIES_SLOT, new ItemBuilder(Material.COW_SPAWN_EGG)
-                .setName(Component.text(lang.raw("gui.breed.editor.species_line", "species", current.speciesId()), NamedTextColor.AQUA)).build());
+                .setName(ComponentUtils.parseWithDefault(lang.raw("gui.breed.editor.species_line", "species", current.speciesId()), NamedTextColor.AQUA)).build());
 
         setItem(DESCRIPTION_SLOT, new ItemBuilder(Material.WRITTEN_BOOK)
-                .setName(Component.text(lang.raw("gui.editor.description_title"), NamedTextColor.YELLOW))
+                .setName(ComponentUtils.parseWithDefault(lang.raw("gui.editor.description_title"), NamedTextColor.YELLOW))
                 .setLore(ItemBuilder.toLoreLines(current.description().isBlank() ? lang.raw("gui.editor.no_description") : current.description()))
                 .build());
 
         setItem(PRODUCTION_SLOT, new ItemBuilder(Material.BUCKET)
-                .setName(Component.text(lang.raw("gui.breed.editor.production_line", "value",
+                .setName(ComponentUtils.parseWithDefault(lang.raw("gui.breed.editor.production_line", "value",
                         String.format(Locale.ROOT, "%.2f", current.productionMultiplier())), NamedTextColor.AQUA))
-                .setLore(Component.text(lang.raw("gui.editor.step01_hint"), NamedTextColor.GRAY)).build());
+                .setLore(ComponentUtils.parseWithDefault(lang.raw("gui.editor.step01_hint"), NamedTextColor.GRAY)).build());
 
         setItem(WEIGHT_SLOT, new ItemBuilder(Material.IRON_INGOT)
-                .setName(Component.text(lang.raw("gui.breed.editor.weight_line", "value",
+                .setName(ComponentUtils.parseWithDefault(lang.raw("gui.breed.editor.weight_line", "value",
                         String.format(Locale.ROOT, "%.2f", current.weightMultiplier())), NamedTextColor.WHITE))
-                .setLore(Component.text(lang.raw("gui.editor.step01_hint"), NamedTextColor.GRAY)).build());
+                .setLore(ComponentUtils.parseWithDefault(lang.raw("gui.editor.step01_hint"), NamedTextColor.GRAY)).build());
 
         setItem(FERTILITY_SLOT, new ItemBuilder(Material.RABBIT_FOOT)
-                .setName(Component.text(lang.raw("gui.breed.editor.fertility_line", "value",
+                .setName(ComponentUtils.parseWithDefault(lang.raw("gui.breed.editor.fertility_line", "value",
                         String.format(Locale.ROOT, "%.2f", current.fertilityMultiplier())), NamedTextColor.YELLOW))
-                .setLore(Component.text(lang.raw("gui.editor.step01_hint"), NamedTextColor.GRAY)).build());
+                .setLore(ComponentUtils.parseWithDefault(lang.raw("gui.editor.step01_hint"), NamedTextColor.GRAY)).build());
 
         setItem(RESISTANCE_SLOT, new ItemBuilder(Material.SHIELD)
-                .setName(Component.text(lang.raw("gui.breed.editor.resistance_line", "value",
+                .setName(ComponentUtils.parseWithDefault(lang.raw("gui.breed.editor.resistance_line", "value",
                         String.format(Locale.ROOT, "%.2f", current.resistanceMultiplier())), NamedTextColor.GREEN))
-                .setLore(Component.text(lang.raw("gui.editor.step01_hint"), NamedTextColor.GRAY)).build());
+                .setLore(ComponentUtils.parseWithDefault(lang.raw("gui.editor.step01_hint"), NamedTextColor.GRAY)).build());
 
         setItem(TEMPERAMENT_SLOT, new ItemBuilder(Material.PLAYER_HEAD)
-                .setName(Component.text(lang.raw("gui.breed.editor.temperament_line", "temperament", current.temperament()), NamedTextColor.GOLD)).build());
+                .setName(ComponentUtils.parseWithDefault(lang.raw("gui.breed.editor.temperament_line", "temperament", current.temperament()), NamedTextColor.GOLD)).build());
 
         EntityReskin reskin = current.reskin();
 
         setItem(RESKIN_MATERIAL_SLOT, new ItemBuilder(Material.ARMOR_STAND)
-                .setName(Component.text(lang.raw("gui.breed.editor.reskin_material_line", "value",
+                .setName(ComponentUtils.parseWithDefault(lang.raw("gui.breed.editor.reskin_material_line", "value",
                         reskin.material() != null ? reskin.material() : lang.raw("gui.breed.editor.reskin_none")), NamedTextColor.LIGHT_PURPLE))
                 .setLore(ItemBuilder.toLoreLines(lang.raw("gui.breed.editor.reskin_hint")))
                 .build());
 
         setItem(RESKIN_CMD_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(Component.text(lang.raw("gui.breed.editor.reskin_cmd_line", "value", reskin.customModelData()), NamedTextColor.LIGHT_PURPLE))
+                .setName(ComponentUtils.parseWithDefault(lang.raw("gui.breed.editor.reskin_cmd_line", "value", reskin.customModelData()), NamedTextColor.LIGHT_PURPLE))
                 .build());
 
         setItem(RESKIN_SCALE_SLOT, new ItemBuilder(Material.SLIME_BALL)
-                .setName(Component.text(lang.raw("gui.breed.editor.reskin_scale_line", "value",
+                .setName(ComponentUtils.parseWithDefault(lang.raw("gui.breed.editor.reskin_scale_line", "value",
                         String.format(Locale.ROOT, "%.2f", reskin.scale())), NamedTextColor.LIGHT_PURPLE))
-                .setLore(Component.text(lang.raw("gui.editor.step01_hint"), NamedTextColor.GRAY)).build());
+                .setLore(ComponentUtils.parseWithDefault(lang.raw("gui.editor.step01_hint"), NamedTextColor.GRAY)).build());
 
         setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back")));
     }

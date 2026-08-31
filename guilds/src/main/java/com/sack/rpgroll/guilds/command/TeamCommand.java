@@ -1,5 +1,7 @@
 package com.sack.rpgroll.guilds.command;
 
+import com.sack.rpgroll.common.command.Senders;
+
 import com.sack.rpgroll.api.RPGRollAPI;
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.guilds.gui.team.TeamHubGUI;
@@ -55,7 +57,7 @@ public class TeamCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
-        if (!(sender instanceof Player player)) {
+        if (!(Senders.asPlayer(sender) instanceof Player player)) {
             lang().send(sender, "common.players_only");
             return true;
         }
@@ -301,7 +303,7 @@ public class TeamCommand implements CommandExecutor, TabCompleter {
 
         if (args.length == 3 && "waypoint".equals(sub)
                 && List.of("tp", "remove").contains(args[1].toLowerCase(Locale.ROOT))
-                && sender instanceof Player player) {
+                && Senders.asPlayer(sender) instanceof Player player) {
             Team team = teamManager.getTeam(player.getUniqueId()).orElse(null);
             if (team == null) {
                 return List.of();

@@ -13,7 +13,18 @@ prompt:
 
 command:
   dungeon:
-    usage: "&eUsage: /dungeon <list|info|invite|accept|decline|leaveparty|enter|leave|revive|ranking> [args]"
+    usage: |-
+      &eUsage: /dungeon
+      &7 • &flist
+      &7 • &finfo
+      &7 • &finvite
+      &7 • &faccept
+      &7 • &fdecline
+      &7 • &fleaveparty
+      &7 • &fenter
+      &7 • &fleave
+      &7 • &frevive
+      &7 • &franking
     not_found: "&cDungeon '{id}' doesn't exist."
     player_not_found: "&cPlayer not found."
     not_in_run: "&cYou're not in any run."
@@ -56,6 +67,7 @@ command:
     leave:
       ok: "&7You abandoned the dungeon."
     revive:
+      players_only: "&cOnly a player can revive a teammate."
       usage: "&eUsage: /dungeon revive <player>"
       ok: "&a✔ Revived."
       not_dead: "&cThat player isn't dead in this run."
@@ -65,7 +77,14 @@ command:
       entry: "&7{position}. {players} — {seconds}s, {deaths} death(s)"
   dungeonadmin:
     no_permission: "&cYou don't have permission to use this command."
-    usage: "&eUsage: /dungeonadmin <create|reload|forcestop|browser|editor|structure> [args]"
+    usage: |-
+      &eUsage: /dungeonadmin
+      &7 • &fcreate
+      &7 • &freload
+      &7 • &fforcestop
+      &7 • &fbrowser
+      &7 • &feditor
+      &7 • &fstructure
     players_only: "&cOnly a player can open the editor."
     not_found: "&cDungeon '{id}' doesn't exist."
     create:

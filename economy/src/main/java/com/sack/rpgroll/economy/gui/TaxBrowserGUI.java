@@ -32,7 +32,7 @@ public class TaxBrowserGUI extends InventoryGUI {
 
     public TaxBrowserGUI(Player player, TaxRuleManager taxRuleManager, ChatPromptManager chatPromptManager,
             Runnable onBack) {
-        super(player, Component.text(chatPromptManager.lang().raw("tax.browser.title"), NamedTextColor.GOLD), SIZE);
+        super(player, ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("tax.browser.title"), NamedTextColor.GOLD), SIZE);
         this.taxRuleManager = taxRuleManager;
         this.chatPromptManager = chatPromptManager;
         this.onBack = onBack;

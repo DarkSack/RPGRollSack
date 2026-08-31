@@ -1,5 +1,7 @@
 package com.sack.rpgroll.ranching.gui;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.ranching.core.nutrition.Feed;
@@ -42,7 +44,7 @@ public class FeedEditorGUI extends InventoryGUI {
 
     public FeedEditorGUI(Player player, Feed feed, FeedManager feedManager, ChatPromptManager chatPromptManager,
             Runnable onBack) {
-        super(player, Component.text(chatPromptManager.lang().raw("gui.feed.editor.title", "id", feed.id()), NamedTextColor.GOLD), SIZE);
+        super(player, ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.feed.editor.title", "id", feed.id()), NamedTextColor.GOLD), SIZE);
         this.current = feed;
         this.feedManager = feedManager;
         this.chatPromptManager = chatPromptManager;
@@ -70,39 +72,39 @@ public class FeedEditorGUI extends InventoryGUI {
                 .setName(lang.component("gui.editor.name_line", "name", current.displayName())).build());
 
         setItem(ICON_SLOT, new ItemBuilder(SpeciesBrowserGUI.parseMaterial(current.icon(), Material.WHEAT))
-                .setName(Component.text(lang.raw("gui.editor.icon_line", "icon", current.icon()), NamedTextColor.YELLOW)).build());
+                .setName(ComponentUtils.parseWithDefault(lang.raw("gui.editor.icon_line", "icon", current.icon()), NamedTextColor.YELLOW)).build());
 
         setItem(DESCRIPTION_SLOT, new ItemBuilder(Material.WRITTEN_BOOK)
-                .setName(Component.text(lang.raw("gui.editor.description_title"), NamedTextColor.YELLOW))
+                .setName(ComponentUtils.parseWithDefault(lang.raw("gui.editor.description_title"), NamedTextColor.YELLOW))
                 .setLore(ItemBuilder.toLoreLines(current.description().isBlank() ? lang.raw("gui.editor.no_description") : current.description()))
                 .build());
 
         setItem(QUALITY_SLOT, new ItemBuilder(Material.AMETHYST_SHARD)
-                .setName(Component.text(lang.raw("gui.feed.editor.quality_line", "quality", current.quality()), NamedTextColor.LIGHT_PURPLE))
-                .setLore(Component.text(lang.raw("gui.editor.rotate_hint"), NamedTextColor.GRAY)).build());
+                .setName(ComponentUtils.parseWithDefault(lang.raw("gui.feed.editor.quality_line", "quality", current.quality()), NamedTextColor.LIGHT_PURPLE))
+                .setLore(ComponentUtils.parseWithDefault(lang.raw("gui.editor.rotate_hint"), NamedTextColor.GRAY)).build());
 
         setItem(TAGS_SLOT, new ItemBuilder(Material.HOPPER)
-                .setName(Component.text(lang.raw("gui.feed.editor.tags_line", "tags", String.join(", ", current.tags())), NamedTextColor.GOLD))
-                .setLore(Component.text(lang.raw("gui.editor.prompt_tags_hint"), NamedTextColor.GRAY)).build());
+                .setName(ComponentUtils.parseWithDefault(lang.raw("gui.feed.editor.tags_line", "tags", String.join(", ", current.tags())), NamedTextColor.GOLD))
+                .setLore(ComponentUtils.parseWithDefault(lang.raw("gui.editor.prompt_tags_hint"), NamedTextColor.GRAY)).build());
 
         setItem(NUTRITION_SLOT, new ItemBuilder(Material.APPLE)
-                .setName(Component.text(lang.raw("gui.feed.editor.nutrition_line", "value", current.nutritionValue()), NamedTextColor.AQUA))
-                .setLore(Component.text(lang.raw("gui.editor.step5_hint"), NamedTextColor.GRAY)).build());
+                .setName(ComponentUtils.parseWithDefault(lang.raw("gui.feed.editor.nutrition_line", "value", current.nutritionValue()), NamedTextColor.AQUA))
+                .setLore(ComponentUtils.parseWithDefault(lang.raw("gui.editor.step5_hint"), NamedTextColor.GRAY)).build());
 
         setItem(HEALTH_SLOT, new ItemBuilder(Material.GOLDEN_APPLE)
-                .setName(Component.text(lang.raw("gui.editor.health_bonus_line", "value", current.healthBonus()), NamedTextColor.RED))
-                .setLore(Component.text(lang.raw("gui.editor.step2_hint"), NamedTextColor.GRAY)).build());
+                .setName(ComponentUtils.parseWithDefault(lang.raw("gui.editor.health_bonus_line", "value", current.healthBonus()), NamedTextColor.RED))
+                .setLore(ComponentUtils.parseWithDefault(lang.raw("gui.editor.step2_hint"), NamedTextColor.GRAY)).build());
 
         setItem(HAPPINESS_SLOT, new ItemBuilder(Material.CAKE)
-                .setName(Component.text(lang.raw("gui.editor.happiness_bonus_line", "value", current.happinessBonus()), NamedTextColor.LIGHT_PURPLE))
-                .setLore(Component.text(lang.raw("gui.editor.step2_hint"), NamedTextColor.GRAY)).build());
+                .setName(ComponentUtils.parseWithDefault(lang.raw("gui.editor.happiness_bonus_line", "value", current.happinessBonus()), NamedTextColor.LIGHT_PURPLE))
+                .setLore(ComponentUtils.parseWithDefault(lang.raw("gui.editor.step2_hint"), NamedTextColor.GRAY)).build());
 
         setItem(PRODUCTION_SLOT, new ItemBuilder(Material.BUCKET)
-                .setName(Component.text(lang.raw("gui.feed.editor.production_bonus_line", "value", current.productionBonus()), NamedTextColor.AQUA))
-                .setLore(Component.text(lang.raw("gui.editor.step2_hint"), NamedTextColor.GRAY)).build());
+                .setName(ComponentUtils.parseWithDefault(lang.raw("gui.feed.editor.production_bonus_line", "value", current.productionBonus()), NamedTextColor.AQUA))
+                .setLore(ComponentUtils.parseWithDefault(lang.raw("gui.editor.step2_hint"), NamedTextColor.GRAY)).build());
 
         setItem(GIVE_SLOT, new ItemBuilder(Material.CHEST)
-                .setName(Component.text(lang.raw("gui.editor.give_one"), NamedTextColor.GREEN)).build());
+                .setName(ComponentUtils.parseWithDefault(lang.raw("gui.editor.give_one"), NamedTextColor.GREEN)).build());
 
         setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back")));
     }

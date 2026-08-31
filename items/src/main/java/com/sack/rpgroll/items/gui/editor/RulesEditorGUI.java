@@ -1,5 +1,7 @@
 package com.sack.rpgroll.items.gui.editor;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
@@ -88,7 +90,7 @@ public class RulesEditorGUI extends InventoryGUI {
                 String.valueOf(req.money()), lang.raw("editor.rules.money_req_hint")));
         setItem(QUESTS_SLOT, new ItemBuilder(Material.MAP)
                 .setName(lang.component("editor.rules.quests"))
-                .setLore(Component.text(req.completedQuests().isEmpty() ? lang.raw("editor.rules.quests_none")
+                .setLore(ComponentUtils.parseWithDefault(req.completedQuests().isEmpty() ? lang.raw("editor.rules.quests_none")
                         : String.join(", ", req.completedQuests()), NamedTextColor.GRAY),
                         lang.component("editor.rules.quests_hint"))
                 .build());
@@ -134,8 +136,7 @@ public class RulesEditorGUI extends InventoryGUI {
 
     private org.bukkit.inventory.ItemStack textField(Material material, String name, String value, String hint) {
         return new ItemBuilder(material)
-                .setName(Component.text(name + ": " + (value == null || value.isBlank() ? lang.raw("editor.rules.undefined") : value),
-                        NamedTextColor.YELLOW))
+                .setName(ComponentUtils.parseWithDefault(name + ": " + (value == null || value.isBlank() ? lang.raw("editor.rules.undefined") : value), NamedTextColor.YELLOW))
                 .setLore(Component.text(hint, NamedTextColor.GRAY))
                 .build();
     }

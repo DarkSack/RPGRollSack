@@ -5,7 +5,16 @@ general:
   no_permission: "&cYou don't have permission to use this command."
 
 command:
-  usage: "&eUsage: /mobadmin <spawn|list|info|reload|killall|create|browser|editor>"
+  usage: |-
+    &eUsage: /mobadmin
+    &7 • &fspawn
+    &7 • &flist
+    &7 • &finfo
+    &7 • &freload
+    &7 • &fkillall
+    &7 • &fcreate
+    &7 • &fbrowser
+    &7 • &feditor
   create_player_only: "&cOnly a player can create a mob."
   create_usage: "&eUsage: /mobadmin create <id> [base-entity-type]"
   id_exists: "&cA mob with that id already exists."

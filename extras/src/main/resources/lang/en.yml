@@ -4,7 +4,15 @@
 command:
   no-permission: "You don't have permission to use this command."
   usage:
-    main: "Usage: /extrasadmin <reload|list|get|set|add|apply|remove> [args]"
+    main: |-
+      &eUsage: /extrasadmin
+      &7 • &freload
+      &7 • &flist
+      &7 • &fget
+      &7 • &fset
+      &7 • &fadd
+      &7 • &fapply
+      &7 • &fremove
     get: "Usage: /extrasadmin get <player> <stat>"
     set: "Usage: /extrasadmin set <player> <stat> <value>"
     add: "Usage: /extrasadmin add <player> <stat> <amount>"
@@ -25,6 +33,7 @@ command:
     success: "✔ Condition '{condition}' applied to {player}"
   remove:
     success: "✔ Condition '{condition}' removed from {player}"
+  stat-not-found: "No stat exists with id: {stat}"
   condition-not-found: "No condition exists with id: {condition}"
   player-not-found: "Player not found: {player}"
   invalid-number: "Invalid numeric value: {value}"

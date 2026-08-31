@@ -1,5 +1,7 @@
 package com.sack.rpgroll.workers.gui;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.common.reskin.EntityReskin;
 
 import com.sack.rpgroll.gui.InventoryGUI;
@@ -54,8 +56,7 @@ public class ProfessionEditorGUI extends InventoryGUI {
 
     public ProfessionEditorGUI(Player player, Profession profession, ProfessionManager professionManager,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text(chatPromptManager.lang().raw("gui.profession.editor.title", "id", profession.id()),
-                NamedTextColor.GOLD), SIZE);
+        super(player, ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.profession.editor.title", "id", profession.id()), NamedTextColor.GOLD), SIZE);
         this.current = profession;
         this.professionManager = professionManager;
         this.chatPromptManager = chatPromptManager;
@@ -78,31 +79,30 @@ public class ProfessionEditorGUI extends InventoryGUI {
         }
 
         setItem(NAME_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.profession.editor.name", "name",
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.profession.editor.name", "name",
                         current.displayName()), NamedTextColor.YELLOW)).build());
 
         setItem(ICON_SLOT, new ItemBuilder(ProfessionBrowserGUI.parseMaterial(current.icon(), Material.VILLAGER_SPAWN_EGG))
-                .setName(Component.text(chatPromptManager.lang().raw("gui.profession.editor.icon", "icon", current.icon()),
-                        NamedTextColor.YELLOW)).build());
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.profession.editor.icon", "icon", current.icon()), NamedTextColor.YELLOW)).build());
 
         setItem(ENTITY_TYPE_SLOT, new ItemBuilder(Material.ARMOR_STAND)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.profession.editor.entity_type", "entity",
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.profession.editor.entity_type", "entity",
                         current.entityType()), NamedTextColor.AQUA)).build());
 
         setItem(DESCRIPTION_SLOT, new ItemBuilder(Material.WRITTEN_BOOK)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.profession.editor.description"), NamedTextColor.YELLOW))
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.profession.editor.description"), NamedTextColor.YELLOW))
                 .setLore(ItemBuilder.toLoreLines(current.description().isBlank()
                         ? chatPromptManager.lang().raw("gui.editor.no_description") : current.description()))
                 .build());
 
         setItem(SKILLS_SLOT, new ItemBuilder(Material.BOOK)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.profession.editor.skills", "skills",
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.profession.editor.skills", "skills",
                         String.join(", ", current.skillIds())), NamedTextColor.GOLD))
-                .setLore(Component.text(chatPromptManager.lang().raw("gui.profession.editor.skills_hint"), NamedTextColor.GRAY))
+                .setLore(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.profession.editor.skills_hint"), NamedTextColor.GRAY))
                 .build());
 
         setItem(AI_RULES_SLOT, new ItemBuilder(Material.COMPARATOR)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.profession.editor.ai_rules", "count",
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.profession.editor.ai_rules", "count",
                         current.aiRules().size()), NamedTextColor.LIGHT_PURPLE))
                 .setLore(ItemBuilder.toLoreLines(chatPromptManager.lang().raw("gui.profession.editor.ai_rules_lore",
                         "conditions", java.util.Arrays.toString(AiCondition.values()), "actions",
@@ -110,58 +110,55 @@ public class ProfessionEditorGUI extends InventoryGUI {
                 .build());
 
         setItem(CLEAR_RULES_SLOT, new ItemBuilder(Material.BARRIER)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.profession.editor.clear_rules"), NamedTextColor.RED))
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.profession.editor.clear_rules"), NamedTextColor.RED))
                 .build());
 
         setItem(SCHEDULE_SLOT, new ItemBuilder(Material.CLOCK)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.profession.editor.schedule", "schedule",
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.profession.editor.schedule", "schedule",
                         current.scheduleId() == null ? chatPromptManager.lang().raw("gui.profession.editor.schedule_none")
-                                : current.scheduleId()),
-                        NamedTextColor.AQUA))
-                .setLore(Component.text(chatPromptManager.lang().raw("gui.profession.editor.schedule_hint", "keyword",
+                                : current.scheduleId()), NamedTextColor.AQUA))
+                .setLore(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.profession.editor.schedule_hint", "keyword",
                         chatPromptManager.lang().raw("gui.profession.editor.schedule_none_keyword")), NamedTextColor.GRAY))
                 .build());
 
         setItem(WAGE_AMOUNT_SLOT, new ItemBuilder(Material.GOLD_NUGGET)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.profession.editor.wage", "wage",
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.profession.editor.wage", "wage",
                         current.wageAmount()), NamedTextColor.YELLOW))
-                .setLore(Component.text(chatPromptManager.lang().raw("gui.profession.editor.wage_hint"), NamedTextColor.GRAY))
+                .setLore(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.profession.editor.wage_hint"), NamedTextColor.GRAY))
                 .build());
 
         setItem(WAGE_TYPE_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.profession.editor.wage_type", "type",
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.profession.editor.wage_type", "type",
                         current.wageType()), NamedTextColor.GREEN))
-                .setLore(Component.text(chatPromptManager.lang().raw("gui.profession.editor.rotate_hint"), NamedTextColor.GRAY))
+                .setLore(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.profession.editor.rotate_hint"), NamedTextColor.GRAY))
                 .build());
 
         setItem(TOOL_SLOT, new ItemBuilder(Material.IRON_PICKAXE)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.profession.editor.tool", "tool",
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.profession.editor.tool", "tool",
                         current.toolMaterial() == null ? chatPromptManager.lang().raw("gui.profession.editor.tool_none")
-                                : current.toolMaterial()),
-                        NamedTextColor.WHITE))
-                .setLore(Component.text(chatPromptManager.lang().raw("gui.profession.editor.tool_hint", "keyword",
+                                : current.toolMaterial()), NamedTextColor.WHITE))
+                .setLore(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.profession.editor.tool_hint", "keyword",
                         chatPromptManager.lang().raw("gui.profession.editor.tool_none_keyword")), NamedTextColor.GRAY))
                 .build());
 
         EntityReskin reskin = current.reskin();
 
         setItem(RESKIN_MATERIAL_SLOT, new ItemBuilder(Material.ARMOR_STAND)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.profession.editor.reskin_material",
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.profession.editor.reskin_material",
                         "value", reskin.material() != null ? reskin.material()
-                                : chatPromptManager.lang().raw("gui.profession.editor.reskin_none")),
-                        NamedTextColor.LIGHT_PURPLE))
+                                : chatPromptManager.lang().raw("gui.profession.editor.reskin_none")), NamedTextColor.LIGHT_PURPLE))
                 .setLore(ItemBuilder.toLoreLines(chatPromptManager.lang().raw("gui.profession.editor.reskin_hint")))
                 .build());
 
         setItem(RESKIN_CMD_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.profession.editor.reskin_cmd", "value",
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.profession.editor.reskin_cmd", "value",
                         reskin.customModelData()), NamedTextColor.LIGHT_PURPLE))
                 .build());
 
         setItem(RESKIN_SCALE_SLOT, new ItemBuilder(Material.SLIME_BALL)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.profession.editor.reskin_scale", "value",
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.profession.editor.reskin_scale", "value",
                         reskin.scale()), NamedTextColor.LIGHT_PURPLE))
-                .setLore(Component.text(chatPromptManager.lang().raw("gui.profession.editor.reskin_scale_hint"), NamedTextColor.GRAY))
+                .setLore(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.profession.editor.reskin_scale_hint"), NamedTextColor.GRAY))
                 .build());
 
         setItem(BACK_SLOT, ItemBuilder.createCancelButton(chatPromptManager.lang().raw("gui.common.back")));
@@ -246,8 +243,7 @@ public class ProfessionEditorGUI extends InventoryGUI {
         String[] parts = raw.split(";");
 
         if (parts.length < 3) {
-            player.sendMessage(Component.text(chatPromptManager.lang().raw("gui.profession.editor.invalid_rule_format"),
-                    NamedTextColor.RED));
+            player.sendMessage(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.profession.editor.invalid_rule_format"), NamedTextColor.RED));
             build();
             return;
         }
@@ -259,8 +255,7 @@ public class ProfessionEditorGUI extends InventoryGUI {
             condition = AiCondition.valueOf(parts[0].trim().toUpperCase(Locale.ROOT));
             action = AiAction.valueOf(parts[1].trim().toUpperCase(Locale.ROOT));
         } catch (IllegalArgumentException e) {
-            player.sendMessage(Component.text(chatPromptManager.lang().raw("gui.profession.editor.invalid_rule_values"),
-                    NamedTextColor.RED));
+            player.sendMessage(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.profession.editor.invalid_rule_values"), NamedTextColor.RED));
             build();
             return;
         }

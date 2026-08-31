@@ -1,5 +1,7 @@
 package com.sack.rpgroll.dungeons.command;
 
+import com.sack.rpgroll.common.command.Senders;
+
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.dungeons.core.DungeonBounds;
 import com.sack.rpgroll.dungeons.core.DungeonCheckpointPolicy;
@@ -123,7 +125,7 @@ public class DungeonAdminCommand implements CommandExecutor, TabCompleter {
         dungeonManager.register(definition);
         lang.send(sender, "command.dungeonadmin.create.ok", "id", id);
 
-        if (sender instanceof Player player) {
+        if (Senders.asPlayer(sender) instanceof Player player) {
             new DungeonEditorHubGUI(player,
                     new DungeonEditorSession(definition, dungeonManager, chatPromptManager, plugin)).open();
         }
@@ -162,7 +164,7 @@ public class DungeonAdminCommand implements CommandExecutor, TabCompleter {
 
     private void handleBrowser(CommandSender sender) {
 
-        if (!(sender instanceof Player player)) {
+        if (!(Senders.asPlayer(sender) instanceof Player player)) {
             lang.send(sender, "command.dungeonadmin.players_only");
             return;
         }
@@ -172,7 +174,7 @@ public class DungeonAdminCommand implements CommandExecutor, TabCompleter {
 
     private void handleEditor(CommandSender sender, String[] args) {
 
-        if (!(sender instanceof Player player)) {
+        if (!(Senders.asPlayer(sender) instanceof Player player)) {
             lang.send(sender, "command.dungeonadmin.players_only");
             return;
         }
@@ -296,7 +298,7 @@ public class DungeonAdminCommand implements CommandExecutor, TabCompleter {
                 return;
             }
 
-        } else if (sender instanceof Player player) {
+        } else if (Senders.asPlayer(sender) instanceof Player player) {
             origin = player.getLocation();
         } else {
             lang.send(sender, "command.dungeonadmin.structure.paste.console_needs_coords");
@@ -330,7 +332,7 @@ public class DungeonAdminCommand implements CommandExecutor, TabCompleter {
         String vanillaName = args[2];
         String newId = args[3].toLowerCase(Locale.ROOT);
         String displayName = args.length > 4 ? String.join(" ", List.of(args).subList(4, args.length)) : newId;
-        Player requestedBy = sender instanceof Player player ? player : null;
+        Player requestedBy = Senders.asPlayer(sender) instanceof Player player ? player : null;
 
         StructureImportService.Result result =
                 structureImportService.importFromVanilla(vanillaName, newId, displayName, requestedBy);
@@ -355,7 +357,7 @@ public class DungeonAdminCommand implements CommandExecutor, TabCompleter {
         String fileName = args[2];
         String newId = args[3].toLowerCase(Locale.ROOT);
         String displayName = args.length > 4 ? String.join(" ", List.of(args).subList(4, args.length)) : newId;
-        Player requestedBy = sender instanceof Player player ? player : null;
+        Player requestedBy = Senders.asPlayer(sender) instanceof Player player ? player : null;
 
         StructureImportService.Result result =
                 structureImportService.importFromSchematic(fileName, newId, displayName, requestedBy);
@@ -373,7 +375,7 @@ public class DungeonAdminCommand implements CommandExecutor, TabCompleter {
 
     private void handleStructureBrowser(CommandSender sender) {
 
-        if (!(sender instanceof Player player)) {
+        if (!(Senders.asPlayer(sender) instanceof Player player)) {
             lang.send(sender, "command.dungeonadmin.structure.browser.players_only");
             return;
         }

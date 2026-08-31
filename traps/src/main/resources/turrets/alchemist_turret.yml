@@ -22,4 +22,10 @@ impact:
     effects: "SLOWNESS:200:1;WEAKNESS:200:0"
 
 model:
-  material: BREWING_STAND
+  # Bloque entero que se coloca en el mundo: es el cuerpo de la torreta.
+  base-block: BREWING_STAND
+  # Ítem que flota encima. Gira solo mientras busca y se orienta
+  # hacia el objetivo cuando lo detecta.
+  material: BLAZE_ROD
+  hover-height: 1.1
+  spin-degrees-per-tick: 4.0

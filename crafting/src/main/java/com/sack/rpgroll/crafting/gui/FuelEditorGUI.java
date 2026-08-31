@@ -1,5 +1,7 @@
 package com.sack.rpgroll.crafting.gui;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.crafting.fuel.FuelDefinition;
 import com.sack.rpgroll.crafting.fuel.FuelManager;
 import com.sack.rpgroll.gui.InventoryGUI;
@@ -33,7 +35,7 @@ public class FuelEditorGUI extends InventoryGUI {
 
     public FuelEditorGUI(Player player, FuelDefinition fuel, FuelManager fuelManager,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text(chatPromptManager.lang().raw("gui.fuel.editor_title", "id", fuel.id()), NamedTextColor.GOLD), SIZE);
+        super(player, ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.fuel.editor_title", "id", fuel.id()), NamedTextColor.GOLD), SIZE);
         this.current = fuel;
         this.fuelManager = fuelManager;
         this.chatPromptManager = chatPromptManager;
@@ -59,26 +61,26 @@ public class FuelEditorGUI extends InventoryGUI {
                 .setName(chatPromptManager.lang().component("gui.common.field_name", "value", current.displayName())).build());
 
         setItem(ICON_SLOT, new ItemBuilder(FuelBrowserGUI.parseMaterial(current.icon()))
-                .setName(Component.text(chatPromptManager.lang().raw("gui.common.field_icon", "value", current.icon()), NamedTextColor.YELLOW)).build());
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.common.field_icon", "value", current.icon()), NamedTextColor.YELLOW)).build());
 
         setItem(MATERIAL_OR_ITEM_SLOT, new ItemBuilder(Material.PAPER)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.fuel.field_material_or_item", "value", current.materialOrItemId()), NamedTextColor.AQUA))
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.fuel.field_material_or_item", "value", current.materialOrItemId()), NamedTextColor.AQUA))
                 .build());
 
         setItem(IS_CUSTOM_ITEM_SLOT, new ItemBuilder(current.isCustomItem() ? Material.LIME_CONCRETE : Material.GRAY_CONCRETE)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.fuel.field_is_custom_item", "value", current.isCustomItem()), NamedTextColor.GOLD))
-                .setLore(Component.text(chatPromptManager.lang().raw("gui.common.click_toggle"), NamedTextColor.GRAY)).build());
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.fuel.field_is_custom_item", "value", current.isCustomItem()), NamedTextColor.GOLD))
+                .setLore(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.common.click_toggle"), NamedTextColor.GRAY)).build());
 
         setItem(BURN_TICKS_SLOT, new ItemBuilder(Material.CLOCK)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.fuel.field_burn_ticks", "value", current.burnTicks()), NamedTextColor.AQUA))
-                .setLore(Component.text(chatPromptManager.lang().raw("gui.common.click_inc_dec", "inc", "+20", "dec", "-20"), NamedTextColor.GRAY)).build());
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.fuel.field_burn_ticks", "value", current.burnTicks()), NamedTextColor.AQUA))
+                .setLore(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.common.click_inc_dec", "inc", "+20", "dec", "-20"), NamedTextColor.GRAY)).build());
 
         setItem(CONSUME_AMOUNT_SLOT, new ItemBuilder(Material.HOPPER)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.fuel.field_consume_amount", "value", current.consumeAmount()), NamedTextColor.AQUA))
-                .setLore(Component.text(chatPromptManager.lang().raw("gui.common.click_inc_dec", "inc", "+1", "dec", "-1"), NamedTextColor.GRAY)).build());
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.fuel.field_consume_amount", "value", current.consumeAmount()), NamedTextColor.AQUA))
+                .setLore(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.common.click_inc_dec", "inc", "+1", "dec", "-1"), NamedTextColor.GRAY)).build());
 
         setItem(DELETE_SLOT, new ItemBuilder(Material.BARRIER)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.fuel.delete"), NamedTextColor.RED)).build());
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.fuel.delete"), NamedTextColor.RED)).build());
 
         setItem(BACK_SLOT, ItemBuilder.createCancelButton(chatPromptManager.lang().raw("gui.common.back")));
     }

@@ -1,5 +1,7 @@
 package com.sack.rpgroll.crafting.station.listener;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.crafting.api.event.StationOpenEvent;
 import com.sack.rpgroll.crafting.station.CustomStation;
 import com.sack.rpgroll.crafting.station.CustomStationManager;
@@ -122,10 +124,9 @@ public class StationBlockInteractListener implements Listener {
         if (!structured.isEmpty()) {
             StructureRequirement req = structureDetector.findMissing(block, structured.get(0).structureRequirements())
                     .orElseThrow();
-            player.sendMessage(Component.text(
+            player.sendMessage(ComponentUtils.parseWithDefault(
                     lang.raw("station.structure_incomplete", "material", req.material(), "dx", req.dx(), "dy",
-                            req.dy(), "dz", req.dz()),
-                    NamedTextColor.RED));
+                            req.dy(), "dz", req.dz()), NamedTextColor.RED));
         }
 
         return null;

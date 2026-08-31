@@ -1,5 +1,7 @@
 package com.sack.rpgroll.economy.gui;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.economy.currency.Currency;
 import com.sack.rpgroll.economy.currency.CurrencyManager;
@@ -39,8 +41,7 @@ public class CurrencyEditorGUI extends InventoryGUI {
 
     public CurrencyEditorGUI(Player player, Currency currency, CurrencyManager currencyManager,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text(chatPromptManager.lang().raw("currency.editor.title", "id", currency.id()),
-                NamedTextColor.GOLD), SIZE);
+        super(player, ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("currency.editor.title", "id", currency.id()), NamedTextColor.GOLD), SIZE);
         this.current = currency;
         this.currencyManager = currencyManager;
         this.chatPromptManager = chatPromptManager;

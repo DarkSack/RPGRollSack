@@ -1,5 +1,7 @@
 package com.sack.rpgroll.ranching.gui;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.ranching.core.health.Disease;
@@ -38,7 +40,7 @@ public class DiseaseEditorGUI extends InventoryGUI {
 
     public DiseaseEditorGUI(Player player, Disease disease, DiseaseManager diseaseManager,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text(chatPromptManager.lang().raw("gui.disease.editor.title", "id", disease.id()), NamedTextColor.GOLD), SIZE);
+        super(player, ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.disease.editor.title", "id", disease.id()), NamedTextColor.GOLD), SIZE);
         this.current = disease;
         this.diseaseManager = diseaseManager;
         this.chatPromptManager = chatPromptManager;
@@ -66,39 +68,35 @@ public class DiseaseEditorGUI extends InventoryGUI {
                 .setName(lang.component("gui.editor.name_line", "name", current.displayName())).build());
 
         setItem(DESCRIPTION_SLOT, new ItemBuilder(Material.WRITTEN_BOOK)
-                .setName(Component.text(lang.raw("gui.editor.description_title"), NamedTextColor.YELLOW))
+                .setName(ComponentUtils.parseWithDefault(lang.raw("gui.editor.description_title"), NamedTextColor.YELLOW))
                 .setLore(ItemBuilder.toLoreLines(current.description().isBlank() ? lang.raw("gui.editor.no_description") : current.description()))
                 .build());
 
         setItem(SYMPTOMS_SLOT, new ItemBuilder(Material.SPIDER_EYE)
-                .setName(Component.text(lang.raw("gui.disease.editor.symptoms_line", "symptoms", String.join(", ", current.symptoms())), NamedTextColor.GOLD))
-                .setLore(Component.text(lang.raw("gui.disease.editor.prompt_symptoms"), NamedTextColor.GRAY)).build());
+                .setName(ComponentUtils.parseWithDefault(lang.raw("gui.disease.editor.symptoms_line", "symptoms", String.join(", ", current.symptoms())), NamedTextColor.GOLD))
+                .setLore(ComponentUtils.parseWithDefault(lang.raw("gui.disease.editor.prompt_symptoms"), NamedTextColor.GRAY)).build());
 
         setItem(DURATION_SLOT, new ItemBuilder(Material.CLOCK)
-                .setName(Component.text(lang.raw("gui.disease.editor.duration_line", "ticks", current.durationTicks()), NamedTextColor.WHITE))
-                .setLore(Component.text(lang.raw("gui.editor.step1200_hint"), NamedTextColor.GRAY)).build());
+                .setName(ComponentUtils.parseWithDefault(lang.raw("gui.disease.editor.duration_line", "ticks", current.durationTicks()), NamedTextColor.WHITE))
+                .setLore(ComponentUtils.parseWithDefault(lang.raw("gui.editor.step1200_hint"), NamedTextColor.GRAY)).build());
 
         setItem(CONTAGION_SLOT, new ItemBuilder(Material.SLIME_BALL)
-                .setName(Component.text(
-                        lang.raw("gui.disease.editor.contagion_line", "value", String.format(Locale.ROOT, "%.0f", current.contagionChance() * 100)),
-                        NamedTextColor.GREEN))
-                .setLore(Component.text(lang.raw("gui.editor.step5pct_hint"), NamedTextColor.GRAY)).build());
+                .setName(ComponentUtils.parseWithDefault(
+                        lang.raw("gui.disease.editor.contagion_line", "value", String.format(Locale.ROOT, "%.0f", current.contagionChance() * 100)), NamedTextColor.GREEN))
+                .setLore(ComponentUtils.parseWithDefault(lang.raw("gui.editor.step5pct_hint"), NamedTextColor.GRAY)).build());
 
         setItem(HEALTH_PENALTY_SLOT, new ItemBuilder(Material.REDSTONE)
-                .setName(Component.text(lang.raw("gui.disease.editor.health_penalty_line", "value", current.healthPenaltyPerCheck()),
-                        NamedTextColor.RED))
-                .setLore(Component.text(lang.raw("gui.editor.step1_hint"), NamedTextColor.GRAY)).build());
+                .setName(ComponentUtils.parseWithDefault(lang.raw("gui.disease.editor.health_penalty_line", "value", current.healthPenaltyPerCheck()), NamedTextColor.RED))
+                .setLore(ComponentUtils.parseWithDefault(lang.raw("gui.editor.step1_hint"), NamedTextColor.GRAY)).build());
 
         setItem(HAPPINESS_PENALTY_SLOT, new ItemBuilder(Material.GRAY_DYE)
-                .setName(Component.text(lang.raw("gui.disease.editor.happiness_penalty_line", "value", current.happinessPenaltyPerCheck()),
-                        NamedTextColor.LIGHT_PURPLE))
-                .setLore(Component.text(lang.raw("gui.editor.step1_hint"), NamedTextColor.GRAY)).build());
+                .setName(ComponentUtils.parseWithDefault(lang.raw("gui.disease.editor.happiness_penalty_line", "value", current.happinessPenaltyPerCheck()), NamedTextColor.LIGHT_PURPLE))
+                .setLore(ComponentUtils.parseWithDefault(lang.raw("gui.editor.step1_hint"), NamedTextColor.GRAY)).build());
 
         setItem(PRODUCTION_PENALTY_SLOT, new ItemBuilder(Material.BARRIER)
-                .setName(Component.text(
-                        lang.raw("gui.disease.editor.production_penalty_line", "value", String.format(Locale.ROOT, "%.0f", current.productionPenalty() * 100)),
-                        NamedTextColor.AQUA))
-                .setLore(Component.text(lang.raw("gui.editor.step10pct_hint"), NamedTextColor.GRAY)).build());
+                .setName(ComponentUtils.parseWithDefault(
+                        lang.raw("gui.disease.editor.production_penalty_line", "value", String.format(Locale.ROOT, "%.0f", current.productionPenalty() * 100)), NamedTextColor.AQUA))
+                .setLore(ComponentUtils.parseWithDefault(lang.raw("gui.editor.step10pct_hint"), NamedTextColor.GRAY)).build());
 
         setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back")));
     }

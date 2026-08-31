@@ -16,6 +16,7 @@ import com.sack.rpgroll.mobs.instance.MobInstanceService;
 import com.sack.rpgroll.mobs.integration.MobsPlaceholders;
 import com.sack.rpgroll.mobs.listener.MobAITask;
 import com.sack.rpgroll.mobs.listener.MobCombatListener;
+import com.sack.rpgroll.mobs.listener.MobReloadListener;
 import com.sack.rpgroll.mobs.listener.NaturalSpawnListener;
 import com.sack.rpgroll.mobs.rarity.MobRarityResolver;
 import com.sack.rpgroll.mobs.region.MobRegionManager;
@@ -88,6 +89,11 @@ public class MobsPlugin extends JavaPlugin {
 
         NaturalSpawnListener spawnListener = new NaturalSpawnListener(mobManager, engine, regionManager);
         getServer().getPluginManager().registerEvents(spawnListener, this);
+
+        // Sin esto, un mob del plugin que sobrevive a la descarga de su chunk
+        // vuelve sin estado de runtime: deja de cambiar de fase y de repartir
+        // loot por contribución.
+        getServer().getPluginManager().registerEvents(new MobReloadListener(engine), this);
 
         MobAITask aiTask = new MobAITask(engine, instanceService, regionManager, mobManager);
         getServer().getScheduler().runTaskTimer(this, aiTask, AI_TICK_INTERVAL, AI_TICK_INTERVAL);

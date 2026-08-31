@@ -1,5 +1,7 @@
 package com.sack.rpgroll.crafting.gui;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.crafting.ingredient.IngredientSpec;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
@@ -58,17 +60,17 @@ public class IngredientListEditorGUI extends InventoryGUI {
 
             setItem(i, new ItemBuilder(Material.HOPPER)
                     .setName(Component.text(IngredientSpecFormat.format(spec), NamedTextColor.AQUA))
-                    .setLore(Component.text(chatPromptManager.lang().raw("gui.common.shift_remove"), NamedTextColor.RED))
+                    .setLore(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.common.shift_remove"), NamedTextColor.RED))
                     .build());
         }
 
         setItem(ADD_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.ingredient_list.add"), NamedTextColor.GREEN))
-                .setLore(Component.text(chatPromptManager.lang().raw("gui.ingredient_list.add_lore_1"), NamedTextColor.GRAY),
-                        Component.text(chatPromptManager.lang().raw("gui.ingredient_list.add_lore_2"), NamedTextColor.DARK_GRAY),
-                        Component.text(chatPromptManager.lang().raw("gui.ingredient_list.add_lore_3"), NamedTextColor.DARK_GRAY),
-                        Component.text(chatPromptManager.lang().raw("gui.ingredient_list.add_lore_4"), NamedTextColor.DARK_GRAY),
-                        Component.text(chatPromptManager.lang().raw("gui.ingredient_list.add_lore_5"), NamedTextColor.DARK_GRAY))
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.ingredient_list.add"), NamedTextColor.GREEN))
+                .setLore(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.ingredient_list.add_lore_1"), NamedTextColor.GRAY),
+                        ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.ingredient_list.add_lore_2"), NamedTextColor.DARK_GRAY),
+                        ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.ingredient_list.add_lore_3"), NamedTextColor.DARK_GRAY),
+                        ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.ingredient_list.add_lore_4"), NamedTextColor.DARK_GRAY),
+                        ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.ingredient_list.add_lore_5"), NamedTextColor.DARK_GRAY))
                 .build());
 
         setItem(BACK_SLOT, ItemBuilder.createCancelButton(chatPromptManager.lang().raw("gui.common.back")));

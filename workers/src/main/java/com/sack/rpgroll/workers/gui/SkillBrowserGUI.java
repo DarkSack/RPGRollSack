@@ -31,7 +31,7 @@ public class SkillBrowserGUI extends InventoryGUI {
 
     public SkillBrowserGUI(Player player, SkillManager skillManager, ProfessionManager professionManager,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text(chatPromptManager.lang().raw("gui.skill.browser.title"), NamedTextColor.GOLD), SIZE);
+        super(player, ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.skill.browser.title"), NamedTextColor.GOLD), SIZE);
         this.skillManager = skillManager;
         this.professionManager = professionManager;
         this.chatPromptManager = chatPromptManager;
@@ -54,16 +54,16 @@ public class SkillBrowserGUI extends InventoryGUI {
 
             setItem(i, new ItemBuilder(Material.BOOK)
                     .setName(ComponentUtils.parse(skill.displayName()))
-                    .setLore(Component.text(chatPromptManager.lang().raw("gui.profession.browser.id_label", "id",
+                    .setLore(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.profession.browser.id_label", "id",
                             skill.id()), NamedTextColor.GRAY),
-                            Component.text(chatPromptManager.lang().raw("gui.skill.browser.profession_label", "profession",
+                            ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.skill.browser.profession_label", "profession",
                                     skill.professionId()), NamedTextColor.GRAY),
-                            Component.text(chatPromptManager.lang().raw("gui.common.click_to_edit"), NamedTextColor.YELLOW))
+                            ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.common.click_to_edit"), NamedTextColor.YELLOW))
                     .build());
         }
 
         setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.skill.browser.new"), NamedTextColor.GREEN)).build());
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.skill.browser.new"), NamedTextColor.GREEN)).build());
         setItem(BACK_SLOT, ItemBuilder.createCancelButton(chatPromptManager.lang().raw("gui.common.back")));
     }
 
@@ -94,15 +94,13 @@ public class SkillBrowserGUI extends InventoryGUI {
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 
             if (skillManager.exists(id)) {
-                player.sendMessage(Component.text(chatPromptManager.lang().raw("gui.skill.browser.duplicate_id"),
-                        NamedTextColor.RED));
+                player.sendMessage(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.skill.browser.duplicate_id"), NamedTextColor.RED));
                 reopen();
                 return;
             }
 
             if (professionManager.getAll().isEmpty()) {
-                player.sendMessage(Component.text(chatPromptManager.lang().raw("gui.skill.browser.need_profession"),
-                        NamedTextColor.RED));
+                player.sendMessage(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.skill.browser.need_profession"), NamedTextColor.RED));
                 reopen();
                 return;
             }

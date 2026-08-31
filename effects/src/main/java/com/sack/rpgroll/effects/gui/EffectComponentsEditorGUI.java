@@ -1,5 +1,7 @@
 package com.sack.rpgroll.effects.gui;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.effects.core.EffectComponent;
 import com.sack.rpgroll.effects.core.EffectComponentType;
@@ -38,8 +40,7 @@ public class EffectComponentsEditorGUI extends InventoryGUI {
 
     public EffectComponentsEditorGUI(Player player, EffectDefinition effect, EffectManager effectManager,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text(chatPromptManager.lang().raw("gui.components.title", "id", effect.id()),
-                NamedTextColor.GOLD), SIZE);
+        super(player, ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.components.title", "id", effect.id()), NamedTextColor.GOLD), SIZE);
         this.current = effect;
         this.effectManager = effectManager;
         this.chatPromptManager = chatPromptManager;

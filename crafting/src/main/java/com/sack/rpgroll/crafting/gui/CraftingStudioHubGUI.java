@@ -1,5 +1,7 @@
 package com.sack.rpgroll.crafting.gui;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.crafting.anvil.AnvilRecipeManager;
 import com.sack.rpgroll.crafting.brewing.BrewRecipeManager;
 import com.sack.rpgroll.crafting.cartography.CartographyRecipeManager;
@@ -58,7 +60,7 @@ public class CraftingStudioHubGUI extends InventoryGUI {
             CartographyRecipeManager cartographyRecipeManager, LoomRecipeManager loomRecipeManager,
             VillagerTradeManager villagerTradeManager, VanillaRecipeBridge vanillaRecipeBridge,
             ChatPromptManager chatPromptManager) {
-        super(player, Component.text(chatPromptManager.lang().raw("gui.hub.title"), NamedTextColor.DARK_AQUA), SIZE);
+        super(player, ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.hub.title"), NamedTextColor.DARK_AQUA), SIZE);
         this.lang = chatPromptManager.lang();
         this.stationManager = stationManager;
         this.recipeManager = recipeManager;
@@ -84,45 +86,45 @@ public class CraftingStudioHubGUI extends InventoryGUI {
         }
 
         setItem(STATIONS_SLOT, new ItemBuilder(Material.SMITHING_TABLE)
-                .setName(Component.text(lang.raw("gui.hub.stations_name"), NamedTextColor.YELLOW))
-                .setLore(Component.text(lang.raw("gui.hub.count_defined", "count", stationManager.count()), NamedTextColor.GRAY)).build());
+                .setName(ComponentUtils.parseWithDefault(lang.raw("gui.hub.stations_name"), NamedTextColor.YELLOW))
+                .setLore(ComponentUtils.parseWithDefault(lang.raw("gui.hub.count_defined", "count", stationManager.count()), NamedTextColor.GRAY)).build());
 
         setItem(RECIPES_SLOT, new ItemBuilder(Material.CRAFTING_TABLE)
-                .setName(Component.text(lang.raw("gui.hub.recipes_name"), NamedTextColor.YELLOW))
-                .setLore(Component.text(lang.raw("gui.hub.count_defined", "count", recipeManager.count()), NamedTextColor.GRAY)).build());
+                .setName(ComponentUtils.parseWithDefault(lang.raw("gui.hub.recipes_name"), NamedTextColor.YELLOW))
+                .setLore(ComponentUtils.parseWithDefault(lang.raw("gui.hub.count_defined", "count", recipeManager.count()), NamedTextColor.GRAY)).build());
 
         setItem(FUELS_SLOT, new ItemBuilder(Material.COAL)
-                .setName(Component.text(lang.raw("gui.hub.fuels_name"), NamedTextColor.YELLOW))
-                .setLore(Component.text(lang.raw("gui.hub.count_defined_masc", "count", fuelManager.count()), NamedTextColor.GRAY)).build());
+                .setName(ComponentUtils.parseWithDefault(lang.raw("gui.hub.fuels_name"), NamedTextColor.YELLOW))
+                .setLore(ComponentUtils.parseWithDefault(lang.raw("gui.hub.count_defined_masc", "count", fuelManager.count()), NamedTextColor.GRAY)).build());
 
         setItem(VANILLA_RECIPES_SLOT, new ItemBuilder(Material.FURNACE)
-                .setName(Component.text(lang.raw("gui.hub.vanilla_recipes_name"), NamedTextColor.YELLOW))
-                .setLore(Component.text(lang.raw("gui.hub.count_registered", "count", vanillaRecipeManager.count()), NamedTextColor.GRAY)).build());
+                .setName(ComponentUtils.parseWithDefault(lang.raw("gui.hub.vanilla_recipes_name"), NamedTextColor.YELLOW))
+                .setLore(ComponentUtils.parseWithDefault(lang.raw("gui.hub.count_registered", "count", vanillaRecipeManager.count()), NamedTextColor.GRAY)).build());
 
         setItem(ANVIL_RECIPES_SLOT, new ItemBuilder(Material.ANVIL)
-                .setName(Component.text(lang.raw("gui.hub.anvil_recipes_name"), NamedTextColor.YELLOW))
-                .setLore(Component.text(lang.raw("gui.hub.count_defined", "count", anvilRecipeManager.count()), NamedTextColor.GRAY)).build());
+                .setName(ComponentUtils.parseWithDefault(lang.raw("gui.hub.anvil_recipes_name"), NamedTextColor.YELLOW))
+                .setLore(ComponentUtils.parseWithDefault(lang.raw("gui.hub.count_defined", "count", anvilRecipeManager.count()), NamedTextColor.GRAY)).build());
 
         setItem(BREW_RECIPES_SLOT, new ItemBuilder(Material.BREWING_STAND)
-                .setName(Component.text(lang.raw("gui.hub.brew_recipes_name"), NamedTextColor.YELLOW))
-                .setLore(Component.text(lang.raw("gui.hub.count_defined", "count", brewRecipeManager.count()), NamedTextColor.GRAY)).build());
+                .setName(ComponentUtils.parseWithDefault(lang.raw("gui.hub.brew_recipes_name"), NamedTextColor.YELLOW))
+                .setLore(ComponentUtils.parseWithDefault(lang.raw("gui.hub.count_defined", "count", brewRecipeManager.count()), NamedTextColor.GRAY)).build());
 
         setItem(GRINDSTONE_RECIPES_SLOT, new ItemBuilder(Material.GRINDSTONE)
-                .setName(Component.text(lang.raw("gui.hub.grindstone_recipes_name"), NamedTextColor.YELLOW))
-                .setLore(Component.text(lang.raw("gui.hub.count_defined", "count", grindstoneRecipeManager.count()), NamedTextColor.GRAY)).build());
+                .setName(ComponentUtils.parseWithDefault(lang.raw("gui.hub.grindstone_recipes_name"), NamedTextColor.YELLOW))
+                .setLore(ComponentUtils.parseWithDefault(lang.raw("gui.hub.count_defined", "count", grindstoneRecipeManager.count()), NamedTextColor.GRAY)).build());
 
         setItem(CARTOGRAPHY_RECIPES_SLOT, new ItemBuilder(Material.CARTOGRAPHY_TABLE)
-                .setName(Component.text(lang.raw("gui.hub.cartography_recipes_name"), NamedTextColor.YELLOW))
-                .setLore(Component.text(lang.raw("gui.hub.count_defined", "count", cartographyRecipeManager.count()), NamedTextColor.GRAY)).build());
+                .setName(ComponentUtils.parseWithDefault(lang.raw("gui.hub.cartography_recipes_name"), NamedTextColor.YELLOW))
+                .setLore(ComponentUtils.parseWithDefault(lang.raw("gui.hub.count_defined", "count", cartographyRecipeManager.count()), NamedTextColor.GRAY)).build());
 
         setItem(LOOM_RECIPES_SLOT, new ItemBuilder(Material.LOOM)
-                .setName(Component.text(lang.raw("gui.hub.loom_recipes_name"), NamedTextColor.YELLOW))
-                .setLore(Component.text(lang.raw("gui.hub.count_defined", "count", loomRecipeManager.count()), NamedTextColor.GRAY)).build());
+                .setName(ComponentUtils.parseWithDefault(lang.raw("gui.hub.loom_recipes_name"), NamedTextColor.YELLOW))
+                .setLore(ComponentUtils.parseWithDefault(lang.raw("gui.hub.count_defined", "count", loomRecipeManager.count()), NamedTextColor.GRAY)).build());
 
         setItem(VILLAGER_TRADES_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text(lang.raw("gui.hub.villager_trades_name"), NamedTextColor.YELLOW))
-                .setLore(Component.text(lang.raw("gui.hub.count_defined_masc", "count", villagerTradeManager.count()), NamedTextColor.GRAY),
-                        Component.text(lang.raw("gui.hub.villager_bind_hint"), NamedTextColor.DARK_GRAY))
+                .setName(ComponentUtils.parseWithDefault(lang.raw("gui.hub.villager_trades_name"), NamedTextColor.YELLOW))
+                .setLore(ComponentUtils.parseWithDefault(lang.raw("gui.hub.count_defined_masc", "count", villagerTradeManager.count()), NamedTextColor.GRAY),
+                        ComponentUtils.parseWithDefault(lang.raw("gui.hub.villager_bind_hint"), NamedTextColor.DARK_GRAY))
                 .build());
 
         setItem(CLOSE_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.hub.close")));

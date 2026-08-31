@@ -1,5 +1,7 @@
 package com.sack.rpgroll.workers.gui;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.workers.core.skill.Skill;
@@ -34,8 +36,7 @@ public class SkillEditorGUI extends InventoryGUI {
 
     public SkillEditorGUI(Player player, Skill skill, SkillManager skillManager, ChatPromptManager chatPromptManager,
             Runnable onBack) {
-        super(player, Component.text(chatPromptManager.lang().raw("gui.skill.editor.title", "id", skill.id()),
-                NamedTextColor.GOLD), SIZE);
+        super(player, ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.skill.editor.title", "id", skill.id()), NamedTextColor.GOLD), SIZE);
         this.current = skill;
         this.skillManager = skillManager;
         this.chatPromptManager = chatPromptManager;
@@ -61,30 +62,29 @@ public class SkillEditorGUI extends InventoryGUI {
                 .setName(chatPromptManager.lang().component("gui.skill.editor.name", "name", current.displayName())).build());
 
         setItem(PROFESSION_SLOT, new ItemBuilder(Material.VILLAGER_SPAWN_EGG)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.skill.editor.profession", "profession",
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.skill.editor.profession", "profession",
                         current.professionId()), NamedTextColor.AQUA)).build());
 
         setItem(DESCRIPTION_SLOT, new ItemBuilder(Material.WRITTEN_BOOK)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.profession.editor.description"), NamedTextColor.YELLOW))
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.profession.editor.description"), NamedTextColor.YELLOW))
                 .setLore(ItemBuilder.toLoreLines(current.description().isBlank()
                         ? chatPromptManager.lang().raw("gui.editor.no_description") : current.description()))
                 .build());
 
         setItem(ATTRIBUTE_KEY_SLOT, new ItemBuilder(Material.COMPASS)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.skill.editor.attribute_key", "key",
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.skill.editor.attribute_key", "key",
                         current.attributeKey()), NamedTextColor.GOLD)).build());
 
         setItem(MAX_LEVEL_SLOT, new ItemBuilder(Material.EXPERIENCE_BOTTLE)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.skill.editor.max_level", "level",
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.skill.editor.max_level", "level",
                         current.maxLevel()), NamedTextColor.GREEN))
-                .setLore(Component.text(chatPromptManager.lang().raw("gui.skill.editor.max_level_hint"), NamedTextColor.GRAY))
+                .setLore(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.skill.editor.max_level_hint"), NamedTextColor.GRAY))
                 .build());
 
         setItem(VALUE_PER_LEVEL_SLOT, new ItemBuilder(Material.NETHER_STAR)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.skill.editor.value_per_level", "value",
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.skill.editor.value_per_level", "value",
                         current.valuePerLevel()), NamedTextColor.LIGHT_PURPLE))
-                .setLore(Component.text(chatPromptManager.lang().raw("gui.skill.editor.value_per_level_hint"),
-                        NamedTextColor.GRAY)).build());
+                .setLore(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.skill.editor.value_per_level_hint"), NamedTextColor.GRAY)).build());
 
         setItem(BACK_SLOT, ItemBuilder.createCancelButton(chatPromptManager.lang().raw("gui.common.back")));
     }

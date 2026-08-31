@@ -74,7 +74,7 @@ public class WavesEditorGUI extends InventoryGUI {
 
         setItem(ADD_SLOT, new ItemBuilder(Material.EMERALD)
                 .setName(ComponentUtils.parse(lang.raw("gui.editor.waves.add")))
-                .setLore(Component.text(lang.raw("gui.editor.waves.format_hint"), NamedTextColor.GRAY))
+                .setLore(ComponentUtils.parseWithDefault(lang.raw("gui.editor.waves.format_hint"), NamedTextColor.GRAY))
                 .build());
 
         setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back")));

@@ -1,5 +1,7 @@
 package com.sack.rpgroll.crafting.gui;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.crafting.condition.RecipeCondition;
 import com.sack.rpgroll.crafting.recipe.RecipeResult;
 import com.sack.rpgroll.crafting.recipe.RecipeResultType;
@@ -54,7 +56,7 @@ public class VillagerTradeEditorGUI extends InventoryGUI {
 
     public VillagerTradeEditorGUI(Player player, VillagerTradeDefinition trade, VillagerTradeManager tradeManager,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text(chatPromptManager.lang().raw("gui.villager_trade.editor_title", "id", trade.id()), NamedTextColor.GOLD), SIZE);
+        super(player, ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.villager_trade.editor_title", "id", trade.id()), NamedTextColor.GOLD), SIZE);
         this.current = trade;
         this.tradeManager = tradeManager;
         this.chatPromptManager = chatPromptManager;
@@ -88,28 +90,28 @@ public class VillagerTradeEditorGUI extends InventoryGUI {
                 .setName(chatPromptManager.lang().component("gui.common.field_name", "value", current.displayName())).build());
 
         setItem(ICON_SLOT, new ItemBuilder(CustomStationBrowserGUI.parseMaterial(current.icon()))
-                .setName(Component.text(chatPromptManager.lang().raw("gui.common.field_icon", "value", current.icon()), NamedTextColor.YELLOW)).build());
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.common.field_icon", "value", current.icon()), NamedTextColor.YELLOW)).build());
 
         RecipeResult cost1 = cost1();
         setItem(COST1_TYPE_SLOT, new ItemBuilder(Material.CHEST)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.villager_trade.field_cost1_type", "value", cost1.type()), NamedTextColor.AQUA))
-                .setLore(Component.text(chatPromptManager.lang().raw("gui.common.toggle_material_item_hint"), NamedTextColor.GRAY)).build());
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.villager_trade.field_cost1_type", "value", cost1.type()), NamedTextColor.AQUA))
+                .setLore(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.common.toggle_material_item_hint"), NamedTextColor.GRAY)).build());
         setItem(COST1_VALUE_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.villager_trade.field_cost1_value", "value", cost1.value()), NamedTextColor.YELLOW)).build());
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.villager_trade.field_cost1_value", "value", cost1.value()), NamedTextColor.YELLOW)).build());
         setItem(COST1_AMOUNT_SLOT, new ItemBuilder(Material.HOPPER)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.villager_trade.field_cost1_amount", "value", cost1.amount()), NamedTextColor.AQUA))
-                .setLore(Component.text(chatPromptManager.lang().raw("gui.common.click_inc_dec", "inc", "+1", "dec", "-1"), NamedTextColor.GRAY)).build());
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.villager_trade.field_cost1_amount", "value", cost1.amount()), NamedTextColor.AQUA))
+                .setLore(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.common.click_inc_dec", "inc", "+1", "dec", "-1"), NamedTextColor.GRAY)).build());
 
         RecipeResult cost2 = cost2();
         if (cost2 != null) {
             setItem(COST2_TYPE_SLOT, new ItemBuilder(Material.CHEST)
-                    .setName(Component.text(chatPromptManager.lang().raw("gui.villager_trade.field_cost2_type", "value", cost2.type()), NamedTextColor.AQUA))
-                    .setLore(Component.text(chatPromptManager.lang().raw("gui.common.toggle_material_item_hint"), NamedTextColor.GRAY)).build());
+                    .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.villager_trade.field_cost2_type", "value", cost2.type()), NamedTextColor.AQUA))
+                    .setLore(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.common.toggle_material_item_hint"), NamedTextColor.GRAY)).build());
             setItem(COST2_VALUE_SLOT, new ItemBuilder(Material.GOLD_INGOT)
-                    .setName(Component.text(chatPromptManager.lang().raw("gui.villager_trade.field_cost2_value", "value", cost2.value()), NamedTextColor.YELLOW)).build());
+                    .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.villager_trade.field_cost2_value", "value", cost2.value()), NamedTextColor.YELLOW)).build());
             setItem(COST2_AMOUNT_SLOT, new ItemBuilder(Material.HOPPER)
-                    .setName(Component.text(chatPromptManager.lang().raw("gui.villager_trade.field_cost2_amount", "value", cost2.amount()), NamedTextColor.AQUA))
-                    .setLore(Component.text(chatPromptManager.lang().raw("gui.common.click_inc_dec", "inc", "+1", "dec", "-1"), NamedTextColor.GRAY)).build());
+                    .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.villager_trade.field_cost2_amount", "value", cost2.amount()), NamedTextColor.AQUA))
+                    .setLore(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.common.click_inc_dec", "inc", "+1", "dec", "-1"), NamedTextColor.GRAY)).build());
         }
 
         setItem(TOGGLE_COST2_SLOT, new ItemBuilder(cost2 != null ? Material.BARRIER : Material.LIME_CONCRETE)
@@ -118,50 +120,49 @@ public class VillagerTradeEditorGUI extends InventoryGUI {
                 .build());
 
         setItem(RESULT_TYPE_SLOT, new ItemBuilder(Material.CHEST)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.common.result_type", "value", current.result().type()), NamedTextColor.AQUA))
-                .setLore(Component.text(chatPromptManager.lang().raw("gui.common.toggle_material_item_hint"), NamedTextColor.GRAY)).build());
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.common.result_type", "value", current.result().type()), NamedTextColor.AQUA))
+                .setLore(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.common.toggle_material_item_hint"), NamedTextColor.GRAY)).build());
         setItem(RESULT_VALUE_SLOT, new ItemBuilder(Material.PAPER)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.common.result_value", "value", current.result().value()), NamedTextColor.YELLOW)).build());
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.common.result_value", "value", current.result().value()), NamedTextColor.YELLOW)).build());
         setItem(RESULT_AMOUNT_SLOT, new ItemBuilder(Material.HOPPER)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.common.result_amount", "value", current.result().amount()), NamedTextColor.AQUA))
-                .setLore(Component.text(chatPromptManager.lang().raw("gui.common.click_inc_dec", "inc", "+1", "dec", "-1"), NamedTextColor.GRAY)).build());
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.common.result_amount", "value", current.result().amount()), NamedTextColor.AQUA))
+                .setLore(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.common.click_inc_dec", "inc", "+1", "dec", "-1"), NamedTextColor.GRAY)).build());
 
         setItem(MAX_USES_SLOT, new ItemBuilder(Material.VILLAGER_SPAWN_EGG)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.villager_trade.field_max_uses", "value", current.maxUses()), NamedTextColor.AQUA))
-                .setLore(Component.text(chatPromptManager.lang().raw("gui.common.click_inc_dec", "inc", "+1", "dec", "-1"), NamedTextColor.GRAY)).build());
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.villager_trade.field_max_uses", "value", current.maxUses()), NamedTextColor.AQUA))
+                .setLore(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.common.click_inc_dec", "inc", "+1", "dec", "-1"), NamedTextColor.GRAY)).build());
 
         setItem(VILLAGER_XP_SLOT, new ItemBuilder(Material.EXPERIENCE_BOTTLE)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.villager_trade.field_villager_xp", "value", current.villagerExperience()), NamedTextColor.AQUA))
-                .setLore(Component.text(chatPromptManager.lang().raw("gui.common.click_inc_dec", "inc", "+1", "dec", "-1"), NamedTextColor.GRAY)).build());
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.villager_trade.field_villager_xp", "value", current.villagerExperience()), NamedTextColor.AQUA))
+                .setLore(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.common.click_inc_dec", "inc", "+1", "dec", "-1"), NamedTextColor.GRAY)).build());
 
         setItem(REWARDS_EXP_SLOT, new ItemBuilder(current.rewardsExperience() ? Material.LIME_CONCRETE : Material.GRAY_CONCRETE)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.villager_trade.field_rewards_experience", "value", current.rewardsExperience()), NamedTextColor.GOLD))
-                .setLore(Component.text(chatPromptManager.lang().raw("gui.common.click_toggle"), NamedTextColor.GRAY)).build());
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.villager_trade.field_rewards_experience", "value", current.rewardsExperience()), NamedTextColor.GOLD))
+                .setLore(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.common.click_toggle"), NamedTextColor.GRAY)).build());
 
         setItem(QUALITY_ENABLED_SLOT, new ItemBuilder(current.qualityEnabled() ? Material.LIME_CONCRETE : Material.GRAY_CONCRETE)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.villager_trade.field_quality_enabled", "value", current.qualityEnabled()), NamedTextColor.GOLD))
-                .setLore(Component.text(chatPromptManager.lang().raw("gui.common.click_toggle"), NamedTextColor.GRAY)).build());
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.villager_trade.field_quality_enabled", "value", current.qualityEnabled()), NamedTextColor.GOLD))
+                .setLore(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.common.click_toggle"), NamedTextColor.GRAY)).build());
 
         setItem(CONDITIONS_SLOT, new ItemBuilder(Material.COMPARATOR)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.common.conditions_count", "count", current.conditions().size()), NamedTextColor.AQUA))
-                .setLore(Component.text(chatPromptManager.lang().raw("gui.common.click_edit_list"), NamedTextColor.GRAY)).build());
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.common.conditions_count", "count", current.conditions().size()), NamedTextColor.AQUA))
+                .setLore(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.common.click_edit_list"), NamedTextColor.GRAY)).build());
 
         setItem(XP_AMOUNT_SLOT, new ItemBuilder(Material.EXPERIENCE_BOTTLE)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.villager_trade.field_xp_amount", "value", current.xpAmount()), NamedTextColor.AQUA))
-                .setLore(Component.text(chatPromptManager.lang().raw("gui.recipe.plus5_minus5_hint"), NamedTextColor.GRAY)).build());
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.villager_trade.field_xp_amount", "value", current.xpAmount()), NamedTextColor.AQUA))
+                .setLore(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.recipe.plus5_minus5_hint"), NamedTextColor.GRAY)).build());
 
         setItem(ECONOMY_CURRENCY_SLOT, new ItemBuilder(Material.GOLD_NUGGET)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.villager_trade.field_economy_currency", "value",
-                        current.economyCurrencyId() == null ? chatPromptManager.lang().raw("gui.recipe.currency_base") : current.economyCurrencyId()),
-                        NamedTextColor.YELLOW))
-                .setLore(Component.text(chatPromptManager.lang().raw("gui.common.click_retype"), NamedTextColor.GRAY)).build());
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.villager_trade.field_economy_currency", "value",
+                        current.economyCurrencyId() == null ? chatPromptManager.lang().raw("gui.recipe.currency_base") : current.economyCurrencyId()), NamedTextColor.YELLOW))
+                .setLore(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.common.click_retype"), NamedTextColor.GRAY)).build());
 
         setItem(ECONOMY_COST_SLOT, new ItemBuilder(Material.SUNFLOWER)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.villager_trade.field_economy_cost", "value", current.economyCost()), NamedTextColor.AQUA))
-                .setLore(Component.text(chatPromptManager.lang().raw("gui.villager_trade.economy_cost_hint"), NamedTextColor.GRAY)).build());
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.villager_trade.field_economy_cost", "value", current.economyCost()), NamedTextColor.AQUA))
+                .setLore(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.villager_trade.economy_cost_hint"), NamedTextColor.GRAY)).build());
 
         setItem(DELETE_SLOT, new ItemBuilder(Material.BARRIER)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.villager_trade.delete"), NamedTextColor.RED)).build());
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.villager_trade.delete"), NamedTextColor.RED)).build());
 
         setItem(BACK_SLOT, ItemBuilder.createCancelButton(chatPromptManager.lang().raw("gui.common.back")));
     }

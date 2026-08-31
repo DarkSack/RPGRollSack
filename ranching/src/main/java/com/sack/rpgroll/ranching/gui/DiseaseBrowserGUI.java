@@ -30,7 +30,7 @@ public class DiseaseBrowserGUI extends InventoryGUI {
 
     public DiseaseBrowserGUI(Player player, DiseaseManager diseaseManager, ChatPromptManager chatPromptManager,
             Runnable onBack) {
-        super(player, Component.text(chatPromptManager.lang().raw("gui.hub.diseases"), NamedTextColor.GOLD), SIZE);
+        super(player, ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.hub.diseases"), NamedTextColor.GOLD), SIZE);
         this.diseaseManager = diseaseManager;
         this.chatPromptManager = chatPromptManager;
         this.onBack = onBack;
@@ -52,13 +52,13 @@ public class DiseaseBrowserGUI extends InventoryGUI {
 
             setItem(i, new ItemBuilder(Material.ROTTEN_FLESH)
                     .setName(ComponentUtils.parse(disease.displayName()))
-                    .setLore(Component.text(chatPromptManager.lang().raw("gui.browser.id_line", "id", disease.id()), NamedTextColor.GRAY),
-                            Component.text(chatPromptManager.lang().raw("gui.common.click_to_edit"), NamedTextColor.YELLOW))
+                    .setLore(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.browser.id_line", "id", disease.id()), NamedTextColor.GRAY),
+                            ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.common.click_to_edit"), NamedTextColor.YELLOW))
                     .build());
         }
 
         setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.disease.browser.new"), NamedTextColor.GREEN)).build());
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.disease.browser.new"), NamedTextColor.GREEN)).build());
         setItem(BACK_SLOT, ItemBuilder.createCancelButton(chatPromptManager.lang().raw("gui.common.back")));
     }
 
@@ -89,7 +89,7 @@ public class DiseaseBrowserGUI extends InventoryGUI {
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 
             if (diseaseManager.exists(id)) {
-                player.sendMessage(Component.text(chatPromptManager.lang().raw("gui.disease.browser.already_exists"), NamedTextColor.RED));
+                player.sendMessage(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.disease.browser.already_exists"), NamedTextColor.RED));
                 reopen();
                 return;
             }

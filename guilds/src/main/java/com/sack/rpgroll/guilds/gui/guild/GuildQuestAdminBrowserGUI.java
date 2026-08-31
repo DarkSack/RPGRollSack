@@ -32,8 +32,7 @@ public class GuildQuestAdminBrowserGUI extends PaginatedGUI {
 
     public GuildQuestAdminBrowserGUI(Player player, GuildQuestManager questManager,
             ChatPromptManager chatPromptManager) {
-        super(player, Component.text(chatPromptManager.lang().raw("guildadmin.quest.browser.title"),
-                NamedTextColor.GOLD), SIZE, CONTENT_SLOTS);
+        super(player, ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("guildadmin.quest.browser.title"), NamedTextColor.GOLD), SIZE, CONTENT_SLOTS);
         this.questManager = questManager;
         this.chatPromptManager = chatPromptManager;
         this.definitions = List.copyOf(questManager.getAll());
@@ -56,9 +55,9 @@ public class GuildQuestAdminBrowserGUI extends PaginatedGUI {
         setItem(contentSlot, new ItemBuilder(Material.MAP)
                 .setName(ComponentUtils.parse(definition.displayName()))
                 .setLore(Component.text(definition.id(), NamedTextColor.DARK_GRAY),
-                        Component.text(lang().raw("guild.quests.type_target", "type", definition.type(),
+                        ComponentUtils.parseWithDefault(lang().raw("guild.quests.type_target", "type", definition.type(),
                                 "target", definition.targetAmount()), NamedTextColor.GRAY),
-                        Component.text(lang().raw("guildadmin.quest.click_edit"), NamedTextColor.YELLOW))
+                        ComponentUtils.parseWithDefault(lang().raw("guildadmin.quest.click_edit"), NamedTextColor.YELLOW))
                 .build());
     }
 
@@ -66,7 +65,7 @@ public class GuildQuestAdminBrowserGUI extends PaginatedGUI {
     protected void renderExtras() {
 
         setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text(lang().raw("guildadmin.quest.button.new"), NamedTextColor.GREEN))
+                .setName(ComponentUtils.parseWithDefault(lang().raw("guildadmin.quest.button.new"), NamedTextColor.GREEN))
                 .build());
 
         setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang().raw("common.close")));

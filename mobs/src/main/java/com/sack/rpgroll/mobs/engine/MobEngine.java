@@ -91,6 +91,48 @@ public class MobEngine {
         return activeMobs;
     }
 
+    /**
+     * Vuelve a registrar un mob que ya existía en el mundo pero se perdió de
+     * {@link #activeMobs}.
+     * <p>
+     * Minecraft persiste la entidad al descargar su chunk, y su id de
+     * definición sobrevive en el PersistentDataContainer — pero el estado de
+     * runtime (fases, daño acumulado, bossbar) vive solo en memoria y se
+     * perdía al recargar. Sin esto, un jefe que se aleja y vuelve deja de
+     * cambiar de fase y de repartir loot por contribución: sigue vivo pero ya
+     * no se comporta como jefe.
+     *
+     * @return el estado restaurado, o vacío si no es un mob del plugin
+     */
+    public Optional<ActiveMobState> restoreIfMissing(LivingEntity entity) {
+
+        UUID id = entity.getUniqueId();
+
+        if (activeMobs.containsKey(id)) {
+            return Optional.of(activeMobs.get(id));
+        }
+
+        Optional<MobDefinition> definitionOpt = instanceService.getDefinitionId(entity)
+                .flatMap(mobManager::get);
+
+        if (definitionOpt.isEmpty()) {
+            return Optional.empty();
+        }
+
+        MobDefinition definition = definitionOpt.get();
+
+        // El daño acumulado no se puede recuperar: nunca se persistió. Se
+        // arranca de cero, que es preferible a no rastrear nada.
+        ActiveMobState state = new ActiveMobState(id, definition.id(), definition.skills());
+        activeMobs.put(id, state);
+
+        if (definition.bossBar().enabled() && !bossBars.containsKey(id)) {
+            createBossBar(entity, definition);
+        }
+
+        return Optional.of(state);
+    }
+
     public Optional<ActiveMobState> getState(UUID entityId) {
         return Optional.ofNullable(activeMobs.get(entityId));
     }

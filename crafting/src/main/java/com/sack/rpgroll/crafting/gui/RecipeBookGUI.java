@@ -36,7 +36,7 @@ public class RecipeBookGUI extends InventoryGUI {
 
     public RecipeBookGUI(Player player, CustomRecipeManager recipeManager, CustomStationManager stationManager,
             DiscoveryService discoveryService, LangManager lang) {
-        super(player, Component.text(lang.raw("gui.recipe_book.title"), NamedTextColor.DARK_AQUA), SIZE);
+        super(player, ComponentUtils.parseWithDefault(lang.raw("gui.recipe_book.title"), NamedTextColor.DARK_AQUA), SIZE);
         this.recipeManager = recipeManager;
         this.stationManager = stationManager;
         this.discoveryService = discoveryService;
@@ -57,8 +57,8 @@ public class RecipeBookGUI extends InventoryGUI {
 
             if (!discovery.hasDiscovered(recipe.id())) {
                 setItem(i, new ItemBuilder(Material.BARRIER)
-                        .setName(Component.text(lang.raw("gui.recipe_book.undiscovered_name"), NamedTextColor.DARK_GRAY))
-                        .setLore(Component.text(lang.raw("gui.recipe_book.undiscovered_lore"), NamedTextColor.GRAY))
+                        .setName(ComponentUtils.parseWithDefault(lang.raw("gui.recipe_book.undiscovered_name"), NamedTextColor.DARK_GRAY))
+                        .setLore(ComponentUtils.parseWithDefault(lang.raw("gui.recipe_book.undiscovered_lore"), NamedTextColor.GRAY))
                         .build());
                 continue;
             }
@@ -69,11 +69,10 @@ public class RecipeBookGUI extends InventoryGUI {
 
             setItem(i, new ItemBuilder(parseMaterial(recipe.icon()))
                     .setName(ComponentUtils.parse(recipe.displayName()))
-                    .setLore(Component.text(lang.raw("gui.recipe_book.station_lore", "value", stationName), NamedTextColor.GRAY),
-                            Component.text(lang.raw("gui.recipe_book.result_lore", "value", recipe.result().value(),
+                    .setLore(ComponentUtils.parseWithDefault(lang.raw("gui.recipe_book.station_lore", "value", stationName), NamedTextColor.GRAY),
+                            ComponentUtils.parseWithDefault(lang.raw("gui.recipe_book.result_lore", "value", recipe.result().value(),
                                     "amount", recipe.result().amount()), NamedTextColor.YELLOW),
-                            Component.text(lang.raw("gui.recipe_book.ingredients_lore", "count", recipe.ingredients().size()),
-                                    NamedTextColor.GRAY))
+                            ComponentUtils.parseWithDefault(lang.raw("gui.recipe_book.ingredients_lore", "count", recipe.ingredients().size()), NamedTextColor.GRAY))
                     .build());
         }
     }

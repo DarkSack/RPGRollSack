@@ -1,5 +1,7 @@
 package com.sack.rpgroll.ranching.gui;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.ranching.core.species.Species;
@@ -50,7 +52,7 @@ public class SpeciesEditorGUI extends InventoryGUI {
 
     public SpeciesEditorGUI(Player player, Species species, SpeciesManager speciesManager,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text(chatPromptManager.lang().raw("gui.species.editor.title", "id", species.id()), NamedTextColor.GOLD), SIZE);
+        super(player, ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.species.editor.title", "id", species.id()), NamedTextColor.GOLD), SIZE);
         this.current = species;
         this.speciesManager = speciesManager;
         this.chatPromptManager = chatPromptManager;
@@ -78,75 +80,69 @@ public class SpeciesEditorGUI extends InventoryGUI {
                 .setName(lang.component("gui.editor.name_line", "name", current.displayName())).build());
 
         setItem(ICON_SLOT, new ItemBuilder(SpeciesBrowserGUI.parseMaterial(current.icon(), Material.COW_SPAWN_EGG))
-                .setName(Component.text(lang.raw("gui.editor.icon_line", "icon", current.icon()), NamedTextColor.YELLOW)).build());
+                .setName(ComponentUtils.parseWithDefault(lang.raw("gui.editor.icon_line", "icon", current.icon()), NamedTextColor.YELLOW)).build());
 
         setItem(ENTITY_TYPE_SLOT, new ItemBuilder(Material.ARMOR_STAND)
-                .setName(Component.text(lang.raw("gui.species.editor.entity_type_line", "entity", current.entityType()), NamedTextColor.AQUA))
-                .setLore(Component.text(lang.raw("gui.species.editor.entity_type_hint"), NamedTextColor.GRAY))
+                .setName(ComponentUtils.parseWithDefault(lang.raw("gui.species.editor.entity_type_line", "entity", current.entityType()), NamedTextColor.AQUA))
+                .setLore(ComponentUtils.parseWithDefault(lang.raw("gui.species.editor.entity_type_hint"), NamedTextColor.GRAY))
                 .build());
 
         setItem(DESCRIPTION_SLOT, new ItemBuilder(Material.WRITTEN_BOOK)
-                .setName(Component.text(lang.raw("gui.editor.description_title"), NamedTextColor.YELLOW))
+                .setName(ComponentUtils.parseWithDefault(lang.raw("gui.editor.description_title"), NamedTextColor.YELLOW))
                 .setLore(ItemBuilder.toLoreLines(current.description().isBlank() ? lang.raw("gui.editor.no_description") : current.description()))
                 .build());
 
         setItem(PRODUCT_TYPES_SLOT, new ItemBuilder(Material.HOPPER)
-                .setName(Component.text(lang.raw("gui.species.editor.product_types_line", "types", String.join(", ", current.productTypes())), NamedTextColor.GOLD))
-                .setLore(Component.text(lang.raw("gui.species.editor.product_types_hint"), NamedTextColor.GRAY))
+                .setName(ComponentUtils.parseWithDefault(lang.raw("gui.species.editor.product_types_line", "types", String.join(", ", current.productTypes())), NamedTextColor.GOLD))
+                .setLore(ComponentUtils.parseWithDefault(lang.raw("gui.species.editor.product_types_hint"), NamedTextColor.GRAY))
                 .build());
 
         setItem(WEIGHT_MIN_SLOT, new ItemBuilder(Material.IRON_INGOT)
-                .setName(Component.text(lang.raw("gui.species.editor.weight_min_line", "weight",
+                .setName(ComponentUtils.parseWithDefault(lang.raw("gui.species.editor.weight_min_line", "weight",
                         String.format(Locale.ROOT, "%.1f", current.baseWeightMin())), NamedTextColor.AQUA))
-                .setLore(Component.text(lang.raw("gui.editor.step10_hint"), NamedTextColor.GRAY)).build());
+                .setLore(ComponentUtils.parseWithDefault(lang.raw("gui.editor.step10_hint"), NamedTextColor.GRAY)).build());
 
         setItem(WEIGHT_MAX_SLOT, new ItemBuilder(Material.GOLD_INGOT)
-                .setName(Component.text(lang.raw("gui.species.editor.weight_max_line", "weight",
+                .setName(ComponentUtils.parseWithDefault(lang.raw("gui.species.editor.weight_max_line", "weight",
                         String.format(Locale.ROOT, "%.1f", current.baseWeightMax())), NamedTextColor.AQUA))
-                .setLore(Component.text(lang.raw("gui.editor.step10_hint"), NamedTextColor.GRAY)).build());
+                .setLore(ComponentUtils.parseWithDefault(lang.raw("gui.editor.step10_hint"), NamedTextColor.GRAY)).build());
 
         setItem(BABY_DURATION_SLOT, new ItemBuilder(Material.EGG)
-                .setName(Component.text(lang.raw("gui.species.editor.baby_duration_line", "duration", ticksToMinutes(current.babyStageDurationTicks())),
-                        NamedTextColor.GREEN))
-                .setLore(Component.text(lang.raw("gui.editor.step1min_hint"), NamedTextColor.GRAY)).build());
+                .setName(ComponentUtils.parseWithDefault(lang.raw("gui.species.editor.baby_duration_line", "duration", ticksToMinutes(current.babyStageDurationTicks())), NamedTextColor.GREEN))
+                .setLore(ComponentUtils.parseWithDefault(lang.raw("gui.editor.step1min_hint"), NamedTextColor.GRAY)).build());
 
         setItem(JUVENILE_DURATION_SLOT, new ItemBuilder(Material.LEATHER)
-                .setName(Component.text(lang.raw("gui.species.editor.juvenile_duration_line", "duration", ticksToMinutes(current.juvenileStageDurationTicks())),
-                        NamedTextColor.GREEN))
-                .setLore(Component.text(lang.raw("gui.editor.step1min_hint"), NamedTextColor.GRAY)).build());
+                .setName(ComponentUtils.parseWithDefault(lang.raw("gui.species.editor.juvenile_duration_line", "duration", ticksToMinutes(current.juvenileStageDurationTicks())), NamedTextColor.GREEN))
+                .setLore(ComponentUtils.parseWithDefault(lang.raw("gui.editor.step1min_hint"), NamedTextColor.GRAY)).build());
 
         setItem(ELDER_THRESHOLD_SLOT, new ItemBuilder(Material.CLOCK)
-                .setName(Component.text(lang.raw("gui.species.editor.elder_threshold_line", "duration", ticksToMinutes(current.elderThresholdTicks())),
-                        NamedTextColor.GRAY))
-                .setLore(Component.text(lang.raw("gui.species.editor.elder_threshold_hint"),
-                        NamedTextColor.GRAY)).build());
+                .setName(ComponentUtils.parseWithDefault(lang.raw("gui.species.editor.elder_threshold_line", "duration", ticksToMinutes(current.elderThresholdTicks())), NamedTextColor.GRAY))
+                .setLore(ComponentUtils.parseWithDefault(lang.raw("gui.species.editor.elder_threshold_hint"), NamedTextColor.GRAY)).build());
 
         setItem(GESTATION_SLOT, new ItemBuilder(Material.PINK_DYE)
-                .setName(Component.text(lang.raw("gui.species.editor.gestation_line", "duration", ticksToMinutes(current.gestationDurationTicks())),
-                        NamedTextColor.LIGHT_PURPLE))
-                .setLore(Component.text(lang.raw("gui.species.editor.gestation_hint"),
-                        NamedTextColor.GRAY)).build());
+                .setName(ComponentUtils.parseWithDefault(lang.raw("gui.species.editor.gestation_line", "duration", ticksToMinutes(current.gestationDurationTicks())), NamedTextColor.LIGHT_PURPLE))
+                .setLore(ComponentUtils.parseWithDefault(lang.raw("gui.species.editor.gestation_hint"), NamedTextColor.GRAY)).build());
 
         setItem(MIN_LITTER_SLOT, new ItemBuilder(Material.BREAD)
-                .setName(Component.text(lang.raw("gui.species.editor.min_litter_line", "value", current.minLitterSize()), NamedTextColor.WHITE))
-                .setLore(Component.text(lang.raw("gui.editor.step1_hint"), NamedTextColor.GRAY)).build());
+                .setName(ComponentUtils.parseWithDefault(lang.raw("gui.species.editor.min_litter_line", "value", current.minLitterSize()), NamedTextColor.WHITE))
+                .setLore(ComponentUtils.parseWithDefault(lang.raw("gui.editor.step1_hint"), NamedTextColor.GRAY)).build());
 
         setItem(MAX_LITTER_SLOT, new ItemBuilder(Material.CAKE)
-                .setName(Component.text(lang.raw("gui.species.editor.max_litter_line", "value", current.maxLitterSize()), NamedTextColor.WHITE))
-                .setLore(Component.text(lang.raw("gui.editor.step1_hint"), NamedTextColor.GRAY)).build());
+                .setName(ComponentUtils.parseWithDefault(lang.raw("gui.species.editor.max_litter_line", "value", current.maxLitterSize()), NamedTextColor.WHITE))
+                .setLore(ComponentUtils.parseWithDefault(lang.raw("gui.editor.step1_hint"), NamedTextColor.GRAY)).build());
 
         setItem(FERTILITY_SLOT, new ItemBuilder(Material.RABBIT_FOOT)
-                .setName(Component.text(lang.raw("gui.species.editor.fertility_line", "value",
+                .setName(ComponentUtils.parseWithDefault(lang.raw("gui.species.editor.fertility_line", "value",
                         String.format(Locale.ROOT, "%.0f", current.baseFertility() * 100)), NamedTextColor.YELLOW))
-                .setLore(Component.text(lang.raw("gui.editor.step5pct_hint"), NamedTextColor.GRAY)).build());
+                .setLore(ComponentUtils.parseWithDefault(lang.raw("gui.editor.step5pct_hint"), NamedTextColor.GRAY)).build());
 
         setItem(DIET_TAGS_SLOT, new ItemBuilder(Material.WHEAT)
-                .setName(Component.text(lang.raw("gui.species.editor.diet_line", "tags", String.join(", ", current.dietTags())), NamedTextColor.GOLD))
-                .setLore(Component.text(lang.raw("gui.species.editor.diet_hint"), NamedTextColor.GRAY))
+                .setName(ComponentUtils.parseWithDefault(lang.raw("gui.species.editor.diet_line", "tags", String.join(", ", current.dietTags())), NamedTextColor.GOLD))
+                .setLore(ComponentUtils.parseWithDefault(lang.raw("gui.species.editor.diet_hint"), NamedTextColor.GRAY))
                 .build());
 
         setItem(BASE_PRODUCTION_SLOT, new ItemBuilder(Material.BUCKET)
-                .setName(Component.text(lang.raw("gui.species.editor.base_production_title"), NamedTextColor.AQUA))
+                .setName(ComponentUtils.parseWithDefault(lang.raw("gui.species.editor.base_production_title"), NamedTextColor.AQUA))
                 .setLore(ItemBuilder.toLoreLines(formatProduction(current.baseProduction())
                         + "\n" + lang.raw("gui.species.editor.base_production_hint")))
                 .build());

@@ -1,5 +1,7 @@
 package com.sack.rpgroll.effects.command;
 
+import com.sack.rpgroll.common.command.Senders;
+
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.effects.api.EffectsAPI;
 import com.sack.rpgroll.effects.core.EffectManager;
@@ -76,7 +78,7 @@ public class EffectsAdminCommand implements CommandExecutor, TabCompleter {
 
     private void handleBrowser(CommandSender sender) {
 
-        if (!(sender instanceof Player player)) {
+        if (!(Senders.asPlayer(sender) instanceof Player player)) {
             lang.send(sender, "command.browser_player_only");
             return;
         }
@@ -162,7 +164,7 @@ public class EffectsAdminCommand implements CommandExecutor, TabCompleter {
                 lang.send(sender, "command.player_not_found", "name", args[1]);
                 return;
             }
-        } else if (sender instanceof Player senderPlayer) {
+        } else if (Senders.asPlayer(sender) instanceof Player senderPlayer) {
             target = senderPlayer;
         } else {
             lang.send(sender, "command.list_console_no_target");

@@ -1,5 +1,7 @@
 package com.sack.rpgroll.crafting.gui;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.crafting.anvil.AnvilRecipeDefinition;
 import com.sack.rpgroll.crafting.anvil.AnvilRecipeManager;
 import com.sack.rpgroll.crafting.ingredient.IngredientSpec;
@@ -32,7 +34,7 @@ public class AnvilRecipeBrowserGUI extends InventoryGUI {
 
     public AnvilRecipeBrowserGUI(Player player, AnvilRecipeManager recipeManager, ChatPromptManager chatPromptManager,
             Runnable onBack) {
-        super(player, Component.text(chatPromptManager.lang().raw("gui.anvil_recipe.browser_title"), NamedTextColor.GOLD), SIZE);
+        super(player, ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.anvil_recipe.browser_title"), NamedTextColor.GOLD), SIZE);
         this.recipeManager = recipeManager;
         this.chatPromptManager = chatPromptManager;
         this.onBack = onBack;
@@ -54,15 +56,15 @@ public class AnvilRecipeBrowserGUI extends InventoryGUI {
 
             setItem(i, new ItemBuilder(Material.ANVIL)
                     .setName(Component.text(recipe.id(), NamedTextColor.YELLOW))
-                    .setLore(Component.text(chatPromptManager.lang().raw("gui.anvil_recipe.base_lore", "value", recipe.baseIngredient().value()), NamedTextColor.GRAY),
-                            Component.text(chatPromptManager.lang().raw("gui.anvil_recipe.addition_lore", "value", recipe.additionIngredient().value()), NamedTextColor.GRAY),
-                            Component.text(chatPromptManager.lang().raw("gui.anvil_recipe.result_lore", "value", recipe.result().value()), NamedTextColor.AQUA),
-                            Component.text(chatPromptManager.lang().raw("gui.common.click_edit"), NamedTextColor.YELLOW))
+                    .setLore(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.anvil_recipe.base_lore", "value", recipe.baseIngredient().value()), NamedTextColor.GRAY),
+                            ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.anvil_recipe.addition_lore", "value", recipe.additionIngredient().value()), NamedTextColor.GRAY),
+                            ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.anvil_recipe.result_lore", "value", recipe.result().value()), NamedTextColor.AQUA),
+                            ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.common.click_edit"), NamedTextColor.YELLOW))
                     .build());
         }
 
         setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.anvil_recipe.create_new"), NamedTextColor.GREEN)).build());
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.anvil_recipe.create_new"), NamedTextColor.GREEN)).build());
         setItem(BACK_SLOT, ItemBuilder.createCancelButton(chatPromptManager.lang().raw("gui.common.back")));
     }
 
@@ -93,7 +95,7 @@ public class AnvilRecipeBrowserGUI extends InventoryGUI {
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 
             if (recipeManager.exists(id)) {
-                player.sendMessage(Component.text(chatPromptManager.lang().raw("gui.anvil_recipe.already_exists"), NamedTextColor.RED));
+                player.sendMessage(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.anvil_recipe.already_exists"), NamedTextColor.RED));
                 reopen();
                 return;
             }

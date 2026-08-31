@@ -12,7 +12,14 @@ prompt:
 # /itemadmin command
 command:
   itemadmin:
-    usage: "&cUsage: /itemadmin <give|list|reload|create|browser|editor> [args]"
+    usage: |-
+      &cUsage: /itemadmin
+      &7 • &fgive
+      &7 • &flist
+      &7 • &freload
+      &7 • &fcreate
+      &7 • &fbrowser
+      &7 • &feditor
     player_only: "&cOnly a player can use this."
     reload:
       success: "&a✔ Reloaded: {count} item(s)."
@@ -38,7 +45,12 @@ command:
       not_found: "&cNo item exists with id: {id}"
   item:
     player_only: "Only a player can use this command."
-    usage: "&cUsage: /item <info|upgrade|skin|socket> [args]"
+    usage: |-
+      &cUsage: /item
+      &7 • &finfo
+      &7 • &fupgrade
+      &7 • &fskin
+      &7 • &fsocket
     no_item: "&cYou're not holding an RPGRoll-Items item."
     info:
       pack: "&7Pack: {pack}"

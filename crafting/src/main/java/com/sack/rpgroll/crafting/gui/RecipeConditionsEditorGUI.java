@@ -1,5 +1,7 @@
 package com.sack.rpgroll.crafting.gui;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.crafting.condition.ConditionType;
 import com.sack.rpgroll.crafting.condition.RecipeCondition;
 import com.sack.rpgroll.gui.InventoryGUI;
@@ -66,21 +68,20 @@ public class RecipeConditionsEditorGUI extends InventoryGUI {
 
             setItem(i, new ItemBuilder(Material.COMPARATOR)
                     .setName(Component.text(condition.type().name(), NamedTextColor.AQUA))
-                    .setLore(Component.text(chatPromptManager.lang().raw("gui.conditions.value_lore", "value",
-                                    condition.value() == null ? chatPromptManager.lang().raw("gui.conditions.value_none") : condition.value()),
-                                    NamedTextColor.GRAY),
-                            Component.text(chatPromptManager.lang().raw("gui.conditions.min_value_lore", "value", condition.minValue()), NamedTextColor.GRAY),
-                            Component.text(chatPromptManager.lang().raw("gui.common.shift_remove"), NamedTextColor.RED))
+                    .setLore(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.conditions.value_lore", "value",
+                                    condition.value() == null ? chatPromptManager.lang().raw("gui.conditions.value_none") : condition.value()), NamedTextColor.GRAY),
+                            ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.conditions.min_value_lore", "value", condition.minValue()), NamedTextColor.GRAY),
+                            ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.common.shift_remove"), NamedTextColor.RED))
                     .build());
         }
 
         setItem(ADD_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.conditions.add"), NamedTextColor.GREEN))
-                .setLore(Component.text(chatPromptManager.lang().raw("gui.conditions.add_lore_1"), NamedTextColor.GRAY),
-                        Component.text(chatPromptManager.lang().raw("gui.conditions.add_lore_2"), NamedTextColor.DARK_GRAY),
-                        Component.text(chatPromptManager.lang().raw("gui.conditions.add_lore_3"), NamedTextColor.DARK_GRAY),
-                        Component.text(chatPromptManager.lang().raw("gui.conditions.add_lore_4"), NamedTextColor.DARK_GRAY),
-                        Component.text(chatPromptManager.lang().raw("gui.conditions.add_lore_5", "types", typeList()), NamedTextColor.DARK_GRAY))
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.conditions.add"), NamedTextColor.GREEN))
+                .setLore(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.conditions.add_lore_1"), NamedTextColor.GRAY),
+                        ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.conditions.add_lore_2"), NamedTextColor.DARK_GRAY),
+                        ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.conditions.add_lore_3"), NamedTextColor.DARK_GRAY),
+                        ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.conditions.add_lore_4"), NamedTextColor.DARK_GRAY),
+                        ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.conditions.add_lore_5", "types", typeList()), NamedTextColor.DARK_GRAY))
                 .build());
 
         setItem(BACK_SLOT, ItemBuilder.createCancelButton(chatPromptManager.lang().raw("gui.common.back")));
@@ -131,7 +132,7 @@ public class RecipeConditionsEditorGUI extends InventoryGUI {
             try {
                 type = ConditionType.valueOf(parts[0].trim().toUpperCase(Locale.ROOT));
             } catch (IllegalArgumentException e) {
-                player.sendMessage(Component.text(chatPromptManager.lang().raw("gui.conditions.invalid_type", "type", parts[0]), NamedTextColor.RED));
+                player.sendMessage(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.conditions.invalid_type", "type", parts[0]), NamedTextColor.RED));
                 return;
             }
 

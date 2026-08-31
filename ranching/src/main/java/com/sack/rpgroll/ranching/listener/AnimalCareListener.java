@@ -1,5 +1,7 @@
 package com.sack.rpgroll.ranching.listener;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.ranching.core.animal.Animal;
 import com.sack.rpgroll.ranching.core.animal.AnimalManager;
@@ -119,12 +121,12 @@ public class AnimalCareListener implements Listener {
         consumeOne(item);
 
         if (!animal.isSick()) {
-            player.sendMessage(Component.text(lang.raw("listener.care.medicine_not_sick"), NamedTextColor.GRAY));
+            player.sendMessage(ComponentUtils.parseWithDefault(lang.raw("listener.care.medicine_not_sick"), NamedTextColor.GRAY));
             return;
         }
 
         if (!medicine.curesDiseaseIds().contains(animal.activeDiseaseId())) {
-            player.sendMessage(Component.text(lang.raw("listener.care.medicine_wrong_disease"), NamedTextColor.YELLOW));
+            player.sendMessage(ComponentUtils.parseWithDefault(lang.raw("listener.care.medicine_wrong_disease"), NamedTextColor.YELLOW));
             return;
         }
 
@@ -139,7 +141,7 @@ public class AnimalCareListener implements Listener {
         } else {
 
             animal.reduceDiseaseDuration(medicine.recoveryBoostTicks());
-            player.sendMessage(Component.text(lang.raw("listener.care.medicine_partial"), NamedTextColor.YELLOW));
+            player.sendMessage(ComponentUtils.parseWithDefault(lang.raw("listener.care.medicine_partial"), NamedTextColor.YELLOW));
         }
     }
 

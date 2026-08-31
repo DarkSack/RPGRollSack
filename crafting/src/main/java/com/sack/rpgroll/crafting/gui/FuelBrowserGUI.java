@@ -28,7 +28,7 @@ public class FuelBrowserGUI extends InventoryGUI {
     private List<FuelDefinition> fuels;
 
     public FuelBrowserGUI(Player player, FuelManager fuelManager, ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text(chatPromptManager.lang().raw("gui.fuel.browser_title"), NamedTextColor.GOLD), SIZE);
+        super(player, ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.fuel.browser_title"), NamedTextColor.GOLD), SIZE);
         this.fuelManager = fuelManager;
         this.chatPromptManager = chatPromptManager;
         this.onBack = onBack;
@@ -50,14 +50,14 @@ public class FuelBrowserGUI extends InventoryGUI {
 
             setItem(i, new ItemBuilder(parseMaterial(fuel.icon()))
                     .setName(ComponentUtils.parse(fuel.displayName()))
-                    .setLore(Component.text(chatPromptManager.lang().raw("gui.common.id_lore", "id", fuel.id()), NamedTextColor.GRAY),
-                            Component.text(chatPromptManager.lang().raw("gui.fuel.burn_ticks_lore", "value", fuel.burnTicks()), NamedTextColor.AQUA),
-                            Component.text(chatPromptManager.lang().raw("gui.common.click_edit"), NamedTextColor.YELLOW))
+                    .setLore(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.common.id_lore", "id", fuel.id()), NamedTextColor.GRAY),
+                            ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.fuel.burn_ticks_lore", "value", fuel.burnTicks()), NamedTextColor.AQUA),
+                            ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.common.click_edit"), NamedTextColor.YELLOW))
                     .build());
         }
 
         setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.fuel.create_new"), NamedTextColor.GREEN)).build());
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.fuel.create_new"), NamedTextColor.GREEN)).build());
         setItem(BACK_SLOT, ItemBuilder.createCancelButton(chatPromptManager.lang().raw("gui.common.back")));
     }
 
@@ -88,7 +88,7 @@ public class FuelBrowserGUI extends InventoryGUI {
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 
             if (fuelManager.exists(id)) {
-                player.sendMessage(Component.text(chatPromptManager.lang().raw("gui.fuel.already_exists"), NamedTextColor.RED));
+                player.sendMessage(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.fuel.already_exists"), NamedTextColor.RED));
                 reopen();
                 return;
             }

@@ -1,5 +1,7 @@
 package com.sack.rpgroll.guilds.gui.guild;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.guilds.gui.PaginatedGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.guilds.GuildServices;
@@ -50,10 +52,10 @@ public class GuildBrowserGUI extends PaginatedGUI {
 
         setItem(contentSlot, new ItemBuilder(guild.icon())
                 .setName(Component.text(guild.name(), guild.color()))
-                .setLore(Component.text(lang().raw("guild.browser.level_members", "level", guild.level(),
+                .setLore(ComponentUtils.parseWithDefault(lang().raw("guild.browser.level_members", "level", guild.level(),
                         "count", guild.memberCount()), NamedTextColor.GRAY),
                         Component.text(guild.motto(), NamedTextColor.DARK_GRAY),
-                        Component.text(lang().raw("guild.browser.click_open"), NamedTextColor.YELLOW))
+                        ComponentUtils.parseWithDefault(lang().raw("guild.browser.click_open"), NamedTextColor.YELLOW))
                 .build());
     }
 
@@ -61,13 +63,11 @@ public class GuildBrowserGUI extends PaginatedGUI {
     protected void renderExtras() {
 
         setItem(PREV_SLOT, hasPreviousPage()
-                ? new ItemBuilder(Material.ARROW).setName(Component.text(lang().raw("common.previous_page"),
-                        NamedTextColor.YELLOW)).build()
+                ? new ItemBuilder(Material.ARROW).setName(ComponentUtils.parseWithDefault(lang().raw("common.previous_page"), NamedTextColor.YELLOW)).build()
                 : ItemBuilder.createFiller());
 
         setItem(NEXT_SLOT, hasNextPage()
-                ? new ItemBuilder(Material.ARROW).setName(Component.text(lang().raw("common.next_page"),
-                        NamedTextColor.YELLOW)).build()
+                ? new ItemBuilder(Material.ARROW).setName(ComponentUtils.parseWithDefault(lang().raw("common.next_page"), NamedTextColor.YELLOW)).build()
                 : ItemBuilder.createFiller());
 
         setItem(CLOSE_SLOT, ItemBuilder.createCancelButton(lang().raw("common.close")));

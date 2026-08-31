@@ -1,5 +1,7 @@
 package com.sack.rpgroll.ranching.listener;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.ranching.core.animal.Animal;
 import com.sack.rpgroll.ranching.core.animal.AnimalManager;
@@ -98,7 +100,7 @@ public class ProductionListener implements Listener {
         event.getPlayer().getInventory().addItem(milk).values()
                 .forEach(leftover -> event.getPlayer().getWorld().dropItemNaturally(event.getPlayer().getLocation(), leftover));
 
-        event.getPlayer().sendMessage(Component.text(
+        event.getPlayer().sendMessage(ComponentUtils.parseWithDefault(
                 lang.raw("listener.production.milk_obtained", "quality", result.get().quality()), NamedTextColor.GREEN));
     }
 
@@ -131,7 +133,7 @@ public class ProductionListener implements Listener {
         }
 
         event.getEntity().getWorld().dropItemNaturally(event.getEntity().getLocation(), wool);
-        event.getPlayer().sendMessage(Component.text(
+        event.getPlayer().sendMessage(ComponentUtils.parseWithDefault(
                 lang.raw("listener.production.wool_obtained", "quality", result.get().quality()), NamedTextColor.GREEN));
     }
 

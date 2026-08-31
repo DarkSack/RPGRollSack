@@ -21,4 +21,10 @@ impact:
     speed: "2.5"
 
 model:
+  # Bloque entero que se coloca en el mundo: es el cuerpo de la torreta.
+  base-block: DIAMOND_BLOCK
+  # Ítem que flota encima. Gira solo mientras busca y se orienta
+  # hacia el objetivo cuando lo detecta.
   material: CROSSBOW
+  hover-height: 1.1
+  spin-degrees-per-tick: 4.0

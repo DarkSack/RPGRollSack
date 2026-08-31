@@ -1,5 +1,7 @@
 package com.sack.rpgroll.ranching.gui;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.ranching.core.animal.Animal;
@@ -66,7 +68,7 @@ public class BreedingPlannerGUI extends InventoryGUI {
             BreedManager breedManager, GeneManager geneManager, GeneticsEngine geneticsEngine,
             PedigreeService pedigreeService, BreedingEngine breedingEngine, int inbreedingGenerations,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text(chatPromptManager.lang().raw("gui.hub.breeding"), NamedTextColor.LIGHT_PURPLE), SIZE);
+        super(player, ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.hub.breeding"), NamedTextColor.LIGHT_PURPLE), SIZE);
         this.animalManager = animalManager;
         this.speciesManager = speciesManager;
         this.breedManager = breedManager;
@@ -94,12 +96,11 @@ public class BreedingPlannerGUI extends InventoryGUI {
         setItem(SLOT_A, slotFor(selectedA, lang.raw("gui.planner.animal_a")));
         setItem(SLOT_B, slotFor(selectedB, lang.raw("gui.planner.animal_b")));
         setItem(PREVIEW_SLOT, new ItemBuilder(Material.HEART_OF_THE_SEA)
-                .setName(Component.text(lang.raw("gui.planner.preview_button"), NamedTextColor.LIGHT_PURPLE))
-                .setLore(Component.text(lang.raw("gui.planner.preview_hint"), NamedTextColor.GRAY)).build());
+                .setName(ComponentUtils.parseWithDefault(lang.raw("gui.planner.preview_button"), NamedTextColor.LIGHT_PURPLE))
+                .setLore(ComponentUtils.parseWithDefault(lang.raw("gui.planner.preview_hint"), NamedTextColor.GRAY)).build());
         setItem(FORCE_BREED_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text(lang.raw("gui.planner.force_breed_button"), NamedTextColor.GREEN))
-                .setLore(Component.text(lang.raw("gui.planner.force_breed_hint"),
-                        NamedTextColor.GRAY))
+                .setName(ComponentUtils.parseWithDefault(lang.raw("gui.planner.force_breed_button"), NamedTextColor.GREEN))
+                .setLore(ComponentUtils.parseWithDefault(lang.raw("gui.planner.force_breed_hint"), NamedTextColor.GRAY))
                 .build());
 
         int totalPages = Math.max(1, (animals.size() + PER_PAGE - 1) / PER_PAGE);
@@ -118,17 +119,17 @@ public class BreedingPlannerGUI extends InventoryGUI {
                             (species != null ? species.displayName() : animal.speciesId()) + " #"
                                     + animal.id().toString().substring(0, 8),
                             NamedTextColor.YELLOW))
-                    .setLore(Component.text(chatPromptManager.lang().raw("gui.animal.sex_stage", "sex", animal.sex(), "stage", animal.stage()), NamedTextColor.GRAY),
-                            Component.text(chatPromptManager.lang().raw("gui.planner.pick_hint"), NamedTextColor.GRAY))
+                    .setLore(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.animal.sex_stage", "sex", animal.sex(), "stage", animal.stage()), NamedTextColor.GRAY),
+                            ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.planner.pick_hint"), NamedTextColor.GRAY))
                     .build());
         }
 
         if (page > 0) {
-            setItem(PREV_SLOT, new ItemBuilder(Material.ARROW).setName(Component.text(chatPromptManager.lang().raw("gui.common.prev"), NamedTextColor.GRAY)).build());
+            setItem(PREV_SLOT, new ItemBuilder(Material.ARROW).setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.common.prev"), NamedTextColor.GRAY)).build());
         }
 
         if (page < totalPages - 1) {
-            setItem(NEXT_SLOT, new ItemBuilder(Material.ARROW).setName(Component.text(chatPromptManager.lang().raw("gui.common.next"), NamedTextColor.GRAY)).build());
+            setItem(NEXT_SLOT, new ItemBuilder(Material.ARROW).setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.common.next"), NamedTextColor.GRAY)).build());
         }
 
         setItem(BACK_SLOT, ItemBuilder.createCancelButton(chatPromptManager.lang().raw("gui.common.back")));
@@ -138,16 +139,16 @@ public class BreedingPlannerGUI extends InventoryGUI {
 
         if (animal == null) {
             return new ItemBuilder(Material.GRAY_DYE)
-                    .setName(Component.text(chatPromptManager.lang().raw("gui.planner.slot_unselected", "label", label), NamedTextColor.GRAY)).build();
+                    .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.planner.slot_unselected", "label", label), NamedTextColor.GRAY)).build();
         }
 
         Species species = speciesManager.get(animal.speciesId()).orElse(null);
 
         return new ItemBuilder(species != null ? SpeciesBrowserGUI.parseMaterial(species.icon(), Material.COW_SPAWN_EGG)
                 : Material.BARRIER)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.planner.slot_selected", "label", label,
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.planner.slot_selected", "label", label,
                         "id", animal.id().toString().substring(0, 8)), NamedTextColor.YELLOW))
-                .setLore(Component.text(chatPromptManager.lang().raw("gui.animal.sex_stage", "sex", animal.sex(), "stage", animal.stage()), NamedTextColor.GRAY))
+                .setLore(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.animal.sex_stage", "sex", animal.sex(), "stage", animal.stage()), NamedTextColor.GRAY))
                 .build();
     }
 
@@ -205,17 +206,17 @@ public class BreedingPlannerGUI extends InventoryGUI {
         var lang = chatPromptManager.lang();
 
         if (selectedA == null || selectedB == null) {
-            player.sendMessage(Component.text(lang.raw("gui.planner.pick_two_first"), NamedTextColor.RED));
+            player.sendMessage(ComponentUtils.parseWithDefault(lang.raw("gui.planner.pick_two_first"), NamedTextColor.RED));
             return;
         }
 
         if (!selectedA.speciesId().equals(selectedB.speciesId())) {
-            player.sendMessage(Component.text(lang.raw("gui.planner.different_species"), NamedTextColor.RED));
+            player.sendMessage(ComponentUtils.parseWithDefault(lang.raw("gui.planner.different_species"), NamedTextColor.RED));
             return;
         }
 
         if (selectedA.sex() == selectedB.sex()) {
-            player.sendMessage(Component.text(lang.raw("gui.planner.same_sex"), NamedTextColor.RED));
+            player.sendMessage(ComponentUtils.parseWithDefault(lang.raw("gui.planner.same_sex"), NamedTextColor.RED));
             return;
         }
 
@@ -226,19 +227,18 @@ public class BreedingPlannerGUI extends InventoryGUI {
         boolean inbred = pedigreeService.isInbred(selectedA.id(), selectedA.ancestors(), selectedB.id(),
                 selectedB.ancestors(), inbreedingGenerations);
 
-        player.sendMessage(Component.text(lang.raw("gui.planner.preview_header"), NamedTextColor.LIGHT_PURPLE));
+        player.sendMessage(ComponentUtils.parseWithDefault(lang.raw("gui.planner.preview_header"), NamedTextColor.LIGHT_PURPLE));
 
         for (GenePreviewStats stat : stats) {
-            player.sendMessage(Component.text(lang.raw("gui.planner.preview_stat_line", "gene", stat.geneDisplayName(),
+            player.sendMessage(ComponentUtils.parseWithDefault(lang.raw("gui.planner.preview_stat_line", "gene", stat.geneDisplayName(),
                     "min", String.format(Locale.ROOT, "%.1f", stat.min()), "max", String.format(Locale.ROOT, "%.1f", stat.max()),
                     "average", String.format(Locale.ROOT, "%.1f", stat.average())), NamedTextColor.AQUA));
         }
 
         if (inbred) {
-            player.sendMessage(Component.text(lang.raw("gui.planner.inbreeding_warning"),
-                    NamedTextColor.RED));
+            player.sendMessage(ComponentUtils.parseWithDefault(lang.raw("gui.planner.inbreeding_warning"), NamedTextColor.RED));
         } else {
-            player.sendMessage(Component.text(lang.raw("gui.planner.no_relation"), NamedTextColor.GREEN));
+            player.sendMessage(ComponentUtils.parseWithDefault(lang.raw("gui.planner.no_relation"), NamedTextColor.GREEN));
         }
     }
 
@@ -247,14 +247,14 @@ public class BreedingPlannerGUI extends InventoryGUI {
         var lang = chatPromptManager.lang();
 
         if (selectedA == null || selectedB == null) {
-            player.sendMessage(Component.text(lang.raw("gui.planner.pick_two_first"), NamedTextColor.RED));
+            player.sendMessage(ComponentUtils.parseWithDefault(lang.raw("gui.planner.pick_two_first"), NamedTextColor.RED));
             return;
         }
 
         Entity entity = Bukkit.getEntity(selectedA.id());
 
         if (!(entity instanceof LivingEntity livingEntity) || !livingEntity.isValid()) {
-            player.sendMessage(Component.text(lang.raw("gui.planner.animal_a_not_loaded"), NamedTextColor.RED));
+            player.sendMessage(ComponentUtils.parseWithDefault(lang.raw("gui.planner.animal_a_not_loaded"), NamedTextColor.RED));
             return;
         }
 

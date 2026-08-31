@@ -1,5 +1,7 @@
 package com.sack.rpgroll.workers.listener;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.workers.core.logistics.WarehouseManager;
 import com.sack.rpgroll.workers.item.WorkerItemFactory;
@@ -47,14 +49,12 @@ public class WarehouseDesignatorListener implements Listener {
         event.setCancelled(true);
 
         if (warehouseManager.remove(block.getLocation())) {
-            event.getPlayer().sendMessage(Component.text(lang.raw("listener.warehouse_designator.removed"),
-                    NamedTextColor.YELLOW));
+            event.getPlayer().sendMessage(ComponentUtils.parseWithDefault(lang.raw("listener.warehouse_designator.removed"), NamedTextColor.YELLOW));
             return;
         }
 
         warehouseManager.designate(block.getLocation(), "");
-        event.getPlayer().sendMessage(Component.text(lang.raw("listener.warehouse_designator.designated"),
-                NamedTextColor.GREEN));
+        event.getPlayer().sendMessage(ComponentUtils.parseWithDefault(lang.raw("listener.warehouse_designator.designated"), NamedTextColor.GREEN));
     }
 
 }

@@ -64,24 +64,21 @@ public class GuildTerritoryGUI extends InventoryGUI {
 
             setItem(i, new ItemBuilder(Material.GRASS_BLOCK)
                     .setName(ComponentUtils.parse(territory.name()))
-                    .setLore(Component.text(lang().raw("guild.territory.lore.world", "world", territory.world()),
-                            NamedTextColor.GRAY),
-                            Component.text(lang().raw("guild.territory.lore.block_protection", "state",
-                                    territory.protectBlocks() ? lang().raw("common.yes") : lang().raw("common.no")),
-                                    NamedTextColor.GRAY),
-                            Component.text(lang().raw("guild.territory.lore.outsider_pvp", "state",
-                                    territory.allowOutsiderPvp() ? lang().raw("common.yes") : lang().raw("common.no")),
-                                    NamedTextColor.GRAY),
-                            Component.text(lang().raw("guild.territory.lore.toggle_hint"), NamedTextColor.DARK_GRAY),
-                            Component.text(lang().raw("guild.territory.lore.release_hint"), NamedTextColor.DARK_GRAY))
+                    .setLore(ComponentUtils.parseWithDefault(lang().raw("guild.territory.lore.world", "world", territory.world()), NamedTextColor.GRAY),
+                            ComponentUtils.parseWithDefault(lang().raw("guild.territory.lore.block_protection", "state",
+                                    territory.protectBlocks() ? lang().raw("common.yes") : lang().raw("common.no")), NamedTextColor.GRAY),
+                            ComponentUtils.parseWithDefault(lang().raw("guild.territory.lore.outsider_pvp", "state",
+                                    territory.allowOutsiderPvp() ? lang().raw("common.yes") : lang().raw("common.no")), NamedTextColor.GRAY),
+                            ComponentUtils.parseWithDefault(lang().raw("guild.territory.lore.toggle_hint"), NamedTextColor.DARK_GRAY),
+                            ComponentUtils.parseWithDefault(lang().raw("guild.territory.lore.release_hint"), NamedTextColor.DARK_GRAY))
                     .build());
         }
 
         int maxTerritories = guild.upgradeTree().maxTerritories();
 
         setItem(CLAIM_SLOT, new ItemBuilder(territories.size() < maxTerritories ? Material.EMERALD : Material.BARRIER)
-                .setName(Component.text(lang().raw("guild.territory.button.claim"), NamedTextColor.GREEN))
-                .setLore(Component.text(lang().raw("guild.territory.lore.quota", "count", territories.size(),
+                .setName(ComponentUtils.parseWithDefault(lang().raw("guild.territory.button.claim"), NamedTextColor.GREEN))
+                .setLore(ComponentUtils.parseWithDefault(lang().raw("guild.territory.lore.quota", "count", territories.size(),
                         "max", maxTerritories), NamedTextColor.GRAY))
                 .build());
 

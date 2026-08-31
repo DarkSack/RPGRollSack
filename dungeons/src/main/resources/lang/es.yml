@@ -13,7 +13,18 @@ prompt:
 
 command:
   dungeon:
-    usage: "&eUso: /dungeon <list|info|invite|accept|decline|leaveparty|enter|leave|revive|ranking> [args]"
+    usage: |-
+      &eUso: /dungeon
+      &7 • &flist
+      &7 • &finfo
+      &7 • &finvite
+      &7 • &faccept
+      &7 • &fdecline
+      &7 • &fleaveparty
+      &7 • &fenter
+      &7 • &fleave
+      &7 • &frevive
+      &7 • &franking
     not_found: "&cNo existe la mazmorra '{id}'."
     player_not_found: "&cJugador no encontrado."
     not_in_run: "&cNo estás en ninguna corrida."
@@ -56,6 +67,7 @@ command:
     leave:
       ok: "&7Abandonaste la mazmorra."
     revive:
+      players_only: "&cSolo un jugador puede revivir a un compañero."
       usage: "&eUso: /dungeon revive <jugador>"
       ok: "&a✔ Revivido."
       not_dead: "&cEse jugador no está muerto en esta corrida."
@@ -65,7 +77,14 @@ command:
       entry: "&7{position}. {players} — {seconds}s, {deaths} muerte(s)"
   dungeonadmin:
     no_permission: "&cNo tenés permiso para usar este comando."
-    usage: "&eUso: /dungeonadmin <create|reload|forcestop|browser|editor|structure> [args]"
+    usage: |-
+      &eUso: /dungeonadmin
+      &7 • &fcreate
+      &7 • &freload
+      &7 • &fforcestop
+      &7 • &fbrowser
+      &7 • &feditor
+      &7 • &fstructure
     players_only: "&cSolo un jugador puede abrir el editor."
     not_found: "&cNo existe la mazmorra '{id}'."
     create:

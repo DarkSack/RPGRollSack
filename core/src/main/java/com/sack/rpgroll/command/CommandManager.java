@@ -1,5 +1,7 @@
 package com.sack.rpgroll.command;
 
+import com.sack.rpgroll.common.command.Senders;
+
 import com.sack.rpgroll.RPGRoll;
 import com.sack.rpgroll.common.lang.LangManager;
 
@@ -72,7 +74,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
         }
 
         // Verificar si es solo para jugadores
-        if (subCommand.isPlayerOnly() && !(sender instanceof Player)) {
+        if (subCommand.isPlayerOnly() && !(Senders.asPlayer(sender) instanceof Player)) {
             lang.send(sender, "general.player_only");
             return true;
         }

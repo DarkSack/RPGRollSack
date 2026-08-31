@@ -31,7 +31,7 @@ public class ProfessionBrowserGUI extends InventoryGUI {
 
     public ProfessionBrowserGUI(Player player, ProfessionManager professionManager, ChatPromptManager chatPromptManager,
             Runnable onBack) {
-        super(player, Component.text(chatPromptManager.lang().raw("gui.profession.browser.title"), NamedTextColor.GOLD), SIZE);
+        super(player, ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.profession.browser.title"), NamedTextColor.GOLD), SIZE);
         this.professionManager = professionManager;
         this.chatPromptManager = chatPromptManager;
         this.onBack = onBack;
@@ -61,18 +61,18 @@ public class ProfessionBrowserGUI extends InventoryGUI {
 
             setItem(i, new ItemBuilder(parseMaterial(profession.icon(), Material.VILLAGER_SPAWN_EGG))
                     .setName(ComponentUtils.parse(profession.displayName()))
-                    .setLore(Component.text(chatPromptManager.lang().raw("gui.profession.browser.id_label", "id",
+                    .setLore(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.profession.browser.id_label", "id",
                             profession.id()), NamedTextColor.GRAY),
-                            Component.text(chatPromptManager.lang().raw("gui.profession.browser.entity_label", "entity",
+                            ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.profession.browser.entity_label", "entity",
                                     profession.entityType()), NamedTextColor.GRAY),
-                            Component.text(chatPromptManager.lang().raw("gui.profession.browser.ai_rules_label", "count",
+                            ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.profession.browser.ai_rules_label", "count",
                                     profession.aiRules().size()), NamedTextColor.GRAY),
-                            Component.text(chatPromptManager.lang().raw("gui.common.click_to_edit"), NamedTextColor.YELLOW))
+                            ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.common.click_to_edit"), NamedTextColor.YELLOW))
                     .build());
         }
 
         setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.profession.browser.new"), NamedTextColor.GREEN))
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.profession.browser.new"), NamedTextColor.GREEN))
                 .build());
         setItem(BACK_SLOT, ItemBuilder.createCancelButton(chatPromptManager.lang().raw("gui.common.back")));
     }
@@ -104,8 +104,7 @@ public class ProfessionBrowserGUI extends InventoryGUI {
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 
             if (professionManager.exists(id)) {
-                player.sendMessage(Component.text(chatPromptManager.lang().raw("gui.profession.browser.duplicate_id"),
-                        NamedTextColor.RED));
+                player.sendMessage(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.profession.browser.duplicate_id"), NamedTextColor.RED));
                 reopen();
                 return;
             }

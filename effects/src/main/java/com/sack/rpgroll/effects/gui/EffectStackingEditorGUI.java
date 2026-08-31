@@ -1,5 +1,7 @@
 package com.sack.rpgroll.effects.gui;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.effects.core.EffectDefinition;
 import com.sack.rpgroll.effects.core.EffectManager;
@@ -39,8 +41,7 @@ public class EffectStackingEditorGUI extends InventoryGUI {
 
     public EffectStackingEditorGUI(Player player, EffectDefinition effect, EffectManager effectManager,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text(chatPromptManager.lang().raw("gui.stacking.title", "id", effect.id()),
-                NamedTextColor.GOLD), SIZE);
+        super(player, ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.stacking.title", "id", effect.id()), NamedTextColor.GOLD), SIZE);
         this.current = effect;
         this.effectManager = effectManager;
         this.chatPromptManager = chatPromptManager;

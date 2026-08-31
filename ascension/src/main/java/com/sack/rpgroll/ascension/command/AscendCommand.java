@@ -1,5 +1,7 @@
 package com.sack.rpgroll.ascension.command;
 
+import com.sack.rpgroll.common.command.Senders;
+
 import com.sack.rpgroll.ascension.core.ClassSpecialization;
 import com.sack.rpgroll.ascension.core.RaceEvolution;
 import com.sack.rpgroll.ascension.deferred.FactionManager;
@@ -54,7 +56,7 @@ public class AscendCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
-        if (!(sender instanceof Player player)) {
+        if (!(Senders.asPlayer(sender) instanceof Player player)) {
             lang.send(sender, "general.player_only");
             return true;
         }
@@ -153,9 +155,8 @@ public class AscendCommand implements CommandExecutor, TabCompleter {
 
         lang.send(player, "command.affinity_header");
 
-        state.getAffinityExperience().forEach((id, xp) -> player.sendMessage(Component.text(
-                lang.raw("command.affinity_entry", "id", id, "level", Math.min(100, xp / 100), "xp", xp),
-                NamedTextColor.WHITE)));
+        state.getAffinityExperience().forEach((id, xp) -> player.sendMessage(ComponentUtils.parseWithDefault(
+                lang.raw("command.affinity_entry", "id", id, "level", Math.min(100, xp / 100), "xp", xp), NamedTextColor.WHITE)));
     }
 
     private void handleReputation(Player player) {
@@ -170,10 +171,9 @@ public class AscendCommand implements CommandExecutor, TabCompleter {
         lang.send(player, "command.reputation_header");
 
         for (var faction : factionManager.getAll()) {
-            player.sendMessage(Component.text(
+            player.sendMessage(ComponentUtils.parseWithDefault(
                     lang.raw("command.reputation_entry", "faction", faction.displayName(), "amount",
-                            state.getReputation(faction.id())),
-                    NamedTextColor.WHITE));
+                            state.getReputation(faction.id())), NamedTextColor.WHITE));
         }
     }
 
@@ -248,7 +248,7 @@ public class AscendCommand implements CommandExecutor, TabCompleter {
                 case "specialize" -> TabCompleteUtil.filter(args[1],
                         engine.getSpecializationManager().getAll().stream().map(ClassSpecialization::id).toList());
                 case "title" -> {
-                    if (!(sender instanceof Player player)) {
+                    if (!(Senders.asPlayer(sender) instanceof Player player)) {
                         yield List.of();
                     }
                     List<String> options = new java.util.ArrayList<>(

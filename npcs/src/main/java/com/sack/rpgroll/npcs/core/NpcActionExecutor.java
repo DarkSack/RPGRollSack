@@ -1,5 +1,7 @@
 package com.sack.rpgroll.npcs.core;
 
+import com.sack.rpgroll.common.command.Senders;
+
 import com.sack.rpgroll.util.ComponentUtils;
 
 import org.bukkit.Bukkit;
@@ -109,7 +111,7 @@ public class NpcActionExecutor {
     /**
      * A diferencia de {@link #executeCommand}, corre el comando con el jugador como sender real —
      * necesario para comandos propios de RPGRoll (ej. "quest start x", que exigen
-     * {@code sender instanceof Player} y fallan en silencio si se disparan por consola).
+     * {@code Senders.asPlayer(sender) instanceof Player} y fallan en silencio si se disparan por consola).
      */
     private void executeCommandAsPlayer(Player player, String rawCommand) {
         String parsed = rawCommand.replace("{player}", player.getName());

@@ -30,7 +30,7 @@ public class WorkerEventBrowserGUI extends InventoryGUI {
 
     public WorkerEventBrowserGUI(Player player, WorkerEventManager eventManager, ChatPromptManager chatPromptManager,
             Runnable onBack) {
-        super(player, Component.text(chatPromptManager.lang().raw("gui.event.browser.title"), NamedTextColor.GOLD), SIZE);
+        super(player, ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.event.browser.title"), NamedTextColor.GOLD), SIZE);
         this.eventManager = eventManager;
         this.chatPromptManager = chatPromptManager;
         this.onBack = onBack;
@@ -52,16 +52,16 @@ public class WorkerEventBrowserGUI extends InventoryGUI {
 
             setItem(i, new ItemBuilder(Material.PAPER)
                     .setName(ComponentUtils.parse(event.displayName()))
-                    .setLore(Component.text(chatPromptManager.lang().raw("gui.profession.browser.id_label", "id",
+                    .setLore(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.profession.browser.id_label", "id",
                             event.id()), NamedTextColor.GRAY),
-                            Component.text(chatPromptManager.lang().raw("gui.event.browser.type_label", "type",
+                            ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.event.browser.type_label", "type",
                                     event.type()), NamedTextColor.GRAY),
-                            Component.text(chatPromptManager.lang().raw("gui.common.click_to_edit"), NamedTextColor.YELLOW))
+                            ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.common.click_to_edit"), NamedTextColor.YELLOW))
                     .build());
         }
 
         setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.event.browser.new"), NamedTextColor.GREEN)).build());
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.event.browser.new"), NamedTextColor.GREEN)).build());
         setItem(BACK_SLOT, ItemBuilder.createCancelButton(chatPromptManager.lang().raw("gui.common.back")));
     }
 
@@ -92,8 +92,7 @@ public class WorkerEventBrowserGUI extends InventoryGUI {
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 
             if (eventManager.exists(id)) {
-                player.sendMessage(Component.text(chatPromptManager.lang().raw("gui.event.browser.duplicate_id"),
-                        NamedTextColor.RED));
+                player.sendMessage(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.event.browser.duplicate_id"), NamedTextColor.RED));
                 reopen();
                 return;
             }

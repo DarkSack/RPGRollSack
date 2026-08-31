@@ -1,5 +1,7 @@
 package com.sack.rpgroll.ranching.gui;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.ranching.core.animal.Animal;
@@ -37,7 +39,7 @@ public class AnimalBrowserGUI extends InventoryGUI {
 
     public AnimalBrowserGUI(Player player, AnimalManager animalManager, SpeciesManager speciesManager,
             BreedManager breedManager, ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text(chatPromptManager.lang().raw("gui.hub.animals"), NamedTextColor.GOLD), SIZE);
+        super(player, ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.hub.animals"), NamedTextColor.GOLD), SIZE);
         this.animalManager = animalManager;
         this.speciesManager = speciesManager;
         this.breedManager = breedManager;
@@ -72,29 +74,29 @@ public class AnimalBrowserGUI extends InventoryGUI {
                                     + animal.id().toString().substring(0, 8),
                             NamedTextColor.YELLOW))
                     .setLore(
-                            Component.text(chatPromptManager.lang().raw("gui.animal.sex", "sex", animal.sex()), NamedTextColor.GRAY),
-                            Component.text(chatPromptManager.lang().raw("gui.animal.stage", "stage", animal.stage()), NamedTextColor.GRAY),
-                            Component.text(chatPromptManager.lang().raw("gui.animal.quality", "quality", animal.quality()), NamedTextColor.GOLD),
-                            Component.text(chatPromptManager.lang().raw("gui.animal.generation", "gen", animal.generation()), NamedTextColor.GRAY),
-                            Component.text(chatPromptManager.lang().raw("gui.animal.health_happiness", "health",
+                            ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.animal.sex", "sex", animal.sex()), NamedTextColor.GRAY),
+                            ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.animal.stage", "stage", animal.stage()), NamedTextColor.GRAY),
+                            ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.animal.quality", "quality", animal.quality()), NamedTextColor.GOLD),
+                            ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.animal.generation", "gen", animal.generation()), NamedTextColor.GRAY),
+                            ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.animal.health_happiness", "health",
                                     String.format(Locale.ROOT, "%.0f", animal.health()), "happiness",
                                     String.format(Locale.ROOT, "%.0f", animal.happiness())), NamedTextColor.GREEN),
                             animal.isSick()
-                                    ? Component.text(chatPromptManager.lang().raw("gui.animal.sick", "disease", animal.activeDiseaseId()), NamedTextColor.RED)
-                                    : Component.text(chatPromptManager.lang().raw("gui.animal.healthy"), NamedTextColor.GREEN),
-                            animal.isPregnant() ? Component.text(chatPromptManager.lang().raw("gui.animal.pregnant"), NamedTextColor.LIGHT_PURPLE)
+                                    ? ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.animal.sick", "disease", animal.activeDiseaseId()), NamedTextColor.RED)
+                                    : ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.animal.healthy"), NamedTextColor.GREEN),
+                            animal.isPregnant() ? ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.animal.pregnant"), NamedTextColor.LIGHT_PURPLE)
                                     : Component.text(""))
                     .build());
         }
 
         if (page > 0) {
             setItem(PREV_SLOT, new ItemBuilder(Material.ARROW)
-                    .setName(Component.text(chatPromptManager.lang().raw("gui.common.prev_page"), NamedTextColor.GRAY)).build());
+                    .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.common.prev_page"), NamedTextColor.GRAY)).build());
         }
 
         if (page < totalPages - 1) {
             setItem(NEXT_SLOT, new ItemBuilder(Material.ARROW)
-                    .setName(Component.text(chatPromptManager.lang().raw("gui.common.next_page"), NamedTextColor.GRAY)).build());
+                    .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.common.next_page"), NamedTextColor.GRAY)).build());
         }
 
         setItem(BACK_SLOT, ItemBuilder.createCancelButton(chatPromptManager.lang().raw("gui.common.back")));

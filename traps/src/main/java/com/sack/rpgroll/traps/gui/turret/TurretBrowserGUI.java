@@ -96,7 +96,8 @@ public class TurretBrowserGUI extends InventoryGUI {
             }
 
             TurretDefinition turret = new TurretDefinition(id, id, "", 12.0, true, true, 20, List.of(), null, null,
-                    null);
+                    null,
+                null, 0, -1);
 
             turretManager.save(turret);
             reopen();

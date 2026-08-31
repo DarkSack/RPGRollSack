@@ -1,5 +1,7 @@
 package com.sack.rpgroll.chat.command;
 
+import com.sack.rpgroll.common.command.Senders;
+
 import com.sack.rpgroll.chat.language.LanguageManager;
 import com.sack.rpgroll.chat.language.LanguageService;
 import com.sack.rpgroll.chat.language.PlayerLanguageState;
@@ -37,7 +39,7 @@ public class LanguageCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
-        if (!(sender instanceof Player player)) {
+        if (!(Senders.asPlayer(sender) instanceof Player player)) {
             lang.send(sender, "common.players_only");
             return true;
         }

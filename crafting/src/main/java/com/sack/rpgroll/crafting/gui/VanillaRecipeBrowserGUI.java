@@ -1,5 +1,7 @@
 package com.sack.rpgroll.crafting.gui;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.crafting.recipe.RecipeResult;
 import com.sack.rpgroll.crafting.recipe.RecipeResultType;
 import com.sack.rpgroll.crafting.vanilla.VanillaRecipeBridge;
@@ -34,7 +36,7 @@ public class VanillaRecipeBrowserGUI extends InventoryGUI {
 
     public VanillaRecipeBrowserGUI(Player player, VanillaRecipeManager recipeManager, VanillaRecipeBridge recipeBridge,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text(chatPromptManager.lang().raw("gui.vanilla_recipe.browser_title"), NamedTextColor.GOLD), SIZE);
+        super(player, ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.vanilla_recipe.browser_title"), NamedTextColor.GOLD), SIZE);
         this.recipeManager = recipeManager;
         this.recipeBridge = recipeBridge;
         this.chatPromptManager = chatPromptManager;
@@ -57,14 +59,14 @@ public class VanillaRecipeBrowserGUI extends InventoryGUI {
 
             setItem(i, new ItemBuilder(Material.CRAFTING_TABLE)
                     .setName(Component.text(recipe.id(), NamedTextColor.YELLOW))
-                    .setLore(Component.text(chatPromptManager.lang().raw("gui.vanilla_recipe.type_lore", "value", recipe.type()), NamedTextColor.AQUA),
-                            Component.text(chatPromptManager.lang().raw("gui.vanilla_recipe.result_lore", "value", recipe.result().value()), NamedTextColor.GRAY),
-                            Component.text(chatPromptManager.lang().raw("gui.common.click_edit"), NamedTextColor.YELLOW))
+                    .setLore(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.vanilla_recipe.type_lore", "value", recipe.type()), NamedTextColor.AQUA),
+                            ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.vanilla_recipe.result_lore", "value", recipe.result().value()), NamedTextColor.GRAY),
+                            ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.common.click_edit"), NamedTextColor.YELLOW))
                     .build());
         }
 
         setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.vanilla_recipe.create_new"), NamedTextColor.GREEN)).build());
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.vanilla_recipe.create_new"), NamedTextColor.GREEN)).build());
         setItem(BACK_SLOT, ItemBuilder.createCancelButton(chatPromptManager.lang().raw("gui.common.back")));
     }
 
@@ -96,7 +98,7 @@ public class VanillaRecipeBrowserGUI extends InventoryGUI {
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 
             if (recipeManager.exists(id)) {
-                player.sendMessage(Component.text(chatPromptManager.lang().raw("gui.vanilla_recipe.already_exists"), NamedTextColor.RED));
+                player.sendMessage(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.vanilla_recipe.already_exists"), NamedTextColor.RED));
                 reopen();
                 return;
             }

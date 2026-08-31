@@ -1,5 +1,7 @@
 package com.sack.rpgroll.items.gui.editor;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
@@ -69,8 +71,7 @@ public class MaterialExtrasEditorGUI extends InventoryGUI {
         if (showColor()) {
             setItem(COLOR_SLOT, new ItemBuilder(Material.LEATHER_CHESTPLATE)
                     .setName(lang.component("editor.material_extras.color_label"))
-                    .setLore(Component.text(session.dyeColor == null ? lang.raw("editor.rules.undefined") : session.dyeColor,
-                            NamedTextColor.GRAY),
+                    .setLore(ComponentUtils.parseWithDefault(session.dyeColor == null ? lang.raw("editor.rules.undefined") : session.dyeColor, NamedTextColor.GRAY),
                             lang.component("editor.material_extras.color_click"))
                     .build());
         }
@@ -78,9 +79,8 @@ public class MaterialExtrasEditorGUI extends InventoryGUI {
         if (showSkull()) {
             setItem(SKULL_SLOT, new ItemBuilder(Material.PLAYER_HEAD)
                     .setName(lang.component("editor.material_extras.skull_label"))
-                    .setLore(Component.text(session.skullTexture == null ? lang.raw("editor.rules.undefined")
-                                    : lang.raw("editor.material_extras.skull_defined"),
-                            NamedTextColor.GRAY),
+                    .setLore(ComponentUtils.parseWithDefault(session.skullTexture == null ? lang.raw("editor.rules.undefined")
+                                    : lang.raw("editor.material_extras.skull_defined"), NamedTextColor.GRAY),
                             lang.component("editor.material_extras.skull_click"))
                     .build());
         }
@@ -89,7 +89,7 @@ public class MaterialExtrasEditorGUI extends InventoryGUI {
             setItem(TRIM_SLOT, new ItemBuilder(Material.IRON_CHESTPLATE)
                     .setName(lang.component("editor.material_extras.trim_label"))
                     .setLore(session.trim == null
-                            ? Component.text(lang.raw("editor.rules.undefined"), NamedTextColor.GRAY)
+                            ? ComponentUtils.parseWithDefault(lang.raw("editor.rules.undefined"), NamedTextColor.GRAY)
                             : Component.text(session.trim.material() + " / " + session.trim.pattern(),
                                     NamedTextColor.GRAY))
                     .build());

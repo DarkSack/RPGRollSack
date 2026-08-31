@@ -1,5 +1,7 @@
 package com.sack.rpgroll.economy.gui;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.economy.auction.AuctionListing;
 import com.sack.rpgroll.economy.auction.AuctionManager;
@@ -36,7 +38,7 @@ public class AuctionHouseGUI extends InventoryGUI {
 
     public AuctionHouseGUI(Player player, AuctionManager auctionManager, CurrencyManager currencyManager,
             ChatPromptManager chatPromptManager, long defaultDurationMillis) {
-        super(player, Component.text(chatPromptManager.lang().raw("auction.title"), NamedTextColor.GOLD), SIZE);
+        super(player, ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("auction.title"), NamedTextColor.GOLD), SIZE);
         this.auctionManager = auctionManager;
         this.currencyManager = currencyManager;
         this.chatPromptManager = chatPromptManager;

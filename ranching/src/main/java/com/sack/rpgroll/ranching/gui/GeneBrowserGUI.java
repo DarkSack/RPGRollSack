@@ -30,7 +30,7 @@ public class GeneBrowserGUI extends InventoryGUI {
     private List<Gene> genes;
 
     public GeneBrowserGUI(Player player, GeneManager geneManager, ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text(chatPromptManager.lang().raw("gui.hub.genes"), NamedTextColor.GOLD), SIZE);
+        super(player, ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.hub.genes"), NamedTextColor.GOLD), SIZE);
         this.geneManager = geneManager;
         this.chatPromptManager = chatPromptManager;
         this.onBack = onBack;
@@ -52,15 +52,15 @@ public class GeneBrowserGUI extends InventoryGUI {
 
             setItem(i, new ItemBuilder(Material.NETHER_STAR)
                     .setName(ComponentUtils.parse(gene.displayName()))
-                    .setLore(Component.text(chatPromptManager.lang().raw("gui.browser.id_line", "id", gene.id()), NamedTextColor.GRAY),
-                            Component.text(chatPromptManager.lang().raw("gui.gene.browser.attribute_key_line", "key", gene.attributeKey()), NamedTextColor.GRAY),
-                            Component.text(chatPromptManager.lang().raw("gui.gene.browser.dominance_line", "dominance", gene.dominance()), NamedTextColor.GRAY),
-                            Component.text(chatPromptManager.lang().raw("gui.common.click_to_edit"), NamedTextColor.YELLOW))
+                    .setLore(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.browser.id_line", "id", gene.id()), NamedTextColor.GRAY),
+                            ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.gene.browser.attribute_key_line", "key", gene.attributeKey()), NamedTextColor.GRAY),
+                            ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.gene.browser.dominance_line", "dominance", gene.dominance()), NamedTextColor.GRAY),
+                            ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.common.click_to_edit"), NamedTextColor.YELLOW))
                     .build());
         }
 
         setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.gene.browser.new"), NamedTextColor.GREEN)).build());
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.gene.browser.new"), NamedTextColor.GREEN)).build());
         setItem(BACK_SLOT, ItemBuilder.createCancelButton(chatPromptManager.lang().raw("gui.common.back")));
     }
 
@@ -91,7 +91,7 @@ public class GeneBrowserGUI extends InventoryGUI {
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 
             if (geneManager.exists(id)) {
-                player.sendMessage(Component.text(chatPromptManager.lang().raw("gui.gene.browser.already_exists"), NamedTextColor.RED));
+                player.sendMessage(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.gene.browser.already_exists"), NamedTextColor.RED));
                 reopen();
                 return;
             }

@@ -1,5 +1,7 @@
 package com.sack.rpgroll.guilds.gui.guild;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.guilds.gui.ChatPromptManager;
@@ -61,13 +63,13 @@ public class GuildMembersGUI extends InventoryGUI {
             setItem(i, ItemBuilder.skull(null)
                     .setName(Component.text((offline.getName() != null ? offline.getName() : memberId.toString())
                             + " — " + role, role == GuildRole.LEADER ? NamedTextColor.GOLD : NamedTextColor.YELLOW))
-                    .setLore(Component.text(lang().raw("guild.members.lore.next_role"), NamedTextColor.GRAY),
-                            Component.text(lang().raw("guild.members.lore.kick"), NamedTextColor.GRAY))
+                    .setLore(ComponentUtils.parseWithDefault(lang().raw("guild.members.lore.next_role"), NamedTextColor.GRAY),
+                            ComponentUtils.parseWithDefault(lang().raw("guild.members.lore.kick"), NamedTextColor.GRAY))
                     .build());
         }
 
         setItem(INVITE_SLOT, new ItemBuilder(org.bukkit.Material.PLAYER_HEAD)
-                .setName(Component.text(lang().raw("guild.members.button.invite"), NamedTextColor.GREEN))
+                .setName(ComponentUtils.parseWithDefault(lang().raw("guild.members.button.invite"), NamedTextColor.GREEN))
                 .build());
 
         setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang().raw("common.back")));

@@ -6,7 +6,12 @@ prompt:
 command:
   player_only: "Solo jugadores pueden usar este comando."
   workers:
-    usage: "Uso: /workers <inspect|hire|fire|list>"
+    usage: |-
+      &eUso: /workers
+      &7 • &finspect
+      &7 • &fhire
+      &7 • &ffire
+      &7 • &flist
     look_at_worker: "Mirá directamente a un worker rastreado."
     already_employed: "Ya tiene un empleador."
     hired: "✔ Contratado."

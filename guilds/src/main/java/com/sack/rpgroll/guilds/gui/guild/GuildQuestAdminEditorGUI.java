@@ -1,5 +1,7 @@
 package com.sack.rpgroll.guilds.gui.guild;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.guilds.gui.ChatPromptManager;
@@ -36,7 +38,7 @@ public class GuildQuestAdminEditorGUI extends InventoryGUI {
 
     public GuildQuestAdminEditorGUI(Player player, GuildQuestDefinition definition, GuildQuestManager questManager,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text(chatPromptManager.lang().raw("guildadmin.quest.editor.title", "id",
+        super(player, ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("guildadmin.quest.editor.title", "id",
                 definition.id()), NamedTextColor.GOLD), SIZE);
         this.current = definition;
         this.questManager = questManager;
@@ -65,50 +67,48 @@ public class GuildQuestAdminEditorGUI extends InventoryGUI {
 
         setItem(NAME_SLOT, new ItemBuilder(Material.NAME_TAG)
                 .setName(lang().component("guildadmin.quest.name_label", "name", current.displayName()))
-                .setLore(Component.text(lang().raw("guildadmin.quest.lore.click_to_type_new"), NamedTextColor.GRAY))
+                .setLore(ComponentUtils.parseWithDefault(lang().raw("guildadmin.quest.lore.click_to_type_new"), NamedTextColor.GRAY))
                 .build());
 
         setItem(TYPE_SLOT, new ItemBuilder(Material.COMPASS)
-                .setName(Component.text(lang().raw("guildadmin.quest.type_label", "type", current.type()),
-                        NamedTextColor.YELLOW))
-                .setLore(Component.text(lang().raw("guildadmin.quest.lore.click_next"), NamedTextColor.GRAY),
-                        Component.text(lang().raw("guildadmin.quest.lore.win_war_note"), NamedTextColor.DARK_GRAY))
+                .setName(ComponentUtils.parseWithDefault(lang().raw("guildadmin.quest.type_label", "type", current.type()), NamedTextColor.YELLOW))
+                .setLore(ComponentUtils.parseWithDefault(lang().raw("guildadmin.quest.lore.click_next"), NamedTextColor.GRAY),
+                        ComponentUtils.parseWithDefault(lang().raw("guildadmin.quest.lore.win_war_note"), NamedTextColor.DARK_GRAY))
                 .build());
 
         setItem(TARGET_REF_SLOT, new ItemBuilder(Material.PAPER)
-                .setName(Component.text(lang().raw("guildadmin.quest.reference_label", "reference",
+                .setName(ComponentUtils.parseWithDefault(lang().raw("guildadmin.quest.reference_label", "reference",
                         current.targetReference() == null ? lang().raw("guildadmin.quest.reference_none")
                                 : current.targetReference()), NamedTextColor.YELLOW))
-                .setLore(Component.text(lang().raw("guildadmin.quest.lore.reference_example"), NamedTextColor.GRAY),
-                        Component.text(lang().raw("guildadmin.quest.lore.click_to_type_new"), NamedTextColor.GRAY))
+                .setLore(ComponentUtils.parseWithDefault(lang().raw("guildadmin.quest.lore.reference_example"), NamedTextColor.GRAY),
+                        ComponentUtils.parseWithDefault(lang().raw("guildadmin.quest.lore.click_to_type_new"), NamedTextColor.GRAY))
                 .build());
 
         setItem(TARGET_AMOUNT_SLOT, new ItemBuilder(Material.TARGET)
-                .setName(Component.text(lang().raw("guildadmin.quest.target_amount_label", "amount",
+                .setName(ComponentUtils.parseWithDefault(lang().raw("guildadmin.quest.target_amount_label", "amount",
                         current.targetAmount()), NamedTextColor.YELLOW))
-                .setLore(Component.text(lang().raw("guildadmin.quest.lore.click_increments"), NamedTextColor.GRAY))
+                .setLore(ComponentUtils.parseWithDefault(lang().raw("guildadmin.quest.lore.click_increments"), NamedTextColor.GRAY))
                 .build());
 
         setItem(REWARD_MONEY_SLOT, new ItemBuilder(Material.GOLD_INGOT)
-                .setName(Component.text(lang().raw("guildadmin.quest.reward_money_label", "amount",
+                .setName(ComponentUtils.parseWithDefault(lang().raw("guildadmin.quest.reward_money_label", "amount",
                         current.rewardMoney()), NamedTextColor.YELLOW))
-                .setLore(Component.text(lang().raw("guildadmin.quest.lore.click_100"), NamedTextColor.GRAY))
+                .setLore(ComponentUtils.parseWithDefault(lang().raw("guildadmin.quest.lore.click_100"), NamedTextColor.GRAY))
                 .build());
 
         setItem(REWARD_XP_SLOT, new ItemBuilder(Material.EXPERIENCE_BOTTLE)
-                .setName(Component.text(lang().raw("guildadmin.quest.reward_xp_label", "amount", current.rewardXp()),
-                        NamedTextColor.YELLOW))
-                .setLore(Component.text(lang().raw("guildadmin.quest.lore.click_50"), NamedTextColor.GRAY))
+                .setName(ComponentUtils.parseWithDefault(lang().raw("guildadmin.quest.reward_xp_label", "amount", current.rewardXp()), NamedTextColor.YELLOW))
+                .setLore(ComponentUtils.parseWithDefault(lang().raw("guildadmin.quest.lore.click_50"), NamedTextColor.GRAY))
                 .build());
 
         setItem(MIN_LEVEL_SLOT, new ItemBuilder(Material.LADDER)
-                .setName(Component.text(lang().raw("guildadmin.quest.min_level_label", "level",
+                .setName(ComponentUtils.parseWithDefault(lang().raw("guildadmin.quest.min_level_label", "level",
                         current.minGuildLevel()), NamedTextColor.YELLOW))
-                .setLore(Component.text(lang().raw("guildadmin.quest.lore.click_increments"), NamedTextColor.GRAY))
+                .setLore(ComponentUtils.parseWithDefault(lang().raw("guildadmin.quest.lore.click_increments"), NamedTextColor.GRAY))
                 .build());
 
         setItem(DESCRIPTION_SLOT, new ItemBuilder(Material.WRITTEN_BOOK)
-                .setName(Component.text(lang().raw("guildadmin.quest.description_label"), NamedTextColor.YELLOW))
+                .setName(ComponentUtils.parseWithDefault(lang().raw("guildadmin.quest.description_label"), NamedTextColor.YELLOW))
                 .setLore(ItemBuilder.toLoreLines(current.description().isBlank()
                         ? lang().raw("guild.customization.no_description") : current.description()))
                 .build());

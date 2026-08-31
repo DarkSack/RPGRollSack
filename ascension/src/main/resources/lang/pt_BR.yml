@@ -8,7 +8,17 @@ general:
 
 # Comando /ascend (jogador)
 command:
-  usage: "&cUso: /ascend <race|specialize|talent|prestige|affinity|reputation|title|legacy|info> [args]"
+  usage: |-
+    &cUso: /ascend
+    &7 • &frace
+    &7 • &fspecialize
+    &7 • &ftalent
+    &7 • &fprestige
+    &7 • &faffinity
+    &7 • &freputation
+    &7 • &ftitle
+    &7 • &flegacy
+    &7 • &finfo
   race_usage: "&cUso: /ascend race <id>"
   race_not_found: "&cNão existe uma evolução com id: {id}"
   race_success: "&a✔ Você evoluiu para: {id}"
@@ -48,7 +58,13 @@ command:
 # Comando /ascendadmin
 admin:
   no_permission: "&cVocê não tem permissão para usar este comando."
-  usage: "&cUso: /ascendadmin <achievement|title|reputation|browser|reload> [args]"
+  usage: |-
+    &cUso: /ascendadmin
+    &7 • &fachievement
+    &7 • &ftitle
+    &7 • &freputation
+    &7 • &fbrowser
+    &7 • &freload
   browser_player_only: "&cSó um jogador pode usar o editor visual."
   browser_invalid_option: "&cOpção inválida. Use: evolution, specialization, prestige, affinity, jobevolution, secret, faction, achievement, title ou legacy"
   achievement_usage: "&cUso: /ascendadmin achievement grant <jogador> <id>"

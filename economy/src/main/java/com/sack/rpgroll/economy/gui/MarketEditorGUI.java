@@ -1,5 +1,7 @@
 package com.sack.rpgroll.economy.gui;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.economy.market.MarketProduct;
 import com.sack.rpgroll.economy.market.MarketProductManager;
@@ -40,8 +42,7 @@ public class MarketEditorGUI extends InventoryGUI {
 
     public MarketEditorGUI(Player player, MarketProduct product, MarketProductManager productManager,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text(chatPromptManager.lang().raw("market.editor.title", "id", product.id()),
-                NamedTextColor.GOLD), SIZE);
+        super(player, ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("market.editor.title", "id", product.id()), NamedTextColor.GOLD), SIZE);
         this.current = product;
         this.productManager = productManager;
         this.chatPromptManager = chatPromptManager;

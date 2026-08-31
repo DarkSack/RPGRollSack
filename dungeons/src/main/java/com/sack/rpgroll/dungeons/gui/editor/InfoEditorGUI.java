@@ -74,7 +74,7 @@ public class InfoEditorGUI extends InventoryGUI {
 
         setItem(DESCRIPTION_SLOT, new ItemBuilder(Material.BOOK)
                 .setName(ComponentUtils.parse(lang.raw("gui.editor.info.description.label")))
-                .setLore(Component.text(session.description.isBlank()
+                .setLore(ComponentUtils.parseWithDefault(session.description.isBlank()
                         ? lang.raw("gui.editor.info.description.empty") : session.description, NamedTextColor.GRAY))
                 .build());
 

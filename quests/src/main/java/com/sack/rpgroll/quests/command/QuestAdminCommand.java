@@ -1,5 +1,7 @@
 package com.sack.rpgroll.quests.command;
 
+import com.sack.rpgroll.common.command.Senders;
+
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.quests.QuestsPlugin;
 import com.sack.rpgroll.quests.core.Quest;
@@ -82,7 +84,7 @@ public class QuestAdminCommand implements CommandExecutor, TabCompleter {
 
     private void handleBrowser(CommandSender sender, String[] args) {
 
-        if (!(sender instanceof Player player)) {
+        if (!(Senders.asPlayer(sender) instanceof Player player)) {
             lang.send(sender, "admin.browser_player_only");
             return;
         }

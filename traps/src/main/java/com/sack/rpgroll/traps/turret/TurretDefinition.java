@@ -23,7 +23,17 @@ import java.util.Objects;
  * (otro proyectil, SONIC_BOOM, EFFECT, DAMAGE...) — la misma lista de
  * acciones que ya puede usar cualquier trampa custom.
  *
+ * <p>
+ * Visualmente una torreta son dos piezas: {@code baseBlock}, un bloque
+ * entero que se coloca en el mundo (bloque de diamante, sculk sensor...), y
+ * {@code model}, un ítem que flota encima. El ítem gira solo mientras no hay
+ * objetivo y se orienta hacia él cuando lo detecta, así se nota a simple
+ * vista si la torreta está buscando o ya apuntando.
+ *
  * @param customModelData null = sin CMD (usa el material tal cual).
+ * @param baseBlock       bloque que se coloca en el suelo; null = no coloca ninguno.
+ * @param hoverHeight     altura del ítem por encima del bloque, en bloques.
+ * @param spinDegreesPerTick giro en reposo; 0 = quieto.
  */
 public record TurretDefinition(
         String id,
@@ -36,7 +46,10 @@ public record TurretDefinition(
         List<String> conditions,
         TrapAction impact,
         Material model,
-        Integer customModelData) implements RPGContent {
+        Integer customModelData,
+        Material baseBlock,
+        double hoverHeight,
+        double spinDegreesPerTick) implements RPGContent {
 
     private static final TrapAction DEFAULT_IMPACT = new TrapAction("CUSTOM_PROJECTILE",
             Map.of("projectile-type", "ARROW"));
@@ -55,6 +68,10 @@ public record TurretDefinition(
         conditions = conditions == null ? List.of() : List.copyOf(conditions);
         impact = impact == null ? DEFAULT_IMPACT : impact;
         model = model == null ? Material.CROSSBOW : model;
+        // 0 se respeta (quieto a propósito); solo un valor negativo o sin
+        // definir cae al default.
+        hoverHeight = hoverHeight <= 0 ? 1.1 : hoverHeight;
+        spinDegreesPerTick = spinDegreesPerTick < 0 ? 4.0 : spinDegreesPerTick;
     }
 
 }

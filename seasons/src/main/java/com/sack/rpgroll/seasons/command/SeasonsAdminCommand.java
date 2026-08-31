@@ -1,5 +1,7 @@
 package com.sack.rpgroll.seasons.command;
 
+import com.sack.rpgroll.common.command.Senders;
+
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.seasons.SeasonsPlugin;
 import com.sack.rpgroll.seasons.core.CalendarManager;
@@ -88,7 +90,7 @@ public class SeasonsAdminCommand implements CommandExecutor, TabCompleter {
 
     private void handleBrowser(CommandSender sender) {
 
-        if (!(sender instanceof Player player)) {
+        if (!(Senders.asPlayer(sender) instanceof Player player)) {
             lang.send(sender, "command.admin.players_only_studio");
             return;
         }

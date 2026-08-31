@@ -1,5 +1,7 @@
 package com.sack.rpgroll.crafting.gui;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.crafting.cartography.CartographyRecipeDefinition;
 import com.sack.rpgroll.crafting.cartography.CartographyRecipeManager;
 import com.sack.rpgroll.crafting.condition.RecipeCondition;
@@ -41,7 +43,7 @@ public class CartographyRecipeEditorGUI extends InventoryGUI {
 
     public CartographyRecipeEditorGUI(Player player, CartographyRecipeDefinition recipe, CartographyRecipeManager recipeManager,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text(chatPromptManager.lang().raw("gui.cartography_recipe.editor_title", "id", recipe.id()), NamedTextColor.GOLD), SIZE);
+        super(player, ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.cartography_recipe.editor_title", "id", recipe.id()), NamedTextColor.GOLD), SIZE);
         this.current = recipe;
         this.recipeManager = recipeManager;
         this.chatPromptManager = chatPromptManager;
@@ -64,30 +66,30 @@ public class CartographyRecipeEditorGUI extends InventoryGUI {
         }
 
         setItem(MAP_SLOT, new ItemBuilder(Material.FILLED_MAP)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.cartography_recipe.field_map", "value", IngredientSpecFormat.format(current.mapIngredient())), NamedTextColor.AQUA))
-                .setLore(Component.text(chatPromptManager.lang().raw("gui.common.click_retype"), NamedTextColor.GRAY)).build());
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.cartography_recipe.field_map", "value", IngredientSpecFormat.format(current.mapIngredient())), NamedTextColor.AQUA))
+                .setLore(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.common.click_retype"), NamedTextColor.GRAY)).build());
 
         setItem(ITEM_SLOT, new ItemBuilder(Material.PAPER)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.cartography_recipe.field_item", "value", IngredientSpecFormat.format(current.itemIngredient())), NamedTextColor.AQUA))
-                .setLore(Component.text(chatPromptManager.lang().raw("gui.common.click_retype"), NamedTextColor.GRAY)).build());
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.cartography_recipe.field_item", "value", IngredientSpecFormat.format(current.itemIngredient())), NamedTextColor.AQUA))
+                .setLore(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.common.click_retype"), NamedTextColor.GRAY)).build());
 
         setItem(RESULT_TYPE_SLOT, new ItemBuilder(Material.CHEST)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.common.result_type", "value", current.result().type()), NamedTextColor.AQUA))
-                .setLore(Component.text(chatPromptManager.lang().raw("gui.common.toggle_material_item_hint"), NamedTextColor.GRAY)).build());
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.common.result_type", "value", current.result().type()), NamedTextColor.AQUA))
+                .setLore(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.common.toggle_material_item_hint"), NamedTextColor.GRAY)).build());
 
         setItem(RESULT_VALUE_SLOT, new ItemBuilder(Material.MAP)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.common.result_value", "value", current.result().value()), NamedTextColor.YELLOW)).build());
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.common.result_value", "value", current.result().value()), NamedTextColor.YELLOW)).build());
 
         setItem(RESULT_AMOUNT_SLOT, new ItemBuilder(Material.HOPPER)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.common.result_amount", "value", current.result().amount()), NamedTextColor.AQUA))
-                .setLore(Component.text(chatPromptManager.lang().raw("gui.common.click_inc_dec", "inc", "+1", "dec", "-1"), NamedTextColor.GRAY)).build());
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.common.result_amount", "value", current.result().amount()), NamedTextColor.AQUA))
+                .setLore(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.common.click_inc_dec", "inc", "+1", "dec", "-1"), NamedTextColor.GRAY)).build());
 
         setItem(CONDITIONS_SLOT, new ItemBuilder(Material.COMPARATOR)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.common.conditions_count", "count", current.conditions().size()), NamedTextColor.AQUA))
-                .setLore(Component.text(chatPromptManager.lang().raw("gui.common.click_edit_list"), NamedTextColor.GRAY)).build());
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.common.conditions_count", "count", current.conditions().size()), NamedTextColor.AQUA))
+                .setLore(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.common.click_edit_list"), NamedTextColor.GRAY)).build());
 
         setItem(DELETE_SLOT, new ItemBuilder(Material.BARRIER)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.cartography_recipe.delete"), NamedTextColor.RED)).build());
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.cartography_recipe.delete"), NamedTextColor.RED)).build());
 
         setItem(BACK_SLOT, ItemBuilder.createCancelButton(chatPromptManager.lang().raw("gui.common.back")));
     }

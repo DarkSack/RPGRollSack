@@ -58,8 +58,7 @@ public class EffectEditorHubGUI extends InventoryGUI {
 
     public EffectEditorHubGUI(Player player, EffectDefinition effect, EffectManager effectManager,
             EffectTracker tracker, ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text(chatPromptManager.lang().raw("gui.editor.title", "id", effect.id()),
-                NamedTextColor.GOLD), SIZE);
+        super(player, ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.editor.title", "id", effect.id()), NamedTextColor.GOLD), SIZE);
         this.current = effect;
         this.effectManager = effectManager;
         this.tracker = tracker;

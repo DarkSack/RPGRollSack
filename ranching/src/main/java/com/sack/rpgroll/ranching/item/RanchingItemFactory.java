@@ -40,29 +40,26 @@ public final class RanchingItemFactory {
             lore.add(Component.empty());
         }
 
-        lore.add(Component.text(lang.raw("item.feed.quality", "quality", feed.quality()), NamedTextColor.YELLOW));
-        lore.add(Component.text(
-                lang.raw("item.feed.nutrition", "value", String.format(Locale.ROOT, "%.1f", feed.nutritionValue())),
-                NamedTextColor.AQUA));
+        lore.add(ComponentUtils.parseWithDefault(lang.raw("item.feed.quality", "quality", feed.quality()), NamedTextColor.YELLOW));
+        lore.add(ComponentUtils.parseWithDefault(
+                lang.raw("item.feed.nutrition", "value", String.format(Locale.ROOT, "%.1f", feed.nutritionValue())), NamedTextColor.AQUA));
 
         if (feed.healthBonus() > 0) {
-            lore.add(Component.text(
-                    lang.raw("item.feed.health", "value", String.format(Locale.ROOT, "%.1f", feed.healthBonus())),
-                    NamedTextColor.RED));
+            lore.add(ComponentUtils.parseWithDefault(
+                    lang.raw("item.feed.health", "value", String.format(Locale.ROOT, "%.1f", feed.healthBonus())), NamedTextColor.RED));
         }
 
         if (feed.happinessBonus() > 0) {
-            lore.add(Component.text(lang.raw("item.feed.happiness", "value",
+            lore.add(ComponentUtils.parseWithDefault(lang.raw("item.feed.happiness", "value",
                     String.format(Locale.ROOT, "%.1f", feed.happinessBonus())), NamedTextColor.LIGHT_PURPLE));
         }
 
         if (!feed.tags().isEmpty()) {
-            lore.add(Component.text(lang.raw("item.feed.tags", "tags", String.join(", ", feed.tags())),
-                    NamedTextColor.DARK_GRAY));
+            lore.add(ComponentUtils.parseWithDefault(lang.raw("item.feed.tags", "tags", String.join(", ", feed.tags())), NamedTextColor.DARK_GRAY));
         }
 
         lore.add(Component.empty());
-        lore.add(Component.text(lang.raw("item.feed.use_hint"), NamedTextColor.DARK_GRAY));
+        lore.add(ComponentUtils.parseWithDefault(lang.raw("item.feed.use_hint"), NamedTextColor.DARK_GRAY));
 
         ItemStack item = new ItemBuilder(material)
                 .setName(ComponentUtils.parse(feed.displayName()).colorIfAbsent(NamedTextColor.WHITE))
@@ -83,16 +80,15 @@ public final class RanchingItemFactory {
             lore.add(Component.empty());
         }
 
-        lore.add(Component.text(lang.raw("item.medicine.type", "type", medicine.type()), NamedTextColor.AQUA));
+        lore.add(ComponentUtils.parseWithDefault(lang.raw("item.medicine.type", "type", medicine.type()), NamedTextColor.AQUA));
 
         if (!medicine.curesDiseaseIds().isEmpty()) {
-            lore.add(Component.text(
-                    lang.raw("item.medicine.treats", "diseases", String.join(", ", medicine.curesDiseaseIds())),
-                    NamedTextColor.GREEN));
+            lore.add(ComponentUtils.parseWithDefault(
+                    lang.raw("item.medicine.treats", "diseases", String.join(", ", medicine.curesDiseaseIds())), NamedTextColor.GREEN));
         }
 
         lore.add(Component.empty());
-        lore.add(Component.text(lang.raw("item.medicine.use_hint"), NamedTextColor.DARK_GRAY));
+        lore.add(ComponentUtils.parseWithDefault(lang.raw("item.medicine.use_hint"), NamedTextColor.DARK_GRAY));
 
         ItemStack item = new ItemBuilder(material)
                 .setName(ComponentUtils.parse(medicine.displayName()).colorIfAbsent(NamedTextColor.WHITE))
@@ -114,15 +110,13 @@ public final class RanchingItemFactory {
         }
 
         if (!vaccine.preventsDiseaseIds().isEmpty()) {
-            lore.add(Component.text(
-                    lang.raw("item.vaccine.prevents", "diseases", String.join(", ", vaccine.preventsDiseaseIds())),
-                    NamedTextColor.GREEN));
+            lore.add(ComponentUtils.parseWithDefault(
+                    lang.raw("item.vaccine.prevents", "diseases", String.join(", ", vaccine.preventsDiseaseIds())), NamedTextColor.GREEN));
         }
 
-        lore.add(Component.text(lang.raw(vaccine.isPermanent() ? "item.vaccine.permanent" : "item.vaccine.temporary"),
-                NamedTextColor.AQUA));
+        lore.add(ComponentUtils.parseWithDefault(lang.raw(vaccine.isPermanent() ? "item.vaccine.permanent" : "item.vaccine.temporary"), NamedTextColor.AQUA));
         lore.add(Component.empty());
-        lore.add(Component.text(lang.raw("item.vaccine.use_hint"), NamedTextColor.DARK_GRAY));
+        lore.add(ComponentUtils.parseWithDefault(lang.raw("item.vaccine.use_hint"), NamedTextColor.DARK_GRAY));
 
         ItemStack item = new ItemBuilder(material)
                 .setName(ComponentUtils.parse(vaccine.displayName()).colorIfAbsent(NamedTextColor.WHITE))

@@ -12,7 +12,18 @@ prompt:
   cancelled: "&cCancelado."
 
 admin:
-  usage: "&eUso: /trapadmin <create|edit|browser|reload|place|remove|list|info|forcetrigger|turret> [args]"
+  usage: |-
+    &eUso: /trapadmin
+    &7 • &fcreate
+    &7 • &fedit
+    &7 • &fbrowser
+    &7 • &freload
+    &7 • &fplace
+    &7 • &fremove
+    &7 • &flist
+    &7 • &finfo
+    &7 • &fforcetrigger
+    &7 • &fturret
   trap_not_found: "&cNão existe a armadilha '{id}'."
   must_look_at_block: "&cVocê precisa estar olhando para um bloco."
   create:

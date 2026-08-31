@@ -1,5 +1,7 @@
 package com.sack.rpgroll.chat.command;
 
+import com.sack.rpgroll.common.command.Senders;
+
 import com.sack.rpgroll.chat.ignore.IgnoreManager;
 import com.sack.rpgroll.chat.whisper.WhisperManager;
 import com.sack.rpgroll.common.lang.LangManager;
@@ -26,7 +28,7 @@ public class WhisperCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
-        if (!(sender instanceof Player player)) {
+        if (!(Senders.asPlayer(sender) instanceof Player player)) {
             lang.send(sender, "common.players_only");
             return true;
         }

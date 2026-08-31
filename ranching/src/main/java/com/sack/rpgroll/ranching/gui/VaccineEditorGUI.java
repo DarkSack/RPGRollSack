@@ -1,5 +1,7 @@
 package com.sack.rpgroll.ranching.gui;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.ranching.core.health.DiseaseManager;
@@ -40,7 +42,7 @@ public class VaccineEditorGUI extends InventoryGUI {
 
     public VaccineEditorGUI(Player player, Vaccine vaccine, VaccineManager vaccineManager,
             DiseaseManager diseaseManager, ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text(chatPromptManager.lang().raw("gui.vaccine.editor.title", "id", vaccine.id()), NamedTextColor.GOLD), SIZE);
+        super(player, ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.vaccine.editor.title", "id", vaccine.id()), NamedTextColor.GOLD), SIZE);
         this.current = vaccine;
         this.vaccineManager = vaccineManager;
         this.diseaseManager = diseaseManager;
@@ -69,32 +71,31 @@ public class VaccineEditorGUI extends InventoryGUI {
                 .setName(lang.component("gui.editor.name_line", "name", current.displayName())).build());
 
         setItem(ICON_SLOT, new ItemBuilder(SpeciesBrowserGUI.parseMaterial(current.icon(), Material.POTION))
-                .setName(Component.text(lang.raw("gui.editor.icon_line", "icon", current.icon()), NamedTextColor.YELLOW)).build());
+                .setName(ComponentUtils.parseWithDefault(lang.raw("gui.editor.icon_line", "icon", current.icon()), NamedTextColor.YELLOW)).build());
 
         setItem(DESCRIPTION_SLOT, new ItemBuilder(Material.WRITTEN_BOOK)
-                .setName(Component.text(lang.raw("gui.editor.description_title"), NamedTextColor.YELLOW))
+                .setName(ComponentUtils.parseWithDefault(lang.raw("gui.editor.description_title"), NamedTextColor.YELLOW))
                 .setLore(ItemBuilder.toLoreLines(current.description().isBlank() ? lang.raw("gui.editor.no_description") : current.description()))
                 .build());
 
         setItem(DISEASES_SLOT, new ItemBuilder(Material.ROTTEN_FLESH)
-                .setName(Component.text(lang.raw("item.vaccine.prevents", "diseases", String.join(", ", current.preventsDiseaseIds())), NamedTextColor.GREEN))
+                .setName(ComponentUtils.parseWithDefault(lang.raw("item.vaccine.prevents", "diseases", String.join(", ", current.preventsDiseaseIds())), NamedTextColor.GREEN))
                 .setLore(ItemBuilder.toLoreLines(lang.raw("gui.editor.known_diseases", "diseases",
                         String.join(", ", diseaseManager.getAll().stream().map(d -> d.id()).toList()))
                         + "\n" + lang.raw("gui.editor.prompt_disease_ids"))).build());
 
         setItem(RISK_REDUCTION_SLOT, new ItemBuilder(Material.SHIELD)
-                .setName(Component.text(lang.raw("gui.vaccine.editor.risk_reduction_line", "value", String.format(Locale.ROOT, "%.0f", current.riskReduction() * 100)),
-                        NamedTextColor.AQUA))
-                .setLore(Component.text(lang.raw("gui.editor.step10pct_hint"), NamedTextColor.GRAY)).build());
+                .setName(ComponentUtils.parseWithDefault(lang.raw("gui.vaccine.editor.risk_reduction_line", "value", String.format(Locale.ROOT, "%.0f", current.riskReduction() * 100)), NamedTextColor.AQUA))
+                .setLore(ComponentUtils.parseWithDefault(lang.raw("gui.editor.step10pct_hint"), NamedTextColor.GRAY)).build());
 
         setItem(DURATION_SLOT, new ItemBuilder(Material.CLOCK)
-                .setName(Component.text(current.isPermanent() ? lang.raw("gui.vaccine.editor.duration_permanent")
+                .setName(ComponentUtils.parseWithDefault(current.isPermanent() ? lang.raw("gui.vaccine.editor.duration_permanent")
                         : lang.raw("gui.vaccine.editor.duration_line", "ticks", current.immunityDurationTicks()), NamedTextColor.WHITE))
-                .setLore(Component.text(lang.raw("gui.vaccine.editor.duration_hint"), NamedTextColor.GRAY))
+                .setLore(ComponentUtils.parseWithDefault(lang.raw("gui.vaccine.editor.duration_hint"), NamedTextColor.GRAY))
                 .build());
 
         setItem(GIVE_SLOT, new ItemBuilder(Material.CHEST)
-                .setName(Component.text(lang.raw("gui.editor.give_one_female"), NamedTextColor.GREEN)).build());
+                .setName(ComponentUtils.parseWithDefault(lang.raw("gui.editor.give_one_female"), NamedTextColor.GREEN)).build());
 
         setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back")));
     }

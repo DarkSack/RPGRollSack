@@ -12,7 +12,18 @@ prompt:
   cancelled: "&cCancelled."
 
 admin:
-  usage: "&eUsage: /trapadmin <create|edit|browser|reload|place|remove|list|info|forcetrigger|turret> [args]"
+  usage: |-
+    &eUsage: /trapadmin
+    &7 • &fcreate
+    &7 • &fedit
+    &7 • &fbrowser
+    &7 • &freload
+    &7 • &fplace
+    &7 • &fremove
+    &7 • &flist
+    &7 • &finfo
+    &7 • &fforcetrigger
+    &7 • &fturret
   trap_not_found: "&cThere is no trap '{id}'."
   must_look_at_block: "&cYou need to be looking at a block."
   create:

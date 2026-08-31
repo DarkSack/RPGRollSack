@@ -1,5 +1,7 @@
 package com.sack.rpgroll.crafting.gui;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.crafting.ingredient.IngredientSpec;
 import com.sack.rpgroll.crafting.ingredient.IngredientType;
 import com.sack.rpgroll.crafting.loom.LoomRecipeDefinition;
@@ -32,7 +34,7 @@ public class LoomRecipeBrowserGUI extends InventoryGUI {
 
     public LoomRecipeBrowserGUI(Player player, LoomRecipeManager recipeManager, ChatPromptManager chatPromptManager,
             Runnable onBack) {
-        super(player, Component.text(chatPromptManager.lang().raw("gui.loom_recipe.browser_title"), NamedTextColor.GOLD), SIZE);
+        super(player, ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.loom_recipe.browser_title"), NamedTextColor.GOLD), SIZE);
         this.recipeManager = recipeManager;
         this.chatPromptManager = chatPromptManager;
         this.onBack = onBack;
@@ -54,15 +56,15 @@ public class LoomRecipeBrowserGUI extends InventoryGUI {
 
             setItem(i, new ItemBuilder(Material.LOOM)
                     .setName(Component.text(recipe.id(), NamedTextColor.YELLOW))
-                    .setLore(Component.text(chatPromptManager.lang().raw("gui.loom_recipe.banner_lore", "value", recipe.bannerIngredient().value()), NamedTextColor.GRAY),
-                            Component.text(chatPromptManager.lang().raw("gui.loom_recipe.dye_lore", "value", recipe.dyeIngredient().value()), NamedTextColor.GRAY),
-                            Component.text(chatPromptManager.lang().raw("gui.loom_recipe.result_lore", "value", recipe.result().value()), NamedTextColor.AQUA),
-                            Component.text(chatPromptManager.lang().raw("gui.common.click_edit"), NamedTextColor.YELLOW))
+                    .setLore(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.loom_recipe.banner_lore", "value", recipe.bannerIngredient().value()), NamedTextColor.GRAY),
+                            ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.loom_recipe.dye_lore", "value", recipe.dyeIngredient().value()), NamedTextColor.GRAY),
+                            ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.loom_recipe.result_lore", "value", recipe.result().value()), NamedTextColor.AQUA),
+                            ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.common.click_edit"), NamedTextColor.YELLOW))
                     .build());
         }
 
         setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.loom_recipe.create_new"), NamedTextColor.GREEN)).build());
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.loom_recipe.create_new"), NamedTextColor.GREEN)).build());
         setItem(BACK_SLOT, ItemBuilder.createCancelButton(chatPromptManager.lang().raw("gui.common.back")));
     }
 
@@ -93,7 +95,7 @@ public class LoomRecipeBrowserGUI extends InventoryGUI {
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 
             if (recipeManager.exists(id)) {
-                player.sendMessage(Component.text(chatPromptManager.lang().raw("gui.loom_recipe.already_exists"), NamedTextColor.RED));
+                player.sendMessage(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.loom_recipe.already_exists"), NamedTextColor.RED));
                 reopen();
                 return;
             }

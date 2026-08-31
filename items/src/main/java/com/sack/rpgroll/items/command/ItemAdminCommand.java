@@ -1,5 +1,7 @@
 package com.sack.rpgroll.items.command;
 
+import com.sack.rpgroll.common.command.Senders;
+
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.items.core.ItemDefinition;
 import com.sack.rpgroll.items.core.ItemFactory;
@@ -96,7 +98,7 @@ public class ItemAdminCommand implements CommandExecutor, TabCompleter {
 
     private void handleCreate(CommandSender sender, String[] args) {
 
-        if (!(sender instanceof Player player)) {
+        if (!(Senders.asPlayer(sender) instanceof Player player)) {
             lang().send(sender, "command.itemadmin.create.player_only");
             return;
         }
@@ -207,7 +209,7 @@ public class ItemAdminCommand implements CommandExecutor, TabCompleter {
 
     private void handleBrowser(CommandSender sender) {
 
-        if (!(sender instanceof Player player)) {
+        if (!(Senders.asPlayer(sender) instanceof Player player)) {
             lang().send(sender, "command.itemadmin.player_only");
             return;
         }
@@ -218,7 +220,7 @@ public class ItemAdminCommand implements CommandExecutor, TabCompleter {
 
     private void handleEditor(CommandSender sender, String[] args) {
 
-        if (!(sender instanceof Player player)) {
+        if (!(Senders.asPlayer(sender) instanceof Player player)) {
             lang().send(sender, "command.itemadmin.player_only");
             return;
         }

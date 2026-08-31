@@ -31,7 +31,7 @@ public class CurrencyBrowserGUI extends InventoryGUI {
 
     public CurrencyBrowserGUI(Player player, CurrencyManager currencyManager, ChatPromptManager chatPromptManager,
             Runnable onBack) {
-        super(player, Component.text(chatPromptManager.lang().raw("currency.browser.title"), NamedTextColor.GOLD), SIZE);
+        super(player, ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("currency.browser.title"), NamedTextColor.GOLD), SIZE);
         this.currencyManager = currencyManager;
         this.chatPromptManager = chatPromptManager;
         this.onBack = onBack;

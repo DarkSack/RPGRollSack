@@ -1,5 +1,7 @@
 package com.sack.rpgroll.fishing.command;
 
+import com.sack.rpgroll.common.command.Senders;
+
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.fishing.FishingPlugin;
 import com.sack.rpgroll.fishing.core.BaitManager;
@@ -85,7 +87,7 @@ public class FishingAdminCommand implements CommandExecutor, TabCompleter {
 
     private void handleBrowser(CommandSender sender) {
 
-        if (!(sender instanceof Player player)) {
+        if (!(Senders.asPlayer(sender) instanceof Player player)) {
             lang.send(sender, "command.admin.players_only_studio");
             return;
         }
@@ -113,7 +115,12 @@ public class FishingAdminCommand implements CommandExecutor, TabCompleter {
 
     private void handleGiveRod(CommandSender sender, String[] args) {
 
-        if (!(sender instanceof Player player) || args.length < 2) {
+        if (!(Senders.asPlayer(sender) instanceof Player player)) {
+            lang.send(sender, "command.admin.players_only");
+            return;
+        }
+
+        if (args.length < 2) {
             lang.send(sender, "command.admin.giverod_usage");
             return;
         }
@@ -131,7 +138,12 @@ public class FishingAdminCommand implements CommandExecutor, TabCompleter {
 
     private void handleGiveBait(CommandSender sender, String[] args) {
 
-        if (!(sender instanceof Player player) || args.length < 2) {
+        if (!(Senders.asPlayer(sender) instanceof Player player)) {
+            lang.send(sender, "command.admin.players_only");
+            return;
+        }
+
+        if (args.length < 2) {
             lang.send(sender, "command.admin.givebait_usage");
             return;
         }

@@ -1,5 +1,7 @@
 package com.sack.rpgroll.guilds.gui.guild;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.guilds.gui.PaginatedGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.guilds.guild.Guild;
@@ -57,8 +59,8 @@ public class GuildDiplomacyGUI extends PaginatedGUI {
 
         setItem(contentSlot, new ItemBuilder(other.icon())
                 .setName(Component.text(other.name() + " — " + status, statusColor(status)))
-                .setLore(Component.text(lang().raw("guild.diplomacy.level", "level", other.level()), NamedTextColor.GRAY),
-                        Component.text(lang().raw("guild.diplomacy.click_change"), NamedTextColor.YELLOW))
+                .setLore(ComponentUtils.parseWithDefault(lang().raw("guild.diplomacy.level", "level", other.level()), NamedTextColor.GRAY),
+                        ComponentUtils.parseWithDefault(lang().raw("guild.diplomacy.click_change"), NamedTextColor.YELLOW))
                 .build());
     }
 
@@ -78,12 +80,10 @@ public class GuildDiplomacyGUI extends PaginatedGUI {
         setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang().raw("common.back")));
 
         setItem(45, hasPreviousPage()
-                ? new ItemBuilder(Material.ARROW).setName(Component.text(lang().raw("common.previous_page"),
-                        NamedTextColor.YELLOW)).build()
+                ? new ItemBuilder(Material.ARROW).setName(ComponentUtils.parseWithDefault(lang().raw("common.previous_page"), NamedTextColor.YELLOW)).build()
                 : ItemBuilder.createFiller());
         setItem(53 - 1, hasNextPage()
-                ? new ItemBuilder(Material.ARROW).setName(Component.text(lang().raw("common.next_page"),
-                        NamedTextColor.YELLOW)).build()
+                ? new ItemBuilder(Material.ARROW).setName(ComponentUtils.parseWithDefault(lang().raw("common.next_page"), NamedTextColor.YELLOW)).build()
                 : ItemBuilder.createFiller());
     }
 

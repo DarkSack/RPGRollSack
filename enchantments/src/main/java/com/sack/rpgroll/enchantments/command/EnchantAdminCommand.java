@@ -1,5 +1,7 @@
 package com.sack.rpgroll.enchantments.command;
 
+import com.sack.rpgroll.common.command.Senders;
+
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.enchantments.core.CustomEnchantment;
 import com.sack.rpgroll.enchantments.core.EnchantmentManager;
@@ -111,14 +113,14 @@ public class EnchantAdminCommand implements CommandExecutor, TabCompleter {
 
     private void handleBrowser(CommandSender sender) {
 
-        if (sender instanceof Player player) {
+        if (Senders.asPlayer(sender) instanceof Player player) {
             new EnchantmentBrowserGUI(player, manager, chatPromptManager).open();
         }
     }
 
     private void handleApply(CommandSender sender, String[] args) {
 
-        if (!(sender instanceof Player player)) {
+        if (!(Senders.asPlayer(sender) instanceof Player player)) {
             lang.send(sender, "enchant_admin_command.player_only");
             return;
         }
@@ -212,7 +214,7 @@ public class EnchantAdminCommand implements CommandExecutor, TabCompleter {
 
     private void handleRemove(CommandSender sender, String[] args) {
 
-        if (!(sender instanceof Player player)) {
+        if (!(Senders.asPlayer(sender) instanceof Player player)) {
             lang.send(sender, "enchant_admin_command.player_only");
             return;
         }

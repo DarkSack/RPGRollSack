@@ -1,5 +1,9 @@
 package com.sack.rpgroll.crafting.command;
 
+import com.sack.rpgroll.common.command.Senders;
+
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.crafting.anvil.AnvilRecipeManager;
 import com.sack.rpgroll.crafting.brewing.BrewRecipeManager;
 import com.sack.rpgroll.crafting.cartography.CartographyRecipeManager;
@@ -86,32 +90,32 @@ public class CraftingAdminCommand implements CommandExecutor, TabCompleter {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
         if (!sender.hasPermission("rpgrollcrafting.admin.*")) {
-            sender.sendMessage(Component.text(lang.raw("common.no_permission"), NamedTextColor.RED));
+            sender.sendMessage(ComponentUtils.parseWithDefault(lang.raw("common.no_permission"), NamedTextColor.RED));
             return true;
         }
 
         if (args.length == 0) {
-            sender.sendMessage(Component.text(lang.raw("command.crafting_admin.usage"), NamedTextColor.YELLOW));
+            sender.sendMessage(ComponentUtils.parseWithDefault(lang.raw("command.crafting_admin.usage"), NamedTextColor.YELLOW));
             return true;
         }
 
         switch (args[0].toLowerCase(Locale.ROOT)) {
             case "browser" -> {
-                if (sender instanceof Player player) {
+                if (Senders.asPlayer(sender) instanceof Player player) {
                     new CraftingStudioHubGUI(player, stationManager, recipeManager, fuelManager, vanillaRecipeManager,
                             anvilRecipeManager, brewRecipeManager, grindstoneRecipeManager, cartographyRecipeManager,
                             loomRecipeManager, villagerTradeManager, vanillaRecipeBridge, chatPromptManager).open();
                 } else {
-                    sender.sendMessage(Component.text(lang.raw("common.players_only_gui"), NamedTextColor.RED));
+                    sender.sendMessage(ComponentUtils.parseWithDefault(lang.raw("common.players_only_gui"), NamedTextColor.RED));
                 }
             }
             case "reload" -> {
                 onReload.run();
-                sender.sendMessage(Component.text(lang.raw("command.crafting_admin.reloaded"), NamedTextColor.GREEN));
+                sender.sendMessage(ComponentUtils.parseWithDefault(lang.raw("command.crafting_admin.reloaded"), NamedTextColor.GREEN));
             }
             case "give" -> handleGive(sender, args);
             case "villager" -> handleVillager(sender, args);
-            default -> sender.sendMessage(Component.text(lang.raw("common.unknown_subcommand"), NamedTextColor.RED));
+            default -> sender.sendMessage(ComponentUtils.parseWithDefault(lang.raw("common.unknown_subcommand"), NamedTextColor.RED));
         }
 
         return true;
@@ -119,71 +123,67 @@ public class CraftingAdminCommand implements CommandExecutor, TabCompleter {
 
     private void handleVillager(CommandSender sender, String[] args) {
 
-        if (!(sender instanceof Player player)) {
-            sender.sendMessage(Component.text(lang.raw("common.players_only"), NamedTextColor.RED));
+        if (!(Senders.asPlayer(sender) instanceof Player player)) {
+            sender.sendMessage(ComponentUtils.parseWithDefault(lang.raw("common.players_only"), NamedTextColor.RED));
             return;
         }
 
         if (args.length < 2) {
-            player.sendMessage(Component.text(lang.raw("command.crafting_admin.villager_usage"), NamedTextColor.YELLOW));
+            player.sendMessage(ComponentUtils.parseWithDefault(lang.raw("command.crafting_admin.villager_usage"), NamedTextColor.YELLOW));
             return;
         }
 
         Entity target = player.getTargetEntity(6);
         if (!(target instanceof AbstractVillager villager)) {
-            player.sendMessage(Component.text(lang.raw("command.crafting_admin.villager_target_required"), NamedTextColor.RED));
+            player.sendMessage(ComponentUtils.parseWithDefault(lang.raw("command.crafting_admin.villager_target_required"), NamedTextColor.RED));
             return;
         }
 
         switch (args[1].toLowerCase(Locale.ROOT)) {
             case "bind" -> {
                 if (args.length < 3) {
-                    player.sendMessage(Component.text(lang.raw("command.crafting_admin.villager_bind_usage"), NamedTextColor.YELLOW));
+                    player.sendMessage(ComponentUtils.parseWithDefault(lang.raw("command.crafting_admin.villager_bind_usage"), NamedTextColor.YELLOW));
                     return;
                 }
                 Set<String> ids = new LinkedHashSet<>(Arrays.asList(args[2].split(",")));
                 ids.removeIf(id -> villagerTradeManager.get(id).isEmpty());
                 if (ids.isEmpty()) {
-                    player.sendMessage(Component.text(lang.raw("command.crafting_admin.villager_bind_no_valid_ids"), NamedTextColor.RED));
+                    player.sendMessage(ComponentUtils.parseWithDefault(lang.raw("command.crafting_admin.villager_bind_no_valid_ids"), NamedTextColor.RED));
                     return;
                 }
                 VillagerBinding.bind(plugin, villager, ids);
-                player.sendMessage(Component.text(
-                        lang.raw("command.crafting_admin.villager_bind_success", "ids", String.join(", ", ids)),
-                        NamedTextColor.GREEN));
+                player.sendMessage(ComponentUtils.parseWithDefault(
+                        lang.raw("command.crafting_admin.villager_bind_success", "ids", String.join(", ", ids)), NamedTextColor.GREEN));
             }
             case "unbind" -> {
                 VillagerBinding.unbind(plugin, villager);
-                player.sendMessage(Component.text(lang.raw("command.crafting_admin.villager_unbind_success"),
-                        NamedTextColor.GREEN));
+                player.sendMessage(ComponentUtils.parseWithDefault(lang.raw("command.crafting_admin.villager_unbind_success"), NamedTextColor.GREEN));
             }
-            default -> player.sendMessage(Component.text(lang.raw("common.unknown_subcommand"), NamedTextColor.RED));
+            default -> player.sendMessage(ComponentUtils.parseWithDefault(lang.raw("common.unknown_subcommand"), NamedTextColor.RED));
         }
     }
 
     private void handleGive(CommandSender sender, String[] args) {
 
         if (args.length < 3) {
-            sender.sendMessage(Component.text(lang.raw("command.crafting_admin.give_usage"),
-                    NamedTextColor.YELLOW));
+            sender.sendMessage(ComponentUtils.parseWithDefault(lang.raw("command.crafting_admin.give_usage"), NamedTextColor.YELLOW));
             return;
         }
 
         Player target = Bukkit.getPlayerExact(args[1]);
         if (target == null) {
-            sender.sendMessage(Component.text(lang.raw("common.player_not_found"), NamedTextColor.RED));
+            sender.sendMessage(ComponentUtils.parseWithDefault(lang.raw("common.player_not_found"), NamedTextColor.RED));
             return;
         }
 
         ItemStack item = ItemsBridge.createItem(args[2]).orElse(null);
         if (item == null) {
-            sender.sendMessage(Component.text(lang.raw("command.crafting_admin.give_item_failed"),
-                    NamedTextColor.RED));
+            sender.sendMessage(ComponentUtils.parseWithDefault(lang.raw("command.crafting_admin.give_item_failed"), NamedTextColor.RED));
             return;
         }
 
         target.getInventory().addItem(item);
-        sender.sendMessage(Component.text(lang.raw("command.crafting_admin.give_success"), NamedTextColor.GREEN));
+        sender.sendMessage(ComponentUtils.parseWithDefault(lang.raw("command.crafting_admin.give_success"), NamedTextColor.GREEN));
     }
 
     @Override

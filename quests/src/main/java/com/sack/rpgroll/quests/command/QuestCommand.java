@@ -1,5 +1,7 @@
 package com.sack.rpgroll.quests.command;
 
+import com.sack.rpgroll.common.command.Senders;
+
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.quests.core.Quest;
 import com.sack.rpgroll.quests.engine.QuestEngine;
@@ -40,7 +42,7 @@ public class QuestCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
-        if (!(sender instanceof Player player)) {
+        if (!(Senders.asPlayer(sender) instanceof Player player)) {
             lang.send(sender, "general.player_only");
             return true;
         }

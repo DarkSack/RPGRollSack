@@ -4,6 +4,7 @@ common:
 
 command:
   admin:
+    players_only: "&cSolo un jugador puede recibir esto — usalo desde el juego."
     players_only_studio: "&cSolo jugadores pueden abrir el Magic Studio."
     usage: "&cUso: /magicadmin <browser|reload|givecatalyst <id>|givegrimoire <id>>"
     usage_givecatalyst: "&cUso: /magicadmin givecatalyst <id>"

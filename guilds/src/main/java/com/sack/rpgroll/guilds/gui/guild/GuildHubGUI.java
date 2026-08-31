@@ -55,8 +55,7 @@ public class GuildHubGUI extends InventoryGUI {
         setItem(4, new ItemBuilder(guild.icon())
                 .setName(Component.text(guild.name() + " — " + lang().raw("guild.hub.level_suffix", "level",
                         guild.level()), guild.color()))
-                .setLore(Component.text(lang().raw("guild.hub.member_count", "count", guild.memberCount()),
-                        NamedTextColor.GRAY),
+                .setLore(ComponentUtils.parseWithDefault(lang().raw("guild.hub.member_count", "count", guild.memberCount()), NamedTextColor.GRAY),
                         Component.text(guild.motto(), NamedTextColor.GRAY))
                 .build());
 
@@ -76,7 +75,7 @@ public class GuildHubGUI extends InventoryGUI {
                 NamedTextColor.WHITE));
 
         setItem(DISBAND_SLOT, new ItemBuilder(Material.REDSTONE_BLOCK)
-                .setName(Component.text(lang().raw("guild.hub.button.disband_leave"), NamedTextColor.RED))
+                .setName(ComponentUtils.parseWithDefault(lang().raw("guild.hub.button.disband_leave"), NamedTextColor.RED))
                 .build());
 
         setItem(CLOSE_SLOT, ItemBuilder.createCancelButton(lang().raw("common.close")));

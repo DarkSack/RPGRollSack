@@ -1,5 +1,7 @@
 package com.sack.rpgroll.chat.command;
 
+import com.sack.rpgroll.common.command.Senders;
+
 import com.sack.rpgroll.chat.channel.ChannelManager;
 import com.sack.rpgroll.chat.channel.ChatChannel;
 import com.sack.rpgroll.chat.player.PlayerChannelState;
@@ -38,7 +40,7 @@ public class ChannelCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
-        if (!(sender instanceof Player player)) {
+        if (!(Senders.asPlayer(sender) instanceof Player player)) {
             lang.send(sender, "common.players_only");
             return true;
         }

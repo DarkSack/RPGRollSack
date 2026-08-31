@@ -1,5 +1,9 @@
 package com.sack.rpgroll.ranching.command;
 
+import com.sack.rpgroll.common.command.Senders;
+
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.ranching.core.animal.AnimalManager;
 import com.sack.rpgroll.ranching.core.breeds.BreedManager;
 import com.sack.rpgroll.ranching.core.species.SpeciesManager;
@@ -38,13 +42,13 @@ public class RanchingCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
-        if (!(sender instanceof Player player)) {
+        if (!(Senders.asPlayer(sender) instanceof Player player)) {
             sender.sendMessage(chatPromptManager.lang().raw("command.player_only"));
             return true;
         }
 
         if (args.length < 1 || !args[0].equalsIgnoreCase("inspect")) {
-            player.sendMessage(Component.text(chatPromptManager.lang().raw("command.ranching.usage_inspect"), NamedTextColor.RED));
+            player.sendMessage(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("command.ranching.usage_inspect"), NamedTextColor.RED));
             return true;
         }
 
@@ -52,7 +56,7 @@ public class RanchingCommand implements CommandExecutor, TabCompleter {
         var animal = target != null ? animalManager.resolve(target) : java.util.Optional.<com.sack.rpgroll.ranching.core.animal.Animal>empty();
 
         if (animal.isEmpty()) {
-            player.sendMessage(Component.text(chatPromptManager.lang().raw("command.ranching.look_at_animal"), NamedTextColor.RED));
+            player.sendMessage(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("command.ranching.look_at_animal"), NamedTextColor.RED));
             return true;
         }
 

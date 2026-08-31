@@ -31,7 +31,7 @@ public class VillagerTradeBrowserGUI extends InventoryGUI {
 
     public VillagerTradeBrowserGUI(Player player, VillagerTradeManager tradeManager, ChatPromptManager chatPromptManager,
             Runnable onBack) {
-        super(player, Component.text(chatPromptManager.lang().raw("gui.villager_trade.browser_title"), NamedTextColor.GOLD), SIZE);
+        super(player, ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.villager_trade.browser_title"), NamedTextColor.GOLD), SIZE);
         this.tradeManager = tradeManager;
         this.chatPromptManager = chatPromptManager;
         this.onBack = onBack;
@@ -53,15 +53,15 @@ public class VillagerTradeBrowserGUI extends InventoryGUI {
 
             setItem(i, new ItemBuilder(CustomStationBrowserGUI.parseMaterial(trade.icon()))
                     .setName(ComponentUtils.parse(trade.displayName()))
-                    .setLore(Component.text(chatPromptManager.lang().raw("gui.common.id_lore", "id", trade.id()), NamedTextColor.GRAY),
-                            Component.text(chatPromptManager.lang().raw("gui.villager_trade.cost_lore", "value", trade.costs().get(0).value()), NamedTextColor.GRAY),
-                            Component.text(chatPromptManager.lang().raw("gui.villager_trade.result_lore", "value", trade.result().value()), NamedTextColor.AQUA),
-                            Component.text(chatPromptManager.lang().raw("gui.common.click_edit"), NamedTextColor.YELLOW))
+                    .setLore(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.common.id_lore", "id", trade.id()), NamedTextColor.GRAY),
+                            ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.villager_trade.cost_lore", "value", trade.costs().get(0).value()), NamedTextColor.GRAY),
+                            ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.villager_trade.result_lore", "value", trade.result().value()), NamedTextColor.AQUA),
+                            ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.common.click_edit"), NamedTextColor.YELLOW))
                     .build());
         }
 
         setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.villager_trade.create_new"), NamedTextColor.GREEN)).build());
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.villager_trade.create_new"), NamedTextColor.GREEN)).build());
         setItem(BACK_SLOT, ItemBuilder.createCancelButton(chatPromptManager.lang().raw("gui.common.back")));
     }
 
@@ -92,7 +92,7 @@ public class VillagerTradeBrowserGUI extends InventoryGUI {
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 
             if (tradeManager.exists(id)) {
-                player.sendMessage(Component.text(chatPromptManager.lang().raw("gui.villager_trade.already_exists"), NamedTextColor.RED));
+                player.sendMessage(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.villager_trade.already_exists"), NamedTextColor.RED));
                 reopen();
                 return;
             }

@@ -10,7 +10,15 @@ chat_prompt_manager:
 # /renchant command (admin)
 enchant_admin_command:
   no_permission: "&cYou don't have permission to use this command."
-  usage: "&cUsage: /renchant <apply|remove|give|list|info|reload|browser> [args]"
+  usage: |-
+    &cUsage: /renchant
+    &7 • &fapply
+    &7 • &fremove
+    &7 • &fgive
+    &7 • &flist
+    &7 • &finfo
+    &7 • &freload
+    &7 • &fbrowser
   player_only: "&cOnly a player can use this."
   apply_usage: "&cUsage: /renchant apply <id> <level>"
   give_usage: "&cUsage: /renchant give <player> <id> <level> — gives a book (combine on an anvil to apply)"

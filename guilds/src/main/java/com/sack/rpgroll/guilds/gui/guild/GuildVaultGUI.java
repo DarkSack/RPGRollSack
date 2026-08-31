@@ -1,5 +1,7 @@
 package com.sack.rpgroll.guilds.gui.guild;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.guilds.gui.ChatPromptManager;
@@ -70,22 +72,21 @@ public class GuildVaultGUI extends InventoryGUI {
         }
 
         setItem(DEPOSIT_MONEY_SLOT, new ItemBuilder(Material.GOLD_INGOT)
-                .setName(Component.text(lang().raw("guild.vault.button.deposit"), NamedTextColor.GREEN))
+                .setName(ComponentUtils.parseWithDefault(lang().raw("guild.vault.button.deposit"), NamedTextColor.GREEN))
                 .build());
 
         setItem(WITHDRAW_MONEY_SLOT, new ItemBuilder(Material.GOLD_NUGGET)
-                .setName(Component.text(lang().raw("guild.vault.button.withdraw"), NamedTextColor.YELLOW))
-                .setLore(Component.text(lang().raw("guild.vault.lore.requires_bank_permission"), NamedTextColor.GRAY))
+                .setName(ComponentUtils.parseWithDefault(lang().raw("guild.vault.button.withdraw"), NamedTextColor.YELLOW))
+                .setLore(ComponentUtils.parseWithDefault(lang().raw("guild.vault.lore.requires_bank_permission"), NamedTextColor.GRAY))
                 .build());
 
         setItem(LOG_SLOT, new ItemBuilder(Material.WRITTEN_BOOK)
-                .setName(Component.text(lang().raw("guild.vault.button.log"), NamedTextColor.AQUA))
+                .setName(ComponentUtils.parseWithDefault(lang().raw("guild.vault.button.log"), NamedTextColor.AQUA))
                 .build());
 
         setItem(BALANCE_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text(lang().raw("guild.vault.balance", "amount", guild.vault().balance()),
-                        NamedTextColor.GREEN))
-                .setLore(Component.text(lang().raw("guild.vault.storage_slots", "count", slots()), NamedTextColor.GRAY))
+                .setName(ComponentUtils.parseWithDefault(lang().raw("guild.vault.balance", "amount", guild.vault().balance()), NamedTextColor.GREEN))
+                .setLore(ComponentUtils.parseWithDefault(lang().raw("guild.vault.storage_slots", "count", slots()), NamedTextColor.GRAY))
                 .build());
 
         setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang().raw("common.back")));

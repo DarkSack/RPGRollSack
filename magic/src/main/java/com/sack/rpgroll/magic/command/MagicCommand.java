@@ -1,5 +1,7 @@
 package com.sack.rpgroll.magic.command;
 
+import com.sack.rpgroll.common.command.Senders;
+
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.magic.core.RuneManager;
 import com.sack.rpgroll.magic.core.Spell;
@@ -54,7 +56,7 @@ public class MagicCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
-        if (!(sender instanceof Player player)) {
+        if (!(Senders.asPlayer(sender) instanceof Player player)) {
             lang.send(sender, "common.players_only");
             return true;
         }
@@ -154,7 +156,7 @@ public class MagicCommand implements CommandExecutor, TabCompleter {
         }
 
         if (args.length == 2 && List.of("select", "cast").contains(args[0].toLowerCase(Locale.ROOT))
-                && sender instanceof Player player) {
+                && Senders.asPlayer(sender) instanceof Player player) {
             return TabCompleteUtil.filter(args[1], spellbookManager.getOrLoad(player).allLearned());
         }
 

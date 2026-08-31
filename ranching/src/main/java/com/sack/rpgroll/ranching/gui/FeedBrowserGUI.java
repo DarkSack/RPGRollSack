@@ -30,7 +30,7 @@ public class FeedBrowserGUI extends InventoryGUI {
     private List<Feed> feeds;
 
     public FeedBrowserGUI(Player player, FeedManager feedManager, ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text(chatPromptManager.lang().raw("gui.hub.feeds"), NamedTextColor.GOLD), SIZE);
+        super(player, ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.hub.feeds"), NamedTextColor.GOLD), SIZE);
         this.feedManager = feedManager;
         this.chatPromptManager = chatPromptManager;
         this.onBack = onBack;
@@ -52,14 +52,14 @@ public class FeedBrowserGUI extends InventoryGUI {
 
             setItem(i, new ItemBuilder(SpeciesBrowserGUI.parseMaterial(feed.icon(), Material.WHEAT))
                     .setName(ComponentUtils.parse(feed.displayName()))
-                    .setLore(Component.text(chatPromptManager.lang().raw("gui.browser.id_line", "id", feed.id()), NamedTextColor.GRAY),
-                            Component.text(chatPromptManager.lang().raw("gui.feed.browser.quality_line", "quality", feed.quality()), NamedTextColor.GRAY),
-                            Component.text(chatPromptManager.lang().raw("gui.common.click_to_edit"), NamedTextColor.YELLOW))
+                    .setLore(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.browser.id_line", "id", feed.id()), NamedTextColor.GRAY),
+                            ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.feed.browser.quality_line", "quality", feed.quality()), NamedTextColor.GRAY),
+                            ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.common.click_to_edit"), NamedTextColor.YELLOW))
                     .build());
         }
 
         setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.feed.browser.new"), NamedTextColor.GREEN)).build());
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.feed.browser.new"), NamedTextColor.GREEN)).build());
         setItem(BACK_SLOT, ItemBuilder.createCancelButton(chatPromptManager.lang().raw("gui.common.back")));
     }
 
@@ -90,7 +90,7 @@ public class FeedBrowserGUI extends InventoryGUI {
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 
             if (feedManager.exists(id)) {
-                player.sendMessage(Component.text(chatPromptManager.lang().raw("gui.feed.browser.already_exists"), NamedTextColor.RED));
+                player.sendMessage(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.feed.browser.already_exists"), NamedTextColor.RED));
                 reopen();
                 return;
             }

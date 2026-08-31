@@ -9,6 +9,7 @@ import com.sack.rpgroll.traps.registry.TrapActionRegistry;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.entity.Display;
@@ -84,18 +85,27 @@ public class TurretEngine {
             }
 
             TurretRuntimeState state = runtime.computeIfAbsent(placed.placementId(), id -> new TurretRuntimeState());
+            ensureBaseBlock(anchor, definition);
             ItemDisplay visual = ensureVisual(placed, definition, state, anchor);
 
             LivingEntity target = findTarget(anchor, definition);
 
             if (target == null) {
                 state.targetEntity = null;
+
+                // Sin objetivo gira sobre sí misma: se ve a simple vista que
+                // está buscando y no apagada.
+                if (definition.spinDegreesPerTick() > 0) {
+                    state.idleYaw = (float) ((state.idleYaw + definition.spinDegreesPerTick()) % 360.0);
+                    visual.setRotation(state.idleYaw, 0);
+                }
+
                 continue;
             }
 
             state.targetEntity = target.getUniqueId();
 
-            Location eye = anchor.clone().add(0, 0.3, 0);
+            Location eye = hoverLocation(anchor, definition);
             Vector direction = target.getLocation().add(0, target.getHeight() / 2.0, 0).toVector()
                     .subtract(eye.toVector()).normalize();
 
@@ -183,13 +193,37 @@ public class TurretEngine {
             }
         }
 
-        ItemDisplay display = anchor.getWorld().spawn(anchor, ItemDisplay.class);
+        ItemDisplay display = anchor.getWorld().spawn(hoverLocation(anchor, definition), ItemDisplay.class);
         display.getPersistentDataContainer().set(placementKey, PersistentDataType.STRING, placed.placementId());
         display.setBillboard(Display.Billboard.FIXED);
         display.setItemStack(buildModel(definition));
 
         state.visualEntity = display.getUniqueId();
         return display;
+    }
+
+    /** Posición del ítem flotante: centrado sobre el bloque base. */
+    private Location hoverLocation(Location anchor, TurretDefinition definition) {
+        return anchor.clone().add(0.5, definition.hoverHeight(), 0.5);
+    }
+
+    /**
+     * Coloca el bloque base si la definición lo pide y todavía no está.
+     * <p>
+     * Se comprueba el material actual antes de escribir para no ensuciar el
+     * mundo en cada tick ni pisar un bloque que el admin haya cambiado a mano.
+     */
+    private void ensureBaseBlock(Location anchor, TurretDefinition definition) {
+
+        Material base = definition.baseBlock();
+
+        if (base == null) {
+            return;
+        }
+
+        if (anchor.getBlock().getType() != base) {
+            anchor.getBlock().setType(base);
+        }
     }
 
     private ItemStack buildModel(TurretDefinition definition) {

@@ -1,5 +1,7 @@
 package com.sack.rpgroll.magic.command;
 
+import com.sack.rpgroll.common.command.Senders;
+
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.magic.core.CatalystManager;
 import com.sack.rpgroll.magic.core.GrimoireManager;
@@ -79,7 +81,7 @@ public class MagicAdminCommand implements CommandExecutor, TabCompleter {
 
     private void handleBrowser(CommandSender sender) {
 
-        if (!(sender instanceof Player player)) {
+        if (!(Senders.asPlayer(sender) instanceof Player player)) {
             lang.send(sender, "command.admin.players_only_studio");
             return;
         }
@@ -106,7 +108,12 @@ public class MagicAdminCommand implements CommandExecutor, TabCompleter {
 
     private void handleGiveCatalyst(CommandSender sender, String[] args) {
 
-        if (!(sender instanceof Player player) || args.length < 2) {
+        if (!(Senders.asPlayer(sender) instanceof Player player)) {
+            lang.send(sender, "command.admin.players_only");
+            return;
+        }
+
+        if (args.length < 2) {
             lang.send(sender, "command.admin.usage_givecatalyst");
             return;
         }
@@ -124,7 +131,12 @@ public class MagicAdminCommand implements CommandExecutor, TabCompleter {
 
     private void handleGiveGrimoire(CommandSender sender, String[] args) {
 
-        if (!(sender instanceof Player player) || args.length < 2) {
+        if (!(Senders.asPlayer(sender) instanceof Player player)) {
+            lang.send(sender, "command.admin.players_only");
+            return;
+        }
+
+        if (args.length < 2) {
             lang.send(sender, "command.admin.usage_givegrimoire");
             return;
         }

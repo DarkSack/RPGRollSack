@@ -1,5 +1,7 @@
 package com.sack.rpgroll.ranching.gui;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.ranching.core.animal.Animal;
@@ -38,7 +40,7 @@ public class AnimalDetailGUI extends InventoryGUI {
 
     public AnimalDetailGUI(Player player, Animal animal, SpeciesManager speciesManager, BreedManager breedManager,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text(chatPromptManager.lang().raw("gui.animal.detail_title",
+        super(player, ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.animal.detail_title",
                 "id", animal.id().toString().substring(0, 8)), NamedTextColor.GOLD), SIZE);
         this.animal = animal;
         this.speciesManager = speciesManager;
@@ -64,7 +66,7 @@ public class AnimalDetailGUI extends InventoryGUI {
         setItem(IDENTITY_SLOT, new ItemBuilder(species != null
                 ? SpeciesBrowserGUI.parseMaterial(species.icon(), Material.COW_SPAWN_EGG)
                 : Material.BARRIER)
-                .setName(Component.text(lang.raw("gui.animal.detail.identity_title"), NamedTextColor.GOLD))
+                .setName(ComponentUtils.parseWithDefault(lang.raw("gui.animal.detail.identity_title"), NamedTextColor.GOLD))
                 .setLore(ItemBuilder.toLoreLines(
                         lang.raw("gui.animal.detail.species", "species", species != null ? species.displayName() : animal.speciesId()) + "\n"
                                 + lang.raw("gui.animal.detail.breed", "breed", breed != null ? breed.displayName() : lang.raw("gui.animal.detail.no_breed")) + "\n"
@@ -79,17 +81,17 @@ public class AnimalDetailGUI extends InventoryGUI {
                 .build());
 
         setItem(GENETICS_SLOT, new ItemBuilder(Material.NETHER_STAR)
-                .setName(Component.text(lang.raw("gui.animal.detail.genetics_title"), NamedTextColor.LIGHT_PURPLE))
+                .setName(ComponentUtils.parseWithDefault(lang.raw("gui.animal.detail.genetics_title"), NamedTextColor.LIGHT_PURPLE))
                 .setLore(ItemBuilder.toLoreLines(formatPhenotype()))
                 .build());
 
         setItem(LINEAGE_SLOT, new ItemBuilder(Material.BOOK)
-                .setName(Component.text(lang.raw("gui.animal.detail.lineage_title"), NamedTextColor.AQUA))
+                .setName(ComponentUtils.parseWithDefault(lang.raw("gui.animal.detail.lineage_title"), NamedTextColor.AQUA))
                 .setLore(ItemBuilder.toLoreLines(formatLineage()))
                 .build());
 
         setItem(STATUS_SLOT, new ItemBuilder(Material.GOLDEN_APPLE)
-                .setName(Component.text(lang.raw("gui.animal.detail.status_title"), NamedTextColor.GREEN))
+                .setName(ComponentUtils.parseWithDefault(lang.raw("gui.animal.detail.status_title"), NamedTextColor.GREEN))
                 .setLore(ItemBuilder.toLoreLines(
                         lang.raw("gui.animal.detail.health_line", "health", String.format(Locale.ROOT, "%.0f", animal.health())) + "\n"
                                 + lang.raw("gui.animal.detail.happiness_line", "happiness", String.format(Locale.ROOT, "%.0f", animal.happiness())) + "\n"

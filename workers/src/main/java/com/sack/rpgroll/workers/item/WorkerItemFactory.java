@@ -1,5 +1,7 @@
 package com.sack.rpgroll.workers.item;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 
@@ -19,10 +21,10 @@ public final class WorkerItemFactory {
     public static ItemStack createWarehouseDesignator(LangManager lang) {
 
         ItemStack item = new ItemBuilder(Material.STICK)
-                .setName(Component.text(lang.raw("item.warehouse_designator.name"), NamedTextColor.GOLD))
+                .setName(ComponentUtils.parseWithDefault(lang.raw("item.warehouse_designator.name"), NamedTextColor.GOLD))
                 .setLore(
-                        Component.text(lang.raw("item.warehouse_designator.lore1"), NamedTextColor.GRAY),
-                        Component.text(lang.raw("item.warehouse_designator.lore2"), NamedTextColor.GRAY))
+                        ComponentUtils.parseWithDefault(lang.raw("item.warehouse_designator.lore1"), NamedTextColor.GRAY),
+                        ComponentUtils.parseWithDefault(lang.raw("item.warehouse_designator.lore2"), NamedTextColor.GRAY))
                 .build();
 
         ItemMeta meta = item.getItemMeta();

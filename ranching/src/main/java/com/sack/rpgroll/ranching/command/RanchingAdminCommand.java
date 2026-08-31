@@ -1,5 +1,7 @@
 package com.sack.rpgroll.ranching.command;
 
+import com.sack.rpgroll.common.command.Senders;
+
 import com.sack.rpgroll.ranching.core.animal.AnimalManager;
 import com.sack.rpgroll.ranching.core.breeds.Breed;
 import com.sack.rpgroll.ranching.core.breeds.BreedManager;
@@ -79,7 +81,7 @@ public class RanchingAdminCommand implements CommandExecutor, TabCompleter {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
         if (!sender.hasPermission("rpgrollranching.admin.*")) {
-            sender.sendMessage(Component.text(chatPromptManager.lang().raw("command.admin.no_permission"), NamedTextColor.RED));
+            sender.sendMessage(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("command.admin.no_permission"), NamedTextColor.RED));
             return true;
         }
 
@@ -100,8 +102,8 @@ public class RanchingAdminCommand implements CommandExecutor, TabCompleter {
 
     private void handleBrowser(CommandSender sender) {
 
-        if (!(sender instanceof Player player)) {
-            sender.sendMessage(Component.text(chatPromptManager.lang().raw("command.admin.player_only_browser"), NamedTextColor.RED));
+        if (!(Senders.asPlayer(sender) instanceof Player player)) {
+            sender.sendMessage(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("command.admin.player_only_browser"), NamedTextColor.RED));
             return;
         }
 
@@ -112,26 +114,25 @@ public class RanchingAdminCommand implements CommandExecutor, TabCompleter {
 
     private void handleReload(CommandSender sender) {
         onReload.run();
-        sender.sendMessage(Component.text(chatPromptManager.lang().raw("command.admin.reloaded"), NamedTextColor.GREEN));
+        sender.sendMessage(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("command.admin.reloaded"), NamedTextColor.GREEN));
     }
 
     private void handleSpawn(CommandSender sender, String[] args) {
 
-        if (!(sender instanceof Player player)) {
-            sender.sendMessage(Component.text(chatPromptManager.lang().raw("command.admin.player_only_spawn"), NamedTextColor.RED));
+        if (!(Senders.asPlayer(sender) instanceof Player player)) {
+            sender.sendMessage(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("command.admin.player_only_spawn"), NamedTextColor.RED));
             return;
         }
 
         if (args.length < 2) {
-            player.sendMessage(Component.text(chatPromptManager.lang().raw("command.admin.usage_spawn"), NamedTextColor.RED));
+            player.sendMessage(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("command.admin.usage_spawn"), NamedTextColor.RED));
             return;
         }
 
         Species species = speciesManager.get(args[1].toLowerCase()).orElse(null);
 
         if (species == null) {
-            player.sendMessage(Component.text(chatPromptManager.lang().raw("command.admin.unknown_species", "id", args[1]),
-                    NamedTextColor.RED));
+            player.sendMessage(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("command.admin.unknown_species", "id", args[1]), NamedTextColor.RED));
             return;
         }
 
@@ -145,14 +146,13 @@ public class RanchingAdminCommand implements CommandExecutor, TabCompleter {
         animalManager.registerFounder(entity, species, breed, sex, geneticsEngine,
                 geneManager.getForSpecies(species.id()));
 
-        player.sendMessage(Component.text(chatPromptManager.lang().raw("command.admin.spawned_prefix"), NamedTextColor.GREEN)
+        player.sendMessage(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("command.admin.spawned_prefix"), NamedTextColor.GREEN)
                 .append(ComponentUtils.parse(species.displayName()))
-                .append(Component.text(chatPromptManager.lang().raw("command.admin.spawned_suffix", "sex", sex),
-                        NamedTextColor.GREEN)));
+                .append(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("command.admin.spawned_suffix", "sex", sex), NamedTextColor.GREEN)));
     }
 
     private void sendUsage(CommandSender sender) {
-        sender.sendMessage(Component.text(chatPromptManager.lang().raw("command.admin.usage"), NamedTextColor.RED));
+        sender.sendMessage(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("command.admin.usage"), NamedTextColor.RED));
     }
 
     @Override

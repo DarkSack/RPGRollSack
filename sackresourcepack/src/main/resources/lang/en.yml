@@ -1,7 +1,23 @@
 command:
   no-permission: "You don't have permission to use this command."
   gui-players-only: "Only a player can open the Dashboard."
-  usage: "Usage: /srp <reload|rebuild|validate|publish|status|content|conflicts|models|textures|sounds|fonts|cache|dev|datapack|gui>"
+  usage: |-
+    &eUsage: /srp
+    &7 • &freload
+    &7 • &frebuild
+    &7 • &fvalidate
+    &7 • &fpublish
+    &7 • &fstatus
+    &7 • &fcontent
+    &7 • &fconflicts
+    &7 • &fmodels
+    &7 • &ftextures
+    &7 • &fsounds
+    &7 • &ffonts
+    &7 • &fcache
+    &7 • &fdev
+    &7 • &fdatapack
+    &7 • &fgui
   reload-done: "✔ config.yml reloaded. Changes to the HTTP port, content folder, or pack-format require restarting the plugin."
   build-type-rebuild: "Rebuild"
   build-type-validate: "Validation"

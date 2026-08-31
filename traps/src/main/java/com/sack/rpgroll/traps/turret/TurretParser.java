@@ -36,8 +36,22 @@ public class TurretParser implements ContentParser<TurretDefinition> {
                 ? config.getInt("model.custom-model-data")
                 : null;
 
+        // Sin "model.base-block" no se coloca ningún bloque: una torreta puede
+        // ser solo el ítem flotante, como era antes de esta opción.
+        Material baseBlock = config.contains("model.base-block")
+                ? parseMaterial(config.getString("model.base-block"), null)
+                : null;
+
+        // -1 (y no 0) señala "sin definir" para que el record aplique su
+        // default: 0 es un valor válido que significa "quieto a propósito".
+        double hoverHeight = config.getDouble("model.hover-height", -1);
+        double spinDegreesPerTick = config.contains("model.spin-degrees-per-tick")
+                ? config.getDouble("model.spin-degrees-per-tick")
+                : -1;
+
         return new TurretDefinition(id, displayName, description, radius, targetPlayers, targetHostileMobs,
-                fireIntervalTicks, conditions, impact, model, customModelData);
+                fireIntervalTicks, conditions, impact, model, customModelData,
+                baseBlock, hoverHeight, spinDegreesPerTick);
     }
 
     /** Sin sección "impact": null — el compact constructor de TurretDefinition rellena el default (flecha). */

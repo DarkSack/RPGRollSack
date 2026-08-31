@@ -8,7 +8,14 @@ general:
 
 # Comando /crate (admin)
 admin:
-  usage: "&cUso: /crate <setlocation|removelocation|givekey|list|reload|browser> [args]"
+  usage: |-
+    &cUso: /crate
+    &7 • &fsetlocation
+    &7 • &fremovelocation
+    &7 • &fgivekey
+    &7 • &flist
+    &7 • &freload
+    &7 • &fbrowser
   setlocation_usage: "&cUso: /crate setlocation <crateId>"
   crate_not_found: "&cNo existe un crate con id: {id}"
   must_look_at_block: "&cTenés que estar mirando el bloque del crate."

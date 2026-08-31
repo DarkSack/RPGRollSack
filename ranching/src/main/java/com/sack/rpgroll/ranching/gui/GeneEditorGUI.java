@@ -1,5 +1,7 @@
 package com.sack.rpgroll.ranching.gui;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.ranching.core.genetics.Gene;
@@ -44,7 +46,7 @@ public class GeneEditorGUI extends InventoryGUI {
 
     public GeneEditorGUI(Player player, Gene gene, GeneManager geneManager, ChatPromptManager chatPromptManager,
             Runnable onBack) {
-        super(player, Component.text(chatPromptManager.lang().raw("gui.gene.editor.title", "id", gene.id()), NamedTextColor.GOLD), SIZE);
+        super(player, ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.gene.editor.title", "id", gene.id()), NamedTextColor.GOLD), SIZE);
         this.current = gene;
         this.geneManager = geneManager;
         this.chatPromptManager = chatPromptManager;
@@ -72,40 +74,39 @@ public class GeneEditorGUI extends InventoryGUI {
                 .setName(lang.component("gui.editor.name_line", "name", current.displayName())).build());
 
         setItem(ATTRIBUTE_KEY_SLOT, new ItemBuilder(Material.COMPASS)
-                .setName(Component.text(lang.raw("gui.gene.editor.attribute_key_line", "key", current.attributeKey()), NamedTextColor.AQUA))
-                .setLore(Component.text(lang.raw("gui.gene.editor.attribute_key_hint"), NamedTextColor.GRAY)).build());
+                .setName(ComponentUtils.parseWithDefault(lang.raw("gui.gene.editor.attribute_key_line", "key", current.attributeKey()), NamedTextColor.AQUA))
+                .setLore(ComponentUtils.parseWithDefault(lang.raw("gui.gene.editor.attribute_key_hint"), NamedTextColor.GRAY)).build());
 
         setItem(DESCRIPTION_SLOT, new ItemBuilder(Material.WRITTEN_BOOK)
-                .setName(Component.text(lang.raw("gui.editor.description_title"), NamedTextColor.YELLOW))
+                .setName(ComponentUtils.parseWithDefault(lang.raw("gui.editor.description_title"), NamedTextColor.YELLOW))
                 .setLore(ItemBuilder.toLoreLines(current.description().isBlank() ? lang.raw("gui.editor.no_description") : current.description()))
                 .build());
 
         setItem(DOMINANCE_SLOT, new ItemBuilder(Material.REPEATER)
-                .setName(Component.text(lang.raw("gui.gene.editor.dominance_line", "dominance", current.dominance()), NamedTextColor.LIGHT_PURPLE))
-                .setLore(Component.text(lang.raw("gui.gene.editor.dominance_hint"), NamedTextColor.GRAY)).build());
+                .setName(ComponentUtils.parseWithDefault(lang.raw("gui.gene.editor.dominance_line", "dominance", current.dominance()), NamedTextColor.LIGHT_PURPLE))
+                .setLore(ComponentUtils.parseWithDefault(lang.raw("gui.gene.editor.dominance_hint"), NamedTextColor.GRAY)).build());
 
         setItem(MIN_VALUE_SLOT, new ItemBuilder(Material.RED_DYE)
-                .setName(Component.text(lang.raw("gui.gene.editor.min_value_line", "value", current.minValue()), NamedTextColor.WHITE))
-                .setLore(Component.text(lang.raw("gui.editor.step5_hint"), NamedTextColor.GRAY)).build());
+                .setName(ComponentUtils.parseWithDefault(lang.raw("gui.gene.editor.min_value_line", "value", current.minValue()), NamedTextColor.WHITE))
+                .setLore(ComponentUtils.parseWithDefault(lang.raw("gui.editor.step5_hint"), NamedTextColor.GRAY)).build());
 
         setItem(MAX_VALUE_SLOT, new ItemBuilder(Material.LIME_DYE)
-                .setName(Component.text(lang.raw("gui.gene.editor.max_value_line", "value", current.maxValue()), NamedTextColor.WHITE))
-                .setLore(Component.text(lang.raw("gui.editor.step5_hint"), NamedTextColor.GRAY)).build());
+                .setName(ComponentUtils.parseWithDefault(lang.raw("gui.gene.editor.max_value_line", "value", current.maxValue()), NamedTextColor.WHITE))
+                .setLore(ComponentUtils.parseWithDefault(lang.raw("gui.editor.step5_hint"), NamedTextColor.GRAY)).build());
 
         setItem(SPECIES_SLOT, new ItemBuilder(Material.COW_SPAWN_EGG)
-                .setName(Component.text(lang.raw("gui.gene.editor.species_line", "species",
-                        current.applicableSpecies().isEmpty() ? lang.raw("gui.gene.editor.any_species") : String.join(", ", current.applicableSpecies())),
-                        NamedTextColor.GOLD))
-                .setLore(Component.text(lang.raw("gui.gene.editor.species_hint"), NamedTextColor.GRAY))
+                .setName(ComponentUtils.parseWithDefault(lang.raw("gui.gene.editor.species_line", "species",
+                        current.applicableSpecies().isEmpty() ? lang.raw("gui.gene.editor.any_species") : String.join(", ", current.applicableSpecies())), NamedTextColor.GOLD))
+                .setLore(ComponentUtils.parseWithDefault(lang.raw("gui.gene.editor.species_hint"), NamedTextColor.GRAY))
                 .build());
 
         setItem(MUTATIONS_SLOT, new ItemBuilder(Material.DRAGON_BREATH)
-                .setName(Component.text(lang.raw("gui.gene.editor.mutations_line", "count", current.mutations().size()), NamedTextColor.LIGHT_PURPLE))
+                .setName(ComponentUtils.parseWithDefault(lang.raw("gui.gene.editor.mutations_line", "count", current.mutations().size()), NamedTextColor.LIGHT_PURPLE))
                 .setLore(ItemBuilder.toLoreLines(lang.raw("gui.gene.editor.mutations_hint")))
                 .build());
 
         setItem(CLEAR_MUTATIONS_SLOT, new ItemBuilder(Material.BARRIER)
-                .setName(Component.text(lang.raw("gui.gene.editor.clear_mutations"), NamedTextColor.RED)).build());
+                .setName(ComponentUtils.parseWithDefault(lang.raw("gui.gene.editor.clear_mutations"), NamedTextColor.RED)).build());
 
         setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back")));
     }
@@ -148,7 +149,7 @@ public class GeneEditorGUI extends InventoryGUI {
         String[] parts = raw.split(";");
 
         if (parts.length < 5) {
-            player.sendMessage(Component.text(chatPromptManager.lang().raw("gui.gene.editor.invalid_format"), NamedTextColor.RED));
+            player.sendMessage(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.gene.editor.invalid_format"), NamedTextColor.RED));
             build();
             return;
         }
@@ -168,7 +169,7 @@ public class GeneEditorGUI extends InventoryGUI {
             effectValue = Double.parseDouble(parts[3].trim());
             chance = Double.parseDouble(parts[4].trim());
         } catch (NumberFormatException e) {
-            player.sendMessage(Component.text(chatPromptManager.lang().raw("gui.gene.editor.invalid_value"), NamedTextColor.RED));
+            player.sendMessage(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.gene.editor.invalid_value"), NamedTextColor.RED));
             build();
             return;
         }

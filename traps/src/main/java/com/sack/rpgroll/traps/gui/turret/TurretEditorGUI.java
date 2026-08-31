@@ -235,54 +235,62 @@ public class TurretEditorGUI extends InventoryGUI {
         TurretDefinition c = current();
         return new TurretDefinition(c.id(), value, c.description(), c.radius(), c.targetPlayers(),
                 c.targetHostileMobs(), c.fireIntervalTicks(), c.conditions(), c.impact(), c.model(),
-                c.customModelData());
+                c.customModelData(),
+                null, 0, -1);
     }
 
     private TurretDefinition withModel(Material model) {
         TurretDefinition c = current();
         return new TurretDefinition(c.id(), c.displayName(), c.description(), c.radius(), c.targetPlayers(),
                 c.targetHostileMobs(), c.fireIntervalTicks(), c.conditions(), c.impact(), model,
-                c.customModelData());
+                c.customModelData(),
+                null, 0, -1);
     }
 
     private TurretDefinition withRadius(double radius) {
         TurretDefinition c = current();
         return new TurretDefinition(c.id(), c.displayName(), c.description(), radius, c.targetPlayers(),
                 c.targetHostileMobs(), c.fireIntervalTicks(), c.conditions(), c.impact(), c.model(),
-                c.customModelData());
+                c.customModelData(),
+                null, 0, -1);
     }
 
     private TurretDefinition withTargetPlayers(boolean value) {
         TurretDefinition c = current();
         return new TurretDefinition(c.id(), c.displayName(), c.description(), c.radius(), value,
                 c.targetHostileMobs(), c.fireIntervalTicks(), c.conditions(), c.impact(), c.model(),
-                c.customModelData());
+                c.customModelData(),
+                null, 0, -1);
     }
 
     private TurretDefinition withTargetHostileMobs(boolean value) {
         TurretDefinition c = current();
         return new TurretDefinition(c.id(), c.displayName(), c.description(), c.radius(), c.targetPlayers(), value,
-                c.fireIntervalTicks(), c.conditions(), c.impact(), c.model(), c.customModelData());
+                c.fireIntervalTicks(), c.conditions(), c.impact(), c.model(), c.customModelData(),
+                null, 0, -1);
     }
 
     private TurretDefinition withFireInterval(long ticks) {
         TurretDefinition c = current();
         return new TurretDefinition(c.id(), c.displayName(), c.description(), c.radius(), c.targetPlayers(),
-                c.targetHostileMobs(), ticks, c.conditions(), c.impact(), c.model(), c.customModelData());
+                c.targetHostileMobs(), ticks, c.conditions(), c.impact(), c.model(), c.customModelData(),
+                null, 0, -1);
     }
 
     private TurretDefinition withImpact(TrapAction impact) {
         TurretDefinition c = current();
         return new TurretDefinition(c.id(), c.displayName(), c.description(), c.radius(), c.targetPlayers(),
                 c.targetHostileMobs(), c.fireIntervalTicks(), c.conditions(), impact, c.model(),
-                c.customModelData());
+                c.customModelData(),
+                null, 0, -1);
     }
 
     private TurretDefinition withConditions(List<String> conditions) {
         TurretDefinition c = current();
         return new TurretDefinition(c.id(), c.displayName(), c.description(), c.radius(), c.targetPlayers(),
                 c.targetHostileMobs(), c.fireIntervalTicks(), conditions, c.impact(), c.model(),
-                c.customModelData());
+                c.customModelData(),
+                null, 0, -1);
     }
 
 }

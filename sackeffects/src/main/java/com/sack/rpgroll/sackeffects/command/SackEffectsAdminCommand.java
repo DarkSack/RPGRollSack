@@ -1,5 +1,7 @@
 package com.sack.rpgroll.sackeffects.command;
 
+import com.sack.rpgroll.common.command.Senders;
+
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.sackeffects.SackEffectsPlugin;
 import com.sack.rpgroll.sackeffects.core.EffectDefinition;
@@ -73,7 +75,7 @@ public class SackEffectsAdminCommand implements CommandExecutor, TabCompleter {
 
     private void handleBrowser(CommandSender sender) {
 
-        if (!(sender instanceof Player player)) {
+        if (!(Senders.asPlayer(sender) instanceof Player player)) {
             langManager.send(sender, "command.browser_players_only");
             return;
         }
@@ -113,7 +115,7 @@ public class SackEffectsAdminCommand implements CommandExecutor, TabCompleter {
                 langManager.send(sender, "command.test_player_not_found", "player", args[2]);
                 return;
             }
-        } else if (sender instanceof Player senderPlayer) {
+        } else if (Senders.asPlayer(sender) instanceof Player senderPlayer) {
             target = senderPlayer;
         } else {
             langManager.send(sender, "command.test_specify_player");

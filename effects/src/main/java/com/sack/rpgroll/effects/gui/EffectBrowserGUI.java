@@ -1,5 +1,7 @@
 package com.sack.rpgroll.effects.gui;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.effects.core.EffectCategory;
 import com.sack.rpgroll.effects.core.EffectDefinition;
@@ -45,7 +47,7 @@ public class EffectBrowserGUI extends InventoryGUI {
 
     public EffectBrowserGUI(Player player, EffectManager effectManager, EffectTracker tracker,
             ChatPromptManager chatPromptManager) {
-        super(player, Component.text(chatPromptManager.lang().raw("gui.browser.title"), NamedTextColor.GOLD), SIZE);
+        super(player, ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.browser.title"), NamedTextColor.GOLD), SIZE);
         this.effectManager = effectManager;
         this.tracker = tracker;
         this.chatPromptManager = chatPromptManager;

@@ -1,5 +1,7 @@
 package com.sack.rpgroll.ranching.gui;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.ranching.core.animal.Animal;
@@ -33,7 +35,7 @@ public class VeterinaryGUI extends InventoryGUI {
 
     public VeterinaryGUI(Player player, AnimalManager animalManager, DiseaseManager diseaseManager,
             SpeciesManager speciesManager, ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text(chatPromptManager.lang().raw("gui.hub.veterinary"), NamedTextColor.RED), SIZE);
+        super(player, ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.hub.veterinary"), NamedTextColor.RED), SIZE);
         this.animalManager = animalManager;
         this.diseaseManager = diseaseManager;
         this.speciesManager = speciesManager;
@@ -53,7 +55,7 @@ public class VeterinaryGUI extends InventoryGUI {
 
         if (sickAnimals.isEmpty()) {
             setItem(22, new ItemBuilder(Material.LIME_DYE)
-                    .setName(Component.text(chatPromptManager.lang().raw("gui.veterinary.none_sick"), NamedTextColor.GREEN)).build());
+                    .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.veterinary.none_sick"), NamedTextColor.GREEN)).build());
         }
 
         for (int i = 0; i < sickAnimals.size() && i < 36; i++) {
@@ -67,12 +69,11 @@ public class VeterinaryGUI extends InventoryGUI {
                             (species != null ? species.displayName() : animal.speciesId()) + " #"
                                     + animal.id().toString().substring(0, 8),
                             NamedTextColor.YELLOW))
-                    .setLore(Component.text(chatPromptManager.lang().raw("gui.veterinary.disease", "disease",
-                                    disease != null ? disease.displayName() : animal.activeDiseaseId()),
-                                    NamedTextColor.RED),
-                            Component.text(chatPromptManager.lang().raw("gui.veterinary.ticks_remaining", "ticks",
+                    .setLore(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.veterinary.disease", "disease",
+                                    disease != null ? disease.displayName() : animal.activeDiseaseId()), NamedTextColor.RED),
+                            ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.veterinary.ticks_remaining", "ticks",
                                     animal.diseaseRemainingTicks()), NamedTextColor.GRAY),
-                            Component.text(chatPromptManager.lang().raw("gui.veterinary.click_to_cure"), NamedTextColor.GREEN))
+                            ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.veterinary.click_to_cure"), NamedTextColor.GREEN))
                     .build());
         }
 
@@ -90,7 +91,7 @@ public class VeterinaryGUI extends InventoryGUI {
             Animal animal = sickAnimals.get(slot);
             animal.cure();
             animalManager.save(animal);
-            player.sendMessage(Component.text(chatPromptManager.lang().raw("gui.veterinary.cured"), NamedTextColor.GREEN));
+            player.sendMessage(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.veterinary.cured"), NamedTextColor.GREEN));
             reopen();
             return;
         }

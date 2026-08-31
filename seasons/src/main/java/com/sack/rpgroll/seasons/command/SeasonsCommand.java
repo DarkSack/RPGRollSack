@@ -1,5 +1,7 @@
 package com.sack.rpgroll.seasons.command;
 
+import com.sack.rpgroll.common.command.Senders;
+
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.seasons.api.SeasonsAPI;
 import com.sack.rpgroll.util.TabCompleteUtil;
@@ -51,7 +53,7 @@ public class SeasonsCommand implements CommandExecutor, TabCompleter {
                 lang.send(sender, "command.player.unknown_world", "world", args[1]);
                 return;
             }
-        } else if (sender instanceof Player player) {
+        } else if (Senders.asPlayer(sender) instanceof Player player) {
             world = player.getWorld();
         } else {
             lang.send(sender, "command.player.specify_world");
@@ -69,7 +71,7 @@ public class SeasonsCommand implements CommandExecutor, TabCompleter {
 
         lang.send(sender, "command.player.current_season", "world", world.getName(), "season", season.displayName());
 
-        if (sender instanceof Player player) {
+        if (Senders.asPlayer(sender) instanceof Player player) {
             double temperature = SeasonsAPI.get().getTemperature(player.getLocation());
             lang.send(sender, "command.player.temperature", "temperature",
                     String.format(Locale.ROOT, "%.1f", temperature));

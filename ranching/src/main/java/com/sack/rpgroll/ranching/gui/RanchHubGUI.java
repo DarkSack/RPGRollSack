@@ -1,5 +1,7 @@
 package com.sack.rpgroll.ranching.gui;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.ranching.core.animal.AnimalManager;
@@ -59,7 +61,7 @@ public class RanchHubGUI extends InventoryGUI {
             VaccineManager vaccineManager, MedicineManager medicineManager, AnimalManager animalManager,
             GeneticsEngine geneticsEngine, PedigreeService pedigreeService, BreedingEngine breedingEngine,
             ChatPromptManager chatPromptManager, int inbreedingGenerations) {
-        super(player, Component.text(chatPromptManager.lang().raw("gui.hub.title"), NamedTextColor.GOLD), SIZE);
+        super(player, ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.hub.title"), NamedTextColor.GOLD), SIZE);
         this.speciesManager = speciesManager;
         this.breedManager = breedManager;
         this.geneManager = geneManager;
@@ -94,9 +96,9 @@ public class RanchHubGUI extends InventoryGUI {
 
         setItem(ANIMALS_SLOT, button(Material.CHEST, chatPromptManager.lang().raw("gui.hub.animals"), animalManager.getAll().size()));
         setItem(BREEDING_SLOT, new ItemBuilder(Material.HEART_OF_THE_SEA)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.hub.breeding"), NamedTextColor.LIGHT_PURPLE)).build());
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.hub.breeding"), NamedTextColor.LIGHT_PURPLE)).build());
         setItem(VETERINARY_SLOT, new ItemBuilder(Material.GOLDEN_APPLE)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.hub.veterinary"), NamedTextColor.RED)).build());
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.hub.veterinary"), NamedTextColor.RED)).build());
 
         setItem(CLOSE_SLOT, ItemBuilder.createCancelButton(chatPromptManager.lang().raw("gui.common.close")));
     }
@@ -104,7 +106,7 @@ public class RanchHubGUI extends InventoryGUI {
     private org.bukkit.inventory.ItemStack button(Material material, String label, int count) {
         return new ItemBuilder(material)
                 .setName(Component.text(label + " (" + count + ")", NamedTextColor.YELLOW))
-                .setLore(Component.text(chatPromptManager.lang().raw("gui.common.manage_hint"), NamedTextColor.GRAY))
+                .setLore(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.common.manage_hint"), NamedTextColor.GRAY))
                 .build();
     }
 

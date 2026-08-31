@@ -1,5 +1,7 @@
 package com.sack.rpgroll.guilds.command;
 
+import com.sack.rpgroll.common.command.Senders;
+
 import com.sack.rpgroll.api.RPGRollAPI;
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.guilds.GuildServices;
@@ -47,7 +49,7 @@ public class GuildCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
-        if (!(sender instanceof Player player)) {
+        if (!(Senders.asPlayer(sender) instanceof Player player)) {
             lang().send(sender, "common.players_only");
             return true;
         }

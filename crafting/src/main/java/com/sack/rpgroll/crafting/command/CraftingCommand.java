@@ -1,5 +1,9 @@
 package com.sack.rpgroll.crafting.command;
 
+import com.sack.rpgroll.common.command.Senders;
+
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.crafting.discovery.DiscoveryService;
 import com.sack.rpgroll.crafting.discovery.ExperimentationOutcome;
 import com.sack.rpgroll.crafting.discovery.ExperimentationService;
@@ -60,8 +64,8 @@ public class CraftingCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
-        if (!(sender instanceof Player player)) {
-            sender.sendMessage(Component.text(lang.raw("common.players_only"), NamedTextColor.RED));
+        if (!(Senders.asPlayer(sender) instanceof Player player)) {
+            sender.sendMessage(ComponentUtils.parseWithDefault(lang.raw("common.players_only"), NamedTextColor.RED));
             return true;
         }
 
@@ -73,7 +77,7 @@ public class CraftingCommand implements CommandExecutor, TabCompleter {
             case "upgrade" -> handleUpgrade(player);
             case "experiment" -> handleExperiment(player);
             case "proficiency" -> sendProficiency(player, args);
-            default -> player.sendMessage(Component.text(lang.raw("common.unknown_subcommand"), NamedTextColor.RED));
+            default -> player.sendMessage(ComponentUtils.parseWithDefault(lang.raw("common.unknown_subcommand"), NamedTextColor.RED));
         }
 
         return true;
@@ -84,9 +88,8 @@ public class CraftingCommand implements CommandExecutor, TabCompleter {
         int discovered = discoveryService.get(player.getUniqueId()).discoveredRecipeIds().size();
         int total = recipeManager.count();
 
-        player.sendMessage(Component.text(
-                lang.raw("command.crafting.discovered_count", "discovered", discovered, "total", total),
-                NamedTextColor.AQUA));
+        player.sendMessage(ComponentUtils.parseWithDefault(
+                lang.raw("command.crafting.discovered_count", "discovered", discovered, "total", total), NamedTextColor.AQUA));
     }
 
     private void handleUpgrade(Player player) {
@@ -94,13 +97,13 @@ public class CraftingCommand implements CommandExecutor, TabCompleter {
         StationUpgradeService.Result result = upgradeService.attemptUpgrade(player);
 
         switch (result) {
-            case OK -> player.sendMessage(Component.text(lang.raw("command.crafting.upgrade_ok"), NamedTextColor.GREEN));
+            case OK -> player.sendMessage(ComponentUtils.parseWithDefault(lang.raw("command.crafting.upgrade_ok"), NamedTextColor.GREEN));
             case NOT_A_STATION -> player.sendMessage(
-                    Component.text(lang.raw("command.crafting.upgrade_not_a_station"), NamedTextColor.RED));
-            case ALREADY_MAX -> player.sendMessage(Component.text(lang.raw("command.crafting.upgrade_already_max"), NamedTextColor.YELLOW));
+                    ComponentUtils.parseWithDefault(lang.raw("command.crafting.upgrade_not_a_station"), NamedTextColor.RED));
+            case ALREADY_MAX -> player.sendMessage(ComponentUtils.parseWithDefault(lang.raw("command.crafting.upgrade_already_max"), NamedTextColor.YELLOW));
             case NO_UPGRADE_DEFINED -> player.sendMessage(
-                    Component.text(lang.raw("command.crafting.upgrade_no_upgrade_defined"), NamedTextColor.RED));
-            case MISSING_COST -> player.sendMessage(Component.text(lang.raw("command.crafting.upgrade_missing_cost"), NamedTextColor.RED));
+                    ComponentUtils.parseWithDefault(lang.raw("command.crafting.upgrade_no_upgrade_defined"), NamedTextColor.RED));
+            case MISSING_COST -> player.sendMessage(ComponentUtils.parseWithDefault(lang.raw("command.crafting.upgrade_missing_cost"), NamedTextColor.RED));
         }
     }
 
@@ -110,7 +113,7 @@ public class CraftingCommand implements CommandExecutor, TabCompleter {
         Optional<StationRuntime> runtimeOpt = runtimeRegistry.findByInventory(top);
 
         if (runtimeOpt.isEmpty()) {
-            player.sendMessage(Component.text(lang.raw("command.crafting.experiment_not_a_station"), NamedTextColor.RED));
+            player.sendMessage(ComponentUtils.parseWithDefault(lang.raw("command.crafting.experiment_not_a_station"), NamedTextColor.RED));
             return;
         }
 
@@ -124,20 +127,20 @@ public class CraftingCommand implements CommandExecutor, TabCompleter {
         switch (outcome.result()) {
             case DISCOVERED -> {
                 lang.send(player, "command.crafting.experiment_discovered", "recipe", outcome.recipe().displayName());
-                player.sendMessage(Component.text(lang.raw("command.crafting.experiment_discovered_hint"), NamedTextColor.GRAY));
+                player.sendMessage(ComponentUtils.parseWithDefault(lang.raw("command.crafting.experiment_discovered_hint"), NamedTextColor.GRAY));
             }
-            case NOT_ALLOWED -> player.sendMessage(Component.text(lang.raw("command.crafting.experiment_not_allowed"), NamedTextColor.RED));
-            case ON_COOLDOWN -> player.sendMessage(Component.text(lang.raw("command.crafting.experiment_on_cooldown"), NamedTextColor.YELLOW));
+            case NOT_ALLOWED -> player.sendMessage(ComponentUtils.parseWithDefault(lang.raw("command.crafting.experiment_not_allowed"), NamedTextColor.RED));
+            case ON_COOLDOWN -> player.sendMessage(ComponentUtils.parseWithDefault(lang.raw("command.crafting.experiment_on_cooldown"), NamedTextColor.YELLOW));
             case ALREADY_DISCOVERED_ALL -> player.sendMessage(
-                    Component.text(lang.raw("command.crafting.experiment_already_all"), NamedTextColor.YELLOW));
-            case NO_MATCH -> player.sendMessage(Component.text(lang.raw("command.crafting.experiment_no_match"), NamedTextColor.GRAY));
+                    ComponentUtils.parseWithDefault(lang.raw("command.crafting.experiment_already_all"), NamedTextColor.YELLOW));
+            case NO_MATCH -> player.sendMessage(ComponentUtils.parseWithDefault(lang.raw("command.crafting.experiment_no_match"), NamedTextColor.GRAY));
         }
     }
 
     private void sendProficiency(Player player, String[] args) {
 
         if (args.length < 2) {
-            player.sendMessage(Component.text(lang.raw("command.crafting.proficiency_usage"), NamedTextColor.YELLOW));
+            player.sendMessage(ComponentUtils.parseWithDefault(lang.raw("command.crafting.proficiency_usage"), NamedTextColor.YELLOW));
             return;
         }
 
@@ -146,9 +149,8 @@ public class CraftingCommand implements CommandExecutor, TabCompleter {
         int level = ProficiencyLevelCurve.levelFor(xp);
         double progress = Math.round(ProficiencyLevelCurve.progressWithinLevel(xp) * 1000) / 10.0;
 
-        player.sendMessage(Component.text(lang.raw("command.crafting.proficiency_value", "category", category,
-                "level", level, "max", ProficiencyLevelCurve.MAX_LEVEL, "progress", progress),
-                NamedTextColor.LIGHT_PURPLE));
+        player.sendMessage(ComponentUtils.parseWithDefault(lang.raw("command.crafting.proficiency_value", "category", category,
+                "level", level, "max", ProficiencyLevelCurve.MAX_LEVEL, "progress", progress), NamedTextColor.LIGHT_PURPLE));
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.sack.rpgroll.workers.gui;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.workers.core.schedule.Schedule;
@@ -35,8 +37,7 @@ public class ScheduleEditorGUI extends InventoryGUI {
 
     public ScheduleEditorGUI(Player player, Schedule schedule, ScheduleManager scheduleManager,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text(chatPromptManager.lang().raw("gui.schedule.editor.title", "id", schedule.id()),
-                NamedTextColor.GOLD), SIZE);
+        super(player, ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.schedule.editor.title", "id", schedule.id()), NamedTextColor.GOLD), SIZE);
         this.current = schedule;
         this.scheduleManager = scheduleManager;
         this.chatPromptManager = chatPromptManager;
@@ -59,24 +60,24 @@ public class ScheduleEditorGUI extends InventoryGUI {
         }
 
         setItem(NAME_SLOT, new ItemBuilder(Material.NAME_TAG)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.schedule.editor.name", "name",
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.schedule.editor.name", "name",
                         current.displayName()), NamedTextColor.YELLOW)).build());
 
         setItem(DESCRIPTION_SLOT, new ItemBuilder(Material.WRITTEN_BOOK)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.profession.editor.description"), NamedTextColor.YELLOW))
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.profession.editor.description"), NamedTextColor.YELLOW))
                 .setLore(ItemBuilder.toLoreLines(current.description().isBlank()
                         ? chatPromptManager.lang().raw("gui.editor.no_description") : current.description()))
                 .build());
 
         setItem(ENTRIES_SLOT, new ItemBuilder(Material.CLOCK)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.schedule.editor.entries", "count",
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.schedule.editor.entries", "count",
                         current.entries().size()), NamedTextColor.AQUA))
                 .setLore(ItemBuilder.toLoreLines(chatPromptManager.lang().raw("gui.schedule.editor.entries_lore", "entries",
                         formatEntries(), "activities", java.util.Arrays.toString(ScheduleActivity.values()))))
                 .build());
 
         setItem(CLEAR_SLOT, new ItemBuilder(Material.BARRIER)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.schedule.editor.clear_entries"), NamedTextColor.RED))
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.schedule.editor.clear_entries"), NamedTextColor.RED))
                 .build());
 
         setItem(BACK_SLOT, ItemBuilder.createCancelButton(chatPromptManager.lang().raw("gui.common.back")));
@@ -123,8 +124,7 @@ public class ScheduleEditorGUI extends InventoryGUI {
         String[] parts = raw.split(";");
 
         if (parts.length < 2) {
-            player.sendMessage(Component.text(chatPromptManager.lang().raw("gui.schedule.editor.invalid_entry_format"),
-                    NamedTextColor.RED));
+            player.sendMessage(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.schedule.editor.invalid_entry_format"), NamedTextColor.RED));
             build();
             return;
         }
@@ -136,8 +136,7 @@ public class ScheduleEditorGUI extends InventoryGUI {
             tick = Long.parseLong(parts[0].trim());
             activity = ScheduleActivity.valueOf(parts[1].trim().toUpperCase(Locale.ROOT));
         } catch (Exception e) {
-            player.sendMessage(Component.text(chatPromptManager.lang().raw("gui.schedule.editor.invalid_entry_values"),
-                    NamedTextColor.RED));
+            player.sendMessage(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.schedule.editor.invalid_entry_values"), NamedTextColor.RED));
             build();
             return;
         }

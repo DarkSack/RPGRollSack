@@ -1,5 +1,7 @@
 package com.sack.rpgroll.economy.gui;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.economy.tax.TaxRule;
 import com.sack.rpgroll.economy.tax.TaxRuleManager;
@@ -38,8 +40,7 @@ public class TaxEditorGUI extends InventoryGUI {
 
     public TaxEditorGUI(Player player, TaxRule rule, TaxRuleManager taxRuleManager, ChatPromptManager chatPromptManager,
             Runnable onBack) {
-        super(player, Component.text(chatPromptManager.lang().raw("tax.editor.title", "id", rule.id()),
-                NamedTextColor.GOLD), SIZE);
+        super(player, ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("tax.editor.title", "id", rule.id()), NamedTextColor.GOLD), SIZE);
         this.current = rule;
         this.taxRuleManager = taxRuleManager;
         this.chatPromptManager = chatPromptManager;

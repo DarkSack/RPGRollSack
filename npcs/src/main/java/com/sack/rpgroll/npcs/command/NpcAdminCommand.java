@@ -1,5 +1,7 @@
 package com.sack.rpgroll.npcs.command;
 
+import com.sack.rpgroll.common.command.Senders;
+
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.npcs.RPGRollNPCs;
 import com.sack.rpgroll.npcs.core.*;
@@ -266,7 +268,7 @@ public class NpcAdminCommand implements CommandExecutor, TabCompleter {
         /** @return el sender como Player, o null (ya avisado) si no lo es — usado por los subcomandos que abren una GUI o necesitan una ubicación. */
         private Player requirePlayer(CommandSender sender) {
 
-                if (sender instanceof Player player) {
+                if (Senders.asPlayer(sender) instanceof Player player) {
                         return player;
                 }
 

@@ -5,6 +5,7 @@ command:
   admin:
     usage: "&cUso: /fishingadmin <browser|reload|giverod <id>|givebait <id>>"
     players_only_studio: "&cSolo jugadores pueden abrir el Fishing Studio."
+    players_only: "&cSolo un jugador puede recibir esto — usalo desde el juego."
     reloaded: "&a✔ Recargado: {species} especie(s), {rods} caña(s), {baits} carnada(s), {treasures} tesoro(s), {junk} basura(s), {regions} región(es)."
     giverod_usage: "&cUso: /fishingadmin giverod <id>"
     giverod_unknown: "&cNo existe una caña con id: {id}"

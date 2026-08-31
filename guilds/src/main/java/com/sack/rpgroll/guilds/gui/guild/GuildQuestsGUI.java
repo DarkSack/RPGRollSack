@@ -76,7 +76,7 @@ public class GuildQuestsGUI extends InventoryGUI {
 
             setItem(i, new ItemBuilder(Material.MAP)
                     .setName(ComponentUtils.parse(name))
-                    .setLore(Component.text(lang().raw("guild.quests.progress", "current", progress.currentAmount(),
+                    .setLore(ComponentUtils.parseWithDefault(lang().raw("guild.quests.progress", "current", progress.currentAmount(),
                             "target", target), NamedTextColor.GRAY))
                     .build());
         }
@@ -88,11 +88,11 @@ public class GuildQuestsGUI extends InventoryGUI {
             setItem(18 + i, new ItemBuilder(Material.BOOK)
                     .setName(ComponentUtils.parse(definition.displayName()))
                     .setLore(Component.text(definition.description(), NamedTextColor.GRAY),
-                            Component.text(lang().raw("guild.quests.type_target", "type", definition.type(),
+                            ComponentUtils.parseWithDefault(lang().raw("guild.quests.type_target", "type", definition.type(),
                                     "target", definition.targetAmount()), NamedTextColor.GRAY),
-                            Component.text(lang().raw("guild.quests.reward", "money", definition.rewardMoney(),
+                            ComponentUtils.parseWithDefault(lang().raw("guild.quests.reward", "money", definition.rewardMoney(),
                                     "xp", definition.rewardXp()), NamedTextColor.GRAY),
-                            Component.text(lang().raw("guild.quests.click_start"), NamedTextColor.GREEN))
+                            ComponentUtils.parseWithDefault(lang().raw("guild.quests.click_start"), NamedTextColor.GREEN))
                     .build());
         }
 

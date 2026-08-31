@@ -1,5 +1,7 @@
 package com.sack.rpgroll.crafting.gui;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.crafting.station.CustomStation;
 import com.sack.rpgroll.crafting.station.CustomStationManager;
 import com.sack.rpgroll.gui.InventoryGUI;
@@ -46,7 +48,7 @@ public class CustomStationEditorGUI extends InventoryGUI {
 
     public CustomStationEditorGUI(Player player, CustomStation station, CustomStationManager stationManager,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text(chatPromptManager.lang().raw("gui.station.editor_title", "id", station.id()), NamedTextColor.GOLD), SIZE);
+        super(player, ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.station.editor_title", "id", station.id()), NamedTextColor.GOLD), SIZE);
         this.current = station;
         this.stationManager = stationManager;
         this.chatPromptManager = chatPromptManager;
@@ -72,62 +74,60 @@ public class CustomStationEditorGUI extends InventoryGUI {
                 .setName(chatPromptManager.lang().component("gui.common.field_name", "value", current.displayName())).build());
 
         setItem(ICON_SLOT, new ItemBuilder(CustomStationBrowserGUI.parseMaterial(current.icon()))
-                .setName(Component.text(chatPromptManager.lang().raw("gui.common.field_icon", "value", current.icon()), NamedTextColor.YELLOW)).build());
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.common.field_icon", "value", current.icon()), NamedTextColor.YELLOW)).build());
 
         setItem(BLOCK_SLOT, new ItemBuilder(CustomStationBrowserGUI.parseMaterial(current.triggerBlockMaterial()))
-                .setName(Component.text(chatPromptManager.lang().raw("gui.station.field_block", "value", current.triggerBlockMaterial()), NamedTextColor.AQUA))
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.station.field_block", "value", current.triggerBlockMaterial()), NamedTextColor.AQUA))
                 .build());
 
         setItem(INVENTORY_SIZE_SLOT, new ItemBuilder(Material.CHEST)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.station.field_inventory_size", "value", current.inventorySize()), NamedTextColor.AQUA))
-                .setLore(Component.text(chatPromptManager.lang().raw("gui.station.inventory_size_hint"), NamedTextColor.GRAY)).build());
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.station.field_inventory_size", "value", current.inventorySize()), NamedTextColor.AQUA))
+                .setLore(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.station.inventory_size_hint"), NamedTextColor.GRAY)).build());
 
         setItem(FUEL_SLOT_SLOT, new ItemBuilder(Material.BLAZE_POWDER)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.station.field_fuel_slot", "value", current.fuelSlot()), NamedTextColor.GOLD))
-                .setLore(Component.text(chatPromptManager.lang().raw("gui.station.fuel_slot_hint"), NamedTextColor.GRAY))
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.station.field_fuel_slot", "value", current.fuelSlot()), NamedTextColor.GOLD))
+                .setLore(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.station.fuel_slot_hint"), NamedTextColor.GRAY))
                 .build());
 
         setItem(OUTPUT_SLOT_SLOT, new ItemBuilder(Material.HOPPER)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.station.field_output_slot", "value", current.outputSlot()), NamedTextColor.AQUA))
-                .setLore(Component.text(chatPromptManager.lang().raw("gui.common.click_inc_dec", "inc", "+1", "dec", "-1"), NamedTextColor.GRAY)).build());
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.station.field_output_slot", "value", current.outputSlot()), NamedTextColor.AQUA))
+                .setLore(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.common.click_inc_dec", "inc", "+1", "dec", "-1"), NamedTextColor.GRAY)).build());
 
         setItem(REQUIRES_FUEL_SLOT, new ItemBuilder(current.requiresFuel() ? Material.LIME_CONCRETE : Material.GRAY_CONCRETE)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.station.field_requires_fuel", "value", current.requiresFuel()), NamedTextColor.GOLD))
-                .setLore(Component.text(chatPromptManager.lang().raw("gui.common.click_toggle"), NamedTextColor.GRAY)).build());
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.station.field_requires_fuel", "value", current.requiresFuel()), NamedTextColor.GOLD))
+                .setLore(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.common.click_toggle"), NamedTextColor.GRAY)).build());
 
         setItem(GUI_TITLE_SLOT, new ItemBuilder(Material.OAK_SIGN)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.station.field_gui_title", "value", current.guiTitle()), NamedTextColor.YELLOW)).build());
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.station.field_gui_title", "value", current.guiTitle()), NamedTextColor.YELLOW)).build());
 
         setItem(MAX_TIER_SLOT, new ItemBuilder(Material.ANVIL)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.station.field_max_tier", "value", current.maxTier()), NamedTextColor.GOLD))
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.station.field_max_tier", "value", current.maxTier()), NamedTextColor.GOLD))
                 .setLore(
-                        Component.text(chatPromptManager.lang().raw("gui.station.max_tier_hint"), NamedTextColor.GRAY),
-                        Component.text(chatPromptManager.lang().raw("gui.station.max_tier_yaml_hint"), NamedTextColor.DARK_GRAY))
+                        ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.station.max_tier_hint"), NamedTextColor.GRAY),
+                        ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.station.max_tier_yaml_hint"), NamedTextColor.DARK_GRAY))
                 .build());
 
         setItem(SPEED_BONUS_SLOT, new ItemBuilder(Material.SUGAR)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.station.field_speed_bonus", "value", percent(current.speedBonusPerTier())),
-                        NamedTextColor.AQUA))
-                .setLore(Component.text(chatPromptManager.lang().raw("gui.station.percent_hint"), NamedTextColor.GRAY)).build());
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.station.field_speed_bonus", "value", percent(current.speedBonusPerTier())), NamedTextColor.AQUA))
+                .setLore(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.station.percent_hint"), NamedTextColor.GRAY)).build());
 
         setItem(FAIL_REDUCTION_SLOT, new ItemBuilder(Material.SHIELD)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.station.field_fail_reduction", "value", percent(current.failReductionPerTier())),
-                        NamedTextColor.AQUA))
-                .setLore(Component.text(chatPromptManager.lang().raw("gui.station.percent_hint"), NamedTextColor.GRAY)).build());
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.station.field_fail_reduction", "value", percent(current.failReductionPerTier())), NamedTextColor.AQUA))
+                .setLore(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.station.percent_hint"), NamedTextColor.GRAY)).build());
 
         setItem(SKILL_CATEGORY_SLOT, new ItemBuilder(Material.EXPERIENCE_BOTTLE)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.station.field_skill_category", "value", current.skillCategory()), NamedTextColor.LIGHT_PURPLE))
-                .setLore(Component.text(chatPromptManager.lang().raw("gui.station.skill_category_hint"), NamedTextColor.GRAY))
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.station.field_skill_category", "value", current.skillCategory()), NamedTextColor.LIGHT_PURPLE))
+                .setLore(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.station.skill_category_hint"), NamedTextColor.GRAY))
                 .build());
 
         setItem(EXPERIMENTATION_SLOT,
                 new ItemBuilder(current.allowExperimentation() ? Material.LIME_CONCRETE : Material.GRAY_CONCRETE)
-                        .setName(Component.text(chatPromptManager.lang().raw("gui.station.field_allow_experimentation", "value", current.allowExperimentation()), NamedTextColor.GOLD))
-                        .setLore(Component.text(chatPromptManager.lang().raw("gui.station.allow_experimentation_hint"), NamedTextColor.GRAY))
+                        .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.station.field_allow_experimentation", "value", current.allowExperimentation()), NamedTextColor.GOLD))
+                        .setLore(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.station.allow_experimentation_hint"), NamedTextColor.GRAY))
                         .build());
 
         setItem(DELETE_SLOT, new ItemBuilder(Material.BARRIER)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.station.delete"), NamedTextColor.RED)).build());
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.station.delete"), NamedTextColor.RED)).build());
 
         setItem(BACK_SLOT, ItemBuilder.createCancelButton(chatPromptManager.lang().raw("gui.common.back")));
     }

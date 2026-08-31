@@ -16,7 +16,18 @@ prompt:
 
 team:
   not_in_team: "&cYou're not in any team."
-  usage: "&eUsage: /team <invite|accept|decline|leave|kick|info|ping|waypoint|chat|queue> [args]"
+  usage: |-
+    &eUsage: /team
+    &7 • &finvite
+    &7 • &faccept
+    &7 • &fdecline
+    &7 • &fleave
+    &7 • &fkick
+    &7 • &finfo
+    &7 • &fping
+    &7 • &fwaypoint
+    &7 • &fchat
+    &7 • &fqueue
   decline:
     success: "&7Invitation declined."
   invite:
@@ -103,7 +114,16 @@ team:
     no_permission_buffs: "&cYou don't have permission to manage the team's buffs."
 
 guild:
-  usage: "&eUsage: /guild <create|disband|accept|decline|leave|ranking|chat|gui> [args]"
+  usage: |-
+    &eUsage: /guild
+    &7 • &fcreate
+    &7 • &fdisband
+    &7 • &faccept
+    &7 • &fdecline
+    &7 • &fleave
+    &7 • &franking
+    &7 • &fchat
+    &7 • &fgui
   not_in_guild: "&cYou're not in any guild."
   not_in_guild_browser: "&cYou're not in any guild — use /guild browser."
   already_in_guild: "&cYou're already in a guild."
@@ -299,7 +319,12 @@ guild:
     click_open: "&eClick to open"
 
 guildadmin:
-  usage: "&eUsage: /guildadmin <reload|browser [guilds|quests]|delete> [args]"
+  usage: |-
+    &eUsage: /guildadmin
+    &7 • &freload
+    &7 • &fbrowser [guilds
+    &7 • &fquests]
+    &7 • &fdelete
   reload:
     success: "&a✔ Guild quests reloaded: {count}"
   browser:

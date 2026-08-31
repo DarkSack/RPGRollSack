@@ -1,5 +1,7 @@
 package com.sack.rpgroll.mobs.command;
 
+import com.sack.rpgroll.common.command.Senders;
+
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.mobs.core.MobDefinition;
 import com.sack.rpgroll.mobs.core.MobManager;
@@ -94,7 +96,7 @@ public class MobAdminCommand implements CommandExecutor, TabCompleter {
 
     private void handleCreate(CommandSender sender, String[] args) {
 
-        if (!(sender instanceof Player player)) {
+        if (!(Senders.asPlayer(sender) instanceof Player player)) {
             lang.send(sender, "command.create_player_only");
             return;
         }
@@ -139,7 +141,7 @@ public class MobAdminCommand implements CommandExecutor, TabCompleter {
         }
 
         Player target = args.length >= 3 ? Bukkit.getPlayerExact(args[2])
-                : (sender instanceof Player player ? player : null);
+                : (Senders.asPlayer(sender) instanceof Player player ? player : null);
 
         if (target == null) {
             lang.send(sender, "command.spawn_need_player");
@@ -227,7 +229,7 @@ public class MobAdminCommand implements CommandExecutor, TabCompleter {
 
     private void handleBrowser(CommandSender sender) {
 
-        if (!(sender instanceof Player player)) {
+        if (!(Senders.asPlayer(sender) instanceof Player player)) {
             lang.send(sender, "command.browser_player_only");
             return;
         }
@@ -237,7 +239,7 @@ public class MobAdminCommand implements CommandExecutor, TabCompleter {
 
     private void handleEditor(CommandSender sender, String[] args) {
 
-        if (!(sender instanceof Player player)) {
+        if (!(Senders.asPlayer(sender) instanceof Player player)) {
             lang.send(sender, "command.editor_player_only");
             return;
         }

@@ -114,6 +114,10 @@ public class ExtrasAdminCommand implements CommandExecutor, TabCompleter {
             return;
         }
 
+        if (!requireStat(sender, args[2])) {
+            return;
+        }
+
         double value = statEngine.get(target, args[2]);
         lang.send(sender, "command.get.result",
                 "player", target.getName(), "stat", args[2], "value", value);
@@ -128,6 +132,10 @@ public class ExtrasAdminCommand implements CommandExecutor, TabCompleter {
 
         Player target = requireTarget(sender, args[1]);
         if (target == null) {
+            return;
+        }
+
+        if (!requireStat(sender, args[2])) {
             return;
         }
 
@@ -150,6 +158,10 @@ public class ExtrasAdminCommand implements CommandExecutor, TabCompleter {
 
         Player target = requireTarget(sender, args[1]);
         if (target == null) {
+            return;
+        }
+
+        if (!requireStat(sender, args[2])) {
             return;
         }
 
@@ -199,6 +211,25 @@ public class ExtrasAdminCommand implements CommandExecutor, TabCompleter {
 
         conditionRuntime.remove(target, args[2]);
         lang.send(sender, "command.remove.success", "condition", args[2], "player", target.getName());
+    }
+
+    /**
+     * Valida que la stat exista antes de leerla o escribirla.
+     * <p>
+     * Sin esto, {@code get <jugador> no_existe} devolvía {@code 0.0} — un
+     * valor inventado que hacía creer al admin que la stat existe y está en
+     * cero. Las conditions ya se validaban así; las stats no.
+     *
+     * @return true si existe; si no, ya se le avisó al sender
+     */
+    private boolean requireStat(CommandSender sender, String id) {
+
+        if (statManager.get(id).isPresent()) {
+            return true;
+        }
+
+        lang.send(sender, "command.stat-not-found", "stat", id);
+        return false;
     }
 
     private Player requireTarget(CommandSender sender, String name) {

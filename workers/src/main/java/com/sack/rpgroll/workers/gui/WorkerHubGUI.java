@@ -1,5 +1,7 @@
 package com.sack.rpgroll.workers.gui;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.workers.core.event.WorkerEventManager;
@@ -37,7 +39,7 @@ public class WorkerHubGUI extends InventoryGUI {
     public WorkerHubGUI(Player player, ProfessionManager professionManager, SkillManager skillManager,
             ScheduleManager scheduleManager, WorkerEventManager eventManager, WorkerManager workerManager,
             ChatPromptManager chatPromptManager) {
-        super(player, Component.text(chatPromptManager.lang().raw("gui.hub.title"), NamedTextColor.GOLD), SIZE);
+        super(player, ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.hub.title"), NamedTextColor.GOLD), SIZE);
         this.professionManager = professionManager;
         this.skillManager = skillManager;
         this.scheduleManager = scheduleManager;
@@ -63,10 +65,9 @@ public class WorkerHubGUI extends InventoryGUI {
         setItem(EVENTS_SLOT, button(Material.PAPER, chatPromptManager.lang().raw("gui.hub.events"), eventManager.count()));
 
         setItem(WORKERS_SLOT, new ItemBuilder(Material.CHEST)
-                .setName(Component.text(
-                        chatPromptManager.lang().raw("gui.hub.worker_browser", "count", workerManager.getAll().size()),
-                        NamedTextColor.YELLOW))
-                .setLore(Component.text(chatPromptManager.lang().raw("gui.common.click_to_manage"), NamedTextColor.GRAY))
+                .setName(ComponentUtils.parseWithDefault(
+                        chatPromptManager.lang().raw("gui.hub.worker_browser", "count", workerManager.getAll().size()), NamedTextColor.YELLOW))
+                .setLore(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.common.click_to_manage"), NamedTextColor.GRAY))
                 .build());
 
         setItem(CLOSE_SLOT, ItemBuilder.createCancelButton(chatPromptManager.lang().raw("gui.common.close")));
@@ -75,7 +76,7 @@ public class WorkerHubGUI extends InventoryGUI {
     private org.bukkit.inventory.ItemStack button(Material material, String label, int count) {
         return new ItemBuilder(material)
                 .setName(Component.text(label + " (" + count + ")", NamedTextColor.YELLOW))
-                .setLore(Component.text(chatPromptManager.lang().raw("gui.common.click_to_manage"), NamedTextColor.GRAY))
+                .setLore(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.common.click_to_manage"), NamedTextColor.GRAY))
                 .build();
     }
 

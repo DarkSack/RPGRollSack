@@ -16,7 +16,12 @@ common:
 
 command:
   crafting_admin:
-    usage: "Uso: /craftingadmin <browser|reload|give|villager>"
+    usage: |-
+      &eUso: /craftingadmin
+      &7 • &fbrowser
+      &7 • &freload
+      &7 • &fgive
+      &7 • &fvillager
     reloaded: "✔ RPGRoll-Crafting recargado."
     give_usage: "Uso: /craftingadmin give <jugador> <item-id-de-RPGRoll-Items>"
     give_item_failed: "No se pudo crear ese ítem (¿RPGRoll-Items instalado? ¿id correcto?)"

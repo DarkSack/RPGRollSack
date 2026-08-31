@@ -1,5 +1,7 @@
 package com.sack.rpgroll.items.gui.editor;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
@@ -96,7 +98,7 @@ public class DisplayEditorGUI extends InventoryGUI {
 
         setItem(CMD_SLOT, new ItemBuilder(Material.PAPER)
                 .setName(lang.component("editor.display.cmd_label"))
-                .setLore(Component.text(session.customModelData == null ? lang.raw("editor.display.cmd_undefined")
+                .setLore(ComponentUtils.parseWithDefault(session.customModelData == null ? lang.raw("editor.display.cmd_undefined")
                         : String.valueOf(session.customModelData), NamedTextColor.GRAY),
                         lang.component("editor.display.cmd_hint"))
                 .build());

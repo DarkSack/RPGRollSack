@@ -1,5 +1,7 @@
 package com.sack.rpgroll.guilds.command;
 
+import com.sack.rpgroll.common.command.Senders;
+
 import com.sack.rpgroll.guilds.GuildServices;
 import com.sack.rpgroll.guilds.gui.guild.GuildBrowserGUI;
 import com.sack.rpgroll.guilds.gui.guild.GuildQuestAdminBrowserGUI;
@@ -51,7 +53,7 @@ public class GuildAdminCommand implements CommandExecutor, TabCompleter {
             }
             case "browser" -> {
 
-                if (!(sender instanceof Player player)) {
+                if (!(Senders.asPlayer(sender) instanceof Player player)) {
                     services.langManager().send(sender, "guildadmin.browser.players_only");
                     return true;
                 }

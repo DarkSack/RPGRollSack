@@ -1,5 +1,7 @@
 package com.sack.rpgroll.traps.command;
 
+import com.sack.rpgroll.common.command.Senders;
+
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.traps.TrapsPlugin;
 import com.sack.rpgroll.traps.core.TrapDefinition;
@@ -106,7 +108,7 @@ public class TrapAdminCommand implements CommandExecutor, TabCompleter {
     }
 
     private Player requirePlayer(CommandSender sender) {
-        if (sender instanceof Player player) {
+        if (Senders.asPlayer(sender) instanceof Player player) {
             return player;
         }
         lang.send(sender, "general.player_only");
@@ -263,7 +265,7 @@ public class TrapAdminCommand implements CommandExecutor, TabCompleter {
             return;
         }
 
-        Player asPlayer = sender instanceof Player p ? p : null;
+        Player asPlayer = Senders.asPlayer(sender) instanceof Player p ? p : null;
         boolean triggered = engine.forceTrigger(args[1], asPlayer);
 
         lang.send(sender, triggered ? "admin.forcetrigger.ok" : "admin.forcetrigger.failed", "placement", args[1]);
@@ -301,7 +303,8 @@ public class TrapAdminCommand implements CommandExecutor, TabCompleter {
             return;
         }
 
-        TurretDefinition turret = new TurretDefinition(id, id, "", 12.0, true, true, 20, List.of(), null, null, null);
+        TurretDefinition turret = new TurretDefinition(id, id, "", 12.0, true, true, 20, List.of(), null, null, null,
+                null, 0, -1);
 
         turretManager.save(turret);
         lang.send(sender, "admin.turret.create.ok", "id", id);

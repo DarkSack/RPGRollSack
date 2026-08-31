@@ -1,5 +1,7 @@
 package com.sack.rpgroll.guilds.gui.guild;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
@@ -67,14 +69,13 @@ public class GuildUpgradeTreeGUI extends InventoryGUI {
             double cost = branch.upgradeCost(level);
 
             setItem(i, new ItemBuilder(iconFor(branch))
-                    .setName(Component.text(lang().raw("guild.upgrade.branch_level", "branch", branch.displayName(lang()),
+                    .setName(ComponentUtils.parseWithDefault(lang().raw("guild.upgrade.branch_level", "branch", branch.displayName(lang()),
                             "level", level, "max", GuildUpgradeBranch.MAX_LEVEL), NamedTextColor.YELLOW))
                     .setLore(
                             Component.text(branch.description(lang()), NamedTextColor.GRAY),
-                            maxed ? Component.text(lang().raw("guild.upgrade.max_level"), NamedTextColor.GREEN)
-                                    : Component.text(lang().raw("guild.upgrade.cost", "cost", cost), NamedTextColor.GOLD),
-                            maxed ? Component.empty() : Component.text(lang().raw("guild.upgrade.click_hint"),
-                                    NamedTextColor.AQUA))
+                            maxed ? ComponentUtils.parseWithDefault(lang().raw("guild.upgrade.max_level"), NamedTextColor.GREEN)
+                                    : ComponentUtils.parseWithDefault(lang().raw("guild.upgrade.cost", "cost", cost), NamedTextColor.GOLD),
+                            maxed ? Component.empty() : ComponentUtils.parseWithDefault(lang().raw("guild.upgrade.click_hint"), NamedTextColor.AQUA))
                     .build());
         }
 

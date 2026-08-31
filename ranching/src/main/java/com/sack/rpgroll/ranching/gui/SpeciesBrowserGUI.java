@@ -1,5 +1,7 @@
 package com.sack.rpgroll.ranching.gui;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.ranching.core.species.Species;
@@ -30,7 +32,7 @@ public class SpeciesBrowserGUI extends InventoryGUI {
 
     public SpeciesBrowserGUI(Player player, SpeciesManager speciesManager, ChatPromptManager chatPromptManager,
             Runnable onBack) {
-        super(player, Component.text(chatPromptManager.lang().raw("gui.hub.species"), NamedTextColor.GOLD), SIZE);
+        super(player, ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.hub.species"), NamedTextColor.GOLD), SIZE);
         this.speciesManager = speciesManager;
         this.chatPromptManager = chatPromptManager;
         this.onBack = onBack;
@@ -52,14 +54,14 @@ public class SpeciesBrowserGUI extends InventoryGUI {
 
             setItem(i, new ItemBuilder(parseMaterial(entry.icon(), Material.COW_SPAWN_EGG))
                     .setName(Component.text(entry.displayName(), NamedTextColor.YELLOW))
-                    .setLore(Component.text(chatPromptManager.lang().raw("gui.browser.id_line", "id", entry.id()), NamedTextColor.GRAY),
-                            Component.text(chatPromptManager.lang().raw("gui.species.browser.entity_line", "entity", entry.entityType()), NamedTextColor.GRAY),
-                            Component.text(chatPromptManager.lang().raw("gui.common.click_to_edit"), NamedTextColor.YELLOW))
+                    .setLore(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.browser.id_line", "id", entry.id()), NamedTextColor.GRAY),
+                            ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.species.browser.entity_line", "entity", entry.entityType()), NamedTextColor.GRAY),
+                            ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.common.click_to_edit"), NamedTextColor.YELLOW))
                     .build());
         }
 
         setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.species.browser.new"), NamedTextColor.GREEN)).build());
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.species.browser.new"), NamedTextColor.GREEN)).build());
         setItem(BACK_SLOT, ItemBuilder.createCancelButton(chatPromptManager.lang().raw("gui.common.back")));
     }
 
@@ -90,7 +92,7 @@ public class SpeciesBrowserGUI extends InventoryGUI {
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 
             if (speciesManager.exists(id)) {
-                player.sendMessage(Component.text(chatPromptManager.lang().raw("gui.species.browser.already_exists"), NamedTextColor.RED));
+                player.sendMessage(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.species.browser.already_exists"), NamedTextColor.RED));
                 reopen();
                 return;
             }

@@ -1,5 +1,7 @@
 package com.sack.rpgroll.crates.command;
 
+import com.sack.rpgroll.common.command.Senders;
+
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.crates.CratesPlugin;
 import com.sack.rpgroll.crates.core.Crate;
@@ -109,7 +111,7 @@ public class CrateAdminCommand implements CommandExecutor, TabCompleter {
     /** @return el sender como Player, o null (ya avisado) si no lo es — usado por los subcomandos que necesitan mirar un bloque o abrir una GUI. */
     private Player requirePlayer(CommandSender sender) {
 
-        if (sender instanceof Player player) {
+        if (Senders.asPlayer(sender) instanceof Player player) {
             return player;
         }
 

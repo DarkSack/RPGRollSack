@@ -1,5 +1,7 @@
 package com.sack.rpgroll.items.command;
 
+import com.sack.rpgroll.common.command.Senders;
+
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.items.core.ItemDefinition;
 import com.sack.rpgroll.items.core.ItemManager;
@@ -53,7 +55,7 @@ public class ItemCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
-        if (!(sender instanceof Player player)) {
+        if (!(Senders.asPlayer(sender) instanceof Player player)) {
             langManager.send(sender, "command.item.player_only");
             return true;
         }
@@ -171,7 +173,7 @@ public class ItemCommand implements CommandExecutor, TabCompleter {
             return TabCompleteUtil.filter(args[0], SUBCOMMANDS);
         }
 
-        if (args.length == 2 && "socket".equalsIgnoreCase(args[0]) && sender instanceof Player player) {
+        if (args.length == 2 && "socket".equalsIgnoreCase(args[0]) && Senders.asPlayer(sender) instanceof Player player) {
 
             ItemStack held = player.getInventory().getItemInMainHand();
             Optional<ItemDefinition> definitionOpt = instanceService.getId(held).flatMap(itemManager::get);

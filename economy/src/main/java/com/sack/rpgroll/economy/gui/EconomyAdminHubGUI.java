@@ -1,5 +1,7 @@
 package com.sack.rpgroll.economy.gui;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.economy.currency.CurrencyManager;
 import com.sack.rpgroll.economy.market.MarketEngine;
@@ -34,7 +36,7 @@ public class EconomyAdminHubGUI extends InventoryGUI {
 
     public EconomyAdminHubGUI(Player player, CurrencyManager currencyManager, MarketProductManager marketProductManager,
             MarketEngine marketEngine, TaxRuleManager taxRuleManager, ChatPromptManager chatPromptManager) {
-        super(player, Component.text(chatPromptManager.lang().raw("studio.title"), NamedTextColor.GOLD), SIZE);
+        super(player, ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("studio.title"), NamedTextColor.GOLD), SIZE);
         this.currencyManager = currencyManager;
         this.marketProductManager = marketProductManager;
         this.marketEngine = marketEngine;
@@ -60,7 +62,7 @@ public class EconomyAdminHubGUI extends InventoryGUI {
 
     private org.bukkit.inventory.ItemStack button(Material material, String label, int count) {
         return new ItemBuilder(material)
-                .setName(Component.text(lang.raw("studio.button_format", "label", label, "count", count), NamedTextColor.YELLOW))
+                .setName(ComponentUtils.parseWithDefault(lang.raw("studio.button_format", "label", label, "count", count), NamedTextColor.YELLOW))
                 .setLore(lang.component("common.click_manage"))
                 .build();
     }

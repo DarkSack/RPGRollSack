@@ -35,7 +35,7 @@ public class ShopListGUI extends InventoryGUI {
 
     public ShopListGUI(Player player, ShopManager shopManager, CurrencyManager currencyManager, TaxEngine taxEngine,
             ChatPromptManager chatPromptManager) {
-        super(player, Component.text(chatPromptManager.lang().raw("shop.list.title"), NamedTextColor.GOLD), SIZE);
+        super(player, ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("shop.list.title"), NamedTextColor.GOLD), SIZE);
         this.shopManager = shopManager;
         this.currencyManager = currencyManager;
         this.taxEngine = taxEngine;

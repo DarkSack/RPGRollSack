@@ -1,5 +1,7 @@
 package com.sack.rpgroll.crafting.gui;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.common.lang.LangManager;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
@@ -37,7 +39,7 @@ public class ChatPromptManager implements Listener {
 
     public void prompt(Player player, String question, Consumer<String> callback) {
         player.sendMessage(Component.text(question, NamedTextColor.YELLOW));
-        player.sendMessage(Component.text(lang.raw("chat_prompt.footer"), NamedTextColor.GRAY));
+        player.sendMessage(ComponentUtils.parseWithDefault(lang.raw("chat_prompt.footer"), NamedTextColor.GRAY));
         pending.put(player.getUniqueId(), callback);
     }
 
@@ -56,7 +58,7 @@ public class ChatPromptManager implements Listener {
 
         Bukkit.getScheduler().runTask(plugin, () -> {
             if (message.equalsIgnoreCase(lang.raw("chat_prompt.cancel_keyword"))) {
-                event.getPlayer().sendMessage(Component.text(lang.raw("chat_prompt.cancelled"), NamedTextColor.RED));
+                event.getPlayer().sendMessage(ComponentUtils.parseWithDefault(lang.raw("chat_prompt.cancelled"), NamedTextColor.RED));
                 return;
             }
             callback.accept(message);

@@ -1,5 +1,7 @@
 package com.sack.rpgroll.workers.core.economy;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.workers.core.worker.Worker;
 import com.sack.rpgroll.workers.core.worker.WorkerManager;
@@ -76,7 +78,7 @@ public class WageTask extends BukkitRunnable {
         Player employer = worker.employerId() != null ? Bukkit.getPlayer(worker.employerId()) : null;
 
         if (employer != null) {
-            employer.sendMessage(Component.text(lang.raw(key), NamedTextColor.YELLOW));
+            employer.sendMessage(ComponentUtils.parseWithDefault(lang.raw(key), NamedTextColor.YELLOW));
         }
     }
 

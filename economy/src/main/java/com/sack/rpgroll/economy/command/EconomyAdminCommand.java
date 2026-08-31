@@ -1,5 +1,7 @@
 package com.sack.rpgroll.economy.command;
 
+import com.sack.rpgroll.common.command.Senders;
+
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.economy.currency.CurrencyManager;
 import com.sack.rpgroll.economy.gui.ChatPromptManager;
@@ -67,7 +69,7 @@ public class EconomyAdminCommand implements CommandExecutor, TabCompleter {
 
         switch (args[0].toLowerCase()) {
             case "browser" -> {
-                if (sender instanceof Player player) {
+                if (Senders.asPlayer(sender) instanceof Player player) {
                     new EconomyAdminHubGUI(player, currencyManager, marketProductManager, marketEngine, taxRuleManager,
                             chatPromptManager).open();
                 } else {

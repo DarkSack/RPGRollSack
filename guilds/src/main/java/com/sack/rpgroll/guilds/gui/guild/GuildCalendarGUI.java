@@ -66,12 +66,12 @@ public class GuildCalendarGUI extends InventoryGUI {
                     .setLore(Component.text(event.type() + " · " + format.format(new Date(event.scheduledAtMillis())),
                             NamedTextColor.GRAY),
                             Component.text(event.description(), NamedTextColor.GRAY),
-                            Component.text(lang().raw("guild.calendar.lore.shift_click_delete"), NamedTextColor.DARK_GRAY))
+                            ComponentUtils.parseWithDefault(lang().raw("guild.calendar.lore.shift_click_delete"), NamedTextColor.DARK_GRAY))
                     .build());
         }
 
         setItem(ADD_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text(lang().raw("guild.calendar.button.add"), NamedTextColor.GREEN))
+                .setName(ComponentUtils.parseWithDefault(lang().raw("guild.calendar.button.add"), NamedTextColor.GREEN))
                 .build());
 
         setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang().raw("common.back")));

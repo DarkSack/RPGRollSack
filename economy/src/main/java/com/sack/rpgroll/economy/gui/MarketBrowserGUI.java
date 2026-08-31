@@ -33,7 +33,7 @@ public class MarketBrowserGUI extends InventoryGUI {
 
     public MarketBrowserGUI(Player player, MarketProductManager productManager, MarketEngine marketEngine,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text(chatPromptManager.lang().raw("market.browser.title"), NamedTextColor.GOLD), SIZE);
+        super(player, ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("market.browser.title"), NamedTextColor.GOLD), SIZE);
         this.productManager = productManager;
         this.marketEngine = marketEngine;
         this.chatPromptManager = chatPromptManager;

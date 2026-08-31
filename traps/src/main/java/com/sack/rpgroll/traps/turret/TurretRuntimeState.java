@@ -14,4 +14,7 @@ final class TurretRuntimeState {
     UUID targetEntity;
     long nextFireAtMillis;
 
+
+    /** Yaw acumulado del giro en reposo, en grados. */
+    public float idleYaw;
 }

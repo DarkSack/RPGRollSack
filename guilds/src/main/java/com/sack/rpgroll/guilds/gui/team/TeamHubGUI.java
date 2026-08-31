@@ -1,5 +1,7 @@
 package com.sack.rpgroll.guilds.gui.team;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.guilds.gui.ChatPromptManager;
@@ -82,7 +84,7 @@ public class TeamHubGUI extends InventoryGUI {
 
         if (team == null) {
             setItem(22, new ItemBuilder(Material.BARRIER)
-                    .setName(Component.text(lang().raw("team.hub.not_in_team"), NamedTextColor.RED))
+                    .setName(ComponentUtils.parseWithDefault(lang().raw("team.hub.not_in_team"), NamedTextColor.RED))
                     .build());
             setItem(CLOSE_SLOT, ItemBuilder.createCancelButton(lang().raw("common.close")));
             return;
@@ -97,13 +99,13 @@ public class TeamHubGUI extends InventoryGUI {
             setItem(MEMBERS_START + i, ItemBuilder.skull(null)
                     .setName(Component.text((offline.getName() != null ? offline.getName() : memberId.toString())
                             + " — " + role, role == TeamRole.LEADER ? NamedTextColor.GOLD : NamedTextColor.YELLOW))
-                    .setLore(Component.text(lang().raw("team.hub.lore.change_role"), NamedTextColor.GRAY),
-                            Component.text(lang().raw("team.hub.lore.kick"), NamedTextColor.GRAY))
+                    .setLore(ComponentUtils.parseWithDefault(lang().raw("team.hub.lore.change_role"), NamedTextColor.GRAY),
+                            ComponentUtils.parseWithDefault(lang().raw("team.hub.lore.kick"), NamedTextColor.GRAY))
                     .build());
         }
 
         setItem(INVITE_SLOT, new ItemBuilder(Material.PLAYER_HEAD)
-                .setName(Component.text(lang().raw("team.hub.button.invite"), NamedTextColor.GREEN))
+                .setName(ComponentUtils.parseWithDefault(lang().raw("team.hub.button.invite"), NamedTextColor.GREEN))
                 .build());
 
         setItem(NAME_SLOT, new ItemBuilder(Material.NAME_TAG)
@@ -111,20 +113,18 @@ public class TeamHubGUI extends InventoryGUI {
                 .build());
 
         setItem(COLOR_SLOT, new ItemBuilder(Material.WHITE_DYE)
-                .setName(Component.text(lang().raw("team.hub.color_label", "color", team.color()), NamedTextColor.YELLOW))
-                .setLore(Component.text(lang().raw("team.hub.lore.click_to_change"), NamedTextColor.GRAY))
+                .setName(ComponentUtils.parseWithDefault(lang().raw("team.hub.color_label", "color", team.color()), NamedTextColor.YELLOW))
+                .setLore(ComponentUtils.parseWithDefault(lang().raw("team.hub.lore.click_to_change"), NamedTextColor.GRAY))
                 .build());
 
         setItem(MAX_PLAYERS_SLOT, new ItemBuilder(Material.PLAYER_HEAD)
-                .setName(Component.text(lang().raw("team.hub.max_players_label", "amount", team.maxPlayers()),
-                        NamedTextColor.YELLOW))
-                .setLore(Component.text(lang().raw("team.hub.lore.plus_minus_one"), NamedTextColor.GRAY))
+                .setName(ComponentUtils.parseWithDefault(lang().raw("team.hub.max_players_label", "amount", team.maxPlayers()), NamedTextColor.YELLOW))
+                .setLore(ComponentUtils.parseWithDefault(lang().raw("team.hub.lore.plus_minus_one"), NamedTextColor.GRAY))
                 .build());
 
         setItem(MIN_LEVEL_SLOT, new ItemBuilder(Material.EXPERIENCE_BOTTLE)
-                .setName(Component.text(lang().raw("team.hub.min_level_label", "level", team.minLevel()),
-                        NamedTextColor.YELLOW))
-                .setLore(Component.text(lang().raw("team.hub.lore.plus_minus_one"), NamedTextColor.GRAY))
+                .setName(ComponentUtils.parseWithDefault(lang().raw("team.hub.min_level_label", "level", team.minLevel()), NamedTextColor.YELLOW))
+                .setLore(ComponentUtils.parseWithDefault(lang().raw("team.hub.lore.plus_minus_one"), NamedTextColor.GRAY))
                 .build());
 
         setItem(SHARE_XP_SLOT, toggleItem(lang().raw("team.hub.share_xp"), team.shareXp()));
@@ -137,8 +137,7 @@ public class TeamHubGUI extends InventoryGUI {
         setItem(BUFF_SPEED_SLOT, buffItem(team, TeamBuff.SPEED_BOOST));
 
         setItem(LEAVE_SLOT, new ItemBuilder(Material.REDSTONE_BLOCK)
-                .setName(Component.text(lang().raw(team.size() <= 1 ? "team.hub.button.disband" : "team.hub.button.leave"),
-                        NamedTextColor.RED))
+                .setName(ComponentUtils.parseWithDefault(lang().raw(team.size() <= 1 ? "team.hub.button.disband" : "team.hub.button.leave"), NamedTextColor.RED))
                 .build());
 
         setItem(CLOSE_SLOT, ItemBuilder.createCancelButton(lang().raw("common.close")));
@@ -148,7 +147,7 @@ public class TeamHubGUI extends InventoryGUI {
         return new ItemBuilder(enabled ? Material.LIME_DYE : Material.GRAY_DYE)
                 .setName(Component.text(label + ": " + (enabled ? lang().raw("common.yes") : lang().raw("common.no")),
                         enabled ? NamedTextColor.GREEN : NamedTextColor.GRAY))
-                .setLore(Component.text(lang().raw("team.hub.lore.click_to_toggle"), NamedTextColor.GRAY))
+                .setLore(ComponentUtils.parseWithDefault(lang().raw("team.hub.lore.click_to_toggle"), NamedTextColor.GRAY))
                 .build();
     }
 
@@ -330,7 +329,7 @@ public class TeamHubGUI extends InventoryGUI {
         return new ItemBuilder(enabled ? Material.LIME_DYE : Material.GRAY_DYE)
                 .setName(Component.text(buff.displayName(lang()) + " +" + (int) (buff.percent() * 100) + "%",
                         enabled ? NamedTextColor.GREEN : NamedTextColor.GRAY))
-                .setLore(Component.text(lang().raw(enabled ? "team.hub.lore.click_deactivate"
+                .setLore(ComponentUtils.parseWithDefault(lang().raw(enabled ? "team.hub.lore.click_deactivate"
                         : "team.hub.lore.click_activate"), NamedTextColor.GRAY))
                 .build();
     }

@@ -29,7 +29,7 @@ public class ScheduleBrowserGUI extends InventoryGUI {
 
     public ScheduleBrowserGUI(Player player, ScheduleManager scheduleManager, ChatPromptManager chatPromptManager,
             Runnable onBack) {
-        super(player, Component.text(chatPromptManager.lang().raw("gui.schedule.browser.title"), NamedTextColor.GOLD), SIZE);
+        super(player, ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.schedule.browser.title"), NamedTextColor.GOLD), SIZE);
         this.scheduleManager = scheduleManager;
         this.chatPromptManager = chatPromptManager;
         this.onBack = onBack;
@@ -51,16 +51,16 @@ public class ScheduleBrowserGUI extends InventoryGUI {
 
             setItem(i, new ItemBuilder(Material.CLOCK)
                     .setName(ComponentUtils.parse(schedule.displayName()))
-                    .setLore(Component.text(chatPromptManager.lang().raw("gui.profession.browser.id_label", "id",
+                    .setLore(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.profession.browser.id_label", "id",
                             schedule.id()), NamedTextColor.GRAY),
-                            Component.text(chatPromptManager.lang().raw("gui.schedule.browser.entries_label", "count",
+                            ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.schedule.browser.entries_label", "count",
                                     schedule.entries().size()), NamedTextColor.GRAY),
-                            Component.text(chatPromptManager.lang().raw("gui.common.click_to_edit"), NamedTextColor.YELLOW))
+                            ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.common.click_to_edit"), NamedTextColor.YELLOW))
                     .build());
         }
 
         setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)
-                .setName(Component.text(chatPromptManager.lang().raw("gui.schedule.browser.new"), NamedTextColor.GREEN))
+                .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.schedule.browser.new"), NamedTextColor.GREEN))
                 .build());
         setItem(BACK_SLOT, ItemBuilder.createCancelButton(chatPromptManager.lang().raw("gui.common.back")));
     }
@@ -92,8 +92,7 @@ public class ScheduleBrowserGUI extends InventoryGUI {
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 
             if (scheduleManager.exists(id)) {
-                player.sendMessage(Component.text(chatPromptManager.lang().raw("gui.schedule.browser.duplicate_id"),
-                        NamedTextColor.RED));
+                player.sendMessage(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.schedule.browser.duplicate_id"), NamedTextColor.RED));
                 reopen();
                 return;
             }
