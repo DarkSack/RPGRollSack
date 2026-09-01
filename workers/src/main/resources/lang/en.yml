@@ -8,10 +8,10 @@ command:
   workers:
     usage: |-
       &eUsage: /workers
-      &7 • &finspect
-      &7 • &fhire
-      &7 • &ffire
-      &7 • &flist
+      &7 • &binspect
+      &7 • &ahire
+      &7 • &efire
+      &7 • &dlist
     look_at_worker: "Look directly at a tracked worker."
     already_employed: "It already has an employer."
     hired: "✔ Hired."
@@ -21,7 +21,12 @@ command:
     list_entry: "- {profession} #{id}"
   admin:
     no_permission: "You don't have permission to use this command."
-    usage: "Usage: /workersadmin <browser|reload|spawn <profession> [name]|designator>"
+    usage: |-
+      Usage: /workersadmin
+      &7 • &bbrowser
+      &7 • &areload
+      &7 • &espawn <profession> [name]
+      &7 • &ddesignator
     player_only_browser: "Only a player can open the Worker Studio."
     reloaded: "✔ RPGRoll-Workers reloaded."
     player_only_spawn: "Only a player can spawn a worker."

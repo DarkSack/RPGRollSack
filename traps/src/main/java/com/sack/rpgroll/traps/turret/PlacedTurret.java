@@ -12,7 +12,9 @@ import java.util.Objects;
  * memoria, ver {@link TurretEngine}, no algo que valga la pena persistir).
  */
 public record PlacedTurret(String placementId, String turretId, String world, int x, int y, int z,
-        java.util.UUID owner) {
+        java.util.UUID owner,
+        java.util.Map<String, Integer> ammo,
+        TurretTargeting targeting) {
 
     /**
      * @param owner quién la colocó. Solo esa persona (o un admin) puede
@@ -21,6 +23,9 @@ public record PlacedTurret(String placementId, String turretId, String world, in
      *              sacar un admin.
      */
     public PlacedTurret {
+        // Copia defensiva: el motor consume munición y no debe poder mutar
+        // el estado guardado sin pasar por el manager.
+        ammo = ammo == null ? java.util.Map.of() : java.util.Map.copyOf(ammo);
         Objects.requireNonNull(placementId, "placementId no puede ser null");
         Objects.requireNonNull(turretId, "turretId no puede ser null");
         Objects.requireNonNull(world, "world no puede ser null");

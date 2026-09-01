@@ -6,7 +6,7 @@ import com.sack.rpgroll.effects.core.EffectComponent;
 import com.sack.rpgroll.effects.core.EffectComponentType;
 import com.sack.rpgroll.effects.core.EffectTriggerType;
 import com.sack.rpgroll.effects.runtime.ActiveEffect;
-import com.sack.rpgroll.sackeffects.api.SackEffectsAPI;
+import com.sack.rpgroll.fx.api.RPGRollFXAPI;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -32,8 +32,8 @@ import java.util.Optional;
  * atributo/sonido inválido en el YAML) solo loguea un warning y no afecta a
  * los demás componentes ni al resto del efecto.
  * <p>
- * VISUAL/SOUND delegan en {@code SackEffectsAPI} (dependencia blanda — si
- * RPGRoll-Particles no está instalado, esos componentes simplemente no hacen
+ * VISUAL/SOUND delegan en {@code RPGRollFXAPI} (dependencia blanda — si
+ * RPGRoll-FX no está instalado, esos componentes simplemente no hacen
  * nada) y solo tienen efecto sobre {@link Player}, ya que esa API solo
  * acepta un Player como "caster".
  */
@@ -62,7 +62,7 @@ public class EffectComponentExecutor {
                 execute(target, activeEffect, component, trigger);
             } catch (Throwable e) {
                 // Throwable (no solo Exception) a propósito: VISUAL/AURA dependen de otros
-                // plugins vía softdepend (RPGRoll-Particles) — si no están instalados, resolver esa
+                // plugins vía softdepend (RPGRoll-FX) — si no están instalados, resolver esa
                 // clase lanza NoClassDefFoundError, no una Exception normal.
                 plugin.getLogger().warning("✘ Error ejecutando componente " + component.type() + " del efecto '"
                         + activeEffect.definition().id() + "': " + e.getMessage());
@@ -209,18 +209,18 @@ public class EffectComponentExecutor {
         target.addPotionEffect(new PotionEffect(type, durationTicks, amplifier, false, true));
     }
 
-    // ============ VISUAL / SOUND (delega en RPGRoll-Particles) ============
+    // ============ VISUAL / SOUND (delega en RPGRoll-FX) ============
 
     private void executeVisual(LivingEntity target, EffectComponent component) {
 
-        if (!(target instanceof Player player) || !SackEffectsAPI.isReady()) {
+        if (!(target instanceof Player player) || !RPGRollFXAPI.isReady()) {
             return;
         }
 
         String sackEffectId = component.param("effect", null);
 
         if (sackEffectId != null) {
-            SackEffectsAPI.get().play(sackEffectId, player);
+            RPGRollFXAPI.get().play(sackEffectId, player);
         }
     }
 

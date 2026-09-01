@@ -53,7 +53,7 @@ public class SpeciesBrowserGUI extends InventoryGUI {
             Species entry = species.get(i);
 
             setItem(i, new ItemBuilder(parseMaterial(entry.icon(), Material.COW_SPAWN_EGG))
-                    .setName(Component.text(entry.displayName(), NamedTextColor.YELLOW))
+                    .setName(ComponentUtils.parseWithDefault(entry.displayName(), NamedTextColor.YELLOW))
                     .setLore(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.browser.id_line", "id", entry.id()), NamedTextColor.GRAY),
                             ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.species.browser.entity_line", "entity", entry.entityType()), NamedTextColor.GRAY),
                             ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.common.click_to_edit"), NamedTextColor.YELLOW))

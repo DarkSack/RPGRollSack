@@ -169,6 +169,13 @@ admin_setrace:
   error: "&cError al cambiar la raza."
 
 # Comando /rpg admin resetstats
+admin_restore:
+  usage: "&cUso: {usage}"
+  unknown_kind: "&cNo entiendo '{value}'. Usa: vida, mana, o nada para las dos."
+  success: "&a✔ {player} restaurado — vida: {health}, maná: {mana}."
+  notify_target: "&a✦ Un admin te restauró — vida: {health}, maná: {mana}."
+  error: "&cNo se pudo restaurar al jugador."
+
 admin_resetstats:
   usage: "&cUso: {usage}"
   success: "&a✔ Atributos de {player} reiniciados. {points} punto(s) de estadística disponibles para reasignar."
@@ -246,7 +253,7 @@ race_browser_gui:
   click_to_edit: "&eClick para editar"
   create_new: "&aCrear raza nueva"
   close_button: "Cerrar"
-  prompt_new: "Escribí el id de la nueva raza:"
+  prompt_new: "Escribe el id de la nueva raza:"
   already_exists: "&cYa existe una raza con ese id."
 
 # GUI: navegador de clases (admin)
@@ -256,7 +263,7 @@ class_browser_gui:
   click_to_edit: "&eClick para editar"
   create_new: "&aCrear clase nueva"
   close_button: "Cerrar"
-  prompt_new: "Escribí el id de la nueva clase:"
+  prompt_new: "Escribe el id de la nueva clase:"
   already_exists: "&cYa existe una clase con ese id."
 
 # GUI: editor de una raza (admin)
@@ -277,11 +284,11 @@ race_editor_gui:
   speed_slot_name: "&eVelocidad: {percent}%"
   speed_slot_lore: "&7Click: +5% · Click derecho: -5%"
   back_button: "Volver"
-  prompt_name: "Escribí el nuevo nombre:"
-  prompt_description: "Escribí la nueva descripción:"
-  prompt_attributes: "Escribí los atributos separados por comas (ej. STR=3,CON=2):"
-  prompt_passive_traits: "Escribí los ids de traits pasivos separados por comas:"
-  prompt_lore: "Escribí las líneas de lore separadas por ';':"
+  prompt_name: "Escribe el nuevo nombre:"
+  prompt_description: "Escribe la nueva descripción:"
+  prompt_attributes: "Escribe los atributos separados por comas (ej. STR=3,CON=2):"
+  prompt_passive_traits: "Escribe los ids de traits pasivos separados por comas:"
+  prompt_lore: "Escribe las líneas de lore separadas por ';':"
 
 # GUI: editor de una clase (admin)
 class_editor_gui:
@@ -297,11 +304,11 @@ class_editor_gui:
   lore_slot_name: "&eLore: {count} línea(s)"
   lore_slot_lore: "&7Click para escribir todas separadas por ';'"
   back_button: "Volver"
-  prompt_name: "Escribí el nuevo nombre:"
-  prompt_description: "Escribí la nueva descripción:"
-  prompt_attributes: "Escribí los atributos separados por comas (ej. STR=3,CON=2):"
-  prompt_passive_traits: "Escribí los ids de traits pasivos separados por comas:"
-  prompt_lore: "Escribí las líneas de lore separadas por ';':"
+  prompt_name: "Escribe el nuevo nombre:"
+  prompt_description: "Escribe la nueva descripción:"
+  prompt_attributes: "Escribe los atributos separados por comas (ej. STR=3,CON=2):"
+  prompt_passive_traits: "Escribe los ids de traits pasivos separados por comas:"
+  prompt_lore: "Escribe las líneas de lore separadas por ';':"
 
 # GUI: editor de un trabajo (admin)
 job_editor_gui:
@@ -323,12 +330,12 @@ job_editor_gui:
   exploration_slot_name: "&eExploración: {money} oro/bioma, {blocks} bloques"
   exploration_slot_lore: "&7Click para escribir (oro-bioma;xp-bioma;bloques;oro-dist;xp-dist)"
   back_button: "Volver"
-  prompt_name: "Escribí el nuevo nombre:"
-  prompt_description: "Escribí la nueva descripción:"
-  prompt_rewards: "Escribí: target;oro;xp (ej. DIAMOND_ORE;5;20):"
+  prompt_name: "Escribe el nuevo nombre:"
+  prompt_description: "Escribe la nueva descripción:"
+  prompt_rewards: "Escribe: target;oro;xp (ej. DIAMOND_ORE;5;20):"
   invalid_format: "&cFormato inválido."
   rewards_not_numeric: "&cOro y XP deben ser numéricos."
-  prompt_exploration: "Escribí: oro-bioma;xp-bioma;bloques;oro-distancia;xp-distancia (ej. 50;100;500;10;20):"
+  prompt_exploration: "Escribe: oro-bioma;xp-bioma;bloques;oro-distancia;xp-distancia (ej. 50;100;500;10;20):"
   exploration_missing_values: "&cHacen falta 5 valores."
   exploration_not_numeric: "&cTodos los valores deben ser numéricos."
 
@@ -348,8 +355,8 @@ skill_editor_gui:
   damage_slot_name: "&eMultiplicador de daño: {multiplier}"
   damage_slot_lore: "&7Click: +0.1 · Click derecho: -0.1"
   back_button: "Volver"
-  prompt_name: "Escribí el nuevo nombre:"
-  prompt_description: "Escribí la nueva descripción:"
+  prompt_name: "Escribe el nuevo nombre:"
+  prompt_description: "Escribe la nueva descripción:"
 
 # GUI: editor de un trait (admin)
 trait_editor_gui:
@@ -366,9 +373,9 @@ trait_editor_gui:
   effect_lore_line3: "&7HP {hp} · MP {mp} · DMG {dmg} · DEF {def}"
   effect_lore_hint: "&8Click para escribir todos (str,dex,con,int,wis,cha,hp,mp,dmg,def)"
   back_button: "Volver"
-  prompt_name: "Escribí el nuevo nombre:"
-  prompt_description: "Escribí la nueva descripción:"
-  prompt_effect: "Escribí 10 valores separados por comas (str,dex,con,int,wis,cha,hp,mp,dmg,def):"
+  prompt_name: "Escribe el nuevo nombre:"
+  prompt_description: "Escribe la nueva descripción:"
+  prompt_effect: "Escribe 10 valores separados por comas (str,dex,con,int,wis,cha,hp,mp,dmg,def):"
   effect_missing_values: "&cHacen falta 10 valores."
   effect_values_not_numeric: "&cTodos los valores deben ser numéricos."
 
@@ -488,7 +495,7 @@ job_browser_gui:
   create_new: "&aCrear trabajo nuevo"
   create_new_lore: "&8Recordá: sin listener Java propio, no otorgará XP solo."
   close_button: "Cerrar"
-  prompt_new: "Escribí el id del nuevo trabajo:"
+  prompt_new: "Escribe el id del nuevo trabajo:"
   already_exists: "&cYa existe un trabajo con ese id."
 
 # GUI: navegador de skills (admin)
@@ -498,7 +505,7 @@ skill_browser_gui:
   click_to_edit: "&eClick para editar"
   create_new: "&aCrear skill nueva"
   close_button: "Cerrar"
-  prompt_new: "Escribí el id de la nueva skill:"
+  prompt_new: "Escribe el id de la nueva skill:"
   already_exists: "&cYa existe una skill con ese id."
 
 # GUI: navegador de traits (admin)
@@ -508,7 +515,7 @@ trait_browser_gui:
   click_to_edit: "&eClick para editar"
   create_new: "&aCrear trait nuevo"
   close_button: "Cerrar"
-  prompt_new: "Escribí el id del nuevo trait:"
+  prompt_new: "Escribe el id del nuevo trait:"
   already_exists: "&cYa existe un trait con ese id."
 
 # Comando /rpg class

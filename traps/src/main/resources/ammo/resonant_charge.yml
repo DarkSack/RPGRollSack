@@ -1,0 +1,11 @@
+# Carga resonante: alimenta el boom sónico de la torreta Warden.
+id: resonant_charge
+display-name: "&3Carga resonante"
+description: "&7Libera un estallido sónico al impactar."
+icon: ECHO_SHARD
+stack-size: 1
+
+impact:
+  type: SONIC_BOOM
+  params:
+    damage: "12"

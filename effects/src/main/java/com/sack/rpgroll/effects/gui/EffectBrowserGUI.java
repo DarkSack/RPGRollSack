@@ -80,7 +80,7 @@ public class EffectBrowserGUI extends InventoryGUI {
             Material icon = parseMaterial(effect.icon());
 
             setItem(i, new ItemBuilder(icon)
-                    .setName(Component.text(effect.displayName(), effect.rarity().color()))
+                    .setName(ComponentUtils.parseWithDefault(effect.displayName(), effect.rarity().color()))
                     .setLore(lang.component("gui.common.id_label", "id", effect.id()),
                             lang.component("gui.browser.item_category_components", "category", effect.category(),
                                     "count", effect.components().size()),

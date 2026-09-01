@@ -10,12 +10,12 @@ general:
 admin:
   usage: |-
     &cUsage: /crate
-    &7 • &fsetlocation
-    &7 • &fremovelocation
-    &7 • &fgivekey
-    &7 • &flist
-    &7 • &freload
-    &7 • &fbrowser
+    &7 • &bsetlocation
+    &7 • &aremovelocation
+    &7 • &egivekey
+    &7 • &dlist
+    &7 • &6reload
+    &7 • &9browser
   setlocation_usage: "&cUsage: /crate setlocation <crateId>"
   crate_not_found: "&cNo crate exists with id: {id}"
   must_look_at_block: "&cYou need to be looking at the crate's block."

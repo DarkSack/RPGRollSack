@@ -15,16 +15,16 @@ command:
   dungeon:
     usage: |-
       &eUso: /dungeon
-      &7 • &flist
-      &7 • &finfo
-      &7 • &finvite
-      &7 • &faccept
-      &7 • &fdecline
-      &7 • &fleaveparty
-      &7 • &fenter
+      &7 • &blist
+      &7 • &ainfo
+      &7 • &einvite
+      &7 • &daccept
+      &7 • &6decline
+      &7 • &9leaveparty
+      &7 • &center
       &7 • &fleave
-      &7 • &frevive
-      &7 • &franking
+      &7 • &5revive
+      &7 • &2ranking
     not_found: "&cA masmorra '{id}' não existe."
     player_not_found: "&cJogador não encontrado."
     not_in_run: "&cVocê não está em nenhuma corrida."
@@ -52,6 +52,7 @@ command:
     decline:
       ok: "&7Convite recusado."
     leaveparty:
+      players_only: "&cSó um jogador pode sair de um grupo."
       disbanded: "&7Grupo desfeito."
       left: "&7Você saiu do grupo."
     enter:
@@ -65,6 +66,7 @@ command:
       on_cooldown: "&cAlguém do grupo ainda está em cooldown para esta masmorra."
       difficulty_not_found: "&cA dificuldade '{difficulty}' não existe."
     leave:
+      players_only: "&cSó um jogador pode sair de uma masmorra."
       ok: "&7Você abandonou a masmorra."
     revive:
       players_only: "&cSó um jogador pode reviver um companheiro."
@@ -79,12 +81,12 @@ command:
     no_permission: "&cVocê não tem permissão para usar este comando."
     usage: |-
       &eUso: /dungeonadmin
-      &7 • &fcreate
-      &7 • &freload
-      &7 • &fforcestop
-      &7 • &fbrowser
-      &7 • &feditor
-      &7 • &fstructure
+      &7 • &bcreate
+      &7 • &areload
+      &7 • &eforcestop
+      &7 • &dbrowser
+      &7 • &6editor
+      &7 • &9structure
     players_only: "&cSó um jogador pode abrir o editor."
     not_found: "&cA masmorra '{id}' não existe."
     create:
@@ -100,7 +102,15 @@ command:
     editor:
       usage: "&eUso: /dungeonadmin editor <id>"
     structure:
-      usage: "&eUso: /dungeonadmin structure <list|info|paste|import|importschem|browser> [args]"
+      usage: |-
+        &eUso: /dungeonadmin structure
+        &7 • &blist
+        &7 • &ainfo
+        &7 • &epaste
+        &7 • &dimport
+        &7 • &6importschem
+        &7 • &9browser
+        &8   [args]
       not_found: "&cNão existe uma estrutura com id: {id}"
       list:
         header: "&6Biblioteca de Estruturas ({count}):"

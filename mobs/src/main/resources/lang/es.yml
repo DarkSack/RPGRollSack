@@ -3,19 +3,19 @@
 
 # Mensajes generales
 general:
-  no_permission: "&cNo tenés permiso para usar este comando."
+  no_permission: "&cNo tienes permiso para usar este comando."
 
 # Comando /mobadmin
 command:
   usage: |-
     &eUso: /mobadmin
-    &7 • &fspawn
-    &7 • &flist
-    &7 • &finfo
-    &7 • &freload
-    &7 • &fkillall
-    &7 • &fcreate
-    &7 • &fbrowser
+    &7 • &bspawn
+    &7 • &alist
+    &7 • &einfo
+    &7 • &dreload
+    &7 • &6killall
+    &7 • &9create
+    &7 • &cbrowser
     &7 • &feditor
   create_player_only: "&cSolo un jugador puede crear un mob."
   create_usage: "&eUso: /mobadmin create <id> [tipo-entidad-base]"
@@ -70,9 +70,9 @@ gui:
     click_minus5_25: "&7Click derecho: -5 · Shift-click derecho: -25"
     none_label: "(ninguno)"
     id_label: "&eID: {id}"
-    prompt_new_name: "Escribí el nuevo nombre:"
-    prompt_new_id_generic: "Escribí el nuevo id:"
-    prompt_region_id: "Escribí el id de región:"
+    prompt_new_name: "Escribe el nuevo nombre:"
+    prompt_new_id_generic: "Escribe el nuevo id:"
+    prompt_region_id: "Escribe el id de región:"
 
   browser:
     title: "Mobs RPGRoll"
@@ -83,8 +83,8 @@ gui:
     all_categories: "&bTodas las categorías"
     clear_search: "&cLimpiar búsqueda"
     create_new: "&aCrear mob nuevo"
-    prompt_search: "Escribí parte del nombre o id del mob:"
-    prompt_new_mob: "Escribí: id;tipo-entidad-base (ej. cave_troll;ZOMBIE):"
+    prompt_search: "Escribe parte del nombre o id del mob:"
+    prompt_new_mob: "Escribe: id;tipo-entidad-base (ej. cave_troll;ZOMBIE):"
     invalid_id: "&cId inválido o ya existente."
 
   editor:
@@ -122,7 +122,7 @@ gui:
     title: "Stats: {id}"
     add_custom: "&aAgregar stat custom"
     add_custom_hint: "&7Click para escribir uno nuevo por chat"
-    prompt_custom: "Escribí: <stat> <valor> (ej. magic_damage 15):"
+    prompt_custom: "Escribe: <stat> <valor> (ej. magic_damage 15):"
 
   skill_edit:
     title: "Skill: {id}"
@@ -141,7 +141,7 @@ gui:
     actions_label: "&eAcciones: {count}"
     actions_hint: "&7Click para abrir el editor de acciones"
     actions_gui_title: "Acciones: {name}"
-    prompt_conditions: "Escribí las condiciones separadas por ';' (ej. mob.health < 50%; night == true):"
+    prompt_conditions: "Escribe las condiciones separadas por ';' (ej. mob.health < 50%; night == true):"
 
   skills:
     title: "Skills: {id}"
@@ -150,14 +150,14 @@ gui:
     cooldown_chance_lore: "&7cooldown: {seconds}s · chance: {chance}%"
     actions_lore: "&7acciones: {count}"
     add: "&aAgregar skill"
-    prompt_add: "Escribí el id de la nueva skill:"
+    prompt_add: "Escribe el id de la nueva skill:"
 
   custom_data:
     title: "Datos custom: {id}"
     entry_label: "&b{key}: {value}"
     add: "&aAgregar dato"
     add_hint: "&7Click para escribir: clave valor"
-    prompt_add: "Escribí: <clave> <valor>:"
+    prompt_add: "Escribe: <clave> <valor>:"
 
   spawn_rules:
     title: "Spawn: {id}"
@@ -179,10 +179,10 @@ gui:
     add_biome: "&aAgregar bioma"
     add_world: "&aAgregar mundo"
     add_region: "&aAgregar región"
-    prompt_hour_range: "Escribí el rango horario (ej. 19-6):"
+    prompt_hour_range: "Escribe el rango horario (ej. 19-6):"
     invalid_hours: "&cHoras numéricas inválidas."
-    prompt_biome: "Escribí la key del bioma (ej. plains, dark_forest):"
-    prompt_world: "Escribí el nombre del mundo:"
+    prompt_biome: "Escribe la key del bioma (ej. plains, dark_forest):"
+    prompt_world: "Escribe el nombre del mundo:"
 
   dialogues:
     title: "Diálogos: {id}"
@@ -190,9 +190,9 @@ gui:
     assoc_trigger: "&etrigger: {trigger}"
     assoc_none: "&e(sin asociar)"
     add: "&aAgregar línea"
-    prompt_assoc: "Asociá esta línea: trigger:SPAWN, phase:enraged, o 'ninguno':"
+    prompt_assoc: "Asocia esta línea: trigger:SPAWN, phase:enraged, o 'ninguno':"
     invalid_trigger: "&cTrigger inválido."
-    prompt_text: "Escribí el texto del diálogo:"
+    prompt_text: "Escribe el texto del diálogo:"
 
   bossbar:
     title: "BossBar: {id}"
@@ -201,7 +201,7 @@ gui:
     style_label: "&eEstilo: {value}"
     title_label: "&eTítulo: {value}"
     title_default: "(nombre del mob)"
-    prompt_title: "Escribí el nuevo título:"
+    prompt_title: "Escribe el nuevo título:"
 
   loot:
     title: "Loot: {id}"
@@ -212,8 +212,8 @@ gui:
     entry_chance: "&7probabilidad: {chance}% · nivel mín: {level} · {scope}"
     entry_hint: "&8Click para reemplazar · Shift-click para quitar"
     add: "&aAgregar entrada de loot"
-    prompt_add: "Escribí: TIPO referencia cantidadMin cantidadMax probabilidad nivelMinimo scope\nej. ITEM iron_sword 1 1 25 0 SHARED — tipos: ITEM/MONEY/EXPERIENCE/COMMAND/QUEST — scope: SHARED/PER_PLAYER"
-    prompt_replace: "Escribí la entrada reemplazante: TIPO referencia cantidadMin cantidadMax probabilidad nivelMinimo scope\nej. ITEM iron_sword 1 1 25 0 SHARED — tipos: ITEM/MONEY/EXPERIENCE/COMMAND/QUEST — scope: SHARED/PER_PLAYER"
+    prompt_add: "Escribe: TIPO referencia cantidadMin cantidadMax probabilidad nivelMinimo scope\nej. ITEM iron_sword 1 1 25 0 SHARED — tipos: ITEM/MONEY/EXPERIENCE/COMMAND/QUEST — scope: SHARED/PER_PLAYER"
+    prompt_replace: "Escribe la entrada reemplazante: TIPO referencia cantidadMin cantidadMax probabilidad nivelMinimo scope\nej. ITEM iron_sword 1 1 25 0 SHARED — tipos: ITEM/MONEY/EXPERIENCE/COMMAND/QUEST — scope: SHARED/PER_PLAYER"
     invalid_fields: "&cFormato inválido — se esperaban 7 campos."
     invalid_value: "&cValor inválido en la entrada de loot."
 
@@ -232,19 +232,19 @@ gui:
     add_multiplier_hint: "&7Click para escribir: stat multiplicador (ej. damage 1.5)"
     add_skill: "&aAgregar skill existente"
     add_skill_hint: "&7Click para escribir el id de una skill ya creada"
-    prompt_bossbar_color: "Escribí el color (ej. RED, PURPLE):"
-    prompt_dialogue: "Escribí la línea de diálogo:"
-    prompt_particle: "Escribí el nombre de la partícula:"
-    prompt_add_multiplier: "Escribí: <stat> <multiplicador> (ej. damage 1.5):"
-    prompt_add_skill: "Escribí el id de una skill ya definida en Skills:"
-    skill_not_found: "&cNo existe esa skill — creala primero en Skills."
+    prompt_bossbar_color: "Escribe el color (ej. RED, PURPLE):"
+    prompt_dialogue: "Escribe la línea de diálogo:"
+    prompt_particle: "Escribe el nombre de la partícula:"
+    prompt_add_multiplier: "Escribe: <stat> <multiplicador> (ej. damage 1.5):"
+    prompt_add_skill: "Escribe el id de una skill ya definida en Skills:"
+    skill_not_found: "&cNo existe esa skill — créala primero en Skills."
 
   phases:
     title: "Fases: {id}"
     entry_label: "&e{id} (≤{threshold}% vida)"
     entry_counts: "&7skills: {skills} · multiplicadores: {multipliers}"
     add: "&aAgregar fase"
-    prompt_add: "Escribí el id de la nueva fase:"
+    prompt_add: "Escribe el id de la nueva fase:"
 
   ai:
     title: "IA: {id}"
@@ -265,7 +265,7 @@ gui:
     patrol_point_label: "&bPunto {index}: {point}"
     add_patrol: "&aAgregar punto de patrulla"
     add_patrol_hint: "&7Click para escribir: x,y,z"
-    prompt_coords: "Escribí las coordenadas: x,y,z"
+    prompt_coords: "Escribe las coordenadas: x,y,z"
     invalid_coords: "&cCoordenadas numéricas inválidas."
 
   resistances:
@@ -277,8 +277,8 @@ gui:
     add_weakness: "&aAgregar debilidad"
     add_weakness_hint1: "&7Click para escribir: TIPO clave porcentaje"
     add_weakness_hint2: "&8(ej. ELEMENT fire 50)"
-    prompt_custom: "Escribí: <elemento> <porcentaje> (ej. bleed 30):"
-    prompt_weakness: "Escribí: TIPO clave porcentaje (ej. ELEMENT fire 50):"
+    prompt_custom: "Escribe: <elemento> <porcentaje> (ej. bleed 30):"
+    prompt_weakness: "Escribe: TIPO clave porcentaje (ej. ELEMENT fire 50):"
     invalid_type_or_value: "&cTipo o porcentaje inválido."
 
   triggers:
@@ -290,7 +290,7 @@ gui:
     add: "&aAgregar acción"
     add_hint1: "&7TIPO clave=valor clave2=valor2"
     add_hint2: "&8ej. PARTICLE particle=FLAME count=10"
-    prompt_add: "Escribí: TIPO clave=valor clave2=valor2 (ej. FIRE ticks=60):"
+    prompt_add: "Escribe: TIPO clave=valor clave2=valor2 (ej. FIRE ticks=60):"
 
   model:
     title: "Modelo: {id}"
@@ -308,15 +308,15 @@ gui:
     equipment_label: "&e{slot}: {value}"
     empty_label: "(vacío)"
     equipment_hint: "&7Click: escribir referencia (item de Items o Material)"
-    prompt_base_type: "Escribí el EntityType vanilla (ej. ZOMBIE, WITHER_SKELETON):"
-    prompt_modelengine: "Escribí el id de modelo (ModelEngine/BetterModel):"
-    prompt_equipment: "Escribí la referencia de ítem para {slot}:"
+    prompt_base_type: "Escribe el EntityType vanilla (ej. ZOMBIE, WITHER_SKELETON):"
+    prompt_modelengine: "Escribe el id de modelo (ModelEngine/BetterModel):"
+    prompt_equipment: "Escribe la referencia de ítem para {slot}:"
     skins:
       title: "Skins: {id}"
       entry_cmd: "&dCustom model data: {value}"
       entry_weight: "&dPeso: {value}"
       add: "&aAgregar skin"
-      prompt_add: "Escribí: id material custom-model-data [peso] (ej. winter PAPER 100001 1.0):"
+      prompt_add: "Escribe: id material custom-model-data [peso] (ej. winter PAPER 100001 1.0):"
 
   identity:
     title: "Identidad: {id}"
@@ -333,7 +333,7 @@ gui:
     description_label: "&eDescripción"
     description_empty: "(vacía)"
     add_tag: "&aAgregar tag"
-    prompt_color: "Escribí un color (ej. gold, red, #FF8800):"
-    prompt_rarity: "Escribí el id de rareza:"
-    prompt_description: "Escribí la descripción:"
-    prompt_tag: "Escribí el nuevo tag:"
+    prompt_color: "Escribe un color (ej. gold, red, #FF8800):"
+    prompt_rarity: "Escribe el id de rareza:"
+    prompt_description: "Escribe la descripción:"
+    prompt_tag: "Escribe el nuevo tag:"

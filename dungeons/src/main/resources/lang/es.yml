@@ -1,5 +1,5 @@
 # Mensajes de RPGRoll-Dungeons (idioma: Español)
-# Editá este archivo libremente — tus cambios se conservan tras un /dungeonadmin reload.
+# Edita este archivo libremente — tus cambios se conservan tras un /dungeonadmin reload.
 # Placeholders con {llave} se reemplazan por valores dinámicos donde se indique.
 
 common:
@@ -15,16 +15,16 @@ command:
   dungeon:
     usage: |-
       &eUso: /dungeon
-      &7 • &flist
-      &7 • &finfo
-      &7 • &finvite
-      &7 • &faccept
-      &7 • &fdecline
-      &7 • &fleaveparty
-      &7 • &fenter
+      &7 • &blist
+      &7 • &ainfo
+      &7 • &einvite
+      &7 • &daccept
+      &7 • &6decline
+      &7 • &9leaveparty
+      &7 • &center
       &7 • &fleave
-      &7 • &frevive
-      &7 • &franking
+      &7 • &5revive
+      &7 • &2ranking
     not_found: "&cNo existe la mazmorra '{id}'."
     player_not_found: "&cJugador no encontrado."
     not_in_run: "&cNo estás en ninguna corrida."
@@ -45,13 +45,14 @@ command:
       failed: "&cNo se pudo invitar: {result}"
     accept:
       ok: "&a✔ Te uniste al grupo."
-      no_invite: "&cNo tenés ninguna invitación pendiente."
+      no_invite: "&cNo tienes ninguna invitación pendiente."
       expired: "&cEsa invitación ya expiró."
       team_gone: "&cEse grupo ya no existe."
       team_full: "&cEse grupo ya está lleno."
     decline:
       ok: "&7Invitación rechazada."
     leaveparty:
+      players_only: "&cSolo un jugador puede salir de un grupo."
       disbanded: "&7Grupo disuelto."
       left: "&7Saliste del grupo."
     enter:
@@ -65,6 +66,7 @@ command:
       on_cooldown: "&cAlguien del grupo todavía está en cooldown para esta mazmorra."
       difficulty_not_found: "&cNo existe la dificultad '{difficulty}'."
     leave:
+      players_only: "&cSolo un jugador puede salir de una mazmorra."
       ok: "&7Abandonaste la mazmorra."
     revive:
       players_only: "&cSolo un jugador puede revivir a un compañero."
@@ -76,15 +78,15 @@ command:
       empty: "&7Todavía no hay corridas registradas."
       entry: "&7{position}. {players} — {seconds}s, {deaths} muerte(s)"
   dungeonadmin:
-    no_permission: "&cNo tenés permiso para usar este comando."
+    no_permission: "&cNo tienes permiso para usar este comando."
     usage: |-
       &eUso: /dungeonadmin
-      &7 • &fcreate
-      &7 • &freload
-      &7 • &fforcestop
-      &7 • &fbrowser
-      &7 • &feditor
-      &7 • &fstructure
+      &7 • &bcreate
+      &7 • &areload
+      &7 • &eforcestop
+      &7 • &dbrowser
+      &7 • &6editor
+      &7 • &9structure
     players_only: "&cSolo un jugador puede abrir el editor."
     not_found: "&cNo existe la mazmorra '{id}'."
     create:
@@ -100,7 +102,15 @@ command:
     editor:
       usage: "&eUso: /dungeonadmin editor <id>"
     structure:
-      usage: "&eUso: /dungeonadmin structure <list|info|paste|import|importschem|browser> [args]"
+      usage: |-
+        &eUso: /dungeonadmin structure
+        &7 • &blist
+        &7 • &ainfo
+        &7 • &epaste
+        &7 • &dimport
+        &7 • &6importschem
+        &7 • &9browser
+        &8   [args]
       not_found: "&cNo existe una estructura con id: {id}"
       list:
         header: "&6Biblioteca de Estructuras ({count}):"
@@ -115,16 +125,16 @@ command:
         world_not_found: "&cNo existe el mundo: {world}"
         invalid_coords: "&cCoordenadas inválidas."
         console_needs_coords: "&cDesde consola hace falta pasar mundo y coordenadas: structure paste <id> <mundo> <x> <y> <z>"
-        invalid_rotation: "&cRotación inválida — usá NONE, CLOCKWISE_90, CLOCKWISE_180 o COUNTERCLOCKWISE_90."
+        invalid_rotation: "&cRotación inválida — usa NONE, CLOCKWISE_90, CLOCKWISE_180 o COUNTERCLOCKWISE_90."
         ok: "&a✔ Estructura '{id}' pegada."
-        failed: "&c✘ No se pudo pegar la estructura — revisá la consola."
+        failed: "&c✘ No se pudo pegar la estructura — revisa la consola."
       import:
         usage: "&eUso: /dungeonadmin structure import <nombreVanilla> <nuevoId> [nombre visible...]"
         usage_hint: "&7nombreVanilla es el nombre que le pusiste al Structure Block al guardar (ej. rpgroll:sala1)."
         ok: "&a✔ Estructura '{id}' importada a la Biblioteca."
         id_taken: "&cYa existe una estructura con ese id."
         vanilla_not_found: "&cNo se encontró ninguna estructura vanilla guardada como '{name}'."
-        io_error: "&cError de I/O al importar — revisá la consola."
+        io_error: "&cError de I/O al importar — revisa la consola."
       importschem:
         usage: "&eUso: /dungeonadmin structure importschem <archivo.schem> <nuevoId> [nombre visible...]"
         usage_hint: "&7archivo es el nombre del .schem en la carpeta schematics/ de WorldEdit (el mismo que usaste con //schematic save)."
@@ -132,7 +142,7 @@ command:
         id_taken: "&cYa existe una estructura con ese id."
         worldedit_missing: "&cEsto requiere WorldEdit instalado y habilitado en el servidor."
         file_not_found: "&cNo se encontró el schematic '{file}' en la carpeta schematics/ de WorldEdit."
-        io_error: "&cError de I/O al importar el schematic — revisá la consola."
+        io_error: "&cError de I/O al importar el schematic — revisa la consola."
       browser:
         players_only: "&cSolo un jugador puede abrir la Biblioteca de Estructuras."
 

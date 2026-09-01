@@ -8,20 +8,25 @@ command:
   workers:
     usage: |-
       &eUso: /workers
-      &7 • &finspect
-      &7 • &fhire
-      &7 • &ffire
-      &7 • &flist
-    look_at_worker: "Mirá directamente a un worker rastreado."
+      &7 • &binspect
+      &7 • &ahire
+      &7 • &efire
+      &7 • &dlist
+    look_at_worker: "Mira directamente a un worker rastreado."
     already_employed: "Ya tiene un empleador."
     hired: "✔ Contratado."
-    cannot_fire_other: "No podés despedir el worker de otro jugador."
+    cannot_fire_other: "No puedes despedir el worker de otro jugador."
     fired: "Despedido."
     list_header: "=== Tus trabajadores ({count}) ==="
     list_entry: "- {profession} #{id}"
   admin:
-    no_permission: "No tenés permiso para usar este comando."
-    usage: "Uso: /workersadmin <browser|reload|spawn <profesion> [nombre]|designator>"
+    no_permission: "No tienes permiso para usar este comando."
+    usage: |-
+      Uso: /workersadmin
+      &7 • &bbrowser
+      &7 • &areload
+      &7 • &espawn <profesion> [nombre]
+      &7 • &ddesignator
     player_only_browser: "Solo un jugador puede abrir el Worker Studio."
     reloaded: "✔ RPGRoll-Workers recargado."
     player_only_spawn: "Solo un jugador puede spawnear un worker."
@@ -39,8 +44,8 @@ gui:
     click_to_manage: "Click para administrar"
     click_to_edit: "Click para editar"
   editor:
-    prompt_name: "Escribí el nuevo nombre:"
-    prompt_description: "Escribí la nueva descripción:"
+    prompt_name: "Escribe el nuevo nombre:"
+    prompt_description: "Escribe la nueva descripción:"
     no_description: "(sin descripción)"
   hub:
     title: "Worker Studio"
@@ -56,7 +61,7 @@ gui:
       entity_label: "entidad: {entity}"
       ai_rules_label: "reglas de IA: {count}"
       new: "Crear profesión nueva"
-      prompt_new_id: "Escribí el id de la nueva profesión:"
+      prompt_new_id: "Escribe el id de la nueva profesión:"
       duplicate_id: "Ya existe una profesión con ese id."
     editor:
       title: "Profesión: {id}"
@@ -65,14 +70,14 @@ gui:
       entity_type: "Entidad vanilla: {entity}"
       description: "Descripción"
       skills: "Habilidades: {skills}"
-      skills_hint: "Escribí ids separados por comas"
+      skills_hint: "Escribe ids separados por comas"
       ai_rules: "Reglas de IA: {count}"
       ai_rules_lore: "Formato: CONDICION;ACCION;prioridad\nCondiciones: {conditions}\nAcciones: {actions}\nEscribí para AGREGAR una."
       clear_rules: "Borrar todas las reglas"
       schedule: "Horario: {schedule}"
       schedule_none: "(ninguno)"
       schedule_none_keyword: "ninguno"
-      schedule_hint: "Escribí el id de un horario, o '{keyword}'"
+      schedule_hint: "Escribe el id de un horario, o '{keyword}'"
       wage: "Salario: {wage}"
       wage_hint: "Click: +10 · Click derecho: -10"
       wage_type: "Tipo de pago: {type}"
@@ -80,13 +85,13 @@ gui:
       tool: "Herramienta: {tool}"
       tool_none: "(ninguna)"
       tool_none_keyword: "ninguna"
-      tool_hint: "Escribí un Material, o '{keyword}'"
-      prompt_icon: "Escribí el Material del ícono:"
-      prompt_entity_type: "Escribí el EntityType (VILLAGER, ZOMBIE...):"
-      prompt_skills: "Escribí ids de habilidad separados por comas:"
-      prompt_ai_rule: "Escribí 'CONDICION;ACCION;prioridad' para agregar una regla:"
-      prompt_schedule: "Escribí el id del horario (o '{keyword}'):"
-      prompt_tool: "Escribí un Material de herramienta (o '{keyword}'):"
+      tool_hint: "Escribe un Material, o '{keyword}'"
+      prompt_icon: "Escribe el Material del ícono:"
+      prompt_entity_type: "Escribe el EntityType (VILLAGER, ZOMBIE...):"
+      prompt_skills: "Escribe ids de habilidad separados por comas:"
+      prompt_ai_rule: "Escribe 'CONDICION;ACCION;prioridad' para agregar una regla:"
+      prompt_schedule: "Escribe el id del horario (o '{keyword}'):"
+      prompt_tool: "Escribe un Material de herramienta (o '{keyword}'):"
       invalid_rule_format: "Formato inválido — necesita 3 partes separadas por ';'."
       invalid_rule_values: "Condición o acción inválida."
       reskin_material: "&dReskin — material: {value}"
@@ -95,16 +100,16 @@ gui:
       reskin_none: "(ninguno)"
       reskin_hint: "Reskin propio (sin ModelEngine) — monta un modelo custom sobre el worker. Shift-click: quitar."
       reskin_scale_hint: "Click: +0.1 · Click derecho: -0.1"
-      prompt_reskin_material: "Escribí el Material base del ítem de reskin (ej. PAPER):"
-      prompt_reskin_cmd: "Escribí el custom-model-data del reskin (número entero):"
+      prompt_reskin_material: "Escribe el Material base del ítem de reskin (ej. PAPER):"
+      prompt_reskin_cmd: "Escribe el custom-model-data del reskin (número entero):"
   skill:
     browser:
       title: "Habilidades"
       profession_label: "profesión: {profession}"
       new: "Crear habilidad nueva"
-      prompt_new_id: "Escribí el id de la nueva habilidad:"
+      prompt_new_id: "Escribe el id de la nueva habilidad:"
       duplicate_id: "Ya existe una habilidad con ese id."
-      need_profession: "Creá al menos una profesión primero."
+      need_profession: "Crea al menos una profesión primero."
     editor:
       title: "Habilidad: {id}"
       name: "Nombre: {name}"
@@ -114,14 +119,14 @@ gui:
       max_level_hint: "Click: +5 · Click derecho: -5"
       value_per_level: "Valor por nivel: {value}"
       value_per_level_hint: "Click: +0.5 · Click derecho: -0.5"
-      prompt_profession: "Escribí el id de la profesión:"
-      prompt_attribute_key: "Escribí el attribute-key:"
+      prompt_profession: "Escribe el id de la profesión:"
+      prompt_attribute_key: "Escribe el attribute-key:"
   schedule:
     browser:
       title: "Horarios"
       entries_label: "entradas: {count}"
       new: "Crear horario nuevo"
-      prompt_new_id: "Escribí el id del nuevo horario:"
+      prompt_new_id: "Escribe el id del nuevo horario:"
       duplicate_id: "Ya existe un horario con ese id."
     editor:
       title: "Horario: {id}"
@@ -130,7 +135,7 @@ gui:
       entries_lore: "{entries}\nFormato: tick;ACTIVIDAD (0-24000, 0=amanecer)\nActividades: {activities}\nEscribí para AGREGAR una."
       no_entries: "(sin entradas)"
       clear_entries: "Borrar todas las entradas"
-      prompt_entry: "Escribí 'tick;ACTIVIDAD' para agregar una entrada:"
+      prompt_entry: "Escribe 'tick;ACTIVIDAD' para agregar una entrada:"
       invalid_entry_format: "Formato inválido — necesita 2 partes separadas por ';'."
       invalid_entry_values: "Tick o actividad inválidos."
   event:
@@ -138,7 +143,7 @@ gui:
       title: "Eventos de Worker"
       type_label: "tipo: {type}"
       new: "Crear evento nuevo"
-      prompt_new_id: "Escribí el id del nuevo evento:"
+      prompt_new_id: "Escribe el id del nuevo evento:"
       duplicate_id: "Ya existe un evento con ese id."
     editor:
       title: "Evento: {id}"
@@ -180,10 +185,10 @@ gui:
       hire: "▶ Contratar (salario por defecto de la profesión)"
       fire: "Despedir"
       set_home: "Fijar hogar en mi ubicación"
-      prompt_rename: "Escribí el nuevo nombre del worker:"
+      prompt_rename: "Escribe el nuevo nombre del worker:"
       already_employed_other: "Ya tiene otro empleador."
       hired: "✔ Contratado."
-      cannot_fire_other: "No podés despedir el worker de otro jugador."
+      cannot_fire_other: "No puedes despedir el worker de otro jugador."
       fired: "Despedido."
       home_set: "✔ Hogar fijado en tu ubicación."
 

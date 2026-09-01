@@ -59,6 +59,7 @@ public class EnchantEffectExecutor {
             case COMMAND -> executeCommand(effect, context);
             case MESSAGE -> executeMessage(effect, context);
             case PARTICLE -> executeParticle(effect, context);
+            case PARTICLES -> executeParticles(effect, context);
             case SOUND -> executeSound(effect, context);
             case PICKUP_ITEMS -> executePickupItems(effect, context);
         }
@@ -188,6 +189,24 @@ public class EnchantEffectExecutor {
         }
 
         return result;
+    }
+
+    /**
+     * Reproduce un efecto completo de RPGRoll-FX por id.
+     * <p>
+     * PARTICLE dibuja una partícula vanilla suelta; PARTICLES dispara un
+     * efecto ya compuesto. Integración blanda: sin el plugin no hace nada.
+     */
+    private void executeParticles(EnchantEffect effect, EffectContext context) {
+
+        String effectId = effect.param("effect-id", effect.param("id", ""));
+
+        if (effectId.isBlank()) {
+            return;
+        }
+
+        com.sack.rpgroll.common.integration.ParticlesIntegration.play(
+                effectId, context.player(), targetLocation(context));
     }
 
     private void executeParticle(EnchantEffect effect, EffectContext context) {

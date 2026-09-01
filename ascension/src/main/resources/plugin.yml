@@ -7,15 +7,6 @@ description: Expansión de progresión avanzada (evolución de razas, especializ
 depend: [RPGRoll]
 softdepend: [RPGRoll-Enchantments, RPGRoll-Quests, PlaceholderAPI]
 
-commands:
-  ascend:
-    description: Comandos de progresión avanzada para jugadores
-    usage: /ascend <race|specialize|talent|prestige|affinity|reputation|title|legacy|info> [args]
-  ascendadmin:
-    description: Comandos administrativos de Ascension
-    usage: /ascendadmin <achievement|title|reputation|browser|reload> [args]
-    permission: rpgrollascension.admin.*
-
 permissions:
   rpgrollascension.admin.*:
     description: Acceso completo a comandos administrativos de Ascension

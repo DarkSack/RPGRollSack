@@ -1,12 +1,17 @@
 common:
-  no_permission: "&cNo tenés permiso para usar este comando."
+  no_permission: "&cNo tienes permiso para usar este comando."
   players_only: "Solo jugadores pueden usar este comando."
 
 command:
   admin:
     players_only: "&cSolo un jugador puede recibir esto — usalo desde el juego."
     players_only_studio: "&cSolo jugadores pueden abrir el Magic Studio."
-    usage: "&cUso: /magicadmin <browser|reload|givecatalyst <id>|givegrimoire <id>>"
+    usage: |-
+      &cUso: /magicadmin
+      &7 • &bbrowser
+      &7 • &areload
+      &7 • &egivecatalyst <id>
+      &7 • &dgivegrimoire <id>
     usage_givecatalyst: "&cUso: /magicadmin givecatalyst <id>"
     usage_givegrimoire: "&cUso: /magicadmin givegrimoire <id>"
     reloaded: "&a✔ Recargado: {schools} escuela(s), {spells} hechizo(s), {grimoires} grimorio(s), {runes} runa(s), {catalysts} catalizador(es)."
@@ -14,26 +19,31 @@ command:
     unknown_grimoire: "&cNo existe un grimorio con id: {id}"
     given: "&a✔ Entregado."
   player:
-    usage: "&cUso: /magic <spellbook|select <id>|cast <id>|cooldowns>"
+    usage: |-
+      &cUso: /magic
+      &7 • &bspellbook
+      &7 • &aselect <id>
+      &7 • &ecast <id>
+      &7 • &dcooldowns
     usage_select: "&cUso: /magic select <id>"
     usage_cast: "&cUso: /magic cast <id>"
-    dont_know_spell: "&cNo sabés ese hechizo todavía."
+    dont_know_spell: "&cNo sabes ese hechizo todavía."
     selected: "&a✔ Hechizo seleccionado: {id}"
     unknown_spell: "&cNo existe un hechizo con id: {id}"
-    no_cooldowns: "&7No tenés ningún hechizo en cooldown."
+    no_cooldowns: "&7No tienes ningún hechizo en cooldown."
     cooldowns_header: "&6Cooldowns activos:"
     cooldown_line: "&f• {name}: {seconds}s"
 
 cast:
-  no_spell_selected: "&cNo tenés ningún hechizo seleccionado — usá /magic select <id>."
+  no_spell_selected: "&cNo tienes ningún hechizo seleccionado — usa /magic select <id>."
   reason:
     school_missing: "La escuela '{school}' no existe."
     on_cooldown: "En cooldown ({seconds}s restantes)."
     rpgroll_not_ready: "RPGRoll no está listo."
-    no_character: "No tenés un personaje creado."
-    not_enough_mana: "No tenés suficiente maná ({current}/{required})."
-    not_enough_health: "No tenés suficiente vida para pagar el costo."
-    not_enough_experience: "No tenés suficiente experiencia."
+    no_character: "No tienes un personaje creado."
+    not_enough_mana: "No tienes suficiente maná ({current}/{required})."
+    not_enough_health: "No tienes suficiente vida para pagar el costo."
+    not_enough_experience: "No tienes suficiente experiencia."
     missing_reagent: "Te falta el reactivo: {amount}x {material}"
     unknown_spell: "No existe un hechizo con id: {id}"
 
@@ -78,9 +88,9 @@ gui:
     name_label: "&eNombre: {name}"
     icon_label: "&eÍcono: {icon}"
     description_title: "&eDescripción"
-    prompt_name: "Escribí el nuevo nombre:"
-    prompt_icon: "Escribí el Material del ícono:"
-    prompt_description: "Escribí la nueva descripción:"
+    prompt_name: "Escribe el nuevo nombre:"
+    prompt_icon: "Escribe el Material del ícono:"
+    prompt_description: "Escribe la nueva descripción:"
     step_1: "&7Click: +1 · Click derecho: -1"
     step_5: "&7Click: +5 · Click derecho: -5"
     step_20: "&7Click: +20 · Click derecho: -20"
@@ -102,7 +112,7 @@ gui:
   school_browser:
     title: "&6Escuelas de Magia"
     new: "&aCrear escuela nueva"
-    prompt_new_id: "Escribí el id de la nueva escuela:"
+    prompt_new_id: "Escribe el id de la nueva escuela:"
     already_exists: "&cYa existe una escuela con ese id."
 
   school_editor:
@@ -111,17 +121,17 @@ gui:
     color_lore: "&7Click para escribir uno nuevo (ej. RED, AQUA...)"
     cast_sound_label: "&eSonido al lanzar: {value}"
     cast_sound_lore: "&7Escribí 'ninguno' para quitarlo"
-    cast_effect_label: "&eEfecto RPGRoll-Particles: {value}"
+    cast_effect_label: "&eEfecto RPGRoll-FX: {value}"
     cast_effect_lore: "&7Escribí 'ninguno' para quitarlo"
-    prompt_cast_sound: "Escribí el Sound (o 'ninguno' para quitarlo):"
-    prompt_cast_effect: "Escribí el id del efecto de RPGRoll-Particles (o 'ninguno'):"
+    prompt_cast_sound: "Escribe el Sound (o 'ninguno' para quitarlo):"
+    prompt_cast_effect: "Escribe el id del efecto de RPGRoll-FX (o 'ninguno'):"
     race_affinities_label: "&eAfinidades de raza: {count}"
     class_affinities_label: "&eAfinidades de clase: {count}"
     affinity_line: "&7{key}: {sign}{percent}%"
     affinity_lore: "&8Click para reescribir (id=fraccion,id2=fraccion2)"
-    prompt_color: "Escribí el color (ej. RED, AQUA, LIGHT_PURPLE):"
-    prompt_race_affinities: "Escribí: raza=fraccion,raza2=fraccion2 (ej. elf=0.25,demon=-0.2):"
-    prompt_class_affinities: "Escribí: clase=fraccion,clase2=fraccion2 (ej. paladin=0.3):"
+    prompt_color: "Escribe el color (ej. RED, AQUA, LIGHT_PURPLE):"
+    prompt_race_affinities: "Escribe: raza=fraccion,raza2=fraccion2 (ej. elf=0.25,demon=-0.2):"
+    prompt_class_affinities: "Escribe: clase=fraccion,clase2=fraccion2 (ej. paladin=0.3):"
 
   spell_browser:
     title: "&6Hechizos"
@@ -129,8 +139,8 @@ gui:
     rarity_level_label: "&7{rarity} · Nivel {level}"
     component_count_label: "&7{count} componente(s)"
     new: "&aCrear hechizo nuevo"
-    prompt_new: "Escribí: id escuela (ej. fireball fire):"
-    need_school_first: "&cPrimero creá al menos una escuela."
+    prompt_new: "Escribe: id escuela (ej. fireball fire):"
+    need_school_first: "&cPrimero crea al menos una escuela."
     invalid_format: "&cFormato inválido — hacen falta id y escuela."
     already_exists: "&cYa existe un hechizo con ese id."
     unknown_school: "&cNo existe una escuela con id: {id}"
@@ -155,11 +165,11 @@ gui:
     tree_tier_label: "&eNivel del árbol: {tier}"
     components_label: "&a▶ Componentes ({count})"
     components_lore: "&7El pipeline que se ejecuta al lanzarlo"
-    prompt_color: "Escribí el color (ej. RED, AQUA):"
-    prompt_school: "Escribí el id de la escuela:"
+    prompt_color: "Escribe el color (ej. RED, AQUA):"
+    prompt_school: "Escribe el id de la escuela:"
     unknown_school: "&cNo existe esa escuela."
-    prompt_reagent: "Escribí: MATERIAL,CANTIDAD (o 'ninguno'):"
-    prompt_tree_parent: "Escribí el id del hechizo anterior (o 'ninguno'):"
+    prompt_reagent: "Escribe: MATERIAL,CANTIDAD (o 'ninguno'):"
+    prompt_tree_parent: "Escribe el id del hechizo anterior (o 'ninguno'):"
 
   spell_components:
     title: "&6Componentes: {id}"
@@ -169,7 +179,7 @@ gui:
     add_lore_3: "&8ej. DAMAGE_DIRECT amount=8"
     add_lore_4: "&8Orden importa — se ejecutan de arriba a abajo"
     component_label: "&b#{index} {type}"
-    prompt_add: "Escribí: TIPO clave=valor,clave2=valor2:"
+    prompt_add: "Escribe: TIPO clave=valor,clave2=valor2:"
     invalid_type: "&cTipo inválido: {type}"
 
   spellbook:
@@ -187,7 +197,7 @@ gui:
     title: "Runas"
     type_label: "&7Tipo: {type}"
     new: "&aCrear runa nueva"
-    prompt_new_id: "Escribí el id de la nueva runa:"
+    prompt_new_id: "Escribe el id de la nueva runa:"
     already_exists: "&cYa existe una runa con ese id."
 
   rune_editor:
@@ -200,43 +210,43 @@ gui:
     params_help_explosive: "&8ej. radius=3,damage=4"
     params_help_apply_effect: "&8ej. effect-id=frozen (id de un efecto de RPGRoll-Effects)"
     params_help_modifier: "&8ej. multiplier=0.5"
-    prompt_params: "Escribí: clave=valor,clave2=valor2:"
+    prompt_params: "Escribe: clave=valor,clave2=valor2:"
 
   rune_socket:
     title: "&6Runas: {spell}"
     add_label: "&aSocketear runa ({count}/{max})"
     add_lore: "&7Escribí el id de una runa existente"
-    prompt_add: "Escribí el id de la runa a socketear:"
+    prompt_add: "Escribe el id de la runa a socketear:"
     unknown_rune: "&cNo existe una runa con ese id."
-    socket_failed: "&cNo se pudo socketear — ¿ya la tenés, o llegaste al tope de {max}?"
+    socket_failed: "&cNo se pudo socketear — ¿ya la tienes, o llegaste al tope de {max}?"
     socketed: "&a✔ Runa socketeada."
 
   grimoire_browser:
     title: "&6Grimorios"
     spell_count_lore: "&7{count} hechizo(s)"
     new: "&aCrear grimorio nuevo"
-    prompt_new_id: "Escribí el id del nuevo grimorio:"
+    prompt_new_id: "Escribe el id del nuevo grimorio:"
     already_exists: "&cYa existe un grimorio con ese id."
 
   grimoire_editor:
     title: "&6Grimorio: {id}"
     school_any: "(cualquiera)"
     school_label: "&bEscuela: {value}"
-    school_lore: "&7Puramente informativo — escribí 'ninguna' para quitarlo"
+    school_lore: "&7Puramente informativo — escribe 'ninguna' para quitarlo"
     level_label: "&eNivel requerido: {level}"
     give: "&a▶ Darme uno"
     add_spell: "&aAgregar hechizo"
     add_spell_lore: "&7Escribí el id de un hechizo existente"
     given: "&a✔ Te diste un grimorio '{name}'."
-    prompt_school: "Escribí el id de la escuela (o 'ninguna'):"
-    prompt_add_spell: "Escribí el id del hechizo a agregar:"
+    prompt_school: "Escribe el id de la escuela (o 'ninguna'):"
+    prompt_add_spell: "Escribe el id del hechizo a agregar:"
     unknown_spell: "&cNo existe un hechizo con ese id."
     spell_already_added: "&cEse hechizo ya está en el grimorio."
 
   catalyst_browser:
     title: "&6Catalizadores"
     new: "&aCrear catalizador nuevo"
-    prompt_new_id: "Escribí el id del nuevo catalizador:"
+    prompt_new_id: "Escribe el id del nuevo catalizador:"
     already_exists: "&cYa existe un catalizador con ese id."
 
   catalyst_editor:
@@ -247,4 +257,4 @@ gui:
     range_label: "&dAlcance: x{value}"
     give: "&a▶ Darme uno"
     given: "&a✔ Te diste un catalizador '{name}'."
-    prompt_material: "Escribí el Material:"
+    prompt_material: "Escribe el Material:"

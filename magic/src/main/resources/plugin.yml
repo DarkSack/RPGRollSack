@@ -5,17 +5,7 @@ api-version: "26.1.1"
 author: Sack
 description: Framework de magia modular — escuelas, hechizos construidos por componentes, maná, catalizadores, grimorios, runas y árboles de progresión.
 depend: [RPGRoll]
-softdepend: [RPGRoll-Particles, RPGRoll-Effects]
-
-commands:
-  magicadmin:
-    description: Comandos administrativos de RPGRoll-Magic (Magic Studio)
-    usage: /magicadmin <browser|reload|givecatalyst|givegrimoire> [args]
-    permission: rpgrollmagic.admin.*
-  magic:
-    description: Comandos de jugador de RPGRoll-Magic
-    usage: /magic <spellbook|select <id>|cast <id>|cooldowns>
-    permission: rpgrollmagic.use
+softdepend: [RPGRoll-FX, RPGRoll-Effects]
 
 permissions:
   rpgrollmagic.admin.*:

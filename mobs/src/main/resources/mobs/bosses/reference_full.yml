@@ -26,7 +26,7 @@ model:
   scale: 2.5
   glow: true
   invisible: false
-  model-engine-id: reference_boss_model # solo si tenés ModelEngine
+  model-engine-id: reference_boss_model # solo si tienes ModelEngine
   # Skins propias del motor (sin depender de ModelEngine/BetterModel): al spawnear
   # se sortea una por peso (weight) y se monta un ItemDisplay con ese material+CMD
   # como pasajero de la entidad — la elegida queda persistida (no se vuelve a

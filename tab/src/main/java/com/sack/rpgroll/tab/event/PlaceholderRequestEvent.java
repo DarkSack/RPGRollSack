@@ -7,7 +7,7 @@ import org.bukkit.event.HandlerList;
 /**
  * Informativo: se dispara cada vez que se resuelve un placeholder desconocido
  * (ni interno ni registrado) — útil para depurar YAMLs con placeholders mal
- * escritos. Para REGISTRAR placeholders usá
+ * escritos. Para REGISTRAR placeholders usa
  * {@link com.sack.rpgroll.tab.placeholder.TABPlaceholderRegistry}, no este evento.
  */
 public class PlaceholderRequestEvent extends Event {

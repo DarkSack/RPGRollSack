@@ -62,7 +62,9 @@ public class AssetBrowserGUI extends InventoryGUI {
 
     /** @param assetBaseUrl base para pedir texturas sueltas (ver {@code ResourcePackHttpServer#assetBaseUrl()}), null si no hay host HTTP propio habilitado. */
     public AssetBrowserGUI(Player player, BuildEngine buildEngine, String assetBaseUrl, LangManager lang, Runnable onBack) {
-        super(player, Component.text(lang.raw("gui.asset-browser.title"), NamedTextColor.GREEN), SIZE);
+        // El color sale del YAML como en el resto del ecosistema; Component.text
+        // lo dejaba fijo en verde e ignoraba lo que pusiera el admin.
+        super(player, lang.component("gui.asset-browser.title"), SIZE);
         this.buildEngine = buildEngine;
         this.assetBaseUrl = assetBaseUrl;
         this.lang = lang;

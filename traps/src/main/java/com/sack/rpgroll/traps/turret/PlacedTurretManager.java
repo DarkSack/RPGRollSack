@@ -61,7 +61,9 @@ public class PlacedTurretManager {
                         entry.getInt("z"),
                         entry.getString("owner") == null
                                 ? null
-                                : UUID.fromString(entry.getString("owner")));
+                                : UUID.fromString(entry.getString("owner")),
+                        readAmmo(entry),
+                        readTargeting(entry));
 
                 placements.put(placementId, placed);
 
@@ -91,6 +93,15 @@ public class PlacedTurretManager {
             if (placed.owner() != null) {
                 config.set(path + ".owner", placed.owner().toString());
             }
+
+            for (var slot : placed.ammo().entrySet()) {
+                config.set(path + ".ammo." + slot.getKey(), slot.getValue());
+            }
+
+            config.set(path + ".targeting.allies", placed.targeting().allies());
+            config.set(path + ".targeting.enemies", placed.targeting().enemies());
+            config.set(path + ".targeting.hostile-mobs", placed.targeting().hostileMobs());
+            config.set(path + ".targeting.passive-mobs", placed.targeting().passiveMobs());
         }
 
         try {
@@ -108,22 +119,96 @@ public class PlacedTurretManager {
     }
 
     public PlacedTurret add(String turretId, Location location) {
-        return add(turretId, location, null);
+        return add(turretId, location, null, new TurretTargeting(false, true, true, false));
     }
 
     /** @param owner quién la coloca; null si viene de un comando de admin. */
-    public PlacedTurret add(String turretId, Location location, UUID owner) {
+    public PlacedTurret add(String turretId, Location location, UUID owner, TurretTargeting targeting) {
 
         String placementId = UUID.randomUUID().toString().substring(0, 8);
 
         PlacedTurret placed = new PlacedTurret(
                 placementId, turretId, location.getWorld().getName(),
-                location.getBlockX(), location.getBlockY(), location.getBlockZ(), owner);
+                location.getBlockX(), location.getBlockY(), location.getBlockZ(), owner, java.util.Map.of(), targeting);
 
         placements.put(placementId, placed);
         save();
 
         return placed;
+    }
+
+    /** Sin sección "targeting" (instancias viejas) se asume el comportamiento previo. */
+    private TurretTargeting readTargeting(ConfigurationSection entry) {
+
+        ConfigurationSection section = entry.getConfigurationSection("targeting");
+
+        if (section == null) {
+            return new TurretTargeting(false, true, true, false);
+        }
+
+        return new TurretTargeting(
+                section.getBoolean("allies", false),
+                section.getBoolean("enemies", true),
+                section.getBoolean("hostile-mobs", true),
+                section.getBoolean("passive-mobs", false));
+    }
+
+    /** Cambia a quién apunta una instancia y persiste. */
+    public void setTargeting(String placementId, TurretTargeting targeting) {
+
+        PlacedTurret current = placements.get(placementId);
+
+        if (current == null) {
+            return;
+        }
+
+        placements.put(placementId, new PlacedTurret(current.placementId(), current.turretId(),
+                current.world(), current.x(), current.y(), current.z(), current.owner(),
+                current.ammo(), targeting));
+
+        save();
+    }
+
+    private java.util.Map<String, Integer> readAmmo(ConfigurationSection entry) {
+
+        ConfigurationSection section = entry.getConfigurationSection("ammo");
+
+        if (section == null) {
+            return java.util.Map.of();
+        }
+
+        java.util.Map<String, Integer> ammo = new java.util.HashMap<>();
+
+        for (String ammoId : section.getKeys(false)) {
+            int amount = section.getInt(ammoId);
+            if (amount > 0) {
+                ammo.put(ammoId, amount);
+            }
+        }
+
+        return ammo;
+    }
+
+    /**
+     * Reemplaza la munición de una instancia y persiste.
+     * <p>
+     * Se guarda en cada cambio a propósito: la munición es lo que hace que
+     * una torreta dispare, y perderla en una caída del server sería peor que
+     * el costo de escribir el archivo.
+     */
+    public void setAmmo(String placementId, java.util.Map<String, Integer> ammo) {
+
+        PlacedTurret current = placements.get(placementId);
+
+        if (current == null) {
+            return;
+        }
+
+        placements.put(placementId, new PlacedTurret(current.placementId(), current.turretId(),
+                current.world(), current.x(), current.y(), current.z(), current.owner(), ammo,
+                current.targeting()));
+
+        save();
     }
 
     public boolean remove(String placementId) {

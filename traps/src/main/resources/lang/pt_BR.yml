@@ -14,16 +14,17 @@ prompt:
 admin:
   usage: |-
     &eUso: /trapadmin
-    &7 • &fcreate
-    &7 • &fedit
-    &7 • &fbrowser
-    &7 • &freload
-    &7 • &fplace
-    &7 • &fremove
-    &7 • &flist
+    &7 • &bcreate
+    &7 • &aedit
+    &7 • &ebrowser
+    &7 • &dreload
+    &7 • &6place
+    &7 • &9remove
+    &7 • &clist
     &7 • &finfo
-    &7 • &fforcetrigger
-    &7 • &fturret
+    &7 • &5forcetrigger
+    &7 • &2turret
+    &7 • &bammo
   trap_not_found: "&cNão existe a armadilha '{id}'."
   must_look_at_block: "&cVocê precisa estar olhando para um bloco."
   create:
@@ -33,7 +34,7 @@ admin:
   edit:
     usage: "&eUso: /trapadmin edit <id>"
   reload:
-    ok: "&a✔ Recarregado: {traps} armadilha(s), {locations} instância(s) colocada(s)."
+    ok: "&a✔ Recarregado: {traps} armadilha(s), {turrets} torre(s), {ammo} munição(ões), {locations} instância(s) colocada(s)."
   place:
     usage: "&eUso: /trapadmin place <id> [zone]"
     ok: "&a✔ Armadilha '{trap}' colocada — id da instância: {placement}"
@@ -55,7 +56,15 @@ admin:
     usage: "&eUso: /trapadmin forcetrigger <placementId>"
     ok: "&a✔ Instância '{placement}' disparada."
     failed: "&cNão foi possível disparar '{placement}' (não existe, não está ARMED, ou não cumpre condições)."
+  ammo:
+    give_needs_player: "&cNo console você precisa indicar o jogador: /trapadmin ammo give <id> <jogador>"
+    item_lore: "&8Carrega {amount} tiro(s) por unidade"
+    give_usage: "&eUso: /trapadmin ammo give <id> [jogador] [quantidade]"
+    not_found: "&cNão existe munição com id '{id}'."
+    given: "&a✔ {amount}x '{id}' entregue a {player}."
   turret:
+    catalog_needs_player: "&cO catálogo é uma interface: só um jogador pode abri-lo."
+    no_access: "&cVocê não pode administrar esta torre: não é sua nem do seu time."
     give_usage: "&eUso: /trapadmin turret give <id> [jogador] [quantidade]"
     give_needs_player: "&cPelo console você precisa indicar o jogador: /trapadmin turret give <id> <jogador>"
     given: "&a✔ {amount}x '{id}' entregue a {player}."
@@ -68,12 +77,13 @@ admin:
     item_lore_owner: "&8Só você poderá removê-la"
     usage: |-
       &eUso: /trapadmin turret
-      &7 • &fcreate
-      &7 • &fedit
-      &7 • &fbrowser
-      &7 • &fgive
-      &7 • &fplace
-      &7 • &fremove
+      &7 • &bcreate
+      &7 • &aedit
+      &7 • &ebrowser
+      &7 • &dgive
+      &7 • &6catalog
+      &7 • &9place
+      &7 • &cremove
       &7 • &flist
     not_found: "&cNão existe a torreta '{id}'."
     create:
@@ -99,6 +109,32 @@ protection:
   missing_key: "&cVocê precisa da chave correta para quebrar esse bloco."
 
 gui:
+  turret_catalog:
+    title: "&6Torres e munição"
+    radius: "&7Raio: &f{value} blocos"
+    interval: "&7Dispara a cada: &f{value}s"
+    targets: "&7Atira em: &f{value}"
+    targets_both: "jogadores e mobs hostis"
+    targets_players: "jogadores"
+    targets_mobs: "mobs hostis"
+    targets_none: "ninguém (sem alvos configurados)"
+    ammo_hint: "&7Aceita qualquer uma das &f{count}&7 munições"
+    click_to_get: "&eClique para obter 1"
+    click_to_get_ammo: "&eClique para obter 1"
+    ammo_section: "&bMunição disponível"
+    ammo_section_lore: "&7Carregue na torre clicando com o botão direito nela."
+    received: "&a✔ Você recebeu: {name}"
+
+  turret_ammo:
+    title: "&6Munição da torre"
+    only_ammo: "&cAqui só entra munição."
+    target_allies: "&bAtirar em aliados"
+    target_enemies: "&cAtirar em inimigos"
+    target_hostile_mobs: "&2Atirar em mobs hostis"
+    target_passive_mobs: "&eAtirar em mobs passivos"
+    state_on: "&aLigado"
+    state_off: "&7Desligado"
+    click_toggle: "&8Clique para alternar"
   common:
     back: "Voltar"
     close: "Fechar"

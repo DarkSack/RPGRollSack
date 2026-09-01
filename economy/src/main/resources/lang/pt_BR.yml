@@ -37,13 +37,13 @@ common:
 admin:
   usage: |-
     &eUso: /economyadmin
-    &7 • &fbrowser
-    &7 • &freload
-    &7 • &fgive
-    &7 • &ftake
-    &7 • &fsetbalance
-    &7 • &finflation
-    &7 • &fsnapshot
+    &7 • &bbrowser
+    &7 • &areload
+    &7 • &egive
+    &7 • &dtake
+    &7 • &6setbalance
+    &7 • &9inflation
+    &7 • &csnapshot
   browser_players_only: "&cSó um jogador pode abrir o navegador."
   reload_done: "&a✔ RPGRoll-Economy recarregado."
   adjust_usage: "&eUso: /economyadmin {sub} <jogador> <moeda> <quantidade>"

@@ -1,0 +1,11 @@
+# Vial de sanación: munición para la torreta de curación.
+id: mending_vial
+display-name: "&aVial de sanación"
+description: "&7Cura al objetivo en vez de dañarlo."
+icon: GLISTERING_MELON_SLICE
+stack-size: 1
+
+impact:
+  type: HEAL
+  params:
+    amount: "4"

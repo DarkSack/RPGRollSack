@@ -3,11 +3,17 @@
 
 # Mensajes generales
 general:
-  no_permission: "&cNo tenés permiso para usar este comando."
+  no_permission: "&cNo tienes permiso para usar este comando."
 
 # Comando /rpgeffects
 command:
-  usage: "&cUso: /rpgeffects <browser|reload|apply <id> <jugador>|remove <id> <jugador>|list [jugador]>"
+  usage: |-
+    &cUso: /rpgeffects
+    &7 • &bbrowser
+    &7 • &areload
+    &7 • &eapply <id> <jugador>
+    &7 • &dremove <id> <jugador>
+    &7 • &6list [jugador]
   browser_player_only: "&cSolo jugadores pueden abrir el Effect Studio."
   reload_success: "&a✔ Recargado: {count} efecto(s)."
   apply_usage: "&cUso: /rpgeffects apply <id> <jugador>"
@@ -20,7 +26,7 @@ command:
   remove_usage: "&cUso: /rpgeffects remove <id> <jugador>"
   remove_success: "&a✔ Removido '{id}' de {player}."
   remove_not_active: "&7{player} no tiene ese efecto activo."
-  list_console_no_target: "&cLa consola no tiene un jugador por defecto — especificá uno: /rpgeffects list <jugador>"
+  list_console_no_target: "&cLa consola no tiene un jugador por defecto — especifica uno: /rpgeffects list <jugador>"
   list_no_active: "&7{player} no tiene efectos activos."
   list_header: "&6Efectos activos en {player}:"
   list_entry: "&f• {id} (stacks: {stacks}, restante: {remaining})"
@@ -52,7 +58,7 @@ gui:
     id_exists: "&cYa existe un efecto con ese id."
     invalid_material: "&cMaterial inválido: {value}"
     invalid_type: "&cTipo inválido: {value}"
-    prompt_new_name: "Escribí el nuevo nombre:"
+    prompt_new_name: "Escribe el nuevo nombre:"
 
   browser:
     title: "Effect Studio"
@@ -65,9 +71,9 @@ gui:
     filter_label: "&bCategoría: {text}"
     filter_all: "TODAS"
     create_new: "&aCrear efecto nuevo"
-    prompt_search: "Escribí el texto a buscar:"
-    prompt_new: "Escribí el id del nuevo efecto:"
-    prompt_duplicate: "Escribí el id para la copia de '{id}':"
+    prompt_search: "Escribe el texto a buscar:"
+    prompt_new: "Escribe el id del nuevo efecto:"
+    prompt_duplicate: "Escribe el id para la copia de '{id}':"
     duplicate_success: "&a✔ Duplicado como '{id}'."
 
   editor:
@@ -97,12 +103,12 @@ gui:
     stacking_name: "&dStacking / Tags / Conflictos"
     stacking_mode_label: "&7Modo: {mode}"
     stacking_counts: "&7{tags} tag(s), {conflicts} conflicto(s)"
-    test_button: "&a▶ Probar en vos mismo"
+    test_button: "&a▶ Probar en ti mismo"
     test_hint: "&7Ignora las condiciones — solo para previsualizar"
-    test_message: "&a▶ Probando '{id}' en vos mismo..."
-    prompt_icon: "Escribí el Material del ícono (ej. NETHER_STAR):"
-    prompt_color: "Escribí el color (nombre o #hex):"
-    prompt_description: "Escribí la nueva descripción:"
+    test_message: "&a▶ Probando '{id}' en ti mismo..."
+    prompt_icon: "Escribe el Material del ícono (ej. NETHER_STAR):"
+    prompt_color: "Escribe el color (nombre o #hex):"
+    prompt_description: "Escribe la nueva descripción:"
 
   components:
     title: "Componentes: {id}"
@@ -113,7 +119,7 @@ gui:
     add_hint2: "&8ej. PERIODIC_DAMAGE ON_SECOND amount=2,amount-per-stack=1"
     add_hint3: "&8ej. VISUAL ON_APPLY effect=level_up"
     add_hint4: "&8tipos: {types}"
-    prompt_add: "Escribí: TIPO TRIGGER clave=valor,clave2=valor2"
+    prompt_add: "Escribe: TIPO TRIGGER clave=valor,clave2=valor2"
     invalid_format: "&cFormato inválido — hacen falta al menos TIPO y TRIGGER."
     invalid_trigger: "&cTrigger inválido: {value}"
 
@@ -124,7 +130,7 @@ gui:
     add_hint2: "&8ej. LEVEL_MIN value=10"
     add_hint3: "&8ej. WORLD value=world_nether"
     add_hint4: "&8tipos: {types}"
-    prompt_add: "Escribí: TIPO clave=valor,clave2=valor2"
+    prompt_add: "Escribe: TIPO clave=valor,clave2=valor2"
 
   stacking:
     title: "Stacking: {id}"
@@ -142,18 +148,18 @@ gui:
     tags_note: "&7Usadas por inmunidades (ej. fire, curse, poison)"
     conflicts_label: "&eConflictos: {value}"
     conflicts_note: "&7Ids de otros efectos que se remueven al aplicar este (y viceversa)"
-    prompt_upgrade: "Escribí el id del efecto al que se transforma (vacío = ninguno):"
-    prompt_tags: "Escribí los tags separados por comas (ej. fire,debuff):"
-    prompt_conflicts: "Escribí los ids en conflicto separados por comas:"
+    prompt_upgrade: "Escribe el id del efecto al que se transforma (vacío = ninguno):"
+    prompt_tags: "Escribe los tags separados por comas (ej. fire,debuff):"
+    prompt_conflicts: "Escribe los ids en conflicto separados por comas:"
 
 # Motivos de rechazo al evaluar condiciones de aplicación (EffectConditionEvaluator)
 condition:
-  level_min: "Necesitás nivel {min} (tenés {level})."
-  level_max: "Nivel máximo permitido: {max} (tenés {level})."
+  level_min: "Necesitás nivel {min} (tienes {level})."
+  level_max: "Nivel máximo permitido: {max} (tienes {level})."
   race: "Necesitás ser de la raza: {value}"
   class: "Necesitás ser de la clase: {value}"
   job: "Necesitás la profesión: {value}"
-  world: "Tenés que estar en el mundo: {value}"
+  world: "Tienes que estar en el mundo: {value}"
   weather: "Necesitás clima: {value}"
   time_range: "Solo disponible entre las {min} y {max} (hora del mundo)."
   health_below: "Necesitás tener menos de {percent}% de vida."
@@ -163,4 +169,4 @@ condition:
   guild_generic: "Necesitás pertenecer a un guild."
   guild_specific: "Necesitás pertenecer a un guild: {value}"
   team: "Necesitás estar en un team."
-  permission: "No tenés el permiso requerido."
+  permission: "No tienes el permiso requerido."

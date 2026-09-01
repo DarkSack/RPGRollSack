@@ -1,0 +1,6 @@
+# Configuración de RPGRoll-FX
+
+# Idioma de los mensajes (jugador y comandos). Opciones: es, en, pt_BR.
+# Los textos viven en lang/<idioma>.yml dentro de esta carpeta de datos —
+# puedes editarlos ahí directamente. Tras cambiar esto, /rpgfx reload.
+language: es

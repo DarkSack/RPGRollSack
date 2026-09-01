@@ -183,21 +183,42 @@ public class ChatPlugin extends JavaPlugin {
 
     private void registerCommand(String name, CommandExecutor executor) {
 
-        var command = getCommand(name);
+        String[] info = metaFor(name);
 
-        if (command == null) {
-            getLogger().severe("✘ El comando '" + name + "' no está declarado en plugin.yml");
-            return;
-        }
+        com.sack.rpgroll.common.command.BrigadierCommands.register(this, name, info[0],
+                info[1].isEmpty() ? null : info[1], executor);
+    }
 
-        command.setExecutor(executor);
+    /**
+     * Descripción y permiso de cada comando.
+     * <p>
+     * Vivían en {@code plugin.yml}, pero los comandos se registran por
+     * Brigadier (ver {@code BrigadierCommands}) para que {@code execute as}
+     * entregue al jugador real, y ahí ya no hay YAML de donde leerlos.
+     */
+    private String[] metaFor(String name) {
 
-
-        if (executor instanceof org.bukkit.command.TabCompleter tabCompleter) {
-
-            command.setTabCompleter(tabCompleter);
-
-        }
+        return switch (name) {
+            case "channel" -> new String[] { "Unirse/salir/listar canales de chat", "" };
+            case "ch" -> new String[] { "Alias de /channel", "" };
+            case "w" -> new String[] { "Enviar un mensaje privado", "" };
+            case "r" -> new String[] { "Responder al último whisper", "" };
+            case "socialspy" -> new String[] { "Alternar espía de whispers (staff)", "rpgrollchat.socialspy" };
+            case "ignore" -> new String[] { "Ignorar jugadores/guilds/canales", "" };
+            case "me" -> new String[] { "Acción narrativa en tercera persona", "" };
+            case "do" -> new String[] { "Descripción narrativa fuera de personaje (OOC)", "" };
+            case "emote" -> new String[] { "Ejecutar una emote (wave, laugh, sit, cry, dance, ...)", "" };
+            case "wave" -> new String[] { "Emote de saludo", "" };
+            case "laugh" -> new String[] { "Emote de risa", "" };
+            case "sit" -> new String[] { "Emote de sentarse", "" };
+            case "cry" -> new String[] { "Emote de llanto", "" };
+            case "dance" -> new String[] { "Emote de baile", "" };
+            case "react" -> new String[] { "Reaccionar al último mensaje visto en un canal", "" };
+            case "chatlog" -> new String[] { "Buscar/exportar/moderar el historial de chat", "rpgrollchat.staff" };
+            case "language" -> new String[] { "Aprender/hablar idiomas", "" };
+            case "chatadmin" -> new String[] { "Comandos administrativos de chat", "rpgrollchat.admin.*" };
+            default -> new String[] { "", "" };
+        };
     }
 
     private void registerPlaceholders() {

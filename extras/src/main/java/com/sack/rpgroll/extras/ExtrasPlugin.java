@@ -149,17 +149,12 @@ public class ExtrasPlugin extends JavaPlugin {
 
     private void registerCommand() {
 
-        var command = getCommand("extrasadmin");
-
-        if (command == null) {
-            getLogger().severe("✘ El comando 'extrasadmin' no está declarado en plugin.yml");
-            return;
-        }
-
         var executor = new ExtrasAdminCommand(
                 statManager, statEngine, conditionManager, conditionRuntime, this::reload, langManager);
-        command.setExecutor(executor);
-        command.setTabCompleter(executor);
+
+        // Registrado por Brigadier para que `execute as` entregue al jugador real.
+        com.sack.rpgroll.common.command.BrigadierCommands.register(this, "extrasadmin",
+                "Gestiona needs y conditions de RPGRoll-Extras", "rpgrollextras.admin.*", executor);
     }
 
     @Override

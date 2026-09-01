@@ -1,6 +1,7 @@
 package com.sack.rpgroll.traps.registry;
 
 import com.sack.rpgroll.traps.integration.EffectsIntegration;
+import com.sack.rpgroll.common.integration.ParticlesIntegration;
 import com.sack.rpgroll.traps.integration.ItemsIntegration;
 import com.sack.rpgroll.util.ComponentUtils;
 
@@ -15,6 +16,7 @@ import org.bukkit.entity.Arrow;
 import org.bukkit.entity.DragonFireball;
 import org.bukkit.entity.Egg;
 import org.bukkit.entity.EnderPearl;
+import org.bukkit.entity.EvokerFangs;
 import org.bukkit.entity.Fireball;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -96,8 +98,17 @@ public final class BuiltinTrapActions {
             try {
                 Particle particle = Particle.valueOf(action.param("particle", "SMOKE").toUpperCase(Locale.ROOT));
                 int count = Integer.parseInt(action.param("count", "20"));
-                location.getWorld().spawnParticle(particle, location.clone().add(0.5, 0.5, 0.5), count, 0.5, 0.5,
-                        0.5, 0.02);
+
+                // La dispersión y la velocidad son lo que separa una nubecita
+                // tímida de un efecto que se ve: antes estaban fijas en 0.5 y
+                // 0.02, así que toda trampa se veía igual de pobre.
+                double offsetX = Double.parseDouble(action.param("offset-x", "0.5"));
+                double offsetY = Double.parseDouble(action.param("offset-y", "0.5"));
+                double offsetZ = Double.parseDouble(action.param("offset-z", "0.5"));
+                double speed = Double.parseDouble(action.param("speed", "0.02"));
+
+                location.getWorld().spawnParticle(particle, location.clone().add(0.5, 0.5, 0.5), count,
+                        offsetX, offsetY, offsetZ, speed);
             } catch (IllegalArgumentException e) {
                 plugin.getLogger().warning("✘ PARTICLE inválida en acción de trampa: " + action.param("particle", ""));
             }
@@ -138,7 +149,42 @@ public final class BuiltinTrapActions {
             float power = Float.parseFloat(action.param("power", "2.0"));
             boolean fire = Boolean.parseBoolean(action.param("fire", "false"));
             boolean breakBlocks = Boolean.parseBoolean(action.param("break-blocks", "false"));
-            location.getWorld().createExplosion(location.clone().add(0.5, 0.5, 0.5), power, fire, breakBlocks);
+
+            World world = location.getWorld();
+            Location center = location.clone().add(0.5, 0.5, 0.5);
+
+            world.createExplosion(center, power, fire, breakBlocks);
+
+            // Con break-blocks en false la explosión de Bukkit queda casi
+            // invisible: sin cráter no hay nada que mirar y parece que la
+            // trampa no hizo nada. El estallido se dibuja aparte para que se
+            // vea igual de contundente sin romper el escenario.
+            world.spawnParticle(Particle.EXPLOSION_EMITTER, center, 1 + (int) (power / 2));
+            world.spawnParticle(Particle.FLAME, center, (int) (power * 25), power / 2, power / 3, power / 2, 0.12);
+            world.spawnParticle(Particle.LARGE_SMOKE, center, (int) (power * 18), power / 2, power / 3, power / 2,
+                    0.06);
+            world.playSound(center, Sound.ENTITY_GENERIC_EXPLODE, Math.min(1.6f, 0.9f + power / 5f), 0.85f);
+
+            // Empujón hacia afuera: es lo que hace que se sienta una explosión
+            // y no un simple golpe.
+            double knockback = Double.parseDouble(action.param("knockback", "1.0"));
+
+            if (knockback > 0) {
+                for (org.bukkit.entity.Entity nearby : world.getNearbyEntities(center, power, power, power)) {
+
+                    if (!(nearby instanceof LivingEntity living)) {
+                        continue;
+                    }
+
+                    Vector push = living.getLocation().toVector().subtract(center.toVector());
+
+                    if (push.lengthSquared() < 0.01) {
+                        push = new Vector(0, 1, 0);
+                    }
+
+                    living.setVelocity(push.normalize().multiply(knockback).setY(Math.max(0.45, knockback / 2)));
+                }
+            }
         });
 
         registry.register("FIRE", (action, ctx) -> {
@@ -307,6 +353,98 @@ public final class BuiltinTrapActions {
 
             target.damage(amount);
             target.setVelocity(direction.multiply(1.5).setY(0.4));
+        });
+
+        /**
+         * Los colmillos del evocador, la misma línea que invoca el Evoker.
+         * <p>
+         * Es lo que un "corredor de pinchos" debería verse: pinchos que
+         * brotan del suelo hacia quien pasa, en vez de una partícula suelta.
+         * Los colmillos ya traen su propia animación, sonido y golpe, así que
+         * el efecto sale coherente sin inventar nada.
+         *
+         * <p>Parámetros: {@code rows} (cuántos colmillos en la línea),
+         * {@code spacing} (bloques entre uno y otro), {@code damage},
+         * {@code ring} (true = círculo alrededor en vez de línea).
+         */
+        registry.register("EVOKER_FANGS", (action, ctx) -> {
+
+            Location origin = ctx.anchorLocation();
+            LivingEntity target = ctx.target();
+
+            if (origin == null || origin.getWorld() == null) {
+                return;
+            }
+
+            World world = origin.getWorld();
+            int count = Math.max(1, Integer.parseInt(action.param("rows", "8")));
+            double spacing = Double.parseDouble(action.param("spacing", "1.2"));
+            double damage = Double.parseDouble(action.param("damage", "0"));
+            boolean ring = Boolean.parseBoolean(action.param("ring", "false"));
+
+            for (int i = 0; i < count; i++) {
+
+                Location spot;
+
+                if (ring) {
+                    double angle = 2 * Math.PI * i / count;
+                    spot = origin.clone().add(Math.cos(angle) * spacing * 2, 0, Math.sin(angle) * spacing * 2);
+                } else if (target != null) {
+                    // Línea que avanza desde la trampa hacia la víctima.
+                    Vector direction = target.getLocation().toVector().subtract(origin.toVector()).setY(0);
+                    if (direction.lengthSquared() < 0.01) {
+                        direction = new Vector(1, 0, 0);
+                    }
+                    spot = origin.clone().add(direction.normalize().multiply(spacing * (i + 1)));
+                } else {
+                    spot = origin.clone().add(spacing * (i + 1), 0, 0);
+                }
+
+                // Los colmillos necesitan suelo: si el bloque está al aire se
+                // baja hasta encontrarlo, si no aparecen flotando y no golpean.
+                spot = groundedNear(spot);
+
+                if (spot == null) {
+                    continue;
+                }
+
+                Location fangSpot = spot;
+                int delay = i;
+
+                Bukkit.getScheduler().runTaskLater(ctx.engine().getPlugin(), () -> {
+
+                    EvokerFangs fangs = world.spawn(fangSpot, EvokerFangs.class);
+
+                    if (damage > 0 && target != null && target.getLocation().distanceSquared(fangSpot) <= 4.0) {
+                        target.damage(damage);
+                    }
+
+                    world.spawnParticle(Particle.CRIT, fangSpot.clone().add(0, 0.5, 0), 12, 0.2, 0.3, 0.2, 0.05);
+
+                }, delay * 2L);
+            }
+
+            world.playSound(origin, Sound.ENTITY_EVOKER_PREPARE_ATTACK, 1.2f, 0.9f);
+        });
+
+        /**
+         * Reproduce un efecto de RPGRoll-FX por id.
+         * <p>
+         * Permite que una trampa dispare efectos diseñados en ese plugin en
+         * vez de limitarse a una partícula de Bukkit. Integración blanda: si
+         * RPGRoll-FX no está instalado la acción simplemente no hace
+         * nada, igual que el resto de integraciones opcionales.
+         */
+        registry.register("PARTICLES", (action, ctx) -> {
+
+            String effectId = action.param("effect-id", action.param("id", ""));
+            Location location = ctx.anchorLocation();
+
+            if (effectId.isBlank() || location == null) {
+                return;
+            }
+
+            ParticlesIntegration.play(effectId, ctx.triggeringPlayer(), location);
         });
 
         registry.register("COMMAND", (action, ctx) -> {
@@ -482,6 +620,31 @@ public final class BuiltinTrapActions {
         }
 
         return result;
+    }
+
+
+    /**
+     * Baja hasta 3 bloques buscando suelo sólido.
+     * <p>
+     * Los EvokerFangs solo golpean si nacen sobre un bloque; en un pasillo con
+     * escalones o alfombras el punto calculado cae al aire y el ataque se
+     * pierde sin que se note por qué.
+     */
+    private static Location groundedNear(Location spot) {
+
+        Location probe = spot.clone();
+
+        for (int drop = 0; drop <= 3; drop++) {
+
+            Location candidate = probe.clone().subtract(0, drop, 0);
+
+            if (candidate.getBlock().getRelative(org.bukkit.block.BlockFace.DOWN).getType().isSolid()
+                    && candidate.getBlock().isPassable()) {
+                return candidate;
+            }
+        }
+
+        return null;
     }
 
 }

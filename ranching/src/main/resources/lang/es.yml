@@ -7,10 +7,14 @@ command:
   player_only: "Solo jugadores pueden usar este comando."
   ranching:
     usage_inspect: "Uso: /ranching inspect"
-    look_at_animal: "Mirá directamente a un animal rastreado por Ranching."
+    look_at_animal: "Mira directamente a un animal rastreado por Ranching."
   admin:
-    no_permission: "No tenés permiso para usar este comando."
-    usage: "Uso: /ranchingadmin <browser|reload|spawn <especie> [raza]>"
+    no_permission: "No tienes permiso para usar este comando."
+    usage: |-
+      Uso: /ranchingadmin
+      &7 • &bbrowser
+      &7 • &areload
+      &7 • &espawn <especie> [raza]
     player_only_browser: "Solo un jugador puede abrir el Ranch Studio."
     reloaded: "✔ RPGRoll-Ranching recargado."
     player_only_spawn: "Solo un jugador puede spawnear un animal."
@@ -97,12 +101,12 @@ gui:
     step01_hint: "Click: +0.1 · Click derecho: -0.1"
     step1min_hint: "Click: +1 min · Click derecho: -1 min"
     step1200_hint: "Click: +1200 (1 min) · Click derecho: -1200"
-    prompt_name: "Escribí el nuevo nombre:"
-    prompt_icon: "Escribí el Material del ícono:"
-    prompt_description: "Escribí la nueva descripción:"
-    prompt_tags: "Escribí tags separados por comas:"
-    prompt_tags_hint: "Escribí tags separados por comas"
-    prompt_disease_ids: "Escribí ids de enfermedad separados por comas:"
+    prompt_name: "Escribe el nuevo nombre:"
+    prompt_icon: "Escribe el Material del ícono:"
+    prompt_description: "Escribe la nueva descripción:"
+    prompt_tags: "Escribe tags separados por comas:"
+    prompt_tags_hint: "Escribe tags separados por comas"
+    prompt_disease_ids: "Escribe ids de enfermedad separados por comas:"
 
   animal:
     sex: "Sexo: {sex}"
@@ -155,14 +159,14 @@ gui:
     browser:
       new: "Crear especie nueva"
       already_exists: "Ya existe una especie con ese id."
-      prompt_new_id: "Escribí el id de la nueva especie:"
+      prompt_new_id: "Escribe el id de la nueva especie:"
       entity_line: "entidad: {entity}"
     editor:
       title: "Especie: {id}"
       entity_type_line: "Entidad vanilla: {entity}"
       entity_type_hint: "Nombre de un EntityType (COW, CHICKEN, SHEEP...)"
       product_types_line: "Productos: {types}"
-      product_types_hint: "Escribí tipos separados por comas (milk, wool, eggs...)"
+      product_types_hint: "Escribe tipos separados por comas (milk, wool, eggs...)"
       weight_min_line: "Peso mín.: {weight} kg"
       weight_max_line: "Peso máx.: {weight} kg"
       baby_duration_line: "Duración cría: {duration}"
@@ -175,21 +179,21 @@ gui:
       max_litter_line: "Camada máx.: {value}"
       fertility_line: "Fertilidad base: {value}%"
       diet_line: "Dieta: {tags}"
-      diet_hint: "Escribí tags separados por comas — vacío = cualquier alimento"
+      diet_hint: "Escribe tags separados por comas — vacío = cualquier alimento"
       base_production_title: "Producción base"
-      base_production_hint: "Escribí 'clave=valor,clave=valor' (ej. milk=3,leather=1)"
+      base_production_hint: "Escribe 'clave=valor,clave=valor' (ej. milk=3,leather=1)"
       no_production: "(sin productos configurados)"
-      prompt_entity_type: "Escribí el EntityType (COW, CHICKEN, SHEEP...):"
-      prompt_product_types: "Escribí los tipos de producto separados por comas:"
-      prompt_diet_tags: "Escribí los tags de dieta separados por comas:"
-      prompt_base_production: "Escribí 'clave=valor,clave=valor':"
+      prompt_entity_type: "Escribe el EntityType (COW, CHICKEN, SHEEP...):"
+      prompt_product_types: "Escribe los tipos de producto separados por comas:"
+      prompt_diet_tags: "Escribe los tags de dieta separados por comas:"
+      prompt_base_production: "Escribe 'clave=valor,clave=valor':"
 
   breed:
     browser:
       new: "Crear raza nueva"
       already_exists: "Ya existe una raza con ese id."
-      need_species_first: "Creá al menos una especie primero."
-      prompt_new_id: "Escribí el id de la nueva raza:"
+      need_species_first: "Crea al menos una especie primero."
+      prompt_new_id: "Escribe el id de la nueva raza:"
       species_line: "especie: {species}"
     editor:
       title: "Raza: {id}"
@@ -199,21 +203,21 @@ gui:
       fertility_line: "Fertilidad: x{value}"
       resistance_line: "Resistencia: x{value}"
       temperament_line: "Temperamento: {temperament}"
-      prompt_species_id: "Escribí el id de la especie:"
-      prompt_temperament: "Escribí el temperamento (ej. Calmada, Agresiva):"
+      prompt_species_id: "Escribe el id de la especie:"
+      prompt_temperament: "Escribe el temperamento (ej. Calmada, Agresiva):"
       reskin_material_line: "&dReskin — material: {value}"
       reskin_cmd_line: "&dReskin — custom model data: {value}"
       reskin_scale_line: "&dReskin — escala: {value}"
       reskin_none: "(ninguno)"
       reskin_hint: "Reskin propio (sin ModelEngine) — animal invisible + modelo custom. Shift-click: quitar."
-      prompt_reskin_material: "Escribí el Material base del ítem de reskin (ej. PAPER):"
-      prompt_reskin_cmd: "Escribí el custom-model-data del reskin (número entero):"
+      prompt_reskin_material: "Escribe el Material base del ítem de reskin (ej. PAPER):"
+      prompt_reskin_cmd: "Escribe el custom-model-data del reskin (número entero):"
 
   gene:
     browser:
       new: "Crear gen nuevo"
       already_exists: "Ya existe un gen con ese id."
-      prompt_new_id: "Escribí el id del nuevo gen:"
+      prompt_new_id: "Escribe el id del nuevo gen:"
       attribute_key_line: "attribute-key: {key}"
       dominance_line: "dominancia: {dominance}"
     editor:
@@ -226,13 +230,13 @@ gui:
       max_value_line: "Máximo: {value}"
       species_line: "Especies: {species}"
       any_species: "cualquiera"
-      species_hint: "Escribí ids separados por comas — vacío = cualquiera"
+      species_hint: "Escribe ids separados por comas — vacío = cualquiera"
       mutations_line: "Mutaciones: {count}"
       mutations_hint: "Formato: id;nombre;TIPO;valor;chance\nTIPO: MULTIPLY, OVERRIDE, COSMETIC_TAG\nEscribí para AGREGAR una."
       clear_mutations: "Borrar todas las mutaciones"
-      prompt_attribute_key: "Escribí el attribute-key:"
-      prompt_species: "Escribí ids de especie separados por comas (vacío = cualquiera):"
-      prompt_add_mutation: "Escribí 'id;nombre;TIPO;valor;chance' para agregar una mutación:"
+      prompt_attribute_key: "Escribe el attribute-key:"
+      prompt_species: "Escribe ids de especie separados por comas (vacío = cualquiera):"
+      prompt_add_mutation: "Escribe 'id;nombre;TIPO;valor;chance' para agregar una mutación:"
       invalid_format: "Formato inválido — necesita 5 partes separadas por ';'."
       invalid_value: "Valor o chance inválidos."
 
@@ -240,7 +244,7 @@ gui:
     browser:
       new: "Crear alimento nuevo"
       already_exists: "Ya existe un alimento con ese id."
-      prompt_new_id: "Escribí el id del nuevo alimento:"
+      prompt_new_id: "Escribe el id del nuevo alimento:"
       quality_line: "calidad: {quality}"
     editor:
       title: "Alimento: {id}"
@@ -254,11 +258,11 @@ gui:
     browser:
       new: "Crear enfermedad nueva"
       already_exists: "Ya existe una enfermedad con ese id."
-      prompt_new_id: "Escribí el id de la nueva enfermedad:"
+      prompt_new_id: "Escribe el id de la nueva enfermedad:"
     editor:
       title: "Enfermedad: {id}"
       symptoms_line: "Síntomas: {symptoms}"
-      prompt_symptoms: "Escribí los síntomas separados por comas:"
+      prompt_symptoms: "Escribe los síntomas separados por comas:"
       duration_line: "Duración: {ticks} ticks"
       contagion_line: "Contagio: {value}%"
       health_penalty_line: "Penalidad de salud/chequeo: {value}"
@@ -269,7 +273,7 @@ gui:
     browser:
       new: "Crear vacuna nueva"
       already_exists: "Ya existe una vacuna con ese id."
-      prompt_new_id: "Escribí el id de la nueva vacuna:"
+      prompt_new_id: "Escribe el id de la nueva vacuna:"
     editor:
       title: "Vacuna: {id}"
       risk_reduction_line: "Reducción de riesgo: {value}%"
@@ -282,7 +286,7 @@ gui:
     browser:
       new: "Crear medicina nueva"
       already_exists: "Ya existe una medicina con ese id."
-      prompt_new_id: "Escribí el id de la nueva medicina:"
+      prompt_new_id: "Escribe el id de la nueva medicina:"
       type_line: "tipo: {type}"
     editor:
       title: "Medicina: {id}"
@@ -301,7 +305,7 @@ gui:
     pick_hint: "Click para elegir como A o B"
     slot_unselected: "{label}: (sin elegir)"
     slot_selected: "{label}: {id}"
-    pick_two_first: "Elegí dos animales primero."
+    pick_two_first: "Elige dos animales primero."
     different_species: "Esos dos no son de la misma especie."
     same_sex: "Esos dos son del mismo sexo."
     preview_header: "=== Previsualización de cruce ==="

@@ -46,12 +46,62 @@ public class FakePlayerRenderer {
     private final ProtocolManager protocolManager;
     private static final int POSE_METADATA_INDEX = 6;
 
+    /**
+     * Se enciende cuando ProtocolLib no puede armar los packets contra este
+     * servidor. Los NPCs se reintentaban en cada bloque caminado, así que un
+     * único fallo llenaba la consola con cientos de stacktraces por minuto.
+     */
+    private boolean renderingUnavailable;
+
     public FakePlayerRenderer(Plugin plugin) {
         this.plugin = plugin;
         this.protocolManager = ProtocolLibrary.getProtocolManager();
     }
 
-    public void spawnFor(Player viewer, NpcDefinition npc, UUID npcUuid, int entityId) {
+    /**
+     * @return true si el NPC quedó enviado al cliente. false significa que
+     *         este servidor no puede renderizar NPCs y no vale la pena
+     *         reintentar.
+     */
+    public boolean spawnFor(Player viewer, NpcDefinition npc, UUID npcUuid, int entityId) {
+
+        if (renderingUnavailable) {
+            return false;
+        }
+
+        try {
+            doSpawnFor(viewer, npc, npcUuid, entityId);
+            return true;
+
+        } catch (RuntimeException e) {
+            // ProtocolLib tira FieldAccessException/IllegalArgumentException
+            // cuando la estructura del packet no coincide con la del servidor.
+            reportUnavailable(e);
+            return false;
+        }
+    }
+
+    /**
+     * Deja constancia una sola vez y apaga el renderizado.
+     * <p>
+     * El caso visto en producción: {@code Field index 0 is out of bounds for
+     * length 0} al escribir el tipo de entidad en SPAWN_ENTITY — ProtocolLib
+     * no encontró ese campo porque su versión no conoce el formato de packets
+     * de ese servidor.
+     */
+    private void reportUnavailable(RuntimeException cause) {
+
+        renderingUnavailable = true;
+
+        plugin.getLogger().severe("✘ No se pueden renderizar NPCs en este servidor: "
+                + cause.getClass().getSimpleName() + ": " + cause.getMessage());
+        plugin.getLogger().severe("  Casi siempre es ProtocolLib desactualizado para la versión de "
+                + Bukkit.getServer().getMinecraftVersion() + " que corre este servidor.");
+        plugin.getLogger().severe("  Actualiza ProtocolLib y reinicia. El resto de RPGRoll-NPCs sigue "
+                + "funcionando; solo no se dibujan los NPCs.");
+    }
+
+    private void doSpawnFor(Player viewer, NpcDefinition npc, UUID npcUuid, int entityId) {
 
         WrappedGameProfile profile = new WrappedGameProfile(npcUuid, sanitizeProfileName(npc.id()));
 
@@ -69,11 +119,30 @@ public class FakePlayerRenderer {
         applyPose(viewer, npc, entityId);
 
         // Remover de la tablist tras un breve delay, dejando la entidad visible
-        Bukkit.getScheduler().runTaskLater(plugin, () -> sendPlayerInfoRemove(viewer, npcUuid), 40L);
+        // Corre fuera del try de spawnFor, así que lleva su propia guarda.
+        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            if (renderingUnavailable || !viewer.isOnline()) {
+                return;
+            }
+            try {
+                sendPlayerInfoRemove(viewer, npcUuid);
+            } catch (RuntimeException e) {
+                reportUnavailable(e);
+            }
+        }, 40L);
     }
 
     public void despawnFor(Player viewer, int entityId) {
-        sendEntityDestroy(viewer, entityId);
+
+        if (renderingUnavailable) {
+            return;
+        }
+
+        try {
+            sendEntityDestroy(viewer, entityId);
+        } catch (RuntimeException e) {
+            reportUnavailable(e);
+        }
     }
 
     private void sendPlayerInfoAdd(Player viewer, WrappedGameProfile profile, UUID npcUuid, String displayName) {
@@ -131,6 +200,15 @@ public class FakePlayerRenderer {
 
         packet.getIntegers().write(0, entityId);
         packet.getUUIDs().write(0, npcUuid);
+
+        // Si ProtocolLib no reconoce el campo de tipo de entidad, escribir en
+        // el índice 0 revienta con "out of bounds for length 0". Se comprueba
+        // antes para dar un error que explique qué pasa.
+        if (packet.getEntityTypeModifier().size() == 0) {
+            throw new IllegalStateException(
+                    "SPAWN_ENTITY no expone un campo de tipo de entidad — ProtocolLib no entiende "
+                            + "el formato de packets de este servidor");
+        }
 
         packet.getEntityTypeModifier().write(0, EntityType.PLAYER);
 

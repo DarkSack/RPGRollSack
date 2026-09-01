@@ -3,12 +3,20 @@
 
 # Mensajes generales
 general:
-  no_permission: "&cNo tenés permiso para usar este comando."
+  no_permission: "&cNo tienes permiso para usar este comando."
   player_only: "&cSolo un jugador puede usar este comando."
 
 # Comando /questadmin
 admin:
-  usage: "&cUso: /questadmin <give|complete|fail|reset|reload|browser [quests|regions]> [jugador] [questId]"
+  usage: |-
+    &cUso: /questadmin
+    &7 • &bgive
+    &7 • &acomplete
+    &7 • &efail
+    &7 • &dreset
+    &7 • &6reload
+    &7 • &9browser [quests|regions]
+    &8   [jugador] [questId]
   browser_player_only: "&cSolo un jugador puede abrir el navegador."
   give_usage: "&cUso: /questadmin give <jugador> <questId>"
   player_not_found: "&cJugador no encontrado: {player}"
@@ -25,7 +33,15 @@ admin:
 
 # Comando /quest (jugador)
 command:
-  usage: "&cUso: /quest <list|info|start|abandon|active|completed> [id]"
+  usage: |-
+    &cUso: /quest
+    &7 • &blist
+    &7 • &ainfo
+    &7 • &estart
+    &7 • &dabandon
+    &7 • &6active
+    &7 • &9completed
+    &8   [id]
   list_empty: "&7No hay misiones definidas."
   list_header: "&6Misiones disponibles:"
   list_entry: "&f• {id} — {name} ({category}, {difficulty})"
@@ -39,12 +55,12 @@ command:
   info_repeatable_no: "&7Repetible: no"
   start_usage: "&cUso: /quest start <id>"
   start_success: "&a✔ Misión iniciada: {name}"
-  start_denied_header: "&cNo podés iniciar esta misión:"
+  start_denied_header: "&cNo puedes iniciar esta misión:"
   start_denied_reason: "&c- {reason}"
   abandon_usage: "&cUso: /quest abandon <id>"
   abandon_success: "&a✔ Misión abandonada."
-  abandon_not_active: "&cNo tenés esa misión activa."
-  active_empty: "&7No tenés misiones activas."
+  abandon_not_active: "&cNo tienes esa misión activa."
+  active_empty: "&7No tienes misiones activas."
   active_header: "&6Misiones activas:"
   active_entry: "&f• {name} — stage {current}/{total} ({stageId})"
   completed_empty: "&7Todavía no completaste ninguna misión."
@@ -53,7 +69,7 @@ command:
 
 # Motor de misiones (motivos de rechazo, diálogo, mensajes de finalización)
 engine:
-  already_active: "Ya tenés esta quest activa."
+  already_active: "Ya tienes esta quest activa."
   already_completed_not_repeatable: "Ya completaste esta quest y no es repetible."
   on_cooldown: "Esta quest está en cooldown todavía."
   dialog_npc_prefix: "&e[NPC] "
@@ -63,18 +79,18 @@ engine:
 
 # Motivos de rechazo al chequear si un jugador puede iniciar una quest
 requirement:
-  level: "Necesitas nivel {required} (tenés {current})."
+  level: "Necesitas nivel {required} (tienes {current})."
   race: "Necesitas ser de la raza: {race}"
   class: "Necesitas ser de la clase: {class}"
   profession: "Necesitas la profesión: {profession}"
   trait: "Necesitas el trait: {trait}"
-  permission: "No tenés el permiso requerido para esta quest."
+  permission: "No tienes el permiso requerido para esta quest."
   money: "Necesitas al menos {amount} de dinero."
   item: "Necesitas {amount}x {material}"
   completed_quest: "Necesitas haber completado la quest: {quest}"
-  world: "Tenés que estar en el mundo: {world}"
-  region: "Tenés que estar en la región: {region}"
-  biome: "Tenés que estar en el bioma: {biome}"
+  world: "Tienes que estar en el mundo: {world}"
+  region: "Tienes que estar en la región: {region}"
+  biome: "Tienes que estar en el bioma: {biome}"
   weather: "Necesitás clima: {weather}"
   time_range: "Solo disponible entre las {min} y {max} (hora del mundo)."
 
@@ -89,7 +105,7 @@ browser:
   click_to_edit: "&eClick para editar"
   create_new: "&aCrear quest nueva"
   close_button: "Cerrar"
-  prompt_new_id: "Escribí el id de la nueva quest:"
+  prompt_new_id: "Escribe el id de la nueva quest:"
   id_exists: "&cYa existe una quest con ese id."
 
 # GUI: editor de una quest
@@ -116,8 +132,8 @@ editor:
   stage_yaml_hint: "&8Los objetivos/diálogo se editan en el YAML"
   add_stage: "&aAgregar stage (por id)"
   back_button: "Volver"
-  prompt_name: "Escribí el nuevo nombre de la quest:"
-  prompt_add_stage: "Escribí el id del nuevo stage:"
+  prompt_name: "Escribe el nuevo nombre de la quest:"
+  prompt_add_stage: "Escribe el id del nuevo stage:"
   stage_min_required: "&cUna quest necesita al menos un stage."
 
 # GUI: navegador de regiones
@@ -127,7 +143,7 @@ region_browser:
   click_to_edit: "&eClick para editar"
   create_new: "&aCrear región nueva (acá)"
   close_button: "Cerrar"
-  prompt_new_id: "Escribí el id de la nueva región:"
+  prompt_new_id: "Escribe el id de la nueva región:"
   id_exists: "&cYa existe una región con ese id."
 
 # GUI: editor de una región

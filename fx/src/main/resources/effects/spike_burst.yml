@@ -1,0 +1,60 @@
+id: spike_burst
+display-name: "&4&lErupción de Pinchos"
+description: "Onda de tierra y esquirlas que acompaña a los pinchos brotando del suelo. Pensado para la trampa Corredor de Pinchos de RPGRoll-Traps, pero sirve para cualquier ataque que salga desde abajo."
+
+steps:
+  - type: SOUND
+    delay: 0
+    sound: BLOCK_DEEPSLATE_BREAK
+    target: LOCATION
+    volume: 1.6
+    pitch: 0.5
+
+  # Anillo bajo, a ras del suelo: la tierra que se levanta.
+  - type: PARTICLE
+    delay: 0
+    particle: CRIT
+    shape: CIRCLE
+    target: LOCATION
+    radius: 1.0
+    points: 28
+    count: 2
+    speed: 0.05
+
+  - type: PARTICLE
+    delay: 2
+    particle: LARGE_SMOKE
+    shape: CIRCLE
+    target: LOCATION
+    radius: 2.0
+    points: 40
+    count: 1
+    speed: 0.02
+
+  # Segundo anillo más abierto: la onda que se expande.
+  - type: PARTICLE
+    delay: 4
+    particle: CRIT
+    shape: BURST
+    target: LOCATION
+    radius: 3.2
+    points: 70
+    count: 2
+    speed: 0.10
+
+  - type: SOUND
+    delay: 4
+    sound: ENTITY_EVOKER_FANGS_ATTACK
+    target: LOCATION
+    volume: 1.5
+    pitch: 0.75
+
+  - type: PARTICLE
+    delay: 6
+    particle: DUST_PLUME
+    shape: CIRCLE
+    target: LOCATION
+    radius: 4.0
+    points: 64
+    count: 1
+    speed: 0.03

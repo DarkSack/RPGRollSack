@@ -252,4 +252,10 @@ public class TrapEngine {
         return Optional.empty();
     }
 
+
+    /** El plugin dueño del motor, para acciones que necesitan programar tareas. */
+    public Plugin getPlugin() {
+        return plugin;
+    }
+
 }

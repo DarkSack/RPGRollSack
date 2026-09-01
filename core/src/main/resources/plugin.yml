@@ -7,12 +7,6 @@ description: DnD RPG Framework para Minecraft Paper
 softdepend: [Vault, PlaceholderAPI]
 
 # Comandos del plugin
-commands:
-  rpg:
-    description: Comando principal de RPGRoll
-    usage: /rpg <subcomando> [argumentos]
-    aliases: [rpgroll, dnd]
-
 # Permisos del plugin
 permissions:
   rpgroll.*:

@@ -3,21 +3,21 @@ command:
   gui-players-only: "Only a player can open the Dashboard."
   usage: |-
     &eUsage: /srp
-    &7 • &freload
-    &7 • &frebuild
-    &7 • &fvalidate
-    &7 • &fpublish
-    &7 • &fstatus
-    &7 • &fcontent
-    &7 • &fconflicts
+    &7 • &breload
+    &7 • &arebuild
+    &7 • &evalidate
+    &7 • &dpublish
+    &7 • &6status
+    &7 • &9content
+    &7 • &cconflicts
     &7 • &fmodels
-    &7 • &ftextures
-    &7 • &fsounds
-    &7 • &ffonts
-    &7 • &fcache
-    &7 • &fdev
-    &7 • &fdatapack
-    &7 • &fgui
+    &7 • &5textures
+    &7 • &2sounds
+    &7 • &bfonts
+    &7 • &acache
+    &7 • &edev
+    &7 • &ddatapack
+    &7 • &6gui
   reload-done: "✔ config.yml reloaded. Changes to the HTTP port, content folder, or pack-format require restarting the plugin."
   build-type-rebuild: "Rebuild"
   build-type-validate: "Validation"
@@ -53,7 +53,10 @@ command:
   datapack-build-done: "✔ Datapack merged and copied to datapacks/ — {count} module(s). Run '/srp datapack reload' to apply it."
   datapack-build-resolution-error: "  ✘ {error}"
   datapack-reload-done: "✔ Server#reloadData() executed — recipes/loot tables/tags/advancements reloaded."
-  datapack-usage: "Usage: /srp datapack <build|reload>"
+  datapack-usage: |-
+    Usage: /srp datapack
+    &7 • &bbuild
+    &7 • &areload
 
 gui:
   back: "Back"

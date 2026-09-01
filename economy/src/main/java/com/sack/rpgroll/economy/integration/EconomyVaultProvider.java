@@ -271,7 +271,7 @@ public class EconomyVaultProvider implements Economy {
 
     private EconomyResponse notImplemented() {
         return new EconomyResponse(0, 0, EconomyResponse.ResponseType.NOT_IMPLEMENTED,
-                "RPGRoll-Economy no soporta bancos de Vault (usá /economy bank en su lugar)");
+                "RPGRoll-Economy no soporta bancos de Vault (usa /economy bank en su lugar)");
     }
 
     // ============ Cuentas: RPGRoll-Economy no necesita crear cuentas explícitamente ============

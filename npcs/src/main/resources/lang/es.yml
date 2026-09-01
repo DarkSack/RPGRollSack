@@ -8,7 +8,15 @@ general:
 
 # Comando /npc (admin)
 command:
-  usage: "&cUso: /npc <create|edit|list|delete|reload|menus> [id]"
+  usage: |-
+    &cUso: /npc
+    &7 • &bcreate
+    &7 • &aedit
+    &7 • &elist
+    &7 • &ddelete
+    &7 • &6reload
+    &7 • &9menus
+    &8   [id]
   not_found: "&cNo existe ese NPC."
   create:
     usage: "&cUso: /npc create <id>"
@@ -82,7 +90,7 @@ menu:
     click_to_edit: "&eClick para editar"
     create_new: "&aCrear menú nuevo"
     close: "Cerrar"
-    prompt_new_id: "Escribí el id del nuevo menú:"
+    prompt_new_id: "Escribe el id del nuevo menú:"
     already_exists: "&cYa existe un menú con ese id."
   editor:
     title: "&6Menú: {id}"
@@ -94,9 +102,9 @@ menu:
     item_hint: "&8Click para agregar una acción · Shift-click para quitar"
     add_item: "&aAgregar ítem al menú"
     back: "Volver"
-    prompt_title: "Escribí el nuevo título del menú:"
-    prompt_item: "Escribí: slot;material;nombre (ej. 11;IRON_SWORD;&fEspada):"
-    prompt_action: "Escribí: TIPO;valor (ej. GIVE_ITEM;SHIELD,1 — tipos: {types}):"
+    prompt_title: "Escribe el nuevo título del menú:"
+    prompt_item: "Escribe: slot;material;nombre (ej. 11;IRON_SWORD;&fEspada):"
+    prompt_action: "Escribe: TIPO;valor (ej. GIVE_ITEM;SHIELD,1 — tipos: {types}):"
     invalid_format: "&cFormato inválido."
     invalid_slot_number: "&cEl slot debe ser un número."
     invalid_action_type: "&cTipo de acción inválido."

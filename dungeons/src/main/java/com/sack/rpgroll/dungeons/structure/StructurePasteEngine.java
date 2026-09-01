@@ -121,11 +121,27 @@ public class StructurePasteEngine {
     private boolean placeSchematic(StructureDefinition def, Location origin, StructureRotation rotation,
             Mirror mirror) {
 
-        if (!SchematicBridge.isAvailable()) {
+        // El guard va en un método que NO menciona SchematicBridge: la JVM
+        // carga los tipos de WorldEdit al verificar el método que los usa, o
+        // sea antes de que un if dentro de ese mismo método llegue a correr.
+        // Con el chequeo adentro reventaba con NoClassDefFoundError.
+        if (!worldEditPresent()) {
             dungeonsPlugin.getLogger().warning("✘ No se puede pegar la structure '" + def.id()
                     + "' (SCHEMATIC): WorldEdit no está instalado/habilitado.");
             return false;
         }
+
+        return doPlaceSchematic(def, origin, rotation, mirror);
+    }
+
+    /** ¿Está WorldEdit? Se pregunta por Bukkit para no tocar sus clases. */
+    private boolean worldEditPresent() {
+        return org.bukkit.Bukkit.getPluginManager().isPluginEnabled("WorldEdit");
+    }
+
+    /** Toca WorldEdit: solo se entra tras confirmar que está instalado. */
+    private boolean doPlaceSchematic(StructureDefinition def, Location origin, StructureRotation rotation,
+            Mirror mirror) {
 
         File file = schematicFile(def.id());
 
@@ -145,9 +161,15 @@ public class StructurePasteEngine {
     /** Tamaño real de una estructura SCHEMATIC — solo se conoce tras leer su .schem. Requiere WorldEdit. */
     public BlockVector schematicSize(String id) {
 
-        if (!SchematicBridge.isAvailable()) {
+        if (!worldEditPresent()) {
             return null;
         }
+
+        return doSchematicSize(id);
+    }
+
+    /** Toca WorldEdit: solo se entra tras confirmar que está instalado. */
+    private BlockVector doSchematicSize(String id) {
 
         File file = schematicFile(id);
 

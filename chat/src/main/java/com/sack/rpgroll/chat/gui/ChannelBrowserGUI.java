@@ -1,5 +1,6 @@
 package com.sack.rpgroll.chat.gui;
 
+import com.sack.rpgroll.util.ComponentUtils;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.chat.channel.ChannelManager;
 import com.sack.rpgroll.chat.channel.ChatChannel;
@@ -48,7 +49,7 @@ public class ChannelBrowserGUI extends PaginatedGUI {
         LangManager lang = chatPromptManager.lang();
 
         setItem(contentSlot, new ItemBuilder(resolveIcon(channel))
-                .setName(Component.text(channel.displayName(), resolveColor(channel)))
+                .setName(ComponentUtils.parseWithDefault(channel.displayName(), resolveColor(channel)))
                 .setLore(Component.text(channel.id(), NamedTextColor.DARK_GRAY),
                         lang.component("channel.browser_lore_scope", "scope", channel.scope(), "priority",
                                 channel.priority()).colorIfAbsent(NamedTextColor.GRAY),

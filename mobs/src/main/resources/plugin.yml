@@ -7,12 +7,6 @@ description: Motor de mobs, jefes e invocaciones personalizados (componentes, fa
 depend: [RPGRoll]
 softdepend: [RPGRoll-Items, RPGRoll-Quests, PlaceholderAPI, SackResourcePack]
 
-commands:
-  mobadmin:
-    description: Gestiona definiciones de mobs (spawnear, editar, recargar)
-    usage: /mobadmin <spawn|list|reload|create|browser|editor|killall> [args]
-    permission: rpgrollmobs.admin.*
-
 permissions:
   rpgrollmobs.admin.*:
     description: Acceso completo a comandos administrativos de mobs

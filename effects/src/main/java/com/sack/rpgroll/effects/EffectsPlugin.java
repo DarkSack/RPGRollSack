@@ -59,15 +59,12 @@ public class EffectsPlugin extends JavaPlugin {
 
         new EffectTickTask(tracker, executor).runTaskTimer(this, 1L, 1L);
 
-        var effectsCommand = getCommand("rpgeffects");
-        if (effectsCommand == null) {
-            getLogger().severe("✘ El comando 'rpgeffects' no está declarado en plugin.yml");
-        } else {
-            var effectsAdminCommand = new EffectsAdminCommand(effectManager, tracker, chatPromptManager, langManager,
+        var effectsAdminCommand = new EffectsAdminCommand(effectManager, tracker, chatPromptManager, langManager,
                     this);
-            effectsCommand.setExecutor(effectsAdminCommand);
-            effectsCommand.setTabCompleter(effectsAdminCommand);
-        }
+
+        // Registrado por Brigadier para que `execute as` entregue al jugador real.
+        com.sack.rpgroll.common.command.BrigadierCommands.register(this, "rpgeffects",
+                "Comandos administrativos de RPGRoll-Effects", "rpgrolleffects.admin.*", effectsAdminCommand);
 
         getLogger().info("✔ RPGRoll-Effects habilitado. " + effectManager.count() + " efecto(s) cargado(s).");
     }

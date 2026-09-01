@@ -5,13 +5,7 @@ api-version: "26.1.1"
 author: Sack
 description: Sistema de encantamientos personalizados basado en componentes (triggers, condiciones y efectos) para RPGRoll
 depend: [RPGRoll]
-softdepend: [PlaceholderAPI]
-
-commands:
-  renchant:
-    description: Gestiona encantamientos personalizados
-    usage: /renchant <apply|remove|give|list|info|reload|browser> [args]
-    permission: rpgrollenchantments.admin.*
+softdepend: [RPGRoll-FX, PlaceholderAPI]
 
 permissions:
   rpgrollenchantments.admin.*:

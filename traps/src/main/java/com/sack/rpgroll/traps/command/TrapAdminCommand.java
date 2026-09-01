@@ -46,9 +46,9 @@ import java.util.Optional;
 public class TrapAdminCommand implements CommandExecutor, TabCompleter {
 
     private static final List<String> SUBCOMMANDS = List.of("create", "edit", "browser", "reload", "place",
-            "remove", "list", "info", "forcetrigger", "turret");
+            "remove", "list", "info", "forcetrigger", "turret", "ammo");
     private static final List<String> TURRET_SUBCOMMANDS = List.of("create", "edit", "browser", "place", "remove",
-            "list");
+            "list", "give", "catalog");
 
     private static final String PERMISSION = "rpgrolltraps.admin.*";
     private static final int LOOK_RANGE = 8;
@@ -58,6 +58,7 @@ public class TrapAdminCommand implements CommandExecutor, TabCompleter {
     private final PlacedTrapManager placedTrapManager;
     private final TrapEngine engine;
     private final TurretManager turretManager;
+    private final com.sack.rpgroll.traps.ammo.AmmoManager ammoManager;
     private final PlacedTurretManager placedTurretManager;
     private final TurretEngine turretEngine;
     private final ChatPromptManager chatPromptManager;
@@ -65,12 +66,13 @@ public class TrapAdminCommand implements CommandExecutor, TabCompleter {
 
     public TrapAdminCommand(TrapsPlugin plugin, TrapManager trapManager, PlacedTrapManager placedTrapManager,
             TrapEngine engine, TurretManager turretManager, PlacedTurretManager placedTurretManager,
-            TurretEngine turretEngine, ChatPromptManager chatPromptManager, LangManager lang) {
+            TurretEngine turretEngine, ChatPromptManager chatPromptManager, LangManager lang, com.sack.rpgroll.traps.ammo.AmmoManager ammoManager) {
         this.plugin = plugin;
         this.trapManager = trapManager;
         this.placedTrapManager = placedTrapManager;
         this.engine = engine;
         this.turretManager = turretManager;
+        this.ammoManager = ammoManager;
         this.placedTurretManager = placedTurretManager;
         this.turretEngine = turretEngine;
         this.chatPromptManager = chatPromptManager;
@@ -101,6 +103,7 @@ public class TrapAdminCommand implements CommandExecutor, TabCompleter {
             case "info" -> handleInfo(sender, args);
             case "forcetrigger" -> handleForceTrigger(sender, args);
             case "turret" -> handleTurret(sender, args);
+            case "ammo" -> handleAmmo(sender, args);
             default -> sendUsage(sender);
         }
 
@@ -173,8 +176,11 @@ public class TrapAdminCommand implements CommandExecutor, TabCompleter {
         lang.reload(plugin.getConfig().getString("language", "es"));
         trapManager.reload();
         turretManager.reload();
+        // Sin esto, editar un YAML de munición solo surtía efecto al reiniciar.
+        ammoManager.reload();
         lang.send(sender, "admin.reload.ok", "traps", trapManager.count(),
-                "locations", placedTrapManager.getAll().size());
+                "locations", placedTrapManager.getAll().size(),
+                "turrets", turretManager.count(), "ammo", ammoManager.count());
     }
 
     private void handlePlace(CommandSender sender, String[] args) {
@@ -289,6 +295,7 @@ public class TrapAdminCommand implements CommandExecutor, TabCompleter {
             case "place" -> handleTurretPlace(sender, args);
             case "remove" -> handleTurretRemove(sender, args);
             case "give" -> handleTurretGive(sender, args);
+            case "catalog" -> handleTurretCatalog(sender);
             case "list" -> handleTurretList(sender);
             default -> lang.send(sender, "admin.turret.usage");
         }
@@ -380,10 +387,84 @@ public class TrapAdminCommand implements CommandExecutor, TabCompleter {
      * nombrarlo — por eso los dos chequeos están separados y no fundidos en
      * un solo mensaje de uso.
      */
+    /** /trapadmin ammo give &lt;id&gt; [jugador] [cantidad] */
+    private void handleAmmo(CommandSender sender, String[] args) {
+
+        if (args.length < 3 || !args[1].equalsIgnoreCase("give")) {
+            lang.send(sender, "admin.ammo.give_usage");
+            return;
+        }
+
+        var ammoOpt = ammoManager.get(args[2]);
+
+        if (ammoOpt.isEmpty()) {
+            lang.send(sender, "admin.ammo.not_found", "id", args[2]);
+            return;
+        }
+
+        Player target;
+
+        if (args.length >= 4) {
+            target = Bukkit.getPlayerExact(args[3]);
+
+            if (target == null) {
+                lang.send(sender, "admin.turret.player_not_found", "player", args[3]);
+                return;
+            }
+        } else {
+            target = Senders.asPlayer(sender);
+
+            if (target == null) {
+                lang.send(sender, "admin.ammo.give_needs_player");
+                return;
+            }
+        }
+
+        int amount = 1;
+
+        if (args.length >= 5) {
+            try {
+                amount = Math.max(1, Integer.parseInt(args[4]));
+            } catch (NumberFormatException e) {
+                lang.send(sender, "admin.turret.invalid_amount", "value", args[4]);
+                return;
+            }
+        }
+
+        target.getInventory().addItem(
+                com.sack.rpgroll.traps.ammo.AmmoItem.create(plugin, ammoOpt.get(), lang, amount));
+
+        lang.send(sender, "admin.ammo.given", "amount", amount, "id", args[2], "player", target.getName());
+    }
+
+    /** Abre el catálogo para conseguir torretas y munición con un clic. */
+    private void handleTurretCatalog(CommandSender sender) {
+
+        Player player = Senders.asPlayer(sender);
+
+        if (player == null) {
+            lang.send(sender, "admin.turret.catalog_needs_player");
+            return;
+        }
+
+        new com.sack.rpgroll.traps.gui.turret.TurretCatalogGUI(
+                player, plugin, turretManager, ammoManager, lang).open();
+    }
+
     private void handleTurretGive(CommandSender sender, String[] args) {
 
         if (args.length < 3) {
-            lang.send(sender, "admin.turret.give_usage");
+            // Sin id: en vez de repetir la sintaxis, se abre el catálogo, que
+            // es justo lo que hace falta cuando no te sabes los ids. Desde
+            // consola no hay GUI posible, así que ahí sí va el uso.
+            Player player = Senders.asPlayer(sender);
+
+            if (player != null) {
+                handleTurretCatalog(sender);
+            } else {
+                lang.send(sender, "admin.turret.give_usage");
+            }
+
             return;
         }
 
@@ -474,6 +555,7 @@ public class TrapAdminCommand implements CommandExecutor, TabCompleter {
             return switch (sub) {
                 case "edit", "place" -> TabCompleteUtil.filter(args[1], trapIds());
                 case "remove", "info", "forcetrigger" -> TabCompleteUtil.filter(args[1], placementIds());
+                case "ammo" -> TabCompleteUtil.filter(args[1], List.of("give"));
                 default -> List.of();
             };
         }
@@ -484,6 +566,11 @@ public class TrapAdminCommand implements CommandExecutor, TabCompleter {
 
         if (sub.equals("turret")) {
             return turretTabComplete(args);
+        }
+
+        if (sub.equals("ammo") && args.length == 3 && args[1].equalsIgnoreCase("give")) {
+            return TabCompleteUtil.filter(args[2],
+                    ammoManager.getAll().stream().map(a -> a.id()).toList());
         }
 
         return List.of();

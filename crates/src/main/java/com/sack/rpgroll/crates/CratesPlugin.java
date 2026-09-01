@@ -67,15 +67,12 @@ public class CratesPlugin extends JavaPlugin {
         ChatPromptManager chatPromptManager = new ChatPromptManager(this, langManager);
         getServer().getPluginManager().registerEvents(chatPromptManager, this);
 
-        var crateCommand = getCommand("crate");
-        if (crateCommand == null) {
-            getLogger().severe("✘ El comando 'crate' no está declarado en plugin.yml");
-        } else {
-            var crateAdminCommand = new CrateAdminCommand(this, crateManager, placedCrateManager, hologramsHook,
+        var crateAdminCommand = new CrateAdminCommand(this, crateManager, placedCrateManager, hologramsHook,
                     crateKeyItem, chatPromptManager, langManager);
-            crateCommand.setExecutor(crateAdminCommand);
-            crateCommand.setTabCompleter(crateAdminCommand);
-        }
+
+        // Registrado por Brigadier para que `execute as` entregue al jugador real.
+        com.sack.rpgroll.common.command.BrigadierCommands.register(this, "crate",
+                "Gestiona crates", "rpgrollcrates.admin.*", crateAdminCommand);
 
         rebuildHolograms();
 

@@ -5,12 +5,6 @@ api-version: "26.1.1"
 author: Sack
 description: Asset Pipeline para resource packs — escaneo de módulos, resolución de dependencias, fusión de namespaces, CustomModelData estable, validación, build+hash y distribución automática. Framework independiente, no depende de RPGRoll.
 
-commands:
-  srp:
-    description: Comandos de SackResourcePack
-    usage: /srp <reload|rebuild|validate|publish|status|content|conflicts|models|textures|sounds|fonts|cache|dev|datapack> [args]
-    permission: sackresourcepack.admin.*
-
 permissions:
   sackresourcepack.admin.*:
     description: Acceso completo a los comandos de SackResourcePack

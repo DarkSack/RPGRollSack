@@ -14,16 +14,17 @@ prompt:
 admin:
   usage: |-
     &eUsage: /trapadmin
-    &7 • &fcreate
-    &7 • &fedit
-    &7 • &fbrowser
-    &7 • &freload
-    &7 • &fplace
-    &7 • &fremove
-    &7 • &flist
+    &7 • &bcreate
+    &7 • &aedit
+    &7 • &ebrowser
+    &7 • &dreload
+    &7 • &6place
+    &7 • &9remove
+    &7 • &clist
     &7 • &finfo
-    &7 • &fforcetrigger
-    &7 • &fturret
+    &7 • &5forcetrigger
+    &7 • &2turret
+    &7 • &bammo
   trap_not_found: "&cThere is no trap '{id}'."
   must_look_at_block: "&cYou need to be looking at a block."
   create:
@@ -33,7 +34,7 @@ admin:
   edit:
     usage: "&eUsage: /trapadmin edit <id>"
   reload:
-    ok: "&a✔ Reloaded: {traps} trap(s), {locations} placed instance(s)."
+    ok: "&a✔ Reloaded: {traps} trap(s), {turrets} turret(s), {ammo} ammo type(s), {locations} placed instance(s)."
   place:
     usage: "&eUsage: /trapadmin place <id> [zone]"
     ok: "&a✔ Trap '{trap}' placed — instance id: {placement}"
@@ -55,7 +56,15 @@ admin:
     usage: "&eUsage: /trapadmin forcetrigger <placementId>"
     ok: "&a✔ Instance '{placement}' triggered."
     failed: "&cCouldn't trigger '{placement}' (doesn't exist, not ARMED, or conditions not met)."
+  ammo:
+    give_needs_player: "&cFrom console you must name the player: /trapadmin ammo give <id> <player>"
+    item_lore: "&8Loads {amount} shot(s) per unit"
+    give_usage: "&eUsage: /trapadmin ammo give <id> [player] [amount]"
+    not_found: "&cNo ammunition exists with id '{id}'."
+    given: "&a✔ {amount}x '{id}' given to {player}."
   turret:
+    catalog_needs_player: "&cThe catalog is a GUI: only a player can open it."
+    no_access: "&cYou can't manage this turret: it isn't yours or your team's."
     give_usage: "&eUsage: /trapadmin turret give <id> [player] [amount]"
     give_needs_player: "&cFrom console you must name the player: /trapadmin turret give <id> <player>"
     given: "&a✔ {amount}x '{id}' given to {player}."
@@ -68,12 +77,13 @@ admin:
     item_lore_owner: "&8Only you will be able to remove it"
     usage: |-
       &eUsage: /trapadmin turret
-      &7 • &fcreate
-      &7 • &fedit
-      &7 • &fbrowser
-      &7 • &fgive
-      &7 • &fplace
-      &7 • &fremove
+      &7 • &bcreate
+      &7 • &aedit
+      &7 • &ebrowser
+      &7 • &dgive
+      &7 • &6catalog
+      &7 • &9place
+      &7 • &cremove
       &7 • &flist
     not_found: "&cThere is no turret '{id}'."
     create:
@@ -99,6 +109,32 @@ protection:
   missing_key: "&cYou need the right key to break that block."
 
 gui:
+  turret_catalog:
+    title: "&6Turrets and ammo"
+    radius: "&7Radius: &f{value} blocks"
+    interval: "&7Fires every: &f{value}s"
+    targets: "&7Shoots at: &f{value}"
+    targets_both: "players and hostile mobs"
+    targets_players: "players"
+    targets_mobs: "hostile mobs"
+    targets_none: "nobody (no targets configured)"
+    ammo_hint: "&7Takes any of the &f{count}&7 ammo types"
+    click_to_get: "&eClick to get 1"
+    click_to_get_ammo: "&eClick to get 1"
+    ammo_section: "&bAvailable ammo"
+    ammo_section_lore: "&7Load it into the turret by right-clicking it."
+    received: "&a✔ You received: {name}"
+
+  turret_ammo:
+    title: "&6Turret ammunition"
+    only_ammo: "&cOnly ammunition goes in here."
+    target_allies: "&bShoot allies"
+    target_enemies: "&cShoot enemies"
+    target_hostile_mobs: "&2Shoot hostile mobs"
+    target_passive_mobs: "&eShoot passive mobs"
+    state_on: "&aOn"
+    state_off: "&7Off"
+    click_toggle: "&8Click to toggle"
   common:
     back: "Back"
     close: "Close"

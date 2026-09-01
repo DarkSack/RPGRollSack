@@ -2,7 +2,7 @@
 # RPGRoll-Items - Sistema de mensajes
 
 general:
-  no_permission: "&cNo tenés permiso para usar este comando."
+  no_permission: "&cNo tienes permiso para usar este comando."
 
 # Prompts genéricos del sistema de captura de chat (ChatPromptManager)
 prompt:
@@ -14,18 +14,18 @@ command:
   itemadmin:
     usage: |-
       &cUso: /itemadmin
-      &7 • &fgive
-      &7 • &flist
-      &7 • &freload
-      &7 • &fcreate
-      &7 • &fbrowser
-      &7 • &feditor
+      &7 • &bgive
+      &7 • &alist
+      &7 • &ereload
+      &7 • &dcreate
+      &7 • &6browser
+      &7 • &9editor
     player_only: "&cSolo un jugador puede usar esto."
     reload:
       success: "&a✔ Recargado: {count} ítem(s)."
     create:
       player_only: "&cSolo un jugador puede crear un ítem."
-      usage: "&cUso: /itemadmin create <id> [pack] (si omitís [pack], elegís/creás uno desde un menú)"
+      usage: "&cUso: /itemadmin create <id> [pack] (si omites [pack], eliges/creas uno desde un menú)"
       already_exists: "&cYa existe un ítem con ese id."
       success: "&a✔ Ítem '{id}' creado — configuralo en el editor."
     give:
@@ -47,11 +47,11 @@ command:
     player_only: "Solo un jugador puede usar este comando."
     usage: |-
       &cUso: /item
-      &7 • &finfo
-      &7 • &fupgrade
-      &7 • &fskin
-      &7 • &fsocket
-    no_item: "&cNo tenés un ítem de RPGRoll-Items en la mano."
+      &7 • &binfo
+      &7 • &aupgrade
+      &7 • &eskin
+      &7 • &dsocket
+    no_item: "&cNo tienes un ítem de RPGRoll-Items en la mano."
     info:
       pack: "&7Pack: {pack}"
       rarity: "&7Rareza: {rarity}"
@@ -61,7 +61,7 @@ command:
       ok: "&a✔ Ítem mejorado."
       max_level: "&cEste ítem ya está en su nivel máximo."
       no_upgrade_defined: "&cEl próximo nivel de mejora no está definido todavía."
-      cant_afford_money: "&cNo tenés suficiente dinero para esta mejora."
+      cant_afford_money: "&cNo tienes suficiente dinero para esta mejora."
       missing_material: "&cTe falta el material requerido para esta mejora."
     skin:
       none: "&cEste ítem no tiene skins alternativas."
@@ -89,18 +89,18 @@ gem:
 
 # ItemEquipTask: aviso de requisitos incumplidos al equipar
 equip:
-  requirements_header: "&cNo cumplís los requisitos de {item}:"
+  requirements_header: "&cNo cumples los requisitos de {item}:"
   requirement_line: "&c- {reason}"
 
 # ItemRequirementChecker: motivos individuales (se muestran vía equip.requirement_line)
 requirement:
-  level: "Necesitás nivel {level} (tenés {current})."
+  level: "Necesitás nivel {level} (tienes {current})."
   race: "Necesitás ser de la raza: {race}"
   class: "Necesitás ser de la clase: {class}"
   profession: "Necesitás la profesión: {profession}"
   trait: "Necesitás el trait: {trait}"
   skill: "Necesitás la habilidad: {skill}"
-  permission: "No tenés el permiso requerido."
+  permission: "No tienes el permiso requerido."
   money: "Necesitás al menos {amount} de dinero."
 
 # Cooldown de habilidad activa (ItemTriggerListener)
@@ -124,8 +124,8 @@ gui:
     clear_search: "&cLimpiar búsqueda"
     create_new: "&aCrear ítem nuevo"
     received: "&a✔ Recibiste: {item}"
-    prompt_search: "Escribí parte del nombre o id del ítem:"
-    prompt_new_item: "Escribí el id del nuevo ítem (ej. flame_blade):"
+    prompt_search: "Escribe parte del nombre o id del ítem:"
+    prompt_new_item: "Escribe el id del nuevo ítem (ej. flame_blade):"
     invalid_id: "&cId inválido o ya existente."
   rarity_picker:
     title: "&6Elegí una rareza"
@@ -140,7 +140,7 @@ gui:
     no_filter: "&7(sin filtro)"
     filter: "&7Filtro: {text}"
     clear_filter: "&cLimpiar filtro"
-    prompt_search: "Escribí parte del nombre del material (ej. sword):"
+    prompt_search: "Escribe parte del nombre del material (ej. sword):"
 
 # Editor gráfico completo (/itemadmin create, /itemadmin editor, browser)
 editor:
@@ -208,9 +208,9 @@ editor:
     material_extras_error: "&c{material} no admite color, textura de cabeza ni trim."
     flags_label: "&6Flags de tooltip"
     flags_desc: "&7Qué oculta el tooltip nativo del ítem"
-    prompt_rename: "Escribí el nuevo nombre (usa & para colores):"
-    prompt_lore: "Escribí la lore completa (usa | para separar líneas):"
-    prompt_cmd: "Escribí el número de Custom Model Data:"
+    prompt_rename: "Escribe el nuevo nombre (usa & para colores):"
+    prompt_lore: "Escribe la lore completa (usa | para separar líneas):"
+    prompt_cmd: "Escribe el número de Custom Model Data:"
   material_extras:
     title: "&6Extras de material: {id}"
     color_label: "&eColor (cuero/poción)"
@@ -221,9 +221,9 @@ editor:
     trim_label: "&eTrim de armadura"
     no_extras: "&cSin extras para {material}"
     no_extras_desc: "&7Este material no admite color, textura de cabeza ni trim."
-    prompt_color: "Escribí el color en hex (ej. FF0000), o 'borrar' para quitarlo:"
-    prompt_skull: "Pegá la textura base64 (de minecraft-heads.com), o 'borrar' para quitarla:"
-    prompt_trim: "Escribí: <material> <patrón> (ej. REDSTONE COAST), o 'borrar' para quitarlo:"
+    prompt_color: "Escribe el color en hex (ej. FF0000), o 'borrar' para quitarlo:"
+    prompt_skull: "Pega la textura base64 (de minecraft-heads.com), o 'borrar' para quitarla:"
+    prompt_trim: "Escribe: <material> <patrón> (ej. REDSTONE COAST), o 'borrar' para quitarlo:"
   stats:
     title: "&6Stats: {id}"
     vanilla_attributes_label: "&7Atributos vanilla"
@@ -235,8 +235,8 @@ editor:
     attribute_hint1: "&8Atributo vanilla (visible en tooltip nativo)"
     attribute_hint2: "&7Click: +1 · Shift-click: +10 · Derecho: -1/-10"
     invalid_value: "&cValor numérico inválido."
-    prompt_custom_stat: "Escribí: <stat> <valor> (ej. mining_speed 15):"
-    prompt_custom_attribute: "Escribí: <ATRIBUTO_VANILLA> <valor> (ej. SCALE 0.5):"
+    prompt_custom_stat: "Escribe: <stat> <valor> (ej. mining_speed 15):"
+    prompt_custom_attribute: "Escribe: <ATRIBUTO_VANILLA> <valor> (ej. SCALE 0.5):"
   rules:
     title: "&6Reglas: {id}"
     level: "Nivel requerido"
@@ -271,15 +271,15 @@ editor:
     buy_price: "Precio de compra"
     price_hint: "Click: +10 · Shift: +100 · Derecho: -10/-100"
     undefined: "(sin definir)"
-    prompt_field: "Escribí el valor de {label} (actual: {current}), o 'borrar':"
+    prompt_field: "Escribe el valor de {label} (actual: {current}), o 'borrar':"
     prompt_field_none: "ninguno"
-    prompt_quests: "Escribí los ids de quest separados por coma (o 'borrar' para vaciar):"
+    prompt_quests: "Escribe los ids de quest separados por coma (o 'borrar' para vaciar):"
   enchantments:
     title: "&6Encantamientos: {id}"
     custom_section: "&7RPGRoll-Enchantments"
     add_vanilla: "&aAgregar encantamiento vanilla"
     add_custom: "&aAgregar encantamiento custom"
-    prompt_add: "Escribí: <id> <nivel> (ej. {example}):"
+    prompt_add: "Escribe: <id> <nivel> (ej. {example}):"
     example_vanilla: "sharpness 3"
     example_custom: "lifesteal 2"
     invalid_level: "&cNivel inválido."
@@ -287,19 +287,19 @@ editor:
     title: "&6Efectos: {id}"
     while_equipped: "&7Mientras esté equipado: {value}"
     add: "&aAgregar efecto"
-    prompt_add: "Escribí: <poción> <amplificador> <si|no equipado> (ej. SPEED 1 si):"
+    prompt_add: "Escribe: <poción> <amplificador> <si|no equipado> (ej. SPEED 1 si):"
     invalid_amplifier: "&cAmplificador inválido."
   sockets:
     title: "&6Sockets: {id}"
     accepted_types: "&7Tipos aceptados: {types}"
     any_type: "cualquiera"
     add: "&aAgregar socket"
-    prompt_add: "Escribí: <id> <tipos separados por coma o 'cualquiera'> (ej. socket-1 FIRE,GENERIC):"
+    prompt_add: "Escribe: <id> <tipos separados por coma o 'cualquiera'> (ej. socket-1 FIRE,GENERIC):"
   skins:
     title: "&6Skins: {id}"
     id_lore: "&7id: {id}"
     add: "&aAgregar skin"
-    prompt_add: "Escribí: <id> <nombre> <material> (ej. golden Dorada GOLDEN_SWORD):"
+    prompt_add: "Escribe: <id> <nombre> <material> (ej. golden Dorada GOLDEN_SWORD):"
   recipes:
     title: "&6Recetas: {id}"
     add_shapeless: "&a+ Shapeless"
@@ -307,10 +307,10 @@ editor:
     add_furnace: "&a+ Furnace"
     add_stonecutter: "&a+ Stonecutter"
     no_data: "(sin datos)"
-    prompt_shapeless: "Escribí los ingredientes separados por coma:"
-    prompt_shaped_rows: "Escribí las 3 filas separadas por '|' (usa espacio para vacío, ej. ' I | I | S '):"
-    prompt_shaped_key: "Escribí el mapeo de letras: letra=MATERIAL,letra2=MATERIAL2 (ej. I=IRON_INGOT,S=STICK):"
-    prompt_simple: "Escribí el material de entrada (ej. IRON_ORE):"
+    prompt_shapeless: "Escribe los ingredientes separados por coma:"
+    prompt_shaped_rows: "Escribe las 3 filas separadas por '|' (usa espacio para vacío, ej. ' I | I | S '):"
+    prompt_shaped_key: "Escribe el mapeo de letras: letra=MATERIAL,letra2=MATERIAL2 (ej. I=IRON_INGOT,S=STICK):"
+    prompt_simple: "Escribe el material de entrada (ej. IRON_ORE):"
   triggers:
     title: "&6Comportamiento: {id}"
     action_count: "&7{count} acción(es)"
@@ -322,8 +322,8 @@ editor:
     level_label: "&eNivel +{level}"
     add: "&aAgregar nivel de mejora"
     invalid_value: "&cValor inválido."
-    prompt_new: "Escribí: <nivel> <costo> (ej. 1 100):"
-    prompt_stat_bonus: "Escribí: <stat> <valor> para agregar a este nivel:"
+    prompt_new: "Escribe: <nivel> <costo> (ej. 1 100):"
+    prompt_stat_bonus: "Escribe: <stat> <valor> para agregar a este nivel:"
   abilities:
     title: "&6Habilidades: {id}"
     passive: "&7Pasiva"
@@ -332,7 +332,7 @@ editor:
     hint: "&8Click: editar · Shift-click: quitar"
     add: "&aAgregar habilidad"
     invalid_id: "&cId inválido."
-    prompt_new: "Escribí el id de la nueva habilidad:"
+    prompt_new: "Escribe el id de la nueva habilidad:"
   ability_edit:
     title: "&6Habilidad: {id}"
     name_label: "&eNombre: {name}"
@@ -350,28 +350,28 @@ editor:
     conditions_label: "&bCondiciones ({count})"
     actions_label: "&aAcciones ({count})"
     click_edit: "&7Click para editar"
-    prompt_rename: "Escribí el nuevo nombre de la habilidad:"
-    prompt_cooldown: "Escribí el cooldown (ej. 10s, 2m):"
-    prompt_conditions: "Escribí las condiciones separadas por ';' (ej. player.level >= 20):"
+    prompt_rename: "Escribe el nuevo nombre de la habilidad:"
+    prompt_cooldown: "Escribe el cooldown (ej. 10s, 2m):"
+    prompt_conditions: "Escribe las condiciones separadas por ';' (ej. player.level >= 20):"
     actions_of: "Acciones de {ability}"
   custom_data:
     title: "&6Datos custom: {id}"
     add: "&aAgregar dato"
-    prompt_add: "Escribí: <clave> <valor>:"
+    prompt_add: "Escribe: <clave> <valor>:"
   action_list:
     add: "&aAgregar acción"
     add_hint1: "&7TIPO clave=valor clave2=valor2"
     add_hint2: "&8ej. PARTICLE particle=FLAME count=10"
-    prompt_add: "Escribí: TIPO clave=valor clave2=valor2 (ej. FIRE ticks=60):"
+    prompt_add: "Escribe: TIPO clave=valor clave2=valor2 (ej. FIRE ticks=60):"
 
 # Selector de pack (colección) al crear un ítem nuevo
 pack_selector:
   title: "&6Elegí un pack"
-  empty_hint: "&7Todavía no tenés ningún pack — creá el primero."
+  empty_hint: "&7Todavía no tienes ningún pack — crea el primero."
   click_to_use: "&eClick para usar este pack"
   create_new: "&aCrear paquete nuevo"
   create_new_lore: "&7Crea packs/<nombre>/ con su propia resourcepack/"
   cancel_button: "Cancelar"
-  prompt_new: "Escribí el nombre del nuevo paquete (ej. swords):"
-  invalid_name: "&cNombre inválido. Usá solo minúsculas, números, '_' o '-'."
+  prompt_new: "Escribe el nombre del nuevo paquete (ej. swords):"
+  invalid_name: "&cNombre inválido. Usa solo minúsculas, números, '_' o '-'."
   already_exists: "&cYa existe un paquete con ese nombre."

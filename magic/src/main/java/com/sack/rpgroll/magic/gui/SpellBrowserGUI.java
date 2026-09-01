@@ -1,5 +1,6 @@
 package com.sack.rpgroll.magic.gui;
 
+import com.sack.rpgroll.util.ComponentUtils;
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
@@ -57,7 +58,7 @@ public class SpellBrowserGUI extends InventoryGUI {
             NamedTextColor color = SchoolBrowserGUI.parseColor(spell.color());
 
             setItem(i, new ItemBuilder(SchoolBrowserGUI.parseMaterial(spell.icon()))
-                    .setName(Component.text(spell.displayName(), color))
+                    .setName(ComponentUtils.parseWithDefault(spell.displayName(), color))
                     .setLore(lang.component("gui.common.id_label", "id", spell.id()),
                             lang.component("gui.spell_browser.school_label", "schoolId", spell.schoolId()),
                             lang.component("gui.spell_browser.rarity_level_label", "rarity", spell.rarity(),

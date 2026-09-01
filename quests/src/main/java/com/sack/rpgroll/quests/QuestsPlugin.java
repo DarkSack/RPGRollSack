@@ -112,18 +112,26 @@ public class QuestsPlugin extends JavaPlugin {
 
     private void registerCommand(String name, org.bukkit.command.CommandExecutor executor) {
 
-        var command = getCommand(name);
+        String[] info = metaFor(name);
 
-        if (command == null) {
-            getLogger().severe("✘ El comando '" + name + "' no está declarado en plugin.yml");
-            return;
-        }
+        com.sack.rpgroll.common.command.BrigadierCommands.register(this, name, info[0],
+                info[1].isEmpty() ? null : info[1], executor);
+    }
 
-        command.setExecutor(executor);
+    /**
+     * Descripción y permiso de cada comando.
+     * <p>
+     * Vivían en {@code plugin.yml}, pero los comandos se registran por
+     * Brigadier (ver {@code BrigadierCommands}) para que {@code execute as}
+     * entregue al jugador real, y ahí ya no hay YAML de donde leerlos.
+     */
+    private String[] metaFor(String name) {
 
-        if (executor instanceof org.bukkit.command.TabCompleter tabCompleter) {
-            command.setTabCompleter(tabCompleter);
-        }
+        return switch (name) {
+            case "quest" -> new String[] { "Comandos de misiones para jugadores", "" };
+            case "questadmin" -> new String[] { "Comandos administrativos de misiones", "rpgrollquests.admin.*" };
+            default -> new String[] { "", "" };
+        };
     }
 
     /** API pública: otros plugins/addons pueden registrar quests, tipos de objetivo, condiciones y acciones. */

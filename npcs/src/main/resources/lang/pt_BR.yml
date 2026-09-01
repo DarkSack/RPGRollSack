@@ -8,7 +8,15 @@ general:
 
 # Comando /npc (admin)
 command:
-  usage: "&cUso: /npc <create|edit|list|delete|reload|menus> [id]"
+  usage: |-
+    &cUso: /npc
+    &7 • &bcreate
+    &7 • &aedit
+    &7 • &elist
+    &7 • &ddelete
+    &7 • &6reload
+    &7 • &9menus
+    &8   [id]
   not_found: "&cEsse NPC não existe."
   create:
     usage: "&cUso: /npc create <id>"

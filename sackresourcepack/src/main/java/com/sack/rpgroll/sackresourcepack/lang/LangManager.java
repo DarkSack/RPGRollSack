@@ -50,8 +50,20 @@ public class LangManager {
                 }
             }
 
+            // El archivo de disco manda, pero el del JAR queda de respaldo:
+            // saveResource(..., false) no sobreescribe, así que las claves que
+            // agregue una versión nueva nunca llegarían a un servidor que ya
+            // tenía el archivo, y saldrían crudas al jugador.
+            YamlConfiguration packaged = loadPackaged(resourcePath);
+
             if (file.exists()) {
-                locales.put(locale, YamlConfiguration.loadConfiguration(file));
+                YamlConfiguration onDisk = YamlConfiguration.loadConfiguration(file);
+                if (packaged != null) {
+                    onDisk.setDefaults(packaged);
+                }
+                locales.put(locale, onDisk);
+            } else if (packaged != null) {
+                locales.put(locale, packaged);
             } else {
                 plugin.getLogger().warning("✘ No se encontró lang/" + locale + ".yml — ese idioma quedará sin cargar.");
             }
@@ -107,4 +119,23 @@ public class LangManager {
 
         return LEGACY.deserialize(text);
     }
+
+    /** El {@code lang/<locale>.yml} tal como viaja dentro del JAR, o null si no está. */
+    private YamlConfiguration loadPackaged(String resourcePath) {
+
+        try (java.io.InputStream in = plugin.getResource(resourcePath)) {
+
+            if (in == null) {
+                return null;
+            }
+
+            return YamlConfiguration.loadConfiguration(
+                    new java.io.InputStreamReader(in, java.nio.charset.StandardCharsets.UTF_8));
+
+        } catch (java.io.IOException e) {
+            plugin.getLogger().warning("✘ No se pudo leer " + resourcePath + " del JAR: " + e.getMessage());
+            return null;
+        }
+    }
+
 }

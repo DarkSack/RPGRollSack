@@ -5,17 +5,7 @@ api-version: "26.1.1"
 author: Sack
 description: Pesca como profesión completa — cientos de especies configurables, cañas/carnadas, minijuego vanilla o RPG, tesoros/basura, peces legendarios y enciclopedia de capturas.
 depend: [RPGRoll]
-softdepend: [RPGRoll-Particles, RPGRoll-Effects, RPGRoll-Seasons, SackResourcePack]
-
-commands:
-  fishingadmin:
-    description: Comandos administrativos de RPGRoll-Fishing (Fishing Studio)
-    usage: /fishingadmin <browser|reload|giverod <id>|givebait <id>> [args]
-    permission: rpgrollfishing.admin.*
-  fishing:
-    description: Comandos de jugador de RPGRoll-Fishing
-    usage: /fishing <encyclopedia|stats>
-    permission: rpgrollfishing.use
+softdepend: [RPGRoll-FX, RPGRoll-Effects, RPGRoll-Seasons, SackResourcePack]
 
 permissions:
   rpgrollfishing.admin.*:

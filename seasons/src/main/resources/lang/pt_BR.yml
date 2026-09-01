@@ -11,7 +11,13 @@ command:
     current_season: "&6Estação atual em {world}: &e{season}"
     temperature: "&bTemperatura onde você está: {temperature}°C"
   admin:
-    usage: "&cUso: /seasonsadmin <browser|reload|setseason <mundo> <id>|advance <mundo>|trigger <id> <mundo>>"
+    usage: |-
+      &cUso: /seasonsadmin
+      &7 • &bbrowser
+      &7 • &areload
+      &7 • &esetseason <mundo> <id>
+      &7 • &dadvance <mundo>
+      &7 • &6trigger <id> <mundo>
     players_only_studio: "&cSomente jogadores podem abrir o Season Studio."
     reloaded: "&a✔ Recarregado: {calendars} calendário(s), {seasons} estação(ões), {events} evento(s), {regions} região(ões)."
     usage_setseason: "&cUso: /seasonsadmin setseason <mundo> <id>"

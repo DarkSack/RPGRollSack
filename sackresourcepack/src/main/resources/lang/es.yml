@@ -1,23 +1,23 @@
 command:
-  no-permission: "No tenés permiso para usar este comando."
+  no-permission: "No tienes permiso para usar este comando."
   gui-players-only: "Solo un jugador puede abrir el Dashboard."
   usage: |-
     &eUso: /srp
-    &7 • &freload
-    &7 • &frebuild
-    &7 • &fvalidate
-    &7 • &fpublish
-    &7 • &fstatus
-    &7 • &fcontent
-    &7 • &fconflicts
+    &7 • &breload
+    &7 • &arebuild
+    &7 • &evalidate
+    &7 • &dpublish
+    &7 • &6status
+    &7 • &9content
+    &7 • &cconflicts
     &7 • &fmodels
-    &7 • &ftextures
-    &7 • &fsounds
-    &7 • &ffonts
-    &7 • &fcache
-    &7 • &fdev
-    &7 • &fdatapack
-    &7 • &fgui
+    &7 • &5textures
+    &7 • &2sounds
+    &7 • &bfonts
+    &7 • &acache
+    &7 • &edev
+    &7 • &ddatapack
+    &7 • &6gui
   reload-done: "✔ config.yml recargado. Cambios de puerto HTTP, carpeta de contenido o pack-format requieren reiniciar el plugin."
   build-type-rebuild: "Reconstrucción"
   build-type-validate: "Validación"
@@ -41,7 +41,7 @@ command:
   conflicts-none: "Sin conflictos registrados en el último build."
   conflicts-header: "=== Conflictos ({count}) ==="
   conflicts-line: "- {path}: {previous} → {current}"
-  assettype-no-build: "No hay ningún build todavía — corré /srp rebuild."
+  assettype-no-build: "No hay ningún build todavía — corre /srp rebuild."
   assettype-header: "=== {type} ({count}) ==="
   assettype-line: "- {path}"
   assettype-error: "✘ Error recorriendo el pack: {error}"
@@ -49,11 +49,14 @@ command:
   dev-toggled: "Modo desarrollo ahora: {state}"
   dev-state-active: "ACTIVO"
   dev-state-inactive: "inactivo"
-  datapack-disabled: "✘ El datapack está deshabilitado — activá 'datapack.enabled' en config.yml."
-  datapack-build-done: "✔ Datapack fusionado y copiado a datapacks/ — {count} módulo(s). Corré '/srp datapack reload' para aplicarlo."
+  datapack-disabled: "✘ El datapack está deshabilitado — activa 'datapack.enabled' en config.yml."
+  datapack-build-done: "✔ Datapack fusionado y copiado a datapacks/ — {count} módulo(s). Corre '/srp datapack reload' para aplicarlo."
   datapack-build-resolution-error: "  ✘ {error}"
   datapack-reload-done: "✔ Server#reloadData() ejecutado — recetas/loot tables/tags/advancements recargados."
-  datapack-usage: "Uso: /srp datapack <build|reload>"
+  datapack-usage: |-
+    Uso: /srp datapack
+    &7 • &bbuild
+    &7 • &areload
 
 gui:
   back: "Volver"
@@ -80,7 +83,7 @@ gui:
     browser-lore-1: "Ver todos los assets"
     browser-lore-2: "del pack fusionado."
     no-build-name: "Sin build todavía"
-    no-build-lore-1: "Usá 'Reconstruir' para generar"
+    no-build-lore-1: "Usa 'Reconstruir' para generar"
     no-build-lore-2: "el pack por primera vez."
     status-name: "Estado del pack"
     status-modules-loaded: "{count} módulo(s) cargado(s)"

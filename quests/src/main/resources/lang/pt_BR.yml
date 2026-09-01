@@ -8,7 +8,15 @@ general:
 
 # Comando /questadmin
 admin:
-  usage: "&cUso: /questadmin <give|complete|fail|reset|reload|browser [quests|regions]> [jogador] [questId]"
+  usage: |-
+    &cUso: /questadmin
+    &7 • &bgive
+    &7 • &acomplete
+    &7 • &efail
+    &7 • &dreset
+    &7 • &6reload
+    &7 • &9browser [quests|regions]
+    &8   [jogador] [questId]
   browser_player_only: "&cApenas um jogador pode abrir o navegador."
   give_usage: "&cUso: /questadmin give <jogador> <questId>"
   player_not_found: "&cJogador não encontrado: {player}"
@@ -25,7 +33,15 @@ admin:
 
 # Comando /quest (jogador)
 command:
-  usage: "&cUso: /quest <list|info|start|abandon|active|completed> [id]"
+  usage: |-
+    &cUso: /quest
+    &7 • &blist
+    &7 • &ainfo
+    &7 • &estart
+    &7 • &dabandon
+    &7 • &6active
+    &7 • &9completed
+    &8   [id]
   list_empty: "&7Nenhuma missão definida."
   list_header: "&6Missões disponíveis:"
   list_entry: "&f• {id} — {name} ({category}, {difficulty})"

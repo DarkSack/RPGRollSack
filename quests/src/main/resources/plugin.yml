@@ -7,15 +7,6 @@ description: Motor de misiones ramificadas, componible por stages/objetivos/cond
 depend: [RPGRoll]
 softdepend: [PlaceholderAPI]
 
-commands:
-  quest:
-    description: Comandos de misiones para jugadores
-    usage: /quest <list|info|start|abandon|track|active|completed> [args]
-  questadmin:
-    description: Comandos administrativos de misiones
-    usage: /questadmin <give|complete|fail|reset|reload|browser [quests|regions]> [args]
-    permission: rpgrollquests.admin.*
-
 permissions:
   rpgrollquests.admin.*:
     description: Acceso completo a comandos administrativos de misiones

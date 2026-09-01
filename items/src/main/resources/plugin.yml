@@ -5,16 +5,7 @@ api-version: "26.1.1"
 author: Sack
 description: Motor de ítems personalizados (componentes, stats, sockets, skins, mejoras, recetas) para RPGRoll
 depend: [RPGRoll]
-softdepend: [RPGRoll-Enchantments, Vault, "PlaceholderAPI", SackResourcePack]
-
-commands:
-  itemadmin:
-    description: Gestiona definiciones de ítems (crear, dar, editar, recargar)
-    usage: /itemadmin <give|list|reload|create|browser|editor> [args]
-    permission: rpgrollitems.admin.*
-  item:
-    description: Interactúa con el ítem RPGRoll que tenés en mano
-    usage: /item <info|upgrade|skin|socket> [args]
+softdepend: [RPGRoll-FX, RPGRoll-Enchantments, Vault, "PlaceholderAPI", SackResourcePack]
 
 permissions:
   rpgrollitems.admin.*:

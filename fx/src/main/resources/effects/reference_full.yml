@@ -1,0 +1,151 @@
+# ============================================================================
+# EFECTO DE REFERENCIA — usa los 6 tipos de paso, las 8 formas de partícula y
+# los 4 targets que soporta RPGRoll-FX. Documentación ejecutable, pensada
+# para copiar/pegar pasos sueltos. Ver "RPGRoll-FX" en la docs.
+# ============================================================================
+
+id: reference_full_example
+display-name: "&d&lEfecto de Referencia"
+description: "Un efecto de ejemplo que documenta cada tipo de paso, forma y target disponible."
+
+steps:
+  # PARTICLE — shape: POINT (default, sin especificar)
+  - type: PARTICLE
+    delay: 0
+    particle: END_ROD
+    target: SELF
+    count: 1
+    speed: 0
+
+  # PARTICLE — shape: CIRCLE
+  - type: PARTICLE
+    delay: 2
+    particle: SNOWFLAKE
+    shape: CIRCLE
+    target: SELF
+    radius: 1.5
+    points: 30
+    count: 1
+    speed: 0
+
+  # PARTICLE — shape: SPHERE
+  - type: PARTICLE
+    delay: 4
+    particle: TOTEM_OF_UNDYING
+    shape: SPHERE
+    target: SELF
+    radius: 1.2
+    points: 60
+    count: 1
+    speed: 0
+
+  # PARTICLE — shape: LINE (única forma que usa un segundo punto: "target" = from, "to" = destino)
+  - type: PARTICLE
+    delay: 6
+    particle: FLAME
+    shape: LINE
+    target: SELF
+    to: TARGET
+    points: 20
+    count: 1
+    speed: 0
+
+  # PARTICLE — shape: HELIX
+  - type: PARTICLE
+    delay: 8
+    particle: PORTAL
+    shape: HELIX
+    target: SELF
+    radius: 1.0
+    height: 3.0
+    turns: 3
+    points: 60
+    count: 1
+    speed: 0
+
+  # PARTICLE — shape: CONE (según hacia dónde mira el jugador)
+  - type: PARTICLE
+    delay: 10
+    particle: FLAME
+    shape: CONE
+    target: SELF
+    radius: 1.5
+    length: 3.0
+    points: 40
+    count: 1
+    speed: 0
+
+  # PARTICLE — shape: CUBE_OUTLINE
+  - type: PARTICLE
+    delay: 12
+    particle: SOUL_FIRE_FLAME
+    shape: CUBE_OUTLINE
+    target: SELF
+    radius: 1.0
+    points: 40
+    count: 1
+    speed: 0
+
+  # PARTICLE — shape: BURST
+  - type: PARTICLE
+    delay: 14
+    particle: FIREWORK
+    shape: BURST
+    target: SELF
+    radius: 1.5
+    points: 40
+    count: 1
+    speed: 0.3
+
+  # SOUND — target: SELF (solo el caster lo escucha)
+  - type: SOUND
+    delay: 0
+    sound: BLOCK_BEACON_ACTIVATE
+    target: SELF
+    volume: 1.0
+    pitch: 1.0
+
+  # SOUND — target: ALL_NEARBY (todos dentro de radius alrededor de "around")
+  - type: SOUND
+    delay: 14
+    sound: ENTITY_ENDER_DRAGON_GROWL
+    target: ALL_NEARBY
+    around: SELF
+    radius: 10
+    volume: 1.0
+    pitch: 0.8
+
+  # TITLE
+  - type: TITLE
+    delay: 2
+    title: "&d&l¡Efecto de Referencia!"
+    subtitle: "&7Documentación ejecutable"
+    target: SELF
+    fade-in: 5
+    stay: 40
+    fade-out: 10
+
+  # ACTIONBAR
+  - type: ACTIONBAR
+    delay: 0
+    text: "&d✦ Efecto de Referencia activado ✦"
+    target: SELF
+
+  # BOSSBAR — target: ALL_NEARBY
+  - type: BOSSBAR
+    delay: 0
+    title: "&d✦ Efecto de Referencia ✦"
+    color: PURPLE
+    style: SEGMENTED_10
+    duration: 60
+    target: ALL_NEARBY
+    around: SELF
+    radius: 8
+
+  # POTION — target: TARGET (si el contexto tiene un objetivo; si no, cae a SELF)
+  - type: POTION
+    delay: 4
+    potion: GLOWING
+    duration: 100
+    amplifier: 0
+    target: TARGET

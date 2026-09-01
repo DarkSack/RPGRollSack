@@ -212,26 +212,20 @@ public class EconomyPlugin extends JavaPlugin {
 
     private void registerCommands(ChatPromptManager chatPromptManager) {
 
-        var adminCommand = getCommand("economyadmin");
-        if (adminCommand == null) {
-            getLogger().severe("✘ El comando 'economyadmin' no está declarado en plugin.yml");
-        } else {
-            var executor = new EconomyAdminCommand(currencyManager, marketProductManager, marketEngine, taxRuleManager,
+        var adminExecutor = new EconomyAdminCommand(currencyManager, marketProductManager, marketEngine, taxRuleManager,
                     walletService, inflationTracker, chatPromptManager, this::reloadContent);
-            adminCommand.setExecutor(executor);
-            adminCommand.setTabCompleter(executor);
-        }
 
-        var playerCommand = getCommand("economy");
-        if (playerCommand == null) {
-            getLogger().severe("✘ El comando 'economy' no está declarado en plugin.yml");
-        } else {
-            var executor = new EconomyCommand(currencyManager, walletService, bankManager, loanService, shopManager,
+        // Registrado por Brigadier para que `execute as` entregue al jugador real.
+        com.sack.rpgroll.common.command.BrigadierCommands.register(this, "economyadmin",
+                "Comandos administrativos de RPGRoll-Economy (Economy Studio)", "rpgrolleconomy.admin.*", adminExecutor);
+
+        var playerExecutor = new EconomyCommand(currencyManager, walletService, bankManager, loanService, shopManager,
                     taxEngine, auctionManager, companyManager, companyService, chatPromptManager,
                     auctionDefaultDurationMillis);
-            playerCommand.setExecutor(executor);
-            playerCommand.setTabCompleter(executor);
-        }
+
+        // Registrado por Brigadier para que `execute as` entregue al jugador real.
+        com.sack.rpgroll.common.command.BrigadierCommands.register(this, "economy",
+                "Comandos de jugador de RPGRoll-Economy", "rpgrolleconomy.use", playerExecutor);
     }
 
     private void reloadContent() {

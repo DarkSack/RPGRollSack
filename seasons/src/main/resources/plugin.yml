@@ -5,17 +5,7 @@ api-version: "26.1.1"
 author: Sack
 description: Calendario y estaciones 100% personalizables — clima, temperatura por bioma, vegetación dinámica, mobs/jefes de temporada y eventos mundiales.
 depend: [RPGRoll]
-softdepend: [RPGRoll-Particles, RPGRoll-Effects, RPGRoll-Mobs]
-
-commands:
-  seasonsadmin:
-    description: Comandos administrativos de RPGRoll-Seasons (Season Studio)
-    usage: /seasonsadmin <browser|reload|setseason <mundo> <id>|advance <mundo>|trigger <id> <mundo>> [args]
-    permission: rpgrollseasons.admin.*
-  seasons:
-    description: Comandos de jugador de RPGRoll-Seasons
-    usage: /seasons info [mundo]
-    permission: rpgrollseasons.use
+softdepend: [RPGRoll-FX, RPGRoll-Effects, RPGRoll-Mobs]
 
 permissions:
   rpgrollseasons.admin.*:

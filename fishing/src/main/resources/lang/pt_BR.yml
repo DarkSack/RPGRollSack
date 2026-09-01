@@ -3,7 +3,12 @@ common:
 
 command:
   admin:
-    usage: "&cUso: /fishingadmin <browser|reload|giverod <id>|givebait <id>>"
+    usage: |-
+      &cUso: /fishingadmin
+      &7 • &bbrowser
+      &7 • &areload
+      &7 • &egiverod <id>
+      &7 • &dgivebait <id>
     players_only_studio: "&cSó jogadores podem abrir o Fishing Studio."
     players_only: "&cSó um jogador pode receber isso — use no jogo."
     reloaded: "&a✔ Recarregado: {species} espécie(s), {rods} vara(s), {baits} isca(s), {treasures} tesouro(s), {junk} lixo(s), {regions} região(ões)."
@@ -14,7 +19,10 @@ command:
     given: "&a✔ Entregue."
   player:
     players_only: "&cSó jogadores podem usar este comando."
-    usage: "&cUso: /fishing <encyclopedia|stats>"
+    usage: |-
+      &cUso: /fishing
+      &7 • &bencyclopedia
+      &7 • &astats
     stats_title: "&6Estatísticas de pesca:"
     stats_caught: "&fPeixes pescados: {count}"
     stats_species: "&fEspécies descobertas: {discovered}/{total}"
@@ -102,7 +110,7 @@ gui:
     full_moon_hint: "&7Só se aplica se for lendário. Clique para alternar"
     field_required_bait: "&eIsca necessária: {value}"
     required_bait_hint: "&7Só se aplica se for lendário."
-    field_catch_effect: "&eEfeito RPGRoll-Particles: {value}"
+    field_catch_effect: "&eEfeito RPGRoll-FX: {value}"
     field_catch_status_effect: "&eEfeito de status: {value}"
     catch_status_effect_hint: "&7Id de um efeito do RPGRoll-Effects — ex. uma enguia elétrica atordoa o pescador."
     prompt_name: "Digite o novo nome:"
@@ -119,7 +127,7 @@ gui:
     prompt_bait_tags: "Digite as tags de isca separadas por vírgulas:"
     prompt_required_bait: "Digite o id da isca necessária (ou 'nenhuma'):"
     unknown_bait: "&cEssa isca não existe."
-    prompt_catch_effect: "Digite o id do efeito do RPGRoll-Particles (ou 'nenhum'):"
+    prompt_catch_effect: "Digite o id do efeito do RPGRoll-FX (ou 'nenhum'):"
     prompt_catch_status_effect: "Digite o id do efeito do RPGRoll-Effects (ou 'nenhum'):"
 
   rod:

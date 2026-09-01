@@ -1,5 +1,6 @@
 package com.sack.rpgroll.guilds.gui.guild;
 
+import com.sack.rpgroll.util.ComponentUtils;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.guilds.GuildsAPI;
@@ -48,7 +49,7 @@ public class GuildAchievementsGUI extends InventoryGUI {
             boolean unlocked = guild.unlockedAchievements().contains(definition.id());
 
             setItem(i, new ItemBuilder(unlocked ? Material.GOLD_INGOT : Material.GRAY_DYE)
-                    .setName(Component.text(definition.displayName(), unlocked ? NamedTextColor.GOLD
+                    .setName(ComponentUtils.parseWithDefault(definition.displayName(), unlocked ? NamedTextColor.GOLD
                             : NamedTextColor.DARK_GRAY))
                     .setLore(Component.text(definition.description(), NamedTextColor.GRAY),
                             Component.text(lang().raw(unlocked ? "guild.achievements.unlocked"

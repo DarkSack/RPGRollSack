@@ -6,12 +6,6 @@ author: Sack
 description: Sistema de NPCs interactuables para RPGRoll
 depend: [RPGRoll, ProtocolLib]
 
-commands:
-  npc:
-    description: Gestiona NPCs
-    usage: /npc <create|edit|list|delete|reload|menus> [id]
-    permission: rpgrollnpcs.admin.*
-
 permissions:
   rpgrollnpcs.admin.*:
     description: Acceso completo a comandos de NPCs

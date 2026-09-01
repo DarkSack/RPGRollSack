@@ -19,8 +19,8 @@ dependencies {
     // el ganadero de verdad cuida animales de Ranching, el pescador de verdad
     // pesca vía Fishing, el clima/estación real de Seasons modula la IA, los
     // gremios pueden compartir trabajadores, y las notificaciones de eventos
-    // de worker pueden disparar partículas/sonidos de RPGRoll-Particles.
-    compileOnly(project(":sackeffects"))
+    // de worker pueden disparar partículas/sonidos de RPGRoll-FX.
+    compileOnly(project(":fx"))
     compileOnly(project(":effects"))
     compileOnly(project(":seasons"))
     compileOnly(project(":ranching"))

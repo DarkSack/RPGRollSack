@@ -14,13 +14,17 @@ actions:
   - type: SOUND
     params:
       sound: ENTITY_TNT_PRIMED
-      volume: "1.0"
+      volume: "1.4"
       pitch: "0.8"
   - type: EXPLOSION
     params:
-      power: "2.5"
+      # 4.0 es la potencia de un TNT. Con 2.5 apenas se notaba.
+      power: "4.0"
       fire: "false"
-      break-blocks: "false"
+      # En true deja cráter de verdad. Ponlo en false si no quieres que la
+      # mina te rompa el escenario.
+      break-blocks: "true"
+      knockback: "1.4"
   - type: EFFECT
     params:
       effect-id: "burning"

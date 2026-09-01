@@ -169,6 +169,13 @@ admin_setrace:
   error: "&cErro ao alterar a raça."
 
 # Comando /rpg admin resetstats
+admin_restore:
+  usage: "&cUso: {usage}"
+  unknown_kind: "&cNão entendi '{value}'. Use: vida, mana, ou nada para as duas."
+  success: "&a✔ {player} restaurado — vida: {health}, mana: {mana}."
+  notify_target: "&a✦ Um admin te restaurou — vida: {health}, mana: {mana}."
+  error: "&cNão foi possível restaurar o jogador."
+
 admin_resetstats:
   usage: "&cUso: {usage}"
   success: "&a✔ Atributos de {player} reiniciados. {points} ponto(s) de atributo disponíveis para redistribuir."

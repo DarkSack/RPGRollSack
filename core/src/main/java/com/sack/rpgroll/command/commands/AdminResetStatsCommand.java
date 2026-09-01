@@ -74,7 +74,15 @@ public class AdminResetStatsCommand implements RPGCommand {
                         .orElse(0);
             }
 
-            PlayerStats defaultStats = PlayerStats.createDefault();
+            // Antes esto era PlayerStats.createDefault() a secas, que dejaba al
+            // jugador en 10 planos y le borraba los bonos de su raza y su clase
+            // para siempre. Reiniciar los puntos gastados no debería quitarle lo
+            // que es innato a su personaje.
+            var services = plugin.getBootstrap().getServices();
+            PlayerStats defaultStats = com.sack.rpgroll.player.stats.BaseStats.forRaceAndClass(
+                    rpgPlayer.getRace(), rpgPlayer.getPlayerClass(),
+                    services.get(com.sack.rpgroll.api.race.RaceManager.class),
+                    services.get(com.sack.rpgroll.api.playerclass.ClassManager.class));
 
             CombatStats currentCombatStats = rpgPlayer.getCombatStats();
             CombatStats refreshedCombatStats = CombatStats.of(

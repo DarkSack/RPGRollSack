@@ -210,7 +210,7 @@ public class ItemFactory {
         }
 
         lore.add(Component.empty());
-        lore.add(Component.text(rarity.displayName(), rarity.color()).decoration(TextDecoration.ITALIC, false));
+        lore.add(ComponentUtils.parseWithDefault(rarity.displayName(), rarity.color()).decoration(TextDecoration.ITALIC, false));
 
         return lore;
     }

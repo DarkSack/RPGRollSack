@@ -100,24 +100,18 @@ public class FishingPlugin extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new FishingCastListener(rodManager, baitManager, catchEngine,
                 minigameManager, profileManager, rpgMode, langManager), this);
 
-        var adminCommand = getCommand("fishingadmin");
-        if (adminCommand == null) {
-            getLogger().severe("✘ El comando 'fishingadmin' no está declarado en plugin.yml");
-        } else {
-            var fishingAdminCommand = new FishingAdminCommand(speciesManager, rodManager, baitManager,
+        var fishingAdminCommand = new FishingAdminCommand(speciesManager, rodManager, baitManager,
                     treasureManager, junkManager, regionManager, chatPromptManager, this);
-            adminCommand.setExecutor(fishingAdminCommand);
-            adminCommand.setTabCompleter(fishingAdminCommand);
-        }
 
-        var playerCommand = getCommand("fishing");
-        if (playerCommand == null) {
-            getLogger().severe("✘ El comando 'fishing' no está declarado en plugin.yml");
-        } else {
-            var fishingCommand = new FishingCommand(speciesManager, profileManager, langManager);
-            playerCommand.setExecutor(fishingCommand);
-            playerCommand.setTabCompleter(fishingCommand);
-        }
+        // Registrado por Brigadier para que `execute as` entregue al jugador real.
+        com.sack.rpgroll.common.command.BrigadierCommands.register(this, "fishingadmin",
+                "Comandos administrativos de RPGRoll-Fishing (Fishing Studio)", "rpgrollfishing.admin.*", fishingAdminCommand);
+
+        var fishingCommand = new FishingCommand(speciesManager, profileManager, langManager);
+
+        // Registrado por Brigadier para que `execute as` entregue al jugador real.
+        com.sack.rpgroll.common.command.BrigadierCommands.register(this, "fishing",
+                "Comandos de jugador de RPGRoll-Fishing", "rpgrollfishing.use", fishingCommand);
 
         getLogger().info("✔ RPGRoll-Fishing habilitado (modo " + (rpgMode ? "RPG" : "vanilla") + "). "
                 + speciesManager.count() + " especie(s), " + rodManager.count() + " caña(s), "

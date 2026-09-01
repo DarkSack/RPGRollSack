@@ -1,5 +1,6 @@
 package com.sack.rpgroll.seasons.gui;
 
+import com.sack.rpgroll.util.ComponentUtils;
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
@@ -58,7 +59,7 @@ public class SeasonBrowserGUI extends InventoryGUI {
             NamedTextColor color = parseColor(season.color());
 
             setItem(i, new ItemBuilder(parseMaterial(season.icon()))
-                    .setName(Component.text(season.displayName(), color))
+                    .setName(ComponentUtils.parseWithDefault(season.displayName(), color))
                     .setLore(lang.component("gui.common.id_label", "id", season.id()),
                             lang.component("gui.season_browser.duration_label", "amount", season.durationAmount(),
                                     "unit", season.durationUnit()),

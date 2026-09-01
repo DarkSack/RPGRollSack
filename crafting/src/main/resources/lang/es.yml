@@ -1,5 +1,5 @@
 chat_prompt:
-  footer: "Escribí en el chat, o 'cancelar' para abortar."
+  footer: "Escribe en el chat, o 'cancelar' para abortar."
   cancel_keyword: "cancelar"
   cancelled: "Cancelado."
 
@@ -8,7 +8,7 @@ station:
   recipe_discovered: "§b§lNueva receta descubierta: §f{recipe}"
 
 common:
-  no_permission: "No tenés permiso."
+  no_permission: "No tienes permiso."
   players_only: "Solo un jugador puede usar este comando."
   players_only_gui: "Solo un jugador puede abrir el navegador."
   unknown_subcommand: "Subcomando desconocido."
@@ -18,34 +18,37 @@ command:
   crafting_admin:
     usage: |-
       &eUso: /craftingadmin
-      &7 • &fbrowser
-      &7 • &freload
-      &7 • &fgive
-      &7 • &fvillager
+      &7 • &bbrowser
+      &7 • &areload
+      &7 • &egive
+      &7 • &dvillager
     reloaded: "✔ RPGRoll-Crafting recargado."
     give_usage: "Uso: /craftingadmin give <jugador> <item-id-de-RPGRoll-Items>"
     give_item_failed: "No se pudo crear ese ítem (¿RPGRoll-Items instalado? ¿id correcto?)"
     give_success: "✔ Entregado."
-    villager_usage: "Uso: /craftingadmin villager <bind <id1,id2,...>|unbind>"
+    villager_usage: |-
+      Uso: /craftingadmin villager
+      &7 • &bbind <id1,id2,...>
+      &7 • &aunbind
     villager_bind_usage: "Uso: /craftingadmin villager bind <id1,id2,...>"
-    villager_target_required: "Tenés que estar mirando a un aldeano (o comerciante ambulante)."
+    villager_target_required: "Tienes que estar mirando a un aldeano (o comerciante ambulante)."
     villager_bind_no_valid_ids: "Ninguno de esos ids de comercio existe."
     villager_bind_success: "✔ Aldeano vinculado a: {ids}"
     villager_unbind_success: "✔ Aldeano desvinculado — vuelve a ofrecer comercios vanilla normales."
   crafting:
     discovered_count: "Recetas descubiertas: {discovered}/{total}"
     upgrade_ok: "✔ ¡Estación mejorada!"
-    upgrade_not_a_station: "Tenés que tener abierta una estación personalizada para mejorarla."
+    upgrade_not_a_station: "Tienes que tener abierta una estación personalizada para mejorarla."
     upgrade_already_max: "Esta estación ya está en su nivel máximo."
     upgrade_no_upgrade_defined: "No hay un costo definido para el próximo nivel (falta en el YAML)."
     upgrade_missing_cost: "Te faltan materiales o dinero para esta mejora."
-    experiment_not_a_station: "Tenés que tener abierta una estación personalizada para experimentar."
+    experiment_not_a_station: "Tienes que tener abierta una estación personalizada para experimentar."
     experiment_discovered: "§b§l¡Descubriste algo experimentando! §f{recipe}"
-    experiment_discovered_hint: "Ya podés craftearla poniendo esos mismos ingredientes."
+    experiment_discovered_hint: "Ya puedes craftearla poniendo esos mismos ingredientes."
     experiment_not_allowed: "Esta estación no permite experimentar."
-    experiment_on_cooldown: "Esperá un poco antes de volver a experimentar."
+    experiment_on_cooldown: "Espera un poco antes de volver a experimentar."
     experiment_already_all: "Ya descubriste todas las recetas de esta estación."
-    experiment_no_match: "No pasó nada... probá con otra combinación."
+    experiment_no_match: "No pasó nada... prueba con otra combinación."
     proficiency_usage: "Uso: /crafting proficiency <categoría>"
     proficiency_value: "Proficiencia en '{category}': nivel {level}/{max} ({progress}% al siguiente)"
 
@@ -61,9 +64,9 @@ gui:
     click_inc_dec: "Click: {inc} · Click derecho: {dec}"
     field_name: "Nombre: {value}"
     field_icon: "Ícono: {value}"
-    prompt_name: "Escribí el nuevo nombre:"
-    prompt_icon: "Escribí el Material del ícono:"
-    prompt_result_value: "Escribí el material o id de ítem del resultado:"
+    prompt_name: "Escribe el nuevo nombre:"
+    prompt_icon: "Escribe el Material del ícono:"
+    prompt_result_value: "Escribe el material o id de ítem del resultado:"
     result_type: "Result. tipo: {value}"
     result_value: "Result. valor: {value}"
     result_amount: "Result. cantidad: {value}"
@@ -71,7 +74,7 @@ gui:
     conditions_count: "Condiciones ({count})"
     delete: "Eliminar {noun}"
     id_lore: "id: {id}"
-    prompt_ingredient: "Escribí {label}: TIPO VALOR CANTIDAD [CALIDAD-MINIMA]"
+    prompt_ingredient: "Escribe {label}: TIPO VALOR CANTIDAD [CALIDAD-MINIMA]"
     ingredient_format_hint: "Formato: TIPO VALOR CANTIDAD [CALIDAD-MINIMA]"
     ingredient_invalid_type: "Tipo inválido: {type}"
     ingredient_invalid_amount: "Cantidad inválida: {value}"
@@ -99,7 +102,7 @@ gui:
     editor_title: "Estación: {id}"
     block_lore: "bloque: {block}"
     create_new: "Crear estación nueva"
-    prompt_new_id: "Escribí el id de la nueva estación:"
+    prompt_new_id: "Escribe el id de la nueva estación:"
     field_block: "Bloque disparador: {value}"
     field_inventory_size: "Tamaño de inventario: {value}"
     inventory_size_hint: "Click: +9 · Click derecho: -9"
@@ -120,17 +123,17 @@ gui:
     allow_experimentation_hint: "Habilita /crafting experiment en esta estación"
     delete: "Eliminar estación"
     already_exists: "Ya existe una estación con ese id."
-    prompt_block: "Escribí el Material del bloque disparador:"
-    prompt_gui_title: "Escribí el nuevo título de GUI:"
-    prompt_skill_category: "Escribí la categoría de proficiencia:"
+    prompt_block: "Escribe el Material del bloque disparador:"
+    prompt_gui_title: "Escribe el nuevo título de GUI:"
+    prompt_skill_category: "Escribe la categoría de proficiencia:"
 
   recipe:
     browser_title: "Recetas personalizadas"
     editor_title: "Receta: {id}"
     station_lore: "estación: {station}"
     create_new: "Crear receta nueva"
-    prompt_new_id: "Escribí el id de la nueva receta:"
-    prompt_new_station_id: "Escribí el id de la estación donde se procesa:"
+    prompt_new_id: "Escribe el id de la nueva receta:"
+    prompt_new_station_id: "Escribe el id de la estación donde se procesa:"
     field_station: "Estación: {value}"
     field_processing_time: "Tiempo (ticks): {value}"
     time_ticks_hint: "Click: +20 · Click derecho: -20"
@@ -148,22 +151,22 @@ gui:
     ingredients_count: "Ingredientes ({count})"
     delete: "Eliminar receta"
     already_exists: "Ya existe una receta con ese id."
-    prompt_station: "Escribí el id de la estación:"
-    prompt_economy_currency: "Escribí el id de moneda (o 'base'):"
+    prompt_station: "Escribe el id de la estación:"
+    prompt_economy_currency: "Escribe el id de moneda (o 'base'):"
 
   fuel:
     browser_title: "Combustibles"
     editor_title: "Combustible: {id}"
     burn_ticks_lore: "burn-ticks: {value}"
     create_new: "Crear combustible nuevo"
-    prompt_new_id: "Escribí el id del nuevo combustible:"
+    prompt_new_id: "Escribe el id del nuevo combustible:"
     field_material_or_item: "Material/item-id: {value}"
     field_is_custom_item: "Es ítem personalizado: {value}"
     field_burn_ticks: "Ticks de quemado: {value}"
     field_consume_amount: "Cantidad consumida: {value}"
     delete: "Eliminar combustible"
     already_exists: "Ya existe un combustible con ese id."
-    prompt_material_or_item: "Escribí el Material vanilla o el id de ítem personalizado:"
+    prompt_material_or_item: "Escribe el Material vanilla o el id de ítem personalizado:"
 
   ingredient_list:
     title: "Ingredientes: {id}"
@@ -173,7 +176,7 @@ gui:
     add_lore_3: "ej. ITEM_ID enchanted_gem 1 FINE"
     add_lore_4: "ej. TAG minecraft:planks 4"
     add_lore_5: "ej. ANY 1"
-    prompt_add: "Escribí: TIPO VALOR CANTIDAD [CALIDAD-MINIMA]"
+    prompt_add: "Escribe: TIPO VALOR CANTIDAD [CALIDAD-MINIMA]"
 
   conditions:
     title: "Condiciones: {id}"
@@ -186,7 +189,7 @@ gui:
     value_lore: "valor: {value}"
     value_none: "(ninguno)"
     min_value_lore: "min-value: {value}"
-    prompt_add: "Escribí: TIPO [valor] [min-value]"
+    prompt_add: "Escribe: TIPO [valor] [min-value]"
     invalid_type: "Tipo inválido: {type}"
 
   vanilla_recipe:
@@ -195,7 +198,7 @@ gui:
     type_lore: "tipo: {value}"
     result_lore: "resultado: {value}"
     create_new: "Crear receta vanilla nueva"
-    prompt_new_id: "Escribí el id de la nueva receta vanilla:"
+    prompt_new_id: "Escribe el id de la nueva receta vanilla:"
     already_exists: "Ya existe una receta vanilla con ese id."
     field_type: "Tipo: {value}"
     click_cycle_hint: "Click para ciclar"
@@ -215,11 +218,11 @@ gui:
     experience_hint: "Click: +0.5 · Click derecho: -0.5"
     conditions_crafting_only_hint: "Solo aplican en mesa de crafteo"
     delete: "Eliminar receta"
-    prompt_shape: "Escribí las filas separadas por coma (ej. III,IWI, I ):"
-    prompt_key: "Escribí letra=MATERIAL separados por coma (ej. I=IRON_INGOT,W=OAK_PLANKS):"
-    prompt_ingredients: "Escribí los materiales separados por coma:"
-    prompt_template: "Escribí el Material de la plantilla:"
-    prompt_base: "Escribí el Material base:"
+    prompt_shape: "Escribe las filas separadas por coma (ej. III,IWI, I ):"
+    prompt_key: "Escribe letra=MATERIAL separados por coma (ej. I=IRON_INGOT,W=OAK_PLANKS):"
+    prompt_ingredients: "Escribe los materiales separados por coma:"
+    prompt_template: "Escribe el Material de la plantilla:"
+    prompt_base: "Escribe el Material base:"
 
   anvil_recipe:
     browser_title: "Recetas de yunque"
@@ -228,7 +231,7 @@ gui:
     addition_lore: "adición: {value}"
     result_lore: "resultado: {value}"
     create_new: "Crear receta de yunque nueva"
-    prompt_new_id: "Escribí el id de la nueva receta de yunque:"
+    prompt_new_id: "Escribe el id de la nueva receta de yunque:"
     already_exists: "Ya existe una receta de yunque con ese id."
     field_base: "Base: {value}"
     field_addition: "Adición: {value}"
@@ -243,7 +246,7 @@ gui:
     ingredient_lore: "ingrediente: {value}"
     result_lore: "resultado: {value}"
     create_new: "Crear receta de fermentación nueva"
-    prompt_new_id: "Escribí el id de la nueva receta de fermentación:"
+    prompt_new_id: "Escribe el id de la nueva receta de fermentación:"
     already_exists: "Ya existe una receta de fermentación con ese id."
     field_ingredient: "Ingrediente: {value}"
     delete: "Eliminar receta de fermentación"
@@ -255,7 +258,7 @@ gui:
     lower_lore: "inferior: {value}"
     result_lore: "resultado: {value}"
     create_new: "Crear receta de amolar nueva"
-    prompt_new_id: "Escribí el id de la nueva receta de amolar:"
+    prompt_new_id: "Escribe el id de la nueva receta de amolar:"
     already_exists: "Ya existe una receta de amolar con ese id."
     field_upper: "Superior: {value}"
     field_lower: "Inferior: {value}"
@@ -270,7 +273,7 @@ gui:
     item_lore: "ítem: {value}"
     result_lore: "resultado: {value}"
     create_new: "Crear receta de cartografía nueva"
-    prompt_new_id: "Escribí el id de la nueva receta de cartografía:"
+    prompt_new_id: "Escribe el id de la nueva receta de cartografía:"
     already_exists: "Ya existe una receta de cartografía con ese id."
     field_map: "Mapa: {value}"
     field_item: "Ítem: {value}"
@@ -285,7 +288,7 @@ gui:
     dye_lore: "tinte: {value}"
     result_lore: "resultado: {value}"
     create_new: "Crear receta de telar nueva"
-    prompt_new_id: "Escribí el id de la nueva receta de telar:"
+    prompt_new_id: "Escribe el id de la nueva receta de telar:"
     already_exists: "Ya existe una receta de telar con ese id."
     field_banner: "Banner: {value}"
     field_dye: "Tinte: {value}"
@@ -303,7 +306,7 @@ gui:
     cost_lore: "costo: {value}"
     result_lore: "resultado: {value}"
     create_new: "Crear comercio nuevo"
-    prompt_new_id: "Escribí el id del nuevo comercio:"
+    prompt_new_id: "Escribe el id del nuevo comercio:"
     already_exists: "Ya existe un comercio con ese id."
     field_cost1_type: "Costo 1 tipo: {value}"
     field_cost1_value: "Costo 1 valor: {value}"
@@ -322,9 +325,9 @@ gui:
     field_economy_cost: "Costo económico: {value}"
     economy_cost_hint: "Click: +10 · Click derecho: -10"
     delete: "Eliminar comercio"
-    prompt_cost1_value: "Escribí el material o id de ítem del costo 1:"
-    prompt_cost2_value: "Escribí el material o id de ítem del costo 2:"
-    prompt_economy_currency: "Escribí el id de moneda (vacío = usar la base):"
+    prompt_cost1_value: "Escribe el material o id de ítem del costo 1:"
+    prompt_cost2_value: "Escribe el material o id de ítem del costo 2:"
+    prompt_economy_currency: "Escribe el id de moneda (vacío = usar la base):"
 
   recipe_book:
     title: "Libro de Recetas"

@@ -1,6 +1,0 @@
-# Configuración de RPGRoll-Particles
-
-# Idioma de los mensajes (jugador y comandos). Opciones: es, en, pt_BR.
-# Los textos viven en lang/<idioma>.yml dentro de esta carpeta de datos —
-# podés editarlos ahí directamente. Tras cambiar esto, /rpgparticles reload.
-language: es

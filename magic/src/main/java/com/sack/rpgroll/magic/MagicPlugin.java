@@ -90,25 +90,19 @@ public class MagicPlugin extends JavaPlugin {
         getServer().getPluginManager().registerEvents(
                 new GrimoireListener(grimoireManager, spellManager, spellbookManager, langManager), this);
 
-        var adminCommand = getCommand("magicadmin");
-        if (adminCommand == null) {
-            getLogger().severe("✘ El comando 'magicadmin' no está declarado en plugin.yml");
-        } else {
-            var magicAdminCommand = new MagicAdminCommand(schoolManager, spellManager, grimoireManager, runeManager,
+        var magicAdminCommand = new MagicAdminCommand(schoolManager, spellManager, grimoireManager, runeManager,
                     catalystManager, chatPromptManager, langManager);
-            adminCommand.setExecutor(magicAdminCommand);
-            adminCommand.setTabCompleter(magicAdminCommand);
-        }
 
-        var playerCommand = getCommand("magic");
-        if (playerCommand == null) {
-            getLogger().severe("✘ El comando 'magic' no está declarado en plugin.yml");
-        } else {
-            var magicCommand = new MagicCommand(spellManager, runeManager, spellbookManager, engine,
+        // Registrado por Brigadier para que `execute as` entregue al jugador real.
+        com.sack.rpgroll.common.command.BrigadierCommands.register(this, "magicadmin",
+                "Comandos administrativos de RPGRoll-Magic (Magic Studio)", "rpgrollmagic.admin.*", magicAdminCommand);
+
+        var magicCommand = new MagicCommand(spellManager, runeManager, spellbookManager, engine,
                     chatPromptManager);
-            playerCommand.setExecutor(magicCommand);
-            playerCommand.setTabCompleter(magicCommand);
-        }
+
+        // Registrado por Brigadier para que `execute as` entregue al jugador real.
+        com.sack.rpgroll.common.command.BrigadierCommands.register(this, "magic",
+                "Comandos de jugador de RPGRoll-Magic", "rpgrollmagic.use", magicCommand);
 
         getLogger().info("✔ RPGRoll-Magic habilitado. " + schoolManager.count() + " escuela(s), "
                 + spellManager.count() + " hechizo(s), " + grimoireManager.count() + " grimorio(s), "

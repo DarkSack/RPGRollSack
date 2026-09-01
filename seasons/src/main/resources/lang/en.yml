@@ -11,7 +11,13 @@ command:
     current_season: "&6Current season in {world}: &e{season}"
     temperature: "&bTemperature where you are: {temperature}°C"
   admin:
-    usage: "&cUsage: /seasonsadmin <browser|reload|setseason <world> <id>|advance <world>|trigger <id> <world>>"
+    usage: |-
+      &cUsage: /seasonsadmin
+      &7 • &bbrowser
+      &7 • &areload
+      &7 • &esetseason <world> <id>
+      &7 • &dadvance <world>
+      &7 • &6trigger <id> <world>
     players_only_studio: "&cOnly players can open the Season Studio."
     reloaded: "&a✔ Reloaded: {calendars} calendar(s), {seasons} season(s), {events} event(s), {regions} region(s)."
     usage_setseason: "&cUsage: /seasonsadmin setseason <world> <id>"

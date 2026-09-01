@@ -2,7 +2,7 @@
 
 # Idioma de los mensajes (jugador y comandos). Opciones: es, en, pt_BR.
 # Los textos viven en lang/<idioma>.yml dentro de esta carpeta de datos —
-# podés editarlos ahí directamente. Tras cambiar esto, /craftingadmin reload.
+# puedes editarlos ahí directamente. Tras cambiar esto, /craftingadmin reload.
 language: es
 
 # Cada cuántos ticks el motor de estaciones personalizadas avanza el procesamiento en curso

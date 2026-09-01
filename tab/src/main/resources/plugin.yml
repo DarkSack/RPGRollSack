@@ -7,12 +7,6 @@ description: Personalización avanzada de TabList, Scoreboard, Nametags, BelowNa
 depend: [RPGRoll]
 softdepend: [ProtocolLib, PlaceholderAPI]
 
-commands:
-  tabadmin:
-    description: Gestiona perfiles, scoreboards, tablist, nametags y bossbars de RPGRoll-TAB
-    usage: /tabadmin <reload|list|profile <jugador> <perfil>> [args]
-    permission: rpgrolltab.admin.*
-
 permissions:
   rpgrolltab.admin.*:
     description: Acceso completo a comandos administrativos de RPGRoll-TAB

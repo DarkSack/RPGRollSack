@@ -1,0 +1,61 @@
+# Language file: English
+# RPGRoll-FX - Message system
+
+# General messages
+general:
+  no_permission: "&cYou don't have permission to use this command."
+
+# /rpgfx <browser|reload|test>
+command:
+  usage: |-
+    &cUsage: /rpgfx
+    &7 • &bbrowser
+    &7 • &areload
+    &7 • &etest <id> [player]
+  browser_players_only: "&cOnly players can open the effects browser."
+  reload_success: "&a✔ Reloaded: {count} effect(s)."
+  test_usage: "&cUsage: /rpgfx test <id> [player]"
+  test_effect_not_found: "&cNo effect exists with id: {id}"
+  test_player_not_found: "&cPlayer not found: {player}"
+  test_specify_player: "&cSpecify a player: /rpgfx test <id> <player>"
+  test_playing: "&a▶ Playing '{id}' on {player}."
+
+# Shared chat prompts (used by the admin GUIs)
+prompt:
+  cancel_hint: "&7Type in chat, or 'cancelar' to abort."
+  cancelled: "&cCancelled."
+
+# EffectBrowserGUI
+browser:
+  title: "&6RPGRoll Effects"
+  item_lore_id: "&7id: {id}"
+  item_lore_steps: "&7{count} step(s)"
+  item_lore_edit: "&eClick to edit"
+  new_effect_name: "&aCreate new effect"
+  close_button: "Close"
+  new_effect_prompt: "Type the id of the new effect:"
+  id_exists: "&cAn effect with that id already exists."
+
+# EffectEditorGUI
+editor:
+  title: "&6Effect: {id}"
+  name_item: "&eName: {name}"
+  name_lore_hint: "&7Click to type a new one"
+  description_item: "&eDescription"
+  description_empty: "(no description)"
+  test_item: "&a▶ Test on yourself"
+  item_lore_steps: "&7{count} step(s)"
+  add_step_item: "&aAdd step"
+  add_step_lore_syntax: "&7TYPE delay key=value,key2=value2"
+  add_step_lore_example_particle: "&8e.g. PARTICLE 0 particle=FLAME,shape=SPHERE,radius=1.5,points=40"
+  add_step_lore_example_sound: "&8e.g. SOUND 5 sound=ENTITY_BLAZE_SHOOT,volume=1,pitch=1.2"
+  back_button: "Back"
+  step_delay_lore: "&7Delay: {ticks} ticks"
+  step_remove_hint: "&cShift-click to remove"
+  test_playing: "&a▶ Playing '{id}'..."
+  rename_prompt: "Type the new name:"
+  description_prompt: "Type the new description:"
+  add_step_prompt: "Type: TYPE delay key=value,key2=value2 (e.g. SOUND 0 sound=ENTITY_PLAYER_LEVELUP,volume=1):"
+  add_step_invalid_format: "&cInvalid format — at least TYPE and delay are required."
+  add_step_invalid_type: "&cInvalid type: {type} (use PARTICLE, SOUND, TITLE, ACTIONBAR, BOSSBAR or POTION)."
+  add_step_invalid_delay: "&cInvalid delay: {delay}"

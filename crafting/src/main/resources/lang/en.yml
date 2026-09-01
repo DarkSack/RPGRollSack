@@ -18,15 +18,18 @@ command:
   crafting_admin:
     usage: |-
       &eUsage: /craftingadmin
-      &7 • &fbrowser
-      &7 • &freload
-      &7 • &fgive
-      &7 • &fvillager
+      &7 • &bbrowser
+      &7 • &areload
+      &7 • &egive
+      &7 • &dvillager
     reloaded: "✔ RPGRoll-Crafting reloaded."
     give_usage: "Usage: /craftingadmin give <player> <RPGRoll-Items item-id>"
     give_item_failed: "Couldn't create that item (is RPGRoll-Items installed? is the id correct?)"
     give_success: "✔ Given."
-    villager_usage: "Usage: /craftingadmin villager <bind <id1,id2,...>|unbind>"
+    villager_usage: |-
+      Usage: /craftingadmin villager
+      &7 • &bbind <id1,id2,...>
+      &7 • &aunbind
     villager_bind_usage: "Usage: /craftingadmin villager bind <id1,id2,...>"
     villager_target_required: "You need to be looking at a villager (or wandering trader)."
     villager_bind_no_valid_ids: "None of those trade ids exist."

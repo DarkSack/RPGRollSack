@@ -7,23 +7,6 @@ description: Sistema social de RPGRoll — equipos temporales (Teams) y organiza
 depend: [RPGRoll]
 softdepend: [RPGRoll-Items, RPGRoll-Quests, Vault, PlaceholderAPI]
 
-commands:
-  team:
-    description: Comandos de equipo temporal
-    usage: /team <create|invite|accept|decline|leave|kick|promote|demote|info|config|buff|ping|waypoint|chat|queue> [args]
-    # "team" es también un comando vanilla de Minecraft (equipos de scoreboard, permiso
-    # minecraft.command.team) y algunos plugins de gestión de servidor (ej. EssentialsX y
-    # similares) también lo reclaman — si "/team" no responde con esto o abre otra cosa,
-    # usá el alias "/rteam", que es exclusivo de este addon y nunca choca.
-    aliases: [rteam]
-  guild:
-    description: Comandos de guild
-    usage: /guild <create|disband|invite|accept|decline|leave|kick|promote|demote|info|vault|territory|upgrade|diplomacy|quest|achievements|calendar|ranking|chat|customize> [args]
-  guildadmin:
-    description: Comandos administrativos de guilds
-    usage: /guildadmin <reload|browser [guilds|quests]|delete> [args]
-    permission: rpgrollguilds.admin.*
-
 permissions:
   rpgrollguilds.admin.*:
     description: Acceso completo a comandos administrativos de guilds

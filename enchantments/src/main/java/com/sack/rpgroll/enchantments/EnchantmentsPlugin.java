@@ -61,15 +61,12 @@ public class EnchantmentsPlugin extends JavaPlugin {
         ChatPromptManager chatPromptManager = new ChatPromptManager(this, langManager);
         getServer().getPluginManager().registerEvents(chatPromptManager, this);
 
-        var enchantCommand = getCommand("renchant");
-        if (enchantCommand == null) {
-            getLogger().severe("✘ El comando 'renchant' no está declarado en plugin.yml");
-        } else {
-            var enchantAdminCommand = new EnchantAdminCommand(this, enchantmentManager, enchantmentItem,
+        var enchantAdminCommand = new EnchantAdminCommand(this, enchantmentManager, enchantmentItem,
                     chatPromptManager);
-            enchantCommand.setExecutor(enchantAdminCommand);
-            enchantCommand.setTabCompleter(enchantAdminCommand);
-        }
+
+        // Registrado por Brigadier para que `execute as` entregue al jugador real.
+        com.sack.rpgroll.common.command.BrigadierCommands.register(this, "renchant",
+                "Gestiona encantamientos personalizados", "rpgrollenchantments.admin.*", enchantAdminCommand);
 
         registerPlaceholders();
 

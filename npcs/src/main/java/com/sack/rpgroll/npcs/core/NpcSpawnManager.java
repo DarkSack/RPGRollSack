@@ -77,8 +77,11 @@ public class NpcSpawnManager {
             boolean isVisible = currentlyVisible.contains(npc.id());
 
             if (inRange && !isVisible) {
-                spawn(player, npc);
-                currentlyVisible.add(npc.id());
+                // Solo se anota como visible si de verdad se envió: si no, el
+                // despawn posterior mandaría un destroy de algo inexistente.
+                if (spawn(player, npc)) {
+                    currentlyVisible.add(npc.id());
+                }
             } else if (!inRange && isVisible) {
                 despawn(player, npc);
                 currentlyVisible.remove(npc.id());
@@ -110,10 +113,16 @@ public class NpcSpawnManager {
         visibleTo.remove(player.getUniqueId());
     }
 
-    private void spawn(Player player, NpcDefinition npc) {
+    private boolean spawn(Player player, NpcDefinition npc) {
+
         UUID npcUuid = npcUuids.get(npc.id());
-        int entityId = npcEntityIds.get(npc.id());
-        renderer.spawnFor(player, npc, npcUuid, entityId);
+        Integer entityId = npcEntityIds.get(npc.id());
+
+        if (npcUuid == null || entityId == null) {
+            return false;
+        }
+
+        return renderer.spawnFor(player, npc, npcUuid, entityId);
     }
 
     private void despawn(Player player, NpcDefinition npc) {

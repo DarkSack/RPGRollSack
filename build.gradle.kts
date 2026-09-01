@@ -6,7 +6,7 @@
 
 val addonModuleNames = listOf(
     "core", "npcs", "crates", "enchantments", "quests", "items", "ascension", "mobs",
-    "dungeons", "guilds", "chat", "sackeffects", "effects", "magic", "seasons", "fishing",
+    "dungeons", "guilds", "chat", "fx", "effects", "magic", "seasons", "fishing",
     "sackresourcepack", "ranching", "workers", "economy", "crafting", "tab", "extras", "traps",
 )
 

@@ -14,12 +14,12 @@ command:
   itemadmin:
     usage: |-
       &cUsage: /itemadmin
-      &7 • &fgive
-      &7 • &flist
-      &7 • &freload
-      &7 • &fcreate
-      &7 • &fbrowser
-      &7 • &feditor
+      &7 • &bgive
+      &7 • &alist
+      &7 • &ereload
+      &7 • &dcreate
+      &7 • &6browser
+      &7 • &9editor
     player_only: "&cOnly a player can use this."
     reload:
       success: "&a✔ Reloaded: {count} item(s)."
@@ -47,10 +47,10 @@ command:
     player_only: "Only a player can use this command."
     usage: |-
       &cUsage: /item
-      &7 • &finfo
-      &7 • &fupgrade
-      &7 • &fskin
-      &7 • &fsocket
+      &7 • &binfo
+      &7 • &aupgrade
+      &7 • &eskin
+      &7 • &dsocket
     no_item: "&cYou're not holding an RPGRoll-Items item."
     info:
       pack: "&7Pack: {pack}"

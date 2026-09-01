@@ -15,6 +15,12 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
+import com.sack.rpgroll.traps.gui.turret.TurretAmmoGUI;
+import com.sack.rpgroll.traps.turret.TurretAccess;
+import com.sack.rpgroll.traps.turret.TurretTargeting;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.block.Action;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.plugin.Plugin;
 
 import java.util.Optional;
@@ -29,21 +35,20 @@ import java.util.Optional;
  */
 public class TurretPlacementListener implements Listener {
 
-    /** Un admin puede retirar torretas de cualquiera: hace falta para limpiar. */
-    private static final String ADMIN_PERMISSION = "rpgrolltraps.admin.*";
-
     private final Plugin plugin;
     private final TurretManager turretManager;
     private final PlacedTurretManager placedTurretManager;
     private final TurretEngine turretEngine;
+    private final com.sack.rpgroll.traps.ammo.AmmoManager ammoManager;
     private final LangManager lang;
 
     public TurretPlacementListener(Plugin plugin, TurretManager turretManager,
-            PlacedTurretManager placedTurretManager, TurretEngine turretEngine, LangManager lang) {
+            PlacedTurretManager placedTurretManager, TurretEngine turretEngine, com.sack.rpgroll.traps.ammo.AmmoManager ammoManager, LangManager lang) {
         this.plugin = plugin;
         this.turretManager = turretManager;
         this.placedTurretManager = placedTurretManager;
         this.turretEngine = turretEngine;
+        this.ammoManager = ammoManager;
         this.lang = lang;
     }
 
@@ -66,21 +71,48 @@ public class TurretPlacementListener implements Listener {
             return;
         }
 
+        // Arranca con lo que diga su definición; el dueño lo ajusta después
+        // desde la GUI.
         PlacedTurret placed = placedTurretManager.add(
-                turretId, event.getBlock().getLocation(), event.getPlayer().getUniqueId());
+                turretId, event.getBlock().getLocation(), event.getPlayer().getUniqueId(),
+                TurretTargeting.defaultsFor(definition.get()));
 
         lang.send(event.getPlayer(), "admin.turret.placed_by_item",
                 "id", turretId, "placementId", placed.placementId());
     }
 
     @EventHandler
+    public void onInteract(PlayerInteractEvent event) {
+
+        if (event.getAction() != Action.RIGHT_CLICK_BLOCK || event.getClickedBlock() == null
+                || event.getHand() != EquipmentSlot.HAND) {
+            return;
+        }
+
+        PlacedTurret placed = turretAt(event.getClickedBlock().getLocation());
+
+        if (placed == null) {
+            return;
+        }
+
+        // Es una torreta: nunca se coloca un bloque encima ni se abre otra cosa.
+        event.setCancelled(true);
+
+        Player player = event.getPlayer();
+
+        if (!TurretAccess.canManage(player, placed)) {
+            lang.send(player, "admin.turret.no_access");
+            return;
+        }
+
+        new TurretAmmoGUI(plugin, placedTurretManager, ammoManager, lang, placed.placementId()).open(player);
+    }
+
+    @EventHandler
     public void onBreak(BlockBreakEvent event) {
 
         Location broken = event.getBlock().getLocation();
-        PlacedTurret placed = placedTurretManager.getAll().stream()
-                .filter(candidate -> sameBlock(candidate, broken))
-                .findFirst()
-                .orElse(null);
+        PlacedTurret placed = turretAt(broken);
 
         if (placed == null) {
             return;
@@ -106,6 +138,13 @@ public class TurretPlacementListener implements Listener {
         lang.send(player, "admin.turret.removed_by_break", "placementId", placed.placementId());
     }
 
+    private PlacedTurret turretAt(Location location) {
+        return placedTurretManager.getAll().stream()
+                .filter(candidate -> sameBlock(candidate, location))
+                .findFirst()
+                .orElse(null);
+    }
+
     private boolean sameBlock(PlacedTurret placed, Location location) {
         return placed.world().equals(location.getWorld().getName())
                 && placed.x() == location.getBlockX()
@@ -113,10 +152,12 @@ public class TurretPlacementListener implements Listener {
                 && placed.z() == location.getBlockZ();
     }
 
-    /** Sin dueño registrado (colocada por comando) solo la saca un admin. */
+    /**
+     * Retirar exige lo mismo que reabastecer: dueño, su team/guild, o admin.
+     * Sin dueño registrado (colocada por comando) solo la saca un admin.
+     */
     private boolean canRemove(Player player, PlacedTurret placed) {
-        return player.hasPermission(ADMIN_PERMISSION)
-                || (placed.owner() != null && placed.owner().equals(player.getUniqueId()));
+        return TurretAccess.canManage(player, placed);
     }
 
 }

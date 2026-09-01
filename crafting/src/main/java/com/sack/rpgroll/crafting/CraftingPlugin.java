@@ -210,27 +210,21 @@ public class CraftingPlugin extends JavaPlugin {
     private void registerCommands(ChatPromptManager chatPromptManager, StationUpgradeService stationUpgradeService,
             ExperimentationService experimentationService) {
 
-        var adminCommand = getCommand("craftingadmin");
-        if (adminCommand == null) {
-            getLogger().severe("✘ El comando 'craftingadmin' no está declarado en plugin.yml");
-        } else {
-            var executor = new CraftingAdminCommand(this, stationManager, recipeManager, fuelManager,
+        var craftingAdminExecutor = new CraftingAdminCommand(this, stationManager, recipeManager, fuelManager,
                     vanillaRecipeManager, anvilRecipeManager, brewRecipeManager, grindstoneRecipeManager,
                     cartographyRecipeManager, loomRecipeManager, vanillaRecipeBridge, villagerTradeManager,
                     chatPromptManager, this::reloadContent, langManager);
-            adminCommand.setExecutor(executor);
-            adminCommand.setTabCompleter(executor);
-        }
 
-        var playerCommand = getCommand("crafting");
-        if (playerCommand == null) {
-            getLogger().severe("✘ El comando 'crafting' no está declarado en plugin.yml");
-        } else {
-            var executor = new CraftingCommand(recipeManager, stationManager, discoveryService, stationRuntimeRegistry,
+        // Registrado por Brigadier para que `execute as` entregue al jugador real.
+        com.sack.rpgroll.common.command.BrigadierCommands.register(this, "craftingadmin",
+                "Comandos administrativos de RPGRoll-Crafting (Crafting Studio)", "rpgrollcrafting.admin.*", craftingAdminExecutor);
+
+        var craftingExecutor = new CraftingCommand(recipeManager, stationManager, discoveryService, stationRuntimeRegistry,
                     stationUpgradeService, experimentationService, proficiencyService, langManager);
-            playerCommand.setExecutor(executor);
-            playerCommand.setTabCompleter(executor);
-        }
+
+        // Registrado por Brigadier para que `execute as` entregue al jugador real.
+        com.sack.rpgroll.common.command.BrigadierCommands.register(this, "crafting",
+                "Comandos de jugador de RPGRoll-Crafting", "rpgrollcrafting.use", craftingExecutor);
     }
 
     private void reloadContent() {

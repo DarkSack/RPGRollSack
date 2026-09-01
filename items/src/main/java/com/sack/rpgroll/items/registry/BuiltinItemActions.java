@@ -76,6 +76,25 @@ public final class BuiltinItemActions {
             }
         });
 
+        /**
+         * Reproduce un efecto completo de RPGRoll-FX por id.
+         * <p>
+         * A diferencia de PARTICLE, que dibuja una sola partícula vanilla, acá
+         * el efecto trae sus propias formas, sonidos y tiempos ya compuestos.
+         * Integración blanda: sin RPGRoll-FX instalado no hace nada.
+         */
+        registry.register("PARTICLES", (action, ctx) -> {
+
+            String effectId = action.param("effect-id", action.param("id", ""));
+
+            if (effectId.isBlank()) {
+                return;
+            }
+
+            com.sack.rpgroll.common.integration.ParticlesIntegration.play(
+                    effectId, ctx.player(), targetLocation(ctx));
+        });
+
         registry.register("EXPLOSION", (action, ctx) -> {
 
             Location location = targetLocation(ctx);

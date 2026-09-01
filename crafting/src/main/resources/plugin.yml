@@ -7,16 +7,6 @@ description: Motor de crafteo avanzado — recetas personalizadas con condicione
 depend: [RPGRoll]
 softdepend: [RPGRoll-Items, RPGRoll-Economy, RPGRoll-Guilds, RPGRoll-Seasons]
 
-commands:
-  craftingadmin:
-    description: Comandos administrativos de RPGRoll-Crafting (Crafting Studio)
-    usage: /craftingadmin <browser|reload|give|villager> [args]
-    permission: rpgrollcrafting.admin.*
-  crafting:
-    description: Comandos de jugador de RPGRoll-Crafting
-    usage: /crafting <book|discover|upgrade|experiment|proficiency> [args]
-    permission: rpgrollcrafting.use
-
 permissions:
   rpgrollcrafting.admin.*:
     description: Acceso completo a comandos administrativos de Crafting Studio

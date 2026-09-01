@@ -28,7 +28,7 @@ import java.util.List;
 
 public class TrapsPlugin extends JavaPlugin {
 
-    private static final List<String> DIRECTORIES = List.of("traps", "turrets");
+    private static final List<String> DIRECTORIES = List.of("traps", "turrets", "ammo");
     private static final long DEFAULT_TICK_INTERVAL = 20L;
     private static final long DEFAULT_TURRET_TICK_INTERVAL = 5L;
 
@@ -36,6 +36,7 @@ public class TrapsPlugin extends JavaPlugin {
     private PlacedTrapManager placedTrapManager;
     private TrapEngine engine;
     private TurretManager turretManager;
+    private com.sack.rpgroll.traps.ammo.AmmoManager ammoManager;
     private PlacedTurretManager placedTurretManager;
     private TurretEngine turretEngine;
     private LangManager langManager;
@@ -74,12 +75,14 @@ public class TrapsPlugin extends JavaPlugin {
         engine.start(tickInterval);
 
         turretManager = new TurretManager(this);
+        ammoManager = new com.sack.rpgroll.traps.ammo.AmmoManager(this);
+        ammoManager.initialize();
         turretManager.initialize();
 
         placedTurretManager = new PlacedTurretManager(this);
         placedTurretManager.load();
 
-        turretEngine = new TurretEngine(this, turretManager, placedTurretManager, conditionEvaluator, actionRegistry);
+        turretEngine = new TurretEngine(this, turretManager, placedTurretManager, conditionEvaluator, actionRegistry, ammoManager);
 
         long turretTickInterval = getConfig().getLong("engine.turret-tick-interval-ticks",
                 DEFAULT_TURRET_TICK_INTERVAL);
@@ -95,18 +98,17 @@ public class TrapsPlugin extends JavaPlugin {
 
         // Coloca/retira torretas como bloques; solo el dueño puede sacarlas.
         getServer().getPluginManager().registerEvents(
-                new TurretPlacementListener(this, turretManager, placedTurretManager, turretEngine, langManager),
+                new TurretPlacementListener(this, turretManager, placedTurretManager, turretEngine, ammoManager, langManager),
                 this);
 
-        var trapAdminCommand = getCommand("trapadmin");
-        if (trapAdminCommand == null) {
-            getLogger().severe("✘ El comando 'trapadmin' no está declarado en plugin.yml");
-        } else {
-            var executor = new TrapAdminCommand(this, trapManager, placedTrapManager, engine, turretManager,
-                    placedTurretManager, turretEngine, chatPromptManager, langManager);
-            trapAdminCommand.setExecutor(executor);
-            trapAdminCommand.setTabCompleter(executor);
-        }
+        var executor = new TrapAdminCommand(this, trapManager, placedTrapManager, engine, turretManager,
+                placedTurretManager, turretEngine, chatPromptManager, langManager, ammoManager);
+
+        // Registrado por Brigadier, no por plugin.yml, para que `execute as`
+        // entregue al jugador real (ver BrigadierCommands).
+        com.sack.rpgroll.common.command.BrigadierCommands.register(this, "trapadmin",
+                "Gestiona trampas/mecanismos", java.util.List.of(),
+                executor, executor, "rpgrolltraps.admin.*");
 
         getLogger().info("✔ RPGRoll-Traps habilitado. " + trapManager.count() + " tipo(s) de trampa cargados, "
                 + placedTrapManager.getAll().size() + " instancia(s) colocada(s), " + turretManager.count()

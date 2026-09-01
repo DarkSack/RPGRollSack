@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.mockito.ArgumentCaptor;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -146,4 +147,71 @@ class LangManagerTest {
 
         assertTrue(lang.raw("msg", "a", "1", "b", "2").equals("A=1 B=2 A=1"));
     }
+
+    /**
+     * Simula el JAR del plugin: {@code getResource} devuelve un stream nuevo
+     * en cada llamada, igual que Bukkit.
+     */
+    private void packageInJar(String locale, String content) {
+        when(plugin.getResource("lang/" + locale + ".yml"))
+                .thenAnswer(invocation -> new ByteArrayInputStream(content.getBytes(StandardCharsets.UTF_8)));
+    }
+
+    /**
+     * El fallo visto en un servidor real: el admin ya tenía el lang en disco
+     * de una versión anterior, una actualización agregó una clave nueva, y
+     * como el archivo de disco nunca se sobreescribe la clave salía cruda al
+     * jugador (`enchant_admin_command.give_success`).
+     */
+    @Test
+    void rawFallsBackToJarWhenDiskFileIsFromAnOlderVersion() throws IOException {
+        writeLangFile("es", "greeting: 'Hola'");
+        packageInJar("es", "greeting: 'Hola'\nclave_nueva: 'Mensaje agregado en la actualización'");
+
+        LangManager lang = new LangManager(plugin, List.of("es"), "es");
+
+        assertEquals("Mensaje agregado en la actualización", lang.raw("clave_nueva"));
+    }
+
+    /** Lo que el admin tradujo en disco sigue mandando sobre el JAR. */
+    @Test
+    void diskFileTakesPrecedenceOverJar() throws IOException {
+        writeLangFile("es", "greeting: 'Saludo editado por el admin'");
+        packageInJar("es", "greeting: 'Hola'");
+
+        LangManager lang = new LangManager(plugin, List.of("es"), "es");
+
+        assertEquals("Saludo editado por el admin", lang.raw("greeting"));
+    }
+
+    /** Sin archivo en disco todavía, el del JAR alcanza para resolver. */
+    @Test
+    void loadsFromJarWhenNothingOnDiskYet() {
+        packageInJar("es", "greeting: 'Hola'");
+
+        LangManager lang = new LangManager(plugin, List.of("es"), "es");
+
+        assertEquals("Hola", lang.raw("greeting"));
+    }
+
+
+    /**
+     * Un comando /reload tiene que recoger lo que el admin acaba de editar.
+     * Antes esto solo cambiaba de idioma activo entre los YAML ya cargados al
+     * arrancar, así que editar una traducción no surtía efecto hasta reiniciar
+     * el servidor entero.
+     */
+    @Test
+    void reloadRereadsTheFileFromDisk() throws IOException {
+        writeLangFile("es", "greeting: 'Hola'");
+
+        LangManager lang = new LangManager(plugin, List.of("es"), "es");
+        assertEquals("Hola", lang.raw("greeting"));
+
+        writeLangFile("es", "greeting: 'Buenas'");
+        lang.reload("es");
+
+        assertEquals("Buenas", lang.raw("greeting"));
+    }
+
 }

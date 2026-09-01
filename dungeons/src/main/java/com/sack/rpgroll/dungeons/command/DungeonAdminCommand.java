@@ -1,5 +1,6 @@
 package com.sack.rpgroll.dungeons.command;
 
+import com.sack.rpgroll.util.ComponentUtils;
 import com.sack.rpgroll.common.command.Senders;
 
 import com.sack.rpgroll.common.lang.LangManager;
@@ -257,7 +258,7 @@ public class DungeonAdminCommand implements CommandExecutor, TabCompleter {
             case CUSTOM -> def.width() + "x" + def.height() + "x" + def.depth();
         };
 
-        sender.sendMessage(Component.text(def.displayName() + " (" + def.id() + ")", NamedTextColor.GOLD));
+        sender.sendMessage(ComponentUtils.parseWithDefault(def.displayName() + " (" + def.id() + ")", NamedTextColor.GOLD));
         lang.send(sender, "command.dungeonadmin.structure.info.source", "source", def.sourceType());
         lang.send(sender, "command.dungeonadmin.structure.info.size", "size", size);
         sender.sendMessage(Component.text(def.description(), NamedTextColor.GRAY));
@@ -358,6 +359,16 @@ public class DungeonAdminCommand implements CommandExecutor, TabCompleter {
         String newId = args[3].toLowerCase(Locale.ROOT);
         String displayName = args.length > 4 ? String.join(" ", List.of(args).subList(4, args.length)) : newId;
         Player requestedBy = Senders.asPlayer(sender) instanceof Player player ? player : null;
+
+        // La comprobación tiene que estar acá, no dentro del servicio: aquel
+        // método referencia tipos de WorldEdit, y la JVM los carga al
+        // verificarlo — antes de que su propio if llegue a ejecutarse. Sin
+        // WorldEdit instalado eso reventaba con NoClassDefFoundError en vez de
+        // dar el mensaje. Se consulta por Bukkit para no tocar sus clases.
+        if (!Bukkit.getPluginManager().isPluginEnabled("WorldEdit")) {
+            lang.send(sender, "command.dungeonadmin.structure.importschem.worldedit_missing");
+            return;
+        }
 
         StructureImportService.Result result =
                 structureImportService.importFromSchematic(fileName, newId, displayName, requestedBy);

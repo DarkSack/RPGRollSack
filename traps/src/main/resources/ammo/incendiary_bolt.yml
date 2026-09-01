@@ -1,0 +1,13 @@
+# Munición incendiaria: cambia por completo el comportamiento de la torreta
+# sin tocar su definición — la munición decide QUÉ pasa al impactar.
+id: incendiary_bolt
+display-name: "&cVirote incendiario"
+description: "&7Prende fuego al impactar."
+icon: FIRE_CHARGE
+stack-size: 1
+
+impact:
+  type: CUSTOM_PROJECTILE
+  params:
+    projectile-type: SMALL_FIREBALL
+    speed: "2.0"

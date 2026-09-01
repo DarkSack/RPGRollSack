@@ -3,7 +3,11 @@
 
 command:
   no-permission: "Você não tem permissão para usar este comando."
-  usage: "Uso: /tabadmin <reload|list|profile <jogador> <perfil>>"
+  usage: |-
+    Uso: /tabadmin
+    &7 • &breload
+    &7 • &alist
+    &7 • &eprofile <jogador> <perfil>
   reload:
     success: "✔ RPGRoll-TAB recarregado: {profiles} perfil(is), {contexts} contexto(s)."
   list:

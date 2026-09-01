@@ -2,7 +2,7 @@ package com.sack.rpgroll.seasons.event;
 
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.effects.api.EffectsAPI;
-import com.sack.rpgroll.sackeffects.api.SackEffectsAPI;
+import com.sack.rpgroll.fx.api.RPGRollFXAPI;
 import com.sack.rpgroll.seasons.core.WorldEvent;
 import com.sack.rpgroll.seasons.core.WorldEventComponent;
 import com.sack.rpgroll.seasons.integration.MobsIntegration;
@@ -113,8 +113,8 @@ public class WorldEventEngine {
 
         String effectId = component.param("effect-id", null);
 
-        if (effectId != null && SackEffectsAPI.isReady()) {
-            SackEffectsAPI.get().play(effectId, player);
+        if (effectId != null && RPGRollFXAPI.isReady()) {
+            RPGRollFXAPI.get().play(effectId, player);
         }
     }
 

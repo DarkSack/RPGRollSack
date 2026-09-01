@@ -99,7 +99,7 @@ components:
     pitch: 1.0
 
   - type: VISUAL
-    effect-id: level_up # id de un efecto de RPGRoll-Particles, si está instalado
+    effect-id: level_up # id de un efecto de RPGRoll-FX, si está instalado
 
   # --- Mundo ---
   - type: BREAK_BLOCK

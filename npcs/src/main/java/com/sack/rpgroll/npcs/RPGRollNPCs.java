@@ -93,13 +93,9 @@ public class RPGRollNPCs extends JavaPlugin {
                 menuManager,
                 langManager);
 
-        var npcCommand = getCommand("npc");
-        if (npcCommand == null) {
-            getLogger().severe("✘ El comando 'npc' no está declarado en plugin.yml");
-        } else {
-            npcCommand.setExecutor(adminCommand);
-            npcCommand.setTabCompleter(adminCommand);
-        }
+        // Registrado por Brigadier para que `execute as` entregue al jugador real.
+        com.sack.rpgroll.common.command.BrigadierCommands.register(this, "npc",
+                "Gestiona NPCs", "rpgrollnpcs.admin.*", adminCommand);
 
         getLogger().info(
                 "✔ RPGRoll-NPCs habilitado. "

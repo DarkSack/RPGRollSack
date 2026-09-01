@@ -3,6 +3,7 @@ package com.sack.rpgroll.traps.turret;
 import com.sack.rpgroll.traps.condition.TrapConditionContext;
 import com.sack.rpgroll.traps.condition.TrapConditionEvaluator;
 import com.sack.rpgroll.traps.integration.MobsIntegration;
+import com.sack.rpgroll.traps.core.TrapAction;
 import com.sack.rpgroll.traps.registry.TrapActionContext;
 import com.sack.rpgroll.traps.registry.TrapActionRegistry;
 
@@ -43,18 +44,20 @@ public class TurretEngine {
     private final PlacedTurretManager placedTurretManager;
     private final TrapConditionEvaluator conditionEvaluator;
     private final TrapActionRegistry actionRegistry;
+    private final com.sack.rpgroll.traps.ammo.AmmoManager ammoManager;
     private final NamespacedKey placementKey;
 
     private final Map<String, TurretRuntimeState> runtime = new HashMap<>();
     private BukkitTask task;
 
     public TurretEngine(JavaPlugin plugin, TurretManager turretManager, PlacedTurretManager placedTurretManager,
-            TrapConditionEvaluator conditionEvaluator, TrapActionRegistry actionRegistry) {
+            TrapConditionEvaluator conditionEvaluator, TrapActionRegistry actionRegistry, com.sack.rpgroll.traps.ammo.AmmoManager ammoManager) {
         this.plugin = plugin;
         this.turretManager = turretManager;
         this.placedTurretManager = placedTurretManager;
         this.conditionEvaluator = conditionEvaluator;
         this.actionRegistry = actionRegistry;
+        this.ammoManager = ammoManager;
         this.placementKey = new NamespacedKey(plugin, "turret-placement");
     }
 
@@ -88,7 +91,7 @@ public class TurretEngine {
             ensureBaseBlock(anchor, definition);
             ItemDisplay visual = ensureVisual(placed, definition, state, anchor);
 
-            LivingEntity target = findTarget(anchor, definition);
+            LivingEntity target = findTarget(anchor, definition, placed);
 
             if (target == null) {
                 state.targetEntity = null;
@@ -113,14 +116,13 @@ public class TurretEngine {
 
             long now = System.currentTimeMillis();
 
-            if (now >= state.nextFireAtMillis) {
-                fire(placed, eye, target, definition);
+            if (now >= state.nextFireAtMillis && fire(placed, eye, target, definition)) {
                 state.nextFireAtMillis = now + definition.fireIntervalTicks() * 50L;
             }
         }
     }
 
-    private LivingEntity findTarget(Location anchor, TurretDefinition definition) {
+    private LivingEntity findTarget(Location anchor, TurretDefinition definition, PlacedTurret placed) {
 
         World world = anchor.getWorld();
         double radiusSquared = definition.radius() * definition.radius();
@@ -130,7 +132,7 @@ public class TurretEngine {
 
         for (LivingEntity candidate : world.getNearbyLivingEntities(anchor, definition.radius())) {
 
-            if (!isValidTarget(candidate, definition)) {
+            if (!isValidTarget(candidate, definition, placed)) {
                 continue;
             }
 
@@ -145,7 +147,13 @@ public class TurretEngine {
         return best;
     }
 
-    private boolean isValidTarget(LivingEntity candidate, TurretDefinition definition) {
+    /**
+     * El filtro de objetivos combina la definición (qué puede hacer esta
+     * torreta) con la configuración de la instancia (qué quiere su dueño).
+     */
+    private boolean isValidTarget(LivingEntity candidate, TurretDefinition definition, PlacedTurret placed) {
+
+        TurretTargeting targeting = placed.targeting();
 
         if (candidate instanceof Player player) {
 
@@ -153,25 +161,72 @@ public class TurretEngine {
                 return false;
             }
 
+            // Creativo y espectador quedan fuera: una torreta no debe
+            // dispararle a alguien que está construyendo.
             if (player.getGameMode() != GameMode.SURVIVAL && player.getGameMode() != GameMode.ADVENTURE) {
+                return false;
+            }
+
+            boolean ally = TurretAccess.isAlly(player, placed);
+
+            if (ally ? !targeting.allies() : !targeting.enemies()) {
                 return false;
             }
 
             return conditionEvaluator.evaluateAll(definition.conditions(), new TrapConditionContext(player));
         }
 
-        if (!definition.targetHostileMobs()) {
+        boolean hostile = candidate instanceof Monster || MobsIntegration.isCustomHostile(candidate);
+
+        if (hostile) {
+            return definition.targetHostileMobs() && targeting.hostileMobs();
+        }
+
+        return targeting.passiveMobs();
+    }
+
+    /**
+     * Consume una unidad de munición y ejecuta su impacto contra el objetivo.
+     * <p>
+     * La munición decide QUÉ pasa al impactar y la torreta la puntería, así
+     * que una misma torreta cambia de comportamiento según lo que se le
+     * cargue. Si la munición no define impacto propio, se usa el de la
+     * torreta.
+     *
+     * @return false si no había munición — la torreta no dispara.
+     */
+    private boolean fire(PlacedTurret placed, Location origin, LivingEntity target, TurretDefinition definition) {
+
+        String ammoId = placed.ammo().entrySet().stream()
+                .filter(slot -> slot.getValue() > 0)
+                .map(java.util.Map.Entry::getKey)
+                .findFirst()
+                .orElse(null);
+
+        if (ammoId == null) {
             return false;
         }
 
-        return candidate instanceof Monster || MobsIntegration.isCustomHostile(candidate);
-    }
+        java.util.Map<String, Integer> remaining = new java.util.HashMap<>(placed.ammo());
+        int left = remaining.get(ammoId) - 1;
 
-    /** Ejecuta la acción {@code impact} de la torreta contra el objetivo — mismo registro/acciones que las trampas. */
-    private void fire(PlacedTurret placed, Location origin, LivingEntity target, TurretDefinition definition) {
+        if (left > 0) {
+            remaining.put(ammoId, left);
+        } else {
+            remaining.remove(ammoId);
+        }
+
+        placedTurretManager.setAmmo(placed.placementId(), remaining);
+
+        TrapAction impact = ammoManager.get(ammoId)
+                .map(com.sack.rpgroll.traps.ammo.AmmoDefinition::impact)
+                .orElse(null);
+
         TrapActionContext context = new TrapActionContext(null, null, target, null, origin,
                 "turret:" + placed.turretId());
-        actionRegistry.execute(definition.impact(), context);
+
+        actionRegistry.execute(impact != null ? impact : definition.impact(), context);
+        return true;
     }
 
     private ItemDisplay ensureVisual(PlacedTurret placed, TurretDefinition definition, TurretRuntimeState state,

@@ -105,25 +105,19 @@ public class RanchingPlugin extends JavaPlugin {
 
         startTasks(animalManager, breedingEngine, inbreedingGenerations);
 
-        var adminCommand = getCommand("ranchingadmin");
-        if (adminCommand == null) {
-            getLogger().severe("✘ El comando 'ranchingadmin' no está declarado en plugin.yml");
-        } else {
-            var ranchingAdminCommand = new RanchingAdminCommand(speciesManager, breedManager, geneManager,
+        var ranchingAdminCommand = new RanchingAdminCommand(speciesManager, breedManager, geneManager,
                     feedManager, diseaseManager, vaccineManager, medicineManager, animalManager, geneticsEngine,
                     pedigreeService, breedingEngine, chatPromptManager, inbreedingGenerations, this::reloadContent);
-            adminCommand.setExecutor(ranchingAdminCommand);
-            adminCommand.setTabCompleter(ranchingAdminCommand);
-        }
 
-        var playerCommand = getCommand("ranching");
-        if (playerCommand == null) {
-            getLogger().severe("✘ El comando 'ranching' no está declarado en plugin.yml");
-        } else {
-            var ranchingCommand = new RanchingCommand(animalManager, speciesManager, breedManager, chatPromptManager);
-            playerCommand.setExecutor(ranchingCommand);
-            playerCommand.setTabCompleter(ranchingCommand);
-        }
+        // Registrado por Brigadier para que `execute as` entregue al jugador real.
+        com.sack.rpgroll.common.command.BrigadierCommands.register(this, "ranchingadmin",
+                "Comandos administrativos de RPGRoll-Ranching (Ranch Studio)", "rpgrollranching.admin.*", ranchingAdminCommand);
+
+        var ranchingCommand = new RanchingCommand(animalManager, speciesManager, breedManager, chatPromptManager);
+
+        // Registrado por Brigadier para que `execute as` entregue al jugador real.
+        com.sack.rpgroll.common.command.BrigadierCommands.register(this, "ranching",
+                "Comandos de jugador de RPGRoll-Ranching", "rpgrollranching.use", ranchingCommand);
 
         getLogger().info("✔ RPGRoll-Ranching habilitado (genética: " + geneticsMode + "). "
                 + speciesManager.count() + " especie(s), " + breedManager.count() + " raza(s), "

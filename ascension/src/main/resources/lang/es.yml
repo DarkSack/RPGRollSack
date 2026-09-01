@@ -4,21 +4,21 @@
 # Mensajes generales
 general:
   player_only: "&cSolo un jugador puede usar este comando."
-  no_permission: "&cNo tenés permiso para usar este comando."
+  no_permission: "&cNo tienes permiso para usar este comando."
 
 # Comando /ascend (jugador)
 command:
   usage: |-
     &cUso: /ascend
-    &7 • &frace
-    &7 • &fspecialize
-    &7 • &ftalent
-    &7 • &fprestige
-    &7 • &faffinity
-    &7 • &freputation
-    &7 • &ftitle
+    &7 • &brace
+    &7 • &aspecialize
+    &7 • &etalent
+    &7 • &dprestige
+    &7 • &6affinity
+    &7 • &9reputation
+    &7 • &ctitle
     &7 • &flegacy
-    &7 • &finfo
+    &7 • &5info
   race_usage: "&cUso: /ascend race <id>"
   race_not_found: "&cNo existe una evolución con id: {id}"
   race_success: "&a✔ Evolucionaste a: {id}"
@@ -31,7 +31,7 @@ command:
   talent_node_not_found: "&cEse nodo de talento no existe en tu árbol."
   talent_already_unlocked: "&cYa desbloqueaste ese talento."
   talent_missing_prerequisites: "&cTe faltan los talentos previos requeridos."
-  talent_not_enough_points: "&cNo tenés suficientes puntos de talento."
+  talent_not_enough_points: "&cNo tienes suficientes puntos de talento."
   prestige_success: "&a✔ ¡Prestigiaste! Bono acumulado: {percent}% de experiencia."
   affinity_empty: "&7Todavía no desarrollaste ninguna afinidad."
   affinity_header: "&6Tus afinidades:"
@@ -39,7 +39,10 @@ command:
   reputation_empty: "&7No hay facciones definidas."
   reputation_header: "&6Tu reputación:"
   reputation_entry: "&f• {faction}: {amount}"
-  title_usage: "&cUso: /ascend title <id|clear>"
+  title_usage: |-
+    &cUso: /ascend title
+    &7 • &bid
+    &7 • &aclear
   title_cleared: "&a✔ Título desactivado."
   title_not_unlocked: "&cNo desbloqueaste ese título todavía."
   title_active: "&a✔ Título activo: {name}"
@@ -57,14 +60,14 @@ command:
 
 # Comando /ascendadmin
 admin:
-  no_permission: "&cNo tenés permiso para usar este comando."
+  no_permission: "&cNo tienes permiso para usar este comando."
   usage: |-
     &cUso: /ascendadmin
-    &7 • &fachievement
-    &7 • &ftitle
-    &7 • &freputation
-    &7 • &fbrowser
-    &7 • &freload
+    &7 • &bachievement
+    &7 • &atitle
+    &7 • &ereputation
+    &7 • &dbrowser
+    &7 • &6reload
   browser_player_only: "&cSolo un jugador puede usar el editor visual."
   browser_invalid_option: "&cOpción inválida. Usa: evolution, specialization, prestige, affinity, jobevolution, secret, faction, achievement, title o legacy"
   achievement_usage: "&cUso: /ascendadmin achievement grant <jugador> <id>"
@@ -91,13 +94,13 @@ engine:
   evolution_wrong_race: "Esta evolución no corresponde a tu raza: {race}"
   specialization_wrong_class: "Esta especialización no corresponde a tu clase: {class}"
   core_not_ready: "RPGRoll Core todavía no está listo."
-  prestige_level_required: "Necesitás nivel {level} para prestigiar (tenés {current})."
+  prestige_level_required: "Necesitás nivel {level} para prestigiar (tienes {current})."
   legacy_prestige_required: "Todavía no alcanzaste el prestigio mínimo para un Legado."
 
 # Motivos de rechazo al chequear AscensionRequirements
 requirement:
-  level: "Necesitás nivel {required} (tenés {current})."
-  prestige: "Necesitás prestigio {required} (tenés {current})."
+  level: "Necesitás nivel {required} (tienes {current})."
+  prestige: "Necesitás prestigio {required} (tienes {current})."
   trait: "Necesitás el trait: {trait}"
   reputation: "Necesitás {amount} de reputación con: {faction}"
   completed_quest: "Necesitás haber completado la quest: {quest}"
@@ -127,9 +130,9 @@ gui:
     browser_title: "&6Evoluciones de raza"
     item_base: "&7Base: {race}"
     create_new: "&aCrear evolución nueva"
-    prompt_new_id: "Escribí el id de la nueva evolución:"
+    prompt_new_id: "Escribe el id de la nueva evolución:"
     id_exists: "&cYa existe una evolución con ese id."
-    prompt_base_race_new: "Escribí el id de la raza base:"
+    prompt_base_race_new: "Escribe el id de la raza base:"
     editor_title: "&6Evolución: {id}"
     base_race_label: "&eRaza base: {race}"
     click_to_change: "&7Click para cambiarla"
@@ -145,25 +148,25 @@ gui:
     causes_hint: "&8Click para escribir: causa=valor,causa2=valor2"
     weaknesses_label: "&eDebilidades: {count}"
     professions_label: "&eProfesiones desbloqueadas: {count}"
-    prompt_base_race: "Escribí el id de la raza base:"
-    prompt_new_name: "Escribí el nuevo nombre:"
-    prompt_requirements: "Escribí: nivel;prestigio;trait;quest1,quest2;facción=rep (ej. 20;0;-;;reino=50):"
-    prompt_stats: "Escribí: stat=valor,stat2=valor2 (ej. health=4,speed=10):"
-    prompt_traits: "Escribí los traits otorgados, separados por comas:"
-    prompt_skills: "Escribí las skills otorgadas, separadas por comas:"
-    prompt_affinities: "Escribí: afinidad=valor,afinidad2=valor2:"
-    prompt_resistances: "Escribí: causa=valor,causa2=valor2:"
-    prompt_weaknesses: "Escribí: causa=valor,causa2=valor2:"
-    prompt_professions: "Escribí las profesiones desbloqueadas, separadas por comas:"
+    prompt_base_race: "Escribe el id de la raza base:"
+    prompt_new_name: "Escribe el nuevo nombre:"
+    prompt_requirements: "Escribe: nivel;prestigio;trait;quest1,quest2;facción=rep (ej. 20;0;-;;reino=50):"
+    prompt_stats: "Escribe: stat=valor,stat2=valor2 (ej. health=4,speed=10):"
+    prompt_traits: "Escribe los traits otorgados, separados por comas:"
+    prompt_skills: "Escribe las skills otorgadas, separadas por comas:"
+    prompt_affinities: "Escribe: afinidad=valor,afinidad2=valor2:"
+    prompt_resistances: "Escribe: causa=valor,causa2=valor2:"
+    prompt_weaknesses: "Escribe: causa=valor,causa2=valor2:"
+    prompt_professions: "Escribe las profesiones desbloqueadas, separadas por comas:"
 
   class_specialization:
     browser_title: "&6Especializaciones de clase"
     item_base: "&7Base: {class}"
     item_talent_count: "&7{count} talento(s)"
     create_new: "&aCrear especialización nueva"
-    prompt_new_id: "Escribí el id de la nueva especialización:"
+    prompt_new_id: "Escribe el id de la nueva especialización:"
     id_exists: "&cYa existe una especialización con ese id."
-    prompt_base_class_new: "Escribí el id de la clase base:"
+    prompt_base_class_new: "Escribe el id de la clase base:"
     editor_title: "&6Especialización: {id}"
     base_class_label: "&eClase base: {class}"
     click_to_change: "&7Click para cambiarla"
@@ -176,37 +179,37 @@ gui:
     talents_label: "&eTalentos: {count} nodo(s)"
     talents_add_hint: "&7Click para agregar/actualizar un nodo:"
     talents_format_hint: "&8id;nombre;costo;requiere1,requiere2;stat=val;skill;trait;encantamiento"
-    talents_dash_hint: "&8(usá '-' para dejar un campo vacío)"
+    talents_dash_hint: "&8(usa '-' para dejar un campo vacío)"
     talents_node_entry: "&b- {id} ({cost} pts)"
     talents_remove: "&cEliminar un talento"
     talents_remove_hint: "&7Click para escribir el id del nodo a eliminar"
-    prompt_base_class: "Escribí el id de la clase base:"
-    prompt_new_name: "Escribí el nuevo nombre:"
-    prompt_requirements: "Escribí: nivel;prestigio;trait;quest1,quest2;facción=rep (ej. 20;0;-;;reino=50):"
-    prompt_stats: "Escribí: stat=valor,stat2=valor2:"
-    prompt_restrictions: "Escribí las restricciones, separadas por comas:"
-    prompt_equipment: "Escribí el equipo exclusivo, separado por comas:"
-    prompt_talent_add: "Escribí: id;nombre;costo;requiere1,requiere2;stat=val;skill;trait;encantamiento"
-    prompt_talent_remove: "Escribí el id del nodo a eliminar:"
+    prompt_base_class: "Escribe el id de la clase base:"
+    prompt_new_name: "Escribe el nuevo nombre:"
+    prompt_requirements: "Escribe: nivel;prestigio;trait;quest1,quest2;facción=rep (ej. 20;0;-;;reino=50):"
+    prompt_stats: "Escribe: stat=valor,stat2=valor2:"
+    prompt_restrictions: "Escribe las restricciones, separadas por comas:"
+    prompt_equipment: "Escribe el equipo exclusivo, separado por comas:"
+    prompt_talent_add: "Escribe: id;nombre;costo;requiere1,requiere2;stat=val;skill;trait;encantamiento"
+    prompt_talent_remove: "Escribe el id del nodo a eliminar:"
 
   prestige:
     browser_title: "&6Prestigio RPGRoll-Ascension"
     item_name: "&ePrestigio {id}"
     item_level_required: "&7Nivel requerido: {level}"
     create_new: "&aCrear rango nuevo"
-    prompt_new_id: "Escribí el número del nuevo rango de prestigio (ej. 3):"
+    prompt_new_id: "Escribe el número del nuevo rango de prestigio (ej. 3):"
     id_exists: "&cYa existe un rango con ese id."
     editor_title: "&6Prestigio: {id}"
     level_label: "&eNivel requerido: {level}"
     click_plusminus10: "&7Click: +10 · Click derecho: -10"
     bonus_label: "&eBono de XP: {percent}%"
     skills_label: "&eSkills otorgadas: {count}"
-    prompt_skills: "Escribí las skills otorgadas, separadas por comas:"
+    prompt_skills: "Escribe las skills otorgadas, separadas por comas:"
 
   affinity:
     browser_title: "&6Afinidades RPGRoll-Ascension"
     create_new: "&aCrear afinidad nueva"
-    prompt_new_id: "Escribí el id de la nueva afinidad:"
+    prompt_new_id: "Escribe el id de la nueva afinidad:"
     id_exists: "&cYa existe una afinidad con ese id."
     editor_title: "&6Afinidad: {id}"
     opposing_label: "&eOpuesta: {value}"
@@ -215,17 +218,17 @@ gui:
     resist_label: "&eCausas resistidas: {count}"
     resist_hint: "&7Click para escribir lista separada por comas"
     resist_example: "&8(ej. FIRE,LAVA,HOT_FLOOR)"
-    prompt_new_name: "Escribí el nuevo nombre:"
-    prompt_opposing: "Escribí el id de la afinidad opuesta (o '-' para ninguna):"
-    prompt_resist: "Escribí las causas de daño resistidas, separadas por comas:"
+    prompt_new_name: "Escribe el nuevo nombre:"
+    prompt_opposing: "Escribe el id de la afinidad opuesta (o '-' para ninguna):"
+    prompt_resist: "Escribe las causas de daño resistidas, separadas por comas:"
 
   job_evolution:
     browser_title: "&6Evoluciones de job"
     item_base: "&7Base: {job}"
     create_new: "&aCrear evolución nueva"
-    prompt_new_id: "Escribí el id de la nueva evolución:"
+    prompt_new_id: "Escribe el id de la nueva evolución:"
     id_exists: "&cYa existe una evolución de job con ese id."
-    prompt_base_job_new: "Escribí el id del job base:"
+    prompt_base_job_new: "Escribe el id del job base:"
     editor_title: "&6Evolución de job: {id}"
     base_job_label: "&eJob base: {job}"
     click_to_change: "&7Click para cambiarlo"
@@ -234,19 +237,19 @@ gui:
     recipes_label: "&eRecetas desbloqueadas: {count}"
     tools_label: "&eHerramientas desbloqueadas: {count}"
     quests_label: "&eQuests desbloqueadas: {count}"
-    prompt_base_job: "Escribí el id del job base:"
-    prompt_new_name: "Escribí el nuevo nombre:"
-    prompt_recipes: "Escribí las recetas desbloqueadas, separadas por comas:"
-    prompt_tools: "Escribí las herramientas desbloqueadas, separadas por comas:"
-    prompt_quests: "Escribí las quests desbloqueadas, separadas por comas:"
+    prompt_base_job: "Escribe el id del job base:"
+    prompt_new_name: "Escribe el nuevo nombre:"
+    prompt_recipes: "Escribe las recetas desbloqueadas, separadas por comas:"
+    prompt_tools: "Escribe las herramientas desbloqueadas, separadas por comas:"
+    prompt_quests: "Escribe las quests desbloqueadas, separadas por comas:"
 
   secret_unlock:
     browser_title: "&6Desbloqueos secretos"
     item_target: "&7{type}: {target}"
     create_new: "&aCrear desbloqueo nuevo"
-    prompt_new_id: "Escribí el id del nuevo desbloqueo secreto:"
+    prompt_new_id: "Escribe el id del nuevo desbloqueo secreto:"
     id_exists: "&cYa existe un desbloqueo con ese id."
-    prompt_target_new: "Escribí el id real del contenido en :core (raza/clase/trait):"
+    prompt_target_new: "Escribe el id real del contenido en :core (raza/clase/trait):"
     editor_title: "&6Secreto: {id}"
     type_label: "&eTipo: {type}"
     type_hint: "&7Click para cambiar (RACE/CLASS/TRAIT)"
@@ -254,42 +257,42 @@ gui:
     target_hint: "&7Click para escribir el id real en :core"
     requirements_label: "&eRequisitos"
     requirements_hint: "&8Click para escribir: nivel;prestigio;trait;quests;facción=rep"
-    prompt_type: "Escribí el tipo (RACE, CLASS o TRAIT):"
-    prompt_target: "Escribí el id real del contenido en :core:"
-    prompt_requirements: "Escribí: nivel;prestigio;trait;quest1,quest2;facción=rep,facción2=rep (ej. 20;0;-;;reino=50):"
+    prompt_type: "Escribe el tipo (RACE, CLASS o TRAIT):"
+    prompt_target: "Escribe el id real del contenido en :core:"
+    prompt_requirements: "Escribe: nivel;prestigio;trait;quest1,quest2;facción=rep,facción2=rep (ej. 20;0;-;;reino=50):"
 
   faction:
     browser_title: "&6Facciones RPGRoll-Ascension"
     create_new: "&aCrear facción nueva"
-    prompt_new_id: "Escribí el id de la nueva facción:"
+    prompt_new_id: "Escribe el id de la nueva facción:"
     id_exists: "&cYa existe una facción con ese id."
     editor_title: "&6Facción: {id}"
-    prompt_new_name: "Escribí el nuevo nombre:"
+    prompt_new_name: "Escribe el nuevo nombre:"
 
   achievement:
     browser_title: "&6Logros RPGRoll-Ascension"
     create_new: "&aCrear logro nuevo"
-    prompt_new_id: "Escribí el id del nuevo logro:"
+    prompt_new_id: "Escribe el id del nuevo logro:"
     id_exists: "&cYa existe un logro con ese id."
     editor_title: "&6Logro: {id}"
     description_label: "&eDescripción"
     description_empty: "(sin descripción)"
-    prompt_new_name: "Escribí el nuevo nombre:"
-    prompt_description: "Escribí la nueva descripción:"
+    prompt_new_name: "Escribe el nuevo nombre:"
+    prompt_description: "Escribe la nueva descripción:"
 
   title:
     browser_title: "&6Títulos RPGRoll-Ascension"
     create_new: "&aCrear título nuevo"
-    prompt_new_id: "Escribí el id del nuevo título:"
+    prompt_new_id: "Escribe el id del nuevo título:"
     id_exists: "&cYa existe un título con ese id."
     editor_title: "&6Título: {id}"
-    prompt_new_name: "Escribí el nuevo nombre:"
+    prompt_new_name: "Escribe el nuevo nombre:"
 
   legacy:
     browser_title: "&6Legado RPGRoll-Ascension"
     item_prestige: "&7Prestigio {prestige}"
     create_new: "&aCrear tier nuevo"
-    prompt_new_id: "Escribí el id del nuevo tier (ej. 3):"
+    prompt_new_id: "Escribe el id del nuevo tier (ej. 3):"
     id_exists: "&cYa existe un tier con ese id."
     editor_title: "&6Legado: {id}"
     prestige_label: "&ePrestigio requerido: {prestige}"

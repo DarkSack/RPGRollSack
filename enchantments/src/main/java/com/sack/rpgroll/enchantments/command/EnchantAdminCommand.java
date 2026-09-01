@@ -113,9 +113,12 @@ public class EnchantAdminCommand implements CommandExecutor, TabCompleter {
 
     private void handleBrowser(CommandSender sender) {
 
-        if (Senders.asPlayer(sender) instanceof Player player) {
-            new EnchantmentBrowserGUI(player, manager, chatPromptManager).open();
+        if (!(Senders.asPlayer(sender) instanceof Player player)) {
+            lang.send(sender, "enchant_admin_command.browser_players_only");
+            return;
         }
+
+        new EnchantmentBrowserGUI(player, manager, chatPromptManager).open();
     }
 
     private void handleApply(CommandSender sender, String[] args) {

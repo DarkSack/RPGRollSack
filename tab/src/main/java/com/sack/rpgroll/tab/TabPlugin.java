@@ -177,19 +177,13 @@ public class TabPlugin extends JavaPlugin {
 
     private void registerCommand() {
 
-        var tabCommand = getCommand("tabadmin");
-
-        if (tabCommand == null) {
-            getLogger().severe("✘ El comando 'tabadmin' no está declarado en plugin.yml");
-            return;
-        }
-
         var executor = new TabAdminCommand(profileManager, contextManager, tablistManager, scoreboardManager,
                 nametagManager, belowNameManager, bossBarManager, sortingManager, teamsManager, animationManager,
                 playerStateManager, refreshCoordinator, langManager);
 
-        tabCommand.setExecutor(executor);
-        tabCommand.setTabCompleter(executor);
+        // Registrado por Brigadier para que `execute as` entregue al jugador real.
+        com.sack.rpgroll.common.command.BrigadierCommands.register(this, "tabadmin",
+                "Gestiona perfiles, scoreboards, tablist, nametags y bossbars de RPGRoll-TAB", "rpgrolltab.admin.*", executor);
     }
 
 }

@@ -13,7 +13,7 @@ dependencies {
     compileOnly(project(":core"))
     // Ambos son softdepend en tiempo de ejecución (plugin.yml) — acá son compileOnly
     // porque Magic solo llama a sus API públicas si el plugin está presente (isReady()).
-    compileOnly(project(":sackeffects"))
+    compileOnly(project(":fx"))
     compileOnly(project(":effects"))
 
     // compileOnly no se propaga al source set de test (:api/:common ya los aporta

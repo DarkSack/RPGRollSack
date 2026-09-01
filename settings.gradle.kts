@@ -19,7 +19,7 @@ include(
     "dungeons",
     "guilds",
     "chat",
-    "sackeffects",
+    "fx",
     "effects",
     "magic",
     "seasons",

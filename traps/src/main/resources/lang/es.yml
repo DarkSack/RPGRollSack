@@ -1,9 +1,9 @@
 # Mensajes de RPGRoll-Traps (idioma: Español)
-# Editá este archivo libremente — tus cambios se conservan tras un /trapadmin reload.
+# Edita este archivo libremente — tus cambios se conservan tras un /trapadmin reload.
 # Placeholders con {llave} se reemplazan por valores dinámicos donde se indique.
 
 general:
-  no_permission: "&cNo tenés permiso para usar este comando."
+  no_permission: "&cNo tienes permiso para usar este comando."
   player_only: "&cSolo un jugador puede hacer esto."
 
 prompt:
@@ -14,26 +14,27 @@ prompt:
 admin:
   usage: |-
     &eUso: /trapadmin
-    &7 • &fcreate
-    &7 • &fedit
-    &7 • &fbrowser
-    &7 • &freload
-    &7 • &fplace
-    &7 • &fremove
-    &7 • &flist
+    &7 • &bcreate
+    &7 • &aedit
+    &7 • &ebrowser
+    &7 • &dreload
+    &7 • &6place
+    &7 • &9remove
+    &7 • &clist
     &7 • &finfo
-    &7 • &fforcetrigger
-    &7 • &fturret
+    &7 • &5forcetrigger
+    &7 • &2turret
+    &7 • &bammo
   trap_not_found: "&cNo existe la trampa '{id}'."
   must_look_at_block: "&cTenés que estar mirando un bloque."
   create:
     usage: "&eUso: /trapadmin create <id>"
     id_taken: "&cYa existe una trampa con ese id."
-    ok: "&a✔ Trampa '{id}' creada — editala con /trapadmin edit {id} (o /trapadmin browser)."
+    ok: "&a✔ Trampa '{id}' creada — edítala con /trapadmin edit {id} (o /trapadmin browser)."
   edit:
     usage: "&eUso: /trapadmin edit <id>"
   reload:
-    ok: "&a✔ Recargado: {traps} trampa(s), {locations} instancia(s) colocada(s)."
+    ok: "&a✔ Recargado: {traps} trampa(s), {turrets} torreta(s), {ammo} munición(es), {locations} instancia(s) colocada(s)."
   place:
     usage: "&eUso: /trapadmin place <id> [zone]"
     ok: "&a✔ Trampa '{trap}' colocada — id de instancia: {placement}"
@@ -55,7 +56,15 @@ admin:
     usage: "&eUso: /trapadmin forcetrigger <placementId>"
     ok: "&a✔ Instancia '{placement}' disparada."
     failed: "&cNo se pudo disparar '{placement}' (no existe, no está ARMED, o no cumple condiciones)."
+  ammo:
+    give_needs_player: "&cDesde consola debes indicar el jugador: /trapadmin ammo give <id> <jugador>"
+    item_lore: "&8Carga {amount} disparo(s) por unidad"
+    give_usage: "&eUso: /trapadmin ammo give <id> [jugador] [cantidad]"
+    not_found: "&cNo existe la munición '{id}'."
+    given: "&a✔ {amount}x '{id}' entregada a {player}."
   turret:
+    catalog_needs_player: "&cEl catálogo es una interfaz: solo un jugador puede abrirlo."
+    no_access: "&cNo puedes administrar esta torreta: no es tuya ni de tu equipo."
     give_usage: "&eUso: /trapadmin turret give <id> [jugador] [cantidad]"
     give_needs_player: "&cDesde consola debes indicar el jugador: /trapadmin turret give <id> <jugador>"
     given: "&a✔ {amount}x '{id}' entregada a {player}."
@@ -68,18 +77,19 @@ admin:
     item_lore_owner: "&8Solo tú podrás retirarla"
     usage: |-
       &eUso: /trapadmin turret
-      &7 • &fcreate
-      &7 • &fedit
-      &7 • &fbrowser
-      &7 • &fgive
-      &7 • &fplace
-      &7 • &fremove
+      &7 • &bcreate
+      &7 • &aedit
+      &7 • &ebrowser
+      &7 • &dgive
+      &7 • &6catalog
+      &7 • &9place
+      &7 • &cremove
       &7 • &flist
     not_found: "&cNo existe la torreta '{id}'."
     create:
       usage: "&eUso: /trapadmin turret create <id>"
       id_taken: "&cYa existe una torreta con ese id."
-      ok: "&a✔ Torreta '{id}' creada — editala con /trapadmin turret edit {id} (o /trapadmin turret browser)."
+      ok: "&a✔ Torreta '{id}' creada — edítala con /trapadmin turret edit {id} (o /trapadmin turret browser)."
     edit:
       usage: "&eUso: /trapadmin turret edit <id>"
     place:
@@ -99,6 +109,32 @@ protection:
   missing_key: "&cNecesitás la llave correcta para romper ese bloque."
 
 gui:
+  turret_catalog:
+    title: "&6Torretas y munición"
+    radius: "&7Radio: &f{value} bloques"
+    interval: "&7Dispara cada: &f{value}s"
+    targets: "&7Le dispara a: &f{value}"
+    targets_both: "jugadores y mobs hostiles"
+    targets_players: "jugadores"
+    targets_mobs: "mobs hostiles"
+    targets_none: "nadie (sin objetivos configurados)"
+    ammo_hint: "&7Admite cualquiera de las &f{count}&7 municiones"
+    click_to_get: "&eClic para obtener 1"
+    click_to_get_ammo: "&eClic para obtener 1"
+    ammo_section: "&bMunición disponible"
+    ammo_section_lore: "&7Cárgala en la torreta con clic derecho sobre ella."
+    received: "&a✔ Recibiste: {name}"
+
+  turret_ammo:
+    title: "&6Munición de la torreta"
+    only_ammo: "&cAquí solo entra munición."
+    target_allies: "&bDisparar a aliados"
+    target_enemies: "&cDisparar a enemigos"
+    target_hostile_mobs: "&2Disparar a mobs hostiles"
+    target_passive_mobs: "&eDisparar a mobs pasivos"
+    state_on: "&aActivado"
+    state_off: "&7Desactivado"
+    click_toggle: "&8Clic para cambiar"
   common:
     back: "Volver"
     close: "Cerrar"

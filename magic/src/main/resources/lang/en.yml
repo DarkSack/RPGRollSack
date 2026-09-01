@@ -6,7 +6,12 @@ command:
   admin:
     players_only: "&cOnly a player can receive this — run it in game."
     players_only_studio: "&cOnly players can open the Magic Studio."
-    usage: "&cUsage: /magicadmin <browser|reload|givecatalyst <id>|givegrimoire <id>>"
+    usage: |-
+      &cUsage: /magicadmin
+      &7 • &bbrowser
+      &7 • &areload
+      &7 • &egivecatalyst <id>
+      &7 • &dgivegrimoire <id>
     usage_givecatalyst: "&cUsage: /magicadmin givecatalyst <id>"
     usage_givegrimoire: "&cUsage: /magicadmin givegrimoire <id>"
     reloaded: "&a✔ Reloaded: {schools} school(s), {spells} spell(s), {grimoires} grimoire(s), {runes} rune(s), {catalysts} catalyst(s)."
@@ -14,7 +19,12 @@ command:
     unknown_grimoire: "&cNo grimoire exists with id: {id}"
     given: "&a✔ Given."
   player:
-    usage: "&cUsage: /magic <spellbook|select <id>|cast <id>|cooldowns>"
+    usage: |-
+      &cUsage: /magic
+      &7 • &bspellbook
+      &7 • &aselect <id>
+      &7 • &ecast <id>
+      &7 • &dcooldowns
     usage_select: "&cUsage: /magic select <id>"
     usage_cast: "&cUsage: /magic cast <id>"
     dont_know_spell: "&cYou don't know that spell yet."
@@ -111,10 +121,10 @@ gui:
     color_lore: "&7Click to type a new one (e.g. RED, AQUA...)"
     cast_sound_label: "&eSound on cast: {value}"
     cast_sound_lore: "&7Type 'ninguno' to remove it"
-    cast_effect_label: "&eRPGRoll-Particles effect: {value}"
+    cast_effect_label: "&eRPGRoll-FX effect: {value}"
     cast_effect_lore: "&7Type 'ninguno' to remove it"
     prompt_cast_sound: "Type the Sound (or 'ninguno' to remove it):"
-    prompt_cast_effect: "Type the RPGRoll-Particles effect id (or 'ninguno'):"
+    prompt_cast_effect: "Type the RPGRoll-FX effect id (or 'ninguno'):"
     race_affinities_label: "&eRace affinities: {count}"
     class_affinities_label: "&eClass affinities: {count}"
     affinity_line: "&7{key}: {sign}{percent}%"

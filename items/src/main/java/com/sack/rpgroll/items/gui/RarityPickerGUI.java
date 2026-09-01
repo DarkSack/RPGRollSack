@@ -1,5 +1,6 @@
 package com.sack.rpgroll.items.gui;
 
+import com.sack.rpgroll.util.ComponentUtils;
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.items.rarity.Rarity;
@@ -51,7 +52,7 @@ public class RarityPickerGUI extends PaginatedGUI {
         Rarity rarity = rarities.get(absoluteIndex);
 
         setItem(contentSlot, new ItemBuilder(Material.NETHER_STAR)
-                .setName(Component.text(rarity.displayName(), rarity.color()).decoration(TextDecoration.BOLD, rarity.glow()))
+                .setName(ComponentUtils.parseWithDefault(rarity.displayName(), rarity.color()).decoration(TextDecoration.BOLD, rarity.glow()))
                 .setLore(langManager.component("gui.rarity_picker.id_lore", "id", rarity.id()),
                         langManager.component(rarity.glow() ? "gui.rarity_picker.glow_yes" : "gui.rarity_picker.glow_no"))
                 .build());

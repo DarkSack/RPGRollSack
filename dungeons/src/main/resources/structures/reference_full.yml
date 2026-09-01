@@ -19,7 +19,7 @@ anchor: { x: 1, y: 0, z: 1 }
 # Un carácter → un Material. '.' y ' ' ya son AIR aunque no los declares acá.
 # Evitá materiales con orientación (puertas, escaleras, antorchas de pared,
 # camas...) — el motor los pega con setType() plano, sin BlockData, así que
-# vos tenés que reponer la orientación a mano después de pegar si la necesitás.
+# vos tienes que reponer la orientación a mano después de pegar si la necesitás.
 palette:
   '#': STONE_BRICKS
   '.': AIR

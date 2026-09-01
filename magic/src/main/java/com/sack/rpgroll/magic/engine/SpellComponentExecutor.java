@@ -2,7 +2,7 @@ package com.sack.rpgroll.magic.engine;
 
 import com.sack.rpgroll.effects.api.EffectsAPI;
 import com.sack.rpgroll.magic.core.SpellComponent;
-import com.sack.rpgroll.sackeffects.api.SackEffectsAPI;
+import com.sack.rpgroll.fx.api.RPGRollFXAPI;
 import com.sack.rpgroll.util.ComponentUtils;
 
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -31,7 +31,7 @@ import java.util.Locale;
  * {@code SpellCastEngine} maneja directamente porque necesitan pausar el
  * pipeline entre ticks. Un error en un componente solo loguea un warning y
  * no interrumpe el resto, mismo criterio que EffectComponentExecutor/
- * RPGRoll-Particles EffectEngine.
+ * RPGRoll-FX EffectEngine.
  */
 public class SpellComponentExecutor {
 
@@ -362,11 +362,11 @@ public class SpellComponentExecutor {
 
         String effectId = component.param("effect-id", null);
 
-        if (effectId == null || !SackEffectsAPI.isReady()) {
+        if (effectId == null || !RPGRollFXAPI.isReady()) {
             return;
         }
 
-        SackEffectsAPI.get().play(effectId, context.caster(), context.currentLocation());
+        RPGRollFXAPI.get().play(effectId, context.caster(), context.currentLocation());
     }
 
     // ============ Mundo ============

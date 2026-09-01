@@ -35,7 +35,7 @@ structure-requirements:
     dz: 1
     material: IRON_BLOCK
 
-# Forja I-V — /crafting upgrade mientras la tenés abierta.
+# Forja I-V — /crafting upgrade mientras la tienes abierta.
 max-tier: 5
 speed-bonus-per-tier: 0.08
 fail-reduction-per-tier: 0.03

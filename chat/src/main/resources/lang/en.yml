@@ -98,7 +98,12 @@ whisper:
   spy_off: "Whisper spy disabled."
 
 ignore:
-  usage: "Usage: /ignore <player|guild|channel> <add|remove|list> [name]"
+  usage: |-
+    Usage: /ignore
+    &7 • &bplayer
+    &7 • &aguild
+    &7 • &echannel
+    &8   <add|remove|list> [name]
   list_header: "=== Ignored ({type}) ==="
   now_ignoring_guild: "✔ You're now ignoring the guild {name}."
   stopped_ignoring_guild: "You stopped ignoring the guild {name}."
@@ -195,14 +200,24 @@ emote:
   prompt_target_message: "Type the new message with target (uses {player} and {target}):"
 
 log:
-  usage: "Usage: /chatlog <search|export|clear> [channel] [player] [date yyyy-MM-dd]"
+  usage: |-
+    Usage: /chatlog
+    &7 • &bsearch
+    &7 • &aexport
+    &7 • &eclear
+    &8   [channel] [player] [date yyyy-MM-dd]
   results_header: "=== Results ({count}, last 20) ==="
   exported: "✔ Exported {count} message(s) to {file}."
   cleared: "✔ In-memory history cleared (backup at {file})."
 
 admin:
   reloaded: "✔ RPGRoll-Chat reloaded: {channels} channel(s), {languages} language(s), {roles} role(s), {emotes} emote(s)."
-  usage: "Usage: /chatadmin <reload|browser [channel|language|role|emote]|editor <channel>> [args]"
+  usage: |-
+    Usage: /chatadmin
+    &7 • &breload
+    &7 • &abrowser [channel|language|role|emote]
+    &7 • &eeditor <channel>
+    &8   [args]
   usage_editor: "Usage: /chatadmin editor <channel>"
   players_only_browser: "Only a player can open the browser."
   players_only_editor: "Only a player can open the editor."

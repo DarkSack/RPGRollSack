@@ -128,8 +128,10 @@ public class SackResourcePackPlugin extends JavaPlugin {
         AssetsAPI.init(this, contentDirectory);
 
         var srpCommand = new SrpCommand(this);
-        getCommand("srp").setExecutor(srpCommand);
-        getCommand("srp").setTabCompleter(srpCommand);
+
+        // Registrado por Brigadier para que `execute as` entregue al jugador real.
+        com.sack.rpgroll.sackresourcepack.command.BrigadierCommands.register(this, "srp",
+                "Comandos de SackResourcePack", "sackresourcepack.admin.*", srpCommand);
 
         rebuildAndDistribute();
 

@@ -18,7 +18,7 @@ import java.util.Set;
  * @param minWeight/maxWeight kg — el peso real de la captura se sortea en ese rango
  * @param attractedByBaitTags tags de {@link Bait} que dan bono de peso — vacío = cualquier carnada sirve igual
  * @param requiredBaitId       solo relevante si {@code legendary} — exige esa carnada exacta, no solo un tag
- * @param catchEffectId        id de un efecto de RPGRoll-Particles a reproducir en el jugador al capturarlo, o null
+ * @param catchEffectId        id de un efecto de RPGRoll-FX a reproducir en el jugador al capturarlo, o null
  * @param catchStatusEffectId  id de un efecto de RPGRoll-Effects a aplicar al jugador al capturarlo, o null (ej. una anguila eléctrica que aturde)
  */
 public record FishSpecies(

@@ -7,15 +7,6 @@ description: Motor de mazmorras instanciadas (salas, oleadas, jefes, objetivos, 
 depend: [RPGRoll, RPGRoll-Mobs, RPGRoll-Guilds]
 softdepend: [RPGRoll-Items, RPGRoll-Quests, PlaceholderAPI, WorldEdit]
 
-commands:
-  dungeon:
-    description: Comandos de mazmorras para jugadores
-    usage: /dungeon <list|info|invite|accept|decline|leaveparty|enter|leave|revive|ranking> [args]
-  dungeonadmin:
-    description: Comandos administrativos de mazmorras
-    usage: /dungeonadmin <create|reload|forcestop|browser|editor|structure> [args]
-    permission: rpgrolldungeons.admin.*
-
 permissions:
   rpgrolldungeons.admin.*:
     description: Acceso completo a comandos administrativos de mazmorras

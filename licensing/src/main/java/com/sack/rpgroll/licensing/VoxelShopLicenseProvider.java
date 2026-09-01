@@ -113,7 +113,7 @@ public class VoxelShopLicenseProvider implements LicenseProvider {
         if (e instanceof IOException io && LicenseHttp.isTrustFailure(io)) {
             return "el Java de este servidor no pudo validar el certificado de voxel.shop."
                     + " Suele ser un cacerts vacío o desactualizado en la instalación de Java,"
-                    + " o un antivirus interceptando HTTPS. Probá actualizar Java o arrancar con"
+                    + " o un antivirus interceptando HTTPS. Prueba actualizar Java o arrancar con"
                     + " -Djavax.net.ssl.trustStoreType=Windows-ROOT (Windows).";
         }
 

@@ -312,11 +312,13 @@ public class Bootstrap {
         commandManager.register(new AllocateStatCommand(plugin));
         commandManager.register(new UseSkillCommand(plugin));
         commandManager.register(new AdminResetStatsCommand(plugin));
+        commandManager.register(new AdminRestoreCommand(plugin));
         commandManager.register(new AdminContentCommand(plugin));
 
-        // Registrar el comando principal /rpg
-        plugin.getCommand("rpg").setExecutor(commandManager);
-        plugin.getCommand("rpg").setTabCompleter(commandManager);
+        // Registrar el comando principal /rpg por Brigadier, para que
+        // `execute as` entregue al jugador real (ver BrigadierCommands).
+        com.sack.rpgroll.common.command.BrigadierCommands.register(plugin, "rpg",
+                "Comando principal de RPGRoll", null, commandManager);
 
         services.register(CommandManager.class, commandManager);
 

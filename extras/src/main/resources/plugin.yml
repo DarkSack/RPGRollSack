@@ -7,12 +7,6 @@ description: Necesidades y estados de supervivencia configurables (sed, stamina,
 depend: [RPGRoll]
 softdepend: [RPGRoll-TAB, RPGRoll-Seasons, PlaceholderAPI, Vault]
 
-commands:
-  extrasadmin:
-    description: Gestiona needs y conditions de RPGRoll-Extras
-    usage: /extrasadmin <reload|list|get|set|add|apply|remove> [args]
-    permission: rpgrollextras.admin.*
-
 permissions:
   rpgrollextras.admin.*:
     description: Acceso completo a comandos administrativos de RPGRoll-Extras

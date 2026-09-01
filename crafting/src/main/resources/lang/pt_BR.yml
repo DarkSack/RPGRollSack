@@ -18,15 +18,18 @@ command:
   crafting_admin:
     usage: |-
       &eUso: /craftingadmin
-      &7 • &fbrowser
-      &7 • &freload
-      &7 • &fgive
-      &7 • &fvillager
+      &7 • &bbrowser
+      &7 • &areload
+      &7 • &egive
+      &7 • &dvillager
     reloaded: "✔ RPGRoll-Crafting recarregado."
     give_usage: "Uso: /craftingadmin give <jogador> <id-de-item-do-RPGRoll-Items>"
     give_item_failed: "Não foi possível criar esse item (RPGRoll-Items está instalado? o id está correto?)"
     give_success: "✔ Entregue."
-    villager_usage: "Uso: /craftingadmin villager <bind <id1,id2,...>|unbind>"
+    villager_usage: |-
+      Uso: /craftingadmin villager
+      &7 • &bbind <id1,id2,...>
+      &7 • &aunbind
     villager_bind_usage: "Uso: /craftingadmin villager bind <id1,id2,...>"
     villager_target_required: "Você precisa estar olhando para um aldeão (ou mercador ambulante)."
     villager_bind_no_valid_ids: "Nenhum desses ids de comércio existe."

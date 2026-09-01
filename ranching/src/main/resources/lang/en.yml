@@ -10,7 +10,11 @@ command:
     look_at_animal: "Look directly at an animal tracked by Ranching."
   admin:
     no_permission: "You don't have permission to use this command."
-    usage: "Usage: /ranchingadmin <browser|reload|spawn <species> [breed]>"
+    usage: |-
+      Usage: /ranchingadmin
+      &7 • &bbrowser
+      &7 • &areload
+      &7 • &espawn <species> [breed]
     player_only_browser: "Only a player can open the Ranch Studio."
     reloaded: "✔ RPGRoll-Ranching reloaded."
     player_only_spawn: "Only a player can spawn an animal."

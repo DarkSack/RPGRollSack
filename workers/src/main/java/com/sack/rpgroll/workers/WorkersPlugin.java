@@ -102,24 +102,18 @@ public class WorkersPlugin extends JavaPlugin {
 
         startTasks(behaviorRegistry, economyService, moraleEngine, workSearchRadius);
 
-        var adminCommand = getCommand("workersadmin");
-        if (adminCommand == null) {
-            getLogger().severe("✘ El comando 'workersadmin' no está declarado en plugin.yml");
-        } else {
-            var workersAdminCommand = new WorkersAdminCommand(professionManager, skillManager, scheduleManager,
+        var workersAdminCommand = new WorkersAdminCommand(professionManager, skillManager, scheduleManager,
                     workerEventManager, workerManager, warehouseManager, chatPromptManager, this::reloadContent);
-            adminCommand.setExecutor(workersAdminCommand);
-            adminCommand.setTabCompleter(workersAdminCommand);
-        }
 
-        var playerCommand = getCommand("workers");
-        if (playerCommand == null) {
-            getLogger().severe("✘ El comando 'workers' no está declarado en plugin.yml");
-        } else {
-            var workersCommand = new WorkersCommand(workerManager, professionManager, chatPromptManager);
-            playerCommand.setExecutor(workersCommand);
-            playerCommand.setTabCompleter(workersCommand);
-        }
+        // Registrado por Brigadier para que `execute as` entregue al jugador real.
+        com.sack.rpgroll.common.command.BrigadierCommands.register(this, "workersadmin",
+                "Comandos administrativos de RPGRoll-Workers (Worker Studio)", "rpgrollworkers.admin.*", workersAdminCommand);
+
+        var workersCommand = new WorkersCommand(workerManager, professionManager, chatPromptManager);
+
+        // Registrado por Brigadier para que `execute as` entregue al jugador real.
+        com.sack.rpgroll.common.command.BrigadierCommands.register(this, "workers",
+                "Comandos de jugador de RPGRoll-Workers", "rpgrollworkers.use", workersCommand);
 
         getLogger().info("✔ RPGRoll-Workers habilitado. " + professionManager.count() + " profesión(es), "
                 + workerManager.getAll().size() + " worker(s) cargado(s).");

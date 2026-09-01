@@ -1,5 +1,5 @@
 common:
-  no_permission: "&cNo tenés permiso para usar este comando."
+  no_permission: "&cNo tienes permiso para usar este comando."
 
 command:
   player:
@@ -11,7 +11,13 @@ command:
     current_season: "&6Estación actual en {world}: &e{season}"
     temperature: "&bTemperatura donde estás: {temperature}°C"
   admin:
-    usage: "&cUso: /seasonsadmin <browser|reload|setseason <mundo> <id>|advance <mundo>|trigger <id> <mundo>>"
+    usage: |-
+      &cUso: /seasonsadmin
+      &7 • &bbrowser
+      &7 • &areload
+      &7 • &esetseason <mundo> <id>
+      &7 • &dadvance <mundo>
+      &7 • &6trigger <id> <mundo>
     players_only_studio: "&cSolo jugadores pueden abrir el Season Studio."
     reloaded: "&a✔ Recargado: {calendars} calendario(s), {seasons} estación(es), {events} evento(s), {regions} región(es)."
     usage_setseason: "&cUso: /seasonsadmin setseason <mundo> <id>"
@@ -51,9 +57,9 @@ gui:
     description_title: "&eDescripción"
     world_label: "&eMundo: {world}"
     mode_label: "&bModo: {mode}"
-    prompt_name: "Escribí el nuevo nombre:"
-    prompt_icon: "Escribí el Material del ícono:"
-    prompt_description: "Escribí la nueva descripción:"
+    prompt_name: "Escribe el nuevo nombre:"
+    prompt_icon: "Escribe el Material del ícono:"
+    prompt_description: "Escribe la nueva descripción:"
 
   studio_hub:
     title: "&6Season Studio"
@@ -70,21 +76,21 @@ gui:
     title: "&6Calendarios"
     season_count: "&7{count} estación(es)"
     new: "&aCrear calendario nuevo"
-    prompt_new_id: "Escribí el id del nuevo calendario:"
+    prompt_new_id: "Escribe el id del nuevo calendario:"
     already_exists: "&cYa existe un calendario con ese id."
 
   calendar_editor:
     title: "&6Calendario: {id}"
     add: "&aAgregar estación al final"
     add_lore: "&7Escribí el id de una estación existente"
-    prompt_add: "Escribí el id de la estación a agregar:"
+    prompt_add: "Escribe el id de la estación a agregar:"
     unknown_season: "&cNo existe una estación con ese id."
 
   season_browser:
     title: "&6Estaciones"
     duration_label: "&7{amount} {unit}"
     new: "&aCrear estación nueva"
-    prompt_new_id: "Escribí el id de la nueva estación:"
+    prompt_new_id: "Escribe el id de la nueva estación:"
     already_exists: "&cYa existe una estación con ese id."
 
   season_editor:
@@ -109,15 +115,15 @@ gui:
     mob_modifiers_label: "&a▶ Mobs de temporada ({count})"
     world_events_label: "&eEventos elegibles: {count}"
     world_events_lore: "&7Escribí los ids separados por comas"
-    prompt_color: "Escribí el color (ej. GREEN, GOLD):"
-    prompt_duration: "Escribí: CANTIDAD UNIDAD (REAL_HOURS, REAL_DAYS, REAL_WEEKS, MINECRAFT_DAYS):"
+    prompt_color: "Escribe el color (ej. GREEN, GOLD):"
+    prompt_duration: "Escribe: CANTIDAD UNIDAD (REAL_HOURS, REAL_DAYS, REAL_WEEKS, MINECRAFT_DAYS):"
     invalid_unit: "&cUnidad inválida: {value}"
-    prompt_climate: "Escribí: rain-chance=x,storm-chance=x,snow-chance=x,fog-chance=x,base-temperature=x,temperature-variance=x,wind-strength=x,humidity=x,heatwave-chance=x,thunderstorm-chance=x"
-    prompt_exclusive_boss: "Escribí el id del mob jefe (o 'ninguno'):"
-    prompt_tags: "Escribí los tags separados por comas:"
-    prompt_biome_modifiers: "Escribí: bioma=delta,bioma2=delta2:"
-    prompt_vegetation: "Escribí: SNOW_LAYERS,ICE_LAKES,DRY_GRASS,FALLING_LEAVES,FLOWER_BOOM (los que apliquen):"
-    prompt_world_events: "Escribí los ids de eventos elegibles, separados por comas:"
+    prompt_climate: "Escribe: rain-chance=x,storm-chance=x,snow-chance=x,fog-chance=x,base-temperature=x,temperature-variance=x,wind-strength=x,humidity=x,heatwave-chance=x,thunderstorm-chance=x"
+    prompt_exclusive_boss: "Escribe el id del mob jefe (o 'ninguno'):"
+    prompt_tags: "Escribe los tags separados por comas:"
+    prompt_biome_modifiers: "Escribe: bioma=delta,bioma2=delta2:"
+    prompt_vegetation: "Escribe: SNOW_LAYERS,ICE_LAKES,DRY_GRASS,FALLING_LEAVES,FLOWER_BOOM (los que apliquen):"
+    prompt_world_events: "Escribe los ids de eventos elegibles, separados por comas:"
 
   sub_seasons_editor:
     title: "&6Subestaciones: {id}"
@@ -126,7 +132,7 @@ gui:
     add: "&aAgregar subestación al final"
     add_lore_1: "&7ID NOMBRE CANTIDAD UNIDAD [TEMP]"
     add_lore_2: "&8ej. temprana Temprana 2 MINECRAFT_DAYS"
-    prompt_add: "Escribí: ID NOMBRE CANTIDAD UNIDAD [TEMPERATURA]:"
+    prompt_add: "Escribe: ID NOMBRE CANTIDAD UNIDAD [TEMPERATURA]:"
     invalid_unit: "&cUnidad inválida: {value}"
 
   mob_modifiers_editor:
@@ -134,14 +140,14 @@ gui:
     chance_label: "&7Chance extra: {percent}%"
     add: "&aAgregar mob de temporada"
     add_lore: "&7Escribí: id-de-mob chance (ej. winter_yeti 0.05)"
-    prompt_add: "Escribí: id-de-mob chance (0.0-1.0):"
+    prompt_add: "Escribe: id-de-mob chance (0.0-1.0):"
     invalid_chance: "&cChance inválida: {value}"
 
   world_event_browser:
     title: "&6Eventos Mundiales"
     component_count: "&7{count} componente(s)"
     new: "&aCrear evento nuevo"
-    prompt_new_id: "Escribí el id del nuevo evento:"
+    prompt_new_id: "Escribe el id del nuevo evento:"
     already_exists: "&cYa existe un evento con ese id."
 
   world_event_editor:
@@ -160,13 +166,13 @@ gui:
     add_lore_2: "&8ej. PARTICLE particle=FLAME,count=30"
     add_lore_3: "&8ej. SPAWN_MOB mob-id=winter_yeti,chance=0.5"
     add_lore_4: "&8Orden importa — se ejecutan de arriba a abajo"
-    prompt_add: "Escribí: TIPO clave=valor,clave2=valor2:"
+    prompt_add: "Escribe: TIPO clave=valor,clave2=valor2:"
     invalid_type: "&cTipo inválido: {value}"
 
   region_browser:
     title: "&6Regiones de Temporada"
     new: "&aCrear región nueva (en tu ubicación)"
-    prompt_new_id: "Escribí el id de la nueva región:"
+    prompt_new_id: "Escribe el id de la nueva región:"
     already_exists: "&cYa existe una región con ese id."
 
   region_editor:
@@ -181,7 +187,7 @@ gui:
     pinned_calendar_label: "&bCalendario propio: {value}"
     pinned_calendar_lore_1: "&7Solo aplica en modo PINNED_CALENDAR"
     pinned_calendar_lore_2: "&7Escribí el id de un calendario (o 'ninguno')"
-    prompt_pinned_season: "Escribí el id de la estación fija (o 'ninguna'):"
+    prompt_pinned_season: "Escribe el id de la estación fija (o 'ninguna'):"
     unknown_season: "&cNo existe esa estación."
-    prompt_pinned_calendar: "Escribí el id del calendario propio (o 'ninguno'):"
+    prompt_pinned_calendar: "Escribe el id del calendario propio (o 'ninguno'):"
     unknown_calendar: "&cNo existe ese calendario."

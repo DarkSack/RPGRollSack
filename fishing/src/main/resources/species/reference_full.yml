@@ -12,7 +12,7 @@ display-name: "&d&lPez de Referencia"
 icon: PUFFERFISH
 # El material real que muestra la textura custom es "icon" de arriba; este número
 # de custom-model-data lo resuelve un resource pack real (mismo pipeline que
-# RPGRoll-Items: dejá el modelo/textura en plugins/RPGRoll-Fishing/resourcepack/
+# RPGRoll-Items: deja el modelo/textura en plugins/RPGRoll-Fishing/resourcepack/
 # <namespace>/<textures|models>/item/... — se sincroniza solo hacia SackResourcePack
 # si está instalado). Sin resource pack, el ítem se ve como el "icon" vanilla normal.
 custom-model-data: 200001
@@ -75,5 +75,5 @@ required-level: 60
 requires-full-moon: true
 required-bait: golden_lure # id de un bait específico obligatorio (además de attracted-by-bait-tags)
 
-catch-effect: level_up # id de un efecto de RPGRoll-Particles al capturarla, si está instalado
+catch-effect: level_up # id de un efecto de RPGRoll-FX al capturarla, si está instalado
 catch-status-effect: reference_full_example # id de un efecto de RPGRoll-Effects aplicado al pescador al capturarla

@@ -3,7 +3,12 @@ common:
 
 command:
   admin:
-    usage: "&cUsage: /fishingadmin <browser|reload|giverod <id>|givebait <id>>"
+    usage: |-
+      &cUsage: /fishingadmin
+      &7 • &bbrowser
+      &7 • &areload
+      &7 • &egiverod <id>
+      &7 • &dgivebait <id>
     players_only_studio: "&cOnly players can open the Fishing Studio."
     players_only: "&cOnly a player can receive this — run it in game."
     reloaded: "&a✔ Reloaded: {species} species, {rods} rod(s), {baits} bait(s), {treasures} treasure(s), {junk} junk item(s), {regions} region(s)."
@@ -14,7 +19,10 @@ command:
     given: "&a✔ Given."
   player:
     players_only: "&cOnly players can use this command."
-    usage: "&cUsage: /fishing <encyclopedia|stats>"
+    usage: |-
+      &cUsage: /fishing
+      &7 • &bencyclopedia
+      &7 • &astats
     stats_title: "&6Fishing stats:"
     stats_caught: "&fFish caught: {count}"
     stats_species: "&fSpecies discovered: {discovered}/{total}"
@@ -102,7 +110,7 @@ gui:
     full_moon_hint: "&7Only applies if legendary. Click to toggle"
     field_required_bait: "&eRequired bait: {value}"
     required_bait_hint: "&7Only applies if legendary."
-    field_catch_effect: "&eRPGRoll-Particles effect: {value}"
+    field_catch_effect: "&eRPGRoll-FX effect: {value}"
     field_catch_status_effect: "&eStatus effect: {value}"
     catch_status_effect_hint: "&7Id of an RPGRoll-Effects effect — e.g. an electric eel stuns the angler."
     prompt_name: "Type the new name:"
@@ -119,7 +127,7 @@ gui:
     prompt_bait_tags: "Type the bait tags separated by commas:"
     prompt_required_bait: "Type the required bait's id (or 'none'):"
     unknown_bait: "&cThat bait doesn't exist."
-    prompt_catch_effect: "Type the RPGRoll-Particles effect id (or 'none'):"
+    prompt_catch_effect: "Type the RPGRoll-FX effect id (or 'none'):"
     prompt_catch_status_effect: "Type the RPGRoll-Effects effect id (or 'none'):"
 
   rod:

@@ -1,5 +1,6 @@
 package com.sack.rpgroll.magic.gui;
 
+import com.sack.rpgroll.util.ComponentUtils;
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
@@ -51,7 +52,7 @@ public class SchoolBrowserGUI extends InventoryGUI {
             NamedTextColor color = parseColor(school.color());
 
             setItem(i, new ItemBuilder(parseMaterial(school.icon()))
-                    .setName(Component.text(school.displayName(), color))
+                    .setName(ComponentUtils.parseWithDefault(school.displayName(), color))
                     .setLore(lang.component("gui.common.id_label", "id", school.id()),
                             lang.component("gui.common.click_edit"))
                     .build());

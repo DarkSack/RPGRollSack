@@ -177,6 +177,9 @@ public class DungeonCommand implements CommandExecutor, TabCompleter {
     private void handleLeaveParty(CommandSender sender) {
 
         if (!(Senders.asPlayer(sender) instanceof Player player)) {
+            // Sin este aviso el comando no respondía absolutamente nada desde
+            // consola, y no había forma de saber si había hecho algo.
+            lang.send(sender, "command.dungeon.leaveparty.players_only");
             return;
         }
 
@@ -242,6 +245,7 @@ public class DungeonCommand implements CommandExecutor, TabCompleter {
     private void handleLeave(CommandSender sender) {
 
         if (!(Senders.asPlayer(sender) instanceof Player player)) {
+            lang.send(sender, "command.dungeon.leave.players_only");
             return;
         }
 

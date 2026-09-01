@@ -2,8 +2,12 @@
 # {placeholder} se reemplaza dinámicamente. Códigos de color legacy (&) preservados.
 
 command:
-  no-permission: "No tenés permiso para usar este comando."
-  usage: "Uso: /tabadmin <reload|list|profile <jugador> <perfil>>"
+  no-permission: "No tienes permiso para usar este comando."
+  usage: |-
+    Uso: /tabadmin
+    &7 • &breload
+    &7 • &alist
+    &7 • &eprofile <jugador> <perfil>
   reload:
     success: "✔ RPGRoll-TAB recargado: {profiles} perfil(es), {contexts} contexto(s)."
   list:

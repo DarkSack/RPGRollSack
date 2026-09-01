@@ -15,6 +15,8 @@ public enum EnchantEffectType {
     COMMAND,
     MESSAGE,
     PARTICLE,
+    /** Efecto completo de RPGRoll-FX por id (formas, sonidos y tiempos ya compuestos). */
+    PARTICLES,
     SOUND,
     PICKUP_ITEMS
 }

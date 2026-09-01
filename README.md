@@ -17,7 +17,7 @@ Ya no es un único plugin: es un **ecosistema de 1 core + 23 addons independient
 Cambios recientes aplicados en todo el ecosistema:
 
 - 🚀 **Migración completa a Paper 26.1.1 (Java 25)** — se abandona el soporte a 1.21.1: los 21 módulos (core + 20 addons) ahora compilan contra la nueva API de Paper. Incluye la renombrada de todas las constantes de `Attribute` (se les quitó el prefijo `GENERIC_`/`PLAYER_`/`ZOMBIE_`) y la adaptación a que `Sound` dejó de ser un `Enum` plano
-- 🖱️ **Botones "Volver" arreglados en todas las GUIs** — encantamientos, tiendas de NPCs, chat, crates y RPGRoll-Particles: el botón `Volver`/`Cerrar` reabría el menú anterior sin cerrar de verdad el inventario activo, dejando la GUI "congelada". Corregido en 59 archivos (el `reopen()` de cada GUI ahora usa `open()` en vez de `build()`)
+- 🖱️ **Botones "Volver" arreglados en todas las GUIs** — encantamientos, tiendas de NPCs, chat, crates y RPGRoll-FX: el botón `Volver`/`Cerrar` reabría el menú anterior sin cerrar de verdad el inventario activo, dejando la GUI "congelada". Corregido en 59 archivos (el `reopen()` de cada GUI ahora usa `open()` en vez de `build()`)
 - 🧟 **Mobs de RPGRoll-Mobs vuelven a moverse y patrullar** — se removía la IA nativa de Bukkit (`Mob#setAware(false)`) para evitar que interfiriera con el motor de IA propio, pero esa misma llamada también bloquea el sistema de pathfinding de Paper, dejando a los mobs completamente estáticos. Ya no se desactiva
 - ✏️ **`/renchant remove` corregido** — ahora resuelve el encantamiento por su id real antes de intentar removerlo, en vez de fallar silenciosamente
 - ⌨️ **Autocompletado (Tab) real en todos los plugins** — cada comando (`/rpg`, `/rpgeffects`, `/mobadmin`, `/renchant`, etc.) sugiere ahora desde el contenido real registrado: razas, clases, encantamientos, efectos, tipos de entidad, ítems, jugadores online, mundos, etc. — no solo la lista de subcomandos
@@ -63,7 +63,7 @@ Cada addon extiende el core con un sistema completo propio, construido por **com
 | 🏰 **Dungeons**         | Mazmorras instanciadas: salas, oleadas, jefes, dificultades, ranking; estructuras NATIVE/CUSTOM y schematics de WorldEdit (opcional) |
 | 🛡️ **Guilds**           | Equipos temporales (Teams) y organizaciones permanentes (Guilds)                                          |
 | 💬 **Chat**             | Canales, proximidad, idiomas, roles, whisper, antispam, reacciones, logs                                  |
-| 🎆 **RPGRoll-Particles**      | Librería reusable de partículas con formas, sonidos, títulos/actionbar/bossbar                            |
+| 🎆 **RPGRoll-FX**      | Librería reusable de partículas con formas, sonidos, títulos/actionbar/bossbar                            |
 | 🌀 **RPGRoll-Effects**  | Motor de efectos de estado (buffs/debuffs/auras) aplicable desde cualquier addon                          |
 | 🪄 **RPGRoll-Magic**    | Escuelas de magia, hechizos por componentes, maná, catalizadores, grimorios, runas                        |
 | 🍂 **RPGRoll-Seasons**  | Calendario y estaciones: clima, temperatura por bioma, vegetación dinámica, eventos mundiales             |
@@ -96,13 +96,13 @@ Ver el detalle completo de cada uno (comandos, permisos, formato YAML, ejemplos)
 | Dungeons         | `/dungeon`, `/dungeonadmin`                      | RPGRoll, Mobs, Guilds   | Items, Quests, PlaceholderAPI, WorldEdit                                | **$15**         |
 | Guilds           | `/guild`, `/team`, `/guildadmin`                 | RPGRoll                 | Items, Quests, Vault, PlaceholderAPI                                    | **$12**         |
 | Chat             | `/channel`, `/w`, `/language`, `/chatadmin`, ... | RPGRoll                 | Guilds, PlaceholderAPI                                                  | **$10**         |
-| RPGRoll-Particles| `/rpgparticles`                                  | RPGRoll                 | —                                                                       | **$6**          |
-| RPGRoll-Effects  | `/rpgeffects`                                    | RPGRoll                 | RPGRoll-Particles, Guilds                                                     | **$10**         |
-| RPGRoll-Magic    | `/magic`, `/magicadmin`                          | RPGRoll                 | RPGRoll-Particles, RPGRoll-Effects                                            | **$18**         |
-| RPGRoll-Seasons  | `/seasons`, `/seasonsadmin`                      | RPGRoll                 | RPGRoll-Particles, RPGRoll-Effects, Mobs                                      | **$14**         |
-| RPGRoll-Fishing  | `/fishing`, `/fishingadmin`                      | RPGRoll                 | RPGRoll-Particles, RPGRoll-Effects, Seasons, SackResourcePack                 | **$14**         |
-| RPGRoll-Ranching | `/ranching`, `/ranchingadmin`                    | RPGRoll                 | RPGRoll-Particles, RPGRoll-Effects, Seasons, SackResourcePack                 | **$16**         |
-| RPGRoll-Workers  | `/workers`, `/workersadmin`                      | RPGRoll                 | RPGRoll-Particles, RPGRoll-Effects, Seasons, Ranching, Fishing, Guilds, Vault, SackResourcePack | **$16**         |
+| RPGRoll-FX| `/rpgfx`                                  | RPGRoll                 | —                                                                       | **$6**          |
+| RPGRoll-Effects  | `/rpgeffects`                                    | RPGRoll                 | RPGRoll-FX, Guilds                                                     | **$10**         |
+| RPGRoll-Magic    | `/magic`, `/magicadmin`                          | RPGRoll                 | RPGRoll-FX, RPGRoll-Effects                                            | **$18**         |
+| RPGRoll-Seasons  | `/seasons`, `/seasonsadmin`                      | RPGRoll                 | RPGRoll-FX, RPGRoll-Effects, Mobs                                      | **$14**         |
+| RPGRoll-Fishing  | `/fishing`, `/fishingadmin`                      | RPGRoll                 | RPGRoll-FX, RPGRoll-Effects, Seasons, SackResourcePack                 | **$14**         |
+| RPGRoll-Ranching | `/ranching`, `/ranchingadmin`                    | RPGRoll                 | RPGRoll-FX, RPGRoll-Effects, Seasons, SackResourcePack                 | **$16**         |
+| RPGRoll-Workers  | `/workers`, `/workersadmin`                      | RPGRoll                 | RPGRoll-FX, RPGRoll-Effects, Seasons, Ranching, Fishing, Guilds, Vault, SackResourcePack | **$16**         |
 | SackResourcePack | `/srp`                                           | _(ninguno, standalone)_ | S3 (subida remota)                                                      | **$12**         |
 | RPGRoll-Economy  | `/economy`, `/economyadmin`                      | RPGRoll                 | Vault, PlaceholderAPI, Guilds, Seasons                                  | **$18**         |
 | RPGRoll-Crafting | `/crafting`, `/craftingadmin`                    | RPGRoll                 | Items, Economy, Guilds, Seasons                                         | **$17**         |

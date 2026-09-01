@@ -10,15 +10,15 @@ general:
 command:
   usage: |-
     &cUsage: /ascend
-    &7 • &frace
-    &7 • &fspecialize
-    &7 • &ftalent
-    &7 • &fprestige
-    &7 • &faffinity
-    &7 • &freputation
-    &7 • &ftitle
+    &7 • &brace
+    &7 • &aspecialize
+    &7 • &etalent
+    &7 • &dprestige
+    &7 • &6affinity
+    &7 • &9reputation
+    &7 • &ctitle
     &7 • &flegacy
-    &7 • &finfo
+    &7 • &5info
   race_usage: "&cUsage: /ascend race <id>"
   race_not_found: "&cThere's no evolution with id: {id}"
   race_success: "&a✔ You evolved into: {id}"
@@ -39,7 +39,10 @@ command:
   reputation_empty: "&7No factions are defined."
   reputation_header: "&6Your reputation:"
   reputation_entry: "&f• {faction}: {amount}"
-  title_usage: "&cUsage: /ascend title <id|clear>"
+  title_usage: |-
+    &cUsage: /ascend title
+    &7 • &bid
+    &7 • &aclear
   title_cleared: "&a✔ Title deactivated."
   title_not_unlocked: "&cYou haven't unlocked that title yet."
   title_active: "&a✔ Active title: {name}"
@@ -60,11 +63,11 @@ admin:
   no_permission: "&cYou don't have permission to use this command."
   usage: |-
     &cUsage: /ascendadmin
-    &7 • &fachievement
-    &7 • &ftitle
-    &7 • &freputation
-    &7 • &fbrowser
-    &7 • &freload
+    &7 • &bachievement
+    &7 • &atitle
+    &7 • &ereputation
+    &7 • &dbrowser
+    &7 • &6reload
   browser_player_only: "&cOnly a player can use the visual editor."
   browser_invalid_option: "&cInvalid option. Use: evolution, specialization, prestige, affinity, jobevolution, secret, faction, achievement, title or legacy"
   achievement_usage: "&cUsage: /ascendadmin achievement grant <player> <id>"

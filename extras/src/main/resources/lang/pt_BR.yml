@@ -6,13 +6,13 @@ command:
   usage:
     main: |-
       &eUso: /extrasadmin
-      &7 • &freload
-      &7 • &flist
-      &7 • &fget
-      &7 • &fset
-      &7 • &fadd
-      &7 • &fapply
-      &7 • &fremove
+      &7 • &breload
+      &7 • &alist
+      &7 • &eget
+      &7 • &dset
+      &7 • &6add
+      &7 • &9apply
+      &7 • &cremove
     get: "Uso: /extrasadmin get <jogador> <stat>"
     set: "Uso: /extrasadmin set <jogador> <stat> <valor>"
     add: "Uso: /extrasadmin add <jogador> <stat> <quantidade>"

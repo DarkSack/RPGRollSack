@@ -18,7 +18,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 
 /**
  * Confirmación de pegado de una estructura de la Biblioteca — "admin
- * normal": pará donde querés la esquina/ancla, abrí esto, elegí rotación
+ * normal": pará donde quieres la esquina/ancla, abrí esto, elegí rotación
  * si hace falta, click en Pegar. Sin coordenadas a mano (eso es
  * {@code /dungeonadmin structure paste <id> <mundo> <x> <y> <z>}, para
  * cuando sí las necesitás).

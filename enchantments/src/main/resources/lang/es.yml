@@ -9,16 +9,17 @@ chat_prompt_manager:
 
 # Comando /renchant (admin)
 enchant_admin_command:
+  browser_players_only: "&cSolo un jugador puede abrir el navegador de encantamientos."
   no_permission: "&cNo tienes permiso para usar este comando."
   usage: |-
     &cUso: /renchant
-    &7 • &fapply
-    &7 • &fremove
-    &7 • &fgive
-    &7 • &flist
-    &7 • &finfo
-    &7 • &freload
-    &7 • &fbrowser
+    &7 • &bapply
+    &7 • &aremove
+    &7 • &egive
+    &7 • &dlist
+    &7 • &6info
+    &7 • &9reload
+    &7 • &cbrowser
   player_only: "&cSolo un jugador puede usar esto."
   apply_usage: "&cUso: /renchant apply <id> <nivel>"
   give_usage: "&cUso: /renchant give <jugador> <id> <nivel> — da un libro (combinar en yunque para aplicar)"
@@ -53,7 +54,7 @@ enchantment_browser_gui:
   entry_lore_line2: "&eClick para editar"
   create_new: "&aCrear encantamiento nuevo"
   close_button: "Cerrar"
-  prompt_new: "Escribí el id del nuevo encantamiento:"
+  prompt_new: "Escribe el id del nuevo encantamiento:"
   already_exists: "&cYa existe un encantamiento con ese id."
 
 # GUI: editor de un encantamiento (admin)
@@ -75,9 +76,9 @@ enchantment_editor_gui:
   effect_remove_hint: "&8Shift-click para quitar"
   add_effect_button: "&aAgregar efecto"
   back_button: "Volver"
-  prompt_name: "Escribí el nuevo nombre:"
-  prompt_conflicts: "Escribí los ids en conflicto separados por comas:"
-  prompt_conditions: "Escribí las condiciones separadas por ';':"
+  prompt_name: "Escribe el nuevo nombre:"
+  prompt_conflicts: "Escribe los ids en conflicto separados por comas:"
+  prompt_conditions: "Escribe las condiciones separadas por ';':"
   min_one_effect: "&cEl encantamiento necesita al menos un efecto."
-  prompt_add_effect: "Escribí: TIPO;clave=valor;clave2=valor2 (tipos: {types}):"
+  prompt_add_effect: "Escribe: TIPO;clave=valor;clave2=valor2 (tipos: {types}):"
   invalid_effect_type: "&cTipo de efecto inválido."

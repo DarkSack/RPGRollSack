@@ -12,9 +12,9 @@ gui:
   none: "(ninguno)"
 
 channel:
-  no_active: "No tenés un canal activo — usá /channel join <canal>."
-  no_permission_speak: "No tenés permiso para hablar en este canal."
-  no_permission_view: "No tenés permiso para ver ese canal."
+  no_active: "No tienes un canal activo — usa /channel join <canal>."
+  no_permission_speak: "No tienes permiso para hablar en este canal."
+  no_permission_view: "No tienes permiso para ver ese canal."
   not_found: "No existe ese canal."
   mentioned: "&e→ Te mencionaron en #{channel}"
   list_header: "=== Canales ==="
@@ -37,7 +37,7 @@ channel:
   next_page: "Siguiente »"
   create_new: "Crear canal nuevo"
   already_exists: "Ya existe un canal con ese id."
-  prompt_new_id: "Escribí el id del nuevo canal:"
+  prompt_new_id: "Escribe el id del nuevo canal:"
   editor_title: "&6Canal: {id}"
   label_name: "Nombre: {value}"
   label_icon: "Ícono: {value}"
@@ -67,29 +67,29 @@ channel:
   toggle_yes: "sí"
   toggle_no: "no"
   toggle_lore: "Click para alternar"
-  prompt_name: "Escribí el nuevo nombre del canal:"
-  prompt_icon: "Escribí el nombre del Material (ej. PAPER):"
-  prompt_color: "Escribí el nombre del color (ej. GOLD):"
-  prompt_view_permission: "Escribí el permiso para VER el canal (vacío = ninguno):"
-  prompt_speak_permission: "Escribí el permiso para HABLAR en el canal (vacío = ninguno):"
-  prompt_format: "Escribí el nuevo formato (tokens: {player} {message} {channel} {world} {role_prefix} {role_suffix} {context_prefix}):"
-  prompt_sound: "Escribí el nombre del Sound (vacío = ninguno):"
+  prompt_name: "Escribe el nuevo nombre del canal:"
+  prompt_icon: "Escribe el nombre del Material (ej. PAPER):"
+  prompt_color: "Escribe el nombre del color (ej. GOLD):"
+  prompt_view_permission: "Escribe el permiso para VER el canal (vacío = ninguno):"
+  prompt_speak_permission: "Escribe el permiso para HABLAR en el canal (vacío = ninguno):"
+  prompt_format: "Escribe el nuevo formato (tokens: {player} {message} {channel} {world} {role_prefix} {role_suffix} {context_prefix}):"
+  prompt_sound: "Escribe el nombre del Sound (vacío = ninguno):"
 
 antispam:
-  on_cooldown: "Esperá un momento antes de volver a hablar en este canal."
+  on_cooldown: "Espera un momento antes de volver a hablar en este canal."
   flood: "Estás enviando mensajes demasiado rápido."
   repetition: "No repitas el mismo mensaje."
   banned_word: "Tu mensaje contiene una palabra prohibida."
   url_blocked: "No se permiten enlaces en este canal."
-  excessive_caps: "Bajá un poco las mayúsculas."
+  excessive_caps: "Baja un poco las mayúsculas."
 
 whisper:
   usage_reply: "Uso: /r <mensaje>"
-  no_target: "No tenés a quién responderle."
+  no_target: "No tienes a quién responderle."
   target_ignoring: "Ese jugador te está ignorando."
   usage_whisper: "Uso: /w <jugador> <mensaje>"
   player_not_found: "Jugador no encontrado."
-  cannot_self: "No podés susurrarte a vos mismo."
+  cannot_self: "No puedes susurrarte a ti mismo."
   to_sender: "&dTú -> {target}: &f{message}"
   to_target: "&d{sender} -> Tú: &f{message}"
   spy_line: "&8[Spy] {sender} -> {target}: &7{message}"
@@ -98,7 +98,12 @@ whisper:
   spy_off: "Espía de whispers desactivado."
 
 ignore:
-  usage: "Uso: /ignore <player|guild|channel> <add|remove|list> [nombre]"
+  usage: |-
+    Uso: /ignore
+    &7 • &bplayer
+    &7 • &aguild
+    &7 • &echannel
+    &8   <add|remove|list> [nombre]
   list_header: "=== Ignorados ({type}) ==="
   now_ignoring_guild: "✔ Ahora ignorás a la guild {name}."
   stopped_ignoring_guild: "Dejaste de ignorar a la guild {name}."
@@ -110,7 +115,7 @@ ignore:
 reaction:
   usage: "Uso: /react <emoji>"
   no_recent: "No hay ningún mensaje reciente para reaccionar."
-  invalid: "Reacción inválida. Usá: 👍 ❤ 🔥 😂 ⭐ ⚔"
+  invalid: "Reacción inválida. Usa: 👍 ❤ 🔥 😂 ⭐ ⚔"
   unavailable: "Ese mensaje ya no está disponible para reaccionar."
   notify_added: "&6{symbol} &e{reactor}&7 reaccionó a {sender} ({count} {symbol})"
   notify_removed: "&6{symbol} &e{reactor}&7 quitó su reacción a {sender} ({count} {symbol})"
@@ -120,7 +125,7 @@ rpaction:
   usage: "Uso: /{label} <texto>"
 
 prompt:
-  footer: "Escribí en el chat, o '{keyword}' para abortar."
+  footer: "Escribe en el chat, o '{keyword}' para abortar."
   cancel_keyword: "cancelar"
   cancelled: "Cancelado."
 
@@ -131,16 +136,16 @@ language:
   status_speaking_suffix: ", hablando"
   usage_learn: "Uso: /language learn <idioma>"
   learned: "✔ Aprendiste {id}."
-  already_known: "Ya conocés ese idioma."
+  already_known: "Ya conoces ese idioma."
   not_found: "No existe ese idioma."
   usage_speak: "Uso: /language speak <idioma>"
   now_speaking: "✔ Ahora hablás en {id}."
-  dont_know: "No conocés ese idioma."
+  dont_know: "No conoces ese idioma."
   browser_title: "&6Idiomas RPGRoll"
   browser_lore_races: "Razas: {value}"
   races_universal: "(universal)"
   create_new: "Crear idioma nuevo"
-  prompt_new_id: "Escribí el id del nuevo idioma:"
+  prompt_new_id: "Escribe el id del nuevo idioma:"
   already_exists: "Ya existe un idioma con ese id."
   editor_title: "&6Idioma: {id}"
   label_name: "Nombre: {value}"
@@ -149,16 +154,16 @@ language:
   label_races: "Razas por defecto: {value}"
   lore_races_hint: "Vacío = todos lo conocen (idioma universal)"
   lore_races_prompt: "Click para escribir la lista separada por comas"
-  prompt_name: "Escribí el nuevo nombre del idioma:"
-  prompt_obfuscation: "Escribí un solo carácter para la ofuscación (ej. ?):"
-  prompt_races: "Escribí las razas separadas por coma (vacío = universal):"
+  prompt_name: "Escribe el nuevo nombre del idioma:"
+  prompt_obfuscation: "Escribe un solo carácter para la ofuscación (ej. ?):"
+  prompt_races: "Escribe las razas separadas por coma (vacío = universal):"
 
 role:
   browser_title: "&6Roles de Chat RPGRoll"
   browser_lore_priority: "Prioridad: {priority}"
   browser_lore_permission: "Permiso: {value}"
   create_new: "Crear rol nuevo"
-  prompt_new_id: "Escribí el id del nuevo rol:"
+  prompt_new_id: "Escribe el id del nuevo rol:"
   already_exists: "Ya existe un rol con ese id."
   editor_title: "&6Rol: {id}"
   label_prefix: "Prefijo: {value}"
@@ -168,11 +173,11 @@ role:
   label_priority: "Prioridad: {value}"
   label_permission: "Permiso: {value}"
   lore_permission_hint: "Click para escribir uno nuevo (vacío = todos)"
-  prompt_prefix: "Escribí el nuevo prefijo (podés usar & para colores):"
-  prompt_suffix: "Escribí el nuevo sufijo (podés usar & para colores):"
-  prompt_color: "Escribí el nombre del color (ej. GOLD):"
-  prompt_icon: "Escribí el nombre del Material (ej. DIAMOND):"
-  prompt_permission: "Escribí el permiso (vacío = sin restricción):"
+  prompt_prefix: "Escribe el nuevo prefijo (puedes usar & para colores):"
+  prompt_suffix: "Escribe el nuevo sufijo (puedes usar & para colores):"
+  prompt_color: "Escribe el nombre del color (ej. GOLD):"
+  prompt_icon: "Escribe el nombre del Material (ej. DIAMOND):"
+  prompt_permission: "Escribe el permiso (vacío = sin restricción):"
 
 emote:
   usage: "Uso: /emote <nombre> [jugador]"
@@ -181,7 +186,7 @@ emote:
   browser_lore_radius: "Radio: {value}"
   radius_world: "todo el mundo"
   create_new: "Crear emote nueva"
-  prompt_new_id: "Escribí el id de la nueva emote (ej. /emote <id>):"
+  prompt_new_id: "Escribe el id de la nueva emote (ej. /emote <id>):"
   already_exists: "Ya existe una emote con ese id."
   editor_title: "&6Emote: {id}"
   label_message: "Mensaje (sin objetivo)"
@@ -191,18 +196,28 @@ emote:
   lore_target_hint: "Usa {player} y {target} · Click para escribir uno nuevo"
   label_radius: "Radio: {value}"
   lore_radius: "Click: +10 · Click derecho: -10 (0 = todo el mundo)"
-  prompt_message: "Escribí el nuevo mensaje (usa {player}):"
-  prompt_target_message: "Escribí el nuevo mensaje con objetivo (usa {player} y {target}):"
+  prompt_message: "Escribe el nuevo mensaje (usa {player}):"
+  prompt_target_message: "Escribe el nuevo mensaje con objetivo (usa {player} y {target}):"
 
 log:
-  usage: "Uso: /chatlog <search|export|clear> [canal] [jugador] [fecha yyyy-MM-dd]"
+  usage: |-
+    Uso: /chatlog
+    &7 • &bsearch
+    &7 • &aexport
+    &7 • &eclear
+    &8   [canal] [jugador] [fecha yyyy-MM-dd]
   results_header: "=== Resultados ({count}, últimos 20) ==="
   exported: "✔ Exportado {count} mensaje(s) a {file}."
   cleared: "✔ Historial en memoria limpiado (respaldo en {file})."
 
 admin:
   reloaded: "✔ RPGRoll-Chat recargado: {channels} canal(es), {languages} idioma(s), {roles} rol(es), {emotes} emote(s)."
-  usage: "Uso: /chatadmin <reload|browser [channel|language|role|emote]|editor <canal>> [args]"
+  usage: |-
+    Uso: /chatadmin
+    &7 • &breload
+    &7 • &abrowser [channel|language|role|emote]
+    &7 • &eeditor <canal>
+    &8   [args]
   usage_editor: "Uso: /chatadmin editor <canal>"
   players_only_browser: "Solo un jugador puede abrir el navegador."
   players_only_editor: "Solo un jugador puede abrir el editor."

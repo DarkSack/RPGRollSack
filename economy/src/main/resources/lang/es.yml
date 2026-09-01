@@ -6,7 +6,7 @@ prompt:
 common:
   success: "&a✔ Listo."
   fail_result: "&c✘ {result}"
-  no_permission: "&cNo tenés permiso."
+  no_permission: "&cNo tienes permiso."
   players_only: "&cSolo un jugador puede usar este comando."
   unknown_subcommand: "&cSubcomando desconocido."
   invalid_amount: "&cCantidad inválida."
@@ -31,19 +31,19 @@ common:
   click_plus001_minus001: "&7Click: +0.01 · Click derecho: -0.01"
   label_name: "&eNombre: {value}"
   label_icon: "&eÍcono: {value}"
-  prompt_new_name: "Escribí el nuevo nombre:"
-  prompt_material_icon: "Escribí el Material del ícono:"
+  prompt_new_name: "Escribe el nuevo nombre:"
+  prompt_material_icon: "Escribe el Material del ícono:"
 
 admin:
   usage: |-
     &eUso: /economyadmin
-    &7 • &fbrowser
-    &7 • &freload
-    &7 • &fgive
-    &7 • &ftake
-    &7 • &fsetbalance
-    &7 • &finflation
-    &7 • &fsnapshot
+    &7 • &bbrowser
+    &7 • &areload
+    &7 • &egive
+    &7 • &dtake
+    &7 • &6setbalance
+    &7 • &9inflation
+    &7 • &csnapshot
   browser_players_only: "&cSolo un jugador puede abrir el navegador."
   reload_done: "&a✔ RPGRoll-Economy recargado."
   adjust_usage: "&eUso: /economyadmin {sub} <jugador> <moneda> <cantidad>"
@@ -57,7 +57,7 @@ admin:
 player:
   balance: "&6Balance ({currency}): {amount}"
   pay_usage: "&eUso: /economy pay <jugador> <cantidad> [moneda]"
-  pay_self: "&cNo podés pagarte a vos mismo."
+  pay_self: "&cNo puedes pagarte a ti mismo."
   pay_success: "&a✔ Le pagaste {amount} a {target}."
 
 studio:
@@ -74,7 +74,7 @@ currency:
     lore_symbol: "&7símbolo: {symbol}"
     lore_base: "&6Moneda base"
     new_button: "&aCrear moneda nueva"
-    prompt_new_id: "Escribí el id de la nueva moneda:"
+    prompt_new_id: "Escribe el id de la nueva moneda:"
     duplicate_id: "&cYa existe una moneda con ese id."
   editor:
     title: "Moneda: {id}"
@@ -88,9 +88,9 @@ currency:
     exchange_rate: "&bTasa de cambio a base: {value}"
     is_base: "&6Moneda base: {value}"
     delete: "&cEliminar moneda"
-    prompt_symbol: "Escribí el nuevo símbolo:"
-    prompt_color: "Escribí el color (NamedTextColor o #hex):"
-    prompt_permission: "Escribí el nodo de permiso (o 'ninguno'):"
+    prompt_symbol: "Escribe el nuevo símbolo:"
+    prompt_color: "Escribe el color (NamedTextColor o #hex):"
+    prompt_permission: "Escribe el nodo de permiso (o 'ninguno'):"
 
 market:
   browser:
@@ -98,7 +98,7 @@ market:
     lore_price: "&aprecio actual: {price}"
     lore_base: "&7base: {price}"
     new_button: "&aCrear producto nuevo"
-    prompt_new_id: "Escribí el id del nuevo producto (ej. un Material vanilla):"
+    prompt_new_id: "Escribe el id del nuevo producto (ej. un Material vanilla):"
     duplicate_id: "&cYa existe un producto con ese id."
   editor:
     title: "Producto: {id}"
@@ -114,8 +114,8 @@ market:
     click_plus005_minus005: "&7Click: +0.05 · Click derecho: -0.05"
     recovery_rate: "&bTasa de recuperación: {value}"
     delete: "&cEliminar producto"
-    prompt_currency: "Escribí el id de moneda (o 'default'):"
-    prompt_category: "Escribí la categoría:"
+    prompt_currency: "Escribe el id de moneda (o 'default'):"
+    prompt_category: "Escribe la categoría:"
 
 tax:
   browser:
@@ -123,7 +123,7 @@ tax:
     lore_type: "&7tipo: {type}"
     lore_rate: "&6tasa: {rate}%"
     new_button: "&aCrear regla nueva"
-    prompt_new_id: "Escribí el id de la nueva regla tributaria:"
+    prompt_new_id: "Escribe el id de la nueva regla tributaria:"
     duplicate_id: "&cYa existe una regla con ese id."
   editor:
     title: "Impuesto: {id}"
@@ -136,7 +136,7 @@ tax:
     applies_hint2: "&7(vacío = aplica a todo)"
     enabled: "&6Activo: {value}"
     delete: "&cEliminar regla"
-    prompt_applies_to: "Escribí ids/categorías separados por comas (vacío = todo):"
+    prompt_applies_to: "Escribe ids/categorías separados por comas (vacío = todo):"
 
 bank:
   title: "Banco"
@@ -144,7 +144,7 @@ bank:
   lore_balance: "&6saldo: {value}"
   lore_active_loans: "&7préstamos activos: {count}"
   new_account: "&aAbrir cuenta personal nueva"
-  prompt_new_account: "Escribí un nombre para tu nueva cuenta personal:"
+  prompt_new_account: "Escribe un nombre para tu nueva cuenta personal:"
   detail:
     title: "Cuenta: {name}"
     deposit: "&aDepositar"
@@ -156,14 +156,14 @@ bank:
     no_loans: "&7(sin préstamos activos)"
     remaining: "&6Restante: {value}"
     rename: "&eRenombrar cuenta"
-    prompt_deposit: "¿Cuánto querés depositar?"
-    prompt_withdraw: "¿Cuánto querés retirar?"
-    prompt_loan_request: "¿Cuánto querés pedir prestado? (interés 8%, 30 días)"
+    prompt_deposit: "¿Cuánto quieres depositar?"
+    prompt_withdraw: "¿Cuánto quieres retirar?"
+    prompt_loan_request: "¿Cuánto quieres pedir prestado? (interés 8%, 30 días)"
     loan_granted: "&a✔ Préstamo otorgado."
-    no_active_loans: "&cNo tenés préstamos activos en esta cuenta."
-    prompt_pay_loan: "¿Cuánto querés pagar?"
+    no_active_loans: "&cNo tienes préstamos activos en esta cuenta."
+    prompt_pay_loan: "¿Cuánto quieres pagar?"
     payment_applied: "&a✔ Pago aplicado."
-    prompt_rename: "Escribí el nuevo nombre de la cuenta:"
+    prompt_rename: "Escribe el nuevo nombre de la cuenta:"
 
 shop:
   list:
@@ -184,16 +184,16 @@ shop:
     rename: "&eRenombrar tienda"
     state_open: "&6Abierta (click para cerrar)"
     state_closed: "&6Cerrada (click para abrir)"
-    prompt_price: "Escribí el precio unitario:"
-    prompt_stock: "Escribí el stock (-1 = ilimitado):"
-    prompt_rename: "Escribí el nuevo nombre de tu tienda:"
+    prompt_price: "Escribe el precio unitario:"
+    prompt_stock: "Escribe el stock (-1 = ilimitado):"
+    prompt_rename: "Escribe el nuevo nombre de tu tienda:"
   view:
     lore_price: "&6precio: {value} c/u"
     lore_stock: "&7stock: {value}"
     click_hint: "&aClick: comprar 1 · Shift-click: comprar 8"
     purchase_success: "&a✔ Compra realizada."
     out_of_stock: "&c✘ No hay suficiente stock."
-    insufficient_funds: "&c✘ No tenés suficiente dinero."
+    insufficient_funds: "&c✘ No tienes suficiente dinero."
     shop_closed: "&c✘ Esta tienda está cerrada."
     inventory_full: "&c✘ Tu inventario está lleno."
 
@@ -207,9 +207,9 @@ auction:
   collect_button: "&eRetirar mis ítems/premios"
   collect_ready: "&7{count} listo(s)"
   no_buy_now: "&cEsta subasta no tiene compra inmediata."
-  prompt_bid: "¿Cuánto querés pujar? (mínimo {min})"
-  prompt_start_price: "Escribí el precio inicial de la subasta:"
-  prompt_buy_now_price: "Escribí el precio de compra inmediata (0 = ninguno):"
+  prompt_bid: "¿Cuánto quieres pujar? (mínimo {min})"
+  prompt_start_price: "Escribe el precio inicial de la subasta:"
+  prompt_buy_now_price: "Escribe el precio de compra inmediata (0 = ninguno):"
   publish_success: "&a✔ Subasta publicada."
   collect_success: "&a✔ Retiraste tus ítems/premios pendientes."
 
@@ -219,7 +219,7 @@ company:
     lore_role: "&7rol: {value}"
     lore_employees: "&7empleados: {count}"
     found_button: "&aFundar empresa nueva"
-    prompt_name: "Escribí el nombre de tu nueva empresa:"
+    prompt_name: "Escribe el nombre de tu nueva empresa:"
     duplicate_name: "&cYa existe una empresa con ese nombre."
     founded: "&a✔ Empresa fundada."
   detail:
@@ -228,18 +228,18 @@ company:
     treasury_lore: "&6Tesorería: {value}"
     withdraw: "&cRetirar de tesorería"
     requires_manager: "&7Requiere OWNER/MANAGER"
-    no_permission_lore: "&7No tenés permiso"
+    no_permission_lore: "&7No tienes permiso"
     hire: "&eContratar empleado"
     fire: "&cDespedir empleado"
     pay_salaries: "&6Pagar salarios ahora"
     disband: "&4Disolver empresa"
     owner_only_lore: "&7Solo el dueño puede hacerlo"
-    prompt_deposit: "¿Cuánto querés depositar en la tesorería?"
-    prompt_withdraw: "¿Cuánto querés retirar de la tesorería?"
-    prompt_hire_name: "Escribí el nombre del jugador a contratar:"
-    prompt_wage: "Escribí el salario para {name}:"
+    prompt_deposit: "¿Cuánto quieres depositar en la tesorería?"
+    prompt_withdraw: "¿Cuánto quieres retirar de la tesorería?"
+    prompt_hire_name: "Escribe el nombre del jugador a contratar:"
+    prompt_wage: "Escribe el salario para {name}:"
     hired: "&a✔ {name} contratado."
-    prompt_fire_name: "Escribí el nombre del jugador a despedir:"
+    prompt_fire_name: "Escribe el nombre del jugador a despedir:"
     fired: "&a✔ {name} despedido."
     salaries_paid: "&a✔ Se pagó a {count} empleado(s)."
     disbanded: "&a✔ Empresa disuelta."

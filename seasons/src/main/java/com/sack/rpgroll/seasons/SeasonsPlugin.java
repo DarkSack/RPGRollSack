@@ -114,24 +114,18 @@ public class SeasonsPlugin extends JavaPlugin {
         Bukkit.getScheduler().runTaskTimer(this, () -> stateStore.save(clockManager), AUTOSAVE_TICK_INTERVAL,
                 AUTOSAVE_TICK_INTERVAL);
 
-        var adminCommand = getCommand("seasonsadmin");
-        if (adminCommand == null) {
-            getLogger().severe("✘ El comando 'seasonsadmin' no está declarado en plugin.yml");
-        } else {
-            var seasonsAdminCommand = new SeasonsAdminCommand(this, calendarManager, seasonManager, worldEventManager,
+        var seasonsAdminCommand = new SeasonsAdminCommand(this, calendarManager, seasonManager, worldEventManager,
                     regionManager, worldEventEngine, SeasonsAPI.get(), chatPromptManager);
-            adminCommand.setExecutor(seasonsAdminCommand);
-            adminCommand.setTabCompleter(seasonsAdminCommand);
-        }
 
-        var playerCommand = getCommand("seasons");
-        if (playerCommand == null) {
-            getLogger().severe("✘ El comando 'seasons' no está declarado en plugin.yml");
-        } else {
-            var seasonsCommand = new SeasonsCommand(langManager);
-            playerCommand.setExecutor(seasonsCommand);
-            playerCommand.setTabCompleter(seasonsCommand);
-        }
+        // Registrado por Brigadier para que `execute as` entregue al jugador real.
+        com.sack.rpgroll.common.command.BrigadierCommands.register(this, "seasonsadmin",
+                "Comandos administrativos de RPGRoll-Seasons (Season Studio)", "rpgrollseasons.admin.*", seasonsAdminCommand);
+
+        var seasonsCommand = new SeasonsCommand(langManager);
+
+        // Registrado por Brigadier para que `execute as` entregue al jugador real.
+        com.sack.rpgroll.common.command.BrigadierCommands.register(this, "seasons",
+                "Comandos de jugador de RPGRoll-Seasons", "rpgrollseasons.use", seasonsCommand);
 
         getLogger().info("✔ RPGRoll-Seasons habilitado. " + calendarManager.count() + " calendario(s), "
                 + seasonManager.count() + " estación(es), " + worldEventManager.count() + " evento(s), "

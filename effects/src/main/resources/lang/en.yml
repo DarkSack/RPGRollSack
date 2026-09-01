@@ -7,7 +7,13 @@ general:
 
 # /rpgeffects command
 command:
-  usage: "&cUsage: /rpgeffects <browser|reload|apply <id> <player>|remove <id> <player>|list [player]>"
+  usage: |-
+    &cUsage: /rpgeffects
+    &7 • &bbrowser
+    &7 • &areload
+    &7 • &eapply <id> <player>
+    &7 • &dremove <id> <player>
+    &7 • &6list [player]
   browser_player_only: "&cOnly players can open the Effect Studio."
   reload_success: "&a✔ Reloaded: {count} effect(s)."
   apply_usage: "&cUsage: /rpgeffects apply <id> <player>"

@@ -18,16 +18,16 @@ team:
   not_in_team: "&cYou're not in any team."
   usage: |-
     &eUsage: /team
-    &7 • &finvite
-    &7 • &faccept
-    &7 • &fdecline
-    &7 • &fleave
-    &7 • &fkick
-    &7 • &finfo
-    &7 • &fping
+    &7 • &binvite
+    &7 • &aaccept
+    &7 • &edecline
+    &7 • &dleave
+    &7 • &6kick
+    &7 • &9info
+    &7 • &cping
     &7 • &fwaypoint
-    &7 • &fchat
-    &7 • &fqueue
+    &7 • &5chat
+    &7 • &2queue
   decline:
     success: "&7Invitation declined."
   invite:
@@ -50,12 +50,25 @@ team:
   kick:
     usage: "&eUsage: /team kick <player>"
   ping:
-    usage: "&eUsage: /team ping <enemy|objective|loot|npc|place> [label]"
+    usage: |-
+      &eUsage: /team ping
+      &7 • &benemy
+      &7 • &aobjective
+      &7 • &eloot
+      &7 • &dnpc
+      &7 • &6place
+      &8   [label]
     notify: "&f📍 {player} marked {type}"
     notify_labeled: "&f📍 {player} marked {type} ({label})"
   waypoint:
     not_in_team: "&cYou're not in any team."
-    usage: "&eUsage: /team waypoint <set|list|tp|remove> [name]"
+    usage: |-
+      &eUsage: /team waypoint
+      &7 • &bset
+      &7 • &alist
+      &7 • &etp
+      &7 • &dremove
+      &8   [name]
     set_usage: "&eUsage: /team waypoint set <name>"
     set_success: "&a✔ Waypoint '{name}' saved."
     list_header: "&6=== Team waypoints ==="
@@ -116,13 +129,13 @@ team:
 guild:
   usage: |-
     &eUsage: /guild
-    &7 • &fcreate
-    &7 • &fdisband
-    &7 • &faccept
-    &7 • &fdecline
-    &7 • &fleave
-    &7 • &franking
-    &7 • &fchat
+    &7 • &bcreate
+    &7 • &adisband
+    &7 • &eaccept
+    &7 • &ddecline
+    &7 • &6leave
+    &7 • &9ranking
+    &7 • &cchat
     &7 • &fgui
   not_in_guild: "&cYou're not in any guild."
   not_in_guild_browser: "&cYou're not in any guild — use /guild browser."
@@ -321,10 +334,10 @@ guild:
 guildadmin:
   usage: |-
     &eUsage: /guildadmin
-    &7 • &freload
-    &7 • &fbrowser [guilds
-    &7 • &fquests]
-    &7 • &fdelete
+    &7 • &breload
+    &7 • &abrowser [guilds
+    &7 • &equests]
+    &7 • &ddelete
   reload:
     success: "&a✔ Guild quests reloaded: {count}"
   browser:

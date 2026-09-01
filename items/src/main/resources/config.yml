@@ -1,4 +1,4 @@
 # Idioma de los mensajes (comandos, GUIs de admin, ítems). Opciones: es, en, pt_BR.
 # Los textos viven en lang/<idioma>.yml dentro de esta carpeta de datos —
-# podés editarlos ahí directamente. Tras cambiar esto, /itemadmin reload.
+# puedes editarlos ahí directamente. Tras cambiar esto, /itemadmin reload.
 language: es

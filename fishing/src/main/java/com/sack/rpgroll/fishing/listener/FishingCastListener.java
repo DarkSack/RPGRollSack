@@ -12,7 +12,7 @@ import com.sack.rpgroll.fishing.item.FishingItemFactory;
 import com.sack.rpgroll.fishing.minigame.FishBattleSession;
 import com.sack.rpgroll.fishing.minigame.FishingMinigameManager;
 import com.sack.rpgroll.fishing.runtime.FishingProfileManager;
-import com.sack.rpgroll.sackeffects.api.SackEffectsAPI;
+import com.sack.rpgroll.fx.api.RPGRollFXAPI;
 
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
@@ -143,8 +143,8 @@ public class FishingCastListener implements Listener {
                 profileManager.getOrLoad(player).registerCatch(species.id(), result.weight(), result.length(),
                         result.quality());
 
-                if (species.catchEffectId() != null && SackEffectsAPI.isReady()) {
-                    SackEffectsAPI.get().play(species.catchEffectId(), player);
+                if (species.catchEffectId() != null && RPGRollFXAPI.isReady()) {
+                    RPGRollFXAPI.get().play(species.catchEffectId(), player);
                 }
 
                 if (species.catchStatusEffectId() != null && EffectsAPI.isReady()) {

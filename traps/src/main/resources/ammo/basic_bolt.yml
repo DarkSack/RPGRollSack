@@ -1,0 +1,13 @@
+# Munición básica: una flecha común. Es lo que dispara una torreta centinela
+# si no le cargás nada más específico.
+id: basic_bolt
+display-name: "&fVirote básico"
+description: "&7Munición estándar para torretas de proyectil."
+icon: ARROW
+stack-size: 1
+
+impact:
+  type: CUSTOM_PROJECTILE
+  params:
+    projectile-type: ARROW
+    speed: "2.5"

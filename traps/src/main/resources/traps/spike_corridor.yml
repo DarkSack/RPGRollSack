@@ -1,5 +1,10 @@
-# Corredor de pinchos: dispara al detectar un jugador dentro del radio (sin necesitar pisar un bloque exacto),
-# hace daño y aplica sangrado si RPGRoll-Effects está disponible.
+# Corredor de pinchos: se activa al detectar un jugador dentro del radio (sin
+# necesitar pisar un bloque exacto). Los pinchos son los colmillos del evocador,
+# que brotan del suelo en línea hacia la víctima con su propia animación y
+# sonido — se ve como un ataque diseñado, no como una partícula suelta.
+#
+# La acción PARTICLES usa RPGRoll-FX si está instalado; si no, se ignora
+# sola y el resto del efecto se ve igual.
 id: spike_corridor
 display-name: "&4Corredor de Pinchos"
 description: "Se activa cuando alguien se acerca demasiado."
@@ -12,13 +17,47 @@ radius: 2.0
 conditions: []
 
 actions:
-  - type: PARTICLE
-    params:
-      particle: DAMAGE_INDICATOR
-      count: "10"
+  # 1. Aviso: el suelo tiembla un instante antes de que salgan los pinchos.
   - type: SOUND
     params:
-      sound: ENTITY_PLAYER_HURT
+      sound: BLOCK_DEEPSLATE_BREAK
+      volume: "1.4"
+      pitch: "0.5"
+  - type: PARTICLE
+    params:
+      particle: DUST_PLUME
+      count: "60"
+      offset-x: "1.2"
+      offset-y: "0.1"
+      offset-z: "1.2"
+
+  # 2. Los pinchos: línea de colmillos que avanza hacia quien lo activó.
+  - type: EVOKER_FANGS
+    params:
+      rows: "10"
+      spacing: "1.1"
+      damage: "3"
+
+  # 3. Efecto propio de RPGRoll-FX, si está disponible.
+  - type: PARTICLES
+    params:
+      effect-id: "spike_burst"
+
+  # 4. Remate visual y sonoro.
+  - type: PARTICLE
+    params:
+      particle: CRIT
+      count: "45"
+      offset-x: "1.0"
+      offset-y: "0.6"
+      offset-z: "1.0"
+      speed: "0.35"
+  - type: SOUND
+    params:
+      sound: ENTITY_EVOKER_FANGS_ATTACK
+      volume: "1.5"
+      pitch: "0.8"
+
   - type: DAMAGE
     params:
       amount: "6"

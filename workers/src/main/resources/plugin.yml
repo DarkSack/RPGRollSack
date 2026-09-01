@@ -5,17 +5,7 @@ api-version: "26.1.1"
 author: Sack
 description: Trabajadores autónomos con IA por reglas, necesidades, personalidad, horarios, logística, economía y eventos — habitantes del mundo, no minions.
 depend: [RPGRoll]
-softdepend: [RPGRoll-Particles, RPGRoll-Effects, RPGRoll-Seasons, RPGRoll-Ranching, RPGRoll-Fishing, RPGRoll-Guilds, Vault, SackResourcePack]
-
-commands:
-  workersadmin:
-    description: Comandos administrativos de RPGRoll-Workers (Worker Studio)
-    usage: /workersadmin <browser|reload|spawn <profesion> [nombre]|designator> [args]
-    permission: rpgrollworkers.admin.*
-  workers:
-    description: Comandos de jugador de RPGRoll-Workers
-    usage: /workers <inspect|hire|fire|list>
-    permission: rpgrollworkers.use
+softdepend: [RPGRoll-FX, RPGRoll-Effects, RPGRoll-Seasons, RPGRoll-Ranching, RPGRoll-Fishing, RPGRoll-Guilds, Vault, SackResourcePack]
 
 permissions:
   rpgrollworkers.admin.*:

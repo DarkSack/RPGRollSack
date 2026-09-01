@@ -10,7 +10,7 @@ import com.sack.rpgroll.magic.core.Spell;
 import com.sack.rpgroll.magic.core.SpellCatalyst;
 import com.sack.rpgroll.magic.core.SpellComponent;
 import com.sack.rpgroll.magic.runtime.PlayerSpellbook;
-import com.sack.rpgroll.sackeffects.api.SackEffectsAPI;
+import com.sack.rpgroll.fx.api.RPGRollFXAPI;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -120,8 +120,8 @@ public class SpellCastEngine {
             }
         }
 
-        if (school.castEffectId() != null && SackEffectsAPI.isReady()) {
-            SackEffectsAPI.get().play(school.castEffectId(), caster);
+        if (school.castEffectId() != null && RPGRollFXAPI.isReady()) {
+            RPGRollFXAPI.get().play(school.castEffectId(), caster);
         }
     }
 
@@ -180,6 +180,21 @@ public class SpellCastEngine {
         double maxDistance = component.paramDouble("max-distance", 20) * context.rangeMultiplier();
         double hitRadius = component.paramDouble("hit-radius", 1.0);
         Particle trailParticle = parseParticle(component.param("trail-particle", "ENCHANTED_HIT"));
+
+        // La estela era literalmente una partícula por tick, sin dispersión:
+        // por eso un proyectil se veía como un hilo y no como una estela.
+        int trailCount = Math.max(1, component.paramInt("trail-count", 1));
+        double trailOffset = component.paramDouble("trail-offset", 0);
+        double trailSpeed = component.paramDouble("trail-speed", 0);
+        double trailDensity = Math.max(0.1, component.paramDouble("trail-density", 1.0));
+        int perTick = Math.max(1, (int) Math.round(trailCount * trailDensity));
+
+        // Un efecto completo de RPGRoll-FX disparado cada N ticks del
+        // vuelo: es lo que convierte una flecha en una onda sónica.
+        String trailEffectId = component.param("trail-effect", null);
+        int trailEffectInterval = Math.max(1, component.paramInt("trail-effect-interval", 4));
+        String impactEffectId = component.param("impact-effect", null);
+
         int maxTicks = (int) Math.ceil(maxDistance / speed) + 5;
 
         context.setCurrentLocation(origin.clone());
@@ -189,10 +204,24 @@ public class SpellCastEngine {
             int traveled = 0;
             final Location current = origin.clone();
 
+            /**
+             * El efecto de impacto tiene que dispararse en las TRES salidas del
+             * proyectil: bloque sólido, entidad golpeada y distancia agotada.
+             * Antes solo saltaba contra un bloque, así que pegarle a un mob —el
+             * caso más común— no mostraba nada.
+             */
+            void playImpact(Location where) {
+                if (impactEffectId != null) {
+                    com.sack.rpgroll.common.integration.ParticlesIntegration.play(
+                            impactEffectId, caster, where.clone());
+                }
+            }
+
             @Override
             public void run() {
 
                 if (traveled >= maxTicks) {
+                    playImpact(current);
                     cancel();
                     runFrom(context, components, index + 1);
                     return;
@@ -200,9 +229,17 @@ public class SpellCastEngine {
 
                 current.add(direction.clone().multiply(speed));
                 context.setCurrentLocation(current.clone());
-                world.spawnParticle(trailParticle, current, 1, 0, 0, 0, 0);
+
+                world.spawnParticle(trailParticle, current, perTick,
+                        trailOffset, trailOffset, trailOffset, trailSpeed);
+
+                if (trailEffectId != null && traveled % trailEffectInterval == 0) {
+                    com.sack.rpgroll.common.integration.ParticlesIntegration.play(
+                            trailEffectId, caster, current.clone());
+                }
 
                 if (current.getBlock().getType().isSolid()) {
+                    playImpact(current);
                     cancel();
                     runFrom(context, components, index + 1);
                     return;
@@ -222,6 +259,7 @@ public class SpellCastEngine {
                     context.setCurrentTargets(targets);
 
                     if (!context.piercing() || targets.size() >= context.maxPierces()) {
+                        playImpact(living.getLocation().add(0, living.getHeight() / 2.0, 0));
                         cancel();
                         runFrom(context, components, index + 1);
                         return;

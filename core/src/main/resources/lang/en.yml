@@ -169,6 +169,13 @@ admin_setrace:
   error: "&cError changing the race."
 
 # /rpg admin resetstats command
+admin_restore:
+  usage: "&cUsage: {usage}"
+  unknown_kind: "&cI don't understand '{value}'. Use: vida, mana, or nothing for both."
+  success: "&a✔ {player} restored — health: {health}, mana: {mana}."
+  notify_target: "&a✦ An admin restored you — health: {health}, mana: {mana}."
+  error: "&cCould not restore the player."
+
 admin_resetstats:
   usage: "&cUsage: {usage}"
   success: "&a✔ {player}'s stats have been reset. {points} stat point(s) available to reassign."
