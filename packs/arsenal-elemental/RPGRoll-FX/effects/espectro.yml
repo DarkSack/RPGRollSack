@@ -1,0 +1,40 @@
+id: espectro
+display-name: "&7&lEspectro"
+description: "Almas que suben en espiral."
+
+steps:
+  - type: SOUND
+    delay: 0
+    sound: PARTICLE_SOUL_ESCAPE
+    target: ALL_NEARBY
+    around: SELF
+    radius: 14.0
+    volume: 1.2
+    pitch: 0.8
+  - type: PARTICLE
+    delay: 0
+    particle: SOUL
+    shape: HELIX
+    draw-ticks: 12
+    target: LOCATION
+    radius: 1.54
+    height: 3.5
+    turns: 3
+    points: 165
+    count: 6
+    offset-x: 0.14
+    offset-y: 0.14
+    offset-z: 0.14
+    speed: 0.02
+  - type: PARTICLE
+    delay: 8
+    particle: SOUL
+    shape: SPHERE
+    target: LOCATION
+    radius: 1.82
+    points: 99
+    count: 6
+    offset-x: 0.14
+    offset-y: 0.14
+    offset-z: 0.14
+    speed: 0.05

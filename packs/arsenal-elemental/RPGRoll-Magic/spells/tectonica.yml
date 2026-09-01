@@ -1,0 +1,26 @@
+# El efecto visual lo pone RPGRoll-FX ('tectonica'); el hechizo solo
+# aporta el daño y el costo. Sin ese plugin el hechizo funciona igual,
+# solo que sin espectáculo.
+id: tectonica
+display-name: "&6Tectónica"
+icon: DEEPSLATE
+color: GOLD
+school: tierra
+rarity: UNCOMMON
+level: 11
+cast-time: 0
+cooldown: 120
+trigger: RIGHT_CLICK
+tree-tier: 1
+tags: [tierra, arsenal]
+description: "Dos ondas que parten el suelo desde el centro hacia afuera."
+
+cost:
+  mana: 28
+
+components:
+  - type: VISUAL
+    effect-id: tectonica
+  - type: DAMAGE_AREA
+    radius: 4
+    amount: 17

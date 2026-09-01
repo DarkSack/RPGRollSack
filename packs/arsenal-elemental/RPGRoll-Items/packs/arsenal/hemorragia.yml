@@ -1,0 +1,29 @@
+# Al activarse lanza el efecto 'hemorragia' de RPGRoll-FX.
+id: hemorragia
+pack: arsenal
+material: NETHERITE_SWORD
+display-name: "&4Hemorragia"
+lore:
+  - "&7Las heridas que abres no cierran solas."
+  - "&8Pack Arsenal Elemental."
+rarity: EPIC
+glow: true
+
+flags:
+  - HIDE_ATTRIBUTES
+
+stats:
+  damage: 6
+  critical_chance: 10
+
+requirements:
+  level: 10
+
+triggers:
+  ENTITY_HIT:
+    - type: PARTICLES
+      effect-id: hemorragia
+
+economy:
+  sell: 1000
+  buy: 2500

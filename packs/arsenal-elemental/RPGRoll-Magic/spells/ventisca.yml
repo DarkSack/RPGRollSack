@@ -1,0 +1,26 @@
+# El efecto visual lo pone RPGRoll-FX ('ventisca'); el hechizo solo
+# aporta el daño y el costo. Sin ese plugin el hechizo funciona igual,
+# solo que sin espectáculo.
+id: ventisca
+display-name: "&bVentisca"
+icon: PACKED_ICE
+color: AQUA
+school: escarcha
+rarity: COMMON
+level: 6
+cast-time: 0
+cooldown: 70
+trigger: RIGHT_CLICK
+tree-tier: 0
+tags: [escarcha, arsenal]
+description: "Tres anillos de escarcha que se abren en cadena y dejan el suelo escarchado."
+
+cost:
+  mana: 20
+
+components:
+  - type: VISUAL
+    effect-id: ventisca
+  - type: DAMAGE_AREA
+    radius: 3
+    amount: 12

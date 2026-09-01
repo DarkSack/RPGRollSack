@@ -1,0 +1,51 @@
+id: hielo_negro
+display-name: "&9&lHielo Negro"
+description: "Escarcha y sombra en el mismo anillo."
+
+steps:
+  - type: SOUND
+    delay: 0
+    sound: BLOCK_POWDER_SNOW_BREAK
+    target: ALL_NEARBY
+    around: SELF
+    radius: 14.0
+    volume: 1.2
+    pitch: 0.6
+  - type: PARTICLE
+    delay: 0
+    particle: SNOWFLAKE
+    shape: CIRCLE
+    draw-ticks: 5
+    target: LOCATION
+    radius: 2.52
+    points: 99
+    count: 6
+    offset-x: 0.14
+    offset-y: 0.14
+    offset-z: 0.14
+    speed: 0
+  - type: PARTICLE
+    delay: 2
+    particle: SQUID_INK
+    shape: CIRCLE
+    draw-ticks: 5
+    target: LOCATION
+    radius: 2.52
+    points: 99
+    count: 6
+    offset-x: 0.14
+    offset-y: 0.14
+    offset-z: 0.14
+    speed: 0.02
+  - type: PARTICLE
+    delay: 7
+    particle: SNOWFLAKE
+    shape: BURST
+    target: LOCATION
+    radius: 3.64
+    points: 121
+    count: 6
+    offset-x: 0.14
+    offset-y: 0.14
+    offset-z: 0.14
+    speed: 0.2

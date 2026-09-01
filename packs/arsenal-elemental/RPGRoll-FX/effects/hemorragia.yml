@@ -1,0 +1,38 @@
+id: hemorragia
+display-name: "&4&lHemorragia"
+description: "Un estallido corto y sucio, a ras del objetivo."
+
+steps:
+  - type: PARTICLE
+    delay: 0
+    particle: DAMAGE_INDICATOR
+    shape: BURST
+    target: TARGET
+    radius: 1.68
+    points: 77
+    count: 6
+    offset-x: 0.14
+    offset-y: 0.14
+    offset-z: 0.14
+    speed: 0.2
+  - type: SOUND
+    delay: 0
+    sound: ENTITY_PLAYER_ATTACK_CRIT
+    target: ALL_NEARBY
+    around: SELF
+    radius: 14.0
+    volume: 1.2
+    pitch: 0.7
+  - type: PARTICLE
+    delay: 4
+    particle: DUST_PLUME
+    shape: CIRCLE
+    draw-ticks: 5
+    target: TARGET
+    radius: 2.1
+    points: 66
+    count: 6
+    offset-x: 0.14
+    offset-y: 0.14
+    offset-z: 0.14
+    speed: 0.03

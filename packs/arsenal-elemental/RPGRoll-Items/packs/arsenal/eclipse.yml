@@ -1,0 +1,29 @@
+# Al activarse lanza el efecto 'eclipse' de RPGRoll-FX.
+id: eclipse
+pack: arsenal
+material: ECHO_SHARD
+display-name: "&8Eclipse"
+lore:
+  - "&7Cuando te hieren, el mundo se apaga un instante."
+  - "&8Pack Arsenal Elemental."
+rarity: LEGENDARY
+glow: true
+
+flags:
+  - HIDE_ATTRIBUTES
+
+stats:
+  damage: 9
+  critical_chance: 14
+
+requirements:
+  level: 18
+
+triggers:
+  RIGHT_CLICK:
+    - type: PARTICLES
+      effect-id: eclipse
+
+economy:
+  sell: 1800
+  buy: 4500

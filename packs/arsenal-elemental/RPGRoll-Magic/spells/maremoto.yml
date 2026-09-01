@@ -1,0 +1,26 @@
+# El efecto visual lo pone RPGRoll-FX ('maremoto'); el hechizo solo
+# aporta el daño y el costo. Sin ese plugin el hechizo funciona igual,
+# solo que sin espectáculo.
+id: maremoto
+display-name: "&3Maremoto"
+icon: HEART_OF_THE_SEA
+color: GREEN
+school: naturaleza
+rarity: RARE
+level: 13
+cast-time: 0
+cooldown: 145
+trigger: RIGHT_CLICK
+tree-tier: 1
+tags: [naturaleza, arsenal]
+description: "Una ola que se levanta en espiral y rompe hacia fuera."
+
+cost:
+  mana: 34
+
+components:
+  - type: VISUAL
+    effect-id: maremoto
+  - type: DAMAGE_AREA
+    radius: 4
+    amount: 19

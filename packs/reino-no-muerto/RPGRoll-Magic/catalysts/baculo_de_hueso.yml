@@ -1,0 +1,9 @@
+# Catalizador del pack: pega más fuerte y llega más lejos, pero cobra
+# más maná. Pensado para el nigromante que acepta quedarse seco.
+id: baculo_de_hueso
+display-name: "&5Báculo de Hueso"
+material: BONE
+description: "Tallado con la tibia de un rey que ya nadie nombra. Canaliza mejor, cuesta más."
+power-multiplier: 1.35
+cost-multiplier: 1.20
+range-multiplier: 1.15

@@ -1,0 +1,26 @@
+# El efecto visual lo pone RPGRoll-FX ('aureola'); el hechizo solo
+# aporta el daño y el costo. Sin ese plugin el hechizo funciona igual,
+# solo que sin espectáculo.
+id: aureola
+display-name: "&fAureola"
+icon: BEACON
+color: WHITE
+school: luz
+rarity: RARE
+level: 14
+cast-time: 0
+cooldown: 150
+trigger: RIGHT_CLICK
+tree-tier: 1
+tags: [luz, arsenal]
+description: "Tres anillos de luz que ascienden y estallan en el último."
+
+cost:
+  mana: 30
+
+components:
+  - type: VISUAL
+    effect-id: aureola
+  - type: DAMAGE_AREA
+    radius: 4
+    amount: 20

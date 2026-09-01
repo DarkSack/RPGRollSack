@@ -1,0 +1,31 @@
+# Estela de "fuego negro": humo oscuro con brasas de alma. Corta, para
+# repetirse durante el vuelo sin saturar.
+id: fuego_negro
+display-name: "&8&lFuego Negro"
+description: "Estela oscura con brasas, para proyectiles."
+
+steps:
+  - type: PARTICLE
+    delay: 0
+    particle: SOUL_FIRE_FLAME
+    shape: SPHERE
+    target: LOCATION
+    radius: 0.7
+    points: 30
+    count: 4
+    offset-x: 0.12
+    offset-y: 0.12
+    offset-z: 0.12
+    speed: 0.01
+  - type: PARTICLE
+    delay: 0
+    particle: SQUID_INK
+    shape: SPHERE
+    target: LOCATION
+    radius: 0.9
+    points: 24
+    count: 3
+    offset-x: 0.15
+    offset-y: 0.15
+    offset-z: 0.15
+    speed: 0.02

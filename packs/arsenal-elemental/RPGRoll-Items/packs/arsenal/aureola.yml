@@ -1,0 +1,29 @@
+# Al activarse lanza el efecto 'aureola' de RPGRoll-FX.
+id: aureola
+pack: arsenal
+material: BEACON
+display-name: "&fAureola"
+lore:
+  - "&7La luz te sigue, aunque no la pidas."
+  - "&8Pack Arsenal Elemental."
+rarity: LEGENDARY
+glow: true
+
+flags:
+  - HIDE_ATTRIBUTES
+
+stats:
+  damage: 7
+  critical_chance: 12
+
+requirements:
+  level: 14
+
+triggers:
+  RIGHT_CLICK:
+    - type: PARTICLES
+      effect-id: aureola
+
+economy:
+  sell: 1400
+  buy: 3500

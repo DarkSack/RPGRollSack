@@ -1,0 +1,28 @@
+# Hechizo de entrada: barato, sin proyectil, para nivel 1.
+id: toque_gelido
+display-name: "&bToque Gélido"
+icon: PHANTOM_MEMBRANE
+color: AQUA
+school: nigromancia
+rarity: COMMON
+level: 1
+cast-time: 0
+cooldown: 30
+trigger: RIGHT_CLICK
+tree-tier: 0
+tags: [nigromancia, hielo]
+description: "El frío de la tumba, concentrado en una mano. Poco daño, casi sin costo."
+
+cost:
+  mana: 10
+
+components:
+  - type: DAMAGE_DIRECT
+    amount: 6
+  - type: PARTICLE
+    particle: SNOWFLAKE
+    count: 18
+  - type: SOUND
+    sound: BLOCK_GLASS_BREAK
+    volume: 0.9
+    pitch: 0.7

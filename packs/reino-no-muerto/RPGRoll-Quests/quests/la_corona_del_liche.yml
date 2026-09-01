@@ -1,0 +1,27 @@
+# Quest 3 de 3: el cierre. Pide el jefe final y paga como tal.
+id: la_corona_del_liche
+display-name: "&6La Corona del Liche"
+category: MAIN_STORY
+difficulty: LEGENDARY
+repeatable: false
+
+requirements:
+  level: 28
+
+stages:
+  - id: derrotar_al_liche
+    objectives:
+      - type: KILL_ENTITY
+        entity: WITHER_SKELETON
+        amount: 1
+        description: "Derrota al Liche del Sepulcro"
+    on-complete:
+      - type: TITLE
+        title: "&6&lLA CORONA CAE"
+        subtitle: "&7El Reino No-Muerto queda sin rey"
+      - type: MESSAGE
+        value: "&7La corona sigue ahí, esperando otra cabeza."
+
+rewards:
+  money: 1200
+  experience: 2000

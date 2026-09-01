@@ -1,0 +1,91 @@
+# Antes usaba END_ROD, SNOWFLAKE y ENCHANT: las tres son blancas, por eso se
+# veía de un solo color. Ahora cada anillo lleva una partícula con color propio
+# y una forma distinta, para distinguirlos por color Y por silueta.
+id: prisma
+display-name: "&b&lPrisma"
+description: "Un triángulo rojo, un cuadrado verde y un hexágono morado, uno sobre otro."
+
+steps:
+  - type: SOUND
+    delay: 0
+    sound: BLOCK_AMETHYST_BLOCK_CHIME
+    target: ALL_NEARBY
+    around: SELF
+    radius: 16
+    volume: 1.2
+    pitch: 1.0
+
+  # Triángulo rojo
+  - type: PARTICLE
+    delay: 0
+    particle: CRIMSON_SPORE
+    shape: POLYGON
+    sides: 3
+    target: LOCATION
+    radius: 2.6
+    points: 150
+    density: 1.0
+    count: 6
+    offset-x: 0.05
+    offset-y: 0.05
+    offset-z: 0.05
+    draw-ticks: 6
+    speed: 0
+
+  # Cuadrado verde
+  - type: PARTICLE
+    delay: 7
+    particle: HAPPY_VILLAGER
+    shape: POLYGON
+    sides: 4
+    target: LOCATION
+    radius: 3.4
+    points: 180
+    count: 6
+    offset-x: 0.05
+    offset-y: 0.05
+    offset-z: 0.05
+    draw-ticks: 6
+    speed: 0
+
+  # Hexágono morado
+  - type: PARTICLE
+    delay: 14
+    particle: WITCH
+    shape: POLYGON
+    sides: 6
+    target: LOCATION
+    radius: 4.2
+    points: 210
+    count: 6
+    offset-x: 0.05
+    offset-y: 0.05
+    offset-z: 0.05
+    draw-ticks: 7
+    speed: 0
+
+  # Estrella dorada de remate
+  - type: PARTICLE
+    delay: 22
+    particle: ELECTRIC_SPARK
+    shape: STAR
+    points-count: 5
+    inner-radius: 1.6
+    target: LOCATION
+    radius: 4.6
+    points: 200
+    count: 7
+    offset-x: 0.06
+    offset-y: 0.06
+    offset-z: 0.06
+    draw-ticks: 8
+    speed: 0
+
+  - type: SOUND
+    delay: 22
+    sound: BLOCK_AMETHYST_BLOCK_RESONATE
+    target: ALL_NEARBY
+    around: SELF
+    radius: 16
+    volume: 1.3
+    pitch: 1.2

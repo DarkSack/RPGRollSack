@@ -1,0 +1,26 @@
+# El efecto visual lo pone RPGRoll-FX ('vendaval'); el hechizo solo
+# aporta el daño y el costo. Sin ese plugin el hechizo funciona igual,
+# solo que sin espectáculo.
+id: vendaval
+display-name: "&fVendaval"
+icon: FEATHER
+color: YELLOW
+school: tormenta
+rarity: UNCOMMON
+level: 7
+cast-time: 0
+cooldown: 90
+trigger: RIGHT_CLICK
+tree-tier: 1
+tags: [tormenta, arsenal]
+description: "Una espiral de aire que se abre en abanico hacia adelante."
+
+cost:
+  mana: 18
+
+components:
+  - type: VISUAL
+    effect-id: vendaval
+  - type: DAMAGE_AREA
+    radius: 3
+    amount: 13

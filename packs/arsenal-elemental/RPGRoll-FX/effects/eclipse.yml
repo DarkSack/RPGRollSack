@@ -1,0 +1,38 @@
+id: eclipse
+display-name: "&8&lEclipse"
+description: "Un disco negro con borde de luz."
+
+steps:
+  - type: SOUND
+    delay: 0
+    sound: ENTITY_ELDER_GUARDIAN_CURSE
+    target: ALL_NEARBY
+    around: SELF
+    radius: 19.6
+    volume: 0.9
+    pitch: 0.8
+  - type: PARTICLE
+    delay: 0
+    particle: SQUID_INK
+    shape: SPHERE
+    target: LOCATION
+    radius: 2.24
+    points: 154
+    count: 6
+    offset-x: 0.14
+    offset-y: 0.14
+    offset-z: 0.14
+    speed: 0
+  - type: PARTICLE
+    delay: 4
+    particle: END_ROD
+    shape: CIRCLE
+    draw-ticks: 5
+    target: LOCATION
+    radius: 3.36
+    points: 110
+    count: 6
+    offset-x: 0.14
+    offset-y: 0.14
+    offset-z: 0.14
+    speed: 0

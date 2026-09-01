@@ -1,0 +1,38 @@
+# La otra variante: estela oscura y explosión de plasma al pegar.
+id: flecha_de_fuego_negro
+display-name: "&8Flecha de Fuego Negro"
+icon: SPECTRAL_ARROW
+color: DARK_GRAY
+school: sombra
+rarity: RARE
+level: 16
+cast-time: 0
+cooldown: 130
+trigger: RIGHT_CLICK
+tree-tier: 2
+tags: [sombra, proyectil, arsenal]
+description: "Una saeta que arrastra fuego negro y estalla en plasma al impactar."
+
+cost:
+  mana: 38
+
+components:
+  - type: SOUND
+    sound: ITEM_CROSSBOW_SHOOT
+    volume: 1.2
+    pitch: 0.6
+
+  - type: PROJECTILE
+    speed: 1.8
+    max-distance: 40
+    hit-radius: 1.2
+    trail-particle: SQUID_INK
+    trail-count: 10
+    trail-offset: 0.2
+    trail-density: 2.0
+    trail-effect: fuego_negro
+    trail-effect-interval: 2
+    impact-effect: plasma
+
+  - type: DAMAGE_DIRECT
+    amount: 16

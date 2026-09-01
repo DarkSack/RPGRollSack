@@ -1,0 +1,29 @@
+# Al activarse lanza el efecto 'incandescencia' de RPGRoll-FX.
+id: incandescencia
+pack: arsenal
+material: BLAZE_ROD
+display-name: "&6Incandescencia"
+lore:
+  - "&7Prende lo que toques. Lo que arde, arde de verdad."
+  - "&8Pack Arsenal Elemental."
+rarity: RARE
+glow: true
+
+flags:
+  - HIDE_ATTRIBUTES
+
+stats:
+  damage: 4
+  critical_chance: 7
+
+requirements:
+  level: 4
+
+triggers:
+  ENTITY_HIT:
+    - type: PARTICLES
+      effect-id: incandescencia
+
+economy:
+  sell: 400
+  buy: 1000

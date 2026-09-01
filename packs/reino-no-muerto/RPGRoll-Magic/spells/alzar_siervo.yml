@@ -1,0 +1,29 @@
+# El hechizo insignia de la escuela: invoca un no-muerto que pelea por ti.
+# Nivel medio y cooldown de 3 minutos para que sea una decisión, no un hábito.
+id: alzar_siervo
+display-name: "&8Alzar Siervo"
+icon: SKELETON_SKULL
+color: DARK_GRAY
+school: nigromancia
+rarity: RARE
+level: 12
+cast-time: 15
+cooldown: 180
+trigger: RIGHT_CLICK
+tree-tier: 1
+tags: [nigromancia, invocacion]
+description: "Levanta a un muerto cercano para que pelee de tu lado. No pregunta si quería."
+
+cost:
+  mana: 45
+
+components:
+  - type: PARTICLE
+    particle: SOUL
+    count: 40
+  - type: SUMMON
+    entity: SKELETON
+  - type: SOUND
+    sound: ENTITY_SKELETON_AMBIENT
+    volume: 1.0
+    pitch: 0.6

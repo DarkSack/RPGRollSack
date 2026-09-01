@@ -1,0 +1,17 @@
+# La escuela del pack. Afinidades pensadas para que elegir raza/clase
+# importe: un enano no nigromantiza bien, un mago sí.
+id: nigromancia
+display-name: "&5Nigromancia"
+color: DARK_PURPLE
+icon: WITHER_SKELETON_SKULL
+description: "Escuela prohibida que negocia con lo que ya murió. Cura poco, cobra siempre."
+cast-sound: ENTITY_WITHER_AMBIENT
+
+race-affinities:
+  draconido: 0.15
+  elfo: -0.2
+  enano: -0.15
+
+class-affinities:
+  mago: 0.25
+  guerrero: -0.1

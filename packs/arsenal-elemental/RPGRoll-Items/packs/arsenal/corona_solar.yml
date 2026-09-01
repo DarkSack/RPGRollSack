@@ -1,0 +1,29 @@
+# Al activarse lanza el efecto 'corona_solar' de RPGRoll-FX.
+id: corona_solar
+pack: arsenal
+material: GOLDEN_APPLE
+display-name: "&eCorona Solar"
+lore:
+  - "&7Llevas un sol pequeño encima."
+  - "&8Pack Arsenal Elemental."
+rarity: LEGENDARY
+glow: true
+
+flags:
+  - HIDE_ATTRIBUTES
+
+stats:
+  damage: 9
+  critical_chance: 15
+
+requirements:
+  level: 20
+
+triggers:
+  RIGHT_CLICK:
+    - type: PARTICLES
+      effect-id: corona_solar
+
+economy:
+  sell: 2000
+  buy: 5000

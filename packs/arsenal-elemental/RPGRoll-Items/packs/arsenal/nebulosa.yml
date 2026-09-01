@@ -1,0 +1,29 @@
+# Al activarse lanza el efecto 'nebulosa' de RPGRoll-FX.
+id: nebulosa
+pack: arsenal
+material: NETHER_STAR
+display-name: "&5Nebulosa"
+lore:
+  - "&7Vistes un pedazo de cielo."
+  - "&8Pack Arsenal Elemental."
+rarity: LEGENDARY
+glow: true
+
+flags:
+  - HIDE_ATTRIBUTES
+
+stats:
+  damage: 10
+  critical_chance: 16
+
+requirements:
+  level: 22
+
+triggers:
+  EQUIP:
+    - type: PARTICLES
+      effect-id: nebulosa
+
+economy:
+  sell: 2200
+  buy: 5500

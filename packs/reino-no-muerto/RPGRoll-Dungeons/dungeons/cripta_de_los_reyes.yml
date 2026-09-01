@@ -1,0 +1,165 @@
+# La mazmorra que ata el pack: usa los 5 mobs en orden de dificultad y
+# termina en el liche. Las coordenadas son de ejemplo — hay que moverlas
+# a donde construyas la cripta en tu mundo (ver LEEME.md).
+id: cripta_de_los_reyes
+category: crypt
+display-name: "&5Cripta de los Reyes"
+icon: WITHER_SKELETON_SKULL
+description: "Bajo la capilla derruida duerme una dinastía que nunca aceptó estar muerta."
+recommended-level: 25
+estimated-minutes: 35
+min-players: 1
+max-players: 4
+cooldown: 24h
+repeatable: true
+tags: [crypt, no_muerto, reino_no_muerto]
+
+lobby:
+  world: world
+  x: 0
+  y: 64
+  z: 0
+  yaw: 0
+  pitch: 0
+
+bounds:
+  world: world
+  min-x: -60
+  min-y: 20
+  min-z: -60
+  max-x: 60
+  max-y: 80
+  max-z: 60
+
+rooms:
+  - id: umbral
+    type: ENTRANCE
+    entry:
+      world: world
+      x: 0
+      y: 50
+      z: 10
+    events:
+      ROOM_ENTER:
+        - type: MESSAGE
+          value: "&5El sello de la puerta está roto desde adentro."
+        - type: SOUND
+          sound: BLOCK_IRON_DOOR_OPEN
+          volume: "1.0"
+          pitch: "0.6"
+
+  - id: galeria_de_los_siervos
+    type: COMBAT
+    entry:
+      world: world
+      x: 0
+      y: 50
+      z: -10
+    waves:
+      - id: primera
+        mobs:
+          - id: siervo_sepulcro
+            amount: 4
+        time-limit: 0s
+        delay-before: 0s
+      - id: segunda
+        mobs:
+          - id: siervo_sepulcro
+            amount: 3
+          - id: centinela_osario
+            amount: 2
+        time-limit: 0s
+        delay-before: 5s
+    events:
+      ROOM_ENTER:
+        - type: MESSAGE
+          value: "&7Los harapos se mueven antes que los cuerpos."
+
+  - id: osario
+    type: COMBAT
+    entry:
+      world: world
+      x: 0
+      y: 50
+      z: -30
+    waves:
+      - id: unica
+        mobs:
+          - id: centinela_osario
+            amount: 3
+          - id: planidera_espectral
+            amount: 2
+        time-limit: 0s
+        delay-before: 0s
+    events:
+      ROOM_ENTER:
+        - type: MESSAGE
+          value: "&bUn llanto apaga las antorchas."
+        - type: SOUND
+          sound: ENTITY_GHAST_AMBIENT
+          volume: "0.8"
+          pitch: "0.7"
+
+  - id: sala_del_juramento
+    type: COMBAT
+    entry:
+      world: world
+      x: 0
+      y: 45
+      z: -45
+    waves:
+      - id: guardian
+        mobs:
+          - id: caballero_caido
+            amount: 1
+        time-limit: 0s
+        delay-before: 0s
+    events:
+      ROOM_ENTER:
+        - type: TITLE
+          title: "&4Sala del Juramento"
+          subtitle: "&7Algo se levanta al fondo"
+
+  - id: descanso
+    type: REST
+    entry:
+      world: world
+      x: 0
+      y: 45
+      z: -55
+    events:
+      ROOM_ENTER:
+        - type: MESSAGE
+          value: "&aUn tramo sin muertos. Aprovéchalo."
+
+  - id: sepulcro
+    type: BOSS
+    entry:
+      world: world
+      x: 0
+      y: 40
+      z: -70
+    waves:
+      - id: liche
+        mobs:
+          - id: liche_del_sepulcro
+            amount: 1
+        time-limit: 0s
+        delay-before: 3s
+    events:
+      ROOM_ENTER:
+        - type: TITLE
+          title: "&5&lEL SEPULCRO"
+          subtitle: "&7La corona todavía brilla"
+        - type: SOUND
+          sound: ENTITY_WITHER_SPAWN
+          volume: "1.0"
+          pitch: "0.5"
+
+rewards:
+  - type: MONEY
+    amount-min: 400
+    amount-max: 700
+  - type: EXPERIENCE
+    amount-min: 600
+    amount-max: 900

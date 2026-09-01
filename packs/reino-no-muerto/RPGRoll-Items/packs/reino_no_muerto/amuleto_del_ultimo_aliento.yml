@@ -1,0 +1,39 @@
+# La reliquia del pack: no da estadísticas grandes, da un botón.
+# Cooldown de 5 minutos para que sea un salvavidas, no una rutina.
+id: amuleto_del_ultimo_aliento
+pack: reino_no_muerto
+material: TOTEM_OF_UNDYING
+display-name: "&6Amuleto del Último Aliento"
+lore:
+  - "&7El liche lo usaba para no morir."
+  - "&7Funciona igual de bien para los vivos."
+  - "&8Clic derecho: recupera vida."
+rarity: LEGENDARY
+glow: true
+
+stats:
+  health: 10
+
+requirements:
+  level: 25
+
+abilities:
+  - id: ultimo_aliento
+    display-name: "&6Último Aliento"
+    passive: false
+    trigger: RIGHT_CLICK
+    cooldown: 300s
+    actions:
+      - type: HEAL
+        amount: "12"
+      - type: PARTICLE
+        particle: TOTEM_OF_UNDYING
+        count: "40"
+      - type: SOUND
+        sound: ITEM_TOTEM_USE
+        volume: "1.0"
+        pitch: "1.0"
+
+economy:
+  sell: 1500
+  buy: 3000

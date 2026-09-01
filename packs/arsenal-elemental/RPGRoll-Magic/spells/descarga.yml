@@ -1,0 +1,26 @@
+# El efecto visual lo pone RPGRoll-FX ('descarga'); el hechizo solo
+# aporta el daño y el costo. Sin ese plugin el hechizo funciona igual,
+# solo que sin espectáculo.
+id: descarga
+display-name: "&eDescarga"
+icon: LIGHTNING_ROD
+color: YELLOW
+school: tormenta
+rarity: UNCOMMON
+level: 9
+cast-time: 0
+cooldown: 110
+trigger: RIGHT_CLICK
+tree-tier: 1
+tags: [tormenta, arsenal]
+description: "Un rayo que viaja hasta el objetivo y revienta al llegar."
+
+cost:
+  mana: 26
+
+components:
+  - type: VISUAL
+    effect-id: descarga
+  - type: DAMAGE_AREA
+    radius: 4
+    amount: 15

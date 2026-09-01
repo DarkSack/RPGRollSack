@@ -1,0 +1,6 @@
+id: fuego
+display-name: "&6Fuego"
+color: GOLD
+icon: BLAZE_POWDER
+description: "Destrucción directa: poco control, mucho daño."
+cast-sound: ENTITY_BLAZE_SHOOT

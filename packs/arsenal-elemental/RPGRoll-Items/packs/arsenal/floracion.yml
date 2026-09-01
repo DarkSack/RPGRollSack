@@ -1,0 +1,29 @@
+# Al activarse lanza el efecto 'floracion' de RPGRoll-FX.
+id: floracion
+pack: arsenal
+material: FLOWERING_AZALEA
+display-name: "&aFloración"
+lore:
+  - "&7Caminas y el suelo responde."
+  - "&8Pack Arsenal Elemental."
+rarity: UNCOMMON
+glow: true
+
+flags:
+  - HIDE_ATTRIBUTES
+
+stats:
+  damage: 4
+  critical_chance: 7
+
+requirements:
+  level: 5
+
+triggers:
+  EQUIP:
+    - type: PARTICLES
+      effect-id: floracion
+
+economy:
+  sell: 500
+  buy: 1250

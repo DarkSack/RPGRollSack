@@ -1,0 +1,26 @@
+# El efecto visual lo pone RPGRoll-FX ('apoteosis'); el hechizo solo
+# aporta el daño y el costo. Sin ese plugin el hechizo funciona igual,
+# solo que sin espectáculo.
+id: apoteosis
+display-name: "&6Apoteosis"
+icon: DRAGON_EGG
+color: WHITE
+school: luz
+rarity: LEGENDARY
+level: 25
+cast-time: 0
+cooldown: 300
+trigger: RIGHT_CLICK
+tree-tier: 3
+tags: [luz, arsenal]
+description: "El más grande del pack: título, bossbar y tres capas de partículas."
+
+cost:
+  mana: 60
+
+components:
+  - type: VISUAL
+    effect-id: apoteosis
+  - type: DAMAGE_AREA
+    radius: 6
+    amount: 31

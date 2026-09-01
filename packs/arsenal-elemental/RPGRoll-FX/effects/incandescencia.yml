@@ -1,0 +1,45 @@
+id: incandescencia
+display-name: "&6&lIncandescencia"
+description: "Un cono de fuego que estalla hacia adelante."
+
+steps:
+  - type: SOUND
+    delay: 0
+    sound: ITEM_FIRECHARGE_USE
+    target: SELF
+    volume: 1.2
+    pitch: 0.8
+  - type: PARTICLE
+    delay: 0
+    particle: FLAME
+    shape: CONE
+    draw-ticks: 6
+    target: LOCATION
+    radius: 1.68
+    length: 4.0
+    points: 132
+    count: 6
+    offset-x: 0.14
+    offset-y: 0.14
+    offset-z: 0.14
+    speed: 0.02
+  - type: PARTICLE
+    delay: 5
+    particle: LAVA
+    shape: BURST
+    target: LOCATION
+    radius: 2.8
+    points: 88
+    count: 6
+    offset-x: 0.14
+    offset-y: 0.14
+    offset-z: 0.14
+    speed: 0.25
+  - type: SOUND
+    delay: 5
+    sound: ENTITY_BLAZE_SHOOT
+    target: ALL_NEARBY
+    around: SELF
+    radius: 16.8
+    volume: 1.0
+    pitch: 0.7

@@ -1,0 +1,27 @@
+# Dispara el efecto 'incandescencia' de RPGRoll-FX además de su daño.
+# El efecto es lo que lo hace notarse; el daño es lo que lo hace valer.
+id: incandescencia
+display-name: "&6Incandescencia"
+rarity: UNCOMMON
+max-level: 3
+
+categories:
+  - WEAPON
+
+trigger:
+  - PLAYER_ATTACK
+
+levels:
+  1:
+    power: 2
+  2:
+    power: 4
+  3:
+    power: 7
+
+effects:
+  - type: PARTICLES
+    effect-id: incandescencia
+  - type: DAMAGE
+    amount: "{power}"
+    apply-to: target

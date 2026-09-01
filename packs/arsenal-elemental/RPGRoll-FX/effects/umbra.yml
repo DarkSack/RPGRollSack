@@ -1,0 +1,38 @@
+id: umbra
+display-name: "&8&lUmbra"
+description: "Una caja de sombra se cierra sobre el objetivo."
+
+steps:
+  - type: SOUND
+    delay: 0
+    sound: ENTITY_WARDEN_HEARTBEAT
+    target: ALL_NEARBY
+    around: SELF
+    radius: 16.8
+    volume: 1.2
+    pitch: 0.5
+  - type: PARTICLE
+    delay: 0
+    particle: SQUID_INK
+    shape: CUBE_OUTLINE
+    draw-ticks: 8
+    target: LOCATION
+    radius: 2.8
+    points: 132
+    count: 6
+    offset-x: 0.14
+    offset-y: 0.14
+    offset-z: 0.14
+    speed: 0
+  - type: PARTICLE
+    delay: 6
+    particle: LARGE_SMOKE
+    shape: SPHERE
+    target: LOCATION
+    radius: 1.96
+    points: 121
+    count: 6
+    offset-x: 0.14
+    offset-y: 0.14
+    offset-z: 0.14
+    speed: 0.02

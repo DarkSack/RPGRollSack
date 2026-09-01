@@ -1,0 +1,79 @@
+id: descarga
+display-name: "&e&lDescarga"
+description: "Un rayo que viaja hasta el objetivo y revienta al llegar. Sin objetivo, se proyecta hacia donde miras."
+
+steps:
+  - type: SOUND
+    delay: 0
+    sound: ENTITY_LIGHTNING_BOLT_THUNDER
+    target: ALL_NEARBY
+    around: SELF
+    radius: 20
+    volume: 1.0
+    pitch: 1.4
+
+  # El haz principal. 'length' solo se usa si no hay objetivo: entonces el
+  # rayo se dispara hacia donde mira el lanzador en vez de quedar en cero.
+  - type: PARTICLE
+    delay: 0
+    particle: ELECTRIC_SPARK
+    shape: LINE
+    target: SELF
+    to: TARGET
+    length: 16
+    points: 120
+    count: 8
+    offset-x: 0.12
+    offset-y: 0.12
+    offset-z: 0.12
+    speed: 0.02
+
+  # Segundo haz superpuesto, más disperso: le da grosor al rayo.
+  - type: PARTICLE
+    delay: 1
+    particle: END_ROD
+    shape: LINE
+    target: SELF
+    to: TARGET
+    length: 16
+    points: 90
+    count: 5
+    offset-x: 0.3
+    offset-y: 0.3
+    offset-z: 0.3
+    speed: 0
+
+  - type: PARTICLE
+    delay: 4
+    particle: ELECTRIC_SPARK
+    shape: BURST
+    target: TARGET
+    radius: 3.0
+    points: 140
+    count: 8
+    offset-x: 0.2
+    offset-y: 0.2
+    offset-z: 0.2
+    speed: 0.35
+
+  - type: PARTICLE
+    delay: 4
+    particle: FIREWORK
+    shape: SPHERE
+    target: TARGET
+    radius: 1.8
+    points: 110
+    count: 6
+    offset-x: 0.15
+    offset-y: 0.15
+    offset-z: 0.15
+    speed: 0.1
+
+  - type: SOUND
+    delay: 4
+    sound: ENTITY_LIGHTNING_BOLT_IMPACT
+    target: ALL_NEARBY
+    around: SELF
+    radius: 20
+    volume: 1.2
+    pitch: 1.0

@@ -1,0 +1,26 @@
+# El efecto visual lo pone RPGRoll-FX ('corona_solar'); el hechizo solo
+# aporta el daño y el costo. Sin ese plugin el hechizo funciona igual,
+# solo que sin espectáculo.
+id: corona_solar
+display-name: "&eCorona Solar"
+icon: GOLDEN_APPLE
+color: GOLD
+school: fuego
+rarity: EPIC
+level: 20
+cast-time: 0
+cooldown: 210
+trigger: RIGHT_CLICK
+tree-tier: 2
+tags: [fuego, arsenal]
+description: "Un sol que se abre alrededor de quien lo lanza."
+
+cost:
+  mana: 46
+
+components:
+  - type: VISUAL
+    effect-id: corona_solar
+  - type: DAMAGE_AREA
+    radius: 5
+    amount: 26

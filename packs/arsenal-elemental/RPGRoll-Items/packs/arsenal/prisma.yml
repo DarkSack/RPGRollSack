@@ -1,0 +1,29 @@
+# Al activarse lanza el efecto 'prisma' de RPGRoll-FX.
+id: prisma
+pack: arsenal
+material: AMETHYST_SHARD
+display-name: "&bPrisma"
+lore:
+  - "&7La luz se descompone al golpearte."
+  - "&8Pack Arsenal Elemental."
+rarity: RARE
+glow: true
+
+flags:
+  - HIDE_ATTRIBUTES
+
+stats:
+  damage: 5
+  critical_chance: 9
+
+requirements:
+  level: 8
+
+triggers:
+  EQUIP:
+    - type: PARTICLES
+      effect-id: prisma
+
+economy:
+  sell: 800
+  buy: 2000

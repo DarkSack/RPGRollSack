@@ -1,0 +1,69 @@
+# El sónico de verdad. El del Warden es una LÍNEA de partículas SONIC_BOOM,
+# no una suelta: una sola se ve como un anillo perdido. Acá se traza el haz
+# y encima se abre la onda de choque.
+#
+# SONIC_BOOM lleva count 1 y cero dispersión a propósito: es una partícula
+# grande y con animación propia, apilarlas la ensucia en vez de agrandarla.
+id: impacto_sonico
+display-name: "&3&lImpacto Sónico"
+description: "El haz del Warden: línea de ondas sónicas más la onda de choque."
+
+steps:
+  - type: SOUND
+    delay: 0
+    sound: ENTITY_WARDEN_SONIC_BOOM
+    target: ALL_NEARBY
+    around: SELF
+    radius: 25
+    volume: 1.4
+    pitch: 1.0
+
+  # El haz: 14 ondas en línea, como las dibuja el Warden
+  - type: PARTICLE
+    delay: 0
+    particle: SONIC_BOOM
+    shape: LINE
+    target: SELF
+    to: TARGET
+    length: 14
+    points: 14
+    count: 1
+    speed: 0
+    draw-ticks: 5
+
+  # Onda de choque alrededor del impacto
+  - type: PARTICLE
+    delay: 3
+    particle: SOUL_FIRE_FLAME
+    shape: CIRCLE
+    target: LOCATION
+    radius: 4.5
+    points: 180
+    count: 7
+    offset-x: 0.2
+    offset-y: 0.2
+    offset-z: 0.2
+    draw-ticks: 5
+    speed: 0.1
+
+  - type: PARTICLE
+    delay: 6
+    particle: ELECTRIC_SPARK
+    shape: BURST
+    target: LOCATION
+    radius: 5.5
+    points: 200
+    count: 8
+    offset-x: 0.25
+    offset-y: 0.25
+    offset-z: 0.25
+    speed: 0.4
+
+  - type: SOUND
+    delay: 6
+    sound: ENTITY_WARDEN_ATTACK_IMPACT
+    target: ALL_NEARBY
+    around: SELF
+    radius: 25
+    volume: 1.3
+    pitch: 0.9

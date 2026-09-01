@@ -1,0 +1,26 @@
+# El efecto visual lo pone RPGRoll-FX ('plasma'); el hechizo solo
+# aporta el daño y el costo. Sin ese plugin el hechizo funciona igual,
+# solo que sin espectáculo.
+id: plasma
+display-name: "&dPlasma"
+icon: MAGMA_CREAM
+color: GOLD
+school: fuego
+rarity: EPIC
+level: 15
+cast-time: 0
+cooldown: 160
+trigger: RIGHT_CLICK
+tree-tier: 2
+tags: [fuego, arsenal]
+description: "Una esfera de fuego de alma que aguanta un segundo y revienta."
+
+cost:
+  mana: 36
+
+components:
+  - type: VISUAL
+    effect-id: plasma
+  - type: DAMAGE_AREA
+    radius: 4
+    amount: 21

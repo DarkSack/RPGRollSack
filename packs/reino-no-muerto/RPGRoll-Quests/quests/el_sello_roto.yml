@@ -1,0 +1,25 @@
+# Quest 1 de 3: la de entrada. Mata mobs del pack en superficie para
+# que el jugador conozca a los siervos antes de bajar.
+id: el_sello_roto
+display-name: "&5El Sello Roto"
+category: MAIN_STORY
+difficulty: NORMAL
+repeatable: false
+
+requirements:
+  level: 15
+
+stages:
+  - id: limpiar_alrededores
+    objectives:
+      - type: KILL_ENTITY
+        entity: ZOMBIE
+        amount: 15
+        description: "Elimina 15 no-muertos alrededor de la capilla"
+    on-complete:
+      - type: MESSAGE
+        value: "&7El suelo deja de temblar. Por ahora."
+
+rewards:
+  money: 200
+  experience: 350

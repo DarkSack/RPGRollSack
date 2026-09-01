@@ -1,0 +1,29 @@
+# Al activarse lanza el efecto 'espectro' de RPGRoll-FX.
+id: espectro
+pack: arsenal
+material: SOUL_LANTERN
+display-name: "&7Espectro"
+lore:
+  - "&7Algo se va contigo cuando caes."
+  - "&8Pack Arsenal Elemental."
+rarity: EPIC
+glow: true
+
+flags:
+  - HIDE_ATTRIBUTES
+
+stats:
+  damage: 8
+  critical_chance: 13
+
+requirements:
+  level: 17
+
+triggers:
+  PLAYER_DEATH:
+    - type: PARTICLES
+      effect-id: espectro
+
+economy:
+  sell: 1700
+  buy: 4250

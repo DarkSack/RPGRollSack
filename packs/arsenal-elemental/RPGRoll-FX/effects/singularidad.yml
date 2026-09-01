@@ -1,0 +1,40 @@
+id: singularidad
+display-name: "&5&lSingularidad"
+description: "Una hélice que colapsa en un punto."
+
+steps:
+  - type: SOUND
+    delay: 0
+    sound: BLOCK_PORTAL_TRIGGER
+    target: ALL_NEARBY
+    around: SELF
+    radius: 16.8
+    volume: 0.8
+    pitch: 1.6
+  - type: PARTICLE
+    delay: 0
+    particle: PORTAL
+    shape: HELIX
+    draw-ticks: 12
+    target: LOCATION
+    radius: 2.24
+    height: 3.5
+    turns: 4
+    points: 198
+    count: 6
+    offset-x: 0.14
+    offset-y: 0.14
+    offset-z: 0.14
+    speed: 0
+  - type: PARTICLE
+    delay: 8
+    particle: REVERSE_PORTAL
+    shape: SPHERE
+    target: LOCATION
+    radius: 1.12
+    points: 132
+    count: 6
+    offset-x: 0.14
+    offset-y: 0.14
+    offset-z: 0.14
+    speed: 0.1

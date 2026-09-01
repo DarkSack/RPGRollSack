@@ -1,0 +1,81 @@
+# Arquero. Existe para castigar al que se queda quieto curándose:
+# pega de lejos y no se puede ignorar mientras peleas con los siervos.
+id: centinela_osario
+category: NORMAL
+display-name: "&fCentinela del Osario"
+name-color: "#D8D8D8"
+level: 12
+rarity: uncommon
+tags: [ "no_muerto", "reino_no_muerto", "distancia" ]
+description: "Vigila los pasillos desde hace tanto que ya no recuerda a quién servía."
+base-entity-type: SKELETON
+
+model:
+  scale: 1.05
+  equipment:
+    hand: BOW
+    head: IRON_HELMET
+    chest: CHAINMAIL_CHESTPLATE
+
+stats:
+  health: 60
+  damage: 7
+  defense: 3
+  speed: 100
+  armor: 4
+  dodge: 8
+  accuracy: 92
+  critical_chance: 12
+  critical_damage: 45
+  knockback_resistance: 0
+
+resistances:
+  poison: 100
+
+weaknesses:
+  - type: ELEMENT
+    key: holy
+    extra-damage-percent: 60
+
+ai:
+  goals: [ "ATTACK_PLAYERS" ]
+  aggro-range: 20
+  flee-health-percent: 25
+  move-speed: 1.0
+
+skills:
+  - id: flecha_marchita
+    display-name: "Flecha Marchita"
+    trigger: PERIODIC
+    cooldown: 9s
+    chance: 45
+    actions:
+      - type: PROJECTILE
+        projectile: SPECTRAL_ARROW
+        speed: "1.6"
+      - type: SOUND
+        sound: ENTITY_SKELETON_SHOOT
+        volume: "1.0"
+        pitch: "0.7"
+
+loot:
+  - type: ITEM
+    reference: BONE
+    amount-min: 2
+    amount-max: 4
+    chance: 90
+    scope: PER_PLAYER
+  - type: ITEM
+    reference: ARROW
+    amount-min: 4
+    amount-max: 10
+    chance: 60
+    scope: PER_PLAYER
+  - type: EXPERIENCE
+    amount-min: 14
+    amount-max: 22
+    chance: 100
+    scope: PER_PLAYER
+
+spawn-rules:
+  natural-spawn: false

@@ -1,0 +1,6 @@
+id: tormenta
+display-name: "&eTormenta"
+color: YELLOW
+icon: LIGHTNING_ROD
+description: "Alcance y velocidad. Castiga al que se queda quieto."
+cast-sound: ENTITY_LIGHTNING_BOLT_THUNDER

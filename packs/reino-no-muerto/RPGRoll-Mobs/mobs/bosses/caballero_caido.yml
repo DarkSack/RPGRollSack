@@ -1,0 +1,129 @@
+# Mini jefe de mitad de mazmorra. Una sola fase, para que se lea como
+# un escalón antes del liche y no como otro jefe completo.
+id: caballero_caido
+category: MINI_BOSS
+display-name: "&4Caballero Caído"
+name-color: "#8B0000"
+level: 22
+rarity: epic
+tags: [ "no_muerto", "reino_no_muerto", "jefe" ]
+description: "Juró proteger la cripta. Sigue cumpliendo, siglos después de morir."
+base-entity-type: WITHER_SKELETON
+
+model:
+  scale: 1.4
+  equipment:
+    hand: IRON_SWORD
+    head: NETHERITE_HELMET
+    chest: IRON_CHESTPLATE
+
+stats:
+  health: 260
+  damage: 11
+  defense: 7
+  speed: 100
+  armor: 9
+  dodge: 5
+  accuracy: 95
+  critical_chance: 18
+  critical_damage: 60
+  knockback_resistance: 70
+
+resistances:
+  poison: 100
+  physical: 25
+
+weaknesses:
+  - type: ELEMENT
+    key: holy
+    extra-damage-percent: 50
+
+ai:
+  goals: [ "ATTACK_PLAYERS" ]
+  aggro-range: 22
+  flee-health-percent: 0
+  move-speed: 0.95
+
+skills:
+  - id: tajo_del_juramento
+    display-name: "Tajo del Juramento"
+    trigger: PERIODIC
+    cooldown: 11s
+    chance: 55
+    actions:
+      - type: PARTICLE
+        particle: SOUL_FIRE_FLAME
+        count: "30"
+      - type: DAMAGE
+        amount: "9"
+      - type: SOUND
+        sound: ENTITY_WITHER_SKELETON_HURT
+        volume: "1.0"
+        pitch: "0.8"
+
+phases:
+  - id: juramento_roto
+    health-threshold-percent: 40
+    stat-multipliers:
+      damage: 1.35
+      speed: 1.15
+    skills:
+      - id: llamado_de_la_guardia
+        display-name: "Llamado de la Guardia"
+        trigger: PERIODIC
+        cooldown: 18s
+        chance: 60
+        actions:
+          - type: PARTICLE
+            particle: SOUL
+            count: "50"
+          - type: SOUND
+            sound: ENTITY_WITHER_SPAWN
+            volume: "0.8"
+            pitch: "1.2"
+    bossbar-color: RED
+    bossbar-title: "&4&lCaballero Caído &7[Juramento Roto]"
+    dialogue: "&4\"Mi juramento no termina con mi vida.\""
+    particle: SOUL_FIRE_FLAME
+
+triggers:
+  SPAWN:
+    - type: MESSAGE
+      value: "&4&l[Caballero Caído] &7Una armadura oxidada se levanta sola."
+  DEATH:
+    - type: PARTICLE
+      particle: SOUL
+      count: "60"
+
+loot:
+  - type: ITEM
+    reference: IRON_INGOT
+    amount-min: 3
+    amount-max: 6
+    chance: 70
+    scope: SHARED
+  - type: MONEY
+    amount-min: 40
+    amount-max: 80
+    chance: 100
+    scope: PER_PLAYER
+  - type: EXPERIENCE
+    amount-min: 80
+    amount-max: 120
+    chance: 100
+    scope: PER_PLAYER
+
+bossbar:
+  enabled: true
+  color: RED
+  style: NOTCHED_6
+  title: "&4&lCaballero Caído"
+
+dialogues:
+  - trigger: SPAWN
+    text: "&4\"Nadie pasa. Esa fue mi orden.\""
+  - trigger: DEATH
+    text: "&7\"Al fin... relevado...\""
+
+spawn-rules:
+  natural-spawn: false

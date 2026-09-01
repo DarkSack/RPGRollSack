@@ -1,0 +1,6 @@
+id: luz
+display-name: "&fLuz"
+color: WHITE
+icon: BEACON
+description: "Revela, purga y bendice. La escuela más cara de subir."
+cast-sound: BLOCK_BEACON_ACTIVATE

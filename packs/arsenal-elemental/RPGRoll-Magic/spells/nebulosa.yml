@@ -1,0 +1,26 @@
+# El efecto visual lo pone RPGRoll-FX ('nebulosa'); el hechizo solo
+# aporta el daño y el costo. Sin ese plugin el hechizo funciona igual,
+# solo que sin espectáculo.
+id: nebulosa
+display-name: "&5Nebulosa"
+icon: NETHER_STAR
+color: DARK_PURPLE
+school: arcano
+rarity: EPIC
+level: 22
+cast-time: 0
+cooldown: 220
+trigger: RIGHT_CLICK
+tree-tier: 2
+tags: [arcano, arsenal]
+description: "Una nube estelar lenta que se posa sobre el objetivo."
+
+cost:
+  mana: 48
+
+components:
+  - type: VISUAL
+    effect-id: nebulosa
+  - type: DAMAGE_AREA
+    radius: 5
+    amount: 28

@@ -1,0 +1,38 @@
+id: corona_solar
+display-name: "&e&lCorona Solar"
+description: "Un sol que se abre alrededor del lanzador."
+
+steps:
+  - type: SOUND
+    delay: 0
+    sound: ITEM_TOTEM_USE
+    target: ALL_NEARBY
+    around: SELF
+    radius: 22.4
+    volume: 1.0
+    pitch: 1.2
+  - type: PARTICLE
+    delay: 0
+    particle: FLAME
+    shape: CIRCLE
+    draw-ticks: 5
+    target: LOCATION
+    radius: 3.08
+    points: 132
+    count: 6
+    offset-x: 0.14
+    offset-y: 0.14
+    offset-z: 0.14
+    speed: 0.02
+  - type: PARTICLE
+    delay: 4
+    particle: TOTEM_OF_UNDYING
+    shape: BURST
+    target: LOCATION
+    radius: 3.92
+    points: 154
+    count: 6
+    offset-x: 0.14
+    offset-y: 0.14
+    offset-z: 0.14
+    speed: 0.25

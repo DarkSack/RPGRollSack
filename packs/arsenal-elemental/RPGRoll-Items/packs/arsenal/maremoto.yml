@@ -1,0 +1,29 @@
+# Al activarse lanza el efecto 'maremoto' de RPGRoll-FX.
+id: maremoto
+pack: arsenal
+material: HEART_OF_THE_SEA
+display-name: "&3Maremoto"
+lore:
+  - "&7El agua sigue al arma."
+  - "&8Pack Arsenal Elemental."
+rarity: EPIC
+glow: true
+
+flags:
+  - HIDE_ATTRIBUTES
+
+stats:
+  damage: 7
+  critical_chance: 11
+
+requirements:
+  level: 13
+
+triggers:
+  THROW:
+    - type: PARTICLES
+      effect-id: maremoto
+
+economy:
+  sell: 1300
+  buy: 3250

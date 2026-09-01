@@ -1,0 +1,26 @@
+# El efecto visual lo pone RPGRoll-FX ('eclipse'); el hechizo solo
+# aporta el daño y el costo. Sin ese plugin el hechizo funciona igual,
+# solo que sin espectáculo.
+id: eclipse
+display-name: "&8Eclipse"
+icon: ECHO_SHARD
+color: DARK_GRAY
+school: sombra
+rarity: EPIC
+level: 18
+cast-time: 0
+cooldown: 200
+trigger: RIGHT_CLICK
+tree-tier: 2
+tags: [sombra, arsenal]
+description: "Un disco negro con un borde de luz que lo rodea."
+
+cost:
+  mana: 44
+
+components:
+  - type: VISUAL
+    effect-id: eclipse
+  - type: DAMAGE_AREA
+    radius: 5
+    amount: 24

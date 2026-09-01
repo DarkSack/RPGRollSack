@@ -1,0 +1,25 @@
+# Quest 2 de 3: empuja hacia la mazmorra y hacia el mini jefe.
+id: los_guardianes_del_umbral
+display-name: "&4Los Guardianes del Umbral"
+category: MAIN_STORY
+difficulty: HARD
+repeatable: false
+
+requirements:
+  level: 20
+
+stages:
+  - id: vencer_al_caballero
+    objectives:
+      - type: KILL_ENTITY
+        entity: WITHER_SKELETON
+        amount: 1
+        description: "Derrota al Caballero Caído en la Cripta de los Reyes"
+    on-complete:
+      - type: TITLE
+        title: "&4El juramento se rompe"
+        subtitle: "&7El camino al sepulcro queda abierto"
+
+rewards:
+  money: 500
+  experience: 800

@@ -1,0 +1,26 @@
+# El efecto visual lo pone RPGRoll-FX ('umbra'); el hechizo solo
+# aporta el daño y el costo. Sin ese plugin el hechizo funciona igual,
+# solo que sin espectáculo.
+id: umbra
+display-name: "&8Umbra"
+icon: SCULK_CATALYST
+color: DARK_GRAY
+school: sombra
+rarity: RARE
+level: 12
+cast-time: 0
+cooldown: 140
+trigger: RIGHT_CLICK
+tree-tier: 1
+tags: [sombra, arsenal]
+description: "Una caja de sombra que se cierra sobre quien esté dentro."
+
+cost:
+  mana: 32
+
+components:
+  - type: VISUAL
+    effect-id: umbra
+  - type: DAMAGE_AREA
+    radius: 4
+    amount: 18

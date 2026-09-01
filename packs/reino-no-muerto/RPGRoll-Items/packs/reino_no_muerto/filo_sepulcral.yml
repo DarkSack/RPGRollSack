@@ -1,0 +1,45 @@
+# El arma del pack. Roba vida al golpear, que es la fantasía del tema,
+# y pide nivel 20 para que caiga del Caballero, no del primer siervo.
+id: filo_sepulcral
+pack: reino_no_muerto
+material: NETHERITE_SWORD
+display-name: "&5Filo Sepulcral"
+lore:
+  - "&7Forjado con el hierro de una tumba profanada."
+  - "&8Bebe de quien corta."
+rarity: EPIC
+glow: true
+
+flags:
+  - HIDE_ATTRIBUTES
+
+stats:
+  damage: 10
+  critical_chance: 18
+  critical_damage: 60
+  attack_speed: 1.1
+
+requirements:
+  level: 20
+
+durability:
+  max: 700
+  repairable: true
+  degrade-per-use: 1
+
+custom-enchantments:
+  lifesteal: 2
+
+triggers:
+  ENTITY_HIT:
+    - type: PARTICLE
+      particle: SOUL
+      count: 10
+    - type: SOUND
+      sound: ENTITY_WITHER_SHOOT
+      volume: "0.5"
+      pitch: "1.4"
+
+economy:
+  sell: 900
+  buy: 1800

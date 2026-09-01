@@ -1,0 +1,27 @@
+# Dispara el efecto 'eclipse' de RPGRoll-FX además de su daño.
+# El efecto es lo que lo hace notarse; el daño es lo que lo hace valer.
+id: eclipse
+display-name: "&8Eclipse"
+rarity: LEGENDARY
+max-level: 3
+
+categories:
+  - CHESTPLATE
+
+trigger:
+  - ENTITY_DAMAGE
+
+levels:
+  1:
+    power: 5
+  2:
+    power: 7
+  3:
+    power: 10
+
+effects:
+  - type: PARTICLES
+    effect-id: eclipse
+  - type: DAMAGE
+    amount: "{power}"
+    apply-to: target

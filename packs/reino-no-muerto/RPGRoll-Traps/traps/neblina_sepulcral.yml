@@ -1,0 +1,34 @@
+# Trampa de zona, no de golpe: hace poco daño pero se dispara seguido,
+# para que una sala entera se sienta hostil sin matar de un toque.
+id: neblina_sepulcral
+display-name: "&2Neblina Sepulcral"
+description: "El aire de la cripta no se respira, se aguanta."
+icon: SCULK_VEIN
+
+trigger:
+  type: PROXIMITY
+
+radius: 4.0
+conditions: []
+
+actions:
+  - type: PARTICLE
+    params:
+      particle: SNEEZE
+      count: "70"
+      offset-x: "2.5"
+      offset-y: "1.2"
+      offset-z: "2.5"
+      speed: "0.05"
+  - type: SOUND
+    params:
+      sound: ENTITY_WITHER_AMBIENT
+      volume: "0.7"
+      pitch: "1.4"
+  - type: DAMAGE
+    params:
+      amount: "3"
+
+cooldown-millis: 5000
+charges: -1
+chain: []

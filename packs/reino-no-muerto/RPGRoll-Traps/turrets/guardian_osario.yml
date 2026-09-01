@@ -1,0 +1,25 @@
+# Torreta del pack. Cadencia lenta y radio corto a propósito: acompaña
+# a los mobs de la cripta, no reemplaza la pelea.
+# El cuerpo es un bloque de huesos con un cráneo girando encima.
+id: guardian_osario
+display-name: "&fGuardián del Osario"
+description: "Un cráneo montado sobre huesos apilados. Sigue vigilando por costumbre."
+
+radius: 9.0
+target-players: true
+target-hostile-mobs: false
+fire-interval-ticks: 50
+
+conditions: []
+
+impact:
+  type: PROJECTILE
+  params:
+    projectile-type: SPECTRAL_ARROW
+    speed: "1.8"
+
+model:
+  base-block: BONE_BLOCK
+  material: SKELETON_SKULL
+  hover-height: 1.15
+  spin-degrees-per-tick: 3.0

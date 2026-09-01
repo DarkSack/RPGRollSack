@@ -1,0 +1,29 @@
+# Armadura de nivel medio: cambia armadura por velocidad, para que
+# elegirla sea una decisión y no un upgrade automático.
+id: coraza_osea
+pack: reino_no_muerto
+material: NETHERITE_CHESTPLATE
+display-name: "&fCoraza Ósea"
+lore:
+  - "&7Costillas ajenas, atadas con alambre."
+  - "&8Pesa menos de lo que aparenta."
+rarity: RARE
+glow: false
+
+flags:
+  - HIDE_ATTRIBUTES
+
+stats:
+  armor: 8
+  health: 20
+
+requirements:
+  level: 15
+
+durability:
+  max: 600
+  repairable: true
+
+economy:
+  sell: 500
+  buy: 1000

@@ -1,0 +1,83 @@
+# El "elemento raro" del trío normal: no pega fuerte, pero ciega y drena maná.
+# Está pensada para que un grupo la priorice en vez de ignorarla.
+id: planidera_espectral
+category: NORMAL
+display-name: "&bPlañidera Espectral"
+name-color: "#7FD5FF"
+level: 15
+rarity: rare
+tags: [ "no_muerto", "reino_no_muerto", "espectro" ]
+description: "Llora por una tumba que nadie recuerda. Su lamento apaga la magia."
+base-entity-type: VEX
+
+model:
+  scale: 1.3
+  glow: true
+  equipment:
+    hand: AIR
+
+stats:
+  health: 50
+  damage: 6
+  defense: 1
+  speed: 120
+  armor: 1
+  dodge: 25
+  accuracy: 90
+  critical_chance: 10
+  critical_damage: 40
+  knockback_resistance: 0
+
+resistances:
+  poison: 100
+  physical: 30
+
+weaknesses:
+  - type: ELEMENT
+    key: holy
+    extra-damage-percent: 80
+
+ai:
+  goals: [ "ATTACK_PLAYERS" ]
+  aggro-range: 18
+  flee-health-percent: 0
+  move-speed: 1.2
+
+skills:
+  - id: lamento
+    display-name: "Lamento"
+    trigger: PERIODIC
+    cooldown: 14s
+    chance: 55
+    actions:
+      - type: PARTICLE
+        particle: SOUL
+        count: "35"
+      - type: SOUND
+        sound: ENTITY_GHAST_HURT
+        volume: "1.2"
+        pitch: "0.6"
+      - type: DAMAGE
+        amount: "4"
+
+loot:
+  - type: ITEM
+    reference: GHAST_TEAR
+    amount-min: 1
+    amount-max: 1
+    chance: 25
+    scope: PER_PLAYER
+  - type: ITEM
+    reference: SOUL_SAND
+    amount-min: 1
+    amount-max: 2
+    chance: 45
+    scope: PER_PLAYER
+  - type: EXPERIENCE
+    amount-min: 20
+    amount-max: 30
+    chance: 100
+    scope: PER_PLAYER
+
+spawn-rules:
+  natural-spawn: false

@@ -1,0 +1,6 @@
+id: arcano
+display-name: "&5Arcano"
+color: DARK_PURPLE
+icon: ENDER_EYE
+description: "Manipula espacio y tiempo. Difícil de leer, difícil de esquivar."
+cast-sound: BLOCK_PORTAL_TRIGGER

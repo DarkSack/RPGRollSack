@@ -1,0 +1,29 @@
+# Al activarse lanza el efecto 'apoteosis' de RPGRoll-FX.
+id: apoteosis
+pack: arsenal
+material: DRAGON_EGG
+display-name: "&6Apoteosis"
+lore:
+  - "&7No es un encantamiento, es una declaración."
+  - "&8Pack Arsenal Elemental."
+rarity: MYTHIC
+glow: true
+
+flags:
+  - HIDE_ATTRIBUTES
+
+stats:
+  damage: 11
+  critical_chance: 17
+
+requirements:
+  level: 25
+
+triggers:
+  RIGHT_CLICK:
+    - type: PARTICLES
+      effect-id: apoteosis
+
+economy:
+  sell: 2500
+  buy: 6250

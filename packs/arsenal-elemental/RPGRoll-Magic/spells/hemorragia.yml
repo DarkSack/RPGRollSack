@@ -1,0 +1,26 @@
+# El efecto visual lo pone RPGRoll-FX ('hemorragia'); el hechizo solo
+# aporta el daño y el costo. Sin ese plugin el hechizo funciona igual,
+# solo que sin espectáculo.
+id: hemorragia
+display-name: "&4Hemorragia"
+icon: NETHERITE_SWORD
+color: DARK_GRAY
+school: sombra
+rarity: UNCOMMON
+level: 10
+cast-time: 0
+cooldown: 100
+trigger: RIGHT_CLICK
+tree-tier: 1
+tags: [sombra, arsenal]
+description: "Un estallido corto y sucio, a la altura del pecho."
+
+cost:
+  mana: 24
+
+components:
+  - type: VISUAL
+    effect-id: hemorragia
+  - type: DAMAGE_AREA
+    radius: 4
+    amount: 16

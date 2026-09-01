@@ -1,0 +1,26 @@
+# El efecto visual lo pone RPGRoll-FX ('incandescencia'); el hechizo solo
+# aporta el daño y el costo. Sin ese plugin el hechizo funciona igual,
+# solo que sin espectáculo.
+id: incandescencia
+display-name: "&6Incandescencia"
+icon: BLAZE_ROD
+color: GOLD
+school: fuego
+rarity: COMMON
+level: 4
+cast-time: 0
+cooldown: 60
+trigger: RIGHT_CLICK
+tree-tier: 0
+tags: [fuego, arsenal]
+description: "Un cono de fuego que sale de las manos y no perdona a lo que tiene delante."
+
+cost:
+  mana: 18
+
+components:
+  - type: VISUAL
+    effect-id: incandescencia
+  - type: DAMAGE_AREA
+    radius: 3
+    amount: 10

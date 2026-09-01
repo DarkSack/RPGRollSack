@@ -1,0 +1,29 @@
+# Al activarse lanza el efecto 'singularidad' de RPGRoll-FX.
+id: singularidad
+pack: arsenal
+material: ENDER_EYE
+display-name: "&5Singularidad"
+lore:
+  - "&7El espacio se dobla donde pega."
+  - "&8Pack Arsenal Elemental."
+rarity: EPIC
+glow: true
+
+flags:
+  - HIDE_ATTRIBUTES
+
+stats:
+  damage: 8
+  critical_chance: 13
+
+requirements:
+  level: 16
+
+triggers:
+  RIGHT_CLICK:
+    - type: PARTICLES
+      effect-id: singularidad
+
+economy:
+  sell: 1600
+  buy: 4000

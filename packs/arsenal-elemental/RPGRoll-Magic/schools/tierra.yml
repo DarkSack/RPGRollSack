@@ -1,0 +1,6 @@
+id: tierra
+display-name: "&6Tierra"
+color: GOLD
+icon: DEEPSLATE
+description: "Lenta y pesada. Lo que alcanza, no se levanta."
+cast-sound: BLOCK_DEEPSLATE_BREAK

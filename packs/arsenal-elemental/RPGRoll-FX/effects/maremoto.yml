@@ -1,0 +1,102 @@
+# SPLASH y BUBBLE apenas se ven fuera del agua, por eso quedaba deslucido.
+# Ahora el cuerpo de la ola son partículas visibles a cielo abierto y la
+# columna se dibuja progresivamente para que se vea SUBIR.
+id: maremoto
+display-name: "&3&lMaremoto"
+description: "Una columna de agua que sube girando y revienta en dos anillos."
+
+steps:
+  - type: SOUND
+    delay: 0
+    sound: ENTITY_PLAYER_SPLASH_HIGH_SPEED
+    target: ALL_NEARBY
+    around: SELF
+    radius: 18
+    volume: 1.3
+    pitch: 0.7
+
+  # Base: el agua que se junta antes de subir
+  - type: PARTICLE
+    delay: 0
+    particle: WARPED_SPORE
+    shape: CIRCLE
+    target: LOCATION
+    radius: 3.0
+    points: 160
+    count: 8
+    offset-x: 0.2
+    offset-y: 0.1
+    offset-z: 0.2
+    draw-ticks: 5
+    speed: 0.02
+
+  # La columna: sube girando, dibujada tick a tick
+  - type: PARTICLE
+    delay: 5
+    particle: SOUL_FIRE_FLAME
+    shape: HELIX
+    target: LOCATION
+    radius: 2.2
+    height: 7.0
+    turns: 4
+    points: 220
+    count: 6
+    offset-x: 0.12
+    offset-y: 0.12
+    offset-z: 0.12
+    draw-ticks: 14
+    speed: 0
+
+  # Espuma acompañando la columna
+  - type: PARTICLE
+    delay: 6
+    particle: SPLASH
+    shape: HELIX
+    target: LOCATION
+    radius: 2.6
+    height: 7.0
+    turns: 4
+    points: 180
+    count: 8
+    offset-x: 0.25
+    offset-y: 0.25
+    offset-z: 0.25
+    draw-ticks: 14
+    speed: 0.05
+
+  - type: SOUND
+    delay: 20
+    sound: ENTITY_DOLPHIN_JUMP
+    target: ALL_NEARBY
+    around: SELF
+    radius: 18
+    volume: 1.2
+    pitch: 0.8
+
+  # Rompe: dos anillos que se abren
+  - type: PARTICLE
+    delay: 20
+    particle: DOLPHIN
+    shape: CIRCLE
+    target: LOCATION
+    radius: 5.0
+    points: 200
+    count: 7
+    offset-x: 0.2
+    offset-y: 0.3
+    offset-z: 0.2
+    draw-ticks: 6
+    speed: 0.08
+
+  - type: PARTICLE
+    delay: 24
+    particle: WARPED_SPORE
+    shape: BURST
+    target: LOCATION
+    radius: 6.5
+    points: 220
+    count: 9
+    offset-x: 0.3
+    offset-y: 0.3
+    offset-z: 0.3
+    speed: 0.4

@@ -1,0 +1,36 @@
+id: floracion
+display-name: "&a&lFloración"
+description: "Brota una esfera de vida y se asienta en el suelo."
+
+steps:
+  - type: SOUND
+    delay: 0
+    sound: BLOCK_AZALEA_LEAVES_PLACE
+    target: SELF
+    volume: 1.2
+    pitch: 1.2
+  - type: PARTICLE
+    delay: 0
+    particle: HAPPY_VILLAGER
+    shape: SPHERE
+    target: LOCATION
+    radius: 2.24
+    points: 154
+    count: 6
+    offset-x: 0.14
+    offset-y: 0.14
+    offset-z: 0.14
+    speed: 0
+  - type: PARTICLE
+    delay: 6
+    particle: COMPOSTER
+    shape: CIRCLE
+    draw-ticks: 5
+    target: LOCATION
+    radius: 3.64
+    points: 110
+    count: 6
+    offset-x: 0.14
+    offset-y: 0.14
+    offset-z: 0.14
+    speed: 0.02

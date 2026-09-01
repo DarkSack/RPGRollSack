@@ -1,0 +1,29 @@
+# Al activarse lanza el efecto 'plasma' de RPGRoll-FX.
+id: plasma
+pack: arsenal
+material: MAGMA_CREAM
+display-name: "&dPlasma"
+lore:
+  - "&7Lo que matas deja un cráter de luz."
+  - "&8Pack Arsenal Elemental."
+rarity: EPIC
+glow: true
+
+flags:
+  - HIDE_ATTRIBUTES
+
+stats:
+  damage: 8
+  critical_chance: 12
+
+requirements:
+  level: 15
+
+triggers:
+  ENTITY_KILL:
+    - type: PARTICLES
+      effect-id: plasma
+
+economy:
+  sell: 1500
+  buy: 3750

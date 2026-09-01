@@ -1,0 +1,48 @@
+id: nebulosa
+display-name: "&5&lNebulosa"
+description: "Una nube estelar lenta."
+
+steps:
+  - type: SOUND
+    delay: 0
+    sound: BLOCK_CONDUIT_AMBIENT
+    target: SELF
+    volume: 1.0
+    pitch: 0.6
+  - type: PARTICLE
+    delay: 0
+    particle: PORTAL
+    shape: SPHERE
+    target: LOCATION
+    radius: 2.8
+    points: 198
+    count: 6
+    offset-x: 0.14
+    offset-y: 0.14
+    offset-z: 0.14
+    speed: 0.01
+  - type: PARTICLE
+    delay: 6
+    particle: END_ROD
+    shape: CIRCLE
+    draw-ticks: 5
+    target: LOCATION
+    radius: 3.64
+    points: 99
+    count: 6
+    offset-x: 0.14
+    offset-y: 0.14
+    offset-z: 0.14
+    speed: 0
+  - type: PARTICLE
+    delay: 12
+    particle: ENCHANT
+    shape: SPHERE
+    target: LOCATION
+    radius: 1.96
+    points: 121
+    count: 6
+    offset-x: 0.14
+    offset-y: 0.14
+    offset-z: 0.14
+    speed: 0.03

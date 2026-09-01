@@ -1,0 +1,15 @@
+# Material de progresión. No hace nada solo: existe para que las quests
+# y las mejoras tengan una moneda propia del pack.
+id: fragmento_de_alma
+pack: reino_no_muerto
+material: ECHO_SHARD
+display-name: "&bFragmento de Alma"
+lore:
+  - "&7Un pedazo de alguien que no terminó de irse."
+  - "&8Material del Reino No-Muerto."
+rarity: UNCOMMON
+glow: true
+
+economy:
+  sell: 60
+  buy: 150

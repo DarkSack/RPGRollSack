@@ -1,0 +1,26 @@
+# El efecto visual lo pone RPGRoll-FX ('fractura'); el hechizo solo
+# aporta el daño y el costo. Sin ese plugin el hechizo funciona igual,
+# solo que sin espectáculo.
+id: fractura
+display-name: "&fFractura"
+icon: ANVIL
+color: GOLD
+school: tierra
+rarity: RARE
+level: 12
+cast-time: 0
+cooldown: 130
+trigger: RIGHT_CLICK
+tree-tier: 1
+tags: [tierra, arsenal]
+description: "Una caja de grietas que aguanta y después revienta."
+
+cost:
+  mana: 30
+
+components:
+  - type: VISUAL
+    effect-id: fractura
+  - type: DAMAGE_AREA
+    radius: 4
+    amount: 18

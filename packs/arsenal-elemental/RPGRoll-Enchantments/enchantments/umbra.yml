@@ -1,0 +1,27 @@
+# Dispara el efecto 'umbra' de RPGRoll-FX además de su daño.
+# El efecto es lo que lo hace notarse; el daño es lo que lo hace valer.
+id: umbra
+display-name: "&8Umbra"
+rarity: EPIC
+max-level: 3
+
+categories:
+  - CHESTPLATE
+
+trigger:
+  - ENTITY_DAMAGE
+
+levels:
+  1:
+    power: 4
+  2:
+    power: 6
+  3:
+    power: 9
+
+effects:
+  - type: PARTICLES
+    effect-id: umbra
+  - type: DAMAGE
+    amount: "{power}"
+    apply-to: target

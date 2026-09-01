@@ -1,0 +1,26 @@
+# El efecto visual lo pone RPGRoll-FX ('singularidad'); el hechizo solo
+# aporta el daño y el costo. Sin ese plugin el hechizo funciona igual,
+# solo que sin espectáculo.
+id: singularidad
+display-name: "&5Singularidad"
+icon: ENDER_EYE
+color: DARK_PURPLE
+school: arcano
+rarity: EPIC
+level: 16
+cast-time: 0
+cooldown: 180
+trigger: RIGHT_CLICK
+tree-tier: 2
+tags: [arcano, arsenal]
+description: "Una hélice que gira hacia dentro hasta colapsar en un punto."
+
+cost:
+  mana: 40
+
+components:
+  - type: VISUAL
+    effect-id: singularidad
+  - type: DAMAGE_AREA
+    radius: 5
+    amount: 22

@@ -1,0 +1,52 @@
+id: ventisca
+display-name: "&b&lVentisca"
+description: "Tres anillos de escarcha que se abren uno tras otro."
+
+steps:
+  - type: SOUND
+    delay: 0
+    sound: BLOCK_GLASS_BREAK
+    target: ALL_NEARBY
+    around: SELF
+    radius: 14.0
+    volume: 1.1
+    pitch: 0.6
+  - type: PARTICLE
+    delay: 0
+    particle: SNOWFLAKE
+    shape: CIRCLE
+    draw-ticks: 5
+    target: LOCATION
+    radius: 1.4
+    points: 52
+    count: 6
+    offset-x: 0.14
+    offset-y: 0.14
+    offset-z: 0.14
+    speed: 0
+  - type: PARTICLE
+    delay: 4
+    particle: SNOWFLAKE
+    shape: CIRCLE
+    draw-ticks: 5
+    target: LOCATION
+    radius: 3.36
+    points: 96
+    count: 6
+    offset-x: 0.14
+    offset-y: 0.14
+    offset-z: 0.14
+    speed: 0
+  - type: PARTICLE
+    delay: 8
+    particle: CLOUD
+    shape: CIRCLE
+    draw-ticks: 5
+    target: LOCATION
+    radius: 5.32
+    points: 140
+    count: 6
+    offset-x: 0.14
+    offset-y: 0.14
+    offset-z: 0.14
+    speed: 0.01

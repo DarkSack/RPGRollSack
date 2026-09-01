@@ -1,0 +1,6 @@
+id: naturaleza
+display-name: "&aNaturaleza"
+color: GREEN
+icon: FLOWERING_AZALEA
+description: "Sostiene al grupo: cura, protege y aguanta."
+cast-sound: BLOCK_AZALEA_LEAVES_PLACE

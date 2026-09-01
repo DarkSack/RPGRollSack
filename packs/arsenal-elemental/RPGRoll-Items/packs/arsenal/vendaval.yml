@@ -1,0 +1,29 @@
+# Al activarse lanza el efecto 'vendaval' de RPGRoll-FX.
+id: vendaval
+pack: arsenal
+material: FEATHER
+display-name: "&fVendaval"
+lore:
+  - "&7Saltas más alto de lo que deberías."
+  - "&8Pack Arsenal Elemental."
+rarity: RARE
+glow: true
+
+flags:
+  - HIDE_ATTRIBUTES
+
+stats:
+  damage: 5
+  critical_chance: 8
+
+requirements:
+  level: 7
+
+triggers:
+  PLAYER_JUMP:
+    - type: PARTICLES
+      effect-id: vendaval
+
+economy:
+  sell: 700
+  buy: 1750

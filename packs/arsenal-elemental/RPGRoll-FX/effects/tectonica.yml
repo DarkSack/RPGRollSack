@@ -1,0 +1,52 @@
+id: tectonica
+display-name: "&6&lTectónica"
+description: "El suelo se parte en dos ondas."
+
+steps:
+  - type: SOUND
+    delay: 0
+    sound: BLOCK_DEEPSLATE_BREAK
+    target: ALL_NEARBY
+    around: SELF
+    radius: 19.6
+    volume: 1.4
+    pitch: 0.5
+  - type: PARTICLE
+    delay: 0
+    particle: CRIT
+    shape: CIRCLE
+    draw-ticks: 5
+    target: LOCATION
+    radius: 1.68
+    points: 66
+    count: 12
+    offset-x: 0.14
+    offset-y: 0.14
+    offset-z: 0.14
+    speed: 0.05
+  - type: PARTICLE
+    delay: 5
+    particle: LARGE_SMOKE
+    shape: CIRCLE
+    draw-ticks: 5
+    target: LOCATION
+    radius: 4.2
+    points: 132
+    count: 6
+    offset-x: 0.14
+    offset-y: 0.14
+    offset-z: 0.14
+    speed: 0.02
+  - type: PARTICLE
+    delay: 10
+    particle: DUST_PLUME
+    shape: CIRCLE
+    draw-ticks: 5
+    target: LOCATION
+    radius: 6.3
+    points: 154
+    count: 6
+    offset-x: 0.14
+    offset-y: 0.14
+    offset-z: 0.14
+    speed: 0.03

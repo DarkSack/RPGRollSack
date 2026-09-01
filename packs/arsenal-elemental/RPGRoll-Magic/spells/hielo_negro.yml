@@ -1,0 +1,26 @@
+# El efecto visual lo pone RPGRoll-FX ('hielo_negro'); el hechizo solo
+# aporta el daño y el costo. Sin ese plugin el hechizo funciona igual,
+# solo que sin espectáculo.
+id: hielo_negro
+display-name: "&9Hielo Negro"
+icon: BLUE_ICE
+color: AQUA
+school: escarcha
+rarity: EPIC
+level: 19
+cast-time: 0
+cooldown: 190
+trigger: RIGHT_CLICK
+tree-tier: 2
+tags: [escarcha, arsenal]
+description: "Escarcha y sombra girando en el mismo anillo."
+
+cost:
+  mana: 42
+
+components:
+  - type: VISUAL
+    effect-id: hielo_negro
+  - type: DAMAGE_AREA
+    radius: 5
+    amount: 25

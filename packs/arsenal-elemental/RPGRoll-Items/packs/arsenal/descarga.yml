@@ -1,0 +1,29 @@
+# Al activarse lanza el efecto 'descarga' de RPGRoll-FX.
+id: descarga
+pack: arsenal
+material: LIGHTNING_ROD
+display-name: "&eDescarga"
+lore:
+  - "&7Cada golpe deja el aire cargado."
+  - "&8Pack Arsenal Elemental."
+rarity: EPIC
+glow: true
+
+flags:
+  - HIDE_ATTRIBUTES
+
+stats:
+  damage: 6
+  critical_chance: 9
+
+requirements:
+  level: 9
+
+triggers:
+  ENTITY_HIT:
+    - type: PARTICLES
+      effect-id: descarga
+
+economy:
+  sell: 900
+  buy: 2250

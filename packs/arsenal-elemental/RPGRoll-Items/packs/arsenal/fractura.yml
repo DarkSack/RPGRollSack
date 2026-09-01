@@ -1,0 +1,29 @@
+# Al activarse lanza el efecto 'fractura' de RPGRoll-FX.
+id: fractura
+pack: arsenal
+material: ANVIL
+display-name: "&fFractura"
+lore:
+  - "&7La piedra se rinde antes de que la toques."
+  - "&8Pack Arsenal Elemental."
+rarity: RARE
+glow: true
+
+flags:
+  - HIDE_ATTRIBUTES
+
+stats:
+  damage: 7
+  critical_chance: 11
+
+requirements:
+  level: 12
+
+triggers:
+  BLOCK_BREAK:
+    - type: PARTICLES
+      effect-id: fractura
+
+economy:
+  sell: 1200
+  buy: 3000

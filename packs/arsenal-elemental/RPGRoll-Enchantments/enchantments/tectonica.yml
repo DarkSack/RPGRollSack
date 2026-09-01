@@ -1,0 +1,27 @@
+# Dispara el efecto 'tectonica' de RPGRoll-FX además de su daño.
+# El efecto es lo que lo hace notarse; el daño es lo que lo hace valer.
+id: tectonica
+display-name: "&6Tectónica"
+rarity: RARE
+max-level: 3
+
+categories:
+  - TOOLS
+
+trigger:
+  - BLOCK_BREAK
+
+levels:
+  1:
+    power: 3
+  2:
+    power: 6
+  3:
+    power: 8
+
+effects:
+  - type: PARTICLES
+    effect-id: tectonica
+  - type: DAMAGE
+    amount: "{power}"
+    apply-to: target

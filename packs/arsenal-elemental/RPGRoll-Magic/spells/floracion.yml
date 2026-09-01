@@ -1,0 +1,26 @@
+# El efecto visual lo pone RPGRoll-FX ('floracion'); el hechizo solo
+# aporta el daño y el costo. Sin ese plugin el hechizo funciona igual,
+# solo que sin espectáculo.
+id: floracion
+display-name: "&aFloración"
+icon: FLOWERING_AZALEA
+color: GREEN
+school: naturaleza
+rarity: COMMON
+level: 5
+cast-time: 0
+cooldown: 80
+trigger: RIGHT_CLICK
+tree-tier: 0
+tags: [naturaleza, arsenal]
+description: "Brota vida alrededor y se asienta lentamente en el suelo."
+
+cost:
+  mana: 16
+
+components:
+  - type: VISUAL
+    effect-id: floracion
+  - type: DAMAGE_AREA
+    radius: 3
+    amount: 11

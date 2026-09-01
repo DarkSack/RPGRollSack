@@ -1,0 +1,40 @@
+# Demostración de lo que permiten los parámetros nuevos del proyectil:
+# la estela ya no es una partícula por tick, sino un efecto completo de
+# RPGRoll-FX disparado cada 2 ticks del vuelo, con otro al impactar.
+id: onda_sonica
+display-name: "&3Onda Sónica"
+icon: ECHO_SHARD
+color: DARK_AQUA
+school: tormenta
+rarity: EPIC
+level: 20
+cast-time: 0
+cooldown: 160
+trigger: RIGHT_CLICK
+tree-tier: 2
+tags: [tormenta, proyectil, arsenal]
+description: "Un proyectil que deja una estela sónica y revienta en descarga al impactar."
+
+cost:
+  mana: 45
+
+components:
+  - type: SOUND
+    sound: ENTITY_WARDEN_SONIC_CHARGE
+    volume: 1.2
+    pitch: 1.0
+
+  - type: PROJECTILE
+    speed: 1.4
+    max-distance: 32
+    hit-radius: 1.4
+    trail-particle: SOUL_FIRE_FLAME
+    trail-count: 12
+    trail-offset: 0.25
+    trail-density: 2.0
+    trail-effect: estela_sonica
+    trail-effect-interval: 2
+    impact-effect: impacto_sonico
+
+  - type: DAMAGE_DIRECT
+    amount: 20

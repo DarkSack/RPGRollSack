@@ -1,0 +1,30 @@
+# Estela de vuelo: se dispara muchas veces durante el trayecto, así que es
+# deliberadamente barata. El SONIC_BOOM NO va acá — una sucesión de ondas
+# sónicas cada 2 ticks es ruido visual, no un rayo.
+id: estela_sonica
+display-name: "&3&lEstela Sónica"
+description: "Anillo corto y barato, pensado para repetirse durante el vuelo de un proyectil."
+
+steps:
+  - type: PARTICLE
+    delay: 0
+    particle: SOUL_FIRE_FLAME
+    shape: CIRCLE
+    target: LOCATION
+    radius: 1.0
+    points: 22
+    count: 4
+    offset-x: 0.1
+    offset-y: 0.1
+    offset-z: 0.1
+    speed: 0.02
+  - type: PARTICLE
+    delay: 0
+    particle: ELECTRIC_SPARK
+    shape: POINT
+    target: LOCATION
+    count: 6
+    offset-x: 0.3
+    offset-y: 0.3
+    offset-z: 0.3
+    speed: 0.05

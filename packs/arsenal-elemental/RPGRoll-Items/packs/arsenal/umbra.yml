@@ -1,0 +1,29 @@
+# Al activarse lanza el efecto 'umbra' de RPGRoll-FX.
+id: umbra
+pack: arsenal
+material: SCULK_CATALYST
+display-name: "&8Umbra"
+lore:
+  - "&7La sombra devuelve parte de lo que te hacen."
+  - "&8Pack Arsenal Elemental."
+rarity: EPIC
+glow: true
+
+flags:
+  - HIDE_ATTRIBUTES
+
+stats:
+  damage: 7
+  critical_chance: 11
+
+requirements:
+  level: 12
+
+triggers:
+  PLAYER_DAMAGE:
+    - type: PARTICLES
+      effect-id: umbra
+
+economy:
+  sell: 1200
+  buy: 3000

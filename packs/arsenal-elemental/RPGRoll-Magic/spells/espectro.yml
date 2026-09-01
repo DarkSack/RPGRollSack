@@ -1,0 +1,26 @@
+# El efecto visual lo pone RPGRoll-FX ('espectro'); el hechizo solo
+# aporta el daño y el costo. Sin ese plugin el hechizo funciona igual,
+# solo que sin espectáculo.
+id: espectro
+display-name: "&7Espectro"
+icon: SOUL_LANTERN
+color: DARK_GRAY
+school: sombra
+rarity: RARE
+level: 17
+cast-time: 0
+cooldown: 175
+trigger: RIGHT_CLICK
+tree-tier: 1
+tags: [sombra, arsenal]
+description: "Almas que suben en espiral y se dispersan arriba."
+
+cost:
+  mana: 38
+
+components:
+  - type: VISUAL
+    effect-id: espectro
+  - type: DAMAGE_AREA
+    radius: 5
+    amount: 23

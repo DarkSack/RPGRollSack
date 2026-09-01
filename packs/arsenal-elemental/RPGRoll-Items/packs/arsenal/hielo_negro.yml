@@ -1,0 +1,29 @@
+# Al activarse lanza el efecto 'hielo_negro' de RPGRoll-FX.
+id: hielo_negro
+pack: arsenal
+material: BLUE_ICE
+display-name: "&9Hielo Negro"
+lore:
+  - "&7Te agachas y el suelo se congela."
+  - "&8Pack Arsenal Elemental."
+rarity: EPIC
+glow: true
+
+flags:
+  - HIDE_ATTRIBUTES
+
+stats:
+  damage: 9
+  critical_chance: 14
+
+requirements:
+  level: 19
+
+triggers:
+  PLAYER_SNEAK:
+    - type: PARTICLES
+      effect-id: hielo_negro
+
+economy:
+  sell: 1900
+  buy: 4750

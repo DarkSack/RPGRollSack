@@ -1,0 +1,10 @@
+id: esquirla_de_hueso
+display-name: "&fEsquirla de Hueso"
+description: "Munición barata para las torretas del sepulcro."
+icon: BONE
+stack-size: 32
+
+impact:
+  type: DAMAGE
+  params:
+    amount: "5"

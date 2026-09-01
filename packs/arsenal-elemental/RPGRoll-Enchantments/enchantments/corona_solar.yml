@@ -1,0 +1,27 @@
+# Dispara el efecto 'corona_solar' de RPGRoll-FX además de su daño.
+# El efecto es lo que lo hace notarse; el daño es lo que lo hace valer.
+id: corona_solar
+display-name: "&eCorona Solar"
+rarity: LEGENDARY
+max-level: 3
+
+categories:
+  - HELMET
+
+trigger:
+  - PLAYER_MOVE
+
+levels:
+  1:
+    power: 5
+  2:
+    power: 8
+  3:
+    power: 11
+
+effects:
+  - type: PARTICLES
+    effect-id: corona_solar
+  - type: DAMAGE
+    amount: "{power}"
+    apply-to: target

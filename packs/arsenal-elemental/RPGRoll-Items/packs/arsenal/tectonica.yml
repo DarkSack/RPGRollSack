@@ -1,0 +1,29 @@
+# Al activarse lanza el efecto 'tectonica' de RPGRoll-FX.
+id: tectonica
+pack: arsenal
+material: DEEPSLATE
+display-name: "&6Tectónica"
+lore:
+  - "&7Rompes piedra como si fuera tierra suelta."
+  - "&8Pack Arsenal Elemental."
+rarity: RARE
+glow: true
+
+flags:
+  - HIDE_ATTRIBUTES
+
+stats:
+  damage: 6
+  critical_chance: 10
+
+requirements:
+  level: 11
+
+triggers:
+  BLOCK_BREAK:
+    - type: PARTICLES
+      effect-id: tectonica
+
+economy:
+  sell: 1100
+  buy: 2750

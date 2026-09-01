@@ -1,0 +1,6 @@
+id: escarcha
+display-name: "&bEscarcha"
+color: AQUA
+icon: PACKED_ICE
+description: "Frena, congela y desgasta. Gana por paciencia."
+cast-sound: BLOCK_GLASS_BREAK

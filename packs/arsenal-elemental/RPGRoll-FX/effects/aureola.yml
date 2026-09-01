@@ -1,0 +1,51 @@
+id: aureola
+display-name: "&f&lAureola"
+description: "Tres anillos de luz que ascienden."
+
+steps:
+  - type: SOUND
+    delay: 0
+    sound: BLOCK_BEACON_ACTIVATE
+    target: ALL_NEARBY
+    around: SELF
+    radius: 19.6
+    volume: 1.0
+    pitch: 1.3
+  - type: PARTICLE
+    delay: 0
+    particle: END_ROD
+    shape: CIRCLE
+    draw-ticks: 5
+    target: LOCATION
+    radius: 2.52
+    points: 88
+    count: 6
+    offset-x: 0.14
+    offset-y: 0.14
+    offset-z: 0.14
+    speed: 0
+  - type: PARTICLE
+    delay: 4
+    particle: END_ROD
+    shape: CIRCLE
+    draw-ticks: 5
+    target: LOCATION
+    radius: 1.82
+    points: 70
+    count: 6
+    offset-x: 0.14
+    offset-y: 0.14
+    offset-z: 0.14
+    speed: 0
+  - type: PARTICLE
+    delay: 8
+    particle: TOTEM_OF_UNDYING
+    shape: SPHERE
+    target: LOCATION
+    radius: 1.4
+    points: 110
+    count: 6
+    offset-x: 0.14
+    offset-y: 0.14
+    offset-z: 0.14
+    speed: 0.05

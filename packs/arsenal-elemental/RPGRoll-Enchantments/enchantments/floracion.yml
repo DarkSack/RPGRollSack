@@ -1,0 +1,27 @@
+# Dispara el efecto 'floracion' de RPGRoll-FX además de su daño.
+# El efecto es lo que lo hace notarse; el daño es lo que lo hace valer.
+id: floracion
+display-name: "&aFloración"
+rarity: UNCOMMON
+max-level: 3
+
+categories:
+  - HELMET
+
+trigger:
+  - PLAYER_MOVE
+
+levels:
+  1:
+    power: 2
+  2:
+    power: 5
+  3:
+    power: 7
+
+effects:
+  - type: PARTICLES
+    effect-id: floracion
+  - type: DAMAGE
+    amount: "{power}"
+    apply-to: target

@@ -1,0 +1,182 @@
+# Jefe final del pack. Tres fases con una idea cada una, para que la pelea
+# se lea sin explicación: golpea -> invoca -> se desespera.
+id: liche_del_sepulcro
+category: DUNGEON_BOSS
+display-name: "&5Liche del Sepulcro"
+name-color: "#A855F7"
+level: 35
+rarity: legendary
+tags: [ "no_muerto", "reino_no_muerto", "jefe", "magia" ]
+description: "Cambió su muerte por una corona. Ahora la corona lo gobierna a él."
+base-entity-type: WITHER_SKELETON
+
+model:
+  scale: 1.6
+  glow: true
+  equipment:
+    hand: BLAZE_ROD
+    head: GOLDEN_HELMET
+    chest: LEATHER_CHESTPLATE
+
+stats:
+  health: 600
+  damage: 14
+  defense: 8
+  speed: 95
+  armor: 10
+  dodge: 10
+  accuracy: 96
+  critical_chance: 20
+  critical_damage: 80
+  knockback_resistance: 90
+
+resistances:
+  poison: 100
+  magic: 50
+  physical: 20
+
+weaknesses:
+  - type: ELEMENT
+    key: holy
+    extra-damage-percent: 70
+
+ai:
+  goals: [ "ATTACK_PLAYERS" ]
+  aggro-range: 26
+  flee-health-percent: 0
+  move-speed: 0.8
+
+skills:
+  - id: descarga_de_almas
+    display-name: "Descarga de Almas"
+    trigger: PERIODIC
+    cooldown: 10s
+    chance: 60
+    actions:
+      - type: PARTICLE
+        particle: SOUL_FIRE_FLAME
+        count: "45"
+        offset-x: "1.5"
+        offset-y: "1.0"
+        offset-z: "1.5"
+        speed: "0.2"
+      - type: DAMAGE
+        amount: "11"
+      - type: SOUND
+        sound: ENTITY_EVOKER_CAST_SPELL
+        volume: "1.2"
+        pitch: "0.7"
+
+phases:
+  - id: corte_de_huesos
+    health-threshold-percent: 65
+    stat-multipliers:
+      damage: 1.2
+    skills:
+      - id: alzar_corte
+        display-name: "Alzar la Corte"
+        trigger: PERIODIC
+        cooldown: 20s
+        chance: 70
+        actions:
+          - type: PARTICLE
+            particle: SOUL
+            count: "70"
+          - type: SOUND
+            sound: ENTITY_WITHER_SPAWN
+            volume: "1.0"
+            pitch: "1.1"
+    bossbar-color: PURPLE
+    bossbar-title: "&5&lLiche del Sepulcro &7[Alza su Corte]"
+    dialogue: "&5\"Levántense. Aún me deben servidumbre.\""
+    particle: SOUL
+
+  - id: corona_ardiente
+    health-threshold-percent: 25
+    stat-multipliers:
+      damage: 1.5
+      speed: 1.25
+    skills:
+      - id: nova_sepulcral
+        display-name: "Nova Sepulcral"
+        trigger: PERIODIC
+        cooldown: 14s
+        chance: 75
+        actions:
+          - type: PARTICLE
+            particle: SOUL_FIRE_FLAME
+            count: "90"
+            offset-x: "2.5"
+            offset-y: "1.5"
+            offset-z: "2.5"
+            speed: "0.3"
+          - type: DAMAGE
+            amount: "16"
+          - type: PUSH
+            strength: "2.0"
+    bossbar-color: RED
+    bossbar-title: "&4&lLiche del Sepulcro &7[Corona Ardiente]"
+    dialogue: "&4\"¡La corona arde y yo con ella!\""
+    particle: SOUL_FIRE_FLAME
+
+triggers:
+  SPAWN:
+    - type: TITLE
+      title: "&5&lEL LICHE DESPIERTA"
+      subtitle: "&7La corona del sepulcro vuelve a brillar"
+    - type: SOUND
+      sound: ENTITY_WITHER_SPAWN
+      volume: "1.0"
+      pitch: "0.6"
+  PHASE_CHANGE:
+    - type: SOUND
+      sound: ENTITY_EVOKER_PREPARE_SUMMON
+      volume: "1.0"
+      pitch: "0.8"
+  DEATH:
+    - type: TITLE
+      title: "&6&lLA CORONA CAE"
+      subtitle: "&7El sepulcro queda en silencio"
+    - type: EXPLOSION
+      power: "2.5"
+      break-blocks: "false"
+
+loot:
+  - type: ITEM
+    reference: NETHER_STAR
+    amount-min: 1
+    amount-max: 1
+    chance: 35
+    required-level: 30
+    scope: SHARED
+  - type: ITEM
+    reference: DIAMOND
+    amount-min: 2
+    amount-max: 5
+    chance: 80
+    scope: SHARED
+  - type: MONEY
+    amount-min: 150
+    amount-max: 300
+    chance: 100
+    scope: PER_PLAYER
+  - type: EXPERIENCE
+    amount-min: 250
+    amount-max: 400
+    chance: 100
+    scope: PER_PLAYER
+
+bossbar:
+  enabled: true
+  color: PURPLE
+  style: NOTCHED_20
+  title: "&5&lLiche del Sepulcro"
+
+dialogues:
+  - trigger: SPAWN
+    text: "&5\"Otro que confunde valentía con prisa.\""
+  - trigger: DEATH
+    text: "&7\"La corona... buscará otra cabeza...\""
+
+spawn-rules:
+  natural-spawn: false

@@ -1,0 +1,27 @@
+# Dispara el efecto 'descarga' de RPGRoll-FX además de su daño.
+# El efecto es lo que lo hace notarse; el daño es lo que lo hace valer.
+id: descarga
+display-name: "&eDescarga"
+rarity: RARE
+max-level: 3
+
+categories:
+  - WEAPON
+
+trigger:
+  - PLAYER_ATTACK
+
+levels:
+  1:
+    power: 3
+  2:
+    power: 5
+  3:
+    power: 8
+
+effects:
+  - type: PARTICLES
+    effect-id: descarga
+  - type: DAMAGE
+    amount: "{power}"
+    apply-to: target

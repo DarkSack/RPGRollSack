@@ -1,0 +1,26 @@
+# El efecto visual lo pone RPGRoll-FX ('prisma'); el hechizo solo
+# aporta el daño y el costo. Sin ese plugin el hechizo funciona igual,
+# solo que sin espectáculo.
+id: prisma
+display-name: "&bPrisma"
+icon: AMETHYST_SHARD
+color: WHITE
+school: luz
+rarity: UNCOMMON
+level: 8
+cast-time: 0
+cooldown: 95
+trigger: RIGHT_CLICK
+tree-tier: 1
+tags: [luz, arsenal]
+description: "Tres anillos de colores distintos, uno por tick."
+
+cost:
+  mana: 22
+
+components:
+  - type: VISUAL
+    effect-id: prisma
+  - type: DAMAGE_AREA
+    radius: 4
+    amount: 14

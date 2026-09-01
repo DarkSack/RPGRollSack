@@ -1,0 +1,29 @@
+# Al activarse lanza el efecto 'ventisca' de RPGRoll-FX.
+id: ventisca
+pack: arsenal
+material: PACKED_ICE
+display-name: "&bVentisca"
+lore:
+  - "&7El frío se abre paso solo cuando te golpean."
+  - "&8Pack Arsenal Elemental."
+rarity: RARE
+glow: true
+
+flags:
+  - HIDE_ATTRIBUTES
+
+stats:
+  damage: 5
+  critical_chance: 8
+
+requirements:
+  level: 6
+
+triggers:
+  PLAYER_DAMAGE:
+    - type: PARTICLES
+      effect-id: ventisca
+
+economy:
+  sell: 600
+  buy: 1500

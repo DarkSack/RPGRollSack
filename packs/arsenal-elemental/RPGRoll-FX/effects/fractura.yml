@@ -1,0 +1,38 @@
+id: fractura
+display-name: "&f&lFractura"
+description: "Una caja de grietas que revienta."
+
+steps:
+  - type: PARTICLE
+    delay: 0
+    particle: CRIT
+    shape: CUBE_OUTLINE
+    draw-ticks: 8
+    target: LOCATION
+    radius: 2.24
+    points: 121
+    count: 6
+    offset-x: 0.14
+    offset-y: 0.14
+    offset-z: 0.14
+    speed: 0
+  - type: SOUND
+    delay: 0
+    sound: BLOCK_GLASS_BREAK
+    target: ALL_NEARBY
+    around: SELF
+    radius: 16.8
+    volume: 1.4
+    pitch: 0.9
+  - type: PARTICLE
+    delay: 5
+    particle: CRIT
+    shape: BURST
+    target: LOCATION
+    radius: 3.36
+    points: 143
+    count: 6
+    offset-x: 0.14
+    offset-y: 0.14
+    offset-z: 0.14
+    speed: 0.3

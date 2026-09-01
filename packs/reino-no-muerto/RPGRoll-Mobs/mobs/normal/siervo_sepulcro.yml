@@ -1,0 +1,72 @@
+# El enemigo de relleno del pack: barato de matar, aparece en grupo.
+# Su única gracia es el veneno al golpear, que obliga a no dejarse rodear.
+id: siervo_sepulcro
+category: NORMAL
+display-name: "&8Siervo del Sepulcro"
+name-color: "#6B6B6B"
+level: 8
+rarity: common
+tags: [ "no_muerto", "reino_no_muerto" ]
+description: "Un cadáver reanimado que aún viste los harapos de su antiguo señor."
+base-entity-type: ZOMBIE
+
+model:
+  scale: 1.0
+  equipment:
+    hand: WOODEN_SWORD
+    head: CHAINMAIL_HELMET
+
+stats:
+  health: 45
+  damage: 5
+  defense: 2
+  speed: 90
+  armor: 2
+  dodge: 0
+  accuracy: 85
+  critical_chance: 5
+  critical_damage: 30
+  knockback_resistance: 10
+
+resistances:
+  poison: 100
+
+weaknesses:
+  - type: ELEMENT
+    key: holy
+    extra-damage-percent: 60
+
+ai:
+  goals: [ "ATTACK_PLAYERS" ]
+  aggro-range: 14
+  flee-health-percent: 0
+  move-speed: 0.85
+
+skills:
+  - id: zarpazo_putrido
+    display-name: "Zarpazo Pútrido"
+    trigger: ON_ATTACK
+    cooldown: 6s
+    chance: 35
+    actions:
+      - type: PARTICLE
+        particle: SMOKE
+        count: "10"
+      - type: DAMAGE
+        amount: "2"
+
+loot:
+  - type: ITEM
+    reference: ROTTEN_FLESH
+    amount-min: 1
+    amount-max: 3
+    chance: 80
+    scope: PER_PLAYER
+  - type: EXPERIENCE
+    amount-min: 8
+    amount-max: 14
+    chance: 100
+    scope: PER_PLAYER
+
+spawn-rules:
+  natural-spawn: false

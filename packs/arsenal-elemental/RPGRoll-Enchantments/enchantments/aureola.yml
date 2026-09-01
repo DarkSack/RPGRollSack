@@ -1,0 +1,27 @@
+# Dispara el efecto 'aureola' de RPGRoll-FX además de su daño.
+# El efecto es lo que lo hace notarse; el daño es lo que lo hace valer.
+id: aureola
+display-name: "&fAureola"
+rarity: EPIC
+max-level: 3
+
+categories:
+  - HELMET
+
+trigger:
+  - PLAYER_MOVE
+
+levels:
+  1:
+    power: 4
+  2:
+    power: 6
+  3:
+    power: 9
+
+effects:
+  - type: PARTICLES
+    effect-id: aureola
+  - type: DAMAGE
+    amount: "{power}"
+    apply-to: target

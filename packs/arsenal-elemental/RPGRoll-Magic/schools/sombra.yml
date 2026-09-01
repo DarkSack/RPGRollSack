@@ -1,0 +1,6 @@
+id: sombra
+display-name: "&8Sombra"
+color: DARK_GRAY
+icon: SCULK_CATALYST
+description: "Roba, debilita y desaparece. Nada de esto es limpio."
+cast-sound: ENTITY_WARDEN_HEARTBEAT

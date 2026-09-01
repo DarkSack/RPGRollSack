@@ -1,0 +1,30 @@
+# Hechizo de área, alto costo y cooldown largo: la recompensa de subir la escuela.
+# El cast-time de 1s existe para que no sirva como botón de pánico.
+id: plaga_sepulcral
+display-name: "&2Plaga Sepulcral"
+icon: FERMENTED_SPIDER_EYE
+color: DARK_GREEN
+school: nigromancia
+rarity: EPIC
+level: 18
+cast-time: 20
+cooldown: 240
+trigger: RIGHT_CLICK
+tree-tier: 2
+tags: [nigromancia, area, veneno]
+description: "Una nube de podredumbre que se queda donde cae. Tarda en lanzarse: no es para huir."
+
+cost:
+  mana: 55
+
+components:
+  - type: PARTICLE
+    particle: SNEEZE
+    count: 60
+  - type: DAMAGE_AREA
+    radius: 5
+    amount: 14
+  - type: SOUND
+    sound: ENTITY_WITHER_HURT
+    volume: 1.2
+    pitch: 0.6
