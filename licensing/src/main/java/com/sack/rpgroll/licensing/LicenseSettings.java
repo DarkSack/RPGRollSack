@@ -28,10 +28,32 @@ final class LicenseSettings {
 
     /**
      * URL del servicio de verificación propio, para las ventas directas
-     * (Ko-fi, Patreon) — la función {@code /api/verify} desplegada desde el
-     * repositorio privado {@code verification-web} (Vercel + Supabase).
+     * (Ko-fi, Patreon) — {@code /api/verify} en el repositorio privado
+     * {@code rpgroll-store} (Vercel + Supabase).
+     * <p>
+     * Antes vivía en {@code verification-web}, que quedó deprecado: la tienda
+     * absorbió la verificación para que emitir y validar una licencia compartan
+     * base y no haya dos servicios que mantener sincronizados.
+     * <p>
+     * Cambiar esta constante <b>no</b> alcanza para los jars ya distribuidos:
+     * queda compilada en el bytecode, así que una copia vieja sigue llamando a
+     * la URL anterior. Por eso el dominio viejo debe seguir respondiendo, o
+     * redirigir, mientras exista alguna versión antigua en circulación.
      */
-    static final String SELF_HOSTED_ENDPOINT = "https://verification-web-murex.vercel.app/api/verify";
+    static final String SELF_HOSTED_ENDPOINT = "https://rpgroll-store.vercel.app/api/verify";
+
+    /**
+     * Token que acompaña la verificación. Lo aporta cada módulo al arrancar,
+     * igual que el {@code resourceId}: {@code :licensing} es interno y no
+     * tiene constantes generadas propias.
+     * <p>
+     * No es autenticación y no hay que pretender que lo sea: el plugin corre en
+     * la máquina del comprador, así que esto se puede sacar del jar. Sirve para
+     * que la URL no quede a merced de cualquiera que la encuentre; quien
+     * probaría claves a lo bruto lo frena el límite por IP del servidor, no
+     * esto.
+     */
+    static String selfHostedToken = "";
 
     /**
      * Prefijo de las claves que emite el servidor propio ({@code issue} las

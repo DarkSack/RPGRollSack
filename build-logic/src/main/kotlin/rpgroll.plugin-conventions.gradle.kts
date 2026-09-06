@@ -76,6 +76,23 @@ val generateLicenseIdentity by tasks.registering {
                 "Falta '$moduleName' en licensing.properties — todo módulo vendible necesita su id de producto.",
             )
 
+        // Un id en 0 es el marcador de "todavía no creé el producto en la
+        // tienda". Compila igual y el jar parece correcto, pero ninguna compra
+        // valida jamás. Se avisa fuerte en cada build para que no se escape a
+        // una publicación; con -Prpgroll.allowUnassignedIds se silencia mientras
+        // se arma el catálogo.
+        if (resourceId == "0" && !project.hasProperty("rpgroll.allowUnassignedIds")) {
+            logger.warn(
+                "✘ $moduleName: id de producto sin asignar (0). Este jar NO puede validar ninguna compra. " +
+                    "Pon el id real de la tienda en licensing.properties antes de publicar.",
+            )
+        }
+
+        // Del entorno primero: en CI el token va como secreto, no en el archivo.
+        val verifyToken = System.getenv("RPGROLL_VERIFY_TOKEN")
+            ?: properties.getProperty("verify.token")
+            ?: ""
+
         val target = outputDir.get().asFile.resolve("com/sack/rpgroll/license/identity/LicenseIdentity.java")
         target.parentFile.mkdirs()
         target.writeText(
@@ -90,6 +107,16 @@ val generateLicenseIdentity by tasks.registering {
 
                 /** Id de "$moduleName" en el marketplace. */
                 public static final String RESOURCE_ID = "$resourceId";
+
+                /**
+                 * Token que acompana la verificacion propia. Se inyecta al
+                 * compilar desde licensing.properties o la variable de entorno
+                 * RPGROLL_VERIFY_TOKEN, para no dejarlo escrito en el repo.
+                 *
+                 * Vacio = no se manda cabecera. El servidor, si no tiene
+                 * VERIFY_TOKEN configurado, tampoco la exige.
+                 */
+                public static final String VERIFY_TOKEN = "$verifyToken";
 
             }
             """.trimIndent() + "\n",

@@ -23,6 +23,17 @@ public final class LicenseGate {
      * @return true si el plugin puede seguir arrancando
      */
     public static boolean verify(Plugin plugin, String resourceId) {
+        return verify(plugin, resourceId, "");
+    }
+
+    /**
+     * @param verifyToken token del servicio propio, generado al compilar. Vacío
+     *                    = no se manda cabecera.
+     */
+    public static boolean verify(Plugin plugin, String resourceId, String verifyToken) {
+
+        LicenseSettings.selfHostedToken = verifyToken == null ? "" : verifyToken;
+
 
         if (Boolean.getBoolean("rpgroll.devmode")) {
             plugin.getLogger().warning(

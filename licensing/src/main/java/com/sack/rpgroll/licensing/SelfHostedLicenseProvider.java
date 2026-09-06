@@ -98,13 +98,20 @@ public class SelfHostedLicenseProvider implements LicenseProvider {
                 body.append("&server_name=").append(urlEncode(serverName));
             }
 
-            HttpRequest request = HttpRequest.newBuilder()
+            HttpRequest.Builder builder = HttpRequest.newBuilder()
                     .uri(URI.create(endpoint))
                     .timeout(TIMEOUT)
                     .header("Content-Type", "application/x-www-form-urlencoded")
                     .header("User-Agent", "RPGRoll-License-Check/1.0")
-                    .POST(HttpRequest.BodyPublishers.ofString(body.toString()))
-                    .build();
+                    .POST(HttpRequest.BodyPublishers.ofString(body.toString()));
+
+            // Sin token no se manda la cabecera: mandarla vacia solo serviria
+            // para que un servidor que si lo exige rechace la peticion.
+            if (!LicenseSettings.selfHostedToken.isBlank()) {
+                builder.header("X-RPGRoll-Token", LicenseSettings.selfHostedToken);
+            }
+
+            HttpRequest request = builder.build();
 
             HttpResponse<String> response = send(request);
 

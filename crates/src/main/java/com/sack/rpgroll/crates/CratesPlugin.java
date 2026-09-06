@@ -35,7 +35,7 @@ public class CratesPlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        if (!LicenseGate.verify(this, LicenseIdentity.RESOURCE_ID)) {
+        if (!LicenseGate.verify(this, LicenseIdentity.RESOURCE_ID, LicenseIdentity.VERIFY_TOKEN)) {
             getServer().getPluginManager().disablePlugin(this);
             return;
         }
