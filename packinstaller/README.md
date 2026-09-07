@@ -1,0 +1,103 @@
+# Instalador de packs
+
+Reparte el contenido de un pack en las carpetas de los plugins que el servidor
+tenga instalados, y omite los que no.
+
+Un pack está organizado así, y esa estructura es exactamente la del destino:
+
+```
+reino-no-muerto/
+  LEEME.md                              (documentación: no se instala)
+  RPGRoll-Mobs/mobs/bosses/lich.yml  →  plugins/RPGRoll-Mobs/mobs/bosses/lich.yml
+  RPGRoll-Magic/spells/drenar.yml    →  plugins/RPGRoll-Magic/spells/drenar.yml
+  RPGRoll-Traps/traps/pinchos.yml    →  se omite si RPGRoll-Traps no está
+```
+
+## Para el comprador
+
+Doble clic en `RPGRoll-PackInstaller.jar`. **No hay nada que instalar**: quien
+corre Paper ya tiene Java, porque el servidor no arranca sin él.
+
+En un servidor sin escritorio —un VPS por SSH, que es donde vive media
+comunidad— el mismo archivo funciona desde la consola:
+
+```
+java -jar RPGRoll-PackInstaller.jar <pack> <carpeta-plugins> [--instalar]
+```
+
+Sin `--instalar` solo enseña lo que haría. Ese es el valor por defecto a
+propósito: en una consola no hay ventana de confirmación, así que la primera
+ejecución tiene que ser inofensiva.
+
+El pack puede ser una carpeta o su `.zip` — se acepta el zip para que nadie
+tenga que descomprimir primero, que es donde la gente acaba con el pack anidado
+dentro de una carpeta de más y luego no se instala nada.
+
+## Qué valida
+
+Todo esto ocurre **antes** de tocar el disco. El peor final posible es una lista
+de problemas en pantalla y un servidor idéntico a como estaba.
+
+| Comprobación | Por qué |
+|---|---|
+| La carpeta destino parece un `plugins/` | Volcar 116 archivos sueltos en la carpeta equivocada se limpia a mano, uno por uno |
+| Existe, es carpeta y se puede escribir | Fallar a mitad de copia deja el pack instalado por la mitad |
+| Espacio libre, por el doble de lo que ocupa | Los respaldos ocupan aparte |
+| Rutas del zip que se escapan (`../../`) | Los packs se descargan de internet, que es justo el escenario del *zip slip* |
+| El destino final cae dentro de `plugins/` | Un enlace simbólico puede sacar la ruta fuera sin que aparezca ningún `..` |
+| Nombres de carpeta que no son ningún plugin | Una errata como `RPGRoll-Mob` no se instalaría nunca **y nadie se enteraría** |
+| Nombres que solo difieren en mayúsculas | Funciona en el Windows de quien armó el pack y falla en el Linux del comprador |
+| Archivos ya presentes e idénticos | Reinstalar el mismo pack no debe tocar nada ni generar respaldos inútiles |
+
+Que falte un addon **no es un error**: nadie compra los 24. Se omite y se dice
+cuál. Un nombre desconocido sí avisa, pero tampoco impide instalar — si mañana
+sale un addon nuevo, un instalador viejo tiene que seguir sirviendo.
+
+## Qué hace al instalar
+
+- Escribe a un temporal y luego mueve. Si el proceso muere a mitad, el archivo
+  original queda intacto en vez de convertirse en medio archivo que el plugin no
+  puede leer al arrancar.
+- Guarda una copia de todo lo que reemplaza en
+  `rpgroll-respaldo-<fecha>/`, **junto a** `plugins/` y no dentro: ahí dentro el
+  servidor intentaría cargarla como si fuera un plugin. Conserva la estructura,
+  así que restaurar es arrastrar la carpeta de vuelta.
+- No crea la carpeta de un plugin que no está instalado. Crearla haría pensar
+  que sí lo está.
+
+## Por qué Java y no otra cosa
+
+El comprador corre Paper, que exige Java: ya lo tiene, sin excepción. Un
+ejecutable en Python o Node obligaría a instalar un intérprete solo para copiar
+archivos.
+
+Swing viene dentro del JDK, así que esto es **un solo `.jar` sin dependencias**
+(44 KB) que se abre con doble clic. Nada que instalar, ningún permiso de
+administrador, ningún antivirus preguntando por un `.exe` desconocido.
+
+Se compila para **Java 17** aunque el resto del repo apunte a 25. Esto no corre
+en el servidor sino en la máquina del comprador, que puede tener cualquier cosa;
+bajar el objetivo no cuesta nada —no se usa ninguna API posterior— y evita el
+peor final para un instalador: un doble clic que no hace nada y un mensaje sobre
+versiones de clase que nadie sabe interpretar.
+
+## Distribución
+
+No va dentro del zip de plugins: no es un plugin. Se acompaña al pack, o se
+publica como descarga suelta en la tienda.
+
+```
+./gradlew :packinstaller:jar
+```
+
+Deja `build/libs/RPGRoll-PackInstaller.jar`.
+
+## Sobre el aspecto de la ventana
+
+`InstallerWindow.construir()` devuelve el `JFrame` sin mostrarlo, y
+`rellenarParaRetrato(...)` lo deja en el estado posterior a *Revisar*. Juntos
+permiten dibujar la ventana en un PNG sin abrir nada en el escritorio de nadie.
+
+Existe porque en este repo los fallos visuales no los ha encontrado nunca la
+suite de pruebas: las pruebas cubren la lógica, y lo que se ve en pantalla hay
+que mirarlo.

@@ -31,5 +31,8 @@ include(
     "crafting",
     "tab",
     "extras",
-    "traps"
+    "traps",
+
+    // Herramienta de escritorio para los compradores, no un plugin.
+    "packinstaller"
 )
