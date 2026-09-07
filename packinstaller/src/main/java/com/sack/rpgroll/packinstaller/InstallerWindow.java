@@ -1,33 +1,32 @@
 package com.sack.rpgroll.packinstaller;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.datatransfer.DataFlavor;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Map;
+import java.util.List;
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
+import javax.swing.JEditorPane;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
+import javax.swing.TransferHandler;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.UIManager;
 import javax.swing.filechooser.FileFilter;
 
 /**
@@ -43,20 +42,12 @@ import javax.swing.filechooser.FileFilter;
  */
 final class InstallerWindow {
 
-    private static final Color FONDO = new Color(0x0E, 0x11, 0x16);
-    private static final Color PANEL = new Color(0x16, 0x1B, 0x22);
-    private static final Color BORDE = new Color(0x26, 0x2D, 0x36);
-    private static final Color TEXTO = new Color(0xE6, 0xED, 0xF3);
-    private static final Color TENUE = new Color(0x8B, 0x94, 0x9E);
-    private static final Color ACENTO = new Color(0x54, 0xDA, 0xF4);
-    private static final Color MALO = new Color(0xF8, 0x51, 0x49);
-
     private final JFrame ventana = new JFrame("Instalador de packs · RPGRoll");
     private final JTextField campoPack = new JTextField();
     private final JTextField campoPlugins = new JTextField();
-    private final JTextArea informe = new JTextArea();
-    private final JButton botonRevisar = new JButton("Revisar");
-    private final JButton botonInstalar = new JButton("Instalar");
+    private final JEditorPane informe = new JEditorPane();
+    private final Estilo.Boton botonRevisar = new Estilo.Boton("Revisar", false);
+    private final Estilo.Boton botonInstalar = new Estilo.Boton("Instalar", true);
     private final JLabel estado = new JLabel(" ");
 
     private Plan planActual;
@@ -70,22 +61,23 @@ final class InstallerWindow {
     private Path packRevisado;
 
     static void mostrar() {
-        SwingUtilities.invokeLater(() -> new InstallerWindow().construir());
+        SwingUtilities.invokeLater(() -> new InstallerWindow().construir().setVisible(true));
     }
 
-    private void construir() {
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (Exception ignorado) {
-            // El aspecto por defecto sirve igual; no vale la pena no abrir por esto.
-        }
-
+    /**
+     * Monta la ventana, sin mostrarla.
+     *
+     * <p>Quien la muestra es {@link #mostrar()}. Separarlo permite además
+     * comprobar en una prueba que se construye entera sin reventar, que es el
+     * fallo de interfaz más caro: se ve al abrir, no al compilar.
+     */
+    JFrame construir() {
         ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        ventana.setMinimumSize(new Dimension(720, 560));
+        ventana.setMinimumSize(new Dimension(780, 600));
 
-        JPanel raiz = new JPanel(new BorderLayout(0, 12));
-        raiz.setBorder(BorderFactory.createEmptyBorder(16, 16, 16, 16));
-        raiz.setBackground(FONDO);
+        JPanel raiz = new JPanel(new BorderLayout(0, 14));
+        raiz.setBorder(BorderFactory.createEmptyBorder(20, 20, 18, 20));
+        raiz.setBackground(Estilo.FONDO);
 
         raiz.add(cabecera(), BorderLayout.NORTH);
         raiz.add(centro(), BorderLayout.CENTER);
@@ -97,34 +89,93 @@ final class InstallerWindow {
         vigilar(campoPack);
         vigilar(campoPlugins);
 
+        permitirSoltarArchivos(raiz);
+
         ventana.setContentPane(raiz);
         ventana.pack();
+        ventana.setSize(860, 660);
         ventana.setLocationRelativeTo(null);
-        ventana.setVisible(true);
+
+        return ventana;
     }
 
+    // ------------------------------------------------------------------
+    // Montaje
+    // ------------------------------------------------------------------
+
     private JPanel cabecera() {
-        JPanel panel = new JPanel(new GridBagLayout());
-        panel.setBackground(FONDO);
+        JPanel panel = new JPanel(new BorderLayout(0, 14));
+        panel.setBackground(Estilo.FONDO);
 
-        GridBagConstraints c = new GridBagConstraints();
-        c.insets = new Insets(4, 0, 4, 8);
-        c.anchor = GridBagConstraints.WEST;
+        JPanel titulos = new JPanel();
+        titulos.setLayout(new javax.swing.BoxLayout(titulos, javax.swing.BoxLayout.Y_AXIS));
+        titulos.setBackground(Estilo.FONDO);
 
-        fila(panel, c, 0, "Pack", campoPack, "Elegir…", this::elegirPack);
-        fila(panel, c, 1, "Carpeta plugins", campoPlugins, "Elegir…", this::elegirPlugins);
+        JLabel titulo = new JLabel("Instalador de packs");
+        titulo.setFont(Estilo.fuente(Font.BOLD, 21));
+        titulo.setForeground(Estilo.TEXTO);
+        titulo.setAlignmentX(0f);
+        // Unos píxeles de aire: el ancho preferido de un JLabel queda justo al
+        // píxel y la última letra se corta según cómo se dibuje el texto.
+        titulo.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 8));
+
+        JLabel bajada = new JLabel(
+                "Reparte el contenido en los plugins que tengas instalados. El resto se omite.");
+        bajada.setFont(Estilo.fuente(Font.PLAIN, 12));
+        bajada.setForeground(Estilo.TENUE);
+        bajada.setBorder(BorderFactory.createEmptyBorder(3, 0, 0, 8));
+        bajada.setAlignmentX(0f);
+
+        titulos.add(titulo);
+        titulos.add(bajada);
+
+        panel.add(titulos, BorderLayout.NORTH);
+        panel.add(rutas(), BorderLayout.CENTER);
 
         return panel;
     }
 
+    private JPanel rutas() {
+        Estilo.Tarjeta tarjeta = new Estilo.Tarjeta(new GridBagLayout());
+
+        GridBagConstraints c = new GridBagConstraints();
+        c.insets = new Insets(5, 0, 5, 10);
+        c.anchor = GridBagConstraints.WEST;
+
+        fila(tarjeta, c, 0, "Pack", campoPack, this::elegirPack);
+        fila(tarjeta, c, 1, "Carpeta plugins", campoPlugins, this::elegirPlugins);
+
+        JLabel pista = new JLabel("Arrastra aquí el .zip del pack, o púlsalo en Elegir");
+        pista.setFont(Estilo.fuente(Font.PLAIN, 11));
+        pista.setForeground(Estilo.TENUE);
+
+        c.gridx = 0;
+        c.gridy = 2;
+        c.gridwidth = 3;
+        c.weightx = 1;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.insets = new Insets(6, 0, 0, 0);
+        tarjeta.add(pista, c);
+
+        JPanel envoltorio = new JPanel(new BorderLayout());
+        envoltorio.setBackground(Estilo.FONDO);
+        envoltorio.add(tarjeta, BorderLayout.CENTER);
+
+        return envoltorio;
+    }
+
     private void fila(JPanel panel, GridBagConstraints c, int y, String etiqueta,
-                      JTextField campo, String textoBoton, Runnable accion) {
+                      JTextField campo, Runnable accion) {
         c.gridx = 0;
         c.gridy = y;
+        c.gridwidth = 1;
         c.weightx = 0;
         c.fill = GridBagConstraints.NONE;
+
         JLabel titulo = new JLabel(etiqueta);
-        titulo.setForeground(TENUE);
+        titulo.setFont(Estilo.fuente(Font.PLAIN, 12));
+        titulo.setForeground(Estilo.TENUE);
+        titulo.setPreferredSize(new Dimension(110, 20));
         panel.add(titulo, c);
 
         c.gridx = 1;
@@ -136,44 +187,50 @@ final class InstallerWindow {
         c.gridx = 2;
         c.weightx = 0;
         c.fill = GridBagConstraints.NONE;
-        JButton boton = new JButton(textoBoton);
+
+        Estilo.Boton boton = new Estilo.Boton("Elegir", false);
         boton.addActionListener(evento -> accion.run());
         panel.add(boton, c);
     }
 
     private JPanel centro() {
-        JPanel panel = new JPanel(new BorderLayout(0, 6));
-        panel.setBackground(FONDO);
+        JPanel panel = new JPanel(new BorderLayout(0, 8));
+        panel.setBackground(Estilo.FONDO);
 
-        JLabel titulo = new JLabel("Qué va a pasar");
-        titulo.setForeground(TENUE);
+        JLabel titulo = new JLabel("QUÉ VA A PASAR");
+        titulo.setFont(Estilo.fuente(Font.BOLD, 10));
+        titulo.setForeground(Estilo.TENUE);
         panel.add(titulo, BorderLayout.NORTH);
 
         informe.setEditable(false);
-        informe.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
-        informe.setBackground(PANEL);
-        informe.setForeground(TEXTO);
-        informe.setCaretColor(TEXTO);
-        informe.setBorder(BorderFactory.createEmptyBorder(10, 12, 10, 12));
-        informe.setText("Elige un pack y la carpeta 'plugins' del servidor, y pulsa Revisar.\n\n"
-                + "Revisar no toca nada: solo mira y cuenta.");
+        informe.setContentType("text/html");
+        informe.setFont(Estilo.fuente(Font.PLAIN, 12));
+        informe.setBackground(Estilo.PANEL);
+        informe.setBorder(BorderFactory.createEmptyBorder(14, 16, 14, 16));
+        informe.setText(Informe.bienvenida());
 
         JScrollPane scroll = new JScrollPane(informe);
-        scroll.setBorder(BorderFactory.createLineBorder(BORDE));
-        panel.add(scroll, BorderLayout.CENTER);
+        Estilo.oscurecerBarras(scroll);
+
+        Estilo.Tarjeta tarjeta = new Estilo.Tarjeta(new BorderLayout());
+        tarjeta.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
+        tarjeta.add(scroll, BorderLayout.CENTER);
+
+        panel.add(tarjeta, BorderLayout.CENTER);
 
         return panel;
     }
 
     private JPanel pie() {
         JPanel panel = new JPanel(new BorderLayout());
-        panel.setBackground(FONDO);
+        panel.setBackground(Estilo.FONDO);
 
-        estado.setForeground(TENUE);
+        estado.setFont(Estilo.fuente(Font.PLAIN, 12));
+        estado.setForeground(Estilo.TENUE);
         panel.add(estado, BorderLayout.WEST);
 
-        JPanel botones = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
-        botones.setBackground(FONDO);
+        JPanel botones = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
+        botones.setBackground(Estilo.FONDO);
 
         botonRevisar.addActionListener(evento -> revisar());
 
@@ -185,6 +242,19 @@ final class InstallerWindow {
         panel.add(botones, BorderLayout.EAST);
 
         return panel;
+    }
+
+    private static void estilizar(JTextField campo) {
+        campo.setFont(Estilo.monoespaciada(12));
+        campo.setBackground(Estilo.PANEL_2);
+        campo.setForeground(Estilo.TEXTO);
+        campo.setCaretColor(Estilo.ACENTO);
+        campo.setSelectionColor(Estilo.BORDE);
+        campo.setSelectedTextColor(Estilo.TEXTO);
+        campo.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(Estilo.BORDE),
+                BorderFactory.createEmptyBorder(8, 10, 8, 10)));
+        campo.setPreferredSize(new Dimension(400, 34));
     }
 
     private void vigilar(JTextField campo) {
@@ -206,16 +276,62 @@ final class InstallerWindow {
         });
     }
 
-    private static void estilizar(JTextField campo) {
-        campo.setBackground(PANEL);
-        campo.setForeground(TEXTO);
-        campo.setCaretColor(TEXTO);
-        campo.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(BORDE),
-                BorderFactory.createEmptyBorder(6, 8, 6, 8)));
-        campo.setPreferredSize(new Dimension(360, 30));
+    /**
+     * Soltar archivos sobre la ventana.
+     *
+     * <p>Es el gesto natural con un zip recién descargado, y ahorra el diálogo
+     * de archivos entero. Se decide por lo que se suelta: una carpeta llamada
+     * {@code plugins} es el destino; cualquier otra cosa, el pack.
+     */
+    private void permitirSoltarArchivos(JPanel raiz) {
+        raiz.setTransferHandler(new TransferHandler() {
+
+            @Override
+            public boolean canImport(TransferSupport soporte) {
+                return soporte.isDataFlavorSupported(DataFlavor.javaFileListFlavor);
+            }
+
+            @Override
+            public boolean importData(TransferSupport soporte) {
+                if (!canImport(soporte)) {
+                    return false;
+                }
+
+                try {
+                    Object datos = soporte.getTransferable()
+                            .getTransferData(DataFlavor.javaFileListFlavor);
+
+                    if (!(datos instanceof List<?> lista) || lista.isEmpty()) {
+                        return false;
+                    }
+
+                    for (Object elemento : lista) {
+                        if (elemento instanceof File archivo) {
+                            colocar(archivo);
+                        }
+                    }
+
+                    return true;
+                } catch (Exception error) {
+                    return false;
+                }
+            }
+
+            private void colocar(File archivo) {
+                boolean esCarpetaPlugins = archivo.isDirectory()
+                        && archivo.getName().equalsIgnoreCase("plugins");
+
+                if (esCarpetaPlugins) {
+                    campoPlugins.setText(archivo.getAbsolutePath());
+                } else {
+                    campoPack.setText(archivo.getAbsolutePath());
+                }
+            }
+        });
     }
 
+    // ------------------------------------------------------------------
+    // Acciones
     // ------------------------------------------------------------------
 
     private void elegirPack() {
@@ -240,7 +356,6 @@ final class InstallerWindow {
 
         if (selector.showOpenDialog(ventana) == JFileChooser.APPROVE_OPTION) {
             campoPack.setText(selector.getSelectedFile().getAbsolutePath());
-            invalidarPlan();
         }
     }
 
@@ -251,7 +366,6 @@ final class InstallerWindow {
 
         if (selector.showOpenDialog(ventana) == JFileChooser.APPROVE_OPTION) {
             campoPlugins.setText(selector.getSelectedFile().getAbsolutePath());
-            invalidarPlan();
         }
     }
 
@@ -272,13 +386,10 @@ final class InstallerWindow {
             return;
         }
 
-        estado.setForeground(TENUE);
-        estado.setText("Revisando…");
-
         try (PackSource pack = PackSource.desde(origen)) {
             Plan plan = new Planner(pack, plugins).planificar();
-            informe.setText(describir(plan));
-            informe.setCaretPosition(0);
+
+            mostrarHtml(Informe.delPlan(plan));
 
             planActual = plan;
             packRevisado = origen;
@@ -287,19 +398,15 @@ final class InstallerWindow {
             botonInstalar.setEnabled(!plan.tieneErrores() && hayTrabajo);
 
             if (plan.tieneErrores()) {
-                estado.setForeground(MALO);
-                estado.setText("Hay errores que resolver.");
+                anunciar(Estilo.MAL, "Hay errores que resolver.");
             } else if (!hayTrabajo) {
-                estado.setForeground(TENUE);
-                estado.setText("Todo está ya en su sitio.");
+                anunciar(Estilo.TENUE, "Todo está ya en su sitio.");
             } else {
-                estado.setForeground(ACENTO);
-                estado.setText(Formato.archivos(plan.aInstalar().size()) + " por instalar.");
+                anunciar(Estilo.ACENTO, Formato.archivos(plan.aInstalar().size()) + " por instalar.");
             }
         } catch (IOException error) {
-            informe.setText("No se pudo leer el pack:\n\n" + error.getMessage());
-            estado.setForeground(MALO);
-            estado.setText("No se pudo leer el pack.");
+            mostrarHtml(Informe.error(String.valueOf(error.getMessage())));
+            anunciar(Estilo.MAL, "No se pudo leer el pack.");
         }
     }
 
@@ -350,14 +457,16 @@ final class InstallerWindow {
 
         botonRevisar.setEnabled(false);
         botonInstalar.setEnabled(false);
-        estado.setForeground(TENUE);
-        estado.setText("Instalando…");
+        anunciar(Estilo.TENUE, "Instalando…");
+
+        int total = plan.aInstalar().size();
 
         // En un hilo aparte: copiando desde el hilo de la interfaz, la ventana
         // se congela y Windows la marca como "no responde" a mitad del trabajo.
-        int total = plan.aInstalar().size();
-
         new SwingWorker<Installer.Resultado, String>() {
+
+            private int hechos;
+
             @Override
             protected Installer.Resultado doInBackground() throws IOException {
                 try (PackSource pack = PackSource.desde(origen)) {
@@ -365,14 +474,12 @@ final class InstallerWindow {
                 }
             }
 
-            private int hechos;
-
             @Override
-            protected void process(java.util.List<String> copiados) {
+            protected void process(List<String> copiados) {
                 // Se cuenta por lote y se pinta una sola vez: con 116 archivos,
                 // repintar por cada uno cuesta más que copiarlos.
                 hechos += copiados.size();
-                estado.setText("Instalando… " + hechos + " de " + total);
+                anunciar(Estilo.TENUE, "Instalando… " + hechos + " de " + total);
             }
 
             @Override
@@ -382,102 +489,35 @@ final class InstallerWindow {
                 try {
                     mostrarResultado(get());
                 } catch (Exception error) {
-                    informe.setText("La instalación falló:\n\n" + error.getMessage());
-                    estado.setForeground(MALO);
-                    estado.setText("Falló.");
+                    mostrarHtml(Informe.error(String.valueOf(error.getMessage())));
+                    anunciar(Estilo.MAL, "Falló.");
                 }
             }
         }.execute();
     }
 
     private void mostrarResultado(Installer.Resultado resultado) {
-        StringBuilder texto = new StringBuilder();
-        texto.append("Instalación terminada\n\n");
-        texto.append("  Copiados:     ").append(resultado.copiados()).append('\n');
-        texto.append("  Reemplazados: ").append(resultado.reemplazados()).append('\n');
-        texto.append("  Omitidos:     ").append(resultado.omitidos()).append('\n');
+        mostrarHtml(Informe.resultado(resultado));
 
-        if (resultado.copiaDeSeguridad() != null) {
-            texto.append("\n  Copia de los originales en:\n  ")
-                    .append(resultado.copiaDeSeguridad()).append('\n');
-        }
-
-        if (!resultado.todoBien()) {
-            texto.append("\nNo se pudieron copiar ")
-                    .append(Formato.archivos(resultado.fallos().size())).append(":\n");
-            resultado.fallos().forEach(fallo -> texto.append("  - ").append(fallo).append('\n'));
-
-            estado.setForeground(MALO);
-            estado.setText("Terminó con fallos.");
+        if (resultado.todoBien()) {
+            anunciar(Estilo.BIEN, "Listo.");
         } else {
-            texto.append("\nReinicia el servidor para que los plugins lean el contenido nuevo.\n");
-            estado.setForeground(ACENTO);
-            estado.setText("Listo.");
+            anunciar(Estilo.MAL, "Terminó con fallos.");
         }
-
-        informe.setText(texto.toString());
-        informe.setCaretPosition(0);
 
         // No se vuelve a habilitar Instalar: el plan ya se aplicó y repetirlo
         // sin revisar de nuevo solo puede confundir sobre qué queda por hacer.
         planActual = null;
+        packRevisado = null;
     }
 
-    // ------------------------------------------------------------------
+    private void mostrarHtml(String html) {
+        informe.setText(html);
+        informe.setCaretPosition(0);
+    }
 
-    private static String describir(Plan plan) {
-        StringBuilder texto = new StringBuilder();
-
-        texto.append("Pack:    ").append(plan.nombrePack()).append('\n');
-        texto.append("Destino: ").append(plan.carpetaPlugins()).append("\n\n");
-
-        for (Plan.Aviso aviso : plan.avisos()) {
-            String prefijo = switch (aviso.nivel()) {
-                case ERROR -> "ERROR  ";
-                case ADVERTENCIA -> "AVISO  ";
-                case NOTA -> "nota   ";
-            };
-            texto.append(prefijo).append(aviso.mensaje()).append('\n');
-        }
-
-        if (!plan.avisos().isEmpty()) {
-            texto.append('\n');
-        }
-
-        Map<Plan.Accion, Integer> resumen = plan.resumen();
-
-        for (Plan.Accion accion : Plan.Accion.values()) {
-            Integer cuantos = resumen.get(accion);
-
-            if (cuantos != null) {
-                texto.append(String.format("  %-16s %s%n", accion.etiqueta(),
-                        Formato.archivos(cuantos)));
-            }
-        }
-
-        if (!plan.pluginsAfectados().isEmpty()) {
-            texto.append("\nSe instala en:\n");
-            plan.pluginsAfectados().forEach(plugin ->
-                    texto.append("  + ").append(plugin).append('\n'));
-        }
-
-        if (!plan.pluginsOmitidos().isEmpty()) {
-            texto.append("\nSe omite (no instalado en este servidor):\n");
-            plan.pluginsOmitidos().forEach(plugin ->
-                    texto.append("  - ").append(plugin).append('\n'));
-        }
-
-        if (!plan.aInstalar().isEmpty()) {
-            texto.append("\nArchivos (").append(Formato.tamano(plan.bytesAEscribir())).append("):\n");
-
-            for (Plan.Entrada entrada : plan.aInstalar()) {
-                texto.append("  ")
-                        .append(entrada.accion() == Plan.Accion.REEMPLAZA ? "~ " : "+ ")
-                        .append(entrada.archivo().rutaRelativa())
-                        .append('\n');
-            }
-        }
-
-        return texto.toString();
+    private void anunciar(java.awt.Color tinta, String texto) {
+        estado.setForeground(tinta);
+        estado.setText(texto);
     }
 }

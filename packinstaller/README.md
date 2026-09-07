@@ -15,7 +15,7 @@ reino-no-muerto/
 
 ## Para el comprador
 
-Doble clic en `RPGRoll-PackInstaller.jar`. **No hay nada que instalar**: quien
+Doble clic en `RPGRoll-PackInstaller-1.0.0.jar`. **No hay nada que instalar**: quien
 corre Paper ya tiene Java, porque el servidor no arranca sin él.
 
 En un servidor sin escritorio —un VPS por SSH, que es donde vive media
@@ -30,7 +30,10 @@ propósito: en una consola no hay ventana de confirmación, así que la primera
 ejecución tiene que ser inofensiva.
 
 El pack puede ser una carpeta o su `.zip`, para que nadie tenga que
-descomprimir primero.
+descomprimir primero. También se puede **arrastrar el zip sobre la ventana**,
+que es el gesto natural con algo recién descargado: si lo que se suelta es una
+carpeta llamada `plugins` se toma como destino, y cualquier otra cosa como el
+pack.
 
 Si el zip envuelve el pack en una carpeta —que es justo lo que hace «Enviar a
 → Carpeta comprimida» de Windows, y casi cualquier herramienta gráfica— se
@@ -79,7 +82,7 @@ ejecutable en Python o Node obligaría a instalar un intérprete solo para copia
 archivos.
 
 Swing viene dentro del JDK, así que esto es **un solo `.jar` sin dependencias**
-(48 KB) que se abre con doble clic. Nada que instalar, ningún permiso de
+(60 KB) que se abre con doble clic. Nada que instalar, ningún permiso de
 administrador, ningún antivirus preguntando por un `.exe` desconocido.
 
 Se compila para **Java 17** aunque el resto del repo apunte a 25. Esto no corre
@@ -97,4 +100,24 @@ publica como descarga suelta en la tienda.
 ./gradlew :packinstaller:jar
 ```
 
-Deja `build/libs/RPGRoll-PackInstaller.jar`.
+Deja `build/libs/RPGRoll-PackInstaller-<versión>.jar`. La versión va en el
+nombre y en el manifiesto: cuando alguien reporte un problema, la primera
+pregunta es cuál tiene.
+
+## Sobre la ventana
+
+Los botones y las barras de desplazamiento se dibujan a mano. El aspecto nativo
+de Windows pinta los botones en gris claro y no deja cambiarlo: sobre un fondo
+oscuro se ve como un error, no como una decisión.
+
+El informe es HTML dentro de un `JEditorPane`, porque un `JTextArea` no admite
+color y lo único que se quiere saber de un vistazo es qué se instala y qué se
+omite. El HTML de Swing es antiguo —viene a ser HTML 3.2— y tiene una rareza
+que cuesta encontrar: **descarta el espacio que precede a un `<b>`**, también
+escrito como `&nbsp;`, y también si se mete dentro de la etiqueta. "la carpeta
+plugins" se lee "la carpetaplugins". Por eso no hay negritas a media frase;
+donde sí las hay es al principio de línea, que es seguro.
+
+Dos pruebas dibujan la ventana y el informe en `build/*.png`. No comprueban el
+aspecto —eso hay que mirarlo— pero sí que ambos se montan sin reventar, que es
+el fallo de interfaz más caro: no aparece al compilar, solo al abrir.
