@@ -277,6 +277,84 @@ class PlannerTest {
     }
 
     // ------------------------------------------------------------------
+    // Packs envueltos en una carpeta (lo que produce el zip de Windows)
+    // ------------------------------------------------------------------
+
+    @Test
+    void entra_solo_en_la_carpeta_que_envuelve_al_pack() throws IOException {
+        // "Enviar a > Carpeta comprimida" mete todo dentro de una carpeta con el
+        // nombre del pack. Sin tratarlo no se instalaria absolutamente nada.
+        Path origen = pack(
+                "reino-no-muerto/RPGRoll-Mobs/mobs/esqueleto.yml",
+                "reino-no-muerto/RPGRoll-Magic/spells/bola.yml");
+
+        Path destino = plugins("RPGRoll-Mobs", "RPGRoll-Magic");
+        Plan plan = planificar(origen, destino);
+
+        assertEquals(2, plan.aInstalar().size());
+
+        // Sin depender del orden: los archivos salen ordenados por ruta, asi que
+        // "Magic" va antes que "Mobs" y fijar un indice hace fragil la prueba.
+        List<Path> destinos = plan.aInstalar().stream().map(Plan.Entrada::destino).toList();
+
+        assertTrue(destinos.contains(destino.resolve("RPGRoll-Mobs/mobs/esqueleto.yml")));
+        assertTrue(destinos.contains(destino.resolve("RPGRoll-Magic/spells/bola.yml")));
+    }
+
+    @Test
+    void no_entra_si_la_raiz_ya_es_una_carpeta_de_plugin() throws IOException {
+        // Un pack de un solo plugin tiene una unica carpeta raiz, igual que uno
+        // envuelto. Lo que los distingue es que esta si es un plugin conocido.
+        Path origen = pack("RPGRoll-Mobs/mobs/esqueleto.yml");
+        Path destino = plugins("RPGRoll-Mobs");
+
+        Plan plan = planificar(origen, destino);
+
+        assertEquals(destino.resolve("RPGRoll-Mobs/mobs/esqueleto.yml"),
+                plan.aInstalar().get(0).destino());
+    }
+
+    @Test
+    void no_entra_si_hay_varias_carpetas_en_la_raiz() throws IOException {
+        Path origen = pack("otra-cosa/x.yml", "y-otra/z.yml");
+        Plan plan = planificar(origen, plugins("RPGRoll-Mobs"));
+
+        // Con dos candidatas no hay forma de saber cual es el envoltorio, asi
+        // que no se adivina: se avisa y no se instala nada.
+        assertTrue(plan.aInstalar().isEmpty());
+    }
+
+    @Test
+    void no_entra_si_dentro_no_hay_ningun_plugin_conocido() throws IOException {
+        Path origen = pack("carpeta-rara/otra/x.yml");
+        Plan plan = planificar(origen, plugins("RPGRoll-Mobs"));
+
+        assertTrue(plan.aInstalar().isEmpty());
+    }
+
+    @Test
+    void avisa_de_que_entro_en_la_carpeta_envolvente() throws IOException {
+        Path origen = pack("reino-no-muerto/RPGRoll-Mobs/mobs/esqueleto.yml");
+        Plan plan = planificar(origen, plugins("RPGRoll-Mobs"));
+
+        assertTrue(plan.avisos().stream()
+                        .anyMatch(a -> a.mensaje().contains("reino-no-muerto")),
+                "entrar en una carpeta sin decirlo esconde lo que esta pasando");
+    }
+
+    @Test
+    void la_documentacion_sigue_reconociendose_dentro_del_envoltorio() throws IOException {
+        Path origen = pack(
+                "reino-no-muerto/LEEME.md",
+                "reino-no-muerto/RPGRoll-Mobs/mobs/esqueleto.yml");
+
+        Plan plan = planificar(origen, plugins("RPGRoll-Mobs"));
+
+        assertEquals(1, conAccion(plan, Plan.Accion.DOCUMENTACION));
+        assertEquals(1, plan.aInstalar().size());
+    }
+
+    // ------------------------------------------------------------------
 
     @Test
     void el_plan_no_escribe_nada() throws IOException {

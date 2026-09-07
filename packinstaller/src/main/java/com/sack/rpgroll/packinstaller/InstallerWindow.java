@@ -14,7 +14,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Map;
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -26,6 +25,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.UIManager;
 import javax.swing.filechooser.FileFilter;
 
@@ -60,17 +61,19 @@ final class InstallerWindow {
 
     private Plan planActual;
 
+    /**
+     * El pack con el que se construyó {@link #planActual}.
+     *
+     * <p>Se instala desde acá y no releyendo el campo de texto: si no, escribir
+     * otra ruta después de revisar instalaría algo que nadie ha visto.
+     */
+    private Path packRevisado;
+
     static void mostrar() {
-        SwingUtilities.invokeLater(() -> new InstallerWindow().construir().setVisible(true));
+        SwingUtilities.invokeLater(() -> new InstallerWindow().construir());
     }
 
-    /**
-     * Monta la ventana sin mostrarla.
-     *
-     * <p>Separado de {@link #mostrar()} para poder dibujarla en una imagen y
-     * revisar el aspecto sin abrir nada en el escritorio de nadie.
-     */
-    JFrame construir() {
+    private void construir() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception ignorado) {
@@ -88,11 +91,16 @@ final class InstallerWindow {
         raiz.add(centro(), BorderLayout.CENTER);
         raiz.add(pie(), BorderLayout.SOUTH);
 
+        // Elegir con el botón ya invalida el plan, pero escribir la ruta a mano
+        // también tiene que hacerlo: si no, revisar un pack y teclear otro
+        // instalaría algo que nadie ha visto.
+        vigilar(campoPack);
+        vigilar(campoPlugins);
+
         ventana.setContentPane(raiz);
         ventana.pack();
         ventana.setLocationRelativeTo(null);
-
-        return ventana;
+        ventana.setVisible(true);
     }
 
     private JPanel cabecera() {
@@ -179,6 +187,25 @@ final class InstallerWindow {
         return panel;
     }
 
+    private void vigilar(JTextField campo) {
+        campo.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent evento) {
+                invalidarPlan();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent evento) {
+                invalidarPlan();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent evento) {
+                invalidarPlan();
+            }
+        });
+    }
+
     private static void estilizar(JTextField campo) {
         campo.setBackground(PANEL);
         campo.setForeground(TEXTO);
@@ -187,16 +214,6 @@ final class InstallerWindow {
                 BorderFactory.createLineBorder(BORDE),
                 BorderFactory.createEmptyBorder(6, 8, 6, 8)));
         campo.setPreferredSize(new Dimension(360, 30));
-    }
-
-    /** Rellena la ventana con un caso de ejemplo, solo para el retrato. */
-    void rellenarParaRetrato(Path pack, Path plugins, String informeDeEjemplo) {
-        campoPack.setText(pack.toString());
-        campoPlugins.setText(plugins.toString());
-        informe.setText(informeDeEjemplo);
-        botonInstalar.setEnabled(true);
-        estado.setForeground(ACENTO);
-        estado.setText("15 archivos por instalar.");
     }
 
     // ------------------------------------------------------------------
@@ -241,6 +258,7 @@ final class InstallerWindow {
     /** Cambiar cualquier ruta invalida el plan: instalar uno viejo sería mentir. */
     private void invalidarPlan() {
         planActual = null;
+        packRevisado = null;
         botonInstalar.setEnabled(false);
     }
 
@@ -263,6 +281,7 @@ final class InstallerWindow {
             informe.setCaretPosition(0);
 
             planActual = plan;
+            packRevisado = origen;
 
             boolean hayTrabajo = !plan.aInstalar().isEmpty();
             botonInstalar.setEnabled(!plan.tieneErrores() && hayTrabajo);
@@ -306,8 +325,9 @@ final class InstallerWindow {
 
     private void instalar() {
         Plan plan = planActual;
+        Path origen = packRevisado;
 
-        if (plan == null) {
+        if (plan == null || origen == null) {
             return;
         }
 
@@ -335,13 +355,24 @@ final class InstallerWindow {
 
         // En un hilo aparte: copiando desde el hilo de la interfaz, la ventana
         // se congela y Windows la marca como "no responde" a mitad del trabajo.
-        new SwingWorker<Installer.Resultado, Void>() {
+        int total = plan.aInstalar().size();
+
+        new SwingWorker<Installer.Resultado, String>() {
             @Override
             protected Installer.Resultado doInBackground() throws IOException {
-                try (PackSource pack = PackSource.desde(Path.of(campoPack.getText().trim()))) {
-                    return new Installer(pack).instalar(plan, ruta -> {
-                    });
+                try (PackSource pack = PackSource.desde(origen)) {
+                    return new Installer(pack).instalar(plan, this::publish);
                 }
+            }
+
+            private int hechos;
+
+            @Override
+            protected void process(java.util.List<String> copiados) {
+                // Se cuenta por lote y se pinta una sola vez: con 116 archivos,
+                // repintar por cada uno cuesta más que copiarlos.
+                hechos += copiados.size();
+                estado.setText("Instalando… " + hechos + " de " + total);
             }
 
             @Override

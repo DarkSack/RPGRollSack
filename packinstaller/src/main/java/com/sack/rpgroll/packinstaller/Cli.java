@@ -2,6 +2,8 @@ package com.sack.rpgroll.packinstaller;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -48,9 +50,26 @@ final class Cli {
             return 2;
         }
 
-        Path origen = Path.of(args[0]);
-        Path plugins = Path.of(args[1]);
-        boolean instalar = args.length > 2 && args[2].equals("--instalar");
+        // La bandera se busca en cualquier posición: escribirla antes de las
+        // rutas es un orden razonable y no hay motivo para rechazarlo.
+        boolean instalar = false;
+        List<String> rutas = new ArrayList<>();
+
+        for (String argumento : args) {
+            if (argumento.equals("--instalar")) {
+                instalar = true;
+            } else {
+                rutas.add(argumento);
+            }
+        }
+
+        if (rutas.size() < 2) {
+            System.err.println(ayuda());
+            return 2;
+        }
+
+        Path origen = Path.of(rutas.get(0));
+        Path plugins = Path.of(rutas.get(1));
 
         try (PackSource pack = PackSource.desde(origen)) {
             Plan plan = new Planner(pack, plugins).planificar();

@@ -29,9 +29,15 @@ Sin `--instalar` solo enseña lo que haría. Ese es el valor por defecto a
 propósito: en una consola no hay ventana de confirmación, así que la primera
 ejecución tiene que ser inofensiva.
 
-El pack puede ser una carpeta o su `.zip` — se acepta el zip para que nadie
-tenga que descomprimir primero, que es donde la gente acaba con el pack anidado
-dentro de una carpeta de más y luego no se instala nada.
+El pack puede ser una carpeta o su `.zip`, para que nadie tenga que
+descomprimir primero.
+
+Si el zip envuelve el pack en una carpeta —que es justo lo que hace «Enviar a
+→ Carpeta comprimida» de Windows, y casi cualquier herramienta gráfica— se
+entra en ella sola y se avisa. Sin eso no se reconocería ninguna carpeta de
+plugin y no se copiaría **nada**, con un mensaje que suena a que el pack está
+roto. Solo se entra cuando no hay duda posible: una única carpeta en la raíz,
+que no es ningún plugin conocido, y dentro de ella sí aparece alguno.
 
 ## Qué valida
 
@@ -48,6 +54,7 @@ de problemas en pantalla y un servidor idéntico a como estaba.
 | Nombres de carpeta que no son ningún plugin | Una errata como `RPGRoll-Mob` no se instalaría nunca **y nadie se enteraría** |
 | Nombres que solo difieren en mayúsculas | Funciona en el Windows de quien armó el pack y falla en el Linux del comprador |
 | Archivos ya presentes e idénticos | Reinstalar el mismo pack no debe tocar nada ni generar respaldos inútiles |
+| Que el plan siga siendo el revisado | Cambiar la ruta después de *Revisar* instalaría algo que nadie ha visto |
 
 Que falte un addon **no es un error**: nadie compra los 24. Se omite y se dice
 cuál. Un nombre desconocido sí avisa, pero tampoco impide instalar — si mañana
@@ -72,7 +79,7 @@ ejecutable en Python o Node obligaría a instalar un intérprete solo para copia
 archivos.
 
 Swing viene dentro del JDK, así que esto es **un solo `.jar` sin dependencias**
-(44 KB) que se abre con doble clic. Nada que instalar, ningún permiso de
+(48 KB) que se abre con doble clic. Nada que instalar, ningún permiso de
 administrador, ningún antivirus preguntando por un `.exe` desconocido.
 
 Se compila para **Java 17** aunque el resto del repo apunte a 25. Esto no corre
@@ -91,13 +98,3 @@ publica como descarga suelta en la tienda.
 ```
 
 Deja `build/libs/RPGRoll-PackInstaller.jar`.
-
-## Sobre el aspecto de la ventana
-
-`InstallerWindow.construir()` devuelve el `JFrame` sin mostrarlo, y
-`rellenarParaRetrato(...)` lo deja en el estado posterior a *Revisar*. Juntos
-permiten dibujar la ventana en un PNG sin abrir nada en el escritorio de nadie.
-
-Existe porque en este repo los fallos visuales no los ha encontrado nunca la
-suite de pruebas: las pruebas cubren la lógica, y lo que se ve en pantalla hay
-que mirarlo.

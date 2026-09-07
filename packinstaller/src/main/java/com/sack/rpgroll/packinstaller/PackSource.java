@@ -32,12 +32,6 @@ abstract class PackSource implements AutoCloseable {
             int corte = rutaRelativa.indexOf('/');
             return corte < 0 ? "" : rutaRelativa.substring(0, corte);
         }
-
-        /** La ruta dentro de la carpeta del plugin. */
-        String rutaDentroDelPlugin() {
-            int corte = rutaRelativa.indexOf('/');
-            return corte < 0 ? rutaRelativa : rutaRelativa.substring(corte + 1);
-        }
     }
 
     abstract String nombre();

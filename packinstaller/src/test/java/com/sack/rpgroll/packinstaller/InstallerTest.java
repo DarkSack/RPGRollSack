@@ -128,7 +128,8 @@ class InstallerTest {
         instalar(origen, destino);
         Installer.Resultado segunda = instalar(origen, destino);
 
-        assertEquals(0, segunda.instalados());
+        assertEquals(0, segunda.copiados());
+        assertEquals(0, segunda.reemplazados());
         assertEquals(null, segunda.copiaDeSeguridad());
     }
 

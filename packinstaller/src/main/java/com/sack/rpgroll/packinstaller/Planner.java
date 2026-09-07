@@ -23,6 +23,13 @@ final class Planner {
     private final PackSource pack;
     private final Path carpetaPlugins;
 
+    /**
+     * Carpeta que envuelve al pack dentro del zip, si la hay.
+     *
+     * <p>Vacío cuando el pack está en la raíz, que es lo esperado.
+     */
+    private String envoltorio = "";
+
     Planner(PackSource pack, Path carpetaPlugins) {
         this.pack = pack;
         this.carpetaPlugins = carpetaPlugins;
@@ -41,6 +48,13 @@ final class Planner {
             return new Plan(pack.nombre(), carpetaPlugins, entradas, avisos);
         }
 
+        envoltorio = detectarEnvoltorio(archivos);
+
+        if (!envoltorio.isEmpty()) {
+            avisos.add(new Plan.Aviso(Plan.Aviso.Nivel.NOTA,
+                    "El pack viene dentro de la carpeta '" + envoltorio + "'. Se entra en ella sola."));
+        }
+
         Set<String> carpetasVistas = new LinkedHashSet<>();
 
         for (PackSource.Archivo archivo : archivos) {
@@ -49,7 +63,13 @@ final class Planner {
                 continue;
             }
 
-            String carpeta = archivo.carpetaRaiz();
+            String relativa = sinEnvoltorio(archivo.rutaRelativa());
+
+            if (relativa.isEmpty()) {
+                continue;
+            }
+
+            String carpeta = carpetaRaizDe(relativa);
 
             // Un archivo suelto en la raíz es documentación (LEEME.md y
             // compañía), no contenido de ningún plugin. Se lista para que se
@@ -71,7 +91,7 @@ final class Planner {
                 continue;
             }
 
-            Path destino = destinoPlugin.resolve(archivo.rutaDentroDelPlugin());
+            Path destino = destinoPlugin.resolve(dentroDelPluginDe(relativa));
 
             // Cinturón y tirantes: aunque `rutaSegura` ya filtró los "..", se
             // comprueba el resultado final. Un enlace simbólico dentro de
@@ -116,6 +136,84 @@ final class Planner {
             // SHA-256 es obligatorio en toda implementación de Java.
             throw new IllegalStateException(imposible);
         }
+    }
+
+    // ------------------------------------------------------------------
+    // Packs envueltos en una carpeta
+    // ------------------------------------------------------------------
+
+    /**
+     * Detecta el caso en que el zip incluye la carpeta del pack.
+     *
+     * <p>Es lo que produce «Enviar a → Carpeta comprimida» de Windows y casi
+     * cualquier herramienta gráfica: en vez de {@code RPGRoll-Mobs/...}, las
+     * entradas quedan como {@code reino-no-muerto/RPGRoll-Mobs/...}. Sin
+     * tratarlo, el instalador no reconoce ninguna carpeta de plugin y no copia
+     * absolutamente nada — con un aviso que suena a que el pack está mal.
+     *
+     * <p>Solo se entra cuando no hay ninguna duda: ninguna carpeta de la raíz
+     * es un plugin conocido, hay <b>exactamente una</b> carpeta, y dentro de
+     * ella sí aparece alguno. Con esas tres condiciones no se puede confundir
+     * con un pack legítimo.
+     *
+     * @return el nombre de la carpeta envolvente, o cadena vacía si no la hay
+     */
+    private static String detectarEnvoltorio(List<PackSource.Archivo> archivos) {
+        Set<String> raiz = new LinkedHashSet<>();
+
+        for (PackSource.Archivo archivo : archivos) {
+            String carpeta = archivo.carpetaRaiz();
+
+            if (!carpeta.isEmpty()) {
+                raiz.add(carpeta);
+            }
+        }
+
+        if (raiz.size() != 1) {
+            return "";
+        }
+
+        String unica = raiz.iterator().next();
+
+        if (RpgRollPlugins.esConocido(unica)) {
+            return "";
+        }
+
+        String prefijo = unica + "/";
+
+        for (PackSource.Archivo archivo : archivos) {
+            String resto = archivo.rutaRelativa();
+
+            if (resto.startsWith(prefijo)) {
+                String dentro = resto.substring(prefijo.length());
+                int corte = dentro.indexOf('/');
+
+                if (corte > 0 && RpgRollPlugins.esConocido(dentro.substring(0, corte))) {
+                    return unica;
+                }
+            }
+        }
+
+        return "";
+    }
+
+    private String sinEnvoltorio(String ruta) {
+        if (envoltorio.isEmpty()) {
+            return ruta;
+        }
+
+        String prefijo = envoltorio + "/";
+        return ruta.startsWith(prefijo) ? ruta.substring(prefijo.length()) : "";
+    }
+
+    private static String carpetaRaizDe(String ruta) {
+        int corte = ruta.indexOf('/');
+        return corte < 0 ? "" : ruta.substring(0, corte);
+    }
+
+    private static String dentroDelPluginDe(String ruta) {
+        int corte = ruta.indexOf('/');
+        return corte < 0 ? ruta : ruta.substring(corte + 1);
     }
 
     // ------------------------------------------------------------------

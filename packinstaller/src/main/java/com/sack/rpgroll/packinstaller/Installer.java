@@ -25,10 +25,6 @@ final class Installer {
         boolean todoBien() {
             return fallos.isEmpty();
         }
-
-        int instalados() {
-            return copiados + reemplazados;
-        }
     }
 
     private final PackSource pack;
