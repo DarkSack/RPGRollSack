@@ -193,6 +193,34 @@ class LicenseManagerTest {
                 "SELF_HOSTED_ENDPOINT sin configurar en LicenseSettings");
     }
 
+    /**
+     * El endpoint tiene que estar en un dominio propio.
+     * <p>
+     * Esta constante queda compilada en cada jar, así que es la única dirección
+     * que una copia vendida sabe consultar — para siempre. Apuntarla al
+     * subdominio gratuito de un proveedor significa que el día que ese
+     * subdominio desaparezca, todos los jars que ya están en el disco de los
+     * compradores dejan de validar y no hay arreglo posible.
+     * <p>
+     * Es fácil que alguien lo apunte "un momento" a un despliegue de prueba y
+     * se le escape a una publicación, porque nada más lo delata: compila,
+     * arranca y valida igual mientras ese despliegue exista.
+     */
+    @Test
+    void theSelfHostedEndpointIsNotOnAProviderSubdomain() {
+        String endpoint = LicenseSettings.SELF_HOSTED_ENDPOINT;
+
+        for (String provider : new String[] {".vercel.app", ".netlify.app", ".onrender.com",
+                ".herokuapp.com", ".fly.dev", ".pages.dev", "localhost", "127.0.0.1"}) {
+            assertFalse(endpoint.contains(provider),
+                    "SELF_HOSTED_ENDPOINT apunta a " + provider + ", que no es un dominio propio: "
+                            + endpoint);
+        }
+
+        assertTrue(endpoint.startsWith("https://"),
+                "la verificación tiene que ir por HTTPS: " + endpoint);
+    }
+
     @Test
     void validationSuccessIsCachedForTheGracePeriod() throws Exception {
         writeLicense("key: 'REAL-KEY'\n");

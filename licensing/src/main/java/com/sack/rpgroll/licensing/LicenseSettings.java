@@ -28,19 +28,27 @@ final class LicenseSettings {
 
     /**
      * URL del servicio de verificación propio, para las ventas directas
-     * (Ko-fi, Patreon) — {@code /api/verify} en el repositorio privado
-     * {@code rpgroll-store} (Vercel + Supabase).
+     * (Ko-fi, Patreon) — {@code /api/verify} de la tienda (Vercel + Supabase).
      * <p>
      * Antes vivía en {@code verification-web}, que quedó deprecado: la tienda
      * absorbió la verificación para que emitir y validar una licencia compartan
      * base y no haya dos servicios que mantener sincronizados.
      * <p>
-     * Cambiar esta constante <b>no</b> alcanza para los jars ya distribuidos:
-     * queda compilada en el bytecode, así que una copia vieja sigue llamando a
-     * la URL anterior. Por eso el dominio viejo debe seguir respondiendo, o
-     * redirigir, mientras exista alguna versión antigua en circulación.
+     * <b>Es un dominio propio y no el {@code *.vercel.app} del despliegue.</b>
+     * Esta cadena queda compilada en el bytecode de cada jar, así que es la
+     * única dirección que una copia distribuida sabe consultar — para siempre.
+     * Con el subdominio del proveedor, mudarse de hosting, o que el proveedor
+     * cambie cómo los asigna, dejaría sin validar a todos los jars que ya están
+     * en el disco de los compradores, sin ningún arreglo posible desde acá. Con
+     * dominio propio eso se resuelve repuntando un registro DNS. Aparte,
+     * {@code vercel.app} está en la Public Suffix List y algunos hosts de
+     * Minecraft lo bloquean en bloque.
+     * <p>
+     * Cambiar esta constante <b>no</b> alcanza para los jars ya distribuidos.
+     * Por eso el dominio anterior debe seguir respondiendo, o redirigir,
+     * mientras exista alguna versión antigua en circulación.
      */
-    static final String SELF_HOSTED_ENDPOINT = "https://rpgroll-store.vercel.app/api/verify";
+    static final String SELF_HOSTED_ENDPOINT = "https://store.sackito.online/api/verify";
 
     /**
      * Token que acompaña la verificación. Lo aporta cada módulo al arrancar,
