@@ -76,15 +76,17 @@ val generateLicenseIdentity by tasks.registering {
                 "Falta '$moduleName' en licensing.properties — todo módulo vendible necesita su id de producto.",
             )
 
-        // Un id en 0 es el marcador de "todavía no creé el producto en la
-        // tienda". Compila igual y el jar parece correcto, pero ninguna compra
-        // valida jamás. Se avisa fuerte en cada build para que no se escape a
-        // una publicación; con -Prpgroll.allowUnassignedIds se silencia mientras
-        // se arma el catálogo.
+        // Un id en 0 es el marcador de "todavía no publiqué el listing en
+        // voxel.shop". Solo afecta a ESE canal: las ventas propias se validan
+        // por PRODUCT_SLUG, que siempre está bien puesto. Compila igual y el
+        // jar parece correcto, así que se avisa fuerte en cada build para que
+        // no se escape a una publicación en el marketplace; con
+        // -Prpgroll.allowUnassignedIds se silencia mientras se arma el catálogo.
         if (resourceId == "0" && !project.hasProperty("rpgroll.allowUnassignedIds")) {
             logger.warn(
-                "✘ $moduleName: id de producto sin asignar (0). Este jar NO puede validar ninguna compra. " +
-                    "Pon el id real de la tienda en licensing.properties antes de publicar.",
+                "✘ $moduleName: id de voxel.shop sin asignar (0). Este jar NO puede validar una compra " +
+                    "hecha EN EL MARKETPLACE (las ventas propias sí, van por slug). " +
+                    "Pon el id real del listing en licensing.properties antes de publicarlo ahí.",
             )
         }
 
@@ -105,8 +107,24 @@ val generateLicenseIdentity by tasks.registering {
                 private LicenseIdentity() {
                 }
 
-                /** Id de "$moduleName" en el marketplace. */
+                /**
+                 * Id de "$moduleName" en el marketplace (voxel.shop). Es el
+                 * numero que va en la URL del listing y solo lo entiende ese
+                 * canal.
+                 */
                 public static final String RESOURCE_ID = "$resourceId";
+
+                /**
+                 * Identificador de este modulo en la tienda propia: el slug de
+                 * rpgroll.products, que es exactamente el nombre del modulo en
+                 * Gradle y la clave en licensing.properties.
+                 *
+                 * Va aparte del RESOURCE_ID a proposito. Son dos catalogos
+                 * distintos y no comparten identificador: mandarle el numero de
+                 * voxel.shop a la tienda propia devuelve "not-covered", que el
+                 * plugin trata como licencia invalida y sin periodo de gracia.
+                 */
+                public static final String PRODUCT_SLUG = "$moduleName";
 
                 /**
                  * Token que acompana la verificacion propia. Se inyecta al

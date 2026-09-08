@@ -24,6 +24,9 @@ class LicenseManagerTest {
     /** Id de producto de prueba: en producción lo aporta cada módulo. */
     private static final String RESOURCE = "test-resource";
 
+    /** Slug del mismo producto en la tienda propia. Distinto a propósito. */
+    private static final String SLUG = "test-slug";
+
     @TempDir
     File dataFolder;
 
@@ -46,7 +49,7 @@ class LicenseManagerTest {
     }
 
     /** Proveedor de prueba que devuelve siempre lo mismo y recuerda lo que recibió. */
-    private static final class StubProvider implements LicenseProvider {
+    private static class StubProvider implements LicenseProvider {
 
         private final LicenseResult result;
         private String seenKey;
@@ -74,7 +77,7 @@ class LicenseManagerTest {
         writeLicense("key: '%%__LICENSE__%%'\n");
         StubProvider provider = new StubProvider(LicenseResult.valid("no debería llamarse"));
 
-        LicenseResult result = new LicenseManager(plugin, RESOURCE, provider).check();
+        LicenseResult result = new LicenseManager(plugin, RESOURCE, SLUG, provider).check();
 
         assertEquals(LicenseResult.Status.INVALID, result.status());
         assertNull(provider.seenKey);
@@ -84,14 +87,14 @@ class LicenseManagerTest {
     void blankKeyIsRejected() throws Exception {
         writeLicense("key: ''\n");
 
-        assertEquals(LicenseResult.Status.INVALID, new LicenseManager(plugin, RESOURCE).check().status());
+        assertEquals(LicenseResult.Status.INVALID, new LicenseManager(plugin, RESOURCE, SLUG).check().status());
     }
 
     @Test
     void missingKeyIsRejected() throws Exception {
         writeLicense("# sin campo key\n");
 
-        assertEquals(LicenseResult.Status.INVALID, new LicenseManager(plugin, RESOURCE).check().status());
+        assertEquals(LicenseResult.Status.INVALID, new LicenseManager(plugin, RESOURCE, SLUG).check().status());
     }
 
     @Test
@@ -99,7 +102,7 @@ class LicenseManagerTest {
         writeLicense("key: '  REAL-KEY  '\n");
         StubProvider provider = new StubProvider(LicenseResult.valid("ok"));
 
-        new LicenseManager(plugin, RESOURCE, provider).check();
+        new LicenseManager(plugin, RESOURCE, SLUG, provider).check();
 
         assertEquals("REAL-KEY", provider.seenKey);
     }
@@ -111,7 +114,7 @@ class LicenseManagerTest {
         writeLicense("key: 'REAL-KEY'\nresource-id: 'producto-que-no-compre'\n");
         StubProvider provider = new StubProvider(LicenseResult.valid("ok"));
 
-        new LicenseManager(plugin, RESOURCE, provider).check();
+        new LicenseManager(plugin, RESOURCE, SLUG, provider).check();
 
         assertEquals(RESOURCE, provider.seenResourceId);
     }
@@ -127,7 +130,7 @@ class LicenseManagerTest {
                 """);
         StubProvider provider = new StubProvider(LicenseResult.valid("ok"));
 
-        LicenseResult result = new LicenseManager(plugin, RESOURCE, provider).check();
+        LicenseResult result = new LicenseManager(plugin, RESOURCE, SLUG, provider).check();
 
         // Llega al stub tal cual, sin que el YAML haya podido redirigir nada.
         assertEquals("REAL-KEY", provider.seenKey);
@@ -139,7 +142,7 @@ class LicenseManagerTest {
     // endpoint que tenga configurado el build.
     @Test
     void selfHostedKeyPrefixSelectsTheSelfHostedProvider() {
-        LicenseProvider provider = new LicenseManager(plugin, RESOURCE)
+        LicenseProvider provider = new LicenseManager(plugin, RESOURCE, SLUG)
                 .resolveProvider(LicenseSettings.SELF_HOSTED_KEY_PREFIX + "AAAAA-BBBBB");
 
         assertInstanceOf(SelfHostedLicenseProvider.class, provider);
@@ -147,9 +150,40 @@ class LicenseManagerTest {
 
     @Test
     void aNonPrefixedKeyGoesToVoxelShop() {
-        LicenseProvider provider = new LicenseManager(plugin, RESOURCE).resolveProvider("VOXEL-STYLE-KEY");
+        LicenseProvider provider = new LicenseManager(plugin, RESOURCE, SLUG).resolveProvider("VOXEL-STYLE-KEY");
 
         assertInstanceOf(VoxelShopLicenseProvider.class, provider);
+    }
+
+    // Los dos canales tienen catálogos separados y ninguno reconoce el
+    // identificador del otro. Cuando ambos recibían el id de voxel.shop, la
+    // tienda propia respondía "not-covered" — que es valid:false, o sea
+    // licencia inválida y sin período de gracia: el plugin de alguien que pagó
+    // no arrancaba, y el log culpaba a su licencia.
+    @Test
+    void theSelfHostedChannelGetsTheSlugAndVoxelShopTheMarketplaceId() {
+        LicenseManager manager = new LicenseManager(plugin, RESOURCE, SLUG);
+
+        assertEquals(SLUG, manager.identifierFor(new SelfHostedLicenseProvider("https://x/api/verify")),
+                "la tienda propia identifica los productos por slug");
+        assertEquals(RESOURCE, manager.identifierFor(new VoxelShopLicenseProvider()),
+                "voxel.shop identifica los productos por su id numérico");
+    }
+
+    @Test
+    void theSelfHostedRequestCarriesTheSlug() throws Exception {
+        writeLicense("key: '" + LicenseSettings.SELF_HOSTED_KEY_PREFIX + "AAAAA'\n");
+
+        StubProvider provider = new StubProvider(LicenseResult.valid("ok")) {
+            @Override
+            public boolean usesProductSlug() {
+                return true;
+            }
+        };
+
+        new LicenseManager(plugin, RESOURCE, SLUG, provider).check();
+
+        assertEquals(SLUG, provider.seenResourceId);
     }
 
     @Test
@@ -163,7 +197,7 @@ class LicenseManagerTest {
     void validationSuccessIsCachedForTheGracePeriod() throws Exception {
         writeLicense("key: 'REAL-KEY'\n");
 
-        new LicenseManager(plugin, RESOURCE, new StubProvider(LicenseResult.valid("ok"))).check();
+        new LicenseManager(plugin, RESOURCE, SLUG, new StubProvider(LicenseResult.valid("ok"))).check();
 
         assertTrue(new File(dataFolder, ".license-cache.yml").exists());
     }
@@ -173,7 +207,7 @@ class LicenseManagerTest {
         writeLicense("key: 'REAL-KEY'\n");
         writeCache(true, System.currentTimeMillis());
 
-        LicenseResult result = new LicenseManager(plugin, RESOURCE,
+        LicenseResult result = new LicenseManager(plugin, RESOURCE, SLUG,
                 new StubProvider(LicenseResult.unknown("servidor caído"))).check();
 
         assertEquals(LicenseResult.Status.VALID, result.status());
@@ -184,7 +218,7 @@ class LicenseManagerTest {
         writeLicense("key: 'REAL-KEY'\n");
         writeCache(true, System.currentTimeMillis() - (8L * 24 * 60 * 60 * 1000));
 
-        LicenseResult result = new LicenseManager(plugin, RESOURCE,
+        LicenseResult result = new LicenseManager(plugin, RESOURCE, SLUG,
                 new StubProvider(LicenseResult.unknown("servidor caído"))).check();
 
         assertEquals(LicenseResult.Status.INVALID, result.status());
@@ -194,7 +228,7 @@ class LicenseManagerTest {
     void outageWithNoCacheAtAllIsRejected() throws Exception {
         writeLicense("key: 'REAL-KEY'\n");
 
-        LicenseResult result = new LicenseManager(plugin, RESOURCE,
+        LicenseResult result = new LicenseManager(plugin, RESOURCE, SLUG,
                 new StubProvider(LicenseResult.unknown("servidor caído"))).check();
 
         assertEquals(LicenseResult.Status.INVALID, result.status());
@@ -206,7 +240,7 @@ class LicenseManagerTest {
         writeLicense("key: 'RPGR-KOFI-KEY'\n");
         writeCache(true, System.currentTimeMillis());
 
-        LicenseResult result = new LicenseManager(plugin, RESOURCE,
+        LicenseResult result = new LicenseManager(plugin, RESOURCE, SLUG,
                 new StubProvider(LicenseResult.invalid("revocada"))).check();
 
         assertEquals(LicenseResult.Status.INVALID, result.status());
@@ -219,9 +253,9 @@ class LicenseManagerTest {
         writeLicense("key: 'REAL-KEY'\n");
         writeCache(true, System.currentTimeMillis());
 
-        new LicenseManager(plugin, RESOURCE, new StubProvider(LicenseResult.invalid("revocada"))).check();
+        new LicenseManager(plugin, RESOURCE, SLUG, new StubProvider(LicenseResult.invalid("revocada"))).check();
 
-        LicenseResult afterOutage = new LicenseManager(plugin, RESOURCE,
+        LicenseResult afterOutage = new LicenseManager(plugin, RESOURCE, SLUG,
                 new StubProvider(LicenseResult.unknown("servidor caído"))).check();
 
         assertEquals(LicenseResult.Status.INVALID, afterOutage.status());

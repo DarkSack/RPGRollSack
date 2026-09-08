@@ -39,17 +39,25 @@ public class LicenseManager {
 
     private final Plugin plugin;
     private final String resourceId;
+    private final String productSlug;
     private final LicenseProvider providerOverride;
     private final LicenseCache cache;
 
-    public LicenseManager(Plugin plugin, String resourceId) {
-        this(plugin, resourceId, null);
+    /**
+     * @param resourceId  id del producto en voxel.shop (numérico)
+     * @param productSlug id del producto en la tienda propia (slug). Son dos
+     *                    catálogos distintos: ver {@link LicenseProvider#usesProductSlug()}
+     */
+    public LicenseManager(Plugin plugin, String resourceId, String productSlug) {
+        this(plugin, resourceId, productSlug, null);
     }
 
     /** Constructor para tests o para forzar un proveedor concreto. */
-    public LicenseManager(Plugin plugin, String resourceId, LicenseProvider providerOverride) {
+    public LicenseManager(Plugin plugin, String resourceId, String productSlug,
+                          LicenseProvider providerOverride) {
         this.plugin = plugin;
         this.resourceId = resourceId;
+        this.productSlug = productSlug;
         this.providerOverride = providerOverride;
         this.cache = new LicenseCache(plugin);
     }
@@ -76,7 +84,7 @@ public class LicenseManager {
 
         plugin.getLogger().info("Verificando licencia contra " + provider.name() + "...");
 
-        LicenseResult result = provider.validate(key, resourceId);
+        LicenseResult result = provider.validate(key, identifierFor(provider));
 
         return switch (result.status()) {
 
@@ -92,6 +100,15 @@ public class LicenseManager {
 
             case UNKNOWN -> handleUnknown(result);
         };
+    }
+
+    /**
+     * Cada canal nombra sus productos a su manera y ninguno reconoce el nombre
+     * del otro. Visible para los tests: es el paso que, mal puesto, deja al
+     * comprador con un {@code not-covered} y el plugin apagado.
+     */
+    String identifierFor(LicenseProvider provider) {
+        return provider.usesProductSlug() ? productSlug : resourceId;
     }
 
     /**

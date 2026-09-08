@@ -44,7 +44,13 @@ dependencies {
     testImplementation(project(":common"))
 }
 
-tasks.named<Jar>("jar") {
+// withType y no named("jar"): el módulo que aplique el plugin shadow distribuye
+// su shadowJar, y esa es OTRA tarea Jar que no hereda nada de la configuración
+// de `jar`. Cuando esto configuraba solo `jar`, el jar publicado de :npcs salía
+// sin una sola clase de :common ni de :licensing —incluido LicenseGate, que su
+// onEnable llama— y nada lo delataba: compila, empaqueta y pesa lo que debe.
+// Es el fallo que un `./gradlew build` verde no ve.
+tasks.withType<Jar>().configureEach {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 
     from(embeddedCommon.elements.map { elements -> elements.map { zipTree(it.asFile) } }) {

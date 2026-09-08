@@ -16,13 +16,17 @@ import java.time.Duration;
  * marketplace que sustituya {@code %%__LICENSE__%%} ni exponga una API de
  * verificación.
  * <p>
- * El endpoint lo configura el vendedor en {@code license.yml}
- * ({@code endpoint:}), así que el plugin no tiene ninguna URL propia
- * hardcodeada.
+ * El endpoint es una constante de compilación
+ * ({@link LicenseSettings#SELF_HOSTED_ENDPOINT}), no un campo de
+ * {@code license.yml}: mientras fue configurable, cualquier comprador podía
+ * apuntarlo a un servidor propio que respondiera siempre
+ * {@code {"valid":true}}.
  * <p>
  * <b>Contrato esperado.</b> {@code POST <endpoint>} con
  * {@code application/x-www-form-urlencoded} y los campos {@code license} y
- * {@code resource}. La respuesta debe ser JSON:
+ * {@code resource}. Ojo con {@code resource}: acá va el <b>slug</b> del
+ * producto en la tienda propia ({@code mobs}), no el id numérico de
+ * voxel.shop — ver {@link #usesProductSlug()}. La respuesta debe ser JSON:
  *
  * <pre>{@code
  * { "valid": true,  "status": "active",  "message": "opcional" }
@@ -75,6 +79,16 @@ public class SelfHostedLicenseProvider implements LicenseProvider {
     @Override
     public String name() {
         return "servidor propio";
+    }
+
+    /**
+     * La tienda propia identifica cada producto por su slug
+     * ({@code rpgroll.products.slug}), que es el mismo nombre que el módulo
+     * tiene en Gradle. El id numérico de voxel.shop no existe en ese catálogo.
+     */
+    @Override
+    public boolean usesProductSlug() {
+        return true;
     }
 
     @Override

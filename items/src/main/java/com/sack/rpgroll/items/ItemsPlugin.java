@@ -65,7 +65,8 @@ public class ItemsPlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        if (!LicenseGate.verify(this, LicenseIdentity.RESOURCE_ID, LicenseIdentity.VERIFY_TOKEN)) {
+        if (!LicenseGate.verify(this, LicenseIdentity.RESOURCE_ID, LicenseIdentity.PRODUCT_SLUG,
+                LicenseIdentity.VERIFY_TOKEN)) {
             getServer().getPluginManager().disablePlugin(this);
             return;
         }

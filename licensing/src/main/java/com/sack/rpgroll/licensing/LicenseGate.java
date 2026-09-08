@@ -19,18 +19,21 @@ public final class LicenseGate {
     }
 
     /**
-     * @param resourceId id del producto en el marketplace, propio de este módulo
-     * @return true si el plugin puede seguir arrancando
-     */
-    public static boolean verify(Plugin plugin, String resourceId) {
-        return verify(plugin, resourceId, "");
-    }
-
-    /**
+     * Los tres valores salen de la clase {@code LicenseIdentity} que Gradle
+     * genera para cada módulo — no hay forma correcta de llamar a esto con
+     * literales escritos a mano.
+     *
+     * @param resourceId  id del producto en voxel.shop (numérico)
+     * @param productSlug id del producto en la tienda propia (slug). NO es el
+     *                    mismo valor que {@code resourceId}: son dos catálogos
+     *                    distintos, y confundirlos deja al comprador con el
+     *                    plugin apagado
      * @param verifyToken token del servicio propio, generado al compilar. Vacío
      *                    = no se manda cabecera.
+     * @return true si el plugin puede seguir arrancando
      */
-    public static boolean verify(Plugin plugin, String resourceId, String verifyToken) {
+    public static boolean verify(Plugin plugin, String resourceId, String productSlug,
+                                 String verifyToken) {
 
         LicenseSettings.selfHostedToken = verifyToken == null ? "" : verifyToken;
 
@@ -41,7 +44,7 @@ public final class LicenseGate {
             return true;
         }
 
-        LicenseResult result = new LicenseManager(plugin, resourceId).check();
+        LicenseResult result = new LicenseManager(plugin, resourceId, productSlug).check();
 
         if (result.isValid()) {
             plugin.getLogger().info("✔ Licencia verificada: " + result.message());

@@ -96,7 +96,8 @@ public class Bootstrap {
      *         deshabilitar el plugin.
      */
     private boolean verifyLicense() {
-        return LicenseGate.verify(plugin, LicenseIdentity.RESOURCE_ID);
+        return LicenseGate.verify(plugin, LicenseIdentity.RESOURCE_ID, LicenseIdentity.PRODUCT_SLUG,
+                LicenseIdentity.VERIFY_TOKEN);
     }
 
     /**

@@ -20,4 +20,21 @@ public interface LicenseProvider {
     /** Nombre del proveedor, usado en logs. */
     String name();
 
+    /**
+     * Qué identificador de producto espera este canal.
+     * <p>
+     * Los dos canales tienen catálogos propios y NO comparten identificador: en
+     * voxel.shop un producto es un número ({@code 10170}), y en la tienda
+     * propia es un slug ({@code mobs}). Mandar el equivocado no falla de forma
+     * ruidosa — la tienda propia responde {@code not-covered}, que es
+     * {@code valid:false}, o sea licencia inválida y sin período de gracia: el
+     * plugin de alguien que pagó no arranca.
+     *
+     * @return true si {@link #validate} espera el slug de la tienda propia en
+     *         vez del id del marketplace
+     */
+    default boolean usesProductSlug() {
+        return false;
+    }
+
 }
