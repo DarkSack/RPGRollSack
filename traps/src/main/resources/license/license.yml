@@ -1,14 +1,18 @@
 # Tu clave de licencia de RPGRoll-Traps. Es lo único que va en este archivo.
 #
-#   Si compraste en voxel.shop, NO tienes que tocar nada: el .jar que
-#   descargas desde tu panel de compras ya viene con tu clave puesta acá.
-#   Si ves el texto "%%__LICENSE__%%" tal cual (sin reemplazar), significa
-#   que esta copia no se descargó desde voxel.shop y el plugin no va a
-#   arrancar.
+#   Se compra en la tienda oficial: https://store.sackito.online
 #
-#   Si fue una venta directa (Ko-fi, Patreon), pega acá la clave que te
-#   pasó el vendedor — empieza con "RPGR-".
+#   Al comprar te llega la clave por correo, y siempre la tienes a mano en
+#   https://store.sackito.online/mis-compras. Empieza con "RPGR-": pégala abajo,
+#   en lugar de %%__LICENSE__%%, y reinicia el servidor.
 #
-# Cada módulo se compra por separado y por lo tanto lleva su propia clave:
-# la de RPGRoll-Traps no sirve para otro plugin del ecosistema.
+#   ¿La conseguiste por Ko-fi o Patreon? Es el mismo tipo de clave. Crea tu
+#   cuenta en la tienda con el MISMO correo con el que apoyaste y aparecerá
+#   en "Mis compras", junto con las descargas de cada versión nueva.
+#
+#   Si descargaste el .jar desde un marketplace que pone la clave por ti,
+#   ya viene rellenado: no toques nada.
+#
+# Cada módulo se compra por separado y lleva su propia clave, salvo que
+# compraras un pack: en ese caso la misma clave sirve para todo lo que incluye.
 key: '%%__LICENSE__%%'
