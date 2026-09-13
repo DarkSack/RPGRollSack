@@ -45,7 +45,12 @@ public final class ResourceSync {
         CREATED,
         /** Existía sin tocar y el JAR traía una versión distinta: se reemplazó. */
         UPDATED,
-        /** Editado por el admin y el JAR trae otra versión: se dejó aparte. */
+        /**
+         * Editado por el admin y el JAR trae otra versión: se dejó aparte. Solo
+         * se devuelve la vez que se aparta —o se cambia— esa versión; en los
+         * arranques siguientes es {@link #UNCHANGED}, para no repetir el mismo
+         * aviso en cada reinicio hasta que nadie lo lea.
+         */
         KEPT_EDITED,
         /** Ya estaba al día, o editado sin que haya nada nuevo que ofrecer. */
         UNCHANGED
@@ -116,10 +121,12 @@ public final class ResourceSync {
         // Editado (o de antes del registro) y con versión nueva en el JAR.
         Path copy = updateCopy(relativePath);
 
-        if (!Files.exists(copy) || !Arrays.equals(Files.readAllBytes(copy), packaged)) {
-            write(copy, packaged);
+        if (Files.exists(copy) && Arrays.equals(Files.readAllBytes(copy), packaged)) {
+            // Ya estaba apartada y ya se avisó.
+            return Outcome.UNCHANGED;
         }
 
+        write(copy, packaged);
         return Outcome.KEPT_EDITED;
     }
 

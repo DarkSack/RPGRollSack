@@ -70,6 +70,20 @@ class ResourceSyncTest {
     }
 
     @Test
+    void theSameNewVersionIsOnlyAnnouncedOnce() throws IOException {
+        boot("damage: 2");
+        Files.writeString(dataFolder.resolve(PATH), "damage: 99");
+
+        assertEquals(ResourceSync.Outcome.KEPT_EDITED, boot("damage: 3"));
+        // Reinicios siguientes con el mismo JAR: nada nuevo que contar.
+        assertEquals(ResourceSync.Outcome.UNCHANGED, boot("damage: 3"));
+        assertEquals(ResourceSync.Outcome.UNCHANGED, boot("damage: 3"));
+        // Pero una versión aún más nueva sí se anuncia.
+        assertEquals(ResourceSync.Outcome.KEPT_EDITED, boot("damage: 4"));
+        assertEquals("damage: 99", onDisk());
+    }
+
+    @Test
     void editedFileWithNothingNewLeavesNoCopyAside() throws IOException {
         boot("damage: 2");
         Files.writeString(dataFolder.resolve(PATH), "damage: 99");
