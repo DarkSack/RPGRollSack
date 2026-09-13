@@ -18,6 +18,15 @@ val checkReleaseVersions by tasks.registering {
     description = "Falla si algún módulo tiene una versión distinta al resto — un release es UN número para todo el ecosistema."
 
     doLast {
+        // Un jar compilado con -Prpgroll.dev=true acepta -Drpgroll.devmode, que
+        // salta la licencia. Eso no puede llegar nunca a un comprador.
+        if (providers.gradleProperty("rpgroll.dev").map { it.toBoolean() }.getOrElse(false)) {
+            throw GradleException(
+                "Este build es de desarrollo (-Prpgroll.dev=true): sus jars permiten saltarse la licencia. " +
+                    "Vuelve a lanzar el release sin esa propiedad.",
+            )
+        }
+
         val versions = addonProjects.associate { it.name to it.version.toString() }
         val distinct = versions.values.toSet()
 

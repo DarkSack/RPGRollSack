@@ -37,10 +37,12 @@ public final class LicenseGate {
 
         LicenseSettings.selfHostedToken = verifyToken == null ? "" : verifyToken;
 
-
-        if (Boolean.getBoolean("rpgroll.devmode")) {
+        // Solo en jars de desarrollo. En uno de venta DEV_BUILD es una constante
+        // false: el compilador borra esta rama y el flag no sirve para nada, que
+        // es justo lo que tiene que pasar si alguien lo prueba en su servidor.
+        if (LicenseBuild.DEV_BUILD && Boolean.getBoolean("rpgroll.devmode")) {
             plugin.getLogger().warning(
-                    "✔ Chequeo de licencia OMITIDO (-Drpgroll.devmode=true) — NO usar en producción.");
+                    "✔ Chequeo de licencia OMITIDO (-Drpgroll.devmode=true, jar de desarrollo) — NO usar en producción.");
             return true;
         }
 
