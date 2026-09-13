@@ -2,9 +2,18 @@
 .kotlin
 .vscode
 .claude
-bin
-build
-out
+# Salidas de compilación: SOLO en la raíz y en la raíz de cada módulo.
+#
+# Antes decía "build" a secas, y eso también ignoraba cualquier paquete de
+# código llamado build — como sackresourcepack/.../build/, con BuildEngine
+# dentro. Ese paquete nunca llegó al repo, y al copiar el proyecto desde git
+# desapareció: hubo que reconstruirlo desde un jar compilado.
+/build/
+/*/build/
+/bin/
+/*/bin/
+/out/
+/*/out/
 UI
 
 # "test" a secas ignoraba también todos los src/test/** — los tests unitarios
