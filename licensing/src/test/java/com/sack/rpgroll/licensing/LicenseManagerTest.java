@@ -288,4 +288,72 @@ class LicenseManagerTest {
 
         assertEquals(LicenseResult.Status.INVALID, afterOutage.status());
     }
+
+    // ── Gracia firmada para las claves del servidor propio ──────────────────
+
+    private static final long DAY = 24L * 60 * 60 * 1000;
+
+    @Test
+    void selfHostedOutageIsRescuedOnlyByASignedValidation() throws Exception {
+        TestSigner store = new TestSigner();
+        writeLicense("key: 'RPGR-KOFI-KEY'\n");
+
+        // Una validación real: la firma viaja a la caché.
+        LicenseProof proof = store.proof("RPGR-KOFI-KEY", RESOURCE, "srv", System.currentTimeMillis());
+        new LicenseManager(plugin, RESOURCE, SLUG, new StubProvider(LicenseResult.validSigned("ok", proof)))
+                .withSigningKey(store.publicKey()).check();
+
+        LicenseResult afterOutage = new LicenseManager(plugin, RESOURCE, SLUG,
+                new StubProvider(LicenseResult.unknown("servidor caído")))
+                .withSigningKey(store.publicKey()).check();
+
+        assertEquals(LicenseResult.Status.VALID, afterOutage.status());
+    }
+
+    // Lo que se podía hacer antes: escribir la caché a mano y bloquear la tienda.
+    @Test
+    void handWrittenCacheGivesNoGraceToASelfHostedKey() throws Exception {
+        TestSigner store = new TestSigner();
+        writeLicense("key: 'RPGR-KOFI-KEY'\n");
+        writeCache(true, System.currentTimeMillis());
+
+        LicenseResult result = new LicenseManager(plugin, RESOURCE, SLUG,
+                new StubProvider(LicenseResult.unknown("servidor caído")))
+                .withSigningKey(store.publicKey()).check();
+
+        assertEquals(LicenseResult.Status.INVALID, result.status());
+    }
+
+    @Test
+    void signedValidationOfAnotherKeyGivesNoGrace() {
+        TestSigner store = new TestSigner();
+        LicenseProof proof = store.proof("RPGR-OTRA-CLAVE", RESOURCE, "srv", System.currentTimeMillis());
+        LicenseCache.CachedState state = new LicenseCache.CachedState(true, System.currentTimeMillis(), proof);
+
+        assertFalse(LicenseCache.isWithinSignedGracePeriod(state, store.publicKey(), "RPGR-KOFI-KEY", RESOURCE,
+                System.currentTimeMillis()));
+    }
+
+    @Test
+    void signedValidationOlderThanTheGracePeriodGivesNoGrace() {
+        TestSigner store = new TestSigner();
+        long now = System.currentTimeMillis();
+        LicenseProof proof = store.proof("RPGR-KOFI-KEY", RESOURCE, "srv", now - 8 * DAY);
+        // `last-validated-at` es editable: no cuenta, cuenta la fecha firmada.
+        LicenseCache.CachedState state = new LicenseCache.CachedState(true, now, proof);
+
+        assertFalse(LicenseCache.isWithinSignedGracePeriod(state, store.publicKey(), "RPGR-KOFI-KEY", RESOURCE, now));
+    }
+
+    @Test
+    void signedValidationWithAnEditedDateGivesNoGrace() {
+        TestSigner store = new TestSigner();
+        long now = System.currentTimeMillis();
+        LicenseProof genuine = store.proof("RPGR-KOFI-KEY", RESOURCE, "srv", now - 8 * DAY);
+        LicenseProof edited = new LicenseProof(genuine.status(), genuine.server(), genuine.nonce(), now,
+                genuine.signature());
+
+        assertFalse(LicenseCache.isWithinSignedGracePeriod(new LicenseCache.CachedState(true, now, edited),
+                store.publicKey(), "RPGR-KOFI-KEY", RESOURCE, now));
+    }
 }

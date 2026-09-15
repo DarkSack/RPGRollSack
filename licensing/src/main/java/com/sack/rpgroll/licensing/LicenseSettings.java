@@ -1,5 +1,7 @@
 package com.sack.rpgroll.licensing;
 
+import java.security.PublicKey;
+
 /**
  * Parámetros de licenciamiento que decide EL VENDEDOR al compilar, no el
  * comprador.
@@ -70,5 +72,29 @@ final class LicenseSettings {
      * misma dice de qué canal viene.
      */
     static final String SELF_HOSTED_KEY_PREFIX = "RPGR-";
+
+    /**
+     * Clave PÚBLICA Ed25519 con la que la tienda firma cada respuesta de
+     * {@code /api/verify}. La privada vive solo en Vercel ({@code LICENSE_SIGNING_KEY}).
+     * <p>
+     * Pública a propósito: con ella solo se comprueba, no se firma. Cambiarla
+     * deja sin validar a todos los jars ya distribuidos con la anterior, así que
+     * no se rota salvo que la privada se filtre. Se generó con
+     * {@code node scripts/clave-firma.mjs} en rpgroll-store.
+     */
+    static final String SIGNING_PUBLIC_KEY = "MCowBQYDK2VwAyEA7Xv8Y0vQsRQHmH1hlsxPN9mzlZpuAn6YBz1TT0X3tsc=";
+
+    private static volatile PublicKey signingPublicKey;
+
+    static PublicKey signingPublicKey() {
+        PublicKey key = signingPublicKey;
+
+        if (key == null) {
+            key = LicenseSignature.decodePublicKey(SIGNING_PUBLIC_KEY);
+            signingPublicKey = key;
+        }
+
+        return key;
+    }
 
 }

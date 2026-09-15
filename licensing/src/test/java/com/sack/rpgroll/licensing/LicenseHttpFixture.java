@@ -22,6 +22,12 @@ final class LicenseHttpFixture implements AutoCloseable {
     }
 
     static LicenseHttpFixture responding(int statusCode, String body) throws IOException {
+        return respondingWith(statusCode, request -> body);
+    }
+
+    /** La respuesta se arma con la petición: hace falta para firmar con su nonce. */
+    static LicenseHttpFixture respondingWith(int statusCode, java.util.function.UnaryOperator<String> body)
+            throws IOException {
 
         HttpServer server = HttpServer.create(new InetSocketAddress("127.0.0.1", 0), 0);
         LicenseHttpFixture fixture = new LicenseHttpFixture(server);
@@ -30,7 +36,7 @@ final class LicenseHttpFixture implements AutoCloseable {
 
             fixture.lastRequestBody = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
 
-            byte[] payload = body.getBytes(StandardCharsets.UTF_8);
+            byte[] payload = body.apply(fixture.lastRequestBody).getBytes(StandardCharsets.UTF_8);
             exchange.sendResponseHeaders(statusCode, payload.length);
 
             try (OutputStream out = exchange.getResponseBody()) {

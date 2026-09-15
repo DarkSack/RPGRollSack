@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.security.PublicKey;
 import java.util.List;
 
 /**
@@ -42,6 +43,7 @@ public class LicenseManager {
     private final String productSlug;
     private final LicenseProvider providerOverride;
     private final LicenseCache cache;
+    private PublicKey signingKey = LicenseSettings.signingPublicKey();
 
     /**
      * @param resourceId  id del producto en voxel.shop (numérico)
@@ -89,7 +91,7 @@ public class LicenseManager {
         return switch (result.status()) {
 
             case VALID -> {
-                cache.write(true);
+                cache.write(true, result.proof());
                 yield result;
             }
 
@@ -98,7 +100,7 @@ public class LicenseManager {
                 yield result;
             }
 
-            case UNKNOWN -> handleUnknown(result);
+            case UNKNOWN -> handleUnknown(result, key, identifierFor(provider));
         };
     }
 
@@ -107,6 +109,12 @@ public class LicenseManager {
      * del otro. Visible para los tests: es el paso que, mal puesto, deja al
      * comprador con un {@code not-covered} y el plugin apagado.
      */
+    /** Para los tests: firman con una clave propia. */
+    LicenseManager withSigningKey(PublicKey key) {
+        this.signingKey = key;
+        return this;
+    }
+
     String identifierFor(LicenseProvider provider) {
         return provider.usesProductSlug() ? productSlug : resourceId;
     }
@@ -140,11 +148,11 @@ public class LicenseManager {
         }
     }
 
-    private LicenseResult handleUnknown(LicenseResult networkFailure) {
+    private LicenseResult handleUnknown(LicenseResult networkFailure, String key, String resource) {
 
         var cached = cache.read();
 
-        if (cached.isPresent() && cache.isWithinGracePeriod(cached.get())) {
+        if (cached.isPresent() && graceApplies(cached.get(), key, resource)) {
             plugin.getLogger().warning("✘ " + networkFailure.message()
                     + " — usando la última validación exitosa reciente (período de gracia).");
             return LicenseResult.valid("Período de gracia activo tras un fallo de red.");
@@ -152,6 +160,21 @@ public class LicenseManager {
 
         return LicenseResult.invalid("No se pudo validar la licencia y no hay una validación previa reciente: "
                 + networkFailure.message());
+    }
+
+    /**
+     * Las claves del servidor propio solo tienen gracia con una validación
+     * firmada por la tienda (ver {@link LicenseCache}); editar el archivo de
+     * caché no la concede. Las de voxel.shop no traen firma y siguen con la
+     * regla de siempre.
+     */
+    boolean graceApplies(LicenseCache.CachedState state, String key, String resource) {
+        if (key.startsWith(LicenseSettings.SELF_HOSTED_KEY_PREFIX)) {
+            return LicenseCache.isWithinSignedGracePeriod(state, signingKey, key, resource,
+                    System.currentTimeMillis());
+        }
+
+        return cache.isWithinGracePeriod(state);
     }
 
     /**

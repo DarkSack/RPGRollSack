@@ -8,6 +8,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.security.PublicKey;
 import java.time.Duration;
 
 /**
@@ -48,6 +49,13 @@ import java.time.Duration;
  * servidor está inalcanzable. Es el costo inevitable de tolerar cortes; la
  * alternativa (bloquear ante cualquier fallo de red) castiga a los
  * compradores legítimos por un problema del vendedor.
+ * <p>
+ * <b>Firma.</b> Cada petición lleva un {@code nonce} aleatorio y la respuesta
+ * tiene que venir firmada por la tienda ({@code issued_at} + {@code signature},
+ * ver {@link LicenseSignature}). Una respuesta sin firma válida —un servidor
+ * falso, un proxy, una respuesta vieja reenviada— se trata como UNKNOWN: no
+ * concede nada, y tampoco apaga el plugin de alguien que pagó si lo que falló
+ * es la tienda.
  */
 public class SelfHostedLicenseProvider implements LicenseProvider {
 
@@ -56,6 +64,7 @@ public class SelfHostedLicenseProvider implements LicenseProvider {
     private final String endpoint;
     private final String serverId;
     private final String serverName;
+    private final PublicKey publicKey;
 
     private final HttpClient httpClient = HttpClient.newBuilder()
             .connectTimeout(TIMEOUT)
@@ -71,9 +80,15 @@ public class SelfHostedLicenseProvider implements LicenseProvider {
      * @param serverName nombre legible del servidor, solo para mostrarlo en el panel
      */
     public SelfHostedLicenseProvider(String endpoint, String serverId, String serverName) {
+        this(endpoint, serverId, serverName, LicenseSettings.signingPublicKey());
+    }
+
+    /** @param publicKey clave con la que se comprueban las respuestas; los tests ponen la suya */
+    SelfHostedLicenseProvider(String endpoint, String serverId, String serverName, PublicKey publicKey) {
         this.endpoint = endpoint;
         this.serverId = serverId;
         this.serverName = serverName;
+        this.publicKey = publicKey;
     }
 
     @Override
@@ -99,6 +114,8 @@ public class SelfHostedLicenseProvider implements LicenseProvider {
                     "El modo 'self-hosted' necesita un 'endpoint' en license.yml y no hay ninguno configurado.");
         }
 
+        String nonce = LicenseSignature.newNonce();
+
         try {
             StringBuilder body = new StringBuilder()
                     .append("license=").append(urlEncode(licenseKey))
@@ -111,6 +128,8 @@ public class SelfHostedLicenseProvider implements LicenseProvider {
             if (serverName != null && !serverName.isBlank()) {
                 body.append("&server_name=").append(urlEncode(serverName));
             }
+
+            body.append("&nonce=").append(nonce);
 
             HttpRequest.Builder builder = HttpRequest.newBuilder()
                     .uri(URI.create(endpoint))
@@ -134,7 +153,7 @@ public class SelfHostedLicenseProvider implements LicenseProvider {
                         "El servidor de licencias respondió HTTP " + response.statusCode() + ".");
             }
 
-            return parse(response.body());
+            return parse(response.body(), licenseKey, resourceId, nonce);
 
         } catch (IllegalArgumentException e) {
             return LicenseResult.invalid("El 'endpoint' de license.yml no es una URL válida: " + e.getMessage());
@@ -186,7 +205,7 @@ public class SelfHostedLicenseProvider implements LicenseProvider {
     }
 
     /** Igual que en voxel.shop: una respuesta rara es UNKNOWN, nunca INVALID. */
-    private LicenseResult parse(String rawBody) {
+    private LicenseResult parse(String rawBody, String licenseKey, String resourceId, String nonce) {
 
         try {
             JsonObject root = JsonParser.parseString(rawBody).getAsJsonObject();
@@ -200,8 +219,25 @@ public class SelfHostedLicenseProvider implements LicenseProvider {
                     ? root.get("message").getAsString()
                     : null;
 
-            if (root.get("valid").getAsBoolean()) {
-                return LicenseResult.valid(message != null ? message : "Compra verificada (" + status + ").");
+            boolean valid = root.get("valid").getAsBoolean();
+            String server = serverId == null || serverId.isBlank() ? "" : serverId;
+
+            LicenseProof proof = root.has("signature") && root.has("issued_at")
+                    ? new LicenseProof(status, server, nonce,
+                            root.get("issued_at").getAsLong(), root.get("signature").getAsString())
+                    : null;
+
+            String signed = proof == null ? null : LicenseSignature.message(valid, status,
+                    LicenseSignature.sha256Hex(licenseKey), resourceId, server, nonce, proof.issuedAt());
+
+            if (proof == null || !LicenseSignature.verify(publicKey, signed, proof.signature())) {
+                return LicenseResult.unknown("La respuesta del servidor de licencias no trae una firma válida"
+                        + " (¿un proxy o un servidor que no es la tienda?).");
+            }
+
+            if (valid) {
+                return LicenseResult.validSigned(
+                        message != null ? message : "Compra verificada (" + status + ").", proof);
             }
 
             return LicenseResult.invalid(
