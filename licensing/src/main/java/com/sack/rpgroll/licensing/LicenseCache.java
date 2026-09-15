@@ -57,7 +57,21 @@ public class LicenseCache {
     }
 
     public boolean isWithinGracePeriod(CachedState state) {
-        return state.valid() && (System.currentTimeMillis() - state.lastValidatedAt()) < GRACE_PERIOD_MILLIS;
+        return isWithinGracePeriod(state, System.currentTimeMillis());
+    }
+
+    /**
+     * Una validación con fecha futura no cuenta.
+     * <p>
+     * El archivo es YAML en la carpeta del servidor. Antes bastaba con escribir
+     * {@code last-validated-at: 9999999999999} y bloquear el dominio de la
+     * tienda: "ahora menos el futuro" da negativo, que siempre es menor que siete
+     * días, y el plugin arrancaba en gracia para siempre sin licencia. Se tolera
+     * un minuto de adelanto por relojes desajustados entre arranques.
+     */
+    static boolean isWithinGracePeriod(CachedState state, long now) {
+        long elapsed = now - state.lastValidatedAt();
+        return state.valid() && elapsed >= -60_000L && elapsed < GRACE_PERIOD_MILLIS;
     }
 
 }
