@@ -146,6 +146,14 @@ desincronizados. Los dos módulos que empaquetan dependencias propias (`core` sh
 shadea y reubica OkHttp) usan su `shadowJar`, no el jar plano — la tarea ya lo resuelve sola por módulo, no
 hace falta tocar nada al agregar un addon nuevo mientras siga la convención `rpgroll.addon-conventions`.
 
+Al terminar, `verifyRelease` compara el SHA-256 de cada jar del zip con el jar compilado de su módulo y falla
+si falta alguno, si sobra alguno o si alguno no coincide. Esa tarea se ejecuta **siempre**, también cuando el
+resto sale `UP-TO-DATE`: los archivos que arma Gradle son reproducibles, así que recompilar sin cambiar nada
+da jars idénticos byte a byte y el zip conserva su fecha original. Eso es correcto, pero desde fuera se parece
+demasiado a "el zip se quedó viejo", y antes de publicar esa duda hay que poder resolverla sin mirar fechas.
+El `MANIFEST.txt` del zip lleva esos mismos SHA-256, para comprobar más tarde que el jar instalado en un
+servidor es el que salió del release.
+
 No corre como parte de `./gradlew build` — es completamente opt-in.
 
 ---

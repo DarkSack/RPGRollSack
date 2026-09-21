@@ -1,7 +1,7 @@
 @echo off
 setlocal enabledelayedexpansion
 
-rem Copia los jars compilados de RPGRoll (core + los 10 addons) a la
+rem Copia los jars compilados de RPGRoll (core + los 23 addons) a la
 rem carpeta plugins/ de tu servidor de pruebas, y borra plugins/.paper-remapped
 rem para que Paper no reuse una version vieja cacheada de esos jars.
 rem
@@ -26,7 +26,10 @@ if not exist "%DEST_DIR%\" (
 )
 
 set "ROOT=%~dp0"
-set "MODULES=core ascension chat crates dungeons enchantments guilds items mobs npcs quests sackeffects effects"
+rem La lista tiene que ser la misma que addonModuleNames en build.gradle.kts:
+rem si agregas un modulo nuevo y te olvidas de ponerlo aqui, el servidor de
+rem pruebas se queda con la version vieja de ese plugin y no avisa nadie.
+set "MODULES=core npcs crates enchantments quests items ascension mobs dungeons guilds chat fx effects magic seasons fishing sackresourcepack ranching workers economy crafting tab extras traps"
 
 if exist "%DEST_DIR%\.paper-remapped\" (
     rd /s /q "%DEST_DIR%\.paper-remapped"
