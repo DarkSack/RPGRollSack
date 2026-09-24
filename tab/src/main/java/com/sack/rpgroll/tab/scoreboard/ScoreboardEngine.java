@@ -6,6 +6,7 @@ import com.sack.rpgroll.tab.animation.AnimationManager;
 import com.sack.rpgroll.tab.placeholder.PlaceholderEngine;
 import com.sack.rpgroll.tab.teams.PlayerScoreboardService;
 import com.sack.rpgroll.util.ComponentUtils;
+import io.papermc.paper.scoreboard.numbers.NumberFormat;
 
 import net.kyori.adventure.text.Component;
 
@@ -64,6 +65,12 @@ public class ScoreboardEngine {
         } else {
             objective.displayName(title);
         }
+
+        // Sin esto, Minecraft pinta a la derecha de cada línea su puntuación:
+        // una columna de números rojos del 10 al 1 que no significan nada, solo
+        // son el orden interno de las entradas. Antes se escondían con trucos de
+        // paquetes; desde 1.20.3 hay una forma nativa de decir "no pintes nada".
+        objective.numberFormat(NumberFormat.blank());
 
         List<String> visibleLines = definition.lines().stream()
                 .filter(line -> conditionEvaluator.evaluate(line.condition(), player))

@@ -14,9 +14,11 @@ footer:
     - ""
     - "&7Jugadores: &f{online}&7/&f{max}"
     - "&7TPS: &a{tps}"
-    - "&6play.example.com"
+    - "&6tu-servidor.net"
 
-# {prefix}/{suffix} los rellena el Team activo del jugador (ver teams/).
+# {prefix}/{suffix} salen del Team activo del jugador (el "teams" de su perfil,
+# ver teams/) — por defecto vienen vacíos. También sirve cualquier placeholder
+# de PlaceholderAPI, p. ej. %luckperms_prefix%, si tienes ese plugin.
 # {ping_formatted} usa los tramos definidos en "ping" más abajo.
 # {gamemode_formatted} solo se sustituye si "gamemode.enabled: true".
 player-format: "{prefix}{player}{suffix} &8- {ping_formatted}"

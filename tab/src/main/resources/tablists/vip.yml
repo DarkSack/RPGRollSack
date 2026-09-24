@@ -13,7 +13,7 @@ footer:
   lines:
     - ""
     - "&7Jugadores: &f{online}&7/&f{max}"
-    - "&dplay.example.com"
+    - "&dtu-servidor.net"
 
 player-format: "{prefix}{player}{suffix} &8- {ping_formatted}"
 

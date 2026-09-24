@@ -24,6 +24,7 @@ import com.sack.rpgroll.tab.nametag.NametagManager;
 import com.sack.rpgroll.tab.placeholder.PlaceholderEngine;
 import com.sack.rpgroll.tab.profile.PlayerStateManager;
 import com.sack.rpgroll.tab.profile.ProfileManager;
+import com.sack.rpgroll.tab.profile.TABProfile;
 import com.sack.rpgroll.tab.scoreboard.LineConditionEvaluator;
 import com.sack.rpgroll.tab.scoreboard.ScoreboardEngine;
 import com.sack.rpgroll.tab.scoreboard.ScoreboardManager;
@@ -32,14 +33,17 @@ import com.sack.rpgroll.tab.sorting.SortingManager;
 import com.sack.rpgroll.tab.tablist.TabListEngine;
 import com.sack.rpgroll.tab.tablist.TablistManager;
 import com.sack.rpgroll.tab.teams.PlayerScoreboardService;
+import com.sack.rpgroll.tab.teams.TeamsDefinition;
 import com.sack.rpgroll.tab.teams.TeamsEngine;
 import com.sack.rpgroll.tab.teams.TeamsManager;
 import com.sack.rpgroll.tab.visibility.VisibilityEngine;
 import com.sack.rpgroll.tab.visibility.WorldVisibilityService;
 
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.List;
+import java.util.Optional;
 
 public class TabPlugin extends JavaPlugin {
 
@@ -120,6 +124,7 @@ public class TabPlugin extends JavaPlugin {
         sortingEngine = new SortingEngine(placeholderEngine);
         teamsManager = new TeamsManager(this);
         teamsManager.initialize();
+        registerTeamAffixPlaceholders();
         playerScoreboardService = new PlayerScoreboardService();
         teamsEngine = new TeamsEngine(playerScoreboardService);
         tabListEngine = new TabListEngine(tablistManager, sortingManager, sortingEngine, teamsManager, teamsEngine,
@@ -174,6 +179,32 @@ public class TabPlugin extends JavaPlugin {
         if (animationEngine != null) {
             animationEngine.stop();
         }
+    }
+
+    /**
+     * Registra {@code {prefix}}/{@code {suffix}} a partir del Team activo del
+     * jugador (ver teams/). Van aquí, como placeholders del motor, y no como
+     * una sustitución especial del tablist, porque —a diferencia de
+     * {@code {ping_formatted}}/{@code {gamemode_formatted}}— no dependen de la
+     * configuración del elemento que los use: así quedan disponibles por igual
+     * en tablist, scoreboard, nametag, belowname y bossbar.
+     * <p>
+     * Hacen falta explícitamente para el tablist: el cliente solo pinta el
+     * prefix/suffix del Team cuando la entrada NO trae un display name propio,
+     * y {@link TabListEngine} siempre fija {@code playerListName}, así que sin
+     * esto el prefix/suffix del Team nunca se vería en la lista.
+     */
+    private void registerTeamAffixPlaceholders() {
+
+        placeholderEngine.register("prefix", player -> activeTeams(player).map(TeamsDefinition::prefix).orElse(""));
+        placeholderEngine.register("suffix", player -> activeTeams(player).map(TeamsDefinition::suffix).orElse(""));
+    }
+
+    private Optional<TeamsDefinition> activeTeams(Player player) {
+
+        return playerStateManager.activeProfile(player)
+                .map(TABProfile::teamsId)
+                .flatMap(teamsManager::get);
     }
 
     private void registerCommand() {

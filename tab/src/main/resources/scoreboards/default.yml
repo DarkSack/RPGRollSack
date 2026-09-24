@@ -3,5 +3,5 @@
 id: default
 extends: rpg_template
 replacements:
-  server: "play.example.com"
+  server: "tu-servidor.net"
 priority: 0
