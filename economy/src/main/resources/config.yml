@@ -7,6 +7,18 @@ language: es
 # externo que hable Vault (Jobs, tiendas de otros plugins, EssentialsX-style) opera sobre esta moneda.
 default-currency: gold
 
+# Con qué prioridad se registra esta economía en Vault: lowest, low, normal, high, highest.
+#
+# Por defecto 'highest' porque otros plugins (EssentialsX, por ejemplo) registran
+# la suya con prioridad 'normal', y ante un empate Vault se queda con el que cargó
+# primero. Si eso pasa, el resto del ecosistema mueve dinero en las cuentas del OTRO
+# plugin mientras los mercados, bancos e impuestos de aquí siguen usando las carteras
+# propias: el mismo jugador con dos saldos distintos.
+#
+# Ponlo en 'normal' o menos solo si quieres deliberadamente que otro plugin sea la
+# economía del servidor y usar este addon únicamente por sus mercados y subastas.
+vault-priority: highest
+
 # Cada cuánto (ticks, 20 = 1 segundo) el precio de mercado se recupera un paso hacia su base-price.
 market-recovery-interval-ticks: 1200
 

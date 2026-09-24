@@ -13,22 +13,37 @@ import java.util.Optional;
  * arrancar sin ella. Los sistemas que dependan de Economy (ej. trabajos)
  * deben chequear isAvailable() antes de usarla, y degradar con gracia
  * (deshabilitar esa función, no crashear) si no está presente.
+ * <p>
+ * <b>El proveedor se resuelve en cada uso, no se cachea al arrancar.</b> Los
+ * addons del propio ecosistema —RPGRoll-Economy el primero— dependen del core,
+ * así que Bukkit los habilita DESPUÉS: si el core se quedara con el proveedor
+ * que encontró en su {@code onEnable}, elegiría siempre la economía de un
+ * plugin ajeno (EssentialsX y compañía cargan antes) y RPGRoll-Economy nunca
+ * se usaría, aunque esté instalada y registrada con prioridad más alta. El
+ * síntoma era desagradable de diagnosticar: el jugador terminaba con dos
+ * saldos distintos, uno por cada sistema, sin ningún error en consola.
+ * <p>
+ * Resolver en cada llamada es una búsqueda en un mapa: irrelevante frente al
+ * coste de cualquier operación de economía, y además deja que el servidor
+ * cambie de proveedor en caliente (un {@code /reload} de otro plugin) sin
+ * dejar al core apuntando a un objeto muerto.
  */
 public class VaultEconomyProvider {
 
     private final RPGRoll plugin;
-    private Economy economy;
+
+    /** Último proveedor anunciado en consola, para no repetir el mensaje en cada uso. */
+    private String announcedProvider;
 
     public VaultEconomyProvider(RPGRoll plugin) {
         this.plugin = plugin;
     }
 
     /**
-     * Intenta conectar con Vault + un plugin de economía compatible
-     * (EssentialsX, CMI, etc.). Seguro de llamar aunque Vault no esté instalado.
+     * Comprueba que Vault y alguna economía estén disponibles, y lo anuncia.
+     * Seguro de llamar aunque Vault no esté instalado.
      *
-     * @return true si se conectó exitosamente, false si no hay Vault o economía
-     *         disponible
+     * @return true si hay economía utilizable en este momento
      */
     public boolean setup() {
 
@@ -38,27 +53,49 @@ public class VaultEconomyProvider {
             return false;
         }
 
-        RegisteredServiceProvider<Economy> provider = plugin.getServer().getServicesManager()
-                .getRegistration(Economy.class);
-
-        if (provider == null) {
+        if (resolve() == null) {
             plugin.getLogger().warning(
                     "✘ Vault está instalado, pero no hay ningún plugin de economía registrado (ej. EssentialsX). "
                             + "El sistema de economía estará desactivado.");
             return false;
         }
 
-        this.economy = provider.getProvider();
-        plugin.getLogger().info("✔ Economía conectada vía Vault: " + economy.getName());
         return true;
     }
 
     public boolean isAvailable() {
-        return economy != null;
+        return resolve() != null;
     }
 
     public Optional<Economy> getEconomy() {
-        return Optional.ofNullable(economy);
+        return Optional.ofNullable(resolve());
+    }
+
+    /**
+     * Pregunta a Vault quién provee la economía AHORA. Anuncia en consola solo
+     * cuando el proveedor cambia respecto al último anunciado.
+     */
+    private Economy resolve() {
+
+        if (plugin.getServer().getPluginManager().getPlugin("Vault") == null) {
+            return null;
+        }
+
+        RegisteredServiceProvider<Economy> provider = plugin.getServer().getServicesManager()
+                .getRegistration(Economy.class);
+
+        if (provider == null) {
+            return null;
+        }
+
+        Economy economy = provider.getProvider();
+
+        if (!economy.getName().equals(announcedProvider)) {
+            announcedProvider = economy.getName();
+            plugin.getLogger().info("✔ Economía conectada vía Vault: " + economy.getName());
+        }
+
+        return economy;
     }
 
 }

@@ -188,6 +188,37 @@ public class EconomyPlugin extends JavaPlugin {
         }
     }
 
+    /**
+     * Prioridad con la que se registra el proveedor de Vault.
+     * <p>
+     * Por defecto {@code HIGHEST} y no {@code NORMAL} por un motivo concreto:
+     * plugins generalistas como EssentialsX también registran una economía con
+     * prioridad {@code Normal}, y Vault resuelve el empate por orden de carga.
+     * Al cargar antes (alfabéticamente, o por dependencias), Essentials ganaba
+     * y el resto del ecosistema terminaba moviendo dinero en SUS cuentas
+     * mientras los mercados, bancos e impuestos de este addon seguían
+     * operando sobre las carteras propias: dos bolsillos para el mismo
+     * jugador, sin ningún aviso.
+     * <p>
+     * Quien instala RPGRoll-Economy quiere que la economía sea esta. Aun así
+     * es configurable, porque un servidor puede querer lo contrario —
+     * conservar la economía de otro plugin y usar este addon solo por sus
+     * mercados.
+     */
+    private ServicePriority vaultPriority() {
+
+        String configured = getConfig().getString("vault-priority", "highest");
+
+        try {
+            return ServicePriority.valueOf(
+                    configured.trim().substring(0, 1).toUpperCase() + configured.trim().substring(1).toLowerCase());
+        } catch (IllegalArgumentException | IndexOutOfBoundsException exception) {
+            getLogger().warning("vault-priority: '" + configured + "' no es válido"
+                    + " (lowest, low, normal, high, highest). Se usa highest.");
+            return ServicePriority.Highest;
+        }
+    }
+
     private void registerVault() {
 
         if (getServer().getPluginManager().getPlugin("Vault") == null) {
@@ -196,9 +227,12 @@ public class EconomyPlugin extends JavaPlugin {
             return;
         }
 
+        ServicePriority priority = vaultPriority();
+
         getServer().getServicesManager().register(Economy.class, new EconomyVaultProvider(walletService, currencyManager),
-                this, ServicePriority.Normal);
-        getLogger().info("✔ RPGRoll-Economy registrado como proveedor del servicio Economy de Vault.");
+                this, priority);
+        getLogger().info("✔ RPGRoll-Economy registrado como proveedor del servicio Economy de Vault"
+                + " (prioridad " + priority + ").");
     }
 
     private void registerPlaceholders() {
