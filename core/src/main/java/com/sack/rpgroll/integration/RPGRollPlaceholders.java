@@ -2,6 +2,10 @@ package com.sack.rpgroll.integration;
 
 import com.sack.rpgroll.RPGRoll;
 import com.sack.rpgroll.api.RPGRollAPI;
+import com.sack.rpgroll.api.playerclass.ClassManager;
+import com.sack.rpgroll.api.playerclass.PlayerClass;
+import com.sack.rpgroll.api.race.Race;
+import com.sack.rpgroll.api.race.RaceManager;
 import com.sack.rpgroll.gameplay.combat.CombatStats;
 import com.sack.rpgroll.player.RPGPlayer;
 import com.sack.rpgroll.player.jobs.PlayerJobs;
@@ -97,8 +101,17 @@ public class RPGRollPlaceholders extends PlaceholderExpansion {
             case "xp_to_next" -> String.valueOf(progression.getExpToNextLevel());
             case "xp_percent" -> String.valueOf(progression.getProgressPercent());
             case "max_level" -> progression.isMaxLevel() ? "si" : "no";
-            case "race" -> valueOrDash(rpgPlayer.getRace());
-            case "class" -> valueOrDash(rpgPlayer.getPlayerClass());
+            case "race" -> valueOrDash(raceDisplay(rpgPlayer.getRace()));
+            case "class" -> valueOrDash(classDisplay(rpgPlayer.getPlayerClass()));
+            // Variantes pensadas para nametags, tablist y chat: quedan VACÍAS
+            // mientras el jugador no haya elegido, en vez del "-" de arriba.
+            // Así un formato como "&7%rpgroll_class_tag%" no muestra "[-]"
+            // colgando del nombre de quien acaba de entrar.
+            case "race_tag" -> tagOrEmpty(raceDisplay(rpgPlayer.getRace()));
+            case "class_tag" -> tagOrEmpty(classDisplay(rpgPlayer.getPlayerClass()));
+            // Sin corchetes: para formatos que ya aportan su propia decoración.
+            case "race_display" -> emptyIfNull(raceDisplay(rpgPlayer.getRace()));
+            case "class_display" -> emptyIfNull(classDisplay(rpgPlayer.getPlayerClass()));
             case "health" -> formatNumber(combat.currentHealth());
             case "health_max" -> formatNumber(combat.maxHealth());
             case "mana" -> formatNumber(combat.currentMana());
@@ -187,6 +200,52 @@ public class RPGRollPlaceholders extends PlaceholderExpansion {
 
     private String valueOrDash(String value) {
         return value == null || value.isBlank() ? "-" : value;
+    }
+
+    /** "[&c⚔ Guerrero]" si hay valor; cadena vacía si no. */
+    private String tagOrEmpty(String value) {
+        return value == null || value.isBlank() ? "" : "[" + value + "]";
+    }
+
+    private String emptyIfNull(String value) {
+        return value == null ? "" : value;
+    }
+
+    /**
+     * Nombre visible de la clase, no su id.
+     * <p>
+     * El jugador guarda el <b>id</b> ("guerrero"), que es lo correcto para
+     * persistir, pero es lo que menos apetece leer en un tablist: sale en
+     * minúscula, sin color y sin sitio donde poner un icono. El
+     * {@code display-name} del YAML ("&amp;c⚔ Guerrero") sí lleva las tres
+     * cosas, y así cambiarlas es editar un fichero de configuración en vez de
+     * recompilar.
+     * <p>
+     * Si la clase ya no existe —se renombró o se borró su fichero y hay
+     * jugadores que la tenían— se devuelve el id en crudo: es feo, pero es
+     * información real y localizable, que es mejor que un hueco en blanco.
+     */
+    private String classDisplay(String id) {
+
+        if (id == null || id.isBlank()) {
+            return id;
+        }
+
+        ClassManager manager = plugin.getBootstrap().getServices().get(ClassManager.class);
+
+        return manager == null ? id : manager.get(id).map(PlayerClass::displayName).orElse(id);
+    }
+
+    /** Igual que {@link #classDisplay(String)}, para razas. */
+    private String raceDisplay(String id) {
+
+        if (id == null || id.isBlank()) {
+            return id;
+        }
+
+        RaceManager manager = plugin.getBootstrap().getServices().get(RaceManager.class);
+
+        return manager == null ? id : manager.get(id).map(Race::displayName).orElse(id);
     }
 
     private String formatNumber(double value) {
