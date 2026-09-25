@@ -27,7 +27,7 @@ attributes:
 
 requirements:
   level: 20
-  class: warrior
+  class: guerrero
 
 durability:
   max: 500
@@ -87,11 +87,12 @@ upgrades:
 recipes:
   - type: SHAPED
     shape:
-      - " I "
-      - " I "
+      - " B "
+      - " D "
       - " S "
     key:
-      I: IRON_INGOT
+      B: BLAZE_POWDER
+      D: DIAMOND
       S: STICK
 
 economy:

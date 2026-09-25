@@ -65,9 +65,9 @@ attributes:
 # Requisitos para poder usar/equipar el ítem — todos opcionales, se evalúan todos los presentes
 requirements:
   level: 40
-  race: elf
-  class: warrior
-  profession: blacksmith
+  race: elfo
+  class: guerrero
+  profession: minero
   skill: swordsmanship
   trait: strong_arm
   permission: rpgroll.items.mythic

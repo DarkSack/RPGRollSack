@@ -37,11 +37,11 @@ conditions:
   - type: LEVEL_MIN
     min-value: 10
   - type: RACE
-    value: elf
+    value: elfo
   - type: CLASS
-    value: warrior
+    value: guerrero
   - type: JOB_MIN
-    value: blacksmith
+    value: minero
     min-value: 5
   - type: PERMISSION
     value: rpgrollcrafting.recipe.reference

@@ -31,6 +31,6 @@ conditions:
   - type: LEVEL_MIN
     min-value: 15
   - type: JOB_MIN
-    value: blacksmith
+    value: minero
     min-value: 3
   - type: GUILD_MEMBER

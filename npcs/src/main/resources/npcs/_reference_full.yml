@@ -50,7 +50,7 @@ actions:
     value: "MIN_LEVEL:10;MESSAGE:Veo que ya tienes experiencia.;MESSAGE:Vuelve cuando seas más fuerte."
 
   - type: CONDITIONAL
-    value: "HAS_RACE:elf || HAS_CLASS:mage;MESSAGE:Los arcanos te reconocen.;MESSAGE:No perteneces a los arcanos."
+    value: "HAS_RACE:elfo || HAS_CLASS:mago;MESSAGE:Los arcanos te reconocen.;MESSAGE:No perteneces a los arcanos."
 
   - type: OPEN_GUI
     value: "reference_full_menu"

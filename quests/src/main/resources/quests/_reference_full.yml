@@ -20,7 +20,7 @@ cooldown: "1d" # solo aplica si repeatable: true — soporta s/m/h/d
 
 requirements:
   level: 15
-  race: elf
+  race: elfo
   class: ranger
   profession: hunter
   trait: keen_eye

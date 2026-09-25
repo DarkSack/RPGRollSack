@@ -43,9 +43,9 @@ conditions:
   - type: LEVEL_MAX
     value: "80"
   - type: RACE
-    value: elf
+    value: elfo
   - type: CLASS
-    value: mage
+    value: mago
   - type: JOB
     value: alchemist
   - type: WORLD
