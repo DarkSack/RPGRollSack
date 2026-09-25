@@ -188,8 +188,14 @@ public class AdminJobCommand implements RPGCommand {
             return;
         }
 
+        int previousLevel = jobs.getLevel(jobId);
         JobProgress newProgress = new JobProgress(jobId, level, 0);
         playerManager.savePlayer(rpgPlayer.updateJobs(jobs.withProgress(newProgress)));
+
+        if (level > previousLevel) {
+            Bukkit.getPluginManager().callEvent(new com.sack.rpgroll.api.event.PlayerJobLevelUpEvent(
+                    target, jobId, previousLevel, level));
+        }
 
         lang.send(sender, "admin_job.setlevel_success", "job", jobId, "player", target.getName(), "level", level);
     }

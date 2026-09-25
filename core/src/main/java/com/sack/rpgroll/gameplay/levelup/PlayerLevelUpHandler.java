@@ -86,6 +86,10 @@ public class PlayerLevelUpHandler {
         // Disparar evento
         Bukkit.getPluginManager().callEvent(
                 new LevelUpEvent(player, leveledUpPlayer, currentLevel + 1, rewards));
+        // El evento de la API pública: los addons escuchan este, no el interno.
+        Bukkit.getPluginManager().callEvent(
+                new com.sack.rpgroll.api.event.PlayerLevelUpEvent(player, leveledUpPlayer, currentLevel,
+                        currentLevel + 1));
 
         // Enviar mensajes
         sendLevelUpMessage(player, currentLevel + 1, rewards);

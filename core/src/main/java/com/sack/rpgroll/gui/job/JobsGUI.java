@@ -186,6 +186,14 @@ public class JobsGUI extends InventoryGUI {
             return;
         }
 
+        // Cancelable: un addon puede exigir requisitos que el core no conoce.
+        var joinEvent = new com.sack.rpgroll.api.event.PlayerJoinJobEvent(player, rpgPlayer, jobId);
+        org.bukkit.Bukkit.getPluginManager().callEvent(joinEvent);
+        if (joinEvent.isCancelled()) {
+            lang.send(player, "jobs_gui.join_denied", "job", jobOpt.get().displayName());
+            return;
+        }
+
         RPGPlayer updated = rpgPlayer.joinJob(jobId);
         playerManager.savePlayer(updated);
 
@@ -200,6 +208,8 @@ public class JobsGUI extends InventoryGUI {
 
         RPGPlayer updated = rpgPlayer.leaveJob(jobId);
         playerManager.savePlayer(updated);
+        org.bukkit.Bukkit.getPluginManager().callEvent(
+                new com.sack.rpgroll.api.event.PlayerLeaveJobEvent(player, updated, jobId));
 
         String name = jobOpt.map(Job::displayName).orElse(jobId);
         lang.send(player, "jobs_gui.left", "job", name);

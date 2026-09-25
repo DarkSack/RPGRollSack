@@ -1,5 +1,7 @@
 package com.sack.rpgroll.gui.character;
 
+import com.sack.rpgroll.api.event.CharacterCreatedEvent;
+import com.sack.rpgroll.api.event.CharacterSelectionEvent;
 import com.sack.rpgroll.api.stats.StatType;
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gameplay.combat.CombatStats;
@@ -11,7 +13,9 @@ import com.sack.rpgroll.api.playerclass.PlayerClass;
 import com.sack.rpgroll.api.race.Race;
 import com.sack.rpgroll.race.RaceAttributeApplier;
 import com.sack.rpgroll.api.race.RaceManager;
+import com.sack.rpgroll.gameplay.selection.CharacterSelectionGate;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.Map;
@@ -65,6 +69,14 @@ public class CharacterCreationFlow {
     }
 
     private void onRaceSelected(String race) {
+
+        // Un addon puede reservar razas (p. ej. las secretas de Ascension):
+        // si la niega, se vuelve a mostrar la selección con el motivo.
+        if (!CharacterSelectionGate.allowRace(player, race, CharacterSelectionEvent.Source.CHARACTER_CREATION, lang)) {
+            showRaceSelection();
+            return;
+        }
+
         this.selectedRace = race;
 
         raceManager.get(race)
@@ -80,6 +92,13 @@ public class CharacterCreationFlow {
     }
 
     private void onClassSelected(String playerClass) {
+
+        if (!CharacterSelectionGate.allowClass(player, playerClass, CharacterSelectionEvent.Source.CHARACTER_CREATION,
+                lang)) {
+            showClassSelection();
+            return;
+        }
+
         this.selectedClass = playerClass;
         saveCharacter();
     }
@@ -119,6 +138,9 @@ public class CharacterCreationFlow {
         Optional<PlayerClass> classOpt = classManager.get(selectedClass);
 
         raceOpt.ifPresent(race -> raceAttributeApplier.apply(player, race));
+
+        // Parte de la API pública desde siempre, pero no se lanzaba nunca.
+        Bukkit.getPluginManager().callEvent(new CharacterCreatedEvent(player, selectedRace, selectedClass));
 
         String raceName = raceOpt.map(Race::displayName).orElse(selectedRace);
         String className = classOpt.map(PlayerClass::displayName).orElse(selectedClass);

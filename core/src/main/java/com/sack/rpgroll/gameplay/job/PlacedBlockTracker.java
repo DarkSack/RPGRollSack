@@ -49,6 +49,37 @@ public class PlacedBlockTracker {
     }
 
     /**
+     * Como {@link #isPlayerPlacedAndClear}, pero sin borrar el registro. Para
+     * otros addons que quieren saber si un bloque roto era natural (RPGRoll-
+     * Ascension no cuenta para logros los bloques que el jugador puso él
+     * mismo): tienen que preguntar antes que el listener del minero, que es
+     * el que lo borra, a prioridad MONITOR.
+     */
+    public boolean isPlayerPlaced(Block block) {
+
+        String sql = "SELECT 1 FROM placed_blocks WHERE world = ? AND x = ? AND y = ? AND z = ?";
+
+        try {
+            Connection connection = databaseManager.getConnection();
+
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                statement.setString(1, block.getWorld().getName());
+                statement.setInt(2, block.getX());
+                statement.setInt(3, block.getY());
+                statement.setInt(4, block.getZ());
+
+                try (ResultSet result = statement.executeQuery()) {
+                    return result.next();
+                }
+            }
+
+        } catch (SQLException exception) {
+            plugin.getLogger().warning("✘ Error al consultar bloque colocado: " + exception.getMessage());
+            return false;
+        }
+    }
+
+    /**
      * Verifica si un bloque fue colocado por un jugador. Si lo fue, además
      * elimina el registro (el bloque está a punto de romperse — ya no
      * existirá, así que no tiene sentido mantenerlo trackeado).

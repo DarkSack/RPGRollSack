@@ -392,6 +392,10 @@ player_level_up_handler:
   trait_unlocked: "&d╠ New trait unlocked!: &f{trait}"
 
 # Character creation flow (race + class)
+character_selection:
+  denied: "&cYou can't pick that yet:"
+  denied_reason: "&7 • {reason}"
+
 character_creation_flow:
   already_created: "&cYou already have a character created."
   race_label: "&eRace: &f{race}"
@@ -407,6 +411,7 @@ character_creation_flow:
 
 # Main jobs GUI
 jobs_gui:
+  join_denied: "&cYou don't meet the requirements to join {job}."
   title: "&6Jobs"
   info_name: "&6Your jobs"
   info_lore: "&7Active: {count}/{max}"

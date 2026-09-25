@@ -1,5 +1,7 @@
 package com.sack.rpgroll.command.commands;
 
+import com.sack.rpgroll.api.event.CharacterSelectionEvent;
+import com.sack.rpgroll.gameplay.selection.CharacterSelectionGate;
 import com.sack.rpgroll.RPGRoll;
 import com.sack.rpgroll.api.playerclass.ClassManager;
 import com.sack.rpgroll.api.playerclass.PlayerClass;
@@ -123,6 +125,10 @@ public class ClassCommand implements RPGCommand {
         }
 
         PlayerClass playerClass = classOpt.get();
+
+        if (!CharacterSelectionGate.allowClass(player, playerClass.id(), CharacterSelectionEvent.Source.COMMAND, lang)) {
+            return;
+        }
 
         // Actualizar y guardar — se persiste el id (mismo criterio que CharacterCreationFlow/AdminSetClassCommand).
         RPGPlayer updatedPlayer = rpgPlayer.setClass(playerClass.id());

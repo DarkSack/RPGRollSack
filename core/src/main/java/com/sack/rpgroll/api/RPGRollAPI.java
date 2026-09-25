@@ -111,6 +111,15 @@ public final class RPGRollAPI {
         return plugin.getBootstrap().getServices().get(PlayerManager.class);
     }
 
+    /**
+     * Cambia la raza o la clase de un personaje ya creado, igual que los
+     * comandos de admin. Ver {@link com.sack.rpgroll.gameplay.selection.CharacterChangeService}.
+     */
+    public com.sack.rpgroll.gameplay.selection.CharacterChangeService getCharacterChangeService() {
+        return plugin.getBootstrap().getServices().get(
+                com.sack.rpgroll.gameplay.selection.CharacterChangeService.class);
+    }
+
     // ============ Contenido ============
 
     public RaceManager getRaceManager() {
@@ -131,6 +140,11 @@ public final class RPGRollAPI {
 
     public JobManager getJobManager() {
         return plugin.getBootstrap().getServices().get(JobManager.class);
+    }
+
+    /** Qué bloques puso un jugador (los oficios y los logros no cuentan esos al romperlos). */
+    public com.sack.rpgroll.gameplay.job.PlacedBlockTracker getPlacedBlockTracker() {
+        return plugin.getBootstrap().getServices().get(com.sack.rpgroll.gameplay.job.PlacedBlockTracker.class);
     }
 
     // ============ Integraciones ============

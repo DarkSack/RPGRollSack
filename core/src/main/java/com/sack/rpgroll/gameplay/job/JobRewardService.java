@@ -9,6 +9,7 @@ import com.sack.rpgroll.player.jobs.JobProgress;
 import com.sack.rpgroll.player.jobs.PlayerJobs;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.Optional;
@@ -82,6 +83,8 @@ public class JobRewardService {
         if (leveledUp) {
             bukkitPlayer.sendMessage(lang.component("job_reward_service.level_up", "job", job.displayName(), "level",
                     updated.level()));
+            Bukkit.getPluginManager().callEvent(new com.sack.rpgroll.api.event.PlayerJobLevelUpEvent(
+                    bukkitPlayer, jobId, current.level(), updated.level()));
         }
     }
 
@@ -127,6 +130,8 @@ public class JobRewardService {
         if (leveledUp) {
             bukkitPlayer.sendMessage(lang.component("job_reward_service.level_up", "job", job.displayName(), "level",
                     updated.level()));
+            Bukkit.getPluginManager().callEvent(new com.sack.rpgroll.api.event.PlayerJobLevelUpEvent(
+                    bukkitPlayer, jobId, current.level(), updated.level()));
         }
     }
 

@@ -1,17 +1,13 @@
 package com.sack.rpgroll.command.commands;
 
+import com.sack.rpgroll.gameplay.selection.CharacterChangeService;
 import com.sack.rpgroll.RPGRoll;
 import com.sack.rpgroll.command.RPGCommand;
 import com.sack.rpgroll.common.lang.LangManager;
-import com.sack.rpgroll.gameplay.combat.CombatStats;
-import com.sack.rpgroll.api.stats.StatType;
 import com.sack.rpgroll.player.PlayerManager;
 import com.sack.rpgroll.player.RPGPlayer;
-import com.sack.rpgroll.player.stats.PlayerStats;
 import com.sack.rpgroll.api.playerclass.ClassManager;
 import com.sack.rpgroll.api.playerclass.PlayerClass;
-import com.sack.rpgroll.api.race.Race;
-import com.sack.rpgroll.api.race.RaceManager;
 import com.sack.rpgroll.util.TabCompleteUtil;
 
 import org.bukkit.Bukkit;
@@ -19,7 +15,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -75,20 +70,8 @@ public class AdminSetClassCommand implements RPGCommand {
             }
 
             PlayerClass playerClass = classOpt.get();
-            RPGPlayer rpgPlayer = rpgPlayerOpt.get().setClass(classId);
-
-            if (recalc) {
-                RaceManager raceManager = plugin.getBootstrap().getServices().get(RaceManager.class);
-                PlayerStats recalculated = recalculateStats(playerClass, raceManager, rpgPlayer.getRace());
-                CombatStats recalculatedCombatStats = CombatStats.create(
-                        recalculated.getConstitutionModifier(),
-                        recalculated.getIntelligenceModifier(),
-                        recalculated.getDexterityModifier(),
-                        rpgPlayer.getLevel());
-                rpgPlayer = rpgPlayer.updateStats(recalculated).updateCombatStats(recalculatedCombatStats);
-            }
-
-            playerManager.savePlayer(rpgPlayer);
+            plugin.getBootstrap().getServices().get(CharacterChangeService.class)
+                    .changeClass(target, classId, recalc);
 
             lang.send(sender, "admin_setclass.success", "player", target.getName(), "class", playerClass.displayName());
 
@@ -106,37 +89,8 @@ public class AdminSetClassCommand implements RPGCommand {
         }
     }
 
-    private PlayerStats recalculateStats(PlayerClass playerClass, RaceManager raceManager, String raceId) {
 
-        PlayerStats stats = PlayerStats.createDefault();
 
-        if (raceId != null && !raceId.isEmpty()) {
-            Optional<Race> raceOpt = raceManager.get(raceId);
-            if (raceOpt.isPresent()) {
-                stats = applyBonuses(stats, raceOpt.get().baseAttributes());
-            }
-        }
-
-        stats = applyBonuses(stats, playerClass.baseAttributes());
-        return stats;
-    }
-
-    private PlayerStats applyBonuses(PlayerStats stats, Map<StatType, Integer> bonuses) {
-
-        PlayerStats result = stats;
-
-        for (Map.Entry<StatType, Integer> entry : bonuses.entrySet()) {
-            StatType stat = entry.getKey();
-            int newValue = clamp(result.get(stat) + entry.getValue(), PlayerStats.MIN_STAT, PlayerStats.MAX_STAT);
-            result = result.with(stat, newValue);
-        }
-
-        return result;
-    }
-
-    private int clamp(int value, int min, int max) {
-        return Math.max(min, Math.min(max, value));
-    }
 
     @Override
     public String getName() {

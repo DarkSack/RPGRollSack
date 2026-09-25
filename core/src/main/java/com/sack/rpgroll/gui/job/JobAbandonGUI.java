@@ -139,11 +139,21 @@ public class JobAbandonGUI extends InventoryGUI {
             return;
         }
 
+        var joinEvent = new com.sack.rpgroll.api.event.PlayerJoinJobEvent(player, rpgPlayerOpt.get(), pendingJobId);
+        org.bukkit.Bukkit.getPluginManager().callEvent(joinEvent);
+        if (joinEvent.isCancelled()) {
+            close();
+            lang.send(player, "jobs_gui.join_denied", "job", newJobOpt.get().displayName());
+            return;
+        }
+
         RPGPlayer updated = rpgPlayerOpt.get()
                 .leaveJob(jobToLeave)
                 .joinJob(pendingJobId);
 
         playerManager.savePlayer(updated);
+        org.bukkit.Bukkit.getPluginManager().callEvent(
+                new com.sack.rpgroll.api.event.PlayerLeaveJobEvent(player, updated, jobToLeave));
 
         close();
 

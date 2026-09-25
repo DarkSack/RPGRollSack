@@ -217,6 +217,11 @@ public class Bootstrap {
         reloadableContent.add(classManager);
         plugin.getLogger().info("✔ ClassManager registrado");
 
+        // 8.1 CharacterChangeService - cambios de raza/clase ya creados (admin y API)
+        services.register(com.sack.rpgroll.gameplay.selection.CharacterChangeService.class,
+                new com.sack.rpgroll.gameplay.selection.CharacterChangeService(playerManager, raceManager,
+                        classManager, raceAttributeApplier));
+
         // 9. PlacedBlockTracker - Sistema anti-farm para minero
         PlacedBlockTracker placedBlockTracker = new PlacedBlockTracker(plugin, dbManager);
         services.register(PlacedBlockTracker.class, placedBlockTracker);

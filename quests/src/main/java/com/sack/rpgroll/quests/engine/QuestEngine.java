@@ -163,6 +163,8 @@ public class QuestEngine {
         QuestPlayerState state = stateManager.getOrLoad(player);
 
         state.completeQuest(quest.id(), System.currentTimeMillis());
+        org.bukkit.Bukkit.getPluginManager().callEvent(
+                new com.sack.rpgroll.quests.api.QuestCompleteEvent(player, quest.id()));
         actionRegistry.executeAll(quest.events(QuestEventType.ON_COMPLETE), new QuestActionContext(player, quest, null));
         grantRewards(player, quest);
     }

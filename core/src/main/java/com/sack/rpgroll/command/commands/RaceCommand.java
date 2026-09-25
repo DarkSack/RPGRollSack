@@ -1,5 +1,7 @@
 package com.sack.rpgroll.command.commands;
 
+import com.sack.rpgroll.api.event.CharacterSelectionEvent;
+import com.sack.rpgroll.gameplay.selection.CharacterSelectionGate;
 import com.sack.rpgroll.RPGRoll;
 import com.sack.rpgroll.api.race.Race;
 import com.sack.rpgroll.api.race.RaceManager;
@@ -125,6 +127,10 @@ public class RaceCommand implements RPGCommand {
         }
 
         Race race = raceOpt.get();
+
+        if (!CharacterSelectionGate.allowRace(player, race.id(), CharacterSelectionEvent.Source.COMMAND, lang)) {
+            return;
+        }
 
         // Actualizar y guardar — se persiste el id (mismo criterio que CharacterCreationFlow/AdminSetRaceCommand),
         // no el nombre visible, para que raceManager.get(rpgPlayer.getRace()) siga resolviendo en cualquier lado.
