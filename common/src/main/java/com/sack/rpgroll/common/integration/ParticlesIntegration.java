@@ -50,7 +50,7 @@ public final class ParticlesIntegration {
             return available;
         }
 
-        if (Bukkit.getPluginManager().getPlugin("RPGRoll-FX") == null) {
+        if (!Bukkit.getPluginManager().isPluginEnabled("RPGRoll-FX")) {
             available = false;
             return false;
         }

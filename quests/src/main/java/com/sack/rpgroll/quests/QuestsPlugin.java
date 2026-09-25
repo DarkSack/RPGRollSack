@@ -95,7 +95,7 @@ public class QuestsPlugin extends JavaPlugin {
 
     private void registerPlaceholders(QuestPlayerStateManager stateManager) {
 
-        if (getServer().getPluginManager().getPlugin("PlaceholderAPI") == null) {
+        if (!getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             return;
         }
 

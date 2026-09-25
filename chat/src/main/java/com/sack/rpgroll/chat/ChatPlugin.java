@@ -224,7 +224,7 @@ public class ChatPlugin extends JavaPlugin {
 
     private void registerPlaceholders() {
 
-        if (getServer().getPluginManager().getPlugin("PlaceholderAPI") == null) {
+        if (!getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             return;
         }
 

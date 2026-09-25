@@ -47,7 +47,7 @@ public class VaultEconomyProvider {
      */
     public boolean setup() {
 
-        if (plugin.getServer().getPluginManager().getPlugin("Vault") == null) {
+        if (!plugin.getServer().getPluginManager().isPluginEnabled("Vault")) {
             plugin.getLogger().warning(
                     "✘ Vault no está instalado. El sistema de economía (trabajos, tiendas, etc.) estará desactivado.");
             return false;
@@ -77,7 +77,7 @@ public class VaultEconomyProvider {
      */
     private Economy resolve() {
 
-        if (plugin.getServer().getPluginManager().getPlugin("Vault") == null) {
+        if (!plugin.getServer().getPluginManager().isPluginEnabled("Vault")) {
             return null;
         }
 

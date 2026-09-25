@@ -108,7 +108,7 @@ public class Bootstrap {
      */
     private void registerPlaceholders() {
 
-        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") == null) {
+        if (!Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             return;
         }
 

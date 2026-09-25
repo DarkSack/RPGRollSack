@@ -17,7 +17,7 @@ public final class TabIntegration {
     public static void registerIfPresent(Plugin plugin, StatManager statManager, StatEngine statEngine,
             BodyTemperatureEngine temperatureEngine, ConditionRuntime conditionRuntime) {
 
-        if (Bukkit.getPluginManager().getPlugin("RPGRoll-TAB") == null) {
+        if (!Bukkit.getPluginManager().isPluginEnabled("RPGRoll-TAB")) {
             return;
         }
 

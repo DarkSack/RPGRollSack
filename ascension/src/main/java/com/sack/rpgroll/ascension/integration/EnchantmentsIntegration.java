@@ -17,7 +17,8 @@ public final class EnchantmentsIntegration {
     }
 
     public static boolean isAvailable() {
-        return Bukkit.getPluginManager().getPlugin("RPGRoll-Enchantments") instanceof EnchantmentsPlugin;
+        return Bukkit.getPluginManager().isPluginEnabled("RPGRoll-Enchantments")
+                && Bukkit.getPluginManager().getPlugin("RPGRoll-Enchantments") instanceof EnchantmentsPlugin;
     }
 
     public static void grantToHeldItem(Player player, String enchantId) {

@@ -15,7 +15,8 @@ public final class QuestsIntegration {
     }
 
     public static boolean isAvailable() {
-        return Bukkit.getPluginManager().getPlugin("RPGRoll-Quests") instanceof QuestsPlugin;
+        return Bukkit.getPluginManager().isPluginEnabled("RPGRoll-Quests")
+                && Bukkit.getPluginManager().getPlugin("RPGRoll-Quests") instanceof QuestsPlugin;
     }
 
     public static void startQuest(Player player, String questId) {

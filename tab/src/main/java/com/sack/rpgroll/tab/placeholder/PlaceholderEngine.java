@@ -103,7 +103,7 @@ public class PlaceholderEngine implements TABPlaceholderRegistry {
     }
 
     private boolean isPlaceholderApiPresent() {
-        return Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null;
+        return Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI");
     }
 
     private String resolveBraces(String template, Player player) {

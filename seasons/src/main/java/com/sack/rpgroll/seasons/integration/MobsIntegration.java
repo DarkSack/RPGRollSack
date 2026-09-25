@@ -21,7 +21,8 @@ public final class MobsIntegration {
     }
 
     public static boolean isAvailable() {
-        return Bukkit.getPluginManager().getPlugin("RPGRoll-Mobs") instanceof MobsPlugin;
+        return Bukkit.getPluginManager().isPluginEnabled("RPGRoll-Mobs")
+                && Bukkit.getPluginManager().getPlugin("RPGRoll-Mobs") instanceof MobsPlugin;
     }
 
     public static Optional<LivingEntity> spawnMob(String mobId, Location location) {

@@ -68,7 +68,7 @@ public final class TurretAccess {
      */
     private static boolean sharesTeamOrGuild(UUID player, UUID owner) {
 
-        if (Bukkit.getPluginManager().getPlugin("RPGRoll-Guilds") == null) {
+        if (!Bukkit.getPluginManager().isPluginEnabled("RPGRoll-Guilds")) {
             return false;
         }
 

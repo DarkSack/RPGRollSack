@@ -30,7 +30,9 @@ public final class MobsIntegration {
 
     private static MobsPlugin plugin() {
 
-        var plugin = Bukkit.getPluginManager().getPlugin("RPGRoll-Mobs");
+        var plugin = Bukkit.getPluginManager().isPluginEnabled("RPGRoll-Mobs")
+                ? Bukkit.getPluginManager().getPlugin("RPGRoll-Mobs")
+                : null;
 
         if (!(plugin instanceof MobsPlugin mobsPlugin)) {
             throw new IllegalStateException("RPGRoll-Mobs no está disponible — es una dependencia dura de Dungeons.");

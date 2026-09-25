@@ -5,7 +5,7 @@ api-version: "26.1.1"
 author: Sack
 description: Motor genérico de trampas/mecanismos configurable por YAML para RPGRoll
 depend: [RPGRoll]
-softdepend: [RPGRoll-Items, RPGRoll-Effects, RPGRoll-Mobs, RPGRoll-FX, PlaceholderAPI]
+softdepend: [RPGRoll-Items, RPGRoll-Effects, RPGRoll-Mobs, RPGRoll-FX, RPGRoll-Guilds, PlaceholderAPI]
 
 permissions:
   rpgrolltraps.admin.*:

@@ -39,7 +39,9 @@ public final class ItemsBridge {
 
     private static ItemsPlugin resolve() {
 
-        Plugin plugin = Bukkit.getPluginManager().getPlugin("RPGRoll-Items");
+        Plugin plugin = Bukkit.getPluginManager().isPluginEnabled("RPGRoll-Items")
+                ? Bukkit.getPluginManager().getPlugin("RPGRoll-Items")
+                : null;
         return plugin instanceof ItemsPlugin itemsPlugin ? itemsPlugin : null;
     }
 

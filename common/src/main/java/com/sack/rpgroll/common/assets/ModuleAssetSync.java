@@ -26,12 +26,28 @@ import java.util.function.Supplier;
  */
 public class ModuleAssetSync {
 
-    private static final Map<String, Supplier<AssetTypeRegistry>> TYPE_FOLDERS = Map.of(
-            "textures", AssetsAPI::textures,
-            "models", AssetsAPI::models,
-            "sounds", AssetsAPI::sounds,
-            "font", AssetsAPI::fonts,
-            "particles", AssetsAPI::particles);
+    /**
+     * Todo lo que toca clases de SackResourcePack vive aquí dentro, y esta
+     * clase solo se inicializa después de {@link #isAvailable()}. Si el mapa
+     * estuviera en la clase exterior, crear la instancia ya obligaría a la
+     * JVM a cargar {@code AssetsAPI}: sin SackResourcePack instalado —o
+     * instalado pero deshabilitado, por ejemplo sin licencia— el módulo
+     * entero fallaba al habilitarse con {@code NoClassDefFoundError}, aunque
+     * SackResourcePack es opcional.
+     */
+    private static final class Api {
+
+        static final Map<String, Supplier<AssetTypeRegistry>> TYPE_FOLDERS = Map.of(
+                "textures", AssetsAPI::textures,
+                "models", AssetsAPI::models,
+                "sounds", AssetsAPI::sounds,
+                "font", AssetsAPI::fonts,
+                "particles", AssetsAPI::particles);
+
+        static boolean ready() {
+            return AssetsAPI.isReady();
+        }
+    }
 
     private final Plugin plugin;
     private final String moduleId;
@@ -42,7 +58,7 @@ public class ModuleAssetSync {
     }
 
     public static boolean isAvailable() {
-        return Bukkit.getPluginManager().getPlugin("SackResourcePack") != null && AssetsAPI.isReady();
+        return Bukkit.getPluginManager().isPluginEnabled("SackResourcePack") && Api.ready();
     }
 
     /** Recorre {@code resourcepack/} y sincroniza todo hacia SackResourcePack. Silencioso si no está instalado. */
@@ -69,7 +85,7 @@ public class ModuleAssetSync {
 
             String namespace = namespaceDir.getName();
 
-            for (var typeEntry : TYPE_FOLDERS.entrySet()) {
+            for (var typeEntry : Api.TYPE_FOLDERS.entrySet()) {
 
                 File typeDir = new File(namespaceDir, typeEntry.getKey());
 

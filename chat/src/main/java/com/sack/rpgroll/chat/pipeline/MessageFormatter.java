@@ -67,7 +67,7 @@ public class MessageFormatter {
 
     private String applyPlaceholderApi(Player player, String text) {
 
-        if (org.bukkit.Bukkit.getPluginManager().getPlugin("PlaceholderAPI") == null) {
+        if (!org.bukkit.Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             return text;
         }
 

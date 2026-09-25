@@ -30,7 +30,8 @@ public class MobRarityResolver {
     }
 
     private boolean isItemsAvailable() {
-        return Bukkit.getPluginManager().getPlugin("RPGRoll-Items") instanceof ItemsPlugin;
+        return Bukkit.getPluginManager().isPluginEnabled("RPGRoll-Items")
+                && Bukkit.getPluginManager().getPlugin("RPGRoll-Items") instanceof ItemsPlugin;
     }
 
 }

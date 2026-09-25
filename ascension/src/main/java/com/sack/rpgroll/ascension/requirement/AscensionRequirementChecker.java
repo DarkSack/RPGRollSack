@@ -64,7 +64,9 @@ public class AscensionRequirementChecker {
     private List<String> checkCompletedQuests(Player player, List<String> questIds) {
 
         List<String> reasons = new ArrayList<>();
-        var questsPlugin = Bukkit.getPluginManager().getPlugin("RPGRoll-Quests");
+        var questsPlugin = Bukkit.getPluginManager().isPluginEnabled("RPGRoll-Quests")
+                ? Bukkit.getPluginManager().getPlugin("RPGRoll-Quests")
+                : null;
 
         if (!(questsPlugin instanceof QuestsPlugin quests)) {
             return reasons;

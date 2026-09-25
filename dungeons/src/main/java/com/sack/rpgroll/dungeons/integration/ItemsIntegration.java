@@ -21,7 +21,8 @@ public final class ItemsIntegration {
     }
 
     public static boolean isAvailable() {
-        return Bukkit.getPluginManager().getPlugin("RPGRoll-Items") instanceof ItemsPlugin;
+        return Bukkit.getPluginManager().isPluginEnabled("RPGRoll-Items")
+                && Bukkit.getPluginManager().getPlugin("RPGRoll-Items") instanceof ItemsPlugin;
     }
 
     public static boolean giveItem(Player player, String reference, int amount) {

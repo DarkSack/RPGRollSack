@@ -112,7 +112,7 @@ public class MarketEngine {
     private double seasonModifier(MarketProduct product, Location location) {
 
         if (product.seasonTagModifiers().isEmpty()
-                || Bukkit.getPluginManager().getPlugin("RPGRoll-Seasons") == null
+                || !Bukkit.getPluginManager().isPluginEnabled("RPGRoll-Seasons")
                 || !com.sack.rpgroll.seasons.api.SeasonsAPI.isReady()) {
             return 1.0;
         }

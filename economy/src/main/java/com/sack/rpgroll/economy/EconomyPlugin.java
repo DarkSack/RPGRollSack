@@ -221,7 +221,7 @@ public class EconomyPlugin extends JavaPlugin {
 
     private void registerVault() {
 
-        if (getServer().getPluginManager().getPlugin("Vault") == null) {
+        if (!getServer().getPluginManager().isPluginEnabled("Vault")) {
             getLogger().warning("✘ Vault no está instalado — RPGRoll-Economy funciona igual, pero ningún plugin "
                     + "externo que hable Vault (ni el resto del ecosistema) va a poder cobrar/pagar dinero.");
             return;
@@ -237,7 +237,7 @@ public class EconomyPlugin extends JavaPlugin {
 
     private void registerPlaceholders() {
 
-        if (getServer().getPluginManager().getPlugin("PlaceholderAPI") == null) {
+        if (!getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             return;
         }
 

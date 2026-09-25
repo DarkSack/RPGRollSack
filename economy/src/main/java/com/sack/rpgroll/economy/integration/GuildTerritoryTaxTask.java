@@ -41,7 +41,7 @@ public class GuildTerritoryTaxTask {
 
     public void run() {
 
-        if (Bukkit.getPluginManager().getPlugin("RPGRoll-Guilds") == null || !GuildsAPI.isReady()) {
+        if (!Bukkit.getPluginManager().isPluginEnabled("RPGRoll-Guilds") || !GuildsAPI.isReady()) {
             return;
         }
 
