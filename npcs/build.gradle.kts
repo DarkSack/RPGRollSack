@@ -14,6 +14,10 @@ dependencies {
     // RPGPlayer/RPGRollAPI, que viven físicamente en :core.
     compileOnly(project(":core"))
 
+    // RPGRoll-Quests es opcional (softdepend): solo se toca su NpcTalkEvent
+    // desde QuestsIntegration, y solo si el plugin está habilitado.
+    compileOnly(project(":quests"))
+
     // Sin ProtocolLib: los NPCs son entidades Mannequin del propio servidor
     // (ver NpcSpawnManager), no jugadores falsos hechos a base de packets.
 

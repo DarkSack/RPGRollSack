@@ -3,6 +3,7 @@ package com.sack.rpgroll.npcs.listener;
 import com.sack.rpgroll.npcs.core.NpcActionExecutor;
 import com.sack.rpgroll.npcs.core.NpcManager;
 import com.sack.rpgroll.npcs.core.NpcSpawnManager;
+import com.sack.rpgroll.npcs.integration.QuestsIntegration;
 
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -108,7 +109,14 @@ public class NpcEntityListener implements Listener {
 
         spawnManager.npcIdOf(entity)
                 .flatMap(npcManager::get)
-                .ifPresent(npc -> actionExecutor.execute(player, npc));
+                .ifPresent(npc -> {
+                    // Primero la quest (entregas, "vuelve a hablar con..."),
+                    // luego las acciones del NPC (que pueden abrir un menú).
+                    if (QuestsIntegration.isAvailable()) {
+                        QuestsIntegration.fireTalk(player, npc.id());
+                    }
+                    actionExecutor.execute(player, npc);
+                });
     }
 
 }
