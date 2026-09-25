@@ -202,6 +202,7 @@ public class ItemAdminCommand implements CommandExecutor, TabCompleter {
 
     private void handleReload(CommandSender sender) {
         itemManager.reload();
+        new com.sack.rpgroll.items.recipe.RecipeRegistrar(plugin, itemFactory).registerAll(itemManager);
         new PackAssetSync(plugin, packManager).syncAll();
         lang().reload(plugin.getConfig().getString("language", "es"));
         lang().send(sender, "command.itemadmin.reload.success", "count", itemManager.count());

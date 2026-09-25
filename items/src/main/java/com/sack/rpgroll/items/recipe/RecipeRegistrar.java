@@ -8,14 +8,19 @@ import com.sack.rpgroll.items.core.ItemRecipeDef;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.Keyed;
 import org.bukkit.inventory.FurnaceRecipe;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.inventory.StonecuttingRecipe;
 import org.bukkit.plugin.Plugin;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -35,8 +40,15 @@ public class RecipeRegistrar {
         this.itemFactory = itemFactory;
     }
 
+    /**
+     * Registra las recetas de todos los ítems, quitando antes las que este
+     * plugin hubiera registrado. Así sirve igual al arrancar que en
+     * {@code /itemadmin reload}: antes solo se llamaba al arrancar, y recargar
+     * dejaba sin receta a los ítems nuevos y con receta a los borrados.
+     */
     public void registerAll(ItemManager itemManager) {
 
+        int removed = unregisterOwn();
         int registered = 0;
 
         for (ItemDefinition definition : itemManager.getAll()) {
@@ -49,7 +61,30 @@ public class RecipeRegistrar {
             }
         }
 
+        if (removed > 0) {
+            // Que los clientes conectados vean el libro de recetas nuevo.
+            Bukkit.updateRecipes();
+        }
+
         plugin.getLogger().info("✔ Recetas registradas: " + registered);
+    }
+
+    private int unregisterOwn() {
+
+        String namespace = plugin.getName().toLowerCase(Locale.ROOT);
+        List<NamespacedKey> own = new ArrayList<>();
+
+        for (Iterator<Recipe> it = Bukkit.recipeIterator(); it.hasNext(); ) {
+            if (it.next() instanceof Keyed keyed && keyed.getKey().getNamespace().equals(namespace)) {
+                own.add(keyed.getKey());
+            }
+        }
+
+        for (NamespacedKey key : own) {
+            Bukkit.removeRecipe(key, false);
+        }
+
+        return own.size();
     }
 
     private boolean registerOne(ItemDefinition definition, ItemRecipeDef recipe, int index) {
