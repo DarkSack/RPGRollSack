@@ -1,0 +1,26 @@
+# La exige el secreto dragon_blood de RPGRoll-Ascension (rasgo oculto
+# "Sangre de Dragón"). Sin Ascension es una misión normal.
+id: dragon_hunt
+display-name: "&4La Caza del Dragón"
+category: SIDE_QUEST
+difficulty: ELITE
+repeatable: false
+
+requirements:
+  level: 60
+
+stages:
+  - id: slay
+    objectives:
+      - type: KILL_ENTITY
+        entity: ENDER_DRAGON
+        amount: 1
+        description: "Derrota al dragón del End"
+    on-complete:
+      - type: TITLE
+        title: "&4¡El dragón ha caído!"
+        subtitle: "&7Su sangre te mancha las manos"
+
+rewards:
+  money: 5000
+  experience: 20000

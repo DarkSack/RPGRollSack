@@ -1,0 +1,10 @@
+id: mana_barrier
+name: "&9Barrera de Maná"
+description: |
+  Talento del Archimago (RPGRoll-Ascension, specializations/archmage.yml).
+  Una capa de maná absorbe parte de los golpes.
+required-level: 20
+effect:
+  intelligence-bonus: 1
+  mana-bonus: 15
+  defense-bonus: 0.04

@@ -1,0 +1,10 @@
+id: alma_de_fenix
+name: "&6Alma de Fénix"
+description: |
+  Rasgo oculto (RPGRoll-Ascension, secrets/phoenix_rebirth.yml).
+  Superar la Prueba de las Cenizas deja una llama que no se apaga.
+required-level: 30
+effect:
+  wisdom-bonus: 2
+  mana-bonus: 20
+  defense-bonus: 0.03

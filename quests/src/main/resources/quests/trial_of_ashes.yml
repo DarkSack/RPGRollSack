@@ -1,0 +1,30 @@
+# La exige el secreto phoenix_rebirth de RPGRoll-Ascension (rasgo oculto
+# "Alma de Fénix"). Sin Ascension es una misión normal.
+id: trial_of_ashes
+display-name: "&6La Prueba de las Cenizas"
+category: SIDE_QUEST
+difficulty: HARD
+repeatable: false
+
+requirements:
+  level: 25
+
+stages:
+  - id: embers
+    objectives:
+      - type: KILL_ENTITY
+        entity: BLAZE
+        amount: 30
+        description: "Apaga 30 blazes"
+      - type: KILL_ENTITY
+        entity: WITHER_SKELETON
+        amount: 15
+        description: "Derrota 15 esqueletos wither"
+    on-complete:
+      - type: TITLE
+        title: "&6Superaste la prueba"
+        subtitle: "&7De las cenizas, algo renace"
+
+rewards:
+  money: 1500
+  experience: 6000

@@ -1,0 +1,10 @@
+id: unbreakable_will
+name: "&cVoluntad Inquebrantable"
+description: |
+  Talento del Berserker (RPGRoll-Ascension, specializations/berserker.yml).
+  Cuanto más duro el golpe, más firme el paso.
+required-level: 20
+effect:
+  constitution-bonus: 2
+  health-bonus: 8
+  defense-bonus: 0.03

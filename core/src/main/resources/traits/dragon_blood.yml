@@ -1,0 +1,10 @@
+id: dragon_blood
+name: "&4Sangre de Dragón"
+description: |
+  Rasgo oculto (RPGRoll-Ascension, secrets/dragon_blood.yml).
+  Quien derrota al dragón lleva su sangre: más vida y más daño.
+required-level: 80
+effect:
+  constitution-bonus: 2
+  health-bonus: 10
+  damage-bonus: 0.05
