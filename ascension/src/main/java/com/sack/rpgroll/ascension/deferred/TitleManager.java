@@ -3,8 +3,6 @@ package com.sack.rpgroll.ascension.deferred;
 import com.sack.rpgroll.common.content.ContentManager;
 import com.sack.rpgroll.common.yaml.YamlLoader;
 
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class TitleManager extends ContentManager<Title> {
@@ -12,7 +10,7 @@ public class TitleManager extends ContentManager<Title> {
     private final TitleDefinitionWriter writer;
 
     public TitleManager(JavaPlugin ascensionPlugin) {
-        super(resolveCoreInstance(), new YamlLoader(ascensionPlugin), "titles", "título", new TitleParser());
+        super(owningPlugin(), new YamlLoader(ascensionPlugin), "titles", "título", new TitleParser());
         this.writer = new TitleDefinitionWriter(ascensionPlugin.getDataFolder());
     }
 
@@ -21,15 +19,9 @@ public class TitleManager extends ContentManager<Title> {
         reload();
     }
 
-    private static JavaPlugin resolveCoreInstance() {
-
-        Plugin corePlugin = Bukkit.getPluginManager().getPlugin("RPGRoll");
-
-        if (!(corePlugin instanceof JavaPlugin javaPlugin)) {
-            throw new IllegalStateException("No se pudo resolver la instancia de RPGRoll.");
-        }
-
-        return javaPlugin;
+    /** El propio módulo: la carga se anuncia con su nombre y no hace falta el core. */
+    private static JavaPlugin owningPlugin() {
+        return JavaPlugin.getProvidingPlugin(TitleManager.class);
     }
 
 }

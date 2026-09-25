@@ -3,8 +3,6 @@ package com.sack.rpgroll.ascension.core;
 import com.sack.rpgroll.common.content.ContentManager;
 import com.sack.rpgroll.common.yaml.YamlLoader;
 
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
@@ -21,7 +19,7 @@ public class ClassSpecializationManager extends ContentManager<ClassSpecializati
     private final ClassSpecializationDefinitionWriter writer;
 
     public ClassSpecializationManager(JavaPlugin ascensionPlugin) {
-        super(resolveCoreInstance(), new YamlLoader(ascensionPlugin), "specializations", "especialización",
+        super(owningPlugin(), new YamlLoader(ascensionPlugin), "specializations", "especialización",
                 new ClassSpecializationParser());
         this.writer = new ClassSpecializationDefinitionWriter(ascensionPlugin.getDataFolder());
     }
@@ -71,15 +69,9 @@ public class ClassSpecializationManager extends ContentManager<ClassSpecializati
         return getAll().size();
     }
 
-    private static JavaPlugin resolveCoreInstance() {
-
-        Plugin corePlugin = Bukkit.getPluginManager().getPlugin("RPGRoll");
-
-        if (!(corePlugin instanceof JavaPlugin javaPlugin)) {
-            throw new IllegalStateException("No se pudo resolver la instancia de RPGRoll.");
-        }
-
-        return javaPlugin;
+    /** El propio módulo: la carga se anuncia con su nombre y no hace falta el core. */
+    private static JavaPlugin owningPlugin() {
+        return JavaPlugin.getProvidingPlugin(ClassSpecializationManager.class);
     }
 
 }

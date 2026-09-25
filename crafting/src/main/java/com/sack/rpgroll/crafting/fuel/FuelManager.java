@@ -4,10 +4,8 @@ import com.sack.rpgroll.common.content.ContentManager;
 import com.sack.rpgroll.common.yaml.YamlLoader;
 import com.sack.rpgroll.crafting.item.ItemIdentity;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Locale;
@@ -18,7 +16,7 @@ public class FuelManager extends ContentManager<FuelDefinition> {
     private final FuelDefinitionWriter writer;
 
     public FuelManager(JavaPlugin craftingPlugin) {
-        super(resolveCoreInstance(), new YamlLoader(craftingPlugin), "fuels", "combustible", new FuelDefinitionParser());
+        super(owningPlugin(), new YamlLoader(craftingPlugin), "fuels", "combustible", new FuelDefinitionParser());
         this.writer = new FuelDefinitionWriter(craftingPlugin.getDataFolder());
     }
 
@@ -60,15 +58,9 @@ public class FuelManager extends ContentManager<FuelDefinition> {
         return Optional.empty();
     }
 
-    private static JavaPlugin resolveCoreInstance() {
-
-        Plugin corePlugin = Bukkit.getPluginManager().getPlugin("RPGRoll");
-
-        if (!(corePlugin instanceof JavaPlugin javaPlugin)) {
-            throw new IllegalStateException("No se pudo resolver la instancia de RPGRoll.");
-        }
-
-        return javaPlugin;
+    /** El propio módulo: la carga se anuncia con su nombre y no hace falta el core. */
+    private static JavaPlugin owningPlugin() {
+        return JavaPlugin.getProvidingPlugin(FuelManager.class);
     }
 
 }

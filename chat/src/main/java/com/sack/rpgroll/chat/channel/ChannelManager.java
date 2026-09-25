@@ -3,8 +3,6 @@ package com.sack.rpgroll.chat.channel;
 import com.sack.rpgroll.common.content.ContentManager;
 import com.sack.rpgroll.common.yaml.YamlLoader;
 
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -17,7 +15,7 @@ public class ChannelManager extends ContentManager<ChatChannel> {
     private final ChannelDefinitionWriter writer;
 
     public ChannelManager(JavaPlugin chatPlugin) {
-        super(resolveCoreInstance(), new YamlLoader(chatPlugin), "channels", "canal", new ChannelParser());
+        super(owningPlugin(), new YamlLoader(chatPlugin), "channels", "canal", new ChannelParser());
         this.writer = new ChannelDefinitionWriter(new File(chatPlugin.getDataFolder(), "channels"),
                 chatPlugin.getLogger());
     }
@@ -34,15 +32,9 @@ public class ChannelManager extends ContentManager<ChatChannel> {
                 .toList();
     }
 
-    private static JavaPlugin resolveCoreInstance() {
-
-        Plugin corePlugin = Bukkit.getPluginManager().getPlugin("RPGRoll");
-
-        if (!(corePlugin instanceof JavaPlugin javaPlugin)) {
-            throw new IllegalStateException("No se pudo resolver la instancia de RPGRoll.");
-        }
-
-        return javaPlugin;
+    /** El propio módulo: la carga se anuncia con su nombre y no hace falta el core. */
+    private static JavaPlugin owningPlugin() {
+        return JavaPlugin.getProvidingPlugin(ChannelManager.class);
     }
 
 }

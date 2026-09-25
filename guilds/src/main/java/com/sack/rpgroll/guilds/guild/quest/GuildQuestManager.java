@@ -3,8 +3,6 @@ package com.sack.rpgroll.guilds.guild.quest;
 import com.sack.rpgroll.common.content.ContentManager;
 import com.sack.rpgroll.common.yaml.YamlLoader;
 
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -15,7 +13,7 @@ public class GuildQuestManager extends ContentManager<GuildQuestDefinition> {
     private final GuildQuestDefinitionWriter writer;
 
     public GuildQuestManager(JavaPlugin guildsPlugin) {
-        super(resolveCoreInstance(), new YamlLoader(guildsPlugin), "quests", "quest de guild", new GuildQuestParser());
+        super(owningPlugin(), new YamlLoader(guildsPlugin), "quests", "quest de guild", new GuildQuestParser());
         this.writer = new GuildQuestDefinitionWriter(new File(guildsPlugin.getDataFolder(), "quests"),
                 guildsPlugin.getLogger());
     }
@@ -26,15 +24,9 @@ public class GuildQuestManager extends ContentManager<GuildQuestDefinition> {
         reload();
     }
 
-    private static JavaPlugin resolveCoreInstance() {
-
-        Plugin corePlugin = Bukkit.getPluginManager().getPlugin("RPGRoll");
-
-        if (!(corePlugin instanceof JavaPlugin javaPlugin)) {
-            throw new IllegalStateException("No se pudo resolver la instancia de RPGRoll.");
-        }
-
-        return javaPlugin;
+    /** El propio módulo: la carga se anuncia con su nombre y no hace falta el core. */
+    private static JavaPlugin owningPlugin() {
+        return JavaPlugin.getProvidingPlugin(GuildQuestManager.class);
     }
 
 }

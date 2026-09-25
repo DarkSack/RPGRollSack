@@ -3,8 +3,6 @@ package com.sack.rpgroll.chat.language;
 import com.sack.rpgroll.common.content.ContentManager;
 import com.sack.rpgroll.common.yaml.YamlLoader;
 
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -16,7 +14,7 @@ public class LanguageManager extends ContentManager<Language> {
     private final LanguageDefinitionWriter writer;
 
     public LanguageManager(JavaPlugin chatPlugin) {
-        super(resolveCoreInstance(), new YamlLoader(chatPlugin), "languages", "idioma", new LanguageParser());
+        super(owningPlugin(), new YamlLoader(chatPlugin), "languages", "idioma", new LanguageParser());
         this.writer = new LanguageDefinitionWriter(new File(chatPlugin.getDataFolder(), "languages"),
                 chatPlugin.getLogger());
     }
@@ -47,15 +45,9 @@ public class LanguageManager extends ContentManager<Language> {
         return result;
     }
 
-    private static JavaPlugin resolveCoreInstance() {
-
-        Plugin corePlugin = Bukkit.getPluginManager().getPlugin("RPGRoll");
-
-        if (!(corePlugin instanceof JavaPlugin javaPlugin)) {
-            throw new IllegalStateException("No se pudo resolver la instancia de RPGRoll.");
-        }
-
-        return javaPlugin;
+    /** El propio módulo: la carga se anuncia con su nombre y no hace falta el core. */
+    private static JavaPlugin owningPlugin() {
+        return JavaPlugin.getProvidingPlugin(LanguageManager.class);
     }
 
 }

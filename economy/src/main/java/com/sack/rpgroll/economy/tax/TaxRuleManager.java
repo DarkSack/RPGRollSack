@@ -3,8 +3,6 @@ package com.sack.rpgroll.economy.tax;
 import com.sack.rpgroll.common.content.ContentManager;
 import com.sack.rpgroll.common.yaml.YamlLoader;
 
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.List;
@@ -14,7 +12,7 @@ public class TaxRuleManager extends ContentManager<TaxRule> {
     private final TaxRuleDefinitionWriter writer;
 
     public TaxRuleManager(JavaPlugin economyPlugin) {
-        super(resolveCoreInstance(), new YamlLoader(economyPlugin), "tax", "regla tributaria", new TaxRuleParser());
+        super(owningPlugin(), new YamlLoader(economyPlugin), "tax", "regla tributaria", new TaxRuleParser());
         this.writer = new TaxRuleDefinitionWriter(economyPlugin.getDataFolder());
     }
 
@@ -32,15 +30,9 @@ public class TaxRuleManager extends ContentManager<TaxRule> {
         return getAll().stream().filter(r -> r.enabled() && r.type() == type).toList();
     }
 
-    private static JavaPlugin resolveCoreInstance() {
-
-        Plugin corePlugin = Bukkit.getPluginManager().getPlugin("RPGRoll");
-
-        if (!(corePlugin instanceof JavaPlugin javaPlugin)) {
-            throw new IllegalStateException("No se pudo resolver la instancia de RPGRoll.");
-        }
-
-        return javaPlugin;
+    /** El propio módulo: la carga se anuncia con su nombre y no hace falta el core. */
+    private static JavaPlugin owningPlugin() {
+        return JavaPlugin.getProvidingPlugin(TaxRuleManager.class);
     }
 
 }

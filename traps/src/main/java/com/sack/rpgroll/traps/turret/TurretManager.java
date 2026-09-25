@@ -1,10 +1,8 @@
 package com.sack.rpgroll.traps.turret;
 
-import com.sack.rpgroll.RPGRoll;
 import com.sack.rpgroll.common.content.ContentManager;
 import com.sack.rpgroll.common.yaml.YamlLoader;
 
-import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -19,7 +17,7 @@ public class TurretManager extends ContentManager<TurretDefinition> {
     private final TurretDefinitionWriter writer;
 
     public TurretManager(JavaPlugin trapsPlugin) {
-        super(resolveCoreInstance(), new YamlLoader(trapsPlugin), "turrets", "torreta", new TurretParser());
+        super(owningPlugin(), new YamlLoader(trapsPlugin), "turrets", "torreta", new TurretParser());
         this.writer = new TurretDefinitionWriter(new File(trapsPlugin.getDataFolder(), "turrets"),
                 trapsPlugin.getLogger());
     }
@@ -29,15 +27,9 @@ public class TurretManager extends ContentManager<TurretDefinition> {
         reload();
     }
 
-    private static RPGRoll resolveCoreInstance() {
-
-        var corePlugin = Bukkit.getPluginManager().getPlugin("RPGRoll");
-
-        if (!(corePlugin instanceof RPGRoll rpgRoll)) {
-            throw new IllegalStateException("No se pudo resolver la instancia de RPGRoll.");
-        }
-
-        return rpgRoll;
+    /** El propio módulo: la carga se anuncia con su nombre y no hace falta el core. */
+    private static JavaPlugin owningPlugin() {
+        return JavaPlugin.getProvidingPlugin(TurretManager.class);
     }
 
 }

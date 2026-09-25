@@ -3,8 +3,6 @@ package com.sack.rpgroll.ranching.core.genetics;
 import com.sack.rpgroll.common.content.ContentManager;
 import com.sack.rpgroll.common.yaml.YamlLoader;
 
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.List;
@@ -14,7 +12,7 @@ public class GeneManager extends ContentManager<Gene> {
     private final GeneDefinitionWriter writer;
 
     public GeneManager(JavaPlugin ranchingPlugin) {
-        super(resolveCoreInstance(), new YamlLoader(ranchingPlugin), "genes", "gen", new GeneParser());
+        super(owningPlugin(), new YamlLoader(ranchingPlugin), "genes", "gen", new GeneParser());
         this.writer = new GeneDefinitionWriter(ranchingPlugin.getDataFolder());
     }
 
@@ -28,15 +26,9 @@ public class GeneManager extends ContentManager<Gene> {
         return getAll().stream().filter(gene -> gene.appliesTo(speciesId)).toList();
     }
 
-    private static JavaPlugin resolveCoreInstance() {
-
-        Plugin corePlugin = Bukkit.getPluginManager().getPlugin("RPGRoll");
-
-        if (!(corePlugin instanceof JavaPlugin javaPlugin)) {
-            throw new IllegalStateException("No se pudo resolver la instancia de RPGRoll.");
-        }
-
-        return javaPlugin;
+    /** El propio módulo: la carga se anuncia con su nombre y no hace falta el core. */
+    private static JavaPlugin owningPlugin() {
+        return JavaPlugin.getProvidingPlugin(GeneManager.class);
     }
 
 }

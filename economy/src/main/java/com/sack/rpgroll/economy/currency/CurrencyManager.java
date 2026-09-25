@@ -3,8 +3,6 @@ package com.sack.rpgroll.economy.currency;
 import com.sack.rpgroll.common.content.ContentManager;
 import com.sack.rpgroll.common.yaml.YamlLoader;
 
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Optional;
@@ -15,7 +13,7 @@ public class CurrencyManager extends ContentManager<Currency> {
     private final String defaultCurrencyId;
 
     public CurrencyManager(JavaPlugin economyPlugin, String defaultCurrencyId) {
-        super(resolveCoreInstance(), new YamlLoader(economyPlugin), "currencies", "moneda", new CurrencyParser());
+        super(owningPlugin(), new YamlLoader(economyPlugin), "currencies", "moneda", new CurrencyParser());
         this.writer = new CurrencyDefinitionWriter(economyPlugin.getDataFolder());
         this.defaultCurrencyId = defaultCurrencyId;
     }
@@ -39,15 +37,9 @@ public class CurrencyManager extends ContentManager<Currency> {
         return getAll().stream().filter(Currency::isBase).findFirst();
     }
 
-    private static JavaPlugin resolveCoreInstance() {
-
-        Plugin corePlugin = Bukkit.getPluginManager().getPlugin("RPGRoll");
-
-        if (!(corePlugin instanceof JavaPlugin javaPlugin)) {
-            throw new IllegalStateException("No se pudo resolver la instancia de RPGRoll.");
-        }
-
-        return javaPlugin;
+    /** El propio módulo: la carga se anuncia con su nombre y no hace falta el core. */
+    private static JavaPlugin owningPlugin() {
+        return JavaPlugin.getProvidingPlugin(CurrencyManager.class);
     }
 
 }

@@ -3,8 +3,6 @@ package com.sack.rpgroll.crafting.loom;
 import com.sack.rpgroll.common.content.ContentManager;
 import com.sack.rpgroll.common.yaml.YamlLoader;
 
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class LoomRecipeManager extends ContentManager<LoomRecipeDefinition> {
@@ -12,7 +10,7 @@ public class LoomRecipeManager extends ContentManager<LoomRecipeDefinition> {
     private final LoomRecipeDefinitionWriter writer;
 
     public LoomRecipeManager(JavaPlugin craftingPlugin) {
-        super(resolveCoreInstance(), new YamlLoader(craftingPlugin), "loom-recipes", "receta de telar",
+        super(owningPlugin(), new YamlLoader(craftingPlugin), "loom-recipes", "receta de telar",
                 new LoomRecipeParser());
         this.writer = new LoomRecipeDefinitionWriter(craftingPlugin.getDataFolder());
     }
@@ -27,15 +25,9 @@ public class LoomRecipeManager extends ContentManager<LoomRecipeDefinition> {
         reload();
     }
 
-    private static JavaPlugin resolveCoreInstance() {
-
-        Plugin corePlugin = Bukkit.getPluginManager().getPlugin("RPGRoll");
-
-        if (!(corePlugin instanceof JavaPlugin javaPlugin)) {
-            throw new IllegalStateException("No se pudo resolver la instancia de RPGRoll.");
-        }
-
-        return javaPlugin;
+    /** El propio módulo: la carga se anuncia con su nombre y no hace falta el core. */
+    private static JavaPlugin owningPlugin() {
+        return JavaPlugin.getProvidingPlugin(LoomRecipeManager.class);
     }
 
 }

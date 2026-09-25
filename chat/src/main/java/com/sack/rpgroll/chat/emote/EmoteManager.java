@@ -3,8 +3,6 @@ package com.sack.rpgroll.chat.emote;
 import com.sack.rpgroll.common.content.ContentManager;
 import com.sack.rpgroll.common.yaml.YamlLoader;
 
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -15,7 +13,7 @@ public class EmoteManager extends ContentManager<EmoteDefinition> {
     private final EmoteDefinitionWriter writer;
 
     public EmoteManager(JavaPlugin chatPlugin) {
-        super(resolveCoreInstance(), new YamlLoader(chatPlugin), "emotes", "emote", new EmoteParser());
+        super(owningPlugin(), new YamlLoader(chatPlugin), "emotes", "emote", new EmoteParser());
         this.writer = new EmoteDefinitionWriter(new File(chatPlugin.getDataFolder(), "emotes"),
                 chatPlugin.getLogger());
     }
@@ -26,15 +24,9 @@ public class EmoteManager extends ContentManager<EmoteDefinition> {
         reload();
     }
 
-    private static JavaPlugin resolveCoreInstance() {
-
-        Plugin corePlugin = Bukkit.getPluginManager().getPlugin("RPGRoll");
-
-        if (!(corePlugin instanceof JavaPlugin javaPlugin)) {
-            throw new IllegalStateException("No se pudo resolver la instancia de RPGRoll.");
-        }
-
-        return javaPlugin;
+    /** El propio módulo: la carga se anuncia con su nombre y no hace falta el core. */
+    private static JavaPlugin owningPlugin() {
+        return JavaPlugin.getProvidingPlugin(EmoteManager.class);
     }
 
 }

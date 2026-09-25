@@ -3,8 +3,6 @@ package com.sack.rpgroll.dungeons.structure;
 import com.sack.rpgroll.common.content.ContentManager;
 import com.sack.rpgroll.common.yaml.YamlLoader;
 
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
@@ -17,19 +15,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class StructureLibrary extends ContentManager<StructureDefinition> {
 
     public StructureLibrary(JavaPlugin dungeonsPlugin) {
-        super(resolveCoreInstance(), new YamlLoader(dungeonsPlugin), "structures", "estructura",
+        super(owningPlugin(), new YamlLoader(dungeonsPlugin), "structures", "estructura",
                 new StructureParser());
     }
 
-    private static JavaPlugin resolveCoreInstance() {
-
-        Plugin corePlugin = Bukkit.getPluginManager().getPlugin("RPGRoll");
-
-        if (!(corePlugin instanceof JavaPlugin javaPlugin)) {
-            throw new IllegalStateException("No se pudo resolver la instancia de RPGRoll.");
-        }
-
-        return javaPlugin;
+    /** El propio módulo: la carga se anuncia con su nombre y no hace falta el core. */
+    private static JavaPlugin owningPlugin() {
+        return JavaPlugin.getProvidingPlugin(StructureLibrary.class);
     }
 
 }

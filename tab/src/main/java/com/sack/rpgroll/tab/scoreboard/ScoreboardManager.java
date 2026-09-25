@@ -1,10 +1,8 @@
 package com.sack.rpgroll.tab.scoreboard;
 
-import com.sack.rpgroll.RPGRoll;
 import com.sack.rpgroll.common.content.ContentManager;
 import com.sack.rpgroll.common.yaml.YamlLoader;
 
-import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.HashMap;
@@ -24,7 +22,7 @@ public class ScoreboardManager extends ContentManager<ScoreboardDefinition> {
     private final Map<String, ScoreboardDefinition> resolved = new HashMap<>();
 
     public ScoreboardManager(JavaPlugin tabPlugin) {
-        super(resolveCoreInstance(), new YamlLoader(tabPlugin), "scoreboards", "scoreboard", new ScoreboardParser());
+        super(owningPlugin(), new YamlLoader(tabPlugin), "scoreboards", "scoreboard", new ScoreboardParser());
     }
 
     public void initializeAndResolve() {
@@ -102,15 +100,9 @@ public class ScoreboardManager extends ContentManager<ScoreboardDefinition> {
         return result;
     }
 
-    private static RPGRoll resolveCoreInstance() {
-
-        var corePlugin = Bukkit.getPluginManager().getPlugin("RPGRoll");
-
-        if (!(corePlugin instanceof RPGRoll rpgRoll)) {
-            throw new IllegalStateException("No se pudo resolver la instancia de RPGRoll.");
-        }
-
-        return rpgRoll;
+    /** El propio módulo: la carga se anuncia con su nombre y no hace falta el core. */
+    private static JavaPlugin owningPlugin() {
+        return JavaPlugin.getProvidingPlugin(ScoreboardManager.class);
     }
 
 }

@@ -3,8 +3,6 @@ package com.sack.rpgroll.dungeons.core;
 import com.sack.rpgroll.common.content.ContentManager;
 import com.sack.rpgroll.common.yaml.YamlLoader;
 
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
@@ -24,7 +22,7 @@ public class DungeonManager extends ContentManager<DungeonDefinition> {
     private final Map<String, DungeonDefinition> apiDungeons = new LinkedHashMap<>();
 
     public DungeonManager(JavaPlugin dungeonsPlugin) {
-        super(resolveCoreInstance(), new YamlLoader(dungeonsPlugin), "dungeons", "dungeon", new DungeonParser(), true);
+        super(owningPlugin(), new YamlLoader(dungeonsPlugin), "dungeons", "dungeon", new DungeonParser(), true);
     }
 
     public void register(DungeonDefinition dungeon) {
@@ -61,15 +59,9 @@ public class DungeonManager extends ContentManager<DungeonDefinition> {
         return getAll().size();
     }
 
-    private static JavaPlugin resolveCoreInstance() {
-
-        Plugin corePlugin = Bukkit.getPluginManager().getPlugin("RPGRoll");
-
-        if (!(corePlugin instanceof JavaPlugin javaPlugin)) {
-            throw new IllegalStateException("No se pudo resolver la instancia de RPGRoll.");
-        }
-
-        return javaPlugin;
+    /** El propio módulo: la carga se anuncia con su nombre y no hace falta el core. */
+    private static JavaPlugin owningPlugin() {
+        return JavaPlugin.getProvidingPlugin(DungeonManager.class);
     }
 
 }

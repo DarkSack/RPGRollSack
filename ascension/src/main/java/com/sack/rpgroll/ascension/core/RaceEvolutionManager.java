@@ -3,8 +3,6 @@ package com.sack.rpgroll.ascension.core;
 import com.sack.rpgroll.common.content.ContentManager;
 import com.sack.rpgroll.common.yaml.YamlLoader;
 
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
@@ -25,7 +23,7 @@ public class RaceEvolutionManager extends ContentManager<RaceEvolution> {
     private final RaceEvolutionDefinitionWriter writer;
 
     public RaceEvolutionManager(JavaPlugin ascensionPlugin) {
-        super(resolveCoreInstance(), new YamlLoader(ascensionPlugin), "evolutions", "evolución",
+        super(owningPlugin(), new YamlLoader(ascensionPlugin), "evolutions", "evolución",
                 new RaceEvolutionParser());
         this.writer = new RaceEvolutionDefinitionWriter(ascensionPlugin.getDataFolder());
     }
@@ -75,15 +73,9 @@ public class RaceEvolutionManager extends ContentManager<RaceEvolution> {
         return getAll().size();
     }
 
-    private static JavaPlugin resolveCoreInstance() {
-
-        Plugin corePlugin = Bukkit.getPluginManager().getPlugin("RPGRoll");
-
-        if (!(corePlugin instanceof JavaPlugin javaPlugin)) {
-            throw new IllegalStateException("No se pudo resolver la instancia de RPGRoll.");
-        }
-
-        return javaPlugin;
+    /** El propio módulo: la carga se anuncia con su nombre y no hace falta el core. */
+    private static JavaPlugin owningPlugin() {
+        return JavaPlugin.getProvidingPlugin(RaceEvolutionManager.class);
     }
 
 }

@@ -3,8 +3,6 @@ package com.sack.rpgroll.fishing.core;
 import com.sack.rpgroll.common.content.ContentManager;
 import com.sack.rpgroll.common.yaml.YamlLoader;
 
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class FishingRodManager extends ContentManager<FishingRod> {
@@ -12,7 +10,7 @@ public class FishingRodManager extends ContentManager<FishingRod> {
     private final FishingRodDefinitionWriter writer;
 
     public FishingRodManager(JavaPlugin fishingPlugin) {
-        super(resolveCoreInstance(), new YamlLoader(fishingPlugin), "rods", "caña", new FishingRodParser());
+        super(owningPlugin(), new YamlLoader(fishingPlugin), "rods", "caña", new FishingRodParser());
         this.writer = new FishingRodDefinitionWriter(fishingPlugin.getDataFolder());
     }
 
@@ -21,15 +19,9 @@ public class FishingRodManager extends ContentManager<FishingRod> {
         reload();
     }
 
-    private static JavaPlugin resolveCoreInstance() {
-
-        Plugin corePlugin = Bukkit.getPluginManager().getPlugin("RPGRoll");
-
-        if (!(corePlugin instanceof JavaPlugin javaPlugin)) {
-            throw new IllegalStateException("No se pudo resolver la instancia de RPGRoll.");
-        }
-
-        return javaPlugin;
+    /** El propio módulo: la carga se anuncia con su nombre y no hace falta el core. */
+    private static JavaPlugin owningPlugin() {
+        return JavaPlugin.getProvidingPlugin(FishingRodManager.class);
     }
 
 }

@@ -3,8 +3,6 @@ package com.sack.rpgroll.items.core;
 import com.sack.rpgroll.common.content.ContentManager;
 import com.sack.rpgroll.common.yaml.YamlLoader;
 
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
@@ -28,7 +26,7 @@ public class ItemManager extends ContentManager<ItemDefinition> {
     private final Map<String, ItemDefinition> apiItems = new LinkedHashMap<>();
 
     public ItemManager(JavaPlugin itemsPlugin) {
-        super(resolveCoreInstance(), new YamlLoader(itemsPlugin), "packs", "ítem", new ItemParser(), true);
+        super(owningPlugin(), new YamlLoader(itemsPlugin), "packs", "ítem", new ItemParser(), true);
     }
 
     public void register(ItemDefinition item) {
@@ -65,15 +63,9 @@ public class ItemManager extends ContentManager<ItemDefinition> {
         return getAll().size();
     }
 
-    private static JavaPlugin resolveCoreInstance() {
-
-        Plugin corePlugin = Bukkit.getPluginManager().getPlugin("RPGRoll");
-
-        if (!(corePlugin instanceof JavaPlugin javaPlugin)) {
-            throw new IllegalStateException("No se pudo resolver la instancia de RPGRoll.");
-        }
-
-        return javaPlugin;
+    /** El propio módulo: la carga se anuncia con su nombre y no hace falta el core. */
+    private static JavaPlugin owningPlugin() {
+        return JavaPlugin.getProvidingPlugin(ItemManager.class);
     }
 
 }

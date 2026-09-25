@@ -3,8 +3,6 @@ package com.sack.rpgroll.ranching.core.species;
 import com.sack.rpgroll.common.content.ContentManager;
 import com.sack.rpgroll.common.yaml.YamlLoader;
 
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class SpeciesManager extends ContentManager<Species> {
@@ -12,7 +10,7 @@ public class SpeciesManager extends ContentManager<Species> {
     private final SpeciesDefinitionWriter writer;
 
     public SpeciesManager(JavaPlugin ranchingPlugin) {
-        super(resolveCoreInstance(), new YamlLoader(ranchingPlugin), "species", "especie", new SpeciesParser());
+        super(owningPlugin(), new YamlLoader(ranchingPlugin), "species", "especie", new SpeciesParser());
         this.writer = new SpeciesDefinitionWriter(ranchingPlugin.getDataFolder());
     }
 
@@ -21,15 +19,9 @@ public class SpeciesManager extends ContentManager<Species> {
         reload();
     }
 
-    private static JavaPlugin resolveCoreInstance() {
-
-        Plugin corePlugin = Bukkit.getPluginManager().getPlugin("RPGRoll");
-
-        if (!(corePlugin instanceof JavaPlugin javaPlugin)) {
-            throw new IllegalStateException("No se pudo resolver la instancia de RPGRoll.");
-        }
-
-        return javaPlugin;
+    /** El propio módulo: la carga se anuncia con su nombre y no hace falta el core. */
+    private static JavaPlugin owningPlugin() {
+        return JavaPlugin.getProvidingPlugin(SpeciesManager.class);
     }
 
 }

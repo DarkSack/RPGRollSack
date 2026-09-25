@@ -1,10 +1,8 @@
 package com.sack.rpgroll.npcs.core;
 
-import com.sack.rpgroll.RPGRoll;
 import com.sack.rpgroll.common.yaml.YamlLoader;
 import com.sack.rpgroll.common.content.ContentManager;
 
-import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class NpcMenuManager extends ContentManager<NpcMenuDefinition> {
@@ -12,7 +10,7 @@ public class NpcMenuManager extends ContentManager<NpcMenuDefinition> {
     private final NpcMenuWriter writer;
 
     public NpcMenuManager(JavaPlugin npcsPlugin) {
-        super(resolveCoreInstance(), new YamlLoader(npcsPlugin), "menus", "menú", new NpcMenuParser());
+        super(owningPlugin(), new YamlLoader(npcsPlugin), "menus", "menú", new NpcMenuParser());
         this.writer = new NpcMenuWriter(npcsPlugin);
     }
 
@@ -22,12 +20,9 @@ public class NpcMenuManager extends ContentManager<NpcMenuDefinition> {
         reload();
     }
 
-    private static RPGRoll resolveCoreInstance() {
-        var corePlugin = Bukkit.getPluginManager().getPlugin("RPGRoll");
-        if (!(corePlugin instanceof RPGRoll rpgRoll)) {
-            throw new IllegalStateException("No se pudo resolver la instancia de RPGRoll.");
-        }
-        return rpgRoll;
+    /** El propio módulo: la carga se anuncia con su nombre y no hace falta el core. */
+    private static JavaPlugin owningPlugin() {
+        return JavaPlugin.getProvidingPlugin(NpcMenuManager.class);
     }
 
 }

@@ -3,8 +3,6 @@ package com.sack.rpgroll.crafting.brewing;
 import com.sack.rpgroll.common.content.ContentManager;
 import com.sack.rpgroll.common.yaml.YamlLoader;
 
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class BrewRecipeManager extends ContentManager<BrewRecipeDefinition> {
@@ -12,7 +10,7 @@ public class BrewRecipeManager extends ContentManager<BrewRecipeDefinition> {
     private final BrewRecipeDefinitionWriter writer;
 
     public BrewRecipeManager(JavaPlugin craftingPlugin) {
-        super(resolveCoreInstance(), new YamlLoader(craftingPlugin), "brew-recipes", "receta de fermentación",
+        super(owningPlugin(), new YamlLoader(craftingPlugin), "brew-recipes", "receta de fermentación",
                 new BrewRecipeParser());
         this.writer = new BrewRecipeDefinitionWriter(craftingPlugin.getDataFolder());
     }
@@ -27,15 +25,9 @@ public class BrewRecipeManager extends ContentManager<BrewRecipeDefinition> {
         reload();
     }
 
-    private static JavaPlugin resolveCoreInstance() {
-
-        Plugin corePlugin = Bukkit.getPluginManager().getPlugin("RPGRoll");
-
-        if (!(corePlugin instanceof JavaPlugin javaPlugin)) {
-            throw new IllegalStateException("No se pudo resolver la instancia de RPGRoll.");
-        }
-
-        return javaPlugin;
+    /** El propio módulo: la carga se anuncia con su nombre y no hace falta el core. */
+    private static JavaPlugin owningPlugin() {
+        return JavaPlugin.getProvidingPlugin(BrewRecipeManager.class);
     }
 
 }

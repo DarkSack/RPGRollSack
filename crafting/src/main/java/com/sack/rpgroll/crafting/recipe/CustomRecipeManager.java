@@ -3,8 +3,6 @@ package com.sack.rpgroll.crafting.recipe;
 import com.sack.rpgroll.common.content.ContentManager;
 import com.sack.rpgroll.common.yaml.YamlLoader;
 
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.List;
@@ -14,7 +12,7 @@ public class CustomRecipeManager extends ContentManager<CustomRecipe> {
     private final CustomRecipeDefinitionWriter writer;
 
     public CustomRecipeManager(JavaPlugin craftingPlugin) {
-        super(resolveCoreInstance(), new YamlLoader(craftingPlugin), "recipes", "receta", new CustomRecipeParser());
+        super(owningPlugin(), new YamlLoader(craftingPlugin), "recipes", "receta", new CustomRecipeParser());
         this.writer = new CustomRecipeDefinitionWriter(craftingPlugin.getDataFolder());
     }
 
@@ -32,15 +30,9 @@ public class CustomRecipeManager extends ContentManager<CustomRecipe> {
         return getAll().stream().filter(recipe -> recipe.stationId().equals(stationId)).toList();
     }
 
-    private static JavaPlugin resolveCoreInstance() {
-
-        Plugin corePlugin = Bukkit.getPluginManager().getPlugin("RPGRoll");
-
-        if (!(corePlugin instanceof JavaPlugin javaPlugin)) {
-            throw new IllegalStateException("No se pudo resolver la instancia de RPGRoll.");
-        }
-
-        return javaPlugin;
+    /** El propio módulo: la carga se anuncia con su nombre y no hace falta el core. */
+    private static JavaPlugin owningPlugin() {
+        return JavaPlugin.getProvidingPlugin(CustomRecipeManager.class);
     }
 
 }

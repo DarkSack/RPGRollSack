@@ -3,8 +3,6 @@ package com.sack.rpgroll.enchantments.core;
 import com.sack.rpgroll.common.content.ContentManager;
 import com.sack.rpgroll.common.yaml.YamlLoader;
 
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -29,7 +27,7 @@ public class EnchantmentManager extends ContentManager<CustomEnchantment> {
     private final EnchantmentDefinitionWriter writer;
 
     public EnchantmentManager(JavaPlugin enchantmentsPlugin) {
-        super(resolveCoreInstance(), new YamlLoader(enchantmentsPlugin), "enchantments", "encantamiento",
+        super(owningPlugin(), new YamlLoader(enchantmentsPlugin), "enchantments", "encantamiento",
                 new EnchantmentParser());
         this.writer = new EnchantmentDefinitionWriter(new File(enchantmentsPlugin.getDataFolder(), "enchantments"),
                 enchantmentsPlugin.getLogger());
@@ -81,15 +79,9 @@ public class EnchantmentManager extends ContentManager<CustomEnchantment> {
         return getAll().size();
     }
 
-    private static JavaPlugin resolveCoreInstance() {
-
-        Plugin corePlugin = Bukkit.getPluginManager().getPlugin("RPGRoll");
-
-        if (!(corePlugin instanceof JavaPlugin javaPlugin)) {
-            throw new IllegalStateException("No se pudo resolver la instancia de RPGRoll.");
-        }
-
-        return javaPlugin;
+    /** El propio módulo: la carga se anuncia con su nombre y no hace falta el core. */
+    private static JavaPlugin owningPlugin() {
+        return JavaPlugin.getProvidingPlugin(EnchantmentManager.class);
     }
 
 }
