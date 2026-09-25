@@ -1,4 +1,4 @@
-# src/main/resources/npcs/prueba.yml
+# Ejemplo: no se carga (los ficheros que empiezan por "_" se saltan). Cópialo sin el "_" y cambia la ubicación.
 id: prueba
 display-name: "NPC de Prueba"
 skin:
