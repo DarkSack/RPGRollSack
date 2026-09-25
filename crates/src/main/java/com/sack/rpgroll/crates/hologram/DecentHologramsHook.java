@@ -23,7 +23,7 @@ public class DecentHologramsHook {
 
     public DecentHologramsHook(Plugin plugin) {
         this.plugin = plugin;
-        this.available = plugin.getServer().getPluginManager().getPlugin("DecentHolograms") != null;
+        this.available = plugin.getServer().getPluginManager().isPluginEnabled("DecentHolograms");
 
         if (!available) {
             plugin.getLogger().warning(
