@@ -1,0 +1,18 @@
+# ============================================================================
+# RANGO DE OFICIO DE REFERENCIA — no se carga (guion bajo).
+# Se obtiene solo al llegar a required-job-level en base-job, y es para
+# siempre. Mientras el jugador siga en ese oficio tiene estos permisos:
+#   rpgrollascension.jobevolution.<id>
+#   rpgrollascension.recipe.<id>   (uno por unlocked-recipes)
+#   rpgrollascension.quest.<id>    (uno por unlocked-quests)
+# Si deja el oficio se van; si vuelve, regresan sin repetir recompensas.
+# ============================================================================
+id: reference_full_example
+base-job: minero                  # id de un oficio de RPGRoll
+display-name: "&7Nombre visible"
+required-job-level: 25
+unlocked-recipes: [receta_a]      # permiso para exigir en recetas de Crafting
+unlocked-tools: [miner_pickaxe]   # ids de RPGRoll-Items, se entregan una vez
+unlocked-quests: [quest_a]        # permiso para exigir en quests
+rewards:                          # mismo bloque que los logros
+  money: 500

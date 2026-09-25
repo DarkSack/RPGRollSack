@@ -8,6 +8,36 @@ general:
 
 # Comando /ascend (jugador)
 command:
+  reputation_next: "&7   Siguiente: &f{rank} &7(faltan {missing})"
+  info_achievements: "&eLogros: &f{count}/{total}"
+  any_target: "cualquiera"
+  achievements_empty: "&7No hay logros configurados."
+  achievements_header: "&6&lLogros &7({unlocked}/{total})"
+  achievements_hidden: "&8 ✦ ???"
+  achievements_unlocked: "&a ✔ {name} &8— &7{description}"
+  achievements_locked: "&7 ✦ {name} &8— &7{description}"
+  achievements_criterion: "&8     • &7{type} &f{target}&7: &e{current}&7/&e{required}"
+  titles_empty: "&7Aún no tienes títulos. Se ganan con logros y con la reputación de las facciones."
+  titles_header: "&6&lTus títulos &7(/ascend title <id>)"
+  titles_entry: "&7 • {name} &8({id})"
+  titles_active_entry: "&a ▶ {name} &8({id}) &a— activo"
+  secrets_empty: "&7Este servidor no tiene contenido secreto."
+  secrets_header: "&5&lSecretos"
+  secrets_unlocked: "&d ✔ {type}: &f{name}"
+  secrets_claimable: "&d ✔ {type}: &f{name} &7— &e/ascend secret claim {id}"
+  secrets_hint: "&8 ✦ {type} oculto: &7{hint}"
+  secrets_locked: "&8 ✦ {type} oculto"
+  secret_usage: "&cUso: /ascend secret claim <id>"
+  secret_claimed: "&d✔ Lo has adoptado. Tus estadísticas se han recalculado."
+  secret_not_found: "&cNo existe un secreto con id: {id}"
+  secret_not_claimable: "&cEse secreto no se reclama: se concede o se desbloquea solo."
+  secret_locked: "&cTodavía no cumples lo que pide ese secreto."
+  secret_failed: "&cNo se pudo aplicar. Avisa a un administrador."
+  jobs_empty: "&7No hay rangos de oficio configurados."
+  jobs_header: "&6&lRangos de oficio"
+  jobs_job: "&e {job}"
+  jobs_evolution_owned: "&a   ✔ {name} &8(nivel {level})"
+  jobs_evolution_pending: "&7   ✦ {name} &8(nivel {level})"
   usage: |-
     &cUso: /ascend
     &7 • &brace
@@ -18,6 +48,10 @@ command:
     &7 • &9reputation
     &7 • &ctitle
     &7 • &flegacy
+    &7 • &6achievements
+    &7 • &etitles
+    &7 • &bjobs
+    &7 • &dsecrets
     &7 • &5info
   race_usage: "&cUso: /ascend race <id>"
   race_not_found: "&cNo existe una evolución con id: {id}"
@@ -38,7 +72,7 @@ command:
   affinity_entry: "&f• {id}: {level} (xp: {xp})"
   reputation_empty: "&7No hay facciones definidas."
   reputation_header: "&6Tu reputación:"
-  reputation_entry: "&f• {faction}: {amount}"
+  reputation_entry: "&f• {faction}: &e{amount} &7({rank})"
   title_usage: |-
     &cUso: /ascend title
     &7 • &bid
@@ -60,6 +94,8 @@ command:
 
 # Comando /ascendadmin
 admin:
+  achievement_revoked: "&a✔ Logro {id} retirado a {player}. Las recompensas ya entregadas no se retiran."
+  achievement_not_owned: "&c{player} no tiene ese logro."
   no_permission: "&cNo tienes permiso para usar este comando."
   usage: |-
     &cUso: /ascendadmin
@@ -70,7 +106,7 @@ admin:
     &7 • &6reload
   browser_player_only: "&cSolo un jugador puede usar el editor visual."
   browser_invalid_option: "&cOpción inválida. Usa: evolution, specialization, prestige, affinity, jobevolution, secret, faction, achievement, title o legacy"
-  achievement_usage: "&cUso: /ascendadmin achievement grant <jugador> <id>"
+  achievement_usage: "&cUso: /ascendadmin achievement <grant|revoke> <jugador> <id>"
   achievement_player_not_found: "&cJugador no encontrado: {player}"
   achievement_not_found: "&cNo existe un logro con id: {id}"
   achievement_granted: "&a✔ Logro '{id}' otorgado a {player}"
@@ -298,3 +334,40 @@ gui:
     prestige_label: "&ePrestigio requerido: {prestige}"
     bonus_label: "&eBono de XP permanente: {percent}%"
     stat_points_label: "&ePuntos de stat de bono: {points}"
+
+progress:
+  achievement_unlocked: "&6✦ Logro desbloqueado: &f{name}"
+  broadcast: "&6✦ &f{player} &7ha conseguido &f{name}"
+  title_unlocked: "&e✦ Nuevo título: &f{name} &7— /ascend title {id}"
+  rank_up: "&a▲ Ahora eres &f{rank} &apara &f{faction}"
+  rank_down: "&c▼ Has bajado a &f{rank} &cpara &f{faction}"
+  job_evolution: "&b✦ Tu oficio evoluciona: &f{name}"
+  secret_trait: "&d✦ Un rasgo oculto despierta en ti: &f{name}"
+  secret_discovered: "&d✦ Has desbloqueado algo secreto — {type}: &f{name}"
+  secret_claim_hint: "&7   Puedes adoptarlo con &e/ascend secret claim {id}"
+  reward_money: "&a+{amount}"
+  reward_experience: "&a+{amount} de experiencia"
+  reward_talent_points: "&a+{amount} punto(s) de talento"
+
+secret_type:
+  race: "Raza"
+  class: "Clase"
+  trait: "Rasgo"
+  specialization: "Especialización"
+
+trigger:
+  kill_entity: "Mata"
+  kill_mob: "Derrota a"
+  kill_player: "Derrota jugadores"
+  break_block: "Rompe"
+  place_block: "Coloca"
+  fish: "Pesca"
+  craft_item: "Fabrica"
+  complete_quest: "Completa la misión"
+  visit_biome: "Visita biomas distintos"
+  reach_level: "Llega al nivel"
+  job_level: "Nivel de oficio"
+  prestige: "Prestigios"
+  legacy: "Legados"
+  reputation: "Reputación con"
+  achievements: "Logros"

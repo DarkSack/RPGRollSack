@@ -63,7 +63,7 @@ public class FactionEditorGUI extends InventoryGUI {
 
         if (slot == NAME_SLOT) {
             chatPromptManager.prompt(player, "gui.faction.prompt_new_name",
-                    value -> replace(new Faction(current.id(), value)));
+                    value -> replace(current.withDisplayName(value)));
             return;
         }
 

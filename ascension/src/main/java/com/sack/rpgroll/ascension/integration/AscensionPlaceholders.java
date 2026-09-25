@@ -1,5 +1,11 @@
 package com.sack.rpgroll.ascension.integration;
 
+import com.sack.rpgroll.ascension.deferred.FactionManager;
+import com.sack.rpgroll.ascension.deferred.FactionRank;
+import com.sack.rpgroll.ascension.deferred.JobEvolution;
+import com.sack.rpgroll.ascension.deferred.Title;
+import com.sack.rpgroll.ascension.deferred.TitleManager;
+import com.sack.rpgroll.ascension.engine.ProgressService;
 import com.sack.rpgroll.ascension.engine.AscensionEngine;
 import com.sack.rpgroll.ascension.player.AscensionPlayerState;
 import com.sack.rpgroll.ascension.player.AscensionPlayerStateManager;
@@ -18,10 +24,17 @@ public class AscensionPlaceholders extends PlaceholderExpansion {
 
     private final Plugin plugin;
     private final AscensionEngine engine;
+    private final ProgressService progress;
+    private final TitleManager titleManager;
+    private final FactionManager factionManager;
 
-    public AscensionPlaceholders(Plugin plugin, AscensionEngine engine) {
+    public AscensionPlaceholders(Plugin plugin, AscensionEngine engine, ProgressService progress,
+            TitleManager titleManager, FactionManager factionManager) {
         this.plugin = plugin;
         this.engine = engine;
+        this.progress = progress;
+        this.titleManager = titleManager;
+        this.factionManager = factionManager;
     }
 
     @Override
@@ -69,7 +82,19 @@ public class AscensionPlaceholders extends PlaceholderExpansion {
             case "talent_points":
                 return String.valueOf(state.getAvailableTalentPoints());
             case "title":
+                // El nombre visible, con sus colores: es lo que se pone en
+                // el chat o en el tablist. Antes devolvía el id.
+                return state.getActiveTitle() == null ? ""
+                        : titleManager.get(state.getActiveTitle()).map(Title::displayName)
+                                .orElse(state.getActiveTitle());
+            case "title_id":
                 return valueOrDash(state.getActiveTitle());
+            case "achievements":
+                return String.valueOf(state.getUnlockedAchievements().size());
+            case "achievements_total":
+                return String.valueOf(progress.achievements().getAchievementManager().count());
+            case "titles":
+                return String.valueOf(state.getUnlockedTitles().size());
             default:
                 break;
         }
@@ -82,6 +107,28 @@ public class AscensionPlaceholders extends PlaceholderExpansion {
         if (key.startsWith("affinity_") && key.endsWith("_level")) {
             String id = key.substring("affinity_".length(), key.length() - "_level".length());
             return id.isBlank() ? "" : String.valueOf(Math.min(100, state.getAffinityExperience(id) / 100));
+        }
+
+        if (key.startsWith("rank_")) {
+            String factionId = key.substring("rank_".length());
+            return factionManager.get(factionId)
+                    .flatMap(faction -> faction.rankFor(state.getReputation(faction.id())))
+                    .map(FactionRank::displayName)
+                    .orElse("-");
+        }
+
+        if (key.startsWith("jobrank_")) {
+            String jobId = key.substring("jobrank_".length());
+            return progress.jobEvolutions().evolutionsOf(jobId).stream()
+                    .filter(evolution -> state.getJobEvolutions().contains(evolution.id()))
+                    .reduce((first, second) -> second)
+                    .map(JobEvolution::displayName)
+                    .orElse("-");
+        }
+
+        if (key.startsWith("achievement_")) {
+            String id = key.substring("achievement_".length());
+            return state.getUnlockedAchievements().contains(id) ? "true" : "false";
         }
 
         if (key.startsWith("reputation_")) {

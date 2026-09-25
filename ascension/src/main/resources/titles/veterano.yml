@@ -1,0 +1,5 @@
+# Con requirements se desbloquea solo al cumplirlos.
+id: veterano
+display-name: "&7Veterano"
+requirements:
+  level: 50

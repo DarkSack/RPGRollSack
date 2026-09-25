@@ -71,13 +71,13 @@ public class AchievementEditorGUI extends InventoryGUI {
 
         if (slot == NAME_SLOT) {
             chatPromptManager.prompt(player, "gui.achievement.prompt_new_name",
-                    value -> replace(new Achievement(current.id(), value, current.description())));
+                    value -> replace(current.withDisplayName(value)));
             return;
         }
 
         if (slot == DESCRIPTION_SLOT) {
             chatPromptManager.prompt(player, "gui.achievement.prompt_description",
-                    value -> replace(new Achievement(current.id(), current.displayName(), value)));
+                    value -> replace(current.withDescription(value)));
             return;
         }
 

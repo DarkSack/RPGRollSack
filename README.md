@@ -58,7 +58,7 @@ Cada addon extiende el core con un sistema completo propio, construido por **com
 | ✨ **Enchantments**     | Encantamientos personalizados basados en componentes (triggers/condiciones/efectos)                       |
 | 📜 **Quests**           | Misiones ramificadas por etapas, objetivos, condiciones y eventos                                         |
 | 🎒 **Items**            | Ítems personalizados con stats, sockets, skins, mejoras y recetas                                         |
-| 🌟 **Ascension**        | Progresión avanzada: evolución de razas, especialización de clases, talentos, prestigio, afinidades       |
+| 🌟 **Ascension**        | Progresión avanzada: evolución de razas, especialización de clases, talentos, prestigio, legado y afinidades; logros con criterios y recompensas, facciones con reputación, rangos y rivalidades, títulos, rangos de oficio que desbloquean recetas, y razas, clases, rasgos y especializaciones secretas |
 | 👹 **Mobs**             | Mobs, jefes e invocaciones a medida (componentes, fases, IA propia, loot, reskin visual propio)           |
 | 🏰 **Dungeons**         | Mazmorras instanciadas: salas, oleadas, jefes, dificultades, ranking; estructuras NATIVE/CUSTOM y schematics de WorldEdit (opcional) |
 | 🛡️ **Guilds**           | Equipos temporales (Teams) y organizaciones permanentes (Guilds)                                          |

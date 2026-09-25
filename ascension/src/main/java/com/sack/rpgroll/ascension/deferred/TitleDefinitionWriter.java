@@ -15,13 +15,17 @@ public class TitleDefinitionWriter {
 
     public void save(Title title) {
 
-        YamlConfiguration config = new YamlConfiguration();
+        // Se escribe encima del fichero que ya hay, no se rehace: el editor
+        // solo conoce estos campos, y criterios, rangos o recompensas se
+        // escriben a mano en el YAML. Rehacerlo los borraba al renombrar.
+        File file = new File(folder, title.id() + ".yml");
+        YamlConfiguration config = file.exists() ? YamlConfiguration.loadConfiguration(file) : new YamlConfiguration();
         config.set("id", title.id());
         config.set("display-name", title.displayName());
 
         try {
             folder.mkdirs();
-            config.save(new File(folder, title.id() + ".yml"));
+            config.save(file);
         } catch (IOException e) {
             throw new RuntimeException("No se pudo guardar el título " + title.id(), e);
         }

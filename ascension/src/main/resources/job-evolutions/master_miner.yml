@@ -1,8 +1,16 @@
 id: master_miner
 base-job: minero
-display-name: "&7Master Miner"
+display-name: "&7Maestro Minero"
 required-job-level: 25
+# Da el permiso rpgrollascension.recipe.reinforced_pickaxe mientras sigas en
+# el oficio. Una receta de RPGRoll-Crafting lo exige con:
+#   conditions:
+#     - type: PERMISSION
+#       value: rpgrollascension.recipe.reinforced_pickaxe
 unlocked-recipes:
   - reinforced_pickaxe
+# Ids de RPGRoll-Items: se entregan una vez, al evolucionar.
 unlocked-tools:
-  - efficiency_drill
+  - miner_pickaxe
+rewards:
+  money: 500

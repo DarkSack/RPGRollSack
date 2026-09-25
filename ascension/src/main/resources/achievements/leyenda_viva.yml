@@ -1,0 +1,14 @@
+# Oculto: no aparece en /ascend achievements hasta conseguirlo.
+id: leyenda_viva
+display-name: "&6&lLeyenda Viva"
+description: "Prestigia una vez y consigue otros 3 logros"
+hidden: true
+criteria:
+  - type: PRESTIGE
+    amount: 1
+  - type: ACHIEVEMENTS
+    amount: 3
+rewards:
+  title: portador_de_leyenda
+  talent-points: 2
+  broadcast: true

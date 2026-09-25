@@ -1,5 +1,14 @@
 package com.sack.rpgroll.ascension.command;
 
+import com.sack.rpgroll.ascension.deferred.Achievement;
+import com.sack.rpgroll.ascension.deferred.FactionRank;
+import com.sack.rpgroll.ascension.deferred.JobEvolution;
+import com.sack.rpgroll.ascension.deferred.SecretTargetType;
+import com.sack.rpgroll.ascension.deferred.SecretUnlockRequirement;
+import com.sack.rpgroll.ascension.deferred.Title;
+import com.sack.rpgroll.ascension.engine.AchievementProgress;
+import com.sack.rpgroll.ascension.engine.ProgressService;
+import java.util.Locale;
 import com.sack.rpgroll.common.command.Senders;
 
 import com.sack.rpgroll.ascension.core.ClassSpecialization;
@@ -33,21 +42,28 @@ import java.util.Optional;
  * /ascend reputation           — tu reputación con cada facción
  * /ascend title &lt;id|clear&gt; — activa un título desbloqueado
  * /ascend legacy                — legado (reset total por un bono permanente)
+ * /ascend achievements          — tus logros y lo que te falta
+ * /ascend titles                — tus títulos
+ * /ascend jobs                  — rangos de oficio
+ * /ascend secrets               — contenido secreto descubierto y pistas
+ * /ascend secret claim &lt;id&gt;  — adopta una raza o clase secreta desbloqueada
  * /ascend info                  — resumen de tu progresión
  */
 public class AscendCommand implements CommandExecutor, TabCompleter {
 
     private static final List<String> SUBCOMMANDS = List.of("race", "specialize", "talent", "prestige", "affinity",
-            "reputation", "title", "legacy", "info");
+            "reputation", "title", "titles", "achievements", "jobs", "secrets", "secret", "legacy", "info");
 
     private final AscensionEngine engine;
+    private final ProgressService progress;
     private final FactionManager factionManager;
     private final TitleManager titleManager;
     private final LangManager lang;
 
-    public AscendCommand(AscensionEngine engine, FactionManager factionManager, TitleManager titleManager,
-            LangManager lang) {
+    public AscendCommand(AscensionEngine engine, ProgressService progress, FactionManager factionManager,
+            TitleManager titleManager, LangManager lang) {
         this.engine = engine;
+        this.progress = progress;
         this.factionManager = factionManager;
         this.titleManager = titleManager;
         this.lang = lang;
@@ -74,6 +90,11 @@ public class AscendCommand implements CommandExecutor, TabCompleter {
             case "affinity" -> handleAffinity(player);
             case "reputation" -> handleReputation(player);
             case "title" -> handleTitle(player, args);
+            case "titles" -> handleTitles(player);
+            case "achievements" -> handleAchievements(player);
+            case "jobs" -> handleJobs(player);
+            case "secrets" -> handleSecrets(player);
+            case "secret" -> handleSecret(player, args);
             case "legacy" -> handleLegacy(player);
             case "info" -> handleInfo(player);
             default -> sendUsage(player);
@@ -171,9 +192,16 @@ public class AscendCommand implements CommandExecutor, TabCompleter {
         lang.send(player, "command.reputation_header");
 
         for (var faction : factionManager.getAll()) {
+
+            int amount = state.getReputation(faction.id());
+            String rank = faction.rankFor(amount).map(FactionRank::displayName).orElse(lang.raw("command.none_label"));
+
             player.sendMessage(ComponentUtils.parseWithDefault(
-                    lang.raw("command.reputation_entry", "faction", faction.displayName(), "amount",
-                            state.getReputation(faction.id())), NamedTextColor.WHITE));
+                    lang.raw("command.reputation_entry", "faction", faction.displayName(), "amount", amount,
+                            "rank", rank), NamedTextColor.WHITE));
+
+            faction.nextRank(amount).ifPresent(next -> lang.send(player, "command.reputation_next",
+                    "rank", next.displayName(), "missing", next.threshold() - amount));
         }
     }
 
@@ -221,6 +249,150 @@ public class AscendCommand implements CommandExecutor, TabCompleter {
         lang.send(player, "command.info_prestige", "count", state.getPrestigeCount());
         lang.send(player, "command.info_legacy", "count", state.getLegacyCount());
         lang.send(player, "command.info_exp_bonus", "percent", engine.getExperienceBonusPercent(player));
+        lang.send(player, "command.info_achievements", "count", state.getUnlockedAchievements().size(),
+                "total", progress.achievements().getAchievementManager().count());
+    }
+
+    private void handleAchievements(Player player) {
+
+        AscensionPlayerState state = engine.getStateManager().getOrLoad(player);
+        var achievementEngine = progress.achievements();
+        var all = achievementEngine.getAchievementManager().getAll();
+
+        if (all.isEmpty()) {
+            lang.send(player, "command.achievements_empty");
+            return;
+        }
+
+        lang.send(player, "command.achievements_header", "unlocked", state.getUnlockedAchievements().size(),
+                "total", all.size());
+
+        for (Achievement achievement : all) {
+
+            boolean unlocked = state.getUnlockedAchievements().contains(achievement.id());
+
+            if (!unlocked && achievement.hidden()) {
+                lang.send(player, "command.achievements_hidden");
+                continue;
+            }
+
+            lang.send(player, unlocked ? "command.achievements_unlocked" : "command.achievements_locked",
+                    "name", achievement.displayName(), "description", achievement.description());
+
+            if (unlocked) {
+                continue;
+            }
+
+            for (int i = 0; i < achievement.criteria().size(); i++) {
+                var criterion = achievement.criteria().get(i);
+                lang.send(player, "command.achievements_criterion",
+                        "type", lang.raw("trigger." + criterion.type().name().toLowerCase(Locale.ROOT)),
+                        "target", describeTarget(criterion),
+                        "current", Math.min(achievementEngine.current(player, achievement, i),
+                                AchievementProgress.required(criterion)),
+                        "required", AchievementProgress.required(criterion));
+            }
+        }
+    }
+
+    private String describeTarget(com.sack.rpgroll.ascension.progress.Criterion criterion) {
+
+        if (criterion.key() != null) {
+            return criterion.key();
+        }
+
+        return com.sack.rpgroll.ascension.progress.Glob.isWildcard(criterion.target())
+                ? lang.raw("command.any_target")
+                : criterion.target();
+    }
+
+    private void handleTitles(Player player) {
+
+        AscensionPlayerState state = engine.getStateManager().getOrLoad(player);
+
+        if (state.getUnlockedTitles().isEmpty()) {
+            lang.send(player, "command.titles_empty");
+            return;
+        }
+
+        lang.send(player, "command.titles_header");
+
+        for (String titleId : state.getUnlockedTitles().stream().sorted().toList()) {
+            String name = titleManager.get(titleId).map(Title::displayName).orElse(titleId);
+            lang.send(player, titleId.equals(state.getActiveTitle()) ? "command.titles_active_entry"
+                    : "command.titles_entry", "name", name, "id", titleId);
+        }
+    }
+
+    private void handleSecrets(Player player) {
+
+        var secretEngine = progress.secrets();
+        var secrets = secretEngine.getSecretManager().getAll();
+
+        if (secrets.isEmpty()) {
+            lang.send(player, "command.secrets_empty");
+            return;
+        }
+
+        lang.send(player, "command.secrets_header");
+
+        for (SecretUnlockRequirement secret : secrets) {
+
+            String type = secretEngine.typeName(secret.targetType());
+
+            if (secretEngine.isUnlocked(player, secret)) {
+                boolean claimable = secret.targetType() == SecretTargetType.CLASS
+                        || secret.targetType() == SecretTargetType.RACE;
+                lang.send(player, claimable ? "command.secrets_claimable" : "command.secrets_unlocked",
+                        "type", type, "name", secret.targetId(), "id", secret.id());
+            } else if (secret.hint() != null && !secret.hint().isBlank()) {
+                lang.send(player, "command.secrets_hint", "type", type, "hint", secret.hint());
+            } else {
+                lang.send(player, "command.secrets_locked", "type", type);
+            }
+        }
+    }
+
+    private void handleSecret(Player player, String[] args) {
+
+        if (args.length < 3 || !args[1].equalsIgnoreCase("claim")) {
+            lang.send(player, "command.secret_usage");
+            return;
+        }
+
+        switch (progress.secrets().claim(player, args[2])) {
+            case OK -> lang.send(player, "command.secret_claimed");
+            case NOT_FOUND -> lang.send(player, "command.secret_not_found", "id", args[2]);
+            case NOT_CLAIMABLE -> lang.send(player, "command.secret_not_claimable");
+            case LOCKED -> lang.send(player, "command.secret_locked");
+            case FAILED -> lang.send(player, "command.secret_failed");
+        }
+    }
+
+    private void handleJobs(Player player) {
+
+        AscensionPlayerState state = engine.getStateManager().getOrLoad(player);
+        var jobEngine = progress.jobEvolutions();
+
+        if (jobEngine.getJobEvolutionManager().count() == 0) {
+            lang.send(player, "command.jobs_empty");
+            return;
+        }
+
+        lang.send(player, "command.jobs_header");
+
+        jobEngine.getJobEvolutionManager().getAll().stream()
+                .map(JobEvolution::baseJob)
+                .distinct()
+                .sorted()
+                .forEach(job -> {
+                    lang.send(player, "command.jobs_job", "job", job);
+                    for (JobEvolution evolution : jobEngine.evolutionsOf(job)) {
+                        lang.send(player, state.getJobEvolutions().contains(evolution.id())
+                                ? "command.jobs_evolution_owned" : "command.jobs_evolution_pending",
+                                "name", evolution.displayName(), "level", evolution.requiredJobLevel());
+                    }
+                });
     }
 
     private void reportResult(Player player, java.util.List<String> reasons, String successMessage) {
@@ -247,6 +419,7 @@ public class AscendCommand implements CommandExecutor, TabCompleter {
                         engine.getEvolutionManager().getAll().stream().map(RaceEvolution::id).toList());
                 case "specialize" -> TabCompleteUtil.filter(args[1],
                         engine.getSpecializationManager().getAll().stream().map(ClassSpecialization::id).toList());
+                case "secret" -> TabCompleteUtil.filter(args[1], List.of("claim"));
                 case "title" -> {
                     if (!(Senders.asPlayer(sender) instanceof Player player)) {
                         yield List.of();
@@ -258,6 +431,17 @@ public class AscendCommand implements CommandExecutor, TabCompleter {
                 }
                 default -> List.of();
             };
+        }
+
+        if (args.length == 3 && args[0].equalsIgnoreCase("secret") && args[1].equalsIgnoreCase("claim")
+                && Senders.asPlayer(sender) instanceof Player player) {
+            List<String> claimable = progress.secrets().getSecretManager().getAll().stream()
+                    .filter(secret -> secret.targetType() == SecretTargetType.CLASS
+                            || secret.targetType() == SecretTargetType.RACE)
+                    .filter(secret -> progress.secrets().isUnlocked(player, secret))
+                    .map(SecretUnlockRequirement::id)
+                    .toList();
+            return TabCompleteUtil.filter(args[2], claimable);
         }
 
         return List.of();

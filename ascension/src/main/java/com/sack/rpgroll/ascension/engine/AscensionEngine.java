@@ -29,11 +29,11 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * Orquesta los 4 pilares con mecánica real: evolución de raza,
- * especialización + talentos, prestigio y afinidades. Los sistemas
- * "diferidos" (jobs avanzados, dominio, contenido secreto, reputación,
- * logros, títulos, legado) viven acá también para las operaciones de
- * datos simples (grant/query) que sí forman parte de esta pasada.
+ * Orquesta evolución de raza, especialización + talentos, prestigio, legado
+ * y los bonos de atributo. Logros, facciones, títulos, rangos de oficio y
+ * contenido secreto tienen su propio motor (ver {@link ProgressService});
+ * de ellos, aquí solo entran el candado de las especializaciones secretas y
+ * los bonos permanentes que dan sus recompensas.
  */
 public class AscensionEngine {
 
@@ -45,6 +45,8 @@ public class AscensionEngine {
     private final LegacyManager legacyManager;
     private final AscensionRequirementChecker requirementChecker;
     private final LangManager lang;
+
+    private SecretEngine secretEngine;
 
     private final NamespacedKey healthModifierKey;
     private final NamespacedKey speedModifierKey;
@@ -69,6 +71,11 @@ public class AscensionEngine {
         this.lang = lang;
         this.healthModifierKey = new NamespacedKey(plugin, "ascension-health-modifier");
         this.speedModifierKey = new NamespacedKey(plugin, "ascension-speed-modifier");
+    }
+
+    /** Se cablea después: el motor de secretos se construye aparte. */
+    public void setSecretEngine(SecretEngine secretEngine) {
+        this.secretEngine = secretEngine;
     }
 
     public AscensionPlayerStateManager getStateManager() {
@@ -152,6 +159,14 @@ public class AscensionEngine {
         List<String> reasons = requirementChecker.check(player, specialization.requirements(), state);
         if (!reasons.isEmpty()) {
             return reasons;
+        }
+
+        if (secretEngine != null) {
+            List<String> locked = secretEngine.lockReasons(player,
+                    com.sack.rpgroll.ascension.deferred.SecretTargetType.SPECIALIZATION, specialization.id());
+            if (!locked.isEmpty()) {
+                return locked;
+            }
         }
 
         state.setCurrentSpecializationId(specialization.id());
@@ -327,7 +342,9 @@ public class AscensionEngine {
         state.incrementLegacy();
         state.addPermanentExpBonusPercent(tier.get().permanentExpBonusPercent());
 
-        clearAttributeBonuses(player);
+        // Sin evolución ni especialización ya solo quedan los bonos
+        // permanentes de recompensas, que son de la cuenta y sobreviven.
+        applyAttributeBonuses(player, state);
 
         return List.of();
     }
@@ -368,15 +385,14 @@ public class AscensionEngine {
             });
         }
 
+        // Bonos permanentes de recompensas (logros, rangos de facción…).
+        state.getBonusStats().forEach((k, v) -> combined.merge(k, v, Double::sum));
+
         applyAttribute(player, Attribute.MAX_HEALTH, healthModifierKey, combined.getOrDefault("health", 0.0));
         applyAttribute(player, Attribute.MOVEMENT_SPEED, speedModifierKey,
                 combined.getOrDefault("speed", 0.0) / 100.0);
     }
 
-    private void clearAttributeBonuses(Player player) {
-        applyAttribute(player, Attribute.MAX_HEALTH, healthModifierKey, 0);
-        applyAttribute(player, Attribute.MOVEMENT_SPEED, speedModifierKey, 0);
-    }
 
     private void applyAttribute(Player player, Attribute attribute, NamespacedKey key, double amount) {
 

@@ -33,6 +33,18 @@ public class AscensionPlayerState {
     private final Set<String> unlockedTitles = new HashSet<>();
     private String activeTitle;
 
+    /** Progreso de cada criterio de contador, con clave {@code logro#índice}. */
+    private final Map<String, Integer> achievementProgress = new HashMap<>();
+    /** Valores distintos ya contados (biomas), con la misma clave. */
+    private final Map<String, Set<String>> achievementDistinct = new HashMap<>();
+    /** Rangos de facción cuyas recompensas ya se entregaron, como {@code facción:rango}. */
+    private final Set<String> claimedFactionRanks = new HashSet<>();
+    private final Set<String> jobEvolutions = new HashSet<>();
+    /** Desbloqueos secretos ya cumplidos. */
+    private final Set<String> unlockedSecrets = new HashSet<>();
+    /** Bonos permanentes de atributo ganados con recompensas ({@code health}, {@code speed}). */
+    private final Map<String, Double> bonusStats = new HashMap<>();
+
     public AscensionPlayerState(UUID uuid) {
         this.uuid = uuid;
     }
@@ -159,6 +171,76 @@ public class AscensionPlayerState {
 
     public void setActiveTitle(String activeTitle) {
         this.activeTitle = activeTitle;
+    }
+
+    public Map<String, Integer> getAchievementProgress() {
+        return achievementProgress;
+    }
+
+    public int getAchievementProgress(String key) {
+        return achievementProgress.getOrDefault(key, 0);
+    }
+
+    public void setAchievementProgress(String key, int value) {
+        achievementProgress.put(key, value);
+    }
+
+    public Map<String, Set<String>> getAchievementDistinct() {
+        return achievementDistinct;
+    }
+
+    /** @return true si {@code value} no se había contado todavía para {@code key} */
+    public boolean addAchievementDistinct(String key, String value) {
+        return achievementDistinct.computeIfAbsent(key, ignored -> new HashSet<>()).add(value);
+    }
+
+    /** Olvida el progreso de un logro (al desbloquearlo ya no hace falta). */
+    public void clearAchievementProgress(String achievementId) {
+        String prefix = achievementId + "#";
+        achievementProgress.keySet().removeIf(key -> key.startsWith(prefix));
+        achievementDistinct.keySet().removeIf(key -> key.startsWith(prefix));
+    }
+
+    public boolean revokeAchievement(String id) {
+        clearAchievementProgress(id);
+        return unlockedAchievements.remove(id);
+    }
+
+    public Set<String> getClaimedFactionRanks() {
+        return claimedFactionRanks;
+    }
+
+    /** @return true si es la primera vez que se reclama */
+    public boolean claimFactionRank(String factionId, String rankId) {
+        return claimedFactionRanks.add(factionId + ":" + rankId);
+    }
+
+    public void setReputation(String factionId, int amount) {
+        reputation.put(factionId, amount);
+    }
+
+    public Set<String> getJobEvolutions() {
+        return jobEvolutions;
+    }
+
+    public boolean addJobEvolution(String id) {
+        return jobEvolutions.add(id);
+    }
+
+    public Set<String> getUnlockedSecrets() {
+        return unlockedSecrets;
+    }
+
+    public boolean unlockSecret(String id) {
+        return unlockedSecrets.add(id);
+    }
+
+    public Map<String, Double> getBonusStats() {
+        return bonusStats;
+    }
+
+    public void addBonusStat(String stat, double amount) {
+        bonusStats.merge(stat, amount, Double::sum);
     }
 
     /**

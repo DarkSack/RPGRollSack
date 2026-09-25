@@ -1,0 +1,9 @@
+id: primeros_pasos
+display-name: "&aPrimeros Pasos"
+description: "Llega al nivel 5"
+criteria:
+  - type: REACH_LEVEL
+    amount: 5
+rewards:
+  money: 100
+  message: "&7Bienvenido de verdad al mundo."

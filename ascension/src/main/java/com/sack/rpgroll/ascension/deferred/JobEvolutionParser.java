@@ -23,7 +23,8 @@ public class JobEvolutionParser implements ContentParser<JobEvolution> {
 
         return new JobEvolution(id, baseJob.toLowerCase(Locale.ROOT), config.getString("display-name", id),
                 config.getInt("required-job-level", 0), config.getStringList("unlocked-recipes"),
-                config.getStringList("unlocked-tools"), config.getStringList("unlocked-quests"));
+                config.getStringList("unlocked-tools"), config.getStringList("unlocked-quests"),
+                com.sack.rpgroll.ascension.reward.RewardsParser.parse(config.getConfigurationSection("rewards")));
     }
 
 }

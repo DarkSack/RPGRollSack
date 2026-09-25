@@ -15,7 +15,11 @@ public class JobEvolutionDefinitionWriter {
 
     public void save(JobEvolution evolution) {
 
-        YamlConfiguration config = new YamlConfiguration();
+        // Se escribe encima del fichero que ya hay, no se rehace: el editor
+        // solo conoce estos campos, y criterios, rangos o recompensas se
+        // escriben a mano en el YAML. Rehacerlo los borraba al renombrar.
+        File file = new File(folder, evolution.id() + ".yml");
+        YamlConfiguration config = file.exists() ? YamlConfiguration.loadConfiguration(file) : new YamlConfiguration();
         config.set("id", evolution.id());
         config.set("base-job", evolution.baseJob());
         config.set("display-name", evolution.displayName());
@@ -26,7 +30,7 @@ public class JobEvolutionDefinitionWriter {
 
         try {
             folder.mkdirs();
-            config.save(new File(folder, evolution.id() + ".yml"));
+            config.save(file);
         } catch (IOException e) {
             throw new RuntimeException("No se pudo guardar la evolución de job " + evolution.id(), e);
         }

@@ -3,9 +3,9 @@ version: 1.0.0
 main: com.sack.rpgroll.ascension.AscensionPlugin
 api-version: "26.1.1"
 author: Sack
-description: Expansión de progresión avanzada (evolución de razas, especialización de clases, talentos, prestigio, afinidades) para RPGRoll
+description: Expansión de progresión avanzada (evolución de razas, especialización de clases, talentos, prestigio, afinidades, logros, facciones, títulos, rangos de oficio, contenido secreto y legado) para RPGRoll
 depend: [RPGRoll]
-softdepend: [RPGRoll-Enchantments, RPGRoll-Quests, PlaceholderAPI]
+softdepend: [RPGRoll-Enchantments, RPGRoll-Quests, RPGRoll-Mobs, RPGRoll-Items, Vault, PlaceholderAPI]
 
 permissions:
   rpgrollascension.admin.*:

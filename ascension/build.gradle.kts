@@ -20,5 +20,14 @@ dependencies {
     // RPGRoll-Quests si está presente (softdepend, se chequea en runtime).
     compileOnly(project(":quests"))
 
+    // Logros y reputación por matar mobs de RPGRoll-Mobs (MobDeathEvent).
+    compileOnly(project(":mobs"))
+
+    // Recompensas en dinero. VaultAPI es compileOnly en :core y no se
+    // propaga, así que hay que repetirlo (igual que en Items y Guilds).
+    compileOnly("com.github.MilkBowl:VaultAPI:1.7.1") {
+        exclude(group = "org.bukkit", module = "bukkit")
+    }
+
     compileOnly("me.clip:placeholderapi:2.11.5")
 }

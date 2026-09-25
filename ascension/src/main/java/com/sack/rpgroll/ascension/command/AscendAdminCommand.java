@@ -1,5 +1,6 @@
 package com.sack.rpgroll.ascension.command;
 
+import com.sack.rpgroll.ascension.engine.ProgressService;
 import com.sack.rpgroll.common.command.Senders;
 
 import com.sack.rpgroll.ascension.AscensionPlugin;
@@ -60,12 +61,14 @@ public class AscendAdminCommand implements CommandExecutor, TabCompleter {
     private final ChatPromptManager chatPromptManager;
     private final LangManager lang;
     private final AscensionPlugin plugin;
+    private final ProgressService progress;
 
-    public AscendAdminCommand(AscensionEngine engine, AchievementManager achievementManager,
+    public AscendAdminCommand(AscensionEngine engine, ProgressService progress, AchievementManager achievementManager,
             TitleManager titleManager, AffinityManager affinityManager, JobEvolutionManager jobEvolutionManager,
             SecretUnlockManager secretUnlockManager, FactionManager factionManager,
             ChatPromptManager chatPromptManager, LangManager lang, AscensionPlugin plugin) {
         this.engine = engine;
+        this.progress = progress;
         this.achievementManager = achievementManager;
         this.titleManager = titleManager;
         this.affinityManager = affinityManager;
@@ -137,7 +140,9 @@ public class AscendAdminCommand implements CommandExecutor, TabCompleter {
 
     private void handleAchievement(CommandSender sender, String[] args) {
 
-        if (args.length < 4 || !args[1].equalsIgnoreCase("grant")) {
+        boolean revoke = args.length >= 2 && args[1].equalsIgnoreCase("revoke");
+
+        if (args.length < 4 || !(args[1].equalsIgnoreCase("grant") || revoke)) {
             lang.send(sender, "admin.achievement_usage");
             return;
         }
@@ -155,7 +160,19 @@ public class AscendAdminCommand implements CommandExecutor, TabCompleter {
 
         AscensionPlayerState state = engine.getStateManager().getOrLoad(target);
 
-        if (state.unlockAchievement(args[3])) {
+        if (revoke) {
+            // Las recompensas ya entregadas no se retiran: no hay forma
+            // limpia de quitar dinero gastado o un ítem ya usado.
+            if (state.revokeAchievement(args[3])) {
+                lang.send(sender, "admin.achievement_revoked", "id", args[3], "player", target.getName());
+            } else {
+                lang.send(sender, "admin.achievement_not_owned", "player", target.getName());
+            }
+            return;
+        }
+
+        // Por el motor, para que entregue las recompensas igual que al ganarlo jugando.
+        if (progress.achievements().unlock(target, achievementManager.get(args[3]).get())) {
             lang.send(sender, "admin.achievement_granted", "id", args[3], "player", target.getName());
         } else {
             lang.send(sender, "admin.achievement_already_has", "player", target.getName());
@@ -180,9 +197,7 @@ public class AscendAdminCommand implements CommandExecutor, TabCompleter {
             return;
         }
 
-        AscensionPlayerState state = engine.getStateManager().getOrLoad(target);
-
-        if (state.unlockTitle(args[3])) {
+        if (progress.titles().unlock(target, args[3])) {
             lang.send(sender, "admin.title_granted", "id", args[3], "player", target.getName());
         } else {
             lang.send(sender, "admin.title_already_has", "player", target.getName());
@@ -215,7 +230,8 @@ public class AscendAdminCommand implements CommandExecutor, TabCompleter {
             return;
         }
 
-        engine.getStateManager().getOrLoad(target).addReputation(args[3], amount);
+        // Por el motor: respeta límites y rivales, y entrega los rangos que cruce.
+        progress.factions().addReputation(target, args[3], amount);
         lang.send(sender, "admin.reputation_added", "amount", amount, "faction", args[3], "player",
                 target.getName());
     }
@@ -236,6 +252,8 @@ public class AscendAdminCommand implements CommandExecutor, TabCompleter {
         secretUnlockManager.reload();
         factionManager.reload();
 
+        Bukkit.getOnlinePlayers().forEach(progress::refresh);
+
         lang.send(sender, "admin.reload_success");
     }
 
@@ -250,7 +268,8 @@ public class AscendAdminCommand implements CommandExecutor, TabCompleter {
 
         if (args.length == 2) {
             return switch (sub) {
-                case "achievement", "title" -> TabCompleteUtil.filter(args[1], List.of("grant"));
+                case "achievement" -> TabCompleteUtil.filter(args[1], List.of("grant", "revoke"));
+                case "title" -> TabCompleteUtil.filter(args[1], List.of("grant"));
                 case "reputation" -> TabCompleteUtil.filter(args[1], List.of("add"));
                 case "browser" -> TabCompleteUtil.filter(args[1], BROWSER_CATEGORIES);
                 default -> List.of();

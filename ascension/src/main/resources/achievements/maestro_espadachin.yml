@@ -1,3 +1,12 @@
 id: maestro_espadachin
 display-name: "&fMaestro Espadachín"
-description: "+3% daño con espadas (bono informativo — la mecánica queda para otro addon la aplique)"
+description: "Derrota 500 criaturas con una espada. Recompensa: +2 de vida para siempre"
+criteria:
+  - type: KILL_ENTITY
+    target: "*"
+    held: "*_SWORD"
+    amount: 500
+rewards:
+  stats:
+    health: 2
+  talent-points: 1

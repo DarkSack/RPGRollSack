@@ -1,2 +1,56 @@
 id: kingdom
 display-name: "&6Reino"
+# Ganar con el Reino resta la cuarta parte con la Orden Arcana.
+rivals: [orden_arcana]
+rival-penalty: 0.25
+min: -5000
+max: 10000
+
+# Qué da reputación (amount = cuánta cada vez; puede ser negativa)
+sources:
+  - type: KILL_ENTITY
+    target: PILLAGER
+    amount: 5
+  - type: KILL_ENTITY
+    target: VINDICATOR
+    amount: 8
+  - type: KILL_ENTITY
+    target: RAVAGER
+    amount: 25
+  - type: KILL_ENTITY
+    target: VILLAGER
+    amount: -50
+  - type: COMPLETE_QUEST
+    target: "*"
+    amount: 10
+
+# Rango = el de umbral más alto que no supera tu reputación.
+# Las recompensas se entregan una sola vez, la primera vez que se entra.
+ranks:
+  proscrito:
+    display-name: "&4Proscrito"
+    threshold: -5000
+  sospechoso:
+    display-name: "&cSospechoso"
+    threshold: -500
+  neutral:
+    display-name: "&7Neutral"
+    threshold: 0
+  aliado:
+    display-name: "&aAliado"
+    threshold: 500
+    rewards:
+      money: 250
+  campeon:
+    display-name: "&6Campeón del Reino"
+    threshold: 2500
+    rewards:
+      title: campeon_del_reino
+      talent-points: 1
+  heroe:
+    display-name: "&e&lHéroe del Reino"
+    threshold: 7500
+    rewards:
+      stats:
+        health: 2
+      broadcast: true

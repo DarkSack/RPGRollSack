@@ -1,2 +1,45 @@
 id: orden_arcana
 display-name: "&5Orden Arcana"
+rivals: [kingdom]
+rival-penalty: 0.25
+min: -5000
+max: 10000
+
+sources:
+  - type: KILL_ENTITY
+    target: WITCH
+    amount: 6
+  - type: KILL_ENTITY
+    target: EVOKER
+    amount: 15
+  - type: BREAK_BLOCK
+    target: AMETHYST_CLUSTER
+    amount: 2
+  - type: CRAFT_ITEM
+    target: ENCHANTING_TABLE
+    amount: 40
+
+ranks:
+  hereje:
+    display-name: "&4Hereje"
+    threshold: -5000
+  desconocido:
+    display-name: "&7Desconocido"
+    threshold: 0
+  iniciado:
+    display-name: "&dIniciado"
+    threshold: 500
+    rewards:
+      talent-points: 1
+  adepto:
+    display-name: "&5Adepto"
+    threshold: 2500
+    rewards:
+      stats:
+        speed: 1
+  gran_maestro:
+    display-name: "&5&lGran Maestro"
+    threshold: 7500
+    rewards:
+      title: archimago_honorario
+      broadcast: true

@@ -33,7 +33,7 @@ public class SecretUnlockParser implements ContentParser<SecretUnlockRequirement
         AscensionRequirements requirements = AscensionRequirementsParser.parse(
                 config.getConfigurationSection("requirements"));
 
-        return new SecretUnlockRequirement(id, targetType, targetId, requirements);
+        return new SecretUnlockRequirement(id, targetType, targetId, requirements, config.getString("hint"));
     }
 
 }

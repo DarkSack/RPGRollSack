@@ -1,0 +1,10 @@
+id: cazador_de_dragones
+display-name: "&4Cazador de Dragones"
+description: "Derrota al dragón del End"
+criteria:
+  - type: KILL_ENTITY
+    target: ENDER_DRAGON
+    amount: 1
+rewards:
+  title: el_elegido
+  broadcast: true

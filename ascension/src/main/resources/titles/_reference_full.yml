@@ -1,0 +1,18 @@
+# ============================================================================
+# TÍTULO DE REFERENCIA — no se carga (guion bajo).
+# Un título se gana: como recompensa (logros, rangos de facción, rangos de
+# oficio), a mano con /ascendadmin title grant, o solo, si tiene requirements.
+# El jugador elige cuál lleva con /ascend title <id>, y se ve con el
+# placeholder %rpgrollascension_title% (el nombre, con sus colores).
+# ============================================================================
+id: reference_full_example
+display-name: "&6Nombre visible"
+
+# Opcional. Sin este bloque, el título no se desbloquea solo.
+requirements:
+  level: 50
+  prestige: 1
+  trait: vision_nocturna
+  completed-quests: [tutorial]
+  reputation:
+    kingdom: 1000

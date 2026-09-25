@@ -1,5 +1,17 @@
 package com.sack.rpgroll.ascension;
 
+import com.sack.rpgroll.ascension.engine.AchievementEngine;
+import com.sack.rpgroll.ascension.engine.FactionEngine;
+import com.sack.rpgroll.ascension.engine.JobEvolutionEngine;
+import com.sack.rpgroll.ascension.engine.ProgressService;
+import com.sack.rpgroll.ascension.engine.ProgressTask;
+import com.sack.rpgroll.ascension.engine.RewardService;
+import com.sack.rpgroll.ascension.engine.SecretEngine;
+import com.sack.rpgroll.ascension.engine.TitleEngine;
+import com.sack.rpgroll.ascension.listener.MobProgressListener;
+import com.sack.rpgroll.ascension.listener.ProgressListener;
+import com.sack.rpgroll.ascension.listener.QuestProgressListener;
+import com.sack.rpgroll.ascension.listener.SecretSelectionListener;
 import com.sack.rpgroll.licensing.LicenseGate;
 import com.sack.rpgroll.license.identity.LicenseIdentity;
 
@@ -47,6 +59,7 @@ public class AscensionPlugin extends JavaPlugin {
     private TitleManager titleManager;
     private LegacyManager legacyManager;
     private AscensionEngine engine;
+    private ProgressService progressService;
     private LangManager langManager;
 
     @Override
@@ -94,23 +107,60 @@ public class AscensionPlugin extends JavaPlugin {
         engine = new AscensionEngine(this, stateManager, evolutionManager, specializationManager, prestigeManager,
                 legacyManager, requirementChecker, langManager);
 
+        RewardService rewardService = new RewardService(this, stateManager, langManager);
+        TitleEngine titleEngine = new TitleEngine(titleManager, stateManager, requirementChecker, langManager);
+        FactionEngine factionEngine = new FactionEngine(factionManager, stateManager, rewardService, langManager);
+        rewardService.wire(titleEngine, factionEngine, engine::reapplyBonuses);
+        AchievementEngine achievementEngine = new AchievementEngine(achievementManager, stateManager, rewardService,
+                langManager);
+        JobEvolutionEngine jobEvolutionEngine = new JobEvolutionEngine(this, jobEvolutionManager, stateManager,
+                rewardService, langManager);
+        SecretEngine secretEngine = new SecretEngine(secretUnlockManager, stateManager, requirementChecker,
+                langManager);
+        engine.setSecretEngine(secretEngine);
+
+        progressService = new ProgressService(achievementEngine, factionEngine, titleEngine, jobEvolutionEngine,
+                secretEngine);
+
         ChatPromptManager chatPromptManager = new ChatPromptManager(this, langManager);
         getServer().getPluginManager().registerEvents(chatPromptManager, this);
 
         getServer().getPluginManager().registerEvents(new PlayerSessionListener(engine), this);
         getServer().getPluginManager().registerEvents(
                 new AffinityCombatListener(affinityManager, stateManager), this);
+        getServer().getPluginManager().registerEvents(new ProgressListener(this, progressService), this);
+        getServer().getPluginManager().registerEvents(new SecretSelectionListener(secretEngine), this);
 
-        registerCommand("ascend", new AscendCommand(engine, factionManager, titleManager, langManager));
-        registerCommand("ascendadmin", new AscendAdminCommand(engine, achievementManager, titleManager,
-                affinityManager, jobEvolutionManager, secretUnlockManager, factionManager, chatPromptManager,
-                langManager, this));
+        // Estos dos referencian clases de otros addons: solo si están
+        // habilitados, o Ascension no arrancaría sin ellos.
+        if (getServer().getPluginManager().isPluginEnabled("RPGRoll-Quests")) {
+            getServer().getPluginManager().registerEvents(new QuestProgressListener(progressService), this);
+        }
+        if (getServer().getPluginManager().isPluginEnabled("RPGRoll-Mobs")) {
+            getServer().getPluginManager().registerEvents(new MobProgressListener(progressService), this);
+        }
+
+        getServer().getScheduler().runTaskTimer(this, new ProgressTask(progressService, stateManager),
+                ProgressTask.PERIOD, ProgressTask.PERIOD);
+
+        // Tras un /reload hay jugadores dentro que no pasan por el join.
+        getServer().getScheduler().runTaskLater(this,
+                () -> getServer().getOnlinePlayers().forEach(progressService::refresh), 40L);
+
+        registerCommand("ascend", new AscendCommand(engine, progressService, factionManager, titleManager,
+                langManager));
+        registerCommand("ascendadmin", new AscendAdminCommand(engine, progressService, achievementManager,
+                titleManager, affinityManager, jobEvolutionManager, secretUnlockManager, factionManager,
+                chatPromptManager, langManager, this));
 
         registerPlaceholders();
 
         getLogger().info("✔ RPGRoll-Ascension habilitado. " + evolutionManager.count() + " evolución(es), "
                 + specializationManager.count() + " especialización(es), " + affinityManager.count()
-                + " afinidad(es), " + prestigeManager.count() + " rango(s) de prestigio.");
+                + " afinidad(es), " + prestigeManager.count() + " rango(s) de prestigio, "
+                + achievementManager.count() + " logro(s), " + factionManager.count() + " facción(es), "
+                + titleManager.count() + " título(s), " + jobEvolutionManager.count() + " rango(s) de oficio, "
+                + secretUnlockManager.count() + " secreto(s).");
     }
 
     private void registerPlaceholders() {
@@ -119,7 +169,7 @@ public class AscensionPlugin extends JavaPlugin {
             return;
         }
 
-        new AscensionPlaceholders(this, engine).register();
+        new AscensionPlaceholders(this, engine, progressService, titleManager, factionManager).register();
         getLogger().info("✔ Placeholders registrados en PlaceholderAPI (%rpgrollascension_...%)");
     }
 
@@ -158,6 +208,11 @@ public class AscensionPlugin extends JavaPlugin {
 
     public AscensionEngine getEngine() {
         return engine;
+    }
+
+    /** Logros, facciones, títulos, rangos de oficio y secretos. */
+    public ProgressService getProgressService() {
+        return progressService;
     }
 
     public RaceEvolutionManager getEvolutionManager() {

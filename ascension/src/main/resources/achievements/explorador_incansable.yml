@@ -1,3 +1,11 @@
 id: explorador_incansable
 display-name: "&aExplorador Incansable"
-description: "+5% velocidad de descubrimiento (bono informativo — la mecánica queda para otro addon la aplique)"
+description: "Pisa 25 biomas distintos. Recompensa: +2% de velocidad para siempre"
+criteria:
+  # Cada bioma cuenta una sola vez, también los de datapacks (Terralith…).
+  - type: VISIT_BIOME
+    amount: 25
+rewards:
+  stats:
+    speed: 2
+  money: 500

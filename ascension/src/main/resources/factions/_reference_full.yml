@@ -1,0 +1,44 @@
+# ============================================================================
+# FACCIÓN DE REFERENCIA — no se carga (guion bajo). Ver también los ejemplos.
+# ============================================================================
+id: reference_full_example
+display-name: "&6Nombre visible"
+
+# Facciones que pierden reputación cuando se gana con esta, y qué fracción
+# de lo ganado (0.5 = la mitad). La pérdida no se contagia a las rivales de
+# las rivales.
+rivals: [otra_faccion]
+rival-penalty: 0.5
+
+# Límites de la reputación
+min: -10000
+max: 10000
+
+# Qué da (o quita) reputación. Mismos tipos que los contadores de los
+# logros: KILL_ENTITY, KILL_MOB, KILL_PLAYER, BREAK_BLOCK, PLACE_BLOCK,
+# FISH, CRAFT_ITEM, COMPLETE_QUEST, VISIT_BIOME. amount = cuánta cada vez.
+sources:
+  - type: KILL_ENTITY
+    target: ZOMBIE
+    held: "*_SWORD"   # opcional
+    amount: 2
+  - type: COMPLETE_QUEST
+    target: "*"
+    amount: 10
+
+# Rangos: el de umbral más alto que no supera la reputación. Subiendo se
+# entregan todos los que se cruzan; bajando, el rango en el que se cae.
+# Cada rango entrega sus recompensas una sola vez por jugador.
+ranks:
+  enemigo:
+    display-name: "&cEnemigo"
+    threshold: -10000
+  neutral:
+    display-name: "&7Neutral"
+    threshold: 0
+  amigo:
+    display-name: "&aAmigo"
+    threshold: 1000
+    rewards:          # mismo bloque que los logros
+      money: 500
+      title: el_elegido

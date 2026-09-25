@@ -8,6 +8,36 @@ general:
 
 # /ascend command (player)
 command:
+  reputation_next: "&7   Next: &f{rank} &7({missing} to go)"
+  info_achievements: "&eAchievements: &f{count}/{total}"
+  any_target: "anything"
+  achievements_empty: "&7No achievements configured."
+  achievements_header: "&6&lAchievements &7({unlocked}/{total})"
+  achievements_hidden: "&8 ✦ ???"
+  achievements_unlocked: "&a ✔ {name} &8— &7{description}"
+  achievements_locked: "&7 ✦ {name} &8— &7{description}"
+  achievements_criterion: "&8     • &7{type} &f{target}&7: &e{current}&7/&e{required}"
+  titles_empty: "&7You have no titles yet. Achievements and faction reputation grant them."
+  titles_header: "&6&lYour titles &7(/ascend title <id>)"
+  titles_entry: "&7 • {name} &8({id})"
+  titles_active_entry: "&a ▶ {name} &8({id}) &a— active"
+  secrets_empty: "&7This server has no secret content."
+  secrets_header: "&5&lSecrets"
+  secrets_unlocked: "&d ✔ {type}: &f{name}"
+  secrets_claimable: "&d ✔ {type}: &f{name} &7— &e/ascend secret claim {id}"
+  secrets_hint: "&8 ✦ Hidden {type}: &7{hint}"
+  secrets_locked: "&8 ✦ Hidden {type}"
+  secret_usage: "&cUsage: /ascend secret claim <id>"
+  secret_claimed: "&d✔ Adopted. Your stats have been recalculated."
+  secret_not_found: "&cThere's no secret with id: {id}"
+  secret_not_claimable: "&cThat secret isn't claimed: it's granted or unlocked on its own."
+  secret_locked: "&cYou don't meet that secret's requirements yet."
+  secret_failed: "&cIt couldn't be applied. Tell an administrator."
+  jobs_empty: "&7No job ranks configured."
+  jobs_header: "&6&lJob ranks"
+  jobs_job: "&e {job}"
+  jobs_evolution_owned: "&a   ✔ {name} &8(level {level})"
+  jobs_evolution_pending: "&7   ✦ {name} &8(level {level})"
   usage: |-
     &cUsage: /ascend
     &7 • &brace
@@ -18,6 +48,10 @@ command:
     &7 • &9reputation
     &7 • &ctitle
     &7 • &flegacy
+    &7 • &6achievements
+    &7 • &etitles
+    &7 • &bjobs
+    &7 • &dsecrets
     &7 • &5info
   race_usage: "&cUsage: /ascend race <id>"
   race_not_found: "&cThere's no evolution with id: {id}"
@@ -38,7 +72,7 @@ command:
   affinity_entry: "&f• {id}: {level} (xp: {xp})"
   reputation_empty: "&7No factions are defined."
   reputation_header: "&6Your reputation:"
-  reputation_entry: "&f• {faction}: {amount}"
+  reputation_entry: "&f• {faction}: &e{amount} &7({rank})"
   title_usage: |-
     &cUsage: /ascend title
     &7 • &bid
@@ -60,6 +94,8 @@ command:
 
 # /ascendadmin command
 admin:
+  achievement_revoked: "&a✔ Achievement {id} revoked from {player}. Rewards already given are kept."
+  achievement_not_owned: "&c{player} doesn't have that achievement."
   no_permission: "&cYou don't have permission to use this command."
   usage: |-
     &cUsage: /ascendadmin
@@ -70,7 +106,7 @@ admin:
     &7 • &6reload
   browser_player_only: "&cOnly a player can use the visual editor."
   browser_invalid_option: "&cInvalid option. Use: evolution, specialization, prestige, affinity, jobevolution, secret, faction, achievement, title or legacy"
-  achievement_usage: "&cUsage: /ascendadmin achievement grant <player> <id>"
+  achievement_usage: "&cUsage: /ascendadmin achievement <grant|revoke> <player> <id>"
   achievement_player_not_found: "&cPlayer not found: {player}"
   achievement_not_found: "&cThere's no achievement with id: {id}"
   achievement_granted: "&a✔ Achievement '{id}' granted to {player}"
@@ -298,3 +334,40 @@ gui:
     prestige_label: "&eRequired prestige: {prestige}"
     bonus_label: "&ePermanent XP bonus: {percent}%"
     stat_points_label: "&eBonus stat points: {points}"
+
+progress:
+  achievement_unlocked: "&6✦ Achievement unlocked: &f{name}"
+  broadcast: "&6✦ &f{player} &7earned &f{name}"
+  title_unlocked: "&e✦ New title: &f{name} &7— /ascend title {id}"
+  rank_up: "&a▲ You're now &f{rank} &awith &f{faction}"
+  rank_down: "&c▼ You dropped to &f{rank} &cwith &f{faction}"
+  job_evolution: "&b✦ Your job evolves: &f{name}"
+  secret_trait: "&d✦ A hidden trait awakens in you: &f{name}"
+  secret_discovered: "&d✦ You unlocked something secret — {type}: &f{name}"
+  secret_claim_hint: "&7   Adopt it with &e/ascend secret claim {id}"
+  reward_money: "&a+{amount}"
+  reward_experience: "&a+{amount} experience"
+  reward_talent_points: "&a+{amount} talent point(s)"
+
+secret_type:
+  race: "Race"
+  class: "Class"
+  trait: "Trait"
+  specialization: "Specialization"
+
+trigger:
+  kill_entity: "Kill"
+  kill_mob: "Defeat"
+  kill_player: "Defeat players"
+  break_block: "Break"
+  place_block: "Place"
+  fish: "Catch"
+  craft_item: "Craft"
+  complete_quest: "Complete the quest"
+  visit_biome: "Visit different biomes"
+  reach_level: "Reach level"
+  job_level: "Job level"
+  prestige: "Prestiges"
+  legacy: "Legacies"
+  reputation: "Reputation with"
+  achievements: "Achievements"

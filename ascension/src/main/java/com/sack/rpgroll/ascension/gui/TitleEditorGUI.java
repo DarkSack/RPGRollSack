@@ -63,7 +63,7 @@ public class TitleEditorGUI extends InventoryGUI {
 
         if (slot == NAME_SLOT) {
             chatPromptManager.prompt(player, "gui.title.prompt_new_name",
-                    value -> replace(new Title(current.id(), value)));
+                    value -> replace(current.withDisplayName(value)));
             return;
         }
 

@@ -57,6 +57,22 @@ public class AscensionPlayerStateStore {
         state.getUnlockedAchievements().addAll(config.getStringList("unlocked-achievements"));
         state.getUnlockedTitles().addAll(config.getStringList("unlocked-titles"));
         state.setActiveTitle(config.getString("active-title"));
+        loadIntMap(config, "achievement-progress", state::setAchievementProgress);
+        var distinct = config.getConfigurationSection("achievement-distinct");
+        if (distinct != null) {
+            for (String key : distinct.getKeys(false)) {
+                distinct.getStringList(key).forEach(value -> state.addAchievementDistinct(key, value));
+            }
+        }
+        state.getClaimedFactionRanks().addAll(config.getStringList("claimed-faction-ranks"));
+        state.getJobEvolutions().addAll(config.getStringList("job-evolutions"));
+        state.getUnlockedSecrets().addAll(config.getStringList("unlocked-secrets"));
+        var bonus = config.getConfigurationSection("bonus-stats");
+        if (bonus != null) {
+            for (String key : bonus.getKeys(false)) {
+                state.addBonusStat(key, bonus.getDouble(key));
+            }
+        }
 
         return state;
     }
@@ -100,6 +116,15 @@ public class AscensionPlayerStateStore {
         if (state.getActiveTitle() != null) {
             config.set("active-title", state.getActiveTitle());
         }
+        // Las claves "logro#índice" llevan '#', que YAML admite como clave de
+        // mapa sin problema, pero no '.': por eso se separa con '#'.
+        state.getAchievementProgress().forEach((key, value) -> config.set("achievement-progress." + key, value));
+        state.getAchievementDistinct().forEach((key, values) ->
+                config.set("achievement-distinct." + key, values.stream().sorted().toList()));
+        config.set("claimed-faction-ranks", state.getClaimedFactionRanks().stream().sorted().toList());
+        config.set("job-evolutions", state.getJobEvolutions().stream().sorted().toList());
+        config.set("unlocked-secrets", state.getUnlockedSecrets().stream().sorted().toList());
+        state.getBonusStats().forEach((key, value) -> config.set("bonus-stats." + key, value));
 
         try {
             config.save(new File(folder, state.uuid() + ".yml"));

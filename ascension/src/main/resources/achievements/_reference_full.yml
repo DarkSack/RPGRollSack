@@ -1,0 +1,76 @@
+# ============================================================================
+# LOGRO DE REFERENCIA — documenta todos los campos. El guion bajo del nombre
+# hace que no se cargue: copia lo que necesites a otro fichero.
+# ============================================================================
+id: reference_full_example
+display-name: "&6Nombre visible"
+description: "Lo que se ve en /ascend achievements"
+
+# true = no aparece en la lista hasta desbloquearlo
+hidden: false
+
+# Se desbloquea cuando se cumplen TODOS. Sin criterios, solo se da a mano
+# con /ascendadmin achievement grant <jugador> <id>.
+criteria:
+  # --- Contadores: avanzan con cada evento ---
+  # target y held admiten comodín: ZOMBIE, *_GOLEM, * (cualquiera)
+  - type: KILL_ENTITY      # tipo de entidad
+    target: ZOMBIE
+    held: "*_SWORD"        # opcional: con qué hay que tenerlo en la mano
+    amount: 100
+  - type: KILL_MOB         # mob de RPGRoll-Mobs, por id
+    target: ash_colossus
+    amount: 1
+  - type: KILL_PLAYER
+    amount: 10
+  - type: BREAK_BLOCK      # los bloques que puso el propio jugador no cuentan
+    target: "*_ORE"
+    amount: 500
+  - type: PLACE_BLOCK
+    target: "*"
+    amount: 1000
+  - type: FISH             # material de lo pescado
+    target: "*"
+    amount: 50
+  - type: CRAFT_ITEM       # una vez por clic, también con shift-clic
+    target: DIAMOND_SWORD
+    amount: 1
+  - type: COMPLETE_QUEST   # quest de RPGRoll-Quests, por id
+    target: tutorial
+    amount: 1
+  - type: VISIT_BIOME      # biomas distintos, cada uno cuenta una vez
+    amount: 20
+  # --- Estado: se comparan con el jugador ---
+  - type: REACH_LEVEL
+    amount: 30
+  - type: JOB_LEVEL
+    key: minero
+    amount: 20
+  - type: PRESTIGE
+    amount: 1
+  - type: LEGACY
+    amount: 1
+  - type: REPUTATION
+    key: kingdom
+    amount: 2500
+  - type: ACHIEVEMENTS     # logros desbloqueados
+    amount: 10
+
+# Todo opcional. Es el mismo bloque que usan los rangos de facción y los
+# rangos de oficio.
+rewards:
+  money: 1000              # por Vault
+  experience: 5000         # experiencia de RPGRoll
+  talent-points: 1
+  title: el_elegido        # desbloquea este título
+  reputation:              # puede ser negativa
+    kingdom: 250
+  stats:                   # bono PERMANENTE de atributo (sobrevive al legado)
+    health: 4              # vida
+    speed: 3               # velocidad, en %
+  items:                   # ids de RPGRoll-Items
+    - healing_potion
+  commands:                # por consola; {player} es el jugador
+    - "give {player} diamond 2"
+  message: "&7Mensaje solo para el jugador"
+  broadcast: true          # anunciarlo a todo el servidor

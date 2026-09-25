@@ -1,0 +1,9 @@
+id: royal_miner
+base-job: minero
+display-name: "&6Minero Real"
+required-job-level: 50
+unlocked-recipes:
+  - royal_drill
+rewards:
+  money: 2000
+  title: veterano
