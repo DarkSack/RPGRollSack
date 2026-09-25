@@ -257,6 +257,15 @@ public class CrateAdminCommand implements CommandExecutor, TabCompleter {
 
         crateManager.reload();
 
+        // También las ubicaciones: antes solo se leían al arrancar, así que
+        // un locations.yml editado a mano no entraba hasta reiniciar, y el
+        // mensaje decía "0 ubicaciones" con el fichero lleno. Los hologramas
+        // de las que ya no estén se quitan.
+        List<String> previous = placedCrateManager.getAll().stream().map(PlacedCrate::hologramName).toList();
+        placedCrateManager.load();
+        List<String> current = placedCrateManager.getAll().stream().map(PlacedCrate::hologramName).toList();
+        previous.stream().filter(name -> !current.contains(name)).forEach(hologramsHook::remove);
+
         for (PlacedCrate placed : placedCrateManager.getAll()) {
 
             Optional<Crate> crateOpt = crateManager.get(placed.crateId());
