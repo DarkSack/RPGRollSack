@@ -44,6 +44,8 @@ import java.util.List;
 
 public class AscensionPlugin extends JavaPlugin {
 
+    private static final String EXP_BONUS_SOURCE = "rpgroll-ascension:prestige";
+
     private static final List<String> DIRECTORIES = List.of(
             "evolutions", "specializations", "prestige", "affinities",
             "job-evolutions", "secrets", "factions", "achievements", "titles", "legacy");
@@ -106,6 +108,10 @@ public class AscensionPlugin extends JavaPlugin {
 
         engine = new AscensionEngine(this, stateManager, evolutionManager, specializationManager, prestigeManager,
                 legacyManager, requirementChecker, langManager);
+
+        // El bono de prestigio solo se mostraba; así entra en la experiencia que se gana.
+        com.sack.rpgroll.api.RPGRollAPI.get().getExperienceBonusService()
+                .registerSource(EXP_BONUS_SOURCE, engine::getExperienceBonusPercent);
 
         RewardService rewardService = new RewardService(this, stateManager, langManager);
         TitleEngine titleEngine = new TitleEngine(titleManager, stateManager, requirementChecker, langManager);
@@ -175,6 +181,9 @@ public class AscensionPlugin extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        if (com.sack.rpgroll.api.RPGRollAPI.isReady()) {
+            com.sack.rpgroll.api.RPGRollAPI.get().getExperienceBonusService().unregisterSource(EXP_BONUS_SOURCE);
+        }
         if (engine != null) {
             engine.getStateManager().saveAll();
         }

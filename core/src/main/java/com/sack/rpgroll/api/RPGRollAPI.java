@@ -147,6 +147,11 @@ public final class RPGRollAPI {
         return plugin.getBootstrap().getServices().get(com.sack.rpgroll.gameplay.job.PlacedBlockTracker.class);
     }
 
+    /** Bonos de experiencia de personaje: permisos de rango y fuentes de los addons. */
+    public ExperienceBonusService getExperienceBonusService() {
+        return plugin.getBootstrap().getServices().get(ExperienceBonusService.class);
+    }
+
     // ============ Integraciones ============
 
     public VaultEconomyProvider getEconomyProvider() {

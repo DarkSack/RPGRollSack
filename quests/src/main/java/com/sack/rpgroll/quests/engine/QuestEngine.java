@@ -407,7 +407,8 @@ public class QuestEngine {
 
             RPGRollAPI api = RPGRollAPI.get();
             api.getPlayer(player.getUniqueId()).ifPresent(rpgPlayer -> {
-                RPGPlayer updated = rpgPlayer.addExperience(rewards.experience());
+                int experience = api.getExperienceBonusService().boost(player, rewards.experience());
+                RPGPlayer updated = rpgPlayer.addExperience(experience);
                 api.getPlayerManager().savePlayer(updated);
             });
         }

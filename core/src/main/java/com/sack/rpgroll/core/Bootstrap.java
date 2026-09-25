@@ -184,6 +184,9 @@ public class Bootstrap {
         services.register(PlayerManager.class, playerManager);
         plugin.getLogger().info("✔ PlayerManager registrado");
 
+        services.register(com.sack.rpgroll.api.ExperienceBonusService.class,
+                new com.sack.rpgroll.api.ExperienceBonusService());
+
         // 4. SkillManager - Carga de habilidades
         SkillManager skillManager = new SkillManager(plugin, configManager.getYamlLoader());
         skillManager.initialize();
@@ -402,7 +405,7 @@ public class Bootstrap {
 
         // ===== Listeners de gameplay (XP, skills, etc) =====
         MobKillListener mobKillListener = new MobKillListener(playerManager, configManager, levelUpRewardsConfig,
-                langManager);
+                langManager, services.get(com.sack.rpgroll.api.ExperienceBonusService.class));
         Bukkit.getPluginManager().registerEvents(mobKillListener, plugin);
 
         LevelUpListener levelUpListener = new LevelUpListener(langManager);

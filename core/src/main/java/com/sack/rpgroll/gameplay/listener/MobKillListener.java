@@ -1,5 +1,6 @@
 package com.sack.rpgroll.gameplay.listener;
 
+import com.sack.rpgroll.api.ExperienceBonusService;
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.config.ConfigManager;
 import com.sack.rpgroll.gameplay.levelup.LevelUpRewardsConfig;
@@ -25,13 +26,15 @@ public class MobKillListener implements Listener {
     private final ConfigManager configManager;
     private final LevelUpRewardsConfig levelUpRewardsConfig;
     private final LangManager lang;
+    private final ExperienceBonusService experienceBonus;
 
     public MobKillListener(PlayerManager playerManager, ConfigManager configManager,
-            LevelUpRewardsConfig levelUpRewardsConfig, LangManager lang) {
+            LevelUpRewardsConfig levelUpRewardsConfig, LangManager lang, ExperienceBonusService experienceBonus) {
         this.playerManager = playerManager;
         this.configManager = configManager;
         this.levelUpRewardsConfig = levelUpRewardsConfig;
         this.lang = lang;
+        this.experienceBonus = experienceBonus;
     }
 
     @EventHandler
@@ -51,6 +54,8 @@ public class MobKillListener implements Listener {
         if (xpReward <= 0) {
             return;
         }
+
+        xpReward = experienceBonus.boost(killer, xpReward);
 
         try {
 
