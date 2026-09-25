@@ -6,7 +6,7 @@ Un framework RPG modular para **Minecraft Java Edition 26.1.1 (Paper)** diseñad
 
 Ya no es un único plugin: es un **ecosistema de 1 core + 23 addons independientes**, cada uno instalable por separado — incluye un asset pipeline de resource packs (`SackResourcePack`) que no depende de ningún otro módulo.
 
-📖 **Documentación completa:** [rpg-roll-docs.vercel.app](https://rpg-roll-docs.vercel.app/)
+📖 **Documentación completa:** [docs.sackito.online](https://docs.sackito.online/)
 
 ☕ **¿Te gusta el proyecto?** Puedes apoyarlo con una donación en [Ko-fi](https://ko-fi.com/sackito).
 
