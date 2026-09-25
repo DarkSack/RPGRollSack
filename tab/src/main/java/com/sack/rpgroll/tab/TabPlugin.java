@@ -133,6 +133,7 @@ public class TabPlugin extends JavaPlugin {
         nametagManager = new NametagManager(this);
         nametagManager.initialize();
         nametagEngine = new NametagEngine(this, placeholderEngine);
+        nametagEngine.start();
 
         belowNameManager = new BelowNameManager(this);
         belowNameManager.initialize();
@@ -178,6 +179,10 @@ public class TabPlugin extends JavaPlugin {
 
         if (animationEngine != null) {
             animationEngine.stop();
+        }
+
+        if (nametagEngine != null) {
+            nametagEngine.stop();
         }
     }
 
