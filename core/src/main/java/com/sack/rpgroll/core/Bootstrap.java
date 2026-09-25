@@ -128,6 +128,12 @@ public class Bootstrap {
 
         }
 
+        // Las escrituras de bloques colocados van en su propio hilo: que
+        // terminen antes de cerrar la base de datos.
+        if (services.contains(PlacedBlockTracker.class)) {
+            services.get(PlacedBlockTracker.class).shutdown();
+        }
+
         // Cerrar base de datos
         if (services.contains(DatabaseManager.class)) {
 
@@ -224,6 +230,7 @@ public class Bootstrap {
 
         // 9. PlacedBlockTracker - Sistema anti-farm para minero
         PlacedBlockTracker placedBlockTracker = new PlacedBlockTracker(plugin, dbManager);
+        placedBlockTracker.load();
         services.register(PlacedBlockTracker.class, placedBlockTracker);
         plugin.getLogger().info("✔ PlacedBlockTracker registrado");
 
@@ -243,7 +250,8 @@ public class Bootstrap {
         ExplorerProgressStorage explorerProgressStorage = new ExplorerProgressStorage(plugin, dbManager);
         services.register(ExplorerProgressStorage.class, explorerProgressStorage);
 
-        PlacedBlockCleanupTask cleanupTask = new PlacedBlockCleanupTask(plugin, dbManager);
+        PlacedBlockCleanupTask cleanupTask = new PlacedBlockCleanupTask(plugin, dbManager,
+                services.get(PlacedBlockTracker.class));
         cleanupTask.start();
         services.register(PlacedBlockCleanupTask.class, cleanupTask);
 

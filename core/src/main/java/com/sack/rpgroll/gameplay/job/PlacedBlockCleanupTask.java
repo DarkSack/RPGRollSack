@@ -20,21 +20,26 @@ import java.sql.Statement;
 public class PlacedBlockCleanupTask extends BukkitRunnable {
 
     private static final long PERIOD_TICKS = 20L * 60 * 60 * 6; // cada 6 horas
-    private static final int RETENTION_DAYS = 7;
+    static final int RETENTION_DAYS = 7;
 
     private final RPGRoll plugin;
     private final DatabaseManager databaseManager;
+    private final PlacedBlockTracker tracker;
 
-    public PlacedBlockCleanupTask(RPGRoll plugin, DatabaseManager databaseManager) {
+    public PlacedBlockCleanupTask(RPGRoll plugin, DatabaseManager databaseManager, PlacedBlockTracker tracker) {
         this.plugin = plugin;
         this.databaseManager = databaseManager;
+        this.tracker = tracker;
     }
 
     @Override
     public void run() {
 
-        String sql = "DELETE FROM placed_blocks WHERE placed_at < (unixepoch('now') - " + (RETENTION_DAYS * 86400)
-                + ")";
+        long cutoff = System.currentTimeMillis() / 1000 - RETENTION_DAYS * 86400L;
+        String sql = "DELETE FROM placed_blocks WHERE placed_at < " + cutoff;
+
+        // La copia en memoria del tracker olvida lo mismo que se borra aquí.
+        tracker.forgetOlderThan(cutoff);
 
         try {
             Connection connection = databaseManager.getConnection();
