@@ -53,6 +53,11 @@ public class NaturalSpawnListener implements Listener {
 
         MobDefinition chosen = pickWeighted(candidates);
 
+        // Si no toca sustituir, se queda la criatura vanilla.
+        if (java.util.concurrent.ThreadLocalRandom.current().nextDouble(100) >= chosen.spawnRules().replaceChance()) {
+            return;
+        }
+
         event.setCancelled(true);
         engine.spawnMob(chosen, event.getLocation());
     }

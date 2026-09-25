@@ -1,5 +1,7 @@
 package com.sack.rpgroll.quests.listener;
 
+import org.bukkit.event.EventPriority;
+import com.sack.rpgroll.api.RPGRollAPI;
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.quests.api.NpcTalkEvent;
 import com.sack.rpgroll.quests.core.Quest;
@@ -62,10 +64,27 @@ public class QuestObjectiveListener implements Listener {
         engine.progressObjective(killer, "KILL_ENTITY", Map.of("entity", event.getEntityType().name()), 1);
     }
 
-    @EventHandler(ignoreCancelled = true)
+    /**
+     * A HIGHEST: después de las protecciones (un bloque que no se pudo romper
+     * no cuenta) y antes del listener del minero, que a MONITOR borra la
+     * marca de "lo puso un jugador". Los bloques que puso el propio jugador
+     * no cuentan: si no, poner y quitar el mismo bloque completaba la quest.
+     */
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
-        engine.progressObjective(event.getPlayer(), "BREAK_BLOCK",
-                Map.of("material", event.getBlock().getType().name()), 1);
+
+        Map<String, String> params = Map.of("material", event.getBlock().getType().name());
+
+        // La consulta del bloque colocado va a SQLite: solo si hay una quest esperándolo.
+        if (!engine.isWaitingFor(event.getPlayer(), "BREAK_BLOCK", params)) {
+            return;
+        }
+
+        if (RPGRollAPI.isReady() && RPGRollAPI.get().getPlacedBlockTracker().isPlayerPlaced(event.getBlock())) {
+            return;
+        }
+
+        engine.progressObjective(event.getPlayer(), "BREAK_BLOCK", params, 1);
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -78,6 +97,12 @@ public class QuestObjectiveListener implements Listener {
     public void onPickup(EntityPickupItemEvent event) {
 
         if (!(event.getEntity() instanceof Player player)) {
+            return;
+        }
+
+        // Lo que tiró un jugador no cuenta: tirar y recoger lo mismo
+        // completaba cualquier quest de recolección.
+        if (event.getItem().getThrower() != null) {
             return;
         }
 

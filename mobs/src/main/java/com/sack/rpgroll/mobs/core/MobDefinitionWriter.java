@@ -282,6 +282,7 @@ public class MobDefinitionWriter {
         config.set("spawn-rules.min-distance-from-players", rules.minDistanceFromPlayers());
         config.set("spawn-rules.natural-spawn", rules.naturalSpawn());
         config.set("spawn-rules.spawn-weight", rules.spawnWeight());
+        config.set("spawn-rules.chance", rules.replaceChance());
     }
 
     private List<Map<String, Object>> skillsToRaw(List<MobSkill> skills) {

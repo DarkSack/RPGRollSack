@@ -221,6 +221,37 @@ public class QuestEngine {
         }
     }
 
+    /**
+     * ¿Tiene el jugador algún objetivo activo, sin completar, de este tipo y
+     * con estos parámetros? Para ahorrarse trabajo caro antes de avanzar
+     * objetivos (consultar la base de datos en cada bloque roto).
+     */
+    public boolean isWaitingFor(Player player, String type, Map<String, String> matchParams) {
+
+        QuestPlayerState state = stateManager.getOrLoad(player);
+
+        for (ActiveQuestProgress progress : state.allActive().values()) {
+
+            Optional<QuestStage> stage = questManager.get(progress.questId())
+                    .flatMap(quest -> quest.stageAt(progress.stageIndex()));
+
+            if (stage.isEmpty()) {
+                continue;
+            }
+
+            List<QuestObjective> objectives = stage.get().objectives();
+            for (int i = 0; i < objectives.size(); i++) {
+                QuestObjective objective = objectives.get(i);
+                if (objective.type().equalsIgnoreCase(type) && objective.matches(matchParams)
+                        && progress.getProgress(i) < objective.amount()) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
     /** Completa directamente un objetivo (WAIT/REACH_LOCATION/DISCOVER_REGION, chequeados por polling). */
     public void completeObjectiveDirectly(Player player, Quest quest, QuestStage stage, ActiveQuestProgress progress,
             int objectiveIndex) {

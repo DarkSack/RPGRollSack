@@ -2,7 +2,15 @@ package com.sack.rpgroll.mobs.core;
 
 import java.util.List;
 
-/** Reglas de aparición: dónde, cuándo y con qué peso puede spawnear este mob. */
+/**
+ * Reglas de aparición: dónde, cuándo y con qué peso puede spawnear este mob.
+ *
+ * @param replaceChance en la aparición natural, probabilidad (0-100) de que
+ *                      este mob sustituya a la criatura vanilla cuando todo
+ *                      lo demás encaja. Sin ella, un mob basado en ZOMBIE
+ *                      para los bosques se comía todos los zombis de los
+ *                      bosques. 100 por defecto, como antes.
+ */
 public record SpawnRules(
         List<String> biomes,
         List<String> regions,
@@ -14,7 +22,8 @@ public record SpawnRules(
         int maxHeight,
         double minDistanceFromPlayers,
         boolean naturalSpawn,
-        double spawnWeight) {
+        double spawnWeight,
+        double replaceChance) {
 
     public SpawnRules {
         biomes = biomes == null ? List.of() : List.copyOf(biomes);
@@ -23,6 +32,14 @@ public record SpawnRules(
         hourMin = hourMin < 0 ? -1 : hourMin;
         hourMax = hourMax < 0 ? -1 : hourMax;
         spawnWeight = spawnWeight <= 0 ? 1.0 : spawnWeight;
+        replaceChance = Math.max(0, Math.min(100, replaceChance));
+    }
+
+    public SpawnRules(List<String> biomes, List<String> regions, List<String> worlds, int hourMin, int hourMax,
+            String weather, int minHeight, int maxHeight, double minDistanceFromPlayers, boolean naturalSpawn,
+            double spawnWeight) {
+        this(biomes, regions, worlds, hourMin, hourMax, weather, minHeight, maxHeight, minDistanceFromPlayers,
+                naturalSpawn, spawnWeight, 100);
     }
 
     public static SpawnRules none() {

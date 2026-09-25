@@ -320,8 +320,9 @@ public class SpawnRulesEditorGUI extends InventoryGUI {
     private SpawnRules with(List<String> biomes, List<String> regions, List<String> worlds,
             int hourMin, int hourMax, String weather, int minHeight, int maxHeight, double minDistance,
             boolean naturalSpawn, double spawnWeight) {
+        // La probabilidad de sustitución no se edita aquí: se conserva la que haya.
         return new SpawnRules(biomes, regions, worlds, hourMin, hourMax, weather, minHeight, maxHeight, minDistance,
-                naturalSpawn, spawnWeight);
+                naturalSpawn, spawnWeight, session.spawnRules.replaceChance());
     }
 
 }

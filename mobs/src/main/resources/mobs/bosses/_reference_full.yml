@@ -236,6 +236,9 @@ spawn-rules:
   min-distance-from-players: 10
   natural-spawn: false # false = solo aparece vía /mobadmin spawn o loot/quest, no en el mundo naturalmente
   spawn-weight: 1.0
+  # Aparición natural: probabilidad (0-100) de sustituir a la criatura vanilla
+  # cuando todo lo demás encaja. 100 = siempre (se come todas las de ese tipo).
+  chance: 100
 
 custom-data:
   arena: "reference_dungeon"

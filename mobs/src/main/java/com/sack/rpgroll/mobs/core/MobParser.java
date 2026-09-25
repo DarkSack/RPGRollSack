@@ -494,7 +494,7 @@ public class MobParser implements ContentParser<MobDefinition> {
         double spawnWeight = section.getDouble("spawn-weight", 1.0);
 
         return new SpawnRules(biomes, regions, worlds, hourMin, hourMax, weather, minHeight, maxHeight, minDistance,
-                naturalSpawn, spawnWeight);
+                naturalSpawn, spawnWeight, section.getDouble("chance", 100));
     }
 
 }
