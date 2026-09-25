@@ -7,7 +7,8 @@
 id: reference_full_example
 display-name: "&b&lNPC de Referencia"
 
-# STANDING | SITTING | SLEEPING | CROUCHING (según lo que soporte tu versión de servidor)
+# STANDING | SNEAKING | SWIMMING | SLEEPING | FALL_FLYING (las que admite el Mannequin;
+# cualquier otra se queda de pie)
 pose: "STANDING"
 
 location:
@@ -35,6 +36,7 @@ actions:
   - type: TAKE_ITEM
     value: "STICK,1"
 
+  # mundo,x,y,z[,yaw,pitch] — sin yaw/pitch conserva hacia dónde miraba el jugador
   - type: TELEPORT
     value: "world,0,70,0"
 

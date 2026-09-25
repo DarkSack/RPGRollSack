@@ -8,7 +8,9 @@ import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.Plugin;
 
 import java.util.HashMap;
@@ -25,7 +27,8 @@ public class ChatPromptManager implements Listener {
 
     private final Plugin plugin;
     private final LangManager langManager;
-    private final Map<UUID, Consumer<String>> pending = new HashMap<>();
+    // Se escribe en el hilo principal y se lee en el del chat.
+    private final Map<UUID, Consumer<String>> pending = new java.util.concurrent.ConcurrentHashMap<>();
 
     public ChatPromptManager(Plugin plugin, LangManager langManager) {
         this.plugin = plugin;
@@ -43,7 +46,8 @@ public class ChatPromptManager implements Listener {
         pending.put(player.getUniqueId(), callback);
     }
 
-    @EventHandler
+    // LOWEST: la respuesta se cancela antes de que RPGRoll-Chat u otro plugin la difunda.
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onChat(AsyncChatEvent event) {
 
         UUID uuid = event.getPlayer().getUniqueId();
@@ -64,6 +68,11 @@ public class ChatPromptManager implements Listener {
             }
             callback.accept(message);
         });
+    }
+
+    @EventHandler
+    public void onQuit(PlayerQuitEvent event) {
+        pending.remove(event.getPlayer().getUniqueId());
     }
 
 }

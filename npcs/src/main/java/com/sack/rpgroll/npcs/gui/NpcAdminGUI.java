@@ -306,7 +306,6 @@ public class NpcAdminGUI extends InventoryGUI {
                                 langManager.send(player, "adminGui.location_assigned");
 
                                 build();
-                                reopen();
 
                         }
 
@@ -349,19 +348,7 @@ public class NpcAdminGUI extends InventoryGUI {
                                 if (saved) {
 
                                         npcManager.reload();
-
-                                        spawnManager.despawnAllForEveryone();
-
-                                        npcManager.getAll()
-                                                        .forEach(
-                                                                        spawnManager::register);
-
-                                        org.bukkit.Bukkit
-                                                        .getOnlinePlayers()
-                                                        .forEach(
-                                                                        online -> spawnManager.updateVisibility(
-                                                                                        online,
-                                                                                        npcManager.getAll()));
+                                        spawnManager.respawnAll(npcManager.getAll());
 
                                         langManager.send(player, "adminGui.save_success",
                                                         "id", session.getId());

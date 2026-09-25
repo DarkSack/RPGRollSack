@@ -17,7 +17,8 @@ import java.util.Map;
 
 public class NpcPoseSelectGUI extends InventoryGUI {
 
-    private static final String[] POSES = { "STANDING", "SITTING", "SNEAKING", "SWIMMING", "SLEEPING" };
+    /** Las que admite el Mannequin; SITTING, por ejemplo, no existe para una entidad con forma de jugador. */
+    private static final String[] POSES = { "STANDING", "SNEAKING", "SWIMMING", "SLEEPING", "FALL_FLYING" };
 
     private final NpcEditSession session;
     private final NpcAdminGUI parent;

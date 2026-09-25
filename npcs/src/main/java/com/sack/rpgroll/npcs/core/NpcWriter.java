@@ -57,9 +57,32 @@ public class NpcWriter {
         }
     }
 
+    /**
+     * Borra el fichero del NPC. Primero prueba con {@code <id>.yml}; si no
+     * existe, busca el fichero cuyo campo {@code id} coincide, porque el
+     * cargador acepta cualquier nombre de fichero.
+     */
     public boolean delete(String npcId) {
-        File file = new File(plugin.getDataFolder(), "npcs/" + npcId + ".yml");
-        return file.exists() && file.delete();
+
+        File folder = new File(plugin.getDataFolder(), "npcs");
+        File file = new File(folder, npcId + ".yml");
+
+        if (file.isFile()) {
+            return file.delete();
+        }
+
+        File[] candidates = folder.listFiles((dir, name) -> name.endsWith(".yml"));
+        if (candidates == null) {
+            return false;
+        }
+
+        for (File candidate : candidates) {
+            if (npcId.equals(YamlConfiguration.loadConfiguration(candidate).getString("id"))) {
+                return candidate.delete();
+            }
+        }
+
+        return false;
     }
 
 }

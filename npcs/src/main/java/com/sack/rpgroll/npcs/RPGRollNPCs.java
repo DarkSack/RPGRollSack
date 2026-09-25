@@ -15,9 +15,7 @@ import com.sack.rpgroll.npcs.core.NpcSpawnManager;
 import com.sack.rpgroll.npcs.core.NpcWriter;
 import com.sack.rpgroll.npcs.integration.MineSkinClient;
 import com.sack.rpgroll.npcs.listener.ChatPromptManager;
-import com.sack.rpgroll.npcs.listener.NpcInteractListener;
-import com.sack.rpgroll.npcs.listener.NpcVisibilityListener;
-import com.sack.rpgroll.npcs.render.FakePlayerRenderer;
+import com.sack.rpgroll.npcs.listener.NpcEntityListener;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -51,26 +49,19 @@ public class RPGRollNPCs extends JavaPlugin {
         npcManager = new NpcManager(this);
         npcManager.initialize();
 
-        FakePlayerRenderer renderer = new FakePlayerRenderer(this);
-        spawnManager = new NpcSpawnManager(this, renderer);
-
-        npcManager.getAll().forEach(spawnManager::register);
-
-        getServer().getPluginManager().registerEvents(
-                new NpcVisibilityListener(npcManager, spawnManager),
-                this);
+        spawnManager = new NpcSpawnManager(this);
 
         NpcMenuManager menuManager = new NpcMenuManager(this);
         menuManager.initialize();
         NpcActionExecutor actionExecutor = new NpcActionExecutor(this, menuManager);
 
-        NpcInteractListener interactListener = new NpcInteractListener(
-                this,
-                npcManager,
-                spawnManager,
-                actionExecutor);
+        getServer().getPluginManager().registerEvents(
+                new NpcEntityListener(npcManager, spawnManager, actionExecutor),
+                this);
 
-        interactListener.register();
+        // Los mundos ya están cargados cuando se habilitan los plugins; los
+        // NPCs en chunks aún sin cargar aparecen con el ChunkLoadEvent.
+        spawnManager.respawnAll(npcManager.getAll());
 
         ChatPromptManager chatPromptManager = new ChatPromptManager(this, langManager);
 
@@ -102,6 +93,13 @@ public class RPGRollNPCs extends JavaPlugin {
                 "✔ RPGRoll-NPCs habilitado. "
                         + npcManager.count()
                         + " NPC(s) cargados.");
+    }
+
+    @Override
+    public void onDisable() {
+        if (spawnManager != null) {
+            spawnManager.despawnAll();
+        }
     }
 
     public NpcManager getNpcManager() {

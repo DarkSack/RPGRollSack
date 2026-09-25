@@ -58,6 +58,10 @@ public class NpcMenuGUI extends InventoryGUI {
                 material = Material.BARRIER;
             }
 
+            if (!material.isItem() || material.isAir()) {
+                material = Material.BARRIER;
+            }
+
             ItemStack item = new ItemStack(material);
             ItemMeta meta = item.getItemMeta();
 

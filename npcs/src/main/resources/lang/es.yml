@@ -21,6 +21,7 @@ command:
   create:
     usage: "&cUso: /npc create <id>"
     already_exists: "&cYa existe un NPC con ese id."
+    invalid_id: '&cEl id solo puede llevar letras, números, "_" y "-" (máx. 48).'
   edit:
     usage: "&cUso: /npc edit <id>"
   list:
@@ -29,6 +30,7 @@ command:
   delete:
     usage: "&cUso: /npc delete <id>"
     success: "&a✔ NPC eliminado: {id}"
+    failed: '&c✘ No encontré el fichero del NPC {id}; no se borró nada.'
   reload:
     success: "&a✔ Recargado: {npcCount} NPC(s), {menuCount} menú(s)."
 

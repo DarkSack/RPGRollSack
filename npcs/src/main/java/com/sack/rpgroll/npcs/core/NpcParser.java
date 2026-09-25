@@ -1,6 +1,7 @@
 package com.sack.rpgroll.npcs.core;
 
 import com.sack.rpgroll.common.content.ContentParser;
+import java.util.logging.Logger;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.util.ArrayList;
@@ -8,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 
 public class NpcParser implements ContentParser<NpcDefinition> {
+
+    private static final Logger LOG = Logger.getLogger("RPGRoll-NPCs");
 
     @Override
     public NpcDefinition parse(YamlConfiguration config) {
@@ -37,7 +40,7 @@ public class NpcParser implements ContentParser<NpcDefinition> {
         float yaw = (float) config.getDouble("location.yaw", 0.0);
         float pitch = (float) config.getDouble("location.pitch", 0.0);
 
-        List<NpcAction> actions = parseActions(config);
+        List<NpcAction> actions = parseActions(id, config);
 
         return new NpcDefinition(
                 id,
@@ -54,7 +57,7 @@ public class NpcParser implements ContentParser<NpcDefinition> {
                 actions);
     }
 
-    private List<NpcAction> parseActions(YamlConfiguration config) {
+    private List<NpcAction> parseActions(String id, YamlConfiguration config) {
 
         List<NpcAction> actions = new ArrayList<>();
         List<Map<?, ?>> rawList = config.getMapList("actions");
@@ -65,6 +68,7 @@ public class NpcParser implements ContentParser<NpcDefinition> {
             Object valueObj = raw.get("value");
 
             if (typeObj == null || valueObj == null) {
+                LOG.warning("'" + id + "': acción sin 'type' o sin 'value', se ignora: " + raw);
                 continue;
             }
 
@@ -74,7 +78,8 @@ public class NpcParser implements ContentParser<NpcDefinition> {
 
                 actions.add(new NpcAction(type, valueObj.toString()));
 
-            } catch (IllegalArgumentException ignored) {
+            } catch (IllegalArgumentException e) {
+                LOG.warning("'" + id + "': tipo de acción desconocido '" + typeObj + "', se ignora.");
             }
         }
 

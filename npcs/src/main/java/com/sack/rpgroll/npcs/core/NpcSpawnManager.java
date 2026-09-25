@@ -1,146 +1,167 @@
 package com.sack.rpgroll.npcs.core;
 
-import com.sack.rpgroll.npcs.render.FakePlayerRenderer;
+import com.destroystokyo.paper.profile.ProfileProperty;
+import com.sack.rpgroll.util.ComponentUtils;
+
+import io.papermc.paper.datacomponent.item.ResolvableProfile;
 
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
+import org.bukkit.Chunk;
+import org.bukkit.Location;
+import org.bukkit.NamespacedKey;
+import org.bukkit.World;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Mannequin;
+import org.bukkit.entity.Pose;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Asigna UUID/entityId fijos por NPC, y decide visibilidad por distancia:
- * a qué jugadores se les muestra cada NPC activo.
+ * Pone cada NPC en el mundo como un {@link Mannequin}: la entidad con forma
+ * de jugador que trae el propio servidor desde 1.21.9.
  * <p>
- * entityId empieza en un rango alto arbitrario para minimizar colisión con
- * IDs reales de entidades del mundo — no hay garantía absoluta de que nunca
- * choque, pero en la práctica es extremadamente improbable con este offset.
+ * Antes se dibujaban jugadores falsos a base de packets de ProtocolLib. Eso se
+ * rompía con cada versión nueva del protocolo (en 26.x el packet de la lista
+ * de jugadores ya no tiene el campo que se escribía) y además el nombre sobre
+ * la cabeza era el del perfil falso, o sea el id interno del NPC, sin colores.
+ * El Mannequin es una entidad normal: lleva nombre con formato, skin, pose y
+ * rotación, lo ven todos los jugadores (también los de Bedrock) y los clics
+ * llegan como eventos de Bukkit.
+ * <p>
+ * Las entidades NO son persistentes: no se guardan con el chunk. Se crean al
+ * cargar el plugin o el chunk y desaparecen al descargarse, así el YAML es la
+ * única fuente de verdad y no quedan duplicados tras un cierre brusco.
  */
 public class NpcSpawnManager {
 
-    private static final int ENTITY_ID_START = 900_000;
-    private static final double VISIBILITY_RADIUS = 48.0;
-
     private final Plugin plugin;
-    private final FakePlayerRenderer renderer;
-    private final AtomicInteger nextEntityId = new AtomicInteger(ENTITY_ID_START);
+    private final NamespacedKey npcIdKey;
 
-    private final Map<String, UUID> npcUuids = new HashMap<>();
-    private final Map<String, Integer> npcEntityIds = new HashMap<>();
+    /** id del NPC -> UUID de su Mannequin vivo. */
+    private final Map<String, UUID> spawned = new HashMap<>();
 
-    // Por jugador, qué npcIds tiene actualmente visibles
-    private final Map<UUID, java.util.Set<String>> visibleTo = new HashMap<>();
-
-    public NpcSpawnManager(Plugin plugin, FakePlayerRenderer renderer) {
+    public NpcSpawnManager(Plugin plugin) {
         this.plugin = plugin;
-        this.renderer = renderer;
+        this.npcIdKey = new NamespacedKey(plugin, "npc_id");
     }
 
-    /**
-     * Registra un NPC en el sistema (le asigna UUID/entityId si no los tenía).
-     * No lo muestra a nadie todavía — eso lo maneja updateVisibility().
-     */
-    public void register(NpcDefinition npc) {
-        npcUuids.computeIfAbsent(npc.id(), id -> UUID.randomUUID());
-        npcEntityIds.computeIfAbsent(npc.id(), id -> nextEntityId.getAndIncrement());
+    /** Quita todos los NPCs del mundo y vuelve a crear los definidos. */
+    public void respawnAll(Collection<NpcDefinition> npcs) {
+        despawnAll();
+        npcs.forEach(this::spawnIfLoaded);
     }
 
-    public void unregisterAll() {
-        npcUuids.clear();
-        npcEntityIds.clear();
-        visibleTo.clear();
+    /** Crea el NPC si su chunk está cargado; si no, lo hará {@link #onChunkLoad}. */
+    public void spawnIfLoaded(NpcDefinition npc) {
+
+        World world = Bukkit.getWorld(npc.world());
+        if (world == null) {
+            plugin.getLogger().warning("✘ NPC '" + npc.id() + "': el mundo '" + npc.world() + "' no está cargado.");
+            return;
+        }
+
+        if (!world.isChunkLoaded(chunkX(npc), chunkZ(npc)) || isAlive(npc.id())) {
+            return;
+        }
+
+        Location location = new Location(world, npc.x(), npc.y(), npc.z(), npc.yaw(), npc.pitch());
+        Mannequin mannequin = world.spawn(location, Mannequin.class, entity -> configure(entity, npc));
+        spawned.put(npc.id(), mannequin.getUniqueId());
     }
 
-    /**
-     * Revisa la posición del jugador contra todos los NPCs registrados en su
-     * mundo, y spawnea/despawnea según entre o salga del radio de visibilidad.
-     */
-    public void updateVisibility(Player player, Iterable<NpcDefinition> allNpcs) {
+    /** Llamado al cargarse un chunk: crea los NPCs que caen dentro. */
+    public void onChunkLoad(Chunk chunk, Collection<NpcDefinition> npcs) {
 
-        java.util.Set<String> currentlyVisible = visibleTo.computeIfAbsent(player.getUniqueId(),
-                k -> new java.util.HashSet<>());
+        String worldName = chunk.getWorld().getName();
 
-        for (NpcDefinition npc : allNpcs) {
-
-            if (!npc.world().equals(player.getWorld().getName())) {
-                if (currentlyVisible.remove(npc.id())) {
-                    despawn(player, npc);
-                }
-                continue;
-            }
-
-            double distanceSquared = distanceSquared(player, npc);
-            boolean inRange = distanceSquared <= (VISIBILITY_RADIUS * VISIBILITY_RADIUS);
-            boolean isVisible = currentlyVisible.contains(npc.id());
-
-            if (inRange && !isVisible) {
-                // Solo se anota como visible si de verdad se envió: si no, el
-                // despawn posterior mandaría un destroy de algo inexistente.
-                if (spawn(player, npc)) {
-                    currentlyVisible.add(npc.id());
-                }
-            } else if (!inRange && isVisible) {
-                despawn(player, npc);
-                currentlyVisible.remove(npc.id());
+        for (NpcDefinition npc : npcs) {
+            if (npc.world().equals(worldName) && chunkX(npc) == chunk.getX() && chunkZ(npc) == chunk.getZ()) {
+                spawnIfLoaded(npc);
             }
         }
     }
 
-    public void despawnAllForEveryone() {
+    public void despawnAll() {
 
-        for (Map.Entry<UUID, java.util.Set<String>> entry : visibleTo.entrySet()) {
-
-            org.bukkit.entity.Player player = Bukkit.getPlayer(entry.getKey());
-            if (player == null) {
-                continue;
-            }
-
-            for (String npcId : entry.getValue()) {
-                Integer entityId = npcEntityIds.get(npcId);
-                if (entityId != null) {
-                    renderer.despawnFor(player, entityId);
-                }
+        for (UUID uuid : spawned.values()) {
+            Entity entity = Bukkit.getEntity(uuid);
+            if (entity != null) {
+                entity.remove();
             }
         }
 
-        visibleTo.clear();
+        spawned.clear();
     }
 
-    public void removeViewer(Player player) {
-        visibleTo.remove(player.getUniqueId());
+    /** @return el id del NPC si la entidad es uno de los nuestros. */
+    public Optional<String> npcIdOf(Entity entity) {
+        return Optional.ofNullable(
+                entity.getPersistentDataContainer().get(npcIdKey, PersistentDataType.STRING));
     }
 
-    private boolean spawn(Player player, NpcDefinition npc) {
-
-        UUID npcUuid = npcUuids.get(npc.id());
-        Integer entityId = npcEntityIds.get(npc.id());
-
-        if (npcUuid == null || entityId == null) {
+    private boolean isAlive(String npcId) {
+        UUID uuid = spawned.get(npcId);
+        if (uuid == null) {
             return false;
         }
-
-        return renderer.spawnFor(player, npc, npcUuid, entityId);
+        Entity entity = Bukkit.getEntity(uuid);
+        return entity != null && entity.isValid();
     }
 
-    private void despawn(Player player, NpcDefinition npc) {
-        Integer entityId = npcEntityIds.get(npc.id());
-        if (entityId != null) {
-            renderer.despawnFor(player, entityId);
+    private static int chunkX(NpcDefinition npc) {
+        return (int) Math.floor(npc.x()) >> 4;
+    }
+
+    private static int chunkZ(NpcDefinition npc) {
+        return (int) Math.floor(npc.z()) >> 4;
+    }
+
+    private void configure(Mannequin entity, NpcDefinition npc) {
+
+        entity.setPersistent(false);
+        entity.getPersistentDataContainer().set(npcIdKey, PersistentDataType.STRING, npc.id());
+
+        entity.customName(ComponentUtils.parse(npc.displayName()));
+        entity.setCustomNameVisible(true);
+        // Sin esto el Mannequin enseña "NPC" debajo del nombre.
+        entity.setDescription(null);
+
+        entity.setImmovable(true);
+        entity.setAI(false);
+        entity.setInvulnerable(true);
+        entity.setSilent(true);
+        entity.setCollidable(false);
+        entity.setRemoveWhenFarAway(false);
+
+        entity.setRotation(npc.yaw(), npc.pitch());
+        entity.setBodyYaw(npc.yaw());
+
+        if (npc.hasCustomSkin()) {
+            entity.setProfile(ResolvableProfile.resolvableProfile()
+                    .addProperty(new ProfileProperty("textures", npc.skinValue(), npc.skinSignature()))
+                    .build());
+        }
+
+        Pose pose = poseOf(npc.pose());
+        if (pose != Pose.STANDING) {
+            entity.setPose(pose, true);
         }
     }
 
-    private double distanceSquared(Player player, NpcDefinition npc) {
-        double dx = player.getLocation().getX() - npc.x();
-        double dy = player.getLocation().getY() - npc.y();
-        double dz = player.getLocation().getZ() - npc.z();
-        return dx * dx + dy * dy + dz * dz;
-    }
-
-    public java.util.Optional<Integer> getEntityId(String npcId) {
-        return java.util.Optional.ofNullable(npcEntityIds.get(npcId));
+    /** La pose pedida si el Mannequin la admite; si no, de pie. */
+    public static Pose poseOf(String name) {
+        try {
+            Pose pose = Pose.valueOf(name);
+            return Mannequin.validPoses().contains(pose) ? pose : Pose.STANDING;
+        } catch (IllegalArgumentException | NullPointerException e) {
+            return Pose.STANDING;
+        }
     }
 
 }

@@ -14,13 +14,8 @@ dependencies {
     // RPGPlayer/RPGRollAPI, que viven físicamente en :core.
     compileOnly(project(":core"))
 
-    // ProtocolLib: requerido en runtime como plugin real del servidor (ver
-    // depend: [RPGRoll, ProtocolLib] en plugin.yml) — nunca se empaqueta.
-    // (El proyecto migró a Maven Central bajo el groupId "net.dmulloy2",
-    // pero repo.dmulloy2.net todavía sirve versiones bajo el groupId
-    // original "com.comphenix.protocol" — usamos esta última porque es la
-    // que ya está resuelta/cacheada en este entorno.)
-    compileOnly("com.comphenix.protocol:ProtocolLib:5.3.0")
+    // Sin ProtocolLib: los NPCs son entidades Mannequin del propio servidor
+    // (ver NpcSpawnManager), no jugadores falsos hechos a base de packets.
 
     // Gson: Paper/Bukkit ya lo trae en su classpath — compileOnly, no se bundlea.
     compileOnly("com.google.code.gson:gson:2.11.0")

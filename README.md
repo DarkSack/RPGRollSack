@@ -53,7 +53,7 @@ Cada addon extiende el core con un sistema completo propio, construido por **com
 
 | Addon                   | Qué agrega                                                                                                |
 | ----------------------- | --------------------------------------------------------------------------------------------------------- |
-| 🧑‍🤝‍🧑 **NPCs**             | NPCs interactuables (tiendas, diálogos, menús) vía ProtocolLib                                            |
+| 🧑‍🤝‍🧑 **NPCs**             | NPCs interactuables (tiendas, diálogos, menús) como Mannequins nativos, sin ProtocolLib                   |
 | 🎁 **Crates**           | Cajas con ruleta de premios, integrables con DecentHolograms                                              |
 | ✨ **Enchantments**     | Encantamientos personalizados basados en componentes (triggers/condiciones/efectos)                       |
 | 📜 **Quests**           | Misiones ramificadas por etapas, objetivos, condiciones y eventos                                         |
@@ -86,7 +86,7 @@ Ver el detalle completo de cada uno (comandos, permisos, formato YAML, ejemplos)
 | Módulo           | Comando raíz                                     | Depende de (hard)       | Integraciones opcionales                                                | Precio estimado |
 | ---------------- | ------------------------------------------------ | ----------------------- | ----------------------------------------------------------------------- | --------------- |
 | `core` (RPGRoll) | `/rpg`                                           | —                       | Vault, PlaceholderAPI                                                   | **$20**         |
-| NPCs             | `/npc`                                           | RPGRoll, ProtocolLib    | —                                                                       | **$8**          |
+| NPCs             | `/npc`                                           | RPGRoll                 | —                                                                       | **$8**          |
 | Crates           | `/crate`                                         | RPGRoll                 | DecentHolograms                                                         | **$6**          |
 | Enchantments     | `/renchant`                                      | RPGRoll                 | PlaceholderAPI                                                          | **$10**         |
 | Quests           | `/quest`, `/questadmin`                          | RPGRoll                 | PlaceholderAPI                                                          | **$12**         |
@@ -125,7 +125,7 @@ Los precios son estimados (USD) en función de la complejidad de cada módulo �
 | Java            | **25**                         |
 | Vault           | Opcional (Soft Depend)         |
 | PlaceholderAPI  | Opcional (Soft Depend)         |
-| ProtocolLib     | Requerido por NPCs             |
+| ProtocolLib     | Opcional (Soft Depend, TAB)    |
 | DecentHolograms | Opcional (Soft Depend, Crates) |
 
 ---
@@ -286,7 +286,7 @@ Actualmente soporta (todas opcionales salvo donde se indica):
 
 - **Vault** — RPGRoll-Economy se registra como proveedor del servicio Economy; Items/Guilds/Workers lo consumen para pagos y salarios
 - **PlaceholderAPI** — placeholders en casi todos los addons
-- **ProtocolLib** — requerido por NPCs
+- **ProtocolLib** — opcional, lo usa RPGRoll-TAB
 - **DecentHolograms** — hologramas en Crates
 - **S3 (SigV4)** — subida remota de resource packs en SackResourcePack
 

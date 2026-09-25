@@ -263,7 +263,10 @@ public class NpcActionExecutor {
             double y = Double.parseDouble(parts[2].trim());
             double z = Double.parseDouble(parts[3].trim());
 
-            player.teleport(new Location(world, x, y, z));
+            float yaw = parts.length >= 5 ? parseFloatOrDefault(parts[4], player.getLocation().getYaw()) : player.getLocation().getYaw();
+            float pitch = parts.length >= 6 ? parseFloatOrDefault(parts[5], player.getLocation().getPitch()) : player.getLocation().getPitch();
+
+            player.teleport(new Location(world, x, y, z, yaw, pitch));
 
         } catch (NumberFormatException e) {
             plugin.getLogger().warning("✘ TELEPORT: coordenadas inválidas en '" + value + "'");

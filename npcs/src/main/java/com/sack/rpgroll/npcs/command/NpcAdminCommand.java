@@ -109,6 +109,12 @@ public class NpcAdminCommand implements CommandExecutor, TabCompleter {
 
                                 String id = args[1];
 
+                                // El id es también el nombre del fichero: nada de rutas ni espacios.
+                                if (!id.matches("[A-Za-z0-9_-]{1,48}")) {
+                                        langManager.send(player, "command.create.invalid_id");
+                                        return true;
+                                }
+
                                 if (npcManager.exists(id)) {
 
                                         langManager.send(player, "command.create.already_exists");
@@ -218,19 +224,13 @@ public class NpcAdminCommand implements CommandExecutor, TabCompleter {
                                         return true;
                                 }
 
-                                writer.delete(id);
+                                if (!writer.delete(id)) {
+                                        langManager.send(sender, "command.delete.failed", "id", id);
+                                        return true;
+                                }
 
                                 npcManager.reload();
-
-                                spawnManager.despawnAllForEveryone();
-
-                                npcManager.getAll()
-                                                .forEach(spawnManager::register);
-
-                                org.bukkit.Bukkit.getOnlinePlayers()
-                                                .forEach(playerOnline -> spawnManager.updateVisibility(
-                                                                playerOnline,
-                                                                npcManager.getAll()));
+                                spawnManager.respawnAll(npcManager.getAll());
 
                                 langManager.send(sender, "command.delete.success", "id", id);
 
@@ -243,15 +243,7 @@ public class NpcAdminCommand implements CommandExecutor, TabCompleter {
                                 npcManager.reload();
                                 menuManager.reload();
 
-                                spawnManager.despawnAllForEveryone();
-
-                                for (var npc : npcManager.getAll()) {
-                                        spawnManager.register(npc);
-                                }
-
-                                for (var online : org.bukkit.Bukkit.getOnlinePlayers()) {
-                                        spawnManager.updateVisibility(online, npcManager.getAll());
-                                }
+                                spawnManager.respawnAll(npcManager.getAll());
 
                                 langManager.send(sender, "command.reload.success",
                                                 "npcCount", npcManager.count(),
