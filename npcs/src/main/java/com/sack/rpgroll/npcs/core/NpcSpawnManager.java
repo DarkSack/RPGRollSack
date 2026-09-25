@@ -72,6 +72,13 @@ public class NpcSpawnManager {
 
         Location location = new Location(world, npc.x(), npc.y(), npc.z(), npc.yaw(), npc.pitch());
         Mannequin mannequin = world.spawn(location, Mannequin.class, entity -> configure(entity, npc));
+
+        if (!mannequin.isValid()) {
+            plugin.getLogger().warning("✘ NPC '" + npc.id() + "': otro plugin canceló su aparición en "
+                    + npc.world() + " aun a prioridad HIGHEST. Revisa protecciones de regiones o anti-mobs.");
+            return;
+        }
+
         spawned.put(npc.id(), mannequin.getUniqueId());
     }
 

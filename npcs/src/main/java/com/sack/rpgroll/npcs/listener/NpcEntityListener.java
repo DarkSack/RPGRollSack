@@ -11,6 +11,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
@@ -65,6 +66,20 @@ public class NpcEntityListener implements Listener {
 
         if (event instanceof EntityDamageByEntityEvent byEntity && byEntity.getDamager() instanceof Player player) {
             trigger(player, event.getEntity());
+        }
+    }
+
+    /**
+     * WorldGuard ({@code mob-spawning deny} con {@code block-plugin-spawning})
+     * y plugins parecidos cancelan cualquier criatura creada por un plugin,
+     * así que en un lobby protegido los NPCs no llegaban a aparecer. Un NPC lo
+     * coloca el admin a propósito: se deshace la cancelación solo para los
+     * nuestros (la marca se pone antes de que salte el evento).
+     */
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onSpawn(EntitySpawnEvent event) {
+        if (event.isCancelled() && isNpc(event.getEntity())) {
+            event.setCancelled(false);
         }
     }
 
