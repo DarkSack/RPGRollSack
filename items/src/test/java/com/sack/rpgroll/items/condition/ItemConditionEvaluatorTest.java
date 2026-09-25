@@ -21,6 +21,10 @@ class ItemConditionEvaluatorTest {
     private ItemConditionEvaluator evaluator;
     private ItemConditionContext context;
 
+    // Los operadores se prueban sobre player.xplevel (el nivel vanilla, que
+    // sale del mock de getLevel()). player.level es el nivel de RPGRoll y
+    // necesita el core, que no está en el classpath de estos tests.
+
     @BeforeEach
     void setUp() {
         player = mock(Player.class);
@@ -40,20 +44,20 @@ class ItemConditionEvaluatorTest {
     void evaluateAllReturnsFalseAsSoonAsOneConditionFails() {
         when(player.getLevel()).thenReturn(10);
 
-        assertFalse(evaluator.evaluateAll(List.of("player.level >= 25"), context));
+        assertFalse(evaluator.evaluateAll(List.of("player.xplevel >= 25"), context));
     }
 
     @Test
     void numericComparisonSupportsAllOperators() {
         when(player.getLevel()).thenReturn(25);
 
-        assertTrue(evaluator.evaluateAll(List.of("player.level == 25"), context));
-        assertTrue(evaluator.evaluateAll(List.of("player.level >= 25"), context));
-        assertTrue(evaluator.evaluateAll(List.of("player.level <= 25"), context));
-        assertTrue(evaluator.evaluateAll(List.of("player.level > 10"), context));
-        assertTrue(evaluator.evaluateAll(List.of("player.level < 30"), context));
-        assertTrue(evaluator.evaluateAll(List.of("player.level != 1"), context));
-        assertFalse(evaluator.evaluateAll(List.of("player.level > 25"), context));
+        assertTrue(evaluator.evaluateAll(List.of("player.xplevel == 25"), context));
+        assertTrue(evaluator.evaluateAll(List.of("player.xplevel >= 25"), context));
+        assertTrue(evaluator.evaluateAll(List.of("player.xplevel <= 25"), context));
+        assertTrue(evaluator.evaluateAll(List.of("player.xplevel > 10"), context));
+        assertTrue(evaluator.evaluateAll(List.of("player.xplevel < 30"), context));
+        assertTrue(evaluator.evaluateAll(List.of("player.xplevel != 1"), context));
+        assertFalse(evaluator.evaluateAll(List.of("player.xplevel > 25"), context));
     }
 
     @Test

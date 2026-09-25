@@ -26,6 +26,10 @@ class TrapConditionEvaluatorTest {
         when(player.getWorld()).thenReturn(world);
     }
 
+    // Los operadores se prueban sobre player.xplevel (el nivel vanilla, que
+    // sale del mock). player.level es el nivel de RPGRoll y necesita el core,
+    // que en este módulo es compileOnly y no está en el classpath de tests.
+
     @Test
     void allConditionsMustPassForEvaluateAllToBeTrue() {
         when(player.getLevel()).thenReturn(30);
@@ -33,8 +37,8 @@ class TrapConditionEvaluatorTest {
 
         TrapConditionContext ctx = new TrapConditionContext(player);
 
-        assertTrue(evaluator.evaluateAll(List.of("player.level >= 30", "player.sneaking == true"), ctx));
-        assertFalse(evaluator.evaluateAll(List.of("player.level >= 30", "player.sneaking == false"), ctx));
+        assertTrue(evaluator.evaluateAll(List.of("player.xplevel >= 30", "player.sneaking == true"), ctx));
+        assertFalse(evaluator.evaluateAll(List.of("player.xplevel >= 30", "player.sneaking == false"), ctx));
     }
 
     @Test
@@ -55,16 +59,16 @@ class TrapConditionEvaluatorTest {
     }
 
     @Test
-    void numericComparisonOperatorsWorkForPlayerLevel() {
+    void numericComparisonOperatorsWorkForPlayerXpLevel() {
         when(player.getLevel()).thenReturn(10);
         TrapConditionContext ctx = new TrapConditionContext(player);
 
-        assertTrue(evaluator.evaluateAll(List.of("player.level == 10"), ctx));
-        assertTrue(evaluator.evaluateAll(List.of("player.level != 5"), ctx));
-        assertTrue(evaluator.evaluateAll(List.of("player.level < 20"), ctx));
-        assertTrue(evaluator.evaluateAll(List.of("player.level <= 10"), ctx));
-        assertTrue(evaluator.evaluateAll(List.of("player.level > 5"), ctx));
-        assertFalse(evaluator.evaluateAll(List.of("player.level > 10"), ctx));
+        assertTrue(evaluator.evaluateAll(List.of("player.xplevel == 10"), ctx));
+        assertTrue(evaluator.evaluateAll(List.of("player.xplevel != 5"), ctx));
+        assertTrue(evaluator.evaluateAll(List.of("player.xplevel < 20"), ctx));
+        assertTrue(evaluator.evaluateAll(List.of("player.xplevel <= 10"), ctx));
+        assertTrue(evaluator.evaluateAll(List.of("player.xplevel > 5"), ctx));
+        assertFalse(evaluator.evaluateAll(List.of("player.xplevel > 10"), ctx));
     }
 
     @Test

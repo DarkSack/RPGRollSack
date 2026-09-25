@@ -151,7 +151,8 @@ public class ItemConditionEvaluator {
         LivingEntity target = context.target();
 
         Object builtin = switch (path) {
-            case "player.level" -> (double) player.getLevel();
+            case "player.level" -> rpgLevel(player);
+            case "player.xplevel" -> (double) player.getLevel();
             case "player.health" -> player.getHealth();
             case "player.foodlevel" -> (double) player.getFoodLevel();
             case "target.type" -> target != null ? target.getType().name() : null;
@@ -171,6 +172,24 @@ public class ItemConditionEvaluator {
         }
 
         return world.hasStorm() ? "RAIN" : "CLEAR";
+    }
+
+    /**
+     * {@code player.level} es el nivel de RPGRoll, igual que en las
+     * condiciones de Quests y que en los {@code requirements} de los ítems.
+     * Antes aquí era el nivel de experiencia vanilla, así que la misma
+     * expresión significaba cosas distintas según el módulo. El vanilla sigue
+     * disponible como {@code player.xplevel}.
+     */
+    private static Double rpgLevel(Player player) {
+
+        if (player == null || !com.sack.rpgroll.api.RPGRollAPI.isReady()) {
+            return null;
+        }
+
+        return com.sack.rpgroll.api.RPGRollAPI.get().getPlayer(player.getUniqueId())
+                .map(rpgPlayer -> (double) rpgPlayer.getLevel())
+                .orElse(null);
     }
 
 }

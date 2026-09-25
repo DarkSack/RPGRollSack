@@ -125,7 +125,8 @@ public class TrapConditionEvaluator {
         Player player = context.player();
 
         Object builtin = switch (path) {
-            case "player.level" -> player != null ? (double) player.getLevel() : null;
+            case "player.level" -> rpgLevel(player);
+            case "player.xplevel" -> player != null ? (double) player.getLevel() : null;
             case "player.health" -> player != null ? player.getHealth() : null;
             case "player.sneaking" -> player != null ? player.isSneaking() : null;
             case "player.foodlevel" -> player != null ? (double) player.getFoodLevel() : null;
@@ -150,6 +151,24 @@ public class TrapConditionEvaluator {
     private boolean isNight(World world) {
         long time = world.getTime();
         return time >= 13000 && time <= 23000;
+    }
+
+    /**
+     * {@code player.level} es el nivel de RPGRoll, igual que en las
+     * condiciones de Quests y que en los {@code requirements} de los ítems.
+     * Antes aquí era el nivel de experiencia vanilla, así que la misma
+     * expresión significaba cosas distintas según el módulo. El vanilla sigue
+     * disponible como {@code player.xplevel}.
+     */
+    private static Double rpgLevel(Player player) {
+
+        if (player == null || !com.sack.rpgroll.api.RPGRollAPI.isReady()) {
+            return null;
+        }
+
+        return com.sack.rpgroll.api.RPGRollAPI.get().getPlayer(player.getUniqueId())
+                .map(rpgPlayer -> (double) rpgPlayer.getLevel())
+                .orElse(null);
     }
 
 }
