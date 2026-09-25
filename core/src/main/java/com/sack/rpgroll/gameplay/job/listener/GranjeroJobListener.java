@@ -6,6 +6,7 @@ import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 
@@ -26,7 +27,7 @@ public class GranjeroJobListener implements Listener {
         this.rewardService = rewardService;
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
 
         Block block = event.getBlock();

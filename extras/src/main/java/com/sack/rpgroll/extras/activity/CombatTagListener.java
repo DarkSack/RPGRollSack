@@ -2,6 +2,7 @@ package com.sack.rpgroll.extras.activity;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
@@ -14,7 +15,7 @@ public class CombatTagListener implements Listener {
         this.activityStateResolver = activityStateResolver;
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onDamage(EntityDamageByEntityEvent event) {
 
         if (event.getEntity() instanceof Player victim) {

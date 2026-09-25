@@ -12,6 +12,7 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.block.Container;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -28,7 +29,7 @@ public class WarehouseDesignatorListener implements Listener {
         this.lang = lang;
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onInteract(PlayerInteractEvent event) {
 
         if (event.getHand() != EquipmentSlot.HAND || event.getAction() != Action.RIGHT_CLICK_BLOCK) {

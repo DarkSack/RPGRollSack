@@ -5,6 +5,7 @@ import com.sack.rpgroll.gameplay.job.PlacedBlockTracker;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -28,12 +29,12 @@ public class MinerJobListener implements Listener {
         this.placedBlockTracker = placedBlockTracker;
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event) {
         placedBlockTracker.markPlaced(event.getBlock());
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
 
         Block block = event.getBlock();

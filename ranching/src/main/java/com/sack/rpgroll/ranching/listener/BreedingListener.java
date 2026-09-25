@@ -11,6 +11,7 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityBreedEvent;
 
@@ -34,7 +35,7 @@ public class BreedingListener implements Listener {
         this.breedingEngine = breedingEngine;
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onBreed(EntityBreedEvent event) {
 
         if (!(event.getMother() instanceof LivingEntity motherEntity)

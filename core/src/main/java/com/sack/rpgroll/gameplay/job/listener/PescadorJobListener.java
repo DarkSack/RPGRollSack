@@ -4,6 +4,7 @@ import com.sack.rpgroll.gameplay.job.JobRewardService;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.inventory.ItemStack;
@@ -22,7 +23,7 @@ public class PescadorJobListener implements Listener {
         this.rewardService = rewardService;
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerFish(PlayerFishEvent event) {
 
         if (event.getState() != PlayerFishEvent.State.CAUGHT_FISH) {

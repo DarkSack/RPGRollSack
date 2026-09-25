@@ -11,6 +11,7 @@ import com.sack.rpgroll.traps.turret.TurretManager;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -52,7 +53,7 @@ public class TurretPlacementListener implements Listener {
         this.lang = lang;
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onPlace(BlockPlaceEvent event) {
 
         String turretId = TurretItem.turretIdOf(plugin, event.getItemInHand());
@@ -108,7 +109,7 @@ public class TurretPlacementListener implements Listener {
         new TurretAmmoGUI(plugin, placedTurretManager, ammoManager, lang, placed.placementId()).open(player);
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onBreak(BlockBreakEvent event) {
 
         Location broken = event.getBlock().getLocation();

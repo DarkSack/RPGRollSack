@@ -13,6 +13,7 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.plugin.Plugin;
@@ -98,7 +99,7 @@ public class SpellChannelManager implements Listener {
         channeling.put(player.getUniqueId(), task);
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onDamage(EntityDamageEvent event) {
 
         if (!(event.getEntity() instanceof Player player) || !isChanneling(player.getUniqueId())) {

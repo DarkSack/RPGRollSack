@@ -27,6 +27,7 @@ import org.bukkit.entity.Chicken;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Sheep;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityDropItemEvent;
@@ -68,7 +69,7 @@ public class ProductionListener implements Listener {
         this.lang = lang;
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onInteract(PlayerInteractEntityEvent event) {
 
         if (event.getHand() != EquipmentSlot.HAND) {
@@ -104,7 +105,7 @@ public class ProductionListener implements Listener {
                 lang.raw("listener.production.milk_obtained", "quality", result.get().quality()), NamedTextColor.GREEN));
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onShear(PlayerShearEntityEvent event) {
 
         Animal animal = animalManager.resolve(event.getEntity()).orElse(null);

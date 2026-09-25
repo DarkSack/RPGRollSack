@@ -6,6 +6,7 @@ import com.destroystokyo.paper.event.player.PlayerJumpEvent;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -40,7 +41,7 @@ public class ConsumptionListener implements Listener {
         statEngine.consumeAll(event.getPlayer(), "jump");
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onAttack(EntityDamageByEntityEvent event) {
 
         if (event.getDamager() instanceof Player attacker) {
@@ -48,7 +49,7 @@ public class ConsumptionListener implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onMine(BlockBreakEvent event) {
         statEngine.consumeAll(event.getPlayer(), "mining");
     }
