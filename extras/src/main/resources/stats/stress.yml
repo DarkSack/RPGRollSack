@@ -1,14 +1,21 @@
-# Estrés (sección 11) — sube en combate, baja descansando; escala de efectos por umbral.
+# Estrés (sección 11) — sube en combate, baja fuera de él; escala de efectos por umbral.
+#
+# Intervalo en TICKS (20 = 1 segundo). Cada 5 s: +5 en combate (un minuto
+# de pelea continua para llegar a 60), -3 quieto y -1 caminando.
 id: stress
 enabled: true
 max: 100
 start: 0
+reset-on-death: true
 
+regeneration-interval: 100
 regeneration:
   - condition: combat
     amount: 5
   - condition: resting
     amount: -3
+  - condition: walking
+    amount: -1
 
 thresholds:
   - condition: ">=60"

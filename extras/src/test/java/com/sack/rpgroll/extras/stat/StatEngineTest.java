@@ -42,6 +42,41 @@ class StatEngineTest {
     }
 
     @Test
+    void consumingAnItemInRestoreRaisesTheStat() {
+
+        StatDefinition thirst = new StatDefinition("thirst", true, 100, 100, null, null, Map.of(), List.of(),
+                Map.of("apple", 4.0), true);
+        when(statManager.get("thirst")).thenReturn(Optional.of(thirst));
+        when(statManager.getAll()).thenReturn(List.of(thirst));
+        engine.set(player, "thirst", 50);
+
+        org.bukkit.inventory.ItemStack apple = mock(org.bukkit.inventory.ItemStack.class);
+        when(apple.getType()).thenReturn(org.bukkit.Material.APPLE);
+        engine.restoreFromConsumed(player, apple);
+
+        assertEquals(54.0, engine.get(player, "thirst"));
+    }
+
+    @Test
+    void resetAfterDeathOnlyTouchesStatsThatAskForIt() {
+
+        StatDefinition thirst = new StatDefinition("thirst", true, 100, 100, null, null, Map.of(), List.of(),
+                Map.of(), true);
+        StatDefinition stress = new StatDefinition("stress", true, 100, 0, null, null, Map.of(), List.of(),
+                Map.of(), false);
+        when(statManager.get("thirst")).thenReturn(Optional.of(thirst));
+        when(statManager.get("stress")).thenReturn(Optional.of(stress));
+        when(statManager.getAll()).thenReturn(List.of(thirst, stress));
+        engine.set(player, "thirst", 5);
+        engine.set(player, "stress", 70);
+
+        engine.resetAfterDeath(player);
+
+        assertEquals(100.0, engine.get(player, "thirst"));
+        assertEquals(70.0, engine.get(player, "stress"));
+    }
+
+    @Test
     void getReturnsConfiguredStartValueOnFirstAccess() {
         when(statManager.get("thirst")).thenReturn(Optional.of(stat("thirst", 100, 100)));
 

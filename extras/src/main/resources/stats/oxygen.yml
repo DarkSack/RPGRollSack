@@ -1,13 +1,18 @@
 # Oxígeno (sección 12) — se recupera respirando aire, se consume bajo el agua.
+#
+# Las reglas se SUMAN: la de +10 no tiene condición y se aplica también bajo
+# el agua, así que la de "underwater" tiene que compensarla (-18 = -8 netos
+# por segundo). Con -8 a secas el oxígeno SUBÍA bajo el agua.
 id: oxygen
 enabled: true
 max: 100
 start: 100
+reset-on-death: true
 
 regeneration:
   - amount: 10
   - condition: underwater
-    amount: -8
+    amount: -18
 
 thresholds:
   - condition: "<=0"

@@ -10,6 +10,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerToggleSprintEvent;
 
 /**
@@ -47,6 +48,12 @@ public class ConsumptionListener implements Listener {
         if (event.getDamager() instanceof Player attacker) {
             statEngine.consumeAll(attacker, "attack");
         }
+    }
+
+    /** Comer o beber: sube los stats que declaren el ítem en su "restore" (la sed, sobre todo). */
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onConsume(PlayerItemConsumeEvent event) {
+        statEngine.restoreFromConsumed(event.getPlayer(), event.getItem());
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)

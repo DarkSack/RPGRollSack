@@ -8,12 +8,18 @@ import com.sack.rpgroll.extras.expression.RateConditionEvaluator;
 import com.sack.rpgroll.extras.modifier.ModifierResolver;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.potion.PotionType;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.ArrayList;
@@ -247,10 +253,83 @@ public class StatEngine {
         }
     }
 
-    public void initializePlayer(Player player) {
+    /**
+     * Sube los stats que declaren este ítem en su {@code restore}. La
+     * botella de agua es un POTION más, así que tiene su propia clave.
+     */
+    public void restoreFromConsumed(Player player, ItemStack item) {
+
+        String key = restoreKey(item);
+
         for (StatDefinition stat : statManager.getAll()) {
-            get(player, stat.id());
+
+            Double amount = stat.enabled() ? stat.restore().get(key) : null;
+
+            if (amount != null) {
+                adjust(player, stat.id(), amount);
+            }
         }
+    }
+
+    static String restoreKey(ItemStack item) {
+
+        if (item.getType() == Material.POTION && item.getItemMeta() instanceof PotionMeta meta
+                && meta.getBasePotionType() == PotionType.WATER) {
+            return "water_bottle";
+        }
+
+        return item.getType().name().toLowerCase(Locale.ROOT);
+    }
+
+    /** Al reaparecer: los stats con {@code reset-on-death} vuelven a su valor inicial. */
+    public void resetAfterDeath(Player player) {
+        for (StatDefinition stat : statManager.getAll()) {
+            if (stat.resetOnDeath()) {
+                set(player, stat.id(), stat.start());
+            }
+        }
+    }
+
+    /**
+     * Carga los valores guardados en el jugador. Antes vivían solo en memoria:
+     * salir y entrar devolvía todo al inicio (y era la única forma de quitarse
+     * la deshidratación).
+     */
+    public void initializePlayer(Player player) {
+
+        PersistentDataContainer data = player.getPersistentDataContainer();
+
+        for (StatDefinition stat : statManager.getAll()) {
+
+            Double saved = data.get(storageKey(stat.id()), PersistentDataType.DOUBLE);
+
+            if (saved != null) {
+                set(player, stat.id(), saved);
+            } else {
+                get(player, stat.id());
+            }
+        }
+    }
+
+    /** Guarda los valores actuales en el jugador (al salir y al apagar). */
+    public void save(Player player) {
+
+        Map<String, Double> current = values.get(player.getUniqueId());
+
+        if (current == null) {
+            return;
+        }
+
+        PersistentDataContainer data = player.getPersistentDataContainer();
+        current.forEach((statId, value) -> data.set(storageKey(statId), PersistentDataType.DOUBLE, value));
+    }
+
+    public void saveAll() {
+        Bukkit.getOnlinePlayers().forEach(this::save);
+    }
+
+    private NamespacedKey storageKey(String statId) {
+        return new NamespacedKey(plugin, "stat_" + statId.toLowerCase(Locale.ROOT));
     }
 
     public void clear(Player player) {

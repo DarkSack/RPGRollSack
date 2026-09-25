@@ -9,6 +9,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 
 public class PlayerLifecycleListener implements Listener {
 
@@ -31,7 +32,13 @@ public class PlayerLifecycleListener implements Listener {
     }
 
     @EventHandler
+    public void onRespawn(PlayerRespawnEvent event) {
+        statEngine.resetAfterDeath(event.getPlayer());
+    }
+
+    @EventHandler
     public void onQuit(PlayerQuitEvent event) {
+        statEngine.save(event.getPlayer());
         statEngine.clear(event.getPlayer());
         conditionRuntime.clear(event.getPlayer());
         temperatureEngine.clear(event.getPlayer());

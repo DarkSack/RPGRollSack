@@ -1,18 +1,24 @@
 # Fatiga (sección 9/10) — distinta de stamina: cansancio ACUMULADO. Sube
 # pasivamente estando despierto (regla sin condición), baja descansando.
+#
+# Las reglas se SUMAN en cada intervalo. El intervalo va en TICKS
+# (20 = 1 segundo); antes corría cada segundo y llegaba a 80 en menos de
+# tres minutos. Ahora: +1 cada 30 s (80 en unos 40 minutos de actividad) y
+# quieto se recupera a -3 netos cada 30 s.
 id: fatigue
 enabled: true
 max: 100
 start: 0
+reset-on-death: true
 
+regeneration-interval: 600
 regeneration:
-  - amount: 0.5
+  - amount: 1
   - condition: resting
-    amount: -3
+    amount: -4
 
 consumption:
-  sprint: 0.2
-  attack: 0.1
+  sprint: 0.1
 
 thresholds:
   - condition: ">=80"
@@ -21,4 +27,4 @@ thresholds:
         amplifier: 0
     actions:
       - type: MESSAGE
-        value: "&7Estás muy cansado — deberías dormir."
+        value: "&7Estás muy cansado: descansa un rato quieto."

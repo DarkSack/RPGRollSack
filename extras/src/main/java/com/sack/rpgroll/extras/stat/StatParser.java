@@ -32,8 +32,12 @@ public class StatParser implements ContentParser<StatDefinition> {
         RegenerationConfig regeneration = parseRegeneration(config, id);
         Map<String, Double> consumption = parseConsumption(config.getConfigurationSection("consumption"));
         List<StatThreshold> thresholds = parseThresholds(config.getMapList("thresholds"), id);
+        // Mismo formato que "consumption": clave -> cantidad.
+        Map<String, Double> restore = parseConsumption(config.getConfigurationSection("restore"));
+        boolean resetOnDeath = config.getBoolean("reset-on-death", true);
 
-        return new StatDefinition(id, enabled, max, start, decay, regeneration, consumption, thresholds);
+        return new StatDefinition(id, enabled, max, start, decay, regeneration, consumption, thresholds,
+                restore, resetOnDeath);
     }
 
     private DecayRule parseDecay(ConfigurationSection section) {

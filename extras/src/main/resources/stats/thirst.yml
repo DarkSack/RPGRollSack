@@ -1,30 +1,49 @@
-# Sed (sección 5) — baja pasivamente, cruzar 30/10 aplica debilidad/lentitud;
-# en 0 aplica la condition "dehydration" (daño periódico) hasta que vuelva a subir.
+# Sed (sección 5) — baja poco a poco y se recupera BEBIENDO (bloque
+# "restore"). Por debajo de 25 avisa, en 10 da debilidad y en 0 aplica la
+# condition "dehydration" hasta que vuelvas a beber.
+#
+# Todos los intervalos van en TICKS: 20 ticks = 1 segundo, 1200 = 1 minuto.
 id: thirst
 enabled: true
 max: 100
 start: 100
+# Al reaparecer tras morir vuelve a "start".
+reset-on-death: true
 
 decay:
   amount: 1
-  interval: 60
+  interval: 1200 # -1 por minuto: de lleno a vacío en unos 100 minutos
 
 consumption:
-  sprint: 0.5
+  sprint: 0.25 # cada vez que empiezas a correr
+
+# Cuánto sube al consumir cada ítem. Clave: el material en minúsculas, o
+# "water_bottle" para la botella de agua (el resto de pociones es "potion").
+restore:
+  water_bottle: 40
+  potion: 20
+  milk_bucket: 30
+  honey_bottle: 25
+  melon_slice: 6
+  apple: 4
+  sweet_berries: 3
+  glow_berries: 3
+  golden_apple: 20
+  beetroot_soup: 15
+  mushroom_stew: 15
+  rabbit_stew: 15
+  suspicious_stew: 15
 
 thresholds:
-  - condition: "<=30"
-    potions:
-      - type: weakness
-        amplifier: 0
+  - condition: "<=25"
     actions:
       - type: MESSAGE
-        value: "&cTenés sed."
+        value: "&bTienes sed. &7Una botella de agua te quita casi la mitad."
 
   - condition: "<=10"
     potions:
-      - type: slowness
-        amplifier: 1
+      - type: weakness
+        amplifier: 0
 
   - condition: "<=0"
     apply-conditions:

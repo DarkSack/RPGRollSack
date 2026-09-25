@@ -162,6 +162,8 @@ public class ExtrasPlugin extends JavaPlugin {
     public void onDisable() {
 
         if (statEngine != null) {
+            // Un apagado no dispara PlayerQuitEvent a tiempo para todos.
+            statEngine.saveAll();
             statEngine.stop();
         }
 
