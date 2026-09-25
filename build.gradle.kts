@@ -5,9 +5,10 @@
 // ============================================================================
 
 val addonModuleNames = listOf(
-    "core", "npcs", "crates", "enchantments", "quests", "items", "ascension", "mobs",
+    // :common se distribuye como RPGRoll-Lib, la librería que todos declaran en depend.
+    "common", "core", "npcs", "crates", "enchantments", "quests", "items", "ascension", "mobs",
     "dungeons", "guilds", "chat", "fx", "effects", "magic", "seasons", "fishing",
-    "sackresourcepack", "ranching", "workers", "economy", "crafting", "tab", "extras", "traps",
+    "sackresourcepack", "ranching", "workers", "economy", "crafting", "tab", "extras", "traps", "pass",
 )
 
 val addonProjects = addonModuleNames.map { project(it) }
@@ -104,8 +105,8 @@ val collectRelease by tasks.registering(Copy::class) {
                 appendLine("instalado en un servidor es exactamente el que salió de este release:")
                 jars.forEach { appendLine("  - ${it.name}  ${sha256(it.readBytes())}") }
                 appendLine()
-                appendLine("Instalación: copiá RPGRoll-<version>.jar (el core) y los addons que necesites")
-                appendLine("a plugins/ del servidor Paper. Ninguno es obligatorio salvo el core.")
+                appendLine("Instalación: copiá RPGRoll-Lib-<version>.jar (la librería, gratuita y")
+                appendLine("obligatoria) y los módulos que necesites a plugins/ del servidor Paper.")
             },
         )
     }

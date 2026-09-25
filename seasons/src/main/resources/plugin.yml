@@ -4,7 +4,7 @@ main: com.sack.rpgroll.seasons.SeasonsPlugin
 api-version: "26.1.1"
 author: Sack
 description: Calendario y estaciones 100% personalizables — clima, temperatura por bioma, vegetación dinámica, mobs/jefes de temporada y eventos mundiales.
-depend: [RPGRoll]
+depend: [RPGRoll-Lib, RPGRoll]
 softdepend: [RPGRoll-FX, RPGRoll-Effects, RPGRoll-Mobs]
 
 permissions:

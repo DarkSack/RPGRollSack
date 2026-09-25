@@ -1,6 +1,6 @@
 package com.sack.rpgroll.gui.listener;
 
-import com.sack.rpgroll.RPGRoll;
+import org.bukkit.plugin.Plugin;
 import com.sack.rpgroll.gui.InventoryGUI;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -20,9 +20,9 @@ public class GUIListener implements Listener {
 
     private static final Map<UUID, InventoryGUI> activeGUIs = new HashMap<>();
 
-    private final RPGRoll plugin;
+    private final Plugin plugin;
 
-    public GUIListener(RPGRoll plugin) {
+    public GUIListener(Plugin plugin) {
         this.plugin = plugin;
     }
 

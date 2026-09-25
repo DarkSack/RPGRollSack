@@ -10,7 +10,9 @@ base.archivesName.set("RPGRoll")
 
 dependencies {
     implementation(project(":api"))
-    implementation(project(":common"))
+    // RPGRoll-Lib: plugin aparte en runtime, no se empaqueta dentro del core.
+    compileOnly(project(":common"))
+    testImplementation(project(":common"))
     implementation(project(":licensing"))
 
     compileOnly("com.github.MilkBowl:VaultAPI:1.7.1") {

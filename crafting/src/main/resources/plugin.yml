@@ -4,7 +4,7 @@ main: com.sack.rpgroll.crafting.CraftingPlugin
 api-version: "26.1.1"
 author: Sack
 description: Motor de crafteo avanzado — recetas personalizadas con condiciones e ingredientes ricos, sistema de calidad, estaciones de crafteo personalizadas (multi-etapa, combustible, fallos), puente con las estaciones vanilla (mesa de crafteo, hornos, cortadora de piedra, mesa de herrería) y motores dedicados de yunque y de fermentación.
-depend: [RPGRoll]
+depend: [RPGRoll-Lib, RPGRoll]
 softdepend: [RPGRoll-Items, RPGRoll-Economy, RPGRoll-Guilds, RPGRoll-Seasons]
 
 permissions:

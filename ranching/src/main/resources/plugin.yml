@@ -4,7 +4,7 @@ main: com.sack.rpgroll.ranching.RanchingPlugin
 api-version: "26.1.1"
 author: Sack
 description: Ganadería como simulación viva — genética hereditaria con linajes, reproducción, nutrición, bienestar animal, enfermedades/vacunas y producción con calidad.
-depend: [RPGRoll]
+depend: [RPGRoll-Lib, RPGRoll]
 softdepend: [RPGRoll-FX, RPGRoll-Effects, RPGRoll-Seasons, SackResourcePack]
 
 permissions:

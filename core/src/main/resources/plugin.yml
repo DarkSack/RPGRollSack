@@ -4,6 +4,7 @@ main: com.sack.rpgroll.RPGRoll
 api-version: "26.1.1"
 author: Sack
 description: DnD RPG Framework para Minecraft Paper
+depend: [RPGRoll-Lib]
 softdepend: [Vault, PlaceholderAPI]
 
 # Comandos del plugin

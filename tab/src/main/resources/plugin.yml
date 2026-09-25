@@ -4,7 +4,7 @@ main: com.sack.rpgroll.tab.TabPlugin
 api-version: "26.1.2"
 author: Sack
 description: Personalización avanzada de TabList, Scoreboard, Nametags, BelowName y BossBars para RPGRoll
-depend: [RPGRoll]
+depend: [RPGRoll-Lib, RPGRoll]
 softdepend: [ProtocolLib, PlaceholderAPI]
 
 permissions:

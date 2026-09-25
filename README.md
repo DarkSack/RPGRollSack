@@ -173,12 +173,13 @@ No hay nada más que configurar: el plugin sabe solo a qué servicio consultar. 
 Si el servicio de licencias no responde, el plugin **no** te bloquea: se apoya en la última validación correcta durante 7 días.
 
 1. Descarga los `.jar` de los módulos que quieras usar.
-2. Coloca **siempre `RPGRoll` (core) primero** dentro de `plugins/` — todos los addons dependen de él (excepto `SackResourcePack`, que es standalone).
+2. Coloca **siempre `RPGRoll-Lib`** dentro de `plugins/`: es la librería compartida del ecosistema, gratuita y sin licencia, y la necesitan todos los módulos (excepto `SackResourcePack`, que es standalone). Añade también `RPGRoll` (core) si tus módulos lo piden (ver tabla).
 3. Agrega los addons que quieras encima, respetando sus dependencias duras (ver tabla de [Ecosistema de módulos](#-ecosistema-de-módulos)) — por ejemplo, `Dungeons` requiere que `Mobs` y `Guilds` ya estén instalados.
 4. Reinicia el servidor.
 
 ```
 plugins/
+├── RPGRoll-Lib.jar
 ├── RPGRoll.jar
 ├── RPGRoll-Items.jar
 ├── RPGRoll-Enchantments.jar

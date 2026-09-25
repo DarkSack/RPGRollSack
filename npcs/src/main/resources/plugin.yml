@@ -4,7 +4,7 @@ main: com.sack.rpgroll.npcs.RPGRollNPCs
 api-version: "26.1.1"
 author: Sack
 description: Sistema de NPCs interactuables para RPGRoll
-depend: [RPGRoll]
+depend: [RPGRoll-Lib, RPGRoll]
 softdepend: [RPGRoll-Quests]
 
 permissions:

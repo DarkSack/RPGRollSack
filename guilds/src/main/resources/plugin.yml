@@ -4,7 +4,7 @@ main: com.sack.rpgroll.guilds.GuildsPlugin
 api-version: "26.1.1"
 author: Sack
 description: Sistema social de RPGRoll — equipos temporales (Teams) y organizaciones permanentes (Guilds)
-depend: [RPGRoll]
+depend: [RPGRoll-Lib, RPGRoll]
 softdepend: [RPGRoll-Items, RPGRoll-Quests, Vault, PlaceholderAPI]
 
 permissions:

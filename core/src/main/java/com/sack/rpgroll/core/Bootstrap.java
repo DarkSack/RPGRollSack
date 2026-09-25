@@ -30,7 +30,6 @@ import com.sack.rpgroll.gameplay.levelup.LevelUpRewardsConfig;
 import com.sack.rpgroll.gameplay.skill.SkillManager;
 import com.sack.rpgroll.gameplay.trait.TraitManager;
 import com.sack.rpgroll.gui.admin.ChatPromptManager;
-import com.sack.rpgroll.gui.listener.GUIListener;
 import com.sack.rpgroll.integration.RPGRollPlaceholders;
 import com.sack.rpgroll.integration.VaultEconomyProvider;
 import com.sack.rpgroll.licensing.LicenseGate;
@@ -396,8 +395,7 @@ public class Bootstrap {
         Bukkit.getPluginManager().registerEvents(combatEffectsListener, plugin);
 
         // ===== Listeners de GUI =====
-        GUIListener guiListener = new GUIListener(plugin);
-        Bukkit.getPluginManager().registerEvents(guiListener, plugin);
+        // El GUIListener lo registra RPGRoll-Lib, uno solo para todos los plugins.
 
         ChatPromptManager chatPromptManager = new ChatPromptManager(plugin, langManager);
         Bukkit.getPluginManager().registerEvents(chatPromptManager, plugin);

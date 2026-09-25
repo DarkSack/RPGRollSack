@@ -4,7 +4,7 @@ main: com.sack.rpgroll.quests.QuestsPlugin
 api-version: "26.1.1"
 author: Sack
 description: Motor de misiones ramificadas, componible por stages/objetivos/condiciones/eventos para RPGRoll
-depend: [RPGRoll]
+depend: [RPGRoll-Lib, RPGRoll]
 softdepend: [PlaceholderAPI]
 
 permissions:
