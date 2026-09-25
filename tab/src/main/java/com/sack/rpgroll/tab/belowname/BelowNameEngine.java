@@ -4,15 +4,28 @@ import com.sack.rpgroll.tab.placeholder.PlaceholderEngine;
 import com.sack.rpgroll.tab.teams.PlayerScoreboardService;
 import com.sack.rpgroll.util.ComponentUtils;
 
+import io.papermc.paper.scoreboard.numbers.NumberFormat;
+
+import net.kyori.adventure.text.Component;
+
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Criteria;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
+import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
 
 import java.util.Collection;
 
-/** Igual que {@link com.sack.rpgroll.tab.teams.TeamsEngine}: escribe en el tablero individual de cada viewer. */
+/**
+ * Igual que {@link com.sack.rpgroll.tab.teams.TeamsEngine}: escribe en el tablero individual de cada viewer.
+ * <p>
+ * El cliente pinta el objetivo BELOW_NAME debajo de CUALQUIER entidad con el
+ * nombre visible (las líneas de un holograma son armor stands con nombre), y
+ * sin puntuación muestra "0". Por eso el objetivo va sin título y con formato
+ * en blanco, y el texto real ("20 ❤") viaja como formato fijo en la puntuación
+ * de cada jugador: lo que no es un jugador no enseña nada.
+ */
 public class BelowNameEngine {
 
     private static final String OBJECTIVE_NAME = "rpgtab_belowname";
@@ -28,6 +41,7 @@ public class BelowNameEngine {
     public void apply(Player subject, BelowNameDefinition definition, Collection<Player> viewers) {
 
         int score = parseScore(placeholderEngine.resolve(definition.scorePlaceholder(), subject));
+        Component text = Component.text(score + " ").append(ComponentUtils.parse(definition.label()));
 
         for (Player viewer : viewers) {
 
@@ -35,14 +49,14 @@ public class BelowNameEngine {
             Objective objective = board.getObjective(OBJECTIVE_NAME);
 
             if (objective == null) {
-                objective = board.registerNewObjective(
-                        OBJECTIVE_NAME, Criteria.DUMMY, ComponentUtils.parse(definition.label()));
+                objective = board.registerNewObjective(OBJECTIVE_NAME, Criteria.DUMMY, Component.empty());
+                objective.numberFormat(NumberFormat.blank());
                 objective.setDisplaySlot(DisplaySlot.BELOW_NAME);
-            } else {
-                objective.displayName(ComponentUtils.parse(definition.label()));
             }
 
-            objective.getScore(subject.getName()).setScore(score);
+            Score entry = objective.getScore(subject.getName());
+            entry.setScore(score);
+            entry.numberFormat(NumberFormat.fixed(text));
         }
     }
 
