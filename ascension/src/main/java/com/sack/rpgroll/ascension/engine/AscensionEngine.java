@@ -3,6 +3,7 @@ package com.sack.rpgroll.ascension.engine;
 import com.sack.rpgroll.api.RPGRollAPI;
 import com.sack.rpgroll.ascension.core.ClassSpecialization;
 import com.sack.rpgroll.ascension.core.ClassSpecializationManager;
+import com.sack.rpgroll.ascension.core.PrestigeLevel;
 import com.sack.rpgroll.ascension.core.PrestigeManager;
 import com.sack.rpgroll.ascension.core.RaceEvolution;
 import com.sack.rpgroll.ascension.core.RaceEvolutionManager;
@@ -273,11 +274,19 @@ public class AscensionEngine {
         }
 
         int nextPrestige = state.getPrestigeCount() + 1;
-        int requiredLevel = prestigeManager.getByNumber(nextPrestige).map(p -> p.requiredLevel()).orElse(100);
+        Optional<PrestigeLevel> next = prestigeManager.getByNumber(nextPrestige);
+        int requiredLevel = next.map(p -> p.requiredLevel()).orElse(100);
 
         if (rpgPlayer.getLevel() < requiredLevel) {
             return List.of(lang.raw("engine.prestige_level_required", "level", requiredLevel, "current",
                     rpgPlayer.getLevel()));
+        }
+
+        if (next.isPresent()) {
+            List<String> reasons = requirementChecker.check(player, next.get().requirements(), state);
+            if (!reasons.isEmpty()) {
+                return reasons;
+            }
         }
 
         PlayerIdentity identity = new PlayerIdentity(rpgPlayer.getUUID(), rpgPlayer.getUsername(),

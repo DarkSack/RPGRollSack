@@ -52,4 +52,20 @@ class PrestigeLevelTest {
 
         assertThrows(UnsupportedOperationException.class, () -> level.grantedSkills().add("nope"));
     }
+
+    @Test
+    void shortConstructorHasNoExtraRequirements() {
+        assertEquals(AscensionRequirements.none(), new PrestigeLevel("1", 100, 5.0, List.of()).requirements());
+    }
+
+    @Test
+    void withKeepsRequirements() {
+        AscensionRequirements trial = new AscensionRequirements(0, 0, null, List.of("prueba_renacimiento"), null);
+        PrestigeLevel level = new PrestigeLevel("1", 100, 5.0, List.of(), trial);
+
+        PrestigeLevel edited = level.with(90, 6.0, List.of("aura"));
+
+        assertEquals(trial, edited.requirements());
+        assertEquals(90, edited.requiredLevel());
+    }
 }

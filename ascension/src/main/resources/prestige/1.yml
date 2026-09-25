@@ -3,3 +3,8 @@ required-level: 100
 exp-bonus-percent: 5
 skills:
   - prestige_aura_1
+
+# Opcional: condiciones extra además del nivel, con el mismo formato que las
+# evoluciones y especializaciones. Por ejemplo, una quest de prueba:
+# requirements:
+#   completed-quests: [prueba_renacimiento]

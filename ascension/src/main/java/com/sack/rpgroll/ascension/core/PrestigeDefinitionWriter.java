@@ -21,6 +21,10 @@ public class PrestigeDefinitionWriter {
         config.set("exp-bonus-percent", level.expBonusPercent());
         config.set("skills", level.grantedSkills());
 
+        if (!level.requirements().equals(AscensionRequirements.none())) {
+            AscensionRequirementsWriter.write(config, "requirements", level.requirements());
+        }
+
         try {
             folder.mkdirs();
             config.save(new File(folder, level.id() + ".yml"));

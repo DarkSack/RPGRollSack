@@ -83,21 +83,21 @@ public class PrestigeEditorGUI extends InventoryGUI {
 
         if (slot == LEVEL_SLOT) {
             int delta = click == ClickType.RIGHT ? -10 : 10;
-            replace(new PrestigeLevel(current.id(), Math.max(1, current.requiredLevel() + delta),
+            replace(current.with(Math.max(1, current.requiredLevel() + delta),
                     current.expBonusPercent(), current.grantedSkills()));
             return;
         }
 
         if (slot == BONUS_SLOT) {
             double delta = click == ClickType.RIGHT ? -1 : 1;
-            replace(new PrestigeLevel(current.id(), current.requiredLevel(),
+            replace(current.with(current.requiredLevel(),
                     Math.max(0, current.expBonusPercent() + delta), current.grantedSkills()));
             return;
         }
 
         if (slot == SKILLS_SLOT) {
             chatPromptManager.prompt(player, "gui.prestige.prompt_skills",
-                    value -> replace(new PrestigeLevel(current.id(), current.requiredLevel(),
+                    value -> replace(current.with(current.requiredLevel(),
                             current.expBonusPercent(), List.of(value.trim().split(",")))));
             return;
         }

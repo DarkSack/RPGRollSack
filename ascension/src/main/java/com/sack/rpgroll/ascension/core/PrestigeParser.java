@@ -17,7 +17,8 @@ public class PrestigeParser implements ContentParser<PrestigeLevel> {
         int requiredLevel = config.getInt("required-level", 100);
         double expBonusPercent = config.getDouble("exp-bonus-percent", 0);
 
-        return new PrestigeLevel(id, requiredLevel, expBonusPercent, config.getStringList("skills"));
+        return new PrestigeLevel(id, requiredLevel, expBonusPercent, config.getStringList("skills"),
+                AscensionRequirementsParser.parse(config.getConfigurationSection("requirements")));
     }
 
 }
