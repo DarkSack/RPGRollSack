@@ -1,0 +1,14 @@
+# Ingrediente de la Espada Rúnica de RPGRoll-Crafting (recipes/runic_blade.yml).
+# Lo vende el aldeano de villager-trades/enchanted_gem_dealer.yml, con
+# calidad aleatoria: la receta pide calidad FINE o mejor.
+id: enchanted_gem
+pack: crafting
+material: EMERALD
+display-name: "&aGema Encantada"
+lore:
+  - "&7Late con una luz que no es suya."
+  - "&8Ingrediente de forja"
+rarity: UNCOMMON
+glow: true
+economy:
+  sell: 60

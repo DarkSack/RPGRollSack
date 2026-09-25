@@ -15,4 +15,7 @@ rewards-experience: true
 conditions: []
 xp-amount: 0
 economy-cost: 0
-quality-enabled: false
+# Con calidad: la Espada Rúnica pide la gema en calidad FINE o mejor, y un
+# ítem sin calidad cuenta como la más baja. Sin esto la receta no se podía
+# completar nunca.
+quality-enabled: true

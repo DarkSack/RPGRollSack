@@ -1,0 +1,25 @@
+# Resultado de la receta de estación de RPGRoll-Crafting
+# (recipes/runic_blade.yml): se forja en la iron_forge, no en la mesa de
+# crafteo, así que no lleva receta propia aquí.
+id: runic_blade
+pack: crafting
+material: DIAMOND_SWORD
+display-name: "&5Espada Rúnica"
+lore:
+  - "&7Las runas se encienden al entrar en combate."
+rarity: EPIC
+stats:
+  damage: 6
+  critical_chance: 8
+  critical_damage: 30
+requirements:
+  level: 15
+durability:
+  max: 800
+  repairable: true
+  degrade-per-use: 1
+sockets:
+  - id: socket-1
+    accepted-types: [FIRE, GENERIC]
+economy:
+  sell: 400
