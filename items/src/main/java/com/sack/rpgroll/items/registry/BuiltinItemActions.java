@@ -100,7 +100,11 @@ public final class BuiltinItemActions {
             Location location = targetLocation(ctx);
             float power = Float.parseFloat(action.param("power", "1.0"));
             boolean breakBlocks = Boolean.parseBoolean(action.param("break-blocks", "false"));
-            location.getWorld().createExplosion(location, power, false, breakBlocks);
+            // Con el jugador como fuente: la explosión no le hace daño a él
+            // (vanilla excluye a la fuente), las muertes se le atribuyen y
+            // WorldGuard/GriefPrevention saben de quién es. Sin fuente, la
+            // habilidad hería a quien la lanzaba.
+            location.getWorld().createExplosion(location, power, false, breakBlocks, ctx.player());
         });
 
         registry.register("DAMAGE", (action, ctx) -> {

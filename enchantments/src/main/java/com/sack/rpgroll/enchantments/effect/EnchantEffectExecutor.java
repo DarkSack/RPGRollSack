@@ -143,7 +143,9 @@ public class EnchantEffectExecutor {
         float power = (float) resolveDouble(effect, context, "power", 1.0);
         boolean breakBlocks = Boolean.parseBoolean(effect.param("break-blocks", "false"));
 
-        location.getWorld().createExplosion(location, power, false, breakBlocks);
+        // El jugador como fuente, por lo mismo que en las acciones de ítems:
+        // sin ella, el encantamiento dañaba a su propio portador.
+        location.getWorld().createExplosion(location, power, false, breakBlocks, context.player());
     }
 
     private void executeTeleport(EnchantEffect effect, EffectContext context) {

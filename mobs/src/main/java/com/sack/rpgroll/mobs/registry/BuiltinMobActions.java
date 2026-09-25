@@ -129,7 +129,9 @@ public final class BuiltinMobActions {
             Location location = ctx.mob().getLocation();
             float power = Float.parseFloat(action.param("power", "1.5"));
             boolean breakBlocks = Boolean.parseBoolean(action.param("break-blocks", "false"));
-            location.getWorld().createExplosion(location, power, false, breakBlocks);
+            // El mob como fuente: no se hiere con su propia explosión y las
+            // protecciones la tratan como explosión de mob.
+            location.getWorld().createExplosion(location, power, false, breakBlocks, ctx.mob());
         });
 
         registry.register("FIRE", (action, ctx) -> {
