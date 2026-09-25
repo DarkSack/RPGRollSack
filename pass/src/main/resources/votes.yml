@@ -1,0 +1,36 @@
+# Votos (/votar). Hace falta Votifier (NuVotifier o AzuVotifier) escuchando
+# en un puerto abierto, y el servidor dado de alta en cada página con ese
+# puerto y la clave pública de plugins/Votifier/rsa/public.key.
+#
+# Quien vota sin estar conectado recibe el voto al entrar.
+# Para probar sin página: /passadmin vote <jugador>
+
+# Enlaces que muestra /votar (clicables en el chat).
+sites: []
+#  - name: "&aMinecraft-MP"
+#    url: "https://minecraft-mp.com/server/XXXXX/vote/"
+
+# Por cada voto.
+rewards:
+  - money:250
+  - key:comun:1
+
+# Puntos de pase por cada voto.
+pass-xp: 150
+
+# Premio al llegar a N días seguidos votando (una vez, el primer voto de ese día).
+streak:
+  3:
+    - key:comun:2
+  7:
+    - key:epica:1
+    - money:1500
+  14:
+    - key:epica:2
+    - item:enchanted_gem:2
+  30:
+    - key:legendario:1
+    - money:5000
+
+# Aviso a todo el servidor. {player} = quien votó. Vacío = sin aviso.
+broadcast: "&b{player} &7votó por el servidor y se llevó recompensas. &e/votar"

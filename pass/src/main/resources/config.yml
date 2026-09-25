@@ -1,0 +1,32 @@
+# Configuración de RPGRoll-Pass
+#
+# Ficheros de esta carpeta:
+#   seasons/<id>.yml  una temporada: fechas, puntos por nivel y recompensas
+#   missions.yml      misiones diarias, semanales y de temporada
+#   daily.yml         recompensa diaria con racha y extra por rango
+#   votes.yml         páginas de votación y recompensas por votar
+# Tras editar cualquiera: /passadmin reload
+
+# Idioma de los mensajes: es, en.
+language: es
+
+# Temporada activa (nombre del fichero en seasons/ sin .yml). Vacío = pase cerrado.
+# Al cambiarla, cada jugador empieza la nueva desde el nivel 0.
+active-season: temporada_1
+
+# Zona horaria en la que cambian el día (diario y misiones) y la semana.
+timezone: America/Mexico_City
+
+# Tras cuántos segundos sin moverse deja de contar el tiempo jugado (PLAYTIME).
+playtime-afk-seconds: 300
+
+# Recompensas, en todos los ficheros, como texto corto:
+#   money:500                 dinero (Vault)
+#   key:legendario:1          llave de RPGRoll-Crates
+#   item:phoenix_feather:1    ítem de RPGRoll-Items
+#   material:diamond:8        ítem vanilla
+#   exp:400                   experiencia de personaje de RPGRoll
+#   command:<comando>         comando de consola; {player} = nombre del jugador
+#
+# La pista premium la abre el permiso rpgroll.pass.premium, p. ej.:
+#   lp user <jugador> permission settemp rpgroll.pass.premium true 45d

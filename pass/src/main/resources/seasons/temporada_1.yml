@@ -1,0 +1,105 @@
+# Pase Royale · Temporada 1
+#
+# Cada xp-per-level puntos de pase sube un nivel. Los puntos salen de las
+# misiones (missions.yml), del diario (daily.yml) y de votar (votes.yml).
+# Ritmo pensado: ~1.000 puntos al día jugando y votando → los 30 niveles en
+# unas 4-5 semanas, con margen dentro de las 6 que dura.
+#
+# free: para todos. premium: requiere rpgroll.pass.premium.
+id: temporada_1
+display-name: "&6&l✦ Pase Royale &7· &eTemporada 1"
+start: 2026-09-25
+end: 2026-11-08
+xp-per-level: 1000
+
+levels:
+  1:
+    free: [money:300, material:bread:16]
+    premium: [item:healing_potion:4, money:500]
+  2:
+    free: [material:iron_ingot:16]
+    premium: [key:comun:1]
+  3:
+    free: [exp:300]
+    premium: [item:espada_escudero:1]
+  4:
+    free: [material:cooked_beef:32]
+    premium: [money:1000]
+  5:
+    free: [key:comun:1, money:500]
+    premium: [key:epica:1, item:enchanted_gem:2]
+  6:
+    free: [material:torch:64]
+    premium: [item:vara_del_iniciado:1]
+  7:
+    free: [item:healing_potion:4]
+    premium: [material:diamond:8]
+  8:
+    free: [money:700]
+    premium: [item:miner_pickaxe:1]
+  9:
+    free: [material:gold_ingot:16]
+    premium: [exp:1000]
+  10:
+    free: [key:comun:2, material:diamond:4]
+    premium: [key:epica:2, item:hoja_del_centinela:1, money:2500]
+  11:
+    free: [exp:500]
+    premium: [item:manto_del_hechicero:1]
+  12:
+    free: [material:experience_bottle:16]
+    premium: [money:1500]
+  13:
+    free: [money:900]
+    premium: [item:peto_del_centinela:1]
+  14:
+    free: [material:golden_carrot:32]
+    premium: [item:mana_draught:8]
+  15:
+    free: [key:epica:1, money:1000]
+    premium: [key:epica:1, item:vara_del_vendaval:1, material:diamond:12]
+  16:
+    free: [material:obsidian:16]
+    premium: [item:knight_helmet:1]
+  17:
+    free: [item:enchanted_gem:1]
+    premium: [money:3000]
+  18:
+    free: [exp:800]
+    premium: [item:shadow_boots:1]
+  19:
+    free: [material:ender_pearl:8]
+    premium: [material:netherite_scrap:2]
+  20:
+    free: [key:epica:1, material:diamond:8]
+    premium: [key:legendario:1, item:cetro_luminico:1, money:5000]
+  21:
+    free: [money:1500]
+    premium: [item:mandoble_del_veterano:1]
+  22:
+    free: [material:golden_apple:4]
+    premium: [item:enchanted_gem:4]
+  23:
+    free: [exp:1200]
+    premium: [item:pico_runico_enano:1]
+  24:
+    free: [material:emerald:16]
+    premium: [money:6000]
+  25:
+    free: [key:epica:2, money:2500]
+    premium: [key:legendario:1, item:runic_blade:1, material:netherite_ingot:1]
+  26:
+    free: [material:experience_bottle:32]
+    premium: [item:phoenix_feather:1]
+  27:
+    free: [money:3000]
+    premium: [material:totem_of_undying:2]
+  28:
+    free: [item:healing_potion:8]
+    premium: [item:flame_blade:1]
+  29:
+    free: [exp:2000]
+    premium: [key:legendario:1, money:8000]
+  30:
+    free: [key:legendario:1, money:5000]
+    premium: [item:dragon_slayer:1, key:legendario:2, money:15000]

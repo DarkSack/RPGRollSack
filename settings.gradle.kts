@@ -32,6 +32,7 @@ include(
     "tab",
     "extras",
     "traps",
+    "pass",
 
     // Herramienta de escritorio para los compradores, no un plugin.
     "packinstaller"

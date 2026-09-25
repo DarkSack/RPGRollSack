@@ -1,0 +1,105 @@
+# RPGRoll-Pass messages. {placeholder} is replaced; colours with &.
+
+command:
+  players_only: "&cThis command is for players only."
+
+reward:
+  money: "&6+{amount} gold"
+  exp: "&a+{amount} character EXP"
+  key: "&e{amount}× &f{crate} &ekey"
+  item: "&d{amount}× &f{item}"
+  material: "&f{amount}× {material}"
+  command: "&7Special reward"
+
+pass:
+  xp_gained: "&8[&6Pass&8] &e+{amount} &7pass points"
+  level_up: "&6&l✦ Pass level {level}! &7Claim your rewards with &e/pass"
+  reminder: "&6✦ &7You have unclaimed pass rewards: &e/pass"
+  claimed: "&a✔ Level {level} rewards claimed."
+  claimed_all: "&a✔ {count} pass reward(s) claimed."
+  nothing_to_claim: "&7Nothing to claim right now."
+  locked: "&cYou haven't reached level {level} yet."
+  needs_premium: "&6That reward is on the Premium Pass. &7Get it in the &estore&7."
+  already_claimed: "&7Already claimed."
+
+missions:
+  completed: "&a✔ Mission complete: &f{mission} &8(&e+{xp} points&8)"
+
+daily:
+  claimed: "&a✔ Day {day} reward claimed. &7Streak: &e{streak} day(s)"
+  bonus: "&6✦ {rank}&6 rank bonus delivered."
+  already: "&7You already claimed today's. Come back tomorrow."
+  reminder: "&e⏰ &7Your daily reward is waiting: &e/daily"
+
+votes:
+  header: "&6&l✦ Vote for the server &7(click each site)"
+  no_sites: "&7No voting sites configured yet."
+  site: "&8 » &a{name}"
+  stats: "&7Total votes: &e{total} &8· &7Streak: &e{streak} day(s)"
+  thanks: "&a✔ Thanks for voting! &7Streak: &e{streak} day(s)"
+  streak_reward: "&6✦ {days} days voting in a row! Streak prize delivered."
+
+admin:
+  usage: "&eUsage: /passadmin reload | xp <player> <amount> | vote <player> | info <player>"
+  reloaded: "&a✔ RPGRoll-Pass reloaded ({missions} missions)."
+  player_offline: "&c{player} is not online."
+  xp_given: "&a✔ {amount} pass points for {player}."
+  vote_sent: "&a✔ Simulated vote for {player}."
+  info: "&e{player}&7: season &f{season}&7, &f{xp} &7points (level &f{level}&7), premium &f{premium}&7, daily streak &f{streak}&7, votes &f{votes}"
+
+gui:
+  back: "&7« Back"
+  previous: "&e« Previous"
+  next: "&eNext »"
+  pass:
+    title: "&8✦ Season Pass"
+    closed: "&cThe pass is closed"
+    closed_lore: "&7There is no active season right now."
+    row_level: "&eLevel"
+    row_free: "&fFree track"
+    row_premium: "&6&lPremium track"
+    premium_active: "&a✔ You have the Premium Pass"
+    premium_buy: "&7Get it in the store"
+    level: "&eLevel {level}"
+    level_unlocked: "&a✔ Unlocked"
+    level_locked: "&7Unlocks at &e{xp} &7points"
+    missions: "&bMissions"
+    missions_lore: "&7Daily, weekly and season"
+    claim_all: "&aClaim all"
+    claim_all_lore: "&7Everything unlocked on both tracks"
+    daily: "&eDaily reward"
+    daily_ready: "&aReady to claim!"
+    daily_done: "&7Already claimed today"
+    header_level: "&7Level &e{level}&7/&e{max}"
+    header_xp: "{bar} &7{xp}/{needed}"
+    header_max: "&6&lPass complete!"
+    header_premium: "&6✦ Premium active"
+    header_free: "&7Free track &8(premium in the store)"
+    header_ends: "&7Ends: &f{date}"
+    reward_free: "&fLevel {level} &8· &7free"
+    reward_premium: "&6Level {level} &8· &6premium"
+    status_claimed: "&a✔ Claimed"
+    status_locked: "&7🔒 Reach level {level}"
+    status_premium: "&6Requires the Premium Pass"
+    status_ready: "&e» Click to claim"
+  missions:
+    title: "&8✦ Pass missions"
+    daily: "&eDaily &7(change at midnight)"
+    weekly: "&bWeekly &7(change on Monday)"
+    season: "&6Season"
+    progress: "{bar} &7{value}/{amount}"
+    reward: "&7Prize: &e+{xp} pass points"
+    done: "&a✔ Complete"
+    pending: "&7In progress"
+  daily:
+    title: "&8✦ Daily reward"
+    streak: "&6Streak: &e{streak} day(s)"
+    streak_resets: "&7Miss a day and it goes back to 1"
+    streak_keeps: "&7Missing a day keeps your streak"
+    day: "&eDay {day}"
+    status_claimed: "&a✔ Claimed"
+    status_ready: "&e» Click to claim"
+    status_upcoming: "&7Coming up"
+    bonus_title: "&6Daily rank bonus"
+    bonus_rank: "&7{rank}"
+    bonus_active: "&a» {rank} &a(your rank)"

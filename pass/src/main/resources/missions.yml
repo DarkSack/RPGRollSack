@@ -1,0 +1,170 @@
+# Misiones del pase. Cada una da "xp" puntos de pase al completarla.
+#
+# scope:  DAILY   se sortean daily-count cada día (las mismas para todos)
+#         WEEKLY  se sortean weekly-count cada lunes
+#         SEASON  fijas toda la temporada, se completan una vez
+# type:   KILL_MOB (target: ZOMBIE...), KILL_RPG_MOB (target: id de RPGRoll-Mobs),
+#         BREAK_BLOCK (target: material; no cuentan bloques puestos por jugadores),
+#         FISH, LEVEL_UP, COMPLETE_QUEST (target: id de quest), PLAYTIME (minutos
+#         sin estar AFK), VOTE, CLAIM_DAILY
+# target: opcional; sin él cuenta cualquiera del tipo.
+
+daily-count: 3
+weekly-count: 3
+
+missions:
+  # ── Diarias ────────────────────────────────────────────────
+  cazar_zombis:
+    scope: DAILY
+    name: "&fCaza &e25 &fzombis"
+    type: KILL_MOB
+    target: ZOMBIE
+    amount: 25
+    xp: 200
+  cazar_esqueletos:
+    scope: DAILY
+    name: "&fCaza &e20 &fesqueletos"
+    type: KILL_MOB
+    target: SKELETON
+    amount: 20
+    xp: 200
+  cazar_creepers:
+    scope: DAILY
+    name: "&fElimina &e10 &fcreepers"
+    type: KILL_MOB
+    target: CREEPER
+    amount: 10
+    xp: 220
+  picar_piedra:
+    scope: DAILY
+    name: "&fPica &e256 &fbloques"
+    type: BREAK_BLOCK
+    amount: 256
+    xp: 200
+  pescar:
+    scope: DAILY
+    name: "&fPesca &e10 &fveces"
+    type: FISH
+    amount: 10
+    xp: 200
+  jugar_un_rato:
+    scope: DAILY
+    name: "&fJuega &e45 &fminutos"
+    type: PLAYTIME
+    amount: 45
+    xp: 250
+  quest_del_dia:
+    scope: DAILY
+    name: "&fCompleta &e1 &fquest"
+    type: COMPLETE_QUEST
+    amount: 1
+    xp: 300
+  votar_hoy:
+    scope: DAILY
+    name: "&fVota por el servidor &7(/votar)"
+    type: VOTE
+    amount: 1
+    xp: 150
+  monstruos_rpg:
+    scope: DAILY
+    name: "&fDerrota &e5 &fcriaturas de RPGRoll"
+    type: KILL_RPG_MOB
+    amount: 5
+    xp: 300
+
+  # ── Semanales ──────────────────────────────────────────────
+  cazador_semanal:
+    scope: WEEKLY
+    name: "&fDerrota &e300 &fcriaturas"
+    type: KILL_MOB
+    amount: 300
+    xp: 800
+  maraton:
+    scope: WEEKLY
+    name: "&fJuega &e5 &fhoras"
+    type: PLAYTIME
+    amount: 300
+    xp: 900
+  aventurero:
+    scope: WEEKLY
+    name: "&fCompleta &e5 &fquests"
+    type: COMPLETE_QUEST
+    amount: 5
+    xp: 1000
+  votante_fiel:
+    scope: WEEKLY
+    name: "&fVota &e7 &fveces"
+    type: VOTE
+    amount: 7
+    xp: 900
+  crecer:
+    scope: WEEKLY
+    name: "&fSube &e3 &fniveles de personaje"
+    type: LEVEL_UP
+    amount: 3
+    xp: 800
+  pescador:
+    scope: WEEKLY
+    name: "&fPesca &e60 &fveces"
+    type: FISH
+    amount: 60
+    xp: 700
+  constancia:
+    scope: WEEKLY
+    name: "&fReclama &e5 &frecompensas diarias"
+    type: CLAIM_DAILY
+    amount: 5
+    xp: 600
+
+  # ── Temporada ──────────────────────────────────────────────
+  leyenda_en_ascenso:
+    scope: SEASON
+    name: "&6Sube &e15 &6niveles de personaje"
+    type: LEVEL_UP
+    amount: 15
+    xp: 3000
+  cronista:
+    scope: SEASON
+    name: "&6Completa &e20 &6quests"
+    type: COMPLETE_QUEST
+    amount: 20
+    xp: 3000
+  embajador:
+    scope: SEASON
+    name: "&6Vota &e30 &6veces"
+    type: VOTE
+    amount: 30
+    xp: 3000
+  matadragones:
+    scope: SEASON
+    name: "&5Derrota al &dDragón del End"
+    type: KILL_MOB
+    target: ENDER_DRAGON
+    amount: 1
+    xp: 4000
+  azote_del_wither:
+    scope: SEASON
+    name: "&5Derrota al &dWither"
+    type: KILL_MOB
+    target: WITHER
+    amount: 1
+    xp: 4000
+  tres_semanas:
+    scope: SEASON
+    name: "&6Reclama &e21 &6recompensas diarias"
+    type: CLAIM_DAILY
+    amount: 21
+    xp: 2500
+  veterano:
+    scope: SEASON
+    name: "&6Juega &e20 &6horas"
+    type: PLAYTIME
+    amount: 1200
+    xp: 3000
+  restos_antiguos:
+    scope: SEASON
+    name: "&6Extrae &e16 &6escombros ancestrales"
+    type: BREAK_BLOCK
+    target: ANCIENT_DEBRIS
+    amount: 16
+    xp: 2500

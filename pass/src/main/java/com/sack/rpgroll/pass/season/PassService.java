@@ -1,0 +1,187 @@
+package com.sack.rpgroll.pass.season;
+
+import com.sack.rpgroll.common.lang.LangManager;
+import com.sack.rpgroll.pass.PassClock;
+import com.sack.rpgroll.pass.player.PassPlayer;
+import com.sack.rpgroll.pass.player.PassPlayerStore;
+import com.sack.rpgroll.pass.reward.Reward;
+import com.sack.rpgroll.pass.reward.RewardService;
+
+import org.bukkit.Sound;
+import org.bukkit.entity.Player;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Consumer;
+
+/** Puntos de pase, niveles y reclamo de las dos pistas de la temporada activa. */
+public class PassService {
+
+    public static final String PREMIUM_PERMISSION = "rpgroll.pass.premium";
+
+    public enum ClaimResult {
+        CLAIMED, CLOSED, LOCKED, ALREADY_CLAIMED, NEEDS_PREMIUM, NOTHING
+    }
+
+    private final PassPlayerStore store;
+    private final RewardService rewards;
+    private final LangManager lang;
+    private final PassClock clock;
+
+    private Season season;
+    private Consumer<PassPlayer> onSeasonStart = player -> {
+    };
+
+    public PassService(PassPlayerStore store, RewardService rewards, LangManager lang, PassClock clock) {
+        this.store = store;
+        this.rewards = rewards;
+        this.lang = lang;
+        this.clock = clock;
+    }
+
+    public void setSeason(Season season) {
+        this.season = season;
+    }
+
+    /** Qué más hay que reiniciar cuando un jugador empieza una temporada nueva (sus misiones de temporada). */
+    public void onSeasonStart(Consumer<PassPlayer> onSeasonStart) {
+        this.onSeasonStart = onSeasonStart;
+    }
+
+    /** La temporada configurada, esté abierta o no. */
+    public Optional<Season> season() {
+        return Optional.ofNullable(season);
+    }
+
+    /** La temporada solo si hoy está dentro de sus fechas. */
+    public Optional<Season> openSeason() {
+        return season().filter(s -> s.isOpen(clock.today()));
+    }
+
+    public PassPlayer player(Player player) {
+
+        PassPlayer state = store.get(player.getUniqueId());
+
+        if (season != null && !season.id().equals(state.seasonId())) {
+            state.startSeason(season.id());
+            onSeasonStart.accept(state);
+        }
+
+        return state;
+    }
+
+    public boolean isPremium(Player player) {
+        return player.hasPermission(PREMIUM_PERMISSION);
+    }
+
+    public int level(Player player) {
+        return season().map(s -> s.levelFor(player(player).xp())).orElse(0);
+    }
+
+    /** Suma puntos de pase y avisa si sube de nivel. Sin temporada abierta no hace nada. */
+    public void addXp(Player player, int amount) {
+
+        Optional<Season> open = openSeason();
+
+        if (open.isEmpty() || amount <= 0) {
+            return;
+        }
+
+        Season current = open.get();
+        PassPlayer state = player(player);
+        int before = current.levelFor(state.xp());
+        state.addXp(amount);
+        int after = current.levelFor(state.xp());
+
+        lang.send(player, "pass.xp_gained", "amount", amount);
+
+        if (after > before) {
+            lang.send(player, "pass.level_up", "level", after);
+            player.playSound(player.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 0.8f, 1.2f);
+        }
+    }
+
+    public ClaimResult claim(Player player, int level, boolean premium) {
+
+        Optional<Season> open = openSeason();
+
+        if (open.isEmpty()) {
+            return ClaimResult.CLOSED;
+        }
+
+        Season current = open.get();
+        PassPlayer state = player(player);
+        List<Reward> track = current.level(level)
+                .map(l -> premium ? l.premium() : l.free())
+                .orElse(List.of());
+
+        if (track.isEmpty()) {
+            return ClaimResult.NOTHING;
+        }
+
+        if (state.hasClaimed(level, premium)) {
+            return ClaimResult.ALREADY_CLAIMED;
+        }
+
+        if (current.levelFor(state.xp()) < level) {
+            return ClaimResult.LOCKED;
+        }
+
+        if (premium && !isPremium(player)) {
+            return ClaimResult.NEEDS_PREMIUM;
+        }
+
+        state.markClaimed(level, premium);
+        rewards.grant(player, track);
+        return ClaimResult.CLAIMED;
+    }
+
+    /** Reclama todo lo desbloqueado de las dos pistas. Devuelve cuántas recompensas entregó. */
+    public int claimAll(Player player) {
+
+        Optional<Season> open = openSeason();
+
+        if (open.isEmpty()) {
+            return 0;
+        }
+
+        int claimed = 0;
+
+        for (int level : open.get().levels().keySet()) {
+            if (claim(player, level, false) == ClaimResult.CLAIMED) {
+                claimed++;
+            }
+            if (claim(player, level, true) == ClaimResult.CLAIMED) {
+                claimed++;
+            }
+        }
+
+        return claimed;
+    }
+
+    /** Hay algo desbloqueado sin reclamar (para el recordatorio al entrar). */
+    public boolean hasUnclaimed(Player player) {
+
+        Optional<Season> open = openSeason();
+
+        if (open.isEmpty()) {
+            return false;
+        }
+
+        PassPlayer state = player(player);
+        int level = open.get().levelFor(state.xp());
+        boolean premium = isPremium(player);
+
+        for (SeasonLevel entry : open.get().levels().headMap(level, true).values()) {
+            if (!entry.free().isEmpty() && !state.hasClaimed(entry.level(), false)) {
+                return true;
+            }
+            if (premium && !entry.premium().isEmpty() && !state.hasClaimed(entry.level(), true)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+}

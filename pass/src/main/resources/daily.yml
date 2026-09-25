@@ -1,0 +1,51 @@
+# Recompensa diaria (/diario). Una por día; cada día seguido avanza la racha
+# y el ciclo de días. Tras el último día vuelve a empezar.
+
+# Si un día no reclamas, la racha vuelve a 1.
+reset-streak-if-missed: true
+
+# Puntos de pase por reclamar.
+pass-xp: 100
+
+days:
+  1:
+    - money:200
+    - material:bread:8
+  2:
+    - money:300
+    - item:healing_potion:2
+  3:
+    - material:iron_ingot:12
+    - exp:300
+  4:
+    - money:500
+    - key:comun:1
+  5:
+    - material:diamond:3
+    - item:mana_draught:2
+  6:
+    - money:800
+    - material:golden_apple:1
+  7:
+    - key:epica:1
+    - money:1200
+    - item:enchanted_gem:1
+
+# Extra diario por rango: se da el PRIMERO de la lista que el jugador tenga.
+# group.<rango> lo pone LuckPerms a todo miembro del rango (y a quien lo herede).
+rank-bonus:
+  - permission: group.mvp
+    name: "&6&lMVP"
+    rewards:
+      - money:600
+      - key:comun:1
+      - item:healing_potion:2
+  - permission: group.vipmas
+    name: "&b&lVIP+"
+    rewards:
+      - money:350
+      - item:healing_potion:2
+  - permission: group.vip
+    name: "&a&lVIP"
+    rewards:
+      - money:200

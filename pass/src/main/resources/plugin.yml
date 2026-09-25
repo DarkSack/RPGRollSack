@@ -1,0 +1,16 @@
+name: RPGRoll-Pass
+version: 1.0.0
+main: com.sack.rpgroll.pass.PassPlugin
+api-version: "26.1.1"
+author: Sack
+description: Pase de temporada con pista gratis y premium, misiones, recompensas diarias y recompensas por votar para RPGRoll
+depend: [RPGRoll]
+softdepend: [RPGRoll-Quests, RPGRoll-Mobs, RPGRoll-Crates, RPGRoll-Items, Votifier, Vault]
+
+permissions:
+  rpgroll.pass.premium:
+    description: Desbloquea la pista premium del pase de temporada
+    default: false
+  rpgroll.pass.admin:
+    description: /passadmin
+    default: op

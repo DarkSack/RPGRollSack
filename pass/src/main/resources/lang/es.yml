@@ -1,0 +1,105 @@
+# Mensajes de RPGRoll-Pass. {placeholder} se reemplaza; colores con &.
+
+command:
+  players_only: "&cEste comando es solo para jugadores."
+
+reward:
+  money: "&6+{amount} de oro"
+  exp: "&a+{amount} EXP de personaje"
+  key: "&e{amount}× llave &f{crate}"
+  item: "&d{amount}× &f{item}"
+  material: "&f{amount}× {material}"
+  command: "&7Recompensa especial"
+
+pass:
+  xp_gained: "&8[&6Pase&8] &e+{amount} &7puntos de pase"
+  level_up: "&6&l✦ ¡Nivel {level} del pase! &7Reclama tus recompensas con &e/pase"
+  reminder: "&6✦ &7Tienes recompensas del pase sin reclamar: &e/pase"
+  claimed: "&a✔ Recompensas del nivel {level} reclamadas."
+  claimed_all: "&a✔ {count} recompensa(s) del pase reclamadas."
+  nothing_to_claim: "&7No tienes nada por reclamar ahora mismo."
+  locked: "&cTodavía no llegas al nivel {level}."
+  needs_premium: "&6Esa recompensa es del Pase Premium. &7Consíguelo en &etienda&7."
+  already_claimed: "&7Ya la reclamaste."
+
+missions:
+  completed: "&a✔ Misión completada: &f{mission} &8(&e+{xp} puntos&8)"
+
+daily:
+  claimed: "&a✔ Recompensa del día {day} reclamada. &7Racha: &e{streak} día(s)"
+  bonus: "&6✦ Extra de rango {rank}&6 entregado."
+  already: "&7Ya reclamaste la de hoy. Vuelve mañana."
+  reminder: "&e⏰ &7Tu recompensa diaria te espera: &e/diario"
+
+votes:
+  header: "&6&l✦ Vota por Sackito Network &7(haz clic en cada página)"
+  no_sites: "&7Todavía no hay páginas de votación configuradas."
+  site: "&8 » &a{name}"
+  stats: "&7Votos totales: &e{total} &8· &7Racha: &e{streak} día(s)"
+  thanks: "&a✔ ¡Gracias por votar! &7Racha: &e{streak} día(s)"
+  streak_reward: "&6✦ ¡{days} días seguidos votando! Premio de racha entregado."
+
+admin:
+  usage: "&eUso: /passadmin reload | xp <jugador> <cantidad> | vote <jugador> | info <jugador>"
+  reloaded: "&a✔ RPGRoll-Pass recargado ({missions} misiones)."
+  player_offline: "&c{player} no está conectado."
+  xp_given: "&a✔ {amount} puntos de pase para {player}."
+  vote_sent: "&a✔ Voto simulado para {player}."
+  info: "&e{player}&7: temporada &f{season}&7, &f{xp} &7puntos (nivel &f{level}&7), premium &f{premium}&7, racha diaria &f{streak}&7, votos &f{votes}"
+
+gui:
+  back: "&7« Volver"
+  previous: "&e« Anterior"
+  next: "&eSiguiente »"
+  pass:
+    title: "&8✦ Pase Royale"
+    closed: "&cEl pase está cerrado"
+    closed_lore: "&7No hay ninguna temporada activa ahora mismo."
+    row_level: "&eNivel"
+    row_free: "&fPista gratis"
+    row_premium: "&6&lPista premium"
+    premium_active: "&a✔ Tienes el Pase Premium"
+    premium_buy: "&7Consíguelo en la tienda"
+    level: "&eNivel {level}"
+    level_unlocked: "&a✔ Desbloqueado"
+    level_locked: "&7Se desbloquea con &e{xp} &7puntos"
+    missions: "&bMisiones"
+    missions_lore: "&7Diarias, semanales y de temporada"
+    claim_all: "&aReclamar todo"
+    claim_all_lore: "&7Todo lo desbloqueado de las dos pistas"
+    daily: "&eRecompensa diaria"
+    daily_ready: "&a¡Lista para reclamar!"
+    daily_done: "&7Ya reclamada hoy"
+    header_level: "&7Nivel &e{level}&7/&e{max}"
+    header_xp: "{bar} &7{xp}/{needed}"
+    header_max: "&6&l¡Pase completado!"
+    header_premium: "&6✦ Premium activo"
+    header_free: "&7Pista gratis &8(premium en la tienda)"
+    header_ends: "&7Termina: &f{date}"
+    reward_free: "&fNivel {level} &8· &7gratis"
+    reward_premium: "&6Nivel {level} &8· &6premium"
+    status_claimed: "&a✔ Reclamada"
+    status_locked: "&7🔒 Llega al nivel {level}"
+    status_premium: "&6Requiere Pase Premium"
+    status_ready: "&e» Clic para reclamar"
+  missions:
+    title: "&8✦ Misiones del pase"
+    daily: "&eDiarias &7(cambian a medianoche)"
+    weekly: "&bSemanales &7(cambian el lunes)"
+    season: "&6De temporada"
+    progress: "{bar} &7{value}/{amount}"
+    reward: "&7Premio: &e+{xp} puntos de pase"
+    done: "&a✔ Completada"
+    pending: "&7En curso"
+  daily:
+    title: "&8✦ Recompensa diaria"
+    streak: "&6Racha: &e{streak} día(s)"
+    streak_resets: "&7Si faltas un día, vuelve a 1"
+    streak_keeps: "&7La racha no se pierde si faltas"
+    day: "&eDía {day}"
+    status_claimed: "&a✔ Reclamado"
+    status_ready: "&e» Clic para reclamar"
+    status_upcoming: "&7Próximamente"
+    bonus_title: "&6Extra diario por rango"
+    bonus_rank: "&7{rank}"
+    bonus_active: "&a» {rank} &a(tu rango)"
