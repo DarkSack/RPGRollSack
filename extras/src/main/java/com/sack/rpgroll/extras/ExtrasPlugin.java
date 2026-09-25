@@ -8,6 +8,7 @@ import com.sack.rpgroll.common.resource.DirectoryCreator;
 import com.sack.rpgroll.common.resource.ResourceCopier;
 import com.sack.rpgroll.extras.action.ExtrasActionExecutor;
 import com.sack.rpgroll.extras.activity.ActivityStateResolver;
+import com.sack.rpgroll.extras.activity.AfkPolicy;
 import com.sack.rpgroll.extras.activity.CombatTagListener;
 import com.sack.rpgroll.extras.api.ExtrasAPI;
 import com.sack.rpgroll.extras.api.NeedsService;
@@ -103,6 +104,7 @@ public class ExtrasPlugin extends JavaPlugin {
         modifierManager.initialize();
         ModifierResolver modifierResolver = new ModifierResolver(modifierManager);
         statEngine.linkModifiers(modifierResolver);
+        statEngine.linkAfkPolicy(AfkPolicy.from(getConfig()));
 
         statEngine.start();
 
@@ -141,6 +143,7 @@ public class ExtrasPlugin extends JavaPlugin {
         statManager.reload();
         conditionManager.reload();
         modifierManager.reload();
+        statEngine.linkAfkPolicy(AfkPolicy.from(getConfig()));
 
         statEngine.start();
         conditionRuntime.start(this);

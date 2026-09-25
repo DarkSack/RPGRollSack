@@ -4,3 +4,11 @@
 # Los textos viven en lang/<idioma>.yml dentro de esta carpeta de datos —
 # puedes editarlos ahí directamente. Tras cambiar esto, /extrasadmin reload.
 language: es
+
+# Jugadores AFK: tras este tiempo sin tocar nada (moverse, girar la cámara,
+# chatear, golpear...) sus stats se congelan — la sed no baja, la fatiga no
+# sube — hasta que vuelvan a hacer algo. Los umbrales ya alcanzados siguen
+# aplicando sus efectos. Tras cambiarlo, /extrasadmin reload.
+afk:
+  pause-stats: true
+  idle-seconds: 300 # 5 minutos

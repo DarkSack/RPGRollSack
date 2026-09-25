@@ -1,5 +1,6 @@
 package com.sack.rpgroll.extras.stat;
 
+import com.sack.rpgroll.extras.activity.AfkPolicy;
 import com.sack.rpgroll.extras.action.ExtrasActionExecutor;
 import com.sack.rpgroll.extras.condition.ConditionManager;
 import com.sack.rpgroll.extras.condition.ConditionRuntime;
@@ -51,6 +52,7 @@ public class StatEngine {
     private ConditionManager conditionManager;
     private ConditionRuntime conditionRuntime;
     private ModifierResolver modifierResolver;
+    private AfkPolicy afkPolicy = AfkPolicy.DISABLED;
 
     private final Map<UUID, Map<String, Double>> values = new ConcurrentHashMap<>();
     private final Map<UUID, Set<String>> activeThresholds = new ConcurrentHashMap<>();
@@ -73,6 +75,11 @@ public class StatEngine {
     /** Inyección tardía — modificadores de raza/clase/job (sección 18), opcional. */
     public void linkModifiers(ModifierResolver modifierResolver) {
         this.modifierResolver = modifierResolver;
+    }
+
+    /** Mientras un jugador está AFK su decay y su regeneración periódica se saltan. */
+    public void linkAfkPolicy(AfkPolicy afkPolicy) {
+        this.afkPolicy = afkPolicy;
     }
 
     public void start() {
@@ -105,13 +112,19 @@ public class StatEngine {
 
     private void tickDecay(StatDefinition stat) {
         for (Player player : Bukkit.getOnlinePlayers()) {
-            adjust(player, stat.id(), -stat.decay().amount() * rateMultiplier(player, stat.id()));
+            if (!afkPolicy.freezes(player)) {
+                adjust(player, stat.id(), -stat.decay().amount() * rateMultiplier(player, stat.id()));
+            }
         }
     }
 
     private void tickRegeneration(StatDefinition stat) {
 
         for (Player player : Bukkit.getOnlinePlayers()) {
+
+            if (afkPolicy.freezes(player)) {
+                continue;
+            }
 
             double delta = 0;
 
