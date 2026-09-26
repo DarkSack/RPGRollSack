@@ -40,6 +40,7 @@ public class ItemParser implements ContentParser<ItemDefinition> {
         List<String> lore = config.getStringList("lore");
         Integer customModelData = config.contains("custom-model-data") ? config.getInt("custom-model-data") : null;
         String itemModel = parseItemModel(config.getString("item-model"), id);
+        String equipmentModel = parseItemModel(config.getString("equipment-model"), id);
         String rarityId = config.getString("rarity", "common");
         Boolean glow = config.contains("glow") ? config.getBoolean("glow") : null;
         boolean unbreakable = config.getBoolean("unbreakable", false);
@@ -72,7 +73,7 @@ public class ItemParser implements ContentParser<ItemDefinition> {
         return new ItemDefinition(id, pack, material, displayName, lore, customModelData, rarityId, glow,
                 flags, unbreakable, dyeColor, skullTexture, trim, stats, attributeModifiers, requirements,
                 durability, vanillaEnchantments, customEnchantments, effects, triggers, abilities, sockets, skins,
-                upgrades, recipes, sellPrice, buyPrice, customData, itemModel);
+                upgrades, recipes, sellPrice, buyPrice, customData, itemModel, equipmentModel);
     }
 
     /** {@code namespace:ruta} en minúsculas; sin namespace se asume {@code minecraft}. */

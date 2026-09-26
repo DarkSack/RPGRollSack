@@ -165,11 +165,57 @@ public class ItemFactory {
             meta.setItemModel(NamespacedKey.fromString(itemModel));
         }
 
+        if (definition.equipmentModel() != null) {
+            applyEquipmentModel(meta, definition.material(), definition.equipmentModel());
+        }
+
         int currentDurability = instanceService.getDurability(item, definition.durability().maxDurability());
 
         meta.lore(buildLore(definition, rarity, upgradeLevel, sockets, currentDurability));
 
         item.setItemMeta(meta);
+    }
+
+    /**
+     * Cambia cómo se ve puesta una armadura. El componente reemplaza entero al
+     * del material, así que se rellenan también la ranura y el sonido.
+     */
+    private static void applyEquipmentModel(ItemMeta meta, Material material, String equipmentModel) {
+
+        org.bukkit.inventory.EquipmentSlot slot = material.getEquipmentSlot();
+        if (slot != org.bukkit.inventory.EquipmentSlot.HEAD && slot != org.bukkit.inventory.EquipmentSlot.CHEST
+                && slot != org.bukkit.inventory.EquipmentSlot.LEGS && slot != org.bukkit.inventory.EquipmentSlot.FEET) {
+            return;
+        }
+
+        var equippable = meta.getEquippable();
+        equippable.setSlot(slot);
+        equippable.setModel(NamespacedKey.fromString(equipmentModel));
+        equippable.setEquipSound(equipSound(material));
+        meta.setEquippable(equippable);
+    }
+
+    private static org.bukkit.Sound equipSound(Material material) {
+        String name = material.name();
+        if (name.startsWith("NETHERITE_")) {
+            return org.bukkit.Sound.ITEM_ARMOR_EQUIP_NETHERITE;
+        }
+        if (name.startsWith("DIAMOND_")) {
+            return org.bukkit.Sound.ITEM_ARMOR_EQUIP_DIAMOND;
+        }
+        if (name.startsWith("IRON_")) {
+            return org.bukkit.Sound.ITEM_ARMOR_EQUIP_IRON;
+        }
+        if (name.startsWith("GOLDEN_")) {
+            return org.bukkit.Sound.ITEM_ARMOR_EQUIP_GOLD;
+        }
+        if (name.startsWith("CHAINMAIL_")) {
+            return org.bukkit.Sound.ITEM_ARMOR_EQUIP_CHAIN;
+        }
+        if (name.startsWith("LEATHER_")) {
+            return org.bukkit.Sound.ITEM_ARMOR_EQUIP_LEATHER;
+        }
+        return org.bukkit.Sound.ITEM_ARMOR_EQUIP_GENERIC;
     }
 
     private List<Component> buildLore(ItemDefinition definition, Rarity rarity, int upgradeLevel,

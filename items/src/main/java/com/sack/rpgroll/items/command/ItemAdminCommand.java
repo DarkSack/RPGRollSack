@@ -38,7 +38,7 @@ import java.util.Optional;
  */
 public class ItemAdminCommand implements CommandExecutor, TabCompleter {
 
-    private static final List<String> SUBCOMMANDS = List.of("give", "list", "reload", "create", "browser", "editor");
+    private static final List<String> SUBCOMMANDS = List.of("give", "list", "reload", "create", "browser", "editor", "ores");
 
     private static final String PERMISSION = "rpgrollitems.admin.*";
     private static final int MAX_GIVE_AMOUNT = 6400;
@@ -86,6 +86,7 @@ public class ItemAdminCommand implements CommandExecutor, TabCompleter {
             case "create" -> handleCreate(sender, args);
             case "browser" -> handleBrowser(sender);
             case "editor" -> handleEditor(sender, args);
+            case "ores" -> handleOres(sender);
             default -> sendUsage(sender);
         }
 
@@ -185,6 +186,23 @@ public class ItemAdminCommand implements CommandExecutor, TabCompleter {
                 "player", target.getName(), "overflow", overflow);
     }
 
+    private void handleOres(CommandSender sender) {
+
+        var service = ((com.sack.rpgroll.items.ItemsPlugin) plugin).getOreService();
+        var ores = service.ores().getAll();
+
+        if (ores.isEmpty()) {
+            lang().send(sender, "command.itemadmin.ores.empty");
+            return;
+        }
+
+        lang().send(sender, "command.itemadmin.ores.header", "count", ores.size(), "chunks", service.chunksSown());
+        for (var ore : ores) {
+            lang().send(sender, "command.itemadmin.ores.entry", "id", ore.id(), "tier", ore.requiredTier(),
+                    "hardness", ore.hardness(), "placed", service.placed(ore.id()));
+        }
+    }
+
     private void handleList(CommandSender sender) {
 
         if (itemManager.count() == 0) {
@@ -201,7 +219,11 @@ public class ItemAdminCommand implements CommandExecutor, TabCompleter {
     }
 
     private void handleReload(CommandSender sender) {
+        plugin.reloadConfig();
         itemManager.reload();
+        var items = (com.sack.rpgroll.items.ItemsPlugin) plugin;
+        items.getOreManager().reload();
+        items.getOreService().rebuild();
         new com.sack.rpgroll.items.recipe.RecipeRegistrar(plugin, itemFactory).registerAll(itemManager);
         new PackAssetSync(plugin, packManager).syncAll();
         lang().reload(plugin.getConfig().getString("language", "es"));

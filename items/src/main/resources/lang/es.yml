@@ -20,6 +20,7 @@ command:
       &7 • &dcreate
       &7 • &6browser
       &7 • &9editor
+      &7 • &3ores
     player_only: "&cSolo un jugador puede usar esto."
     reload:
       success: "&a✔ Recargado: {count} ítem(s)."
@@ -40,6 +41,10 @@ command:
       empty: "&7No hay ítems definidos."
       header: "&6Ítems disponibles:"
       entry: "&f• {id} ({pack}, {rarity})"
+    ores:
+      empty: "&7No hay menas definidas en ores/."
+      header: "&6Menas ({count}) · chunks sembrados desde el arranque: {chunks}"
+      entry: "&7• &f{id} &7· pico de nivel {tier} · dureza {hardness} · {placed} bloques puestos"
     editor:
       usage: "&cUso: /itemadmin editor <id>"
       not_found: "&cNo existe un ítem con id: {id}"
@@ -77,6 +82,9 @@ command:
       gem_not_found: "&cNecesitás tener una gema válida en tu mano secundaria."
 
 # Lore/chrome generado por ItemFactory para cualquier ítem RPGRoll
+ore:
+  need_better_tool: "&cNecesitas un pico de nivel {tier} o más para picar {ore}&c."
+
 item:
   durability_lore: "&7Durabilidad: {current}/{max}"
   socket_empty: "&8[Socket vacío]"

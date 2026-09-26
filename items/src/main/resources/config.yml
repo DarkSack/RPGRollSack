@@ -10,3 +10,13 @@ language: es
 # En las recetas de los ítems, un ingrediente "item:<id>" pide ese ítem exacto.
 recipes:
   protect-custom-items: true
+
+# Menas propias (ores/*.yml). Cada una se siembra al cargar los chunks nuevos
+# de los mundos que diga su 'generation'. retrogen-worlds: mundos donde
+# también se siembran los chunks que ya existían (una sola vez por mena),
+# pensado para un mundo de recursos; en el resto no se toca lo ya generado.
+# Las menas son bloques musicales con instrumentos de cabeza: pon
+# block-updates.disable-noteblock-updates: true en config/paper-global.yml
+# para que nadie pueda fabricar una colocando un bloque musical.
+ores:
+  retrogen-worlds: []

@@ -19,6 +19,10 @@ import com.sack.rpgroll.items.listener.AutoRepairTask;
 import com.sack.rpgroll.items.listener.ItemEquipTask;
 import com.sack.rpgroll.items.listener.ItemTriggerListener;
 import com.sack.rpgroll.items.listener.PlayerSessionListener;
+import com.sack.rpgroll.items.ore.OreGenerator;
+import com.sack.rpgroll.items.ore.OreListener;
+import com.sack.rpgroll.items.ore.OreManager;
+import com.sack.rpgroll.items.ore.OreService;
 import com.sack.rpgroll.items.pack.PackAssetSync;
 import com.sack.rpgroll.items.pack.PackManager;
 import com.sack.rpgroll.items.rarity.RarityManager;
@@ -50,6 +54,9 @@ public class ItemsPlugin extends JavaPlugin {
     private RarityManager rarityManager;
     private GemManager gemManager;
     private GemItem gemItem;
+    private OreManager oreManager;
+    private OreService oreService;
+    private OreListener oreListener;
     private ItemFactory itemFactory;
     private ItemInstanceService instanceService;
     private StatRegistry statRegistry;
@@ -94,6 +101,10 @@ public class ItemsPlugin extends JavaPlugin {
         gemManager.initialize();
         itemManager.initialize();
 
+        new java.io.File(getDataFolder(), "ores").mkdirs();
+        oreManager = new OreManager(this);
+        oreManager.initialize();
+
         instanceService = new ItemInstanceService(this);
         itemFactory = new ItemFactory(this, instanceService, rarityManager, langManager);
 
@@ -116,6 +127,13 @@ public class ItemsPlugin extends JavaPlugin {
         new RecipeRegistrar(this, itemFactory).registerAll(itemManager);
         getServer().getPluginManager().registerEvents(new com.sack.rpgroll.items.recipe.RecipeGuardListener(this,
                 instanceService, () -> getConfig().getBoolean("recipes.protect-custom-items", true)), this);
+
+        oreService = new OreService(this, oreManager, itemManager, instanceService);
+        oreService.rebuild();
+        oreListener = new OreListener(this, oreService, langManager);
+        getServer().getPluginManager().registerEvents(oreListener, this);
+        getServer().getPluginManager().registerEvents(new OreGenerator(this, oreService,
+                () -> java.util.Set.copyOf(getConfig().getStringList("ores.retrogen-worlds"))), this);
 
         ItemRequirementChecker requirementChecker = new ItemRequirementChecker(langManager);
 
@@ -144,6 +162,13 @@ public class ItemsPlugin extends JavaPlugin {
 
         getLogger().info("✔ RPGRoll-Items habilitado. " + itemManager.count() + " ítem(s), "
                 + rarityManager.count() + " rareza(s), " + gemManager.count() + " gema(s) cargadas.");
+    }
+
+    @Override
+    public void onDisable() {
+        if (oreListener != null) {
+            getServer().getOnlinePlayers().forEach(oreListener::clear);
+        }
     }
 
     private void registerCommand(String name, org.bukkit.command.CommandExecutor executor) {
@@ -192,6 +217,14 @@ public class ItemsPlugin extends JavaPlugin {
 
     public GemManager getGemManager() {
         return gemManager;
+    }
+
+    public OreManager getOreManager() {
+        return oreManager;
+    }
+
+    public OreService getOreService() {
+        return oreService;
     }
 
     public ItemFactory getItemFactory() {

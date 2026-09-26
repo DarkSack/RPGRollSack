@@ -35,6 +35,10 @@ public class ItemDefinitionWriter {
             config.set("item-model", definition.itemModel());
         }
 
+        if (definition.equipmentModel() != null) {
+            config.set("equipment-model", definition.equipmentModel());
+        }
+
         config.set("rarity", definition.rarityId());
 
         if (definition.glowOverride() != null) {

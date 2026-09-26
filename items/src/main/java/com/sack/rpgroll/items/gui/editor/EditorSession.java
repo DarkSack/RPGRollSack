@@ -124,7 +124,8 @@ public class EditorSession {
                 original.id(), original.pack(), material, displayName, lore, customModelData, rarityId,
                 glowOverride, flags, unbreakable, dyeColor, skullTexture, trim, stats, attributeModifiers,
                 requirements, durability, vanillaEnchantments, customEnchantments, effects, triggers, abilities,
-                sockets, skins, upgrades, recipes, sellPrice, buyPrice, customData, original.itemModel());
+                sockets, skins, upgrades, recipes, sellPrice, buyPrice, customData, original.itemModel(),
+                original.equipmentModel());
     }
 
     public ItemStack preview() {

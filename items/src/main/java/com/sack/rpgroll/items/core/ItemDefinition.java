@@ -20,6 +20,11 @@ import java.util.Objects;
  * clave {@code namespace:ruta} del modelo del resource pack. Es lo que usan
  * los mapeos v2 de Geyser para darle su ícono en Bedrock; null deja el del
  * material.
+ *
+ * <p>{@code equipmentModel} es el aspecto puesto de una armadura: el
+ * {@code asset_id} del componente {@code equippable}, que apunta a
+ * {@code assets/<ns>/equipment/<ruta>.json} del resource pack. Solo cuenta
+ * en materiales que se equipan en la cabeza, el pecho, las piernas o los pies.
  */
 public record ItemDefinition(
         String id,
@@ -51,7 +56,24 @@ public record ItemDefinition(
         double sellPrice,
         double buyPrice,
         Map<String, String> customData,
-        String itemModel) implements RPGContent {
+        String itemModel,
+        String equipmentModel) implements RPGContent {
+
+    /** Sin equipment-model: la firma anterior. */
+    public ItemDefinition(String id, String pack, Material material, String displayName, List<String> lore,
+            Integer customModelData, String rarityId, Boolean glowOverride, List<String> flags, boolean unbreakable,
+            String dyeColor, String skullTexture, ArmorTrimDef trim, Map<String, Double> stats,
+            Map<String, Double> attributeModifiers, ItemRequirements requirements, ItemDurabilityDef durability,
+            Map<String, Integer> vanillaEnchantments, Map<String, Integer> customEnchantments,
+            List<ItemEffectDef> effects, Map<ItemTrigger, List<ItemAction>> triggers, List<ItemAbility> abilities,
+            List<SocketDefinition> sockets, List<ItemSkin> skins, List<UpgradeLevel> upgrades,
+            List<ItemRecipeDef> recipes, double sellPrice, double buyPrice, Map<String, String> customData,
+            String itemModel) {
+        this(id, pack, material, displayName, lore, customModelData, rarityId, glowOverride, flags, unbreakable,
+                dyeColor, skullTexture, trim, stats, attributeModifiers, requirements, durability,
+                vanillaEnchantments, customEnchantments, effects, triggers, abilities, sockets, skins, upgrades,
+                recipes, sellPrice, buyPrice, customData, itemModel, null);
+    }
 
     /** Sin item-model: la firma de antes, para quien construye definiciones a mano. */
     public ItemDefinition(String id, String pack, Material material, String displayName, List<String> lore,
@@ -65,7 +87,7 @@ public record ItemDefinition(
         this(id, pack, material, displayName, lore, customModelData, rarityId, glowOverride, flags, unbreakable,
                 dyeColor, skullTexture, trim, stats, attributeModifiers, requirements, durability,
                 vanillaEnchantments, customEnchantments, effects, triggers, abilities, sockets, skins, upgrades,
-                recipes, sellPrice, buyPrice, customData, null);
+                recipes, sellPrice, buyPrice, customData, null, null);
     }
 
     public ItemDefinition {
@@ -96,6 +118,8 @@ public record ItemDefinition(
         recipes = recipes == null ? List.of() : List.copyOf(recipes);
         customData = customData == null ? Map.of() : Map.copyOf(customData);
         itemModel = itemModel == null || itemModel.isBlank() ? null : itemModel.trim().toLowerCase(java.util.Locale.ROOT);
+        equipmentModel = equipmentModel == null || equipmentModel.isBlank() ? null
+                : equipmentModel.trim().toLowerCase(java.util.Locale.ROOT);
     }
 
     public List<ItemAction> actionsFor(ItemTrigger trigger) {
