@@ -100,6 +100,7 @@ public class VoteService {
                 : state.lastVoteDay() == today - 1 ? state.voteStreak() + 1 : 1;
 
         state.recordVote(today, streak);
+        pass.save(player);
         rewards.grant(player, config.rewards());
         lang.send(player, "votes.thanks", "service", service, "streak", streak);
         player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.7f, 1.6f);

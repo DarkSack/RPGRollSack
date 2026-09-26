@@ -73,10 +73,20 @@ public class ContentManager<T extends RPGContent> implements Reloadable {
             plugin.getLogger().warning("✘ " + label + " · ids repetidos, se ignoraron: " + duplicates);
         }
 
-        if (registered == 0) {
+        if (registered == 0 && optionalContent()) {
+            plugin.getLogger().info("• " + label + " · ninguna definida todavía.");
+        } else if (registered == 0) {
             plugin.getLogger().warning("✘ " + label
                     + " · sin contenido registrado. Podría no estar disponible en el juego.");
         }
+    }
+
+    /**
+     * Contenido que el servidor puede no tener y aun así funcionar (las
+     * regiones, por ejemplo): vacío se informa, pero no como advertencia.
+     */
+    protected boolean optionalContent() {
+        return false;
     }
 
     @Override

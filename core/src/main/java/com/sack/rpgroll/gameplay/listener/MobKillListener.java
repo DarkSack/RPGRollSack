@@ -79,7 +79,7 @@ public class MobKillListener implements Listener {
 
             // Verificar level up automático
             PlayerLevelUpHandler levelUpHandler = new PlayerLevelUpHandler(playerManager, levelUpRewardsConfig, lang);
-            levelUpHandler.tryLevelUp(killer, updatedPlayer);
+            levelUpHandler.levelUpAll(killer, updatedPlayer);
 
         } catch (Exception e) {
             e.printStackTrace();

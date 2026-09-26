@@ -4,7 +4,7 @@
 
 Un framework RPG modular para **Minecraft Java Edition 26.1.1 (Paper)** diseñado para transformar un servidor vanilla en una experiencia de rol completa inspirada en juegos como **Dungeons & Dragons**, MMORPGs clásicos y sistemas RPG modernos.
 
-Ya no es un único plugin: es un **ecosistema de 1 core + 23 addons independientes**, cada uno instalable por separado — incluye un asset pipeline de resource packs (`SackResourcePack`) que no depende de ningún otro módulo.
+Ya no es un único plugin: es un **ecosistema de 1 core + 24 addons independientes** sobre una librería común (`RPGRoll-Lib`), cada uno instalable por separado — incluye un asset pipeline de resource packs (`SackResourcePack`) que no depende de ningún otro módulo.
 
 📖 **Documentación completa:** [docs.sackito.online](https://docs.sackito.online/)
 
@@ -146,10 +146,10 @@ el paquete de release completo del ecosistema:
 ./gradlew release
 ```
 
-Esto arma `build/distributions/RPGRoll-Ecosystem-<versión>.zip` con el `.jar` final de los 23 addons + el
-core (24 en total) más un `MANIFEST.txt` con la lista. Antes de copiar los jars, `checkReleaseVersions` falla
+Esto arma `build/distributions/RPGRoll-Ecosystem-<versión>.zip` con el `.jar` final de los 24 addons, el
+core y RPGRoll-Lib (26 en total) más un `MANIFEST.txt` con la lista. Antes de copiar los jars, `checkReleaseVersions` falla
 la build si algún módulo quedó en una versión distinta al resto — evita publicar un release con addons
-desincronizados. Los dos módulos que empaquetan dependencias propias (`core` shadea `:api`/`:common`; `npcs`
+desincronizados. Los dos módulos que empaquetan dependencias propias (`core` shadea `:api` y el licenciamiento; `npcs`
 shadea y reubica OkHttp) usan su `shadowJar`, no el jar plano — la tarea ya lo resuelve sola por módulo, no
 hace falta tocar nada al agregar un addon nuevo mientras siga la convención `rpgroll.addon-conventions`.
 
@@ -324,7 +324,7 @@ La idea es que prácticamente cualquier mecánica RPG pueda implementarse utiliz
 
 # ❤️ Estado del desarrollo
 
-El core y los 23 addons descritos arriba están implementados, compilando y en la versión **1.0.0**.
+El core, RPGRoll-Lib y los 24 addons descritos arriba están implementados, compilando y en la versión **1.0.0**.
 
 ---
 

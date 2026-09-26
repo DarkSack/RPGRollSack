@@ -32,6 +32,11 @@ public class MarketRegionManager extends ContentManager<MarketRegion> {
         return getAll().stream().filter(region -> region.contains(world, x, y, z)).findFirst();
     }
 
+    @Override
+    protected boolean optionalContent() {
+        return true;
+    }
+
     /** El propio módulo: la carga se anuncia con su nombre y no hace falta el core. */
     private static JavaPlugin owningPlugin() {
         return JavaPlugin.getProvidingPlugin(MarketRegionManager.class);

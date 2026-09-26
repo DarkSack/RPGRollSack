@@ -67,7 +67,7 @@ public class PassPlugin extends JavaPlugin {
                 new ResourceFile("daily.yml", "daily.yml", false),
                 new ResourceFile("votes.yml", "votes.yml", false)));
 
-        lang = new LangManager(this, List.of("es", "en"), "es");
+        lang = new LangManager(this, List.of("es", "en", "pt_BR"), "es");
         lang.reload(getConfig().getString("language", "es"));
 
         clock = new PassClock(zone());

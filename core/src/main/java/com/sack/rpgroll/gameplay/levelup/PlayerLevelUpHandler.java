@@ -29,6 +29,35 @@ public class PlayerLevelUpHandler {
     }
 
     /**
+     * Sube todos los niveles que alcance la XP acumulada, no solo uno: una
+     * recompensa grande (una misión, el pase) puede cruzar varios umbrales
+     * de golpe, y antes el resto se iba recuperando de a un nivel por mob.
+     *
+     * @return cuántos niveles subió
+     */
+    public int levelUpAll(Player player, RPGPlayer rpgPlayer) {
+
+        int levels = 0;
+        RPGPlayer current = rpgPlayer;
+
+        while (current != null && tryLevelUp(player, current)) {
+
+            RPGPlayer next = playerManager.getPlayer(player.getUniqueId()).orElse(null);
+
+            // En el nivel máximo levelUp() no sube; sin esto el bucle no terminaría
+            // si rewards.yml define niveles por encima del tope.
+            if (next == null || next.getLevel() <= current.getLevel()) {
+                break;
+            }
+
+            levels++;
+            current = next;
+        }
+
+        return levels;
+    }
+
+    /**
      * Intenta subir de nivel si el jugador tiene suficiente XP.
      * Retorna true si subió de nivel, false en caso contrario.
      */

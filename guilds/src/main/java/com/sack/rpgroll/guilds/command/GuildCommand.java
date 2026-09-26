@@ -16,6 +16,7 @@ import com.sack.rpgroll.guilds.guild.chat.GuildChatChannel;
 import com.sack.rpgroll.guilds.guild.ranking.GuildRankingManager;
 import com.sack.rpgroll.util.TabCompleteUtil;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -151,9 +152,13 @@ public class GuildCommand implements CommandExecutor, TabCompleter {
             }
         }
 
-        if (requirements.requiredQuestId() != null && !requirements.requiredQuestId().isBlank()) {
-            lang().send(player, "guild.create.quest_requirement_not_implemented", "quest",
-                    requirements.requiredQuestId());
+        // Sin RPGRoll-Quests instalado el requisito no se puede comprobar y no bloquea.
+        String questId = requirements.requiredQuestId();
+        if (questId != null && !questId.isBlank()
+                && Bukkit.getPluginManager().isPluginEnabled("RPGRoll-Quests")
+                && !QuestRequirement.hasCompleted(player, questId)) {
+            lang().send(player, "guild.create.requires_quest", "quest", questId);
+            return false;
         }
 
         if (requirements.moneyCost() > 0) {

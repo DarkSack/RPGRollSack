@@ -101,7 +101,27 @@ public class PassService {
         }
     }
 
+    /**
+     * Guarda ya el estado del jugador. Tras un reclamo no se espera al
+     * autoguardado: si el servidor se cae antes, el jugador podría volver a
+     * reclamar lo mismo (y el dinero de Vault ya está guardado).
+     */
+    public void save(Player player) {
+        store.save(store.get(player.getUniqueId()));
+    }
+
     public ClaimResult claim(Player player, int level, boolean premium) {
+
+        ClaimResult result = claimLevel(player, level, premium);
+
+        if (result == ClaimResult.CLAIMED) {
+            save(player);
+        }
+
+        return result;
+    }
+
+    private ClaimResult claimLevel(Player player, int level, boolean premium) {
 
         Optional<Season> open = openSeason();
 
@@ -148,12 +168,16 @@ public class PassService {
         int claimed = 0;
 
         for (int level : open.get().levels().keySet()) {
-            if (claim(player, level, false) == ClaimResult.CLAIMED) {
+            if (claimLevel(player, level, false) == ClaimResult.CLAIMED) {
                 claimed++;
             }
-            if (claim(player, level, true) == ClaimResult.CLAIMED) {
+            if (claimLevel(player, level, true) == ClaimResult.CLAIMED) {
                 claimed++;
             }
+        }
+
+        if (claimed > 0) {
+            save(player);
         }
 
         return claimed;

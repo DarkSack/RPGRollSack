@@ -74,6 +74,7 @@ public class DailyService {
         List<Reward> day = config.days().get(cycleIndex(streak));
 
         state.recordDailyClaim(today, streak);
+        pass.save(player);
         rewards.grant(player, day);
         lang.send(player, "daily.claimed", "day", cycleIndex(streak) + 1, "streak", streak);
 

@@ -17,3 +17,6 @@ permissions:
   rpgrollchat.socialspy:
     description: Ver whispers ajenos
     default: op
+  rpgrollchat.antispam.bypass:
+    description: Saltarse el antispam (cooldown de canal, flood y repetición)
+    default: op

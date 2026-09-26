@@ -81,7 +81,11 @@ public class Bootstrap {
             com.sack.rpgroll.common.character.Characters.register(plugin,
                     new com.sack.rpgroll.api.CoreCharacters(services.get(PlayerManager.class),
                             services.get(com.sack.rpgroll.api.ExperienceBonusService.class),
-                            services.get(PlacedBlockTracker.class)));
+                            services.get(PlacedBlockTracker.class),
+                            new com.sack.rpgroll.gameplay.levelup.PlayerLevelUpHandler(
+                                    services.get(PlayerManager.class),
+                                    services.get(com.sack.rpgroll.gameplay.levelup.LevelUpRewardsConfig.class),
+                                    services.get(LangManager.class))));
 
             registerPlaceholders();
 

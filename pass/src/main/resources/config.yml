@@ -7,7 +7,7 @@
 #   votes.yml         páginas de votación y recompensas por votar
 # Tras editar cualquiera: /passadmin reload
 
-# Idioma de los mensajes: es, en.
+# Idioma de los mensajes: es, en, pt_BR.
 language: es
 
 # Temporada activa (nombre del fichero en seasons/ sin .yml). Vacío = pase cerrado.

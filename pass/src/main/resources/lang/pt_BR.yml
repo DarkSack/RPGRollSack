@@ -1,0 +1,105 @@
+# Mensagens do RPGRoll-Pass. {placeholder} é substituído; cores com &.
+
+command:
+  players_only: "&cEste comando é apenas para jogadores."
+
+reward:
+  money: "&6+{amount} de ouro"
+  exp: "&a+{amount} EXP de personagem"
+  key: "&e{amount}× chave &f{crate}"
+  item: "&d{amount}× &f{item}"
+  material: "&f{amount}× {material}"
+  command: "&7Recompensa especial"
+
+pass:
+  xp_gained: "&8[&6Passe&8] &e+{amount} &7pontos de passe"
+  level_up: "&6&l✦ Nível {level} do passe! &7Resgate suas recompensas com &e/pase"
+  reminder: "&6✦ &7Você tem recompensas do passe para resgatar: &e/pase"
+  claimed: "&a✔ Recompensas do nível {level} resgatadas."
+  claimed_all: "&a✔ {count} recompensa(s) do passe resgatada(s)."
+  nothing_to_claim: "&7Você não tem nada para resgatar agora."
+  locked: "&cVocê ainda não chegou ao nível {level}."
+  needs_premium: "&6Essa recompensa é do Passe Premium. &7Consiga-o na &eloja&7."
+  already_claimed: "&7Você já resgatou essa."
+
+missions:
+  completed: "&a✔ Missão concluída: &f{mission} &8(&e+{xp} pontos&8)"
+
+daily:
+  claimed: "&a✔ Recompensa do dia {day} resgatada. &7Sequência: &e{streak} dia(s)"
+  bonus: "&6✦ Extra de cargo {rank}&6 entregue."
+  already: "&7Você já resgatou a de hoje. Volte amanhã."
+  reminder: "&e⏰ &7Sua recompensa diária está esperando: &e/diario"
+
+votes:
+  header: "&6&l✦ Vote no Sackito Network &7(clique em cada página)"
+  no_sites: "&7Ainda não há páginas de votação configuradas."
+  site: "&8 » &a{name}"
+  stats: "&7Votos totais: &e{total} &8· &7Sequência: &e{streak} dia(s)"
+  thanks: "&a✔ Obrigado por votar! &7Sequência: &e{streak} dia(s)"
+  streak_reward: "&6✦ {days} dias seguidos votando! Prêmio de sequência entregue."
+
+admin:
+  usage: "&eUso: /passadmin reload | xp <jogador> <quantidade> | vote <jogador> | info <jogador>"
+  reloaded: "&a✔ RPGRoll-Pass recarregado ({missions} missões)."
+  player_offline: "&c{player} não está conectado."
+  xp_given: "&a✔ {amount} pontos de passe para {player}."
+  vote_sent: "&a✔ Voto simulado para {player}."
+  info: "&e{player}&7: temporada &f{season}&7, &f{xp} &7pontos (nível &f{level}&7), premium &f{premium}&7, sequência diária &f{streak}&7, votos &f{votes}"
+
+gui:
+  back: "&7« Voltar"
+  previous: "&e« Anterior"
+  next: "&ePróxima »"
+  pass:
+    title: "&8✦ Passe Royale"
+    closed: "&cO passe está fechado"
+    closed_lore: "&7Não há nenhuma temporada ativa agora."
+    row_level: "&eNível"
+    row_free: "&fTrilha grátis"
+    row_premium: "&6&lTrilha premium"
+    premium_active: "&a✔ Você tem o Passe Premium"
+    premium_buy: "&7Consiga-o na loja"
+    level: "&eNível {level}"
+    level_unlocked: "&a✔ Desbloqueado"
+    level_locked: "&7Desbloqueia com &e{xp} &7pontos"
+    missions: "&bMissões"
+    missions_lore: "&7Diárias, semanais e de temporada"
+    claim_all: "&aResgatar tudo"
+    claim_all_lore: "&7Tudo o que foi desbloqueado nas duas trilhas"
+    daily: "&eRecompensa diária"
+    daily_ready: "&aPronta para resgatar!"
+    daily_done: "&7Já resgatada hoje"
+    header_level: "&7Nível &e{level}&7/&e{max}"
+    header_xp: "{bar} &7{xp}/{needed}"
+    header_max: "&6&lPasse completo!"
+    header_premium: "&6✦ Premium ativo"
+    header_free: "&7Trilha grátis &8(premium na loja)"
+    header_ends: "&7Termina: &f{date}"
+    reward_free: "&fNível {level} &8· &7grátis"
+    reward_premium: "&6Nível {level} &8· &6premium"
+    status_claimed: "&a✔ Resgatada"
+    status_locked: "&7🔒 Chegue ao nível {level}"
+    status_premium: "&6Requer Passe Premium"
+    status_ready: "&e» Clique para resgatar"
+  missions:
+    title: "&8✦ Missões do passe"
+    daily: "&eDiárias &7(mudam à meia-noite)"
+    weekly: "&bSemanais &7(mudam na segunda-feira)"
+    season: "&6De temporada"
+    progress: "{bar} &7{value}/{amount}"
+    reward: "&7Prêmio: &e+{xp} pontos de passe"
+    done: "&a✔ Concluída"
+    pending: "&7Em andamento"
+  daily:
+    title: "&8✦ Recompensa diária"
+    streak: "&6Sequência: &e{streak} dia(s)"
+    streak_resets: "&7Se faltar um dia, volta para 1"
+    streak_keeps: "&7A sequência não se perde se você faltar"
+    day: "&eDia {day}"
+    status_claimed: "&a✔ Resgatado"
+    status_ready: "&e» Clique para resgatar"
+    status_upcoming: "&7Em breve"
+    bonus_title: "&6Extra diário por cargo"
+    bonus_rank: "&7{rank}"
+    bonus_active: "&a» {rank} &a(seu cargo)"

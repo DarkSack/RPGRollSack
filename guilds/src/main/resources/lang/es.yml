@@ -156,7 +156,7 @@ guild:
     requires_permission: "&cNo tienes el permiso necesario para fundar una guild."
     requires_item: "&cNecesitás {amount}x {item} para fundar una guild."
     requires_money: "&cNecesitás {amount} de dinero para fundar una guild."
-    quest_requirement_not_implemented: "&7Aviso: esta guild requiere haber completado la quest '{quest}', pero esa verificación todavía no está implementada — el requisito no se aplica."
+    requires_quest: "&cNecesitás completar la misión '{quest}' para fundar una guild."
   accept:
     usage: "&eUso: /guild accept <id-de-guild>"
     success: "&a✔ Te uniste a la guild."

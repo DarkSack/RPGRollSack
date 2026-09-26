@@ -19,6 +19,11 @@ public class FishingRegionManager extends ContentManager<FishingRegion> {
         reload();
     }
 
+    @Override
+    protected boolean optionalContent() {
+        return true;
+    }
+
     /** El propio módulo: la carga se anuncia con su nombre y no hace falta el core. */
     private static JavaPlugin owningPlugin() {
         return JavaPlugin.getProvidingPlugin(FishingRegionManager.class);

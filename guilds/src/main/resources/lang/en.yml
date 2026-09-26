@@ -156,7 +156,7 @@ guild:
     requires_permission: "&cYou don't have the required permission to found a guild."
     requires_item: "&cYou need {amount}x {item} to found a guild."
     requires_money: "&cYou need {amount} money to found a guild."
-    quest_requirement_not_implemented: "&7Notice: this guild requires having completed quest '{quest}', but that check isn't implemented yet — the requirement doesn't apply."
+    requires_quest: "&cYou need to complete the quest '{quest}' to found a guild."
   accept:
     usage: "&eUsage: /guild accept <guild-id>"
     success: "&a✔ You joined the guild."

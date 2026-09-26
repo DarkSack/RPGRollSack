@@ -86,6 +86,7 @@ permissions:
       rpgroll.admin.resetstats: true
       rpgroll.admin.job: true
       rpgroll.admin.content: true
+      rpgroll.admin.restore: true
   rpgroll.admin.reload:
     description: Recargar configuración del plugin
     default: op
@@ -124,4 +125,8 @@ permissions:
 
   rpgroll.admin.content:
     description: Editor visual de razas/clases/trabajos/skills/traits
+    default: op
+
+  rpgroll.admin.restore:
+    description: Restaurar la vida o el maná de un jugador (/rpg restore)
     default: op

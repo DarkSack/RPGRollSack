@@ -2,9 +2,11 @@ package com.sack.rpgroll.api;
 
 import com.sack.rpgroll.common.character.RPGCharacters;
 import com.sack.rpgroll.gameplay.job.PlacedBlockTracker;
+import com.sack.rpgroll.gameplay.levelup.PlayerLevelUpHandler;
 import com.sack.rpgroll.player.PlayerManager;
 import com.sack.rpgroll.player.RPGPlayer;
 
+import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
@@ -21,12 +23,14 @@ public final class CoreCharacters implements RPGCharacters {
     private final PlayerManager players;
     private final ExperienceBonusService experienceBonus;
     private final PlacedBlockTracker placedBlocks;
+    private final PlayerLevelUpHandler levelUps;
 
     public CoreCharacters(PlayerManager players, ExperienceBonusService experienceBonus,
-            PlacedBlockTracker placedBlocks) {
+            PlacedBlockTracker placedBlocks, PlayerLevelUpHandler levelUps) {
         this.players = players;
         this.experienceBonus = experienceBonus;
         this.placedBlocks = placedBlocks;
+        this.levelUps = levelUps;
     }
 
     private Optional<RPGPlayer> player(UUID uuid) {
@@ -95,7 +99,16 @@ public final class CoreCharacters implements RPGCharacters {
 
     @Override
     public void addExperience(UUID player, int amount) {
-        player(player).ifPresent(p -> players.savePlayer(p.addExperience(amount)));
+        player(player).ifPresent(p -> {
+            RPGPlayer updated = p.addExperience(amount);
+            players.savePlayer(updated);
+
+            // Igual que al matar un mob: si la EXP alcanza, sube en el acto.
+            Player online = Bukkit.getPlayer(player);
+            if (online != null) {
+                levelUps.levelUpAll(online, updated);
+            }
+        });
     }
 
     @Override
