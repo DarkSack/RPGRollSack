@@ -1,0 +1,66 @@
+# Sección de la tienda del servidor (/tienda herramientas). Ver _reference_full.yml.
+id: herramientas
+display-name: "&fHerramientas y armas"
+icon: DIAMOND_PICKAXE
+slot: 30
+description:
+  - "&7Picos, hachas, espadas, arcos..."
+items:
+  - material: STONE_PICKAXE
+    buy: 4
+  - material: STONE_AXE
+    buy: 4
+  - material: STONE_SHOVEL
+    buy: 2
+  - material: STONE_SWORD
+    buy: 3
+  - material: IRON_PICKAXE
+    buy: 40
+  - material: IRON_AXE
+    buy: 40
+  - material: IRON_SHOVEL
+    buy: 15
+  - material: IRON_HOE
+    buy: 25
+  - material: IRON_SWORD
+    buy: 25
+  - material: DIAMOND_PICKAXE
+    buy: 800
+  - material: DIAMOND_AXE
+    buy: 800
+  - material: DIAMOND_SHOVEL
+    buy: 280
+  - material: DIAMOND_HOE
+    buy: 520
+  - material: DIAMOND_SWORD
+    buy: 540
+  - material: BOW
+    buy: 15
+  - material: CROSSBOW
+    buy: 35
+  - material: ARROW
+    amount: 64
+    buy: 52
+  - material: SPECTRAL_ARROW
+    amount: 16
+    buy: 48
+  - material: SHIELD
+    buy: 25
+  - material: FISHING_ROD
+    buy: 12
+  - material: SHEARS
+    buy: 25
+  - material: FLINT_AND_STEEL
+    buy: 12
+  - material: BRUSH
+    buy: 15
+  - material: SPYGLASS
+    buy: 20
+  - material: COMPASS
+    buy: 45
+  - material: CLOCK
+    buy: 85
+  - material: MACE
+    buy: 6000
+  - material: TRIDENT
+    buy: 5000

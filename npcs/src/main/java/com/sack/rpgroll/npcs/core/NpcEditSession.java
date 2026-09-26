@@ -1,5 +1,7 @@
 package com.sack.rpgroll.npcs.core;
 
+import com.sack.rpgroll.common.menu.MenuAction;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +21,7 @@ public class NpcEditSession {
     private String world;
     private double x, y, z;
     private float yaw, pitch;
-    private final List<NpcAction> actions = new ArrayList<>();
+    private final List<MenuAction> actions = new ArrayList<>();
 
     public NpcEditSession(String id, boolean isNew) {
         this.id = id;
@@ -120,11 +122,11 @@ public class NpcEditSession {
         this.pitch = location.getPitch();
     }
 
-    public List<NpcAction> getActions() {
+    public List<MenuAction> getActions() {
         return actions;
     }
 
-    public void addAction(NpcAction action) {
+    public void addAction(MenuAction action) {
         actions.add(action);
     }
 

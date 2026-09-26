@@ -1,5 +1,7 @@
 package com.sack.rpgroll.npcs.core;
 
+import com.sack.rpgroll.common.menu.MenuAction;
+
 import com.sack.rpgroll.common.content.ContentParser;
 import java.util.logging.Logger;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -40,7 +42,7 @@ public class NpcParser implements ContentParser<NpcDefinition> {
         float yaw = (float) config.getDouble("location.yaw", 0.0);
         float pitch = (float) config.getDouble("location.pitch", 0.0);
 
-        List<NpcAction> actions = parseActions(id, config);
+        List<MenuAction> actions = parseActions(id, config);
 
         return new NpcDefinition(
                 id,
@@ -57,9 +59,9 @@ public class NpcParser implements ContentParser<NpcDefinition> {
                 actions);
     }
 
-    private List<NpcAction> parseActions(String id, YamlConfiguration config) {
+    private List<MenuAction> parseActions(String id, YamlConfiguration config) {
 
-        List<NpcAction> actions = new ArrayList<>();
+        List<MenuAction> actions = new ArrayList<>();
         List<Map<?, ?>> rawList = config.getMapList("actions");
 
         for (Map<?, ?> raw : rawList) {
@@ -74,9 +76,9 @@ public class NpcParser implements ContentParser<NpcDefinition> {
 
             try {
 
-                NpcAction.NpcActionType type = NpcAction.NpcActionType.valueOf(typeObj.toString().toUpperCase());
+                MenuAction.ActionType type = MenuAction.ActionType.valueOf(typeObj.toString().toUpperCase());
 
-                actions.add(new NpcAction(type, valueObj.toString()));
+                actions.add(new MenuAction(type, valueObj.toString()));
 
             } catch (IllegalArgumentException e) {
                 LOG.warning("'" + id + "': tipo de acción desconocido '" + typeObj + "', se ignora.");

@@ -1,4 +1,4 @@
-package com.sack.rpgroll.npcs.core;
+package com.sack.rpgroll.common.menu;
 
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.junit.jupiter.api.Test;
@@ -7,9 +7,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class NpcMenuParserTest {
+class MenuParserTest {
 
-    private final NpcMenuParser parser = new NpcMenuParser();
+    private final MenuParser parser = new MenuParser();
 
     private YamlConfiguration load(String yaml) {
         YamlConfiguration config = new YamlConfiguration();
@@ -30,7 +30,7 @@ class NpcMenuParserTest {
     @Test
     void minimalMenuFallsBackToDefaults() {
         YamlConfiguration config = load("id: shop");
-        NpcMenuDefinition def = parser.parse(config);
+        MenuDefinition def = parser.parse(config);
 
         assertEquals("shop", def.id());
         assertEquals("shop", def.title());
@@ -49,7 +49,7 @@ class NpcMenuParserTest {
                     material: GOLD_INGOT
                 """);
 
-        NpcMenuDefinition def = parser.parse(config);
+        MenuDefinition def = parser.parse(config);
 
         assertEquals(1, def.items().size());
         assertEquals(1, def.items().get(0).slot());
@@ -72,12 +72,12 @@ class NpcMenuParserTest {
                         value: bought!
                 """);
 
-        NpcMenuItem item = parser.parse(config).items().get(0);
+        MenuItem item = parser.parse(config).items().get(0);
 
         assertEquals("Diamond", item.displayName());
         assertEquals(2, item.lore().size());
         assertEquals(1, item.actions().size());
-        assertEquals(NpcAction.NpcActionType.MESSAGE, item.actions().get(0).type());
+        assertEquals(MenuAction.ActionType.MESSAGE, item.actions().get(0).type());
     }
 
     @Test

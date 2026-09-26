@@ -1,5 +1,6 @@
 package com.sack.rpgroll.pass.season;
 
+import com.sack.rpgroll.pass.requirement.LevelRequirements;
 import com.sack.rpgroll.pass.reward.RewardParser;
 
 import org.bukkit.configuration.ConfigurationSection;
@@ -71,7 +72,9 @@ public final class SeasonLoader {
                 String where = "temporada " + id + " nivel " + level;
                 levels.put(level, new SeasonLevel(level,
                         RewardParser.parseAll(list(section, key + ".free"), where + " (gratis)", warn),
-                        RewardParser.parseAll(list(section, key + ".premium"), where + " (premium)", warn)));
+                        RewardParser.parseAll(list(section, key + ".premium"), where + " (premium)", warn),
+                        LevelRequirements.parse(section.getConfigurationSection(key + ".requirements"), where,
+                                warn)));
             }
         }
 

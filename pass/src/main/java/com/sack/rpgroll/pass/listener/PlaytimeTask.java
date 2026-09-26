@@ -2,6 +2,7 @@ package com.sack.rpgroll.pass.listener;
 
 import com.sack.rpgroll.pass.mission.MissionService;
 import com.sack.rpgroll.pass.mission.MissionType;
+import com.sack.rpgroll.pass.season.PassService;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -14,10 +15,12 @@ public class PlaytimeTask implements Runnable {
     public static final long PERIOD_TICKS = 20L * 60;
 
     private final MissionService missions;
+    private final PassService pass;
     private final Duration afkAfter;
 
-    public PlaytimeTask(MissionService missions, Duration afkAfter) {
+    public PlaytimeTask(MissionService missions, PassService pass, Duration afkAfter) {
         this.missions = missions;
+        this.pass = pass;
         this.afkAfter = afkAfter;
     }
 
@@ -26,6 +29,7 @@ public class PlaytimeTask implements Runnable {
         for (Player player : Bukkit.getOnlinePlayers()) {
             if (player.getIdleDuration().compareTo(afkAfter) < 0) {
                 missions.progress(player, MissionType.PLAYTIME, "", 1);
+                pass.addPlaytime(player, 1);
             }
         }
     }

@@ -3,11 +3,19 @@ version: 1.0.0
 main: com.sack.rpgroll.extras.ExtrasPlugin
 api-version: "26.1.1"
 author: Sack
-description: Necesidades y estados de supervivencia configurables (sed, stamina, fatiga, temperatura, oxígeno, estrés, condiciones custom) para RPGRoll
+description: Necesidades y estados de supervivencia configurables (sed, stamina, fatiga, temperatura, oxígeno, estrés, condiciones custom) y el menú del servidor (brújula) para RPGRoll
 depend: [RPGRoll-Lib]
 softdepend: [RPGRoll, RPGRoll-TAB, RPGRoll-Seasons, PlaceholderAPI, Vault]
 
 permissions:
   rpgrollextras.admin.*:
     description: Acceso completo a comandos administrativos de RPGRoll-Extras
+    default: op
+    children:
+      rpgrollextras.menu.any: true
+  rpgrollextras.menu:
+    description: Abrir el menú del servidor (/menu) y recuperar su brújula (/menu item)
+    default: true
+  rpgrollextras.menu.any:
+    description: Abrir cualquier menú de menus/ con /menu <id>
     default: op

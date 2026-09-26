@@ -1,0 +1,72 @@
+# Sección de la tienda del servidor (/tienda comida). Ver _reference_full.yml.
+id: comida
+display-name: "&cComida"
+icon: COOKED_BEEF
+slot: 23
+description:
+  - "&7Para no quedarte con el estómago vacío"
+items:
+  - material: BREAD
+    amount: 16
+    buy: 48
+  - material: COOKED_BEEF
+    amount: 16
+    buy: 80
+  - material: COOKED_PORKCHOP
+    amount: 16
+    buy: 80
+  - material: COOKED_CHICKEN
+    amount: 16
+    buy: 64
+  - material: COOKED_MUTTON
+    amount: 16
+    buy: 64
+  - material: COOKED_RABBIT
+    amount: 16
+    buy: 64
+  - material: COOKED_COD
+    amount: 16
+    buy: 48
+  - material: COOKED_SALMON
+    amount: 16
+    buy: 64
+  - material: BAKED_POTATO
+    amount: 32
+    buy: 64
+  - material: PUMPKIN_PIE
+    amount: 8
+    buy: 48
+  - material: CAKE
+    buy: 20
+  - material: COOKIE
+    amount: 32
+    buy: 32
+  - material: APPLE
+    amount: 16
+    buy: 32
+    sell: 8
+  - material: GOLDEN_CARROT
+    amount: 16
+    buy: 192
+  - material: GOLDEN_APPLE
+    buy: 180
+  - material: MUSHROOM_STEW
+    buy: 4
+  - material: RABBIT_STEW
+    buy: 8
+  - material: BEETROOT_SOUP
+    buy: 5
+  - material: HONEY_BOTTLE
+    amount: 8
+    buy: 48
+  - material: SWEET_BERRIES
+    amount: 32
+    buy: 32
+    sell: 8
+  - material: DRIED_KELP
+    amount: 64
+    buy: 32
+  - material: MELON_SLICE
+    amount: 64
+    buy: 32
+    sell: 8

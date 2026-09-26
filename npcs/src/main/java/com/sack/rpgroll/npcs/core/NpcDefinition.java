@@ -1,5 +1,7 @@
 package com.sack.rpgroll.npcs.core;
 
+import com.sack.rpgroll.common.menu.MenuAction;
+
 import com.sack.rpgroll.common.content.RPGContent;
 
 import java.util.List;
@@ -17,7 +19,7 @@ public record NpcDefinition(
         double z,
         float yaw,
         float pitch,
-        List<NpcAction> actions) implements RPGContent {
+        List<MenuAction> actions) implements RPGContent {
 
     public NpcDefinition {
 

@@ -59,6 +59,8 @@ public class PassPlayerStore {
         yaml.set("season.xp", player.xp);
         yaml.set("season.claimed-free", new ArrayList<>(player.claimedFree));
         yaml.set("season.claimed-premium", new ArrayList<>(player.claimedPremium));
+        yaml.set("season.playtime-minutes", player.seasonPlaytime);
+        yaml.set("season.missions-completed", player.seasonMissions);
         yaml.set("missions.daily-day", player.dailyMissionDay);
         yaml.set("missions.daily", player.dailyMissions);
         yaml.set("missions.weekly-key", player.weeklyKey);
@@ -94,6 +96,8 @@ public class PassPlayerStore {
         player.xp = yaml.getInt("season.xp");
         player.claimedFree.addAll(yaml.getIntegerList("season.claimed-free"));
         player.claimedPremium.addAll(yaml.getIntegerList("season.claimed-premium"));
+        player.seasonPlaytime = yaml.getInt("season.playtime-minutes");
+        player.seasonMissions = yaml.getInt("season.missions-completed");
         player.dailyMissionDay = yaml.getLong("missions.daily-day", Long.MIN_VALUE);
         player.dailyMissions.addAll(yaml.getStringList("missions.daily"));
         player.weeklyKey = yaml.getString("missions.weekly-key", "");

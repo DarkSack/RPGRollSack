@@ -1,12 +1,8 @@
-package com.sack.rpgroll.npcs.gui;
+package com.sack.rpgroll.common.menu;
 
 import com.sack.rpgroll.util.ComponentUtils;
 
 import com.sack.rpgroll.gui.InventoryGUI;
-import com.sack.rpgroll.npcs.core.NpcAction;
-import com.sack.rpgroll.npcs.core.NpcActionExecutor;
-import com.sack.rpgroll.npcs.core.NpcMenuDefinition;
-import com.sack.rpgroll.npcs.core.NpcMenuItem;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
@@ -22,17 +18,17 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Renderiza un NpcMenuDefinition como GUI real, ejecutando las acciones
- * configuradas de cada NpcMenuItem al hacer click.
+ * Renderiza un {@link MenuDefinition} como GUI real, ejecutando las acciones
+ * configuradas de cada {@link MenuItem} al hacer click.
  */
-public class NpcMenuGUI extends InventoryGUI {
+public class MenuGUI extends InventoryGUI {
 
 
-    private final NpcMenuDefinition menu;
-    private final NpcActionExecutor actionExecutor;
-    private final Map<Integer, List<NpcAction>> slotToActions = new HashMap<>();
+    private final MenuDefinition menu;
+    private final MenuActionExecutor actionExecutor;
+    private final Map<Integer, List<MenuAction>> slotToActions = new HashMap<>();
 
-    public NpcMenuGUI(Player player, NpcMenuDefinition menu, NpcActionExecutor actionExecutor) {
+    public MenuGUI(Player player, MenuDefinition menu, MenuActionExecutor actionExecutor) {
         super(player, ComponentUtils.parse(menu.title()), menu.rows() * 9);
         this.menu = menu;
         this.actionExecutor = actionExecutor;
@@ -44,9 +40,15 @@ public class NpcMenuGUI extends InventoryGUI {
         clear();
         slotToActions.clear();
 
-        for (NpcMenuItem menuItem : menu.items()) {
+        fill();
+
+        for (MenuItem menuItem : menu.items()) {
 
             if (menuItem.slot() < 0 || menuItem.slot() >= menu.rows() * 9) {
+                continue;
+            }
+
+            if (menuItem.permission() != null && !player.hasPermission(menuItem.permission())) {
                 continue;
             }
 
@@ -64,14 +66,20 @@ public class NpcMenuGUI extends InventoryGUI {
 
             ItemStack item = new ItemStack(material);
             ItemMeta meta = item.getItemMeta();
+            meta.addItemFlags(org.bukkit.inventory.ItemFlag.values());
+
+            // Una cabeza de jugador sin más muestra la de quien abre el menú.
+            if (meta instanceof org.bukkit.inventory.meta.SkullMeta skull && !skull.hasOwner()) {
+                skull.setOwningPlayer(player);
+            }
 
             if (!menuItem.displayName().isEmpty()) {
-                meta.displayName(ComponentUtils.parse(menuItem.displayName()));
+                meta.displayName(ComponentUtils.parse(menuItem.displayName().replace("{player}", player.getName())));
             }
 
             if (!menuItem.lore().isEmpty()) {
                 List<Component> lore = menuItem.lore().stream()
-                        .<Component>map(ComponentUtils::parse)
+                        .<Component>map(line -> ComponentUtils.parse(line.replace("{player}", player.getName())))
                         .toList();
 
                 meta.lore(lore);
@@ -84,12 +92,34 @@ public class NpcMenuGUI extends InventoryGUI {
         }
     }
 
+    private void fill() {
+
+        if (menu.filler() == null) {
+            return;
+        }
+
+        Material material = Material.matchMaterial(menu.filler());
+        if (material == null || !material.isItem()) {
+            return;
+        }
+
+        ItemStack filler = new ItemStack(material);
+        ItemMeta meta = filler.getItemMeta();
+        meta.displayName(Component.empty());
+        meta.setHideTooltip(true);
+        filler.setItemMeta(meta);
+
+        for (int slot = 0; slot < menu.rows() * 9; slot++) {
+            setItem(slot, filler);
+        }
+    }
+
     @Override
     public void handleClick(InventoryClickEvent event) {
 
         event.setCancelled(true);
 
-        List<NpcAction> actions = slotToActions.get(event.getRawSlot());
+        List<MenuAction> actions = slotToActions.get(event.getRawSlot());
 
         if (actions == null) {
             return;
@@ -97,7 +127,7 @@ public class NpcMenuGUI extends InventoryGUI {
 
         close();
 
-        for (NpcAction action : actions) {
+        for (MenuAction action : actions) {
             actionExecutor.executeOne(player, action);
         }
     }

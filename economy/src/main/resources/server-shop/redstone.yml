@@ -1,0 +1,89 @@
+# Sección de la tienda del servidor (/tienda redstone). Ver _reference_full.yml.
+id: redstone
+display-name: "&cRedstone"
+icon: REDSTONE
+slot: 29
+description:
+  - "&7Mecanismos y automatización"
+items:
+  - material: REDSTONE_TORCH
+    amount: 16
+    buy: 40
+  - material: REPEATER
+    amount: 8
+    buy: 64
+  - material: COMPARATOR
+    amount: 8
+    buy: 96
+  - material: PISTON
+    amount: 8
+    buy: 112
+  - material: STICKY_PISTON
+    amount: 8
+    buy: 160
+  - material: OBSERVER
+    amount: 8
+    buy: 96
+  - material: HOPPER
+    amount: 4
+    buy: 220
+  - material: DROPPER
+    amount: 8
+    buy: 80
+  - material: DISPENSER
+    amount: 8
+    buy: 96
+  - material: LEVER
+    amount: 16
+    buy: 16
+  - material: STONE_BUTTON
+    amount: 16
+    buy: 8
+  - material: STONE_PRESSURE_PLATE
+    amount: 16
+    buy: 16
+  - material: TRIPWIRE_HOOK
+    amount: 8
+    buy: 48
+  - material: DAYLIGHT_DETECTOR
+    amount: 4
+    buy: 80
+  - material: TARGET
+    amount: 4
+    buy: 40
+  - material: REDSTONE_LAMP
+    amount: 8
+    buy: 96
+  - material: NOTE_BLOCK
+    amount: 8
+    buy: 48
+  - material: TNT
+    amount: 8
+    buy: 144
+  - material: RAIL
+    amount: 32
+    buy: 128
+  - material: POWERED_RAIL
+    amount: 16
+    buy: 480
+  - material: DETECTOR_RAIL
+    amount: 16
+    buy: 192
+  - material: ACTIVATOR_RAIL
+    amount: 16
+    buy: 192
+  - material: MINECART
+    buy: 50
+  - material: HOPPER_MINECART
+    buy: 100
+  - material: CHEST
+    amount: 8
+    buy: 32
+  - material: BARREL
+    amount: 8
+    buy: 32
+  - material: TRAPPED_CHEST
+    amount: 8
+    buy: 64
+  - material: CRAFTER
+    buy: 60

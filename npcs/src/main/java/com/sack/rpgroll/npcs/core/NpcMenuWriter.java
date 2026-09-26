@@ -1,5 +1,9 @@
 package com.sack.rpgroll.npcs.core;
 
+import com.sack.rpgroll.common.menu.MenuAction;
+import com.sack.rpgroll.common.menu.MenuDefinition;
+import com.sack.rpgroll.common.menu.MenuItem;
+
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 
@@ -17,7 +21,7 @@ public class NpcMenuWriter {
         this.plugin = plugin;
     }
 
-    public void save(NpcMenuDefinition definition) {
+    public void save(MenuDefinition definition) {
 
         File folder = new File(plugin.getDataFolder(), "menus");
         if (!folder.exists()) {
@@ -30,10 +34,10 @@ public class NpcMenuWriter {
         config.set("rows", definition.rows());
 
         List<Map<String, Object>> itemMaps = new ArrayList<>();
-        for (NpcMenuItem item : definition.items()) {
+        for (MenuItem item : definition.items()) {
 
             List<Map<String, Object>> actionMaps = new ArrayList<>();
-            for (NpcAction action : item.actions()) {
+            for (MenuAction action : item.actions()) {
                 actionMaps.add(Map.of("type", action.type().name(), "value", action.value()));
             }
 

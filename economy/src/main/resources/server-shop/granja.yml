@@ -1,0 +1,81 @@
+# Sección de la tienda del servidor (/tienda granja). Ver _reference_full.yml.
+id: granja
+display-name: "&eGranja"
+icon: WHEAT
+slot: 24
+description:
+  - "&7Semillas, cultivos y cosas del corral"
+  - "&8El trigo sigue al mercado"
+items:
+  - material: WHEAT_SEEDS
+    amount: 32
+    buy: 16
+  - material: WHEAT
+    amount: 16
+    market: WHEAT
+  - material: CARROT
+    amount: 32
+    buy: 48
+    sell: 12
+  - material: POTATO
+    amount: 32
+    buy: 48
+    sell: 12
+  - material: BEETROOT_SEEDS
+    amount: 32
+    buy: 16
+  - material: BEETROOT
+    amount: 32
+    buy: 48
+    sell: 12
+  - material: PUMPKIN_SEEDS
+    amount: 16
+    buy: 16
+  - material: PUMPKIN
+    amount: 16
+    buy: 48
+    sell: 12
+  - material: MELON_SEEDS
+    amount: 16
+    buy: 16
+  - material: MELON
+    amount: 16
+    buy: 64
+    sell: 16
+  - material: COCOA_BEANS
+    amount: 16
+    buy: 32
+    sell: 8
+  - material: NETHER_WART
+    amount: 16
+    buy: 64
+    sell: 16
+  - material: SUGAR
+    amount: 32
+    buy: 32
+  - material: EGG
+    amount: 16
+    buy: 16
+    sell: 4
+  - material: MILK_BUCKET
+    buy: 8
+  - material: HONEYCOMB
+    amount: 8
+    buy: 40
+    sell: 10
+  - material: HAY_BLOCK
+    amount: 8
+    buy: 288
+  - material: BONE_MEAL
+    amount: 32
+    buy: 32
+  - material: LEAD
+    buy: 15
+  - material: SADDLE
+    buy: 120
+  - material: NAME_TAG
+    buy: 90
+  - material: COMPOSTER
+    buy: 4
+  - material: WATER_BUCKET
+    buy: 15

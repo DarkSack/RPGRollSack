@@ -1,0 +1,58 @@
+# ============================================================================
+# SECCIÓN DE TIENDA DE REFERENCIA — documenta todos los campos. El guion bajo
+# del nombre hace que NO se cargue: es documentación. Cada archivo de esta
+# carpeta es una sección de /tienda. Se recargan con /economyadmin reload.
+# ============================================================================
+
+id: reference_full_example          # obligatorio; /tienda <id> abre la sección directamente
+display-name: "&6Sección de ejemplo" # admite &, hex (&#RRGGBB) y MiniMessage
+icon: CHEST                         # material del botón en la portada
+slot: 13                            # casilla de la portada (0-44); sin slot, el primer hueco libre
+premium: false                      # true: brillo en el botón y marco dorado dentro
+permission: ""                      # permiso para entrar; vacío = todos
+currency: ""                        # id de una moneda de currencies/; vacío = la moneda por defecto
+description:                        # líneas bajo el nombre en la portada
+  - "&7Lo que se vende aquí"
+
+# Cada línea entrega UNA de estas cosas:
+#   material: <MATERIAL>   ítem vanilla (lo único que la tienda puede comprarle al jugador)
+#   item: <id>             ítem de RPGRoll-Items
+#   enchant: <id>          libro de un encantamiento de RPGRoll-Enchantments (+ level)
+#   book: <encantamiento>  libro encantado vanilla, por su clave: sharpness, mending... (+ level)
+#   potion: <TIPO>         poción vanilla: STRENGTH, LONG_SWIFTNESS, STRONG_HEALING... (+ form)
+#
+# Y además:
+#   amount: 16     unidades por compra (y por venta). Por defecto 1.
+#   buy: 120       precio del lote. 0 o sin buy = no se vende al jugador.
+#   sell: 30       lo que se paga por el lote. 0 o sin sell = la tienda no lo compra.
+#                  Nunca puede superar a buy (se recorta): sería dinero infinito.
+#   market: DIAMOND  enlaza el precio a un producto de market/: se compra al precio de
+#                  mercado y se vende a server-shop.market-sell-ratio de él (config.yml).
+#                  Comprar sube su demanda y vender su oferta. Ignora buy y sell.
+#   name: "&bNombre"   nombre en vez del del ítem
+#   lore: ["&7..."]    líneas extra
+#
+# En la GUI: clic izquierdo compra un lote y shift+clic una pila entera; clic
+# derecho vende un lote y shift+clic todo lo que el jugador lleve encima.
+# Solo se compran ítems vanilla "limpios": con nombre, encantados o de RPGRoll no cuentan.
+items:
+  - material: OAK_LOG
+    amount: 64
+    buy: 128
+    sell: 32
+  - material: DIAMOND
+    market: DIAMOND
+  - item: flame_blade
+    buy: 140000
+    name: "&6Flame Blade &8(edición tienda)"
+    lore:
+      - "&7Solo mientras dure la temporada"
+  - enchant: lifesteal
+    level: 3
+    buy: 90000
+  - book: mending
+    level: 1
+    buy: 3500
+  - potion: STRONG_HEALING
+    form: SPLASH_POTION
+    buy: 95

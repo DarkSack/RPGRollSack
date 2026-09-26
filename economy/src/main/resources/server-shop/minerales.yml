@@ -1,0 +1,88 @@
+# Sección de la tienda del servidor (/tienda minerales). Ver _reference_full.yml.
+id: minerales
+display-name: "&bMinerales"
+icon: DIAMOND
+slot: 22
+description:
+  - "&7Lingotes, gemas y bloques"
+  - "&8Diamante y hierro siguen al mercado"
+items:
+  - material: COAL
+    amount: 16
+    buy: 48
+    sell: 12
+  - material: CHARCOAL
+    amount: 16
+    buy: 40
+  - material: COPPER_INGOT
+    amount: 16
+    buy: 48
+    sell: 12
+  - material: IRON_INGOT
+    amount: 16
+    market: IRON_INGOT
+  - material: IRON_NUGGET
+    amount: 64
+    buy: 77
+  - material: GOLD_INGOT
+    amount: 16
+    buy: 320
+    sell: 80
+  - material: GOLD_NUGGET
+    amount: 64
+    buy: 148
+  - material: REDSTONE
+    amount: 32
+    buy: 64
+    sell: 16
+  - material: LAPIS_LAZULI
+    amount: 32
+    buy: 128
+    sell: 32
+  - material: QUARTZ
+    amount: 32
+    buy: 128
+    sell: 32
+  - material: AMETHYST_SHARD
+    amount: 16
+    buy: 48
+    sell: 12
+  - material: EMERALD
+    amount: 8
+    buy: 480
+    sell: 120
+  - material: DIAMOND
+    market: DIAMOND
+  - material: NETHERITE_SCRAP
+    buy: 900
+    sell: 225
+  - material: NETHERITE_INGOT
+    buy: 4000
+    sell: 1000
+  - material: COAL_BLOCK
+    amount: 8
+    buy: 216
+  - material: IRON_BLOCK
+    amount: 8
+    buy: 720
+  - material: GOLD_BLOCK
+    amount: 4
+    buy: 720
+  - material: REDSTONE_BLOCK
+    amount: 8
+    buy: 144
+  - material: LAPIS_BLOCK
+    amount: 8
+    buy: 288
+  - material: EMERALD_BLOCK
+    buy: 540
+  - material: DIAMOND_BLOCK
+    buy: 2250
+  - material: GLOWSTONE_DUST
+    amount: 32
+    buy: 96
+    sell: 24
+  - material: FLINT
+    amount: 16
+    buy: 16
+    sell: 4

@@ -37,3 +37,10 @@ command:
   condition-not-found: "Não existe uma condition com id: {condition}"
   player-not-found: "Jogador não encontrado: {player}"
   invalid-number: "Valor numérico inválido: {value}"
+
+server_menu:
+  unknown: "&cNão existe o menu «{id}»."
+  no_permission: "&cVocê não tem permissão para abrir outros menus."
+  players_only: "&cEste comando é só para jogadores."
+  disabled: "&7O menu do servidor está desativado."
+  item_given: "&a✔ Aqui está a sua bússola."

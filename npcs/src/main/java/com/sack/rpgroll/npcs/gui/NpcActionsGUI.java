@@ -1,9 +1,10 @@
 package com.sack.rpgroll.npcs.gui;
 
+import com.sack.rpgroll.common.menu.MenuAction;
+
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
-import com.sack.rpgroll.npcs.core.NpcAction;
 import com.sack.rpgroll.npcs.core.NpcEditSession;
 import com.sack.rpgroll.npcs.listener.ChatPromptManager;
 
@@ -52,9 +53,9 @@ public class NpcActionsGUI extends InventoryGUI {
 
         for (int i = 0; i < actions.size() && i < 18; i++) {
 
-            NpcAction action = actions.get(i);
+            MenuAction action = actions.get(i);
 
-            setItem(i, new ItemBuilder(action.type() == NpcAction.NpcActionType.MESSAGE
+            setItem(i, new ItemBuilder(action.type() == MenuAction.ActionType.MESSAGE
                     ? Material.PAPER
                     : Material.COMMAND_BLOCK)
                     .setName(Component.text(action.type().name(), NamedTextColor.GOLD))
@@ -95,9 +96,9 @@ public class NpcActionsGUI extends InventoryGUI {
                         }
 
                         try {
-                            NpcAction.NpcActionType type = NpcAction.NpcActionType
+                            MenuAction.ActionType type = MenuAction.ActionType
                                     .valueOf(parts[0].trim().toUpperCase());
-                            session.addAction(new NpcAction(type, parts[1].trim()));
+                            session.addAction(new MenuAction(type, parts[1].trim()));
                         } catch (IllegalArgumentException e) {
                             langManager.send(player, "actions.invalid_type", "type", parts[0]);
                         }

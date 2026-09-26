@@ -5,6 +5,7 @@ import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.pass.PassModule;
 import com.sack.rpgroll.pass.player.PassPlayer;
+import com.sack.rpgroll.pass.requirement.RequirementStatus;
 import com.sack.rpgroll.pass.reward.Reward;
 import com.sack.rpgroll.pass.season.PassService;
 import com.sack.rpgroll.pass.season.Season;
@@ -94,15 +95,23 @@ public class PassGUI extends InventoryGUI {
 
             SeasonLevel entry = season.levels().get(levels.get(index));
             boolean unlocked = level >= entry.level();
+            List<RequirementStatus> requirements = pass.requirements(player, entry);
+            boolean requirementsMet = requirements.stream().allMatch(RequirementStatus::met);
 
-            setItem(LEVEL_ROW + column, GuiItems.item(
-                    unlocked ? Material.LIME_STAINED_GLASS_PANE : Material.GRAY_STAINED_GLASS_PANE, entry.level(),
-                    lang.component("gui.pass.level", "level", entry.level()),
-                    List.of(lang.component(unlocked ? "gui.pass.level_unlocked" : "gui.pass.level_locked",
-                            "xp", entry.level() * season.xpPerLevel()))));
+            List<Component> levelLore = new ArrayList<>();
+            levelLore.add(lang.component(unlocked ? "gui.pass.level_unlocked" : "gui.pass.level_locked",
+                    "xp", entry.level() * season.xpPerLevel()));
+            addRequirements(levelLore, requirements);
 
-            setItem(FREE_ROW + column, rewardItem(entry, entry.free(), false, state, unlocked, true));
-            setItem(PREMIUM_ROW + column, rewardItem(entry, entry.premium(), true, state, unlocked, premium));
+            Material pane = !unlocked ? Material.GRAY_STAINED_GLASS_PANE
+                    : requirementsMet ? Material.LIME_STAINED_GLASS_PANE : Material.YELLOW_STAINED_GLASS_PANE;
+            setItem(LEVEL_ROW + column, GuiItems.item(pane, entry.level(),
+                    lang.component("gui.pass.level", "level", entry.level()), levelLore));
+
+            setItem(FREE_ROW + column,
+                    rewardItem(entry, entry.free(), false, state, unlocked, true, requirements));
+            setItem(PREMIUM_ROW + column,
+                    rewardItem(entry, entry.premium(), true, state, unlocked, premium, requirements));
         }
 
         if (page > 0) {
@@ -182,6 +191,12 @@ public class PassGUI extends InventoryGUI {
                 player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.7f, 1.2f);
             }
             case LOCKED -> lang.send(player, "pass.locked", "level", level);
+            case REQUIREMENTS -> {
+                lang.send(player, "pass.requirements_missing", "level", level);
+                open.get().level(level).ifPresent(entry -> module.pass().requirements(player, entry).stream()
+                        .filter(status -> !status.met())
+                        .forEach(status -> player.sendMessage(status.line())));
+            }
             case NEEDS_PREMIUM -> lang.send(player, "pass.needs_premium");
             case ALREADY_CLAIMED -> lang.send(player, "pass.already_claimed");
             default -> {
@@ -211,8 +226,20 @@ public class PassGUI extends InventoryGUI {
                 lore);
     }
 
+    /** Las líneas de requisitos bajo un título; nada si el nivel no exige nada. */
+    private void addRequirements(List<Component> lore, List<RequirementStatus> requirements) {
+
+        if (requirements.isEmpty()) {
+            return;
+        }
+
+        lore.add(Component.empty());
+        lore.add(lang.component("gui.pass.requirements_title"));
+        requirements.forEach(status -> lore.add(status.line()));
+    }
+
     private org.bukkit.inventory.ItemStack rewardItem(SeasonLevel entry, List<Reward> rewards, boolean premiumTrack,
-            PassPlayer state, boolean unlocked, boolean hasTrack) {
+            PassPlayer state, boolean unlocked, boolean hasTrack, List<RequirementStatus> requirements) {
 
         if (rewards.isEmpty()) {
             return ItemBuilder.createFiller();
@@ -220,16 +247,22 @@ public class PassGUI extends InventoryGUI {
 
         List<Component> lore = new ArrayList<>();
         rewards.forEach(reward -> lore.add(module.rewards().describe(reward)));
+        boolean claimed = state.hasClaimed(entry.level(), premiumTrack);
+        if (!claimed) {
+            addRequirements(lore, requirements);
+        }
         lore.add(Component.empty());
 
         Material material = module.rewards().icon(rewards, Material.CHEST);
         String status;
 
-        if (state.hasClaimed(entry.level(), premiumTrack)) {
+        if (claimed) {
             material = premiumTrack ? Material.ORANGE_STAINED_GLASS_PANE : Material.LIME_STAINED_GLASS_PANE;
             status = "gui.pass.status_claimed";
         } else if (!unlocked) {
             status = "gui.pass.status_locked";
+        } else if (!requirements.stream().allMatch(RequirementStatus::met)) {
+            status = "gui.pass.status_requirements";
         } else if (!hasTrack) {
             status = "gui.pass.status_premium";
         } else {

@@ -1,5 +1,7 @@
 package com.sack.rpgroll.npcs.core;
 
+import com.sack.rpgroll.common.menu.MenuAction;
+
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 
@@ -43,7 +45,7 @@ public class NpcWriter {
         config.set("location.pitch", (double) definition.pitch());
 
         List<Map<String, Object>> actionMaps = new ArrayList<>();
-        for (NpcAction action : definition.actions()) {
+        for (MenuAction action : definition.actions()) {
             actionMaps.add(Map.of("type", action.type().name(), "value", action.value()));
         }
         config.set("actions", actionMaps);

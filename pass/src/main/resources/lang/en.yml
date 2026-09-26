@@ -19,6 +19,7 @@ pass:
   claimed_all: "&a✔ {count} pass reward(s) claimed."
   nothing_to_claim: "&7Nothing to claim right now."
   locked: "&cYou haven't reached level {level} yet."
+  requirements_missing: "&cYou don't meet the requirements for level {level} yet:"
   needs_premium: "&6That reward is on the Premium Pass. &7Get it in the &estore&7."
   already_claimed: "&7Already claimed."
 
@@ -38,6 +39,19 @@ votes:
   stats: "&7Total votes: &e{total} &8· &7Streak: &e{streak} day(s)"
   thanks: "&a✔ Thanks for voting! &7Streak: &e{streak} day(s)"
   streak_reward: "&6✦ {days} days voting in a row! Streak prize delivered."
+
+requirement:
+  met: "&a✔"
+  unmet: "&c✘"
+  character_level: "{mark} &7Character level: &f{current}&7/&f{required}"
+  playtime: "{mark} &7Time played this season: &f{current}&7/&f{required}"
+  season_day: "{mark} &7Available from season day &f{day} &8({date})"
+  available_from: "{mark} &7Available from &f{date}"
+  votes: "{mark} &7Votes: &f{current}&7/&f{required}"
+  daily_streak: "{mark} &7Daily streak: &f{current}&7/&f{required} &7day(s)"
+  missions: "{mark} &7Pass missions completed: &f{current}&7/&f{required}"
+  quest: "{mark} &7Complete the quest &f{quest}"
+  permission: "{mark} &7Requires &f{name}"
 
 admin:
   usage: "&eUsage: /passadmin reload | xp <player> <amount> | vote <player> | info <player>"
@@ -63,6 +77,7 @@ gui:
     level: "&eLevel {level}"
     level_unlocked: "&a✔ Unlocked"
     level_locked: "&7Unlocks at &e{xp} &7points"
+    requirements_title: "&6Requirements:"
     missions: "&bMissions"
     missions_lore: "&7Daily, weekly and season"
     claim_all: "&aClaim all"
@@ -80,6 +95,7 @@ gui:
     reward_premium: "&6Level {level} &8· &6premium"
     status_claimed: "&a✔ Claimed"
     status_locked: "&7🔒 Reach level {level}"
+    status_requirements: "&e» Requirements missing"
     status_premium: "&6Requires the Premium Pass"
     status_ready: "&e» Click to claim"
   missions:

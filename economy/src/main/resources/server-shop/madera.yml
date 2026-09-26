@@ -1,0 +1,92 @@
+# Sección de la tienda del servidor (/tienda madera). Ver _reference_full.yml.
+id: madera
+display-name: "&6Maderas"
+icon: OAK_LOG
+slot: 20
+description:
+  - "&7Troncos y tablones de cada árbol"
+items:
+  - material: OAK_LOG
+    amount: 64
+    buy: 128
+    sell: 32
+  - material: OAK_PLANKS
+    amount: 64
+    buy: 32
+  - material: SPRUCE_LOG
+    amount: 64
+    buy: 128
+    sell: 32
+  - material: SPRUCE_PLANKS
+    amount: 64
+    buy: 32
+  - material: BIRCH_LOG
+    amount: 64
+    buy: 128
+    sell: 32
+  - material: BIRCH_PLANKS
+    amount: 64
+    buy: 32
+  - material: JUNGLE_LOG
+    amount: 64
+    buy: 128
+    sell: 32
+  - material: JUNGLE_PLANKS
+    amount: 64
+    buy: 32
+  - material: ACACIA_LOG
+    amount: 64
+    buy: 128
+    sell: 32
+  - material: ACACIA_PLANKS
+    amount: 64
+    buy: 32
+  - material: DARK_OAK_LOG
+    amount: 64
+    buy: 128
+    sell: 32
+  - material: DARK_OAK_PLANKS
+    amount: 64
+    buy: 32
+  - material: MANGROVE_LOG
+    amount: 64
+    buy: 128
+    sell: 32
+  - material: MANGROVE_PLANKS
+    amount: 64
+    buy: 32
+  - material: CHERRY_LOG
+    amount: 64
+    buy: 128
+    sell: 32
+  - material: CHERRY_PLANKS
+    amount: 64
+    buy: 32
+  - material: PALE_OAK_LOG
+    amount: 64
+    buy: 128
+    sell: 32
+  - material: PALE_OAK_PLANKS
+    amount: 64
+    buy: 32
+  - material: BAMBOO_BLOCK
+    amount: 64
+    buy: 96
+  - material: BAMBOO_PLANKS
+    amount: 64
+    buy: 32
+  - material: CRIMSON_STEM
+    amount: 64
+    buy: 160
+  - material: WARPED_STEM
+    amount: 64
+    buy: 160
+  - material: CRIMSON_PLANKS
+    amount: 64
+    buy: 45
+  - material: WARPED_PLANKS
+    amount: 64
+    buy: 45
+  - material: STICK
+    amount: 64
+    buy: 16

@@ -1,0 +1,65 @@
+# Sección de la tienda del servidor (/tienda utilidades). Ver _reference_full.yml.
+id: utilidades
+display-name: "&9Utilidades"
+icon: ENDER_CHEST
+slot: 40
+description:
+  - "&7Mesas de trabajo, almacenaje y viaje"
+items:
+  - material: CRAFTING_TABLE
+    amount: 4
+    buy: 8
+  - material: FURNACE
+    amount: 4
+    buy: 16
+  - material: BLAST_FURNACE
+    buy: 50
+  - material: SMOKER
+    buy: 12
+  - material: ANVIL
+    buy: 330
+  - material: GRINDSTONE
+    buy: 10
+  - material: SMITHING_TABLE
+    buy: 25
+  - material: STONECUTTER
+    buy: 12
+  - material: LOOM
+    buy: 6
+  - material: CARTOGRAPHY_TABLE
+    buy: 8
+  - material: ENCHANTING_TABLE
+    buy: 600
+  - material: ENDER_CHEST
+    buy: 200
+  - material: SHULKER_BOX
+    buy: 520
+  - material: BUNDLE
+    buy: 20
+  - material: WHITE_BED
+    buy: 10
+  - material: BOOK
+    amount: 16
+    buy: 96
+  - material: WRITABLE_BOOK
+    buy: 8
+  - material: MAP
+    buy: 25
+  - material: RECOVERY_COMPASS
+    buy: 300
+  - material: TOTEM_OF_UNDYING
+    buy: 6000
+  - material: FIREWORK_ROCKET
+    amount: 64
+    buy: 192
+  - material: ENDER_EYE
+    amount: 8
+    buy: 176
+  - material: RESPAWN_ANCHOR
+    buy: 700
+  - material: LODESTONE
+    buy: 4100
+  - material: BEACON
+    buy: 30000
+  - material: CONDUIT
+    buy: 3000

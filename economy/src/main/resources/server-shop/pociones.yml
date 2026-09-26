@@ -1,0 +1,78 @@
+# Sección de la tienda del servidor (/tienda pociones). Ver _reference_full.yml.
+id: pociones
+display-name: "&dPociones"
+icon: POTION
+slot: 32
+description:
+  - "&7Listas para beber"
+items:
+  - potion: SWIFTNESS
+    buy: 40
+  - potion: LONG_SWIFTNESS
+    buy: 60
+  - potion: STRONG_SWIFTNESS
+    buy: 70
+  - potion: STRENGTH
+    buy: 60
+  - potion: LONG_STRENGTH
+    buy: 90
+  - potion: STRONG_STRENGTH
+    buy: 110
+  - potion: HEALING
+    buy: 50
+  - potion: STRONG_HEALING
+    buy: 80
+  - potion: REGENERATION
+    buy: 70
+  - potion: LONG_REGENERATION
+    buy: 100
+  - potion: STRONG_REGENERATION
+    buy: 120
+  - potion: FIRE_RESISTANCE
+    buy: 60
+  - potion: LONG_FIRE_RESISTANCE
+    buy: 90
+  - potion: NIGHT_VISION
+    buy: 30
+  - potion: LONG_NIGHT_VISION
+    buy: 45
+  - potion: WATER_BREATHING
+    buy: 35
+  - potion: LONG_WATER_BREATHING
+    buy: 50
+  - potion: LEAPING
+    buy: 30
+  - potion: SLOW_FALLING
+    buy: 40
+  - potion: LONG_SLOW_FALLING
+    buy: 60
+  - potion: INVISIBILITY
+    buy: 60
+  - potion: TURTLE_MASTER
+    buy: 90
+  - potion: HEALING
+    form: SPLASH_POTION
+    buy: 60
+  - potion: STRONG_HEALING
+    form: SPLASH_POTION
+    buy: 95
+  - potion: SWIFTNESS
+    form: SPLASH_POTION
+    buy: 50
+  - material: GLASS_BOTTLE
+    amount: 16
+    buy: 16
+  - material: BREWING_STAND
+    buy: 40
+  - material: BLAZE_POWDER
+    amount: 16
+    buy: 112
+  - material: FERMENTED_SPIDER_EYE
+    amount: 8
+    buy: 40
+  - material: GLISTERING_MELON_SLICE
+    amount: 8
+    buy: 160
+  - material: EXPERIENCE_BOTTLE
+    amount: 16
+    buy: 400

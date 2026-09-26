@@ -22,6 +22,9 @@ public class PassPlayer {
     int xp;
     final Set<Integer> claimedFree = new HashSet<>();
     final Set<Integer> claimedPremium = new HashSet<>();
+    // Para los requisitos de nivel: minutos jugados sin AFK y misiones completadas en la temporada.
+    int seasonPlaytime;
+    int seasonMissions;
 
     // Misiones: las sorteadas de hoy y de esta semana, y el avance de todas.
     long dailyMissionDay = Long.MIN_VALUE;
@@ -56,6 +59,14 @@ public class PassPlayer {
 
     public int xp() {
         return xp;
+    }
+
+    public int seasonPlaytime() {
+        return seasonPlaytime;
+    }
+
+    public int seasonMissions() {
+        return seasonMissions;
     }
 
     public boolean hasClaimed(int level, boolean premium) {
@@ -114,11 +125,18 @@ public class PassPlayer {
         xp = 0;
         claimedFree.clear();
         claimedPremium.clear();
+        seasonPlaytime = 0;
+        seasonMissions = 0;
         markDirty();
     }
 
     public void addXp(int amount) {
         xp = Math.max(0, xp + amount);
+        markDirty();
+    }
+
+    public void addPlaytime(int minutes) {
+        seasonPlaytime += Math.max(0, minutes);
         markDirty();
     }
 
@@ -145,7 +163,9 @@ public class PassPlayer {
     }
 
     public void complete(String missionId) {
-        completed.add(missionId);
+        if (completed.add(missionId)) {
+            seasonMissions++;
+        }
         markDirty();
     }
 

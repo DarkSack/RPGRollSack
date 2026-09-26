@@ -1,0 +1,129 @@
+# Sección de la tienda del servidor (/tienda naturaleza). Ver _reference_full.yml.
+id: naturaleza
+display-name: "&aNaturaleza"
+icon: GRASS_BLOCK
+slot: 21
+description:
+  - "&7Tierra, plantas, flores y retoños"
+items:
+  - material: DIRT
+    amount: 64
+    buy: 20
+  - material: GRASS_BLOCK
+    amount: 64
+    buy: 64
+  - material: PODZOL
+    amount: 32
+    buy: 39
+  - material: MYCELIUM
+    amount: 32
+    buy: 64
+  - material: MOSS_BLOCK
+    amount: 64
+    buy: 64
+  - material: MUD
+    amount: 64
+    buy: 39
+  - material: COARSE_DIRT
+    amount: 64
+    buy: 26
+  - material: ROOTED_DIRT
+    amount: 64
+    buy: 39
+  - material: OAK_SAPLING
+    amount: 16
+    buy: 48
+  - material: SPRUCE_SAPLING
+    amount: 16
+    buy: 48
+  - material: BIRCH_SAPLING
+    amount: 16
+    buy: 48
+  - material: JUNGLE_SAPLING
+    amount: 16
+    buy: 64
+  - material: ACACIA_SAPLING
+    amount: 16
+    buy: 48
+  - material: DARK_OAK_SAPLING
+    amount: 16
+    buy: 64
+  - material: CHERRY_SAPLING
+    amount: 16
+    buy: 80
+  - material: MANGROVE_PROPAGULE
+    amount: 16
+    buy: 64
+  - material: PALE_OAK_SAPLING
+    amount: 16
+    buy: 80
+  - material: OAK_LEAVES
+    amount: 64
+    buy: 32
+  - material: SHORT_GRASS
+    amount: 64
+    buy: 20
+  - material: FERN
+    amount: 64
+    buy: 20
+  - material: VINE
+    amount: 32
+    buy: 16
+  - material: LILY_PAD
+    amount: 16
+    buy: 16
+  - material: DANDELION
+    amount: 16
+    buy: 16
+  - material: POPPY
+    amount: 16
+    buy: 16
+  - material: BLUE_ORCHID
+    amount: 16
+    buy: 32
+  - material: ALLIUM
+    amount: 16
+    buy: 32
+  - material: CORNFLOWER
+    amount: 16
+    buy: 32
+  - material: LILY_OF_THE_VALLEY
+    amount: 16
+    buy: 32
+  - material: SUNFLOWER
+    amount: 16
+    buy: 48
+  - material: PEONY
+    amount: 16
+    buy: 48
+  - material: ROSE_BUSH
+    amount: 16
+    buy: 48
+  - material: BROWN_MUSHROOM
+    amount: 16
+    buy: 32
+  - material: RED_MUSHROOM
+    amount: 16
+    buy: 32
+  - material: CACTUS
+    amount: 16
+    buy: 24
+    sell: 6
+  - material: SUGAR_CANE
+    amount: 32
+    buy: 32
+    sell: 8
+  - material: BAMBOO
+    amount: 64
+    buy: 32
+  - material: KELP
+    amount: 64
+    buy: 32
+  - material: SEA_PICKLE
+    amount: 16
+    buy: 32
+  - material: GLOW_BERRIES
+    amount: 16
+    buy: 32
+  - material: SPORE_BLOSSOM
+    buy: 25

@@ -1,9 +1,10 @@
 package com.sack.rpgroll.npcs.gui;
 
+import com.sack.rpgroll.common.menu.MenuDefinition;
+
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
-import com.sack.rpgroll.npcs.core.NpcMenuDefinition;
 import com.sack.rpgroll.npcs.core.NpcMenuManager;
 import com.sack.rpgroll.npcs.listener.ChatPromptManager;
 
@@ -26,7 +27,7 @@ public class NpcMenuBrowserGUI extends InventoryGUI {
     private final NpcMenuManager menuManager;
     private final ChatPromptManager chatPromptManager;
     private final LangManager langManager;
-    private List<NpcMenuDefinition> menus;
+    private List<MenuDefinition> menus;
 
     public NpcMenuBrowserGUI(Player player, NpcMenuManager menuManager, ChatPromptManager chatPromptManager,
             LangManager langManager) {
@@ -48,7 +49,7 @@ public class NpcMenuBrowserGUI extends InventoryGUI {
 
         for (int i = 0; i < menus.size() && i < 36; i++) {
 
-            NpcMenuDefinition menu = menus.get(i);
+            MenuDefinition menu = menus.get(i);
 
             setItem(i, new ItemBuilder(Material.CHEST)
                     .setName(Component.text(menu.id(), NamedTextColor.YELLOW))
@@ -98,7 +99,7 @@ public class NpcMenuBrowserGUI extends InventoryGUI {
                 return;
             }
 
-            NpcMenuDefinition menu = new NpcMenuDefinition(id, "&8" + id, 3, List.of());
+            MenuDefinition menu = new MenuDefinition(id, "&8" + id, 3, List.of());
             menuManager.save(menu);
             reopen();
         });

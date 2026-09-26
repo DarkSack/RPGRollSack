@@ -1,5 +1,7 @@
 package com.sack.rpgroll.npcs.core;
 
+import com.sack.rpgroll.common.menu.MenuAction;
+
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -54,13 +56,13 @@ class NpcDefinitionTest {
 
         assertTrue(def.actions().isEmpty());
         assertThrows(UnsupportedOperationException.class,
-                () -> def.actions().add(new NpcAction(NpcAction.NpcActionType.MESSAGE, "hi")));
+                () -> def.actions().add(new MenuAction(MenuAction.ActionType.MESSAGE, "hi")));
     }
 
     @Test
     void actionsListIsDefensivelyCopied() {
-        var mutable = new java.util.ArrayList<NpcAction>();
-        mutable.add(new NpcAction(NpcAction.NpcActionType.MESSAGE, "hi"));
+        var mutable = new java.util.ArrayList<MenuAction>();
+        mutable.add(new MenuAction(MenuAction.ActionType.MESSAGE, "hi"));
         NpcDefinition def = new NpcDefinition("merchant", "Merchant", null, null, null, "world",
                 0, 64, 0, 0, 0, mutable);
 

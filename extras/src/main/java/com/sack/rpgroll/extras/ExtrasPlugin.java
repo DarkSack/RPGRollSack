@@ -6,6 +6,11 @@ import com.sack.rpgroll.license.identity.LicenseIdentity;
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.common.resource.DirectoryCreator;
 import com.sack.rpgroll.common.resource.ResourceCopier;
+import com.sack.rpgroll.extras.menu.ExtrasMenuManager;
+import com.sack.rpgroll.extras.menu.MenuCommand;
+import com.sack.rpgroll.extras.menu.ServerMenu;
+import com.sack.rpgroll.extras.menu.ServerMenuConfig;
+import com.sack.rpgroll.extras.menu.ServerMenuListener;
 import com.sack.rpgroll.extras.action.ExtrasActionExecutor;
 import com.sack.rpgroll.extras.activity.ActivityStateResolver;
 import com.sack.rpgroll.extras.activity.AfkPolicy;
@@ -39,9 +44,11 @@ import java.util.List;
 
 public class ExtrasPlugin extends JavaPlugin {
 
-    private static final List<String> DIRECTORIES = List.of("stats", "conditions", "modifiers");
+    private static final List<String> DIRECTORIES = List.of("stats", "conditions", "modifiers", "menus");
 
     private LangManager langManager;
+    private ExtrasMenuManager menuManager;
+    private ServerMenu serverMenu;
     private StatManager statManager;
     private StatEngine statEngine;
     private ConditionManager conditionManager;
@@ -70,6 +77,12 @@ public class ExtrasPlugin extends JavaPlugin {
 
         langManager = new LangManager(this, List.of("es", "en", "pt_BR"), "es");
         langManager.reload(getConfig().getString("language", "es"));
+
+        menuManager = new ExtrasMenuManager(this);
+        menuManager.initialize();
+        serverMenu = new ServerMenu(this, menuManager, langManager);
+        serverMenu.configure(ServerMenuConfig.from(getConfig().getConfigurationSection("server-menu")));
+        getServer().getPluginManager().registerEvents(new ServerMenuListener(this, serverMenu), this);
 
         loadAndWire();
 
@@ -143,6 +156,16 @@ public class ExtrasPlugin extends JavaPlugin {
         statManager.reload();
         conditionManager.reload();
         modifierManager.reload();
+        menuManager.reload();
+        serverMenu.configure(ServerMenuConfig.from(getConfig().getConfigurationSection("server-menu")));
+        // Quien ya está dentro recibe (o pierde) la brújula sin tener que reconectar.
+        getServer().getOnlinePlayers().forEach(player -> {
+            if (serverMenu.config().enabled()) {
+                serverMenu.give(player);
+            } else {
+                serverMenu.remove(player);
+            }
+        });
         statEngine.linkAfkPolicy(AfkPolicy.from(getConfig()));
 
         statEngine.start();
@@ -159,6 +182,10 @@ public class ExtrasPlugin extends JavaPlugin {
         // Registrado por Brigadier para que `execute as` entregue al jugador real.
         com.sack.rpgroll.common.command.BrigadierCommands.register(this, "extrasadmin",
                 "Gestiona needs y conditions de RPGRoll-Extras", "rpgrollextras.admin.*", executor);
+
+        var menuExecutor = new MenuCommand(serverMenu, menuManager, langManager);
+        com.sack.rpgroll.common.command.BrigadierCommands.register(this, "menu", "Menú del servidor",
+                java.util.List.of(), menuExecutor, menuExecutor, "rpgrollextras.menu");
     }
 
     @Override

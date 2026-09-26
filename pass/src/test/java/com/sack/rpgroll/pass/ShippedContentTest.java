@@ -42,6 +42,10 @@ class ShippedContentTest {
         assertEquals(30, season.maxLevel());
         assertTrue(season.levels().values().stream().allMatch(l -> !l.free().isEmpty() && !l.premium().isEmpty()));
         assertEquals(List.of(), warnings);
+
+        // Los niveles hito (cada 5) piden algo más que llegar; el resto no pide nada.
+        season.levels().values().forEach(level -> assertEquals(level.level() % 5 == 0,
+                !level.requirements().isEmpty(), "requisitos del nivel " + level.level()));
     }
 
     @Test

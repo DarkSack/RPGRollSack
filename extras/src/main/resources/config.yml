@@ -5,6 +5,28 @@
 # puedes editarlos ahí directamente. Tras cambiar esto, /extrasadmin reload.
 language: es
 
+# Menú del servidor: un ítem (una brújula por defecto) que abre menus/<menu>.yml
+# con cualquier clic. Los menús usan el mismo formato que los de RPGRoll-NPCs:
+# acciones COMMAND_AS_PLAYER, COMMAND, OPEN_GUI, MESSAGE, SOUND, TELEPORT...
+# /menu lo abre sin el ítem y /menu item lo devuelve.
+server-menu:
+  enabled: false
+  menu: servidor
+  # Se entrega al entrar (en su casilla de la barra) si no lo lleva.
+  give-on-join: true
+  # No cae al morir: vuelve al reaparecer.
+  keep-on-death: true
+  # No se puede tirar, guardar en cofres ni cambiar de mano.
+  locked: true
+  item:
+    material: COMPASS
+    name: "&c&l✦ Brújula del Nether &7(clic)"
+    lore:
+      - "&7Viajes, tienda, pase y más."
+      - "&8Clic con ella en la mano"
+    slot: 8
+    glint: true
+
 # Jugadores AFK: tras este tiempo sin tocar nada (moverse, girar la cámara,
 # chatear, golpear...) sus stats se congelan — la sed no baja, la fatiga no
 # sube — hasta que vuelvan a hacer algo. Los umbrales ya alcanzados siguen

@@ -26,6 +26,9 @@ import com.sack.rpgroll.economy.loan.LoanService;
 import com.sack.rpgroll.economy.loan.LoanStore;
 import com.sack.rpgroll.economy.integration.GuildTerritoryTaxTask;
 import com.sack.rpgroll.economy.market.MarketEngine;
+import com.sack.rpgroll.economy.servershop.ServerShopManager;
+import com.sack.rpgroll.economy.servershop.ServerShopService;
+import com.sack.rpgroll.economy.command.ServerShopCommand;
 import com.sack.rpgroll.economy.market.MarketProductManager;
 import com.sack.rpgroll.economy.market.MarketRegionManager;
 import com.sack.rpgroll.economy.market.MarketStateStore;
@@ -53,7 +56,8 @@ import java.util.List;
  */
 public class EconomyPlugin extends JavaPlugin {
 
-    private static final List<String> DIRECTORIES = List.of("currencies", "market", "market-regions", "tax");
+    private static final List<String> DIRECTORIES = List.of("currencies", "market", "market-regions", "tax",
+            "server-shop");
 
     private LangManager langManager;
 
@@ -74,6 +78,8 @@ public class EconomyPlugin extends JavaPlugin {
     private CompanyManager companyManager;
     private CompanyService companyService;
     private InflationTracker inflationTracker;
+    private ServerShopManager serverShopManager;
+    private ServerShopService serverShopService;
 
     private long auctionDefaultDurationMillis;
 
@@ -144,6 +150,11 @@ public class EconomyPlugin extends JavaPlugin {
         inflationTracker.load();
 
         auctionDefaultDurationMillis = getConfig().getLong("auction-default-duration-hours", 48) * 60L * 60 * 1000;
+
+        serverShopManager = new ServerShopManager(this);
+        serverShopManager.initialize();
+        serverShopService = new ServerShopService(walletService, currencyManager, marketProductManager, marketEngine,
+                getConfig().getDouble("server-shop.market-sell-ratio", 0.4));
 
         EconomyAPI.init(currencyManager, marketProductManager, marketRegionManager, taxRuleManager, walletService,
                 ledger, bankManager, loanService, taxEngine, marketEngine, shopManager, auctionManager,
@@ -261,6 +272,11 @@ public class EconomyPlugin extends JavaPlugin {
         // Registrado por Brigadier para que `execute as` entregue al jugador real.
         com.sack.rpgroll.common.command.BrigadierCommands.register(this, "economy",
                 "Comandos de jugador de RPGRoll-Economy", "rpgrolleconomy.use", playerExecutor);
+
+        var shopExecutor = new ServerShopCommand(serverShopManager, serverShopService, walletService, langManager);
+        com.sack.rpgroll.common.command.BrigadierCommands.register(this, "tienda", "Tienda del servidor",
+                getConfig().getStringList("server-shop.aliases"), shopExecutor, shopExecutor,
+                "rpgrolleconomy.servershop");
     }
 
     private void reloadContent() {
@@ -270,6 +286,8 @@ public class EconomyPlugin extends JavaPlugin {
         marketProductManager.reload();
         marketRegionManager.reload();
         taxRuleManager.reload();
+        serverShopManager.reload();
+        serverShopService.setSellRatio(getConfig().getDouble("server-shop.market-sell-ratio", 0.4));
     }
 
     private void startTasks() {

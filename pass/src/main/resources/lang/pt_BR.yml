@@ -19,6 +19,7 @@ pass:
   claimed_all: "&a✔ {count} recompensa(s) do passe resgatada(s)."
   nothing_to_claim: "&7Você não tem nada para resgatar agora."
   locked: "&cVocê ainda não chegou ao nível {level}."
+  requirements_missing: "&cVocê ainda não cumpre os requisitos do nível {level}:"
   needs_premium: "&6Essa recompensa é do Passe Premium. &7Consiga-o na &eloja&7."
   already_claimed: "&7Você já resgatou essa."
 
@@ -38,6 +39,19 @@ votes:
   stats: "&7Votos totais: &e{total} &8· &7Sequência: &e{streak} dia(s)"
   thanks: "&a✔ Obrigado por votar! &7Sequência: &e{streak} dia(s)"
   streak_reward: "&6✦ {days} dias seguidos votando! Prêmio de sequência entregue."
+
+requirement:
+  met: "&a✔"
+  unmet: "&c✘"
+  character_level: "{mark} &7Nível de personagem: &f{current}&7/&f{required}"
+  playtime: "{mark} &7Tempo jogado nesta temporada: &f{current}&7/&f{required}"
+  season_day: "{mark} &7Disponível a partir do dia &f{day} &7da temporada &8({date})"
+  available_from: "{mark} &7Disponível a partir de &f{date}"
+  votes: "{mark} &7Votos: &f{current}&7/&f{required}"
+  daily_streak: "{mark} &7Sequência diária: &f{current}&7/&f{required} &7dia(s)"
+  missions: "{mark} &7Missões do passe concluídas: &f{current}&7/&f{required}"
+  quest: "{mark} &7Concluir a missão &f{quest}"
+  permission: "{mark} &7Requer &f{name}"
 
 admin:
   usage: "&eUso: /passadmin reload | xp <jogador> <quantidade> | vote <jogador> | info <jogador>"
@@ -63,6 +77,7 @@ gui:
     level: "&eNível {level}"
     level_unlocked: "&a✔ Desbloqueado"
     level_locked: "&7Desbloqueia com &e{xp} &7pontos"
+    requirements_title: "&6Requisitos:"
     missions: "&bMissões"
     missions_lore: "&7Diárias, semanais e de temporada"
     claim_all: "&aResgatar tudo"
@@ -80,6 +95,7 @@ gui:
     reward_premium: "&6Nível {level} &8· &6premium"
     status_claimed: "&a✔ Resgatada"
     status_locked: "&7🔒 Chegue ao nível {level}"
+    status_requirements: "&e» Faltam requisitos"
     status_premium: "&6Requer Passe Premium"
     status_ready: "&e» Clique para resgatar"
   missions:

@@ -6,6 +6,21 @@
 # unas 4-5 semanas, con margen dentro de las 6 que dura.
 #
 # free: para todos. premium: requiere rpgroll.pass.premium.
+#
+# requirements (opcional, vale para las dos pistas): lo que el nivel exige
+# además de haber llegado a él. Se ve en /pase con ✔/✘ y se comprueba al
+# reclamar. Todas las claves son opcionales:
+#   character-level: 15        nivel de personaje (necesita el core RPGRoll)
+#   playtime: 5h               tiempo jugado en la temporada sin AFK (30m, 5h, 1d, 2h30m)
+#   season-day: 7              a partir del día 7 de la temporada
+#   available-from: 2026-10-15 a partir de esa fecha
+#   votes: 10                  votos totales
+#   daily-streak: 3            racha actual de recompensa diaria
+#   missions: 20               misiones del pase completadas esta temporada
+#   quests: [camino_3]         misiones de RPGRoll-Quests completadas
+#   permission: rank.vip       un permiso, y permission-name: "&6VIP" para mostrarlo
+# Lo que depende de un plugin que no está (core, Quests) no se exige.
+# Aquí se usan en los niveles hito: 5, 10, 15, 20, 25 y 30.
 id: temporada_1
 display-name: "&6&l✦ Pase Royale &7· &eTemporada 1"
 start: 2026-09-25
@@ -28,6 +43,8 @@ levels:
   5:
     free: [key:comun:1, money:500]
     premium: [key:epica:1, item:enchanted_gem:2]
+    requirements:
+      playtime: 2h
   6:
     free: [material:torch:64]
     premium: [item:vara_del_iniciado:1]
@@ -43,6 +60,10 @@ levels:
   10:
     free: [key:comun:2, material:diamond:4]
     premium: [key:epica:2, item:hoja_del_centinela:1, money:2500]
+    requirements:
+      character-level: 8
+      playtime: 5h
+      season-day: 4
   11:
     free: [exp:500]
     premium: [item:manto_del_hechicero:1]
@@ -58,6 +79,10 @@ levels:
   15:
     free: [key:epica:1, money:1000]
     premium: [key:epica:1, item:vara_del_vendaval:1, material:diamond:12]
+    requirements:
+      character-level: 12
+      votes: 5
+      quests: [camino_3]
   16:
     free: [material:obsidian:16]
     premium: [item:knight_helmet:1]
@@ -73,6 +98,11 @@ levels:
   20:
     free: [key:epica:1, material:diamond:8]
     premium: [key:legendario:1, item:cetro_luminico:1, money:5000]
+    requirements:
+      character-level: 16
+      playtime: 12h
+      season-day: 10
+      missions: 20
   21:
     free: [money:1500]
     premium: [item:mandoble_del_veterano:1]
@@ -88,6 +118,11 @@ levels:
   25:
     free: [key:epica:2, money:2500]
     premium: [key:legendario:1, item:runic_blade:1, material:netherite_ingot:1]
+    requirements:
+      character-level: 20
+      votes: 12
+      daily-streak: 3
+      quests: [camino_5]
   26:
     free: [material:experience_bottle:32]
     premium: [item:phoenix_feather:1]
@@ -103,3 +138,9 @@ levels:
   30:
     free: [key:legendario:1, money:5000]
     premium: [item:dragon_slayer:1, key:legendario:2, money:15000]
+    requirements:
+      character-level: 24
+      playtime: 24h
+      season-day: 18
+      missions: 40
+      quests: [camino_6]

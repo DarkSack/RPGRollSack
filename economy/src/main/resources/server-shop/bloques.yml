@@ -1,0 +1,131 @@
+# Sección de la tienda del servidor (/tienda bloques). Ver _reference_full.yml.
+id: bloques
+display-name: "&6Bloques de construcción"
+icon: BRICKS
+slot: 19
+description:
+  - "&7Piedra, ladrillo, vidrio, arena..."
+items:
+  - material: STONE
+    amount: 64
+    buy: 39
+  - material: COBBLESTONE
+    amount: 64
+    buy: 26
+  - material: SMOOTH_STONE
+    amount: 64
+    buy: 58
+  - material: STONE_BRICKS
+    amount: 64
+    buy: 58
+  - material: DEEPSLATE
+    amount: 64
+    buy: 39
+  - material: COBBLED_DEEPSLATE
+    amount: 64
+    buy: 32
+  - material: DEEPSLATE_BRICKS
+    amount: 64
+    buy: 64
+  - material: DEEPSLATE_TILES
+    amount: 64
+    buy: 71
+  - material: GRANITE
+    amount: 64
+    buy: 39
+  - material: DIORITE
+    amount: 64
+    buy: 39
+  - material: ANDESITE
+    amount: 64
+    buy: 39
+  - material: TUFF
+    amount: 64
+    buy: 39
+  - material: CALCITE
+    amount: 64
+    buy: 52
+  - material: BRICKS
+    amount: 64
+    buy: 96
+  - material: MUD_BRICKS
+    amount: 64
+    buy: 77
+  - material: SANDSTONE
+    amount: 64
+    buy: 52
+  - material: RED_SANDSTONE
+    amount: 64
+    buy: 58
+  - material: SAND
+    amount: 64
+    buy: 32
+  - material: RED_SAND
+    amount: 64
+    buy: 39
+  - material: GRAVEL
+    amount: 64
+    buy: 32
+  - material: CLAY
+    amount: 64
+    buy: 64
+  - material: TERRACOTTA
+    amount: 64
+    buy: 77
+  - material: GLASS
+    amount: 64
+    buy: 64
+  - material: GLASS_PANE
+    amount: 64
+    buy: 32
+  - material: WHITE_CONCRETE
+    amount: 64
+    buy: 96
+  - material: GRAY_CONCRETE
+    amount: 64
+    buy: 96
+  - material: BLACK_CONCRETE
+    amount: 64
+    buy: 96
+  - material: QUARTZ_BLOCK
+    amount: 16
+    buy: 256
+  - material: PRISMARINE
+    amount: 32
+    buy: 128
+  - material: BLACKSTONE
+    amount: 64
+    buy: 52
+  - material: POLISHED_BLACKSTONE_BRICKS
+    amount: 64
+    buy: 77
+  - material: NETHER_BRICKS
+    amount: 64
+    buy: 96
+  - material: END_STONE
+    amount: 64
+    buy: 96
+  - material: END_STONE_BRICKS
+    amount: 64
+    buy: 128
+  - material: PURPUR_BLOCK
+    amount: 32
+    buy: 96
+  - material: OBSIDIAN
+    amount: 16
+    buy: 192
+  - material: CRYING_OBSIDIAN
+    amount: 8
+    buy: 144
+  - material: SNOW_BLOCK
+    amount: 64
+    buy: 39
+  - material: PACKED_ICE
+    amount: 32
+    buy: 64
+  - material: BLUE_ICE
+    amount: 16
+    buy: 192
+  - material: COPPER_BLOCK
+    amount: 16
+    buy: 432

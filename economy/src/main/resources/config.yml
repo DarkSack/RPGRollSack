@@ -40,3 +40,12 @@ auction-default-duration-hours: 48
 # appliesTo vacío) — sin esa regla el impuesto es 0 y esta tarea no hace nada.
 guild-territory-tax-interval-ticks: 24000
 guild-territory-tax-per-territory: 50.0
+
+# Tienda del servidor (/tienda). Sus secciones son los YAML de server-shop/.
+server-shop:
+  # Otros nombres para /tienda. Se aplican al reiniciar.
+  aliases: [shop]
+  # En las líneas enlazadas a un producto del mercado (market: DIAMOND), qué
+  # fracción de su precio de mercado se paga al jugador que vende. Por debajo
+  # de 1 para que comprar y revender en el acto no dé dinero.
+  market-sell-ratio: 0.4

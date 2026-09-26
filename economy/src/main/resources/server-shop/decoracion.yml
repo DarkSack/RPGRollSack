@@ -1,0 +1,111 @@
+# Sección de la tienda del servidor (/tienda decoracion). Ver _reference_full.yml.
+id: decoracion
+display-name: "&3Decoración y tintes"
+icon: CYAN_DYE
+slot: 34
+description:
+  - "&7Tintes, lana, luces y detalles"
+items:
+  - material: WHITE_DYE
+    amount: 16
+    buy: 24
+  - material: LIGHT_GRAY_DYE
+    amount: 16
+    buy: 24
+  - material: GRAY_DYE
+    amount: 16
+    buy: 24
+  - material: BLACK_DYE
+    amount: 16
+    buy: 24
+  - material: BROWN_DYE
+    amount: 16
+    buy: 24
+  - material: RED_DYE
+    amount: 16
+    buy: 24
+  - material: ORANGE_DYE
+    amount: 16
+    buy: 24
+  - material: YELLOW_DYE
+    amount: 16
+    buy: 24
+  - material: LIME_DYE
+    amount: 16
+    buy: 24
+  - material: GREEN_DYE
+    amount: 16
+    buy: 24
+  - material: CYAN_DYE
+    amount: 16
+    buy: 24
+  - material: LIGHT_BLUE_DYE
+    amount: 16
+    buy: 24
+  - material: BLUE_DYE
+    amount: 16
+    buy: 24
+  - material: PURPLE_DYE
+    amount: 16
+    buy: 24
+  - material: MAGENTA_DYE
+    amount: 16
+    buy: 24
+  - material: PINK_DYE
+    amount: 16
+    buy: 24
+  - material: WHITE_WOOL
+    amount: 32
+    buy: 64
+  - material: TORCH
+    amount: 64
+    buy: 32
+  - material: LANTERN
+    amount: 16
+    buy: 96
+  - material: SOUL_LANTERN
+    amount: 16
+    buy: 112
+  - material: SEA_LANTERN
+    amount: 8
+    buy: 160
+  - material: GLOWSTONE
+    amount: 16
+    buy: 192
+  - material: SHROOMLIGHT
+    amount: 16
+    buy: 160
+  - material: END_ROD
+    amount: 16
+    buy: 160
+  - material: CANDLE
+    amount: 16
+    buy: 48
+  - material: FLOWER_POT
+    amount: 8
+    buy: 24
+  - material: PAINTING
+    amount: 4
+    buy: 24
+  - material: ITEM_FRAME
+    amount: 4
+    buy: 32
+  - material: ARMOR_STAND
+    buy: 15
+  - material: BOOKSHELF
+    amount: 8
+    buy: 160
+  - material: BELL
+    buy: 150
+  - material: WHITE_BANNER
+    amount: 4
+    buy: 48
+  - material: LADDER
+    amount: 32
+    buy: 32
+  - material: SCAFFOLDING
+    amount: 64
+    buy: 64
+  - material: IRON_CHAIN
+    amount: 16
+    buy: 160

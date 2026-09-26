@@ -4,6 +4,8 @@ import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.pass.PassClock;
 import com.sack.rpgroll.pass.player.PassPlayer;
 import com.sack.rpgroll.pass.player.PassPlayerStore;
+import com.sack.rpgroll.pass.requirement.RequirementService;
+import com.sack.rpgroll.pass.requirement.RequirementStatus;
 import com.sack.rpgroll.pass.reward.Reward;
 import com.sack.rpgroll.pass.reward.RewardService;
 
@@ -20,13 +22,14 @@ public class PassService {
     public static final String PREMIUM_PERMISSION = "rpgroll.pass.premium";
 
     public enum ClaimResult {
-        CLAIMED, CLOSED, LOCKED, ALREADY_CLAIMED, NEEDS_PREMIUM, NOTHING
+        CLAIMED, CLOSED, LOCKED, REQUIREMENTS, ALREADY_CLAIMED, NEEDS_PREMIUM, NOTHING
     }
 
     private final PassPlayerStore store;
     private final RewardService rewards;
     private final LangManager lang;
     private final PassClock clock;
+    private final RequirementService requirements;
 
     private Season season;
     private Consumer<PassPlayer> onSeasonStart = player -> {
@@ -37,6 +40,24 @@ public class PassService {
         this.rewards = rewards;
         this.lang = lang;
         this.clock = clock;
+        this.requirements = new RequirementService(lang, clock);
+    }
+
+    /** Estado de cada requisito del nivel para este jugador (vacío si el nivel no exige nada). */
+    public List<RequirementStatus> requirements(Player player, SeasonLevel level) {
+        return season().map(s -> requirements.evaluate(player, player(player), s, level.requirements()))
+                .orElse(List.of());
+    }
+
+    public boolean meetsRequirements(Player player, SeasonLevel level) {
+        return requirements(player, level).stream().allMatch(RequirementStatus::met);
+    }
+
+    /** Suma minutos jugados de la temporada (los usa el requisito playtime). */
+    public void addPlaytime(Player player, int minutes) {
+        if (openSeason().isPresent()) {
+            player(player).addPlaytime(minutes);
+        }
     }
 
     public void setSeason(Season season) {
@@ -131,7 +152,8 @@ public class PassService {
 
         Season current = open.get();
         PassPlayer state = player(player);
-        List<Reward> track = current.level(level)
+        Optional<SeasonLevel> entry = current.level(level);
+        List<Reward> track = entry
                 .map(l -> premium ? l.premium() : l.free())
                 .orElse(List.of());
 
@@ -145,6 +167,10 @@ public class PassService {
 
         if (current.levelFor(state.xp()) < level) {
             return ClaimResult.LOCKED;
+        }
+
+        if (!requirements.meets(player, state, current, entry.get().requirements())) {
+            return ClaimResult.REQUIREMENTS;
         }
 
         if (premium && !isPremium(player)) {
@@ -197,6 +223,9 @@ public class PassService {
         boolean premium = isPremium(player);
 
         for (SeasonLevel entry : open.get().levels().headMap(level, true).values()) {
+            if (!requirements.meets(player, state, open.get(), entry.requirements())) {
+                continue;
+            }
             if (!entry.free().isEmpty() && !state.hasClaimed(entry.level(), false)) {
                 return true;
             }

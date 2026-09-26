@@ -1,4 +1,4 @@
-package com.sack.rpgroll.npcs.core;
+package com.sack.rpgroll.common.menu;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -18,7 +18,7 @@ import static org.mockito.Mockito.when;
  * servidor Paper corriendo, esa llamada estática solo lanza
  * IllegalStateException, así que esas ramas no son testeables acá.
  */
-class NpcConditionTest {
+class MenuConditionTest {
 
     private Player playerWithInventory(ItemStack... contents) {
         Player player = mock(Player.class);
@@ -31,7 +31,7 @@ class NpcConditionTest {
     @Test
     void unknownConditionTypeIsFalse() {
         Player player = playerWithInventory();
-        assertFalse(NpcCondition.evaluate(player, "NOT_A_CONDITION:foo"));
+        assertFalse(MenuCondition.evaluate(player, "NOT_A_CONDITION:foo"));
     }
 
     private ItemStack stack(Material material, int amount) {
@@ -46,9 +46,9 @@ class NpcConditionTest {
         ItemStack diamond = stack(Material.DIAMOND, 3);
         Player player = playerWithInventory(diamond);
 
-        assertTrue(NpcCondition.evaluate(player, "HAS_ITEM:DIAMOND"));
-        assertTrue(NpcCondition.evaluate(player, "HAS_ITEM:DIAMOND,3"));
-        assertFalse(NpcCondition.evaluate(player, "HAS_ITEM:DIAMOND,4"));
+        assertTrue(MenuCondition.evaluate(player, "HAS_ITEM:DIAMOND"));
+        assertTrue(MenuCondition.evaluate(player, "HAS_ITEM:DIAMOND,3"));
+        assertFalse(MenuCondition.evaluate(player, "HAS_ITEM:DIAMOND,4"));
     }
 
     @Test
@@ -57,8 +57,8 @@ class NpcConditionTest {
         ItemStack b = stack(Material.DIAMOND, 2);
         Player player = playerWithInventory(a, b);
 
-        assertTrue(NpcCondition.evaluate(player, "HAS_ITEM:DIAMOND,4"));
-        assertFalse(NpcCondition.evaluate(player, "HAS_ITEM:DIAMOND,5"));
+        assertTrue(MenuCondition.evaluate(player, "HAS_ITEM:DIAMOND,4"));
+        assertFalse(MenuCondition.evaluate(player, "HAS_ITEM:DIAMOND,5"));
     }
 
     @Test
@@ -66,13 +66,13 @@ class NpcConditionTest {
         ItemStack gold = stack(Material.GOLD_INGOT, 5);
         Player player = playerWithInventory(null, gold, null);
 
-        assertFalse(NpcCondition.evaluate(player, "HAS_ITEM:DIAMOND"));
+        assertFalse(MenuCondition.evaluate(player, "HAS_ITEM:DIAMOND"));
     }
 
     @Test
     void hasItemWithInvalidMaterialIsFalse() {
         Player player = playerWithInventory();
-        assertFalse(NpcCondition.evaluate(player, "HAS_ITEM:NOT_A_MATERIAL"));
+        assertFalse(MenuCondition.evaluate(player, "HAS_ITEM:NOT_A_MATERIAL"));
     }
 
     @Test
@@ -80,8 +80,8 @@ class NpcConditionTest {
         ItemStack diamond = stack(Material.DIAMOND, 1);
         Player player = playerWithInventory(diamond);
 
-        assertTrue(NpcCondition.evaluate(player, "HAS_ITEM:DIAMOND && HAS_ITEM:DIAMOND,1"));
-        assertFalse(NpcCondition.evaluate(player, "HAS_ITEM:DIAMOND && HAS_ITEM:DIAMOND,2"));
+        assertTrue(MenuCondition.evaluate(player, "HAS_ITEM:DIAMOND && HAS_ITEM:DIAMOND,1"));
+        assertFalse(MenuCondition.evaluate(player, "HAS_ITEM:DIAMOND && HAS_ITEM:DIAMOND,2"));
     }
 
     @Test
@@ -89,7 +89,7 @@ class NpcConditionTest {
         ItemStack diamond = stack(Material.DIAMOND, 1);
         Player player = playerWithInventory(diamond);
 
-        assertTrue(NpcCondition.evaluate(player, "HAS_ITEM:DIAMOND,5 || HAS_ITEM:DIAMOND,1"));
-        assertFalse(NpcCondition.evaluate(player, "HAS_ITEM:DIAMOND,5 || HAS_ITEM:DIAMOND,6"));
+        assertTrue(MenuCondition.evaluate(player, "HAS_ITEM:DIAMOND,5 || HAS_ITEM:DIAMOND,1"));
+        assertFalse(MenuCondition.evaluate(player, "HAS_ITEM:DIAMOND,5 || HAS_ITEM:DIAMOND,6"));
     }
 }

@@ -1,0 +1,121 @@
+# Menú del servidor: lo abre la brújula (server-menu en config.yml) o /menu.
+# Mismo formato que los menús de RPGRoll-NPCs. Acciones: MESSAGE, COMMAND
+# (consola), COMMAND_AS_PLAYER, OPEN_GUI (otro menú de esta carpeta), SOUND,
+# TELEPORT, GIVE_ITEM, TAKE_ITEM, CONDITIONAL, OPEN_INVENTORY y CLOSE.
+# Por ítem: permission (solo lo ve quien lo tenga). {player} = el jugador.
+# Los botones de un módulo que no tengas instalado dan "comando desconocido":
+# bórralos o cámbialos.
+id: servidor
+title: "&c&l✦ Brújula del Nether"
+rows: 5
+filler: GRAY_STAINED_GLASS_PANE
+
+items:
+  - slot: 4
+    material: PLAYER_HEAD
+    name: "&e&l{player}"
+    lore:
+      - "&7Clic: tu personaje y estadísticas"
+    actions:
+      - type: COMMAND_AS_PLAYER
+        value: "rpg mystats"
+
+  - slot: 19
+    material: BEACON
+    name: "&b&lLobby"
+    lore:
+      - "&7Vuelve al punto de inicio."
+    actions:
+      - type: COMMAND_AS_PLAYER
+        value: "spawn"
+      - type: SOUND
+        value: "ENTITY_ENDERMAN_TELEPORT,0.8,1.2"
+
+  - slot: 20
+    material: ENDER_PEARL
+    name: "&a&lViajes"
+    lore:
+      - "&7Teletransporte aleatorio y destinos."
+    actions:
+      - type: OPEN_GUI
+        value: "destinos"
+
+  - slot: 21
+    material: EMERALD
+    name: "&6&lTienda"
+    lore:
+      - "&7Compra y vende de todo."
+      - "&7Sección &6Premium &7con ítems únicos."
+    actions:
+      - type: COMMAND_AS_PLAYER
+        value: "tienda"
+
+  - slot: 22
+    material: NETHER_STAR
+    name: "&d&lPase de temporada"
+    lore:
+      - "&7Recompensas gratis y premium."
+    actions:
+      - type: COMMAND_AS_PLAYER
+        value: "pase"
+
+  - slot: 23
+    material: CLOCK
+    name: "&e&lRecompensa diaria"
+    lore:
+      - "&7Entra cada día y mantén la racha."
+    actions:
+      - type: COMMAND_AS_PLAYER
+        value: "diario"
+
+  - slot: 24
+    material: WRITABLE_BOOK
+    name: "&f&lMisiones"
+    lore:
+      - "&7Las misiones que tienes en curso."
+    actions:
+      - type: COMMAND_AS_PLAYER
+        value: "quest active"
+
+  - slot: 25
+    material: WHITE_BANNER
+    name: "&9&lGremio"
+    lore:
+      - "&7Tu gremio, o busca uno."
+    actions:
+      - type: COMMAND_AS_PLAYER
+        value: "guild gui"
+
+  - slot: 30
+    material: IRON_PICKAXE
+    name: "&7&lOficios"
+    lore:
+      - "&7Tus trabajos y su progreso."
+    actions:
+      - type: COMMAND_AS_PLAYER
+        value: "rpg jobs"
+
+  - slot: 31
+    material: GOLD_INGOT
+    name: "&6&lEconomía"
+    lore:
+      - "&7Saldo, banco y subastas."
+    actions:
+      - type: COMMAND_AS_PLAYER
+        value: "economy"
+
+  - slot: 32
+    material: PAPER
+    name: "&a&lVotar"
+    lore:
+      - "&7Vota por el servidor y gana premios."
+    actions:
+      - type: COMMAND_AS_PLAYER
+        value: "votar"
+
+  - slot: 40
+    material: BARRIER
+    name: "&cCerrar"
+    actions:
+      - type: CLOSE
+        value: ""

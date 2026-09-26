@@ -1,5 +1,7 @@
 package com.sack.rpgroll.npcs.core;
 
+import com.sack.rpgroll.common.menu.MenuAction;
+
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.junit.jupiter.api.Test;
 
@@ -76,7 +78,7 @@ class NpcParserTest {
         NpcDefinition def = parser.parse(config);
 
         assertEquals(1, def.actions().size());
-        assertEquals(NpcAction.NpcActionType.MESSAGE, def.actions().get(0).type());
+        assertEquals(MenuAction.ActionType.MESSAGE, def.actions().get(0).type());
         assertEquals("hello", def.actions().get(0).value());
     }
 

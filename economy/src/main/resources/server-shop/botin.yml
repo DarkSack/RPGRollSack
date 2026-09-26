@@ -1,0 +1,105 @@
+# Sección de la tienda del servidor (/tienda botin). Ver _reference_full.yml.
+id: botin
+display-name: "&4Botín de criaturas"
+icon: BONE
+slot: 25
+description:
+  - "&7Lo que sueltan los mobs"
+  - "&8La tienda compra casi todo"
+items:
+  - material: ROTTEN_FLESH
+    amount: 64
+    buy: 26
+    sell: 6
+  - material: BONE
+    amount: 32
+    buy: 39
+    sell: 9
+  - material: ARROW
+    amount: 64
+    buy: 52
+  - material: STRING
+    amount: 32
+    buy: 39
+    sell: 9
+  - material: SPIDER_EYE
+    amount: 16
+    buy: 32
+    sell: 8
+  - material: GUNPOWDER
+    amount: 32
+    buy: 96
+    sell: 24
+  - material: SLIME_BALL
+    amount: 16
+    buy: 80
+    sell: 20
+  - material: ENDER_PEARL
+    amount: 16
+    buy: 240
+    sell: 60
+  - material: BLAZE_ROD
+    amount: 16
+    buy: 192
+    sell: 48
+  - material: GHAST_TEAR
+    amount: 4
+    buy: 160
+    sell: 40
+  - material: MAGMA_CREAM
+    amount: 16
+    buy: 128
+    sell: 32
+  - material: PHANTOM_MEMBRANE
+    amount: 8
+    buy: 80
+    sell: 20
+  - material: FEATHER
+    amount: 32
+    buy: 32
+    sell: 8
+  - material: LEATHER
+    amount: 16
+    buy: 48
+    sell: 12
+  - material: RABBIT_HIDE
+    amount: 16
+    buy: 24
+    sell: 6
+  - material: INK_SAC
+    amount: 16
+    buy: 24
+    sell: 6
+  - material: GLOW_INK_SAC
+    amount: 16
+    buy: 64
+    sell: 16
+  - material: PRISMARINE_SHARD
+    amount: 16
+    buy: 48
+    sell: 12
+  - material: PRISMARINE_CRYSTALS
+    amount: 16
+    buy: 64
+    sell: 16
+  - material: SHULKER_SHELL
+    amount: 2
+    buy: 500
+    sell: 125
+  - material: NAUTILUS_SHELL
+    buy: 60
+    sell: 15
+  - material: TURTLE_SCUTE
+    amount: 4
+    buy: 100
+    sell: 25
+  - material: BREEZE_ROD
+    amount: 8
+    buy: 144
+    sell: 36
+  - material: WITHER_SKELETON_SKULL
+    buy: 1500
+    sell: 375
+  - material: NETHER_STAR
+    buy: 25000
+    sell: 6250

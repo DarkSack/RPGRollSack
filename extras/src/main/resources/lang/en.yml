@@ -37,3 +37,10 @@ command:
   condition-not-found: "No condition exists with id: {condition}"
   player-not-found: "Player not found: {player}"
   invalid-number: "Invalid numeric value: {value}"
+
+server_menu:
+  unknown: "&cThere is no menu «{id}»."
+  no_permission: "&cYou can't open other menus."
+  players_only: "&cThis command is for players only."
+  disabled: "&7The server menu is disabled."
+  item_given: "&a✔ Here is your compass."

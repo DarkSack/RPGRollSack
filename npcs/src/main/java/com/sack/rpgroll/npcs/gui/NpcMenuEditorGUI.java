@@ -1,14 +1,15 @@
 package com.sack.rpgroll.npcs.gui;
 
+import com.sack.rpgroll.common.menu.MenuAction;
+import com.sack.rpgroll.common.menu.MenuAction.ActionType;
+import com.sack.rpgroll.common.menu.MenuDefinition;
+import com.sack.rpgroll.common.menu.MenuItem;
+
 import com.sack.rpgroll.util.ComponentUtils;
 
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
-import com.sack.rpgroll.npcs.core.NpcAction;
-import com.sack.rpgroll.npcs.core.NpcAction.NpcActionType;
-import com.sack.rpgroll.npcs.core.NpcMenuDefinition;
-import com.sack.rpgroll.npcs.core.NpcMenuItem;
 import com.sack.rpgroll.npcs.core.NpcMenuManager;
 import com.sack.rpgroll.npcs.listener.ChatPromptManager;
 
@@ -41,9 +42,9 @@ public class NpcMenuEditorGUI extends InventoryGUI {
     private final ChatPromptManager chatPromptManager;
     private final LangManager langManager;
     private final Runnable onBack;
-    private NpcMenuDefinition current;
+    private MenuDefinition current;
 
-    public NpcMenuEditorGUI(Player player, NpcMenuDefinition definition, NpcMenuManager menuManager,
+    public NpcMenuEditorGUI(Player player, MenuDefinition definition, NpcMenuManager menuManager,
             ChatPromptManager chatPromptManager, LangManager langManager, Runnable onBack) {
         super(player, langManager.component("menu.editor.title", "id", definition.id()), SIZE);
         this.current = definition;
@@ -53,7 +54,7 @@ public class NpcMenuEditorGUI extends InventoryGUI {
         this.onBack = onBack;
     }
 
-    private void replace(NpcMenuDefinition updated) {
+    private void replace(MenuDefinition updated) {
         current = updated;
         menuManager.save(current);
         build();
@@ -79,11 +80,11 @@ public class NpcMenuEditorGUI extends InventoryGUI {
                 .setLore(langManager.component("menu.editor.rows_hint"))
                 .build());
 
-        List<NpcMenuItem> items = current.items();
+        List<MenuItem> items = current.items();
 
         for (int i = 0; i < items.size() && i < 36; i++) {
 
-            NpcMenuItem item = items.get(i);
+            MenuItem item = items.get(i);
 
             setItem(9 + i, new ItemBuilder(resolveMaterial(item.material()))
                     .setName(ComponentUtils.parse(item.displayName().isBlank() ? item.material() : item.displayName())
@@ -118,13 +119,13 @@ public class NpcMenuEditorGUI extends InventoryGUI {
 
         if (slot == TITLE_SLOT) {
             chatPromptManager.prompt(player, langManager.raw("menu.editor.prompt_title"),
-                    value -> replace(new NpcMenuDefinition(current.id(), value, current.rows(), current.items())));
+                    value -> replace(new MenuDefinition(current.id(), value, current.rows(), current.items())));
             return;
         }
 
         if (slot == ROWS_SLOT) {
             int delta = click == ClickType.RIGHT ? -1 : 1;
-            replace(new NpcMenuDefinition(current.id(), current.title(), current.rows() + delta, current.items()));
+            replace(new MenuDefinition(current.id(), current.title(), current.rows() + delta, current.items()));
             return;
         }
 
@@ -133,9 +134,9 @@ public class NpcMenuEditorGUI extends InventoryGUI {
             int index = slot - 9;
 
             if (event.isShiftClick()) {
-                List<NpcMenuItem> updated = new ArrayList<>(current.items());
+                List<MenuItem> updated = new ArrayList<>(current.items());
                 updated.remove(index);
-                replace(new NpcMenuDefinition(current.id(), current.title(), current.rows(), updated));
+                replace(new MenuDefinition(current.id(), current.title(), current.rows(), updated));
                 return;
             }
 
@@ -176,17 +177,17 @@ public class NpcMenuEditorGUI extends InventoryGUI {
             String material = parts[1].trim().toUpperCase(Locale.ROOT);
             String name = parts.length > 2 ? parts[2].trim() : "";
 
-            List<NpcMenuItem> updated = new ArrayList<>(current.items());
-            updated.add(new NpcMenuItem(slotNumber, material, name, List.of(), List.of()));
+            List<MenuItem> updated = new ArrayList<>(current.items());
+            updated.add(new MenuItem(slotNumber, material, name, List.of(), List.of()));
 
-            replace(new NpcMenuDefinition(current.id(), current.title(), current.rows(), updated));
+            replace(new MenuDefinition(current.id(), current.title(), current.rows(), updated));
         });
     }
 
     private void promptAddAction(int itemIndex) {
         chatPromptManager.prompt(player,
                 langManager.raw("menu.editor.prompt_action", "types",
-                        String.join(", ", java.util.Arrays.stream(NpcActionType.values()).map(Enum::name).toList())),
+                        String.join(", ", java.util.Arrays.stream(ActionType.values()).map(Enum::name).toList())),
                 value -> {
 
                     String[] parts = value.split(";", 2);
@@ -197,25 +198,25 @@ public class NpcMenuEditorGUI extends InventoryGUI {
                         return;
                     }
 
-                    NpcActionType type;
+                    ActionType type;
                     try {
-                        type = NpcActionType.valueOf(parts[0].trim().toUpperCase(Locale.ROOT));
+                        type = ActionType.valueOf(parts[0].trim().toUpperCase(Locale.ROOT));
                     } catch (IllegalArgumentException e) {
                         langManager.send(player, "menu.editor.invalid_action_type");
                         reopen();
                         return;
                     }
 
-                    List<NpcMenuItem> items = new ArrayList<>(current.items());
-                    NpcMenuItem item = items.get(itemIndex);
+                    List<MenuItem> items = new ArrayList<>(current.items());
+                    MenuItem item = items.get(itemIndex);
 
-                    List<NpcAction> actions = new ArrayList<>(item.actions());
-                    actions.add(new NpcAction(type, parts[1].trim()));
+                    List<MenuAction> actions = new ArrayList<>(item.actions());
+                    actions.add(new MenuAction(type, parts[1].trim()));
 
-                    items.set(itemIndex, new NpcMenuItem(item.slot(), item.material(), item.displayName(),
+                    items.set(itemIndex, new MenuItem(item.slot(), item.material(), item.displayName(),
                             item.lore(), actions));
 
-                    replace(new NpcMenuDefinition(current.id(), current.title(), current.rows(), items));
+                    replace(new MenuDefinition(current.id(), current.title(), current.rows(), items));
                 });
     }
 

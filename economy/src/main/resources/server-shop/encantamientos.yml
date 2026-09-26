@@ -1,0 +1,129 @@
+# Sección de la tienda del servidor (/tienda encantamientos). Ver _reference_full.yml.
+id: encantamientos
+display-name: "&5Encantamientos"
+icon: ENCHANTED_BOOK
+slot: 33
+description:
+  - "&7Libros encantados vanilla al nivel máximo"
+  - "&8Los custom están en Premium"
+items:
+  - book: sharpness
+    level: 5
+    buy: 900
+  - book: smite
+    level: 5
+    buy: 450
+  - book: bane_of_arthropods
+    level: 5
+    buy: 400
+  - book: knockback
+    level: 2
+    buy: 240
+  - book: fire_aspect
+    level: 2
+    buy: 600
+  - book: looting
+    level: 3
+    buy: 1350
+  - book: sweeping_edge
+    level: 3
+    buy: 600
+  - book: efficiency
+    level: 5
+    buy: 800
+  - book: fortune
+    level: 3
+    buy: 1800
+  - book: silk_touch
+    level: 1
+    buy: 900
+  - book: unbreaking
+    level: 3
+    buy: 900
+  - book: mending
+    level: 1
+    buy: 3500
+  - book: protection
+    level: 4
+    buy: 1000
+  - book: fire_protection
+    level: 4
+    buy: 480
+  - book: blast_protection
+    level: 4
+    buy: 520
+  - book: projectile_protection
+    level: 4
+    buy: 480
+  - book: feather_falling
+    level: 4
+    buy: 600
+  - book: respiration
+    level: 3
+    buy: 450
+  - book: aqua_affinity
+    level: 1
+    buy: 200
+  - book: depth_strider
+    level: 3
+    buy: 750
+  - book: frost_walker
+    level: 2
+    buy: 800
+  - book: thorns
+    level: 3
+    buy: 1050
+  - book: power
+    level: 5
+    buy: 800
+  - book: punch
+    level: 2
+    buy: 280
+  - book: flame
+    level: 1
+    buy: 450
+  - book: infinity
+    level: 1
+    buy: 1500
+  - book: loyalty
+    level: 3
+    buy: 750
+  - book: riptide
+    level: 3
+    buy: 900
+  - book: channeling
+    level: 1
+    buy: 900
+  - book: impaling
+    level: 5
+    buy: 750
+  - book: multishot
+    level: 1
+    buy: 600
+  - book: piercing
+    level: 4
+    buy: 600
+  - book: quick_charge
+    level: 3
+    buy: 750
+  - book: luck_of_the_sea
+    level: 3
+    buy: 750
+  - book: lure
+    level: 3
+    buy: 600
+  - book: swift_sneak
+    level: 3
+    buy: 3600
+  - book: soul_speed
+    level: 3
+    buy: 2400
+  - book: density
+    level: 5
+    buy: 1000
+  - book: breach
+    level: 4
+    buy: 1400
+  - book: wind_burst
+    level: 3
+    buy: 2100

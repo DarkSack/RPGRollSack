@@ -1,0 +1,52 @@
+# Sección de la tienda del servidor (/tienda armaduras). Ver _reference_full.yml.
+id: armaduras
+display-name: "&7Armaduras"
+icon: IRON_CHESTPLATE
+slot: 31
+description:
+  - "&7De cuero a diamante"
+items:
+  - material: LEATHER_HELMET
+    buy: 15
+  - material: LEATHER_CHESTPLATE
+    buy: 24
+  - material: LEATHER_LEGGINGS
+    buy: 21
+  - material: LEATHER_BOOTS
+    buy: 12
+  - material: CHAINMAIL_HELMET
+    buy: 45
+  - material: CHAINMAIL_CHESTPLATE
+    buy: 70
+  - material: CHAINMAIL_LEGGINGS
+    buy: 60
+  - material: CHAINMAIL_BOOTS
+    buy: 40
+  - material: IRON_HELMET
+    buy: 55
+  - material: IRON_CHESTPLATE
+    buy: 85
+  - material: IRON_LEGGINGS
+    buy: 75
+  - material: IRON_BOOTS
+    buy: 45
+  - material: GOLDEN_HELMET
+    buy: 110
+  - material: GOLDEN_CHESTPLATE
+    buy: 170
+  - material: GOLDEN_LEGGINGS
+    buy: 150
+  - material: GOLDEN_BOOTS
+    buy: 90
+  - material: DIAMOND_HELMET
+    buy: 1350
+  - material: DIAMOND_CHESTPLATE
+    buy: 2150
+  - material: DIAMOND_LEGGINGS
+    buy: 1900
+  - material: DIAMOND_BOOTS
+    buy: 1100
+  - material: TURTLE_HELMET
+    buy: 150
+  - material: ELYTRA
+    buy: 30000

@@ -1,21 +1,24 @@
 package com.sack.rpgroll.npcs.core;
 
+import com.sack.rpgroll.common.menu.MenuDefinition;
+import com.sack.rpgroll.common.menu.MenuParser;
+
 import com.sack.rpgroll.common.yaml.YamlLoader;
 import com.sack.rpgroll.common.content.ContentManager;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class NpcMenuManager extends ContentManager<NpcMenuDefinition> {
+public class NpcMenuManager extends ContentManager<MenuDefinition> {
 
     private final NpcMenuWriter writer;
 
     public NpcMenuManager(JavaPlugin npcsPlugin) {
-        super(owningPlugin(), new YamlLoader(npcsPlugin), "menus", "menú", new NpcMenuParser());
+        super(owningPlugin(), new YamlLoader(npcsPlugin), "menus", "menú", new MenuParser());
         this.writer = new NpcMenuWriter(npcsPlugin);
     }
 
     /** Persiste el menú a disco y recarga todo el registro para reflejar el cambio de inmediato. */
-    public void save(NpcMenuDefinition definition) {
+    public void save(MenuDefinition definition) {
         writer.save(definition);
         reload();
     }

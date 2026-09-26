@@ -96,7 +96,7 @@ public class PassPlugin extends JavaPlugin {
         boolean votifier = VotifierBridge.register(this, votes::onVote);
 
         Duration afk = Duration.ofSeconds(Math.max(1, getConfig().getInt("playtime-afk-seconds", 300)));
-        Bukkit.getScheduler().runTaskTimer(this, new PlaytimeTask(missions, afk),
+        Bukkit.getScheduler().runTaskTimer(this, new PlaytimeTask(missions, pass, afk),
                 PlaytimeTask.PERIOD_TICKS, PlaytimeTask.PERIOD_TICKS);
         Bukkit.getScheduler().runTaskTimer(this, store::saveDirty, AUTOSAVE_TICKS, AUTOSAVE_TICKS);
 

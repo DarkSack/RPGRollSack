@@ -1,0 +1,76 @@
+# Sección de la tienda del servidor (/tienda premium). Ver _reference_full.yml.
+id: premium
+display-name: "<gradient:#f6d365:#fda085>✦ Premium</gradient>"
+icon: NETHER_STAR
+slot: 4
+premium: true
+description:
+  - "&7Armas, armaduras y reliquias únicas"
+  - "&7y encantamientos que no existen en vanilla"
+  - "&6Caro, pero no hay nada igual"
+items:
+  - item: healing_potion
+    amount: 4
+    buy: 5000
+  - item: mana_draught
+    amount: 4
+    buy: 5000
+  - item: enchanted_gem
+    buy: 7500
+  - item: miner_pickaxe
+    buy: 7500
+  - item: shadow_boots
+    buy: 7500
+  - item: woodsman_axe
+    buy: 7500
+  - item: knight_helmet
+    buy: 20000
+  - item: runic_blade
+    buy: 55000
+  - item: flame_blade
+    buy: 140000
+  - item: phoenix_feather
+    buy: 140000
+  - item: dragon_slayer
+    buy: 350000
+  - item: ancient_orb
+    buy: 500000
+  - enchant: magnet
+    level: 1
+    buy: 6000
+  - enchant: poison
+    level: 1
+    buy: 6000
+  - enchant: poison
+    level: 2
+    buy: 12000
+  - enchant: poison
+    level: 3
+    buy: 18000
+  - enchant: frost
+    level: 1
+    buy: 15000
+  - enchant: frost
+    level: 2
+    buy: 30000
+  - enchant: frost
+    level: 3
+    buy: 45000
+  - enchant: thunder
+    level: 1
+    buy: 45000
+  - enchant: lifesteal
+    level: 1
+    buy: 30000
+  - enchant: lifesteal
+    level: 2
+    buy: 60000
+  - enchant: lifesteal
+    level: 3
+    buy: 90000
+  - enchant: lifesteal
+    level: 4
+    buy: 120000
+  - enchant: lifesteal
+    level: 5
+    buy: 150000

@@ -1,0 +1,40 @@
+# Submenú de viajes del menú del servidor. rtp necesita un plugin de
+# teletransporte aleatorio (LeafRTP, BetterRTP...); spawn, EssentialsXSpawn.
+id: destinos
+title: "&a&l✦ Viajes"
+rows: 3
+filler: GRAY_STAINED_GLASS_PANE
+
+items:
+  - slot: 11
+    material: GRASS_BLOCK
+    name: "&a&lMundo salvaje"
+    lore:
+      - "&7Te lleva a un punto aleatorio"
+      - "&7del mundo principal."
+    actions:
+      - type: COMMAND_AS_PLAYER
+        value: "rtp"
+
+  - slot: 13
+    material: BEACON
+    name: "&b&lLobby"
+    actions:
+      - type: COMMAND_AS_PLAYER
+        value: "spawn"
+
+  - slot: 15
+    material: RED_BED
+    name: "&c&lMi casa"
+    lore:
+      - "&7Tu /home de EssentialsX."
+    actions:
+      - type: COMMAND_AS_PLAYER
+        value: "home"
+
+  - slot: 22
+    material: ARROW
+    name: "&7« Volver"
+    actions:
+      - type: OPEN_GUI
+        value: "servidor"

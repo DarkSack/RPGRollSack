@@ -1,4 +1,4 @@
-package com.sack.rpgroll.npcs.core;
+package com.sack.rpgroll.common.menu;
 
 import com.sack.rpgroll.common.character.Characters;
 
@@ -9,7 +9,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.Optional;
 
 /**
- * Evalúa condiciones sobre el jugador, usadas por NpcAction.CONDITIONAL.
+ * Evalúa condiciones sobre el jugador, usadas por {@link MenuAction.ActionType#CONDITIONAL}.
  * <p>
  * Soporta condiciones simples ("HAS_JOB:minero") y compuestas usando
  * "&&" (todas deben cumplirse) o "||" (al menos una debe cumplirse).
@@ -18,7 +18,11 @@ import java.util.Optional;
  * derecha y se ignora el resto (evita ambigüedad de precedencia sin
  * necesidad de implementar un parser completo de paréntesis).
  */
-public class NpcCondition {
+public final class MenuCondition {
+
+    private MenuCondition() {
+    }
+
 
     public static boolean evaluate(Player player, String rawCondition) {
 
@@ -71,6 +75,7 @@ public class NpcCondition {
             case "HAS_RACE" -> hasRace(player, param);
             case "HAS_CLASS" -> hasClass(player, param);
             case "HAS_ITEM" -> hasItem(player, param);
+            case "HAS_PERMISSION" -> !param.isEmpty() && player.hasPermission(param);
             default -> false;
         };
     }
