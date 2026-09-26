@@ -11,7 +11,6 @@ dependencies {
     // rpgroll.addon-conventions ya agrega compileOnly(:api) y compileOnly(:common),
     // pero este addon también usa InventoryGUI/ItemBuilder (framework de GUIs) que
     // vive físicamente en :core.
-    compileOnly(project(":core"))
 
     // Integraciones blandas (softdepend en plugin.yml, chequeadas en runtime vía
     // Bukkit.getPluginManager().isPluginEnabled(...) antes de tocar sus clases):

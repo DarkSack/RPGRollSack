@@ -13,5 +13,4 @@ dependencies {
     // — esta librería es intencionalmente independiente de RPGRollAPI: solo
     // trabaja con conceptos vanilla (Player/Entity/Location), para que algún día
     // pueda usarla cualquier plugin, no solo los de RPGRoll.
-    compileOnly(project(":core"))
 }

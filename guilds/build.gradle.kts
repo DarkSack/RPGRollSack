@@ -11,7 +11,6 @@ dependencies {
     // rpgroll.addon-conventions ya agrega compileOnly(:api) y compileOnly(:common).
     // :core para RPGRollAPI (nivel/clase del jugador para matchmaking y requisitos
     // de creación de guild) y el framework de GUIs (InventoryGUI/ItemBuilder).
-    compileOnly(project(":core"))
 
     // Integraciones blandas (softdepend en plugin.yml, chequeadas en runtime):
     // requisito de creación "item" (Items) y "quest" (Quests) para fundar una guild.

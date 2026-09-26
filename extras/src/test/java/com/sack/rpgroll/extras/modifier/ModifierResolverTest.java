@@ -1,92 +1,60 @@
 package com.sack.rpgroll.extras.modifier;
 
-import com.sack.rpgroll.RPGRoll;
-import com.sack.rpgroll.core.Bootstrap;
-import com.sack.rpgroll.core.ServiceRegistry;
-import com.sack.rpgroll.player.PlayerManager;
-import com.sack.rpgroll.player.RPGPlayer;
-import com.sack.rpgroll.player.jobs.PlayerJobs;
+import com.sack.rpgroll.common.character.RPGCharacters;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.PluginManager;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockedStatic;
 
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.when;
 
 class ModifierResolverTest {
 
-    private MockedStatic<Bukkit> bukkitMock;
-    private PluginManager pluginManager;
-    private RPGRoll rpgRoll;
-    private Bootstrap bootstrap;
-    private PlayerManager playerManager;
+    private RPGCharacters characters;
     private Player bukkitPlayer;
-    private RPGPlayer rpgPlayer;
     private ModifierManager modifierManager;
     private ModifierResolver resolver;
     private UUID uuid;
 
     @BeforeEach
     void setUp() {
-        pluginManager = mock(PluginManager.class);
-        rpgRoll = mock(RPGRoll.class);
-        bootstrap = mock(Bootstrap.class);
-        ServiceRegistry services = new ServiceRegistry();
-        playerManager = mock(PlayerManager.class);
+        characters = mock(RPGCharacters.class);
         bukkitPlayer = mock(Player.class);
-        rpgPlayer = mock(RPGPlayer.class);
         modifierManager = mock(ModifierManager.class);
-        resolver = new ModifierResolver(modifierManager);
-
-        services.register(PlayerManager.class, playerManager);
-        when(bootstrap.getServices()).thenReturn(services);
-        when(rpgRoll.getBootstrap()).thenReturn(bootstrap);
-        when(pluginManager.getPlugin("RPGRoll")).thenReturn(rpgRoll);
-
-        bukkitMock = mockStatic(Bukkit.class);
-        bukkitMock.when(Bukkit::getPluginManager).thenReturn(pluginManager);
+        resolver = new ModifierResolver(modifierManager, () -> Optional.of(characters));
 
         uuid = UUID.randomUUID();
         when(bukkitPlayer.getUniqueId()).thenReturn(uuid);
-        when(playerManager.getPlayer(uuid)).thenReturn(Optional.of(rpgPlayer));
-    }
-
-    @AfterEach
-    void tearDown() {
-        bukkitMock.close();
+        when(characters.race(uuid)).thenReturn(Optional.empty());
+        when(characters.playerClass(uuid)).thenReturn(Optional.empty());
+        when(characters.activeJobs(uuid)).thenReturn(Set.of());
     }
 
     @Test
     void sumReturnsZeroWhenCorePluginIsAbsent() {
-        when(pluginManager.getPlugin("RPGRoll")).thenReturn(null);
+        ModifierResolver withoutCore = new ModifierResolver(modifierManager, Optional::empty);
 
-        assertEquals(0.0, resolver.sum(bukkitPlayer, "cold_resistance"));
-        assertEquals(1.0, resolver.multiplier(bukkitPlayer, "stat_max"));
+        assertEquals(0.0, withoutCore.sum(bukkitPlayer, "cold_resistance"));
+        assertEquals(1.0, withoutCore.multiplier(bukkitPlayer, "stat_max"));
     }
 
     @Test
     void sumReturnsZeroWhenPlayerHasNoRpgRecord() {
-        when(playerManager.getPlayer(uuid)).thenReturn(Optional.empty());
-
         assertEquals(0.0, resolver.sum(bukkitPlayer, "cold_resistance"));
     }
 
     @Test
     void sumAddsRaceClassAndAllActiveJobModifiers() {
-        when(rpgPlayer.getRace()).thenReturn("elf");
-        when(rpgPlayer.getPlayerClass()).thenReturn("mage");
-        when(rpgPlayer.getJobs()).thenReturn(PlayerJobs.empty().join("miner").join("fisher"));
+        when(characters.race(uuid)).thenReturn(Optional.of("elf"));
+        when(characters.playerClass(uuid)).thenReturn(Optional.of("mage"));
+        when(characters.activeJobs(uuid)).thenReturn(Set.of("miner", "fisher"));
 
         when(modifierManager.get("elf")).thenReturn(Optional.of(
                 new ModifierSet("elf", ModifierSourceType.RACE, Map.of("cold_resistance", 0.1))));
@@ -103,9 +71,7 @@ class ModifierResolverTest {
 
     @Test
     void sumIgnoresModifierSetWhenTypeDoesNotMatchExpectedSourceType() {
-        when(rpgPlayer.getRace()).thenReturn("elf");
-        when(rpgPlayer.getPlayerClass()).thenReturn(null);
-        when(rpgPlayer.getJobs()).thenReturn(PlayerJobs.empty());
+        when(characters.race(uuid)).thenReturn(Optional.of("elf"));
 
         when(modifierManager.get("elf")).thenReturn(Optional.of(
                 new ModifierSet("elf", ModifierSourceType.CLASS, Map.of("cold_resistance", 0.5))));
@@ -115,9 +81,7 @@ class ModifierResolverTest {
 
     @Test
     void sumTreatsMissingKeyAsZero() {
-        when(rpgPlayer.getRace()).thenReturn("elf");
-        when(rpgPlayer.getPlayerClass()).thenReturn(null);
-        when(rpgPlayer.getJobs()).thenReturn(PlayerJobs.empty());
+        when(characters.race(uuid)).thenReturn(Optional.of("elf"));
 
         when(modifierManager.get("elf")).thenReturn(Optional.of(
                 new ModifierSet("elf", ModifierSourceType.RACE, Map.of("other_key", 0.5))));
@@ -127,9 +91,7 @@ class ModifierResolverTest {
 
     @Test
     void multiplierIsAlwaysOnePlusSumEvenWhenSumIsNegative() {
-        when(rpgPlayer.getRace()).thenReturn("elf");
-        when(rpgPlayer.getPlayerClass()).thenReturn(null);
-        when(rpgPlayer.getJobs()).thenReturn(PlayerJobs.empty());
+        when(characters.race(uuid)).thenReturn(Optional.of("elf"));
 
         when(modifierManager.get("elf")).thenReturn(Optional.of(
                 new ModifierSet("elf", ModifierSourceType.RACE, Map.of("stat_max", -0.3))));

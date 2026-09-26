@@ -1,11 +1,11 @@
 package com.sack.rpgroll.effects.condition;
 
-import com.sack.rpgroll.api.RPGRollAPI;
+import com.sack.rpgroll.common.character.Characters;
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.effects.core.EffectCondition;
 import com.sack.rpgroll.effects.core.EffectDefinition;
 import com.sack.rpgroll.guilds.GuildsAPI;
-import com.sack.rpgroll.player.RPGPlayer;
+import com.sack.rpgroll.common.character.RPGCharacters;
 
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
@@ -40,10 +40,12 @@ public class EffectConditionEvaluator {
 
         List<String> reasons = new ArrayList<>();
 
-        RPGPlayer rpgPlayer = null;
+        // Sin el core (o si el objetivo no es un jugador) no hay personaje: las
+        // condiciones de nivel, raza, clase, oficio y maná no aplican.
+        Character rpgPlayer = null;
 
-        if (target instanceof Player player && RPGRollAPI.isReady()) {
-            rpgPlayer = RPGRollAPI.get().getPlayer(player.getUniqueId()).orElse(null);
+        if (target instanceof Player player) {
+            rpgPlayer = Characters.get().map(c -> new Character(c, player.getUniqueId())).orElse(null);
         }
 
         for (EffectCondition condition : effect.conditions()) {
@@ -53,13 +55,13 @@ public class EffectConditionEvaluator {
         return reasons;
     }
 
-    private void checkOne(EffectCondition condition, LivingEntity target, RPGPlayer rpgPlayer, List<String> reasons) {
+    private void checkOne(EffectCondition condition, LivingEntity target, Character rpgPlayer, List<String> reasons) {
 
         switch (condition.type()) {
 
             case LEVEL_MIN -> {
                 int min = condition.paramInt("value", 0);
-                int level = rpgPlayer != null ? rpgPlayer.getLevel() : 0;
+                int level = rpgPlayer != null ? rpgPlayer.level() : 0;
                 if (rpgPlayer != null && level < min) {
                     reasons.add(lang.raw("condition.level_min", "min", min, "level", level));
                 }
@@ -67,7 +69,7 @@ public class EffectConditionEvaluator {
 
             case LEVEL_MAX -> {
                 int max = condition.paramInt("value", Integer.MAX_VALUE);
-                int level = rpgPlayer != null ? rpgPlayer.getLevel() : 0;
+                int level = rpgPlayer != null ? rpgPlayer.level() : 0;
                 if (rpgPlayer != null && level > max) {
                     reasons.add(lang.raw("condition.level_max", "max", max, "level", level));
                 }
@@ -76,7 +78,7 @@ public class EffectConditionEvaluator {
             case RACE -> {
                 String race = condition.param("value", "");
                 if (rpgPlayer != null && !race.isBlank()
-                        && !race.equalsIgnoreCase(String.valueOf(rpgPlayer.getRace()))) {
+                        && !race.equalsIgnoreCase(String.valueOf(rpgPlayer.race()))) {
                     reasons.add(lang.raw("condition.race", "value", race));
                 }
             }
@@ -84,14 +86,14 @@ public class EffectConditionEvaluator {
             case CLASS -> {
                 String playerClass = condition.param("value", "");
                 if (rpgPlayer != null && !playerClass.isBlank()
-                        && !playerClass.equalsIgnoreCase(String.valueOf(rpgPlayer.getPlayerClass()))) {
+                        && !playerClass.equalsIgnoreCase(String.valueOf(rpgPlayer.playerClass()))) {
                     reasons.add(lang.raw("condition.class", "value", playerClass));
                 }
             }
 
             case JOB -> {
                 String job = condition.param("value", "");
-                if (rpgPlayer != null && !job.isBlank() && !rpgPlayer.getJobs().hasJob(job)) {
+                if (rpgPlayer != null && !job.isBlank() && !rpgPlayer.hasJob(job)) {
                     reasons.add(lang.raw("condition.job", "value", job));
                 }
             }
@@ -188,15 +190,43 @@ public class EffectConditionEvaluator {
         return maxHealth <= 0 ? 0 : (target.getHealth() / maxHealth) * 100.0;
     }
 
-    private double manaPercent(RPGPlayer rpgPlayer) {
+    private double manaPercent(Character rpgPlayer) {
 
-        var stats = rpgPlayer.getCombatStats();
+        int maxMana = rpgPlayer.maxMana();
 
-        if (stats == null || stats.maxMana() <= 0) {
+        if (maxMana <= 0) {
             return 0;
         }
 
-        return ((double) stats.currentMana() / stats.maxMana()) * 100.0;
+        return ((double) rpgPlayer.mana() / maxMana) * 100.0;
+    }
+
+    /** El personaje del objetivo, leído por RPGRoll-Lib. */
+    private record Character(RPGCharacters data, java.util.UUID id) {
+
+        int level() {
+            return data.level(id);
+        }
+
+        String race() {
+            return data.race(id).orElse(null);
+        }
+
+        String playerClass() {
+            return data.playerClass(id).orElse(null);
+        }
+
+        boolean hasJob(String jobId) {
+            return data.hasJob(id, jobId);
+        }
+
+        int mana() {
+            return data.mana(id);
+        }
+
+        int maxMana() {
+            return data.maxMana(id);
+        }
     }
 
     private boolean checkGuild(LivingEntity target, String requiredGuildId) {

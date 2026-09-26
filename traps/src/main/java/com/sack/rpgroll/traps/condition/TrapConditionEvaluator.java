@@ -162,12 +162,12 @@ public class TrapConditionEvaluator {
      */
     private static Double rpgLevel(Player player) {
 
-        if (player == null || !com.sack.rpgroll.api.RPGRollAPI.isReady()) {
+        if (player == null) {
             return null;
         }
 
-        return com.sack.rpgroll.api.RPGRollAPI.get().getPlayer(player.getUniqueId())
-                .map(rpgPlayer -> (double) rpgPlayer.getLevel())
+        return com.sack.rpgroll.common.character.Characters.get()
+                .map(characters -> (double) characters.level(player.getUniqueId()))
                 .orElse(null);
     }
 

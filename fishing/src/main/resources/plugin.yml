@@ -4,8 +4,8 @@ main: com.sack.rpgroll.fishing.FishingPlugin
 api-version: "26.1.1"
 author: Sack
 description: Pesca como profesión completa — cientos de especies configurables, cañas/carnadas, minijuego vanilla o RPG, tesoros/basura, peces legendarios y enciclopedia de capturas.
-depend: [RPGRoll-Lib, RPGRoll]
-softdepend: [RPGRoll-FX, RPGRoll-Effects, RPGRoll-Seasons, SackResourcePack]
+depend: [RPGRoll-Lib]
+softdepend: [RPGRoll, RPGRoll-FX, RPGRoll-Effects, RPGRoll-Seasons, SackResourcePack]
 
 permissions:
   rpgrollfishing.admin.*:

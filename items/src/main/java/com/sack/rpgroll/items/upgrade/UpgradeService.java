@@ -1,6 +1,6 @@
 package com.sack.rpgroll.items.upgrade;
 
-import com.sack.rpgroll.api.RPGRollAPI;
+import com.sack.rpgroll.common.integration.VaultEconomy;
 import com.sack.rpgroll.items.core.ItemDefinition;
 import com.sack.rpgroll.items.core.ItemFactory;
 import com.sack.rpgroll.items.core.UpgradeLevel;
@@ -72,16 +72,12 @@ public class UpgradeService {
 
     private boolean chargeMoney(Player player, double amount) {
 
-        if (!RPGRollAPI.isReady()) {
+        var found = VaultEconomy.get();
+        if (found.isEmpty()) {
             return true;
         }
 
-        var economyProvider = RPGRollAPI.get().getEconomyProvider();
-        if (!economyProvider.isAvailable()) {
-            return true;
-        }
-
-        var economy = economyProvider.getEconomy().orElseThrow();
+        var economy = found.get();
 
         if (economy.getBalance(player) < amount) {
             return false;

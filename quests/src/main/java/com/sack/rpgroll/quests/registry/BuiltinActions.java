@@ -2,8 +2,8 @@ package com.sack.rpgroll.quests.registry;
 
 import com.sack.rpgroll.util.ComponentUtils;
 
-import com.sack.rpgroll.api.RPGRollAPI;
-import com.sack.rpgroll.player.RPGPlayer;
+import com.sack.rpgroll.common.character.Characters;
+import com.sack.rpgroll.common.integration.VaultEconomy;
 import com.sack.rpgroll.quests.engine.QuestEngine;
 
 import net.kyori.adventure.bossbar.BossBar;
@@ -103,27 +103,14 @@ public final class BuiltinActions {
 
         registry.register("GIVE_EXP", (action, ctx) -> {
 
-            if (!RPGRollAPI.isReady()) {
-                return;
-            }
-
             int amount = Integer.parseInt(action.param("amount", "0"));
-            RPGRollAPI api = RPGRollAPI.get();
-
-            api.getPlayer(ctx.player().getUniqueId()).ifPresent(rpgPlayer -> {
-                RPGPlayer updated = rpgPlayer.addExperience(amount);
-                api.getPlayerManager().savePlayer(updated);
-            });
+            Characters.get().ifPresent(c -> c.addExperience(ctx.player().getUniqueId(), amount));
         });
 
         registry.register("GIVE_MONEY", (action, ctx) -> {
 
-            if (!RPGRollAPI.isReady()) {
-                return;
-            }
-
             double amount = Double.parseDouble(action.param("amount", "0"));
-            RPGRollAPI.get().getEconomyProvider().getEconomy()
+            VaultEconomy.get()
                     .ifPresent(economy -> economy.depositPlayer(ctx.player(), amount));
         });
 
@@ -176,32 +163,14 @@ public final class BuiltinActions {
 
         registry.register("UNLOCK_PROFESSION", (action, ctx) -> {
 
-            if (!RPGRollAPI.isReady()) {
-                return;
-            }
-
             String jobId = action.param("value", "");
-            RPGRollAPI api = RPGRollAPI.get();
-
-            api.getPlayer(ctx.player().getUniqueId()).ifPresent(rpgPlayer -> {
-                RPGPlayer updated = rpgPlayer.joinJob(jobId);
-                api.getPlayerManager().savePlayer(updated);
-            });
+            Characters.get().ifPresent(c -> c.joinJob(ctx.player().getUniqueId(), jobId));
         });
 
         registry.register("UNLOCK_SKILL", (action, ctx) -> {
 
-            if (!RPGRollAPI.isReady()) {
-                return;
-            }
-
             String skillId = action.param("value", "");
-            RPGRollAPI api = RPGRollAPI.get();
-
-            api.getPlayer(ctx.player().getUniqueId()).ifPresent(rpgPlayer -> {
-                RPGPlayer updated = rpgPlayer.learnSkill(skillId);
-                api.getPlayerManager().savePlayer(updated);
-            });
+            Characters.get().ifPresent(c -> c.learnSkill(ctx.player().getUniqueId(), skillId));
         });
     }
 

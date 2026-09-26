@@ -77,6 +77,12 @@ public class Bootstrap {
             RPGRollAPI.init(plugin);
             plugin.getLogger().info("✔ RPGRollAPI inicializada");
 
+            // Los módulos que no dependen del core leen los personajes por RPGRoll-Lib.
+            com.sack.rpgroll.common.character.Characters.register(plugin,
+                    new com.sack.rpgroll.api.CoreCharacters(services.get(PlayerManager.class),
+                            services.get(com.sack.rpgroll.api.ExperienceBonusService.class),
+                            services.get(PlacedBlockTracker.class)));
+
             registerPlaceholders();
 
             plugin.getLogger().info("==================================");

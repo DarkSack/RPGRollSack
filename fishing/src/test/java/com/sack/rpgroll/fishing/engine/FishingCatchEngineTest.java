@@ -165,7 +165,7 @@ class FishingCatchEngineTest {
     }
 
     @Test
-    void legendarySpeciesWithNoLevelRequirementAndRPGRollAPIUnreadyIsStillEligible() {
+    void legendarySpeciesWithNoLevelRequirementWithoutTheCoreIsStillEligible() {
         FishSpecies legendary = new FishSpecies("kraken", "Kraken", null, 0, null, FishCategory.LEGENDARY,
                 FishRarity.LEGENDARY, Set.of(WaterType.LAKE), Set.of(), Set.of(), 50, 100, 100, 200, 1000, 500,
                 FishBehaviorType.ELUSIVE, Set.of(), Set.of(), Set.of(), Set.of(), true, 0, false, null, null, null);
@@ -182,21 +182,21 @@ class FishingCatchEngineTest {
     }
 
     @Test
-    void legendarySpeciesWithLevelRequirementIsIneligibleWhenRPGRollAPIIsNotReady() {
+    void legendarySpeciesLevelRequirementIsIgnoredWithoutTheCore() {
+        // Sin el core no hay niveles de personaje: el requisito no puede bloquear la especie.
         FishSpecies legendary = new FishSpecies("kraken", "Kraken", null, 0, null, FishCategory.LEGENDARY,
                 FishRarity.LEGENDARY, Set.of(WaterType.LAKE), Set.of(), Set.of(), 50, 100, 100, 200, 1000, 500,
                 FishBehaviorType.ELUSIVE, Set.of(), Set.of(), Set.of(), Set.of(), true, 10, false, null, null, null);
 
-        Junk junk = new Junk("boot", null, null, null, 1.0);
         when(speciesManager.getAll()).thenReturn(List.of(legendary));
-        when(junkManager.getAll()).thenReturn(List.of(junk));
 
         FishingCatchEngine engine = new FishingCatchEngine(speciesManager, treasureManager, junkManager,
                 conditionsResolver, 0.0, 0.0);
 
         CatchResult result = engine.resolveCatch(player, hookLocation, null, null);
 
-        assertEquals(CatchResult.CatchOutcome.JUNK, result.outcome());
+        assertEquals(CatchResult.CatchOutcome.FISH, result.outcome());
+        assertEquals(legendary, result.species());
     }
 
 }

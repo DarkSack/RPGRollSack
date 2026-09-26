@@ -12,7 +12,6 @@ dependencies {
     // :core es el framework de GUIs compartido (InventoryGUI/ItemBuilder).
     // :fx es la capa de renderizado (partículas/sonidos/títulos/bossbar) que
     // este motor de estados usa internamente para sus componentes visuales/sonoros.
-    compileOnly(project(":core"))
     compileOnly(project(":fx"))
     // Solo para las condiciones GUILD/TEAM — softdepend real (isReady() se
     // chequea siempre antes de tocar GuildsAPI, ver EffectConditionEvaluator).

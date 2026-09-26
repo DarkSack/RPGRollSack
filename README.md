@@ -85,30 +85,37 @@ Ver el detalle completo de cada uno (comandos, permisos, formato YAML, ejemplos)
 
 | Módulo           | Comando raíz                                     | Depende de (hard)       | Integraciones opcionales                                                | Precio estimado |
 | ---------------- | ------------------------------------------------ | ----------------------- | ----------------------------------------------------------------------- | --------------- |
-| `core` (RPGRoll) | `/rpg`                                           | —                       | Vault, PlaceholderAPI                                                   | **$20**         |
-| NPCs             | `/npc`                                           | RPGRoll                 | —                                                                       | **$8**          |
-| Crates           | `/crate`                                         | RPGRoll                 | DecentHolograms                                                         | **$6**          |
-| Enchantments     | `/renchant`                                      | RPGRoll                 | PlaceholderAPI                                                          | **$10**         |
-| Quests           | `/quest`, `/questadmin`                          | RPGRoll                 | PlaceholderAPI                                                          | **$12**         |
-| Items            | `/item`, `/itemadmin`                            | RPGRoll                 | Enchantments, Vault, PlaceholderAPI                                     | **$15**         |
-| Ascension        | `/ascend`, `/ascendadmin`                        | RPGRoll                 | Enchantments, Quests, PlaceholderAPI                                    | **$16**         |
-| Mobs             | `/mobadmin`                                      | RPGRoll                 | Items, Quests, PlaceholderAPI, SackResourcePack                         | **$15**         |
-| Dungeons         | `/dungeon`, `/dungeonadmin`                      | RPGRoll, Mobs, Guilds   | Items, Quests, PlaceholderAPI, WorldEdit                                | **$15**         |
-| Guilds           | `/guild`, `/team`, `/guildadmin`                 | RPGRoll                 | Items, Quests, Vault, PlaceholderAPI                                    | **$12**         |
-| Chat             | `/channel`, `/w`, `/language`, `/chatadmin`, ... | RPGRoll                 | Guilds, PlaceholderAPI                                                  | **$10**         |
-| RPGRoll-FX| `/rpgfx`                                  | RPGRoll                 | —                                                                       | **$6**          |
-| RPGRoll-Effects  | `/rpgeffects`                                    | RPGRoll                 | RPGRoll-FX, Guilds                                                     | **$10**         |
-| RPGRoll-Magic    | `/magic`, `/magicadmin`                          | RPGRoll                 | RPGRoll-FX, RPGRoll-Effects                                            | **$18**         |
-| RPGRoll-Seasons  | `/seasons`, `/seasonsadmin`                      | RPGRoll                 | RPGRoll-FX, RPGRoll-Effects, Mobs                                      | **$14**         |
-| RPGRoll-Fishing  | `/fishing`, `/fishingadmin`                      | RPGRoll                 | RPGRoll-FX, RPGRoll-Effects, Seasons, SackResourcePack                 | **$14**         |
-| RPGRoll-Ranching | `/ranching`, `/ranchingadmin`                    | RPGRoll                 | RPGRoll-FX, RPGRoll-Effects, Seasons, SackResourcePack                 | **$16**         |
-| RPGRoll-Workers  | `/workers`, `/workersadmin`                      | RPGRoll                 | RPGRoll-FX, RPGRoll-Effects, Seasons, Ranching, Fishing, Guilds, Vault, SackResourcePack | **$16**         |
+| `core` (RPGRoll) | `/rpg`                                           | RPGRoll-Lib             | Vault, PlaceholderAPI                                                   | **$20**         |
+| NPCs             | `/npc`                                           | RPGRoll-Lib             | —                                                                       | **$8**          |
+| Crates           | `/crate`                                         | RPGRoll-Lib             | DecentHolograms                                                         | **$6**          |
+| Enchantments     | `/renchant`                                      | RPGRoll-Lib             | PlaceholderAPI                                                          | **$10**         |
+| Quests           | `/quest`, `/questadmin`                          | RPGRoll-Lib             | PlaceholderAPI                                                          | **$12**         |
+| Items            | `/item`, `/itemadmin`                            | RPGRoll-Lib             | Enchantments, Vault, PlaceholderAPI                                     | **$15**         |
+| Ascension        | `/ascend`, `/ascendadmin`                        | RPGRoll-Lib, **RPGRoll** | Enchantments, Quests, PlaceholderAPI                                    | **$16**         |
+| Mobs             | `/mobadmin`                                      | RPGRoll-Lib             | Items, Quests, PlaceholderAPI, SackResourcePack                         | **$15**         |
+| Dungeons         | `/dungeon`, `/dungeonadmin`                      | RPGRoll-Lib, Mobs, Guilds | Items, Quests, PlaceholderAPI, WorldEdit                                | **$15**         |
+| Guilds           | `/guild`, `/team`, `/guildadmin`                 | RPGRoll-Lib             | Items, Quests, Vault, PlaceholderAPI                                    | **$12**         |
+| Chat             | `/channel`, `/w`, `/language`, `/chatadmin`, ... | RPGRoll-Lib             | Guilds, PlaceholderAPI                                                  | **$10**         |
+| RPGRoll-FX       | `/rpgfx`                                         | RPGRoll-Lib             | —                                                                       | **$6**          |
+| RPGRoll-Effects  | `/rpgeffects`                                    | RPGRoll-Lib             | RPGRoll-FX, Guilds                                                     | **$10**         |
+| RPGRoll-Magic    | `/magic`, `/magicadmin`                          | RPGRoll-Lib, **RPGRoll** | RPGRoll-FX, RPGRoll-Effects                                            | **$18**         |
+| RPGRoll-Seasons  | `/seasons`, `/seasonsadmin`                      | RPGRoll-Lib             | RPGRoll-FX, RPGRoll-Effects, Mobs                                      | **$14**         |
+| RPGRoll-Fishing  | `/fishing`, `/fishingadmin`                      | RPGRoll-Lib             | RPGRoll-FX, RPGRoll-Effects, Seasons, SackResourcePack                 | **$14**         |
+| RPGRoll-Ranching | `/ranching`, `/ranchingadmin`                    | RPGRoll-Lib             | RPGRoll-FX, RPGRoll-Effects, Seasons, SackResourcePack                 | **$16**         |
+| RPGRoll-Workers  | `/workers`, `/workersadmin`                      | RPGRoll-Lib             | RPGRoll-FX, RPGRoll-Effects, Seasons, Ranching, Fishing, Guilds, Vault, SackResourcePack | **$16**         |
 | SackResourcePack | `/srp`                                           | _(ninguno, standalone)_ | S3 (subida remota)                                                      | **$12**         |
-| RPGRoll-Economy  | `/economy`, `/economyadmin`                      | RPGRoll                 | Vault, PlaceholderAPI, Guilds, Seasons                                  | **$18**         |
-| RPGRoll-Crafting | `/crafting`, `/craftingadmin`                    | RPGRoll                 | Items, Economy, Guilds, Seasons                                         | **$17**         |
-| RPGRoll-TAB      | `/tabadmin`                                      | RPGRoll                 | ProtocolLib, PlaceholderAPI                                             | **$19**         |
-| RPGRoll-Extras   | `/extrasadmin`                                   | RPGRoll                 | RPGRoll-TAB, RPGRoll-Seasons, PlaceholderAPI, Vault                     | **$13**         |
-| RPGRoll-Traps    | `/trapadmin`                                     | RPGRoll                 | Items, RPGRoll-Effects, Mobs, PlaceholderAPI                            | **$14**         |
+| RPGRoll-Economy  | `/economy`, `/economyadmin`                      | RPGRoll-Lib             | Vault, PlaceholderAPI, Guilds, Seasons                                  | **$18**         |
+| RPGRoll-Crafting | `/crafting`, `/craftingadmin`                    | RPGRoll-Lib             | Items, Economy, Guilds, Seasons                                         | **$17**         |
+| RPGRoll-TAB      | `/tabadmin`                                      | RPGRoll-Lib             | ProtocolLib, PlaceholderAPI                                             | **$19**         |
+| RPGRoll-Extras   | `/extrasadmin`                                   | RPGRoll-Lib             | RPGRoll-TAB, RPGRoll-Seasons, PlaceholderAPI, Vault                     | **$13**         |
+| RPGRoll-Traps    | `/trapadmin`                                     | RPGRoll-Lib             | Items, RPGRoll-Effects, Mobs, PlaceholderAPI                            | **$14**         |
+| RPGRoll-Pass     | `/pase`, `/diario`, `/votar`, `/passadmin`       | RPGRoll-Lib             | Quests, Mobs, Crates, Items, Votifier, Vault                            | _por definir_   |
+
+**Solo Ascension y Magic necesitan el core**: prestigio y hechizos trabajan directamente sobre el
+personaje (nivel, maná, vida, stats de combate). El resto funciona **con o sin** `RPGRoll`: si el core
+está instalado, leen nivel, raza, clase, oficios y maná del personaje (requisitos, recompensas de EXP,
+HUD de equipo...) a través de `RPGRoll-Lib`; si no, esos requisitos no aplican y las recompensas de EXP
+de personaje se omiten, pero el módulo funciona completo. La economía se toma directamente de Vault.
 
 Todos los comandos administrativos, de jugador y con contenido dinámico (razas, ítems, encantamientos, especies, entidades, etc.) tienen **autocompletado real por Tab**.
 
@@ -173,14 +180,14 @@ No hay nada más que configurar: el plugin sabe solo a qué servicio consultar. 
 Si el servicio de licencias no responde, el plugin **no** te bloquea: se apoya en la última validación correcta durante 7 días.
 
 1. Descarga los `.jar` de los módulos que quieras usar.
-2. Coloca **siempre `RPGRoll-Lib`** dentro de `plugins/`: es la librería compartida del ecosistema, gratuita y sin licencia, y la necesitan todos los módulos (excepto `SackResourcePack`, que es standalone). Añade también `RPGRoll` (core) si tus módulos lo piden (ver tabla).
+2. Coloca **siempre `RPGRoll-Lib`** dentro de `plugins/`: es la librería compartida del ecosistema, gratuita y sin licencia, y la necesitan todos los módulos (excepto `SackResourcePack`, que es standalone). Añade también `RPGRoll` (core) si usas Ascension o Magic, o si quieres personajes (nivel, raza, clase, oficios) que el resto de módulos pueda aprovechar.
 3. Agrega los addons que quieras encima, respetando sus dependencias duras (ver tabla de [Ecosistema de módulos](#-ecosistema-de-módulos)) — por ejemplo, `Dungeons` requiere que `Mobs` y `Guilds` ya estén instalados.
 4. Reinicia el servidor.
 
 ```
 plugins/
 ├── RPGRoll-Lib.jar
-├── RPGRoll.jar
+├── RPGRoll.jar          (opcional salvo Ascension/Magic)
 ├── RPGRoll-Items.jar
 ├── RPGRoll-Enchantments.jar
 ├── RPGRoll-Mobs.jar

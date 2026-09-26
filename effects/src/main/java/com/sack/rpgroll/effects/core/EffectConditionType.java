@@ -2,8 +2,8 @@ package com.sack.rpgroll.effects.core;
 
 /**
  * Requisito que se evalúa al intentar aplicar un efecto — si alguno falla,
- * el efecto no se aplica. Todas se resuelven contra {@code RPGRollAPI} (ya
- * una dependencia estable de este módulo) salvo GUILD/TEAM (vía
+ * el efecto no se aplica. Todas se resuelven contra el core vía RPGRoll-Lib (si
+ * no está instalado, no aplican) salvo GUILD/TEAM (vía
  * {@code GuildsAPI}, dependencia blanda). REGION y DUNGEON no están
  * disponibles todavía — Quests y Dungeons no exponen una API pública
  * estable para consultarlas desde otro addon (quedan para una próxima

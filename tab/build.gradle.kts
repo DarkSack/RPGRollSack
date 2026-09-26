@@ -11,7 +11,6 @@ dependencies {
     // rpgroll.addon-conventions ya agrega compileOnly(:api) y compileOnly(:common),
     // pero este addon también usa TabCompleteUtil/ComponentUtils/InventoryGUI, que
     // viven físicamente en :core.
-    compileOnly(project(":core"))
 
     // ProtocolLib: solo para las funciones avanzadas que la API pública de
     // Paper no cubre (layout de grilla custom, nametag distinto por

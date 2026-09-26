@@ -11,7 +11,6 @@ dependencies {
     // rpgroll.addon-conventions ya agrega compileOnly(:api) y compileOnly(:common).
     // Este addon usa RPGRollAPI (jugador, razas, clases, jobs, skills, economía Vault)
     // que vive físicamente en :core.
-    compileOnly(project(":core"))
 
     // VaultAPI es compileOnly en :core (no se propaga transitivamente) — hace falta
     // repetirlo acá porque el tipo Economy se referencia directamente (a través de
@@ -24,5 +23,4 @@ dependencies {
 
     // compileOnly no se propaga al source set de test (:api/:common ya los aporta
     // rpgroll.addon-conventions; :core hace falta declararlo acá).
-    testImplementation(project(":core"))
 }

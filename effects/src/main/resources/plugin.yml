@@ -4,8 +4,8 @@ main: com.sack.rpgroll.effects.EffectsPlugin
 api-version: "26.1.1"
 author: Sack
 description: Motor de efectos de estado (buffs/debuffs/auras/maldiciones/bendiciones) basado en componentes, aplicables desde cualquier addon de RPGRoll
-depend: [RPGRoll-Lib, RPGRoll]
-softdepend: [RPGRoll-FX, RPGRoll-Guilds]
+depend: [RPGRoll-Lib]
+softdepend: [RPGRoll, RPGRoll-FX, RPGRoll-Guilds]
 
 permissions:
   rpgrolleffects.admin.*:

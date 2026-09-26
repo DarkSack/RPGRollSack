@@ -11,7 +11,6 @@ dependencies {
     // rpgroll.addon-conventions ya agrega compileOnly(:api) y compileOnly(:common).
     // :core para RPGRollAPI (jugador, jobs, skills, traits, economía) y el
     // framework de GUIs (InventoryGUI/ItemBuilder) que reutiliza el editor.
-    compileOnly(project(":core"))
 
     // Integración nativa con RPGRoll-Enchantments (aplicar encantamientos
     // custom al crear un ítem) — softdepend en plugin.yml, se chequea en

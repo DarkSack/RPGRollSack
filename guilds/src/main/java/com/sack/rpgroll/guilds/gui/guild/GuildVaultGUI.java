@@ -198,12 +198,10 @@ public class GuildVaultGUI extends InventoryGUI {
 
     private void depositMoney(double amount) {
 
-        if (com.sack.rpgroll.api.RPGRollAPI.isReady()) {
-            var economy = com.sack.rpgroll.api.RPGRollAPI.get().getEconomyProvider();
-            if (economy.isAvailable() && !economy.getEconomy().get().withdrawPlayer(player, amount).transactionSuccess()) {
-                lang().send(player, "guild.vault.not_enough_money");
-                return;
-            }
+        var economy = com.sack.rpgroll.common.integration.VaultEconomy.get();
+        if (economy.isPresent() && !economy.get().withdrawPlayer(player, amount).transactionSuccess()) {
+            lang().send(player, "guild.vault.not_enough_money");
+            return;
         }
 
         guild.vault().deposit(amount, VaultTransaction.of(player.getUniqueId(), player.getName(),
@@ -224,10 +222,8 @@ public class GuildVaultGUI extends InventoryGUI {
             return;
         }
 
-        if (com.sack.rpgroll.api.RPGRollAPI.isReady()) {
-            var economy = com.sack.rpgroll.api.RPGRollAPI.get().getEconomyProvider();
-            economy.getEconomy().ifPresent(eco -> eco.depositPlayer(player, amount));
-        }
+        com.sack.rpgroll.common.integration.VaultEconomy.get()
+                .ifPresent(eco -> eco.depositPlayer(player, amount));
 
         guildManager.save(guild);
         lang().send(player, "guild.vault.withdrew", "amount", amount);

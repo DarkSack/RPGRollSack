@@ -15,4 +15,9 @@ dependencies {
     testImplementation("com.google.code.gson:gson:2.11.0")
 
     compileOnly(project(":sackresourcepack"))
+
+    // VaultEconomy: cualquier módulo cobra por Vault sin pasar por el core.
+    compileOnly("com.github.MilkBowl:VaultAPI:1.7.1") {
+        exclude(group = "org.bukkit", module = "bukkit")
+    }
 }

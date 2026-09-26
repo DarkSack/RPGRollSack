@@ -8,7 +8,7 @@ import com.sack.rpgroll.guilds.team.matchmaking.TeamMatchmakingQueue;
 /**
  * Punto de entrada público para otros addons (ej. RPGRoll-Dungeons, que
  * depende de esta API para el sistema de equipos) — mismo patrón que
- * {@link com.sack.rpgroll.api.RPGRollAPI} en :core.
+ * {@code RPGRollAPI} en :core.
  */
 public final class GuildsAPI {
 

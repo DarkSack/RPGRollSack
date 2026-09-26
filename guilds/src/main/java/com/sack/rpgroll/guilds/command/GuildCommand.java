@@ -2,7 +2,8 @@ package com.sack.rpgroll.guilds.command;
 
 import com.sack.rpgroll.common.command.Senders;
 
-import com.sack.rpgroll.api.RPGRollAPI;
+import com.sack.rpgroll.common.character.Characters;
+import com.sack.rpgroll.common.integration.VaultEconomy;
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.guilds.GuildServices;
 import com.sack.rpgroll.guilds.gui.guild.GuildBrowserGUI;
@@ -126,9 +127,9 @@ public class GuildCommand implements CommandExecutor, TabCompleter {
 
     private boolean checkRequirements(Player player) {
 
-        if (requirements.minLevel() > 0 && RPGRollAPI.isReady()) {
-            int level = RPGRollAPI.get().getPlayer(player.getUniqueId()).map(rpgPlayer -> rpgPlayer.getLevel())
-                    .orElse(0);
+        var characters = Characters.get();
+        if (requirements.minLevel() > 0 && characters.isPresent()) {
+            int level = characters.get().level(player.getUniqueId());
             if (level < requirements.minLevel()) {
                 lang().send(player, "guild.create.requires_level", "level", requirements.minLevel());
                 return false;
@@ -157,11 +158,12 @@ public class GuildCommand implements CommandExecutor, TabCompleter {
 
         if (requirements.moneyCost() > 0) {
 
-            if (!RPGRollAPI.isReady() || !RPGRollAPI.get().getEconomyProvider().isAvailable()) {
+            var found = VaultEconomy.get();
+            if (found.isEmpty()) {
                 return true;
             }
 
-            var economy = RPGRollAPI.get().getEconomyProvider().getEconomy().orElseThrow();
+            var economy = found.get();
 
             if (economy.getBalance(player) < requirements.moneyCost()) {
                 lang().send(player, "guild.create.requires_money", "amount", requirements.moneyCost());

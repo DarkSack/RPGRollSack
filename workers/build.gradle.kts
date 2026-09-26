@@ -11,7 +11,6 @@ dependencies {
     // rpgroll.addon-conventions ya agrega compileOnly(:api) y compileOnly(:common).
     // :core es para RPGRollAPI (nivel del jugador), VaultEconomyProvider (salarios) y el
     // framework de GUIs compartido.
-    compileOnly(project(":core"))
 
     // Tests necesitan las clases reales de :common (RPGContent/EntityReskin) en el classpath.
 

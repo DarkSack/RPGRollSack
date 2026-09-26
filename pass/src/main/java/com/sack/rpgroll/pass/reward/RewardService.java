@@ -1,6 +1,7 @@
 package com.sack.rpgroll.pass.reward;
 
-import com.sack.rpgroll.api.RPGRollAPI;
+import com.sack.rpgroll.common.character.Characters;
+import com.sack.rpgroll.common.integration.VaultEconomy;
 import com.sack.rpgroll.common.lang.LangManager;
 
 import net.kyori.adventure.text.Component;
@@ -84,25 +85,14 @@ public class RewardService {
 
     private void giveMoney(Player player, int amount) {
 
-        if (!RPGRollAPI.isReady() || RPGRollAPI.get().getEconomyProvider() == null) {
-            logger.warning("No hay economía para dar " + amount + " a " + player.getName());
-            return;
-        }
-
-        RPGRollAPI.get().getEconomyProvider().getEconomy().ifPresentOrElse(
+        VaultEconomy.get().ifPresentOrElse(
                 economy -> economy.depositPlayer(player, amount),
                 () -> logger.warning("Vault no tiene economía: " + player.getName() + " se quedó sin " + amount));
     }
 
     private void giveExperience(Player player, int amount) {
 
-        if (!RPGRollAPI.isReady()) {
-            return;
-        }
-
-        RPGRollAPI api = RPGRollAPI.get();
-        api.getPlayer(player.getUniqueId()).ifPresent(rpgPlayer ->
-                api.getPlayerManager().savePlayer(rpgPlayer.addExperience(amount)));
+        Characters.get().ifPresent(characters -> characters.addExperience(player.getUniqueId(), amount));
     }
 
     private void giveMaterial(Player player, Material material, int amount) {

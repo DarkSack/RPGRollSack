@@ -4,8 +4,8 @@ main: com.sack.rpgroll.traps.TrapsPlugin
 api-version: "26.1.1"
 author: Sack
 description: Motor genérico de trampas/mecanismos configurable por YAML para RPGRoll
-depend: [RPGRoll-Lib, RPGRoll]
-softdepend: [RPGRoll-Items, RPGRoll-Effects, RPGRoll-Mobs, RPGRoll-FX, RPGRoll-Guilds, PlaceholderAPI]
+depend: [RPGRoll-Lib]
+softdepend: [RPGRoll, RPGRoll-Items, RPGRoll-Effects, RPGRoll-Mobs, RPGRoll-FX, RPGRoll-Guilds, PlaceholderAPI]
 
 permissions:
   rpgrolltraps.admin.*:

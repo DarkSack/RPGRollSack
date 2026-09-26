@@ -11,7 +11,6 @@ dependencies {
     // rpgroll.addon-conventions ya agrega compileOnly(:api) y compileOnly(:common),
     // pero este addon también usa InventoryGUI/ItemBuilder (framework de GUIs) que
     // vive físicamente en :core.
-    compileOnly(project(":core"))
 
     // DecentHolograms: tiene que ser la misma instancia que corre en el servidor
     // (el holograma real, no una copia embebida) — por eso compileOnly, nunca se

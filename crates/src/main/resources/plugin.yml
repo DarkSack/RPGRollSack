@@ -4,8 +4,8 @@ main: com.sack.rpgroll.crates.CratesPlugin
 api-version: "26.1.1"
 author: Sack
 description: Crates con ruleta e integración con DecentHolograms para RPGRoll
-depend: [RPGRoll-Lib, RPGRoll]
-softdepend: [DecentHolograms]
+depend: [RPGRoll-Lib]
+softdepend: [RPGRoll, DecentHolograms]
 
 permissions:
   rpgrollcrates.admin.*:

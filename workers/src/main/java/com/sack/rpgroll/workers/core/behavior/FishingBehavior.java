@@ -14,7 +14,7 @@ import java.util.Random;
  * El pescador busca agua cercana y "pesca" un pez vanilla genérico
  * mientras está parado en la orilla. Deliberadamente NO usa
  * {@code FishingAPI.forceCatch(...)} — ese método exige un
- * {@code Player} real (lo necesita para chequear nivel/RPGRollAPI en
+ * {@code Player} real (lo necesita para chequear el nivel de personaje en
  * peces legendarios), y un worker no es un jugador. Simularlo con un
  * jugador falso sería fràgil y engañoso, así que este behavior se queda
  * con una captura vanilla simple en vez de la genética/calidad rica de

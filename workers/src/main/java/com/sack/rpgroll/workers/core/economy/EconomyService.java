@@ -1,6 +1,6 @@
 package com.sack.rpgroll.workers.core.economy;
 
-import com.sack.rpgroll.api.RPGRollAPI;
+import com.sack.rpgroll.common.integration.VaultEconomy;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -9,8 +9,8 @@ import java.util.UUID;
 
 /**
  * Cobra el salario de un worker de la cuenta Vault real de su empleador
- * — reusa {@code RPGRollAPI.get().getEconomyProvider()} (ya cableado en
- * :core con EssentialsX/CMI/etc.) en vez de inventar una economía
+ * — reusa la economía de Vault vía RPGRoll-Lib ({@link VaultEconomy},
+ * EssentialsX/CMI/etc.) en vez de inventar una economía
  * propia. El worker en sí no tiene cuenta — "cobrar" es, en la práctica,
  * un costo de mantenimiento que el empleador paga para seguir teniendo
  * el contrato activo.
@@ -24,17 +24,7 @@ public class EconomyService {
             return true;
         }
 
-        if (!RPGRollAPI.isReady()) {
-            return false;
-        }
-
-        var economyProvider = RPGRollAPI.get().getEconomyProvider();
-
-        if (economyProvider == null || !economyProvider.isAvailable()) {
-            return false;
-        }
-
-        return economyProvider.getEconomy().map(economy -> {
+        return VaultEconomy.get().map(economy -> {
 
             OfflinePlayer employer = Bukkit.getOfflinePlayer(employerId);
 

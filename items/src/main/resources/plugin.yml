@@ -4,8 +4,8 @@ main: com.sack.rpgroll.items.ItemsPlugin
 api-version: "26.1.1"
 author: Sack
 description: Motor de ítems personalizados (componentes, stats, sockets, skins, mejoras, recetas) para RPGRoll
-depend: [RPGRoll-Lib, RPGRoll]
-softdepend: [RPGRoll-FX, RPGRoll-Enchantments, Vault, "PlaceholderAPI", SackResourcePack]
+depend: [RPGRoll-Lib]
+softdepend: [RPGRoll, RPGRoll-FX, RPGRoll-Enchantments, Vault, "PlaceholderAPI", SackResourcePack]
 
 permissions:
   rpgrollitems.admin.*:

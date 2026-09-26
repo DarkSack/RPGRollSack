@@ -1,8 +1,8 @@
 package com.sack.rpgroll.crafting.condition;
 
-import com.sack.rpgroll.api.RPGRollAPI;
+import com.sack.rpgroll.common.character.Characters;
 import com.sack.rpgroll.guilds.GuildsAPI;
-import com.sack.rpgroll.player.RPGPlayer;
+import com.sack.rpgroll.common.character.RPGCharacters;
 import com.sack.rpgroll.seasons.api.SeasonsAPI;
 
 import org.bukkit.World;
@@ -64,12 +64,14 @@ public class ConditionEvaluator {
     public boolean evaluateOffline(RecipeCondition condition, UUID playerId, Player onlinePlayer, World fallbackWorld) {
 
         return switch (condition.type()) {
-            case LEVEL_MIN -> rpgPlayer(playerId).map(p -> p.getLevel() >= condition.minValue()).orElse(false);
-            case RACE -> rpgPlayer(playerId).map(p -> condition.value().equals(p.getRace())).orElse(false);
-            case CLASS -> rpgPlayer(playerId).map(p -> condition.value().equals(p.getPlayerClass())).orElse(false);
-            case JOB_MIN -> rpgPlayer(playerId)
-                    .map(p -> p.getJobs().hasJob(condition.value())
-                            && p.getJobs().getLevel(condition.value()) >= condition.minValue())
+            case LEVEL_MIN -> characters(playerId).map(c -> c.level(playerId) >= condition.minValue()).orElse(false);
+            case RACE -> characters(playerId)
+                    .map(c -> condition.value().equals(c.race(playerId).orElse(null))).orElse(false);
+            case CLASS -> characters(playerId)
+                    .map(c -> condition.value().equals(c.playerClass(playerId).orElse(null))).orElse(false);
+            case JOB_MIN -> characters(playerId)
+                    .map(c -> c.hasJob(playerId, condition.value())
+                            && c.jobLevel(playerId, condition.value()) >= condition.minValue())
                     .orElse(false);
             case PERMISSION -> onlinePlayer != null && onlinePlayer.hasPermission(condition.value());
             case WORLD -> fallbackWorld != null && fallbackWorld.getName().equalsIgnoreCase(condition.value());
@@ -81,13 +83,13 @@ public class ConditionEvaluator {
         };
     }
 
-    private Optional<RPGPlayer> rpgPlayer(UUID playerId) {
+    private Optional<RPGCharacters> characters(UUID playerId) {
 
-        if (playerId == null || !RPGRollAPI.isReady()) {
+        if (playerId == null) {
             return Optional.empty();
         }
 
-        return RPGRollAPI.get().getPlayer(playerId);
+        return Characters.get();
     }
 
     private boolean evaluateHourRange(World world, String range) {

@@ -1,6 +1,6 @@
 package com.sack.rpgroll.fishing.engine;
 
-import com.sack.rpgroll.api.RPGRollAPI;
+import com.sack.rpgroll.common.character.Characters;
 import com.sack.rpgroll.fishing.core.Bait;
 import com.sack.rpgroll.fishing.core.CatchQuality;
 import com.sack.rpgroll.fishing.core.FishRarity;
@@ -114,12 +114,9 @@ public class FishingCatchEngine {
 
         if (species.legendary()) {
 
-            if (RPGRollAPI.isReady()) {
-                int level = RPGRollAPI.get().getPlayer(player.getUniqueId()).map(rp -> rp.getLevel()).orElse(0);
-                if (level < species.requiredLevel()) {
-                    return false;
-                }
-            } else if (species.requiredLevel() > 0) {
+            // Sin el core no hay niveles de personaje: el requisito se ignora.
+            var characters = Characters.get();
+            if (characters.isPresent() && characters.get().level(player.getUniqueId()) < species.requiredLevel()) {
                 return false;
             }
 
@@ -201,10 +198,7 @@ public class FishingCatchEngine {
             score += bait.qualityBonus() * 10;
         }
 
-        if (RPGRollAPI.isReady()) {
-            int level = RPGRollAPI.get().getPlayer(player.getUniqueId()).map(rp -> rp.getLevel()).orElse(0);
-            score += level * 0.5;
-        }
+        score += Characters.get().map(c -> c.level(player.getUniqueId())).orElse(0) * 0.5;
 
         if (score >= 95) {
             return CatchQuality.MASTERWORK;

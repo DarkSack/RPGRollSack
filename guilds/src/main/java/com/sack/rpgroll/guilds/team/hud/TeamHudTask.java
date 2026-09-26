@@ -1,6 +1,6 @@
 package com.sack.rpgroll.guilds.team.hud;
 
-import com.sack.rpgroll.api.RPGRollAPI;
+import com.sack.rpgroll.common.character.Characters;
 import com.sack.rpgroll.guilds.GuildsAPI;
 import com.sack.rpgroll.guilds.team.Team;
 import com.sack.rpgroll.guilds.team.TeamManager;
@@ -90,15 +90,12 @@ public class TeamHudTask implements Runnable {
             text.append("❤").append((int) Math.ceil(member.getHealth())).append('/')
                     .append((int) member.getMaxHealth());
 
-            if (RPGRollAPI.isReady()) {
-                RPGRollAPI.get().getPlayer(member.getUniqueId()).ifPresent(rpgPlayer -> {
-                    var combat = rpgPlayer.getCombatStats();
-                    text.append(" ✦").append(combat.currentMana()).append('/').append(combat.maxMana());
-                    if (rpgPlayer.getPlayerClass() != null) {
-                        text.append(' ').append('(').append(rpgPlayer.getPlayerClass()).append(')');
-                    }
-                });
-            }
+            Characters.get().filter(c -> c.hasCharacter(member.getUniqueId())).ifPresent(c -> {
+                java.util.UUID id = member.getUniqueId();
+                text.append(" ✦").append(c.mana(id)).append('/').append(c.maxMana(id));
+                c.playerClass(id).ifPresent(playerClass ->
+                        text.append(' ').append('(').append(playerClass).append(')'));
+            });
 
             if (viewer.getWorld().equals(member.getWorld())) {
                 text.append(' ').append((int) viewer.getLocation().distance(member.getLocation())).append('m');

@@ -118,11 +118,14 @@ public class QuestConditionEvaluator {
         String normalized = path.toLowerCase(Locale.ROOT);
 
         Object builtin = switch (normalized) {
-            case "player.level" -> context.rpgPlayer() != null ? (double) context.rpgPlayer().getLevel() : null;
+            case "player.level" -> context.characters() != null
+                    ? (double) context.characters().level(context.player().getUniqueId()) : null;
             case "player.health" -> player.getHealth();
             case "player.foodlevel" -> (double) player.getFoodLevel();
-            case "race" -> context.rpgPlayer() != null ? context.rpgPlayer().getRace() : null;
-            case "class" -> context.rpgPlayer() != null ? context.rpgPlayer().getPlayerClass() : null;
+            case "race" -> context.characters() != null
+                    ? context.characters().race(context.player().getUniqueId()).orElse(null) : null;
+            case "class" -> context.characters() != null
+                    ? context.characters().playerClass(context.player().getUniqueId()).orElse(null) : null;
             case "world" -> player.getWorld().getName();
             case "weather" -> resolveWeather(player.getWorld());
             default -> null;

@@ -1,45 +1,53 @@
 package com.sack.rpgroll.extras.modifier;
 
-import com.sack.rpgroll.RPGRoll;
-import com.sack.rpgroll.player.PlayerManager;
-import com.sack.rpgroll.player.RPGPlayer;
+import com.sack.rpgroll.common.character.Characters;
+import com.sack.rpgroll.common.character.RPGCharacters;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.Locale;
 import java.util.Optional;
+import java.util.UUID;
+import java.util.function.Supplier;
 
 /**
  * Resuelve el modificador combinado de un jugador para una clave dada,
- * leyendo su raza/clase/jobs ACTUALES vía la API pública de RPGRoll-Core
- * (sección 18) — Core nunca se entera de que Extras existe.
+ * leyendo su raza/clase/jobs ACTUALES a través de RPGRoll-Lib (sección 18):
+ * Core nunca se entera de que Extras existe, y sin Core los modificadores
+ * de raza/clase/job simplemente no aplican.
  */
 public class ModifierResolver {
 
     private final ModifierManager modifierManager;
+    private final Supplier<Optional<RPGCharacters>> characters;
 
     public ModifierResolver(ModifierManager modifierManager) {
+        this(modifierManager, Characters::get);
+    }
+
+    ModifierResolver(ModifierManager modifierManager, Supplier<Optional<RPGCharacters>> characters) {
         this.modifierManager = modifierManager;
+        this.characters = characters;
     }
 
     /** Suma aditiva de todos los modificadores (raza + clase + todos los jobs activos) para esa clave. */
     public double sum(Player player, String key) {
 
-        Optional<RPGPlayer> rpgPlayer = resolveRpgPlayer(player);
+        Optional<RPGCharacters> core = characters.get();
 
-        if (rpgPlayer.isEmpty()) {
+        if (core.isEmpty()) {
             return 0;
         }
 
-        RPGPlayer rp = rpgPlayer.get();
+        RPGCharacters rp = core.get();
+        UUID uuid = player.getUniqueId();
         String normalizedKey = key.toLowerCase(Locale.ROOT);
         double total = 0;
 
-        total += valueFrom(rp.getRace(), ModifierSourceType.RACE, normalizedKey);
-        total += valueFrom(rp.getPlayerClass(), ModifierSourceType.CLASS, normalizedKey);
+        total += valueFrom(rp.race(uuid).orElse(null), ModifierSourceType.RACE, normalizedKey);
+        total += valueFrom(rp.playerClass(uuid).orElse(null), ModifierSourceType.CLASS, normalizedKey);
 
-        for (String jobId : rp.getJobs().getActiveJobIds()) {
+        for (String jobId : rp.activeJobs(uuid)) {
             total += valueFrom(jobId, ModifierSourceType.JOB, normalizedKey);
         }
 
@@ -61,23 +69,6 @@ public class ModifierResolver {
                 .filter(set -> set.type() == expectedType)
                 .map(set -> set.values().getOrDefault(key, 0.0))
                 .orElse(0.0);
-    }
-
-    private Optional<RPGPlayer> resolveRpgPlayer(Player player) {
-
-        var corePlugin = Bukkit.getPluginManager().getPlugin("RPGRoll");
-
-        if (!(corePlugin instanceof RPGRoll rpgRoll)) {
-            return Optional.empty();
-        }
-
-        PlayerManager playerManager = rpgRoll.getBootstrap().getServices().get(PlayerManager.class);
-
-        if (playerManager == null) {
-            return Optional.empty();
-        }
-
-        return playerManager.getPlayer(player.getUniqueId());
     }
 
 }

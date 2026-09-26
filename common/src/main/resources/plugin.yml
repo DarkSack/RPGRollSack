@@ -4,4 +4,4 @@ main: com.sack.rpgroll.common.RPGRollLib
 api-version: "26.1.1"
 author: Sack
 description: Librería compartida del ecosistema RPGRoll (idiomas, contenido YAML, comandos, menús). Gratuita; la necesitan todos los plugins de RPGRoll.
-softdepend: [SackResourcePack]
+softdepend: [SackResourcePack, Vault]

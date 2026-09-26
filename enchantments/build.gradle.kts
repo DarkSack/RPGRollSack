@@ -12,7 +12,6 @@ base.archivesName.set("RPGRoll-Enchantments")
 // el editor visual de encantamientos — el resto del addon sigue siendo
 // autocontenido (usa PersistentDataContainer directamente para taggear ítems).
 dependencies {
-    compileOnly(project(":core"))
     compileOnly("me.clip:placeholderapi:2.11.5")
 
     // rpgroll.addon-conventions declara :api y :common como compileOnly, lo

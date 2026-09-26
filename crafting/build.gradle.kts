@@ -10,7 +10,6 @@ base.archivesName.set("RPGRoll-Crafting")
 dependencies {
     // rpgroll.addon-conventions ya agrega compileOnly(:api) y compileOnly(:common).
     // :core para RPGRollAPI (jugador, jobs, skills) y el framework de GUIs (InventoryGUI/ItemBuilder/TabCompleteUtil).
-    compileOnly(project(":core"))
 
     // Integraciones blandas opcionales (softdepend en plugin.yml):
     // :items para reconocer ítems personalizados de RPGRoll-Items como ingrediente/resultado (vía PDC).

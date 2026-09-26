@@ -1,7 +1,7 @@
 package com.sack.rpgroll.quests.listener;
 
 import org.bukkit.event.EventPriority;
-import com.sack.rpgroll.api.RPGRollAPI;
+import com.sack.rpgroll.common.character.Characters;
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.quests.api.NpcTalkEvent;
 import com.sack.rpgroll.quests.core.Quest;
@@ -80,7 +80,7 @@ public class QuestObjectiveListener implements Listener {
             return;
         }
 
-        if (RPGRollAPI.isReady() && RPGRollAPI.get().getPlacedBlockTracker().isPlayerPlaced(event.getBlock())) {
+        if (Characters.get().map(c -> c.isPlayerPlaced(event.getBlock())).orElse(false)) {
             return;
         }
 

@@ -107,6 +107,7 @@ val collectRelease by tasks.registering(Copy::class) {
                 appendLine()
                 appendLine("Instalación: copiá RPGRoll-Lib-<version>.jar (la librería, gratuita y")
                 appendLine("obligatoria) y los módulos que necesites a plugins/ del servidor Paper.")
+                appendLine("El core (RPGRoll) solo es obligatorio para Ascension y Magic.")
             },
         )
     }

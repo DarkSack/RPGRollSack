@@ -1,8 +1,9 @@
 package com.sack.rpgroll.quests.requirement;
 
-import com.sack.rpgroll.api.RPGRollAPI;
 import com.sack.rpgroll.common.lang.LangManager;
-import com.sack.rpgroll.player.RPGPlayer;
+import com.sack.rpgroll.common.character.Characters;
+import com.sack.rpgroll.common.character.RPGCharacters;
+import com.sack.rpgroll.common.integration.VaultEconomy;
 import com.sack.rpgroll.quests.core.ItemRequirement;
 import com.sack.rpgroll.quests.core.QuestRequirements;
 import com.sack.rpgroll.quests.player.QuestPlayerState;
@@ -13,12 +14,17 @@ import org.bukkit.inventory.PlayerInventory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Valida los {@link QuestRequirements} de una quest contra el estado actual
  * de un jugador. Devuelve la lista de motivos de rechazo (vacía = puede
  * iniciarla) en vez de un simple boolean, para poder mostrarle al jugador
  * exactamente qué le falta.
+ * <p>
+ * Los requisitos de personaje (nivel, raza, clase, oficio, rasgo) solo se
+ * comprueban con el core de RPGRoll instalado; sin él no hay personajes y se
+ * dan por cumplidos, para que las quests funcionen igual en un servidor sin core.
  */
 public class QuestRequirementChecker {
 
@@ -34,14 +40,16 @@ public class QuestRequirementChecker {
 
         List<String> reasons = new ArrayList<>();
 
-        RPGPlayer rpgPlayer = RPGRollAPI.isReady() ? RPGRollAPI.get().getPlayer(player.getUniqueId()).orElse(null)
-                : null;
+        RPGCharacters characters = Characters.get().orElse(null);
+        UUID uuid = player.getUniqueId();
 
-        checkLevel(req, rpgPlayer, reasons);
-        checkRace(req, rpgPlayer, reasons);
-        checkClass(req, rpgPlayer, reasons);
-        checkProfession(req, rpgPlayer, reasons);
-        checkTrait(req, rpgPlayer, reasons);
+        if (characters != null) {
+            checkLevel(req, characters, uuid, reasons);
+            checkRace(req, characters, uuid, reasons);
+            checkClass(req, characters, uuid, reasons);
+            checkProfession(req, characters, uuid, reasons);
+            checkTrait(req, characters, uuid, reasons);
+        }
         checkPermission(req, player, reasons);
         checkMoney(req, player, reasons);
         checkItems(req, player, reasons);
@@ -55,65 +63,65 @@ public class QuestRequirementChecker {
         return reasons;
     }
 
-    private void checkLevel(QuestRequirements req, RPGPlayer rpgPlayer, List<String> reasons) {
+    private void checkLevel(QuestRequirements req, RPGCharacters characters, UUID uuid, List<String> reasons) {
 
         if (req.level() <= 0) {
             return;
         }
 
-        int level = rpgPlayer != null ? rpgPlayer.getLevel() : 0;
+        int level = characters.level(uuid);
 
         if (level < req.level()) {
             reasons.add(lang.raw("requirement.level", "required", req.level(), "current", level));
         }
     }
 
-    private void checkRace(QuestRequirements req, RPGPlayer rpgPlayer, List<String> reasons) {
+    private void checkRace(QuestRequirements req, RPGCharacters characters, UUID uuid, List<String> reasons) {
 
         if (req.race() == null || req.race().isBlank()) {
             return;
         }
 
-        String race = rpgPlayer != null ? rpgPlayer.getRace() : null;
+        String race = characters.race(uuid).orElse(null);
 
         if (race == null || !race.equalsIgnoreCase(req.race())) {
             reasons.add(lang.raw("requirement.race", "race", req.race()));
         }
     }
 
-    private void checkClass(QuestRequirements req, RPGPlayer rpgPlayer, List<String> reasons) {
+    private void checkClass(QuestRequirements req, RPGCharacters characters, UUID uuid, List<String> reasons) {
 
         if (req.playerClass() == null || req.playerClass().isBlank()) {
             return;
         }
 
-        String playerClass = rpgPlayer != null ? rpgPlayer.getPlayerClass() : null;
+        String playerClass = characters.playerClass(uuid).orElse(null);
 
         if (playerClass == null || !playerClass.equalsIgnoreCase(req.playerClass())) {
             reasons.add(lang.raw("requirement.class", "class", req.playerClass()));
         }
     }
 
-    private void checkProfession(QuestRequirements req, RPGPlayer rpgPlayer, List<String> reasons) {
+    private void checkProfession(QuestRequirements req, RPGCharacters characters, UUID uuid, List<String> reasons) {
 
         if (req.profession() == null || req.profession().isBlank()) {
             return;
         }
 
-        boolean hasJob = rpgPlayer != null && rpgPlayer.getJobs().hasJob(req.profession());
+        boolean hasJob = characters.hasJob(uuid, req.profession());
 
         if (!hasJob) {
             reasons.add(lang.raw("requirement.profession", "profession", req.profession()));
         }
     }
 
-    private void checkTrait(QuestRequirements req, RPGPlayer rpgPlayer, List<String> reasons) {
+    private void checkTrait(QuestRequirements req, RPGCharacters characters, UUID uuid, List<String> reasons) {
 
         if (req.trait() == null || req.trait().isBlank()) {
             return;
         }
 
-        boolean hasTrait = rpgPlayer != null && rpgPlayer.getTraits().hasTrait(req.trait());
+        boolean hasTrait = characters.hasTrait(uuid, req.trait());
 
         if (!hasTrait) {
             reasons.add(lang.raw("requirement.trait", "trait", req.trait()));
@@ -133,17 +141,11 @@ public class QuestRequirementChecker {
 
     private void checkMoney(QuestRequirements req, Player player, List<String> reasons) {
 
-        if (req.money() <= 0 || !RPGRollAPI.isReady()) {
+        if (req.money() <= 0 || !VaultEconomy.isAvailable()) {
             return;
         }
 
-        var economy = RPGRollAPI.get().getEconomyProvider();
-
-        if (!economy.isAvailable()) {
-            return;
-        }
-
-        double balance = economy.getEconomy().map(eco -> eco.getBalance(player)).orElse(0.0);
+        double balance = VaultEconomy.get().map(eco -> eco.getBalance(player)).orElse(0.0);
 
         if (balance < req.money()) {
             reasons.add(lang.raw("requirement.money", "amount", req.money()));

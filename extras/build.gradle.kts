@@ -11,7 +11,6 @@ dependencies {
     // rpgroll.addon-conventions ya agrega compileOnly(:api) y compileOnly(:common),
     // pero este addon también usa TabCompleteUtil/ComponentUtils, que viven
     // físicamente en :core.
-    compileOnly(project(":core"))
 
     // PlaceholderAPI: puente opcional para exponer stats/conditions como
     // placeholders vía expansión propia.
@@ -25,5 +24,4 @@ dependencies {
 
     // compileOnly no se propaga al source set de test (:api/:common ya los aporta
     // rpgroll.addon-conventions; :core hace falta declararlo acá).
-    testImplementation(project(":core"))
 }

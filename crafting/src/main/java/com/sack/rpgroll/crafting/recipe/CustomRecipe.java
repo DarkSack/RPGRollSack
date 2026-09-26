@@ -17,7 +17,7 @@ import java.util.Objects;
  * @param stationId          id de la {@code CustomStation} donde se procesa esta receta
  * @param processingTimeTicks cuánto tarda una vez iniciada
  * @param fuelPerCraft        unidades de combustible consumidas por crafteo completo (0 = no requiere)
- * @param xpAmount            xp de personaje (RPGPlayer, vía RPGRollAPI) otorgada al completar (0 = ninguna)
+ * @param xpAmount            xp de personaje (del core, vía RPGRoll-Lib) otorgada al completar (0 = ninguna)
  * @param economyCurrencyId   id de moneda de RPGRoll-Economy a cobrar (null = usa la moneda base)
  * @param economyCost         costo monetario al iniciar el crafteo (0 = gratis)
  * @param failChance          probabilidad de fallo (0.0-1.0); negativo = usar default de config.yml

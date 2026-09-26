@@ -1,6 +1,6 @@
 package com.sack.rpgroll.chat.language;
 
-import com.sack.rpgroll.api.RPGRollAPI;
+import com.sack.rpgroll.common.character.Characters;
 
 import org.bukkit.entity.Player;
 
@@ -21,7 +21,7 @@ public class LanguageService {
         this.stateManager = stateManager;
     }
 
-    /** Al primer contacto, siembra los idiomas por defecto de la raza del jugador (si RPGRollAPI está lista). */
+    /** Al primer contacto, siembra los idiomas por defecto de la raza del jugador (si el core de RPGRoll está instalado). */
     public PlayerLanguageState resolve(Player player) {
 
         PlayerLanguageState state = stateManager.getOrLoad(player);
@@ -30,9 +30,7 @@ public class LanguageService {
             return state;
         }
 
-        String raceId = RPGRollAPI.isReady()
-                ? RPGRollAPI.get().getPlayer(player.getUniqueId()).map(p -> p.getRace()).orElse(null)
-                : null;
+        String raceId = Characters.get().flatMap(c -> c.race(player.getUniqueId())).orElse(null);
 
         languageManager.defaultLanguagesForRace(raceId).forEach(language -> state.learn(language.id()));
 

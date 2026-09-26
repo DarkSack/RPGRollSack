@@ -12,7 +12,6 @@ dependencies {
     // rpgroll.addon-conventions ya agrega compileOnly(:api) y compileOnly(:common),
     // pero este addon también usa InventoryGUI/ItemBuilder (framework de GUIs) y
     // RPGPlayer/RPGRollAPI, que viven físicamente en :core.
-    compileOnly(project(":core"))
 
     // RPGRoll-Quests es opcional (softdepend): solo se toca su NpcTalkEvent
     // desde QuestsIntegration, y solo si el plugin está habilitado.

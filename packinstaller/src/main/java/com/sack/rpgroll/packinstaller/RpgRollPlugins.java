@@ -32,7 +32,7 @@ final class RpgRollPlugins {
     }
 
     /**
-     * Los 24 productos. Si se añade un módulo al ecosistema, va acá.
+     * Los 25 productos más la librería. Si se añade un módulo al ecosistema, va acá.
      *
      * <p>Es una lista escrita a mano y no hay forma de que el compilador avise
      * si se queda atrás; el precio de equivocarse es una advertencia de más,
@@ -40,6 +40,7 @@ final class RpgRollPlugins {
      */
     private static final Set<String> CONOCIDOS = Set.of(
             "RPGRoll",
+            "RPGRoll-Lib",
             "RPGRoll-Ascension",
             "RPGRoll-Chat",
             "RPGRoll-Crafting",
@@ -56,6 +57,7 @@ final class RpgRollPlugins {
             "RPGRoll-Magic",
             "RPGRoll-Mobs",
             "RPGRoll-NPCs",
+            "RPGRoll-Pass",
             "RPGRoll-Quests",
             "RPGRoll-Ranching",
             "RPGRoll-Seasons",

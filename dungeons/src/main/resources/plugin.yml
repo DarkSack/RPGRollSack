@@ -4,8 +4,8 @@ main: com.sack.rpgroll.dungeons.DungeonsPlugin
 api-version: "26.1.1"
 author: Sack
 description: Motor de mazmorras instanciadas (salas, oleadas, jefes, objetivos, loot, dificultades, ranking) para RPGRoll
-depend: [RPGRoll-Lib, RPGRoll, RPGRoll-Mobs, RPGRoll-Guilds]
-softdepend: [RPGRoll-Items, RPGRoll-Quests, PlaceholderAPI, WorldEdit]
+depend: [RPGRoll-Lib, RPGRoll-Mobs, RPGRoll-Guilds]
+softdepend: [RPGRoll, Vault, RPGRoll-Items, RPGRoll-Quests, PlaceholderAPI, WorldEdit]
 
 permissions:
   rpgrolldungeons.admin.*:

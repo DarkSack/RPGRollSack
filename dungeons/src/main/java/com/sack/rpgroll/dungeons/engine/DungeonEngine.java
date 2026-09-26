@@ -1,6 +1,6 @@
 package com.sack.rpgroll.dungeons.engine;
 
-import com.sack.rpgroll.api.RPGRollAPI;
+import com.sack.rpgroll.common.integration.VaultEconomy;
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.dungeons.core.DungeonAction;
 import com.sack.rpgroll.dungeons.core.DungeonDefinition;
@@ -647,12 +647,7 @@ public class DungeonEngine {
 
     private void giveMoney(Player player, double amount) {
 
-        if (!RPGRollAPI.isReady()) {
-            return;
-        }
-
-        RPGRollAPI.get().getEconomyProvider().getEconomy()
-                .ifPresent(economy -> economy.depositPlayer(player, amount));
+        VaultEconomy.get().ifPresent(economy -> economy.depositPlayer(player, amount));
     }
 
     // ============ Triggers ============

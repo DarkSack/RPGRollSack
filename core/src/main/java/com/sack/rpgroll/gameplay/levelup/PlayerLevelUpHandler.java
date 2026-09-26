@@ -90,6 +90,10 @@ public class PlayerLevelUpHandler {
         Bukkit.getPluginManager().callEvent(
                 new com.sack.rpgroll.api.event.PlayerLevelUpEvent(player, leveledUpPlayer, currentLevel,
                         currentLevel + 1));
+        // Y el de RPGRoll-Lib, para los módulos que no compilan contra el core.
+        Bukkit.getPluginManager().callEvent(
+                new com.sack.rpgroll.common.character.CharacterLevelUpEvent(player, currentLevel,
+                        currentLevel + 1));
 
         // Enviar mensajes
         sendLevelUpMessage(player, currentLevel + 1, rewards);

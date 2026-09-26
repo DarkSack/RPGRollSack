@@ -4,8 +4,8 @@ main: com.sack.rpgroll.extras.ExtrasPlugin
 api-version: "26.1.1"
 author: Sack
 description: Necesidades y estados de supervivencia configurables (sed, stamina, fatiga, temperatura, oxígeno, estrés, condiciones custom) para RPGRoll
-depend: [RPGRoll-Lib, RPGRoll]
-softdepend: [RPGRoll-TAB, RPGRoll-Seasons, PlaceholderAPI, Vault]
+depend: [RPGRoll-Lib]
+softdepend: [RPGRoll, RPGRoll-TAB, RPGRoll-Seasons, PlaceholderAPI, Vault]
 
 permissions:
   rpgrollextras.admin.*:

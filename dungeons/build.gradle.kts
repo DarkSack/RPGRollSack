@@ -11,7 +11,6 @@ dependencies {
     // rpgroll.addon-conventions ya agrega compileOnly(:api) y compileOnly(:common).
     // :core para RPGRollAPI (jugador, jobs, skills, economía) y el framework de
     // GUIs (InventoryGUI/ItemBuilder) que reutiliza el Dungeon Studio.
-    compileOnly(project(":core"))
 
     // Los jefes de una dungeon SON mobs de RPGRoll-Mobs — integración dura (no
     // softdepend): sin este addon instalado, Dungeons no tiene forma de spawnear

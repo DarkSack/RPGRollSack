@@ -2,9 +2,9 @@ package com.sack.rpgroll.quests.engine;
 
 import com.sack.rpgroll.util.ComponentUtils;
 
-import com.sack.rpgroll.api.RPGRollAPI;
+import com.sack.rpgroll.common.character.Characters;
+import com.sack.rpgroll.common.integration.VaultEconomy;
 import com.sack.rpgroll.common.lang.LangManager;
-import com.sack.rpgroll.player.RPGPlayer;
 import com.sack.rpgroll.quests.condition.QuestConditionContext;
 import com.sack.rpgroll.quests.condition.QuestConditionEvaluator;
 import com.sack.rpgroll.quests.core.Dialog;
@@ -293,10 +293,8 @@ public class QuestEngine {
             }
         }
 
-        RPGPlayer rpgPlayer = RPGRollAPI.isReady() ? RPGRollAPI.get().getPlayer(player.getUniqueId()).orElse(null)
-                : null;
-
-        if (!conditionEvaluator.evaluateAll(stage.conditions(), new QuestConditionContext(player, rpgPlayer))) {
+        QuestConditionContext context = new QuestConditionContext(player, Characters.get().orElse(null));
+        if (!conditionEvaluator.evaluateAll(stage.conditions(), context)) {
             return;
         }
 
@@ -398,19 +396,13 @@ public class QuestEngine {
 
         var rewards = quest.rewards();
 
-        if (rewards.money() > 0 && RPGRollAPI.isReady()) {
-            RPGRollAPI.get().getEconomyProvider().getEconomy()
-                    .ifPresent(economy -> economy.depositPlayer(player, rewards.money()));
+        if (rewards.money() > 0) {
+            VaultEconomy.get().ifPresent(economy -> economy.depositPlayer(player, rewards.money()));
         }
 
-        if (rewards.experience() > 0 && RPGRollAPI.isReady()) {
-
-            RPGRollAPI api = RPGRollAPI.get();
-            api.getPlayer(player.getUniqueId()).ifPresent(rpgPlayer -> {
-                int experience = api.getExperienceBonusService().boost(player, rewards.experience());
-                RPGPlayer updated = rpgPlayer.addExperience(experience);
-                api.getPlayerManager().savePlayer(updated);
-            });
+        if (rewards.experience() > 0) {
+            Characters.get().ifPresent(characters -> characters.addExperience(player.getUniqueId(),
+                    characters.boostExperience(player, rewards.experience())));
         }
 
         for (ItemRequirement item : rewards.items()) {

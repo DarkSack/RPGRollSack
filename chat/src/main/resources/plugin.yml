@@ -4,8 +4,8 @@ main: com.sack.rpgroll.chat.ChatPlugin
 api-version: "26.1.1"
 author: Sack
 description: Motor de chat modular de RPGRoll — canales, proximidad, idiomas, roles, formatos dinámicos, whisper, antispam, reacciones y logs
-depend: [RPGRoll-Lib, RPGRoll]
-softdepend: [RPGRoll-Guilds, PlaceholderAPI]
+depend: [RPGRoll-Lib]
+softdepend: [RPGRoll, RPGRoll-Guilds, PlaceholderAPI]
 
 permissions:
   rpgrollchat.admin.*:

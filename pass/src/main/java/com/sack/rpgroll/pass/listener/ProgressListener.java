@@ -1,7 +1,7 @@
 package com.sack.rpgroll.pass.listener;
 
-import com.sack.rpgroll.api.RPGRollAPI;
-import com.sack.rpgroll.gameplay.event.LevelUpEvent;
+import com.sack.rpgroll.common.character.CharacterLevelUpEvent;
+import com.sack.rpgroll.common.character.Characters;
 import com.sack.rpgroll.pass.mission.MissionService;
 import com.sack.rpgroll.pass.mission.MissionType;
 
@@ -36,7 +36,7 @@ public class ProgressListener implements Listener {
     public void onBreak(BlockBreakEvent event) {
 
         // Los bloques que puso un jugador no cuentan: si no, basta con poner y quitar.
-        if (RPGRollAPI.isReady() && RPGRollAPI.get().getPlacedBlockTracker().isPlayerPlaced(event.getBlock())) {
+        if (Characters.get().map(c -> c.isPlayerPlaced(event.getBlock())).orElse(false)) {
             return;
         }
 
@@ -52,7 +52,7 @@ public class ProgressListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
-    public void onLevelUp(LevelUpEvent event) {
+    public void onLevelUp(CharacterLevelUpEvent event) {
         missions.progress(event.getPlayer(), MissionType.LEVEL_UP, "", 1);
     }
 

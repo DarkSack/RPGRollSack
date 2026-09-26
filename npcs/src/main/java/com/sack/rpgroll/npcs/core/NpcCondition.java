@@ -1,7 +1,6 @@
 package com.sack.rpgroll.npcs.core;
 
-import com.sack.rpgroll.api.RPGRollAPI;
-import com.sack.rpgroll.player.RPGPlayer;
+import com.sack.rpgroll.common.character.Characters;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -77,8 +76,8 @@ public class NpcCondition {
     }
 
     private static boolean hasJob(Player player, String jobId) {
-        return getRpgPlayer(player)
-                .map(rpg -> rpg.getJobs().hasJob(jobId))
+        return characters()
+                .map(c -> c.hasJob(player.getUniqueId(), jobId))
                 .orElse(false);
     }
 
@@ -98,8 +97,8 @@ public class NpcCondition {
             return false;
         }
 
-        return getRpgPlayer(player)
-                .map(rpg -> rpg.getJobs().getLevel(jobId) >= required)
+        return characters()
+                .map(c -> c.jobLevel(player.getUniqueId(), jobId) >= required)
                 .orElse(false);
     }
 
@@ -113,20 +112,20 @@ public class NpcCondition {
             return false;
         }
 
-        return getRpgPlayer(player)
-                .map(rpg -> rpg.getLevel() >= required)
+        return characters()
+                .map(c -> c.level(player.getUniqueId()) >= required)
                 .orElse(false);
     }
 
     private static boolean hasRace(Player player, String raceId) {
-        return getRpgPlayer(player)
-                .map(rpg -> raceId.equalsIgnoreCase(rpg.getRace()))
+        return characters()
+                .map(c -> raceId.equalsIgnoreCase(c.race(player.getUniqueId()).orElse(null)))
                 .orElse(false);
     }
 
     private static boolean hasClass(Player player, String classId) {
-        return getRpgPlayer(player)
-                .map(rpg -> classId.equalsIgnoreCase(rpg.getPlayerClass()))
+        return characters()
+                .map(c -> classId.equalsIgnoreCase(c.playerClass(player.getUniqueId()).orElse(null)))
                 .orElse(false);
     }
 
@@ -167,8 +166,9 @@ public class NpcCondition {
         return total >= requiredAmount;
     }
 
-    private static Optional<RPGPlayer> getRpgPlayer(Player player) {
-        return RPGRollAPI.get().getPlayer(player.getUniqueId());
+    /** Sin el core no hay personajes: las condiciones de nivel, raza, clase y oficio no se cumplen. */
+    private static Optional<com.sack.rpgroll.common.character.RPGCharacters> characters() {
+        return Characters.get();
     }
 
 }

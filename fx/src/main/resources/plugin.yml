@@ -4,7 +4,8 @@ main: com.sack.rpgroll.fx.RPGRollFXPlugin
 api-version: "26.1.1"
 author: Sack
 description: Librería de efectos (partículas con formas, sonidos, títulos/actionbar/bossbar, efectos de poción) reusable por cualquier plugin, similar en espíritu a SCore
-depend: [RPGRoll-Lib, RPGRoll]
+depend: [RPGRoll-Lib]
+softdepend: [RPGRoll]
 
 permissions:
   rpgrollfx.admin.*:

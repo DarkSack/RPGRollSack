@@ -10,7 +10,6 @@ base.archivesName.set("RPGRoll-Ranching")
 dependencies {
     // rpgroll.addon-conventions ya agrega compileOnly(:api) y compileOnly(:common).
     // :core es para RPGRollAPI (nivel del jugador) y el framework de GUIs compartido.
-    compileOnly(project(":core"))
 
     // Tests necesitan las clases reales de :common (RPGContent) en el classpath.
 

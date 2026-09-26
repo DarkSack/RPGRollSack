@@ -10,7 +10,6 @@ base.archivesName.set("RPGRoll-Seasons")
 dependencies {
     // rpgroll.addon-conventions ya agrega compileOnly(:api) y compileOnly(:common).
     // :core es para el framework de GUIs compartido (InventoryGUI/ItemBuilder).
-    compileOnly(project(":core"))
 
     // Tests necesitan las clases reales de :common (RPGContent/ContentManager) en el classpath.
 

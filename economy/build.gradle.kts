@@ -10,7 +10,6 @@ base.archivesName.set("RPGRoll-Economy")
 dependencies {
     // rpgroll.addon-conventions ya agrega compileOnly(:api) y compileOnly(:common).
     // :core para RPGRollAPI (jugador) y el framework de GUIs (InventoryGUI/ItemBuilder/TabCompleteUtil).
-    compileOnly(project(":core"))
 
     // Tests necesitan las clases reales de :common (RPGContent/ContentManager) en el classpath,
     // no solo compileOnly (que rpgroll.addon-conventions no propaga a testImplementation).

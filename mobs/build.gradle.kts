@@ -10,7 +10,6 @@ base.archivesName.set("RPGRoll-Mobs")
 dependencies {
     // rpgroll.addon-conventions ya agrega compileOnly(:api) y compileOnly(:common).
     // :core para RPGRollAPI (jugador, razas, clases — usados en condiciones/loot).
-    compileOnly(project(":core"))
 
     // Integraciones blandas (softdepend en plugin.yml, chequeadas en runtime):
     // reutiliza el sistema de Rareza de Items para colorear mobs de forma

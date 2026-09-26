@@ -9,7 +9,6 @@ base.archivesName.set("RPGRoll-Pass")
 
 dependencies {
     // InventoryGUI, ItemBuilder, la API de jugadores y la economía por Vault.
-    compileOnly(project(":core"))
     compileOnly("com.github.MilkBowl:VaultAPI:1.7.1") {
         exclude(group = "org.bukkit", module = "bukkit")
     }
@@ -19,5 +18,4 @@ dependencies {
     compileOnly(project(":quests"))
     compileOnly(project(":mobs"))
 
-    testImplementation(project(":core"))
 }

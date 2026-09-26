@@ -26,7 +26,7 @@ import com.sack.rpgroll.mobs.rarity.MobRarityResolver;
 import com.sack.rpgroll.mobs.registry.ActionRegistry;
 import com.sack.rpgroll.mobs.registry.MobActionContext;
 
-import com.sack.rpgroll.api.RPGRollAPI;
+import com.sack.rpgroll.common.integration.VaultEconomy;
 
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
@@ -565,12 +565,7 @@ public class MobEngine {
 
     private void giveMoney(Player player, double amount) {
 
-        if (!RPGRollAPI.isReady()) {
-            return;
-        }
-
-        RPGRollAPI.get().getEconomyProvider().getEconomy()
-                .ifPresent(economy -> economy.depositPlayer(player, amount));
+        VaultEconomy.get().ifPresent(economy -> economy.depositPlayer(player, amount));
     }
 
     // ============ BossBar ============

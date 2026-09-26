@@ -2,7 +2,7 @@ package com.sack.rpgroll.guilds.command;
 
 import com.sack.rpgroll.common.command.Senders;
 
-import com.sack.rpgroll.api.RPGRollAPI;
+import com.sack.rpgroll.common.character.Characters;
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.guilds.gui.team.TeamHubGUI;
 import com.sack.rpgroll.guilds.team.Team;
@@ -257,8 +257,9 @@ public class TeamCommand implements CommandExecutor, TabCompleter {
         }
 
         int level = 1;
-        if (RPGRollAPI.isReady()) {
-            level = RPGRollAPI.get().getPlayer(player.getUniqueId()).map(rpgPlayer -> rpgPlayer.getLevel()).orElse(1);
+        var characters = Characters.get();
+        if (characters.isPresent()) {
+            level = Math.max(1, characters.get().level(player.getUniqueId()));
         }
 
         String dungeonId = args.length > 2 ? args[2] : null;
