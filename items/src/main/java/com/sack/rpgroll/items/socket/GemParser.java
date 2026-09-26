@@ -33,7 +33,19 @@ public class GemParser implements ContentParser<Gem> {
             }
         }
 
-        return new Gem(id, displayName, type, statBonus);
+        org.bukkit.Material material = null;
+        String rawMaterial = config.getString("material");
+        if (rawMaterial != null && !rawMaterial.isBlank()) {
+            try {
+                material = org.bukkit.Material.valueOf(rawMaterial.trim().toUpperCase(Locale.ROOT));
+            } catch (IllegalArgumentException e) {
+                throw new IllegalArgumentException("gema '" + id + "' tiene un 'material' inválido: " + rawMaterial);
+            }
+        }
+
+        String itemModel = com.sack.rpgroll.items.core.ItemParser.parseItemModel(config.getString("item-model"), id);
+
+        return new Gem(id, displayName, type, statBonus, material, itemModel);
     }
 
 }

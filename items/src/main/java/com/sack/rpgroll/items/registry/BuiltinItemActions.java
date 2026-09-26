@@ -206,6 +206,11 @@ public final class BuiltinItemActions {
             result = result.replace("{target}", targetPlayer.getName());
         }
 
+        if (ctx.target() != null) {
+            // Vale para cualquier entidad en /effect, /damage, etc.; {target} solo para jugadores.
+            result = result.replace("{target_uuid}", ctx.target().getUniqueId().toString());
+        }
+
         return result;
     }
 

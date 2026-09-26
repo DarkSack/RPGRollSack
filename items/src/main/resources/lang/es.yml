@@ -29,7 +29,7 @@ command:
       already_exists: "&cYa existe un ítem con ese id."
       success: "&a✔ Ítem '{id}' creado — configuralo en el editor."
     give:
-      usage: "&cUso: /itemadmin give <jugador> <id> [cantidad]"
+      usage: "&cUso: /itemadmin give <jugador> <id|gem:id> [cantidad]"
       player_not_found: "&cJugador no encontrado: {player}"
       item_not_found: "&cNo existe un ítem con id: {id}"
       invalid_amount: "&cLa cantidad debe ser un número válido."

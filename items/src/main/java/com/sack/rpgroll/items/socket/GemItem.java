@@ -30,8 +30,12 @@ public class GemItem {
 
     public ItemStack create(Gem gem) {
 
-        ItemStack item = new ItemStack(Material.EMERALD);
+        ItemStack item = new ItemStack(gem.material());
         ItemMeta meta = item.getItemMeta();
+
+        if (gem.itemModel() != null) {
+            meta.setItemModel(NamespacedKey.fromString(gem.itemModel()));
+        }
 
         meta.displayName(ComponentUtils.parse(gem.displayName()).decoration(TextDecoration.ITALIC, false));
         meta.lore(List.of(

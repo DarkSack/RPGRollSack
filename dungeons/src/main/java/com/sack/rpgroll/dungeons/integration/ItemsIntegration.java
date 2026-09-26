@@ -51,11 +51,7 @@ public final class ItemsIntegration {
 
         var plugin = (ItemsPlugin) Bukkit.getPluginManager().getPlugin("RPGRoll-Items");
 
-        return plugin.getItemManager().get(reference).map(definition -> {
-            ItemStack item = plugin.getItemFactory().create(definition);
-            item.setAmount(Math.max(1, amount));
-            return item;
-        });
+        return plugin.create(reference, amount);
     }
 
     private static ItemStack resolveFromMaterial(String reference, int amount) {

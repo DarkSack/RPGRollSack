@@ -15,6 +15,11 @@ import java.util.Objects;
  * Skins, Upgrades, Recipes, Economy, Custom Data) es un campo
  * independiente — "deshabilitado" simplemente significa lista/mapa vacío
  * o 0.
+ *
+ * <p>{@code itemModel} es el componente {@code item_model} (1.21.4+): la
+ * clave {@code namespace:ruta} del modelo del resource pack. Es lo que usan
+ * los mapeos v2 de Geyser para darle su ícono en Bedrock; null deja el del
+ * material.
  */
 public record ItemDefinition(
         String id,
@@ -45,7 +50,23 @@ public record ItemDefinition(
         List<ItemRecipeDef> recipes,
         double sellPrice,
         double buyPrice,
-        Map<String, String> customData) implements RPGContent {
+        Map<String, String> customData,
+        String itemModel) implements RPGContent {
+
+    /** Sin item-model: la firma de antes, para quien construye definiciones a mano. */
+    public ItemDefinition(String id, String pack, Material material, String displayName, List<String> lore,
+            Integer customModelData, String rarityId, Boolean glowOverride, List<String> flags, boolean unbreakable,
+            String dyeColor, String skullTexture, ArmorTrimDef trim, Map<String, Double> stats,
+            Map<String, Double> attributeModifiers, ItemRequirements requirements, ItemDurabilityDef durability,
+            Map<String, Integer> vanillaEnchantments, Map<String, Integer> customEnchantments,
+            List<ItemEffectDef> effects, Map<ItemTrigger, List<ItemAction>> triggers, List<ItemAbility> abilities,
+            List<SocketDefinition> sockets, List<ItemSkin> skins, List<UpgradeLevel> upgrades,
+            List<ItemRecipeDef> recipes, double sellPrice, double buyPrice, Map<String, String> customData) {
+        this(id, pack, material, displayName, lore, customModelData, rarityId, glowOverride, flags, unbreakable,
+                dyeColor, skullTexture, trim, stats, attributeModifiers, requirements, durability,
+                vanillaEnchantments, customEnchantments, effects, triggers, abilities, sockets, skins, upgrades,
+                recipes, sellPrice, buyPrice, customData, null);
+    }
 
     public ItemDefinition {
         Objects.requireNonNull(id, "id no puede ser null");
@@ -74,6 +95,7 @@ public record ItemDefinition(
         upgrades = upgrades == null ? List.of() : List.copyOf(upgrades);
         recipes = recipes == null ? List.of() : List.copyOf(recipes);
         customData = customData == null ? Map.of() : Map.copyOf(customData);
+        itemModel = itemModel == null || itemModel.isBlank() ? null : itemModel.trim().toLowerCase(java.util.Locale.ROOT);
     }
 
     public List<ItemAction> actionsFor(ItemTrigger trigger) {

@@ -159,6 +159,12 @@ public class ItemFactory {
             meta.setCustomModelData(definition.customModelData());
         }
 
+        String itemModel = currentSkin != null && currentSkin.itemModel() != null
+                ? currentSkin.itemModel() : definition.itemModel();
+        if (itemModel != null) {
+            meta.setItemModel(NamespacedKey.fromString(itemModel));
+        }
+
         int currentDurability = instanceService.getDurability(item, definition.durability().maxDurability());
 
         meta.lore(buildLore(definition, rarity, upgradeLevel, sockets, currentDurability));

@@ -2,3 +2,11 @@
 # Los textos viven en lang/<idioma>.yml dentro de esta carpeta de datos —
 # puedes editarlos ahí directamente. Tras cambiar esto, /itemadmin reload.
 language: es
+
+# Recetas.
+# protect-custom-items: un ítem de RPGRoll no se gasta como su material en
+# recetas vanilla (mesa, horno, herrería) ni en recetas que piden el material
+# pelado: un lingote de mitrilo hecho sobre IRON_INGOT no sirve como hierro.
+# En las recetas de los ítems, un ingrediente "item:<id>" pide ese ítem exacto.
+recipes:
+  protect-custom-items: true

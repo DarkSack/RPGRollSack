@@ -49,6 +49,7 @@ public class ItemsPlugin extends JavaPlugin {
     private ItemManager itemManager;
     private RarityManager rarityManager;
     private GemManager gemManager;
+    private GemItem gemItem;
     private ItemFactory itemFactory;
     private ItemInstanceService instanceService;
     private StatRegistry statRegistry;
@@ -103,7 +104,7 @@ public class ItemsPlugin extends JavaPlugin {
 
         ItemConditionEvaluator conditionEvaluator = new ItemConditionEvaluator(conditionRegistry);
 
-        GemItem gemItem = new GemItem(this, langManager);
+        gemItem = new GemItem(this, langManager);
         socketService = new SocketService(instanceService, itemFactory, gemManager, gemItem);
         upgradeService = new UpgradeService(instanceService, itemFactory);
         skinService = new SkinService(instanceService, itemFactory);
@@ -113,6 +114,8 @@ public class ItemsPlugin extends JavaPlugin {
 
         customRecipeRegistry = new CustomRecipeRegistry();
         new RecipeRegistrar(this, itemFactory).registerAll(itemManager);
+        getServer().getPluginManager().registerEvents(new com.sack.rpgroll.items.recipe.RecipeGuardListener(this,
+                instanceService, () -> getConfig().getBoolean("recipes.protect-custom-items", true)), this);
 
         ItemRequirementChecker requirementChecker = new ItemRequirementChecker(langManager);
 
@@ -194,6 +197,32 @@ public class ItemsPlugin extends JavaPlugin {
     public ItemFactory getItemFactory() {
         return itemFactory;
     }
+
+    /**
+     * Crea un ítem a partir de una referencia de otro addon: el id de un ítem
+     * o {@code gem:<id>} para una gema de engaste. Vacío si no existe.
+     */
+    public java.util.Optional<org.bukkit.inventory.ItemStack> create(String reference, int amount) {
+
+        if (reference == null || reference.isBlank()) {
+            return java.util.Optional.empty();
+        }
+
+        String ref = reference.trim();
+        java.util.Optional<org.bukkit.inventory.ItemStack> item;
+
+        if (ref.regionMatches(true, 0, GEM_PREFIX, 0, GEM_PREFIX.length())) {
+            item = gemManager.get(ref.substring(GEM_PREFIX.length()).trim()).map(gemItem::create);
+        } else {
+            item = itemManager.get(ref).map(itemFactory::create);
+        }
+
+        item.ifPresent(stack -> stack.setAmount(Math.max(1, Math.min(amount, stack.getMaxStackSize()))));
+        return item;
+    }
+
+    /** Prefijo de las referencias a gemas de engaste en loot, tiendas y /itemadmin give. */
+    public static final String GEM_PREFIX = "gem:";
 
     public ItemInstanceService getInstanceService() {
         return instanceService;

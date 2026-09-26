@@ -39,6 +39,7 @@ public class ItemParser implements ContentParser<ItemDefinition> {
         String displayName = config.getString("display-name", id);
         List<String> lore = config.getStringList("lore");
         Integer customModelData = config.contains("custom-model-data") ? config.getInt("custom-model-data") : null;
+        String itemModel = parseItemModel(config.getString("item-model"), id);
         String rarityId = config.getString("rarity", "common");
         Boolean glow = config.contains("glow") ? config.getBoolean("glow") : null;
         boolean unbreakable = config.getBoolean("unbreakable", false);
@@ -71,7 +72,27 @@ public class ItemParser implements ContentParser<ItemDefinition> {
         return new ItemDefinition(id, pack, material, displayName, lore, customModelData, rarityId, glow,
                 flags, unbreakable, dyeColor, skullTexture, trim, stats, attributeModifiers, requirements,
                 durability, vanillaEnchantments, customEnchantments, effects, triggers, abilities, sockets, skins,
-                upgrades, recipes, sellPrice, buyPrice, customData);
+                upgrades, recipes, sellPrice, buyPrice, customData, itemModel);
+    }
+
+    /** {@code namespace:ruta} en minúsculas; sin namespace se asume {@code minecraft}. */
+    public static String parseItemModel(String raw, String itemId) {
+
+        if (raw == null || raw.isBlank()) {
+            return null;
+        }
+
+        String value = raw.trim().toLowerCase(java.util.Locale.ROOT);
+        if (!value.contains(":")) {
+            value = "minecraft:" + value;
+        }
+
+        if (!value.matches("[a-z0-9_.-]+:[a-z0-9_./-]+")) {
+            throw new IllegalArgumentException("ítem '" + itemId + "' tiene un 'item-model' inválido: " + raw
+                    + " (formato namespace:ruta, p. ej. sackito:lingote_mitrilo)");
+        }
+
+        return value;
     }
 
     // ============ Componentes simples ============
@@ -389,7 +410,9 @@ public class ItemParser implements ContentParser<ItemDefinition> {
                     ? parseInt(map.get("custom-model-data").toString(), 0)
                     : null;
 
-            skins.add(new ItemSkin(id, displayName, material, customModelData));
+            String itemModel = map.get("item-model") != null ? parseItemModel(map.get("item-model").toString(), id) : null;
+
+            skins.add(new ItemSkin(id, displayName, material, customModelData, itemModel));
         }
 
         return skins;
@@ -476,8 +499,10 @@ public class ItemParser implements ContentParser<ItemDefinition> {
             String baseMaterial = map.get("base-material") != null ? map.get("base-material").toString() : null;
             int cookingTime = map.get("cooking-time") != null ? parseInt(map.get("cooking-time").toString(), 200) : 200;
             String sourceId = map.get("source") != null ? map.get("source").toString() : null;
+            int amount = map.get("amount") != null ? parseInt(map.get("amount").toString(), 1) : 1;
 
-            recipes.add(new ItemRecipeDef(type, shape, key, ingredients, baseMaterial, cookingTime, sourceId));
+            recipes.add(new ItemRecipeDef(type, shape, key, ingredients, baseMaterial, cookingTime, sourceId,
+                    amount));
         }
 
         return recipes;

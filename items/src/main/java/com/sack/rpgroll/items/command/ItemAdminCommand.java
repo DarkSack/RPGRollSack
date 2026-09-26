@@ -153,8 +153,8 @@ public class ItemAdminCommand implements CommandExecutor, TabCompleter {
             return;
         }
 
-        Optional<ItemDefinition> definitionOpt = itemManager.get(args[2]);
-        if (definitionOpt.isEmpty()) {
+        Optional<ItemStack> created = ((com.sack.rpgroll.items.ItemsPlugin) plugin).create(args[2], 1);
+        if (created.isEmpty()) {
             lang().send(sender, "command.itemadmin.give.item_not_found", "id", args[2]);
             return;
         }
@@ -174,7 +174,7 @@ public class ItemAdminCommand implements CommandExecutor, TabCompleter {
             return;
         }
 
-        ItemStack item = itemFactory.create(definitionOpt.get());
+        ItemStack item = created.get();
         item.setAmount(amount);
 
         boolean fullyDelivered = com.sack.rpgroll.util.ItemDeliveryUtil.deliver(target, item);
@@ -261,7 +261,7 @@ public class ItemAdminCommand implements CommandExecutor, TabCompleter {
         }
 
         if (args.length == 3 && "give".equals(sub)) {
-            return TabCompleteUtil.filter(args[2], itemIds());
+            return TabCompleteUtil.filter(args[2], giveableIds());
         }
 
         return List.of();
@@ -269,6 +269,13 @@ public class ItemAdminCommand implements CommandExecutor, TabCompleter {
 
     private List<String> itemIds() {
         return itemManager.getAll().stream().map(ItemDefinition::id).toList();
+    }
+
+    private List<String> giveableIds() {
+        List<String> ids = new java.util.ArrayList<>(itemIds());
+        ((com.sack.rpgroll.items.ItemsPlugin) plugin).getGemManager().getAll()
+                .forEach(gem -> ids.add(com.sack.rpgroll.items.ItemsPlugin.GEM_PREFIX + gem.id()));
+        return ids;
     }
 
 }

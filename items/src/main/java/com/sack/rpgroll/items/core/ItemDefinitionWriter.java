@@ -31,6 +31,10 @@ public class ItemDefinitionWriter {
             config.set("custom-model-data", definition.customModelData());
         }
 
+        if (definition.itemModel() != null) {
+            config.set("item-model", definition.itemModel());
+        }
+
         config.set("rarity", definition.rarityId());
 
         if (definition.glowOverride() != null) {
@@ -223,6 +227,9 @@ public class ItemDefinitionWriter {
             if (skin.customModelData() != null) {
                 entry.put("custom-model-data", skin.customModelData());
             }
+            if (skin.itemModel() != null) {
+                entry.put("item-model", skin.itemModel());
+            }
             raw.add(entry);
         }
 
@@ -280,6 +287,9 @@ public class ItemDefinitionWriter {
             }
             entry.put("cooking-time", recipe.cookingTimeTicks());
 
+            if (recipe.amount() > 1) {
+                entry.put("amount", recipe.amount());
+            }
             if (recipe.sourceId() != null) {
                 entry.put("source", recipe.sourceId());
             }
