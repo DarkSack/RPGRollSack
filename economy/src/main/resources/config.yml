@@ -31,8 +31,38 @@ inflation-snapshot-interval-ticks: 24000
 # Cada cuánto (ticks) expiran subastas vencidas y se procesan pagos/devoluciones.
 auction-check-interval-ticks: 200
 
-# Duración por defecto (horas) de una subasta si no se especifica una al crearla.
-auction-default-duration-hours: 48
+# Casa de Subastas (/subasta, alias abajo): los jugadores publican lo que
+# tienen en la mano, a precio fijo (/subasta vender <precio>) o con pujas
+# (/subasta subastar <inicial> [compra ya]). Lo comprado, lo ganado y lo que
+# vence sin vender va a una caja de recogida: nada se tira ni se pierde.
+auction-house:
+  aliases: [ah, subastas]
+  # Cuánto dura una publicación.
+  duration-hours: 48
+  # Publicaciones a la vez por jugador (0 = sin límite). Con el permiso
+  # rpgrolleconomy.auction.limit.<nombre> se usa el mayor de "limits".
+  max-listings: 5
+  limits:
+    vip: 10
+    mvp: 20
+  # Precio mínimo y máximo (0 = sin máximo) de una publicación.
+  min-price: 1
+  max-price: 0
+  # Comisión al publicar, en % del precio: sale de la economía (no se
+  # devuelve aunque no se venda). Al vender se aplican además los impuestos
+  # de tipo SALE de taxes/.
+  listing-fee-percent: 2
+  # Cuánto tiene que subir una puja sobre la anterior (mínimo 1).
+  min-bid-increment-percent: 5
+  # Una puja en los últimos N segundos alarga la subasta N segundos.
+  anti-snipe-seconds: 30
+  # Moneda de la subasta (vacío = la moneda por defecto).
+  currency: ""
+  # Materiales que no se pueden publicar.
+  blacklist: [BEDROCK, BARRIER, COMMAND_BLOCK, CHAIN_COMMAND_BLOCK, REPEATING_COMMAND_BLOCK, STRUCTURE_BLOCK, JIGSAW, LIGHT, DEBUG_STICK]
+  # Ítems con alguna de estas marcas de datos (plugin:clave) no se pueden
+  # publicar: mochilas ligadas a su dueño y la brújula del menú de RPGRoll-Extras.
+  blocked-data-keys: ["rpgrollextras:backpack_bound", "rpgrollextras:server_menu_item"]
 
 # Integración activa con RPGRoll-Guilds (softdepend — sin nada si no está instalado): cada guild paga
 # un impuesto PROPERTY periódico por cada GuildTerritory que tenga reclamada, descontado de su vault.

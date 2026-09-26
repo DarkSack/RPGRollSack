@@ -11,9 +11,20 @@ permissions:
   rpgrolleconomy.admin.*:
     description: Acceso completo a comandos administrativos de Economy Studio
     default: op
+    children:
+      rpgrolleconomy.auction.admin: true
   rpgrolleconomy.use:
     description: Uso básico de economía (balance, pagar, banco, tiendas, subastas, empresas)
     default: true
   rpgrolleconomy.servershop:
     description: Abrir la tienda del servidor (/tienda)
     default: true
+  rpgrolleconomy.auction:
+    description: Abrir la Casa de Subastas (/subasta), comprar y pujar
+    default: true
+  rpgrolleconomy.auction.sell:
+    description: Publicar ítems en la Casa de Subastas
+    default: true
+  rpgrolleconomy.auction.admin:
+    description: Retirar publicaciones ajenas de la Casa de Subastas (shift-clic derecho)
+    default: op

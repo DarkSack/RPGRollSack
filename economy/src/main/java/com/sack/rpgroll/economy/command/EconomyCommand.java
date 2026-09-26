@@ -4,6 +4,7 @@ import com.sack.rpgroll.common.command.Senders;
 
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.economy.auction.AuctionManager;
+import com.sack.rpgroll.economy.auction.AuctionService;
 import com.sack.rpgroll.economy.bank.BankManager;
 import com.sack.rpgroll.economy.company.CompanyManager;
 import com.sack.rpgroll.economy.company.CompanyService;
@@ -46,13 +47,13 @@ public class EconomyCommand implements CommandExecutor, TabCompleter {
     private final CompanyManager companyManager;
     private final CompanyService companyService;
     private final ChatPromptManager chatPromptManager;
-    private final long auctionDefaultDurationMillis;
+    private final AuctionService auctionService;
     private final LangManager lang;
 
     public EconomyCommand(CurrencyManager currencyManager, WalletService walletService, BankManager bankManager,
             LoanService loanService, ShopManager shopManager, TaxEngine taxEngine, AuctionManager auctionManager,
             CompanyManager companyManager, CompanyService companyService, ChatPromptManager chatPromptManager,
-            long auctionDefaultDurationMillis) {
+            AuctionService auctionService) {
         this.currencyManager = currencyManager;
         this.walletService = walletService;
         this.bankManager = bankManager;
@@ -63,7 +64,7 @@ public class EconomyCommand implements CommandExecutor, TabCompleter {
         this.companyManager = companyManager;
         this.companyService = companyService;
         this.chatPromptManager = chatPromptManager;
-        this.auctionDefaultDurationMillis = auctionDefaultDurationMillis;
+        this.auctionService = auctionService;
         this.lang = chatPromptManager.lang();
     }
 
@@ -85,8 +86,7 @@ public class EconomyCommand implements CommandExecutor, TabCompleter {
             case "pay" -> handlePay(player, args);
             case "bank" -> new BankGUI(player, bankManager, currencyManager, loanService, chatPromptManager).open();
             case "shop" -> new ShopListGUI(player, shopManager, currencyManager, taxEngine, chatPromptManager).open();
-            case "auction" -> new AuctionHouseGUI(player, auctionManager, currencyManager, chatPromptManager,
-                    auctionDefaultDurationMillis).open();
+            case "auction" -> new AuctionHouseGUI(player, auctionService, chatPromptManager).open();
             case "company" -> new CompanyListGUI(player, companyManager, companyService, bankManager, currencyManager,
                     chatPromptManager).open();
             default -> lang.send(player, "common.unknown_subcommand");

@@ -8,6 +8,9 @@ import com.sack.rpgroll.common.resource.DirectoryCreator;
 import com.sack.rpgroll.common.resource.ResourceCopier;
 import com.sack.rpgroll.economy.api.EconomyAPI;
 import com.sack.rpgroll.economy.auction.AuctionManager;
+import com.sack.rpgroll.economy.auction.AuctionService;
+import com.sack.rpgroll.economy.auction.AuctionSettings;
+import com.sack.rpgroll.economy.command.AuctionCommand;
 import com.sack.rpgroll.economy.auction.AuctionStore;
 import com.sack.rpgroll.economy.bank.BankAccountStore;
 import com.sack.rpgroll.economy.bank.BankManager;
@@ -81,7 +84,7 @@ public class EconomyPlugin extends JavaPlugin {
     private ServerShopManager serverShopManager;
     private ServerShopService serverShopService;
 
-    private long auctionDefaultDurationMillis;
+    private AuctionService auctionService;
 
     @Override
     public void onEnable() {
@@ -137,9 +140,12 @@ public class EconomyPlugin extends JavaPlugin {
         shopManager = new ShopManager(shopStore, walletService, taxEngine);
         shopManager.loadAll();
 
-        AuctionStore auctionStore = new AuctionStore(getDataFolder());
-        auctionManager = new AuctionManager(auctionStore, walletService, taxEngine);
+        AuctionStore auctionStore = new AuctionStore(getDataFolder(), getLogger());
+        auctionManager = new AuctionManager(auctionStore, walletService, taxEngine, auctionSettings(),
+                System::currentTimeMillis);
         auctionManager.loadAll();
+        auctionService = new AuctionService(this, auctionManager, currencyManager, walletService, langManager);
+        getServer().getPluginManager().registerEvents(auctionService, this);
 
         CompanyStore companyStore = new CompanyStore(getDataFolder());
         companyManager = new CompanyManager(companyStore);
@@ -148,8 +154,6 @@ public class EconomyPlugin extends JavaPlugin {
 
         inflationTracker = new InflationTracker(walletStore, bankManager, getDataFolder());
         inflationTracker.load();
-
-        auctionDefaultDurationMillis = getConfig().getLong("auction-default-duration-hours", 48) * 60L * 60 * 1000;
 
         serverShopManager = new ServerShopManager(this);
         serverShopManager.initialize();
@@ -267,7 +271,7 @@ public class EconomyPlugin extends JavaPlugin {
 
         var playerExecutor = new EconomyCommand(currencyManager, walletService, bankManager, loanService, shopManager,
                     taxEngine, auctionManager, companyManager, companyService, chatPromptManager,
-                    auctionDefaultDurationMillis);
+                    auctionService);
 
         // Registrado por Brigadier para que `execute as` entregue al jugador real.
         com.sack.rpgroll.common.command.BrigadierCommands.register(this, "economy",
@@ -277,6 +281,15 @@ public class EconomyPlugin extends JavaPlugin {
         com.sack.rpgroll.common.command.BrigadierCommands.register(this, "tienda", "Tienda del servidor",
                 getConfig().getStringList("server-shop.aliases"), shopExecutor, shopExecutor,
                 "rpgrolleconomy.servershop");
+
+        var auctionExecutor = new AuctionCommand(auctionService, chatPromptManager);
+        com.sack.rpgroll.common.command.BrigadierCommands.register(this, "subasta", "Casa de Subastas",
+                getConfig().getStringList("auction-house.aliases"), auctionExecutor, auctionExecutor,
+                "rpgrolleconomy.auction");
+    }
+
+    private AuctionSettings auctionSettings() {
+        return AuctionSettings.from(getConfig(), message -> getLogger().warning("config.yml: " + message));
     }
 
     private void reloadContent() {
@@ -288,6 +301,7 @@ public class EconomyPlugin extends JavaPlugin {
         taxRuleManager.reload();
         serverShopManager.reload();
         serverShopService.setSellRatio(getConfig().getDouble("server-shop.market-sell-ratio", 0.4));
+        auctionManager.settings(auctionSettings());
     }
 
     private void startTasks() {
