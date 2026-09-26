@@ -6,6 +6,13 @@ import com.sack.rpgroll.license.identity.LicenseIdentity;
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.common.resource.DirectoryCreator;
 import com.sack.rpgroll.common.resource.ResourceCopier;
+import com.sack.rpgroll.extras.backpack.BackpackCommand;
+import com.sack.rpgroll.extras.backpack.BackpackConfigParser;
+import com.sack.rpgroll.extras.backpack.BackpackItems;
+import com.sack.rpgroll.extras.backpack.BackpackListener;
+import com.sack.rpgroll.extras.backpack.BackpackRecipes;
+import com.sack.rpgroll.extras.backpack.BackpackService;
+import com.sack.rpgroll.extras.backpack.BackpackStorage;
 import com.sack.rpgroll.extras.menu.ExtrasMenuManager;
 import com.sack.rpgroll.extras.menu.MenuCommand;
 import com.sack.rpgroll.extras.menu.ServerMenu;
@@ -38,8 +45,10 @@ import com.sack.rpgroll.extras.temperature.TemperatureSettings;
 import com.sack.rpgroll.extras.temperature.TemperatureSettingsLoader;
 import com.sack.rpgroll.extras.thermal.ThermalProtectionService;
 
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
 import java.util.List;
 
 public class ExtrasPlugin extends JavaPlugin {
@@ -49,6 +58,8 @@ public class ExtrasPlugin extends JavaPlugin {
     private LangManager langManager;
     private ExtrasMenuManager menuManager;
     private ServerMenu serverMenu;
+    private BackpackService backpackService;
+    private BackpackRecipes backpackRecipes;
     private StatManager statManager;
     private StatEngine statEngine;
     private ConditionManager conditionManager;
@@ -73,7 +84,8 @@ public class ExtrasPlugin extends JavaPlugin {
         new ResourceCopier(this).copyDirectories(DIRECTORIES);
         new ResourceCopier(this).copyFiles(List.of(
                 new com.sack.rpgroll.common.resource.ResourceFile("temperature.yml", "temperature.yml", false),
-                new com.sack.rpgroll.common.resource.ResourceFile("hud.yml", "hud.yml", false)));
+                new com.sack.rpgroll.common.resource.ResourceFile("hud.yml", "hud.yml", false),
+                new com.sack.rpgroll.common.resource.ResourceFile("backpacks.yml", "backpacks.yml", false)));
 
         langManager = new LangManager(this, List.of("es", "en", "pt_BR"), "es");
         langManager.reload(getConfig().getString("language", "es"));
@@ -84,12 +96,28 @@ public class ExtrasPlugin extends JavaPlugin {
         serverMenu.configure(ServerMenuConfig.from(getConfig().getConfigurationSection("server-menu")));
         getServer().getPluginManager().registerEvents(new ServerMenuListener(this, serverMenu), this);
 
+        backpackService = new BackpackService(new BackpackItems(this), new BackpackStorage(getDataFolder(), getLogger()),
+                langManager);
+        backpackRecipes = new BackpackRecipes(this, backpackService);
+        configureBackpacks();
+        getServer().getPluginManager().registerEvents(
+                new BackpackListener(this, backpackService, backpackRecipes, langManager), this);
+
         loadAndWire();
 
         registerCommand();
 
         getLogger().info("✔ RPGRoll-Extras habilitado. " + statManager.count() + " stat(s), "
                 + conditionManager.count() + " condition(s), " + modifierManager.count() + " modificador(es).");
+    }
+
+    private void configureBackpacks() {
+
+        YamlConfiguration yaml = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "backpacks.yml"));
+        backpackService.configure(new BackpackConfigParser(message -> getLogger().warning("backpacks.yml: " + message))
+                .parse(yaml));
+        backpackRecipes.register();
+        getServer().getOnlinePlayers().forEach(backpackRecipes::discover);
     }
 
     private void loadAndWire() {
@@ -167,6 +195,9 @@ public class ExtrasPlugin extends JavaPlugin {
             }
         });
         statEngine.linkAfkPolicy(AfkPolicy.from(getConfig()));
+        // Las mochilas abiertas se guardan y cierran: su nivel pudo cambiar de tamaño.
+        backpackService.closeAll();
+        configureBackpacks();
 
         statEngine.start();
         conditionRuntime.start(this);
@@ -186,10 +217,18 @@ public class ExtrasPlugin extends JavaPlugin {
         var menuExecutor = new MenuCommand(serverMenu, menuManager, langManager);
         com.sack.rpgroll.common.command.BrigadierCommands.register(this, "menu", "Menú del servidor",
                 java.util.List.of(), menuExecutor, menuExecutor, "rpgrollextras.menu");
+
+        var backpackExecutor = new BackpackCommand(backpackService, langManager);
+        com.sack.rpgroll.common.command.BrigadierCommands.register(this, "mochila", "Entrega y lista mochilas",
+                List.of("backpack"), backpackExecutor, backpackExecutor, BackpackCommand.ADMIN_PERMISSION);
     }
 
     @Override
     public void onDisable() {
+
+        if (backpackService != null) {
+            backpackService.closeAll();
+        }
 
         if (statEngine != null) {
             // Un apagado no dispara PlayerQuitEvent a tiempo para todos.

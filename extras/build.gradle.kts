@@ -22,6 +22,10 @@ dependencies {
     // del plugin en runtime (mismo patrón que PlaceholderApiBridge).
     compileOnly(project(":tab"))
 
+    // RPGRoll-Items: solo para resolver los ingredientes item:<id> de las recetas
+    // de mochilas (backpack/ItemsBridge), guardeado por presencia del plugin.
+    compileOnly(project(":items"))
+
     // compileOnly no se propaga al source set de test (:api/:common ya los aporta
     // rpgroll.addon-conventions; :core hace falta declararlo acá).
 }

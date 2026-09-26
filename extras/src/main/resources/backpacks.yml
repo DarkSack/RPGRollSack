@@ -1,0 +1,213 @@
+# Mochilas de RPGRoll-Extras.
+#
+# Una mochila es una cabeza con textura que guarda su contenido aparte, como
+# una shulker: el ítem lleva un identificador y lo que hay dentro vive en
+# data/backpacks/<id>.yml. Pasarla a otro jugador, tirarla o ponerla en el
+# suelo no pierde nada.
+#
+# - Se abre con clic al aire teniéndola en la mano, o con clic derecho sobre
+#   ella en el inventario.
+# - Se pone en el suelo como cualquier cabeza; clic derecho la abre y al
+#   romperla vuelve a ser el ítem, con todo dentro. Las explosiones, los
+#   pistones y el agua no la mueven ni la rompen.
+# - La fila de abajo lleva las pestañas (si no cabe todo en una) y el botón
+#   para ligarla: ligada, solo su dueño (o quien tenga
+#   rpgrollextras.backpack.bypass) puede abrirla o recogerla del suelo. Un
+#   jugador puede tener ligadas todas las que quiera.
+# - Solo una persona a la vez puede tenerla abierta.
+#
+# Tras editar, /extrasadmin reload (las mochilas abiertas se cierran y guardan).
+
+settings:
+  enabled: true
+  # Clic (izquierdo o derecho) al aire con la mochila en la mano la abre.
+  open-in-air: true
+  # Clic derecho sobre la mochila en el propio inventario la abre.
+  open-from-inventory: true
+  # Poner la mochila en el suelo como bloque. Con false, clic derecho sobre un
+  # bloque también la abre.
+  allow-place: true
+  # Quién puede abrir o recoger una mochila puesta en el suelo: "placer" (solo
+  # quien la puso; los plugins de protección no ven las cabezas como cofres) o
+  # "anyone". Si está ligada, además, solo su dueño. Con bypass, siempre.
+  placed-access: placer
+  # Enseñar las recetas en el libro de recetas al entrar.
+  discover-recipes: true
+  # Lo que no se puede guardar dentro (otra mochila nunca se puede). Por
+  # ejemplo, para que no se multiplique el espacio con shulkers:
+  #   forbidden-items: [SHULKER_BOX, WHITE_SHULKER_BOX, BLACK_SHULKER_BOX]
+  forbidden-items: []
+  # Última línea del lore según esté ligada o no. {owner} es el dueño.
+  owner-lore:
+    unbound: "&8Sin ligar: cualquiera puede abrirla"
+    bound: "&7Ligada a &e{owner}"
+
+# Sonidos por su clave de Minecraft (vacío = sin sonido).
+sounds:
+  open: "item.armor.equip_leather"
+  close: "block.wool.place"
+  page: "ui.button.click"
+  bind: "block.chain.place"
+
+# La ventana. En los textos: {name} nombre del nivel, {slots} espacios,
+# {pages} pestañas, {page} número de la pestaña, {current} la pestaña abierta,
+# {used} espacios ocupados, {owner} el dueño.
+gui:
+  title: "{name}"
+  # Relleno de la fila de botones.
+  filler:
+    material: BLACK_STAINED_GLASS_PANE
+    name: " "
+  # Casillas que el nivel todavía no tiene (cuando los espacios no llenan la fila).
+  locked-slot:
+    material: GRAY_STAINED_GLASS_PANE
+    name: "&8Espacio bloqueado"
+    lore:
+      - "&7Mejora la mochila para desbloquearlo."
+  # Las posiciones (slot) son columnas de la fila de abajo: 0 a 8; -1 quita el botón.
+  info:
+    slot: 0
+    material: BOOK
+    name: "{name}"
+    lore:
+      - "&7Espacios: &f{used}&7/&f{slots}"
+      - "&7Pestaña &f{current}&7 de &f{pages}"
+  tabs:
+    # Una casilla por pestaña: un nivel no puede tener más pestañas (de 45
+    # espacios) que casillas haya aquí.
+    slots: [2, 3, 4, 5, 6]
+    normal:
+      material: WHITE_STAINED_GLASS_PANE
+      name: "&ePestaña {page}"
+      lore:
+        - "&7Clic para abrirla"
+    selected:
+      material: LIME_STAINED_GLASS_PANE
+      name: "&a&lPestaña {page}"
+      lore:
+        - "&7Estás aquí"
+  bind:
+    slot: 8
+    unbound:
+      material: TRIPWIRE_HOOK
+      name: "&eLigar a mí"
+      lore:
+        - "&7Solo tú podrás abrirla y"
+        - "&7recogerla del suelo."
+        - ""
+        - "&8Clic para ligarla"
+    bound:
+      material: NAME_TAG
+      name: "&aLigada a {owner}"
+      lore:
+        - "&7Solo {owner} puede abrirla."
+        - ""
+        - "&8Clic para desligarla"
+
+# Niveles, en orden: cada mejora pide la mochila del nivel anterior.
+#
+#   name / lore   textos del ítem ({slots}, {pages})
+#   slots         espacios; más de 45 reparte en pestañas
+#   texture       textura de la cabeza: el hash de textures.minecraft.net, la
+#                 URL completa o el "Value" base64 de minecraft-heads.com
+#   recipe        receta con forma (mesa de crafteo). En ingredients:
+#                   MATERIAL         un material vanilla
+#                   item:<id>        un ítem de RPGRoll-Items
+#                   backpack         la mochila del nivel anterior (conserva
+#                                    el contenido y el dueño)
+#                 enabled: false la quita: ese nivel solo se consigue con
+#                 /mochila give (tiendas, cajas, recompensas).
+tiers:
+  cuero:
+    name: "&6Mochila de Cuero"
+    slots: 18
+    texture: 40b1b53674918391a07a9d00582c058f9280bc526a716c796ee5eab4be10a760
+    lore:
+      - "&7Capacidad: &f{slots} espacios"
+      - "&8Clic al aire o clic derecho en el inventario"
+    recipe:
+      shape: ["LLL", "LCL", "LLL"]
+      ingredients:
+        L: LEATHER
+        C: CHEST
+
+  hierro:
+    name: "&fMochila de Hierro"
+    slots: 27
+    texture: ddaf8edc32afb461aee0713058023101f924e2a7efa883dae72d5d57d4c053d7
+    lore:
+      - "&7Capacidad: &f{slots} espacios"
+      - "&8Clic al aire o clic derecho en el inventario"
+    recipe:
+      shape: ["III", "IBI", "III"]
+      ingredients:
+        I: IRON_INGOT
+        B: backpack
+
+  oro:
+    name: "&eMochila de Oro"
+    slots: 36
+    texture: a37a35522f67b2af92345592846b702b9afb9d7c8dbad5ea150673c9e44de3
+    lore:
+      - "&7Capacidad: &f{slots} espacios"
+      - "&8Clic al aire o clic derecho en el inventario"
+    recipe:
+      shape: ["GGG", "GBG", "GGG"]
+      ingredients:
+        G: GOLD_INGOT
+        B: backpack
+
+  diamante:
+    name: "&bMochila de Diamante"
+    slots: 45
+    texture: 10d1b0732bf7a70de4dc01559cc5c9811068ef7b6095010382709f94093927f6
+    lore:
+      - "&7Capacidad: &f{slots} espacios"
+      - "&8Clic al aire o clic derecho en el inventario"
+    recipe:
+      shape: ["DDD", "DBD", "DDD"]
+      ingredients:
+        D: DIAMOND
+        B: backpack
+
+  netherita_fragmentada:
+    name: "&7Mochila de Fragmentos de Netherita"
+    slots: 72
+    texture: ebdf8d53bdb932c223c627bbb8c1e0c5e351a616cd8056929c66e6dce44433db
+    lore:
+      - "&7Capacidad: &f{slots} espacios &8({pages} pestañas)"
+      - "&8Clic al aire o clic derecho en el inventario"
+    recipe:
+      shape: ["SSS", "SBS", "SSS"]
+      ingredients:
+        S: NETHERITE_SCRAP
+        B: backpack
+
+  netherita:
+    name: "&8&lMochila de Netherita"
+    slots: 90
+    texture: 8dcc6eb40f3bada41e4339888d6d207437598bdbd175c2e731191d5a9a42d3c8
+    lore:
+      - "&7Capacidad: &f{slots} espacios &8({pages} pestañas)"
+      - "&8Clic al aire o clic derecho en el inventario"
+    recipe:
+      shape: ["NNN", "NBN", "NNN"]
+      ingredients:
+        N: NETHERITE_INGOT
+        B: backpack
+
+  espacial:
+    name: "&d&l✦ Mochila Espacial"
+    slots: 135
+    texture: 8224b2c7391eb5bfcb278431d5c827cb26349526c7bc535b1e95f6df9f3fdf3
+    lore:
+      - "&7Capacidad: &f{slots} espacios &8({pages} pestañas)"
+      - "&5Forjada con mineral espacial."
+      - "&8Clic al aire o clic derecho en el inventario"
+    recipe:
+      shape: ["MMM", "MBM", "MMM"]
+      ingredients:
+        # Un ítem de RPGRoll-Items (packs/crafting/mineral_espacial.yml). Sin
+        # ese plugin este nivel queda sin receta.
+        M: item:mineral_espacial
+        B: backpack

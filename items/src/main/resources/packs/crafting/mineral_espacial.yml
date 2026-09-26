@@ -1,0 +1,15 @@
+# Ingrediente de la Mochila Espacial de RPGRoll-Extras (backpacks.yml, nivel
+# espacial): la receta pide 8 de estos alrededor de una mochila de netherita.
+# Solo sirve este ítem; una amatista cualquiera no cuenta.
+id: mineral_espacial
+pack: crafting
+material: AMETHYST_SHARD
+display-name: "&d&l✦ Mineral Espacial"
+lore:
+  - "&7Un fragmento que no es de este mundo."
+  - "&7Pesa menos de lo que debería."
+  - "&8Ingrediente de forja"
+rarity: MYTHIC
+glow: true
+economy:
+  sell: 2500
