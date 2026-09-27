@@ -1,0 +1,212 @@
+# GENERADO por sackito-network/infra/muebles/construir.py: no se edita a mano.
+
+street_lamp:
+  category: "garden"
+  name: "Farola"
+  material: "PAPER"
+  model: "rpgroll_furniture:street_lamp/default"
+  placement:
+    surfaces:
+      - "floor"
+  hitbox:
+    type: "barrier"
+    blocks:
+      - "0,0,0"
+      - "0,1,0"
+  light:
+    level: 15
+    at: "0,2,0"
+  recipe:
+    materials:
+      IRON_INGOT: 4
+      LANTERN: 1
+    money: 25
+  sounds:
+    place: "block.metal.place"
+    break: "block.metal.break"
+fountain:
+  category: "garden"
+  name: "Fuente"
+  material: "PAPER"
+  model: "rpgroll_furniture:fountain/default"
+  placement:
+    surfaces:
+      - "floor"
+  hitbox:
+    type: "barrier"
+    blocks:
+      - "0,0,0"
+  ambient:
+    particle: "SPLASH"
+    at: "0,0.95,0"
+    count: 3
+    spread: 0.08
+    every: 6
+  recipe:
+    materials:
+      STONE_BRICKS: 6
+      WATER_BUCKET: 1
+    money: 35
+  sounds:
+    place: "block.metal.place"
+    break: "block.metal.break"
+parasol:
+  category: "garden"
+  name: "Sombrilla blanco"
+  material: "PAPER"
+  model: "rpgroll_furniture:parasol/white"
+  variants:
+    white:
+      name: "Sombrilla blanco"
+      model: "rpgroll_furniture:parasol/white"
+      dye: "WHITE"
+      recipe:
+        materials:
+          WHITE_WOOL: 3
+          STICK: 3
+        money: 15
+    orange:
+      name: "Sombrilla naranja"
+      model: "rpgroll_furniture:parasol/orange"
+      dye: "ORANGE"
+      recipe:
+        materials:
+          ORANGE_WOOL: 3
+          STICK: 3
+        money: 15
+    magenta:
+      name: "Sombrilla magenta"
+      model: "rpgroll_furniture:parasol/magenta"
+      dye: "MAGENTA"
+      recipe:
+        materials:
+          MAGENTA_WOOL: 3
+          STICK: 3
+        money: 15
+    light_blue:
+      name: "Sombrilla azul claro"
+      model: "rpgroll_furniture:parasol/light_blue"
+      dye: "LIGHT_BLUE"
+      recipe:
+        materials:
+          LIGHT_BLUE_WOOL: 3
+          STICK: 3
+        money: 15
+    yellow:
+      name: "Sombrilla amarillo"
+      model: "rpgroll_furniture:parasol/yellow"
+      dye: "YELLOW"
+      recipe:
+        materials:
+          YELLOW_WOOL: 3
+          STICK: 3
+        money: 15
+    lime:
+      name: "Sombrilla lima"
+      model: "rpgroll_furniture:parasol/lime"
+      dye: "LIME"
+      recipe:
+        materials:
+          LIME_WOOL: 3
+          STICK: 3
+        money: 15
+    pink:
+      name: "Sombrilla rosa"
+      model: "rpgroll_furniture:parasol/pink"
+      dye: "PINK"
+      recipe:
+        materials:
+          PINK_WOOL: 3
+          STICK: 3
+        money: 15
+    gray:
+      name: "Sombrilla gris"
+      model: "rpgroll_furniture:parasol/gray"
+      dye: "GRAY"
+      recipe:
+        materials:
+          GRAY_WOOL: 3
+          STICK: 3
+        money: 15
+    light_gray:
+      name: "Sombrilla gris claro"
+      model: "rpgroll_furniture:parasol/light_gray"
+      dye: "LIGHT_GRAY"
+      recipe:
+        materials:
+          LIGHT_GRAY_WOOL: 3
+          STICK: 3
+        money: 15
+    cyan:
+      name: "Sombrilla cian"
+      model: "rpgroll_furniture:parasol/cyan"
+      dye: "CYAN"
+      recipe:
+        materials:
+          CYAN_WOOL: 3
+          STICK: 3
+        money: 15
+    purple:
+      name: "Sombrilla morado"
+      model: "rpgroll_furniture:parasol/purple"
+      dye: "PURPLE"
+      recipe:
+        materials:
+          PURPLE_WOOL: 3
+          STICK: 3
+        money: 15
+    blue:
+      name: "Sombrilla azul"
+      model: "rpgroll_furniture:parasol/blue"
+      dye: "BLUE"
+      recipe:
+        materials:
+          BLUE_WOOL: 3
+          STICK: 3
+        money: 15
+    brown:
+      name: "Sombrilla marrón"
+      model: "rpgroll_furniture:parasol/brown"
+      dye: "BROWN"
+      recipe:
+        materials:
+          BROWN_WOOL: 3
+          STICK: 3
+        money: 15
+    green:
+      name: "Sombrilla verde"
+      model: "rpgroll_furniture:parasol/green"
+      dye: "GREEN"
+      recipe:
+        materials:
+          GREEN_WOOL: 3
+          STICK: 3
+        money: 15
+    red:
+      name: "Sombrilla rojo"
+      model: "rpgroll_furniture:parasol/red"
+      dye: "RED"
+      recipe:
+        materials:
+          RED_WOOL: 3
+          STICK: 3
+        money: 15
+    black:
+      name: "Sombrilla negro"
+      model: "rpgroll_furniture:parasol/black"
+      dye: "BLACK"
+      recipe:
+        materials:
+          BLACK_WOOL: 3
+          STICK: 3
+        money: 15
+  placement:
+    surfaces:
+      - "floor"
+  hitbox:
+    type: "interaction"
+    width: 0.4
+    height: 1.9
+  sounds:
+    place: "block.wool.place"
+    break: "block.wool.break"

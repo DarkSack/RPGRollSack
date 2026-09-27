@@ -30,7 +30,9 @@ public record ServerShopEntry(Kind kind, String key, int level, String form, int
         /** Libro encantado vanilla. */
         BOOK,
         /** Poción vanilla. */
-        POTION
+        POTION,
+        /** Mueble de RPGRoll-Furniture ({@code id} o {@code id:versión}). */
+        FURNITURE
     }
 
     public ServerShopEntry {

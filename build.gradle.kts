@@ -9,6 +9,7 @@ val addonModuleNames = listOf(
     "common", "core", "npcs", "crates", "enchantments", "quests", "items", "ascension", "mobs",
     "dungeons", "guilds", "chat", "fx", "effects", "magic", "seasons", "fishing",
     "sackresourcepack", "ranching", "workers", "economy", "crafting", "tab", "extras", "traps", "pass",
+    "furniture",
 )
 
 val addonProjects = addonModuleNames.map { project(it) }

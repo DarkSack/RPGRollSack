@@ -1,0 +1,683 @@
+# GENERADO por sackito-network/infra/muebles/construir.py: no se edita a mano.
+
+table:
+  category: "tables"
+  name: "Mesa de roble"
+  lore:
+    - "&7Clic con un objeto para dejarlo encima."
+  material: "PAPER"
+  model: "rpgroll_furniture:table/oak"
+  variants:
+    oak:
+      name: "Mesa de roble"
+      model: "rpgroll_furniture:table/oak"
+      recipe:
+        materials:
+          OAK_PLANKS: 4
+          STICK: 4
+        money: 15
+    spruce:
+      name: "Mesa de abeto"
+      model: "rpgroll_furniture:table/spruce"
+      recipe:
+        materials:
+          SPRUCE_PLANKS: 4
+          STICK: 4
+        money: 15
+    birch:
+      name: "Mesa de abedul"
+      model: "rpgroll_furniture:table/birch"
+      recipe:
+        materials:
+          BIRCH_PLANKS: 4
+          STICK: 4
+        money: 15
+    jungle:
+      name: "Mesa de jungla"
+      model: "rpgroll_furniture:table/jungle"
+      recipe:
+        materials:
+          JUNGLE_PLANKS: 4
+          STICK: 4
+        money: 15
+    acacia:
+      name: "Mesa de acacia"
+      model: "rpgroll_furniture:table/acacia"
+      recipe:
+        materials:
+          ACACIA_PLANKS: 4
+          STICK: 4
+        money: 15
+    dark_oak:
+      name: "Mesa de roble oscuro"
+      model: "rpgroll_furniture:table/dark_oak"
+      recipe:
+        materials:
+          DARK_OAK_PLANKS: 4
+          STICK: 4
+        money: 15
+    mangrove:
+      name: "Mesa de mangle"
+      model: "rpgroll_furniture:table/mangrove"
+      recipe:
+        materials:
+          MANGROVE_PLANKS: 4
+          STICK: 4
+        money: 15
+    cherry:
+      name: "Mesa de cerezo"
+      model: "rpgroll_furniture:table/cherry"
+      recipe:
+        materials:
+          CHERRY_PLANKS: 4
+          STICK: 4
+        money: 15
+    bamboo:
+      name: "Mesa de bambú"
+      model: "rpgroll_furniture:table/bamboo"
+      recipe:
+        materials:
+          BAMBOO_PLANKS: 4
+          STICK: 4
+        money: 15
+    crimson:
+      name: "Mesa de carmesí"
+      model: "rpgroll_furniture:table/crimson"
+      recipe:
+        materials:
+          CRIMSON_PLANKS: 4
+          STICK: 4
+        money: 15
+    warped:
+      name: "Mesa de distorsionada"
+      model: "rpgroll_furniture:table/warped"
+      recipe:
+        materials:
+          WARPED_PLANKS: 4
+          STICK: 4
+        money: 15
+    pale_oak:
+      name: "Mesa de roble pálido"
+      model: "rpgroll_furniture:table/pale_oak"
+      recipe:
+        materials:
+          PALE_OAK_PLANKS: 4
+          STICK: 4
+        money: 15
+  placement:
+    surfaces:
+      - "floor"
+  hitbox:
+    type: "barrier"
+    blocks:
+      - "0,0,0"
+  shelf:
+    - at: "0,1.01,0"
+      scale: 0.45
+      flat: true
+long_table:
+  category: "tables"
+  name: "Mesa larga de roble"
+  material: "PAPER"
+  model: "rpgroll_furniture:long_table/oak"
+  variants:
+    oak:
+      name: "Mesa larga de roble"
+      model: "rpgroll_furniture:long_table/oak"
+      recipe:
+        materials:
+          OAK_PLANKS: 7
+          STICK: 4
+        money: 25
+    spruce:
+      name: "Mesa larga de abeto"
+      model: "rpgroll_furniture:long_table/spruce"
+      recipe:
+        materials:
+          SPRUCE_PLANKS: 7
+          STICK: 4
+        money: 25
+    birch:
+      name: "Mesa larga de abedul"
+      model: "rpgroll_furniture:long_table/birch"
+      recipe:
+        materials:
+          BIRCH_PLANKS: 7
+          STICK: 4
+        money: 25
+    jungle:
+      name: "Mesa larga de jungla"
+      model: "rpgroll_furniture:long_table/jungle"
+      recipe:
+        materials:
+          JUNGLE_PLANKS: 7
+          STICK: 4
+        money: 25
+    acacia:
+      name: "Mesa larga de acacia"
+      model: "rpgroll_furniture:long_table/acacia"
+      recipe:
+        materials:
+          ACACIA_PLANKS: 7
+          STICK: 4
+        money: 25
+    dark_oak:
+      name: "Mesa larga de roble oscuro"
+      model: "rpgroll_furniture:long_table/dark_oak"
+      recipe:
+        materials:
+          DARK_OAK_PLANKS: 7
+          STICK: 4
+        money: 25
+    mangrove:
+      name: "Mesa larga de mangle"
+      model: "rpgroll_furniture:long_table/mangrove"
+      recipe:
+        materials:
+          MANGROVE_PLANKS: 7
+          STICK: 4
+        money: 25
+    cherry:
+      name: "Mesa larga de cerezo"
+      model: "rpgroll_furniture:long_table/cherry"
+      recipe:
+        materials:
+          CHERRY_PLANKS: 7
+          STICK: 4
+        money: 25
+    bamboo:
+      name: "Mesa larga de bambú"
+      model: "rpgroll_furniture:long_table/bamboo"
+      recipe:
+        materials:
+          BAMBOO_PLANKS: 7
+          STICK: 4
+        money: 25
+    crimson:
+      name: "Mesa larga de carmesí"
+      model: "rpgroll_furniture:long_table/crimson"
+      recipe:
+        materials:
+          CRIMSON_PLANKS: 7
+          STICK: 4
+        money: 25
+    warped:
+      name: "Mesa larga de distorsionada"
+      model: "rpgroll_furniture:long_table/warped"
+      recipe:
+        materials:
+          WARPED_PLANKS: 7
+          STICK: 4
+        money: 25
+    pale_oak:
+      name: "Mesa larga de roble pálido"
+      model: "rpgroll_furniture:long_table/pale_oak"
+      recipe:
+        materials:
+          PALE_OAK_PLANKS: 7
+          STICK: 4
+        money: 25
+  placement:
+    surfaces:
+      - "floor"
+  hitbox:
+    type: "barrier"
+    blocks:
+      - "0,0,0"
+      - "-1,0,0"
+  shelf:
+    - at: "0,1.01,0"
+      scale: 0.45
+      flat: true
+    - at: "-1,1.01,0"
+      scale: 0.45
+      flat: true
+coffee_table:
+  category: "tables"
+  name: "Mesita baja de roble"
+  material: "PAPER"
+  model: "rpgroll_furniture:coffee_table/oak"
+  variants:
+    oak:
+      name: "Mesita baja de roble"
+      model: "rpgroll_furniture:coffee_table/oak"
+      recipe:
+        materials:
+          OAK_SLAB: 3
+          STICK: 4
+        money: 10
+    spruce:
+      name: "Mesita baja de abeto"
+      model: "rpgroll_furniture:coffee_table/spruce"
+      recipe:
+        materials:
+          SPRUCE_SLAB: 3
+          STICK: 4
+        money: 10
+    birch:
+      name: "Mesita baja de abedul"
+      model: "rpgroll_furniture:coffee_table/birch"
+      recipe:
+        materials:
+          BIRCH_SLAB: 3
+          STICK: 4
+        money: 10
+    jungle:
+      name: "Mesita baja de jungla"
+      model: "rpgroll_furniture:coffee_table/jungle"
+      recipe:
+        materials:
+          JUNGLE_SLAB: 3
+          STICK: 4
+        money: 10
+    acacia:
+      name: "Mesita baja de acacia"
+      model: "rpgroll_furniture:coffee_table/acacia"
+      recipe:
+        materials:
+          ACACIA_SLAB: 3
+          STICK: 4
+        money: 10
+    dark_oak:
+      name: "Mesita baja de roble oscuro"
+      model: "rpgroll_furniture:coffee_table/dark_oak"
+      recipe:
+        materials:
+          DARK_OAK_SLAB: 3
+          STICK: 4
+        money: 10
+    mangrove:
+      name: "Mesita baja de mangle"
+      model: "rpgroll_furniture:coffee_table/mangrove"
+      recipe:
+        materials:
+          MANGROVE_SLAB: 3
+          STICK: 4
+        money: 10
+    cherry:
+      name: "Mesita baja de cerezo"
+      model: "rpgroll_furniture:coffee_table/cherry"
+      recipe:
+        materials:
+          CHERRY_SLAB: 3
+          STICK: 4
+        money: 10
+    bamboo:
+      name: "Mesita baja de bambú"
+      model: "rpgroll_furniture:coffee_table/bamboo"
+      recipe:
+        materials:
+          BAMBOO_SLAB: 3
+          STICK: 4
+        money: 10
+    crimson:
+      name: "Mesita baja de carmesí"
+      model: "rpgroll_furniture:coffee_table/crimson"
+      recipe:
+        materials:
+          CRIMSON_SLAB: 3
+          STICK: 4
+        money: 10
+    warped:
+      name: "Mesita baja de distorsionada"
+      model: "rpgroll_furniture:coffee_table/warped"
+      recipe:
+        materials:
+          WARPED_SLAB: 3
+          STICK: 4
+        money: 10
+    pale_oak:
+      name: "Mesita baja de roble pálido"
+      model: "rpgroll_furniture:coffee_table/pale_oak"
+      recipe:
+        materials:
+          PALE_OAK_SLAB: 3
+          STICK: 4
+        money: 10
+  placement:
+    surfaces:
+      - "floor"
+  hitbox:
+    type: "barrier"
+    blocks:
+      - "0,0,0"
+  shelf:
+    - at: "0,0.48,0"
+      scale: 0.4
+      flat: true
+round_table:
+  category: "tables"
+  name: "Mesa redonda de roble"
+  material: "PAPER"
+  model: "rpgroll_furniture:round_table/oak"
+  variants:
+    oak:
+      name: "Mesa redonda de roble"
+      model: "rpgroll_furniture:round_table/oak"
+      recipe:
+        materials:
+          OAK_PLANKS: 4
+          STICK: 2
+        money: 15
+    spruce:
+      name: "Mesa redonda de abeto"
+      model: "rpgroll_furniture:round_table/spruce"
+      recipe:
+        materials:
+          SPRUCE_PLANKS: 4
+          STICK: 2
+        money: 15
+    birch:
+      name: "Mesa redonda de abedul"
+      model: "rpgroll_furniture:round_table/birch"
+      recipe:
+        materials:
+          BIRCH_PLANKS: 4
+          STICK: 2
+        money: 15
+    jungle:
+      name: "Mesa redonda de jungla"
+      model: "rpgroll_furniture:round_table/jungle"
+      recipe:
+        materials:
+          JUNGLE_PLANKS: 4
+          STICK: 2
+        money: 15
+    acacia:
+      name: "Mesa redonda de acacia"
+      model: "rpgroll_furniture:round_table/acacia"
+      recipe:
+        materials:
+          ACACIA_PLANKS: 4
+          STICK: 2
+        money: 15
+    dark_oak:
+      name: "Mesa redonda de roble oscuro"
+      model: "rpgroll_furniture:round_table/dark_oak"
+      recipe:
+        materials:
+          DARK_OAK_PLANKS: 4
+          STICK: 2
+        money: 15
+    mangrove:
+      name: "Mesa redonda de mangle"
+      model: "rpgroll_furniture:round_table/mangrove"
+      recipe:
+        materials:
+          MANGROVE_PLANKS: 4
+          STICK: 2
+        money: 15
+    cherry:
+      name: "Mesa redonda de cerezo"
+      model: "rpgroll_furniture:round_table/cherry"
+      recipe:
+        materials:
+          CHERRY_PLANKS: 4
+          STICK: 2
+        money: 15
+    bamboo:
+      name: "Mesa redonda de bambú"
+      model: "rpgroll_furniture:round_table/bamboo"
+      recipe:
+        materials:
+          BAMBOO_PLANKS: 4
+          STICK: 2
+        money: 15
+    crimson:
+      name: "Mesa redonda de carmesí"
+      model: "rpgroll_furniture:round_table/crimson"
+      recipe:
+        materials:
+          CRIMSON_PLANKS: 4
+          STICK: 2
+        money: 15
+    warped:
+      name: "Mesa redonda de distorsionada"
+      model: "rpgroll_furniture:round_table/warped"
+      recipe:
+        materials:
+          WARPED_PLANKS: 4
+          STICK: 2
+        money: 15
+    pale_oak:
+      name: "Mesa redonda de roble pálido"
+      model: "rpgroll_furniture:round_table/pale_oak"
+      recipe:
+        materials:
+          PALE_OAK_PLANKS: 4
+          STICK: 2
+        money: 15
+  placement:
+    surfaces:
+      - "floor"
+  hitbox:
+    type: "barrier"
+    blocks:
+      - "0,0,0"
+  shelf:
+    - at: "0,0.99,0"
+      scale: 0.45
+      flat: true
+nightstand:
+  category: "tables"
+  name: "Mesita de noche de roble"
+  material: "PAPER"
+  model: "rpgroll_furniture:nightstand/oak"
+  variants:
+    oak:
+      name: "Mesita de noche de roble"
+      model: "rpgroll_furniture:nightstand/oak"
+      recipe:
+        materials:
+          OAK_PLANKS: 5
+          CHEST: 1
+        money: 15
+    spruce:
+      name: "Mesita de noche de abeto"
+      model: "rpgroll_furniture:nightstand/spruce"
+      recipe:
+        materials:
+          SPRUCE_PLANKS: 5
+          CHEST: 1
+        money: 15
+    birch:
+      name: "Mesita de noche de abedul"
+      model: "rpgroll_furniture:nightstand/birch"
+      recipe:
+        materials:
+          BIRCH_PLANKS: 5
+          CHEST: 1
+        money: 15
+    jungle:
+      name: "Mesita de noche de jungla"
+      model: "rpgroll_furniture:nightstand/jungle"
+      recipe:
+        materials:
+          JUNGLE_PLANKS: 5
+          CHEST: 1
+        money: 15
+    acacia:
+      name: "Mesita de noche de acacia"
+      model: "rpgroll_furniture:nightstand/acacia"
+      recipe:
+        materials:
+          ACACIA_PLANKS: 5
+          CHEST: 1
+        money: 15
+    dark_oak:
+      name: "Mesita de noche de roble oscuro"
+      model: "rpgroll_furniture:nightstand/dark_oak"
+      recipe:
+        materials:
+          DARK_OAK_PLANKS: 5
+          CHEST: 1
+        money: 15
+    mangrove:
+      name: "Mesita de noche de mangle"
+      model: "rpgroll_furniture:nightstand/mangrove"
+      recipe:
+        materials:
+          MANGROVE_PLANKS: 5
+          CHEST: 1
+        money: 15
+    cherry:
+      name: "Mesita de noche de cerezo"
+      model: "rpgroll_furniture:nightstand/cherry"
+      recipe:
+        materials:
+          CHERRY_PLANKS: 5
+          CHEST: 1
+        money: 15
+    bamboo:
+      name: "Mesita de noche de bambú"
+      model: "rpgroll_furniture:nightstand/bamboo"
+      recipe:
+        materials:
+          BAMBOO_PLANKS: 5
+          CHEST: 1
+        money: 15
+    crimson:
+      name: "Mesita de noche de carmesí"
+      model: "rpgroll_furniture:nightstand/crimson"
+      recipe:
+        materials:
+          CRIMSON_PLANKS: 5
+          CHEST: 1
+        money: 15
+    warped:
+      name: "Mesita de noche de distorsionada"
+      model: "rpgroll_furniture:nightstand/warped"
+      recipe:
+        materials:
+          WARPED_PLANKS: 5
+          CHEST: 1
+        money: 15
+    pale_oak:
+      name: "Mesita de noche de roble pálido"
+      model: "rpgroll_furniture:nightstand/pale_oak"
+      recipe:
+        materials:
+          PALE_OAK_PLANKS: 5
+          CHEST: 1
+        money: 15
+  placement:
+    surfaces:
+      - "floor"
+  hitbox:
+    type: "barrier"
+    blocks:
+      - "0,0,0"
+  storage:
+    rows: 1
+desk:
+  category: "tables"
+  name: "Escritorio de roble"
+  material: "PAPER"
+  model: "rpgroll_furniture:desk/oak"
+  variants:
+    oak:
+      name: "Escritorio de roble"
+      model: "rpgroll_furniture:desk/oak"
+      recipe:
+        materials:
+          OAK_PLANKS: 8
+          CHEST: 1
+        money: 35
+    spruce:
+      name: "Escritorio de abeto"
+      model: "rpgroll_furniture:desk/spruce"
+      recipe:
+        materials:
+          SPRUCE_PLANKS: 8
+          CHEST: 1
+        money: 35
+    birch:
+      name: "Escritorio de abedul"
+      model: "rpgroll_furniture:desk/birch"
+      recipe:
+        materials:
+          BIRCH_PLANKS: 8
+          CHEST: 1
+        money: 35
+    jungle:
+      name: "Escritorio de jungla"
+      model: "rpgroll_furniture:desk/jungle"
+      recipe:
+        materials:
+          JUNGLE_PLANKS: 8
+          CHEST: 1
+        money: 35
+    acacia:
+      name: "Escritorio de acacia"
+      model: "rpgroll_furniture:desk/acacia"
+      recipe:
+        materials:
+          ACACIA_PLANKS: 8
+          CHEST: 1
+        money: 35
+    dark_oak:
+      name: "Escritorio de roble oscuro"
+      model: "rpgroll_furniture:desk/dark_oak"
+      recipe:
+        materials:
+          DARK_OAK_PLANKS: 8
+          CHEST: 1
+        money: 35
+    mangrove:
+      name: "Escritorio de mangle"
+      model: "rpgroll_furniture:desk/mangrove"
+      recipe:
+        materials:
+          MANGROVE_PLANKS: 8
+          CHEST: 1
+        money: 35
+    cherry:
+      name: "Escritorio de cerezo"
+      model: "rpgroll_furniture:desk/cherry"
+      recipe:
+        materials:
+          CHERRY_PLANKS: 8
+          CHEST: 1
+        money: 35
+    bamboo:
+      name: "Escritorio de bambú"
+      model: "rpgroll_furniture:desk/bamboo"
+      recipe:
+        materials:
+          BAMBOO_PLANKS: 8
+          CHEST: 1
+        money: 35
+    crimson:
+      name: "Escritorio de carmesí"
+      model: "rpgroll_furniture:desk/crimson"
+      recipe:
+        materials:
+          CRIMSON_PLANKS: 8
+          CHEST: 1
+        money: 35
+    warped:
+      name: "Escritorio de distorsionada"
+      model: "rpgroll_furniture:desk/warped"
+      recipe:
+        materials:
+          WARPED_PLANKS: 8
+          CHEST: 1
+        money: 35
+    pale_oak:
+      name: "Escritorio de roble pálido"
+      model: "rpgroll_furniture:desk/pale_oak"
+      recipe:
+        materials:
+          PALE_OAK_PLANKS: 8
+          CHEST: 1
+        money: 35
+  placement:
+    surfaces:
+      - "floor"
+  hitbox:
+    type: "barrier"
+    blocks:
+      - "0,0,0"
+      - "-1,0,0"
+  storage:
+    rows: 2

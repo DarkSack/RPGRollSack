@@ -1,0 +1,421 @@
+# GENERADO por sackito-network/infra/muebles/construir.py: no se edita a mano.
+
+counter:
+  category: "kitchen"
+  name: "Encimera de roble"
+  material: "PAPER"
+  model: "rpgroll_furniture:counter/oak"
+  variants:
+    oak:
+      name: "Encimera de roble"
+      model: "rpgroll_furniture:counter/oak"
+      recipe:
+        materials:
+          OAK_PLANKS: 4
+          SMOOTH_QUARTZ_SLAB: 1
+        money: 20
+    spruce:
+      name: "Encimera de abeto"
+      model: "rpgroll_furniture:counter/spruce"
+      recipe:
+        materials:
+          SPRUCE_PLANKS: 4
+          SMOOTH_QUARTZ_SLAB: 1
+        money: 20
+    birch:
+      name: "Encimera de abedul"
+      model: "rpgroll_furniture:counter/birch"
+      recipe:
+        materials:
+          BIRCH_PLANKS: 4
+          SMOOTH_QUARTZ_SLAB: 1
+        money: 20
+    jungle:
+      name: "Encimera de jungla"
+      model: "rpgroll_furniture:counter/jungle"
+      recipe:
+        materials:
+          JUNGLE_PLANKS: 4
+          SMOOTH_QUARTZ_SLAB: 1
+        money: 20
+    acacia:
+      name: "Encimera de acacia"
+      model: "rpgroll_furniture:counter/acacia"
+      recipe:
+        materials:
+          ACACIA_PLANKS: 4
+          SMOOTH_QUARTZ_SLAB: 1
+        money: 20
+    dark_oak:
+      name: "Encimera de roble oscuro"
+      model: "rpgroll_furniture:counter/dark_oak"
+      recipe:
+        materials:
+          DARK_OAK_PLANKS: 4
+          SMOOTH_QUARTZ_SLAB: 1
+        money: 20
+    mangrove:
+      name: "Encimera de mangle"
+      model: "rpgroll_furniture:counter/mangrove"
+      recipe:
+        materials:
+          MANGROVE_PLANKS: 4
+          SMOOTH_QUARTZ_SLAB: 1
+        money: 20
+    cherry:
+      name: "Encimera de cerezo"
+      model: "rpgroll_furniture:counter/cherry"
+      recipe:
+        materials:
+          CHERRY_PLANKS: 4
+          SMOOTH_QUARTZ_SLAB: 1
+        money: 20
+    bamboo:
+      name: "Encimera de bambú"
+      model: "rpgroll_furniture:counter/bamboo"
+      recipe:
+        materials:
+          BAMBOO_PLANKS: 4
+          SMOOTH_QUARTZ_SLAB: 1
+        money: 20
+    crimson:
+      name: "Encimera de carmesí"
+      model: "rpgroll_furniture:counter/crimson"
+      recipe:
+        materials:
+          CRIMSON_PLANKS: 4
+          SMOOTH_QUARTZ_SLAB: 1
+        money: 20
+    warped:
+      name: "Encimera de distorsionada"
+      model: "rpgroll_furniture:counter/warped"
+      recipe:
+        materials:
+          WARPED_PLANKS: 4
+          SMOOTH_QUARTZ_SLAB: 1
+        money: 20
+    pale_oak:
+      name: "Encimera de roble pálido"
+      model: "rpgroll_furniture:counter/pale_oak"
+      recipe:
+        materials:
+          PALE_OAK_PLANKS: 4
+          SMOOTH_QUARTZ_SLAB: 1
+        money: 20
+  placement:
+    surfaces:
+      - "floor"
+  hitbox:
+    type: "barrier"
+    blocks:
+      - "0,0,0"
+  storage:
+    rows: 3
+sink:
+  category: "kitchen"
+  name: "Fregadero de roble"
+  material: "PAPER"
+  model: "rpgroll_furniture:sink/oak"
+  variants:
+    oak:
+      name: "Fregadero de roble"
+      model: "rpgroll_furniture:sink/oak"
+      recipe:
+        materials:
+          OAK_PLANKS: 4
+          IRON_INGOT: 2
+          WATER_BUCKET: 1
+        money: 25
+    spruce:
+      name: "Fregadero de abeto"
+      model: "rpgroll_furniture:sink/spruce"
+      recipe:
+        materials:
+          SPRUCE_PLANKS: 4
+          IRON_INGOT: 2
+          WATER_BUCKET: 1
+        money: 25
+    birch:
+      name: "Fregadero de abedul"
+      model: "rpgroll_furniture:sink/birch"
+      recipe:
+        materials:
+          BIRCH_PLANKS: 4
+          IRON_INGOT: 2
+          WATER_BUCKET: 1
+        money: 25
+    jungle:
+      name: "Fregadero de jungla"
+      model: "rpgroll_furniture:sink/jungle"
+      recipe:
+        materials:
+          JUNGLE_PLANKS: 4
+          IRON_INGOT: 2
+          WATER_BUCKET: 1
+        money: 25
+    acacia:
+      name: "Fregadero de acacia"
+      model: "rpgroll_furniture:sink/acacia"
+      recipe:
+        materials:
+          ACACIA_PLANKS: 4
+          IRON_INGOT: 2
+          WATER_BUCKET: 1
+        money: 25
+    dark_oak:
+      name: "Fregadero de roble oscuro"
+      model: "rpgroll_furniture:sink/dark_oak"
+      recipe:
+        materials:
+          DARK_OAK_PLANKS: 4
+          IRON_INGOT: 2
+          WATER_BUCKET: 1
+        money: 25
+    mangrove:
+      name: "Fregadero de mangle"
+      model: "rpgroll_furniture:sink/mangrove"
+      recipe:
+        materials:
+          MANGROVE_PLANKS: 4
+          IRON_INGOT: 2
+          WATER_BUCKET: 1
+        money: 25
+    cherry:
+      name: "Fregadero de cerezo"
+      model: "rpgroll_furniture:sink/cherry"
+      recipe:
+        materials:
+          CHERRY_PLANKS: 4
+          IRON_INGOT: 2
+          WATER_BUCKET: 1
+        money: 25
+    bamboo:
+      name: "Fregadero de bambú"
+      model: "rpgroll_furniture:sink/bamboo"
+      recipe:
+        materials:
+          BAMBOO_PLANKS: 4
+          IRON_INGOT: 2
+          WATER_BUCKET: 1
+        money: 25
+    crimson:
+      name: "Fregadero de carmesí"
+      model: "rpgroll_furniture:sink/crimson"
+      recipe:
+        materials:
+          CRIMSON_PLANKS: 4
+          IRON_INGOT: 2
+          WATER_BUCKET: 1
+        money: 25
+    warped:
+      name: "Fregadero de distorsionada"
+      model: "rpgroll_furniture:sink/warped"
+      recipe:
+        materials:
+          WARPED_PLANKS: 4
+          IRON_INGOT: 2
+          WATER_BUCKET: 1
+        money: 25
+    pale_oak:
+      name: "Fregadero de roble pálido"
+      model: "rpgroll_furniture:sink/pale_oak"
+      recipe:
+        materials:
+          PALE_OAK_PLANKS: 4
+          IRON_INGOT: 2
+          WATER_BUCKET: 1
+        money: 25
+  placement:
+    surfaces:
+      - "floor"
+  hitbox:
+    type: "barrier"
+    blocks:
+      - "0,0,0"
+  actions:
+    - sound: "item.bucket.empty"
+stove:
+  category: "kitchen"
+  name: "Cocina"
+  lore:
+    - "&7Clic para encender los fogones."
+  material: "PAPER"
+  model: "rpgroll_furniture:stove/default"
+  placement:
+    surfaces:
+      - "floor"
+  hitbox:
+    type: "barrier"
+    blocks:
+      - "0,0,0"
+  states:
+    trigger: "click"
+    list:
+      - id: "off"
+        suffix: ""
+        light: 0
+        sound: "block.fire.extinguish"
+      - id: "on"
+        suffix: "_on"
+        light: 11
+        sound: "item.flintandsteel.use"
+  ambient:
+    particle: "SMOKE"
+    at: "0,1.1,0"
+    count: 1
+    spread: 0.15
+    every: 16
+    state: "on"
+  recipe:
+    materials:
+      IRON_INGOT: 5
+      FURNACE: 1
+    money: 45
+  sounds:
+    place: "block.metal.place"
+    break: "block.metal.break"
+fridge:
+  category: "kitchen"
+  name: "Nevera blanca"
+  material: "PAPER"
+  model: "rpgroll_furniture:fridge/white"
+  variants:
+    white:
+      name: "Nevera blanca"
+      model: "rpgroll_furniture:fridge/white"
+    black:
+      name: "Nevera negra"
+      model: "rpgroll_furniture:fridge/black"
+    silver:
+      name: "Nevera plateada"
+      model: "rpgroll_furniture:fridge/silver"
+  placement:
+    surfaces:
+      - "floor"
+  hitbox:
+    type: "barrier"
+    blocks:
+      - "0,0,0"
+      - "0,1,0"
+  storage:
+    rows: 4
+  recipe:
+    materials:
+      IRON_INGOT: 6
+      ICE: 2
+      CHEST: 1
+    money: 60
+  sounds:
+    place: "block.metal.place"
+    break: "block.metal.break"
+wall_cabinet:
+  category: "kitchen"
+  name: "Alacena de roble"
+  material: "PAPER"
+  model: "rpgroll_furniture:wall_cabinet/oak"
+  variants:
+    oak:
+      name: "Alacena de roble"
+      model: "rpgroll_furniture:wall_cabinet/oak"
+      recipe:
+        materials:
+          OAK_PLANKS: 4
+          GLASS_PANE: 2
+        money: 20
+    spruce:
+      name: "Alacena de abeto"
+      model: "rpgroll_furniture:wall_cabinet/spruce"
+      recipe:
+        materials:
+          SPRUCE_PLANKS: 4
+          GLASS_PANE: 2
+        money: 20
+    birch:
+      name: "Alacena de abedul"
+      model: "rpgroll_furniture:wall_cabinet/birch"
+      recipe:
+        materials:
+          BIRCH_PLANKS: 4
+          GLASS_PANE: 2
+        money: 20
+    jungle:
+      name: "Alacena de jungla"
+      model: "rpgroll_furniture:wall_cabinet/jungle"
+      recipe:
+        materials:
+          JUNGLE_PLANKS: 4
+          GLASS_PANE: 2
+        money: 20
+    acacia:
+      name: "Alacena de acacia"
+      model: "rpgroll_furniture:wall_cabinet/acacia"
+      recipe:
+        materials:
+          ACACIA_PLANKS: 4
+          GLASS_PANE: 2
+        money: 20
+    dark_oak:
+      name: "Alacena de roble oscuro"
+      model: "rpgroll_furniture:wall_cabinet/dark_oak"
+      recipe:
+        materials:
+          DARK_OAK_PLANKS: 4
+          GLASS_PANE: 2
+        money: 20
+    mangrove:
+      name: "Alacena de mangle"
+      model: "rpgroll_furniture:wall_cabinet/mangrove"
+      recipe:
+        materials:
+          MANGROVE_PLANKS: 4
+          GLASS_PANE: 2
+        money: 20
+    cherry:
+      name: "Alacena de cerezo"
+      model: "rpgroll_furniture:wall_cabinet/cherry"
+      recipe:
+        materials:
+          CHERRY_PLANKS: 4
+          GLASS_PANE: 2
+        money: 20
+    bamboo:
+      name: "Alacena de bambú"
+      model: "rpgroll_furniture:wall_cabinet/bamboo"
+      recipe:
+        materials:
+          BAMBOO_PLANKS: 4
+          GLASS_PANE: 2
+        money: 20
+    crimson:
+      name: "Alacena de carmesí"
+      model: "rpgroll_furniture:wall_cabinet/crimson"
+      recipe:
+        materials:
+          CRIMSON_PLANKS: 4
+          GLASS_PANE: 2
+        money: 20
+    warped:
+      name: "Alacena de distorsionada"
+      model: "rpgroll_furniture:wall_cabinet/warped"
+      recipe:
+        materials:
+          WARPED_PLANKS: 4
+          GLASS_PANE: 2
+        money: 20
+    pale_oak:
+      name: "Alacena de roble pálido"
+      model: "rpgroll_furniture:wall_cabinet/pale_oak"
+      recipe:
+        materials:
+          PALE_OAK_PLANKS: 4
+          GLASS_PANE: 2
+        money: 20
+  placement:
+    surfaces:
+      - "wall"
+  hitbox:
+    type: "interaction"
+    width: 1.0
+    height: 0.8
+  storage:
+    rows: 2

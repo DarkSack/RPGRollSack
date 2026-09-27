@@ -1,0 +1,258 @@
+# GENERADO por sackito-network/infra/muebles/construir.py: no se edita a mano.
+
+potted_plant:
+  category: "decoration"
+  name: "Maceta con helecho"
+  material: "PAPER"
+  model: "rpgroll_furniture:potted_plant/fern"
+  variants:
+    fern:
+      name: "Maceta con helecho"
+      model: "rpgroll_furniture:potted_plant/fern"
+    flowers:
+      name: "Maceta con flores"
+      model: "rpgroll_furniture:potted_plant/flowers"
+    cactus:
+      name: "Maceta con cactus"
+      model: "rpgroll_furniture:potted_plant/cactus"
+  placement:
+    surfaces:
+      - "floor"
+  hitbox:
+    type: "interaction"
+    width: 0.6
+    height: 0.9
+  recipe:
+    materials:
+      FLOWER_POT: 1
+      BONE_MEAL: 2
+    money: 5
+big_plant:
+  category: "decoration"
+  name: "Planta grande"
+  material: "PAPER"
+  model: "rpgroll_furniture:big_plant/default"
+  placement:
+    surfaces:
+      - "floor"
+  hitbox:
+    type: "interaction"
+    width: 0.7
+    height: 1.9
+  recipe:
+    materials:
+      FLOWER_POT: 1
+      OAK_SAPLING: 2
+      BONE_MEAL: 4
+    money: 15
+painting:
+  category: "decoration"
+  name: "Cuadro: paisaje"
+  material: "PAPER"
+  model: "rpgroll_furniture:painting/landscape"
+  variants:
+    landscape:
+      name: "Cuadro: paisaje"
+      model: "rpgroll_furniture:painting/landscape"
+    sunset:
+      name: "Cuadro: atardecer"
+      model: "rpgroll_furniture:painting/sunset"
+    mountain:
+      name: "Cuadro: montaña"
+      model: "rpgroll_furniture:painting/mountain"
+    abstract:
+      name: "Cuadro: abstracto"
+      model: "rpgroll_furniture:painting/abstract"
+    flowers:
+      name: "Cuadro: flores"
+      model: "rpgroll_furniture:painting/flowers"
+    sea:
+      name: "Cuadro: mar"
+      model: "rpgroll_furniture:painting/sea"
+  placement:
+    surfaces:
+      - "wall"
+  hitbox:
+    type: "interaction"
+    width: 1.0
+    height: 0.8
+  recipe:
+    materials:
+      PAINTING: 1
+      STICK: 2
+    money: 20
+wall_clock:
+  category: "decoration"
+  name: "Reloj de pared de roble"
+  material: "PAPER"
+  model: "rpgroll_furniture:wall_clock/oak"
+  variants:
+    oak:
+      name: "Reloj de pared de roble"
+      model: "rpgroll_furniture:wall_clock/oak"
+      recipe:
+        materials:
+          OAK_PLANKS: 2
+          CLOCK: 1
+        money: 20
+    spruce:
+      name: "Reloj de pared de abeto"
+      model: "rpgroll_furniture:wall_clock/spruce"
+      recipe:
+        materials:
+          SPRUCE_PLANKS: 2
+          CLOCK: 1
+        money: 20
+    birch:
+      name: "Reloj de pared de abedul"
+      model: "rpgroll_furniture:wall_clock/birch"
+      recipe:
+        materials:
+          BIRCH_PLANKS: 2
+          CLOCK: 1
+        money: 20
+    jungle:
+      name: "Reloj de pared de jungla"
+      model: "rpgroll_furniture:wall_clock/jungle"
+      recipe:
+        materials:
+          JUNGLE_PLANKS: 2
+          CLOCK: 1
+        money: 20
+    acacia:
+      name: "Reloj de pared de acacia"
+      model: "rpgroll_furniture:wall_clock/acacia"
+      recipe:
+        materials:
+          ACACIA_PLANKS: 2
+          CLOCK: 1
+        money: 20
+    dark_oak:
+      name: "Reloj de pared de roble oscuro"
+      model: "rpgroll_furniture:wall_clock/dark_oak"
+      recipe:
+        materials:
+          DARK_OAK_PLANKS: 2
+          CLOCK: 1
+        money: 20
+    mangrove:
+      name: "Reloj de pared de mangle"
+      model: "rpgroll_furniture:wall_clock/mangrove"
+      recipe:
+        materials:
+          MANGROVE_PLANKS: 2
+          CLOCK: 1
+        money: 20
+    cherry:
+      name: "Reloj de pared de cerezo"
+      model: "rpgroll_furniture:wall_clock/cherry"
+      recipe:
+        materials:
+          CHERRY_PLANKS: 2
+          CLOCK: 1
+        money: 20
+    bamboo:
+      name: "Reloj de pared de bambú"
+      model: "rpgroll_furniture:wall_clock/bamboo"
+      recipe:
+        materials:
+          BAMBOO_PLANKS: 2
+          CLOCK: 1
+        money: 20
+    crimson:
+      name: "Reloj de pared de carmesí"
+      model: "rpgroll_furniture:wall_clock/crimson"
+      recipe:
+        materials:
+          CRIMSON_PLANKS: 2
+          CLOCK: 1
+        money: 20
+    warped:
+      name: "Reloj de pared de distorsionada"
+      model: "rpgroll_furniture:wall_clock/warped"
+      recipe:
+        materials:
+          WARPED_PLANKS: 2
+          CLOCK: 1
+        money: 20
+    pale_oak:
+      name: "Reloj de pared de roble pálido"
+      model: "rpgroll_furniture:wall_clock/pale_oak"
+      recipe:
+        materials:
+          PALE_OAK_PLANKS: 2
+          CLOCK: 1
+        money: 20
+  placement:
+    surfaces:
+      - "wall"
+  hitbox:
+    type: "interaction"
+    width: 0.8
+    height: 0.8
+  actions:
+    - sound: "block.note_block.hat"
+globe:
+  category: "decoration"
+  name: "Globo terráqueo"
+  material: "PAPER"
+  model: "rpgroll_furniture:globe/default"
+  placement:
+    surfaces:
+      - "floor"
+  hitbox:
+    type: "interaction"
+    width: 0.6
+    height: 0.85
+  recipe:
+    materials:
+      MAP: 1
+      GOLD_NUGGET: 3
+      STICK: 1
+    money: 15
+vase:
+  category: "decoration"
+  name: "Jarrón blanco"
+  material: "PAPER"
+  model: "rpgroll_furniture:vase/white"
+  variants:
+    white:
+      name: "Jarrón blanco"
+      model: "rpgroll_furniture:vase/white"
+    blue:
+      name: "Jarrón azul"
+      model: "rpgroll_furniture:vase/blue"
+    terracotta:
+      name: "Jarrón de barro"
+      model: "rpgroll_furniture:vase/terracotta"
+  placement:
+    surfaces:
+      - "floor"
+  hitbox:
+    type: "interaction"
+    width: 0.45
+    height: 1.0
+  recipe:
+    materials:
+      CLAY_BALL: 4
+    money: 5
+trash_can:
+  category: "decoration"
+  name: "Papelera"
+  lore:
+    - "&7Lo que tires dentro desaparece al cerrarla."
+  material: "PAPER"
+  model: "rpgroll_furniture:trash_can/default"
+  placement:
+    surfaces:
+      - "floor"
+  hitbox:
+    type: "interaction"
+    width: 0.6
+    height: 0.65
+  trash:
+    rows: 3
+  recipe:
+    materials:
+      IRON_INGOT: 3
+    money: 5

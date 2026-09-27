@@ -1,0 +1,102 @@
+command:
+  players_only: "&cSó um jogador pode usar isto."
+  no_permission: "&cVocê não tem permissão para isso."
+
+station:
+  carpenter: "Carpinteiro"
+  blacksmith: "Ferreiro"
+  tailor: "Alfaiate"
+  potter: "Oleiro"
+
+item:
+  placed_on: "&8Vai em: &7{surfaces}"
+  surface:
+    floor: "chão"
+    wall: "parede"
+    ceiling: "teto"
+  function:
+    seat: "&8• &7Assento &8({seats})"
+    storage: "&8• &7Guarda {slots} itens"
+    trash: "&8• &7Lixeira"
+    light: "&8• &7Ilumina"
+    workstation: "&8• &7Bancada de trabalho"
+    shelf: "&8• &7Exibe {slots} item(ns)"
+    states: "&8• &7Clique para mudar"
+    dye: "&8• &7Pode ser tingido"
+
+place:
+  ok: ""
+  wrong_surface: "&cEste móvel não vai aí (veja a descrição)."
+  blocked: "&cNão cabe: tem algo no caminho."
+  entity_in_way: "&cTem alguém no caminho."
+  chunk_limit: "&cJá tem móveis demais nesta área."
+  type_limit: "&cJá tem muitos deste móvel nesta área."
+  no_permission: "&cVocê não pode colocar este móvel."
+  protected: "&cVocê não pode colocar móveis aqui."
+
+use:
+  unknown: "&cEste móvel ({id}) não existe mais no servidor."
+  not_owner: "&cEste móvel não é seu."
+  protected: "&cVocê não pode mexer em móveis aqui."
+  cannot_rotate: "&cNão cabe girado: algo atrapalha."
+  seat_taken: "&7Está ocupado."
+  storage_private: "&cSó o dono pode abrir."
+  shelf_full: "&7Não cabe mais nada."
+  unknown_workstation: "&cBancada desconhecida: {type}"
+
+carpenter:
+  crafted: "&aVocê fez &f{amount}x {name}&a."
+  missing_materials: "&cFaltam materiais."
+  no_money: "&cVocê não tem dinheiro suficiente."
+  no_economy: "&cEste servidor não tem economia para cobrar."
+
+gui:
+  catalog:
+    title: "<dark_gray>Catálogo de móveis"
+    help: "&eCatálogo &7— feitos num carpinteiro"
+    not_craftable: "&8Não se fabrica: consiga na loja ou como recompensa."
+    made_at: "<gray>Feito em: <white>{station}"
+    admin_take: "&8(admin) Clique: pegar um · Shift: 16"
+  carpenter:
+    title: "<dark_gray>{station}"
+    help: "&eEscolha o que fazer"
+    click: "&eClique: fazer · Shift+clique: até 10"
+  category:
+    count: "&7{count} móvel(is)"
+  variants: "&e{count} versões &7— clique para escolher"
+  cost:
+    title: "&7Custo:"
+    material_ok: "<dark_gray>• <green>{amount}x <lang:{material}> <dark_gray>(você tem {have})"
+    material_missing: "<dark_gray>• <red>{amount}x <lang:{material}> <dark_gray>(você tem {have})"
+    money: "&8• &6{money}"
+    amount: "&8• &7Rende {amount}"
+  empty: "&7Nada aqui."
+  previous: "&ePágina anterior"
+  next: "&ePróxima página"
+  back: "&eVoltar"
+
+admin:
+  help: |-
+    &6/furnitureadmin
+    &e • give <jogador> <móvel>[:versão] [quantidade]
+    &e • carpenter <jogador> [estação] &7— abre um carpinteiro (para um NPC)
+    &e • list &7— móveis carregados
+    &e • info &7— o móvel que você está olhando
+    &e • nearby [raio] &7— móveis próximos
+    &e • remove [raio] &7— remove os próximos (solta o que guardavam)
+    &e • reload
+  reloaded: "&aRecarregado: {count} móvel(is)."
+  give_usage: "&cUso: /furnitureadmin give <jogador> <móvel>[:versão] [quantidade]"
+  carpenter_usage: "&cUso: /furnitureadmin carpenter <jogador> [estação]"
+  player_not_found: "&cNão está online: {player}"
+  unknown_furniture: "&cNão existe o móvel '{id}'."
+  unknown_variant: "&c'{id}' não tem a versão '{variant}'. Tem: {variants}"
+  bad_number: "&cNão é um número: {value}"
+  given: "&aDado &f{amount}x {name} &apara {player}."
+  list_header: "&6{count} móvel(is) carregados &7({placed} colocados em chunks carregados)"
+  list_line: "&e{category}&7: {ids}"
+  info_none: "&7Você não está olhando para nenhum móvel."
+  info: "&6{id} &7versão &f{variant} &7estado &f{state} &7dono &f{owner} &7virado para &f{yaw}° &7em &f{x} {y} {z}"
+  nearby_header: "&6{count} móvel(is) a menos de {radius} blocos:"
+  nearby_line: "&e • {id} &7em {x} {y} {z}"
+  removed: "&aRemovidos {count} móvel(is) a menos de {radius} blocos."

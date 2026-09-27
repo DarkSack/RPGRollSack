@@ -29,4 +29,5 @@ dependencies {
     // La tienda del servidor vende ítems de Items y libros de Enchantments (softdepend).
     compileOnly(project(":items"))
     compileOnly(project(":enchantments"))
+    compileOnly(project(":furniture"))
 }

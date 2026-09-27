@@ -1,0 +1,102 @@
+command:
+  players_only: "&cOnly a player can use this."
+  no_permission: "&cYou don't have permission for that."
+
+station:
+  carpenter: "Carpenter"
+  blacksmith: "Blacksmith"
+  tailor: "Tailor"
+  potter: "Potter"
+
+item:
+  placed_on: "&8Goes on: &7{surfaces}"
+  surface:
+    floor: "floor"
+    wall: "wall"
+    ceiling: "ceiling"
+  function:
+    seat: "&8• &7Seat &8({seats})"
+    storage: "&8• &7Holds {slots} items"
+    trash: "&8• &7Trash can"
+    light: "&8• &7Gives light"
+    workstation: "&8• &7Workstation"
+    shelf: "&8• &7Displays {slots} item(s)"
+    states: "&8• &7Click to change it"
+    dye: "&8• &7Can be dyed"
+
+place:
+  ok: ""
+  wrong_surface: "&cThis furniture doesn't go there (check its description)."
+  blocked: "&cIt doesn't fit: something is in the way."
+  entity_in_way: "&cSomeone is in the way."
+  chunk_limit: "&cThere is too much furniture in this area already."
+  type_limit: "&cThere are too many of this piece in this area already."
+  no_permission: "&cYou can't place this furniture."
+  protected: "&cYou can't place furniture here."
+
+use:
+  unknown: "&cThis furniture ({id}) no longer exists on the server."
+  not_owner: "&cThis furniture isn't yours."
+  protected: "&cYou can't touch furniture here."
+  cannot_rotate: "&cIt doesn't fit rotated: something is in the way."
+  seat_taken: "&7It's taken."
+  storage_private: "&cOnly its owner can open it."
+  shelf_full: "&7Nothing else fits."
+  unknown_workstation: "&cUnknown workstation: {type}"
+
+carpenter:
+  crafted: "&aYou made &f{amount}x {name}&a."
+  missing_materials: "&cYou're missing materials."
+  no_money: "&cYou don't have enough money."
+  no_economy: "&cThis server has no economy to charge it."
+
+gui:
+  catalog:
+    title: "<dark_gray>Furniture catalog"
+    help: "&eCatalog &7— made at a carpenter"
+    not_craftable: "&8Not craftable: get it from the shop or as a reward."
+    made_at: "<gray>Made at: <white>{station}"
+    admin_take: "&8(admin) Click: take one · Shift: 16"
+  carpenter:
+    title: "<dark_gray>{station}"
+    help: "&eChoose what to make"
+    click: "&eClick: make · Shift+click: up to 10"
+  category:
+    count: "&7{count} piece(s)"
+  variants: "&e{count} versions &7— click to choose"
+  cost:
+    title: "&7Cost:"
+    material_ok: "<dark_gray>• <green>{amount}x <lang:{material}> <dark_gray>(you have {have})"
+    material_missing: "<dark_gray>• <red>{amount}x <lang:{material}> <dark_gray>(you have {have})"
+    money: "&8• &6{money}"
+    amount: "&8• &7Makes {amount}"
+  empty: "&7Nothing here."
+  previous: "&ePrevious page"
+  next: "&eNext page"
+  back: "&eBack"
+
+admin:
+  help: |-
+    &6/furnitureadmin
+    &e • give <player> <furniture>[:version] [amount]
+    &e • carpenter <player> [station] &7— opens a carpenter (for an NPC)
+    &e • list &7— loaded furniture
+    &e • info &7— the furniture you're looking at
+    &e • nearby [radius] &7— nearby furniture
+    &e • remove [radius] &7— removes nearby furniture (drops what it held)
+    &e • reload
+  reloaded: "&aReloaded: {count} piece(s)."
+  give_usage: "&cUsage: /furnitureadmin give <player> <furniture>[:version] [amount]"
+  carpenter_usage: "&cUsage: /furnitureadmin carpenter <player> [station]"
+  player_not_found: "&cNot online: {player}"
+  unknown_furniture: "&cThere is no furniture '{id}'."
+  unknown_variant: "&c'{id}' has no version '{variant}'. It has: {variants}"
+  bad_number: "&cNot a number: {value}"
+  given: "&aGave &f{amount}x {name} &ato {player}."
+  list_header: "&6{count} piece(s) loaded &7({placed} placed in loaded chunks)"
+  list_line: "&e{category}&7: {ids}"
+  info_none: "&7You're not looking at any furniture."
+  info: "&6{id} &7version &f{variant} &7state &f{state} &7owner &f{owner} &7facing &f{yaw}° &7at &f{x} {y} {z}"
+  nearby_header: "&6{count} piece(s) within {radius} blocks:"
+  nearby_line: "&e • {id} &7at {x} {y} {z}"
+  removed: "&aRemoved {count} piece(s) within {radius} blocks."

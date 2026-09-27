@@ -1,0 +1,854 @@
+# GENERADO por sackito-network/infra/muebles/construir.py: no se edita a mano.
+
+chair:
+  category: "seating"
+  name: "Silla de roble"
+  lore:
+    - "&7Una silla de madera de toda la vida."
+  material: "PAPER"
+  model: "rpgroll_furniture:chair/oak"
+  variants:
+    oak:
+      name: "Silla de roble"
+      model: "rpgroll_furniture:chair/oak"
+      recipe:
+        materials:
+          OAK_PLANKS: 3
+          STICK: 2
+        money: 10
+    spruce:
+      name: "Silla de abeto"
+      model: "rpgroll_furniture:chair/spruce"
+      recipe:
+        materials:
+          SPRUCE_PLANKS: 3
+          STICK: 2
+        money: 10
+    birch:
+      name: "Silla de abedul"
+      model: "rpgroll_furniture:chair/birch"
+      recipe:
+        materials:
+          BIRCH_PLANKS: 3
+          STICK: 2
+        money: 10
+    jungle:
+      name: "Silla de jungla"
+      model: "rpgroll_furniture:chair/jungle"
+      recipe:
+        materials:
+          JUNGLE_PLANKS: 3
+          STICK: 2
+        money: 10
+    acacia:
+      name: "Silla de acacia"
+      model: "rpgroll_furniture:chair/acacia"
+      recipe:
+        materials:
+          ACACIA_PLANKS: 3
+          STICK: 2
+        money: 10
+    dark_oak:
+      name: "Silla de roble oscuro"
+      model: "rpgroll_furniture:chair/dark_oak"
+      recipe:
+        materials:
+          DARK_OAK_PLANKS: 3
+          STICK: 2
+        money: 10
+    mangrove:
+      name: "Silla de mangle"
+      model: "rpgroll_furniture:chair/mangrove"
+      recipe:
+        materials:
+          MANGROVE_PLANKS: 3
+          STICK: 2
+        money: 10
+    cherry:
+      name: "Silla de cerezo"
+      model: "rpgroll_furniture:chair/cherry"
+      recipe:
+        materials:
+          CHERRY_PLANKS: 3
+          STICK: 2
+        money: 10
+    bamboo:
+      name: "Silla de bambú"
+      model: "rpgroll_furniture:chair/bamboo"
+      recipe:
+        materials:
+          BAMBOO_PLANKS: 3
+          STICK: 2
+        money: 10
+    crimson:
+      name: "Silla de carmesí"
+      model: "rpgroll_furniture:chair/crimson"
+      recipe:
+        materials:
+          CRIMSON_PLANKS: 3
+          STICK: 2
+        money: 10
+    warped:
+      name: "Silla de distorsionada"
+      model: "rpgroll_furniture:chair/warped"
+      recipe:
+        materials:
+          WARPED_PLANKS: 3
+          STICK: 2
+        money: 10
+    pale_oak:
+      name: "Silla de roble pálido"
+      model: "rpgroll_furniture:chair/pale_oak"
+      recipe:
+        materials:
+          PALE_OAK_PLANKS: 3
+          STICK: 2
+        money: 10
+  placement:
+    surfaces:
+      - "floor"
+    rotations: 8
+  hitbox:
+    type: "barrier"
+    blocks:
+      - "0,0,0"
+  seat:
+    height: 0.56
+    positions:
+      - "0,0,0"
+stool:
+  category: "seating"
+  name: "Taburete de roble"
+  material: "PAPER"
+  model: "rpgroll_furniture:stool/oak"
+  variants:
+    oak:
+      name: "Taburete de roble"
+      model: "rpgroll_furniture:stool/oak"
+      recipe:
+        materials:
+          OAK_SLAB: 1
+          STICK: 4
+        money: 6
+    spruce:
+      name: "Taburete de abeto"
+      model: "rpgroll_furniture:stool/spruce"
+      recipe:
+        materials:
+          SPRUCE_SLAB: 1
+          STICK: 4
+        money: 6
+    birch:
+      name: "Taburete de abedul"
+      model: "rpgroll_furniture:stool/birch"
+      recipe:
+        materials:
+          BIRCH_SLAB: 1
+          STICK: 4
+        money: 6
+    jungle:
+      name: "Taburete de jungla"
+      model: "rpgroll_furniture:stool/jungle"
+      recipe:
+        materials:
+          JUNGLE_SLAB: 1
+          STICK: 4
+        money: 6
+    acacia:
+      name: "Taburete de acacia"
+      model: "rpgroll_furniture:stool/acacia"
+      recipe:
+        materials:
+          ACACIA_SLAB: 1
+          STICK: 4
+        money: 6
+    dark_oak:
+      name: "Taburete de roble oscuro"
+      model: "rpgroll_furniture:stool/dark_oak"
+      recipe:
+        materials:
+          DARK_OAK_SLAB: 1
+          STICK: 4
+        money: 6
+    mangrove:
+      name: "Taburete de mangle"
+      model: "rpgroll_furniture:stool/mangrove"
+      recipe:
+        materials:
+          MANGROVE_SLAB: 1
+          STICK: 4
+        money: 6
+    cherry:
+      name: "Taburete de cerezo"
+      model: "rpgroll_furniture:stool/cherry"
+      recipe:
+        materials:
+          CHERRY_SLAB: 1
+          STICK: 4
+        money: 6
+    bamboo:
+      name: "Taburete de bambú"
+      model: "rpgroll_furniture:stool/bamboo"
+      recipe:
+        materials:
+          BAMBOO_SLAB: 1
+          STICK: 4
+        money: 6
+    crimson:
+      name: "Taburete de carmesí"
+      model: "rpgroll_furniture:stool/crimson"
+      recipe:
+        materials:
+          CRIMSON_SLAB: 1
+          STICK: 4
+        money: 6
+    warped:
+      name: "Taburete de distorsionada"
+      model: "rpgroll_furniture:stool/warped"
+      recipe:
+        materials:
+          WARPED_SLAB: 1
+          STICK: 4
+        money: 6
+    pale_oak:
+      name: "Taburete de roble pálido"
+      model: "rpgroll_furniture:stool/pale_oak"
+      recipe:
+        materials:
+          PALE_OAK_SLAB: 1
+          STICK: 4
+        money: 6
+  placement:
+    surfaces:
+      - "floor"
+    rotations: 8
+  hitbox:
+    type: "barrier"
+    blocks:
+      - "0,0,0"
+  seat:
+    height: 0.75
+    positions:
+      - "0,0,0"
+bench:
+  category: "seating"
+  name: "Banco de roble"
+  lore:
+    - "&7Caben dos."
+  material: "PAPER"
+  model: "rpgroll_furniture:bench/oak"
+  variants:
+    oak:
+      name: "Banco de roble"
+      model: "rpgroll_furniture:bench/oak"
+      recipe:
+        materials:
+          OAK_PLANKS: 5
+          STICK: 4
+        money: 18
+    spruce:
+      name: "Banco de abeto"
+      model: "rpgroll_furniture:bench/spruce"
+      recipe:
+        materials:
+          SPRUCE_PLANKS: 5
+          STICK: 4
+        money: 18
+    birch:
+      name: "Banco de abedul"
+      model: "rpgroll_furniture:bench/birch"
+      recipe:
+        materials:
+          BIRCH_PLANKS: 5
+          STICK: 4
+        money: 18
+    jungle:
+      name: "Banco de jungla"
+      model: "rpgroll_furniture:bench/jungle"
+      recipe:
+        materials:
+          JUNGLE_PLANKS: 5
+          STICK: 4
+        money: 18
+    acacia:
+      name: "Banco de acacia"
+      model: "rpgroll_furniture:bench/acacia"
+      recipe:
+        materials:
+          ACACIA_PLANKS: 5
+          STICK: 4
+        money: 18
+    dark_oak:
+      name: "Banco de roble oscuro"
+      model: "rpgroll_furniture:bench/dark_oak"
+      recipe:
+        materials:
+          DARK_OAK_PLANKS: 5
+          STICK: 4
+        money: 18
+    mangrove:
+      name: "Banco de mangle"
+      model: "rpgroll_furniture:bench/mangrove"
+      recipe:
+        materials:
+          MANGROVE_PLANKS: 5
+          STICK: 4
+        money: 18
+    cherry:
+      name: "Banco de cerezo"
+      model: "rpgroll_furniture:bench/cherry"
+      recipe:
+        materials:
+          CHERRY_PLANKS: 5
+          STICK: 4
+        money: 18
+    bamboo:
+      name: "Banco de bambú"
+      model: "rpgroll_furniture:bench/bamboo"
+      recipe:
+        materials:
+          BAMBOO_PLANKS: 5
+          STICK: 4
+        money: 18
+    crimson:
+      name: "Banco de carmesí"
+      model: "rpgroll_furniture:bench/crimson"
+      recipe:
+        materials:
+          CRIMSON_PLANKS: 5
+          STICK: 4
+        money: 18
+    warped:
+      name: "Banco de distorsionada"
+      model: "rpgroll_furniture:bench/warped"
+      recipe:
+        materials:
+          WARPED_PLANKS: 5
+          STICK: 4
+        money: 18
+    pale_oak:
+      name: "Banco de roble pálido"
+      model: "rpgroll_furniture:bench/pale_oak"
+      recipe:
+        materials:
+          PALE_OAK_PLANKS: 5
+          STICK: 4
+        money: 18
+  placement:
+    surfaces:
+      - "floor"
+  hitbox:
+    type: "barrier"
+    blocks:
+      - "0,0,0"
+      - "-1,0,0"
+  seat:
+    height: 0.56
+    positions:
+      - "0,0,0"
+      - "-1,0,0"
+armchair:
+  category: "seating"
+  name: "Sillón blanco"
+  lore:
+    - "&7Tapizado. Se tiñe con cualquier tinte."
+  material: "PAPER"
+  model: "rpgroll_furniture:armchair/white"
+  variants:
+    white:
+      name: "Sillón blanco"
+      model: "rpgroll_furniture:armchair/white"
+      dye: "WHITE"
+      recipe:
+        materials:
+          WHITE_WOOL: 3
+          DARK_OAK_PLANKS: 2
+        money: 30
+    orange:
+      name: "Sillón naranja"
+      model: "rpgroll_furniture:armchair/orange"
+      dye: "ORANGE"
+      recipe:
+        materials:
+          ORANGE_WOOL: 3
+          DARK_OAK_PLANKS: 2
+        money: 30
+    magenta:
+      name: "Sillón magenta"
+      model: "rpgroll_furniture:armchair/magenta"
+      dye: "MAGENTA"
+      recipe:
+        materials:
+          MAGENTA_WOOL: 3
+          DARK_OAK_PLANKS: 2
+        money: 30
+    light_blue:
+      name: "Sillón azul claro"
+      model: "rpgroll_furniture:armchair/light_blue"
+      dye: "LIGHT_BLUE"
+      recipe:
+        materials:
+          LIGHT_BLUE_WOOL: 3
+          DARK_OAK_PLANKS: 2
+        money: 30
+    yellow:
+      name: "Sillón amarillo"
+      model: "rpgroll_furniture:armchair/yellow"
+      dye: "YELLOW"
+      recipe:
+        materials:
+          YELLOW_WOOL: 3
+          DARK_OAK_PLANKS: 2
+        money: 30
+    lime:
+      name: "Sillón lima"
+      model: "rpgroll_furniture:armchair/lime"
+      dye: "LIME"
+      recipe:
+        materials:
+          LIME_WOOL: 3
+          DARK_OAK_PLANKS: 2
+        money: 30
+    pink:
+      name: "Sillón rosa"
+      model: "rpgroll_furniture:armchair/pink"
+      dye: "PINK"
+      recipe:
+        materials:
+          PINK_WOOL: 3
+          DARK_OAK_PLANKS: 2
+        money: 30
+    gray:
+      name: "Sillón gris"
+      model: "rpgroll_furniture:armchair/gray"
+      dye: "GRAY"
+      recipe:
+        materials:
+          GRAY_WOOL: 3
+          DARK_OAK_PLANKS: 2
+        money: 30
+    light_gray:
+      name: "Sillón gris claro"
+      model: "rpgroll_furniture:armchair/light_gray"
+      dye: "LIGHT_GRAY"
+      recipe:
+        materials:
+          LIGHT_GRAY_WOOL: 3
+          DARK_OAK_PLANKS: 2
+        money: 30
+    cyan:
+      name: "Sillón cian"
+      model: "rpgroll_furniture:armchair/cyan"
+      dye: "CYAN"
+      recipe:
+        materials:
+          CYAN_WOOL: 3
+          DARK_OAK_PLANKS: 2
+        money: 30
+    purple:
+      name: "Sillón morado"
+      model: "rpgroll_furniture:armchair/purple"
+      dye: "PURPLE"
+      recipe:
+        materials:
+          PURPLE_WOOL: 3
+          DARK_OAK_PLANKS: 2
+        money: 30
+    blue:
+      name: "Sillón azul"
+      model: "rpgroll_furniture:armchair/blue"
+      dye: "BLUE"
+      recipe:
+        materials:
+          BLUE_WOOL: 3
+          DARK_OAK_PLANKS: 2
+        money: 30
+    brown:
+      name: "Sillón marrón"
+      model: "rpgroll_furniture:armchair/brown"
+      dye: "BROWN"
+      recipe:
+        materials:
+          BROWN_WOOL: 3
+          DARK_OAK_PLANKS: 2
+        money: 30
+    green:
+      name: "Sillón verde"
+      model: "rpgroll_furniture:armchair/green"
+      dye: "GREEN"
+      recipe:
+        materials:
+          GREEN_WOOL: 3
+          DARK_OAK_PLANKS: 2
+        money: 30
+    red:
+      name: "Sillón rojo"
+      model: "rpgroll_furniture:armchair/red"
+      dye: "RED"
+      recipe:
+        materials:
+          RED_WOOL: 3
+          DARK_OAK_PLANKS: 2
+        money: 30
+    black:
+      name: "Sillón negro"
+      model: "rpgroll_furniture:armchair/black"
+      dye: "BLACK"
+      recipe:
+        materials:
+          BLACK_WOOL: 3
+          DARK_OAK_PLANKS: 2
+        money: 30
+  placement:
+    surfaces:
+      - "floor"
+    rotations: 8
+  hitbox:
+    type: "barrier"
+    blocks:
+      - "0,0,0"
+  seat:
+    height: 0.5
+    positions:
+      - "0,0,0"
+  sounds:
+    place: "block.wool.place"
+    break: "block.wool.break"
+sofa:
+  category: "seating"
+  name: "Sofá blanco"
+  lore:
+    - "&7Tres plazas. Se tiñe con cualquier tinte."
+  material: "PAPER"
+  model: "rpgroll_furniture:sofa/white"
+  variants:
+    white:
+      name: "Sofá blanco"
+      model: "rpgroll_furniture:sofa/white"
+      dye: "WHITE"
+      recipe:
+        materials:
+          WHITE_WOOL: 6
+          DARK_OAK_PLANKS: 4
+        money: 60
+    orange:
+      name: "Sofá naranja"
+      model: "rpgroll_furniture:sofa/orange"
+      dye: "ORANGE"
+      recipe:
+        materials:
+          ORANGE_WOOL: 6
+          DARK_OAK_PLANKS: 4
+        money: 60
+    magenta:
+      name: "Sofá magenta"
+      model: "rpgroll_furniture:sofa/magenta"
+      dye: "MAGENTA"
+      recipe:
+        materials:
+          MAGENTA_WOOL: 6
+          DARK_OAK_PLANKS: 4
+        money: 60
+    light_blue:
+      name: "Sofá azul claro"
+      model: "rpgroll_furniture:sofa/light_blue"
+      dye: "LIGHT_BLUE"
+      recipe:
+        materials:
+          LIGHT_BLUE_WOOL: 6
+          DARK_OAK_PLANKS: 4
+        money: 60
+    yellow:
+      name: "Sofá amarillo"
+      model: "rpgroll_furniture:sofa/yellow"
+      dye: "YELLOW"
+      recipe:
+        materials:
+          YELLOW_WOOL: 6
+          DARK_OAK_PLANKS: 4
+        money: 60
+    lime:
+      name: "Sofá lima"
+      model: "rpgroll_furniture:sofa/lime"
+      dye: "LIME"
+      recipe:
+        materials:
+          LIME_WOOL: 6
+          DARK_OAK_PLANKS: 4
+        money: 60
+    pink:
+      name: "Sofá rosa"
+      model: "rpgroll_furniture:sofa/pink"
+      dye: "PINK"
+      recipe:
+        materials:
+          PINK_WOOL: 6
+          DARK_OAK_PLANKS: 4
+        money: 60
+    gray:
+      name: "Sofá gris"
+      model: "rpgroll_furniture:sofa/gray"
+      dye: "GRAY"
+      recipe:
+        materials:
+          GRAY_WOOL: 6
+          DARK_OAK_PLANKS: 4
+        money: 60
+    light_gray:
+      name: "Sofá gris claro"
+      model: "rpgroll_furniture:sofa/light_gray"
+      dye: "LIGHT_GRAY"
+      recipe:
+        materials:
+          LIGHT_GRAY_WOOL: 6
+          DARK_OAK_PLANKS: 4
+        money: 60
+    cyan:
+      name: "Sofá cian"
+      model: "rpgroll_furniture:sofa/cyan"
+      dye: "CYAN"
+      recipe:
+        materials:
+          CYAN_WOOL: 6
+          DARK_OAK_PLANKS: 4
+        money: 60
+    purple:
+      name: "Sofá morado"
+      model: "rpgroll_furniture:sofa/purple"
+      dye: "PURPLE"
+      recipe:
+        materials:
+          PURPLE_WOOL: 6
+          DARK_OAK_PLANKS: 4
+        money: 60
+    blue:
+      name: "Sofá azul"
+      model: "rpgroll_furniture:sofa/blue"
+      dye: "BLUE"
+      recipe:
+        materials:
+          BLUE_WOOL: 6
+          DARK_OAK_PLANKS: 4
+        money: 60
+    brown:
+      name: "Sofá marrón"
+      model: "rpgroll_furniture:sofa/brown"
+      dye: "BROWN"
+      recipe:
+        materials:
+          BROWN_WOOL: 6
+          DARK_OAK_PLANKS: 4
+        money: 60
+    green:
+      name: "Sofá verde"
+      model: "rpgroll_furniture:sofa/green"
+      dye: "GREEN"
+      recipe:
+        materials:
+          GREEN_WOOL: 6
+          DARK_OAK_PLANKS: 4
+        money: 60
+    red:
+      name: "Sofá rojo"
+      model: "rpgroll_furniture:sofa/red"
+      dye: "RED"
+      recipe:
+        materials:
+          RED_WOOL: 6
+          DARK_OAK_PLANKS: 4
+        money: 60
+    black:
+      name: "Sofá negro"
+      model: "rpgroll_furniture:sofa/black"
+      dye: "BLACK"
+      recipe:
+        materials:
+          BLACK_WOOL: 6
+          DARK_OAK_PLANKS: 4
+        money: 60
+  placement:
+    surfaces:
+      - "floor"
+  hitbox:
+    type: "barrier"
+    blocks:
+      - "1,0,0"
+      - "0,0,0"
+      - "-1,0,0"
+  seat:
+    height: 0.5
+    positions:
+      - "1,0,0"
+      - "0,0,0"
+      - "-1,0,0"
+  sounds:
+    place: "block.wool.place"
+    break: "block.wool.break"
+pouf:
+  category: "seating"
+  name: "Puf blanco"
+  material: "PAPER"
+  model: "rpgroll_furniture:pouf/white"
+  variants:
+    white:
+      name: "Puf blanco"
+      model: "rpgroll_furniture:pouf/white"
+      dye: "WHITE"
+      recipe:
+        materials:
+          WHITE_WOOL: 2
+        money: 8
+    orange:
+      name: "Puf naranja"
+      model: "rpgroll_furniture:pouf/orange"
+      dye: "ORANGE"
+      recipe:
+        materials:
+          ORANGE_WOOL: 2
+        money: 8
+    magenta:
+      name: "Puf magenta"
+      model: "rpgroll_furniture:pouf/magenta"
+      dye: "MAGENTA"
+      recipe:
+        materials:
+          MAGENTA_WOOL: 2
+        money: 8
+    light_blue:
+      name: "Puf azul claro"
+      model: "rpgroll_furniture:pouf/light_blue"
+      dye: "LIGHT_BLUE"
+      recipe:
+        materials:
+          LIGHT_BLUE_WOOL: 2
+        money: 8
+    yellow:
+      name: "Puf amarillo"
+      model: "rpgroll_furniture:pouf/yellow"
+      dye: "YELLOW"
+      recipe:
+        materials:
+          YELLOW_WOOL: 2
+        money: 8
+    lime:
+      name: "Puf lima"
+      model: "rpgroll_furniture:pouf/lime"
+      dye: "LIME"
+      recipe:
+        materials:
+          LIME_WOOL: 2
+        money: 8
+    pink:
+      name: "Puf rosa"
+      model: "rpgroll_furniture:pouf/pink"
+      dye: "PINK"
+      recipe:
+        materials:
+          PINK_WOOL: 2
+        money: 8
+    gray:
+      name: "Puf gris"
+      model: "rpgroll_furniture:pouf/gray"
+      dye: "GRAY"
+      recipe:
+        materials:
+          GRAY_WOOL: 2
+        money: 8
+    light_gray:
+      name: "Puf gris claro"
+      model: "rpgroll_furniture:pouf/light_gray"
+      dye: "LIGHT_GRAY"
+      recipe:
+        materials:
+          LIGHT_GRAY_WOOL: 2
+        money: 8
+    cyan:
+      name: "Puf cian"
+      model: "rpgroll_furniture:pouf/cyan"
+      dye: "CYAN"
+      recipe:
+        materials:
+          CYAN_WOOL: 2
+        money: 8
+    purple:
+      name: "Puf morado"
+      model: "rpgroll_furniture:pouf/purple"
+      dye: "PURPLE"
+      recipe:
+        materials:
+          PURPLE_WOOL: 2
+        money: 8
+    blue:
+      name: "Puf azul"
+      model: "rpgroll_furniture:pouf/blue"
+      dye: "BLUE"
+      recipe:
+        materials:
+          BLUE_WOOL: 2
+        money: 8
+    brown:
+      name: "Puf marrón"
+      model: "rpgroll_furniture:pouf/brown"
+      dye: "BROWN"
+      recipe:
+        materials:
+          BROWN_WOOL: 2
+        money: 8
+    green:
+      name: "Puf verde"
+      model: "rpgroll_furniture:pouf/green"
+      dye: "GREEN"
+      recipe:
+        materials:
+          GREEN_WOOL: 2
+        money: 8
+    red:
+      name: "Puf rojo"
+      model: "rpgroll_furniture:pouf/red"
+      dye: "RED"
+      recipe:
+        materials:
+          RED_WOOL: 2
+        money: 8
+    black:
+      name: "Puf negro"
+      model: "rpgroll_furniture:pouf/black"
+      dye: "BLACK"
+      recipe:
+        materials:
+          BLACK_WOOL: 2
+        money: 8
+  placement:
+    surfaces:
+      - "floor"
+  hitbox:
+    type: "barrier"
+    blocks:
+      - "0,0,0"
+  seat:
+    height: 0.53
+    positions:
+      - "0,0,0"
+  sounds:
+    place: "block.wool.place"
+    break: "block.wool.break"
+throne:
+  category: "seating"
+  name: "&6Trono Real"
+  lore:
+    - "&7Solo para quien manda aquí."
+    - "&8No se fabrica."
+  material: "PAPER"
+  model: "rpgroll_furniture:throne/default"
+  placement:
+    surfaces:
+      - "floor"
+  hitbox:
+    type: "barrier"
+    blocks:
+      - "0,0,0"
+      - "0,1,0"
+  seat:
+    height: 0.62
+    positions:
+      - "0,0,0"

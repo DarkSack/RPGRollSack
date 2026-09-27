@@ -1,0 +1,72 @@
+# Configuración de RPGRoll-Furniture
+#
+# Ficheros de esta carpeta:
+#   furniture/*.yml   los muebles (cada clave de primer nivel es uno; ver furniture/_referencia.yml)
+#   bedrock/          lo que necesita Geyser para que Bedrock vea los muebles (ver bedrock/LEEME.md)
+# Tras editar cualquiera: /furnitureadmin reload
+
+# Idioma de los mensajes: es, en, pt_BR.
+language: es
+
+# Categorías del catálogo y del carpintero, en este orden. Un mueble con una categoría que no
+# esté aquí sale igual, al final y con su id como nombre.
+categories:
+  seating:
+    name: "&6Asientos"
+    icon: OAK_STAIRS
+  tables:
+    name: "&6Mesas"
+    icon: OAK_PRESSURE_PLATE
+  storage:
+    name: "&6Almacenaje"
+    icon: BARREL
+  bedroom:
+    name: "&6Dormitorio"
+    icon: RED_BED
+  kitchen:
+    name: "&6Cocina"
+    icon: SMOKER
+  lighting:
+    name: "&eIluminación"
+    icon: LANTERN
+  decoration:
+    name: "&dDecoración"
+    icon: FLOWER_POT
+  garden:
+    name: "&aJardín"
+    icon: OAK_SAPLING
+  workshop:
+    name: "&7Taller"
+    icon: CRAFTING_TABLE
+
+limits:
+  # Muebles por chunk como máximo (0 = sin límite). Cada mueble son una o dos entidades.
+  per-chunk: 64
+
+protection:
+  # Solo quien lo colocó puede retirarlo, girarlo, teñirlo o tocar su estante
+  # (rpgroll.furniture.bypass se salta esto).
+  owner-only: true
+  # Preguntar a los plugins de protección (WorldGuard, claims, territorios de guild) con un
+  # BlockPlaceEvent/BlockBreakEvent de prueba antes de poner o quitar un mueble.
+  check-regions: true
+
+controls:
+  # Clic derecho agachado con la mano vacía gira el mueble un paso.
+  rotate-on-sneak-click: true
+
+dye:
+  # Teñir un mueble (clic derecho con un tinte, si tiene versión de ese color) gasta el tinte.
+  consume: true
+
+seats:
+  # Ajuste fino de la altura de todos los asientos, en bloques (negativo = más bajo).
+  height-offset: 0.0
+
+ambient:
+  # Distancia a la que un jugador ve las partículas de ambiente (humo, llamas).
+  range: 32
+
+resource-pack:
+  # Registrar los modelos de fábrica en SackResourcePack al arrancar (si está instalado).
+  register-in-sackresourcepack: true

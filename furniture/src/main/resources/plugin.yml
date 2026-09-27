@@ -1,0 +1,27 @@
+name: RPGRoll-Furniture
+version: 1.0.0
+main: com.sack.rpgroll.furniture.FurniturePlugin
+api-version: "26.1.1"
+author: Sack
+description: Muebles y decoración colocables para RPGRoll, con asientos, almacenes, luces, estados, variantes y un carpintero
+depend: [RPGRoll-Lib]
+softdepend: [SackResourcePack, Vault]
+
+permissions:
+  rpgroll.furniture.use:
+    description: Colocar, usar y retirar muebles
+    default: true
+  rpgroll.furniture.catalog:
+    description: /muebles, el catálogo
+    default: true
+  rpgroll.furniture.carpenter.anywhere:
+    description: Fabricar muebles desde /muebles sin ir a un carpintero
+    default: false
+  rpgroll.furniture.bypass:
+    description: Retirar y usar muebles de otros, e ignorar el límite por chunk
+    default: op
+  rpgroll.furniture.admin:
+    description: /furnitureadmin
+    default: op
+    children:
+      rpgroll.furniture.bypass: true

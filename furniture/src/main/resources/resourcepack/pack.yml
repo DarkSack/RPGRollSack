@@ -1,0 +1,8 @@
+# GENERADO por sackito-network/infra/muebles/construir.py: no se edita a mano.
+id: rpgroll-furniture
+name: rpgroll-furniture
+version: '1.0'
+author: 'RPGRoll'
+namespace: rpgroll_furniture
+priority: 25
+description: 'Modelos de los muebles de RPGRoll-Furniture'

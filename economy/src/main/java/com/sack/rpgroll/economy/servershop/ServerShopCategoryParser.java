@@ -72,11 +72,14 @@ public class ServerShopCategoryParser implements ContentParser<ServerShopCategor
         } else if (map.containsKey("potion")) {
             kind = ServerShopEntry.Kind.POTION;
             key = text(map, "potion").toUpperCase(Locale.ROOT);
+        } else if (map.containsKey("furniture")) {
+            kind = ServerShopEntry.Kind.FURNITURE;
+            key = text(map, "furniture").toLowerCase(Locale.ROOT);
         } else if (map.containsKey("material")) {
             kind = ServerShopEntry.Kind.MATERIAL;
             key = material(text(map, "material")).name();
         } else {
-            throw new IllegalArgumentException("falta material, item, enchant, book o potion");
+            throw new IllegalArgumentException("falta material, item, enchant, book, potion o furniture");
         }
 
         if (key.isBlank()) {

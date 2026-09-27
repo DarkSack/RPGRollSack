@@ -1,0 +1,569 @@
+# GENERADO por sackito-network/infra/muebles/construir.py: no se edita a mano.
+
+wardrobe:
+  category: "storage"
+  name: "Armario de roble"
+  lore:
+    - "&7Guarda 45 objetos."
+  material: "PAPER"
+  model: "rpgroll_furniture:wardrobe/oak"
+  variants:
+    oak:
+      name: "Armario de roble"
+      model: "rpgroll_furniture:wardrobe/oak"
+      recipe:
+        materials:
+          OAK_PLANKS: 10
+          CHEST: 2
+        money: 50
+    spruce:
+      name: "Armario de abeto"
+      model: "rpgroll_furniture:wardrobe/spruce"
+      recipe:
+        materials:
+          SPRUCE_PLANKS: 10
+          CHEST: 2
+        money: 50
+    birch:
+      name: "Armario de abedul"
+      model: "rpgroll_furniture:wardrobe/birch"
+      recipe:
+        materials:
+          BIRCH_PLANKS: 10
+          CHEST: 2
+        money: 50
+    jungle:
+      name: "Armario de jungla"
+      model: "rpgroll_furniture:wardrobe/jungle"
+      recipe:
+        materials:
+          JUNGLE_PLANKS: 10
+          CHEST: 2
+        money: 50
+    acacia:
+      name: "Armario de acacia"
+      model: "rpgroll_furniture:wardrobe/acacia"
+      recipe:
+        materials:
+          ACACIA_PLANKS: 10
+          CHEST: 2
+        money: 50
+    dark_oak:
+      name: "Armario de roble oscuro"
+      model: "rpgroll_furniture:wardrobe/dark_oak"
+      recipe:
+        materials:
+          DARK_OAK_PLANKS: 10
+          CHEST: 2
+        money: 50
+    mangrove:
+      name: "Armario de mangle"
+      model: "rpgroll_furniture:wardrobe/mangrove"
+      recipe:
+        materials:
+          MANGROVE_PLANKS: 10
+          CHEST: 2
+        money: 50
+    cherry:
+      name: "Armario de cerezo"
+      model: "rpgroll_furniture:wardrobe/cherry"
+      recipe:
+        materials:
+          CHERRY_PLANKS: 10
+          CHEST: 2
+        money: 50
+    bamboo:
+      name: "Armario de bambú"
+      model: "rpgroll_furniture:wardrobe/bamboo"
+      recipe:
+        materials:
+          BAMBOO_PLANKS: 10
+          CHEST: 2
+        money: 50
+    crimson:
+      name: "Armario de carmesí"
+      model: "rpgroll_furniture:wardrobe/crimson"
+      recipe:
+        materials:
+          CRIMSON_PLANKS: 10
+          CHEST: 2
+        money: 50
+    warped:
+      name: "Armario de distorsionada"
+      model: "rpgroll_furniture:wardrobe/warped"
+      recipe:
+        materials:
+          WARPED_PLANKS: 10
+          CHEST: 2
+        money: 50
+    pale_oak:
+      name: "Armario de roble pálido"
+      model: "rpgroll_furniture:wardrobe/pale_oak"
+      recipe:
+        materials:
+          PALE_OAK_PLANKS: 10
+          CHEST: 2
+        money: 50
+  placement:
+    surfaces:
+      - "floor"
+  hitbox:
+    type: "barrier"
+    blocks:
+      - "0,0,0"
+      - "0,1,0"
+  storage:
+    rows: 5
+dresser:
+  category: "storage"
+  name: "Cómoda de roble"
+  material: "PAPER"
+  model: "rpgroll_furniture:dresser/oak"
+  variants:
+    oak:
+      name: "Cómoda de roble"
+      model: "rpgroll_furniture:dresser/oak"
+      recipe:
+        materials:
+          OAK_PLANKS: 8
+          CHEST: 2
+        money: 40
+    spruce:
+      name: "Cómoda de abeto"
+      model: "rpgroll_furniture:dresser/spruce"
+      recipe:
+        materials:
+          SPRUCE_PLANKS: 8
+          CHEST: 2
+        money: 40
+    birch:
+      name: "Cómoda de abedul"
+      model: "rpgroll_furniture:dresser/birch"
+      recipe:
+        materials:
+          BIRCH_PLANKS: 8
+          CHEST: 2
+        money: 40
+    jungle:
+      name: "Cómoda de jungla"
+      model: "rpgroll_furniture:dresser/jungle"
+      recipe:
+        materials:
+          JUNGLE_PLANKS: 8
+          CHEST: 2
+        money: 40
+    acacia:
+      name: "Cómoda de acacia"
+      model: "rpgroll_furniture:dresser/acacia"
+      recipe:
+        materials:
+          ACACIA_PLANKS: 8
+          CHEST: 2
+        money: 40
+    dark_oak:
+      name: "Cómoda de roble oscuro"
+      model: "rpgroll_furniture:dresser/dark_oak"
+      recipe:
+        materials:
+          DARK_OAK_PLANKS: 8
+          CHEST: 2
+        money: 40
+    mangrove:
+      name: "Cómoda de mangle"
+      model: "rpgroll_furniture:dresser/mangrove"
+      recipe:
+        materials:
+          MANGROVE_PLANKS: 8
+          CHEST: 2
+        money: 40
+    cherry:
+      name: "Cómoda de cerezo"
+      model: "rpgroll_furniture:dresser/cherry"
+      recipe:
+        materials:
+          CHERRY_PLANKS: 8
+          CHEST: 2
+        money: 40
+    bamboo:
+      name: "Cómoda de bambú"
+      model: "rpgroll_furniture:dresser/bamboo"
+      recipe:
+        materials:
+          BAMBOO_PLANKS: 8
+          CHEST: 2
+        money: 40
+    crimson:
+      name: "Cómoda de carmesí"
+      model: "rpgroll_furniture:dresser/crimson"
+      recipe:
+        materials:
+          CRIMSON_PLANKS: 8
+          CHEST: 2
+        money: 40
+    warped:
+      name: "Cómoda de distorsionada"
+      model: "rpgroll_furniture:dresser/warped"
+      recipe:
+        materials:
+          WARPED_PLANKS: 8
+          CHEST: 2
+        money: 40
+    pale_oak:
+      name: "Cómoda de roble pálido"
+      model: "rpgroll_furniture:dresser/pale_oak"
+      recipe:
+        materials:
+          PALE_OAK_PLANKS: 8
+          CHEST: 2
+        money: 40
+  placement:
+    surfaces:
+      - "floor"
+  hitbox:
+    type: "barrier"
+    blocks:
+      - "0,0,0"
+      - "-1,0,0"
+  storage:
+    rows: 4
+bookcase:
+  category: "storage"
+  name: "Librería de roble"
+  material: "PAPER"
+  model: "rpgroll_furniture:bookcase/oak"
+  variants:
+    oak:
+      name: "Librería de roble"
+      model: "rpgroll_furniture:bookcase/oak"
+      recipe:
+        materials:
+          OAK_PLANKS: 6
+          BOOK: 6
+        money: 30
+    spruce:
+      name: "Librería de abeto"
+      model: "rpgroll_furniture:bookcase/spruce"
+      recipe:
+        materials:
+          SPRUCE_PLANKS: 6
+          BOOK: 6
+        money: 30
+    birch:
+      name: "Librería de abedul"
+      model: "rpgroll_furniture:bookcase/birch"
+      recipe:
+        materials:
+          BIRCH_PLANKS: 6
+          BOOK: 6
+        money: 30
+    jungle:
+      name: "Librería de jungla"
+      model: "rpgroll_furniture:bookcase/jungle"
+      recipe:
+        materials:
+          JUNGLE_PLANKS: 6
+          BOOK: 6
+        money: 30
+    acacia:
+      name: "Librería de acacia"
+      model: "rpgroll_furniture:bookcase/acacia"
+      recipe:
+        materials:
+          ACACIA_PLANKS: 6
+          BOOK: 6
+        money: 30
+    dark_oak:
+      name: "Librería de roble oscuro"
+      model: "rpgroll_furniture:bookcase/dark_oak"
+      recipe:
+        materials:
+          DARK_OAK_PLANKS: 6
+          BOOK: 6
+        money: 30
+    mangrove:
+      name: "Librería de mangle"
+      model: "rpgroll_furniture:bookcase/mangrove"
+      recipe:
+        materials:
+          MANGROVE_PLANKS: 6
+          BOOK: 6
+        money: 30
+    cherry:
+      name: "Librería de cerezo"
+      model: "rpgroll_furniture:bookcase/cherry"
+      recipe:
+        materials:
+          CHERRY_PLANKS: 6
+          BOOK: 6
+        money: 30
+    bamboo:
+      name: "Librería de bambú"
+      model: "rpgroll_furniture:bookcase/bamboo"
+      recipe:
+        materials:
+          BAMBOO_PLANKS: 6
+          BOOK: 6
+        money: 30
+    crimson:
+      name: "Librería de carmesí"
+      model: "rpgroll_furniture:bookcase/crimson"
+      recipe:
+        materials:
+          CRIMSON_PLANKS: 6
+          BOOK: 6
+        money: 30
+    warped:
+      name: "Librería de distorsionada"
+      model: "rpgroll_furniture:bookcase/warped"
+      recipe:
+        materials:
+          WARPED_PLANKS: 6
+          BOOK: 6
+        money: 30
+    pale_oak:
+      name: "Librería de roble pálido"
+      model: "rpgroll_furniture:bookcase/pale_oak"
+      recipe:
+        materials:
+          PALE_OAK_PLANKS: 6
+          BOOK: 6
+        money: 30
+  placement:
+    surfaces:
+      - "floor"
+  hitbox:
+    type: "barrier"
+    blocks:
+      - "0,0,0"
+      - "0,1,0"
+  storage:
+    rows: 3
+trunk:
+  category: "storage"
+  name: "Baúl de roble"
+  material: "PAPER"
+  model: "rpgroll_furniture:trunk/oak"
+  variants:
+    oak:
+      name: "Baúl de roble"
+      model: "rpgroll_furniture:trunk/oak"
+      recipe:
+        materials:
+          OAK_PLANKS: 6
+          IRON_INGOT: 1
+        money: 20
+    spruce:
+      name: "Baúl de abeto"
+      model: "rpgroll_furniture:trunk/spruce"
+      recipe:
+        materials:
+          SPRUCE_PLANKS: 6
+          IRON_INGOT: 1
+        money: 20
+    birch:
+      name: "Baúl de abedul"
+      model: "rpgroll_furniture:trunk/birch"
+      recipe:
+        materials:
+          BIRCH_PLANKS: 6
+          IRON_INGOT: 1
+        money: 20
+    jungle:
+      name: "Baúl de jungla"
+      model: "rpgroll_furniture:trunk/jungle"
+      recipe:
+        materials:
+          JUNGLE_PLANKS: 6
+          IRON_INGOT: 1
+        money: 20
+    acacia:
+      name: "Baúl de acacia"
+      model: "rpgroll_furniture:trunk/acacia"
+      recipe:
+        materials:
+          ACACIA_PLANKS: 6
+          IRON_INGOT: 1
+        money: 20
+    dark_oak:
+      name: "Baúl de roble oscuro"
+      model: "rpgroll_furniture:trunk/dark_oak"
+      recipe:
+        materials:
+          DARK_OAK_PLANKS: 6
+          IRON_INGOT: 1
+        money: 20
+    mangrove:
+      name: "Baúl de mangle"
+      model: "rpgroll_furniture:trunk/mangrove"
+      recipe:
+        materials:
+          MANGROVE_PLANKS: 6
+          IRON_INGOT: 1
+        money: 20
+    cherry:
+      name: "Baúl de cerezo"
+      model: "rpgroll_furniture:trunk/cherry"
+      recipe:
+        materials:
+          CHERRY_PLANKS: 6
+          IRON_INGOT: 1
+        money: 20
+    bamboo:
+      name: "Baúl de bambú"
+      model: "rpgroll_furniture:trunk/bamboo"
+      recipe:
+        materials:
+          BAMBOO_PLANKS: 6
+          IRON_INGOT: 1
+        money: 20
+    crimson:
+      name: "Baúl de carmesí"
+      model: "rpgroll_furniture:trunk/crimson"
+      recipe:
+        materials:
+          CRIMSON_PLANKS: 6
+          IRON_INGOT: 1
+        money: 20
+    warped:
+      name: "Baúl de distorsionada"
+      model: "rpgroll_furniture:trunk/warped"
+      recipe:
+        materials:
+          WARPED_PLANKS: 6
+          IRON_INGOT: 1
+        money: 20
+    pale_oak:
+      name: "Baúl de roble pálido"
+      model: "rpgroll_furniture:trunk/pale_oak"
+      recipe:
+        materials:
+          PALE_OAK_PLANKS: 6
+          IRON_INGOT: 1
+        money: 20
+  placement:
+    surfaces:
+      - "floor"
+  hitbox:
+    type: "barrier"
+    blocks:
+      - "0,0,0"
+  storage:
+    rows: 3
+wall_shelf:
+  category: "storage"
+  name: "Repisa de roble"
+  lore:
+    - "&7Clic con un objeto para exhibirlo."
+  material: "PAPER"
+  model: "rpgroll_furniture:wall_shelf/oak"
+  variants:
+    oak:
+      name: "Repisa de roble"
+      model: "rpgroll_furniture:wall_shelf/oak"
+      recipe:
+        materials:
+          OAK_SLAB: 2
+          IRON_NUGGET: 2
+        money: 8
+    spruce:
+      name: "Repisa de abeto"
+      model: "rpgroll_furniture:wall_shelf/spruce"
+      recipe:
+        materials:
+          SPRUCE_SLAB: 2
+          IRON_NUGGET: 2
+        money: 8
+    birch:
+      name: "Repisa de abedul"
+      model: "rpgroll_furniture:wall_shelf/birch"
+      recipe:
+        materials:
+          BIRCH_SLAB: 2
+          IRON_NUGGET: 2
+        money: 8
+    jungle:
+      name: "Repisa de jungla"
+      model: "rpgroll_furniture:wall_shelf/jungle"
+      recipe:
+        materials:
+          JUNGLE_SLAB: 2
+          IRON_NUGGET: 2
+        money: 8
+    acacia:
+      name: "Repisa de acacia"
+      model: "rpgroll_furniture:wall_shelf/acacia"
+      recipe:
+        materials:
+          ACACIA_SLAB: 2
+          IRON_NUGGET: 2
+        money: 8
+    dark_oak:
+      name: "Repisa de roble oscuro"
+      model: "rpgroll_furniture:wall_shelf/dark_oak"
+      recipe:
+        materials:
+          DARK_OAK_SLAB: 2
+          IRON_NUGGET: 2
+        money: 8
+    mangrove:
+      name: "Repisa de mangle"
+      model: "rpgroll_furniture:wall_shelf/mangrove"
+      recipe:
+        materials:
+          MANGROVE_SLAB: 2
+          IRON_NUGGET: 2
+        money: 8
+    cherry:
+      name: "Repisa de cerezo"
+      model: "rpgroll_furniture:wall_shelf/cherry"
+      recipe:
+        materials:
+          CHERRY_SLAB: 2
+          IRON_NUGGET: 2
+        money: 8
+    bamboo:
+      name: "Repisa de bambú"
+      model: "rpgroll_furniture:wall_shelf/bamboo"
+      recipe:
+        materials:
+          BAMBOO_SLAB: 2
+          IRON_NUGGET: 2
+        money: 8
+    crimson:
+      name: "Repisa de carmesí"
+      model: "rpgroll_furniture:wall_shelf/crimson"
+      recipe:
+        materials:
+          CRIMSON_SLAB: 2
+          IRON_NUGGET: 2
+        money: 8
+    warped:
+      name: "Repisa de distorsionada"
+      model: "rpgroll_furniture:wall_shelf/warped"
+      recipe:
+        materials:
+          WARPED_SLAB: 2
+          IRON_NUGGET: 2
+        money: 8
+    pale_oak:
+      name: "Repisa de roble pálido"
+      model: "rpgroll_furniture:wall_shelf/pale_oak"
+      recipe:
+        materials:
+          PALE_OAK_SLAB: 2
+          IRON_NUGGET: 2
+        money: 8
+  placement:
+    surfaces:
+      - "wall"
+  hitbox:
+    type: "interaction"
+    width: 1.0
+    height: 0.6
+  shelf:
+    - at: "0.31,0.68,-0.28"
+      scale: 0.3
+    - at: "0,0.68,-0.28"
+      scale: 0.3
+    - at: "-0.31,0.68,-0.28"
+      scale: 0.3

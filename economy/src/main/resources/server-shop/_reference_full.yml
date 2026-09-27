@@ -20,6 +20,7 @@ description:                        # líneas bajo el nombre en la portada
 #   enchant: <id>          libro de un encantamiento de RPGRoll-Enchantments (+ level)
 #   book: <encantamiento>  libro encantado vanilla, por su clave: sharpness, mending... (+ level)
 #   potion: <TIPO>         poción vanilla: STRENGTH, LONG_SWIFTNESS, STRONG_HEALING... (+ form)
+#   furniture: <id>        mueble de RPGRoll-Furniture; <id>:<versión> para una en concreto (sofa:red)
 #
 # Y además:
 #   amount: 16     unidades por compra (y por venta). Por defecto 1.

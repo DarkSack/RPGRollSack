@@ -34,6 +34,8 @@ public final class ServerShopItems {
                     ? ItemsBridge.create(entry.key()) : Optional.empty();
             case ENCHANT -> Bukkit.getPluginManager().isPluginEnabled("RPGRoll-Enchantments")
                     ? EnchantmentsBridge.book(entry.key(), entry.level()) : Optional.empty();
+            case FURNITURE -> Bukkit.getPluginManager().isPluginEnabled("RPGRoll-Furniture")
+                    ? FurnitureBridge.create(entry.key()) : Optional.empty();
         };
     }
 
@@ -43,6 +45,7 @@ public final class ServerShopItems {
         return switch (entry.kind()) {
             case ITEM -> "RPGRoll-Items";
             case ENCHANT -> "RPGRoll-Enchantments";
+            case FURNITURE -> "RPGRoll-Furniture";
             default -> null;
         };
     }

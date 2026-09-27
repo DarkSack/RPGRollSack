@@ -5,7 +5,7 @@ api-version: "26.1.1"
 author: Sack
 description: Sistema económico avanzado — monedas múltiples, wallets, bancos y préstamos, mercado dinámico con oferta/demanda, tiendas de jugador, subastas, empresas, impuestos y libro mayor de transacciones. Provee el servicio Economy de Vault para todo el ecosistema.
 depend: [RPGRoll-Lib]
-softdepend: [RPGRoll, Vault, PlaceholderAPI, RPGRoll-Guilds, RPGRoll-Seasons, RPGRoll-Items, RPGRoll-Enchantments]
+softdepend: [RPGRoll, Vault, PlaceholderAPI, RPGRoll-Guilds, RPGRoll-Seasons, RPGRoll-Items, RPGRoll-Enchantments, RPGRoll-Furniture]
 
 permissions:
   rpgrolleconomy.admin.*:

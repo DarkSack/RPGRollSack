@@ -1,0 +1,96 @@
+# ============================================================================
+# MUEBLE DE REFERENCIA: documenta todos los campos. El guion bajo del nombre del
+# fichero hace que NO se cargue. Cada clave de primer nivel de un .yml de esta
+# carpeta (y subcarpetas) es un mueble. Tras editar: /furnitureadmin reload
+# ============================================================================
+
+mi_mesa:                                # id: minúsculas, números y _
+  category: tables                      # categoría del catálogo (ver categories: en config.yml)
+  name: "&6Mesa de ejemplo"             # &, hex (&#RRGGBB) o MiniMessage
+  lore:
+    - "&7Una línea bajo el nombre."
+  material: PAPER                       # material base del ítem (el que ve quien no tiene el pack)
+  model: mipack:muebles/mesa            # item_model: assets/mipack/items/muebles/mesa.json en el pack
+  permission: ""                        # permiso para colocarlo; vacío = todos
+
+  # Versiones con otro modelo (otra madera, otro color). La primera es la de por defecto.
+  variants:
+    roble:
+      name: "&6Mesa de roble"
+      model: mipack:muebles/mesa_roble
+      recipe: { materials: { OAK_PLANKS: 4 }, money: 10 }     # receta propia (opcional)
+    roja:
+      model: mipack:muebles/mesa_roja
+      dye: RED                          # con un tinte rojo en la mano, el mueble puesto pasa a esta versión
+
+  placement:
+    surfaces: [floor]                   # floor, wall, ceiling
+    rotations: 4                        # 4 (cada 90°), 8 (cada 45°) o 16
+    limit: 0                            # cuántos de este mueble por chunk (0 = solo el límite global)
+
+  # Qué ocupa. Los desplazamientos son con el mueble mirando al sur (su frente hacia +Z,
+  # hacia quien lo coloca): "-1,0,0" es el bloque a la izquierda de quien lo mira de frente,
+  # "0,1,0" el de encima y "0,0,1" el de delante. Al girarlo, se giran con él.
+  hitbox:
+    type: barrier                       # barrier: se choca con él y se pueden poner cosas encima
+    blocks: ["0,0,0", "-1,0,0"]
+    # type: interaction                 # interaction: se atraviesa (lámparas, plantas, alfombras)
+    # width: 0.8
+    # height: 1.0
+
+  display:                              # todo opcional
+    scale: 1.0
+    translation: "0,0,0"                # en bloques, en el marco del mueble
+    brightness: -1                      # 0-15 para dibujarlo siempre con esa luz; -1 = la del sitio
+    view-range: 1.0
+    shadow: 0.0
+    transform: FIXED
+
+  # ---- lo que hace (todo opcional; con clic derecho se usa lo primero que aplique:
+  #      tinte, estante, asiento, almacén, papelera, estación, estados, acciones)
+  seat:
+    height: 0.5                         # altura del asiento sobre el suelo del bloque
+    positions: ["0,0,0", "-1,0,0"]      # una plaza por posición
+  storage:
+    rows: 3                             # 1-6 filas de 9
+    title: "&8Cajones"
+    owner-only: true                    # solo el dueño lo abre (rpgroll.furniture.bypass se lo salta)
+  trash:                                # papelera: lo que queda dentro se borra al cerrar
+    rows: 3
+  light:
+    level: 15
+    at: "0,0,0"                         # dónde va el bloque de luz (tiene que estar libre)
+  states:                               # modelos que se alternan con clic: <model><suffix>
+    trigger: click                      # click o sneak_click
+    list:
+      - { id: off, suffix: "", light: 0 }
+      - { id: on, suffix: "_on", light: 15, sound: block.lever.click }
+  workstation: CRAFTING                 # CRAFTING, LOOM, STONECUTTER, SMITHING, GRINDSTONE,
+                                        # CARTOGRAPHY_TABLE, ENCHANTMENT... o CARPENTER
+  # workstation: { type: CARPENTER, station: carpenter }   # un carpintero de otra estación
+  shelf:                                # objetos exhibidos (clic con un objeto: se pone; mano vacía: se quita)
+    - { at: "0,1.01,0", scale: 0.45, flat: true }
+  ambient:                              # partículas mientras haya alguien cerca
+    particle: SMOKE
+    at: "0,1,0"
+    count: 1
+    spread: 0.05
+    every: 10                           # ticks
+    state: on                           # solo en ese estado (opcional)
+  actions:
+    - { trigger: click, sound: block.note_block.bell }
+    - { trigger: sneak_click, command: "say {player} usó el mueble en {x} {y} {z}", console: true }
+    - { trigger: click, message: "&7Hola, {player}." }
+
+  # Receta del carpintero. Sin recipe (ni en las versiones), el mueble no se fabrica:
+  # se da con /furnitureadmin give (crates, pase, votos) o se vende en la tienda
+  # (RPGRoll-Economy, línea `furniture: mi_mesa`).
+  recipe:
+    station: carpenter                  # qué carpintero lo fabrica
+    materials: { OAK_PLANKS: 4, STICK: 4 }
+    money: 15
+    amount: 1
+
+  sounds:
+    place: block.wood.place
+    break: block.wood.break

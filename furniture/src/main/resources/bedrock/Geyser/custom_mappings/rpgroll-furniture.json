@@ -1,0 +1,4616 @@
+{
+ "format_version": 2,
+ "items": {
+  "minecraft:paper": [
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:chair/oak",
+    "bedrock_identifier": "rpgroll_furniture:chair_oak",
+    "display_name": "Silla de roble",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_chair_oak",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:chair/spruce",
+    "bedrock_identifier": "rpgroll_furniture:chair_spruce",
+    "display_name": "Silla de abeto",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_chair_spruce",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:chair/birch",
+    "bedrock_identifier": "rpgroll_furniture:chair_birch",
+    "display_name": "Silla de abedul",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_chair_birch",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:chair/jungle",
+    "bedrock_identifier": "rpgroll_furniture:chair_jungle",
+    "display_name": "Silla de jungla",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_chair_jungle",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:chair/acacia",
+    "bedrock_identifier": "rpgroll_furniture:chair_acacia",
+    "display_name": "Silla de acacia",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_chair_acacia",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:chair/dark_oak",
+    "bedrock_identifier": "rpgroll_furniture:chair_dark_oak",
+    "display_name": "Silla de roble oscuro",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_chair_dark_oak",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:chair/mangrove",
+    "bedrock_identifier": "rpgroll_furniture:chair_mangrove",
+    "display_name": "Silla de mangle",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_chair_mangrove",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:chair/cherry",
+    "bedrock_identifier": "rpgroll_furniture:chair_cherry",
+    "display_name": "Silla de cerezo",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_chair_cherry",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:chair/bamboo",
+    "bedrock_identifier": "rpgroll_furniture:chair_bamboo",
+    "display_name": "Silla de bambú",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_chair_bamboo",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:chair/crimson",
+    "bedrock_identifier": "rpgroll_furniture:chair_crimson",
+    "display_name": "Silla de carmesí",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_chair_crimson",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:chair/warped",
+    "bedrock_identifier": "rpgroll_furniture:chair_warped",
+    "display_name": "Silla de distorsionada",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_chair_warped",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:chair/pale_oak",
+    "bedrock_identifier": "rpgroll_furniture:chair_pale_oak",
+    "display_name": "Silla de roble pálido",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_chair_pale_oak",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:stool/oak",
+    "bedrock_identifier": "rpgroll_furniture:stool_oak",
+    "display_name": "Taburete de roble",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_stool_oak",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:stool/spruce",
+    "bedrock_identifier": "rpgroll_furniture:stool_spruce",
+    "display_name": "Taburete de abeto",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_stool_spruce",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:stool/birch",
+    "bedrock_identifier": "rpgroll_furniture:stool_birch",
+    "display_name": "Taburete de abedul",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_stool_birch",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:stool/jungle",
+    "bedrock_identifier": "rpgroll_furniture:stool_jungle",
+    "display_name": "Taburete de jungla",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_stool_jungle",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:stool/acacia",
+    "bedrock_identifier": "rpgroll_furniture:stool_acacia",
+    "display_name": "Taburete de acacia",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_stool_acacia",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:stool/dark_oak",
+    "bedrock_identifier": "rpgroll_furniture:stool_dark_oak",
+    "display_name": "Taburete de roble oscuro",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_stool_dark_oak",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:stool/mangrove",
+    "bedrock_identifier": "rpgroll_furniture:stool_mangrove",
+    "display_name": "Taburete de mangle",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_stool_mangrove",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:stool/cherry",
+    "bedrock_identifier": "rpgroll_furniture:stool_cherry",
+    "display_name": "Taburete de cerezo",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_stool_cherry",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:stool/bamboo",
+    "bedrock_identifier": "rpgroll_furniture:stool_bamboo",
+    "display_name": "Taburete de bambú",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_stool_bamboo",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:stool/crimson",
+    "bedrock_identifier": "rpgroll_furniture:stool_crimson",
+    "display_name": "Taburete de carmesí",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_stool_crimson",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:stool/warped",
+    "bedrock_identifier": "rpgroll_furniture:stool_warped",
+    "display_name": "Taburete de distorsionada",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_stool_warped",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:stool/pale_oak",
+    "bedrock_identifier": "rpgroll_furniture:stool_pale_oak",
+    "display_name": "Taburete de roble pálido",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_stool_pale_oak",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:bench/oak",
+    "bedrock_identifier": "rpgroll_furniture:bench_oak",
+    "display_name": "Banco de roble",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_bench_oak",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:bench/spruce",
+    "bedrock_identifier": "rpgroll_furniture:bench_spruce",
+    "display_name": "Banco de abeto",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_bench_spruce",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:bench/birch",
+    "bedrock_identifier": "rpgroll_furniture:bench_birch",
+    "display_name": "Banco de abedul",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_bench_birch",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:bench/jungle",
+    "bedrock_identifier": "rpgroll_furniture:bench_jungle",
+    "display_name": "Banco de jungla",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_bench_jungle",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:bench/acacia",
+    "bedrock_identifier": "rpgroll_furniture:bench_acacia",
+    "display_name": "Banco de acacia",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_bench_acacia",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:bench/dark_oak",
+    "bedrock_identifier": "rpgroll_furniture:bench_dark_oak",
+    "display_name": "Banco de roble oscuro",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_bench_dark_oak",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:bench/mangrove",
+    "bedrock_identifier": "rpgroll_furniture:bench_mangrove",
+    "display_name": "Banco de mangle",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_bench_mangrove",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:bench/cherry",
+    "bedrock_identifier": "rpgroll_furniture:bench_cherry",
+    "display_name": "Banco de cerezo",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_bench_cherry",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:bench/bamboo",
+    "bedrock_identifier": "rpgroll_furniture:bench_bamboo",
+    "display_name": "Banco de bambú",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_bench_bamboo",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:bench/crimson",
+    "bedrock_identifier": "rpgroll_furniture:bench_crimson",
+    "display_name": "Banco de carmesí",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_bench_crimson",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:bench/warped",
+    "bedrock_identifier": "rpgroll_furniture:bench_warped",
+    "display_name": "Banco de distorsionada",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_bench_warped",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:bench/pale_oak",
+    "bedrock_identifier": "rpgroll_furniture:bench_pale_oak",
+    "display_name": "Banco de roble pálido",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_bench_pale_oak",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:armchair/white",
+    "bedrock_identifier": "rpgroll_furniture:armchair_white",
+    "display_name": "Sillón blanco",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_armchair_white",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:armchair/orange",
+    "bedrock_identifier": "rpgroll_furniture:armchair_orange",
+    "display_name": "Sillón naranja",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_armchair_orange",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:armchair/magenta",
+    "bedrock_identifier": "rpgroll_furniture:armchair_magenta",
+    "display_name": "Sillón magenta",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_armchair_magenta",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:armchair/light_blue",
+    "bedrock_identifier": "rpgroll_furniture:armchair_light_blue",
+    "display_name": "Sillón azul claro",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_armchair_light_blue",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:armchair/yellow",
+    "bedrock_identifier": "rpgroll_furniture:armchair_yellow",
+    "display_name": "Sillón amarillo",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_armchair_yellow",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:armchair/lime",
+    "bedrock_identifier": "rpgroll_furniture:armchair_lime",
+    "display_name": "Sillón lima",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_armchair_lime",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:armchair/pink",
+    "bedrock_identifier": "rpgroll_furniture:armchair_pink",
+    "display_name": "Sillón rosa",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_armchair_pink",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:armchair/gray",
+    "bedrock_identifier": "rpgroll_furniture:armchair_gray",
+    "display_name": "Sillón gris",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_armchair_gray",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:armchair/light_gray",
+    "bedrock_identifier": "rpgroll_furniture:armchair_light_gray",
+    "display_name": "Sillón gris claro",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_armchair_light_gray",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:armchair/cyan",
+    "bedrock_identifier": "rpgroll_furniture:armchair_cyan",
+    "display_name": "Sillón cian",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_armchair_cyan",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:armchair/purple",
+    "bedrock_identifier": "rpgroll_furniture:armchair_purple",
+    "display_name": "Sillón morado",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_armchair_purple",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:armchair/blue",
+    "bedrock_identifier": "rpgroll_furniture:armchair_blue",
+    "display_name": "Sillón azul",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_armchair_blue",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:armchair/brown",
+    "bedrock_identifier": "rpgroll_furniture:armchair_brown",
+    "display_name": "Sillón marrón",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_armchair_brown",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:armchair/green",
+    "bedrock_identifier": "rpgroll_furniture:armchair_green",
+    "display_name": "Sillón verde",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_armchair_green",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:armchair/red",
+    "bedrock_identifier": "rpgroll_furniture:armchair_red",
+    "display_name": "Sillón rojo",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_armchair_red",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:armchair/black",
+    "bedrock_identifier": "rpgroll_furniture:armchair_black",
+    "display_name": "Sillón negro",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_armchair_black",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:sofa/white",
+    "bedrock_identifier": "rpgroll_furniture:sofa_white",
+    "display_name": "Sofá blanco",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_sofa_white",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:sofa/orange",
+    "bedrock_identifier": "rpgroll_furniture:sofa_orange",
+    "display_name": "Sofá naranja",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_sofa_orange",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:sofa/magenta",
+    "bedrock_identifier": "rpgroll_furniture:sofa_magenta",
+    "display_name": "Sofá magenta",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_sofa_magenta",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:sofa/light_blue",
+    "bedrock_identifier": "rpgroll_furniture:sofa_light_blue",
+    "display_name": "Sofá azul claro",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_sofa_light_blue",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:sofa/yellow",
+    "bedrock_identifier": "rpgroll_furniture:sofa_yellow",
+    "display_name": "Sofá amarillo",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_sofa_yellow",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:sofa/lime",
+    "bedrock_identifier": "rpgroll_furniture:sofa_lime",
+    "display_name": "Sofá lima",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_sofa_lime",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:sofa/pink",
+    "bedrock_identifier": "rpgroll_furniture:sofa_pink",
+    "display_name": "Sofá rosa",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_sofa_pink",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:sofa/gray",
+    "bedrock_identifier": "rpgroll_furniture:sofa_gray",
+    "display_name": "Sofá gris",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_sofa_gray",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:sofa/light_gray",
+    "bedrock_identifier": "rpgroll_furniture:sofa_light_gray",
+    "display_name": "Sofá gris claro",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_sofa_light_gray",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:sofa/cyan",
+    "bedrock_identifier": "rpgroll_furniture:sofa_cyan",
+    "display_name": "Sofá cian",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_sofa_cyan",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:sofa/purple",
+    "bedrock_identifier": "rpgroll_furniture:sofa_purple",
+    "display_name": "Sofá morado",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_sofa_purple",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:sofa/blue",
+    "bedrock_identifier": "rpgroll_furniture:sofa_blue",
+    "display_name": "Sofá azul",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_sofa_blue",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:sofa/brown",
+    "bedrock_identifier": "rpgroll_furniture:sofa_brown",
+    "display_name": "Sofá marrón",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_sofa_brown",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:sofa/green",
+    "bedrock_identifier": "rpgroll_furniture:sofa_green",
+    "display_name": "Sofá verde",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_sofa_green",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:sofa/red",
+    "bedrock_identifier": "rpgroll_furniture:sofa_red",
+    "display_name": "Sofá rojo",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_sofa_red",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:sofa/black",
+    "bedrock_identifier": "rpgroll_furniture:sofa_black",
+    "display_name": "Sofá negro",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_sofa_black",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:pouf/white",
+    "bedrock_identifier": "rpgroll_furniture:pouf_white",
+    "display_name": "Puf blanco",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_pouf_white",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:pouf/orange",
+    "bedrock_identifier": "rpgroll_furniture:pouf_orange",
+    "display_name": "Puf naranja",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_pouf_orange",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:pouf/magenta",
+    "bedrock_identifier": "rpgroll_furniture:pouf_magenta",
+    "display_name": "Puf magenta",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_pouf_magenta",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:pouf/light_blue",
+    "bedrock_identifier": "rpgroll_furniture:pouf_light_blue",
+    "display_name": "Puf azul claro",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_pouf_light_blue",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:pouf/yellow",
+    "bedrock_identifier": "rpgroll_furniture:pouf_yellow",
+    "display_name": "Puf amarillo",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_pouf_yellow",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:pouf/lime",
+    "bedrock_identifier": "rpgroll_furniture:pouf_lime",
+    "display_name": "Puf lima",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_pouf_lime",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:pouf/pink",
+    "bedrock_identifier": "rpgroll_furniture:pouf_pink",
+    "display_name": "Puf rosa",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_pouf_pink",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:pouf/gray",
+    "bedrock_identifier": "rpgroll_furniture:pouf_gray",
+    "display_name": "Puf gris",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_pouf_gray",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:pouf/light_gray",
+    "bedrock_identifier": "rpgroll_furniture:pouf_light_gray",
+    "display_name": "Puf gris claro",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_pouf_light_gray",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:pouf/cyan",
+    "bedrock_identifier": "rpgroll_furniture:pouf_cyan",
+    "display_name": "Puf cian",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_pouf_cyan",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:pouf/purple",
+    "bedrock_identifier": "rpgroll_furniture:pouf_purple",
+    "display_name": "Puf morado",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_pouf_purple",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:pouf/blue",
+    "bedrock_identifier": "rpgroll_furniture:pouf_blue",
+    "display_name": "Puf azul",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_pouf_blue",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:pouf/brown",
+    "bedrock_identifier": "rpgroll_furniture:pouf_brown",
+    "display_name": "Puf marrón",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_pouf_brown",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:pouf/green",
+    "bedrock_identifier": "rpgroll_furniture:pouf_green",
+    "display_name": "Puf verde",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_pouf_green",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:pouf/red",
+    "bedrock_identifier": "rpgroll_furniture:pouf_red",
+    "display_name": "Puf rojo",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_pouf_red",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:pouf/black",
+    "bedrock_identifier": "rpgroll_furniture:pouf_black",
+    "display_name": "Puf negro",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_pouf_black",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:throne/default",
+    "bedrock_identifier": "rpgroll_furniture:throne_default",
+    "display_name": "Trono Real",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_throne_default",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:table/oak",
+    "bedrock_identifier": "rpgroll_furniture:table_oak",
+    "display_name": "Mesa de roble",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_table_oak",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:table/spruce",
+    "bedrock_identifier": "rpgroll_furniture:table_spruce",
+    "display_name": "Mesa de abeto",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_table_spruce",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:table/birch",
+    "bedrock_identifier": "rpgroll_furniture:table_birch",
+    "display_name": "Mesa de abedul",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_table_birch",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:table/jungle",
+    "bedrock_identifier": "rpgroll_furniture:table_jungle",
+    "display_name": "Mesa de jungla",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_table_jungle",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:table/acacia",
+    "bedrock_identifier": "rpgroll_furniture:table_acacia",
+    "display_name": "Mesa de acacia",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_table_acacia",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:table/dark_oak",
+    "bedrock_identifier": "rpgroll_furniture:table_dark_oak",
+    "display_name": "Mesa de roble oscuro",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_table_dark_oak",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:table/mangrove",
+    "bedrock_identifier": "rpgroll_furniture:table_mangrove",
+    "display_name": "Mesa de mangle",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_table_mangrove",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:table/cherry",
+    "bedrock_identifier": "rpgroll_furniture:table_cherry",
+    "display_name": "Mesa de cerezo",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_table_cherry",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:table/bamboo",
+    "bedrock_identifier": "rpgroll_furniture:table_bamboo",
+    "display_name": "Mesa de bambú",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_table_bamboo",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:table/crimson",
+    "bedrock_identifier": "rpgroll_furniture:table_crimson",
+    "display_name": "Mesa de carmesí",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_table_crimson",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:table/warped",
+    "bedrock_identifier": "rpgroll_furniture:table_warped",
+    "display_name": "Mesa de distorsionada",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_table_warped",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:table/pale_oak",
+    "bedrock_identifier": "rpgroll_furniture:table_pale_oak",
+    "display_name": "Mesa de roble pálido",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_table_pale_oak",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:long_table/oak",
+    "bedrock_identifier": "rpgroll_furniture:long_table_oak",
+    "display_name": "Mesa larga de roble",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_long_table_oak",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:long_table/spruce",
+    "bedrock_identifier": "rpgroll_furniture:long_table_spruce",
+    "display_name": "Mesa larga de abeto",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_long_table_spruce",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:long_table/birch",
+    "bedrock_identifier": "rpgroll_furniture:long_table_birch",
+    "display_name": "Mesa larga de abedul",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_long_table_birch",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:long_table/jungle",
+    "bedrock_identifier": "rpgroll_furniture:long_table_jungle",
+    "display_name": "Mesa larga de jungla",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_long_table_jungle",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:long_table/acacia",
+    "bedrock_identifier": "rpgroll_furniture:long_table_acacia",
+    "display_name": "Mesa larga de acacia",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_long_table_acacia",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:long_table/dark_oak",
+    "bedrock_identifier": "rpgroll_furniture:long_table_dark_oak",
+    "display_name": "Mesa larga de roble oscuro",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_long_table_dark_oak",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:long_table/mangrove",
+    "bedrock_identifier": "rpgroll_furniture:long_table_mangrove",
+    "display_name": "Mesa larga de mangle",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_long_table_mangrove",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:long_table/cherry",
+    "bedrock_identifier": "rpgroll_furniture:long_table_cherry",
+    "display_name": "Mesa larga de cerezo",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_long_table_cherry",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:long_table/bamboo",
+    "bedrock_identifier": "rpgroll_furniture:long_table_bamboo",
+    "display_name": "Mesa larga de bambú",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_long_table_bamboo",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:long_table/crimson",
+    "bedrock_identifier": "rpgroll_furniture:long_table_crimson",
+    "display_name": "Mesa larga de carmesí",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_long_table_crimson",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:long_table/warped",
+    "bedrock_identifier": "rpgroll_furniture:long_table_warped",
+    "display_name": "Mesa larga de distorsionada",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_long_table_warped",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:long_table/pale_oak",
+    "bedrock_identifier": "rpgroll_furniture:long_table_pale_oak",
+    "display_name": "Mesa larga de roble pálido",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_long_table_pale_oak",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:coffee_table/oak",
+    "bedrock_identifier": "rpgroll_furniture:coffee_table_oak",
+    "display_name": "Mesita baja de roble",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_coffee_table_oak",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:coffee_table/spruce",
+    "bedrock_identifier": "rpgroll_furniture:coffee_table_spruce",
+    "display_name": "Mesita baja de abeto",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_coffee_table_spruce",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:coffee_table/birch",
+    "bedrock_identifier": "rpgroll_furniture:coffee_table_birch",
+    "display_name": "Mesita baja de abedul",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_coffee_table_birch",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:coffee_table/jungle",
+    "bedrock_identifier": "rpgroll_furniture:coffee_table_jungle",
+    "display_name": "Mesita baja de jungla",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_coffee_table_jungle",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:coffee_table/acacia",
+    "bedrock_identifier": "rpgroll_furniture:coffee_table_acacia",
+    "display_name": "Mesita baja de acacia",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_coffee_table_acacia",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:coffee_table/dark_oak",
+    "bedrock_identifier": "rpgroll_furniture:coffee_table_dark_oak",
+    "display_name": "Mesita baja de roble oscuro",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_coffee_table_dark_oak",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:coffee_table/mangrove",
+    "bedrock_identifier": "rpgroll_furniture:coffee_table_mangrove",
+    "display_name": "Mesita baja de mangle",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_coffee_table_mangrove",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:coffee_table/cherry",
+    "bedrock_identifier": "rpgroll_furniture:coffee_table_cherry",
+    "display_name": "Mesita baja de cerezo",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_coffee_table_cherry",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:coffee_table/bamboo",
+    "bedrock_identifier": "rpgroll_furniture:coffee_table_bamboo",
+    "display_name": "Mesita baja de bambú",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_coffee_table_bamboo",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:coffee_table/crimson",
+    "bedrock_identifier": "rpgroll_furniture:coffee_table_crimson",
+    "display_name": "Mesita baja de carmesí",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_coffee_table_crimson",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:coffee_table/warped",
+    "bedrock_identifier": "rpgroll_furniture:coffee_table_warped",
+    "display_name": "Mesita baja de distorsionada",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_coffee_table_warped",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:coffee_table/pale_oak",
+    "bedrock_identifier": "rpgroll_furniture:coffee_table_pale_oak",
+    "display_name": "Mesita baja de roble pálido",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_coffee_table_pale_oak",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:round_table/oak",
+    "bedrock_identifier": "rpgroll_furniture:round_table_oak",
+    "display_name": "Mesa redonda de roble",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_round_table_oak",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:round_table/spruce",
+    "bedrock_identifier": "rpgroll_furniture:round_table_spruce",
+    "display_name": "Mesa redonda de abeto",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_round_table_spruce",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:round_table/birch",
+    "bedrock_identifier": "rpgroll_furniture:round_table_birch",
+    "display_name": "Mesa redonda de abedul",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_round_table_birch",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:round_table/jungle",
+    "bedrock_identifier": "rpgroll_furniture:round_table_jungle",
+    "display_name": "Mesa redonda de jungla",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_round_table_jungle",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:round_table/acacia",
+    "bedrock_identifier": "rpgroll_furniture:round_table_acacia",
+    "display_name": "Mesa redonda de acacia",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_round_table_acacia",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:round_table/dark_oak",
+    "bedrock_identifier": "rpgroll_furniture:round_table_dark_oak",
+    "display_name": "Mesa redonda de roble oscuro",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_round_table_dark_oak",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:round_table/mangrove",
+    "bedrock_identifier": "rpgroll_furniture:round_table_mangrove",
+    "display_name": "Mesa redonda de mangle",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_round_table_mangrove",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:round_table/cherry",
+    "bedrock_identifier": "rpgroll_furniture:round_table_cherry",
+    "display_name": "Mesa redonda de cerezo",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_round_table_cherry",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:round_table/bamboo",
+    "bedrock_identifier": "rpgroll_furniture:round_table_bamboo",
+    "display_name": "Mesa redonda de bambú",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_round_table_bamboo",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:round_table/crimson",
+    "bedrock_identifier": "rpgroll_furniture:round_table_crimson",
+    "display_name": "Mesa redonda de carmesí",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_round_table_crimson",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:round_table/warped",
+    "bedrock_identifier": "rpgroll_furniture:round_table_warped",
+    "display_name": "Mesa redonda de distorsionada",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_round_table_warped",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:round_table/pale_oak",
+    "bedrock_identifier": "rpgroll_furniture:round_table_pale_oak",
+    "display_name": "Mesa redonda de roble pálido",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_round_table_pale_oak",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:nightstand/oak",
+    "bedrock_identifier": "rpgroll_furniture:nightstand_oak",
+    "display_name": "Mesita de noche de roble",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_nightstand_oak",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:nightstand/spruce",
+    "bedrock_identifier": "rpgroll_furniture:nightstand_spruce",
+    "display_name": "Mesita de noche de abeto",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_nightstand_spruce",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:nightstand/birch",
+    "bedrock_identifier": "rpgroll_furniture:nightstand_birch",
+    "display_name": "Mesita de noche de abedul",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_nightstand_birch",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:nightstand/jungle",
+    "bedrock_identifier": "rpgroll_furniture:nightstand_jungle",
+    "display_name": "Mesita de noche de jungla",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_nightstand_jungle",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:nightstand/acacia",
+    "bedrock_identifier": "rpgroll_furniture:nightstand_acacia",
+    "display_name": "Mesita de noche de acacia",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_nightstand_acacia",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:nightstand/dark_oak",
+    "bedrock_identifier": "rpgroll_furniture:nightstand_dark_oak",
+    "display_name": "Mesita de noche de roble oscuro",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_nightstand_dark_oak",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:nightstand/mangrove",
+    "bedrock_identifier": "rpgroll_furniture:nightstand_mangrove",
+    "display_name": "Mesita de noche de mangle",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_nightstand_mangrove",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:nightstand/cherry",
+    "bedrock_identifier": "rpgroll_furniture:nightstand_cherry",
+    "display_name": "Mesita de noche de cerezo",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_nightstand_cherry",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:nightstand/bamboo",
+    "bedrock_identifier": "rpgroll_furniture:nightstand_bamboo",
+    "display_name": "Mesita de noche de bambú",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_nightstand_bamboo",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:nightstand/crimson",
+    "bedrock_identifier": "rpgroll_furniture:nightstand_crimson",
+    "display_name": "Mesita de noche de carmesí",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_nightstand_crimson",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:nightstand/warped",
+    "bedrock_identifier": "rpgroll_furniture:nightstand_warped",
+    "display_name": "Mesita de noche de distorsionada",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_nightstand_warped",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:nightstand/pale_oak",
+    "bedrock_identifier": "rpgroll_furniture:nightstand_pale_oak",
+    "display_name": "Mesita de noche de roble pálido",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_nightstand_pale_oak",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:desk/oak",
+    "bedrock_identifier": "rpgroll_furniture:desk_oak",
+    "display_name": "Escritorio de roble",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_desk_oak",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:desk/spruce",
+    "bedrock_identifier": "rpgroll_furniture:desk_spruce",
+    "display_name": "Escritorio de abeto",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_desk_spruce",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:desk/birch",
+    "bedrock_identifier": "rpgroll_furniture:desk_birch",
+    "display_name": "Escritorio de abedul",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_desk_birch",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:desk/jungle",
+    "bedrock_identifier": "rpgroll_furniture:desk_jungle",
+    "display_name": "Escritorio de jungla",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_desk_jungle",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:desk/acacia",
+    "bedrock_identifier": "rpgroll_furniture:desk_acacia",
+    "display_name": "Escritorio de acacia",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_desk_acacia",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:desk/dark_oak",
+    "bedrock_identifier": "rpgroll_furniture:desk_dark_oak",
+    "display_name": "Escritorio de roble oscuro",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_desk_dark_oak",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:desk/mangrove",
+    "bedrock_identifier": "rpgroll_furniture:desk_mangrove",
+    "display_name": "Escritorio de mangle",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_desk_mangrove",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:desk/cherry",
+    "bedrock_identifier": "rpgroll_furniture:desk_cherry",
+    "display_name": "Escritorio de cerezo",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_desk_cherry",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:desk/bamboo",
+    "bedrock_identifier": "rpgroll_furniture:desk_bamboo",
+    "display_name": "Escritorio de bambú",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_desk_bamboo",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:desk/crimson",
+    "bedrock_identifier": "rpgroll_furniture:desk_crimson",
+    "display_name": "Escritorio de carmesí",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_desk_crimson",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:desk/warped",
+    "bedrock_identifier": "rpgroll_furniture:desk_warped",
+    "display_name": "Escritorio de distorsionada",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_desk_warped",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:desk/pale_oak",
+    "bedrock_identifier": "rpgroll_furniture:desk_pale_oak",
+    "display_name": "Escritorio de roble pálido",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_desk_pale_oak",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:wardrobe/oak",
+    "bedrock_identifier": "rpgroll_furniture:wardrobe_oak",
+    "display_name": "Armario de roble",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_wardrobe_oak",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:wardrobe/spruce",
+    "bedrock_identifier": "rpgroll_furniture:wardrobe_spruce",
+    "display_name": "Armario de abeto",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_wardrobe_spruce",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:wardrobe/birch",
+    "bedrock_identifier": "rpgroll_furniture:wardrobe_birch",
+    "display_name": "Armario de abedul",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_wardrobe_birch",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:wardrobe/jungle",
+    "bedrock_identifier": "rpgroll_furniture:wardrobe_jungle",
+    "display_name": "Armario de jungla",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_wardrobe_jungle",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:wardrobe/acacia",
+    "bedrock_identifier": "rpgroll_furniture:wardrobe_acacia",
+    "display_name": "Armario de acacia",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_wardrobe_acacia",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:wardrobe/dark_oak",
+    "bedrock_identifier": "rpgroll_furniture:wardrobe_dark_oak",
+    "display_name": "Armario de roble oscuro",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_wardrobe_dark_oak",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:wardrobe/mangrove",
+    "bedrock_identifier": "rpgroll_furniture:wardrobe_mangrove",
+    "display_name": "Armario de mangle",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_wardrobe_mangrove",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:wardrobe/cherry",
+    "bedrock_identifier": "rpgroll_furniture:wardrobe_cherry",
+    "display_name": "Armario de cerezo",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_wardrobe_cherry",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:wardrobe/bamboo",
+    "bedrock_identifier": "rpgroll_furniture:wardrobe_bamboo",
+    "display_name": "Armario de bambú",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_wardrobe_bamboo",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:wardrobe/crimson",
+    "bedrock_identifier": "rpgroll_furniture:wardrobe_crimson",
+    "display_name": "Armario de carmesí",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_wardrobe_crimson",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:wardrobe/warped",
+    "bedrock_identifier": "rpgroll_furniture:wardrobe_warped",
+    "display_name": "Armario de distorsionada",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_wardrobe_warped",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:wardrobe/pale_oak",
+    "bedrock_identifier": "rpgroll_furniture:wardrobe_pale_oak",
+    "display_name": "Armario de roble pálido",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_wardrobe_pale_oak",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:dresser/oak",
+    "bedrock_identifier": "rpgroll_furniture:dresser_oak",
+    "display_name": "Cómoda de roble",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_dresser_oak",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:dresser/spruce",
+    "bedrock_identifier": "rpgroll_furniture:dresser_spruce",
+    "display_name": "Cómoda de abeto",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_dresser_spruce",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:dresser/birch",
+    "bedrock_identifier": "rpgroll_furniture:dresser_birch",
+    "display_name": "Cómoda de abedul",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_dresser_birch",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:dresser/jungle",
+    "bedrock_identifier": "rpgroll_furniture:dresser_jungle",
+    "display_name": "Cómoda de jungla",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_dresser_jungle",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:dresser/acacia",
+    "bedrock_identifier": "rpgroll_furniture:dresser_acacia",
+    "display_name": "Cómoda de acacia",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_dresser_acacia",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:dresser/dark_oak",
+    "bedrock_identifier": "rpgroll_furniture:dresser_dark_oak",
+    "display_name": "Cómoda de roble oscuro",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_dresser_dark_oak",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:dresser/mangrove",
+    "bedrock_identifier": "rpgroll_furniture:dresser_mangrove",
+    "display_name": "Cómoda de mangle",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_dresser_mangrove",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:dresser/cherry",
+    "bedrock_identifier": "rpgroll_furniture:dresser_cherry",
+    "display_name": "Cómoda de cerezo",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_dresser_cherry",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:dresser/bamboo",
+    "bedrock_identifier": "rpgroll_furniture:dresser_bamboo",
+    "display_name": "Cómoda de bambú",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_dresser_bamboo",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:dresser/crimson",
+    "bedrock_identifier": "rpgroll_furniture:dresser_crimson",
+    "display_name": "Cómoda de carmesí",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_dresser_crimson",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:dresser/warped",
+    "bedrock_identifier": "rpgroll_furniture:dresser_warped",
+    "display_name": "Cómoda de distorsionada",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_dresser_warped",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:dresser/pale_oak",
+    "bedrock_identifier": "rpgroll_furniture:dresser_pale_oak",
+    "display_name": "Cómoda de roble pálido",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_dresser_pale_oak",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:bookcase/oak",
+    "bedrock_identifier": "rpgroll_furniture:bookcase_oak",
+    "display_name": "Librería de roble",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_bookcase_oak",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:bookcase/spruce",
+    "bedrock_identifier": "rpgroll_furniture:bookcase_spruce",
+    "display_name": "Librería de abeto",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_bookcase_spruce",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:bookcase/birch",
+    "bedrock_identifier": "rpgroll_furniture:bookcase_birch",
+    "display_name": "Librería de abedul",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_bookcase_birch",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:bookcase/jungle",
+    "bedrock_identifier": "rpgroll_furniture:bookcase_jungle",
+    "display_name": "Librería de jungla",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_bookcase_jungle",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:bookcase/acacia",
+    "bedrock_identifier": "rpgroll_furniture:bookcase_acacia",
+    "display_name": "Librería de acacia",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_bookcase_acacia",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:bookcase/dark_oak",
+    "bedrock_identifier": "rpgroll_furniture:bookcase_dark_oak",
+    "display_name": "Librería de roble oscuro",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_bookcase_dark_oak",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:bookcase/mangrove",
+    "bedrock_identifier": "rpgroll_furniture:bookcase_mangrove",
+    "display_name": "Librería de mangle",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_bookcase_mangrove",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:bookcase/cherry",
+    "bedrock_identifier": "rpgroll_furniture:bookcase_cherry",
+    "display_name": "Librería de cerezo",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_bookcase_cherry",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:bookcase/bamboo",
+    "bedrock_identifier": "rpgroll_furniture:bookcase_bamboo",
+    "display_name": "Librería de bambú",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_bookcase_bamboo",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:bookcase/crimson",
+    "bedrock_identifier": "rpgroll_furniture:bookcase_crimson",
+    "display_name": "Librería de carmesí",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_bookcase_crimson",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:bookcase/warped",
+    "bedrock_identifier": "rpgroll_furniture:bookcase_warped",
+    "display_name": "Librería de distorsionada",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_bookcase_warped",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:bookcase/pale_oak",
+    "bedrock_identifier": "rpgroll_furniture:bookcase_pale_oak",
+    "display_name": "Librería de roble pálido",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_bookcase_pale_oak",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:trunk/oak",
+    "bedrock_identifier": "rpgroll_furniture:trunk_oak",
+    "display_name": "Baúl de roble",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_trunk_oak",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:trunk/spruce",
+    "bedrock_identifier": "rpgroll_furniture:trunk_spruce",
+    "display_name": "Baúl de abeto",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_trunk_spruce",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:trunk/birch",
+    "bedrock_identifier": "rpgroll_furniture:trunk_birch",
+    "display_name": "Baúl de abedul",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_trunk_birch",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:trunk/jungle",
+    "bedrock_identifier": "rpgroll_furniture:trunk_jungle",
+    "display_name": "Baúl de jungla",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_trunk_jungle",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:trunk/acacia",
+    "bedrock_identifier": "rpgroll_furniture:trunk_acacia",
+    "display_name": "Baúl de acacia",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_trunk_acacia",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:trunk/dark_oak",
+    "bedrock_identifier": "rpgroll_furniture:trunk_dark_oak",
+    "display_name": "Baúl de roble oscuro",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_trunk_dark_oak",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:trunk/mangrove",
+    "bedrock_identifier": "rpgroll_furniture:trunk_mangrove",
+    "display_name": "Baúl de mangle",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_trunk_mangrove",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:trunk/cherry",
+    "bedrock_identifier": "rpgroll_furniture:trunk_cherry",
+    "display_name": "Baúl de cerezo",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_trunk_cherry",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:trunk/bamboo",
+    "bedrock_identifier": "rpgroll_furniture:trunk_bamboo",
+    "display_name": "Baúl de bambú",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_trunk_bamboo",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:trunk/crimson",
+    "bedrock_identifier": "rpgroll_furniture:trunk_crimson",
+    "display_name": "Baúl de carmesí",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_trunk_crimson",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:trunk/warped",
+    "bedrock_identifier": "rpgroll_furniture:trunk_warped",
+    "display_name": "Baúl de distorsionada",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_trunk_warped",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:trunk/pale_oak",
+    "bedrock_identifier": "rpgroll_furniture:trunk_pale_oak",
+    "display_name": "Baúl de roble pálido",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_trunk_pale_oak",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:wall_shelf/oak",
+    "bedrock_identifier": "rpgroll_furniture:wall_shelf_oak",
+    "display_name": "Repisa de roble",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_wall_shelf_oak",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:wall_shelf/spruce",
+    "bedrock_identifier": "rpgroll_furniture:wall_shelf_spruce",
+    "display_name": "Repisa de abeto",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_wall_shelf_spruce",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:wall_shelf/birch",
+    "bedrock_identifier": "rpgroll_furniture:wall_shelf_birch",
+    "display_name": "Repisa de abedul",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_wall_shelf_birch",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:wall_shelf/jungle",
+    "bedrock_identifier": "rpgroll_furniture:wall_shelf_jungle",
+    "display_name": "Repisa de jungla",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_wall_shelf_jungle",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:wall_shelf/acacia",
+    "bedrock_identifier": "rpgroll_furniture:wall_shelf_acacia",
+    "display_name": "Repisa de acacia",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_wall_shelf_acacia",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:wall_shelf/dark_oak",
+    "bedrock_identifier": "rpgroll_furniture:wall_shelf_dark_oak",
+    "display_name": "Repisa de roble oscuro",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_wall_shelf_dark_oak",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:wall_shelf/mangrove",
+    "bedrock_identifier": "rpgroll_furniture:wall_shelf_mangrove",
+    "display_name": "Repisa de mangle",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_wall_shelf_mangrove",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:wall_shelf/cherry",
+    "bedrock_identifier": "rpgroll_furniture:wall_shelf_cherry",
+    "display_name": "Repisa de cerezo",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_wall_shelf_cherry",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:wall_shelf/bamboo",
+    "bedrock_identifier": "rpgroll_furniture:wall_shelf_bamboo",
+    "display_name": "Repisa de bambú",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_wall_shelf_bamboo",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:wall_shelf/crimson",
+    "bedrock_identifier": "rpgroll_furniture:wall_shelf_crimson",
+    "display_name": "Repisa de carmesí",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_wall_shelf_crimson",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:wall_shelf/warped",
+    "bedrock_identifier": "rpgroll_furniture:wall_shelf_warped",
+    "display_name": "Repisa de distorsionada",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_wall_shelf_warped",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:wall_shelf/pale_oak",
+    "bedrock_identifier": "rpgroll_furniture:wall_shelf_pale_oak",
+    "display_name": "Repisa de roble pálido",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_wall_shelf_pale_oak",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:bed/white",
+    "bedrock_identifier": "rpgroll_furniture:bed_white",
+    "display_name": "Cama blanco",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_bed_white",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:bed/orange",
+    "bedrock_identifier": "rpgroll_furniture:bed_orange",
+    "display_name": "Cama naranja",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_bed_orange",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:bed/magenta",
+    "bedrock_identifier": "rpgroll_furniture:bed_magenta",
+    "display_name": "Cama magenta",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_bed_magenta",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:bed/light_blue",
+    "bedrock_identifier": "rpgroll_furniture:bed_light_blue",
+    "display_name": "Cama azul claro",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_bed_light_blue",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:bed/yellow",
+    "bedrock_identifier": "rpgroll_furniture:bed_yellow",
+    "display_name": "Cama amarillo",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_bed_yellow",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:bed/lime",
+    "bedrock_identifier": "rpgroll_furniture:bed_lime",
+    "display_name": "Cama lima",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_bed_lime",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:bed/pink",
+    "bedrock_identifier": "rpgroll_furniture:bed_pink",
+    "display_name": "Cama rosa",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_bed_pink",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:bed/gray",
+    "bedrock_identifier": "rpgroll_furniture:bed_gray",
+    "display_name": "Cama gris",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_bed_gray",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:bed/light_gray",
+    "bedrock_identifier": "rpgroll_furniture:bed_light_gray",
+    "display_name": "Cama gris claro",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_bed_light_gray",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:bed/cyan",
+    "bedrock_identifier": "rpgroll_furniture:bed_cyan",
+    "display_name": "Cama cian",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_bed_cyan",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:bed/purple",
+    "bedrock_identifier": "rpgroll_furniture:bed_purple",
+    "display_name": "Cama morado",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_bed_purple",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:bed/blue",
+    "bedrock_identifier": "rpgroll_furniture:bed_blue",
+    "display_name": "Cama azul",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_bed_blue",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:bed/brown",
+    "bedrock_identifier": "rpgroll_furniture:bed_brown",
+    "display_name": "Cama marrón",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_bed_brown",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:bed/green",
+    "bedrock_identifier": "rpgroll_furniture:bed_green",
+    "display_name": "Cama verde",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_bed_green",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:bed/red",
+    "bedrock_identifier": "rpgroll_furniture:bed_red",
+    "display_name": "Cama rojo",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_bed_red",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:bed/black",
+    "bedrock_identifier": "rpgroll_furniture:bed_black",
+    "display_name": "Cama negro",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_bed_black",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:rug/white",
+    "bedrock_identifier": "rpgroll_furniture:rug_white",
+    "display_name": "Alfombra blanco",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_rug_white",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:rug/orange",
+    "bedrock_identifier": "rpgroll_furniture:rug_orange",
+    "display_name": "Alfombra naranja",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_rug_orange",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:rug/magenta",
+    "bedrock_identifier": "rpgroll_furniture:rug_magenta",
+    "display_name": "Alfombra magenta",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_rug_magenta",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:rug/light_blue",
+    "bedrock_identifier": "rpgroll_furniture:rug_light_blue",
+    "display_name": "Alfombra azul claro",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_rug_light_blue",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:rug/yellow",
+    "bedrock_identifier": "rpgroll_furniture:rug_yellow",
+    "display_name": "Alfombra amarillo",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_rug_yellow",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:rug/lime",
+    "bedrock_identifier": "rpgroll_furniture:rug_lime",
+    "display_name": "Alfombra lima",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_rug_lime",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:rug/pink",
+    "bedrock_identifier": "rpgroll_furniture:rug_pink",
+    "display_name": "Alfombra rosa",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_rug_pink",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:rug/gray",
+    "bedrock_identifier": "rpgroll_furniture:rug_gray",
+    "display_name": "Alfombra gris",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_rug_gray",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:rug/light_gray",
+    "bedrock_identifier": "rpgroll_furniture:rug_light_gray",
+    "display_name": "Alfombra gris claro",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_rug_light_gray",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:rug/cyan",
+    "bedrock_identifier": "rpgroll_furniture:rug_cyan",
+    "display_name": "Alfombra cian",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_rug_cyan",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:rug/purple",
+    "bedrock_identifier": "rpgroll_furniture:rug_purple",
+    "display_name": "Alfombra morado",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_rug_purple",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:rug/blue",
+    "bedrock_identifier": "rpgroll_furniture:rug_blue",
+    "display_name": "Alfombra azul",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_rug_blue",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:rug/brown",
+    "bedrock_identifier": "rpgroll_furniture:rug_brown",
+    "display_name": "Alfombra marrón",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_rug_brown",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:rug/green",
+    "bedrock_identifier": "rpgroll_furniture:rug_green",
+    "display_name": "Alfombra verde",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_rug_green",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:rug/red",
+    "bedrock_identifier": "rpgroll_furniture:rug_red",
+    "display_name": "Alfombra rojo",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_rug_red",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:rug/black",
+    "bedrock_identifier": "rpgroll_furniture:rug_black",
+    "display_name": "Alfombra negro",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_rug_black",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:curtain/white",
+    "bedrock_identifier": "rpgroll_furniture:curtain_white",
+    "display_name": "Cortina blanco",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_curtain_white",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:curtain/white_open",
+    "bedrock_identifier": "rpgroll_furniture:curtain_white_open",
+    "display_name": "Cortina blanco",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_curtain_white",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:curtain/orange",
+    "bedrock_identifier": "rpgroll_furniture:curtain_orange",
+    "display_name": "Cortina naranja",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_curtain_orange",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:curtain/orange_open",
+    "bedrock_identifier": "rpgroll_furniture:curtain_orange_open",
+    "display_name": "Cortina naranja",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_curtain_orange",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:curtain/magenta",
+    "bedrock_identifier": "rpgroll_furniture:curtain_magenta",
+    "display_name": "Cortina magenta",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_curtain_magenta",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:curtain/magenta_open",
+    "bedrock_identifier": "rpgroll_furniture:curtain_magenta_open",
+    "display_name": "Cortina magenta",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_curtain_magenta",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:curtain/light_blue",
+    "bedrock_identifier": "rpgroll_furniture:curtain_light_blue",
+    "display_name": "Cortina azul claro",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_curtain_light_blue",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:curtain/light_blue_open",
+    "bedrock_identifier": "rpgroll_furniture:curtain_light_blue_open",
+    "display_name": "Cortina azul claro",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_curtain_light_blue",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:curtain/yellow",
+    "bedrock_identifier": "rpgroll_furniture:curtain_yellow",
+    "display_name": "Cortina amarillo",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_curtain_yellow",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:curtain/yellow_open",
+    "bedrock_identifier": "rpgroll_furniture:curtain_yellow_open",
+    "display_name": "Cortina amarillo",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_curtain_yellow",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:curtain/lime",
+    "bedrock_identifier": "rpgroll_furniture:curtain_lime",
+    "display_name": "Cortina lima",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_curtain_lime",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:curtain/lime_open",
+    "bedrock_identifier": "rpgroll_furniture:curtain_lime_open",
+    "display_name": "Cortina lima",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_curtain_lime",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:curtain/pink",
+    "bedrock_identifier": "rpgroll_furniture:curtain_pink",
+    "display_name": "Cortina rosa",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_curtain_pink",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:curtain/pink_open",
+    "bedrock_identifier": "rpgroll_furniture:curtain_pink_open",
+    "display_name": "Cortina rosa",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_curtain_pink",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:curtain/gray",
+    "bedrock_identifier": "rpgroll_furniture:curtain_gray",
+    "display_name": "Cortina gris",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_curtain_gray",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:curtain/gray_open",
+    "bedrock_identifier": "rpgroll_furniture:curtain_gray_open",
+    "display_name": "Cortina gris",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_curtain_gray",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:curtain/light_gray",
+    "bedrock_identifier": "rpgroll_furniture:curtain_light_gray",
+    "display_name": "Cortina gris claro",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_curtain_light_gray",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:curtain/light_gray_open",
+    "bedrock_identifier": "rpgroll_furniture:curtain_light_gray_open",
+    "display_name": "Cortina gris claro",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_curtain_light_gray",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:curtain/cyan",
+    "bedrock_identifier": "rpgroll_furniture:curtain_cyan",
+    "display_name": "Cortina cian",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_curtain_cyan",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:curtain/cyan_open",
+    "bedrock_identifier": "rpgroll_furniture:curtain_cyan_open",
+    "display_name": "Cortina cian",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_curtain_cyan",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:curtain/purple",
+    "bedrock_identifier": "rpgroll_furniture:curtain_purple",
+    "display_name": "Cortina morado",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_curtain_purple",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:curtain/purple_open",
+    "bedrock_identifier": "rpgroll_furniture:curtain_purple_open",
+    "display_name": "Cortina morado",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_curtain_purple",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:curtain/blue",
+    "bedrock_identifier": "rpgroll_furniture:curtain_blue",
+    "display_name": "Cortina azul",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_curtain_blue",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:curtain/blue_open",
+    "bedrock_identifier": "rpgroll_furniture:curtain_blue_open",
+    "display_name": "Cortina azul",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_curtain_blue",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:curtain/brown",
+    "bedrock_identifier": "rpgroll_furniture:curtain_brown",
+    "display_name": "Cortina marrón",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_curtain_brown",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:curtain/brown_open",
+    "bedrock_identifier": "rpgroll_furniture:curtain_brown_open",
+    "display_name": "Cortina marrón",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_curtain_brown",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:curtain/green",
+    "bedrock_identifier": "rpgroll_furniture:curtain_green",
+    "display_name": "Cortina verde",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_curtain_green",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:curtain/green_open",
+    "bedrock_identifier": "rpgroll_furniture:curtain_green_open",
+    "display_name": "Cortina verde",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_curtain_green",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:curtain/red",
+    "bedrock_identifier": "rpgroll_furniture:curtain_red",
+    "display_name": "Cortina rojo",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_curtain_red",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:curtain/red_open",
+    "bedrock_identifier": "rpgroll_furniture:curtain_red_open",
+    "display_name": "Cortina rojo",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_curtain_red",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:curtain/black",
+    "bedrock_identifier": "rpgroll_furniture:curtain_black",
+    "display_name": "Cortina negro",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_curtain_black",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:curtain/black_open",
+    "bedrock_identifier": "rpgroll_furniture:curtain_black_open",
+    "display_name": "Cortina negro",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_curtain_black",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:mirror/default",
+    "bedrock_identifier": "rpgroll_furniture:mirror_default",
+    "display_name": "Espejo",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_mirror_default",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:counter/oak",
+    "bedrock_identifier": "rpgroll_furniture:counter_oak",
+    "display_name": "Encimera de roble",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_counter_oak",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:counter/spruce",
+    "bedrock_identifier": "rpgroll_furniture:counter_spruce",
+    "display_name": "Encimera de abeto",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_counter_spruce",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:counter/birch",
+    "bedrock_identifier": "rpgroll_furniture:counter_birch",
+    "display_name": "Encimera de abedul",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_counter_birch",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:counter/jungle",
+    "bedrock_identifier": "rpgroll_furniture:counter_jungle",
+    "display_name": "Encimera de jungla",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_counter_jungle",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:counter/acacia",
+    "bedrock_identifier": "rpgroll_furniture:counter_acacia",
+    "display_name": "Encimera de acacia",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_counter_acacia",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:counter/dark_oak",
+    "bedrock_identifier": "rpgroll_furniture:counter_dark_oak",
+    "display_name": "Encimera de roble oscuro",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_counter_dark_oak",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:counter/mangrove",
+    "bedrock_identifier": "rpgroll_furniture:counter_mangrove",
+    "display_name": "Encimera de mangle",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_counter_mangrove",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:counter/cherry",
+    "bedrock_identifier": "rpgroll_furniture:counter_cherry",
+    "display_name": "Encimera de cerezo",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_counter_cherry",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:counter/bamboo",
+    "bedrock_identifier": "rpgroll_furniture:counter_bamboo",
+    "display_name": "Encimera de bambú",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_counter_bamboo",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:counter/crimson",
+    "bedrock_identifier": "rpgroll_furniture:counter_crimson",
+    "display_name": "Encimera de carmesí",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_counter_crimson",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:counter/warped",
+    "bedrock_identifier": "rpgroll_furniture:counter_warped",
+    "display_name": "Encimera de distorsionada",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_counter_warped",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:counter/pale_oak",
+    "bedrock_identifier": "rpgroll_furniture:counter_pale_oak",
+    "display_name": "Encimera de roble pálido",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_counter_pale_oak",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:sink/oak",
+    "bedrock_identifier": "rpgroll_furniture:sink_oak",
+    "display_name": "Fregadero de roble",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_sink_oak",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:sink/spruce",
+    "bedrock_identifier": "rpgroll_furniture:sink_spruce",
+    "display_name": "Fregadero de abeto",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_sink_spruce",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:sink/birch",
+    "bedrock_identifier": "rpgroll_furniture:sink_birch",
+    "display_name": "Fregadero de abedul",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_sink_birch",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:sink/jungle",
+    "bedrock_identifier": "rpgroll_furniture:sink_jungle",
+    "display_name": "Fregadero de jungla",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_sink_jungle",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:sink/acacia",
+    "bedrock_identifier": "rpgroll_furniture:sink_acacia",
+    "display_name": "Fregadero de acacia",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_sink_acacia",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:sink/dark_oak",
+    "bedrock_identifier": "rpgroll_furniture:sink_dark_oak",
+    "display_name": "Fregadero de roble oscuro",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_sink_dark_oak",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:sink/mangrove",
+    "bedrock_identifier": "rpgroll_furniture:sink_mangrove",
+    "display_name": "Fregadero de mangle",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_sink_mangrove",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:sink/cherry",
+    "bedrock_identifier": "rpgroll_furniture:sink_cherry",
+    "display_name": "Fregadero de cerezo",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_sink_cherry",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:sink/bamboo",
+    "bedrock_identifier": "rpgroll_furniture:sink_bamboo",
+    "display_name": "Fregadero de bambú",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_sink_bamboo",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:sink/crimson",
+    "bedrock_identifier": "rpgroll_furniture:sink_crimson",
+    "display_name": "Fregadero de carmesí",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_sink_crimson",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:sink/warped",
+    "bedrock_identifier": "rpgroll_furniture:sink_warped",
+    "display_name": "Fregadero de distorsionada",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_sink_warped",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:sink/pale_oak",
+    "bedrock_identifier": "rpgroll_furniture:sink_pale_oak",
+    "display_name": "Fregadero de roble pálido",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_sink_pale_oak",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:stove/default",
+    "bedrock_identifier": "rpgroll_furniture:stove_default",
+    "display_name": "Cocina",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_stove_default",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:stove/default_on",
+    "bedrock_identifier": "rpgroll_furniture:stove_default_on",
+    "display_name": "Cocina",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_stove_default",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:fridge/white",
+    "bedrock_identifier": "rpgroll_furniture:fridge_white",
+    "display_name": "Nevera blanca",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_fridge_white",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:fridge/black",
+    "bedrock_identifier": "rpgroll_furniture:fridge_black",
+    "display_name": "Nevera negra",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_fridge_black",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:fridge/silver",
+    "bedrock_identifier": "rpgroll_furniture:fridge_silver",
+    "display_name": "Nevera plateada",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_fridge_silver",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:wall_cabinet/oak",
+    "bedrock_identifier": "rpgroll_furniture:wall_cabinet_oak",
+    "display_name": "Alacena de roble",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_wall_cabinet_oak",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:wall_cabinet/spruce",
+    "bedrock_identifier": "rpgroll_furniture:wall_cabinet_spruce",
+    "display_name": "Alacena de abeto",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_wall_cabinet_spruce",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:wall_cabinet/birch",
+    "bedrock_identifier": "rpgroll_furniture:wall_cabinet_birch",
+    "display_name": "Alacena de abedul",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_wall_cabinet_birch",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:wall_cabinet/jungle",
+    "bedrock_identifier": "rpgroll_furniture:wall_cabinet_jungle",
+    "display_name": "Alacena de jungla",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_wall_cabinet_jungle",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:wall_cabinet/acacia",
+    "bedrock_identifier": "rpgroll_furniture:wall_cabinet_acacia",
+    "display_name": "Alacena de acacia",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_wall_cabinet_acacia",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:wall_cabinet/dark_oak",
+    "bedrock_identifier": "rpgroll_furniture:wall_cabinet_dark_oak",
+    "display_name": "Alacena de roble oscuro",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_wall_cabinet_dark_oak",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:wall_cabinet/mangrove",
+    "bedrock_identifier": "rpgroll_furniture:wall_cabinet_mangrove",
+    "display_name": "Alacena de mangle",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_wall_cabinet_mangrove",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:wall_cabinet/cherry",
+    "bedrock_identifier": "rpgroll_furniture:wall_cabinet_cherry",
+    "display_name": "Alacena de cerezo",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_wall_cabinet_cherry",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:wall_cabinet/bamboo",
+    "bedrock_identifier": "rpgroll_furniture:wall_cabinet_bamboo",
+    "display_name": "Alacena de bambú",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_wall_cabinet_bamboo",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:wall_cabinet/crimson",
+    "bedrock_identifier": "rpgroll_furniture:wall_cabinet_crimson",
+    "display_name": "Alacena de carmesí",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_wall_cabinet_crimson",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:wall_cabinet/warped",
+    "bedrock_identifier": "rpgroll_furniture:wall_cabinet_warped",
+    "display_name": "Alacena de distorsionada",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_wall_cabinet_warped",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:wall_cabinet/pale_oak",
+    "bedrock_identifier": "rpgroll_furniture:wall_cabinet_pale_oak",
+    "display_name": "Alacena de roble pálido",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_wall_cabinet_pale_oak",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:floor_lamp/default",
+    "bedrock_identifier": "rpgroll_furniture:floor_lamp_default",
+    "display_name": "Lámpara de pie",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_floor_lamp_default",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:floor_lamp/default_on",
+    "bedrock_identifier": "rpgroll_furniture:floor_lamp_default_on",
+    "display_name": "Lámpara de pie",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_floor_lamp_default",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:table_lamp/default",
+    "bedrock_identifier": "rpgroll_furniture:table_lamp_default",
+    "display_name": "Lámpara de mesa",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_table_lamp_default",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:table_lamp/default_on",
+    "bedrock_identifier": "rpgroll_furniture:table_lamp_default_on",
+    "display_name": "Lámpara de mesa",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_table_lamp_default",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:chandelier/default",
+    "bedrock_identifier": "rpgroll_furniture:chandelier_default",
+    "display_name": "Candelabro",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_chandelier_default",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:wall_lantern/default",
+    "bedrock_identifier": "rpgroll_furniture:wall_lantern_default",
+    "display_name": "Farol de pared",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_wall_lantern_default",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:candles/default",
+    "bedrock_identifier": "rpgroll_furniture:candles_default",
+    "display_name": "Velas",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_candles_default",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:candles/default_on",
+    "bedrock_identifier": "rpgroll_furniture:candles_default_on",
+    "display_name": "Velas",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_candles_default",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:fireplace/default",
+    "bedrock_identifier": "rpgroll_furniture:fireplace_default",
+    "display_name": "Chimenea",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_fireplace_default",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:fireplace/default_on",
+    "bedrock_identifier": "rpgroll_furniture:fireplace_default_on",
+    "display_name": "Chimenea",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_fireplace_default",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:potted_plant/fern",
+    "bedrock_identifier": "rpgroll_furniture:potted_plant_fern",
+    "display_name": "Maceta con helecho",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_potted_plant_fern",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:potted_plant/flowers",
+    "bedrock_identifier": "rpgroll_furniture:potted_plant_flowers",
+    "display_name": "Maceta con flores",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_potted_plant_flowers",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:potted_plant/cactus",
+    "bedrock_identifier": "rpgroll_furniture:potted_plant_cactus",
+    "display_name": "Maceta con cactus",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_potted_plant_cactus",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:big_plant/default",
+    "bedrock_identifier": "rpgroll_furniture:big_plant_default",
+    "display_name": "Planta grande",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_big_plant_default",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:painting/landscape",
+    "bedrock_identifier": "rpgroll_furniture:painting_landscape",
+    "display_name": "Cuadro: paisaje",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_painting_landscape",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:painting/sunset",
+    "bedrock_identifier": "rpgroll_furniture:painting_sunset",
+    "display_name": "Cuadro: atardecer",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_painting_sunset",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:painting/mountain",
+    "bedrock_identifier": "rpgroll_furniture:painting_mountain",
+    "display_name": "Cuadro: montaña",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_painting_mountain",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:painting/abstract",
+    "bedrock_identifier": "rpgroll_furniture:painting_abstract",
+    "display_name": "Cuadro: abstracto",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_painting_abstract",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:painting/flowers",
+    "bedrock_identifier": "rpgroll_furniture:painting_flowers",
+    "display_name": "Cuadro: flores",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_painting_flowers",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:painting/sea",
+    "bedrock_identifier": "rpgroll_furniture:painting_sea",
+    "display_name": "Cuadro: mar",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_painting_sea",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:wall_clock/oak",
+    "bedrock_identifier": "rpgroll_furniture:wall_clock_oak",
+    "display_name": "Reloj de pared de roble",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_wall_clock_oak",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:wall_clock/spruce",
+    "bedrock_identifier": "rpgroll_furniture:wall_clock_spruce",
+    "display_name": "Reloj de pared de abeto",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_wall_clock_spruce",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:wall_clock/birch",
+    "bedrock_identifier": "rpgroll_furniture:wall_clock_birch",
+    "display_name": "Reloj de pared de abedul",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_wall_clock_birch",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:wall_clock/jungle",
+    "bedrock_identifier": "rpgroll_furniture:wall_clock_jungle",
+    "display_name": "Reloj de pared de jungla",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_wall_clock_jungle",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:wall_clock/acacia",
+    "bedrock_identifier": "rpgroll_furniture:wall_clock_acacia",
+    "display_name": "Reloj de pared de acacia",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_wall_clock_acacia",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:wall_clock/dark_oak",
+    "bedrock_identifier": "rpgroll_furniture:wall_clock_dark_oak",
+    "display_name": "Reloj de pared de roble oscuro",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_wall_clock_dark_oak",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:wall_clock/mangrove",
+    "bedrock_identifier": "rpgroll_furniture:wall_clock_mangrove",
+    "display_name": "Reloj de pared de mangle",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_wall_clock_mangrove",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:wall_clock/cherry",
+    "bedrock_identifier": "rpgroll_furniture:wall_clock_cherry",
+    "display_name": "Reloj de pared de cerezo",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_wall_clock_cherry",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:wall_clock/bamboo",
+    "bedrock_identifier": "rpgroll_furniture:wall_clock_bamboo",
+    "display_name": "Reloj de pared de bambú",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_wall_clock_bamboo",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:wall_clock/crimson",
+    "bedrock_identifier": "rpgroll_furniture:wall_clock_crimson",
+    "display_name": "Reloj de pared de carmesí",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_wall_clock_crimson",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:wall_clock/warped",
+    "bedrock_identifier": "rpgroll_furniture:wall_clock_warped",
+    "display_name": "Reloj de pared de distorsionada",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_wall_clock_warped",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:wall_clock/pale_oak",
+    "bedrock_identifier": "rpgroll_furniture:wall_clock_pale_oak",
+    "display_name": "Reloj de pared de roble pálido",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_wall_clock_pale_oak",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:globe/default",
+    "bedrock_identifier": "rpgroll_furniture:globe_default",
+    "display_name": "Globo terráqueo",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_globe_default",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:vase/white",
+    "bedrock_identifier": "rpgroll_furniture:vase_white",
+    "display_name": "Jarrón blanco",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_vase_white",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:vase/blue",
+    "bedrock_identifier": "rpgroll_furniture:vase_blue",
+    "display_name": "Jarrón azul",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_vase_blue",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:vase/terracotta",
+    "bedrock_identifier": "rpgroll_furniture:vase_terracotta",
+    "display_name": "Jarrón de barro",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_vase_terracotta",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:trash_can/default",
+    "bedrock_identifier": "rpgroll_furniture:trash_can_default",
+    "display_name": "Papelera",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_trash_can_default",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:street_lamp/default",
+    "bedrock_identifier": "rpgroll_furniture:street_lamp_default",
+    "display_name": "Farola",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_street_lamp_default",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:fountain/default",
+    "bedrock_identifier": "rpgroll_furniture:fountain_default",
+    "display_name": "Fuente",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_fountain_default",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:parasol/white",
+    "bedrock_identifier": "rpgroll_furniture:parasol_white",
+    "display_name": "Sombrilla blanco",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_parasol_white",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:parasol/orange",
+    "bedrock_identifier": "rpgroll_furniture:parasol_orange",
+    "display_name": "Sombrilla naranja",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_parasol_orange",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:parasol/magenta",
+    "bedrock_identifier": "rpgroll_furniture:parasol_magenta",
+    "display_name": "Sombrilla magenta",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_parasol_magenta",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:parasol/light_blue",
+    "bedrock_identifier": "rpgroll_furniture:parasol_light_blue",
+    "display_name": "Sombrilla azul claro",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_parasol_light_blue",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:parasol/yellow",
+    "bedrock_identifier": "rpgroll_furniture:parasol_yellow",
+    "display_name": "Sombrilla amarillo",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_parasol_yellow",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:parasol/lime",
+    "bedrock_identifier": "rpgroll_furniture:parasol_lime",
+    "display_name": "Sombrilla lima",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_parasol_lime",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:parasol/pink",
+    "bedrock_identifier": "rpgroll_furniture:parasol_pink",
+    "display_name": "Sombrilla rosa",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_parasol_pink",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:parasol/gray",
+    "bedrock_identifier": "rpgroll_furniture:parasol_gray",
+    "display_name": "Sombrilla gris",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_parasol_gray",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:parasol/light_gray",
+    "bedrock_identifier": "rpgroll_furniture:parasol_light_gray",
+    "display_name": "Sombrilla gris claro",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_parasol_light_gray",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:parasol/cyan",
+    "bedrock_identifier": "rpgroll_furniture:parasol_cyan",
+    "display_name": "Sombrilla cian",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_parasol_cyan",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:parasol/purple",
+    "bedrock_identifier": "rpgroll_furniture:parasol_purple",
+    "display_name": "Sombrilla morado",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_parasol_purple",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:parasol/blue",
+    "bedrock_identifier": "rpgroll_furniture:parasol_blue",
+    "display_name": "Sombrilla azul",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_parasol_blue",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:parasol/brown",
+    "bedrock_identifier": "rpgroll_furniture:parasol_brown",
+    "display_name": "Sombrilla marrón",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_parasol_brown",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:parasol/green",
+    "bedrock_identifier": "rpgroll_furniture:parasol_green",
+    "display_name": "Sombrilla verde",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_parasol_green",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:parasol/red",
+    "bedrock_identifier": "rpgroll_furniture:parasol_red",
+    "display_name": "Sombrilla rojo",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_parasol_red",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:parasol/black",
+    "bedrock_identifier": "rpgroll_furniture:parasol_black",
+    "display_name": "Sombrilla negro",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_parasol_black",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:carpenter_table/default",
+    "bedrock_identifier": "rpgroll_furniture:carpenter_table_default",
+    "display_name": "Mesa de carpintero",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_carpenter_table_default",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:workbench/oak",
+    "bedrock_identifier": "rpgroll_furniture:workbench_oak",
+    "display_name": "Banco de trabajo de roble",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_workbench_oak",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:workbench/spruce",
+    "bedrock_identifier": "rpgroll_furniture:workbench_spruce",
+    "display_name": "Banco de trabajo de abeto",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_workbench_spruce",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:workbench/birch",
+    "bedrock_identifier": "rpgroll_furniture:workbench_birch",
+    "display_name": "Banco de trabajo de abedul",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_workbench_birch",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:workbench/jungle",
+    "bedrock_identifier": "rpgroll_furniture:workbench_jungle",
+    "display_name": "Banco de trabajo de jungla",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_workbench_jungle",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:workbench/acacia",
+    "bedrock_identifier": "rpgroll_furniture:workbench_acacia",
+    "display_name": "Banco de trabajo de acacia",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_workbench_acacia",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:workbench/dark_oak",
+    "bedrock_identifier": "rpgroll_furniture:workbench_dark_oak",
+    "display_name": "Banco de trabajo de roble oscuro",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_workbench_dark_oak",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:workbench/mangrove",
+    "bedrock_identifier": "rpgroll_furniture:workbench_mangrove",
+    "display_name": "Banco de trabajo de mangle",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_workbench_mangrove",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:workbench/cherry",
+    "bedrock_identifier": "rpgroll_furniture:workbench_cherry",
+    "display_name": "Banco de trabajo de cerezo",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_workbench_cherry",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:workbench/bamboo",
+    "bedrock_identifier": "rpgroll_furniture:workbench_bamboo",
+    "display_name": "Banco de trabajo de bambú",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_workbench_bamboo",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:workbench/crimson",
+    "bedrock_identifier": "rpgroll_furniture:workbench_crimson",
+    "display_name": "Banco de trabajo de carmesí",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_workbench_crimson",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:workbench/warped",
+    "bedrock_identifier": "rpgroll_furniture:workbench_warped",
+    "display_name": "Banco de trabajo de distorsionada",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_workbench_warped",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:workbench/pale_oak",
+    "bedrock_identifier": "rpgroll_furniture:workbench_pale_oak",
+    "display_name": "Banco de trabajo de roble pálido",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_workbench_pale_oak",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:loom_frame/white",
+    "bedrock_identifier": "rpgroll_furniture:loom_frame_white",
+    "display_name": "Telar blanco",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_loom_frame_white",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:loom_frame/orange",
+    "bedrock_identifier": "rpgroll_furniture:loom_frame_orange",
+    "display_name": "Telar naranja",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_loom_frame_orange",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:loom_frame/magenta",
+    "bedrock_identifier": "rpgroll_furniture:loom_frame_magenta",
+    "display_name": "Telar magenta",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_loom_frame_magenta",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:loom_frame/light_blue",
+    "bedrock_identifier": "rpgroll_furniture:loom_frame_light_blue",
+    "display_name": "Telar azul claro",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_loom_frame_light_blue",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:loom_frame/yellow",
+    "bedrock_identifier": "rpgroll_furniture:loom_frame_yellow",
+    "display_name": "Telar amarillo",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_loom_frame_yellow",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:loom_frame/lime",
+    "bedrock_identifier": "rpgroll_furniture:loom_frame_lime",
+    "display_name": "Telar lima",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_loom_frame_lime",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:loom_frame/pink",
+    "bedrock_identifier": "rpgroll_furniture:loom_frame_pink",
+    "display_name": "Telar rosa",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_loom_frame_pink",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:loom_frame/gray",
+    "bedrock_identifier": "rpgroll_furniture:loom_frame_gray",
+    "display_name": "Telar gris",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_loom_frame_gray",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:loom_frame/light_gray",
+    "bedrock_identifier": "rpgroll_furniture:loom_frame_light_gray",
+    "display_name": "Telar gris claro",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_loom_frame_light_gray",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:loom_frame/cyan",
+    "bedrock_identifier": "rpgroll_furniture:loom_frame_cyan",
+    "display_name": "Telar cian",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_loom_frame_cyan",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:loom_frame/purple",
+    "bedrock_identifier": "rpgroll_furniture:loom_frame_purple",
+    "display_name": "Telar morado",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_loom_frame_purple",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:loom_frame/blue",
+    "bedrock_identifier": "rpgroll_furniture:loom_frame_blue",
+    "display_name": "Telar azul",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_loom_frame_blue",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:loom_frame/brown",
+    "bedrock_identifier": "rpgroll_furniture:loom_frame_brown",
+    "display_name": "Telar marrón",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_loom_frame_brown",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:loom_frame/green",
+    "bedrock_identifier": "rpgroll_furniture:loom_frame_green",
+    "display_name": "Telar verde",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_loom_frame_green",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:loom_frame/red",
+    "bedrock_identifier": "rpgroll_furniture:loom_frame_red",
+    "display_name": "Telar rojo",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_loom_frame_red",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:loom_frame/black",
+    "bedrock_identifier": "rpgroll_furniture:loom_frame_black",
+    "display_name": "Telar negro",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_loom_frame_black",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:map_table/oak",
+    "bedrock_identifier": "rpgroll_furniture:map_table_oak",
+    "display_name": "Mesa de cartógrafo de roble",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_map_table_oak",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:map_table/spruce",
+    "bedrock_identifier": "rpgroll_furniture:map_table_spruce",
+    "display_name": "Mesa de cartógrafo de abeto",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_map_table_spruce",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:map_table/birch",
+    "bedrock_identifier": "rpgroll_furniture:map_table_birch",
+    "display_name": "Mesa de cartógrafo de abedul",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_map_table_birch",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:map_table/jungle",
+    "bedrock_identifier": "rpgroll_furniture:map_table_jungle",
+    "display_name": "Mesa de cartógrafo de jungla",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_map_table_jungle",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:map_table/acacia",
+    "bedrock_identifier": "rpgroll_furniture:map_table_acacia",
+    "display_name": "Mesa de cartógrafo de acacia",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_map_table_acacia",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:map_table/dark_oak",
+    "bedrock_identifier": "rpgroll_furniture:map_table_dark_oak",
+    "display_name": "Mesa de cartógrafo de roble oscuro",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_map_table_dark_oak",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:map_table/mangrove",
+    "bedrock_identifier": "rpgroll_furniture:map_table_mangrove",
+    "display_name": "Mesa de cartógrafo de mangle",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_map_table_mangrove",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:map_table/cherry",
+    "bedrock_identifier": "rpgroll_furniture:map_table_cherry",
+    "display_name": "Mesa de cartógrafo de cerezo",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_map_table_cherry",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:map_table/bamboo",
+    "bedrock_identifier": "rpgroll_furniture:map_table_bamboo",
+    "display_name": "Mesa de cartógrafo de bambú",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_map_table_bamboo",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:map_table/crimson",
+    "bedrock_identifier": "rpgroll_furniture:map_table_crimson",
+    "display_name": "Mesa de cartógrafo de carmesí",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_map_table_crimson",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:map_table/warped",
+    "bedrock_identifier": "rpgroll_furniture:map_table_warped",
+    "display_name": "Mesa de cartógrafo de distorsionada",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_map_table_warped",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_furniture:map_table/pale_oak",
+    "bedrock_identifier": "rpgroll_furniture:map_table_pale_oak",
+    "display_name": "Mesa de cartógrafo de roble pálido",
+    "bedrock_options": {
+     "icon": "rpgroll_furniture_map_table_pale_oak",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ]
+ }
+}

@@ -1,0 +1,516 @@
+# GENERADO por sackito-network/infra/muebles/construir.py: no se edita a mano.
+
+bed:
+  category: "bedroom"
+  name: "Cama blanco"
+  lore:
+    - "&7Decorativa: para dormir, una cama de siempre."
+  material: "PAPER"
+  model: "rpgroll_furniture:bed/white"
+  variants:
+    white:
+      name: "Cama blanco"
+      model: "rpgroll_furniture:bed/white"
+      dye: "WHITE"
+      recipe:
+        materials:
+          WHITE_WOOL: 3
+          DARK_OAK_PLANKS: 4
+        money: 40
+    orange:
+      name: "Cama naranja"
+      model: "rpgroll_furniture:bed/orange"
+      dye: "ORANGE"
+      recipe:
+        materials:
+          ORANGE_WOOL: 3
+          WHITE_WOOL: 3
+          DARK_OAK_PLANKS: 4
+        money: 40
+    magenta:
+      name: "Cama magenta"
+      model: "rpgroll_furniture:bed/magenta"
+      dye: "MAGENTA"
+      recipe:
+        materials:
+          MAGENTA_WOOL: 3
+          WHITE_WOOL: 3
+          DARK_OAK_PLANKS: 4
+        money: 40
+    light_blue:
+      name: "Cama azul claro"
+      model: "rpgroll_furniture:bed/light_blue"
+      dye: "LIGHT_BLUE"
+      recipe:
+        materials:
+          LIGHT_BLUE_WOOL: 3
+          WHITE_WOOL: 3
+          DARK_OAK_PLANKS: 4
+        money: 40
+    yellow:
+      name: "Cama amarillo"
+      model: "rpgroll_furniture:bed/yellow"
+      dye: "YELLOW"
+      recipe:
+        materials:
+          YELLOW_WOOL: 3
+          WHITE_WOOL: 3
+          DARK_OAK_PLANKS: 4
+        money: 40
+    lime:
+      name: "Cama lima"
+      model: "rpgroll_furniture:bed/lime"
+      dye: "LIME"
+      recipe:
+        materials:
+          LIME_WOOL: 3
+          WHITE_WOOL: 3
+          DARK_OAK_PLANKS: 4
+        money: 40
+    pink:
+      name: "Cama rosa"
+      model: "rpgroll_furniture:bed/pink"
+      dye: "PINK"
+      recipe:
+        materials:
+          PINK_WOOL: 3
+          WHITE_WOOL: 3
+          DARK_OAK_PLANKS: 4
+        money: 40
+    gray:
+      name: "Cama gris"
+      model: "rpgroll_furniture:bed/gray"
+      dye: "GRAY"
+      recipe:
+        materials:
+          GRAY_WOOL: 3
+          WHITE_WOOL: 3
+          DARK_OAK_PLANKS: 4
+        money: 40
+    light_gray:
+      name: "Cama gris claro"
+      model: "rpgroll_furniture:bed/light_gray"
+      dye: "LIGHT_GRAY"
+      recipe:
+        materials:
+          LIGHT_GRAY_WOOL: 3
+          WHITE_WOOL: 3
+          DARK_OAK_PLANKS: 4
+        money: 40
+    cyan:
+      name: "Cama cian"
+      model: "rpgroll_furniture:bed/cyan"
+      dye: "CYAN"
+      recipe:
+        materials:
+          CYAN_WOOL: 3
+          WHITE_WOOL: 3
+          DARK_OAK_PLANKS: 4
+        money: 40
+    purple:
+      name: "Cama morado"
+      model: "rpgroll_furniture:bed/purple"
+      dye: "PURPLE"
+      recipe:
+        materials:
+          PURPLE_WOOL: 3
+          WHITE_WOOL: 3
+          DARK_OAK_PLANKS: 4
+        money: 40
+    blue:
+      name: "Cama azul"
+      model: "rpgroll_furniture:bed/blue"
+      dye: "BLUE"
+      recipe:
+        materials:
+          BLUE_WOOL: 3
+          WHITE_WOOL: 3
+          DARK_OAK_PLANKS: 4
+        money: 40
+    brown:
+      name: "Cama marrón"
+      model: "rpgroll_furniture:bed/brown"
+      dye: "BROWN"
+      recipe:
+        materials:
+          BROWN_WOOL: 3
+          WHITE_WOOL: 3
+          DARK_OAK_PLANKS: 4
+        money: 40
+    green:
+      name: "Cama verde"
+      model: "rpgroll_furniture:bed/green"
+      dye: "GREEN"
+      recipe:
+        materials:
+          GREEN_WOOL: 3
+          WHITE_WOOL: 3
+          DARK_OAK_PLANKS: 4
+        money: 40
+    red:
+      name: "Cama rojo"
+      model: "rpgroll_furniture:bed/red"
+      dye: "RED"
+      recipe:
+        materials:
+          RED_WOOL: 3
+          WHITE_WOOL: 3
+          DARK_OAK_PLANKS: 4
+        money: 40
+    black:
+      name: "Cama negro"
+      model: "rpgroll_furniture:bed/black"
+      dye: "BLACK"
+      recipe:
+        materials:
+          BLACK_WOOL: 3
+          WHITE_WOOL: 3
+          DARK_OAK_PLANKS: 4
+        money: 40
+  placement:
+    surfaces:
+      - "floor"
+  hitbox:
+    type: "barrier"
+    blocks:
+      - "0,0,0"
+      - "0,0,1"
+  seat:
+    height: 0.56
+    positions:
+      - "0,0,0.4"
+  sounds:
+    place: "block.wool.place"
+    break: "block.wool.break"
+rug:
+  category: "bedroom"
+  name: "Alfombra blanco"
+  material: "PAPER"
+  model: "rpgroll_furniture:rug/white"
+  variants:
+    white:
+      name: "Alfombra blanco"
+      model: "rpgroll_furniture:rug/white"
+      dye: "WHITE"
+      recipe:
+        materials:
+          WHITE_CARPET: 4
+        money: 5
+    orange:
+      name: "Alfombra naranja"
+      model: "rpgroll_furniture:rug/orange"
+      dye: "ORANGE"
+      recipe:
+        materials:
+          ORANGE_CARPET: 4
+        money: 5
+    magenta:
+      name: "Alfombra magenta"
+      model: "rpgroll_furniture:rug/magenta"
+      dye: "MAGENTA"
+      recipe:
+        materials:
+          MAGENTA_CARPET: 4
+        money: 5
+    light_blue:
+      name: "Alfombra azul claro"
+      model: "rpgroll_furniture:rug/light_blue"
+      dye: "LIGHT_BLUE"
+      recipe:
+        materials:
+          LIGHT_BLUE_CARPET: 4
+        money: 5
+    yellow:
+      name: "Alfombra amarillo"
+      model: "rpgroll_furniture:rug/yellow"
+      dye: "YELLOW"
+      recipe:
+        materials:
+          YELLOW_CARPET: 4
+        money: 5
+    lime:
+      name: "Alfombra lima"
+      model: "rpgroll_furniture:rug/lime"
+      dye: "LIME"
+      recipe:
+        materials:
+          LIME_CARPET: 4
+        money: 5
+    pink:
+      name: "Alfombra rosa"
+      model: "rpgroll_furniture:rug/pink"
+      dye: "PINK"
+      recipe:
+        materials:
+          PINK_CARPET: 4
+        money: 5
+    gray:
+      name: "Alfombra gris"
+      model: "rpgroll_furniture:rug/gray"
+      dye: "GRAY"
+      recipe:
+        materials:
+          GRAY_CARPET: 4
+        money: 5
+    light_gray:
+      name: "Alfombra gris claro"
+      model: "rpgroll_furniture:rug/light_gray"
+      dye: "LIGHT_GRAY"
+      recipe:
+        materials:
+          LIGHT_GRAY_CARPET: 4
+        money: 5
+    cyan:
+      name: "Alfombra cian"
+      model: "rpgroll_furniture:rug/cyan"
+      dye: "CYAN"
+      recipe:
+        materials:
+          CYAN_CARPET: 4
+        money: 5
+    purple:
+      name: "Alfombra morado"
+      model: "rpgroll_furniture:rug/purple"
+      dye: "PURPLE"
+      recipe:
+        materials:
+          PURPLE_CARPET: 4
+        money: 5
+    blue:
+      name: "Alfombra azul"
+      model: "rpgroll_furniture:rug/blue"
+      dye: "BLUE"
+      recipe:
+        materials:
+          BLUE_CARPET: 4
+        money: 5
+    brown:
+      name: "Alfombra marrón"
+      model: "rpgroll_furniture:rug/brown"
+      dye: "BROWN"
+      recipe:
+        materials:
+          BROWN_CARPET: 4
+        money: 5
+    green:
+      name: "Alfombra verde"
+      model: "rpgroll_furniture:rug/green"
+      dye: "GREEN"
+      recipe:
+        materials:
+          GREEN_CARPET: 4
+        money: 5
+    red:
+      name: "Alfombra rojo"
+      model: "rpgroll_furniture:rug/red"
+      dye: "RED"
+      recipe:
+        materials:
+          RED_CARPET: 4
+        money: 5
+    black:
+      name: "Alfombra negro"
+      model: "rpgroll_furniture:rug/black"
+      dye: "BLACK"
+      recipe:
+        materials:
+          BLACK_CARPET: 4
+        money: 5
+  placement:
+    surfaces:
+      - "floor"
+  hitbox:
+    type: "interaction"
+    width: 1.0
+    height: 0.1
+  sounds:
+    place: "block.wool.place"
+    break: "block.wool.break"
+curtain:
+  category: "bedroom"
+  name: "Cortina blanco"
+  lore:
+    - "&7Clic para abrirla o cerrarla."
+  material: "PAPER"
+  model: "rpgroll_furniture:curtain/white"
+  variants:
+    white:
+      name: "Cortina blanco"
+      model: "rpgroll_furniture:curtain/white"
+      dye: "WHITE"
+      recipe:
+        materials:
+          WHITE_WOOL: 2
+          IRON_NUGGET: 2
+        money: 10
+    orange:
+      name: "Cortina naranja"
+      model: "rpgroll_furniture:curtain/orange"
+      dye: "ORANGE"
+      recipe:
+        materials:
+          ORANGE_WOOL: 2
+          IRON_NUGGET: 2
+        money: 10
+    magenta:
+      name: "Cortina magenta"
+      model: "rpgroll_furniture:curtain/magenta"
+      dye: "MAGENTA"
+      recipe:
+        materials:
+          MAGENTA_WOOL: 2
+          IRON_NUGGET: 2
+        money: 10
+    light_blue:
+      name: "Cortina azul claro"
+      model: "rpgroll_furniture:curtain/light_blue"
+      dye: "LIGHT_BLUE"
+      recipe:
+        materials:
+          LIGHT_BLUE_WOOL: 2
+          IRON_NUGGET: 2
+        money: 10
+    yellow:
+      name: "Cortina amarillo"
+      model: "rpgroll_furniture:curtain/yellow"
+      dye: "YELLOW"
+      recipe:
+        materials:
+          YELLOW_WOOL: 2
+          IRON_NUGGET: 2
+        money: 10
+    lime:
+      name: "Cortina lima"
+      model: "rpgroll_furniture:curtain/lime"
+      dye: "LIME"
+      recipe:
+        materials:
+          LIME_WOOL: 2
+          IRON_NUGGET: 2
+        money: 10
+    pink:
+      name: "Cortina rosa"
+      model: "rpgroll_furniture:curtain/pink"
+      dye: "PINK"
+      recipe:
+        materials:
+          PINK_WOOL: 2
+          IRON_NUGGET: 2
+        money: 10
+    gray:
+      name: "Cortina gris"
+      model: "rpgroll_furniture:curtain/gray"
+      dye: "GRAY"
+      recipe:
+        materials:
+          GRAY_WOOL: 2
+          IRON_NUGGET: 2
+        money: 10
+    light_gray:
+      name: "Cortina gris claro"
+      model: "rpgroll_furniture:curtain/light_gray"
+      dye: "LIGHT_GRAY"
+      recipe:
+        materials:
+          LIGHT_GRAY_WOOL: 2
+          IRON_NUGGET: 2
+        money: 10
+    cyan:
+      name: "Cortina cian"
+      model: "rpgroll_furniture:curtain/cyan"
+      dye: "CYAN"
+      recipe:
+        materials:
+          CYAN_WOOL: 2
+          IRON_NUGGET: 2
+        money: 10
+    purple:
+      name: "Cortina morado"
+      model: "rpgroll_furniture:curtain/purple"
+      dye: "PURPLE"
+      recipe:
+        materials:
+          PURPLE_WOOL: 2
+          IRON_NUGGET: 2
+        money: 10
+    blue:
+      name: "Cortina azul"
+      model: "rpgroll_furniture:curtain/blue"
+      dye: "BLUE"
+      recipe:
+        materials:
+          BLUE_WOOL: 2
+          IRON_NUGGET: 2
+        money: 10
+    brown:
+      name: "Cortina marrón"
+      model: "rpgroll_furniture:curtain/brown"
+      dye: "BROWN"
+      recipe:
+        materials:
+          BROWN_WOOL: 2
+          IRON_NUGGET: 2
+        money: 10
+    green:
+      name: "Cortina verde"
+      model: "rpgroll_furniture:curtain/green"
+      dye: "GREEN"
+      recipe:
+        materials:
+          GREEN_WOOL: 2
+          IRON_NUGGET: 2
+        money: 10
+    red:
+      name: "Cortina rojo"
+      model: "rpgroll_furniture:curtain/red"
+      dye: "RED"
+      recipe:
+        materials:
+          RED_WOOL: 2
+          IRON_NUGGET: 2
+        money: 10
+    black:
+      name: "Cortina negro"
+      model: "rpgroll_furniture:curtain/black"
+      dye: "BLACK"
+      recipe:
+        materials:
+          BLACK_WOOL: 2
+          IRON_NUGGET: 2
+        money: 10
+  placement:
+    surfaces:
+      - "wall"
+  hitbox:
+    type: "interaction"
+    width: 1.0
+    height: 2.0
+  states:
+    trigger: "click"
+    list:
+      - id: "closed"
+        suffix: ""
+        sound: "block.wool.place"
+      - id: "open"
+        suffix: "_open"
+        sound: "block.wool.place"
+  sounds:
+    place: "block.wool.place"
+    break: "block.wool.break"
+mirror:
+  category: "bedroom"
+  name: "Espejo"
+  material: "PAPER"
+  model: "rpgroll_furniture:mirror/default"
+  placement:
+    surfaces:
+      - "wall"
+  hitbox:
+    type: "interaction"
+    width: 0.9
+    height: 1.7
+  recipe:
+    materials:
+      GLASS_PANE: 2
+      GOLD_INGOT: 1
+    money: 25

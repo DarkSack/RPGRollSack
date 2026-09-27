@@ -1,0 +1,212 @@
+# GENERADO por sackito-network/infra/muebles/construir.py: no se edita a mano.
+
+floor_lamp:
+  category: "lighting"
+  name: "Lámpara de pie"
+  material: "PAPER"
+  model: "rpgroll_furniture:floor_lamp/default"
+  placement:
+    surfaces:
+      - "floor"
+  hitbox:
+    type: "interaction"
+    width: 0.6
+    height: 1.9
+  light:
+    level: 15
+  states:
+    trigger: "click"
+    list:
+      - id: "off"
+        suffix: ""
+        light: 0
+        sound: "block.lever.click"
+      - id: "on"
+        suffix: "_on"
+        light: 15
+        sound: "block.lever.click"
+  recipe:
+    materials:
+      IRON_INGOT: 2
+      GLOWSTONE_DUST: 4
+      WHITE_WOOL: 1
+    money: 25
+  sounds:
+    place: "block.metal.place"
+    break: "block.metal.break"
+table_lamp:
+  category: "lighting"
+  name: "Lámpara de mesa"
+  material: "PAPER"
+  model: "rpgroll_furniture:table_lamp/default"
+  placement:
+    surfaces:
+      - "floor"
+  hitbox:
+    type: "interaction"
+    width: 0.55
+    height: 0.8
+  light:
+    level: 13
+  states:
+    trigger: "click"
+    list:
+      - id: "off"
+        suffix: ""
+        light: 0
+        sound: "block.lever.click"
+      - id: "on"
+        suffix: "_on"
+        light: 13
+        sound: "block.lever.click"
+  recipe:
+    materials:
+      GLOWSTONE_DUST: 3
+      WHITE_WOOL: 1
+      CLAY_BALL: 2
+    money: 15
+  sounds:
+    place: "block.metal.place"
+    break: "block.metal.break"
+chandelier:
+  category: "lighting"
+  name: "Candelabro"
+  material: "PAPER"
+  model: "rpgroll_furniture:chandelier/default"
+  placement:
+    surfaces:
+      - "ceiling"
+  hitbox:
+    type: "interaction"
+    width: 1.0
+    height: 0.8
+  light:
+    level: 15
+  ambient:
+    particle: "SMALL_FLAME"
+    at: "0,0.62,-0.375"
+    count: 1
+    spread: 0.0
+    every: 20
+  recipe:
+    materials:
+      GOLD_INGOT: 3
+      CANDLE: 4
+      IRON_CHAIN: 1
+    money: 40
+  sounds:
+    place: "block.metal.place"
+    break: "block.metal.break"
+wall_lantern:
+  category: "lighting"
+  name: "Farol de pared"
+  material: "PAPER"
+  model: "rpgroll_furniture:wall_lantern/default"
+  placement:
+    surfaces:
+      - "wall"
+  hitbox:
+    type: "interaction"
+    width: 0.5
+    height: 0.7
+  light:
+    level: 14
+  recipe:
+    materials:
+      LANTERN: 1
+      IRON_NUGGET: 3
+    money: 10
+  sounds:
+    place: "block.metal.place"
+    break: "block.metal.break"
+candles:
+  category: "lighting"
+  name: "Velas"
+  lore:
+    - "&7Clic para encenderlas."
+  material: "PAPER"
+  model: "rpgroll_furniture:candles/default"
+  placement:
+    surfaces:
+      - "floor"
+  hitbox:
+    type: "interaction"
+    width: 0.5
+    height: 0.5
+  light:
+    level: 9
+  states:
+    trigger: "click"
+    list:
+      - id: "unlit"
+        suffix: ""
+        light: 0
+        sound: "block.candle.extinguish"
+      - id: "lit"
+        suffix: "_on"
+        light: 9
+        sound: "item.flintandsteel.use"
+  ambient:
+    particle: "SMALL_FLAME"
+    at: "0.12,0.55,0.06"
+    count: 1
+    spread: 0.0
+    every: 24
+    state: "lit"
+  recipe:
+    materials:
+      CANDLE: 3
+      GOLD_NUGGET: 2
+    money: 6
+  sounds:
+    place: "block.metal.place"
+    break: "block.metal.break"
+fireplace:
+  category: "lighting"
+  name: "Chimenea"
+  lore:
+    - "&7Clic para encenderla."
+  material: "PAPER"
+  model: "rpgroll_furniture:fireplace/default"
+  placement:
+    surfaces:
+      - "floor"
+  hitbox:
+    type: "barrier"
+    blocks:
+      - "1,0,0"
+      - "0,0,0"
+      - "-1,0,0"
+      - "1,1,0"
+      - "0,1,0"
+      - "-1,1,0"
+  light:
+    level: 15
+    at: "0,0,1"
+  states:
+    trigger: "click"
+    list:
+      - id: "off"
+        suffix: ""
+        light: 0
+        sound: "block.fire.extinguish"
+      - id: "on"
+        suffix: "_on"
+        light: 15
+        sound: "item.firecharge.use"
+  ambient:
+    particle: "CAMPFIRE_COSY_SMOKE"
+    at: "0,2.1,0"
+    count: 1
+    spread: 0.05
+    every: 30
+    state: "on"
+  recipe:
+    materials:
+      BRICKS: 8
+      STONE: 4
+      CAMPFIRE: 1
+    money: 80
+  sounds:
+    place: "block.metal.place"
+    break: "block.metal.break"

@@ -1,0 +1,406 @@
+# GENERADO por sackito-network/infra/muebles/construir.py: no se edita a mano.
+
+carpenter_table:
+  category: "workshop"
+  name: "&6Mesa de carpintero"
+  lore:
+    - "&7Aquí se fabrican todos los muebles."
+  material: "PAPER"
+  model: "rpgroll_furniture:carpenter_table/default"
+  placement:
+    surfaces:
+      - "floor"
+  hitbox:
+    type: "barrier"
+    blocks:
+      - "0,0,0"
+  workstation: "CARPENTER"
+  recipe:
+    materials:
+      CRAFTING_TABLE: 1
+      IRON_INGOT: 3
+      OAK_LOG: 4
+    money: 100
+workbench:
+  category: "workshop"
+  name: "Banco de trabajo de roble"
+  lore:
+    - "&7Una mesa de crafteo más bonita."
+  material: "PAPER"
+  model: "rpgroll_furniture:workbench/oak"
+  variants:
+    oak:
+      name: "Banco de trabajo de roble"
+      model: "rpgroll_furniture:workbench/oak"
+      recipe:
+        materials:
+          CRAFTING_TABLE: 1
+          OAK_PLANKS: 4
+        money: 10
+    spruce:
+      name: "Banco de trabajo de abeto"
+      model: "rpgroll_furniture:workbench/spruce"
+      recipe:
+        materials:
+          CRAFTING_TABLE: 1
+          SPRUCE_PLANKS: 4
+        money: 10
+    birch:
+      name: "Banco de trabajo de abedul"
+      model: "rpgroll_furniture:workbench/birch"
+      recipe:
+        materials:
+          CRAFTING_TABLE: 1
+          BIRCH_PLANKS: 4
+        money: 10
+    jungle:
+      name: "Banco de trabajo de jungla"
+      model: "rpgroll_furniture:workbench/jungle"
+      recipe:
+        materials:
+          CRAFTING_TABLE: 1
+          JUNGLE_PLANKS: 4
+        money: 10
+    acacia:
+      name: "Banco de trabajo de acacia"
+      model: "rpgroll_furniture:workbench/acacia"
+      recipe:
+        materials:
+          CRAFTING_TABLE: 1
+          ACACIA_PLANKS: 4
+        money: 10
+    dark_oak:
+      name: "Banco de trabajo de roble oscuro"
+      model: "rpgroll_furniture:workbench/dark_oak"
+      recipe:
+        materials:
+          CRAFTING_TABLE: 1
+          DARK_OAK_PLANKS: 4
+        money: 10
+    mangrove:
+      name: "Banco de trabajo de mangle"
+      model: "rpgroll_furniture:workbench/mangrove"
+      recipe:
+        materials:
+          CRAFTING_TABLE: 1
+          MANGROVE_PLANKS: 4
+        money: 10
+    cherry:
+      name: "Banco de trabajo de cerezo"
+      model: "rpgroll_furniture:workbench/cherry"
+      recipe:
+        materials:
+          CRAFTING_TABLE: 1
+          CHERRY_PLANKS: 4
+        money: 10
+    bamboo:
+      name: "Banco de trabajo de bambú"
+      model: "rpgroll_furniture:workbench/bamboo"
+      recipe:
+        materials:
+          CRAFTING_TABLE: 1
+          BAMBOO_PLANKS: 4
+        money: 10
+    crimson:
+      name: "Banco de trabajo de carmesí"
+      model: "rpgroll_furniture:workbench/crimson"
+      recipe:
+        materials:
+          CRAFTING_TABLE: 1
+          CRIMSON_PLANKS: 4
+        money: 10
+    warped:
+      name: "Banco de trabajo de distorsionada"
+      model: "rpgroll_furniture:workbench/warped"
+      recipe:
+        materials:
+          CRAFTING_TABLE: 1
+          WARPED_PLANKS: 4
+        money: 10
+    pale_oak:
+      name: "Banco de trabajo de roble pálido"
+      model: "rpgroll_furniture:workbench/pale_oak"
+      recipe:
+        materials:
+          CRAFTING_TABLE: 1
+          PALE_OAK_PLANKS: 4
+        money: 10
+  placement:
+    surfaces:
+      - "floor"
+  hitbox:
+    type: "barrier"
+    blocks:
+      - "0,0,0"
+  workstation: "CRAFTING"
+loom_frame:
+  category: "workshop"
+  name: "Telar blanco"
+  material: "PAPER"
+  model: "rpgroll_furniture:loom_frame/white"
+  variants:
+    white:
+      name: "Telar blanco"
+      model: "rpgroll_furniture:loom_frame/white"
+      dye: "WHITE"
+      recipe:
+        materials:
+          LOOM: 1
+          WHITE_WOOL: 2
+        money: 10
+    orange:
+      name: "Telar naranja"
+      model: "rpgroll_furniture:loom_frame/orange"
+      dye: "ORANGE"
+      recipe:
+        materials:
+          LOOM: 1
+          ORANGE_WOOL: 2
+        money: 10
+    magenta:
+      name: "Telar magenta"
+      model: "rpgroll_furniture:loom_frame/magenta"
+      dye: "MAGENTA"
+      recipe:
+        materials:
+          LOOM: 1
+          MAGENTA_WOOL: 2
+        money: 10
+    light_blue:
+      name: "Telar azul claro"
+      model: "rpgroll_furniture:loom_frame/light_blue"
+      dye: "LIGHT_BLUE"
+      recipe:
+        materials:
+          LOOM: 1
+          LIGHT_BLUE_WOOL: 2
+        money: 10
+    yellow:
+      name: "Telar amarillo"
+      model: "rpgroll_furniture:loom_frame/yellow"
+      dye: "YELLOW"
+      recipe:
+        materials:
+          LOOM: 1
+          YELLOW_WOOL: 2
+        money: 10
+    lime:
+      name: "Telar lima"
+      model: "rpgroll_furniture:loom_frame/lime"
+      dye: "LIME"
+      recipe:
+        materials:
+          LOOM: 1
+          LIME_WOOL: 2
+        money: 10
+    pink:
+      name: "Telar rosa"
+      model: "rpgroll_furniture:loom_frame/pink"
+      dye: "PINK"
+      recipe:
+        materials:
+          LOOM: 1
+          PINK_WOOL: 2
+        money: 10
+    gray:
+      name: "Telar gris"
+      model: "rpgroll_furniture:loom_frame/gray"
+      dye: "GRAY"
+      recipe:
+        materials:
+          LOOM: 1
+          GRAY_WOOL: 2
+        money: 10
+    light_gray:
+      name: "Telar gris claro"
+      model: "rpgroll_furniture:loom_frame/light_gray"
+      dye: "LIGHT_GRAY"
+      recipe:
+        materials:
+          LOOM: 1
+          LIGHT_GRAY_WOOL: 2
+        money: 10
+    cyan:
+      name: "Telar cian"
+      model: "rpgroll_furniture:loom_frame/cyan"
+      dye: "CYAN"
+      recipe:
+        materials:
+          LOOM: 1
+          CYAN_WOOL: 2
+        money: 10
+    purple:
+      name: "Telar morado"
+      model: "rpgroll_furniture:loom_frame/purple"
+      dye: "PURPLE"
+      recipe:
+        materials:
+          LOOM: 1
+          PURPLE_WOOL: 2
+        money: 10
+    blue:
+      name: "Telar azul"
+      model: "rpgroll_furniture:loom_frame/blue"
+      dye: "BLUE"
+      recipe:
+        materials:
+          LOOM: 1
+          BLUE_WOOL: 2
+        money: 10
+    brown:
+      name: "Telar marrón"
+      model: "rpgroll_furniture:loom_frame/brown"
+      dye: "BROWN"
+      recipe:
+        materials:
+          LOOM: 1
+          BROWN_WOOL: 2
+        money: 10
+    green:
+      name: "Telar verde"
+      model: "rpgroll_furniture:loom_frame/green"
+      dye: "GREEN"
+      recipe:
+        materials:
+          LOOM: 1
+          GREEN_WOOL: 2
+        money: 10
+    red:
+      name: "Telar rojo"
+      model: "rpgroll_furniture:loom_frame/red"
+      dye: "RED"
+      recipe:
+        materials:
+          LOOM: 1
+          RED_WOOL: 2
+        money: 10
+    black:
+      name: "Telar negro"
+      model: "rpgroll_furniture:loom_frame/black"
+      dye: "BLACK"
+      recipe:
+        materials:
+          LOOM: 1
+          BLACK_WOOL: 2
+        money: 10
+  placement:
+    surfaces:
+      - "floor"
+  hitbox:
+    type: "barrier"
+    blocks:
+      - "0,0,0"
+  workstation: "LOOM"
+  sounds:
+    place: "block.wool.place"
+    break: "block.wool.break"
+map_table:
+  category: "workshop"
+  name: "Mesa de cartógrafo de roble"
+  material: "PAPER"
+  model: "rpgroll_furniture:map_table/oak"
+  variants:
+    oak:
+      name: "Mesa de cartógrafo de roble"
+      model: "rpgroll_furniture:map_table/oak"
+      recipe:
+        materials:
+          CARTOGRAPHY_TABLE: 1
+          OAK_PLANKS: 2
+        money: 10
+    spruce:
+      name: "Mesa de cartógrafo de abeto"
+      model: "rpgroll_furniture:map_table/spruce"
+      recipe:
+        materials:
+          CARTOGRAPHY_TABLE: 1
+          SPRUCE_PLANKS: 2
+        money: 10
+    birch:
+      name: "Mesa de cartógrafo de abedul"
+      model: "rpgroll_furniture:map_table/birch"
+      recipe:
+        materials:
+          CARTOGRAPHY_TABLE: 1
+          BIRCH_PLANKS: 2
+        money: 10
+    jungle:
+      name: "Mesa de cartógrafo de jungla"
+      model: "rpgroll_furniture:map_table/jungle"
+      recipe:
+        materials:
+          CARTOGRAPHY_TABLE: 1
+          JUNGLE_PLANKS: 2
+        money: 10
+    acacia:
+      name: "Mesa de cartógrafo de acacia"
+      model: "rpgroll_furniture:map_table/acacia"
+      recipe:
+        materials:
+          CARTOGRAPHY_TABLE: 1
+          ACACIA_PLANKS: 2
+        money: 10
+    dark_oak:
+      name: "Mesa de cartógrafo de roble oscuro"
+      model: "rpgroll_furniture:map_table/dark_oak"
+      recipe:
+        materials:
+          CARTOGRAPHY_TABLE: 1
+          DARK_OAK_PLANKS: 2
+        money: 10
+    mangrove:
+      name: "Mesa de cartógrafo de mangle"
+      model: "rpgroll_furniture:map_table/mangrove"
+      recipe:
+        materials:
+          CARTOGRAPHY_TABLE: 1
+          MANGROVE_PLANKS: 2
+        money: 10
+    cherry:
+      name: "Mesa de cartógrafo de cerezo"
+      model: "rpgroll_furniture:map_table/cherry"
+      recipe:
+        materials:
+          CARTOGRAPHY_TABLE: 1
+          CHERRY_PLANKS: 2
+        money: 10
+    bamboo:
+      name: "Mesa de cartógrafo de bambú"
+      model: "rpgroll_furniture:map_table/bamboo"
+      recipe:
+        materials:
+          CARTOGRAPHY_TABLE: 1
+          BAMBOO_PLANKS: 2
+        money: 10
+    crimson:
+      name: "Mesa de cartógrafo de carmesí"
+      model: "rpgroll_furniture:map_table/crimson"
+      recipe:
+        materials:
+          CARTOGRAPHY_TABLE: 1
+          CRIMSON_PLANKS: 2
+        money: 10
+    warped:
+      name: "Mesa de cartógrafo de distorsionada"
+      model: "rpgroll_furniture:map_table/warped"
+      recipe:
+        materials:
+          CARTOGRAPHY_TABLE: 1
+          WARPED_PLANKS: 2
+        money: 10
+    pale_oak:
+      name: "Mesa de cartógrafo de roble pálido"
+      model: "rpgroll_furniture:map_table/pale_oak"
+      recipe:
+        materials:
+          CARTOGRAPHY_TABLE: 1
+          PALE_OAK_PLANKS: 2
+        money: 10
+  placement:
+    surfaces:
+      - "floor"
+  hitbox:
+    type: "barrier"
+    blocks:
+      - "0,0,0"
+  workstation: "CARTOGRAPHY_TABLE"
