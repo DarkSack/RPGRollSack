@@ -2,7 +2,10 @@
 # SQLite es la base de datos por defecto para este plugin
 
 database:
-  # Tipo de base de datos (actualmente solo SQLite está soportado)
+  # Tipo de base de datos: sqlite (por defecto) o postgresql.
+  # PostgreSQL es para compartir el progreso de los jugadores entre varios
+  # servidores de una network. Aun así, cada servidor guarda en su SQLite local
+  # lo que es de su mundo (qué bloques colocó cada jugador).
   type: sqlite
 
   # Nombre del archivo de base de datos
@@ -20,3 +23,15 @@ database:
 
     # Timeout en milisegundos para esperar cuando la BD está bloqueada
     busy_timeout: 5000
+
+  # Solo con type: postgresql. El usuario necesita permiso para crear tablas en
+  # el esquema (RPGRoll crea y migra las suyas al arrancar).
+  postgresql:
+    host: localhost
+    port: 5432
+    database: rpgroll
+    schema: public
+    user: rpgroll
+    password: ''
+    # true exige TLS (una base en otra máquina); en la misma máquina, false.
+    ssl: false

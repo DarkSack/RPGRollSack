@@ -20,6 +20,8 @@ dependencies {
     }
     compileOnly("me.clip:placeholderapi:2.11.5")
     implementation("org.xerial:sqlite-jdbc:3.50.3.0")
+    // PostgreSQL (database.type: postgresql). Sin código nativo: se reubica.
+    implementation("org.postgresql:postgresql:42.7.13")
 
     // Gson ya viene embebido en el server de Paper/Spigot en tiempo de
     // ejecución — compileOnly alcanza, no hace falta empaquetarlo.
@@ -28,6 +30,10 @@ dependencies {
     // compileOnly no se propaga al source set de test, y los tests de
     // licencia sí parsean JSON real.
     testImplementation("com.google.code.gson:gson:2.11.0")
+
+    // Un PostgreSQL 18 de verdad para los tests (binarios oficiales empaquetados por zonky)
+    testImplementation("io.zonky.test:embedded-postgres:2.2.0")
+    testImplementation(platform("io.zonky.test.postgres:embedded-postgres-binaries-bom:18.6.0"))
 }
 
 tasks.shadowJar {
@@ -39,6 +45,11 @@ tasks.shadowJar {
     // binding y el driver falla con UnsatisfiedLinkError al abrir la conexión.
     // Cada plugin de Bukkit/Paper ya tiene su propio classloader aislado, así
     // que dejar org.sqlite sin relocar no genera colisiones con otros plugins.
+
+    // El driver de PostgreSQL sí se reubica (no tiene JNI). Se instancia
+    // directamente en PostgreSQLProvider, sin DriverManager.
+    relocate("org.postgresql", "com.sack.rpgroll.lib.postgresql")
+    relocate("org.checkerframework", "com.sack.rpgroll.lib.checkerframework")
 }
 
 tasks.jar {

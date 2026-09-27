@@ -42,15 +42,15 @@ public class PlacedBlockCleanupTask extends BukkitRunnable {
         tracker.forgetOlderThan(cutoff);
 
         try {
-            Connection connection = databaseManager.getConnection();
-
-            try (Statement statement = connection.createStatement()) {
-                int deleted = statement.executeUpdate(sql);
-
-                if (deleted > 0) {
-                    plugin.getLogger()
-                            .info("✔ Limpieza: " + deleted + " bloques huérfanos eliminados de placed_blocks.");
+            int deleted = databaseManager.withLocalConnection(connection -> {
+                try (Statement statement = connection.createStatement()) {
+                    return statement.executeUpdate(sql);
                 }
+            });
+
+            if (deleted > 0) {
+                plugin.getLogger()
+                        .info("✔ Limpieza: " + deleted + " bloques huérfanos eliminados de placed_blocks.");
             }
 
         } catch (SQLException exception) {

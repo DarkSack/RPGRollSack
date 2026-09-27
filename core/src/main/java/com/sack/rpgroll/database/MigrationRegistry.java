@@ -11,17 +11,48 @@ import java.util.List;
  *
  * Las migraciones viven dentro del JAR en:
  *
- * resources/database/migrations/
+ * resources/database/migrations/            (SQLite)
+ * resources/database/migrations/postgresql/ (PostgreSQL)
+ *
+ * Con PostgreSQL, los datos del jugador van a la base compartida y los del mundo
+ * (placed_blocks: qué bloques puso un jugador en ESTE servidor) se quedan en el
+ * SQLite local, porque dos servidores pueden tener un mundo con el mismo nombre.
+ * Por eso hay tres conjuntos; las versiones son las mismas en todos, cada base
+ * aplica las suyas.
  */
 public class MigrationRegistry {
 
+    /** Qué migraciones corresponden a una base. */
+    public enum Set {
+
+        /** Todo en SQLite: lo de siempre, sin cambios para quien no use PostgreSQL. */
+        SQLITE_ALL,
+
+        /** La base compartida de PostgreSQL: todo menos placed_blocks. */
+        POSTGRESQL,
+
+        /** El SQLite local cuando se usa PostgreSQL: solo placed_blocks. */
+        SQLITE_LOCAL
+
+    }
+
+    /** Versiones que solo tocan placed_blocks. */
+    private static final java.util.Set<Integer> LOCAL_ONLY = java.util.Set.of(6, 8);
+
     private final RPGRoll plugin;
+
+    private final Set set;
 
     private final List<Migration> migrations = new ArrayList<>();
 
     public MigrationRegistry(RPGRoll plugin) {
+        this(plugin, Set.SQLITE_ALL);
+    }
+
+    public MigrationRegistry(RPGRoll plugin, Set set) {
 
         this.plugin = plugin;
+        this.set = set;
 
         registerMigrations();
 
@@ -43,10 +74,34 @@ public class MigrationRegistry {
 
     private void register(int version, String filename) {
 
-        migrations.add(new Migration(
-                version,
-                filename,
-                "database/migrations/" + filename));
+        boolean local = LOCAL_ONLY.contains(version);
+
+        switch (set) {
+
+            case SQLITE_ALL -> migrations.add(new Migration(
+                    version,
+                    filename,
+                    "database/migrations/" + filename));
+
+            case POSTGRESQL -> {
+                if (!local) {
+                    migrations.add(new Migration(
+                            version,
+                            filename,
+                            "database/migrations/postgresql/" + filename));
+                }
+            }
+
+            case SQLITE_LOCAL -> {
+                if (local) {
+                    migrations.add(new Migration(
+                            version,
+                            filename,
+                            "database/migrations/" + filename));
+                }
+            }
+
+        }
 
     }
 
@@ -55,7 +110,7 @@ public class MigrationRegistry {
         Collections.sort(migrations);
 
         plugin.getLogger().info(
-                "✔ " + migrations.size() + " migraciones registradas.");
+                "✔ " + migrations.size() + " migraciones registradas (" + set + ").");
 
         return List.copyOf(migrations);
 

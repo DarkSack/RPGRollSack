@@ -12,10 +12,16 @@ public class DatabaseMigrator {
 
     private final RPGRoll plugin;
     private final Connection connection;
+    private final MigrationRegistry.Set set;
 
     public DatabaseMigrator(RPGRoll plugin, Connection connection) {
+        this(plugin, connection, MigrationRegistry.Set.SQLITE_ALL);
+    }
+
+    public DatabaseMigrator(RPGRoll plugin, Connection connection, MigrationRegistry.Set set) {
         this.plugin = plugin;
         this.connection = connection;
+        this.set = set;
     }
 
     public void migrate() throws Exception {
@@ -24,7 +30,7 @@ public class DatabaseMigrator {
 
         versionTracker.initialize();
 
-        MigrationRegistry registry = new MigrationRegistry(plugin);
+        MigrationRegistry registry = new MigrationRegistry(plugin, set);
 
         List<Migration> migrations = registry.load();
 

@@ -33,28 +33,27 @@ public class ExplorerProgressStorage {
         double distance = 0.0;
 
         try {
-            Connection connection = databaseManager.getConnection();
+            distance = databaseManager.withConnection(connection -> {
 
-            String biomesQuery = "SELECT biome FROM explorer_biomes WHERE uuid = ?";
-            try (PreparedStatement statement = connection.prepareStatement(biomesQuery)) {
-                statement.setString(1, uuid.toString());
-                try (ResultSet result = statement.executeQuery()) {
-                    while (result.next()) {
-                        biomes.add(result.getString("biome"));
+                String biomesQuery = "SELECT biome FROM explorer_biomes WHERE uuid = ?";
+                try (PreparedStatement statement = connection.prepareStatement(biomesQuery)) {
+                    statement.setString(1, uuid.toString());
+                    try (ResultSet result = statement.executeQuery()) {
+                        while (result.next()) {
+                            biomes.add(result.getString("biome"));
+                        }
                     }
                 }
-            }
 
-            String distanceQuery = "SELECT distance_since_payout FROM explorer_distance WHERE uuid = ?";
-            try (PreparedStatement statement = connection.prepareStatement(distanceQuery)) {
-                statement.setString(1, uuid.toString());
-                try (ResultSet result = statement.executeQuery()) {
-                    if (result.next()) {
-                        distance = result.getDouble("distance_since_payout");
+                String distanceQuery = "SELECT distance_since_payout FROM explorer_distance WHERE uuid = ?";
+                try (PreparedStatement statement = connection.prepareStatement(distanceQuery)) {
+                    statement.setString(1, uuid.toString());
+                    try (ResultSet result = statement.executeQuery()) {
+                        return result.next() ? result.getDouble("distance_since_payout") : 0.0;
                     }
                 }
-            }
 
+            });
         } catch (SQLException exception) {
             plugin.getLogger().warning("✘ Error al cargar progreso de exploración: " + exception.getMessage());
         }
@@ -64,15 +63,17 @@ public class ExplorerProgressStorage {
 
     public void markBiomeVisited(UUID uuid, String biome) {
 
-        String sql = "INSERT OR IGNORE INTO explorer_biomes (uuid, biome) VALUES (?, ?)";
+        // ON CONFLICT vale en SQLite y en PostgreSQL (INSERT OR IGNORE solo en SQLite).
+        String sql = "INSERT INTO explorer_biomes (uuid, biome) VALUES (?, ?) ON CONFLICT (uuid, biome) DO NOTHING";
 
         try {
-            Connection connection = databaseManager.getConnection();
-            try (PreparedStatement statement = connection.prepareStatement(sql)) {
-                statement.setString(1, uuid.toString());
-                statement.setString(2, biome);
-                statement.executeUpdate();
-            }
+            databaseManager.withConnection(connection -> {
+                try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                    statement.setString(1, uuid.toString());
+                    statement.setString(2, biome);
+                    return statement.executeUpdate();
+                }
+            });
         } catch (SQLException exception) {
             plugin.getLogger().warning("✘ Error al guardar bioma visitado: " + exception.getMessage());
         }
@@ -80,15 +81,17 @@ public class ExplorerProgressStorage {
 
     public void saveDistance(UUID uuid, double distance) {
 
-        String sql = "INSERT OR REPLACE INTO explorer_distance (uuid, distance_since_payout) VALUES (?, ?)";
+        String sql = "INSERT INTO explorer_distance (uuid, distance_since_payout) VALUES (?, ?) "
+                + "ON CONFLICT (uuid) DO UPDATE SET distance_since_payout = excluded.distance_since_payout";
 
         try {
-            Connection connection = databaseManager.getConnection();
-            try (PreparedStatement statement = connection.prepareStatement(sql)) {
-                statement.setString(1, uuid.toString());
-                statement.setDouble(2, distance);
-                statement.executeUpdate();
-            }
+            databaseManager.withConnection(connection -> {
+                try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                    statement.setString(1, uuid.toString());
+                    statement.setDouble(2, distance);
+                    return statement.executeUpdate();
+                }
+            });
         } catch (SQLException exception) {
             plugin.getLogger().warning("✘ Error al guardar distancia de exploración: " + exception.getMessage());
         }

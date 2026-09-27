@@ -38,7 +38,7 @@ public class SchemaVersionTracker {
         // Crear tabla si no existe
         String createTable = "CREATE TABLE IF NOT EXISTS schema_version (" +
                 "version INTEGER PRIMARY KEY, " +
-                "applied_at INTEGER NOT NULL" +
+                "applied_at BIGINT NOT NULL" +
                 ");";
 
         try (PreparedStatement statement = connection.prepareStatement(createTable)) {

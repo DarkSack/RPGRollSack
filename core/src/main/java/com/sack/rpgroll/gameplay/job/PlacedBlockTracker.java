@@ -53,17 +53,22 @@ public class PlacedBlockTracker {
         int count = 0;
 
         try {
-            Connection connection = databaseManager.getConnection();
+            // Base local: los bloques son del mundo de este servidor, también con PostgreSQL.
+            count = databaseManager.withLocalConnection(connection -> {
+                int loaded = 0;
 
-            try (PreparedStatement statement = connection.prepareStatement(sql);
-                    ResultSet result = statement.executeQuery()) {
+                try (PreparedStatement statement = connection.prepareStatement(sql);
+                        ResultSet result = statement.executeQuery()) {
 
-                while (result.next()) {
-                    worldMap(result.getString(1))
-                            .put(pack(result.getInt(2), result.getInt(3), result.getInt(4)), result.getLong(5));
-                    count++;
+                    while (result.next()) {
+                        worldMap(result.getString(1))
+                                .put(pack(result.getInt(2), result.getInt(3), result.getInt(4)), result.getLong(5));
+                        loaded++;
+                    }
                 }
-            }
+
+                return loaded;
+            });
 
         } catch (SQLException exception) {
             plugin.getLogger().warning("✘ Error al cargar bloques colocados: " + exception.getMessage());
@@ -145,15 +150,15 @@ public class PlacedBlockTracker {
 
         writer.execute(() -> {
             try {
-                Connection connection = databaseManager.getConnection();
-
-                try (PreparedStatement statement = connection.prepareStatement(sql)) {
-                    statement.setString(1, world);
-                    statement.setInt(2, x);
-                    statement.setInt(3, y);
-                    statement.setInt(4, z);
-                    statement.executeUpdate();
-                }
+                databaseManager.withLocalConnection(connection -> {
+                    try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                        statement.setString(1, world);
+                        statement.setInt(2, x);
+                        statement.setInt(3, y);
+                        statement.setInt(4, z);
+                        return statement.executeUpdate();
+                    }
+                });
 
             } catch (SQLException exception) {
                 plugin.getLogger().warning("✘ Error al " + what + ": " + exception.getMessage());

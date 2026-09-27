@@ -12,4 +12,8 @@ public interface DatabaseProvider {
 
     Connection getConnection();
 
+    default DatabaseDialect dialect() {
+        return DatabaseDialect.SQLITE;
+    }
+
 }
