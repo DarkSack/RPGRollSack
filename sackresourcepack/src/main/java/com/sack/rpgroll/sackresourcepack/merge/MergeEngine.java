@@ -79,6 +79,9 @@ public class MergeEngine {
             for (Path source : walk.filter(Files::isRegularFile).toList()) {
 
                 String relativePath = assetsDir.toPath().relativize(source).toString().replace('\\', '/');
+                if (module.excludes(relativePath)) {
+                    continue;
+                }
                 File destination = new File(outputDirectory, ASSETS_PREFIX + relativePath);
 
                 if (isJsonMergeTarget(relativePath) && destination.isFile()) {

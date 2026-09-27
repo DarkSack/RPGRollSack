@@ -5,6 +5,17 @@ language: es
 # propio pack.yml + assets/ — ver la documentación para el formato exacto.
 content-directory: content
 
+# Packs que genera otro plugin en su propia carpeta, sumados como un módulo más
+# en cada build (sin copiarlos a mano). path es relativo a plugins/ y debe tener
+# un assets/ dentro; si todavía no existe, se salta. Ejemplo, FreeMinecraftModels:
+#   - path: FreeMinecraftModels/output/FreeMinecraftModels
+#     id: freeminecraftmodels
+#     namespace: freeminecraftmodels
+#     priority: 20
+#     exclude:                          # rutas dentro de su assets/ que no entran al pack Java
+#       - freeminecraftmodels/rspm_bedrock_pack/   # (el pack de Bedrock de FMM, lo sirve RSPM a Geyser)
+external-packs: []
+
 http:
   # Servidor HTTP embebido (com.sun.net.httpserver, sin dependencias extra)
   # que sirve resourcepack.zip — la opción más simple, cero configuración.

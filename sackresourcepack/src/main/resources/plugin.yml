@@ -3,6 +3,8 @@ version: 1.0.0
 main: com.sack.rpgroll.sackresourcepack.SackResourcePackPlugin
 api-version: "26.1.1"
 author: Sack
+# FreeMinecraftModels genera su pack al arrancar; así está listo antes del primer build (external-packs)
+softdepend: [FreeMinecraftModels]
 description: Asset Pipeline para resource packs — escaneo de módulos, resolución de dependencias, fusión de namespaces, CustomModelData estable, validación, build+hash y distribución automática. Framework independiente, no depende de RPGRoll.
 
 permissions:

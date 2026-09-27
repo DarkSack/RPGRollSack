@@ -13,6 +13,7 @@ import java.util.Objects;
  * @param priority a igualdad de dependencias, menor prioridad se fusiona primero (los de mayor prioridad pueden pisar a los de menor)
  * @param depends  ids de otros módulos obligatorios — si falta alguno, el build falla con un error claro
  * @param optional ids de otros módulos opcionales — si están presentes se ordenan antes, si no, se ignoran sin error
+ * @param exclude  rutas dentro de {@code assets/} que no entran al pack (prefijos, p. ej. {@code ns/carpeta/})
  */
 public record AssetModule(
         String id,
@@ -24,7 +25,13 @@ public record AssetModule(
         List<String> depends,
         List<String> optional,
         String description,
-        File directory) {
+        File directory,
+        List<String> exclude) {
+
+    public AssetModule(String id, String name, String version, String author, String namespace, int priority,
+            List<String> depends, List<String> optional, String description, File directory) {
+        this(id, name, version, author, namespace, priority, depends, optional, description, directory, List.of());
+    }
 
     public AssetModule {
         Objects.requireNonNull(id, "id no puede ser null");
@@ -36,6 +43,17 @@ public record AssetModule(
         optional = optional == null ? List.of() : List.copyOf(optional);
         description = description == null ? "" : description;
         Objects.requireNonNull(directory, "directory no puede ser null");
+        exclude = exclude == null ? List.of() : List.copyOf(exclude);
+    }
+
+    /** true si la ruta (relativa a {@code assets/}) cae dentro de algún {@code exclude}. */
+    public boolean excludes(String relativePath) {
+        for (String prefix : exclude) {
+            if (relativePath.startsWith(prefix)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public File assetsDirectory() {
