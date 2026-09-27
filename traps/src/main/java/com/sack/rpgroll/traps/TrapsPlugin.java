@@ -42,6 +42,12 @@ public class TrapsPlugin extends JavaPlugin {
     private LangManager langManager;
 
     @Override
+    public void onDisable() {
+        // Lo que haya en un cofre de munición abierto se guarda antes de que se cierre solo.
+        com.sack.rpgroll.traps.gui.turret.TurretAmmoGUI.closeAll();
+    }
+
+    @Override
     public void onEnable() {
         if (!LicenseGate.verify(this, LicenseIdentity.RESOURCE_ID, LicenseIdentity.PRODUCT_SLUG,
                 LicenseIdentity.VERIFY_TOKEN)) {

@@ -81,6 +81,12 @@ public class CratesPlugin extends JavaPlugin {
                 + placedCrateManager.getAll().size() + " ubicación(es).");
     }
 
+    @Override
+    public void onDisable() {
+        // Las ruletas a medias se entregan antes de que se guarden los inventarios.
+        com.sack.rpgroll.crates.gui.CrateSpinGUI.finishAll();
+    }
+
     /** Recrea todos los hologramas al arrancar (DecentHolograms no los persiste entre reinicios). */
     private void rebuildHolograms() {
 

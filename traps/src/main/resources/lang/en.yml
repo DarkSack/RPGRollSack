@@ -128,6 +128,7 @@ gui:
   turret_ammo:
     title: "&6Turret ammunition"
     only_ammo: "&cOnly ammunition goes in here."
+    busy: "&cSomeone else is using this turret's ammo."
     target_allies: "&bShoot allies"
     target_enemies: "&cShoot enemies"
     target_hostile_mobs: "&2Shoot hostile mobs"

@@ -85,6 +85,8 @@ executor:
 # Interacting with a crate's block
 interact:
   needs_key: "&cYou need this crate's key to open it."
+  no_rewards: "&cThis crate has no rewards yet. Your key was not used."
+  already_spinning: "&cWait for your current spin to finish."
 
 # Chat-prompt system (used by admin GUIs)
 prompt:

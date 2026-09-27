@@ -19,7 +19,7 @@ public class GuildEvent {
 
     public GuildEvent(String id, String name, String type, String description, long scheduledAtMillis) {
         this.id = id;
-        this.name = name;
+        this.name = com.sack.rpgroll.util.PlayerText.clean(name);
         this.type = type;
         this.description = description;
         this.scheduledAtMillis = scheduledAtMillis;
@@ -34,7 +34,7 @@ public class GuildEvent {
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name = com.sack.rpgroll.util.PlayerText.clean(name);
     }
 
     public String type() {

@@ -1,12 +1,14 @@
 package com.sack.rpgroll.economy.gui;
 
 import com.sack.rpgroll.common.lang.LangManager;
+import com.sack.rpgroll.economy.auction.AuctionPrices;
 import com.sack.rpgroll.economy.bank.BankAccount;
 import com.sack.rpgroll.economy.bank.BankManager;
 import com.sack.rpgroll.economy.currency.Currency;
 import com.sack.rpgroll.economy.currency.CurrencyManager;
 import com.sack.rpgroll.economy.loan.Loan;
 import com.sack.rpgroll.economy.loan.LoanService;
+import com.sack.rpgroll.economy.wallet.Amounts;
 import com.sack.rpgroll.economy.wallet.EconomyResult;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
@@ -115,11 +117,25 @@ public class BankAccountDetailGUI extends InventoryGUI {
                 reopen();
             });
         } else if (slot == LOAN_REQUEST_SLOT) {
-            chatPromptManager.prompt(player, lang.raw("bank.detail.prompt_loan_request"), value -> {
+            LoanService.Settings loans = loanService.settings();
+            Currency currency = currencyManager.defaultCurrency();
+            if (!loans.enabled()) {
+                lang.send(player, "bank.detail.loan_disabled");
+                return;
+            }
+            chatPromptManager.prompt(player, lang.raw("bank.detail.prompt_loan_limits",
+                    "max", loans.maxAmount() > 0 ? currency.format(loans.maxAmount()) : lang.raw("common.unlimited"),
+                    "interest", loans.dailyInterestPercent(), "days", loans.termDays()), value -> {
                 double amount = parseAmount(value);
                 if (amount > 0) {
-                    loanService.issueLoan(account, currencyId, amount, 8.0, 30);
-                    lang.send(player, "bank.detail.loan_granted");
+                    switch (loanService.request(account, player.getUniqueId(), currencyId, amount)) {
+                        case GRANTED -> lang.send(player, "bank.detail.loan_granted");
+                        case DISABLED -> lang.send(player, "bank.detail.loan_disabled");
+                        case INVALID_AMOUNT -> lang.send(player, "common.invalid_money");
+                        case TOO_MUCH -> lang.send(player, "bank.detail.loan_too_much",
+                                "max", currency.format(loans.maxAmount()));
+                        case TOO_MANY -> lang.send(player, "bank.detail.loan_too_many", "max", loans.maxActive());
+                    }
                 }
                 reopen();
             });
@@ -132,8 +148,12 @@ public class BankAccountDetailGUI extends InventoryGUI {
             chatPromptManager.prompt(player, lang.raw("bank.detail.prompt_pay_loan"), value -> {
                 double amount = parseAmount(value);
                 if (amount > 0) {
-                    loanService.makePayment(loans.get(0), account, amount);
-                    lang.send(player, "bank.detail.payment_applied");
+                    EconomyResult result = loanService.makePayment(loans.get(0), account, amount);
+                    if (result == EconomyResult.SUCCESS) {
+                        lang.send(player, "bank.detail.payment_applied");
+                    } else {
+                        notifyResult(result);
+                    }
                 }
                 reopen();
             });
@@ -148,13 +168,14 @@ public class BankAccountDetailGUI extends InventoryGUI {
         }
     }
 
+    /** Lo escrito por el jugador (acepta 1.5k y 2m); 0 y aviso si no es un importe válido, NaN incluido. */
     private double parseAmount(String raw) {
-        try {
-            return Double.parseDouble(raw.trim());
-        } catch (NumberFormatException e) {
+        double amount = AuctionPrices.parse(raw);
+        if (!Amounts.valid(amount)) {
             lang.send(player, "common.invalid_money");
             return 0;
         }
+        return amount;
     }
 
     private void notifyResult(EconomyResult result) {

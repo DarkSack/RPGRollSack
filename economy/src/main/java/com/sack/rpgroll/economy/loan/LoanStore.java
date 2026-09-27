@@ -42,6 +42,11 @@ public class LoanStore {
             loan.setLastAccrualMillis(config.getLong("last-accrual", loan.issuedAtMillis()));
             loan.setPaidOff(config.getBoolean("paid-off", false));
 
+            String borrower = config.getString("borrower");
+            if (borrower != null) {
+                loan.setBorrowerId(UUID.fromString(borrower));
+            }
+
             loans.add(loan);
         }
 
@@ -61,6 +66,7 @@ public class LoanStore {
         config.set("remaining-balance", loan.remainingBalance());
         config.set("last-accrual", loan.lastAccrualMillis());
         config.set("paid-off", loan.isPaidOff());
+        config.set("borrower", loan.borrowerId() == null ? null : loan.borrowerId().toString());
 
         try {
             config.save(new File(folder, loan.id() + ".yml"));

@@ -162,8 +162,9 @@ public final class MenuCondition {
 
         int total = 0;
 
-        for (ItemStack item : player.getInventory().getContents()) {
-            if (item != null && item.getType() == material) {
+        // Mochila y barra (no la armadura puesta), y solo el material normal: ver PaymentItems.
+        for (ItemStack item : player.getInventory().getStorageContents()) {
+            if (item != null && item.getType() == material && PaymentItems.isPlain(item)) {
                 total += item.getAmount();
             }
         }

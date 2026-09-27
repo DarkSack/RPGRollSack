@@ -35,7 +35,7 @@ public class FarmerBehavior implements ProfessionBehavior {
         }
 
         Location origin = entity.getLocation();
-        Block crop = findMatureCrop(origin);
+        Block crop = findMatureCrop(worker, WorkSite.anchor(worker, entity));
 
         if (crop == null) {
             return;
@@ -48,19 +48,21 @@ public class FarmerBehavior implements ProfessionBehavior {
 
         Material yield = HARVEST_YIELD.get(crop.getType());
 
-        if (yield == null) {
+        if (yield == null || !(crop.getBlockData() instanceof Ageable ageable)) {
             return;
         }
 
-        worker.addCarried(yield.name(), 1 + (int) (Math.random() * 2));
+        ageable.setAge(0);
 
-        if (crop.getBlockData() instanceof Ageable ageable) {
-            ageable.setAge(0);
-            crop.setBlockData(ageable);
+        if (!WorkSite.mayChange(worker, entity, crop, ageable)) {
+            return;
         }
+
+        crop.setBlockData(ageable);
+        worker.addCarried(yield.name(), 1 + (int) (Math.random() * 2));
     }
 
-    private Block findMatureCrop(Location origin) {
+    private Block findMatureCrop(Worker worker, Location origin) {
 
         World world = origin.getWorld();
 
@@ -78,11 +80,16 @@ public class FarmerBehavior implements ProfessionBehavior {
 
         for (int x = -radius; x <= radius; x++) {
             for (int z = -radius; z <= radius; z++) {
+
+                if (!WorkSite.isLoaded(world, baseX + x, baseZ + z)) {
+                    continue;
+                }
+
                 for (int y = -2; y <= 2; y++) {
 
                     Block block = world.getBlockAt(baseX + x, baseY + y, baseZ + z);
 
-                    if (!HARVEST_YIELD.containsKey(block.getType())) {
+                    if (!HARVEST_YIELD.containsKey(block.getType()) || !WorkSite.mayWorkAt(worker, block)) {
                         continue;
                     }
 

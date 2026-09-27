@@ -14,10 +14,16 @@ import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.block.BlockState;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.block.BlockIgniteEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 
@@ -376,7 +382,10 @@ public class SpellComponentExecutor {
         Block block = context.currentLocation().getBlock();
 
         if (block.getType() != Material.AIR && block.getType() != Material.BEDROCK) {
-            block.breakNaturally();
+            // Como si lo rompiera el propio lanzador: dispara BlockBreakEvent, así que WorldGuard, los
+            // territorios de guild, las mochilas, los crates y las menas lo ven, y suelta lo que tocaría.
+            // breakNaturally() no avisaba a nadie: rompía spawn, claims y bloques con datos.
+            context.caster().breakBlock(block);
         }
     }
 
@@ -386,8 +395,30 @@ public class SpellComponentExecutor {
         Block block = context.currentLocation().getBlock();
 
         if (block.getType().isAir()) {
-            block.setType(material);
+            placeAsCaster(context.caster(), block, material);
         }
+    }
+
+    /**
+     * Pone el bloque como si lo pusiera el lanzador y lo deshace si un plugin
+     * de protección cancela el BlockPlaceEvent: el mismo orden que el colocar
+     * de vanilla (se pone, se pregunta y se revierte).
+     */
+    private boolean placeAsCaster(Player caster, Block block, Material material) {
+
+        BlockState replaced = block.getState();
+        block.setType(material, false);
+
+        BlockPlaceEvent event = new BlockPlaceEvent(block, replaced, block.getRelative(BlockFace.DOWN),
+                new ItemStack(material), caster, true, EquipmentSlot.HAND);
+        Bukkit.getPluginManager().callEvent(event);
+
+        if (event.isCancelled() || !event.canBuild()) {
+            replaced.update(true, false);
+            return false;
+        }
+
+        return true;
     }
 
     private void executeIgnite(SpellComponent component, SpellCastContext context) {
@@ -404,7 +435,12 @@ public class SpellComponentExecutor {
         Block block = context.currentLocation().getBlock().getRelative(0, 1, 0);
 
         if (block.getType().isAir()) {
-            block.setType(Material.FIRE);
+            BlockIgniteEvent ignite = new BlockIgniteEvent(block, BlockIgniteEvent.IgniteCause.FIREBALL,
+                    (Entity) context.caster());
+            Bukkit.getPluginManager().callEvent(ignite);
+            if (!ignite.isCancelled()) {
+                placeAsCaster(context.caster(), block, Material.FIRE);
+            }
         }
     }
 
@@ -433,7 +469,7 @@ public class SpellComponentExecutor {
                     Block block = point.getBlock();
 
                     if (block.getType() == Material.WATER) {
-                        block.setType(Material.ICE);
+                        placeAsCaster(context.caster(), block, Material.ICE);
                     }
                 }
             }
@@ -550,8 +586,10 @@ public class SpellComponentExecutor {
         }
 
         String casterName = context.caster().getName();
-        String targetName = context.currentTargets().isEmpty() ? casterName
-                : context.currentTargets().get(0).getName();
+        // Un mob renombrado con una etiqueta ("@a", "@e") no puede colarse en el comando: su UUID apunta solo a él.
+        LivingEntity first = context.currentTargets().isEmpty() ? null : context.currentTargets().get(0);
+        String targetName = first == null ? casterName
+                : first instanceof Player player ? player.getName() : first.getUniqueId().toString();
 
         String resolved = raw.replace("%caster%", casterName).replace("%target%", targetName);
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), resolved);

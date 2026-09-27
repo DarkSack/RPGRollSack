@@ -135,7 +135,7 @@ public class JobsGUI extends InventoryGUI {
 
         }
 
-        ItemStack item = ItemBuilder.skull(job.icon())
+        ItemStack item = ItemBuilder.icon(job.icon())
                 .setName(ComponentUtils.parse(job.displayName()).decorate(TextDecoration.BOLD))
                 .setLore(lore)
                 .build();

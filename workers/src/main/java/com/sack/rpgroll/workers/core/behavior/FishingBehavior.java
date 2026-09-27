@@ -39,7 +39,7 @@ public class FishingBehavior implements ProfessionBehavior {
         }
 
         Location origin = entity.getLocation();
-        Location water = findNearestWater(origin);
+        Location water = findNearestWater(WorkSite.anchor(worker, entity));
 
         if (water == null) {
             return;
@@ -73,6 +73,11 @@ public class FishingBehavior implements ProfessionBehavior {
 
         for (int x = -radius; x <= radius; x++) {
             for (int z = -radius; z <= radius; z++) {
+
+                if (!WorkSite.isLoaded(world, baseX + x, baseZ + z)) {
+                    continue;
+                }
+
                 for (int y = -2; y <= 2; y++) {
 
                     var block = world.getBlockAt(baseX + x, baseY + y, baseZ + z);

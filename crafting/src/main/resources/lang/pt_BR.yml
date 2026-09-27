@@ -5,7 +5,7 @@ chat_prompt:
 
 station:
   structure_incomplete: "Esta estrutura está incompleta — falta {material} em ({dx}, {dy}, {dz}) relativo ao bloco."
-  recipe_discovered: "§b§lNova receita descoberta: §f{recipe}"
+  recipe_discovered: "&b&lNova receita descoberta: &f{recipe}"
 
 common:
   no_permission: "Você não tem permissão."
@@ -43,7 +43,7 @@ command:
     upgrade_no_upgrade_defined: "Não há um custo definido para o próximo nível (falta no YAML)."
     upgrade_missing_cost: "Faltam materiais ou dinheiro para esta melhoria."
     experiment_not_a_station: "Você precisa ter uma estação personalizada aberta para experimentar."
-    experiment_discovered: "§b§lVocê descobriu algo experimentando! §f{recipe}"
+    experiment_discovered: "&b&lVocê descobriu algo experimentando! &f{recipe}"
     experiment_discovered_hint: "Agora você já pode craftar isso colocando esses mesmos ingredientes."
     experiment_not_allowed: "Esta estação não permite experimentar."
     experiment_on_cooldown: "Espere um pouco antes de experimentar de novo."

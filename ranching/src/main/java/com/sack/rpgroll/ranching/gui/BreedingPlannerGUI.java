@@ -259,7 +259,7 @@ public class BreedingPlannerGUI extends InventoryGUI {
         }
 
         var result = breedingEngine.attemptConception(selectedA, selectedB, livingEntity.getLocation());
-        player.sendMessage(Component.text(result.message(), result.success() ? NamedTextColor.GREEN : NamedTextColor.YELLOW));
+        player.sendMessage(ComponentUtils.parseWithDefault(result.message(), result.success() ? NamedTextColor.GREEN : NamedTextColor.YELLOW));
     }
 
 }

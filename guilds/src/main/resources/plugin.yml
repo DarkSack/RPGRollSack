@@ -11,3 +11,6 @@ permissions:
   rpgrollguilds.admin.*:
     description: Acceso completo a comandos administrativos de guilds
     default: op
+  rpgrollguilds.team.waypoint.teleport:
+    description: Teletransportarse a los waypoints del equipo (/team waypoint tp)
+    default: op

@@ -145,7 +145,7 @@ public class TeamHubGUI extends InventoryGUI {
 
     private org.bukkit.inventory.ItemStack toggleItem(String label, boolean enabled) {
         return new ItemBuilder(enabled ? Material.LIME_DYE : Material.GRAY_DYE)
-                .setName(Component.text(label + ": " + (enabled ? lang().raw("common.yes") : lang().raw("common.no")),
+                .setName(ComponentUtils.parseWithDefault(label + ": " + (enabled ? lang().raw("common.yes") : lang().raw("common.no")),
                         enabled ? NamedTextColor.GREEN : NamedTextColor.GRAY))
                 .setLore(ComponentUtils.parseWithDefault(lang().raw("team.hub.lore.click_to_toggle"), NamedTextColor.GRAY))
                 .build();
@@ -327,7 +327,7 @@ public class TeamHubGUI extends InventoryGUI {
         boolean enabled = team.hasBuff(buff);
 
         return new ItemBuilder(enabled ? Material.LIME_DYE : Material.GRAY_DYE)
-                .setName(Component.text(buff.displayName(lang()) + " +" + (int) (buff.percent() * 100) + "%",
+                .setName(ComponentUtils.parseWithDefault(buff.displayName(lang()) + " +" + (int) (buff.percent() * 100) + "%",
                         enabled ? NamedTextColor.GREEN : NamedTextColor.GRAY))
                 .setLore(ComponentUtils.parseWithDefault(lang().raw(enabled ? "team.hub.lore.click_deactivate"
                         : "team.hub.lore.click_activate"), NamedTextColor.GRAY))

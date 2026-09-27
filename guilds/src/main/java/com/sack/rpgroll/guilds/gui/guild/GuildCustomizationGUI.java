@@ -60,7 +60,7 @@ public class GuildCustomizationGUI extends InventoryGUI {
                 .build());
 
         setItem(COLOR_SLOT, new ItemBuilder(Material.WHITE_DYE)
-                .setName(Component.text(lang().raw("guild.customization.color_label", "color", guild.color()),
+                .setName(ComponentUtils.parseWithDefault(lang().raw("guild.customization.color_label", "color", guild.color()),
                         guild.color()))
                 .setLore(ComponentUtils.parseWithDefault(lang().raw("guild.customization.lore.click_to_change"), NamedTextColor.GRAY))
                 .build());
@@ -96,7 +96,12 @@ public class GuildCustomizationGUI extends InventoryGUI {
 
         switch (event.getSlot()) {
             case NAME_SLOT -> chatPromptManager.prompt(player, "guild.customization.prompt_name", value -> {
-                guild.setName(value.trim());
+                if (com.sack.rpgroll.util.PlayerText.clean(value).isBlank()) {
+                    lang().send(player, "guild.create.invalid_name");
+                    reopen();
+                    return;
+                }
+                guild.setName(value);
                 save();
                 reopen();
             });

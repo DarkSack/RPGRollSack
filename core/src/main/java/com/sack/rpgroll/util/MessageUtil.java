@@ -24,15 +24,14 @@ public final class MessageUtil {
     public static Component title(String title) {
         return Component.text("╠ ", NamedTextColor.YELLOW)
                 .append(
-                        Component.text(title,
-                                NamedTextColor.GOLD,
-                                TextDecoration.BOLD))
+                        ComponentUtils.parseWithDefault(title, NamedTextColor.GOLD)
+                                .decorate(TextDecoration.BOLD))
                 .append(Component.text(" ╣", NamedTextColor.YELLOW));
     }
 
     public static Component section(String title) {
         return Component.text("╠ ", NamedTextColor.LIGHT_PURPLE)
-                .append(Component.text(title, NamedTextColor.LIGHT_PURPLE)
+                .append(ComponentUtils.parseWithDefault(title, NamedTextColor.LIGHT_PURPLE)
                         .decorate(TextDecoration.BOLD));
     }
 
@@ -41,7 +40,7 @@ public final class MessageUtil {
             Object value) {
 
         return Component.text("╠ ", labelColor)
-                .append(Component.text(label + ": ", labelColor))
+                .append(ComponentUtils.parseWithDefault(label + ": ", labelColor))
                 .append(Component.text(String.valueOf(value), NamedTextColor.WHITE));
     }
 

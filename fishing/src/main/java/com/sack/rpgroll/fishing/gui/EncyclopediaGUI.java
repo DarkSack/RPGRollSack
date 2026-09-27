@@ -1,5 +1,7 @@
 package com.sack.rpgroll.fishing.gui;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.fishing.core.FishSpecies;
 import com.sack.rpgroll.fishing.core.FishSpeciesManager;
@@ -67,7 +69,7 @@ public class EncyclopediaGUI extends InventoryGUI {
             FishRecord record = recordOpt.get();
 
             setItem(i, new ItemBuilder(SpeciesBrowserGUI.parseMaterial(fish.icon()))
-                    .setName(Component.text((fish.legendary() ? "★ " : "") + fish.displayName(),
+                    .setName(ComponentUtils.parseWithDefault((fish.legendary() ? "★ " : "") + fish.displayName(),
                             fish.legendary() ? NamedTextColor.GOLD : NamedTextColor.AQUA))
                     .setLore(
                             Component.text(fish.category() + " · " + fish.rarity(), NamedTextColor.GRAY),

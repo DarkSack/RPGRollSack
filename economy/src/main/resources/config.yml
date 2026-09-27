@@ -25,6 +25,20 @@ market-recovery-interval-ticks: 1200
 # Cada cuánto (ticks) se recalculan préstamos vencidos / se cobra interés acumulado.
 loan-check-interval-ticks: 12000
 
+# Préstamos del banco (/economy bank, una cuenta, Pedir préstamo).
+loans:
+  enabled: true
+  # Lo máximo que se puede pedir de una vez (0 = sin tope; no se recomienda).
+  max-amount: 5000
+  # Préstamos sin saldar a la vez por jugador, sumando todas sus cuentas.
+  max-active: 1
+  # Interés que se suma cada día sobre lo que falta por pagar.
+  daily-interest-percent: 1
+  # Al vencer se cobra solo lo que falte: primero de la cuenta y luego de la
+  # cartera de quien lo pidió. Si no alcanza, queda la deuda y se sigue
+  # cobrando en cada revisión.
+  term-days: 7
+
 # Cada cuánto (ticks) se toma una foto de la masa monetaria total para calcular inflación.
 inflation-snapshot-interval-ticks: 24000
 

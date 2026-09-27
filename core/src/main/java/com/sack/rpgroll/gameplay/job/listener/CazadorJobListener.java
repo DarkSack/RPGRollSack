@@ -2,6 +2,7 @@ package com.sack.rpgroll.gameplay.job.listener;
 
 import com.sack.rpgroll.gameplay.job.JobRewardService;
 import org.bukkit.NamespacedKey;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -9,6 +10,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.EntityTransformEvent;
 import org.bukkit.persistence.PersistentDataType;
 
 /**
@@ -41,6 +43,23 @@ public class CazadorJobListener implements Listener {
 
         event.getEntity().getPersistentDataContainer()
                 .set(fromSpawnerKey, PersistentDataType.BYTE, (byte) 1);
+    }
+
+    /**
+     * Un mob de spawner que se transforma sigue siendo de spawner: un zombi
+     * de spawner ahogado nace como drowned nuevo, sin la marca, y la clásica
+     * granja de drowned sobre un spawner de zombis pagaba cada muerte.
+     */
+    @EventHandler(ignoreCancelled = true)
+    public void onTransform(EntityTransformEvent event) {
+
+        if (!event.getEntity().getPersistentDataContainer().has(fromSpawnerKey, PersistentDataType.BYTE)) {
+            return;
+        }
+
+        for (Entity transformed : event.getTransformedEntities()) {
+            transformed.getPersistentDataContainer().set(fromSpawnerKey, PersistentDataType.BYTE, (byte) 1);
+        }
     }
 
     @EventHandler

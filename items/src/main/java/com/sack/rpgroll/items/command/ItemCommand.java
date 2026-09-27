@@ -110,6 +110,7 @@ public class ItemCommand implements CommandExecutor, TabCompleter {
             case NO_UPGRADE_DEFINED -> langManager.send(player, "command.item.upgrade.no_upgrade_defined");
             case CANT_AFFORD_MONEY -> langManager.send(player, "command.item.upgrade.cant_afford_money");
             case MISSING_MATERIAL -> langManager.send(player, "command.item.upgrade.missing_material");
+            case ONE_AT_A_TIME -> langManager.send(player, "command.item.upgrade.one_at_a_time");
         }
     }
 

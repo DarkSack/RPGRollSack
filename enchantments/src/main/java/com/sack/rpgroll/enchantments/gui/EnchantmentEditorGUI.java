@@ -92,7 +92,7 @@ public class EnchantmentEditorGUI extends InventoryGUI {
                 .build());
 
         setItem(RARITY_SLOT, new ItemBuilder(Material.NETHER_STAR)
-                .setName(Component.text(lang.raw("enchantment_editor_gui.rarity_slot_name", "rarity",
+                .setName(ComponentUtils.parseWithDefault(lang.raw("enchantment_editor_gui.rarity_slot_name", "rarity",
                         current.rarity()), current.rarity().color()))
                 .setLore(lang.component("enchantment_editor_gui.rarity_slot_lore"))
                 .build());

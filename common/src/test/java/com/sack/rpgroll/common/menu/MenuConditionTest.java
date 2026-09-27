@@ -24,7 +24,7 @@ class MenuConditionTest {
         Player player = mock(Player.class);
         PlayerInventory inventory = mock(PlayerInventory.class);
         when(player.getInventory()).thenReturn(inventory);
-        when(inventory.getContents()).thenReturn(contents);
+        when(inventory.getStorageContents()).thenReturn(contents);
         return player;
     }
 

@@ -1,5 +1,7 @@
 package com.sack.rpgroll.seasons.gui;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
@@ -80,7 +82,7 @@ public class CalendarEditorGUI extends InventoryGUI {
             String displayName = seasonManager.get(seasonId).map(season -> season.displayName()).orElse(seasonId);
 
             setItem(SEASONS_START + i, new ItemBuilder(Material.SUNFLOWER)
-                    .setName(Component.text((i + 1) + ". " + displayName, NamedTextColor.GREEN))
+                    .setName(ComponentUtils.parseWithDefault((i + 1) + ". " + displayName, NamedTextColor.GREEN))
                     .setLore(lang.component("gui.common.id_label", "id", seasonId),
                             lang.component("gui.common.shift_remove"))
                     .build());

@@ -22,7 +22,20 @@ public class GuildVault {
         return balance;
     }
 
+    /**
+     * Un importe que el vault acepta: finito y mayor que cero. {@code amount > balance}
+     * no basta: con NaN da false y un vault en NaN dejaba retirar cualquier cifra.
+     */
+    public static boolean validAmount(double amount) {
+        return Double.isFinite(amount) && amount > 0;
+    }
+
     public void deposit(double amount, VaultTransaction entry) {
+
+        if (!validAmount(amount)) {
+            return;
+        }
+
         this.balance += amount;
         log(entry);
     }
@@ -30,7 +43,7 @@ public class GuildVault {
     /** @return true si había saldo suficiente y se retiró. */
     public boolean withdraw(double amount, VaultTransaction entry) {
 
-        if (amount > balance) {
+        if (!validAmount(amount) || !(balance >= amount)) {
             return false;
         }
 

@@ -1,5 +1,7 @@
 package com.sack.rpgroll.fishing.gui;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.common.lang.LangManager;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
@@ -11,12 +13,14 @@ import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.Plugin;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
 /** Captura el próximo mensaje de chat de un jugador y lo entrega a un callback — usado por las GUIs de Fishing Studio. */
@@ -24,7 +28,8 @@ public class ChatPromptManager implements Listener {
 
     private final Plugin plugin;
     private final LangManager lang;
-    private final Map<UUID, Consumer<String>> pending = new HashMap<>();
+    // Se escribe en el hilo principal y se lee en el del chat (asíncrono).
+    private final Map<UUID, Consumer<String>> pending = new ConcurrentHashMap<>();
 
     public ChatPromptManager(Plugin plugin, LangManager lang) {
         this.plugin = plugin;
@@ -36,12 +41,14 @@ public class ChatPromptManager implements Listener {
     }
 
     public void prompt(Player player, String question, Consumer<String> callback) {
-        player.sendMessage(Component.text(question, NamedTextColor.YELLOW));
+        player.sendMessage(ComponentUtils.parseWithDefault(question, NamedTextColor.YELLOW));
         player.sendMessage(lang.component("prompt.footer", "keyword", lang.raw("prompt.cancel_keyword")));
         pending.put(player.getUniqueId(), callback);
     }
 
-    @EventHandler
+    // LOWEST: se cancela antes de que el chat de guild o de equipo (LOW), RPGRoll-Chat
+    // u otro plugin difunda la respuesta, que puede ser un precio o una cantidad.
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onChat(AsyncChatEvent event) {
 
         UUID uuid = event.getPlayer().getUniqueId();
@@ -61,6 +68,11 @@ public class ChatPromptManager implements Listener {
             }
             callback.accept(message);
         });
+    }
+
+    @EventHandler
+    public void onQuit(PlayerQuitEvent event) {
+        pending.remove(event.getPlayer().getUniqueId());
     }
 
 }

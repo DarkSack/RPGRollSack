@@ -23,10 +23,12 @@ items:
     material: SHIELD
     name: "&fEscudo"
     lore:
-      - "&7Precio: &e30 monedas"
+      - "&7Precio: &e30 monedas (Lingote de Oro)"
     actions:
-      - type: GIVE_ITEM
-        value: "SHIELD,1"
+      - type: CONDITIONAL
+        value: "HAS_ITEM:GOLD_INGOT,30;GIVE_ITEM:SHIELD,1;MESSAGE:No tienes suficiente oro (necesitas 30 lingotes)."
+      - type: CONDITIONAL
+        value: "HAS_ITEM:GOLD_INGOT,30;TAKE_ITEM:GOLD_INGOT,30"
 
   - slot: 15
     material: BARRIER

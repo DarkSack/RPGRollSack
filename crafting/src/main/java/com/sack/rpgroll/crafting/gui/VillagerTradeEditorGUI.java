@@ -115,7 +115,7 @@ public class VillagerTradeEditorGUI extends InventoryGUI {
         }
 
         setItem(TOGGLE_COST2_SLOT, new ItemBuilder(cost2 != null ? Material.BARRIER : Material.LIME_CONCRETE)
-                .setName(Component.text(cost2 != null ? chatPromptManager.lang().raw("gui.villager_trade.remove_cost2") : chatPromptManager.lang().raw("gui.villager_trade.add_cost2"),
+                .setName(ComponentUtils.parseWithDefault(cost2 != null ? chatPromptManager.lang().raw("gui.villager_trade.remove_cost2") : chatPromptManager.lang().raw("gui.villager_trade.add_cost2"),
                         cost2 != null ? NamedTextColor.RED : NamedTextColor.GREEN))
                 .build());
 

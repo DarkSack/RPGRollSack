@@ -197,6 +197,10 @@ public class TurretEngine {
      */
     private boolean fire(PlacedTurret placed, Location origin, LivingEntity target, TurretDefinition definition) {
 
+        if (placedTurretManager.isEditing(placed.placementId())) {
+            return false;
+        }
+
         String ammoId = placed.ammo().entrySet().stream()
                 .filter(slot -> slot.getValue() > 0)
                 .map(java.util.Map.Entry::getKey)

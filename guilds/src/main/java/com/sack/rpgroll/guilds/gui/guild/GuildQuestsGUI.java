@@ -87,7 +87,7 @@ public class GuildQuestsGUI extends InventoryGUI {
 
             setItem(18 + i, new ItemBuilder(Material.BOOK)
                     .setName(ComponentUtils.parse(definition.displayName()))
-                    .setLore(Component.text(definition.description(), NamedTextColor.GRAY),
+                    .setLore(ComponentUtils.parseWithDefault(definition.description(), NamedTextColor.GRAY),
                             ComponentUtils.parseWithDefault(lang().raw("guild.quests.type_target", "type", definition.type(),
                                     "target", definition.targetAmount()), NamedTextColor.GRAY),
                             ComponentUtils.parseWithDefault(lang().raw("guild.quests.reward", "money", definition.rewardMoney(),

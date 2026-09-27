@@ -1,5 +1,7 @@
 package com.sack.rpgroll.command;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.common.command.Senders;
 
 import com.sack.rpgroll.RPGRoll;
@@ -188,9 +190,9 @@ public class CommandManager implements CommandExecutor, TabCompleter {
             }
 
             sender.sendMessage(
-                    Component.text(cmd.getUsage(), NamedTextColor.YELLOW)
+                    ComponentUtils.parseWithDefault(cmd.getUsage(), NamedTextColor.YELLOW)
                             .append(Component.text(" - ", NamedTextColor.GRAY))
-                            .append(Component.text(cmd.getDescription(), NamedTextColor.GRAY)));
+                            .append(ComponentUtils.parseWithDefault(cmd.getDescription(), NamedTextColor.GRAY)));
         }
 
         lang.send(sender, "command_manager.help_footer");

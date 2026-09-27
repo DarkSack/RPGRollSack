@@ -38,16 +38,18 @@ public class MessageFormatter {
 
         ChatRole role = roleManager.resolveFor(sender).orElse(null);
 
-        String text = channel.format()
-                .replace("{player}", sender.getName())
-                .replace("{message}", message)
+        // Los %placeholders% se resuelven en el formato ANTES de meter el mensaje (y el nombre del
+        // gremio del contexto): con el mensaje dentro, lo que el jugador escribiera entre % % también
+        // pasaba por PlaceholderAPI y se mostraba resuelto a todo el canal.
+        String text = applyPlaceholderApi(sender, channel.format()
                 .replace("{channel}", channel.displayName())
                 .replace("{world}", sender.getWorld().getName())
                 .replace("{role_prefix}", role != null ? role.prefix() : "")
-                .replace("{role_suffix}", role != null ? role.suffix() : "")
-                .replace("{context_prefix}", contextResolver.contextPrefix(sender));
+                .replace("{role_suffix}", role != null ? role.suffix() : ""));
 
-        text = applyPlaceholderApi(sender, text);
+        text = text.replace("{player}", sender.getName())
+                .replace("{context_prefix}", contextResolver.contextPrefix(sender))
+                .replace("{message}", message);
 
         return toComponent(text, channel.textFormat());
     }

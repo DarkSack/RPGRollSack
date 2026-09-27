@@ -1,5 +1,7 @@
 package com.sack.rpgroll.guilds.guild;
 
+import com.sack.rpgroll.util.PlayerText;
+
 import com.sack.rpgroll.guilds.guild.bank.GuildVault;
 import com.sack.rpgroll.guilds.guild.capital.GuildCapital;
 import com.sack.rpgroll.guilds.guild.event.GuildEvent;
@@ -58,7 +60,7 @@ public class Guild {
 
     public Guild(String id, String name, UUID founderId) {
         this.id = id;
-        this.name = name;
+        this.name = PlayerText.clean(name);
         this.founderId = founderId;
         this.createdAtMillis = System.currentTimeMillis();
         this.members.put(founderId, GuildRole.LEADER);
@@ -73,7 +75,7 @@ public class Guild {
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name = PlayerText.clean(name);
     }
 
     public UUID founderId() {
@@ -278,7 +280,7 @@ public class Guild {
     }
 
     public void setMotto(String motto) {
-        this.motto = motto;
+        this.motto = PlayerText.clean(motto);
     }
 
     public String description() {
@@ -286,7 +288,7 @@ public class Guild {
     }
 
     public void setDescription(String description) {
-        this.description = description;
+        this.description = PlayerText.clean(description);
     }
 
 }

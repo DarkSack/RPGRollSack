@@ -7,6 +7,7 @@ import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.guilds.gui.ChatPromptManager;
 import com.sack.rpgroll.guilds.guild.Guild;
 import com.sack.rpgroll.guilds.guild.GuildManager;
+import com.sack.rpgroll.guilds.guild.bank.GuildVault;
 import com.sack.rpgroll.guilds.guild.bank.VaultTransaction;
 import com.sack.rpgroll.guilds.guild.bank.VaultTransactionType;
 
@@ -198,8 +199,13 @@ public class GuildVaultGUI extends InventoryGUI {
 
     private void depositMoney(double amount) {
 
+        // Sin economía en Vault el depósito salía gratis: dinero creado en el vault.
         var economy = com.sack.rpgroll.common.integration.VaultEconomy.get();
-        if (economy.isPresent() && !economy.get().withdrawPlayer(player, amount).transactionSuccess()) {
+        if (economy.isEmpty()) {
+            lang().send(player, "guild.vault.no_economy");
+            return;
+        }
+        if (!economy.get().withdrawPlayer(player, amount).transactionSuccess()) {
             lang().send(player, "guild.vault.not_enough_money");
             return;
         }
@@ -213,6 +219,12 @@ public class GuildVaultGUI extends InventoryGUI {
 
     private void withdrawMoney(double amount) {
 
+        var economy = com.sack.rpgroll.common.integration.VaultEconomy.get();
+        if (economy.isEmpty()) {
+            lang().send(player, "guild.vault.no_economy");
+            return;
+        }
+
         boolean withdrawn = guild.vault().withdraw(amount, VaultTransaction.of(player.getUniqueId(), player.getName(),
                 VaultTransactionType.WITHDRAW_MONEY, amount, lang().raw("guild.vault.log.withdraw_of",
                         "player", player.getName())));
@@ -222,16 +234,25 @@ public class GuildVaultGUI extends InventoryGUI {
             return;
         }
 
-        com.sack.rpgroll.common.integration.VaultEconomy.get()
-                .ifPresent(eco -> eco.depositPlayer(player, amount));
+        if (!economy.get().depositPlayer(player, amount).transactionSuccess()) {
+            // La cartera no lo pudo recibir (bloqueada, tope): el dinero vuelve al vault en vez de perderse.
+            guild.vault().deposit(amount, VaultTransaction.of(player.getUniqueId(), player.getName(),
+                    VaultTransactionType.DEPOSIT_MONEY, amount, lang().raw("guild.vault.log.deposit_of",
+                            "player", player.getName())));
+            guildManager.save(guild);
+            lang().send(player, "guild.vault.withdraw_failed");
+            return;
+        }
 
         guildManager.save(guild);
         lang().send(player, "guild.vault.withdrew", "amount", amount);
     }
 
+    /** -1 si no es un importe válido: "NaN" e "Infinity" también son números para parseDouble. */
     private double parse(String value) {
         try {
-            return Double.parseDouble(value.trim());
+            double amount = Double.parseDouble(value.trim());
+            return GuildVault.validAmount(amount) ? amount : -1;
         } catch (NumberFormatException e) {
             return -1;
         }

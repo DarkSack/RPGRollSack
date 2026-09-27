@@ -62,7 +62,7 @@ public class StructurePasteConfirmGUI extends InventoryGUI {
         setItem(INFO_SLOT, new ItemBuilder(definition.icon())
                 .setName(ComponentUtils.parse(definition.displayName()).colorIfAbsent(NamedTextColor.WHITE))
                 .setLore(
-                        Component.text(definition.description(), NamedTextColor.GRAY),
+                        ComponentUtils.parseWithDefault(definition.description(), NamedTextColor.GRAY),
                         ComponentUtils.parse(lang.raw("gui.pasteconfirm.centered_on_you")))
                 .build());
 

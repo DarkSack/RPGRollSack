@@ -105,7 +105,7 @@ public class EconomyAdminCommand implements CommandExecutor, TabCompleter {
         String currencyId = args[2];
         double amount = parseDouble(args[3]);
 
-        if (amount <= 0) {
+        if (!com.sack.rpgroll.economy.wallet.Amounts.valid(amount)) {
             lang.send(sender, "common.invalid_amount");
             return;
         }

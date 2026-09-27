@@ -68,6 +68,7 @@ command:
       no_upgrade_defined: "&cEl próximo nivel de mejora no está definido todavía."
       cant_afford_money: "&cNo tienes suficiente dinero para esta mejora."
       missing_material: "&cTe falta el material requerido para esta mejora."
+      one_at_a_time: "&cMejora los ítems de uno en uno: separa el stack."
     skin:
       none: "&cEste ítem no tiene skins alternativas."
       changed: "&a✔ Skin cambiada a: {skin}"

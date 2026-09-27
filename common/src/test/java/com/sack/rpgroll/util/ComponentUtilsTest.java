@@ -73,6 +73,38 @@ class ComponentUtilsTest {
     }
 
     @Test
+    void aLegacyTemplateWithAMiniMessageNameShowsNoRawTags() {
+
+        // "&7Recibiste {item}" con un ítem de nombre en degradado.
+        Component result = ComponentUtils.parse("&7Recibiste <gradient:#a18cd1:#fbc2eb>Grimorio</gradient>");
+
+        assertEquals("Recibiste Grimorio", PlainTextComponentSerializer.plainText().serialize(result));
+    }
+
+    @Test
+    void aMiniMessageTemplateWithALegacyNameShowsNoRawCodes() {
+
+        Component result = ComponentUtils.parse("<gold>Ganaste &6&lEspada &7de hierro");
+
+        assertEquals("Ganaste Espada de hierro", PlainTextComponentSerializer.plainText().serialize(result));
+    }
+
+    @Test
+    void placeholdersInAngleBracketsStayLegacyText() {
+
+        Component result = ComponentUtils.parse("&cUso: /guild create <nombre>");
+
+        assertEquals("Uso: /guild create <nombre>", PlainTextComponentSerializer.plainText().serialize(result));
+        assertEquals(NamedTextColor.RED, result.children().isEmpty() ? result.color() : result.children().get(0).color());
+    }
+
+    @Test
+    void legacyCodesBecomeTheirTags() {
+        assertEquals("<reset><gray>a<bold>b<reset><#54daf4>c<reset><#54daf4>d",
+                ComponentUtils.legacyToMiniMessage("&7a&lb&#54daf4c&x&5&4&d&a&f&4d"));
+    }
+
+    @Test
     void parseTextContainingOnlyOpenBracketFallsBackToLegacy() {
         // Sin '>' de cierre no cuenta como MiniMessage según la heurística de parse().
         Component result = ComponentUtils.parse("&aless < than");

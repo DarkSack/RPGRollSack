@@ -105,7 +105,7 @@ public class RanchHubGUI extends InventoryGUI {
 
     private org.bukkit.inventory.ItemStack button(Material material, String label, int count) {
         return new ItemBuilder(material)
-                .setName(Component.text(label + " (" + count + ")", NamedTextColor.YELLOW))
+                .setName(ComponentUtils.parseWithDefault(label + " (" + count + ")", NamedTextColor.YELLOW))
                 .setLore(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.common.manage_hint"), NamedTextColor.GRAY))
                 .build();
     }

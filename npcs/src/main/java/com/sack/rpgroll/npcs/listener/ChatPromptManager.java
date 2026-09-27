@@ -1,5 +1,7 @@
 package com.sack.rpgroll.npcs.listener;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.common.lang.LangManager;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
@@ -13,7 +15,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.Plugin;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -40,7 +41,7 @@ public class ChatPromptManager implements Listener {
      *                  muestra tal cual, sin parsear MiniMessage/legacy.
      */
     public void prompt(Player player, String question, Consumer<String> callback) {
-        player.sendMessage(net.kyori.adventure.text.Component.text(question,
+        player.sendMessage(ComponentUtils.parseWithDefault(question,
                 net.kyori.adventure.text.format.NamedTextColor.YELLOW));
         langManager.send(player, "prompt.instructions");
         pending.put(player.getUniqueId(), callback);

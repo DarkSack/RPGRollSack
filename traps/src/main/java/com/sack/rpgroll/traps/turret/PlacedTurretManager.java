@@ -23,6 +23,7 @@ public class PlacedTurretManager {
     private final Plugin plugin;
     private final File file;
     private final Map<String, PlacedTurret> placements = new LinkedHashMap<>();
+    private final java.util.Set<String> editing = new java.util.HashSet<>();
 
     public PlacedTurretManager(Plugin plugin) {
         this.plugin = plugin;
@@ -209,6 +210,19 @@ public class PlacedTurretManager {
                 current.targeting()));
 
         save();
+    }
+
+    /** Con el cofre de munición abierto la torreta no dispara: el stock lo tiene quien lo mira. */
+    public void setEditing(String placementId, boolean isEditing) {
+        if (isEditing) {
+            editing.add(placementId);
+        } else {
+            editing.remove(placementId);
+        }
+    }
+
+    public boolean isEditing(String placementId) {
+        return editing.contains(placementId);
     }
 
     public boolean remove(String placementId) {

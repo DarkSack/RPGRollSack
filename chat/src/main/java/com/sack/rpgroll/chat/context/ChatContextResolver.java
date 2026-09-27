@@ -39,7 +39,8 @@ public class ChatContextResolver {
             GuildsAPI.getGuildManager().getAll().stream()
                     .filter(guild -> guild.territories().stream().anyMatch(t -> t.contains(player.getLocation())))
                     .findFirst()
-                    .ifPresent(guild -> prefix.append("&2[").append(guild.name()).append("]&r "));
+                    .ifPresent(guild -> prefix.append("&2[")
+                            .append(com.sack.rpgroll.util.PlayerText.clean(guild.name())).append("]&r "));
         }
 
         return prefix.toString();

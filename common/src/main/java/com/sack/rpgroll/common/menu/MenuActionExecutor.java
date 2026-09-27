@@ -194,13 +194,15 @@ public class MenuActionExecutor {
         }
 
         int remaining = amount;
-        ItemStack[] contents = player.getInventory().getContents();
+        // Los mismos slots y el mismo criterio que HAS_ITEM (ver PaymentItems): los índices de
+        // getStorageContents coinciden con los de setItem (0-35).
+        ItemStack[] contents = player.getInventory().getStorageContents();
 
         for (int i = 0; i < contents.length && remaining > 0; i++) {
 
             ItemStack stack = contents[i];
 
-            if (stack == null || stack.getType() != material) {
+            if (stack == null || stack.getType() != material || !PaymentItems.isPlain(stack)) {
                 continue;
             }
 

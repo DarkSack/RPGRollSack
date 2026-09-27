@@ -68,6 +68,7 @@ command:
       no_upgrade_defined: "&cThe next upgrade level isn't defined yet."
       cant_afford_money: "&cYou don't have enough money for this upgrade."
       missing_material: "&cYou're missing the material required for this upgrade."
+      one_at_a_time: "&cUpgrade items one at a time: split the stack."
     skin:
       none: "&cThis item has no alternate skins."
       changed: "&a✔ Skin changed to: {skin}"

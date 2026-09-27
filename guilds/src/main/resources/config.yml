@@ -3,6 +3,15 @@
 # puedes editarlos ahí directamente. Tras cambiar esto, /guildadmin reload.
 language: es
 
+# Territorios (/guild, Territorio). El radio es la mitad del lado del cubo
+# que se protege alrededor de quien reclama; sin tope, una guild podía
+# reclamar el mapa entero.
+territories:
+  min-radius: 5
+  max-radius: 50
+  # Mundos donde se puede reclamar (vacío = todos).
+  worlds: []
+
 guild-creation:
   money-cost: 5000
   min-level: 5

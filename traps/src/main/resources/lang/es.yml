@@ -128,6 +128,7 @@ gui:
   turret_ammo:
     title: "&6Munición de la torreta"
     only_ammo: "&cAquí solo entra munición."
+    busy: "&cOtra persona está usando la munición de esta torreta."
     target_allies: "&bDisparar a aliados"
     target_enemies: "&cDisparar a enemigos"
     target_hostile_mobs: "&2Disparar a mobs hostiles"

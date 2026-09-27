@@ -108,7 +108,7 @@ public class RaceSelectionGUI extends InventoryGUI {
                         lore.addAll(ItemBuilder.toLoreLines(loreLine));
                 }
 
-                ItemStack item = ItemBuilder.skull(race.icon())
+                ItemStack item = ItemBuilder.icon(race.icon())
                                 .setName(MINI.deserialize(race.displayName()))
                                 .setLore(lore.toArray(new Component[0]))
                                 .build();

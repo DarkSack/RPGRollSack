@@ -16,6 +16,8 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 /** Comprar de la tienda de otro jugador: click = comprar 1, shift-click = comprar 8. */
 public class ShopViewGUI extends InventoryGUI {
@@ -50,17 +52,23 @@ public class ShopViewGUI extends InventoryGUI {
 
         var currency = currencyManager.get(shop.currencyId()).orElse(currencyManager.defaultCurrency());
 
-        for (int i = 0; i < shop.listings().size() && i < 36; i++) {
+        for (int i = 0; i < shop.listings().size() && i < ShopManager.MAX_LISTINGS; i++) {
 
             ShopListing listing = shop.listings().get(i);
 
-            setItem(i, new ItemBuilder(listing.material())
-                    .setName(ComponentUtils.parse(listing.displayName()))
-                    .setLore(lang.component("shop.view.lore_price", "value", currency.format(listing.unitPrice())),
-                            lang.component("shop.view.lore_stock", "value",
-                                    listing.isUnlimited() ? lang.raw("common.unlimited") : listing.stock()),
-                            lang.component("shop.view.click_hint"))
-                    .build());
+            // Se ve el ítem real (encantamientos, nombre...) y, si no tiene nombre propio, el de la línea.
+            ItemStack shown = listing.item();
+            ItemMeta meta = shown.getItemMeta();
+            if (meta != null && !meta.hasDisplayName() && !listing.displayName().equals(listing.material().name())) {
+                meta.displayName(ComponentUtils.parse(listing.displayName()));
+                shown.setItemMeta(meta);
+            }
+
+            setItem(i, ShopManageGUI.withLore(shown,
+                    lang.component("shop.view.lore_price", "value", currency.format(listing.unitPrice())),
+                    lang.component("shop.view.lore_stock", "value",
+                            listing.isUnlimited() ? lang.raw("common.unlimited") : listing.stock()),
+                    lang.component("shop.view.click_hint")));
         }
 
         setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("common.back")));
@@ -72,7 +80,7 @@ public class ShopViewGUI extends InventoryGUI {
         event.setCancelled(true);
         int slot = event.getSlot();
 
-        if (slot < shop.listings().size() && slot < 36) {
+        if (slot < shop.listings().size() && slot < ShopManager.MAX_LISTINGS) {
 
             int quantity = event.getClick() == ClickType.SHIFT_LEFT || event.getClick() == ClickType.SHIFT_RIGHT ? 8 : 1;
             ShopPurchaseResult result = shopManager.buy(player, shop, shop.listings().get(slot), quantity);

@@ -73,6 +73,8 @@ team:
     set_success: "&a✔ Waypoint '{name}' saved."
     list_header: "&6=== Team waypoints ==="
     list_entry: "&7 - {name} ({world})"
+    list_entry_coords: "&7 - {name}: {world} {x} {y} {z}"
+    no_teleport: "&cYou cannot teleport to waypoints; check their coordinates with /team waypoint list."
     not_found: "&cThat waypoint doesn't exist."
     removed: "&7Waypoint removed."
   chat:
@@ -238,6 +240,8 @@ guild:
     slot_not_free: "&cThat slot isn't free."
     not_enough_money: "&cYou don't have enough money."
     insufficient_balance: "&cThe vault doesn't have enough balance."
+    no_economy: "&cThis server has no economy: the vault only stores items."
+    withdraw_failed: "&cYour wallet could not receive the money; it stays in the vault."
     deposited: "&a✔ You deposited {amount}."
     withdrew: "&a✔ You withdrew {amount}."
     log:
@@ -262,6 +266,9 @@ guild:
     prompt_claim: "&eType: name;radius (e.g. base;40):"
     invalid_format: "&cInvalid format."
     radius_not_a_number: "&cThe radius must be a number."
+    prompt_claim_limits: "&eType: name;radius, with a radius between {min} and {max} (e.g. base;{min}):"
+    radius_out_of_range: "&cThe radius must be between {min} and {max}."
+    world_not_allowed: "&cTerritories cannot be claimed in this world."
     overlaps: "&cThat territory overlaps with one already claimed."
     claimed: "&a✔ Territory '{name}' claimed."
     protected: "&cThis territory is protected by a guild."

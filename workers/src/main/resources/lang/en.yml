@@ -191,6 +191,8 @@ gui:
       cannot_fire_other: "You can't fire another player's worker."
       fired: "Fired."
       home_set: "✔ Home set at your location."
+      cannot_manage: "Only whoever hired it (or their guild) can change this."
+      no_set_home: "Only staff can move a worker's home: it is where the worker works."
 
 item:
   warehouse_designator:

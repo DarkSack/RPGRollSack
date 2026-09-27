@@ -23,6 +23,10 @@ import java.util.Locale;
 /** Ficha completa de UN worker — identidad, necesidades, habilidades, contrato, y acciones de gestión. */
 public class WorkerDetailGUI extends InventoryGUI {
 
+    public static final String SET_HOME_PERMISSION = "rpgrollworkers.sethome";
+    private static final String ADMIN_PERMISSION = "rpgrollworkers.admin.*";
+
+
     private static final int SIZE = 45;
 
     private static final int IDENTITY_SLOT = 10;
@@ -147,8 +151,15 @@ public class WorkerDetailGUI extends InventoryGUI {
         int slot = event.getSlot();
 
         if (slot == RENAME_SLOT) {
+
+            // Antes cualquiera que lo mirase podía renombrar el worker de otro (o uno del staff sin contratar).
+            if (!ownsOrAdmin(player)) {
+                player.sendMessage(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.worker.detail.cannot_manage"), NamedTextColor.RED));
+                return;
+            }
+
             chatPromptManager.prompt(player, chatPromptManager.lang().raw("gui.worker.detail.prompt_rename"), value -> {
-                worker.setCustomName(value);
+                worker.setCustomName(com.sack.rpgroll.util.PlayerText.clean(value));
                 workerManager.save(worker);
                 build();
             });
@@ -182,6 +193,13 @@ public class WorkerDetailGUI extends InventoryGUI {
 
         } else if (slot == SET_HOME_SLOT) {
 
+            // El hogar es el centro de su zona de trabajo: movérselo a otro era mandarle a picar,
+            // talar y cosechar en la base de un tercero (las protecciones no ven a un mob).
+            if (!player.hasPermission(SET_HOME_PERMISSION)) {
+                player.sendMessage(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.worker.detail.no_set_home"), NamedTextColor.RED));
+                return;
+            }
+
             worker.setHomeLocation(player.getLocation());
             workerManager.save(worker);
             player.sendMessage(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.worker.detail.home_set"), NamedTextColor.GREEN));
@@ -190,6 +208,11 @@ public class WorkerDetailGUI extends InventoryGUI {
         } else if (slot == BACK_SLOT) {
             onBack.run();
         }
+    }
+
+    /** Contratado por él (o por su gremio), o staff: lo que se le puede cambiar a un worker ajeno, nada. */
+    private boolean ownsOrAdmin(Player viewer) {
+        return viewer.hasPermission(ADMIN_PERMISSION) || (worker.isEmployed() && canManage(viewer));
     }
 
     private boolean canManage(Player viewer) {

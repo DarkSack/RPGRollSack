@@ -51,8 +51,8 @@ public class GuildAchievementsGUI extends InventoryGUI {
             setItem(i, new ItemBuilder(unlocked ? Material.GOLD_INGOT : Material.GRAY_DYE)
                     .setName(ComponentUtils.parseWithDefault(definition.displayName(), unlocked ? NamedTextColor.GOLD
                             : NamedTextColor.DARK_GRAY))
-                    .setLore(Component.text(definition.description(), NamedTextColor.GRAY),
-                            Component.text(lang().raw(unlocked ? "guild.achievements.unlocked"
+                    .setLore(ComponentUtils.parseWithDefault(definition.description(), NamedTextColor.GRAY),
+                            ComponentUtils.parseWithDefault(lang().raw(unlocked ? "guild.achievements.unlocked"
                                     : "guild.achievements.locked"),
                                     unlocked ? NamedTextColor.GREEN : NamedTextColor.RED))
                     .build());

@@ -77,7 +77,7 @@ public class StructureLibraryGUI extends PaginatedGUI {
                         ComponentUtils.parse(lang.raw(native_ ? "gui.structurelibrary.item.source_native"
                                 : "gui.structurelibrary.item.source_custom")),
                         Component.text(size, NamedTextColor.GRAY),
-                        Component.text(def.description(), NamedTextColor.GRAY),
+                        ComponentUtils.parseWithDefault(def.description(), NamedTextColor.GRAY),
                         ComponentUtils.parse(lang.raw("gui.structurelibrary.item.click_to_paste")))
                 .build());
     }

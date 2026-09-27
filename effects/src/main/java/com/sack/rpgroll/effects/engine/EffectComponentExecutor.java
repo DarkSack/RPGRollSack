@@ -299,7 +299,10 @@ public class EffectComponentExecutor {
             return;
         }
 
-        String command = template.replace("%target%", target.getName());
+        // getName() de un mob es su nombre puesto con una etiqueta: una llamada "@a" convertía
+        // "kill %target%" en "kill @a". Para lo que no es jugador va su UUID, que apunta solo a él.
+        String name = target instanceof Player player ? player.getName() : target.getUniqueId().toString();
+        String command = template.replace("%target%", name);
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
     }
 

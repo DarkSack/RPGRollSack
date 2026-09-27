@@ -12,6 +12,7 @@ import com.sack.rpgroll.chat.player.PlayerChannelStateManager;
 import com.sack.rpgroll.chat.reaction.ReactionManager;
 import com.sack.rpgroll.chat.reaction.ReactionType;
 import com.sack.rpgroll.common.lang.LangManager;
+import com.sack.rpgroll.util.PlayerText;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
@@ -38,6 +39,9 @@ public class ChatMessagePipeline {
     private final ChatLogManager logManager;
     private final ReactionManager reactionManager;
     private final LangManager lang;
+
+    /** Quien lo tenga conserva sus &amp;a/&amp;l en los canales legacy; el resto escribe en texto plano. */
+    public static final String COLOR_PERMISSION = "rpgrollchat.color";
 
     public ChatMessagePipeline(PlayerChannelStateManager channelStateManager, AntiSpamManager antiSpamManager,
             MessageFilter messageFilter, MentionResolver mentionResolver, LanguageService languageService,
@@ -100,7 +104,13 @@ public class ChatMessagePipeline {
             return mapped;
         }
 
-        String filtered = messageFilter.apply(channel, rawMessage);
+        String sanitized = sanitize(sender, channel, rawMessage);
+
+        if (sanitized.isBlank()) {
+            return SendResult.OK; // solo traía códigos de formato
+        }
+
+        String filtered = messageFilter.apply(channel, sanitized);
 
         MentionResolver.MentionResult mentions = mentionResolver.resolve(filtered, sender);
         String withHighlight = channel.textFormat() == ChatTextFormat.LEGACY
@@ -138,6 +148,21 @@ public class ChatMessagePipeline {
         }
 
         return SendResult.OK;
+    }
+
+    /**
+     * Sin permiso de colores los códigos &amp; se quitan (antes se aplicaban:
+     * cualquiera escribía en negrita, en &amp;k o imitando el formato del staff),
+     * y en un canal MiniMessage ninguna etiqueta del jugador se interpreta:
+     * un {@code <click:run_command:...>} se volvía un enlace para los demás.
+     * Va antes del filtro para que los reemplazos del admin sí lleven color.
+     */
+    private String sanitize(Player sender, ChatChannel channel, String message) {
+
+        boolean miniMessage = channel.textFormat() == ChatTextFormat.MINIMESSAGE;
+        String text = miniMessage || !sender.hasPermission(COLOR_PERMISSION) ? PlayerText.stripCodes(message) : message;
+
+        return miniMessage ? PlayerText.escapeTags(text) : text;
     }
 
     private Component reactionBar(long messageId) {

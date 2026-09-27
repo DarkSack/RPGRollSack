@@ -191,6 +191,8 @@ gui:
       cannot_fire_other: "No puedes despedir el worker de otro jugador."
       fired: "Despedido."
       home_set: "✔ Hogar fijado en tu ubicación."
+      cannot_manage: "Solo quien lo tiene contratado (o su gremio) puede cambiar esto."
+      no_set_home: "Solo el staff puede mover el hogar de un worker: es la zona donde trabaja."
 
 item:
   warehouse_designator:

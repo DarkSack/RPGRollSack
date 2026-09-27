@@ -1,5 +1,7 @@
 package com.sack.rpgroll.seasons.gui;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
@@ -95,7 +97,7 @@ public class SeasonEditorHubGUI extends InventoryGUI {
                 .setName(lang.component("gui.common.icon_label", "icon", current.icon())).build());
 
         setItem(COLOR_SLOT, new ItemBuilder(Material.PAPER)
-                .setName(Component.text(lang.raw("gui.common.color_label", "color", current.color()),
+                .setName(ComponentUtils.parseWithDefault(lang.raw("gui.common.color_label", "color", current.color()),
                         SeasonBrowserGUI.parseColor(current.color())))
                 .build());
 

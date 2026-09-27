@@ -95,7 +95,7 @@ public class JobAbandonGUI extends InventoryGUI {
 
     private void addJob(int slot, Job job, JobProgress progress) {
 
-        ItemStack item = ItemBuilder.skull(job.icon())
+        ItemStack item = ItemBuilder.icon(job.icon())
                 .setName(ComponentUtils.parse(job.displayName())
                         .decorate(TextDecoration.BOLD))
                 .setLore(

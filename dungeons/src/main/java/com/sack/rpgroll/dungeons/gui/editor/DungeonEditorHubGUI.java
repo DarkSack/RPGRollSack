@@ -96,8 +96,8 @@ public class DungeonEditorHubGUI extends InventoryGUI {
 
     private ItemStack categoryButton(Material material, String name, String description) {
         return new ItemBuilder(material)
-                .setName(Component.text(name, NamedTextColor.YELLOW))
-                .setLore(Component.text(description, NamedTextColor.GRAY))
+                .setName(ComponentUtils.parseWithDefault(name, NamedTextColor.YELLOW))
+                .setLore(ComponentUtils.parseWithDefault(description, NamedTextColor.GRAY))
                 .build();
     }
 

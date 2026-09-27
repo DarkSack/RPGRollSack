@@ -9,12 +9,18 @@ import com.sack.rpgroll.traps.turret.TurretItem;
 import com.sack.rpgroll.traps.turret.TurretManager;
 
 import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockExplodeEvent;
+import org.bukkit.event.block.BlockPistonExtendEvent;
+import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityChangeBlockEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.inventory.ItemStack;
 import com.sack.rpgroll.traps.gui.turret.TurretAmmoGUI;
 import com.sack.rpgroll.traps.turret.TurretAccess;
@@ -24,6 +30,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.plugin.Plugin;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -54,6 +61,20 @@ public class TurretPlacementListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+    public void onPlaceCheck(BlockPlaceEvent event) {
+
+        String turretId = TurretItem.turretIdOf(plugin, event.getItemInHand());
+
+        if (turretId != null && turretManager.get(turretId).isEmpty()) {
+            // El ítem sobrevivió a que se borrara su definición: mejor no
+            // dejar un bloque que nunca va a disparar.
+            event.setCancelled(true);
+            lang.send(event.getPlayer(), "admin.turret.not_found", "id", turretId);
+        }
+    }
+
+    /** En MONITOR: si otro plugin cancela la colocación después, no queda una torreta sin bloque. */
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlace(BlockPlaceEvent event) {
 
         String turretId = TurretItem.turretIdOf(plugin, event.getItemInHand());
@@ -65,10 +86,6 @@ public class TurretPlacementListener implements Listener {
         Optional<TurretDefinition> definition = turretManager.get(turretId);
 
         if (definition.isEmpty()) {
-            // El ítem sobrevivió a que se borrara su definición: mejor no
-            // dejar un bloque que nunca va a disparar.
-            event.setCancelled(true);
-            lang.send(event.getPlayer(), "admin.turret.not_found", "id", turretId);
             return;
         }
 
@@ -110,6 +127,23 @@ public class TurretPlacementListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+    public void onBreakCheck(BlockBreakEvent event) {
+
+        PlacedTurret placed = turretAt(event.getBlock().getLocation());
+
+        if (placed != null && !canRemove(event.getPlayer(), placed)) {
+            event.setCancelled(true);
+            lang.send(event.getPlayer(), "admin.turret.not_owner");
+        }
+    }
+
+    /**
+     * En MONITOR, cuando ya nadie la cancela: se retira y se devuelve el ítem
+     * de la torreta, y solo ese. Antes soltaba además el bloque base (un
+     * bloque de diamante en la de vigilancia, uno de esmeralda en la de
+     * curación): colocar y romper era un duplicador.
+     */
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBreak(BlockBreakEvent event) {
 
         Location broken = event.getBlock().getLocation();
@@ -120,12 +154,23 @@ public class TurretPlacementListener implements Listener {
         }
 
         Player player = event.getPlayer();
+        event.setDropItems(false);
+        event.setExpToDrop(0);
 
-        if (!canRemove(player, placed)) {
-            event.setCancelled(true);
-            lang.send(player, "admin.turret.not_owner");
-            return;
-        }
+        // Primero se cierra su cofre si alguien lo mira (el cierre guarda el stock), y la munición
+        // cargada vuelve como ítems: antes se borraba con la torreta.
+        TurretAmmoGUI.closeFor(placed.placementId());
+        Location dropAt = broken.clone().add(0.5, 0.5, 0.5);
+        placedTurretManager.get(placed.placementId()).ifPresent(current ->
+                current.ammo().forEach((ammoId, amount) -> ammoManager.get(ammoId).ifPresent(ammo -> {
+                    int remaining = amount;
+                    while (remaining > 0) {
+                        int batch = Math.min(remaining, ammo.icon().getMaxStackSize());
+                        broken.getWorld().dropItemNaturally(dropAt,
+                                com.sack.rpgroll.traps.ammo.AmmoItem.create(plugin, ammo, lang, batch));
+                        remaining -= batch;
+                    }
+                })));
 
         turretEngine.despawnVisual(placed.placementId());
         placedTurretManager.remove(placed.placementId());
@@ -137,6 +182,50 @@ public class TurretPlacementListener implements Listener {
         });
 
         lang.send(player, "admin.turret.removed_by_break", "placementId", placed.placementId());
+    }
+
+    // El bloque de una torreta solo sale rompiéndolo su dueño: una explosión
+    // lo soltaba como bloque normal y dejaba la torreta registrada en el aire,
+    // y un pistón lo sacaba de su sitio (romperlo allí daba el bloque, y luego
+    // romper lo que se pusiera en el hueco devolvía también la torreta).
+
+    @EventHandler(ignoreCancelled = true)
+    public void onEntityExplode(EntityExplodeEvent event) {
+        event.blockList().removeIf(this::isTurret);
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onBlockExplode(BlockExplodeEvent event) {
+        event.blockList().removeIf(this::isTurret);
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onPistonExtend(BlockPistonExtendEvent event) {
+        if (anyTurret(event.getBlocks())) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onPistonRetract(BlockPistonRetractEvent event) {
+        if (anyTurret(event.getBlocks())) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onEntityChangeBlock(EntityChangeBlockEvent event) {
+        if (isTurret(event.getBlock())) {
+            event.setCancelled(true);
+        }
+    }
+
+    private boolean isTurret(Block block) {
+        return turretAt(block.getLocation()) != null;
+    }
+
+    private boolean anyTurret(List<Block> blocks) {
+        return !placedTurretManager.getAll().isEmpty() && blocks.stream().anyMatch(this::isTurret);
     }
 
     private PlacedTurret turretAt(Location location) {

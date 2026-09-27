@@ -4,6 +4,7 @@ import com.sack.rpgroll.economy.currency.Currency;
 import com.sack.rpgroll.economy.currency.CurrencyManager;
 import com.sack.rpgroll.economy.ledger.TransactionLedger;
 import com.sack.rpgroll.economy.ledger.TransactionType;
+import com.sack.rpgroll.economy.wallet.Amounts;
 import com.sack.rpgroll.economy.wallet.EconomyResult;
 import com.sack.rpgroll.economy.wallet.WalletService;
 
@@ -87,6 +88,10 @@ public class BankManager {
 
     public EconomyResult depositFromWallet(UUID playerId, BankAccount account, String currencyId, double amount) {
 
+        if (!Amounts.valid(amount)) {
+            return EconomyResult.INVALID_AMOUNT;
+        }
+
         EconomyResult withdrawResult = walletService.withdraw(playerId, currencyId, amount, TransactionType.WITHDRAW,
                 "Depósito a cuenta " + account.name());
 
@@ -103,6 +108,11 @@ public class BankManager {
     }
 
     public EconomyResult withdrawToWallet(UUID playerId, BankAccount account, String currencyId, double amount) {
+
+        // Sin esto un NaN pasaba "saldo - NaN < 0" (false) y la reversión NaN + NaN dejaba la cuenta en NaN.
+        if (!Amounts.valid(amount)) {
+            return EconomyResult.INVALID_AMOUNT;
+        }
 
         Currency currency = currencyManager.get(currencyId).orElse(null);
         if (currency == null) {
@@ -134,7 +144,7 @@ public class BankManager {
 
     public EconomyResult transferBetweenAccounts(BankAccount from, BankAccount to, String currencyId, double amount) {
 
-        if (amount <= 0) {
+        if (!Amounts.valid(amount)) {
             return EconomyResult.INVALID_AMOUNT;
         }
 

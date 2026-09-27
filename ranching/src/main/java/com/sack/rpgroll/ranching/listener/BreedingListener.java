@@ -1,5 +1,7 @@
 package com.sack.rpgroll.ranching.listener;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.ranching.core.animal.Animal;
 import com.sack.rpgroll.ranching.core.animal.AnimalManager;
 import com.sack.rpgroll.ranching.core.breeding.BreedingAttemptResult;
@@ -59,7 +61,7 @@ public class BreedingListener implements Listener {
                 motherEntity.getLocation());
 
         if (event.getBreeder() instanceof Player player) {
-            player.sendMessage(Component.text(result.message(),
+            player.sendMessage(ComponentUtils.parseWithDefault(result.message(),
                     result.success() ? NamedTextColor.GREEN : NamedTextColor.YELLOW));
         }
     }

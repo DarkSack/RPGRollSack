@@ -1,5 +1,7 @@
 package com.sack.rpgroll.magic.listener;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.magic.core.Spell;
 import com.sack.rpgroll.magic.core.SpellCatalyst;
@@ -90,7 +92,7 @@ public class SpellChannelManager implements Listener {
 
                     if (!result.success()) {
                         result.reasons().forEach(reason -> player.sendMessage(
-                                Component.text("✘ " + reason, NamedTextColor.RED)));
+                                ComponentUtils.parseWithDefault("✘ " + reason, NamedTextColor.RED)));
                     }
                 }
             }

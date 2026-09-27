@@ -14,3 +14,6 @@ permissions:
   rpgrollworkers.use:
     description: Uso básico de trabajadores (inspeccionar, contratar, despedir)
     default: true
+  rpgrollworkers.sethome:
+    description: Mover el hogar de un worker (el centro de la zona donde trabaja)
+    default: op

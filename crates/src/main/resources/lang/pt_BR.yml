@@ -85,6 +85,8 @@ executor:
 # Interação com o bloco do crate
 interact:
   needs_key: "&cVocê precisa da chave deste crate para abri-lo."
+  no_rewards: "&cEste crate ainda não tem recompensas. Sua chave não foi gasta."
+  already_spinning: "&cEspere sua roleta terminar."
 
 # Sistema de perguntas por chat (usado pelas GUIs de admin)
 prompt:

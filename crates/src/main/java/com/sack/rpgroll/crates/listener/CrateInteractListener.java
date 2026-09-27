@@ -14,6 +14,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
@@ -80,6 +81,18 @@ public class CrateInteractListener implements Listener {
         Player player = event.getPlayer();
         Crate crate = crateOpt.get();
 
+        // Antes de gastar la llave: sin recompensas la ruleta fallaba después de cobrarla.
+        if (crate.rewards().isEmpty()) {
+            plugin.getLogger().warning("✘ El crate '" + crate.id() + "' no tiene recompensas.");
+            lang.send(player, "interact.no_rewards");
+            return;
+        }
+
+        if (CrateSpinGUI.isSpinning(player)) {
+            lang.send(player, "interact.already_spinning");
+            return;
+        }
+
         if (crate.requireKey()) {
 
             ItemStack inHand = player.getInventory().getItemInMainHand();
@@ -93,6 +106,11 @@ public class CrateInteractListener implements Listener {
         }
 
         new CrateSpinGUI(plugin, player, crate, actionExecutor, lang).open();
+    }
+
+    @EventHandler
+    public void onQuit(PlayerQuitEvent event) {
+        CrateSpinGUI.finishNow(event.getPlayer());
     }
 
     /**

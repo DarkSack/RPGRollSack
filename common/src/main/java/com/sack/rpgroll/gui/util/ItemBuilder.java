@@ -1,5 +1,7 @@
 package com.sack.rpgroll.gui.util;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.destroystokyo.paper.profile.PlayerProfile;
 import com.destroystokyo.paper.profile.ProfileProperty;
 import net.kyori.adventure.text.Component;
@@ -84,6 +86,24 @@ public class ItemBuilder {
      * Si el texture es null o está vacío, devuelve una cabeza sin textura
      * custom (silueta por defecto) — no lanza excepción.
      */
+    /**
+     * El icono de una clase, raza u oficio: una textura de cabeza en base64
+     * (la de minecraft-heads) o el nombre de un material ({@code BLAZE_ROD}).
+     * Vacío, una cabeza sin textura. Antes solo se aceptaban texturas, y una
+     * clase sin una a mano se quedaba con la cabeza de Steve.
+     */
+    public static ItemBuilder icon(String icon) {
+
+        if (icon != null && !icon.isBlank()) {
+            Material material = Material.matchMaterial(icon.trim());
+            if (material != null && material.isItem() && !material.isAir()) {
+                return new ItemBuilder(material);
+            }
+        }
+
+        return skull(icon);
+    }
+
     public static ItemBuilder skull(String base64Texture) {
         ItemBuilder builder = new ItemBuilder(Material.PLAYER_HEAD);
         builder.applySkullTexture(base64Texture);
@@ -113,13 +133,13 @@ public class ItemBuilder {
 
     public static ItemStack createConfirmButton(String text) {
         return new ItemBuilder(Material.LIME_STAINED_GLASS_PANE)
-                .setName(Component.text("✔ " + text, NamedTextColor.GREEN).decorate(TextDecoration.BOLD))
+                .setName(ComponentUtils.parseWithDefault("✔ " + text, NamedTextColor.GREEN).decorate(TextDecoration.BOLD))
                 .build();
     }
 
     public static ItemStack createCancelButton(String text) {
         return new ItemBuilder(Material.RED_STAINED_GLASS_PANE)
-                .setName(Component.text("✖ " + text, NamedTextColor.RED).decorate(TextDecoration.BOLD))
+                .setName(ComponentUtils.parseWithDefault("✖ " + text, NamedTextColor.RED).decorate(TextDecoration.BOLD))
                 .build();
     }
 

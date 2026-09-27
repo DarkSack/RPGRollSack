@@ -137,6 +137,11 @@ public class Bootstrap {
 
         }
 
+        // El explorador guarda en memoria lo recorrido desde el último cobro.
+        if (services.contains(ExplorerJobListener.class)) {
+            services.get(ExplorerJobListener.class).flushAll();
+        }
+
         // Las escrituras de bloques colocados van en su propio hilo: que
         // terminen antes de cerrar la base de datos.
         if (services.contains(PlacedBlockTracker.class)) {
@@ -388,7 +393,8 @@ public class Bootstrap {
         GranjeroJobListener granjeroJobListener = new GranjeroJobListener(jobRewardService);
         Bukkit.getPluginManager().registerEvents(granjeroJobListener, plugin);
 
-        AlquimistaJobListener alquimistaJobListener = new AlquimistaJobListener(jobRewardService);
+        AlquimistaJobListener alquimistaJobListener = new AlquimistaJobListener(jobRewardService,
+                new NamespacedKey(plugin, "brewed"));
         Bukkit.getPluginManager().registerEvents(alquimistaJobListener, plugin);
 
         // ===== Listeners de jugador =====
@@ -424,6 +430,7 @@ public class Bootstrap {
         ExplorerJobListener explorerJobListener = new ExplorerJobListener(jobManager, playerManager,
                 explorerProgressStorage, jobRewardService);
         Bukkit.getPluginManager().registerEvents(explorerJobListener, plugin);
+        services.register(ExplorerJobListener.class, explorerJobListener);
         plugin.getLogger().info("✔ Event listeners registrados.");
 
     }

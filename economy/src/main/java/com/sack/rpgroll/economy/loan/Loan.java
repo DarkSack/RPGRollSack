@@ -15,6 +15,8 @@ public class Loan {
     private double remainingBalance;
     private long lastAccrualMillis;
     private boolean paidOff;
+    /** Quién lo pidió (null en los préstamos guardados antes de existir el campo). */
+    private UUID borrowerId;
 
     public Loan(UUID id, UUID accountId, String currencyId, double principal, double interestRatePercent,
             int termDays, long issuedAtMillis) {
@@ -79,6 +81,14 @@ public class Loan {
 
     public void setPaidOff(boolean paidOff) {
         this.paidOff = paidOff;
+    }
+
+    public UUID borrowerId() {
+        return borrowerId;
+    }
+
+    public void setBorrowerId(UUID borrowerId) {
+        this.borrowerId = borrowerId;
     }
 
     public boolean isOverdue() {

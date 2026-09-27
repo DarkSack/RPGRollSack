@@ -7,6 +7,8 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.type.Leaves;
 import org.bukkit.entity.LivingEntity;
 
 import java.util.Locale;
@@ -19,6 +21,8 @@ import java.util.Locale;
  * de esta pasada.
  */
 public class LumberjackBehavior implements ProfessionBehavior {
+
+    private static final int MAX_TRUNK_HEIGHT = 32;
 
     private final double searchRadius;
 
@@ -34,7 +38,7 @@ public class LumberjackBehavior implements ProfessionBehavior {
         }
 
         Location origin = entity.getLocation();
-        Block log = findNearestLog(origin);
+        Block log = findNearestLog(worker, WorkSite.anchor(worker, entity));
 
         if (log == null) {
             return;
@@ -45,12 +49,16 @@ public class LumberjackBehavior implements ProfessionBehavior {
             return;
         }
 
+        if (!WorkSite.mayChange(worker, entity, log, Material.AIR.createBlockData())) {
+            return;
+        }
+
         Material logType = log.getType();
         log.setType(Material.AIR);
         worker.addCarried(logType.name(), 1);
     }
 
-    private Block findNearestLog(Location origin) {
+    private Block findNearestLog(Worker worker, Location origin) {
 
         World world = origin.getWorld();
 
@@ -67,12 +75,17 @@ public class LumberjackBehavior implements ProfessionBehavior {
         int baseZ = origin.getBlockZ();
 
         for (int x = -radius; x <= radius; x++) {
-            for (int y = -3; y <= radius; y++) {
-                for (int z = -radius; z <= radius; z++) {
+            for (int z = -radius; z <= radius; z++) {
+
+                if (!WorkSite.isLoaded(world, baseX + x, baseZ + z)) {
+                    continue;
+                }
+
+                for (int y = -3; y <= radius; y++) {
 
                     Block block = world.getBlockAt(baseX + x, baseY + y, baseZ + z);
 
-                    if (!isLog(block.getType())) {
+                    if (!isLog(block.getType()) || !isTreeTrunk(block) || !WorkSite.mayWorkAt(worker, block)) {
                         continue;
                     }
 
@@ -91,6 +104,32 @@ public class LumberjackBehavior implements ProfessionBehavior {
 
     private boolean isLog(Material material) {
         return material.name().toLowerCase(Locale.ROOT).endsWith("_log");
+    }
+
+    /**
+     * Un tronco de árbol y no la pared de una casa: sube por los troncos y
+     * busca hojas naturales (las que pone un jugador son persistentes) en lo
+     * alto de la columna. Antes talaba cualquier bloque *_log del radio.
+     */
+    private boolean isTreeTrunk(Block log) {
+
+        Block top = log;
+
+        for (int i = 0; i < MAX_TRUNK_HEIGHT && isLog(top.getRelative(BlockFace.UP).getType()); i++) {
+            top = top.getRelative(BlockFace.UP);
+        }
+
+        for (int dx = -1; dx <= 1; dx++) {
+            for (int dy = 0; dy <= 1; dy++) {
+                for (int dz = -1; dz <= 1; dz++) {
+                    if (top.getRelative(dx, dy, dz).getBlockData() instanceof Leaves leaves && !leaves.isPersistent()) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 
 }

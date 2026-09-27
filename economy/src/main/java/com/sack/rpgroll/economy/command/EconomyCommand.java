@@ -4,6 +4,7 @@ import com.sack.rpgroll.common.command.Senders;
 
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.economy.auction.AuctionManager;
+import com.sack.rpgroll.economy.auction.AuctionPrices;
 import com.sack.rpgroll.economy.auction.AuctionService;
 import com.sack.rpgroll.economy.bank.BankManager;
 import com.sack.rpgroll.economy.company.CompanyManager;
@@ -18,6 +19,7 @@ import com.sack.rpgroll.economy.ledger.TransactionType;
 import com.sack.rpgroll.economy.loan.LoanService;
 import com.sack.rpgroll.economy.shop.ShopManager;
 import com.sack.rpgroll.economy.tax.TaxEngine;
+import com.sack.rpgroll.economy.wallet.Amounts;
 import com.sack.rpgroll.economy.wallet.EconomyResult;
 import com.sack.rpgroll.economy.wallet.WalletService;
 import com.sack.rpgroll.util.TabCompleteUtil;
@@ -108,17 +110,22 @@ public class EconomyCommand implements CommandExecutor, TabCompleter {
             return;
         }
 
-        OfflinePlayer target = Bukkit.getOfflinePlayer(args[1]);
+        // getOfflinePlayer(nombre) se inventa un UUID para un nombre que nunca entró, y el pago se perdía en él.
+        OfflinePlayer target = Bukkit.getOfflinePlayerIfCached(args[1]);
+
+        if (target == null) {
+            lang.send(player, "player.pay_unknown", "target", args[1]);
+            return;
+        }
 
         if (target.getUniqueId().equals(player.getUniqueId())) {
             lang.send(player, "player.pay_self");
             return;
         }
 
-        double amount;
-        try {
-            amount = Double.parseDouble(args[2]);
-        } catch (NumberFormatException e) {
+        // Acepta 1.5k, 2m y comas de miles, como la subasta. NaN, Infinity o negativo no pasan.
+        double amount = AuctionPrices.parse(args[2]);
+        if (!Amounts.valid(amount)) {
             lang.send(player, "common.invalid_amount");
             return;
         }
@@ -129,7 +136,9 @@ public class EconomyCommand implements CommandExecutor, TabCompleter {
                 "Pago de " + player.getName() + " a " + target.getName());
 
         if (result == EconomyResult.SUCCESS) {
-            lang.send(player, "player.pay_success", "amount", amount, "target", target.getName());
+            String shown = currencyManager.get(currencyId).map(currency -> currency.format(amount))
+                    .orElse(String.valueOf(amount));
+            lang.send(player, "player.pay_success", "amount", shown, "target", target.getName());
         } else {
             lang.send(player, "common.fail_result", "result", result);
         }

@@ -1,5 +1,7 @@
 package com.sack.rpgroll.magic.listener;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.magic.core.CatalystManager;
 import com.sack.rpgroll.magic.core.Spell;
@@ -113,7 +115,7 @@ public class SpellCastListener implements Listener {
         CastResult result = engine.cast(spell, player, spellbook, catalyst);
 
         if (!result.success()) {
-            result.reasons().forEach(reason -> player.sendMessage(Component.text("✘ " + reason, NamedTextColor.RED)));
+            result.reasons().forEach(reason -> player.sendMessage(ComponentUtils.parseWithDefault("✘ " + reason, NamedTextColor.RED)));
         }
     }
 

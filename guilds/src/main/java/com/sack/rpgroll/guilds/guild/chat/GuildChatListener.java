@@ -63,7 +63,7 @@ public class GuildChatListener implements Listener {
         Component formatted = Component.text("[" + channel.tag() + "] ", channelColor(channel))
                 .append(Component.text(guild.name() + " ", NamedTextColor.DARK_GRAY))
                 .append(Component.text(player.getName() + ": ", NamedTextColor.GRAY))
-                .append(Component.text(message, NamedTextColor.WHITE));
+                .append(Component.text(com.sack.rpgroll.util.PlayerText.stripCodes(message), NamedTextColor.WHITE));
 
         for (UUID memberId : recipients(guild, channel)) {
             Player member = Bukkit.getPlayer(memberId);

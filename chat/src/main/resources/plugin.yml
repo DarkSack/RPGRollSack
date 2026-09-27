@@ -17,6 +17,9 @@ permissions:
   rpgrollchat.socialspy:
     description: Ver whispers ajenos
     default: op
+  rpgrollchat.color:
+    description: Usar códigos de color y formato (&a, &l...) en el chat, susurros y /me
+    default: op
   rpgrollchat.antispam.bypass:
     description: Saltarse el antispam (cooldown de canal, flood y repetición)
     default: op

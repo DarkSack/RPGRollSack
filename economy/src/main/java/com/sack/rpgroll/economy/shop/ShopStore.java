@@ -2,9 +2,11 @@ package com.sack.rpgroll.economy.shop;
 
 import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -41,23 +43,34 @@ public class ShopStore {
 
             for (Map<?, ?> raw : config.getMapList("listings")) {
 
-                Object materialRaw = raw.get("material");
-                if (materialRaw == null) {
-                    continue;
+                ItemStack item = raw.get("item") instanceof ItemStack stack ? stack : null;
+
+                if (item == null) {
+                    Object materialRaw = raw.get("material");
+                    if (materialRaw == null) {
+                        continue;
+                    }
+                    try {
+                        item = new ItemStack(Material.valueOf(materialRaw.toString()));
+                    } catch (IllegalArgumentException e) {
+                        continue;
+                    }
                 }
 
-                Material material;
-                try {
-                    material = Material.valueOf(materialRaw.toString());
-                } catch (IllegalArgumentException e) {
-                    continue;
-                }
-
-                String displayName = raw.get("display-name") != null ? raw.get("display-name").toString() : material.name();
+                String displayName = raw.get("display-name") != null ? raw.get("display-name").toString()
+                        : item.getType().name();
                 double price = raw.get("price") instanceof Number number ? number.doubleValue() : 1.0;
                 int stock = raw.get("stock") instanceof Number number ? number.intValue() : -1;
 
-                shop.listings().add(new ShopListing(material, displayName, price, stock));
+                if (!raw.containsKey("item") && !shop.isServerShop()) {
+                    // Línea de una tienda de jugador de antes de guardar el ítem: su stock lo escribió el
+                    // dueño sin entregar nada, así que no existe. Puede reponerlo metiendo el ítem de verdad.
+                    stock = 0;
+                } else if (stock < 0 && !shop.isServerShop()) {
+                    stock = 0;
+                }
+
+                shop.listings().add(new ShopListing(item, displayName, price, stock));
             }
 
             shops.add(shop);
@@ -77,11 +90,13 @@ public class ShopStore {
 
         List<Map<String, Object>> listings = new ArrayList<>();
         for (ShopListing listing : shop.listings()) {
-            listings.add(Map.of(
-                    "material", listing.material().name(),
-                    "display-name", listing.displayName(),
-                    "price", listing.unitPrice(),
-                    "stock", listing.stock()));
+            Map<String, Object> entry = new LinkedHashMap<>();
+            entry.put("material", listing.material().name());
+            entry.put("item", listing.item());
+            entry.put("display-name", listing.displayName());
+            entry.put("price", listing.unitPrice());
+            entry.put("stock", listing.stock());
+            listings.add(entry);
         }
         config.set("listings", listings);
 

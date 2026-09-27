@@ -55,7 +55,7 @@ public class WhisperCommand implements CommandExecutor {
                 return true;
             }
 
-            whisperManager.send(player, target, String.join(" ", args));
+            whisperManager.send(player, target, whisperText(player, String.join(" ", args)));
             return true;
         }
 
@@ -81,10 +81,17 @@ public class WhisperCommand implements CommandExecutor {
             return true;
         }
 
-        String message = String.join(" ", java.util.Arrays.asList(args).subList(1, args.length));
+        String message = whisperText(player, String.join(" ", java.util.Arrays.asList(args).subList(1, args.length)));
         whisperManager.send(player, target, message);
 
         return true;
+    }
+
+    /** Igual que en los canales: sin permiso de colores, los códigos &amp; se quitan. */
+    private static String whisperText(Player player, String message) {
+        return player.hasPermission(com.sack.rpgroll.chat.pipeline.ChatMessagePipeline.COLOR_PERMISSION)
+                ? message
+                : com.sack.rpgroll.util.PlayerText.stripCodes(message);
     }
 
 }

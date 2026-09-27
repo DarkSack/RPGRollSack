@@ -40,7 +40,7 @@ public class RecipeConditionsEditorGUI extends InventoryGUI {
 
     public RecipeConditionsEditorGUI(Player player, String title, List<RecipeCondition> initial,
             ChatPromptManager chatPromptManager, Consumer<List<RecipeCondition>> onSave, Runnable onBack) {
-        super(player, Component.text(title, NamedTextColor.GOLD), SIZE);
+        super(player, ComponentUtils.parseWithDefault(title, NamedTextColor.GOLD), SIZE);
         this.conditions = new ArrayList<>(initial);
         this.chatPromptManager = chatPromptManager;
         this.onSave = onSave;

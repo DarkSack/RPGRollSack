@@ -1,5 +1,7 @@
 package com.sack.rpgroll.traps.gui;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
@@ -38,7 +40,7 @@ public class TrapActionsEditorGUI extends InventoryGUI {
 
     public TrapActionsEditorGUI(Player player, String title, List<TrapAction> initial,
             ChatPromptManager chatPromptManager, Consumer<List<TrapAction>> onSave, Runnable onBack) {
-        super(player, Component.text(title, NamedTextColor.GOLD), SIZE);
+        super(player, ComponentUtils.parseWithDefault(title, NamedTextColor.GOLD), SIZE);
         this.actions = new ArrayList<>(initial);
         this.chatPromptManager = chatPromptManager;
         this.onSave = onSave;

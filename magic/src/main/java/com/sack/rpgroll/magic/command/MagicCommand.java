@@ -1,5 +1,7 @@
 package com.sack.rpgroll.magic.command;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.common.command.Senders;
 
 import com.sack.rpgroll.common.lang.LangManager;
@@ -117,7 +119,7 @@ public class MagicCommand implements CommandExecutor, TabCompleter {
         CastResult result = engine.cast(spellOpt.get(), player, spellbook, null);
 
         if (!result.success()) {
-            result.reasons().forEach(reason -> player.sendMessage(Component.text("✘ " + reason, NamedTextColor.RED)));
+            result.reasons().forEach(reason -> player.sendMessage(ComponentUtils.parseWithDefault("✘ " + reason, NamedTextColor.RED)));
         }
     }
 

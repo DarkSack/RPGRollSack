@@ -178,8 +178,7 @@ public class QuestObjectiveListener implements Listener {
         }
 
         int required = objective.amount() - progress.getProgress(index);
-        int available = player.getInventory().all(material).values().stream()
-                .mapToInt(ItemStack::getAmount).sum();
+        int available = deliverable(player, material).stream().mapToInt(ItemStack::getAmount).sum();
 
         if (available < required) {
             lang.send(player, "listener.deliver_missing_items", "required", required, "material", material);
@@ -190,11 +189,31 @@ public class QuestObjectiveListener implements Listener {
         engine.completeObjectiveDirectly(player, quest, stage, progress, index);
     }
 
+    /**
+     * Lo que se puede entregar: el material normal de la mochila y la barra.
+     * Antes contaba también la armadura puesta y los ítems custom hechos
+     * sobre ese material, y los entregaba (una gema custom sobre EMERALD
+     * acababa en una misión que pedía esmeraldas).
+     */
+    private java.util.List<ItemStack> deliverable(Player player, org.bukkit.Material material) {
+
+        java.util.List<ItemStack> stacks = new java.util.ArrayList<>();
+
+        for (ItemStack stack : player.getInventory().getStorageContents()) {
+            if (stack != null && stack.getType() == material
+                    && com.sack.rpgroll.common.menu.PaymentItems.isPlain(stack)) {
+                stacks.add(stack);
+            }
+        }
+
+        return stacks;
+    }
+
     private void removeItems(Player player, org.bukkit.Material material, int amount) {
 
         int remaining = amount;
 
-        for (ItemStack stack : player.getInventory().all(material).values()) {
+        for (ItemStack stack : deliverable(player, material)) {
 
             if (remaining <= 0) {
                 break;

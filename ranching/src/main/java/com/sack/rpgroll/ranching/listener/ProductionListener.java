@@ -226,7 +226,7 @@ public class ProductionListener implements Listener {
         meta.getPersistentDataContainer().set(ProductKeys.PRODUCT_TYPE, org.bukkit.persistence.PersistentDataType.STRING,
                 result.productType());
 
-        meta.lore(List.of(Component.text(lang.raw("item.feed.quality", "quality", result.quality()),
+        meta.lore(List.of(ComponentUtils.parseWithDefault(lang.raw("item.feed.quality", "quality", result.quality()),
                 qualityColor(result.quality()))));
         item.setItemMeta(meta);
 

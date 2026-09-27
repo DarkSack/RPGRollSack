@@ -32,7 +32,7 @@ public class WalletService {
     public EconomyResult deposit(UUID playerId, String currencyId, double amount, TransactionType type,
             String description) {
 
-        if (amount <= 0) {
+        if (!Amounts.valid(amount)) {
             return EconomyResult.INVALID_AMOUNT;
         }
 
@@ -57,7 +57,7 @@ public class WalletService {
     public EconomyResult withdraw(UUID playerId, String currencyId, double amount, TransactionType type,
             String description) {
 
-        if (amount <= 0) {
+        if (!Amounts.valid(amount)) {
             return EconomyResult.INVALID_AMOUNT;
         }
 
@@ -71,7 +71,13 @@ public class WalletService {
             return EconomyResult.LOCKED;
         }
 
-        double newBalance = wallet.balance(currencyId) - amount;
+        double current = wallet.balance(currencyId);
+        if (!Double.isFinite(current)) {
+            // Un saldo ya corrupto (NaN de antes del arreglo): nunca deja retirar, lo arregla un admin.
+            return EconomyResult.LOCKED;
+        }
+
+        double newBalance = current - amount;
         if (newBalance < currency.minBalance()) {
             return EconomyResult.INSUFFICIENT_FUNDS;
         }
@@ -84,6 +90,10 @@ public class WalletService {
     }
 
     public boolean has(UUID playerId, String currencyId, double amount) {
+
+        if (!Double.isFinite(amount)) {
+            return false;
+        }
 
         Currency currency = currencyManager.get(currencyId).orElse(null);
         if (currency == null) {

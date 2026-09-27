@@ -1,5 +1,7 @@
 package com.sack.rpgroll.magic.gui;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
@@ -93,7 +95,7 @@ public class SpellEditorHubGUI extends InventoryGUI {
                 .setName(lang.component("gui.common.icon_label", "icon", current.icon())).build());
 
         setItem(COLOR_SLOT, new ItemBuilder(Material.PAPER)
-                .setName(Component.text(lang.raw("gui.spell_editor.color_label", "color", current.color()),
+                .setName(ComponentUtils.parseWithDefault(lang.raw("gui.spell_editor.color_label", "color", current.color()),
                         SchoolBrowserGUI.parseColor(current.color())))
                 .build());
 

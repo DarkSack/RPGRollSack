@@ -1,12 +1,14 @@
 package com.sack.rpgroll.economy.gui;
 
 import com.sack.rpgroll.common.lang.LangManager;
+import com.sack.rpgroll.economy.auction.AuctionPrices;
 import com.sack.rpgroll.economy.bank.BankManager;
 import com.sack.rpgroll.economy.company.Company;
 import com.sack.rpgroll.economy.company.CompanyManager;
 import com.sack.rpgroll.economy.company.CompanyRole;
 import com.sack.rpgroll.economy.company.CompanyService;
 import com.sack.rpgroll.economy.currency.CurrencyManager;
+import com.sack.rpgroll.economy.wallet.Amounts;
 import com.sack.rpgroll.economy.wallet.EconomyResult;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
@@ -115,10 +117,22 @@ public class CompanyDetailGUI extends InventoryGUI {
         } else if (slot == HIRE_SLOT) {
             chatPromptManager.prompt(player, lang.raw("company.detail.prompt_hire_name"), name -> {
 
-                OfflinePlayer target = Bukkit.getOfflinePlayer(name);
+                // Un nombre que nunca entró daría un UUID inventado: el salario se pagaría a nadie.
+                OfflinePlayer target = Bukkit.getOfflinePlayerIfCached(name.trim());
+                if (target == null) {
+                    lang.send(player, "company.detail.unknown_player", "name", name.trim());
+                    build();
+                    return;
+                }
 
                 chatPromptManager.prompt(player, lang.raw("company.detail.prompt_wage", "name", name), wageValue -> {
-                    companyService.hire(company, target.getUniqueId(), CompanyRole.EMPLOYEE, parseAmount(wageValue));
+                    double wage = parseAmount(wageValue);
+                    if (!Amounts.valid(wage)) {
+                        lang.send(player, "common.invalid_money");
+                        build();
+                        return;
+                    }
+                    companyService.hire(company, target.getUniqueId(), CompanyRole.EMPLOYEE, wage);
                     lang.send(player, "company.detail.hired", "name", name);
                     build();
                 });
@@ -146,12 +160,9 @@ public class CompanyDetailGUI extends InventoryGUI {
         }
     }
 
+    /** Lo escrito por el jugador (acepta 1.5k y 2m); NaN si no se entiende, y los servicios lo rechazan. */
     private double parseAmount(String raw) {
-        try {
-            return Double.parseDouble(raw.trim());
-        } catch (NumberFormatException e) {
-            return 0;
-        }
+        return AuctionPrices.parse(raw);
     }
 
     private void notify(EconomyResult result) {

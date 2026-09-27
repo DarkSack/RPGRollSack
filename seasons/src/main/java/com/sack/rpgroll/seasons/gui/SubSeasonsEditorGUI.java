@@ -1,5 +1,7 @@
 package com.sack.rpgroll.seasons.gui;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
@@ -79,7 +81,7 @@ public class SubSeasonsEditorGUI extends InventoryGUI {
             lore.add(lang.component("gui.common.shift_remove"));
 
             setItem(SUB_SEASONS_START + i, new ItemBuilder(Material.BOOK)
-                    .setName(Component.text((i + 1) + ". " + sub.displayName(), NamedTextColor.GREEN))
+                    .setName(ComponentUtils.parseWithDefault((i + 1) + ". " + sub.displayName(), NamedTextColor.GREEN))
                     .setLore(lore)
                     .build());
         }

@@ -110,7 +110,8 @@ public class GuildCommand implements CommandExecutor, TabCompleter {
             return;
         }
 
-        String name = String.join(" ", java.util.Arrays.asList(args).subList(1, args.length)).trim();
+        // Sin códigos ni etiquetas: el nombre sale en mensajes que ven los demás.
+        String name = com.sack.rpgroll.util.PlayerText.clean(String.join(" ", java.util.Arrays.asList(args).subList(1, args.length)));
         String id = name.toLowerCase(Locale.ROOT).replace(' ', '_').replaceAll("[^a-z0-9_]", "");
 
         if (id.isBlank() || guildManager.exists(id)) {

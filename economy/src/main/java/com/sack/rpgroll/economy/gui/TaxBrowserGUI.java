@@ -58,7 +58,7 @@ public class TaxBrowserGUI extends InventoryGUI {
                     .setLore(lang.component("currency.browser.lore_id", "id", rule.id()),
                             lang.component("tax.browser.lore_type", "type", rule.type()),
                             lang.component("tax.browser.lore_rate", "rate", rule.ratePercent()),
-                            Component.text(rule.enabled() ? lang.raw("common.active") : lang.raw("common.inactive"),
+                            ComponentUtils.parseWithDefault(rule.enabled() ? lang.raw("common.active") : lang.raw("common.inactive"),
                                     rule.enabled() ? NamedTextColor.GREEN : NamedTextColor.RED),
                             lang.component("common.click_edit"))
                     .build());

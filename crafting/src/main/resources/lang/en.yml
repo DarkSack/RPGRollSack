@@ -5,7 +5,7 @@ chat_prompt:
 
 station:
   structure_incomplete: "This structure is incomplete — missing {material} at ({dx}, {dy}, {dz}) relative to the block."
-  recipe_discovered: "§b§lNew recipe discovered: §f{recipe}"
+  recipe_discovered: "&b&lNew recipe discovered: &f{recipe}"
 
 common:
   no_permission: "You don't have permission."
@@ -43,7 +43,7 @@ command:
     upgrade_no_upgrade_defined: "No cost is defined for the next tier (missing in the YAML)."
     upgrade_missing_cost: "You're missing materials or money for this upgrade."
     experiment_not_a_station: "You need to have a custom station open to experiment."
-    experiment_discovered: "§b§lYou discovered something experimenting! §f{recipe}"
+    experiment_discovered: "&b&lYou discovered something experimenting! &f{recipe}"
     experiment_discovered_hint: "You can now craft it by placing those same ingredients."
     experiment_not_allowed: "This station doesn't allow experimenting."
     experiment_on_cooldown: "Wait a bit before experimenting again."

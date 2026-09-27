@@ -1,5 +1,7 @@
 package com.sack.rpgroll.magic.gui;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
@@ -62,7 +64,7 @@ public class RuneSocketGUI extends InventoryGUI {
                     .orElse(Material.EMERALD);
 
             setItem(RUNES_START + i, new ItemBuilder(icon)
-                    .setName(Component.text(displayName, NamedTextColor.GREEN))
+                    .setName(ComponentUtils.parseWithDefault(displayName, NamedTextColor.GREEN))
                     .setLore(lang.component("gui.common.shift_remove"))
                     .build());
         }

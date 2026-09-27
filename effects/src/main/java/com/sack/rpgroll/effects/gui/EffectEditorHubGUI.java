@@ -107,7 +107,7 @@ public class EffectEditorHubGUI extends InventoryGUI {
                 .build());
 
         setItem(RARITY_SLOT, new ItemBuilder(Material.NETHER_STAR)
-                .setName(Component.text(lang.raw("gui.editor.rarity_label", "rarity", current.rarity()),
+                .setName(ComponentUtils.parseWithDefault(lang.raw("gui.editor.rarity_label", "rarity", current.rarity()),
                         current.rarity().color()))
                 .setLore(lang.component("gui.common.click_cycle"))
                 .build());

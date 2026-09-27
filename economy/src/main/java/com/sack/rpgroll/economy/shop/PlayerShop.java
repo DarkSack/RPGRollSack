@@ -7,6 +7,13 @@ import java.util.UUID;
 /** Una tienda de jugador — vive puramente como GUI, no requiere un cofre ni ubicación física en el mundo. */
 public class PlayerShop {
 
+    /**
+     * Dueño de las tiendas del propio servidor (la Intendencia del Reino): son
+     * las únicas con stock ilimitado, y lo que se paga en ellas sale de la
+     * economía en vez de ir a una cartera.
+     */
+    public static final UUID SERVER_OWNER = new UUID(0L, 0L);
+
     private final UUID id;
     private final UUID ownerId;
     private String name;
@@ -27,6 +34,10 @@ public class PlayerShop {
 
     public UUID ownerId() {
         return ownerId;
+    }
+
+    public boolean isServerShop() {
+        return SERVER_OWNER.equals(ownerId);
     }
 
     public String name() {

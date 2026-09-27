@@ -117,7 +117,7 @@ public class Team {
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name = com.sack.rpgroll.util.PlayerText.clean(name);
     }
 
     public NamedTextColor color() {

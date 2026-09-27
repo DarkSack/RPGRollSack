@@ -1,5 +1,7 @@
 package com.sack.rpgroll.items.gui.editor;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
@@ -125,14 +127,14 @@ public class ItemEditorHubGUI extends InventoryGUI {
 
     private ItemStack glass(Material material, String label) {
         return new ItemBuilder(material)
-                .setName(Component.text(label, NamedTextColor.GRAY))
+                .setName(ComponentUtils.parseWithDefault(label, NamedTextColor.GRAY))
                 .build();
     }
 
     private ItemStack categoryButton(Material material, String name, String description) {
         return new ItemBuilder(material)
-                .setName(Component.text(name, NamedTextColor.YELLOW))
-                .setLore(Component.text(description, NamedTextColor.GRAY))
+                .setName(ComponentUtils.parseWithDefault(name, NamedTextColor.YELLOW))
+                .setLore(ComponentUtils.parseWithDefault(description, NamedTextColor.GRAY))
                 .build();
     }
 

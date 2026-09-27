@@ -7,7 +7,8 @@ base-attributes:
   intelligence: 3
   wisdom: 2
 passive-traits: []
-icon: ""
+# Textura de cabeza en base64 o nombre de un material.
+icon: "BLAZE_ROD"
 lore:
   - "&7Armas: Varitas y Bastones"
   - "&7Rol: DPS mágico / Soporte"

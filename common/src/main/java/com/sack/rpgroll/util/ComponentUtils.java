@@ -5,6 +5,7 @@ import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public final class ComponentUtils {
@@ -37,6 +38,25 @@ public final class ComponentUtils {
     private static final Pattern MINI_TAG = Pattern.compile(
             "</?(#[0-9a-fA-F]{6}|[a-z_]+(:[^<>]*)?)>");
 
+    /**
+     * Una etiqueta de estilo MiniMessage de verdad (colores, decoraciones,
+     * degradados, click/hover): la que decide que un texto con {@code &}
+     * también trae MiniMessage. {@code <jugador>} o {@code <cantidad>} no
+     * cuentan: en un mensaje legacy son texto.
+     */
+    private static final Pattern STYLE_TAG = Pattern.compile("(?i)</?(#[0-9a-f]{6}|(black|dark_blue|dark_green|"
+            + "dark_aqua|dark_red|dark_purple|gold|gray|grey|dark_gray|dark_grey|blue|green|aqua|red|light_purple|"
+            + "yellow|white|bold|b|italic|i|em|underlined|u|strikethrough|st|obfuscated|obf|reset|gradient|rainbow|"
+            + "transition|color|colour|c|click|hover|shadow|font)(:[^<>]*)?)>");
+
+    /** Cada código legacy, para pasarlo a su etiqueta: &amp;a, &amp;#RRGGBB y &amp;x&amp;R&amp;R&amp;G&amp;G&amp;B&amp;B. */
+    private static final Pattern LEGACY_ANY = Pattern.compile(
+            "&(?:#([0-9a-fA-F]{6})|[xX]((?:&[0-9a-fA-F]){6})|([0-9a-fk-orA-FK-OR]))");
+
+    private static final String[] COLOR_TAGS = { "black", "dark_blue", "dark_green", "dark_aqua", "dark_red",
+            "dark_purple", "gold", "gray", "dark_gray", "blue", "green", "aqua", "red", "light_purple", "yellow",
+            "white" };
+
     private ComponentUtils() {
         throw new UnsupportedOperationException("Utility class");
     }
@@ -66,9 +86,18 @@ public final class ComponentUtils {
             return Component.empty();
         }
 
+        boolean legacy = LEGACY_CODE.matcher(text).find();
+
+        // Mezclado: una plantilla en & con un nombre en MiniMessage dentro (un
+        // ítem con <gradient>), o al revés. Con un solo parser, la otra mitad
+        // salía impresa tal cual; se pasan los & a etiquetas y se lee todo junto.
+        if (legacy && STYLE_TAG.matcher(text).find()) {
+            return MINI_MESSAGE.deserialize(legacyToMiniMessage(text));
+        }
+
         // Legacy primero: es el formato de la enorme mayoría de los YAML, y
         // un texto con & casi nunca es MiniMessage.
-        if (LEGACY_CODE.matcher(text).find()) {
+        if (legacy) {
             return LEGACY.deserialize(text);
         }
 
@@ -99,6 +128,44 @@ public final class ComponentUtils {
         }
 
         return parsed.colorIfAbsent(fallback);
+    }
+
+    /**
+     * Los códigos &amp; como etiquetas MiniMessage. Un color legacy corta el
+     * formato anterior (negrita incluida), así que va precedido de
+     * {@code <reset>}; las decoraciones se suman, como en legacy.
+     */
+    static String legacyToMiniMessage(String text) {
+
+        Matcher matcher = LEGACY_ANY.matcher(text);
+        StringBuilder out = new StringBuilder();
+
+        while (matcher.find()) {
+
+            String tag;
+
+            if (matcher.group(1) != null) {
+                tag = "<reset><#" + matcher.group(1) + ">";
+            } else if (matcher.group(2) != null) {
+                tag = "<reset><#" + matcher.group(2).replace("&", "") + ">";
+            } else {
+                char code = Character.toLowerCase(matcher.group(3).charAt(0));
+                tag = switch (code) {
+                    case 'k' -> "<obfuscated>";
+                    case 'l' -> "<bold>";
+                    case 'm' -> "<strikethrough>";
+                    case 'n' -> "<underlined>";
+                    case 'o' -> "<italic>";
+                    case 'r' -> "<reset>";
+                    default -> "<reset><" + COLOR_TAGS[Character.digit(code, 16)] + ">";
+                };
+            }
+
+            matcher.appendReplacement(out, Matcher.quoteReplacement(tag));
+        }
+
+        matcher.appendTail(out);
+        return out.toString();
     }
 
     /** ¿El texto define su propio color (legacy o MiniMessage)? */

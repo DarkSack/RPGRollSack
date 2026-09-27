@@ -11,6 +11,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.PrepareAnvilEvent;
 import org.bukkit.inventory.AnvilInventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.view.AnvilView;
 
 /**
  * Sustituye el resultado vanilla del yunque cuando los dos ítems puestos
@@ -20,10 +21,13 @@ import org.bukkit.inventory.ItemStack;
  * Si ninguna receta coincide, el evento no se toca y el yunque vanilla
  * funciona exactamente igual que siempre.
  * <p>
- * {@code amount} en {@code baseIngredient}/{@code additionIngredient} exige
- * que la pila tenga al menos esa cantidad, pero el yunque vanilla solo
- * consume 1 de cada slot al entregar el resultado — un {@code amount} mayor
- * a 1 no hace que se consuma más que eso. Se recomienda dejarlo en 1 acá.
+ * Al sacar el resultado el yunque vanilla vacía el slot de la izquierda
+ * entero y del de la derecha quita {@code repairItemCountCost} (o todo, si
+ * es 0). Por eso la base tiene que estar justo en su {@code amount} (un stack
+ * de más se perdería entero) y del añadido se cobra su {@code amount}. El
+ * coste en niveles va aparte, en {@code repairCost}: antes los niveles de la
+ * receta se usaban como número de ítems a gastar, y el coste en niveles se
+ * quedaba en 0, con lo que el yunque ni siquiera dejaba sacar el resultado.
  */
 public class AnvilEngine implements Listener {
 
@@ -54,7 +58,8 @@ public class AnvilEngine implements Listener {
         for (AnvilRecipeDefinition recipe : recipeManager.getAll()) {
 
             if (!ingredientMatcher.matchesWithAmount(base, recipe.baseIngredient())
-                    || !ingredientMatcher.matchesWithAmount(addition, recipe.additionIngredient())) {
+                    || !ingredientMatcher.matchesWithAmount(addition, recipe.additionIngredient())
+                    || base.getAmount() > Math.max(1, recipe.baseIngredient().amount())) {
                 continue;
             }
 
@@ -68,7 +73,9 @@ public class AnvilEngine implements Listener {
             CraftQuality quality = null; // el yunque no rola calidad — el ítem base ya trae la suya, si tenía
             resultFactory.build(recipe.result(), quality).ifPresent(result -> {
                 event.setResult(result);
-                inventory.setRepairCostAmount(recipe.repairCostLevels());
+                AnvilView view = event.getView();
+                view.setRepairCost(Math.max(1, recipe.repairCostLevels()));
+                view.setRepairItemCountCost(Math.max(1, recipe.additionIngredient().amount()));
             });
 
             return;

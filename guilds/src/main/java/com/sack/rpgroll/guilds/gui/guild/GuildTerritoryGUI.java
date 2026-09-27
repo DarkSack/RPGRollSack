@@ -142,7 +142,19 @@ public class GuildTerritoryGUI extends InventoryGUI {
     }
 
     private void promptClaim() {
-        chatPromptManager.prompt(player, "guild.territory.prompt_claim", value -> {
+
+        var config = org.bukkit.plugin.java.JavaPlugin.getPlugin(com.sack.rpgroll.guilds.GuildsPlugin.class)
+                .getConfig();
+        double minRadius = Math.max(1, config.getDouble("territories.min-radius", 5));
+        double maxRadius = Math.max(minRadius, config.getDouble("territories.max-radius", 50));
+        List<String> worlds = config.getStringList("territories.worlds");
+
+        if (!worlds.isEmpty() && worlds.stream().noneMatch(player.getWorld().getName()::equalsIgnoreCase)) {
+            lang().send(player, "guild.territory.world_not_allowed");
+            return;
+        }
+
+        chatPromptManager.prompt(player, "guild.territory.prompt_claim_limits", value -> {
 
             String[] parts = value.split(";", 2);
 
@@ -157,6 +169,14 @@ public class GuildTerritoryGUI extends InventoryGUI {
                 radius = Double.parseDouble(parts[1].trim());
             } catch (NumberFormatException e) {
                 lang().send(player, "guild.territory.radius_not_a_number");
+                reopen();
+                return;
+            }
+
+            // Sin tope se podía reclamar "base;1000000" (o Infinity) y bloquear el mapa entero a los demás.
+            if (!Double.isFinite(radius) || radius < minRadius || radius > maxRadius) {
+                lang().send(player, "guild.territory.radius_out_of_range", "min", (int) minRadius,
+                        "max", (int) maxRadius);
                 reopen();
                 return;
             }
@@ -183,7 +203,7 @@ public class GuildTerritoryGUI extends InventoryGUI {
             guildManager.save(guild);
             lang().send(player, "guild.territory.claimed", "name", name);
             reopen();
-        });
+        }, "min", (int) minRadius, "max", (int) maxRadius);
     }
 
     private void reopen() {

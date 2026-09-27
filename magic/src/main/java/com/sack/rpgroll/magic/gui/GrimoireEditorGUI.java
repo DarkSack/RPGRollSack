@@ -1,5 +1,7 @@
 package com.sack.rpgroll.magic.gui;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
@@ -99,7 +101,7 @@ public class GrimoireEditorGUI extends InventoryGUI {
             String displayName = spellManager.get(spellId).map(spell -> spell.displayName()).orElse(spellId);
 
             setItem(SPELLS_START + i, new ItemBuilder(Material.BLAZE_POWDER)
-                    .setName(Component.text(displayName, NamedTextColor.LIGHT_PURPLE))
+                    .setName(ComponentUtils.parseWithDefault(displayName, NamedTextColor.LIGHT_PURPLE))
                     .setLore(lang.component("gui.common.id_label", "id", spellId),
                             lang.component("gui.common.shift_remove"))
                     .build());

@@ -75,6 +75,8 @@ public class WorkerManager {
         Worker worker = new Worker(entity.getUniqueId(), profession.id(),
                 personality != null ? personality : randomPersonality());
 
+        // El hogar es donde lo pone el admin: ahí vuelve a comer y dormir, y alrededor de él trabaja.
+        worker.setHomeLocation(entity.getLocation());
         tagEntity(entity, profession.id());
         applyAppearance(entity, profession);
         workers.put(worker.id(), worker);

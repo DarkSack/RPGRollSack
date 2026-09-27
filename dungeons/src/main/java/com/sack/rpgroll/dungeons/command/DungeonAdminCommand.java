@@ -261,7 +261,7 @@ public class DungeonAdminCommand implements CommandExecutor, TabCompleter {
         sender.sendMessage(ComponentUtils.parseWithDefault(def.displayName() + " (" + def.id() + ")", NamedTextColor.GOLD));
         lang.send(sender, "command.dungeonadmin.structure.info.source", "source", def.sourceType());
         lang.send(sender, "command.dungeonadmin.structure.info.size", "size", size);
-        sender.sendMessage(Component.text(def.description(), NamedTextColor.GRAY));
+        sender.sendMessage(ComponentUtils.parseWithDefault(def.description(), NamedTextColor.GRAY));
     }
 
     private void handleStructurePaste(CommandSender sender, String[] args) {

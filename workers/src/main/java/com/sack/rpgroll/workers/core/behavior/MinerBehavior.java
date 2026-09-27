@@ -47,7 +47,7 @@ public class MinerBehavior implements ProfessionBehavior {
         }
 
         Location origin = entity.getLocation();
-        Block target = findNearestOre(origin);
+        Block target = findNearestOre(worker, WorkSite.anchor(worker, entity));
 
         if (target == null) {
             return;
@@ -58,7 +58,7 @@ public class MinerBehavior implements ProfessionBehavior {
             return;
         }
 
-        if (isNextToLava(target)) {
+        if (isNextToLava(target) || !WorkSite.mayChange(worker, entity, target, Material.AIR.createBlockData())) {
             return;
         }
 
@@ -67,7 +67,7 @@ public class MinerBehavior implements ProfessionBehavior {
         worker.addCarried(dropFor(minedType).name(), 1);
     }
 
-    private Block findNearestOre(Location origin) {
+    private Block findNearestOre(Worker worker, Location origin) {
 
         World world = origin.getWorld();
 
@@ -84,12 +84,18 @@ public class MinerBehavior implements ProfessionBehavior {
         int baseZ = origin.getBlockZ();
 
         for (int x = -radius; x <= radius; x++) {
-            for (int y = -radius; y <= radius; y++) {
-                for (int z = -radius; z <= radius; z++) {
+            for (int z = -radius; z <= radius; z++) {
+
+                if (!WorkSite.isLoaded(world, baseX + x, baseZ + z)) {
+                    continue;
+                }
+
+                for (int y = -radius; y <= radius; y++) {
 
                     Block block = world.getBlockAt(baseX + x, baseY + y, baseZ + z);
 
-                    if (!ORES.contains(block.getType())) {
+                    if (!ORES.contains(block.getType()) || !WorkSite.isExposed(block)
+                            || !WorkSite.mayWorkAt(worker, block)) {
                         continue;
                     }
 

@@ -32,7 +32,7 @@ public class IngredientListEditorGUI extends InventoryGUI {
 
     public IngredientListEditorGUI(Player player, String title, List<IngredientSpec> initial,
             ChatPromptManager chatPromptManager, Consumer<List<IngredientSpec>> onSave, Runnable onBack) {
-        super(player, Component.text(title, NamedTextColor.GOLD), SIZE);
+        super(player, ComponentUtils.parseWithDefault(title, NamedTextColor.GOLD), SIZE);
         this.ingredients = new ArrayList<>(initial);
         this.chatPromptManager = chatPromptManager;
         this.onSave = onSave;

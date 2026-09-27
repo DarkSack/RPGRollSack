@@ -28,7 +28,7 @@ public class GuildBrowserGUI extends PaginatedGUI {
     private final List<Guild> guilds;
 
     public GuildBrowserGUI(Player player, GuildServices services) {
-        super(player, Component.text(services.langManager().raw("guild.browser.title"), NamedTextColor.GOLD), SIZE,
+        super(player, ComponentUtils.parseWithDefault(services.langManager().raw("guild.browser.title"), NamedTextColor.GOLD), SIZE,
                 CONTENT_SLOTS);
         this.services = services;
         this.guilds = services.guildManager().getAll().stream()

@@ -63,7 +63,7 @@ public class ObjectivesEditorGUI extends InventoryGUI {
             setItem(i, new ItemBuilder(Material.TARGET)
                     .setName(Component.text(objective.type() + " x" + objective.amount(), NamedTextColor.YELLOW))
                     .setLore(
-                            Component.text(objective.description(), NamedTextColor.GRAY),
+                            ComponentUtils.parseWithDefault(objective.description(), NamedTextColor.GRAY),
                             Component.text(objective.params().toString(), NamedTextColor.DARK_GRAY),
                             ComponentUtils.parse(lang.raw("gui.editor.actionlist.item.remove_hint")))
                     .build());

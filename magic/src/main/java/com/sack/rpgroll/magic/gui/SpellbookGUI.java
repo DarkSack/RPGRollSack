@@ -1,5 +1,7 @@
 package com.sack.rpgroll.magic.gui;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
@@ -97,7 +99,7 @@ public class SpellbookGUI extends InventoryGUI {
             lore.add(lang.component("gui.spellbook.shift_click_sockets"));
 
             var builder = new ItemBuilder(SchoolBrowserGUI.parseMaterial(spell.icon()))
-                    .setName(Component.text((selected ? "★ " : "") + spell.displayName(),
+                    .setName(ComponentUtils.parseWithDefault((selected ? "★ " : "") + spell.displayName(),
                             selected ? NamedTextColor.GOLD : SchoolBrowserGUI.parseColor(spell.color()))
                             .decoration(TextDecoration.BOLD, selected))
                     .setLore(lore);

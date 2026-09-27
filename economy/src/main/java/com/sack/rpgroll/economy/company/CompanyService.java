@@ -5,6 +5,7 @@ import com.sack.rpgroll.economy.bank.BankAccountType;
 import com.sack.rpgroll.economy.bank.BankManager;
 import com.sack.rpgroll.economy.ledger.TransactionLedger;
 import com.sack.rpgroll.economy.ledger.TransactionType;
+import com.sack.rpgroll.economy.wallet.Amounts;
 import com.sack.rpgroll.economy.wallet.EconomyResult;
 import com.sack.rpgroll.economy.wallet.WalletService;
 
@@ -40,14 +41,26 @@ public class CompanyService {
         return company;
     }
 
+    /** Lo que quede en la tesorería vuelve al dueño: antes se borraba con la cuenta. */
     public void disband(Company company) {
+
+        bankManager.get(company.bankAccountId()).ifPresent(treasury -> {
+            for (var balance : java.util.Map.copyOf(treasury.balances()).entrySet()) {
+                if (Amounts.valid(balance.getValue())) {
+                    walletService.deposit(company.ownerId(), balance.getKey(), balance.getValue(),
+                            TransactionType.WITHDRAW, "Tesorería de la empresa disuelta " + company.name());
+                }
+            }
+        });
+
         bankManager.delete(company.bankAccountId());
         companyManager.delete(company.id());
     }
 
     public void hire(Company company, UUID playerId, CompanyRole role, double wage) {
         company.members().put(playerId, role);
-        company.wages().put(playerId, wage);
+        // Un salario NaN pasaba "wage <= 0" y "saldo < wage" y dejaba la tesorería en NaN al pagar.
+        company.wages().put(playerId, Double.isFinite(wage) && wage > 0 ? wage : 0);
         companyManager.save(company);
     }
 
@@ -81,15 +94,20 @@ public class CompanyService {
         for (var entry : company.wages().entrySet()) {
 
             double wage = entry.getValue();
-            if (wage <= 0 || account.balance(currencyId) < wage) {
+            if (!Amounts.valid(wage) || account.balance(currencyId) < wage) {
+                continue;
+            }
+
+            EconomyResult deposited = walletService.deposit(entry.getKey(), currencyId, wage, TransactionType.SALARY,
+                    "Salario de " + company.name());
+            if (deposited != EconomyResult.SUCCESS) {
+                // Cartera bloqueada o moneda desconocida: el salario se queda en la tesorería.
                 continue;
             }
 
             account.setBalance(currencyId, account.balance(currencyId) - wage);
             bankManager.save(account);
 
-            walletService.deposit(entry.getKey(), currencyId, wage, TransactionType.SALARY,
-                    "Salario de " + company.name());
             ledger.record(entry.getKey(), TransactionType.SALARY, currencyId, wage, account.balance(currencyId),
                     "Salario pagado por " + company.name());
 

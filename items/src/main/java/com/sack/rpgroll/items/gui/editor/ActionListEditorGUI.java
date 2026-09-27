@@ -1,5 +1,7 @@
 package com.sack.rpgroll.items.gui.editor;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
@@ -40,7 +42,7 @@ public class ActionListEditorGUI extends InventoryGUI {
 
     public ActionListEditorGUI(Player player, String title, List<ItemAction> actions,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text(title, NamedTextColor.GOLD), SIZE);
+        super(player, ComponentUtils.parseWithDefault(title, NamedTextColor.GOLD), SIZE);
         this.actions = actions;
         this.chatPromptManager = chatPromptManager;
         this.lang = chatPromptManager.lang();

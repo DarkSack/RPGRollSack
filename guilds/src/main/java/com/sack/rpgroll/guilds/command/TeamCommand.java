@@ -187,6 +187,8 @@ public class TeamCommand implements CommandExecutor, TabCompleter {
         pingManager.ping(player, type, location, null, label);
     }
 
+    public static final String WAYPOINT_TELEPORT_PERMISSION = "rpgrollguilds.team.waypoint.teleport";
+
     private void handleWaypoint(Player player, String[] args) {
 
         Team team = teamManager.getTeam(player.getUniqueId()).orElse(null);
@@ -214,11 +216,18 @@ public class TeamCommand implements CommandExecutor, TabCompleter {
             }
             case "list" -> {
                 lang().send(player, "team.waypoint.list_header");
-                team.waypoints().values().forEach(waypoint -> lang().send(player, "team.waypoint.list_entry",
-                        "name", waypoint.name(), "world", waypoint.world()));
+                team.waypoints().values().forEach(waypoint -> lang().send(player, "team.waypoint.list_entry_coords",
+                        "name", waypoint.name(), "world", waypoint.world(), "x", (int) Math.floor(waypoint.x()),
+                        "y", (int) Math.floor(waypoint.y()), "z", (int) Math.floor(waypoint.z())));
             }
             case "tp" -> {
                 if (args.length < 3) {
+                    return;
+                }
+                // Sin permiso propio era un teletransporte gratis, sin espera y entre mundos para
+                // cualquiera con un equipo de dos: saltaba los /home con límite y las ventajas de rango.
+                if (!player.hasPermission(WAYPOINT_TELEPORT_PERMISSION)) {
+                    lang().send(player, "team.waypoint.no_teleport");
                     return;
                 }
                 var waypoint = team.waypoints().get(args[2].toLowerCase(Locale.ROOT));

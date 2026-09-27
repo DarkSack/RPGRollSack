@@ -75,7 +75,7 @@ public class WorkerHubGUI extends InventoryGUI {
 
     private org.bukkit.inventory.ItemStack button(Material material, String label, int count) {
         return new ItemBuilder(material)
-                .setName(Component.text(label + " (" + count + ")", NamedTextColor.YELLOW))
+                .setName(ComponentUtils.parseWithDefault(label + " (" + count + ")", NamedTextColor.YELLOW))
                 .setLore(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.common.click_to_manage"), NamedTextColor.GRAY))
                 .build();
     }

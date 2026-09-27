@@ -85,6 +85,12 @@ public class WorkerAiTask extends BukkitRunnable {
 
             workerManager.ensureAppearanceAttached(living, profession);
 
+            // Workers de antes de que se guardara el hogar: se quedan con el sitio donde están.
+            if (worker.homeLocation() == null) {
+                worker.setHomeLocation(living.getLocation());
+                workerManager.save(worker);
+            }
+
             if (worker.hasActiveEvent() && worker.eventWorkSpeedMultiplier() <= 0) {
                 worker.setCurrentAction(AiAction.IDLE);
                 MovementUtil.stop(living);

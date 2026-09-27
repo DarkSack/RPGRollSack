@@ -1,5 +1,7 @@
 package com.sack.rpgroll.gameplay.job;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.RPGRoll;
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.integration.VaultEconomyProvider;
@@ -164,7 +166,7 @@ public class JobRewardService {
             message.append(lang.raw("job_reward_service.feedback_money", "money", reward.money()));
         }
 
-        bukkitPlayer.sendActionBar(Component.text(message.toString(), NamedTextColor.GREEN));
+        bukkitPlayer.sendActionBar(ComponentUtils.parseWithDefault(message.toString(), NamedTextColor.GREEN));
     }
 
     private JobProgress applyExperience(Job job, JobProgress current, int expGained) {

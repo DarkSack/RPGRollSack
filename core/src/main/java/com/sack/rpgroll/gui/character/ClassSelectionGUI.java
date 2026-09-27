@@ -69,7 +69,7 @@ public class ClassSelectionGUI extends InventoryGUI {
                                 .setName(lang.component("class_selection_gui.selected_race_name")
                                                 .decorate(TextDecoration.BOLD))
                                 .setLore(
-                                                Component.text(selectedRace, NamedTextColor.YELLOW),
+                                                ComponentUtils.parseWithDefault(selectedRace, NamedTextColor.YELLOW),
                                                 lang.component("class_selection_gui.selected_race_lore"))
                                 .build());
 
@@ -110,7 +110,7 @@ public class ClassSelectionGUI extends InventoryGUI {
                         lore.addAll(ItemBuilder.toLoreLines(loreLine));
                 }
 
-                ItemStack item = ItemBuilder.skull(playerClass.icon())
+                ItemStack item = ItemBuilder.icon(playerClass.icon())
                                 .setName(ComponentUtils.parse(playerClass.displayName())
                                                 .decorate(TextDecoration.BOLD))
                                 .setLore(lore.toArray(new Component[0]))

@@ -24,7 +24,10 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -62,6 +65,9 @@ public class CrateSpinGUI extends InventoryGUI {
     };
 
 
+    /** Ruletas en marcha, por jugador: una a la vez, y se entregan si sale a mitad de la animación. */
+    private static final Map<UUID, CrateSpinGUI> SPINNING = new HashMap<>();
+
     private final Plugin plugin;
     private final CrateActionExecutor actionExecutor;
     private final LangManager lang;
@@ -70,10 +76,11 @@ public class CrateSpinGUI extends InventoryGUI {
 
     private BukkitTask animationTask;
     private int currentStep = 0;
+    private boolean granted = false;
 
     public CrateSpinGUI(Plugin plugin, Player player, Crate crate, CrateActionExecutor actionExecutor,
             LangManager lang) {
-        super(player, Component.text(crate.guiTitle(), NamedTextColor.GOLD).decorate(TextDecoration.BOLD), SIZE);
+        super(player, ComponentUtils.parseWithDefault(crate.guiTitle(), NamedTextColor.GOLD).decorate(TextDecoration.BOLD), SIZE);
         this.plugin = plugin;
         this.actionExecutor = actionExecutor;
         this.lang = lang;
@@ -83,8 +90,43 @@ public class CrateSpinGUI extends InventoryGUI {
 
     @Override
     public void open() {
+        SPINNING.put(player.getUniqueId(), this);
         super.open();
         scheduleNextStep();
+    }
+
+    public static boolean isSpinning(Player player) {
+        return SPINNING.containsKey(player.getUniqueId());
+    }
+
+    /**
+     * Entrega ya la recompensa de la ruleta de este jugador, si tiene una a
+     * medias. Llamar al salir del servidor: el inventario se guarda después
+     * de PlayerQuitEvent, y entregársela más tarde a un jugador desconectado
+     * la perdía (con la llave ya gastada).
+     */
+    public static void finishNow(Player player) {
+        CrateSpinGUI spin = SPINNING.get(player.getUniqueId());
+        if (spin != null) {
+            spin.grant();
+        }
+    }
+
+    /** Al apagar: nadie se queda sin lo que ya ganó. */
+    public static void finishAll() {
+        List.copyOf(SPINNING.values()).forEach(CrateSpinGUI::grant);
+    }
+
+    private void grant() {
+
+        if (granted) {
+            return;
+        }
+
+        granted = true;
+        cancelAnimation();
+        SPINNING.remove(player.getUniqueId(), this);
+        actionExecutor.grant(player, winningReward);
     }
 
     /**
@@ -211,10 +253,14 @@ public class CrateSpinGUI extends InventoryGUI {
 
         // Pequeño delay antes de entregar/cerrar para que el jugador
         // alcance a ver el resultado quieto en el slot central.
-        Bukkit.getScheduler().runTaskLater(plugin, () -> actionExecutor.grant(player, winningReward),
-                REWARD_GRANT_DELAY_TICKS);
+        Bukkit.getScheduler().runTaskLater(plugin, this::grant, REWARD_GRANT_DELAY_TICKS);
 
-        Bukkit.getScheduler().runTaskLater(plugin, this::close, AUTO_CLOSE_DELAY_TICKS);
+        // Solo si sigue mirando esta ruleta: si la cerró y abrió otra cosa, no se la cierra.
+        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            if (player.isOnline() && player.getOpenInventory().getTopInventory().equals(inventory)) {
+                close();
+            }
+        }, AUTO_CLOSE_DELAY_TICKS);
     }
 
     @Override

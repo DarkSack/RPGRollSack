@@ -382,7 +382,7 @@ public class QuestEngine {
 
             String targetStage = option.nextStage();
 
-            Component optionComponent = Component.text(index + ". " + option.label(), NamedTextColor.GREEN)
+            Component optionComponent = ComponentUtils.parseWithDefault(index + ". " + option.label(), NamedTextColor.GREEN)
                     .clickEvent(ClickEvent.callback(audience -> jumpToStage(player, quest, targetStage)));
 
             player.sendMessage(optionComponent);

@@ -111,7 +111,7 @@ public class DungeonCommand implements CommandExecutor, TabCompleter {
         sender.sendMessage(Component.text("=== ", NamedTextColor.GOLD)
                 .append(ComponentUtils.parse(definition.displayName()))
                 .append(Component.text(" (" + definition.id() + ") ===", NamedTextColor.GOLD)));
-        sender.sendMessage(Component.text(definition.description(), NamedTextColor.GRAY));
+        sender.sendMessage(ComponentUtils.parseWithDefault(definition.description(), NamedTextColor.GRAY));
         lang.send(sender, "command.dungeon.info.stats", "level", definition.recommendedLevel(),
                 "min", definition.minPlayers(), "max", definition.maxPlayers(),
                 "minutes", definition.estimatedMinutes());

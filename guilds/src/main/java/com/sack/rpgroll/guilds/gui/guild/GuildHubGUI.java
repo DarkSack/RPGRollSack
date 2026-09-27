@@ -53,7 +53,7 @@ public class GuildHubGUI extends InventoryGUI {
         }
 
         setItem(4, new ItemBuilder(guild.icon())
-                .setName(Component.text(guild.name() + " — " + lang().raw("guild.hub.level_suffix", "level",
+                .setName(ComponentUtils.parseWithDefault(guild.name() + " — " + lang().raw("guild.hub.level_suffix", "level",
                         guild.level()), guild.color()))
                 .setLore(ComponentUtils.parseWithDefault(lang().raw("guild.hub.member_count", "count", guild.memberCount()), NamedTextColor.GRAY),
                         Component.text(guild.motto(), NamedTextColor.GRAY))
@@ -82,7 +82,7 @@ public class GuildHubGUI extends InventoryGUI {
     }
 
     private org.bukkit.inventory.ItemStack button(Material material, String name, NamedTextColor color) {
-        return new ItemBuilder(material).setName(Component.text(name, color)).build();
+        return new ItemBuilder(material).setName(ComponentUtils.parseWithDefault(name, color)).build();
     }
 
     @Override

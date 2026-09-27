@@ -14,6 +14,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
@@ -23,8 +24,12 @@ import org.bukkit.inventory.meta.ItemMeta;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.plugin.Plugin;
 
+import com.sack.rpgroll.gui.util.ItemBuilder;
+
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Cofre de munición de una torreta.
@@ -33,6 +38,12 @@ import java.util.Map;
  * munición adentro y al cerrar se convierten en el stock de la torreta;
  * cualquier ítem que no sea munición se le devuelve, para que nadie use la
  * torreta como baúl.
+ * <p>
+ * Lo abre una persona a la vez y, mientras está abierto, la torreta no
+ * dispara: el stock está en la mano de quien lo mira. Antes dos miembros
+ * del equipo veían el stock entero a la vez y cada uno podía sacarlo todo
+ * (el segundo cierre lo devolvía a la torreta), y los disparos hechos con
+ * el cofre abierto se deshacían al cerrarlo.
  */
 public class TurretAmmoGUI implements InventoryHolder, Listener {
 
@@ -45,6 +56,10 @@ public class TurretAmmoGUI implements InventoryHolder, Listener {
     private static final int SLOT_ENEMIES = 21;
     private static final int SLOT_HOSTILE = 23;
     private static final int SLOT_PASSIVE = 24;
+    private static final Set<Integer> TOGGLE_SLOTS = Set.of(SLOT_ALLIES, SLOT_ENEMIES, SLOT_HOSTILE, SLOT_PASSIVE);
+
+    /** Cofres abiertos por torreta. */
+    private static final Map<String, TurretAmmoGUI> OPEN = new HashMap<>();
 
     private final Plugin plugin;
     private final PlacedTurretManager placedTurretManager;
@@ -53,6 +68,7 @@ public class TurretAmmoGUI implements InventoryHolder, Listener {
     private final String placementId;
 
     private Inventory inventory;
+    private Player viewer;
 
     public TurretAmmoGUI(Plugin plugin, PlacedTurretManager placedTurretManager, AmmoManager ammoManager,
             LangManager lang, String placementId) {
@@ -65,16 +81,65 @@ public class TurretAmmoGUI implements InventoryHolder, Listener {
 
     public void open(Player player) {
 
+        TurretAmmoGUI current = OPEN.get(placementId);
+
+        if (current != null && current.isStillViewed()) {
+            lang.send(player, "gui.turret_ammo.busy");
+            return;
+        }
+
+        if (current != null) {
+            current.finish();
+        }
+
         inventory = Bukkit.createInventory(this, SIZE,
                 ComponentUtils.parse(lang.raw("gui.turret_ammo.title")));
 
+        // El resto de la fila de controles, ocupado: si no, un shift-click con los 18 de arriba llenos
+        // dejaba ahí la munición, y al cerrar solo se leen los de arriba (se perdía). Va antes del
+        // stock para que addItem solo pueda usar la fila de arriba.
+        for (int slot = AMMO_SLOTS; slot < SIZE; slot++) {
+            if (!TOGGLE_SLOTS.contains(slot)) {
+                inventory.setItem(slot, ItemBuilder.createFiller());
+            }
+        }
+
         placedTurretManager.get(placementId).ifPresent(placed -> {
-            fill(placed);
             drawTargetingControls(placed);
+            fill(placed);
         });
 
+        viewer = player;
+        OPEN.put(placementId, this);
+        placedTurretManager.setEditing(placementId, true);
         Bukkit.getPluginManager().registerEvents(this, plugin);
         player.openInventory(inventory);
+    }
+
+    private boolean isStillViewed() {
+        return viewer != null && viewer.isOnline() && inventory != null
+                && inventory.equals(viewer.getOpenInventory().getTopInventory());
+    }
+
+    /** Cierra el cofre de esta torreta si alguien lo tiene abierto: el cierre guarda el stock. */
+    public static void closeFor(String placementId) {
+
+        TurretAmmoGUI gui = OPEN.get(placementId);
+
+        if (gui != null && gui.isStillViewed()) {
+            gui.viewer.closeInventory();
+        }
+    }
+
+    /** Al apagar: se guarda lo que haya en cada cofre abierto antes de que desaparezca. */
+    public static void closeAll() {
+        List.copyOf(OPEN.values()).forEach(gui -> {
+            if (gui.isStillViewed()) {
+                gui.viewer.closeInventory();
+            } else {
+                gui.finish();
+            }
+        });
     }
 
     /** Muestra el stock actual como ítems reales, para poder sacarlos también. */
@@ -173,13 +238,42 @@ public class TurretAmmoGUI implements InventoryHolder, Listener {
         }
 
         // Arriba se mueve libre: lo que quede al cerrar es el stock. Solo se
-        // bloquea meter algo que no sea munición.
+        // bloquea meter algo que no sea munición: con el cursor sobre la fila
+        // de arriba, o con shift-click desde el inventario propio (que antes
+        // pasaba porque solo se miraba el slot pulsado, que es el de abajo).
+        boolean fromBottom = slot >= SIZE;
         ItemStack moved = event.getClick().isShiftClick() ? event.getCurrentItem() : event.getCursor();
+        boolean intoAmmo = event.getClick().isShiftClick() ? fromBottom : slot < AMMO_SLOTS;
 
-        if (moved != null && !moved.getType().isAir() && AmmoItem.ammoIdOf(plugin, moved) == null
-                && slot < AMMO_SLOTS) {
+        if (event.getClick() == org.bukkit.event.inventory.ClickType.NUMBER_KEY && slot < AMMO_SLOTS) {
+            moved = event.getWhoClicked().getInventory().getItem(event.getHotbarButton());
+            intoAmmo = true;
+        }
+
+        if (intoAmmo && moved != null && !moved.getType().isAir() && AmmoItem.ammoIdOf(plugin, moved) == null) {
             event.setCancelled(true);
             lang.send((Player) event.getWhoClicked(), "gui.turret_ammo.only_ammo");
+        }
+    }
+
+    @EventHandler
+    public void onDrag(InventoryDragEvent event) {
+
+        if (!(event.getInventory().getHolder() instanceof TurretAmmoGUI gui) || gui != this) {
+            return;
+        }
+
+        boolean touchesTop = event.getRawSlots().stream().anyMatch(raw -> raw < SIZE);
+
+        if (!touchesTop) {
+            return;
+        }
+
+        // Arrastrar no pasaba por onClick: metía cualquier cosa arriba, o en la fila de controles.
+        boolean touchesControls = event.getRawSlots().stream().anyMatch(raw -> raw >= AMMO_SLOTS && raw < SIZE);
+
+        if (touchesControls || AmmoItem.ammoIdOf(plugin, event.getOldCursor()) == null) {
+            event.setCancelled(true);
         }
     }
 
@@ -212,7 +306,14 @@ public class TurretAmmoGUI implements InventoryHolder, Listener {
         }
 
         placedTurretManager.setAmmo(placementId, stock);
+        finish();
+    }
+
+    private void finish() {
+        OPEN.remove(placementId, this);
+        placedTurretManager.setEditing(placementId, false);
         InventoryClickEvent.getHandlerList().unregister(this);
+        InventoryDragEvent.getHandlerList().unregister(this);
         InventoryCloseEvent.getHandlerList().unregister(this);
     }
 

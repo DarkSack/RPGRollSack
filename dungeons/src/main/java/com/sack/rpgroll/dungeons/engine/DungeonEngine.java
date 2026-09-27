@@ -507,6 +507,12 @@ public class DungeonEngine {
 
     private void completeSession(DungeonSession session, DungeonDefinition definition, DungeonSessionState result) {
 
+        // Una sesión se cierra una sola vez: si el jefe muere en el mismo tick en que alguien la
+        // abandona, la segunda llamada repartía otra vez el botín y las marcas de completada.
+        if (session.state() != DungeonSessionState.RUNNING) {
+            return;
+        }
+
         session.setState(result);
 
         DungeonTrigger trigger = switch (result) {

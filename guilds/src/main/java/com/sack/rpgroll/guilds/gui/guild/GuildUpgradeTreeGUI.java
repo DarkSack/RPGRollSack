@@ -72,7 +72,7 @@ public class GuildUpgradeTreeGUI extends InventoryGUI {
                     .setName(ComponentUtils.parseWithDefault(lang().raw("guild.upgrade.branch_level", "branch", branch.displayName(lang()),
                             "level", level, "max", GuildUpgradeBranch.MAX_LEVEL), NamedTextColor.YELLOW))
                     .setLore(
-                            Component.text(branch.description(lang()), NamedTextColor.GRAY),
+                            ComponentUtils.parseWithDefault(branch.description(lang()), NamedTextColor.GRAY),
                             maxed ? ComponentUtils.parseWithDefault(lang().raw("guild.upgrade.max_level"), NamedTextColor.GREEN)
                                     : ComponentUtils.parseWithDefault(lang().raw("guild.upgrade.cost", "cost", cost), NamedTextColor.GOLD),
                             maxed ? Component.empty() : ComponentUtils.parseWithDefault(lang().raw("guild.upgrade.click_hint"), NamedTextColor.AQUA))

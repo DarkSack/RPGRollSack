@@ -127,8 +127,9 @@ public class EconomyPlugin extends JavaPlugin {
         bankManager.loadAll();
 
         LoanStore loanStore = new LoanStore(getDataFolder());
-        loanService = new LoanService(loanStore, bankManager, ledger);
+        loanService = new LoanService(loanStore, bankManager, walletService, ledger, System::currentTimeMillis);
         loanService.loadAll();
+        loanService.configure(LoanService.Settings.from(getConfig().getConfigurationSection("loans")));
 
         taxEngine = new TaxEngine(taxRuleManager, ledger);
 
@@ -139,6 +140,9 @@ public class EconomyPlugin extends JavaPlugin {
         ShopStore shopStore = new ShopStore(getDataFolder());
         shopManager = new ShopManager(shopStore, walletService, taxEngine);
         shopManager.loadAll();
+        // Lo que no se puede subastar (mochilas ligadas, la brújula del menú...) tampoco se vende en tiendas.
+        shopManager.blockReason(item -> com.sack.rpgroll.economy.auction.AuctionItems.blockReason(
+                auctionManager.settings(), item));
 
         AuctionStore auctionStore = new AuctionStore(getDataFolder(), getLogger());
         auctionManager = new AuctionManager(auctionStore, walletService, taxEngine, auctionSettings(),
@@ -302,6 +306,7 @@ public class EconomyPlugin extends JavaPlugin {
         serverShopManager.reload();
         serverShopService.setSellRatio(getConfig().getDouble("server-shop.market-sell-ratio", 0.4));
         auctionManager.settings(auctionSettings());
+        loanService.configure(LoanService.Settings.from(getConfig().getConfigurationSection("loans")));
     }
 
     private void startTasks() {
@@ -312,7 +317,7 @@ public class EconomyPlugin extends JavaPlugin {
         long auctionInterval = getConfig().getLong("auction-check-interval-ticks", 200);
 
         getServer().getScheduler().runTaskTimer(this, marketEngine::runRecovery, marketInterval, marketInterval);
-        getServer().getScheduler().runTaskTimer(this, loanService::accrueInterest, loanInterval, loanInterval);
+        getServer().getScheduler().runTaskTimer(this, loanService::tick, loanInterval, loanInterval);
         getServer().getScheduler().runTaskTimer(this, inflationTracker::takeSnapshot, inflationInterval, inflationInterval);
         getServer().getScheduler().runTaskTimer(this, auctionManager::processExpired, auctionInterval, auctionInterval);
         getServer().getScheduler().runTaskTimer(this, ledger::flush, 600, 600);

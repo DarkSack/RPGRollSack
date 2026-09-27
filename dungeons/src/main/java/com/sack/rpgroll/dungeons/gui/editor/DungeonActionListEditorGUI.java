@@ -39,7 +39,7 @@ public class DungeonActionListEditorGUI extends InventoryGUI {
 
     public DungeonActionListEditorGUI(Player player, String title, List<DungeonAction> actions,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text(title, NamedTextColor.GOLD), SIZE);
+        super(player, ComponentUtils.parseWithDefault(title, NamedTextColor.GOLD), SIZE);
         this.actions = actions;
         this.chatPromptManager = chatPromptManager;
         this.lang = chatPromptManager.lang();

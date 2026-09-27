@@ -1,5 +1,7 @@
 package com.sack.rpgroll.mobs.gui.editor;
 
+import com.sack.rpgroll.util.ComponentUtils;
+
 import com.sack.rpgroll.common.lang.LangManager;
 
 import com.sack.rpgroll.gui.InventoryGUI;
@@ -40,7 +42,7 @@ public class MobActionListEditorGUI extends InventoryGUI {
 
     public MobActionListEditorGUI(Player player, String title, List<MobAction> actions,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, Component.text(title, NamedTextColor.GOLD), SIZE);
+        super(player, ComponentUtils.parseWithDefault(title, NamedTextColor.GOLD), SIZE);
         this.actions = actions;
         this.chatPromptManager = chatPromptManager;
         this.onBack = onBack;

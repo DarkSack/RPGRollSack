@@ -19,10 +19,14 @@ items:
     material: TORCH
     name: "&fAntorchas"
     lore:
-      - "&7Precio: &e2 monedas"
+      - "&7Precio: &e2 monedas (Lingote de Oro)"
     actions:
-      - type: GIVE_ITEM
-        value: "TORCH,8"
+      # Mismo patrón que el pan: primero se entrega y luego se cobra. Con solo
+      # GIVE_ITEM las antorchas salían gratis, por mucho precio que dijera la lore.
+      - type: CONDITIONAL
+        value: "HAS_ITEM:GOLD_INGOT,2;GIVE_ITEM:TORCH,8;MESSAGE:No tienes suficiente oro (necesitas 2 lingotes)."
+      - type: CONDITIONAL
+        value: "HAS_ITEM:GOLD_INGOT,2;TAKE_ITEM:GOLD_INGOT,2"
 
   - slot: 15
     material: BARRIER
