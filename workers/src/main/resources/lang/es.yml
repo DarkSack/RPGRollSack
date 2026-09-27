@@ -27,6 +27,7 @@ command:
       &7 • &areload
       &7 • &espawn <profesion> [nombre]
       &7 • &ddesignator
+      &7 • &6skin <mineskin|jugador|quitar>
     player_only_browser: "Solo un jugador puede abrir el Worker Studio."
     reloaded: "✔ RPGRoll-Workers recargado."
     player_only_spawn: "Solo un jugador puede spawnear un worker."
@@ -35,6 +36,7 @@ command:
     spawned_prefix: "✔ Spawneado un/a "
     spawned_suffix: " ({personality})."
     player_only_designator: "Solo un jugador puede recibir el Designador de Almacén."
+    player_only_skin: "Solo un jugador puede cambiar la skin de un worker (hay que mirarlo)."
     designator_given: "✔ Te diste el Designador de Almacén."
 
 gui:
@@ -211,3 +213,17 @@ task:
   wage:
     insufficient_funds: "⚠ Tu trabajador no tiene fondos suficientes para pagarle a su empleado."
     quit: "⚠ Tu trabajador renunció por mala moral."
+
+skin:
+  usage: "&cUso: /workersadmin skin <enlace o id de MineSkin | nombre de jugador | quitar>, mirando al worker."
+  resolving: "&7Buscando la skin..."
+  applied: "&a✔ Skin puesta: el worker ya la lleva."
+  cleared: "&a✔ Skin quitada: el worker vuelve al aspecto de su profesión."
+  bad_input: "&cNo reconozco eso: pega un enlace o id de MineSkin, o el nombre de un jugador."
+  not_found: "&cNo encontré esa skin. ¿Existe ese jugador o ese id de MineSkin?"
+  unreachable: "&cNo pude contactar con el servicio de skins. Prueba otra vez en un rato."
+  button: "Skin"
+  button_lore: "Actual: {current}\nClick: ponerle la skin de un enlace de MineSkin\no la de un jugador ('quitar' la borra)."
+  current_none: "la de su profesión"
+  current_custom: "personalizada"
+  prompt: "Pega el enlace o id de MineSkin, o el nombre de un jugador ('quitar' para volver al aspecto de su profesión):"

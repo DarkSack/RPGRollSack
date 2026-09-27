@@ -83,7 +83,10 @@ public class WorkerAiTask extends BukkitRunnable {
                 continue;
             }
 
-            workerManager.ensureAppearanceAttached(living, profession);
+            // Con skin, lo que se ve es su maniquí: el modelo de profesión flotaría encima.
+            if (!worker.hasSkin()) {
+                workerManager.ensureAppearanceAttached(living, profession);
+            }
 
             // Workers de antes de que se guardara el hogar: se quedan con el sitio donde están.
             if (worker.homeLocation() == null) {

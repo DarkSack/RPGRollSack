@@ -15,6 +15,8 @@ public enum ItemTrigger {
     BLOCK_BREAK,
     BLOCK_PLACE,
     PLAYER_DAMAGE,
+    /** Un golpe parado con el escudo en alto; el objetivo es quien atacó (o disparó). */
+    SHIELD_BLOCK,
     PLAYER_DEATH,
     PLAYER_RESPAWN,
     PLAYER_MOVE,

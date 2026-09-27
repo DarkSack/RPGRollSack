@@ -103,8 +103,11 @@ effects:
 
 # Triggers -> lista de acciones. El trigger es el evento (EQUIP, UNEQUIP, RIGHT_CLICK,
 # LEFT_CLICK, ENTITY_HIT, ENTITY_KILL, BLOCK_BREAK, BLOCK_PLACE, PLAYER_DAMAGE,
-# PLAYER_DEATH, PLAYER_RESPAWN, PLAYER_MOVE, PLAYER_JUMP, PLAYER_SNEAK,
-# PLAYER_SPRINT, PLAYER_INTERACT, CONSUME, THROW, PICKUP, DROP)
+# SHIELD_BLOCK, PLAYER_DEATH, PLAYER_RESPAWN, PLAYER_MOVE, PLAYER_JUMP,
+# PLAYER_SNEAK, PLAYER_SPRINT, PLAYER_INTERACT, CONSUME, THROW, PICKUP, DROP).
+# SHIELD_BLOCK salta al parar un golpe con el escudo en alto; su objetivo es
+# quien atacó (o disparó), así que DAMAGE, FIRE o un COMMAND con
+# {target_uuid} le devuelven algo del golpe.
 triggers:
   ENTITY_KILL:
     - type: MESSAGE

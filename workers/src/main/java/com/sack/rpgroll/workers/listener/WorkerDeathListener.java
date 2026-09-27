@@ -26,7 +26,12 @@ public class WorkerDeathListener implements Listener {
     @EventHandler
     public void onDeath(EntityDeathEvent event) {
 
-        Worker worker = workerManager.resolve(event.getEntity()).orElse(null);
+        // Solo el mob del worker: resolve() también reconoce su maniquí, y un /kill al maniquí no lo mata.
+        if (!workerManager.isTracked(event.getEntity())) {
+            return;
+        }
+
+        Worker worker = workerManager.get(event.getEntity().getUniqueId()).orElse(null);
 
         if (worker == null) {
             return;

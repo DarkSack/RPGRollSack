@@ -8,7 +8,9 @@ import com.sack.rpgroll.workers.core.profession.Profession;
 import com.sack.rpgroll.workers.core.profession.ProfessionManager;
 import com.sack.rpgroll.workers.core.schedule.ScheduleManager;
 import com.sack.rpgroll.workers.core.skill.SkillManager;
+import com.sack.rpgroll.workers.core.skin.WorkerSkins;
 import com.sack.rpgroll.workers.core.worker.PersonalityTrait;
+import com.sack.rpgroll.workers.core.worker.Worker;
 import com.sack.rpgroll.workers.core.worker.WorkerManager;
 import com.sack.rpgroll.workers.gui.ChatPromptManager;
 import com.sack.rpgroll.workers.gui.WorkerHubGUI;
@@ -23,15 +25,18 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-/** /workersadmin browser|reload|spawn <profesion> [nombre] */
+/** /workersadmin browser|reload|spawn <profesion> [nombre]|designator|skin <mineskin|jugador|quitar> */
 public class WorkersAdminCommand implements CommandExecutor, TabCompleter {
 
-    private static final List<String> SUBCOMMANDS = List.of("browser", "reload", "spawn", "designator");
+    private static final List<String> SUBCOMMANDS = List.of("browser", "reload", "spawn", "designator", "skin");
 
     private final ProfessionManager professionManager;
     private final SkillManager skillManager;
@@ -73,6 +78,7 @@ public class WorkersAdminCommand implements CommandExecutor, TabCompleter {
             case "reload" -> handleReload(sender);
             case "spawn" -> handleSpawn(sender, args);
             case "designator" -> handleDesignator(sender);
+            case "skin" -> handleSkin(sender, args);
             default -> sendUsage(sender);
         }
 
@@ -143,6 +149,31 @@ public class WorkersAdminCommand implements CommandExecutor, TabCompleter {
         player.sendMessage(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("command.admin.designator_given"), NamedTextColor.GREEN));
     }
 
+    /** La skin del worker al que se está mirando: MineSkin, un jugador, o "quitar". */
+    private void handleSkin(CommandSender sender, String[] args) {
+
+        if (!(Senders.asPlayer(sender) instanceof Player player)) {
+            sender.sendMessage(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("command.admin.player_only_skin"), NamedTextColor.RED));
+            return;
+        }
+
+        if (args.length < 2 || workerManager.skins() == null) {
+            chatPromptManager.lang().send(player, "skin.usage");
+            return;
+        }
+
+        Entity target = player.getTargetEntity(6);
+        Worker worker = target != null ? workerManager.resolve(target).orElse(null) : null;
+
+        if (worker == null) {
+            player.sendMessage(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("command.workers.look_at_worker"), NamedTextColor.RED));
+            return;
+        }
+
+        workerManager.skins().apply(player, worker, String.join(" ", Arrays.copyOfRange(args, 1, args.length)), () -> {
+        });
+    }
+
     private void sendUsage(CommandSender sender) {
         sender.sendMessage(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("command.admin.usage"), NamedTextColor.RED));
     }
@@ -152,6 +183,12 @@ public class WorkersAdminCommand implements CommandExecutor, TabCompleter {
 
         if (args.length == 1) {
             return TabCompleteUtil.filter(args[0], SUBCOMMANDS);
+        }
+
+        if (args.length == 2 && "skin".equalsIgnoreCase(args[0])) {
+            List<String> options = new ArrayList<>(List.of(WorkerSkins.CLEAR_WORDS.get(0), "mineskin:"));
+            sender.getServer().getOnlinePlayers().forEach(online -> options.add(online.getName()));
+            return TabCompleteUtil.filter(args[1], options);
         }
 
         if (args.length == 2 && "spawn".equalsIgnoreCase(args[0])) {

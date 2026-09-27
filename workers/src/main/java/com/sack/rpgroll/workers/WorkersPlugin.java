@@ -27,9 +27,13 @@ import com.sack.rpgroll.workers.core.logistics.WarehouseManager;
 import com.sack.rpgroll.workers.core.profession.ProfessionManager;
 import com.sack.rpgroll.workers.core.schedule.ScheduleManager;
 import com.sack.rpgroll.workers.core.skill.SkillManager;
+import com.sack.rpgroll.workers.core.skin.SkinResolver;
+import com.sack.rpgroll.workers.core.skin.WorkerBodyService;
+import com.sack.rpgroll.workers.core.skin.WorkerSkins;
 import com.sack.rpgroll.workers.core.worker.WorkerManager;
 import com.sack.rpgroll.workers.gui.ChatPromptManager;
 import com.sack.rpgroll.workers.listener.WarehouseDesignatorListener;
+import com.sack.rpgroll.workers.listener.WorkerBodyListener;
 import com.sack.rpgroll.workers.listener.WorkerDeathListener;
 
 import org.bukkit.plugin.java.JavaPlugin;
@@ -54,6 +58,7 @@ public class WorkersPlugin extends JavaPlugin {
     private WorkerManager workerManager;
     private WarehouseManager warehouseManager;
     private LangManager langManager;
+    private WorkerBodyService bodyService;
 
     @Override
     public void onEnable() {
@@ -101,6 +106,13 @@ public class WorkersPlugin extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new WarehouseDesignatorListener(warehouseManager, langManager), this);
         getServer().getPluginManager().registerEvents(new WorkerDeathListener(workerManager), this);
 
+        // Skins de jugador: el mob sigue siendo el worker, invisible, y un maniquí con la skin lo sigue.
+        bodyService = new WorkerBodyService(workerManager, professionManager);
+        bodyService.purgeOrphans();
+        workerManager.setSkins(new WorkerSkins(new SkinResolver(this), bodyService, workerManager, langManager));
+        getServer().getPluginManager().registerEvents(new WorkerBodyListener(bodyService), this);
+        getServer().getScheduler().runTaskTimer(this, bodyService::tick, 1L, 1L);
+
         startTasks(behaviorRegistry, economyService, moraleEngine, workSearchRadius);
 
         var workersAdminCommand = new WorkersAdminCommand(professionManager, skillManager, scheduleManager,
@@ -122,6 +134,10 @@ public class WorkersPlugin extends JavaPlugin {
 
     @Override
     public void onDisable() {
+
+        if (bodyService != null) {
+            bodyService.removeAll();
+        }
 
         if (workerManager != null) {
             workerManager.saveAll();

@@ -15,8 +15,10 @@ import com.sack.rpgroll.items.registry.ActionRegistry;
 import com.sack.rpgroll.items.registry.ItemActionContext;
 import com.sack.rpgroll.items.stat.ItemStatEngine;
 
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -127,6 +129,43 @@ public class ItemTriggerListener implements Listener {
         for (ItemStack armorPiece : victim.getInventory().getArmorContents()) {
             fireTrigger(ItemTrigger.PLAYER_DAMAGE, victim, armorPiece, null);
         }
+
+        if (event instanceof EntityDamageByEntityEvent byEntity && blockedWithShield(event, victim)) {
+            fireTrigger(ItemTrigger.SHIELD_BLOCK, victim, victim.getActiveItem(), attackerOf(byEntity.getDamager()));
+        }
+    }
+
+    /**
+     * Parado de verdad: el escudo en alto no basta (un golpe por la espalda
+     * entra igual), tiene que restar el modificador de bloqueo o dejar el
+     * golpe en nada.
+     */
+    @SuppressWarnings("deprecation")
+    private static boolean blockedWithShield(EntityDamageEvent event, Player victim) {
+
+        if (!victim.isBlocking()) {
+            return false;
+        }
+
+        if (event.isApplicable(EntityDamageEvent.DamageModifier.BLOCKING)) {
+            return event.getDamage(EntityDamageEvent.DamageModifier.BLOCKING) < 0;
+        }
+
+        return event.getFinalDamage() <= 0;
+    }
+
+    /** Quien pegó: la entidad, o quien disparó el proyectil. */
+    private static LivingEntity attackerOf(Entity damager) {
+
+        if (damager instanceof LivingEntity living) {
+            return living;
+        }
+
+        if (damager instanceof Projectile projectile && projectile.getShooter() instanceof LivingEntity shooter) {
+            return shooter;
+        }
+
+        return null;
     }
 
     @EventHandler

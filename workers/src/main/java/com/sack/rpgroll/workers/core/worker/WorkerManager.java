@@ -4,6 +4,7 @@ import com.sack.rpgroll.common.reskin.EntityReskin;
 import com.sack.rpgroll.common.reskin.EntityReskinService;
 
 import com.sack.rpgroll.workers.core.profession.Profession;
+import com.sack.rpgroll.workers.core.skin.WorkerSkins;
 
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -28,6 +29,7 @@ public class WorkerManager {
     private final WorkerStore store;
     private final Map<UUID, Worker> workers = new HashMap<>();
     private final Random random = new Random();
+    private WorkerSkins skins;
 
     public WorkerManager(Plugin plugin) {
         this.plugin = plugin;
@@ -43,6 +45,15 @@ public class WorkerManager {
         }
 
         plugin.getLogger().info("✔ Workers cargados: " + workers.size());
+    }
+
+    /** Poner y quitar skins (null hasta que el plugin termina de arrancar). */
+    public WorkerSkins skins() {
+        return skins;
+    }
+
+    public void setSkins(WorkerSkins skins) {
+        this.skins = skins;
     }
 
     public void saveAll() {
@@ -115,8 +126,24 @@ public class WorkerManager {
         return entity.getPersistentDataContainer().has(WorkerKeys.TRACKED, PersistentDataType.BOOLEAN);
     }
 
+    /** El worker de una entidad: su propio mob o, si lleva skin, el maniquí que le hace de cuerpo. */
     public Optional<Worker> resolve(Entity entity) {
-        return isTracked(entity) ? get(entity.getUniqueId()) : Optional.empty();
+
+        if (isTracked(entity)) {
+            return get(entity.getUniqueId());
+        }
+
+        String owner = entity.getPersistentDataContainer().get(WorkerKeys.BODY, PersistentDataType.STRING);
+
+        if (owner == null) {
+            return Optional.empty();
+        }
+
+        try {
+            return get(UUID.fromString(owner));
+        } catch (IllegalArgumentException e) {
+            return Optional.empty();
+        }
     }
 
     public EntityType resolveEntityType(Profession profession) {

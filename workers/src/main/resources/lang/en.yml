@@ -27,6 +27,7 @@ command:
       &7 • &areload
       &7 • &espawn <profession> [name]
       &7 • &ddesignator
+      &7 • &6skin <mineskin|player|remove>
     player_only_browser: "Only a player can open the Worker Studio."
     reloaded: "✔ RPGRoll-Workers reloaded."
     player_only_spawn: "Only a player can spawn a worker."
@@ -35,6 +36,7 @@ command:
     spawned_prefix: "✔ Spawned a "
     spawned_suffix: " ({personality})."
     player_only_designator: "Only a player can receive the Warehouse Designator."
+    player_only_skin: "Only a player can change a worker's skin (you have to look at it)."
     designator_given: "✔ You've been given the Warehouse Designator."
 
 gui:
@@ -211,3 +213,17 @@ task:
   wage:
     insufficient_funds: "⚠ Your worker doesn't have enough funds to pay their employee."
     quit: "⚠ Your worker quit due to low morale."
+
+skin:
+  usage: "&cUsage: /workersadmin skin <MineSkin link or id | player name | remove>, while looking at the worker."
+  resolving: "&7Looking up the skin..."
+  applied: "&a✔ Skin applied: the worker is wearing it now."
+  cleared: "&a✔ Skin removed: the worker is back to its profession's look."
+  bad_input: "&cI don't recognise that: paste a MineSkin link or id, or a player name."
+  not_found: "&cI couldn't find that skin. Does that player or MineSkin id exist?"
+  unreachable: "&cI couldn't reach the skin service. Try again in a while."
+  button: "Skin"
+  button_lore: "Current: {current}\nClick: give it the skin from a MineSkin link\nor a player's skin ('remove' clears it)."
+  current_none: "its profession's"
+  current_custom: "custom"
+  prompt: "Paste the MineSkin link or id, or a player name ('remove' goes back to its profession's look):"

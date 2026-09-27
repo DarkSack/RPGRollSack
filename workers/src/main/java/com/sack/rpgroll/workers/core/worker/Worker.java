@@ -2,6 +2,7 @@ package com.sack.rpgroll.workers.core.worker;
 
 import com.sack.rpgroll.workers.core.ai.AiAction;
 import com.sack.rpgroll.workers.core.economy.WageType;
+import com.sack.rpgroll.workers.core.skin.SkinTexture;
 
 import org.bukkit.Location;
 
@@ -32,6 +33,7 @@ public class Worker {
     private String professionId;
     private String customName;
     private PersonalityTrait personality;
+    private SkinTexture skin;
 
     private final Map<String, Integer> skillLevels = new HashMap<>();
     private final Map<String, Double> skillExperience = new HashMap<>();
@@ -84,6 +86,19 @@ public class Worker {
 
     public void setCustomName(String customName) {
         this.customName = customName;
+    }
+
+    /** Skin de jugador que lleva (su cuerpo es entonces un maniquí), o null: el aspecto de su profesión. */
+    public SkinTexture skin() {
+        return skin;
+    }
+
+    public boolean hasSkin() {
+        return skin != null && skin.value() != null && !skin.value().isBlank();
+    }
+
+    public void setSkin(SkinTexture skin) {
+        this.skin = skin;
     }
 
     public PersonalityTrait personality() {

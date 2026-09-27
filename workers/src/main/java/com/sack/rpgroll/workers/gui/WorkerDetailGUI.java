@@ -38,6 +38,7 @@ public class WorkerDetailGUI extends InventoryGUI {
     private static final int HIRE_SLOT = 30;
     private static final int FIRE_SLOT = 31;
     private static final int SET_HOME_SLOT = 32;
+    private static final int SKIN_SLOT = 34;
 
     private static final int BACK_SLOT = 40;
 
@@ -121,7 +122,20 @@ public class WorkerDetailGUI extends InventoryGUI {
                 .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.worker.detail.set_home"), NamedTextColor.LIGHT_PURPLE))
                 .build());
 
+        if (canChangeSkin(player)) {
+            setItem(SKIN_SLOT, new ItemBuilder(Material.PLAYER_HEAD)
+                    .setName(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("skin.button"), NamedTextColor.AQUA))
+                    .setLore(ItemBuilder.toLoreLines(chatPromptManager.lang().raw("skin.button_lore", "current",
+                            chatPromptManager.lang().raw(worker.hasSkin() ? "skin.current_custom" : "skin.current_none"))))
+                    .build());
+        }
+
         setItem(BACK_SLOT, ItemBuilder.createCancelButton(chatPromptManager.lang().raw("gui.common.back")));
+    }
+
+    /** La skin la pone el staff: es la cara del worker para todo el servidor. */
+    private boolean canChangeSkin(Player viewer) {
+        return viewer.hasPermission(ADMIN_PERMISSION) && workerManager.skins() != null;
     }
 
     private String formatSkills() {
@@ -204,6 +218,12 @@ public class WorkerDetailGUI extends InventoryGUI {
             workerManager.save(worker);
             player.sendMessage(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.worker.detail.home_set"), NamedTextColor.GREEN));
             build();
+
+        } else if (slot == SKIN_SLOT && canChangeSkin(player)) {
+
+            player.closeInventory();
+            chatPromptManager.prompt(player, chatPromptManager.lang().raw("skin.prompt"),
+                    value -> workerManager.skins().apply(player, worker, value, this::build));
 
         } else if (slot == BACK_SLOT) {
             onBack.run();

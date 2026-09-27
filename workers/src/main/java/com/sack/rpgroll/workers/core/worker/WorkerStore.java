@@ -1,6 +1,7 @@
 package com.sack.rpgroll.workers.core.worker;
 
 import com.sack.rpgroll.workers.core.economy.WageType;
+import com.sack.rpgroll.workers.core.skin.SkinTexture;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -58,6 +59,11 @@ public class WorkerStore {
         config.set("profession", worker.professionId());
         config.set("custom-name", worker.customName());
         config.set("personality", worker.personality().name());
+
+        if (worker.hasSkin()) {
+            config.set("skin.value", worker.skin().value());
+            config.set("skin.signature", worker.skin().signature());
+        }
 
         for (var entry : worker.skillLevels().entrySet()) {
             config.set("skill-levels." + entry.getKey(), entry.getValue());
@@ -119,6 +125,11 @@ public class WorkerStore {
 
         Worker worker = new Worker(id, professionId, personality);
         worker.setCustomName(config.getString("custom-name"));
+
+        String skinValue = config.getString("skin.value");
+        if (skinValue != null && !skinValue.isBlank()) {
+            worker.setSkin(new SkinTexture(skinValue, config.getString("skin.signature")));
+        }
 
         ConfigurationSection levelsSection = config.getConfigurationSection("skill-levels");
         ConfigurationSection experienceSection = config.getConfigurationSection("skill-experience");
