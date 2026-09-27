@@ -49,9 +49,10 @@ final class LicenseSettings {
      * Cambiar esta constante <b>no</b> alcanza para los jars ya distribuidos.
      * Por eso el dominio anterior debe seguir respondiendo mientras exista
      * alguna versión antigua en circulación, y respondiendo de verdad: el
-     * HttpClient no sigue redirecciones. Pasó el 2026-09-27, de
-     * {@code store.sackito.online} a {@code shop.sackito.online}: la tienda
-     * sigue sirviendo {@code /api/} en los dos (ver su {@code lib/sitio.ts}).
+     * HttpClient no sigue redirecciones (una redirección cuenta como fallo de
+     * red y solo deja el período de gracia). El cambio de
+     * {@code store.sackito.online} a {@code shop.sackito.online} (2026-09-27)
+     * se hizo sin jars vendidos: {@code store.} quedó como redirección.
      */
     static final String SELF_HOSTED_ENDPOINT = "https://shop.sackito.online/api/verify";
 
