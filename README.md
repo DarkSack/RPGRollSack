@@ -167,9 +167,9 @@ No corre como parte de `./gradlew build` — es completamente opt-in.
 
 # 🔧 Instalación
 
-> ⚠️ Los módulos de RPGRoll son de **pago** — se compran en la tienda oficial, [store.sackito.online](https://store.sackito.online), que es también desde donde se descargan los `.jar`.
+> ⚠️ Los módulos de RPGRoll son de **pago** — se compran en la tienda oficial, [shop.sackito.online](https://shop.sackito.online), que es también desde donde se descargan los `.jar`.
 
-**Licencia.** Al comprar te llega una clave `RPGR-` por correo, y queda guardada en [Mis compras](https://store.sackito.online/mis-compras). Cada plugin crea al arrancar `plugins/<plugin>/license.yml`; pega la clave en el campo `key` y reinicia:
+**Licencia.** Al comprar te llega una clave `RPGR-` por correo, y queda guardada en [Mis compras](https://shop.sackito.online/mis-compras). Cada plugin crea al arrancar `plugins/<plugin>/license.yml`; pega la clave en el campo `key` y reinicia:
 
 ```yaml
 key: 'RPGR-XXXXX-XXXXX-XXXXX-XXXXX'
@@ -330,7 +330,7 @@ El core, RPGRoll-Lib y los 24 addons descritos arriba están implementados, comp
 
 # ☕ Apoya el proyecto
 
-Puedes comprar los módulos en [store.sackito.online](https://store.sackito.online), o si quieres apoyar el desarrollo, puedes donar en [Ko-fi](https://ko-fi.com/sackito). Cualquier aporte ayuda a que el proyecto siga avanzando.
+Puedes comprar los módulos en [shop.sackito.online](https://shop.sackito.online), o si quieres apoyar el desarrollo, puedes donar en [Ko-fi](https://ko-fi.com/sackito). Cualquier aporte ayuda a que el proyecto siga avanzando.
 
 ---
 

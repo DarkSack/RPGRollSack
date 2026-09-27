@@ -47,10 +47,13 @@ final class LicenseSettings {
      * Minecraft lo bloquean en bloque.
      * <p>
      * Cambiar esta constante <b>no</b> alcanza para los jars ya distribuidos.
-     * Por eso el dominio anterior debe seguir respondiendo, o redirigir,
-     * mientras exista alguna versión antigua en circulación.
+     * Por eso el dominio anterior debe seguir respondiendo mientras exista
+     * alguna versión antigua en circulación, y respondiendo de verdad: el
+     * HttpClient no sigue redirecciones. Pasó el 2026-09-27, de
+     * {@code store.sackito.online} a {@code shop.sackito.online}: la tienda
+     * sigue sirviendo {@code /api/} en los dos (ver su {@code lib/sitio.ts}).
      */
-    static final String SELF_HOSTED_ENDPOINT = "https://store.sackito.online/api/verify";
+    static final String SELF_HOSTED_ENDPOINT = "https://shop.sackito.online/api/verify";
 
     /**
      * Token que acompaña la verificación. Lo aporta cada módulo al arrancar,
