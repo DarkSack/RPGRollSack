@@ -179,6 +179,10 @@ public class ItemFactory {
     /**
      * Cambia cómo se ve puesta una armadura. El componente reemplaza entero al
      * del material, así que se rellenan también la ranura y el sonido.
+     * <p>
+     * {@code none} la deja sin aspecto de armadura: en la cabeza el cliente
+     * pinta entonces el modelo del ítem (su {@code display.head}), que es como
+     * se lleva un casco con modelo 3D propio.
      */
     private static void applyEquipmentModel(ItemMeta meta, Material material, String equipmentModel) {
 
@@ -190,7 +194,7 @@ public class ItemFactory {
 
         var equippable = meta.getEquippable();
         equippable.setSlot(slot);
-        equippable.setModel(NamespacedKey.fromString(equipmentModel));
+        equippable.setModel("minecraft:none".equals(equipmentModel) ? null : NamespacedKey.fromString(equipmentModel));
         equippable.setEquipSound(equipSound(material));
         meta.setEquippable(equippable);
     }
