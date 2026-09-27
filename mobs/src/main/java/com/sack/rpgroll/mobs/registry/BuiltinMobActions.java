@@ -179,6 +179,12 @@ public final class BuiltinMobActions {
             target.setVelocity(direction);
         });
 
+        // Lanza una animación del modelo 3D del mob (FreeMinecraftModels): el rugido de
+        // un jefe, un pisotón, el conjuro de una fase... Sin modelo, no hace nada.
+        registry.register("ANIMATION", (action, ctx) -> com.sack.rpgroll.mobs.integration.ModelsIntegration.play(
+                ctx.mob(), action.param("value", action.param("animation", "")),
+                Boolean.parseBoolean(action.param("loop", "false"))));
+
         registry.register("LIGHTNING", (action, ctx) -> {
             Location location = ctx.target() != null ? ctx.target().getLocation() : ctx.mob().getLocation();
             boolean damaging = Boolean.parseBoolean(action.param("damage", "true"));

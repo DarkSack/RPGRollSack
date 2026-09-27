@@ -26,7 +26,10 @@ model:
   scale: 2.5
   glow: true
   invisible: false
-  model-engine-id: reference_boss_model # solo si tienes ModelEngine
+  # Modelo 3D de FreeMinecraftModels (el nombre de su .bbmodel). Con el plugin instalado el mob
+  # se vuelve invisible y el modelo lo sigue: idle/walk los anima FMM; attack y death, este
+  # plugin; el resto se lanza con la acción ANIMATION. Sin FMM se ignora.
+  model-engine-id: reference_boss_model
   # Skins propias del motor (sin depender de ModelEngine/BetterModel): al spawnear
   # se sortea una por peso (weight) y se monta un ItemDisplay con ese material+CMD
   # como pasajero de la entidad — la elegida queda persistida (no se vuelve a
@@ -106,6 +109,8 @@ skills:
         count: "40"
       - type: SOUND
         sound: ENTITY_GENERIC_EXPLODE
+      - type: ANIMATION # animación del modelo 3D (FreeMinecraftModels); loop: true la repite
+        value: slam
 
   - id: summon_minions
     display-name: "&8Invocar Sirvientes"

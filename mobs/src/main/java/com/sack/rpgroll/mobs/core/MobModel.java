@@ -5,10 +5,11 @@ import java.util.Map;
 
 /**
  * Apariencia del mob: tipo base de entidad vanilla, escala, brillo,
- * invisibilidad, equipo visible y skins. {@code modelEngineId} es un
- * punto de extensión — si el server tiene ModelEngine/BetterModel
- * instalado, un addon puede leer este id y aplicar el modelo custom real;
- * este motor no incluye esa integración. {@code skins} es la lista de
+ * invisibilidad, equipo visible y skins. {@code modelEngineId} es el id de un
+ * modelo de Blockbench de FreeMinecraftModels: si el plugin está instalado, el
+ * mob se vuelve invisible y el modelo lo sigue y se anima
+ * ({@link com.sack.rpgroll.mobs.integration.ModelsIntegration}); si no, se
+ * ignora y el mob se ve vanilla. {@code skins} es la lista de
  * skins propias del motor (sin depender de esos plugins externos): al
  * spawnear se sortea una por peso (vacía = sin reskin, mob vanilla normal),
  * aplicada vía {@link com.sack.rpgroll.common.reskin.EntityReskinService}.

@@ -21,6 +21,7 @@ import com.sack.rpgroll.mobs.core.MobSkin;
 import com.sack.rpgroll.mobs.core.MobTrigger;
 import com.sack.rpgroll.mobs.instance.MobInstanceService;
 import com.sack.rpgroll.mobs.integration.ItemsIntegration;
+import com.sack.rpgroll.mobs.integration.ModelsIntegration;
 import com.sack.rpgroll.mobs.integration.QuestsIntegration;
 import com.sack.rpgroll.mobs.rarity.MobRarityResolver;
 import com.sack.rpgroll.mobs.registry.ActionRegistry;
@@ -147,6 +148,7 @@ public class MobEngine {
 
         EntityReskin reskin = resolveActiveReskin(entity, definition.model());
         EntityReskinService.ensureAttached(plugin, entity, reskin);
+        ModelsIntegration.ensureAttached(entity, definition.model().modelEngineId(), entity.customName());
     }
 
     private EntityReskin resolveActiveReskin(LivingEntity entity, MobModel model) {
@@ -241,6 +243,7 @@ public class MobEngine {
         entity.setCustomNameVisible(true);
 
         applyRandomSkin(entity, model);
+        ModelsIntegration.ensureAttached(entity, model.modelEngineId(), nameComponent);
     }
 
     private void applyRandomSkin(LivingEntity entity, MobModel model) {
@@ -508,6 +511,7 @@ public class MobEngine {
 
         ActiveMobState state = activeMobs.remove(entity.getUniqueId());
         EntityReskinService.remove(entity);
+        ModelsIntegration.removeWithDeath(entity);
 
         actionRegistry.executeAll(definition.actionsFor(MobTrigger.DEATH),
                 new MobActionContext(entity, definition, killer));

@@ -36,4 +36,14 @@ dependencies {
     }
 
     compileOnly("me.clip:placeholderapi:2.11.5")
+
+    // FreeMinecraftModels (GPLv3, gratis): pinta modelos de Blockbench sobre el mob
+    // (model.id en el YAML). Integración blanda: sin el plugin, el mob se ve vanilla.
+    compileOnly("com.magmaguy:FreeMinecraftModels:2.12.3") {
+        isTransitive = false
+    }
+}
+
+repositories {
+    maven("https://repo.magmaguy.com/releases")
 }

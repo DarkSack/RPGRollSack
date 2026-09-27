@@ -4,6 +4,7 @@ import com.sack.rpgroll.mobs.core.MobDefinition;
 import com.sack.rpgroll.mobs.core.MobManager;
 import com.sack.rpgroll.mobs.engine.MobEngine;
 import com.sack.rpgroll.mobs.instance.MobInstanceService;
+import com.sack.rpgroll.mobs.integration.ModelsIntegration;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
@@ -74,6 +75,21 @@ public class MobCombatListener implements Listener {
                 engine.handlePostDamage(victim, definition, attacker);
             }
         });
+    }
+
+    /** Un mob con modelo 3D que golpea (o dispara) hace su animación de ataque. */
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onMobAttack(EntityDamageByEntityEvent event) {
+
+        LivingEntity attacker = resolveAttacker(event);
+        if (attacker == null || attacker instanceof Player) {
+            return;
+        }
+
+        MobDefinition definition = resolveDefinition(attacker);
+        if (definition != null && definition.model().modelEngineId() != null) {
+            ModelsIntegration.playAttack(attacker);
+        }
     }
 
     @EventHandler(ignoreCancelled = true)

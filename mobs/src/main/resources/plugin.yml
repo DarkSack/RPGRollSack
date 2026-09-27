@@ -5,7 +5,7 @@ api-version: "26.1.1"
 author: Sack
 description: Motor de mobs, jefes e invocaciones personalizados (componentes, fases, IA, loot) para RPGRoll
 depend: [RPGRoll-Lib]
-softdepend: [RPGRoll, Vault, RPGRoll-Items, RPGRoll-Quests, PlaceholderAPI, SackResourcePack]
+softdepend: [RPGRoll, Vault, RPGRoll-Items, RPGRoll-Quests, PlaceholderAPI, SackResourcePack, FreeMinecraftModels]
 
 permissions:
   rpgrollmobs.admin.*:
