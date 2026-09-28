@@ -7,7 +7,6 @@ import com.sack.rpgroll.fishing.core.TimeRequirement;
 import com.sack.rpgroll.fishing.core.WaterType;
 import com.sack.rpgroll.fishing.core.WeatherType;
 import com.sack.rpgroll.fishing.integration.SeasonsIntegration;
-import com.sack.rpgroll.seasons.api.SeasonsAPI;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -154,8 +153,10 @@ public class FishingConditionsResolver {
 
     private double resolveApproxTemperature(Location location) {
 
-        if (SeasonsAPI.isReady()) {
-            return SeasonsAPI.get().getTemperature(location);
+        Double seasonal = SeasonsIntegration.temperature(location);
+
+        if (seasonal != null) {
+            return seasonal;
         }
 
         String biome = location.getBlock().getBiome().name();

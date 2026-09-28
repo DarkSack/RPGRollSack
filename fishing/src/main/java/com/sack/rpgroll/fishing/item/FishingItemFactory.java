@@ -17,6 +17,7 @@ import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
@@ -51,6 +52,7 @@ public final class FishingItemFactory {
         lore.add(lang.component("item.rod.luck", "value", String.format(Locale.ROOT, "%.2f", rod.luckBonus())));
         lore.add(lang.component("item.rod.resistance", "value", String.format(Locale.ROOT, "%.2f", rod.resistance())));
         lore.add(lang.component("item.rod.reel_speed", "value", String.format(Locale.ROOT, "%.2f", rod.reelSpeed())));
+        lore.add(lang.component("item.rod.cast_power", "value", String.format(Locale.ROOT, "%.2f", rod.castPower())));
 
         if (!rod.preferredCategories().isEmpty()) {
             lore.add(lang.component("item.rod.preferred_categories", "value",
@@ -64,6 +66,12 @@ public final class FishingItemFactory {
                 .setName(ComponentUtils.parse(rod.displayName()).colorIfAbsent(NamedTextColor.WHITE))
                 .setLore(lore)
                 .build();
+
+        // durability: los usos de la caña (en una caña vanilla, 64).
+        if (item.getType().getMaxDurability() > 0 && item.getItemMeta() instanceof Damageable damageable) {
+            damageable.setMaxDamage(rod.durability());
+            item.setItemMeta(damageable);
+        }
 
         return tag(ItemModels.apply(item, "rod", rod.id()), FishingItemKeys.ROD_ID, rod.id());
     }

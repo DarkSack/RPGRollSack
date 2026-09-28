@@ -15,6 +15,8 @@ command:
       &7 • &bbrowser
       &7 • &areload
       &7 • &espawn <species> [breed]
+      &7 • &6givefeed|givemedicine|givevaccine <id> [amount] [player]
+      &7 • &6giveproduct <type> [quality] [amount] [player]
     player_only_browser: "Only a player can open the Ranch Studio."
     reloaded: "✔ RPGRoll-Ranching reloaded."
     player_only_spawn: "Only a player can spawn an animal."
@@ -22,6 +24,15 @@ command:
     unknown_species: "Species '{id}' doesn't exist."
     spawned_prefix: "✔ Spawned a "
     spawned_suffix: " ({sex})."
+    usage_give: "Usage: /ranchingadmin {sub} <id> [amount] [player]"
+    usage_giveproduct: "Usage: /ranchingadmin giveproduct <type> [quality] [amount] [player]"
+    unknown_item: "'{id}' does not exist."
+    unknown_product: "Product '{id}' has no item. Types: {types}."
+    unknown_quality: "Invalid quality '{value}'. Options: {values}."
+    bad_amount: "Invalid amount: '{value}'."
+    player_not_found: "No online player named '{name}'."
+    give_needs_player: "From the console you must give an amount and a player."
+    given: "✔ Gave {amount}× {item} to {player}."
 
 item:
   feed:

@@ -2,6 +2,7 @@ package com.sack.rpgroll.ranching.integration;
 
 import com.sack.rpgroll.seasons.api.SeasonsAPI;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
 /**
@@ -21,9 +22,17 @@ public final class SeasonsIntegration {
     private SeasonsIntegration() {
     }
 
+    /**
+     * Primero se mira si el plugin está: {@code SeasonsAPI.isReady()} ya carga la clase, y sin
+     * RPGRoll-Seasons eso lanza NoClassDefFoundError.
+     */
+    private static boolean ready() {
+        return Bukkit.getPluginManager().isPluginEnabled("RPGRoll-Seasons") && SeasonsAPI.isReady();
+    }
+
     public static Double temperature(Location location) {
 
-        if (!SeasonsAPI.isReady()) {
+        if (!ready()) {
             return null;
         }
 
@@ -32,7 +41,7 @@ public final class SeasonsIntegration {
 
     public static String currentSeasonId(Location location) {
 
-        if (!SeasonsAPI.isReady()) {
+        if (!ready()) {
             return null;
         }
 

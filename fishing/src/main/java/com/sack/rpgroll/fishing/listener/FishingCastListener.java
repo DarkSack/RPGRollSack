@@ -14,6 +14,7 @@ import com.sack.rpgroll.fishing.minigame.FishingMinigameManager;
 import com.sack.rpgroll.fishing.runtime.FishingProfileManager;
 import com.sack.rpgroll.fx.api.RPGRollFXAPI;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -60,14 +61,34 @@ public class FishingCastListener implements Listener {
     public void onFish(PlayerFishEvent event) {
 
         switch (event.getState()) {
-            case FISHING -> handleCast(event.getPlayer());
+            case FISHING -> handleCast(event);
             case CAUGHT_FISH -> handleCatch(event);
             default -> {
             }
         }
     }
 
-    private void handleCast(Player player) {
+    private void handleCast(PlayerFishEvent event) {
+
+        Player player = event.getPlayer();
+
+        // Mientras forcejea no puede lanzar otra vez: ni gasta carnada ni saca una segunda captura.
+        if (minigameManager.isFighting(player.getUniqueId())) {
+            event.setCancelled(true);
+            lang.send(player, "minigame.busy");
+            return;
+        }
+
+        // cast-power: el anzuelo sale más lejos (o más cerca) que con una caña vanilla.
+        String castRodId = FishingItemFactory.getRodId(player.getInventory().getItemInMainHand());
+        if (castRodId != null) {
+            rodManager.get(castRodId).ifPresent(rod -> {
+                double power = Math.max(0.5, Math.min(2.0, rod.castPower()));
+                if (power != 1.0) {
+                    event.getHook().setVelocity(event.getHook().getVelocity().multiply(power));
+                }
+            });
+        }
 
         ItemStack offhand = player.getInventory().getItemInOffHand();
         String baitId = FishingItemFactory.getBaitId(offhand);
@@ -87,16 +108,17 @@ public class FishingCastListener implements Listener {
 
         Player player = event.getPlayer();
 
-        if (minigameManager.isFighting(player.getUniqueId())) {
-            return;
-        }
-
         Entity caught = event.getCaught();
         if (caught instanceof Item item) {
             item.remove();
         }
 
         event.setExpToDrop(0);
+
+        // Por si un lanzamiento se coló durante el forcejeo: sin botín vanilla ni segunda captura.
+        if (minigameManager.isFighting(player.getUniqueId())) {
+            return;
+        }
 
         ItemStack mainHand = player.getInventory().getItemInMainHand();
         String rodId = FishingItemFactory.getRodId(mainHand);
@@ -109,7 +131,7 @@ public class FishingCastListener implements Listener {
 
         if (rpgMode && result.outcome() == CatchResult.CatchOutcome.FISH) {
 
-            FishBattleSession session = new FishBattleSession(result, rod.resistance());
+            FishBattleSession session = new FishBattleSession(result, rod.resistance(), rod.reelSpeed());
 
             minigameManager.start(player, session,
                     (winner, session1) -> awardCatch(winner, session1.pendingCatch()),
@@ -143,11 +165,11 @@ public class FishingCastListener implements Listener {
                 profileManager.getOrLoad(player).registerCatch(species.id(), result.weight(), result.length(),
                         result.quality());
 
-                if (species.catchEffectId() != null && RPGRollFXAPI.isReady()) {
+                if (species.catchEffectId() != null && pluginEnabled("RPGRoll-FX") && RPGRollFXAPI.isReady()) {
                     RPGRollFXAPI.get().play(species.catchEffectId(), player);
                 }
 
-                if (species.catchStatusEffectId() != null && EffectsAPI.isReady()) {
+                if (species.catchStatusEffectId() != null && pluginEnabled("RPGRoll-Effects") && EffectsAPI.isReady()) {
                     EffectsAPI.get().apply(species.catchStatusEffectId(), player);
                 }
             }
@@ -165,6 +187,11 @@ public class FishingCastListener implements Listener {
             case NOTHING -> {
             }
         }
+    }
+
+    /** Antes de tocar la API de un softdepend: si no está instalado, su clase ni existe. */
+    private static boolean pluginEnabled(String name) {
+        return Bukkit.getPluginManager().isPluginEnabled(name);
     }
 
     @EventHandler

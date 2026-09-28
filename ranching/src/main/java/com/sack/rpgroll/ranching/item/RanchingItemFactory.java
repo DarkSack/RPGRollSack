@@ -7,6 +7,8 @@ import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.ranching.core.health.Medicine;
 import com.sack.rpgroll.ranching.core.health.Vaccine;
 import com.sack.rpgroll.ranching.core.nutrition.Feed;
+import com.sack.rpgroll.ranching.core.production.ProductKeys;
+import com.sack.rpgroll.ranching.core.production.ProductQuality;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -22,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-/** Construye los ItemStacks de alimentos/medicinas/vacunas, etiquetados vía PersistentDataContainer. */
+/** Construye los ItemStacks de alimentos/medicinas/vacunas/productos, etiquetados vía PersistentDataContainer. */
 public final class RanchingItemFactory {
 
 
@@ -136,6 +138,60 @@ public final class RanchingItemFactory {
 
     public static String getVaccineId(ItemStack item) {
         return readTag(item, RanchingItemKeys.VACCINE_ID);
+    }
+    /**
+     * Material de un tipo de producto cuando no sale de un animal concreto (la lana, blanca).
+     * {@code null} si el tipo no tiene ítem propio.
+     */
+    public static Material productMaterial(String productType) {
+
+        return switch (productType.toLowerCase(Locale.ROOT)) {
+            case "milk" -> Material.MILK_BUCKET;
+            case "wool" -> Material.WHITE_WOOL;
+            case "eggs" -> Material.EGG;
+            case "meat" -> Material.COOKED_BEEF;
+            case "leather" -> Material.LEATHER;
+            case "horns" -> Material.BONE;
+            case "feathers" -> Material.FEATHER;
+            default -> null;
+        };
+    }
+
+    /** Un producto suelto de la calidad dada, igual que el que da un animal; null si el tipo no tiene ítem. */
+    public static ItemStack createProduct(LangManager lang, String productType, ProductQuality quality, int amount) {
+
+        Material material = productMaterial(productType);
+
+        return material == null ? null : tagProduct(lang, new ItemStack(material, amount), productType, quality);
+    }
+
+    /** Marca un producto con su tipo y calidad (PDC y lore) y le pone su modelo de product-models. */
+    public static ItemStack tagProduct(LangManager lang, ItemStack item, String productType, ProductQuality quality) {
+
+        ItemMeta meta = item.getItemMeta();
+
+        if (meta == null) {
+            return item;
+        }
+
+        meta.getPersistentDataContainer().set(ProductKeys.QUALITY, PersistentDataType.STRING, quality.name());
+        meta.getPersistentDataContainer().set(ProductKeys.PRODUCT_TYPE, PersistentDataType.STRING, productType);
+
+        meta.lore(List.of(ComponentUtils.parseWithDefault(lang.raw("item.feed.quality", "quality", quality),
+                qualityColor(quality))));
+        item.setItemMeta(meta);
+
+        return ItemModels.applyProduct(item, productType, quality);
+    }
+
+    private static NamedTextColor qualityColor(ProductQuality quality) {
+        return switch (quality) {
+            case COMMON -> NamedTextColor.GRAY;
+            case GOOD -> NamedTextColor.GREEN;
+            case PREMIUM -> NamedTextColor.AQUA;
+            case ORGANIC -> NamedTextColor.GOLD;
+            case LEGENDARY -> NamedTextColor.LIGHT_PURPLE;
+        };
     }
 
     private static ItemStack tag(ItemStack item, NamespacedKey key, String value) {

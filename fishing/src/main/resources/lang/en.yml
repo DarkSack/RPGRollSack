@@ -224,6 +224,7 @@ item:
     luck: "&eLuck: x{value}"
     resistance: "&aResistance: x{value}"
     reel_speed: "&dReel speed: x{value}"
+    cast_power: "&bCast range: x{value}"
     preferred_categories: "&6Favorite species: {value}"
     footer: "&8An RPGRoll-Fishing rod"
   bait:
@@ -245,7 +246,8 @@ minigame:
   hit: "&a✔ Nice! ({remaining} left)"
   miss: "&c✘ You missed..."
   escaped: "&c✘ The fish got away..."
-  bar: "&b[{bar}&b] &7Left: &f{remaining} &7Misses: &f{misses}"
+  busy: "&cFinish reeling in the fish that already bit first."
+  bar: "&b[{bar}&b] &7Left: &f{remaining} &7Spare misses: &f{misses}"
 
 catch:
   empty_water: "&7The water was empty this time..."

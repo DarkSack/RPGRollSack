@@ -3,7 +3,7 @@ package com.sack.rpgroll.ranching.listener;
 import com.sack.rpgroll.util.ComponentUtils;
 
 import com.sack.rpgroll.common.lang.LangManager;
-import com.sack.rpgroll.ranching.item.ItemModels;
+import com.sack.rpgroll.ranching.item.RanchingItemFactory;
 import com.sack.rpgroll.ranching.core.animal.Animal;
 import com.sack.rpgroll.ranching.core.animal.AnimalManager;
 import com.sack.rpgroll.ranching.core.breeds.Breed;
@@ -12,8 +12,6 @@ import com.sack.rpgroll.ranching.core.genetics.Gene;
 import com.sack.rpgroll.ranching.core.genetics.GeneManager;
 import com.sack.rpgroll.ranching.core.health.Disease;
 import com.sack.rpgroll.ranching.core.health.DiseaseManager;
-import com.sack.rpgroll.ranching.core.production.ProductKeys;
-import com.sack.rpgroll.ranching.core.production.ProductQuality;
 import com.sack.rpgroll.ranching.core.production.ProductionEngine;
 import com.sack.rpgroll.ranching.core.production.ProductionResult;
 import com.sack.rpgroll.ranching.core.species.Species;
@@ -36,7 +34,6 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerShearEntityEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.List;
 import java.util.Locale;
@@ -215,33 +212,7 @@ public class ProductionListener implements Listener {
     }
 
     private ItemStack tag(ItemStack item, ProductionResult result) {
-
-        ItemMeta meta = item.getItemMeta();
-
-        if (meta == null) {
-            return item;
-        }
-
-        meta.getPersistentDataContainer().set(ProductKeys.QUALITY, org.bukkit.persistence.PersistentDataType.STRING,
-                result.quality().name());
-        meta.getPersistentDataContainer().set(ProductKeys.PRODUCT_TYPE, org.bukkit.persistence.PersistentDataType.STRING,
-                result.productType());
-
-        meta.lore(List.of(ComponentUtils.parseWithDefault(lang.raw("item.feed.quality", "quality", result.quality()),
-                qualityColor(result.quality()))));
-        item.setItemMeta(meta);
-
-        return ItemModels.applyProduct(item, result.productType(), result.quality());
-    }
-
-    private NamedTextColor qualityColor(ProductQuality quality) {
-        return switch (quality) {
-            case COMMON -> NamedTextColor.GRAY;
-            case GOOD -> NamedTextColor.GREEN;
-            case PREMIUM -> NamedTextColor.AQUA;
-            case ORGANIC -> NamedTextColor.GOLD;
-            case LEGENDARY -> NamedTextColor.LIGHT_PURPLE;
-        };
+        return RanchingItemFactory.tagProduct(lang, item, result.productType(), result.quality());
     }
 
     private Material woolMaterialFor(Sheep sheep) {
@@ -255,12 +226,10 @@ public class ProductionListener implements Listener {
 
     private Material materialForProduct(String productType) {
 
+        // La leche, la lana y los huevos tienen su propio evento; al morir solo sueltan el resto.
         return switch (productType.toLowerCase(Locale.ROOT)) {
-            case "meat" -> Material.COOKED_BEEF;
-            case "leather" -> Material.LEATHER;
-            case "horns" -> Material.BONE;
-            case "feathers" -> Material.FEATHER;
-            default -> null;
+            case "milk", "wool", "eggs" -> null;
+            default -> RanchingItemFactory.productMaterial(productType);
         };
     }
 
