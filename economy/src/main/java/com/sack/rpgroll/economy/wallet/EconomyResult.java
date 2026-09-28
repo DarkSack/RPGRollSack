@@ -7,5 +7,7 @@ public enum EconomyResult {
     LOCKED,
     UNKNOWN_CURRENCY,
     INVALID_AMOUNT,
-    LIMIT_EXCEEDED
+    LIMIT_EXCEEDED,
+    /** El almacén externo de saldos ({@link com.sack.rpgroll.economy.api.WalletBackend}) no respondió: no se movió nada. */
+    UNAVAILABLE
 }

@@ -124,6 +124,7 @@ public class EconomyPlugin extends JavaPlugin {
         walletManager = new WalletManager(walletStore);
         ledger = new TransactionLedger(this);
         walletService = new WalletService(walletManager, currencyManager, ledger);
+        watchWalletBackend();
 
         BankAccountStore bankAccountStore = new BankAccountStore(getDataFolder());
         bankManager = new BankManager(bankAccountStore, currencyManager, walletService, ledger);
@@ -345,6 +346,53 @@ public class EconomyPlugin extends JavaPlugin {
         GuildTerritoryTaxTask guildTerritoryTaxTask = new GuildTerritoryTaxTask(this, taxEngine, guildTaxPerTerritory,
                 defaultCurrencyId);
         getServer().getScheduler().runTaskTimer(this, guildTerritoryTaxTask::run, guildTaxInterval, guildTaxInterval);
+    }
+
+
+    /**
+     * Un {@link com.sack.rpgroll.economy.api.WalletBackend} lo registra otro plugin cuando quiera
+     * (antes o después de este): se sigue su alta y su baja en el {@code ServicesManager}.
+     */
+    private void watchWalletBackend() {
+        Runnable refresh = () -> {
+            var backend = getServer().getServicesManager().load(com.sack.rpgroll.economy.api.WalletBackend.class);
+            if (backend != walletService.backend()) {
+                walletService.setBackend(backend);
+                getLogger().info(backend == null ? "Saldos: de vuelta a los ficheros del servidor"
+                        : "Saldos: algunas monedas las lleva " + backend.getClass().getSimpleName());
+            }
+        };
+        refresh.run();
+        getServer().getPluginManager().registerEvents(new org.bukkit.event.Listener() {
+            @org.bukkit.event.EventHandler
+            public void onRegister(org.bukkit.event.server.ServiceRegisterEvent event) {
+                if (event.getProvider().getService() == com.sack.rpgroll.economy.api.WalletBackend.class) {
+                    refresh.run();
+                }
+            }
+
+            // El saldo que el jugador tuviera en este servidor pasa al almacén en cuanto entra.
+            @org.bukkit.event.EventHandler(priority = org.bukkit.event.EventPriority.MONITOR)
+            public void onJoin(org.bukkit.event.player.PlayerJoinEvent event) {
+                var backend = walletService.backend();
+                if (backend == null) {
+                    return;
+                }
+                for (var currency : currencyManager.getAll()) {
+                    if (backend.handles(currency.id())) {
+                        walletService.balance(event.getPlayer().getUniqueId(), currency.id());
+                    }
+                }
+            }
+
+            @org.bukkit.event.EventHandler
+            public void onUnregister(org.bukkit.event.server.ServiceUnregisterEvent event) {
+                if (event.getProvider().getService() == com.sack.rpgroll.economy.api.WalletBackend.class) {
+                    // El proveedor aún figura mientras se lanza la baja: se mira en el siguiente tick.
+                    getServer().getScheduler().runTask(EconomyPlugin.this, refresh);
+                }
+            }
+        }, this);
     }
 
 }

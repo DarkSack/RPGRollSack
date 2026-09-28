@@ -9,6 +9,7 @@ public class Wallet {
 
     private final UUID ownerId;
     private final Map<String, Double> balances = new HashMap<>();
+    private final Map<String, String> pendingImports = new HashMap<>();
     private boolean locked = false;
 
     public Wallet(UUID ownerId) {
@@ -29,6 +30,15 @@ public class Wallet {
 
     public Map<String, Double> balances() {
         return balances;
+    }
+
+    /**
+     * Traspasos del saldo local a un {@link com.sack.rpgroll.economy.api.WalletBackend} empezados y
+     * sin confirmar, por moneda: el id se guarda ANTES de pedirlo, para repetir el mismo si el
+     * servidor cae a mitad y que el almacén no lo cuente dos veces.
+     */
+    public Map<String, String> pendingImports() {
+        return pendingImports;
     }
 
     public boolean isLocked() {

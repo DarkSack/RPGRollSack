@@ -37,6 +37,13 @@ public class WalletStore {
             }
         }
 
+        ConfigurationSection imports = config.getConfigurationSection("imports");
+        if (imports != null) {
+            for (String currencyId : imports.getKeys(false)) {
+                wallet.pendingImports().put(currencyId, imports.getString(currencyId));
+            }
+        }
+
         return wallet;
     }
 
@@ -66,6 +73,10 @@ public class WalletStore {
 
         for (var entry : wallet.balances().entrySet()) {
             config.set("balances." + entry.getKey(), entry.getValue());
+        }
+
+        for (var entry : wallet.pendingImports().entrySet()) {
+            config.set("imports." + entry.getKey(), entry.getValue());
         }
 
         try {
