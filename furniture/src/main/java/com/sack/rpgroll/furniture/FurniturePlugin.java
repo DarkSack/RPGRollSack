@@ -68,6 +68,9 @@ public class FurniturePlugin extends JavaPlugin {
         loadFurniture();
 
         items = new FurnitureItems(keys, manager, lang);
+        // Para el recetario (RPGRoll-Recipes): lo que fabrica cada carpintero.
+        com.sack.rpgroll.common.recipe.RecipeSource.register(this,
+                new com.sack.rpgroll.furniture.item.FurnitureRecipeSource(manager, items, lang));
         index = new FurnitureIndex();
         FurnitureService service = new FurnitureService(keys, manager, items, index, () -> settings);
         seats = new SeatService(keys, () -> settings.seatOffset());

@@ -1,0 +1,29 @@
+name: RPGRoll-Recipes
+version: 1.0.0
+main: com.sack.rpgroll.recipes.RecipesPlugin
+api-version: "26.1.1"
+author: Sack
+description: Visor de recetas al estilo JEI — lee todas las recetas del servidor (vanilla y de cualquier plugin), la fermentación y las estaciones propias de RPGRoll, y las enseña en un menú con buscador, "cómo se hace" y "para qué sirve".
+depend: [RPGRoll-Lib]
+# Solo orden de carga: sus recetas y sus RecipeSource ya existen al montar el índice.
+softdepend: [RPGRoll, RPGRoll-Crafting, RPGRoll-Items, RPGRoll-Furniture, RPGRoll-Extras]
+
+commands:
+  recetas:
+    description: Abre el recetario (cómo se hace cada cosa y para qué sirve).
+    usage: /recetas [buscar <texto> | mano | usos | libro [jugador] | fuentes | recargar]
+    aliases: [recetario, recipes, jei]
+
+permissions:
+  rpgrollrecipes.use:
+    description: Abrir el recetario, buscar y usar el libro
+    default: true
+  rpgrollrecipes.book:
+    description: Sacarse un libro del recetario con /recetas libro
+    default: true
+  rpgrollrecipes.admin:
+    description: Dar libros a otros, ver las fuentes y recargar
+    default: op
+    children:
+      rpgrollrecipes.use: true
+      rpgrollrecipes.book: true

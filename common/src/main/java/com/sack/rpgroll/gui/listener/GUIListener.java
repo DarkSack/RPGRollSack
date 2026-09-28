@@ -61,6 +61,7 @@ public class GUIListener implements Listener {
             gui.handleClick(event);
         } else if (event.getView().getTopInventory().equals(gui.getInventory())) {
             event.setCancelled(true);
+            gui.handlePlayerInventoryClick(event);
         }
     }
 

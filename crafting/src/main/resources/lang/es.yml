@@ -336,3 +336,18 @@ gui:
     station_lore: "Estación: {value}"
     result_lore: "Resultado: {value} x{amount}"
     ingredients_lore: "Ingredientes: {count}"
+
+# Líneas que RPGRoll-Recipes (el recetario) enseña junto a las recetas de Crafting.
+recipe_viewer:
+  time: "&7Tiempo: &f{seconds} s"
+  fuel: "&7Combustible: &f{amount}"
+  cost: "&7Coste: &6{amount} {currency}"
+  fail: "&7Probabilidad de fallo: &c{percent}%"
+  quality: "&7Sale con calidad según tu destreza"
+  min_quality: "&7{item}: calidad mínima &f{quality}"
+  conditions: "&7Tiene {count} requisito(s) extra"
+  discovered: "&8Receta descubierta experimentando"
+  levels: "&7Coste: &a{levels} niveles"
+  trade: "&7Trato: &f{name} &7(máx. {uses} usos)"
+  any_potion: "&fCualquier poción"
+  any_item: "&fCualquier objeto"

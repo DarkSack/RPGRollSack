@@ -100,3 +100,7 @@ admin:
   nearby_header: "&6{count} piece(s) within {radius} blocks:"
   nearby_line: "&e • {id} &7at {x} {y} {z}"
   removed: "&aRemoved {count} piece(s) within {radius} blocks."
+
+# Line RPGRoll-Recipes (the recipe book) shows next to what a carpenter makes.
+recipe_viewer:
+  money: "&7Plus: &6{amount} &7coins"

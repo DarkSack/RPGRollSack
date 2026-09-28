@@ -76,6 +76,7 @@ Cada addon extiende el core con un sistema completo propio, construido por **com
 | 📋 **RPGRoll-TAB**      | TabList, Scoreboard, Nametags, BelowName y BossBars 100% personalizables por placeholders — perfiles, contextos y animaciones por YAML (o el Diseñador de TAB en la web) |
 | 🌡️ **RPGRoll-Extras**  | Necesidades y condiciones de supervivencia configurables (sed, stamina, fatiga, temperatura, oxígeno, estrés) con umbrales que aplican efectos |
 | 🪤 **RPGRoll-Traps**    | Motor de trampas/mecanismos por YAML: triggers/condiciones/acciones/cadenas, bloques reforzados con llave, puertas secretas, y torretas autónomas que apuntan y disparan a jugadores/mobs hostiles |
+| 📖 **RPGRoll-Recipes**  | Recetario al estilo JEI: cómo se hace y para qué sirve cada objeto, leyendo las recetas vanilla, las de cualquier plugin, la fermentación y las estaciones de RPGRoll (`RecipeSource` en RPGRoll-Lib para que cualquier plugin publique las suyas) |
 
 Ver el detalle completo de cada uno (comandos, permisos, formato YAML, ejemplos) en el sitio de documentación (`UI/`).
 
@@ -110,6 +111,7 @@ Ver el detalle completo de cada uno (comandos, permisos, formato YAML, ejemplos)
 | RPGRoll-Extras   | `/extrasadmin`                                   | RPGRoll-Lib             | RPGRoll-TAB, RPGRoll-Seasons, PlaceholderAPI, Vault                     | **$13**         |
 | RPGRoll-Traps    | `/trapadmin`                                     | RPGRoll-Lib             | Items, RPGRoll-Effects, Mobs, PlaceholderAPI                            | **$14**         |
 | RPGRoll-Pass     | `/pase`, `/diario`, `/votar`, `/passadmin`       | RPGRoll-Lib             | Quests, Mobs, Crates, Items, Votifier, Vault                            | _por definir_   |
+| RPGRoll-Recipes  | `/recetas` (`/jei`)                              | RPGRoll-Lib             | Crafting, Furniture, Items, Extras (solo orden de carga)                | _por definir_   |
 
 **Solo Ascension y Magic necesitan el core**: prestigio y hechizos trabajan directamente sobre el
 personaje (nivel, maná, vida, stats de combate). El resto funciona **con o sin** `RPGRoll`: si el core

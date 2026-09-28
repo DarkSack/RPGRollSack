@@ -1,0 +1,44 @@
+# RPGRoll-Recipes — el recetario al estilo JEI.
+#
+# Lee solo, sin configurar nada:
+#  - todas las recetas registradas en el servidor: las vanilla y las de CUALQUIER plugin que use
+#    el sistema de recetas de Bukkit (mesa de crafteo, hornos, fogata, cortapiedras, herrería),
+#    las lea de un YAML o las cree en código;
+#  - la fermentación vanilla (soporte para pociones);
+#  - las estaciones propias de los plugins que publiquen sus recetas (RPGRoll-Crafting:
+#    estaciones, yunque, afiladora, telar, cartografía, fermentación y aldeanos; RPGRoll-Furniture:
+#    carpinteros). Cualquier plugin puede hacerlo implementando RecipeSource de RPGRoll-Lib.
+#  - lo que escribas a mano en extra/*.yml (plugins que craftean en su propio menú o con NPCs).
+#
+# /recetas fuentes (admin) dice cuántas recetas aporta cada origen.
+
+language: es
+
+index:
+  # El índice se rehace al abrir el recetario si tiene más de estos minutos (una receta editada
+  # desde el menú de RPGRoll-Crafting no avisa). 0 = solo al arrancar y con /recetas recargar.
+  refresh-minutes: 5
+
+# Mostrar la fermentación vanilla.
+brewing: true
+
+# Qué no enseñar. Los nombres de origen son los de /recetas fuentes; las estaciones, su id
+# (crafting_table, furnace, blast_furnace, smoker, campfire, stonecutter, smithing_table,
+# brewing_stand, anvil, grindstone, loom, cartography_table, villager o las de cada plugin);
+# las recetas, su id con * como comodín.
+hide:
+  sources: []
+  stations: []
+  recipes: []
+  # recipes:
+  #   - "minecraft:*_from_*"
+
+book:
+  material: BOOK
+  # item_model del recurso (p. ej. "sackito:recetario") para darle un modelo propio.
+  model: ""
+  glint: true
+  # Darle un recetario a cada jugador la primera vez que entra.
+  give-on-first-join: false
+  # Libro + mesa de crafteo = recetario.
+  recipe: true

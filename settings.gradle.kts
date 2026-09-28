@@ -34,6 +34,7 @@ include(
     "traps",
     "pass",
     "furniture",
+    "recipes",
 
     // Herramienta de escritorio para los compradores, no un plugin.
     "packinstaller"

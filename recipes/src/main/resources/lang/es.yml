@@ -1,0 +1,131 @@
+# Mensajes de RPGRoll-Recipes (idioma: Español)
+# Edita este archivo libremente — tus cambios se conservan tras un /recetas recargar.
+# Placeholders con {llave} se reemplazan por valores dinámicos.
+
+msg:
+  no_permission: "&cNo tienes permiso para hacer eso."
+  player_only: "&cSolo un jugador puede hacer esto."
+  player_not_found: "&cNo hay ningún jugador conectado llamado {name}."
+  empty_hand: "&cLleva un objeto en la mano."
+  no_recipes: "&7No hay ninguna receta conocida para hacer eso."
+  no_uses: "&7Eso no es ingrediente de ninguna receta conocida."
+  book_given: "&aRecetario entregado a {name}."
+  reloaded: "&aRecetario recargado: {recipes} recetas."
+
+search:
+  ask: "&6Escribe en el chat qué quieres buscar &7(nombre del objeto, de la estación o &f@origen&7)."
+  footer: "&7O escribe '{keyword}' para no buscar nada."
+  cancel_keyword: "cancelar"
+
+book:
+  name: "&6Recetario"
+  lore: |-
+    &7Todas las recetas del servidor:
+    &7cómo se hace cada cosa y para qué sirve.
+    &eClic derecho para abrir
+
+note:
+  cooking_time: "&7Tiempo: &f{seconds} s"
+  experience: "&7Experiencia: &a{value}"
+  keeps_components: "&7Conserva los datos del primer objeto"
+  applies_trim: "&7Aplica el adorno a la armadura"
+  brewing: "&7Hasta 3 botellas a la vez; también con arrojadizas y persistentes"
+
+station:
+  crafting_table: "Mesa de crafteo"
+  furnace: "Horno"
+  blast_furnace: "Alto horno"
+  smoker: "Ahumador"
+  campfire: "Fogata"
+  stonecutter: "Cortapiedras"
+  smithing_table: "Mesa de herrería"
+  brewing_stand: "Soporte para pociones"
+  anvil: "Yunque"
+  grindstone: "Afiladora"
+  cartography_table: "Mesa de cartografía"
+  loom: "Telar"
+  villager: "Aldeano"
+
+gui:
+  close:
+    name: "&cCerrar"
+  catalog:
+    title: "&8Recetario"
+    all: "Todas"
+    none: "ninguna"
+    item_hint: |-
+      &eClic izquierdo: &fcómo se hace &7({make})
+      &eClic derecho: &fpara qué sirve &7({uses})
+      &8{source}
+    prev:
+      name: "&ePágina anterior"
+      lore: "&7{page} de {pages}"
+    next:
+      name: "&ePágina siguiente"
+      lore: "&7{page} de {pages}"
+    station:
+      name: "&6Estación: &f{value}"
+      lore: |-
+        &7Clic izquierdo: siguiente
+        &7Clic derecho: anterior
+        &7Mayús + clic: todas
+    source:
+      name: "&6Origen: &f{value}"
+      lore: |-
+        &7Qué plugin aporta la receta
+        &7Clic izquierdo: siguiente
+        &7Clic derecho: anterior
+        &7Mayús + clic: todos
+    search:
+      name: "&6Buscar: &f{value}"
+      lore: |-
+        &7Clic izquierdo: escribir en el chat
+        &7Clic derecho: borrar la búsqueda
+        &8Truco: &7@crafting&8 busca por origen
+    info:
+      name: "&6{items} objetos &7· &6{recipes} recetas"
+      lore: |-
+        &7Página {page} de {pages}
+        &7Clic en un objeto de tu inventario
+        &7para ver sus recetas.
+    hand:
+      name: "&6Lo que llevo en la mano"
+      lore: |-
+        &7Clic izquierdo: cómo se hace
+        &7Clic derecho: para qué sirve
+    empty:
+      name: "&7Nada coincide"
+      lore: "&7Prueba con otra búsqueda o quita los filtros."
+  recipe:
+    title_make: "&8Cómo se hace: "
+    title_uses: "&8Para qué sirve: "
+    focus_make: "&7Recetas para &fhacerlo&7. Clic: &fpara qué sirve"
+    focus_uses: "&7Recetas que lo &fusan&7. Clic: &fcómo se hace"
+    source: "&7Origen: &f{value}"
+    id: "&8{value}"
+    arrow_shaped: "&7Con esta forma"
+    arrow_shapeless: "&7En cualquier orden"
+    more: "&7+{count} ingredientes más"
+    back:
+      name: "&eVolver"
+    switch_uses:
+      name: "&6Ver para qué sirve"
+    switch_make:
+      name: "&6Ver cómo se hace"
+    prev:
+      name: "&eReceta anterior"
+    next:
+      name: "&eReceta siguiente"
+    counter:
+      name: "&6Receta {n} de {total}"
+      lore: |-
+        &7Clic en un ingrediente o resultado:
+        &7izquierdo, cómo se hace; derecho, para qué sirve.
+
+sources:
+  header: "&6Recetario: &f{recipes} &7recetas, &f{items} &7objetos (montado en {millis} ms)"
+  line: "&7 • &f{source}&7: {count}"
+  brewing_server: "&7 Fermentación leída del servidor."
+  brewing_table: "&e Fermentación: no se pudo leer del servidor, se usa la tabla fija."
+  special: "&7 {count} recetas especiales sin ingredientes fijos (fuegos artificiales, mapas...) no se muestran."
+  error: "&c ✘ {error}"

@@ -159,6 +159,10 @@ public class CraftingPlugin extends JavaPlugin {
                 brewRecipeManager, grindstoneRecipeManager, cartographyRecipeManager, loomRecipeManager,
                 villagerTradeManager, discoveryService, proficiencyService, stationRuntimeRegistry);
 
+        // Para el recetario (RPGRoll-Recipes): estaciones, yunque, aldeanos... que Bukkit no ve.
+        com.sack.rpgroll.common.recipe.RecipeSource.register(this,
+                new com.sack.rpgroll.crafting.integration.CraftingRecipeSource(langManager));
+
         registerVanillaRecipes();
 
         getServer().getPluginManager().registerEvents(

@@ -1,0 +1,131 @@
+# Mensagens do RPGRoll-Recipes (idioma: Português do Brasil)
+# Edite à vontade — suas mudanças se mantêm após /recetas recargar.
+# {placeholders} são trocados por valores dinâmicos.
+
+msg:
+  no_permission: "&cVocê não tem permissão para fazer isso."
+  player_only: "&cSó um jogador pode fazer isso."
+  player_not_found: "&cNenhum jogador online chamado {name}."
+  empty_hand: "&cSegure um item na mão."
+  no_recipes: "&7Não há nenhuma receita conhecida para fazer isso."
+  no_uses: "&7Isso não é ingrediente de nenhuma receita conhecida."
+  book_given: "&aLivro de receitas entregue a {name}."
+  reloaded: "&aLivro de receitas recarregado: {recipes} receitas."
+
+search:
+  ask: "&6Escreva no chat o que quer procurar &7(nome do item, da estação ou &f@origem&7)."
+  footer: "&7Ou escreva '{keyword}' para não procurar nada."
+  cancel_keyword: "cancelar"
+
+book:
+  name: "&6Livro de Receitas"
+  lore: |-
+    &7Todas as receitas do servidor:
+    &7como fazer cada coisa e para que serve.
+    &eClique direito para abrir
+
+note:
+  cooking_time: "&7Tempo: &f{seconds} s"
+  experience: "&7Experiência: &a{value}"
+  keeps_components: "&7Mantém os dados do primeiro item"
+  applies_trim: "&7Aplica o acabamento na armadura"
+  brewing: "&7Até 3 frascos de uma vez; também arremessáveis e persistentes"
+
+station:
+  crafting_table: "Bancada de Trabalho"
+  furnace: "Fornalha"
+  blast_furnace: "Alto-forno"
+  smoker: "Defumador"
+  campfire: "Fogueira"
+  stonecutter: "Cortador de Pedras"
+  smithing_table: "Mesa de Ferraria"
+  brewing_stand: "Suporte de Poções"
+  anvil: "Bigorna"
+  grindstone: "Rebolo"
+  cartography_table: "Mesa de Cartografia"
+  loom: "Tear"
+  villager: "Aldeão"
+
+gui:
+  close:
+    name: "&cFechar"
+  catalog:
+    title: "&8Livro de Receitas"
+    all: "Todas"
+    none: "nenhuma"
+    item_hint: |-
+      &eClique esquerdo: &fcomo fazer &7({make})
+      &eClique direito: &fpara que serve &7({uses})
+      &8{source}
+    prev:
+      name: "&ePágina anterior"
+      lore: "&7{page} de {pages}"
+    next:
+      name: "&ePróxima página"
+      lore: "&7{page} de {pages}"
+    station:
+      name: "&6Estação: &f{value}"
+      lore: |-
+        &7Clique esquerdo: próxima
+        &7Clique direito: anterior
+        &7Shift + clique: todas
+    source:
+      name: "&6Origem: &f{value}"
+      lore: |-
+        &7Qual plugin adiciona a receita
+        &7Clique esquerdo: próxima
+        &7Clique direito: anterior
+        &7Shift + clique: todas
+    search:
+      name: "&6Procurar: &f{value}"
+      lore: |-
+        &7Clique esquerdo: escrever no chat
+        &7Clique direito: limpar a busca
+        &8Dica: &7@crafting&8 procura por origem
+    info:
+      name: "&6{items} itens &7· &6{recipes} receitas"
+      lore: |-
+        &7Página {page} de {pages}
+        &7Clique num item do seu inventário
+        &7para ver as receitas dele.
+    hand:
+      name: "&6O que estou segurando"
+      lore: |-
+        &7Clique esquerdo: como fazer
+        &7Clique direito: para que serve
+    empty:
+      name: "&7Nada corresponde"
+      lore: "&7Tente outra busca ou tire os filtros."
+  recipe:
+    title_make: "&8Como fazer: "
+    title_uses: "&8Para que serve: "
+    focus_make: "&7Receitas que o &ffazem&7. Clique: &fpara que serve"
+    focus_uses: "&7Receitas que o &fusam&7. Clique: &fcomo fazer"
+    source: "&7Origem: &f{value}"
+    id: "&8{value}"
+    arrow_shaped: "&7Com este formato"
+    arrow_shapeless: "&7Em qualquer ordem"
+    more: "&7+{count} ingredientes a mais"
+    back:
+      name: "&eVoltar"
+    switch_uses:
+      name: "&6Ver para que serve"
+    switch_make:
+      name: "&6Ver como fazer"
+    prev:
+      name: "&eReceita anterior"
+    next:
+      name: "&ePróxima receita"
+    counter:
+      name: "&6Receita {n} de {total}"
+      lore: |-
+        &7Clique num ingrediente ou resultado:
+        &7esquerdo, como fazer; direito, para que serve.
+
+sources:
+  header: "&6Livro de receitas: &f{recipes} &7receitas, &f{items} &7itens (montado em {millis} ms)"
+  line: "&7 • &f{source}&7: {count}"
+  brewing_server: "&7 Poções lidas do servidor."
+  brewing_table: "&e Poções: não deu para ler do servidor, usando a tabela fixa."
+  special: "&7 {count} receitas especiais sem ingredientes fixos (fogos de artifício, mapas...) não aparecem."
+  error: "&c ✘ {error}"

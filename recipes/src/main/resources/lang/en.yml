@@ -1,0 +1,131 @@
+# RPGRoll-Recipes messages (language: English)
+# Edit freely — your changes survive /recetas recargar.
+# {placeholders} are replaced with dynamic values.
+
+msg:
+  no_permission: "&cYou don't have permission to do that."
+  player_only: "&cOnly a player can do this."
+  player_not_found: "&cNo online player named {name}."
+  empty_hand: "&cHold an item in your hand."
+  no_recipes: "&7There is no known recipe to make that."
+  no_uses: "&7That isn't an ingredient of any known recipe."
+  book_given: "&aRecipe book given to {name}."
+  reloaded: "&aRecipe book reloaded: {recipes} recipes."
+
+search:
+  ask: "&6Type what you want to find in chat &7(item name, station name or &f@source&7)."
+  footer: "&7Or type '{keyword}' to search nothing."
+  cancel_keyword: "cancel"
+
+book:
+  name: "&6Recipe Book"
+  lore: |-
+    &7Every recipe on the server:
+    &7how to make each thing and what it's for.
+    &eRight click to open
+
+note:
+  cooking_time: "&7Time: &f{seconds} s"
+  experience: "&7Experience: &a{value}"
+  keeps_components: "&7Keeps the data of the first item"
+  applies_trim: "&7Applies the trim to the armor"
+  brewing: "&7Up to 3 bottles at once; also splash and lingering"
+
+station:
+  crafting_table: "Crafting Table"
+  furnace: "Furnace"
+  blast_furnace: "Blast Furnace"
+  smoker: "Smoker"
+  campfire: "Campfire"
+  stonecutter: "Stonecutter"
+  smithing_table: "Smithing Table"
+  brewing_stand: "Brewing Stand"
+  anvil: "Anvil"
+  grindstone: "Grindstone"
+  cartography_table: "Cartography Table"
+  loom: "Loom"
+  villager: "Villager"
+
+gui:
+  close:
+    name: "&cClose"
+  catalog:
+    title: "&8Recipe Book"
+    all: "All"
+    none: "none"
+    item_hint: |-
+      &eLeft click: &fhow to make it &7({make})
+      &eRight click: &fwhat it's used for &7({uses})
+      &8{source}
+    prev:
+      name: "&ePrevious page"
+      lore: "&7{page} of {pages}"
+    next:
+      name: "&eNext page"
+      lore: "&7{page} of {pages}"
+    station:
+      name: "&6Station: &f{value}"
+      lore: |-
+        &7Left click: next
+        &7Right click: previous
+        &7Shift + click: all
+    source:
+      name: "&6Source: &f{value}"
+      lore: |-
+        &7Which plugin adds the recipe
+        &7Left click: next
+        &7Right click: previous
+        &7Shift + click: all
+    search:
+      name: "&6Search: &f{value}"
+      lore: |-
+        &7Left click: type in chat
+        &7Right click: clear the search
+        &8Tip: &7@crafting&8 searches by source
+    info:
+      name: "&6{items} items &7· &6{recipes} recipes"
+      lore: |-
+        &7Page {page} of {pages}
+        &7Click an item in your inventory
+        &7to see its recipes.
+    hand:
+      name: "&6What I'm holding"
+      lore: |-
+        &7Left click: how to make it
+        &7Right click: what it's used for
+    empty:
+      name: "&7Nothing matches"
+      lore: "&7Try another search or clear the filters."
+  recipe:
+    title_make: "&8How to make: "
+    title_uses: "&8Used for: "
+    focus_make: "&7Recipes that &fmake it&7. Click: &fwhat it's used for"
+    focus_uses: "&7Recipes that &fuse it&7. Click: &fhow to make it"
+    source: "&7Source: &f{value}"
+    id: "&8{value}"
+    arrow_shaped: "&7In this shape"
+    arrow_shapeless: "&7In any order"
+    more: "&7+{count} more ingredients"
+    back:
+      name: "&eBack"
+    switch_uses:
+      name: "&6See what it's used for"
+    switch_make:
+      name: "&6See how to make it"
+    prev:
+      name: "&ePrevious recipe"
+    next:
+      name: "&eNext recipe"
+    counter:
+      name: "&6Recipe {n} of {total}"
+      lore: |-
+        &7Click an ingredient or result:
+        &7left, how to make it; right, what it's for.
+
+sources:
+  header: "&6Recipe book: &f{recipes} &7recipes, &f{items} &7items (built in {millis} ms)"
+  line: "&7 • &f{source}&7: {count}"
+  brewing_server: "&7 Brewing read from the server."
+  brewing_table: "&e Brewing: couldn't read it from the server, using the fixed table."
+  special: "&7 {count} special recipes without fixed ingredients (fireworks, maps...) are not shown."
+  error: "&c ✘ {error}"

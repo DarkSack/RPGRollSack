@@ -100,3 +100,7 @@ admin:
   nearby_header: "&6{count} móvel(is) a menos de {radius} blocos:"
   nearby_line: "&e • {id} &7em {x} {y} {z}"
   removed: "&aRemovidos {count} móvel(is) a menos de {radius} blocos."
+
+# Linha que o RPGRoll-Recipes (o livro de receitas) mostra junto do que um carpinteiro faz.
+recipe_viewer:
+  money: "&7Mais: &6{amount} &7moedas"

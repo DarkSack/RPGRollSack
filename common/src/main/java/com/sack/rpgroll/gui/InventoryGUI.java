@@ -28,6 +28,14 @@ public abstract class InventoryGUI {
     public abstract void handleClick(InventoryClickEvent event);
 
     /**
+     * Clic en el inventario del propio jugador con esta GUI abierta. GUIListener ya canceló
+     * el evento; por defecto no hace nada más (el visor de recetas lo usa para "¿cómo se
+     * hace esto que llevo?").
+     */
+    public void handlePlayerInventoryClick(InventoryClickEvent event) {
+    }
+
+    /**
      * Si es true, GUIListener reabrirá esta GUI automáticamente cuando
      * el jugador la cierre sin haber hecho una selección (ESC, click afuera).
      * Por defecto false — las GUIs deben declararse explícitamente obligatorias.

@@ -100,3 +100,7 @@ admin:
   nearby_header: "&6{count} mueble(s) a menos de {radius} bloques:"
   nearby_line: "&e • {id} &7en {x} {y} {z}"
   removed: "&aQuitados {count} mueble(s) a menos de {radius} bloques."
+
+# Línea que RPGRoll-Recipes (el recetario) enseña junto a lo que fabrica un carpintero.
+recipe_viewer:
+  money: "&7Además: &6{amount} &7monedas"

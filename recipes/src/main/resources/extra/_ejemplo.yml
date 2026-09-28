@@ -1,0 +1,50 @@
+# Referencia: recetas escritas a mano para plugins que no registran las suyas en el servidor
+# (craftean en su propio menú, con un NPC, con un comando...). Los archivos que empiezan por "_"
+# NO se cargan: copia este como extra/<nombre>.yml y edítalo. /recetas recargar para verlo.
+#
+# Lo que SÍ sale solo, sin escribir nada: todo lo que un plugin registra con el sistema de recetas
+# del servidor (casi todos los de ítems personalizados lo hacen) y los plugins que publican un
+# RecipeSource (RPGRoll-Crafting, RPGRoll-Furniture...). Mira /recetas fuentes antes de copiar.
+
+# Nombre del origen en el recetario (por defecto, el nombre del archivo).
+source: "MiPlugin"
+
+# Estaciones propias (opcional). Las vanilla ya existen: crafting_table, furnace, blast_furnace,
+# smoker, campfire, stonecutter, smithing_table, brewing_stand, anvil, grindstone, loom,
+# cartography_table, villager.
+stations:
+  forja_enana:
+    name: "&6Forja enana"
+    icon: ANVIL
+
+recipes:
+  # Con forma: cada letra de "shape" es un ingrediente de "ingredients"; el espacio es un hueco.
+  espada_enana:
+    station: forja_enana
+    shape:
+      - " A "
+      - " A "
+      - " B "
+    ingredients:
+      A: IRON_INGOT
+      B: STICK
+    # Un material, o todo esto (name/lore/model son opcionales; model = item_model del pack):
+    result:
+      material: IRON_SWORD
+      amount: 1
+      name: "&bEspada enana"
+      lore:
+        - "&7Forjada bajo la montaña"
+      model: "miplugin:espada_enana"
+    notes:
+      - "&7Habla con el herrero enano de la capital"
+
+  # Sin forma: lista. "MATERIAL x3" = cantidad; "#minecraft:planks" = cualquiera del tag;
+  # "A|B" = cualquiera de los dos.
+  estofado_enano:
+    station: campfire
+    ingredients:
+      - "BEEF x2"
+      - "#minecraft:planks"
+      - "CARROT|POTATO"
+    result: "RABBIT_STEW x2"
