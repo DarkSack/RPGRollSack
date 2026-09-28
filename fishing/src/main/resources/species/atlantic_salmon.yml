@@ -1,6 +1,7 @@
 id: atlantic_salmon
 display-name: "&fSalmón"
 icon: SALMON
+model: rpgroll_fishing:species/atlantic_salmon
 description: "Sube por los ríos en otoño."
 category: FRESHWATER
 rarity: COMMON

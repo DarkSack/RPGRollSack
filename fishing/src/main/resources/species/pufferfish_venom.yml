@@ -1,6 +1,7 @@
 id: pufferfish_venom
 display-name: "&2Pez Globo"
 icon: PUFFERFISH
+model: rpgroll_fishing:species/pufferfish_venom
 description: "Tímido y venenoso — prefiere pantanos y aguas tibias."
 category: TROPICAL
 rarity: RARE

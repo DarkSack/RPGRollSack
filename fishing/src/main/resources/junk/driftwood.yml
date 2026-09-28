@@ -1,0 +1,6 @@
+id: driftwood
+display-name: "&7Madera de Deriva"
+icon: STICK
+model: "rpgroll_fishing:junk/driftwood"
+description: "Blanqueada por el sol y el agua."
+weight: 1.0

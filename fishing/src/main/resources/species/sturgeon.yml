@@ -1,0 +1,17 @@
+id: sturgeon
+display-name: "&7Esturión"
+icon: COD
+model: "rpgroll_fishing:species/sturgeon"
+description: "Un fósil viviente de río: sus huevas valen oro."
+category: FRESHWATER
+rarity: EPIC
+water-types: [RIVER]
+depths: [BOTTOM]
+min-weight: 10
+max-weight: 120
+min-length: 100
+max-length: 300
+base-price: 160
+base-experience: 60
+behavior: SLOW
+attracted-by-bait-tags: [worm]

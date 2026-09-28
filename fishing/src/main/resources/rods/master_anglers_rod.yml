@@ -1,6 +1,7 @@
 id: master_anglers_rod
 display-name: "&6Caña del Maestro Pescador"
-material: BLAZE_ROD
+material: FISHING_ROD
+model: rpgroll_fishing:rod/master_anglers_rod
 description: "Para quien ya se ganó el derecho a perseguir leyendas."
 durability: 128
 cast-power: 1.3

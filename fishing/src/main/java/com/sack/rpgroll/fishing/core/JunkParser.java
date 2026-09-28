@@ -1,6 +1,7 @@
 package com.sack.rpgroll.fishing.core;
 
 import com.sack.rpgroll.common.content.ContentParser;
+import com.sack.rpgroll.fishing.item.ItemModels;
 
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -13,6 +14,8 @@ public class JunkParser implements ContentParser<Junk> {
         if (id == null || id.isBlank()) {
             throw new IllegalArgumentException("archivo sin campo obligatorio 'id'");
         }
+
+        ItemModels.register("junk", id, config.getString("model"));
 
         return new Junk(id, config.getString("display-name", id), config.getString("icon", "LEATHER_BOOTS"),
                 config.getString("description", ""), config.getDouble("weight", 1.0));

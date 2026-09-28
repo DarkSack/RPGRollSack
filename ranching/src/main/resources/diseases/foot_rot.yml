@@ -1,0 +1,9 @@
+id: foot_rot
+display-name: "&6Pododermatitis"
+description: "Infección de patas y pezuñas: el animal cojea y se mueve poco."
+symptoms: [cojera, "inflamación"]
+duration-ticks: 14000
+contagion-chance: 0.04
+health-penalty-per-check: 1.5
+happiness-penalty-per-check: 4
+production-penalty: 0.75

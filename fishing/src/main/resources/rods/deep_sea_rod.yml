@@ -1,0 +1,12 @@
+id: deep_sea_rod
+display-name: "&9Caña de Altura"
+material: FISHING_ROD
+model: "rpgroll_fishing:rod/deep_sea_rod"
+description: "Gruesa y con un carrete enorme, para lo que tira fuerte en altamar."
+durability: 220
+cast-power: 1.4
+reel-speed: 1.1
+precision: 12
+resistance: 2.2
+luck-bonus: 1.4
+preferred-categories: [deep, saltwater]

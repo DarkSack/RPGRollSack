@@ -1,0 +1,8 @@
+id: spinner_lure
+display-name: "&7Cucharilla Giratoria"
+material: STRING
+model: "rpgroll_fishing:bait/spinner_lure"
+description: "Gira y destella al recoger: provoca a los depredadores."
+tags: [lure, shiny]
+quality-bonus: 2
+legendary-weight-multiplier: 1.5

@@ -1,0 +1,6 @@
+id: tin_can
+display-name: "&7Lata Oxidada"
+icon: IRON_NUGGET
+model: "rpgroll_fishing:junk/tin_can"
+description: "Alguien la tiró al agua hace mucho."
+weight: 1.0

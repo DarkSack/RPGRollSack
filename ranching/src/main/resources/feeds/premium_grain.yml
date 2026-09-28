@@ -1,6 +1,7 @@
 id: premium_grain
 display-name: "&6Grano Premium"
 icon: WHEAT_SEEDS
+model: rpgroll_ranching:feed/premium_grain
 description: "Mezcla balanceada de granos — mejora la producción de verdad."
 quality: PREMIUM
 tags: [grain]

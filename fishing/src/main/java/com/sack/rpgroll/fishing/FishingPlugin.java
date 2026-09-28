@@ -31,6 +31,7 @@ public class FishingPlugin extends JavaPlugin {
 
     private static final List<String> DIRECTORIES = List.of("species", "rods", "baits", "treasures", "junk",
             "regions");
+    private static final List<String> MODEL_DIRECTORIES = List.of("bedrock", "blockbench");
 
     private FishSpeciesManager speciesManager;
     private FishingRodManager rodManager;
@@ -59,6 +60,11 @@ public class FishingPlugin extends JavaPlugin {
         langManager.reload(getConfig().getString("language", "es"));
 
         new ModuleAssetSync(this, "fishing").syncAll();
+
+        // Pack de Bedrock y proyectos de Blockbench de los modelos de fábrica, para el dueño.
+        new DirectoryCreator(this).create(MODEL_DIRECTORIES);
+        new ResourceCopier(this).copyDirectories(MODEL_DIRECTORIES);
+        registerPack();
 
         speciesManager = new FishSpeciesManager(this);
         speciesManager.initialize();
@@ -158,4 +164,23 @@ public class FishingPlugin extends JavaPlugin {
         return langManager;
     }
 
+    /**
+     * El pack de Java de los modelos de fábrica viaja dentro del jar ({@code resourcepack/}) y se
+     * registra en SackResourcePack si está. Sin él, el dueño lo sirve por su cuenta.
+     */
+    private void registerPack() {
+
+        if (!getServer().getPluginManager().isPluginEnabled("SackResourcePack")
+                || !getConfig().getBoolean("resource-pack.register-in-sackresourcepack", true)) {
+            return;
+        }
+        try {
+            if (com.sack.rpgroll.sackresourcepack.api.AssetsAPI.isReady()
+                    && com.sack.rpgroll.sackresourcepack.api.AssetsAPI.assets().registerPlugin(this)) {
+                getLogger().info("✔ Modelos registrados en SackResourcePack (aplica con /srp rebuild).");
+            }
+        } catch (LinkageError e) {
+            getLogger().warning("✘ No se pudo registrar el pack en SackResourcePack: " + e.getMessage());
+        }
+    }
 }

@@ -16,7 +16,9 @@ public class MedicineDefinitionWriter {
 
     public void save(Medicine medicine) {
 
-        YamlConfiguration config = new YamlConfiguration();
+        File file = new File(folder, medicine.id() + ".yml");
+        // Se parte del fichero que haya: así se conservan las claves que el editor no toca (model:...).
+        YamlConfiguration config = file.exists() ? YamlConfiguration.loadConfiguration(file) : new YamlConfiguration();
         config.set("id", medicine.id());
         config.set("display-name", medicine.displayName());
         config.set("icon", medicine.icon());
@@ -30,7 +32,7 @@ public class MedicineDefinitionWriter {
 
         try {
             folder.mkdirs();
-            config.save(new File(folder, medicine.id() + ".yml"));
+            config.save(file);
         } catch (IOException e) {
             throw new RuntimeException("No se pudo guardar la medicina " + medicine.id(), e);
         }

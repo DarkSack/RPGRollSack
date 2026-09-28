@@ -1,0 +1,16 @@
+id: clownfish
+display-name: "&6Pez Payaso"
+icon: TROPICAL_FISH
+model: "rpgroll_fishing:species/clownfish"
+description: "Vive entre anémonas en aguas tibias."
+category: TROPICAL
+rarity: UNCOMMON
+water-types: [OCEAN]
+min-weight: 0.05
+max-weight: 0.25
+min-length: 6
+max-length: 12
+base-price: 10
+base-experience: 5
+behavior: SHY
+attracted-by-bait-tags: [shrimp]

@@ -1,6 +1,7 @@
 package com.sack.rpgroll.ranching.core.health;
 
 import com.sack.rpgroll.common.content.ContentParser;
+import com.sack.rpgroll.ranching.item.ItemModels;
 
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -17,6 +18,8 @@ public class MedicineParser implements ContentParser<Medicine> {
         if (id == null || id.isBlank()) {
             throw new IllegalArgumentException("archivo sin campo obligatorio 'id'");
         }
+
+        ItemModels.register("medicine", id, config.getString("model"));
 
         return new Medicine(
                 id,

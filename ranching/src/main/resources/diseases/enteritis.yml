@@ -1,0 +1,9 @@
+id: enteritis
+display-name: "&eEnteritis"
+description: "Inflamación intestinal: el animal no aprovecha lo que come."
+symptoms: [diarrea, "deshidratación"]
+duration-ticks: 9000
+contagion-chance: 0.06
+health-penalty-per-check: 2.5
+happiness-penalty-per-check: 2
+production-penalty: 0.6

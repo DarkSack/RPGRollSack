@@ -65,7 +65,7 @@ public final class FishingItemFactory {
                 .setLore(lore)
                 .build();
 
-        return tag(item, FishingItemKeys.ROD_ID, rod.id());
+        return tag(ItemModels.apply(item, "rod", rod.id()), FishingItemKeys.ROD_ID, rod.id());
     }
 
     public static ItemStack createBait(Bait bait, LangManager lang) {
@@ -101,7 +101,7 @@ public final class FishingItemFactory {
                 .setLore(lore)
                 .build();
 
-        return tag(item, FishingItemKeys.BAIT_ID, bait.id());
+        return tag(ItemModels.apply(item, "bait", bait.id()), FishingItemKeys.BAIT_ID, bait.id());
     }
 
     /** @return el ItemStack final de una captura resuelta, o null para {@code NOTHING}. */
@@ -140,7 +140,7 @@ public final class FishingItemFactory {
             }
         }
 
-        return item;
+        return ItemModels.apply(item, "species", species.id());
     }
 
     private static ItemStack createTreasureItem(Treasure treasure, LangManager lang) {
@@ -171,10 +171,12 @@ public final class FishingItemFactory {
             lore.add(ComponentUtils.parse(junk.description()).colorIfAbsent(NamedTextColor.GRAY));
         }
 
-        return new ItemBuilder(material)
+        ItemStack item = new ItemBuilder(material)
                 .setName(ComponentUtils.parse(junk.displayName()).colorIfAbsent(NamedTextColor.GRAY))
                 .setLore(lore)
                 .build();
+
+        return ItemModels.apply(item, "junk", junk.id());
     }
 
     public static String getRodId(ItemStack item) {

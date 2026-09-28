@@ -1,0 +1,12 @@
+id: abyssal_rod
+display-name: "&5Caña Abisal"
+material: FISHING_ROD
+model: "rpgroll_fishing:rod/abyssal_rod"
+description: "Sus runas brillan cuando algo antiguo se acerca al anzuelo."
+durability: 300
+cast-power: 1.5
+reel-speed: 1.6
+precision: 25
+resistance: 2.4
+luck-bonus: 2.0
+preferred-categories: [legendary, deep, magic]

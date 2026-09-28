@@ -1,0 +1,9 @@
+id: mange
+display-name: "&5Sarna"
+description: "Ácaros bajo la piel: picor constante y mal aspecto del pelaje o plumaje."
+symptoms: [picor, calvas]
+duration-ticks: 18000
+contagion-chance: 0.07
+health-penalty-per-check: 1
+happiness-penalty-per-check: 5
+production-penalty: 0.8

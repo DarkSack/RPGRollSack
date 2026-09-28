@@ -1,0 +1,8 @@
+id: raw_shrimp
+display-name: "&dGamba Cruda"
+material: STRING
+model: "rpgroll_fishing:bait/raw_shrimp"
+description: "Cebo de mar: lo que vive en la costa no se resiste."
+tags: [shrimp, saltwater]
+quality-bonus: 1.5
+legendary-weight-multiplier: 1.0

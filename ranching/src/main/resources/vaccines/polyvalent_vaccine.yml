@@ -1,0 +1,8 @@
+id: polyvalent_vaccine
+display-name: "&aVacuna Polivalente"
+icon: PAPER
+model: "rpgroll_ranching:vaccine/polyvalent_vaccine"
+description: "Varias vacunas en una: protege menos, pero de todo."
+prevents-diseases: [bovine_flu, pneumonia, enteritis, foot_rot]
+risk-reduction: 0.6
+immunity-duration-ticks: 36000

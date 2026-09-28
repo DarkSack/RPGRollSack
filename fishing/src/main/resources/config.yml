@@ -11,3 +11,7 @@ rpg-mode: true
 # (se evalúan antes de sortear la especie — el resto de la probabilidad es "pez").
 treasure-chance: 0.05
 junk-chance: 0.10
+
+resource-pack:
+  # Registrar los modelos de fábrica en SackResourcePack al arrancar (si está instalado).
+  register-in-sackresourcepack: true

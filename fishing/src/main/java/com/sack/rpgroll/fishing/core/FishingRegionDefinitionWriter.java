@@ -15,7 +15,9 @@ public class FishingRegionDefinitionWriter {
 
     public void save(FishingRegion region) {
 
-        YamlConfiguration config = new YamlConfiguration();
+        File file = new File(folder, region.id() + ".yml");
+        // Se parte del fichero que haya: así se conservan las claves que el editor no toca (model:...).
+        YamlConfiguration config = file.exists() ? YamlConfiguration.loadConfiguration(file) : new YamlConfiguration();
         config.set("id", region.id());
         config.set("world", region.world());
         config.set("min-x", region.minX());
@@ -28,7 +30,7 @@ public class FishingRegionDefinitionWriter {
 
         try {
             folder.mkdirs();
-            config.save(new File(folder, region.id() + ".yml"));
+            config.save(file);
         } catch (IOException e) {
             throw new RuntimeException("No se pudo guardar la región " + region.id(), e);
         }

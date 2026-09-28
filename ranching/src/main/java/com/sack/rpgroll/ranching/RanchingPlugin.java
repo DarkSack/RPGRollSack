@@ -27,6 +27,7 @@ import com.sack.rpgroll.ranching.core.nutrition.FeedManager;
 import com.sack.rpgroll.ranching.core.species.SpeciesManager;
 import com.sack.rpgroll.ranching.core.welfare.WelfareTask;
 import com.sack.rpgroll.ranching.gui.ChatPromptManager;
+import com.sack.rpgroll.ranching.item.ItemModels;
 import com.sack.rpgroll.ranching.listener.AnimalCareListener;
 import com.sack.rpgroll.ranching.listener.BreedingListener;
 import com.sack.rpgroll.ranching.listener.ProductionListener;
@@ -46,6 +47,7 @@ public class RanchingPlugin extends JavaPlugin {
 
     private static final List<String> DIRECTORIES = List.of("species", "breeds", "genes", "feeds", "diseases",
             "vaccines", "medicines", "animals");
+    private static final List<String> MODEL_DIRECTORIES = List.of("bedrock", "blockbench");
 
     private SpeciesManager speciesManager;
     private BreedManager breedManager;
@@ -76,6 +78,12 @@ public class RanchingPlugin extends JavaPlugin {
 
         new ModuleAssetSync(this, "ranching").syncAll();
 
+        // Pack de Bedrock y proyectos de Blockbench de los modelos de fábrica, para el dueño.
+        new DirectoryCreator(this).create(MODEL_DIRECTORIES);
+        new ResourceCopier(this).copyDirectories(MODEL_DIRECTORIES);
+        registerPack();
+
+        ItemModels.loadProducts(getConfig().getConfigurationSection("product-models"));
         initializeManagers();
 
         GeneticsMode geneticsMode = parseGeneticsMode(getConfig().getString("genetics-mode", "ADVANCED"));
@@ -157,6 +165,8 @@ public class RanchingPlugin extends JavaPlugin {
     }
 
     private void reloadContent() {
+        reloadConfig();
+        ItemModels.loadProducts(getConfig().getConfigurationSection("product-models"));
         speciesManager.reload();
         breedManager.reload();
         geneManager.reload();
@@ -224,4 +234,23 @@ public class RanchingPlugin extends JavaPlugin {
         return animalManager;
     }
 
+    /**
+     * El pack de Java de los modelos de fábrica viaja dentro del jar ({@code resourcepack/}) y se
+     * registra en SackResourcePack si está. Sin él, el dueño lo sirve por su cuenta.
+     */
+    private void registerPack() {
+
+        if (!getServer().getPluginManager().isPluginEnabled("SackResourcePack")
+                || !getConfig().getBoolean("resource-pack.register-in-sackresourcepack", true)) {
+            return;
+        }
+        try {
+            if (com.sack.rpgroll.sackresourcepack.api.AssetsAPI.isReady()
+                    && com.sack.rpgroll.sackresourcepack.api.AssetsAPI.assets().registerPlugin(this)) {
+                getLogger().info("✔ Modelos registrados en SackResourcePack (aplica con /srp rebuild).");
+            }
+        } catch (LinkageError e) {
+            getLogger().warning("✘ No se pudo registrar el pack en SackResourcePack: " + e.getMessage());
+        }
+    }
 }

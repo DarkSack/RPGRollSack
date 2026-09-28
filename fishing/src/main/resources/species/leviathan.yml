@@ -1,7 +1,7 @@
 id: leviathan
 display-name: "&5&lLeviatán"
 icon: TROPICAL_FISH
-custom-model-data: 1000
+model: rpgroll_fishing:species/leviathan
 description: "Una criatura ancestral que solo emerge bajo condiciones extremadamente específicas. Requiere la Carnada Legendaria."
 category: LEGENDARY
 rarity: LEGENDARY

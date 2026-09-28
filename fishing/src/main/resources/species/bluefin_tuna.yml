@@ -1,6 +1,7 @@
 id: bluefin_tuna
 display-name: "&fAtún"
 icon: COD
+model: rpgroll_fishing:species/bluefin_tuna
 description: "Un pez grande de mar abierto, más activo en verano."
 category: SALTWATER
 rarity: UNCOMMON

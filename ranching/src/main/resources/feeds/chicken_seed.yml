@@ -1,0 +1,11 @@
+id: chicken_seed
+display-name: "&eSemillas para Gallinas"
+icon: WHEAT
+model: "rpgroll_ranching:feed/chicken_seed"
+description: "Mezcla de granos pequeños a la medida de las aves."
+quality: GOOD
+tags: [grain]
+nutrition-value: 22
+health-bonus: 3
+happiness-bonus: 5
+production-bonus: 6

@@ -1,0 +1,16 @@
+id: piranha
+display-name: "&cPiraña"
+icon: COD
+model: "rpgroll_fishing:species/piranha"
+description: "Pequeña, dentuda y siempre hambrienta."
+category: TROPICAL
+rarity: UNCOMMON
+water-types: [RIVER, SWAMP]
+min-weight: 0.3
+max-weight: 3.5
+min-length: 15
+max-length: 40
+base-price: 12
+base-experience: 7
+behavior: AGGRESSIVE
+attracted-by-bait-tags: [shrimp, worm]

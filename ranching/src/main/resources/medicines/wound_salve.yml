@@ -1,0 +1,11 @@
+id: wound_salve
+display-name: "&aPomada Cicatrizante"
+icon: PAPER
+model: "rpgroll_ranching:medicine/wound_salve"
+description: "Para llagas y pezuñas dañadas."
+type: ANTIBIOTIC
+cures-diseases: [foot_rot, foot_and_mouth]
+cure-chance: 0.55
+recovery-boost-ticks: 3000
+health-bonus: 3
+happiness-bonus: 1

@@ -1,0 +1,16 @@
+id: perch
+display-name: "&ePerca"
+icon: COD
+model: "rpgroll_fishing:species/perch"
+description: "Rayada y abundante: muerde casi cualquier cosa."
+category: FRESHWATER
+rarity: COMMON
+water-types: [LAKE, RIVER]
+min-weight: 0.2
+max-weight: 1.4
+min-length: 15
+max-length: 40
+base-price: 4
+base-experience: 3
+behavior: FAST
+attracted-by-bait-tags: [worm, insect]

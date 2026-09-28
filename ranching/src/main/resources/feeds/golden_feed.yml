@@ -1,0 +1,11 @@
+id: golden_feed
+display-name: "&6&lPienso Dorado"
+icon: GOLD_NUGGET
+model: "rpgroll_ranching:feed/golden_feed"
+description: "Un pienso de leyenda: lo que sale del animal se nota."
+quality: LEGENDARY
+tags: []
+nutrition-value: 50
+health-bonus: 10
+happiness-bonus: 15
+production-bonus: 20

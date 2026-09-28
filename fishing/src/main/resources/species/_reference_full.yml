@@ -10,12 +10,16 @@
 id: reference_full_example
 display-name: "&d&lPez de Referencia"
 icon: PUFFERFISH
-# El material real que muestra la textura custom es "icon" de arriba; este número
-# de custom-model-data lo resuelve un resource pack real (mismo pipeline que
-# RPGRoll-Items: deja el modelo/textura en plugins/RPGRoll-Fishing/resourcepack/
-# <namespace>/<textures|models>/item/... — se sincroniza solo hacia SackResourcePack
-# si está instalado). Sin resource pack, el ítem se ve como el "icon" vanilla normal.
-custom-model-data: 200001
+# Modelo 3D del ítem (componente item_model, 1.21.4+): "<namespace>:<ruta>" de un
+# modelo que esté en el resource pack. El plugin trae de fábrica los de sus especies,
+# cañas, cebos y basura (rpgroll_fishing:species/<id>, rod/<id>, bait/<id>, junk/<id>)
+# y los registra solo en SackResourcePack; los proyectos .bbmodel para editarlos
+# están en plugins/RPGRoll-Fishing/blockbench/ y el pack de Bedrock (Geyser) en bedrock/.
+# Sin "model", el ítem se ve como el "icon" vanilla normal.
+model: rpgroll_fishing:species/pufferfish_venom
+# Alternativa antigua: un número de custom-model-data que resuelva tu propio pack.
+# 0 o ausente = no se pone.
+custom-model-data: 0
 description: "Un pez de ejemplo que documenta cada campo disponible."
 
 # FRESHWATER | SALTWATER | DEEP | TROPICAL | ARCTIC | VOLCANIC | MAGIC | LEGENDARY

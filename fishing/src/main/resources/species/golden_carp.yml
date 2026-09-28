@@ -1,7 +1,7 @@
 id: golden_carp
 display-name: "&6Carpa Dorada"
 icon: TROPICAL_FISH
-custom-model-data: 1001
+model: rpgroll_fishing:species/golden_carp
 description: "Solo sube a la superficie de los lagos en primavera."
 category: FRESHWATER
 rarity: RARE

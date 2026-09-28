@@ -1,0 +1,747 @@
+{
+ "format_version": 2,
+ "items": {
+  "minecraft:hay_block": [
+   {
+    "type": "definition",
+    "model": "rpgroll_ranching:feed/hay",
+    "bedrock_identifier": "rpgroll_ranching:feed_hay",
+    "display_name": "Heno",
+    "bedrock_options": {
+     "icon": "rpgroll_ranching_feed_hay",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_ranching:feed/alfalfa",
+    "bedrock_identifier": "rpgroll_ranching:feed_alfalfa",
+    "display_name": "Alfalfa",
+    "bedrock_options": {
+     "icon": "rpgroll_ranching_feed_alfalfa",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_ranching:feed/silage",
+    "bedrock_identifier": "rpgroll_ranching:feed_silage",
+    "display_name": "Ensilado",
+    "bedrock_options": {
+     "icon": "rpgroll_ranching_feed_silage",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:wheat_seeds": [
+   {
+    "type": "definition",
+    "model": "rpgroll_ranching:feed/premium_grain",
+    "bedrock_identifier": "rpgroll_ranching:feed_premium_grain",
+    "display_name": "Grano premium",
+    "bedrock_options": {
+     "icon": "rpgroll_ranching_feed_premium_grain",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:wheat": [
+   {
+    "type": "definition",
+    "model": "rpgroll_ranching:feed/corn_feed",
+    "bedrock_identifier": "rpgroll_ranching:feed_corn_feed",
+    "display_name": "Pienso de maíz",
+    "bedrock_options": {
+     "icon": "rpgroll_ranching_feed_corn_feed",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_ranching:feed/oat_mix",
+    "bedrock_identifier": "rpgroll_ranching:feed_oat_mix",
+    "display_name": "Mezcla de avena",
+    "bedrock_options": {
+     "icon": "rpgroll_ranching_feed_oat_mix",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_ranching:feed/chicken_seed",
+    "bedrock_identifier": "rpgroll_ranching:feed_chicken_seed",
+    "display_name": "Semillas para gallinas",
+    "bedrock_options": {
+     "icon": "rpgroll_ranching_feed_chicken_seed",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:quartz": [
+   {
+    "type": "definition",
+    "model": "rpgroll_ranching:feed/salt_lick",
+    "bedrock_identifier": "rpgroll_ranching:feed_salt_lick",
+    "display_name": "Bloque de sal",
+    "bedrock_options": {
+     "icon": "rpgroll_ranching_feed_salt_lick",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:paper": [
+   {
+    "type": "definition",
+    "model": "rpgroll_ranching:feed/carrot_mix",
+    "bedrock_identifier": "rpgroll_ranching:feed_carrot_mix",
+    "display_name": "Cubo de zanahorias",
+    "bedrock_options": {
+     "icon": "rpgroll_ranching_feed_carrot_mix",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_ranching:medicine/anti_inflammatory",
+    "bedrock_identifier": "rpgroll_ranching:medicine_anti_inflammatory",
+    "display_name": "Antiinflamatorio",
+    "bedrock_options": {
+     "icon": "rpgroll_ranching_medicine_anti_inflammatory",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_ranching:medicine/dewormer",
+    "bedrock_identifier": "rpgroll_ranching:medicine_dewormer",
+    "display_name": "Pasta desparasitaria",
+    "bedrock_options": {
+     "icon": "rpgroll_ranching_medicine_dewormer",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_ranching:medicine/wound_salve",
+    "bedrock_identifier": "rpgroll_ranching:medicine_wound_salve",
+    "display_name": "Pomada cicatrizante",
+    "bedrock_options": {
+     "icon": "rpgroll_ranching_medicine_wound_salve",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_ranching:medicine/vitamin_drench",
+    "bedrock_identifier": "rpgroll_ranching:medicine_vitamin_drench",
+    "display_name": "Jarabe vitamínico",
+    "bedrock_options": {
+     "icon": "rpgroll_ranching_medicine_vitamin_drench",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_ranching:medicine/herbal_tonic",
+    "bedrock_identifier": "rpgroll_ranching:medicine_herbal_tonic",
+    "display_name": "Tónico de hierbas",
+    "bedrock_options": {
+     "icon": "rpgroll_ranching_medicine_herbal_tonic",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_ranching:vaccine/foot_rot_vaccine",
+    "bedrock_identifier": "rpgroll_ranching:vaccine_foot_rot_vaccine",
+    "display_name": "Vacuna contra la pododermatitis",
+    "bedrock_options": {
+     "icon": "rpgroll_ranching_vaccine_foot_rot_vaccine",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_ranching:vaccine/pneumonia_vaccine",
+    "bedrock_identifier": "rpgroll_ranching:vaccine_pneumonia_vaccine",
+    "display_name": "Vacuna contra la neumonía",
+    "bedrock_options": {
+     "icon": "rpgroll_ranching_vaccine_pneumonia_vaccine",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_ranching:vaccine/enteritis_vaccine",
+    "bedrock_identifier": "rpgroll_ranching:vaccine_enteritis_vaccine",
+    "display_name": "Vacuna contra la enteritis",
+    "bedrock_options": {
+     "icon": "rpgroll_ranching_vaccine_enteritis_vaccine",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_ranching:vaccine/foot_and_mouth_vaccine",
+    "bedrock_identifier": "rpgroll_ranching:vaccine_foot_and_mouth_vaccine",
+    "display_name": "Vacuna contra la fiebre aftosa",
+    "bedrock_options": {
+     "icon": "rpgroll_ranching_vaccine_foot_and_mouth_vaccine",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_ranching:vaccine/polyvalent_vaccine",
+    "bedrock_identifier": "rpgroll_ranching:vaccine_polyvalent_vaccine",
+    "display_name": "Vacuna polivalente",
+    "bedrock_options": {
+     "icon": "rpgroll_ranching_vaccine_polyvalent_vaccine",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:gold_nugget": [
+   {
+    "type": "definition",
+    "model": "rpgroll_ranching:feed/golden_feed",
+    "bedrock_identifier": "rpgroll_ranching:feed_golden_feed",
+    "display_name": "Pienso dorado",
+    "bedrock_options": {
+     "icon": "rpgroll_ranching_feed_golden_feed",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:splash_potion": [
+   {
+    "type": "definition",
+    "model": "rpgroll_ranching:medicine/antibiotic_shot",
+    "bedrock_identifier": "rpgroll_ranching:medicine_antibiotic_shot",
+    "display_name": "Inyección de antibióticos",
+    "bedrock_options": {
+     "icon": "rpgroll_ranching_medicine_antibiotic_shot",
+     "allow_offhand": true,
+     "display_handheld": true
+    }
+   }
+  ],
+  "minecraft:potion": [
+   {
+    "type": "definition",
+    "model": "rpgroll_ranching:vaccine/flu_vaccine",
+    "bedrock_identifier": "rpgroll_ranching:vaccine_flu_vaccine",
+    "display_name": "Vacuna antigripal",
+    "bedrock_options": {
+     "icon": "rpgroll_ranching_vaccine_flu_vaccine",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:milk_bucket": [
+   {
+    "type": "definition",
+    "model": "rpgroll_ranching:product/milk",
+    "bedrock_identifier": "rpgroll_ranching:product_milk",
+    "display_name": "Cubo de leche",
+    "bedrock_options": {
+     "icon": "rpgroll_ranching_product_milk",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_ranching:product/milk_legendary",
+    "bedrock_identifier": "rpgroll_ranching:product_milk_legendary",
+    "display_name": "Leche dorada",
+    "bedrock_options": {
+     "icon": "rpgroll_ranching_product_milk_legendary",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:white_wool": [
+   {
+    "type": "definition",
+    "model": "rpgroll_ranching:product/wool",
+    "bedrock_identifier": "rpgroll_ranching:product_wool",
+    "display_name": "Vellón",
+    "bedrock_options": {
+     "icon": "rpgroll_ranching_product_wool",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_ranching:product/wool_legendary",
+    "bedrock_identifier": "rpgroll_ranching:product_wool_legendary",
+    "display_name": "Vellocino de oro",
+    "bedrock_options": {
+     "icon": "rpgroll_ranching_product_wool_legendary",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:orange_wool": [
+   {
+    "type": "definition",
+    "model": "rpgroll_ranching:product/wool",
+    "bedrock_identifier": "rpgroll_ranching:product_wool",
+    "display_name": "Vellón",
+    "bedrock_options": {
+     "icon": "rpgroll_ranching_product_wool",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_ranching:product/wool_legendary",
+    "bedrock_identifier": "rpgroll_ranching:product_wool_legendary",
+    "display_name": "Vellocino de oro",
+    "bedrock_options": {
+     "icon": "rpgroll_ranching_product_wool_legendary",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:magenta_wool": [
+   {
+    "type": "definition",
+    "model": "rpgroll_ranching:product/wool",
+    "bedrock_identifier": "rpgroll_ranching:product_wool",
+    "display_name": "Vellón",
+    "bedrock_options": {
+     "icon": "rpgroll_ranching_product_wool",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_ranching:product/wool_legendary",
+    "bedrock_identifier": "rpgroll_ranching:product_wool_legendary",
+    "display_name": "Vellocino de oro",
+    "bedrock_options": {
+     "icon": "rpgroll_ranching_product_wool_legendary",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:light_blue_wool": [
+   {
+    "type": "definition",
+    "model": "rpgroll_ranching:product/wool",
+    "bedrock_identifier": "rpgroll_ranching:product_wool",
+    "display_name": "Vellón",
+    "bedrock_options": {
+     "icon": "rpgroll_ranching_product_wool",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_ranching:product/wool_legendary",
+    "bedrock_identifier": "rpgroll_ranching:product_wool_legendary",
+    "display_name": "Vellocino de oro",
+    "bedrock_options": {
+     "icon": "rpgroll_ranching_product_wool_legendary",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:yellow_wool": [
+   {
+    "type": "definition",
+    "model": "rpgroll_ranching:product/wool",
+    "bedrock_identifier": "rpgroll_ranching:product_wool",
+    "display_name": "Vellón",
+    "bedrock_options": {
+     "icon": "rpgroll_ranching_product_wool",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_ranching:product/wool_legendary",
+    "bedrock_identifier": "rpgroll_ranching:product_wool_legendary",
+    "display_name": "Vellocino de oro",
+    "bedrock_options": {
+     "icon": "rpgroll_ranching_product_wool_legendary",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:lime_wool": [
+   {
+    "type": "definition",
+    "model": "rpgroll_ranching:product/wool",
+    "bedrock_identifier": "rpgroll_ranching:product_wool",
+    "display_name": "Vellón",
+    "bedrock_options": {
+     "icon": "rpgroll_ranching_product_wool",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_ranching:product/wool_legendary",
+    "bedrock_identifier": "rpgroll_ranching:product_wool_legendary",
+    "display_name": "Vellocino de oro",
+    "bedrock_options": {
+     "icon": "rpgroll_ranching_product_wool_legendary",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:pink_wool": [
+   {
+    "type": "definition",
+    "model": "rpgroll_ranching:product/wool",
+    "bedrock_identifier": "rpgroll_ranching:product_wool",
+    "display_name": "Vellón",
+    "bedrock_options": {
+     "icon": "rpgroll_ranching_product_wool",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_ranching:product/wool_legendary",
+    "bedrock_identifier": "rpgroll_ranching:product_wool_legendary",
+    "display_name": "Vellocino de oro",
+    "bedrock_options": {
+     "icon": "rpgroll_ranching_product_wool_legendary",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:gray_wool": [
+   {
+    "type": "definition",
+    "model": "rpgroll_ranching:product/wool",
+    "bedrock_identifier": "rpgroll_ranching:product_wool",
+    "display_name": "Vellón",
+    "bedrock_options": {
+     "icon": "rpgroll_ranching_product_wool",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_ranching:product/wool_legendary",
+    "bedrock_identifier": "rpgroll_ranching:product_wool_legendary",
+    "display_name": "Vellocino de oro",
+    "bedrock_options": {
+     "icon": "rpgroll_ranching_product_wool_legendary",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:light_gray_wool": [
+   {
+    "type": "definition",
+    "model": "rpgroll_ranching:product/wool",
+    "bedrock_identifier": "rpgroll_ranching:product_wool",
+    "display_name": "Vellón",
+    "bedrock_options": {
+     "icon": "rpgroll_ranching_product_wool",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_ranching:product/wool_legendary",
+    "bedrock_identifier": "rpgroll_ranching:product_wool_legendary",
+    "display_name": "Vellocino de oro",
+    "bedrock_options": {
+     "icon": "rpgroll_ranching_product_wool_legendary",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:cyan_wool": [
+   {
+    "type": "definition",
+    "model": "rpgroll_ranching:product/wool",
+    "bedrock_identifier": "rpgroll_ranching:product_wool",
+    "display_name": "Vellón",
+    "bedrock_options": {
+     "icon": "rpgroll_ranching_product_wool",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_ranching:product/wool_legendary",
+    "bedrock_identifier": "rpgroll_ranching:product_wool_legendary",
+    "display_name": "Vellocino de oro",
+    "bedrock_options": {
+     "icon": "rpgroll_ranching_product_wool_legendary",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:purple_wool": [
+   {
+    "type": "definition",
+    "model": "rpgroll_ranching:product/wool",
+    "bedrock_identifier": "rpgroll_ranching:product_wool",
+    "display_name": "Vellón",
+    "bedrock_options": {
+     "icon": "rpgroll_ranching_product_wool",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_ranching:product/wool_legendary",
+    "bedrock_identifier": "rpgroll_ranching:product_wool_legendary",
+    "display_name": "Vellocino de oro",
+    "bedrock_options": {
+     "icon": "rpgroll_ranching_product_wool_legendary",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:blue_wool": [
+   {
+    "type": "definition",
+    "model": "rpgroll_ranching:product/wool",
+    "bedrock_identifier": "rpgroll_ranching:product_wool",
+    "display_name": "Vellón",
+    "bedrock_options": {
+     "icon": "rpgroll_ranching_product_wool",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_ranching:product/wool_legendary",
+    "bedrock_identifier": "rpgroll_ranching:product_wool_legendary",
+    "display_name": "Vellocino de oro",
+    "bedrock_options": {
+     "icon": "rpgroll_ranching_product_wool_legendary",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:brown_wool": [
+   {
+    "type": "definition",
+    "model": "rpgroll_ranching:product/wool",
+    "bedrock_identifier": "rpgroll_ranching:product_wool",
+    "display_name": "Vellón",
+    "bedrock_options": {
+     "icon": "rpgroll_ranching_product_wool",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_ranching:product/wool_legendary",
+    "bedrock_identifier": "rpgroll_ranching:product_wool_legendary",
+    "display_name": "Vellocino de oro",
+    "bedrock_options": {
+     "icon": "rpgroll_ranching_product_wool_legendary",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:green_wool": [
+   {
+    "type": "definition",
+    "model": "rpgroll_ranching:product/wool",
+    "bedrock_identifier": "rpgroll_ranching:product_wool",
+    "display_name": "Vellón",
+    "bedrock_options": {
+     "icon": "rpgroll_ranching_product_wool",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_ranching:product/wool_legendary",
+    "bedrock_identifier": "rpgroll_ranching:product_wool_legendary",
+    "display_name": "Vellocino de oro",
+    "bedrock_options": {
+     "icon": "rpgroll_ranching_product_wool_legendary",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:red_wool": [
+   {
+    "type": "definition",
+    "model": "rpgroll_ranching:product/wool",
+    "bedrock_identifier": "rpgroll_ranching:product_wool",
+    "display_name": "Vellón",
+    "bedrock_options": {
+     "icon": "rpgroll_ranching_product_wool",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_ranching:product/wool_legendary",
+    "bedrock_identifier": "rpgroll_ranching:product_wool_legendary",
+    "display_name": "Vellocino de oro",
+    "bedrock_options": {
+     "icon": "rpgroll_ranching_product_wool_legendary",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:black_wool": [
+   {
+    "type": "definition",
+    "model": "rpgroll_ranching:product/wool",
+    "bedrock_identifier": "rpgroll_ranching:product_wool",
+    "display_name": "Vellón",
+    "bedrock_options": {
+     "icon": "rpgroll_ranching_product_wool",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_ranching:product/wool_legendary",
+    "bedrock_identifier": "rpgroll_ranching:product_wool_legendary",
+    "display_name": "Vellocino de oro",
+    "bedrock_options": {
+     "icon": "rpgroll_ranching_product_wool_legendary",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:egg": [
+   {
+    "type": "definition",
+    "model": "rpgroll_ranching:product/egg",
+    "bedrock_identifier": "rpgroll_ranching:product_egg",
+    "display_name": "Huevo de granja",
+    "bedrock_options": {
+     "icon": "rpgroll_ranching_product_egg",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_ranching:product/egg_legendary",
+    "bedrock_identifier": "rpgroll_ranching:product_egg_legendary",
+    "display_name": "Huevo de oro",
+    "bedrock_options": {
+     "icon": "rpgroll_ranching_product_egg_legendary",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:cooked_beef": [
+   {
+    "type": "definition",
+    "model": "rpgroll_ranching:product/meat",
+    "bedrock_identifier": "rpgroll_ranching:product_meat",
+    "display_name": "Chuletón",
+    "bedrock_options": {
+     "icon": "rpgroll_ranching_product_meat",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:leather": [
+   {
+    "type": "definition",
+    "model": "rpgroll_ranching:product/leather",
+    "bedrock_identifier": "rpgroll_ranching:product_leather",
+    "display_name": "Cuero curtido",
+    "bedrock_options": {
+     "icon": "rpgroll_ranching_product_leather",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:bone": [
+   {
+    "type": "definition",
+    "model": "rpgroll_ranching:product/horns",
+    "bedrock_identifier": "rpgroll_ranching:product_horns",
+    "display_name": "Cuerno",
+    "bedrock_options": {
+     "icon": "rpgroll_ranching_product_horns",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:feather": [
+   {
+    "type": "definition",
+    "model": "rpgroll_ranching:product/feathers",
+    "bedrock_identifier": "rpgroll_ranching:product_feathers",
+    "display_name": "Pluma",
+    "bedrock_options": {
+     "icon": "rpgroll_ranching_product_feathers",
+     "allow_offhand": true,
+     "display_handheld": true
+    }
+   }
+  ]
+ }
+}

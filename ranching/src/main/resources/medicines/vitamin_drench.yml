@@ -1,0 +1,11 @@
+id: vitamin_drench
+display-name: "&6Jarabe Vitamínico"
+icon: PAPER
+model: "rpgroll_ranching:medicine/vitamin_drench"
+description: "Vitaminas y electrolitos: el animal se recupera antes."
+type: VITAMIN
+cures-diseases: [enteritis]
+cure-chance: 0.45
+recovery-boost-ticks: 4000
+health-bonus: 6
+happiness-bonus: 3

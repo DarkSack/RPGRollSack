@@ -1,0 +1,11 @@
+id: anti_inflammatory
+display-name: "&fAntiinflamatorio"
+icon: PAPER
+model: "rpgroll_ranching:medicine/anti_inflammatory"
+description: "Calma el dolor y la fiebre; a veces basta para curar."
+type: PAINKILLER
+cures-diseases: [foot_and_mouth, foot_rot]
+cure-chance: 0.3
+recovery-boost-ticks: 2000
+health-bonus: 4
+happiness-bonus: 4

@@ -1,0 +1,16 @@
+id: mackerel
+display-name: "&bCaballa"
+icon: COD
+model: "rpgroll_fishing:species/mackerel"
+description: "Viaja en grandes bancos por la costa."
+category: SALTWATER
+rarity: COMMON
+water-types: [OCEAN]
+min-weight: 0.3
+max-weight: 2
+min-length: 25
+max-length: 50
+base-price: 5
+base-experience: 3
+behavior: FAST
+attracted-by-bait-tags: [shrimp, shiny, saltwater]

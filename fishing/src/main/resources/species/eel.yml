@@ -1,0 +1,17 @@
+id: eel
+display-name: "&6Anguila"
+icon: COD
+model: "rpgroll_fishing:species/eel"
+description: "Resbaladiza y nocturna: cuesta sujetarla."
+category: FRESHWATER
+rarity: UNCOMMON
+water-types: [RIVER, SWAMP]
+min-weight: 0.4
+max-weight: 4
+min-length: 40
+max-length: 110
+base-price: 15
+base-experience: 9
+behavior: ELUSIVE
+allowed-times: [NIGHT, MIDNIGHT]
+attracted-by-bait-tags: [worm]

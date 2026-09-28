@@ -1,0 +1,11 @@
+id: alfalfa
+display-name: "&aAlfalfa"
+icon: HAY_BLOCK
+model: "rpgroll_ranching:feed/alfalfa"
+description: "Forraje rico en proteína: el favorito de vacas y ovejas."
+quality: GOOD
+tags: [hay]
+nutrition-value: 25
+health-bonus: 3
+happiness-bonus: 4
+production-bonus: 5

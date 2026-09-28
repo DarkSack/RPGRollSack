@@ -1,6 +1,7 @@
 package com.sack.rpgroll.fishing.core;
 
 import com.sack.rpgroll.common.content.ContentParser;
+import com.sack.rpgroll.fishing.item.ItemModels;
 
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -18,6 +19,8 @@ public class FishSpeciesParser implements ContentParser<FishSpecies> {
         if (id == null || id.isBlank()) {
             throw new IllegalArgumentException("archivo sin campo obligatorio 'id'");
         }
+
+        ItemModels.register("species", id, config.getString("model"));
 
         return new FishSpecies(
                 id,

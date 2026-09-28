@@ -1,0 +1,8 @@
+# GENERADO por sackito-network/infra/objetos/construir.py: no se edita a mano.
+id: rpgroll-fishing
+name: rpgroll-fishing
+version: '1.0'
+author: 'RPGRoll'
+namespace: rpgroll_fishing
+priority: 25
+description: 'Modelos de RPGRoll-Fishing'

@@ -1,0 +1,12 @@
+id: carbon_rod
+display-name: "&8Caña de Carbono"
+material: FISHING_ROD
+model: "rpgroll_fishing:rod/carbon_rod"
+description: "Rígida y precisa: siente cada picada."
+durability: 160
+cast-power: 1.2
+reel-speed: 1.5
+precision: 14
+resistance: 1.5
+luck-bonus: 1.3
+preferred-categories: [saltwater, tropical]

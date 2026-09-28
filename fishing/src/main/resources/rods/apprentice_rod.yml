@@ -1,6 +1,7 @@
 id: apprentice_rod
 display-name: "&fCaña de Aprendiz"
 material: FISHING_ROD
+model: rpgroll_fishing:rod/apprentice_rod
 description: "Una caña simple con bonos modestos — el primer paso más allá de la pesca vanilla."
 durability: 64
 cast-power: 1.0

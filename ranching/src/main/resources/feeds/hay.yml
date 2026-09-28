@@ -1,6 +1,7 @@
 id: hay
 display-name: "&fHeno"
 icon: HAY_BLOCK
+model: rpgroll_ranching:feed/hay
 description: "Alimento básico y barato."
 quality: COMMON
 tags: [hay]

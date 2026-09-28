@@ -1,0 +1,11 @@
+id: dewormer
+display-name: "&2Pasta Desparasitaria"
+icon: PAPER
+model: "rpgroll_ranching:medicine/dewormer"
+description: "Acaba con ácaros y parásitos."
+type: ANTIPARASITIC
+cures-diseases: [mange]
+cure-chance: 0.75
+recovery-boost-ticks: 2500
+health-bonus: 2
+happiness-bonus: 2

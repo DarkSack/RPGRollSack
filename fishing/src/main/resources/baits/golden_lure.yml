@@ -1,6 +1,7 @@
 id: golden_lure
 display-name: "&6Señuelo Dorado"
 material: GOLD_NUGGET
+model: rpgroll_fishing:bait/golden_lure
 description: "La carnada legendaria — atrae la atención de lo que normalmente ni se acerca."
 tags: [magic, shiny]
 quality-bonus: 3

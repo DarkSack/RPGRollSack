@@ -20,4 +20,7 @@ dependencies {
     compileOnly(project(":fx"))
     compileOnly(project(":effects"))
     compileOnly(project(":seasons"))
+
+    // Registro del pack de modelos de fábrica (softdepend; ver registerPack()).
+    compileOnly(project(":sackresourcepack"))
 }

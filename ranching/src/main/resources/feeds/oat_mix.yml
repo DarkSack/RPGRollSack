@@ -1,0 +1,11 @@
+id: oat_mix
+display-name: "&fMezcla de Avena"
+icon: WHEAT
+model: "rpgroll_ranching:feed/oat_mix"
+description: "Suave y equilibrada, para el día a día."
+quality: COMMON
+tags: [grain]
+nutrition-value: 20
+health-bonus: 3
+happiness-bonus: 3
+production-bonus: 2

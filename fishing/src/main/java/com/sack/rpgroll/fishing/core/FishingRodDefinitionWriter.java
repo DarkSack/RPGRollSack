@@ -16,7 +16,9 @@ public class FishingRodDefinitionWriter {
 
     public void save(FishingRod rod) {
 
-        YamlConfiguration config = new YamlConfiguration();
+        File file = new File(folder, rod.id() + ".yml");
+        // Se parte del fichero que haya: así se conservan las claves que el editor no toca (model:...).
+        YamlConfiguration config = file.exists() ? YamlConfiguration.loadConfiguration(file) : new YamlConfiguration();
         config.set("id", rod.id());
         config.set("display-name", rod.displayName());
         config.set("material", rod.material());
@@ -31,7 +33,7 @@ public class FishingRodDefinitionWriter {
 
         try {
             folder.mkdirs();
-            config.save(new File(folder, rod.id() + ".yml"));
+            config.save(file);
         } catch (IOException e) {
             throw new RuntimeException("No se pudo guardar la caña " + rod.id(), e);
         }

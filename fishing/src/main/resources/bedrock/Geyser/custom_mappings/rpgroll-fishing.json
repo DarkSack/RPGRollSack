@@ -1,0 +1,423 @@
+{
+ "format_version": 2,
+ "items": {
+  "minecraft:salmon": [
+   {
+    "type": "definition",
+    "model": "rpgroll_fishing:species/atlantic_salmon",
+    "bedrock_identifier": "rpgroll_fishing:species_atlantic_salmon",
+    "display_name": "Salmón",
+    "bedrock_options": {
+     "icon": "rpgroll_fishing_species_atlantic_salmon",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_fishing:species/river_trout",
+    "bedrock_identifier": "rpgroll_fishing:species_river_trout",
+    "display_name": "Trucha de río",
+    "bedrock_options": {
+     "icon": "rpgroll_fishing_species_river_trout",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:cod": [
+   {
+    "type": "definition",
+    "model": "rpgroll_fishing:species/bluefin_tuna",
+    "bedrock_identifier": "rpgroll_fishing:species_bluefin_tuna",
+    "display_name": "Atún rojo",
+    "bedrock_options": {
+     "icon": "rpgroll_fishing_species_bluefin_tuna",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_fishing:species/catfish",
+    "bedrock_identifier": "rpgroll_fishing:species_catfish",
+    "display_name": "Bagre",
+    "bedrock_options": {
+     "icon": "rpgroll_fishing_species_catfish",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_fishing:species/northern_pike",
+    "bedrock_identifier": "rpgroll_fishing:species_northern_pike",
+    "display_name": "Lucio",
+    "bedrock_options": {
+     "icon": "rpgroll_fishing_species_northern_pike",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_fishing:species/perch",
+    "bedrock_identifier": "rpgroll_fishing:species_perch",
+    "display_name": "Perca",
+    "bedrock_options": {
+     "icon": "rpgroll_fishing_species_perch",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_fishing:species/eel",
+    "bedrock_identifier": "rpgroll_fishing:species_eel",
+    "display_name": "Anguila",
+    "bedrock_options": {
+     "icon": "rpgroll_fishing_species_eel",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_fishing:species/swordfish",
+    "bedrock_identifier": "rpgroll_fishing:species_swordfish",
+    "display_name": "Pez espada",
+    "bedrock_options": {
+     "icon": "rpgroll_fishing_species_swordfish",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_fishing:species/anglerfish",
+    "bedrock_identifier": "rpgroll_fishing:species_anglerfish",
+    "display_name": "Rape abisal",
+    "bedrock_options": {
+     "icon": "rpgroll_fishing_species_anglerfish",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_fishing:species/piranha",
+    "bedrock_identifier": "rpgroll_fishing:species_piranha",
+    "display_name": "Piraña",
+    "bedrock_options": {
+     "icon": "rpgroll_fishing_species_piranha",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_fishing:species/sturgeon",
+    "bedrock_identifier": "rpgroll_fishing:species_sturgeon",
+    "display_name": "Esturión",
+    "bedrock_options": {
+     "icon": "rpgroll_fishing_species_sturgeon",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_fishing:species/mackerel",
+    "bedrock_identifier": "rpgroll_fishing:species_mackerel",
+    "display_name": "Caballa",
+    "bedrock_options": {
+     "icon": "rpgroll_fishing_species_mackerel",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_fishing:species/crab",
+    "bedrock_identifier": "rpgroll_fishing:species_crab",
+    "display_name": "Cangrejo",
+    "bedrock_options": {
+     "icon": "rpgroll_fishing_species_crab",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_fishing:species/lobster",
+    "bedrock_identifier": "rpgroll_fishing:species_lobster",
+    "display_name": "Langosta",
+    "bedrock_options": {
+     "icon": "rpgroll_fishing_species_lobster",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:tropical_fish": [
+   {
+    "type": "definition",
+    "model": "rpgroll_fishing:species/golden_carp",
+    "bedrock_identifier": "rpgroll_fishing:species_golden_carp",
+    "display_name": "Carpa dorada",
+    "bedrock_options": {
+     "icon": "rpgroll_fishing_species_golden_carp",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_fishing:species/dragon_fish",
+    "bedrock_identifier": "rpgroll_fishing:species_dragon_fish",
+    "display_name": "Pez dragón",
+    "bedrock_options": {
+     "icon": "rpgroll_fishing_species_dragon_fish",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_fishing:species/leviathan",
+    "bedrock_identifier": "rpgroll_fishing:species_leviathan",
+    "display_name": "Leviatán",
+    "bedrock_options": {
+     "icon": "rpgroll_fishing_species_leviathan",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_fishing:species/clownfish",
+    "bedrock_identifier": "rpgroll_fishing:species_clownfish",
+    "display_name": "Pez payaso",
+    "bedrock_options": {
+     "icon": "rpgroll_fishing_species_clownfish",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_fishing:species/koi",
+    "bedrock_identifier": "rpgroll_fishing:species_koi",
+    "display_name": "Koi",
+    "bedrock_options": {
+     "icon": "rpgroll_fishing_species_koi",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:pufferfish": [
+   {
+    "type": "definition",
+    "model": "rpgroll_fishing:species/pufferfish_venom",
+    "bedrock_identifier": "rpgroll_fishing:species_pufferfish_venom",
+    "display_name": "Pez globo",
+    "bedrock_options": {
+     "icon": "rpgroll_fishing_species_pufferfish_venom",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:fishing_rod": [
+   {
+    "type": "definition",
+    "model": "rpgroll_fishing:rod/apprentice_rod",
+    "bedrock_identifier": "rpgroll_fishing:rod_apprentice_rod",
+    "display_name": "Caña de aprendiz",
+    "bedrock_options": {
+     "icon": "rpgroll_fishing_rod_apprentice_rod",
+     "allow_offhand": true,
+     "display_handheld": true
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_fishing:rod/master_anglers_rod",
+    "bedrock_identifier": "rpgroll_fishing:rod_master_anglers_rod",
+    "display_name": "Caña del maestro pescador",
+    "bedrock_options": {
+     "icon": "rpgroll_fishing_rod_master_anglers_rod",
+     "allow_offhand": true,
+     "display_handheld": true
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_fishing:rod/bamboo_rod",
+    "bedrock_identifier": "rpgroll_fishing:rod_bamboo_rod",
+    "display_name": "Caña de bambú",
+    "bedrock_options": {
+     "icon": "rpgroll_fishing_rod_bamboo_rod",
+     "allow_offhand": true,
+     "display_handheld": true
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_fishing:rod/carbon_rod",
+    "bedrock_identifier": "rpgroll_fishing:rod_carbon_rod",
+    "display_name": "Caña de carbono",
+    "bedrock_options": {
+     "icon": "rpgroll_fishing_rod_carbon_rod",
+     "allow_offhand": true,
+     "display_handheld": true
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_fishing:rod/deep_sea_rod",
+    "bedrock_identifier": "rpgroll_fishing:rod_deep_sea_rod",
+    "display_name": "Caña de altura",
+    "bedrock_options": {
+     "icon": "rpgroll_fishing_rod_deep_sea_rod",
+     "allow_offhand": true,
+     "display_handheld": true
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_fishing:rod/abyssal_rod",
+    "bedrock_identifier": "rpgroll_fishing:rod_abyssal_rod",
+    "display_name": "Caña abisal",
+    "bedrock_options": {
+     "icon": "rpgroll_fishing_rod_abyssal_rod",
+     "allow_offhand": true,
+     "display_handheld": true
+    }
+   }
+  ],
+  "minecraft:string": [
+   {
+    "type": "definition",
+    "model": "rpgroll_fishing:bait/earthworm",
+    "bedrock_identifier": "rpgroll_fishing:bait_earthworm",
+    "display_name": "Lombriz",
+    "bedrock_options": {
+     "icon": "rpgroll_fishing_bait_earthworm",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_fishing:bait/cricket",
+    "bedrock_identifier": "rpgroll_fishing:bait_cricket",
+    "display_name": "Grillo",
+    "bedrock_options": {
+     "icon": "rpgroll_fishing_bait_cricket",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_fishing:bait/raw_shrimp",
+    "bedrock_identifier": "rpgroll_fishing:bait_raw_shrimp",
+    "display_name": "Gamba cruda",
+    "bedrock_options": {
+     "icon": "rpgroll_fishing_bait_raw_shrimp",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_fishing:bait/spinner_lure",
+    "bedrock_identifier": "rpgroll_fishing:bait_spinner_lure",
+    "display_name": "Cucharilla giratoria",
+    "bedrock_options": {
+     "icon": "rpgroll_fishing_bait_spinner_lure",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_fishing:bait/feather_fly",
+    "bedrock_identifier": "rpgroll_fishing:bait_feather_fly",
+    "display_name": "Mosca de pluma",
+    "bedrock_options": {
+     "icon": "rpgroll_fishing_bait_feather_fly",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:gold_nugget": [
+   {
+    "type": "definition",
+    "model": "rpgroll_fishing:bait/golden_lure",
+    "bedrock_identifier": "rpgroll_fishing:bait_golden_lure",
+    "display_name": "Señuelo dorado",
+    "bedrock_options": {
+     "icon": "rpgroll_fishing_bait_golden_lure",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:leather_boots": [
+   {
+    "type": "definition",
+    "model": "rpgroll_fishing:junk/old_boot",
+    "bedrock_identifier": "rpgroll_fishing:junk_old_boot",
+    "display_name": "Bota vieja",
+    "bedrock_options": {
+     "icon": "rpgroll_fishing_junk_old_boot",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:iron_nugget": [
+   {
+    "type": "definition",
+    "model": "rpgroll_fishing:junk/tin_can",
+    "bedrock_identifier": "rpgroll_fishing:junk_tin_can",
+    "display_name": "Lata oxidada",
+    "bedrock_options": {
+     "icon": "rpgroll_fishing_junk_tin_can",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:flint": [
+   {
+    "type": "definition",
+    "model": "rpgroll_fishing:junk/broken_bottle",
+    "bedrock_identifier": "rpgroll_fishing:junk_broken_bottle",
+    "display_name": "Botella rota",
+    "bedrock_options": {
+     "icon": "rpgroll_fishing_junk_broken_bottle",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:stick": [
+   {
+    "type": "definition",
+    "model": "rpgroll_fishing:junk/driftwood",
+    "bedrock_identifier": "rpgroll_fishing:junk_driftwood",
+    "display_name": "Madera de deriva",
+    "bedrock_options": {
+     "icon": "rpgroll_fishing_junk_driftwood",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ]
+ }
+}

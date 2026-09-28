@@ -1,0 +1,8 @@
+id: enteritis_vaccine
+display-name: "&5Vacuna contra la Enteritis"
+icon: PAPER
+model: "rpgroll_ranching:vaccine/enteritis_vaccine"
+description: "Protege el intestino de las crías y los adultos."
+prevents-diseases: [enteritis]
+risk-reduction: 0.8
+immunity-duration-ticks: 48000

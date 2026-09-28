@@ -1,7 +1,7 @@
 id: dragon_fish
 display-name: "&4Pez Dragón"
 icon: TROPICAL_FISH
-custom-model-data: 1002
+model: rpgroll_fishing:species/dragon_fish
 description: "Vive cerca de fumarolas volcánicas submarinas — quema al sacarlo del agua."
 category: VOLCANIC
 rarity: EPIC

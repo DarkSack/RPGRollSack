@@ -18,7 +18,9 @@ public class GeneDefinitionWriter {
 
     public void save(Gene gene) {
 
-        YamlConfiguration config = new YamlConfiguration();
+        File file = new File(folder, gene.id() + ".yml");
+        // Se parte del fichero que haya: así se conservan las claves que el editor no toca (model:...).
+        YamlConfiguration config = file.exists() ? YamlConfiguration.loadConfiguration(file) : new YamlConfiguration();
         config.set("id", gene.id());
         config.set("display-name", gene.displayName());
         config.set("description", gene.description());
@@ -45,7 +47,7 @@ public class GeneDefinitionWriter {
 
         try {
             folder.mkdirs();
-            config.save(new File(folder, gene.id() + ".yml"));
+            config.save(file);
         } catch (IOException e) {
             throw new RuntimeException("No se pudo guardar el gen " + gene.id(), e);
         }

@@ -1,6 +1,7 @@
 id: river_trout
 display-name: "&fTrucha"
 icon: SALMON
+model: rpgroll_fishing:species/river_trout
 description: "Común en cualquier río de agua fría."
 category: FRESHWATER
 rarity: COMMON

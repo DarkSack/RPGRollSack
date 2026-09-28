@@ -1,6 +1,7 @@
 package com.sack.rpgroll.fishing.core;
 
 import com.sack.rpgroll.common.content.ContentParser;
+import com.sack.rpgroll.fishing.item.ItemModels;
 
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -22,6 +23,8 @@ public class FishingRodParser implements ContentParser<FishingRod> {
         for (String entry : config.getStringList("preferred-categories")) {
             categories.add(entry.trim().toLowerCase(Locale.ROOT));
         }
+
+        ItemModels.register("rod", id, config.getString("model"));
 
         return new FishingRod(
                 id,

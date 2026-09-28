@@ -1,0 +1,11 @@
+id: corn_feed
+display-name: "&ePienso de Maíz"
+icon: WHEAT
+model: "rpgroll_ranching:feed/corn_feed"
+description: "Energético y barato: engorda rápido."
+quality: GOOD
+tags: [grain]
+nutrition-value: 30
+health-bonus: 2
+happiness-bonus: 5
+production-bonus: 6

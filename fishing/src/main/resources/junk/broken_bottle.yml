@@ -1,0 +1,6 @@
+id: broken_bottle
+display-name: "&7Botella Rota"
+icon: FLINT
+model: "rpgroll_fishing:junk/broken_bottle"
+description: "Sin mensaje dentro. Cuidado, que corta."
+weight: 0.8

@@ -1,0 +1,16 @@
+id: swordfish
+display-name: "&9Pez Espada"
+icon: COD
+model: "rpgroll_fishing:species/swordfish"
+description: "Veloz cazador de altamar con una espada por hocico."
+category: SALTWATER
+rarity: RARE
+water-types: [DEEP_OCEAN]
+min-weight: 40
+max-weight: 300
+min-length: 150
+max-length: 400
+base-price: 90
+base-experience: 45
+behavior: JUMPER
+attracted-by-bait-tags: [lure, shiny]

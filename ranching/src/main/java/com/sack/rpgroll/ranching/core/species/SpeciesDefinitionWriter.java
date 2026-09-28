@@ -16,7 +16,9 @@ public class SpeciesDefinitionWriter {
 
     public void save(Species species) {
 
-        YamlConfiguration config = new YamlConfiguration();
+        File file = new File(folder, species.id() + ".yml");
+        // Se parte del fichero que haya: así se conservan las claves que el editor no toca (model:...).
+        YamlConfiguration config = file.exists() ? YamlConfiguration.loadConfiguration(file) : new YamlConfiguration();
         config.set("id", species.id());
         config.set("display-name", species.displayName());
         config.set("icon", species.icon());
@@ -24,6 +26,7 @@ public class SpeciesDefinitionWriter {
         config.set("entity-type", species.entityType());
         config.set("product-types", List.copyOf(species.productTypes()));
 
+        config.set("base-production", null);
         for (var entry : species.baseProduction().entrySet()) {
             config.set("base-production." + entry.getKey(), entry.getValue());
         }
@@ -41,7 +44,7 @@ public class SpeciesDefinitionWriter {
 
         try {
             folder.mkdirs();
-            config.save(new File(folder, species.id() + ".yml"));
+            config.save(file);
         } catch (IOException e) {
             throw new RuntimeException("No se pudo guardar la especie " + species.id(), e);
         }

@@ -17,7 +17,9 @@ public class BreedDefinitionWriter {
 
     public void save(Breed breed) {
 
-        YamlConfiguration config = new YamlConfiguration();
+        File file = new File(folder, breed.id() + ".yml");
+        // Se parte del fichero que haya: así se conservan las claves que el editor no toca (model:...).
+        YamlConfiguration config = file.exists() ? YamlConfiguration.loadConfiguration(file) : new YamlConfiguration();
         config.set("id", breed.id());
         config.set("display-name", breed.displayName());
         config.set("description", breed.description());
@@ -31,7 +33,7 @@ public class BreedDefinitionWriter {
 
         try {
             folder.mkdirs();
-            config.save(new File(folder, breed.id() + ".yml"));
+            config.save(file);
         } catch (IOException e) {
             throw new RuntimeException("No se pudo guardar la raza " + breed.id(), e);
         }

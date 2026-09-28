@@ -1,9 +1,10 @@
 id: antibiotic_shot
 display-name: "&fInyección de Antibióticos"
 icon: SPLASH_POTION
+model: rpgroll_ranching:medicine/antibiotic_shot
 description: "Trata infecciones activas — no siempre cura al instante."
 type: ANTIBIOTIC
-cures-diseases: [bovine_flu]
+cures-diseases: [bovine_flu, pneumonia, foot_rot]
 cure-chance: 0.6
 recovery-boost-ticks: 3000
 health-bonus: 3

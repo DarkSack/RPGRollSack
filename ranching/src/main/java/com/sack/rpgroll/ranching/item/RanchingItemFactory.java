@@ -66,7 +66,7 @@ public final class RanchingItemFactory {
                 .setLore(lore)
                 .build();
 
-        return tag(item, RanchingItemKeys.FEED_ID, feed.id());
+        return tag(ItemModels.apply(item, "feed", feed.id()), RanchingItemKeys.FEED_ID, feed.id());
     }
 
     public static ItemStack createMedicine(LangManager lang, Medicine medicine) {
@@ -95,7 +95,7 @@ public final class RanchingItemFactory {
                 .setLore(lore)
                 .build();
 
-        return tag(item, RanchingItemKeys.MEDICINE_ID, medicine.id());
+        return tag(ItemModels.apply(item, "medicine", medicine.id()), RanchingItemKeys.MEDICINE_ID, medicine.id());
     }
 
     public static ItemStack createVaccine(LangManager lang, Vaccine vaccine) {
@@ -123,7 +123,7 @@ public final class RanchingItemFactory {
                 .setLore(lore)
                 .build();
 
-        return tag(item, RanchingItemKeys.VACCINE_ID, vaccine.id());
+        return tag(ItemModels.apply(item, "vaccine", vaccine.id()), RanchingItemKeys.VACCINE_ID, vaccine.id());
     }
 
     public static String getFeedId(ItemStack item) {

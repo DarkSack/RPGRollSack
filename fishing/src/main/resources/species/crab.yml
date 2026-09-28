@@ -1,0 +1,17 @@
+id: crab
+display-name: "&cCangrejo"
+icon: COD
+model: "rpgroll_fishing:species/crab"
+description: "Camina de lado por el fondo de la costa."
+category: SALTWATER
+rarity: COMMON
+water-types: [OCEAN, SWAMP]
+depths: [BOTTOM]
+min-weight: 0.2
+max-weight: 2.5
+min-length: 8
+max-length: 25
+base-price: 7
+base-experience: 4
+behavior: SLOW
+attracted-by-bait-tags: [shrimp, saltwater]

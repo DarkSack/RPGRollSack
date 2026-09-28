@@ -1,0 +1,9 @@
+id: foot_and_mouth
+display-name: "&4Fiebre Aftosa"
+description: "Llagas en boca y patas; se extiende rápido entre animales."
+symptoms: [fiebre, llagas, babeo]
+duration-ticks: 16000
+contagion-chance: 0.14
+health-penalty-per-check: 3
+happiness-penalty-per-check: 5
+production-penalty: 0.35

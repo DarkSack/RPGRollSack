@@ -1,5 +1,6 @@
 id: old_boot
 display-name: "&7Bota Vieja"
 icon: LEATHER_BOOTS
+model: rpgroll_fishing:junk/old_boot
 description: "No, no era eso lo que estabas buscando."
 weight: 1.0

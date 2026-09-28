@@ -1,0 +1,8 @@
+id: foot_and_mouth_vaccine
+display-name: "&dVacuna contra la Fiebre Aftosa"
+icon: PAPER
+model: "rpgroll_ranching:vaccine/foot_and_mouth_vaccine"
+description: "Frena el brote antes de que llegue."
+prevents-diseases: [foot_and_mouth]
+risk-reduction: 0.9
+immunity-duration-ticks: 72000

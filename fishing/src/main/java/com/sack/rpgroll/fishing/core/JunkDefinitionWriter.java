@@ -15,7 +15,9 @@ public class JunkDefinitionWriter {
 
     public void save(Junk junk) {
 
-        YamlConfiguration config = new YamlConfiguration();
+        File file = new File(folder, junk.id() + ".yml");
+        // Se parte del fichero que haya: así se conservan las claves que el editor no toca (model:...).
+        YamlConfiguration config = file.exists() ? YamlConfiguration.loadConfiguration(file) : new YamlConfiguration();
         config.set("id", junk.id());
         config.set("display-name", junk.displayName());
         config.set("icon", junk.icon());
@@ -24,7 +26,7 @@ public class JunkDefinitionWriter {
 
         try {
             folder.mkdirs();
-            config.save(new File(folder, junk.id() + ".yml"));
+            config.save(file);
         } catch (IOException e) {
             throw new RuntimeException("No se pudo guardar la basura " + junk.id(), e);
         }

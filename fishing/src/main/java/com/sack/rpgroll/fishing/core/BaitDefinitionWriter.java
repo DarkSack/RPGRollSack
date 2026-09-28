@@ -16,7 +16,9 @@ public class BaitDefinitionWriter {
 
     public void save(Bait bait) {
 
-        YamlConfiguration config = new YamlConfiguration();
+        File file = new File(folder, bait.id() + ".yml");
+        // Se parte del fichero que haya: así se conservan las claves que el editor no toca (model:...).
+        YamlConfiguration config = file.exists() ? YamlConfiguration.loadConfiguration(file) : new YamlConfiguration();
         config.set("id", bait.id());
         config.set("display-name", bait.displayName());
         config.set("material", bait.material());
@@ -27,7 +29,7 @@ public class BaitDefinitionWriter {
 
         try {
             folder.mkdirs();
-            config.save(new File(folder, bait.id() + ".yml"));
+            config.save(file);
         } catch (IOException e) {
             throw new RuntimeException("No se pudo guardar la carnada " + bait.id(), e);
         }

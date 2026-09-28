@@ -1,0 +1,11 @@
+id: herbal_tonic
+display-name: "&2Tónico de Hierbas"
+icon: PAPER
+model: "rpgroll_ranching:medicine/herbal_tonic"
+description: "Remedio de siempre: suave, pero ayuda con lo respiratorio."
+type: VITAMIN
+cures-diseases: [bovine_flu, pneumonia]
+cure-chance: 0.3
+recovery-boost-ticks: 2500
+health-bonus: 3
+happiness-bonus: 6

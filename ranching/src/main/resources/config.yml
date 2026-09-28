@@ -24,3 +24,25 @@ production-check-interval-ticks: 100
 
 # Radio (bloques) en el que una enfermedad contagiosa puede propagarse a animales cercanos.
 disease-contagion-radius: 6.0
+
+# Modelo 3D de cada producto, por tipo (el de product-types de las especies). Un texto = el mismo
+# modelo para todas las calidades; una sección = "default" más uno por calidad (COMMON, GOOD,
+# PREMIUM, ORGANIC, LEGENDARY). Borra una línea para dejar el ítem vanilla.
+product-models:
+  milk:
+    default: rpgroll_ranching:product/milk
+    LEGENDARY: rpgroll_ranching:product/milk_legendary
+  wool:
+    default: rpgroll_ranching:product/wool
+    LEGENDARY: rpgroll_ranching:product/wool_legendary
+  eggs:
+    default: rpgroll_ranching:product/egg
+    LEGENDARY: rpgroll_ranching:product/egg_legendary
+  meat: rpgroll_ranching:product/meat
+  leather: rpgroll_ranching:product/leather
+  horns: rpgroll_ranching:product/horns
+  feathers: rpgroll_ranching:product/feathers
+
+resource-pack:
+  # Registrar los modelos de fábrica en SackResourcePack al arrancar (si está instalado).
+  register-in-sackresourcepack: true

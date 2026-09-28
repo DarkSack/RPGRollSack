@@ -1,0 +1,11 @@
+id: silage
+display-name: "&2Ensilado"
+icon: HAY_BLOCK
+model: "rpgroll_ranching:feed/silage"
+description: "Forraje fermentado: mucha leche en invierno."
+quality: PREMIUM
+tags: [hay]
+nutrition-value: 35
+health-bonus: 3
+happiness-bonus: 4
+production-bonus: 12

@@ -1,6 +1,7 @@
 package com.sack.rpgroll.ranching.core.nutrition;
 
 import com.sack.rpgroll.common.content.ContentParser;
+import com.sack.rpgroll.ranching.item.ItemModels;
 
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -17,6 +18,8 @@ public class FeedParser implements ContentParser<Feed> {
         if (id == null || id.isBlank()) {
             throw new IllegalArgumentException("archivo sin campo obligatorio 'id'");
         }
+
+        ItemModels.register("feed", id, config.getString("model"));
 
         return new Feed(
                 id,

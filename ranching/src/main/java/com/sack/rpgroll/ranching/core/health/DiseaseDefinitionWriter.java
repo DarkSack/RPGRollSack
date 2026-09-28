@@ -16,7 +16,9 @@ public class DiseaseDefinitionWriter {
 
     public void save(Disease disease) {
 
-        YamlConfiguration config = new YamlConfiguration();
+        File file = new File(folder, disease.id() + ".yml");
+        // Se parte del fichero que haya: así se conservan las claves que el editor no toca (model:...).
+        YamlConfiguration config = file.exists() ? YamlConfiguration.loadConfiguration(file) : new YamlConfiguration();
         config.set("id", disease.id());
         config.set("display-name", disease.displayName());
         config.set("description", disease.description());
@@ -29,7 +31,7 @@ public class DiseaseDefinitionWriter {
 
         try {
             folder.mkdirs();
-            config.save(new File(folder, disease.id() + ".yml"));
+            config.save(file);
         } catch (IOException e) {
             throw new RuntimeException("No se pudo guardar la enfermedad " + disease.id(), e);
         }

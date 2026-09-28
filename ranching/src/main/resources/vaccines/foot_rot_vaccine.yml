@@ -1,0 +1,8 @@
+id: foot_rot_vaccine
+display-name: "&6Vacuna contra la Pododermatitis"
+icon: PAPER
+model: "rpgroll_ranching:vaccine/foot_rot_vaccine"
+description: "Protege patas y pezuñas durante meses."
+prevents-diseases: [foot_rot]
+risk-reduction: 0.8
+immunity-duration-ticks: 60000

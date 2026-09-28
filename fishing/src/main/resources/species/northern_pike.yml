@@ -1,0 +1,16 @@
+id: northern_pike
+display-name: "&aLucio"
+icon: COD
+model: "rpgroll_fishing:species/northern_pike"
+description: "Depredador de emboscada de ríos y lagos fríos."
+category: FRESHWATER
+rarity: UNCOMMON
+water-types: [RIVER, LAKE]
+min-weight: 1.2
+max-weight: 9
+min-length: 40
+max-length: 110
+base-price: 16
+base-experience: 9
+behavior: AGGRESSIVE
+attracted-by-bait-tags: [lure, shiny]

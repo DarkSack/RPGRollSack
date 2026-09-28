@@ -16,7 +16,9 @@ public class FeedDefinitionWriter {
 
     public void save(Feed feed) {
 
-        YamlConfiguration config = new YamlConfiguration();
+        File file = new File(folder, feed.id() + ".yml");
+        // Se parte del fichero que haya: así se conservan las claves que el editor no toca (model:...).
+        YamlConfiguration config = file.exists() ? YamlConfiguration.loadConfiguration(file) : new YamlConfiguration();
         config.set("id", feed.id());
         config.set("display-name", feed.displayName());
         config.set("icon", feed.icon());
@@ -30,7 +32,7 @@ public class FeedDefinitionWriter {
 
         try {
             folder.mkdirs();
-            config.save(new File(folder, feed.id() + ".yml"));
+            config.save(file);
         } catch (IOException e) {
             throw new RuntimeException("No se pudo guardar el alimento " + feed.id(), e);
         }

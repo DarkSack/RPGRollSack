@@ -1,0 +1,11 @@
+id: salt_lick
+display-name: "&fBloque de Sal"
+icon: QUARTZ
+model: "rpgroll_ranching:feed/salt_lick"
+description: "Minerales que cualquier animal agradece; no quita el hambre."
+quality: GOOD
+tags: []
+nutrition-value: 5
+health-bonus: 6
+happiness-bonus: 6
+production-bonus: 3

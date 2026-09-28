@@ -1,0 +1,8 @@
+id: pneumonia_vaccine
+display-name: "&eVacuna contra la Neumonía"
+icon: PAPER
+model: "rpgroll_ranching:vaccine/pneumonia_vaccine"
+description: "Imprescindible en corrales cerrados."
+prevents-diseases: [pneumonia]
+risk-reduction: 0.85
+immunity-duration-ticks: 48000

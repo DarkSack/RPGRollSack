@@ -3,6 +3,7 @@ package com.sack.rpgroll.ranching.listener;
 import com.sack.rpgroll.util.ComponentUtils;
 
 import com.sack.rpgroll.common.lang.LangManager;
+import com.sack.rpgroll.ranching.item.ItemModels;
 import com.sack.rpgroll.ranching.core.animal.Animal;
 import com.sack.rpgroll.ranching.core.animal.AnimalManager;
 import com.sack.rpgroll.ranching.core.breeds.Breed;
@@ -230,7 +231,7 @@ public class ProductionListener implements Listener {
                 qualityColor(result.quality()))));
         item.setItemMeta(meta);
 
-        return item;
+        return ItemModels.applyProduct(item, result.productType(), result.quality());
     }
 
     private NamedTextColor qualityColor(ProductQuality quality) {

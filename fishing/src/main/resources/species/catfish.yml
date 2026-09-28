@@ -1,0 +1,17 @@
+id: catfish
+display-name: "&fBagre"
+icon: COD
+model: "rpgroll_fishing:species/catfish"
+description: "Bigotudo y paciente: se esconde en el fondo de lagos y pantanos."
+category: FRESHWATER
+rarity: UNCOMMON
+water-types: [LAKE, SWAMP]
+depths: [BOTTOM]
+min-weight: 1.5
+max-weight: 12
+min-length: 40
+max-length: 120
+base-price: 14
+base-experience: 8
+behavior: SLOW
+attracted-by-bait-tags: [worm, freshwater]

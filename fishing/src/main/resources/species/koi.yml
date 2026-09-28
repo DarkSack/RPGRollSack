@@ -1,0 +1,16 @@
+id: koi
+display-name: "&fKoi"
+icon: TROPICAL_FISH
+model: "rpgroll_fishing:species/koi"
+description: "Carpa ornamental: los buenos ejemplares valen una fortuna."
+category: FRESHWATER
+rarity: RARE
+water-types: [LAKE]
+min-weight: 1
+max-weight: 10
+min-length: 30
+max-length: 90
+base-price: 60
+base-experience: 22
+behavior: SLOW
+attracted-by-bait-tags: [freshwater, insect]

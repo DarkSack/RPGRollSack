@@ -1,0 +1,17 @@
+id: lobster
+display-name: "&4Langosta"
+icon: COD
+model: "rpgroll_fishing:species/lobster"
+description: "Acorazada y cotizada en cualquier mercado."
+category: SALTWATER
+rarity: RARE
+water-types: [OCEAN]
+depths: [BOTTOM]
+min-weight: 0.5
+max-weight: 6
+min-length: 20
+max-length: 60
+base-price: 55
+base-experience: 20
+behavior: SLOW
+attracted-by-bait-tags: [shrimp]

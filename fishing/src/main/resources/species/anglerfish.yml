@@ -1,0 +1,18 @@
+id: anglerfish
+display-name: "&8Rape Abisal"
+icon: COD
+model: "rpgroll_fishing:species/anglerfish"
+description: "Su farolillo atrae presas en la oscuridad del fondo."
+category: DEEP
+rarity: EPIC
+water-types: [DEEP_OCEAN]
+depths: [BOTTOM, UNDERWATER_CAVE]
+min-weight: 2
+max-weight: 25
+min-length: 30
+max-length: 100
+base-price: 140
+base-experience: 70
+behavior: ELUSIVE
+allowed-times: [NIGHT, MIDNIGHT]
+attracted-by-bait-tags: [shiny, magic]

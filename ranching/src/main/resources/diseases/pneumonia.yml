@@ -1,0 +1,9 @@
+id: pneumonia
+display-name: "&cNeumonía"
+description: "Infección respiratoria: muy contagiosa en corrales cerrados."
+symptoms: [tos, fiebre, letargo]
+duration-ticks: 12000
+contagion-chance: 0.1
+health-penalty-per-check: 3
+happiness-penalty-per-check: 3
+production-penalty: 0.5

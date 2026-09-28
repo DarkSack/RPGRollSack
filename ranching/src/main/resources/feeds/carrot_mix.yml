@@ -1,0 +1,11 @@
+id: carrot_mix
+display-name: "&6Cubo de Zanahorias"
+icon: PAPER
+model: "rpgroll_ranching:feed/carrot_mix"
+description: "Un capricho: los animales lo reciben con alegría."
+quality: COMMON
+tags: []
+nutrition-value: 12
+health-bonus: 1
+happiness-bonus: 10
+production-bonus: 1
