@@ -1,5 +1,6 @@
 package com.sack.rpgroll.fishing.item;
 
+import com.sack.rpgroll.common.item.SellValue;
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.util.ComponentUtils;
 
@@ -151,6 +152,8 @@ public final class FishingItemFactory {
             data.set(FishingItemKeys.WEIGHT, PersistentDataType.DOUBLE, result.weight());
             data.set(FishingItemKeys.LENGTH, PersistentDataType.DOUBLE, result.length());
             data.set(FishingItemKeys.PRICE, PersistentDataType.DOUBLE, result.price());
+            // Lo que paga el comprador de RPGRoll-Economy (un pez no se apila: es su precio entero).
+            data.set(SellValue.KEY, PersistentDataType.DOUBLE, result.price());
             item.setItemMeta(meta);
         }
 

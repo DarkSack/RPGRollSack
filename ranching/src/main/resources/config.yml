@@ -43,6 +43,25 @@ product-models:
   horns: rpgroll_ranching:product/horns
   feathers: rpgroll_ranching:product/feathers
 
+# Lo que paga por unidad el comprador de RPGRoll-Economy por cada producto (el tipo de product-types),
+# antes de la calidad. Un tipo sin precio no se le puede vender.
+product-prices:
+  milk: 6
+  wool: 3
+  eggs: 1.5
+  meat: 4
+  leather: 3
+  horns: 5
+  feathers: 1
+
+# Multiplicador del precio según la calidad del producto.
+product-quality-multipliers:
+  COMMON: 1.0
+  GOOD: 1.25
+  PREMIUM: 1.6
+  ORGANIC: 2.0
+  LEGENDARY: 3.5
+
 resource-pack:
   # Registrar los modelos de fábrica en SackResourcePack al arrancar (si está instalado).
   register-in-sackresourcepack: true

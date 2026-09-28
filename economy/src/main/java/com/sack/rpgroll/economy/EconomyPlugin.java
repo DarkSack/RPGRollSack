@@ -14,6 +14,8 @@ import com.sack.rpgroll.economy.command.AuctionCommand;
 import com.sack.rpgroll.economy.auction.AuctionStore;
 import com.sack.rpgroll.economy.bank.BankAccountStore;
 import com.sack.rpgroll.economy.bank.BankManager;
+import com.sack.rpgroll.economy.buyer.BuyerListener;
+import com.sack.rpgroll.economy.buyer.BuyerService;
 import com.sack.rpgroll.economy.command.EconomyAdminCommand;
 import com.sack.rpgroll.economy.command.EconomyCommand;
 import com.sack.rpgroll.economy.company.CompanyManager;
@@ -83,6 +85,7 @@ public class EconomyPlugin extends JavaPlugin {
     private InflationTracker inflationTracker;
     private ServerShopManager serverShopManager;
     private ServerShopService serverShopService;
+    private BuyerService buyerService;
 
     private AuctionService auctionService;
 
@@ -163,6 +166,9 @@ public class EconomyPlugin extends JavaPlugin {
         serverShopManager.initialize();
         serverShopService = new ServerShopService(walletService, currencyManager, marketProductManager, marketEngine,
                 getConfig().getDouble("server-shop.market-sell-ratio", 0.4));
+        buyerService = new BuyerService(serverShopManager, serverShopService, currencyManager, walletService);
+        configureBuyer();
+        getServer().getPluginManager().registerEvents(new BuyerListener(this), this);
 
         EconomyAPI.init(currencyManager, marketProductManager, marketRegionManager, taxRuleManager, walletService,
                 ledger, bankManager, loanService, taxEngine, marketEngine, shopManager, auctionManager,
@@ -183,6 +189,9 @@ public class EconomyPlugin extends JavaPlugin {
 
     @Override
     public void onDisable() {
+
+        // Antes de guardar: al cerrar la ventana del comprador se devuelve lo que había dentro.
+        BuyerListener.closeAll();
 
         if (walletManager != null) {
             walletManager.saveAll();
@@ -268,6 +277,7 @@ public class EconomyPlugin extends JavaPlugin {
 
         var adminExecutor = new EconomyAdminCommand(currencyManager, marketProductManager, marketEngine, taxRuleManager,
                     walletService, inflationTracker, chatPromptManager, this::reloadContent);
+        adminExecutor.setBuyerService(buyerService);
 
         // Registrado por Brigadier para que `execute as` entregue al jugador real.
         com.sack.rpgroll.common.command.BrigadierCommands.register(this, "economyadmin",
@@ -305,8 +315,14 @@ public class EconomyPlugin extends JavaPlugin {
         taxRuleManager.reload();
         serverShopManager.reload();
         serverShopService.setSellRatio(getConfig().getDouble("server-shop.market-sell-ratio", 0.4));
+        configureBuyer();
         auctionManager.settings(auctionSettings());
         loanService.configure(LoanService.Settings.from(getConfig().getConfigurationSection("loans")));
+    }
+
+    private void configureBuyer() {
+        buyerService.configure(getConfig().getDouble("buyer.value-multiplier", 1.0),
+                getConfig().getBoolean("buyer.accept-shop-prices", true));
     }
 
     private void startTasks() {

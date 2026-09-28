@@ -44,6 +44,7 @@ admin:
     &7 • &6setbalance
     &7 • &9inflation
     &7 • &csnapshot
+    &7 • &acomprador <jugador>
   browser_players_only: "&cSolo un jugador puede abrir el navegador."
   reload_done: "&a✔ RPGRoll-Economy recargado."
   adjust_usage: "&eUso: /economyadmin {sub} <jugador> <moneda> <cantidad>"
@@ -53,6 +54,7 @@ admin:
   inflation_header: "&6=== Inflación ==="
   inflation_line: "&e{currency}: {amount} ({sign}{change}%)"
   snapshot_done: "&a✔ Foto de masa monetaria tomada."
+  buyer_usage: "&eUso: /economyadmin comprador <jugador>"
 
 player:
   balance: "&6Balance ({currency}): {amount}"
@@ -390,3 +392,23 @@ auction_house:
     hint: "&eClic: recoger"
     empty: "&7La caja está vacía."
     all: "&aRecoger todo"
+
+buyer:
+  title: "Comprador"
+  sell_name: "&a&lVender"
+  sell_empty: "&7Deja arriba lo que quieras vender."
+  sell_count: "&7{count} ítem(s) que sí compro"
+  sell_total: "&7Te pago: &a{money}"
+  sell_rejected: "&c{count} casilla(s) que no compro"
+  cancel_name: "&cCerrar"
+  help_name: "&eCómo funciona"
+  help_lore: |-
+    &7Pon arriba los ítems y pulsa &aVender&7.
+    &7Pago por el valor de cada cosa: peces,
+    &7productos del rancho y lo que compra /tienda.
+    &7Lo que no compro te lo devuelvo al cerrar.
+  nothing: "&cNo hay nada que pueda comprarte."
+  failed: "&cNo se pudo pagar la venta; no se tocó nada."
+  sold: "&a✔ Vendiste {count} ítem(s) por &e{money}&a."
+  returned: "&7Te devolví {count} montón(es) que no vendiste."
+  disabled: "&cEl comprador no está disponible."

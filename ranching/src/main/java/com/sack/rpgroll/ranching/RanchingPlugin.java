@@ -28,6 +28,7 @@ import com.sack.rpgroll.ranching.core.species.SpeciesManager;
 import com.sack.rpgroll.ranching.core.welfare.WelfareTask;
 import com.sack.rpgroll.ranching.gui.ChatPromptManager;
 import com.sack.rpgroll.ranching.item.ItemModels;
+import com.sack.rpgroll.ranching.item.ProductPrices;
 import com.sack.rpgroll.ranching.listener.AnimalCareListener;
 import com.sack.rpgroll.ranching.listener.BreedingListener;
 import com.sack.rpgroll.ranching.listener.ProductionListener;
@@ -84,6 +85,8 @@ public class RanchingPlugin extends JavaPlugin {
         registerPack();
 
         ItemModels.loadProducts(getConfig().getConfigurationSection("product-models"));
+        ProductPrices.load(getConfig().getConfigurationSection("product-prices"),
+                getConfig().getConfigurationSection("product-quality-multipliers"));
         initializeManagers();
 
         GeneticsMode geneticsMode = parseGeneticsMode(getConfig().getString("genetics-mode", "ADVANCED"));
@@ -171,6 +174,8 @@ public class RanchingPlugin extends JavaPlugin {
         reloadConfig();
         langManager.reload(getConfig().getString("language", "es"));
         ItemModels.loadProducts(getConfig().getConfigurationSection("product-models"));
+        ProductPrices.load(getConfig().getConfigurationSection("product-prices"),
+                getConfig().getConfigurationSection("product-quality-multipliers"));
         speciesManager.reload();
         breedManager.reload();
         geneManager.reload();

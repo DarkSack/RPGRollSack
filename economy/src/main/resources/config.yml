@@ -93,3 +93,14 @@ server-shop:
   # fracción de su precio de mercado se paga al jugador que vende. Por debajo
   # de 1 para que comprar y revender en el acto no dé dinero.
   market-sell-ratio: 0.4
+
+# El comprador: una ventana donde el jugador deja lo que quiera y pulsa "Vender".
+# Se abre con /economyadmin comprador <jugador>, normalmente desde un NPC (acción
+# COMMAND: "economyadmin comprador {player}"). Paga por el valor que trae el ítem
+# (peces, productos del rancho...) y, si no trae, lo que pagaría /tienda por ese
+# material limpio. Lo que no compra se devuelve al cerrar.
+buyer:
+  # Multiplica todo lo que paga (0.8 = un 20% menos que el valor).
+  value-multiplier: 1.0
+  # Si compra también los materiales vanilla al precio de venta de /tienda.
+  accept-shop-prices: true

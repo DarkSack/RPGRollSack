@@ -44,6 +44,7 @@ admin:
     &7 • &6setbalance
     &7 • &9inflation
     &7 • &csnapshot
+    &7 • &acomprador <player>
   browser_players_only: "&cOnly a player can open the browser."
   reload_done: "&a✔ RPGRoll-Economy reloaded."
   adjust_usage: "&eUsage: /economyadmin {sub} <player> <currency> <amount>"
@@ -53,6 +54,7 @@ admin:
   inflation_header: "&6=== Inflation ==="
   inflation_line: "&e{currency}: {amount} ({sign}{change}%)"
   snapshot_done: "&a✔ Money-supply snapshot taken."
+  buyer_usage: "&eUsage: /economyadmin comprador <player>"
 
 player:
   balance: "&6Balance ({currency}): {amount}"
@@ -390,3 +392,23 @@ auction_house:
     hint: "&eClick: collect"
     empty: "&7The box is empty."
     all: "&aCollect everything"
+
+buyer:
+  title: "Buyer"
+  sell_name: "&a&lSell"
+  sell_empty: "&7Put above whatever you want to sell."
+  sell_count: "&7{count} item(s) I will buy"
+  sell_total: "&7I pay you: &a{money}"
+  sell_rejected: "&c{count} slot(s) I don't buy"
+  cancel_name: "&cClose"
+  help_name: "&eHow it works"
+  help_lore: |-
+    &7Put items above and press &aSell&7.
+    &7I pay what each thing is worth: fish,
+    &7ranch products and whatever /shop buys.
+    &7Anything I don't buy is returned on close.
+  nothing: "&cThere is nothing I can buy from you."
+  failed: "&cThe sale could not be paid; nothing was taken."
+  sold: "&a✔ You sold {count} item(s) for &e{money}&a."
+  returned: "&7Returned {count} stack(s) you didn't sell."
+  disabled: "&cThe buyer is not available."

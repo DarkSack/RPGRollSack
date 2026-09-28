@@ -1,0 +1,21 @@
+# Ejemplo: no se carga (los ficheros que empiezan por "_" se saltan). Cópialo sin el "_" y cambia la ubicación.
+# Necesita RPGRoll-Economy: abre la ventana del comprador, donde el jugador deja lo
+# que quiera vender y pulsa "Vender". Paga según el valor de cada ítem (peces,
+# productos del rancho...) o lo que pagaría /tienda por el material; lo demás se devuelve.
+id: comprador
+display-name: "&6Comprador"
+pose: "STANDING"
+
+location:
+  world: world
+  x: 12.0
+  y: 65.0
+  z: 5.0
+  yaw: 90.0
+  pitch: 0.0
+
+actions:
+  - type: MESSAGE
+    value: "&6¿Qué me traes hoy, {player}?"
+  - type: COMMAND
+    value: "economyadmin comprador {player}"

@@ -1,5 +1,6 @@
 package com.sack.rpgroll.ranching.item;
 
+import com.sack.rpgroll.common.item.SellValue;
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.util.ComponentUtils;
 
@@ -176,6 +177,11 @@ public final class RanchingItemFactory {
 
         meta.getPersistentDataContainer().set(ProductKeys.QUALITY, PersistentDataType.STRING, quality.name());
         meta.getPersistentDataContainer().set(ProductKeys.PRODUCT_TYPE, PersistentDataType.STRING, productType);
+        // Lo que paga el comprador de RPGRoll-Economy por unidad (0 = no lo compra).
+        double value = ProductPrices.valueOf(productType, quality);
+        if (value > 0) {
+            meta.getPersistentDataContainer().set(SellValue.KEY, PersistentDataType.DOUBLE, value);
+        }
 
         meta.lore(List.of(ComponentUtils.parseWithDefault(lang.raw("item.feed.quality", "quality", quality),
                 qualityColor(quality))));

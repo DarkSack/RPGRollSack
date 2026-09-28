@@ -3,6 +3,8 @@ package com.sack.rpgroll.economy.command;
 import com.sack.rpgroll.common.command.Senders;
 
 import com.sack.rpgroll.common.lang.LangManager;
+import com.sack.rpgroll.economy.buyer.BuyerMenu;
+import com.sack.rpgroll.economy.buyer.BuyerService;
 import com.sack.rpgroll.economy.currency.CurrencyManager;
 import com.sack.rpgroll.economy.gui.ChatPromptManager;
 import com.sack.rpgroll.economy.gui.EconomyAdminHubGUI;
@@ -28,7 +30,7 @@ import java.util.List;
 public class EconomyAdminCommand implements CommandExecutor, TabCompleter {
 
     private static final List<String> SUBCOMMANDS = List.of("browser", "reload", "give", "take", "setbalance",
-            "inflation", "snapshot");
+            "inflation", "snapshot", "comprador");
 
     private final CurrencyManager currencyManager;
     private final MarketProductManager marketProductManager;
@@ -39,6 +41,7 @@ public class EconomyAdminCommand implements CommandExecutor, TabCompleter {
     private final ChatPromptManager chatPromptManager;
     private final Runnable onReload;
     private final LangManager lang;
+    private BuyerService buyerService;
 
     public EconomyAdminCommand(CurrencyManager currencyManager, MarketProductManager marketProductManager,
             MarketEngine marketEngine, TaxRuleManager taxRuleManager, WalletService walletService,
@@ -52,6 +55,10 @@ public class EconomyAdminCommand implements CommandExecutor, TabCompleter {
         this.chatPromptManager = chatPromptManager;
         this.onReload = onReload;
         this.lang = chatPromptManager.lang();
+    }
+
+    public void setBuyerService(BuyerService buyerService) {
+        this.buyerService = buyerService;
     }
 
     @Override
@@ -88,10 +95,30 @@ public class EconomyAdminCommand implements CommandExecutor, TabCompleter {
                 inflationTracker.takeSnapshot();
                 lang.send(sender, "admin.snapshot_done");
             }
+            case "comprador", "buyer" -> handleBuyer(sender, args);
             default -> lang.send(sender, "common.unknown_subcommand");
         }
 
         return true;
+    }
+
+    /** Abre el comprador a un jugador: pensado para la acción COMMAND de un NPC ({player}). */
+    private void handleBuyer(CommandSender sender, String[] args) {
+
+        Player target = args.length >= 2 ? Bukkit.getPlayerExact(args[1])
+                : Senders.asPlayer(sender) instanceof Player self ? self : null;
+
+        if (target == null) {
+            lang.send(sender, "admin.buyer_usage");
+            return;
+        }
+
+        if (buyerService == null) {
+            lang.send(sender, "buyer.disabled");
+            return;
+        }
+
+        new BuyerMenu(target, buyerService, lang).open();
     }
 
     private void handleAdjust(CommandSender sender, String[] args, boolean give) {
@@ -181,7 +208,8 @@ public class EconomyAdminCommand implements CommandExecutor, TabCompleter {
 
         String sub = args[0].toLowerCase();
 
-        if (args.length == 2 && (sub.equals("give") || sub.equals("take") || sub.equals("setbalance"))) {
+        if (args.length == 2 && (sub.equals("give") || sub.equals("take") || sub.equals("setbalance")
+                || sub.equals("comprador"))) {
             return TabCompleteUtil.onlinePlayerNames(args[1]);
         }
 

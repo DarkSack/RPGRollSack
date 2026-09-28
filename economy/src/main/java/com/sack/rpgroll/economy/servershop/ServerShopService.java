@@ -169,6 +169,13 @@ public class ServerShopService {
         return new Outcome(Result.SOLD, units, money);
     }
 
+    /** Apunta en el mercado una venta hecha fuera de /tienda (el comprador), para que mueva el precio igual. */
+    public void recordMarketSell(ServerShopEntry entry, int units) {
+        if (marketProduct(entry).isPresent()) {
+            market.recordSell(entry.market(), units);
+        }
+    }
+
     private Optional<MarketProduct> marketProduct(ServerShopEntry entry) {
         return entry.market() == null ? Optional.empty() : products.get(entry.market());
     }
