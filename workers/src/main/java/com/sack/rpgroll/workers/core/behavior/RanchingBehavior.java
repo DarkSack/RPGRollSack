@@ -1,5 +1,6 @@
 package com.sack.rpgroll.workers.core.behavior;
 
+import com.sack.rpgroll.common.integration.SoftDepend;
 import com.sack.rpgroll.ranching.api.RanchingAPI;
 import com.sack.rpgroll.ranching.core.animal.Animal;
 import com.sack.rpgroll.workers.core.profession.Profession;
@@ -29,7 +30,7 @@ public class RanchingBehavior implements ProfessionBehavior {
     @Override
     public void work(Worker worker, LivingEntity entity, Profession profession) {
 
-        if (!RanchingAPI.isReady()) {
+        if (!(SoftDepend.enabled("RPGRoll-Ranching") && RanchingAPI.isReady())) {
             return;
         }
 

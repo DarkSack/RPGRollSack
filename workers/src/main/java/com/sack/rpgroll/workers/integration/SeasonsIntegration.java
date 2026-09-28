@@ -1,5 +1,6 @@
 package com.sack.rpgroll.workers.integration;
 
+import com.sack.rpgroll.common.integration.SoftDepend;
 import com.sack.rpgroll.seasons.api.SeasonsAPI;
 
 import org.bukkit.Location;
@@ -19,7 +20,8 @@ public final class SeasonsIntegration {
 
     public static String currentSeasonId(Location location) {
 
-        if (!SeasonsAPI.isReady()) {
+        // Primero el plugin: SeasonsAPI.isReady() ya carga la clase y, sin RPGRoll-Seasons, revienta.
+        if (!(SoftDepend.enabled("RPGRoll-Seasons") && SeasonsAPI.isReady())) {
             return null;
         }
 

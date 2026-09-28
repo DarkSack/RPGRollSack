@@ -1,5 +1,6 @@
 package com.sack.rpgroll.chat.mention;
 
+import com.sack.rpgroll.common.integration.SoftDepend;
 import com.sack.rpgroll.guilds.GuildsAPI;
 
 import org.bukkit.Bukkit;
@@ -34,7 +35,7 @@ public class MentionResolver {
                 continue;
             }
 
-            if (token.equalsIgnoreCase("guild") && GuildsAPI.isReady()) {
+            if (token.equalsIgnoreCase("guild") && (SoftDepend.enabled("RPGRoll-Guilds") && GuildsAPI.isReady())) {
                 GuildsAPI.getGuildManager().findByMember(sender.getUniqueId()).ifPresent(guild ->
                         guild.members().keySet().forEach(uuid -> {
                             Player player = Bukkit.getPlayer(uuid);
@@ -45,7 +46,7 @@ public class MentionResolver {
                 continue;
             }
 
-            if (token.equalsIgnoreCase("team") && GuildsAPI.isReady()) {
+            if (token.equalsIgnoreCase("team") && (SoftDepend.enabled("RPGRoll-Guilds") && GuildsAPI.isReady())) {
                 GuildsAPI.getTeamManager().getTeam(sender.getUniqueId()).ifPresent(team ->
                         team.members().forEach(uuid -> {
                             Player player = Bukkit.getPlayer(uuid);

@@ -1,5 +1,6 @@
 package com.sack.rpgroll.seasons.event;
 
+import com.sack.rpgroll.common.integration.SoftDepend;
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.effects.api.EffectsAPI;
 import com.sack.rpgroll.fx.api.RPGRollFXAPI;
@@ -113,7 +114,7 @@ public class WorldEventEngine {
 
         String effectId = component.param("effect-id", null);
 
-        if (effectId != null && RPGRollFXAPI.isReady()) {
+        if (effectId != null && (SoftDepend.enabled("RPGRoll-FX") && RPGRollFXAPI.isReady())) {
             RPGRollFXAPI.get().play(effectId, player);
         }
     }
@@ -122,7 +123,7 @@ public class WorldEventEngine {
 
         String effectId = component.param("effect-id", null);
 
-        if (effectId != null && EffectsAPI.isReady()) {
+        if (effectId != null && (SoftDepend.enabled("RPGRoll-Effects") && EffectsAPI.isReady())) {
             EffectsAPI.get().apply(effectId, player);
         }
     }

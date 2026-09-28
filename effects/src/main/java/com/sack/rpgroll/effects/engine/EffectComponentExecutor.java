@@ -1,5 +1,6 @@
 package com.sack.rpgroll.effects.engine;
 
+import com.sack.rpgroll.common.integration.SoftDepend;
 import com.sack.rpgroll.util.ComponentUtils;
 
 import com.sack.rpgroll.effects.core.EffectComponent;
@@ -213,7 +214,7 @@ public class EffectComponentExecutor {
 
     private void executeVisual(LivingEntity target, EffectComponent component) {
 
-        if (!(target instanceof Player player) || !RPGRollFXAPI.isReady()) {
+        if (!(target instanceof Player player) || !(SoftDepend.enabled("RPGRoll-FX") && RPGRollFXAPI.isReady())) {
             return;
         }
 

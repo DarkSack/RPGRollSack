@@ -1,5 +1,6 @@
 package com.sack.rpgroll.chat.context;
 
+import com.sack.rpgroll.common.integration.SoftDepend;
 import com.sack.rpgroll.guilds.GuildsAPI;
 
 import org.bukkit.WeatherType;
@@ -35,7 +36,7 @@ public class ChatContextResolver {
             prefix.append("&8[Noche]&r ");
         }
 
-        if (GuildsAPI.isReady()) {
+        if (SoftDepend.enabled("RPGRoll-Guilds") && GuildsAPI.isReady()) {
             GuildsAPI.getGuildManager().getAll().stream()
                     .filter(guild -> guild.territories().stream().anyMatch(t -> t.contains(player.getLocation())))
                     .findFirst()

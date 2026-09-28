@@ -1,5 +1,6 @@
 package com.sack.rpgroll.chat.ignore;
 
+import com.sack.rpgroll.common.integration.SoftDepend;
 import com.sack.rpgroll.guilds.GuildsAPI;
 
 import org.bukkit.entity.Player;
@@ -51,7 +52,7 @@ public class IgnoreManager {
             return true;
         }
 
-        if (GuildsAPI.isReady()) {
+        if (SoftDepend.enabled("RPGRoll-Guilds") && GuildsAPI.isReady()) {
             String guildId = GuildsAPI.getGuildManager().findByMember(sender.getUniqueId())
                     .map(guild -> guild.id())
                     .orElse(null);

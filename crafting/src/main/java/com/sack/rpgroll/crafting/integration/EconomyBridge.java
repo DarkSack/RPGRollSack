@@ -1,5 +1,6 @@
 package com.sack.rpgroll.crafting.integration;
 
+import com.sack.rpgroll.common.integration.SoftDepend;
 import com.sack.rpgroll.economy.api.EconomyAPI;
 import com.sack.rpgroll.economy.ledger.TransactionType;
 import com.sack.rpgroll.economy.wallet.EconomyResult;
@@ -13,7 +14,7 @@ public final class EconomyBridge {
     }
 
     public static boolean isReady() {
-        return EconomyAPI.isReady();
+        return SoftDepend.enabled("RPGRoll-Economy") && EconomyAPI.isReady();
     }
 
     /** @return true si se cobró correctamente (o el costo era 0); false si falta saldo o Economy no está instalado. */
@@ -23,7 +24,7 @@ public final class EconomyBridge {
             return true;
         }
 
-        if (!EconomyAPI.isReady()) {
+        if (!(SoftDepend.enabled("RPGRoll-Economy") && EconomyAPI.isReady())) {
             return false;
         }
 

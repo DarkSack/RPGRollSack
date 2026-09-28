@@ -1,5 +1,6 @@
 package com.sack.rpgroll.chat.command;
 
+import com.sack.rpgroll.common.integration.SoftDepend;
 import com.sack.rpgroll.common.command.Senders;
 
 import com.sack.rpgroll.chat.ignore.IgnoreManager;
@@ -116,7 +117,7 @@ public class IgnoreCommand implements CommandExecutor, TabCompleter {
                 player.sendMessage(Component.text(" - " + (name != null ? name : uuid), NamedTextColor.GRAY));
             });
             case "guild" -> state.ignoredGuilds().forEach(id -> {
-                String name = GuildsAPI.isReady()
+                String name = (SoftDepend.enabled("RPGRoll-Guilds") && GuildsAPI.isReady())
                         ? GuildsAPI.getGuildManager().get(id).map(g -> g.name()).orElse(id)
                         : id;
                 player.sendMessage(Component.text(" - " + name, NamedTextColor.GRAY));

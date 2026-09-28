@@ -1,5 +1,6 @@
 package com.sack.rpgroll.crafting.condition;
 
+import com.sack.rpgroll.common.integration.SoftDepend;
 import com.sack.rpgroll.common.character.Characters;
 import com.sack.rpgroll.guilds.GuildsAPI;
 import com.sack.rpgroll.common.character.RPGCharacters;
@@ -133,7 +134,8 @@ public class ConditionEvaluator {
 
     private boolean evaluateSeason(World world, String seasonId) {
 
-        if (!SeasonsAPI.isReady()) {
+        // Primero el plugin: SeasonsAPI.isReady() ya carga la clase y, sin RPGRoll-Seasons, revienta.
+        if (!(SoftDepend.enabled("RPGRoll-Seasons") && SeasonsAPI.isReady())) {
             return false;
         }
 
@@ -144,7 +146,7 @@ public class ConditionEvaluator {
 
     private boolean evaluateGuildMember(UUID playerId) {
 
-        if (playerId == null || !GuildsAPI.isReady()) {
+        if (playerId == null || !(SoftDepend.enabled("RPGRoll-Guilds") && GuildsAPI.isReady())) {
             return false;
         }
 

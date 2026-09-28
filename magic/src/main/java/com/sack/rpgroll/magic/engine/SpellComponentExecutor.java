@@ -1,5 +1,6 @@
 package com.sack.rpgroll.magic.engine;
 
+import com.sack.rpgroll.common.integration.SoftDepend;
 import com.sack.rpgroll.effects.api.EffectsAPI;
 import com.sack.rpgroll.magic.core.SpellComponent;
 import com.sack.rpgroll.fx.api.RPGRollFXAPI;
@@ -368,7 +369,7 @@ public class SpellComponentExecutor {
 
         String effectId = component.param("effect-id", null);
 
-        if (effectId == null || !RPGRollFXAPI.isReady()) {
+        if (effectId == null || !(SoftDepend.enabled("RPGRoll-FX") && RPGRollFXAPI.isReady())) {
             return;
         }
 
@@ -509,7 +510,7 @@ public class SpellComponentExecutor {
 
         String effectId = component.param("effect-id", null);
 
-        if (effectId == null || !EffectsAPI.isReady()) {
+        if (effectId == null || !(SoftDepend.enabled("RPGRoll-Effects") && EffectsAPI.isReady())) {
             return;
         }
 
@@ -526,7 +527,7 @@ public class SpellComponentExecutor {
 
         String effectId = component.param("effect-id", null);
 
-        if (effectId == null || !EffectsAPI.isReady()) {
+        if (effectId == null || !(SoftDepend.enabled("RPGRoll-Effects") && EffectsAPI.isReady())) {
             return;
         }
 

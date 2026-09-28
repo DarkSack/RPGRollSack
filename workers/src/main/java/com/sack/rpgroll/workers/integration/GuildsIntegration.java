@@ -1,10 +1,10 @@
 package com.sack.rpgroll.workers.integration;
 
+import com.sack.rpgroll.common.integration.SoftDepend;
 import com.sack.rpgroll.guilds.GuildsAPI;
 import com.sack.rpgroll.guilds.guild.Guild;
 import com.sack.rpgroll.guilds.guild.territory.GuildTerritory;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
 import java.util.UUID;
@@ -22,7 +22,7 @@ public final class GuildsIntegration {
 
     public static boolean sameGuild(UUID a, UUID b) {
 
-        if (!GuildsAPI.isReady()) {
+        if (!(SoftDepend.enabled("RPGRoll-Guilds") && GuildsAPI.isReady())) {
             return false;
         }
 
@@ -39,7 +39,7 @@ public final class GuildsIntegration {
      */
     public static boolean mayWorkAt(UUID employerId, Location location) {
 
-        if (!Bukkit.getPluginManager().isPluginEnabled("RPGRoll-Guilds") || !GuildsAPI.isReady()) {
+        if (!(SoftDepend.enabled("RPGRoll-Guilds") && GuildsAPI.isReady())) {
             return true;
         }
 

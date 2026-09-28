@@ -1,5 +1,6 @@
 package com.sack.rpgroll.magic.engine;
 
+import com.sack.rpgroll.common.integration.SoftDepend;
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.magic.affinity.AffinityResolver;
 import com.sack.rpgroll.magic.core.MagicSchool;
@@ -120,7 +121,7 @@ public class SpellCastEngine {
             }
         }
 
-        if (school.castEffectId() != null && RPGRollFXAPI.isReady()) {
+        if (school.castEffectId() != null && (SoftDepend.enabled("RPGRoll-FX") && RPGRollFXAPI.isReady())) {
             RPGRollFXAPI.get().play(school.castEffectId(), caster);
         }
     }

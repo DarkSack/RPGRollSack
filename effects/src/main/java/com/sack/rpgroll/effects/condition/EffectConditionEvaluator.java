@@ -1,5 +1,6 @@
 package com.sack.rpgroll.effects.condition;
 
+import com.sack.rpgroll.common.integration.SoftDepend;
 import com.sack.rpgroll.common.character.Characters;
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.effects.core.EffectCondition;
@@ -231,7 +232,7 @@ public class EffectConditionEvaluator {
 
     private boolean checkGuild(LivingEntity target, String requiredGuildId) {
 
-        if (!(target instanceof Player player) || !GuildsAPI.isReady()) {
+        if (!(target instanceof Player player) || !(SoftDepend.enabled("RPGRoll-Guilds") && GuildsAPI.isReady())) {
             return false;
         }
 
@@ -246,7 +247,7 @@ public class EffectConditionEvaluator {
 
     private boolean checkTeam(LivingEntity target) {
 
-        if (!(target instanceof Player player) || !GuildsAPI.isReady()) {
+        if (!(target instanceof Player player) || !(SoftDepend.enabled("RPGRoll-Guilds") && GuildsAPI.isReady())) {
             return false;
         }
 

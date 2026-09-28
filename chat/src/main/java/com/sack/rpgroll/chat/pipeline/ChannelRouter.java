@@ -1,5 +1,6 @@
 package com.sack.rpgroll.chat.pipeline;
 
+import com.sack.rpgroll.common.integration.SoftDepend;
 import com.sack.rpgroll.chat.channel.ChatChannel;
 import com.sack.rpgroll.chat.channel.ChannelScope;
 import com.sack.rpgroll.chat.ignore.IgnoreManager;
@@ -68,7 +69,7 @@ public class ChannelRouter {
 
     private List<Player> guildMembers(Player sender) {
 
-        if (!GuildsAPI.isReady()) {
+        if (!(SoftDepend.enabled("RPGRoll-Guilds") && GuildsAPI.isReady())) {
             return List.of(sender);
         }
 
@@ -82,7 +83,7 @@ public class ChannelRouter {
 
     private List<Player> teamMembers(Player sender) {
 
-        if (!GuildsAPI.isReady()) {
+        if (!(SoftDepend.enabled("RPGRoll-Guilds") && GuildsAPI.isReady())) {
             return List.of(sender);
         }
 
