@@ -131,6 +131,9 @@ public class ProductionListener implements Listener {
             sheep.setSheared(true);
         }
 
+        // Al cancelar el evento vanilla, las tijeras tampoco se gastan: se gastan aquí.
+        event.getPlayer().damageItemStack(event.getHand(), 1);
+
         event.getEntity().getWorld().dropItemNaturally(event.getEntity().getLocation(), wool);
         event.getPlayer().sendMessage(ComponentUtils.parseWithDefault(
                 lang.raw("listener.production.wool_obtained", "quality", result.get().quality()), NamedTextColor.GREEN));

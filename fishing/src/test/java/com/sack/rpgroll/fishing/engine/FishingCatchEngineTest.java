@@ -60,7 +60,7 @@ class FishingCatchEngineTest {
     }
 
     private FishingConditions lakeConditions() {
-        return new FishingConditions("plains", WaterType.LAKE, DepthRequirement.MID_WATER,
+        return new FishingConditions("plains", WaterType.LAKE, java.util.EnumSet.of(DepthRequirement.SURFACE, DepthRequirement.MID_WATER),
                 com.sack.rpgroll.fishing.core.WeatherType.SUNNY, Set.of(), null);
     }
 

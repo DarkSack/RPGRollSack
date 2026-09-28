@@ -114,6 +114,9 @@ public class RanchingPlugin extends JavaPlugin {
 
         startTasks(animalManager, breedingEngine, inbreedingGenerations);
 
+        // Autoguardado cada 5 minutos: comer, curarse, vacunarse o crecer también tiene que sobrevivir a un cierre inesperado.
+        getServer().getScheduler().runTaskTimer(this, animalManager::autosave, 5 * 60 * 20L, 5 * 60 * 20L);
+
         var ranchingAdminCommand = new RanchingAdminCommand(speciesManager, breedManager, geneManager,
                     feedManager, diseaseManager, vaccineManager, medicineManager, animalManager, geneticsEngine,
                     pedigreeService, breedingEngine, chatPromptManager, inbreedingGenerations, this::reloadContent);
@@ -166,6 +169,7 @@ public class RanchingPlugin extends JavaPlugin {
 
     private void reloadContent() {
         reloadConfig();
+        langManager.reload(getConfig().getString("language", "es"));
         ItemModels.loadProducts(getConfig().getConfigurationSection("product-models"));
         speciesManager.reload();
         breedManager.reload();

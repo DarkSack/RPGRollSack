@@ -10,6 +10,8 @@ import com.sack.rpgroll.ranching.core.breeding.BreedingEngine;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 
+import org.bukkit.entity.Ageable;
+import org.bukkit.entity.Animals;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -28,6 +30,8 @@ import org.bukkit.event.entity.EntityBreedEvent;
  * sigue funcionando normal para mascotas/granjas comunes.
  */
 public class BreedingListener implements Listener {
+
+    private static final int BREED_COOLDOWN_TICKS = 6000;
 
     private final AnimalManager animalManager;
     private final BreedingEngine breedingEngine;
@@ -54,11 +58,27 @@ public class BreedingListener implements Listener {
 
         event.setCancelled(true);
 
+        // Cancelado, vanilla no les quita el celo y volverían a aparearse cada pocos segundos mientras dure.
+        for (LivingEntity parent : new LivingEntity[] {motherEntity, fatherEntity}) {
+            if (parent instanceof Animals animals) {
+                animals.setLoveModeTicks(0);
+            }
+        }
+
         Animal firstAnimal = first.get();
         Animal secondAnimal = second.get();
 
         BreedingAttemptResult result = breedingEngine.attemptConception(firstAnimal, secondAnimal,
                 motherEntity.getLocation());
+
+        // El mismo descanso que da vanilla tras criar (5 min), que al cancelar el evento no llega a ponerse.
+        if (result.success()) {
+            for (LivingEntity parent : new LivingEntity[] {motherEntity, fatherEntity}) {
+                if (parent instanceof Ageable ageable) {
+                    ageable.setAge(BREED_COOLDOWN_TICKS);
+                }
+            }
+        }
 
         if (event.getBreeder() instanceof Player player) {
             player.sendMessage(ComponentUtils.parseWithDefault(result.message(),

@@ -58,6 +58,11 @@ public class AnimalManager {
         animals.values().forEach(store::save);
     }
 
+    /** Autoguardado periódico sin frenar el servidor (ver {@link AnimalStore#saveAllAsync}). */
+    public void autosave() {
+        store.saveAllAsync(animals.values());
+    }
+
     public void save(Animal animal) {
         store.save(animal);
     }
@@ -99,6 +104,8 @@ public class AnimalManager {
                 genotype, phenotype, List.of(), null, null, List.of(), 0, weight, System.currentTimeMillis());
 
         animal.setStage(GrowthStage.ADULT);
+        // La etapa sale de la edad (GrowthTask): con edad 0 volvería a ser una cría en el primer ciclo.
+        animal.addAge(species.babyStageDurationTicks() + species.juvenileStageDurationTicks());
         animal.setFertility(species.baseFertility() * (breed != null ? breed.fertilityMultiplier() : 1.0));
 
         applyAppearance(entity, breed, GrowthStage.ADULT);

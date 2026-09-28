@@ -95,15 +95,13 @@ public class HealthTask extends BukkitRunnable {
             return;
         }
 
-        List<Disease> candidates = diseaseManager.getAll().stream()
-                .filter(disease -> !animal.isImmuneTo(disease.id())).toList();
-
-        if (candidates.isEmpty()) {
-            return;
-        }
-
+        List<Disease> candidates = List.copyOf(diseaseManager.getAll());
         Disease disease = candidates.get(random.nextInt(candidates.size()));
-        animal.infect(disease.id(), disease.durationTicks());
+
+        // La vacuna no da inmunidad total: reduce el riesgo (riskMultiplierFor = 1 - risk-reduction).
+        if (random.nextDouble() < animal.riskMultiplierFor(disease.id())) {
+            animal.infect(disease.id(), disease.durationTicks());
+        }
     }
 
     private void attemptContagion(Animal sick, LivingEntity sickEntity) {
@@ -125,7 +123,8 @@ public class HealthTask extends BukkitRunnable {
 
             Animal other = otherOptional.get();
 
-            if (other.isSick() || !other.speciesId().equals(sick.speciesId()) || other.isImmuneTo(disease.id())) {
+            // Vacunado no quiere decir inmune: su riesgo ya va en riskMultiplierFor, más abajo.
+            if (other.isSick() || !other.speciesId().equals(sick.speciesId())) {
                 continue;
             }
 

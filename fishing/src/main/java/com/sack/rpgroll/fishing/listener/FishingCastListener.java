@@ -40,7 +40,7 @@ public class FishingCastListener implements Listener {
     private final FishingCatchEngine catchEngine;
     private final FishingMinigameManager minigameManager;
     private final FishingProfileManager profileManager;
-    private final boolean rpgMode;
+    private volatile boolean rpgMode;
     private final LangManager lang;
 
     private final Map<UUID, Bait> activeBaitByPlayer = new HashMap<>();
@@ -57,7 +57,13 @@ public class FishingCastListener implements Listener {
         this.lang = lang;
     }
 
-    @EventHandler
+    /** rpg-mode del config (se vuelve a leer con /fishingadmin reload). */
+    public void setRpgMode(boolean rpgMode) {
+        this.rpgMode = rpgMode;
+    }
+
+    // ignoreCancelled: si una protección de zona cancela el lanzamiento, no se gasta la carnada.
+    @EventHandler(ignoreCancelled = true)
     public void onFish(PlayerFishEvent event) {
 
         switch (event.getState()) {
@@ -113,6 +119,8 @@ public class FishingCastListener implements Listener {
             item.remove();
         }
 
+        // Las bolas de experiencia vanilla solo se dejan para la basura y los tesoros: el pez da la suya al sacarlo.
+        int vanillaExp = event.getExpToDrop();
         event.setExpToDrop(0);
 
         // Por si un lanzamiento se coló durante el forcejeo: sin botín vanilla ni segunda captura.
@@ -139,6 +147,10 @@ public class FishingCastListener implements Listener {
             return;
         }
 
+        if (result.outcome() != CatchResult.CatchOutcome.FISH) {
+            event.setExpToDrop(vanillaExp);
+        }
+
         awardCatch(player, result);
     }
 
@@ -161,6 +173,7 @@ public class FishingCastListener implements Listener {
                 var species = result.species();
 
                 lang.send(player, "catch.fish", "name", species.displayName(), "quality", result.quality());
+                player.giveExp(result.experience());
 
                 profileManager.getOrLoad(player).registerCatch(species.id(), result.weight(), result.length(),
                         result.quality());

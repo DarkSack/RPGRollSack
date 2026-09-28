@@ -25,6 +25,7 @@ public class WelfareTask extends BukkitRunnable {
 
     private static final double MIN_HEALTH_FLOOR = 5;
     private static final int NEARBY_SCAN_RADIUS = 8;
+    private static final double DAY_TICKS = 24000;
 
     private final AnimalManager animalManager;
     private final WelfareEngine welfareEngine = new WelfareEngine();
@@ -61,6 +62,8 @@ public class WelfareTask extends BukkitRunnable {
             }
 
             animal.tickImmunities(intervalTicks);
+            // Un animal lleno se vacía en un día de Minecraft.
+            animal.digest(Animal.MAX_SATIETY * intervalTicks / DAY_TICKS);
         }
     }
 

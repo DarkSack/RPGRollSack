@@ -12,12 +12,12 @@ import com.sack.rpgroll.ranching.core.health.MedicineManager;
 import com.sack.rpgroll.ranching.core.health.Vaccine;
 import com.sack.rpgroll.ranching.core.health.VaccineManager;
 import com.sack.rpgroll.ranching.core.nutrition.Feed;
+import com.sack.rpgroll.ranching.core.nutrition.Feeding;
 import com.sack.rpgroll.ranching.core.nutrition.FeedManager;
 import com.sack.rpgroll.ranching.core.species.Species;
 import com.sack.rpgroll.ranching.core.species.SpeciesManager;
 import com.sack.rpgroll.ranching.item.RanchingItemFactory;
 
-import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 
 import org.bukkit.entity.Player;
@@ -101,16 +101,17 @@ public class AnimalCareListener implements Listener {
     private void handleFeed(Player player, Animal animal, Feed feed, ItemStack item) {
 
         Species species = speciesManager.get(animal.speciesId()).orElse(null);
-        boolean matchesDiet = species == null || feed.satisfiesDiet(species.dietTags());
-        double effectiveness = matchesDiet ? 1.0 : 0.4;
+        Feeding.Result result = Feeding.feed(animal, feed, species);
 
-        animal.setHealth(animal.health() + feed.healthBonus() * effectiveness);
-        animal.setHappiness(animal.happiness() + feed.happinessBonus() * effectiveness);
-        animal.addProductionBonus(feed.productionBonus() * feed.quality().multiplier() * effectiveness);
+        if (result == Feeding.Result.FULL) {
+            player.sendMessage(ComponentUtils.parseWithDefault(lang.raw("listener.care.not_hungry"), NamedTextColor.GRAY));
+            return;
+        }
 
         consumeOne(item);
 
-        player.sendMessage(Component.text(
+        boolean matchesDiet = result == Feeding.Result.FED;
+        player.sendMessage(ComponentUtils.parseWithDefault(
                 lang.raw(matchesDiet ? "listener.care.fed_match" : "listener.care.fed_mismatch", "feed", feed.displayName()),
                 matchesDiet ? NamedTextColor.GREEN : NamedTextColor.YELLOW));
     }

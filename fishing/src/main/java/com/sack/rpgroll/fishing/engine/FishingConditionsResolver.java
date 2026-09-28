@@ -14,6 +14,7 @@ import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 
+import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
@@ -43,13 +44,12 @@ public class FishingConditionsResolver {
         Biome biome = hookBlock.getBiome();
 
         WaterType waterType = resolveWaterType(world.getName(), hookLocation, hookBlock, biome);
-        DepthRequirement depth = resolveDepth(hookLocation);
+        Set<DepthRequirement> depths = resolveDepths(hookLocation);
         WeatherType weather = resolveWeather(world, hookLocation);
         Set<TimeRequirement> activeTimes = resolveActiveTimes(world.getTime());
         String seasonId = SeasonsIntegration.currentSeasonId(hookLocation);
 
-        return new FishingConditions(biome.name().toLowerCase(Locale.ROOT), waterType, depth, weather, activeTimes,
-                seasonId);
+        return new FishingConditions(biomeName(biome), waterType, depths, weather, activeTimes, seasonId);
     }
 
     private WaterType resolveWaterType(String worldName, Location location, Block hookBlock, Biome biome) {
@@ -64,7 +64,7 @@ public class FishingConditionsResolver {
             return WaterType.LAVA;
         }
 
-        String name = biome.name();
+        String name = biomeName(biome).toUpperCase(Locale.ROOT);
 
         if (name.contains("RIVER")) {
             return WaterType.RIVER;
@@ -85,7 +85,10 @@ public class FishingConditionsResolver {
         return WaterType.LAKE;
     }
 
-    private DepthRequirement resolveDepth(Location hookLocation) {
+    /** Bloques de agua en la columna a partir de los que hay agua media entre la superficie y el fondo. */
+    static final int MID_WATER_MIN_DEPTH = 3;
+
+    private Set<DepthRequirement> resolveDepths(Location hookLocation) {
 
         World world = hookLocation.getWorld();
         int x = hookLocation.getBlockX();
@@ -106,19 +109,33 @@ public class FishingConditionsResolver {
             floorY--;
         }
 
-        if (isRoofed(world, x, z, surfaceY)) {
-            return DepthRequirement.UNDERWATER_CAVE;
+        boolean floorFound = floorY > floorLimit;
+        int columnDepth = isWater(world.getBlockAt(x, hookY, z)) ? surfaceY - floorY + 1 : 0;
+
+        return depthsFor(columnDepth, floorFound, isRoofed(world, x, z, surfaceY));
+    }
+
+    /**
+     * Qué capas ofrece una columna de agua: la superficie siempre; agua media si es honda; el fondo si
+     * el escaneo llega al suelo; cueva si hay techo sólido encima.
+     */
+    static Set<DepthRequirement> depthsFor(int columnDepth, boolean floorFound, boolean roofed) {
+
+        Set<DepthRequirement> depths = EnumSet.of(DepthRequirement.SURFACE);
+
+        if (columnDepth >= MID_WATER_MIN_DEPTH) {
+            depths.add(DepthRequirement.MID_WATER);
         }
 
-        if (hookY - floorY <= 1) {
-            return DepthRequirement.BOTTOM;
+        if (floorFound) {
+            depths.add(DepthRequirement.BOTTOM);
         }
 
-        if (surfaceY - hookY <= 1) {
-            return DepthRequirement.SURFACE;
+        if (roofed) {
+            depths.add(DepthRequirement.UNDERWATER_CAVE);
         }
 
-        return DepthRequirement.MID_WATER;
+        return depths;
     }
 
     private boolean isRoofed(World world, int x, int z, int surfaceY) {
@@ -159,13 +176,18 @@ public class FishingConditionsResolver {
             return seasonal;
         }
 
-        String biome = location.getBlock().getBiome().name();
+        String biome = biomeName(location.getBlock().getBiome()).toUpperCase(Locale.ROOT);
 
         if (biome.contains("SNOWY") || biome.contains("FROZEN") || biome.contains("ICE") || biome.contains("TAIGA")) {
             return -5;
         }
 
         return 15;
+    }
+
+    /** "river", "deep_ocean"... — la ruta de la clave, así también valen los biomas de datapacks. */
+    private static String biomeName(Biome biome) {
+        return biome.getKey().getKey().toLowerCase(Locale.ROOT);
     }
 
     private Set<TimeRequirement> resolveActiveTimes(long rawTime) {

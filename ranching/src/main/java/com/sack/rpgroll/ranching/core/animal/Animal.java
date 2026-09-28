@@ -52,6 +52,7 @@ public class Animal {
     private final Map<String, Double> diseaseRiskMultiplier = new HashMap<>();
 
     private double productionBonusAccumulator;
+    private double satiety;
     private AnimalQuality quality = AnimalQuality.COMMON;
 
     public Animal(UUID id, String speciesId, String breedId, Sex sex, Map<String, AllelePair> genotype,
@@ -190,6 +191,11 @@ public class Animal {
         this.pendingLitter = new ArrayList<>(litter);
     }
 
+    /** La camada ya concebida, en el orden en que nacerá. */
+    public List<PendingOffspring> pendingLitter() {
+        return List.copyOf(pendingLitter);
+    }
+
     public long pregnancyRemainingTicks() {
         return pregnancyRemainingTicks;
     }
@@ -246,7 +252,16 @@ public class Animal {
     }
 
     /** @param riskMultiplier 0-1, multiplica hacia abajo la chance de contagio/aparición mientras dure la inmunidad. */
+    /**
+     * Vacuna contra una enfermedad: durante {@code durationTicks} (0 = para siempre) su riesgo se multiplica
+     * por {@code riskMultiplier}. Una vacuna más floja no rebaja la protección de una más fuerte que siga activa.
+     */
     public void grantImmunity(String diseaseId, long durationTicks, double riskMultiplier) {
+
+        if (isImmuneTo(diseaseId) && diseaseRiskMultiplier.getOrDefault(diseaseId, 1.0) < riskMultiplier) {
+            return;
+        }
+
         diseaseImmunityRemainingTicks.put(diseaseId, durationTicks <= 0 ? Long.MAX_VALUE : durationTicks);
         diseaseRiskMultiplier.put(diseaseId, riskMultiplier);
     }
@@ -264,8 +279,35 @@ public class Animal {
         return diseaseRiskMultiplier;
     }
 
+    /** Saciedad máxima: lleno, el animal no come más. */
+    public static final double MAX_SATIETY = 100;
+
+    /** Tope del bono de producción que se acumula comiendo: como mucho duplica la próxima producción. */
+    public static final double MAX_PRODUCTION_BONUS = 100;
+
     public void addProductionBonus(double bonus) {
-        this.productionBonusAccumulator += bonus;
+        this.productionBonusAccumulator = Math.min(MAX_PRODUCTION_BONUS, productionBonusAccumulator + bonus);
+    }
+
+    public double satiety() {
+        return satiety;
+    }
+
+    public void setSatiety(double satiety) {
+        this.satiety = Math.max(0, Math.min(MAX_SATIETY, satiety));
+    }
+
+    public boolean isFull() {
+        return satiety >= MAX_SATIETY;
+    }
+
+    public void eat(double nutrition) {
+        setSatiety(satiety + Math.max(0, nutrition));
+    }
+
+    /** Lo que baja la saciedad con el tiempo (ver WelfareTask). */
+    public void digest(double amount) {
+        setSatiety(satiety - Math.max(0, amount));
     }
 
     /** Consume y devuelve el bono acumulado (feeds recientes) — se resetea a 0 tras leerlo. */

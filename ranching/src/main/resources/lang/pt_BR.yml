@@ -59,6 +59,7 @@ listener:
   care:
     fed_match: "✔ Alimentado com {feed}."
     fed_mismatch: "Alimentado com {feed} — não é o favorito dessa espécie."
+    not_hungry: "Não está com fome agora — dê comida de novo mais tarde."
     medicine_not_sick: "Este animal não está doente — mesmo assim recebeu os bônus do remédio."
     medicine_wrong_disease: "Este remédio não trata a doença que este animal tem."
     medicine_cured: "✔ Curado! {disease} foi tratada."

@@ -33,8 +33,8 @@ public class FishingCatchEngine {
     private final TreasureManager treasureManager;
     private final JunkManager junkManager;
     private final FishingConditionsResolver conditionsResolver;
-    private final double treasureChance;
-    private final double junkChance;
+    private volatile double treasureChance;
+    private volatile double junkChance;
     private final Random random = new Random();
 
     public FishingCatchEngine(FishSpeciesManager speciesManager, TreasureManager treasureManager,
@@ -44,6 +44,12 @@ public class FishingCatchEngine {
         this.treasureManager = treasureManager;
         this.junkManager = junkManager;
         this.conditionsResolver = conditionsResolver;
+        this.treasureChance = treasureChance;
+        this.junkChance = junkChance;
+    }
+
+    /** treasure-chance / junk-chance del config (se vuelven a leer con /fishingadmin reload). */
+    public void setChances(double treasureChance, double junkChance) {
         this.treasureChance = treasureChance;
         this.junkChance = junkChance;
     }
@@ -95,7 +101,7 @@ public class FishingCatchEngine {
             return false;
         }
 
-        if (!species.depths().isEmpty() && !species.depths().contains(conditions.depth())) {
+        if (!species.depths().isEmpty() && Collections.disjoint(species.depths(), conditions.depths())) {
             return false;
         }
 

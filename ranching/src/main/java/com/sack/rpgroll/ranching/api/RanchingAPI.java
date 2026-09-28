@@ -14,6 +14,7 @@ import com.sack.rpgroll.ranching.core.health.MedicineManager;
 import com.sack.rpgroll.ranching.core.health.Vaccine;
 import com.sack.rpgroll.ranching.core.health.VaccineManager;
 import com.sack.rpgroll.ranching.core.nutrition.Feed;
+import com.sack.rpgroll.ranching.core.nutrition.Feeding;
 import com.sack.rpgroll.ranching.core.nutrition.FeedManager;
 import com.sack.rpgroll.ranching.core.species.Species;
 import com.sack.rpgroll.ranching.core.species.SpeciesManager;
@@ -133,7 +134,7 @@ public final class RanchingAPI {
 
     // ============ Cuidado programático (pensado para RPGRoll-Workers) ============
 
-    /** @return false si el alimento no existe o el animal no acepta cuidado programático por alguna razón futura. */
+    /** @return false si el alimento no existe o el animal está lleno y no comió. */
     public boolean feedAnimal(Animal animal, String feedId) {
 
         Optional<Feed> feed = feedManager.get(feedId);
@@ -143,12 +144,11 @@ public final class RanchingAPI {
         }
 
         Species species = speciesManager.get(animal.speciesId()).orElse(null);
-        boolean matchesDiet = species == null || feed.get().satisfiesDiet(species.dietTags());
-        double effectiveness = matchesDiet ? 1.0 : 0.4;
 
-        animal.setHealth(animal.health() + feed.get().healthBonus() * effectiveness);
-        animal.setHappiness(animal.happiness() + feed.get().happinessBonus() * effectiveness);
-        animal.addProductionBonus(feed.get().productionBonus() * feed.get().quality().multiplier() * effectiveness);
+        if (Feeding.feed(animal, feed.get(), species) == Feeding.Result.FULL) {
+            return false;
+        }
+
         animalManager.save(animal);
 
         return true;

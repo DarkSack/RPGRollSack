@@ -140,12 +140,18 @@ public final class FishingItemFactory {
 
         ItemStack item = builder.build();
 
-        if (species.customModelData() > 0) {
-            ItemMeta meta = item.getItemMeta();
-            if (meta != null) {
+        ItemMeta meta = item.getItemMeta();
+        if (meta != null) {
+            if (species.customModelData() > 0) {
                 meta.setCustomModelData(species.customModelData());
-                item.setItemMeta(meta);
             }
+            var data = meta.getPersistentDataContainer();
+            data.set(FishingItemKeys.SPECIES_ID, PersistentDataType.STRING, species.id());
+            data.set(FishingItemKeys.QUALITY, PersistentDataType.STRING, result.quality().name());
+            data.set(FishingItemKeys.WEIGHT, PersistentDataType.DOUBLE, result.weight());
+            data.set(FishingItemKeys.LENGTH, PersistentDataType.DOUBLE, result.length());
+            data.set(FishingItemKeys.PRICE, PersistentDataType.DOUBLE, result.price());
+            item.setItemMeta(meta);
         }
 
         return ItemModels.apply(item, "species", species.id());
@@ -193,6 +199,22 @@ public final class FishingItemFactory {
 
     public static String getBaitId(ItemStack item) {
         return readTag(item, FishingItemKeys.BAIT_ID);
+    }
+
+    /** Especie de un pez pescado con el plugin; null si no lo es. */
+    public static String getSpeciesId(ItemStack item) {
+        return readTag(item, FishingItemKeys.SPECIES_ID);
+    }
+
+    /** Precio que se sorteó al pescarlo (el mismo del lore); 0 si no es un pez del plugin. */
+    public static double getPrice(ItemStack item) {
+
+        if (item == null || item.getType().isAir() || item.getItemMeta() == null) {
+            return 0;
+        }
+
+        return item.getItemMeta().getPersistentDataContainer().getOrDefault(FishingItemKeys.PRICE,
+                PersistentDataType.DOUBLE, 0.0);
     }
 
     private static ItemStack tag(ItemStack item, NamespacedKey key, String value) {

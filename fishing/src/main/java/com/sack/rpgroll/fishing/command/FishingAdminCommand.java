@@ -106,6 +106,7 @@ public class FishingAdminCommand implements CommandExecutor, TabCompleter {
         regionManager.reload();
 
         plugin.reloadConfig();
+        plugin.applySettings();
         lang.reload(plugin.getConfig().getString("language", "es"));
 
         lang.send(sender, "command.admin.reloaded", "species", speciesManager.count(), "rods", rodManager.count(),

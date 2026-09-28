@@ -33,6 +33,9 @@ public class FishingPlugin extends JavaPlugin {
             "regions");
     private static final List<String> MODEL_DIRECTORIES = List.of("bedrock", "blockbench");
 
+    /** Cada 5 minutos. */
+    private static final long AUTOSAVE_TICKS = 5 * 60 * 20L;
+
     private FishSpeciesManager speciesManager;
     private FishingRodManager rodManager;
     private BaitManager baitManager;
@@ -40,6 +43,8 @@ public class FishingPlugin extends JavaPlugin {
     private JunkManager junkManager;
     private FishingRegionManager regionManager;
     private FishingProfileManager profileManager;
+    private FishingCatchEngine catchEngine;
+    private FishingCastListener castListener;
     private LangManager langManager;
 
     @Override
@@ -88,12 +93,10 @@ public class FishingPlugin extends JavaPlugin {
 
         FishingConditionsResolver conditionsResolver = new FishingConditionsResolver(regionManager);
 
-        double treasureChance = getConfig().getDouble("treasure-chance", 0.05);
-        double junkChance = getConfig().getDouble("junk-chance", 0.10);
         boolean rpgMode = getConfig().getBoolean("rpg-mode", true);
 
-        FishingCatchEngine catchEngine = new FishingCatchEngine(speciesManager, treasureManager, junkManager,
-                conditionsResolver, treasureChance, junkChance);
+        catchEngine = new FishingCatchEngine(speciesManager, treasureManager, junkManager, conditionsResolver,
+                getConfig().getDouble("treasure-chance", 0.05), getConfig().getDouble("junk-chance", 0.10));
 
         FishingAPI.init(speciesManager, rodManager, baitManager, treasureManager, junkManager, regionManager,
                 profileManager, catchEngine);
@@ -104,8 +107,12 @@ public class FishingPlugin extends JavaPlugin {
         FishingMinigameManager minigameManager = new FishingMinigameManager(this, langManager);
         getServer().getPluginManager().registerEvents(minigameManager, this);
 
-        getServer().getPluginManager().registerEvents(new FishingCastListener(rodManager, baitManager, catchEngine,
-                minigameManager, profileManager, rpgMode, langManager), this);
+        castListener = new FishingCastListener(rodManager, baitManager, catchEngine, minigameManager, profileManager,
+                rpgMode, langManager);
+        getServer().getPluginManager().registerEvents(castListener, this);
+
+        // Autoguardado: sin él, un cierre inesperado borra todo lo pescado desde que entró cada jugador.
+        getServer().getScheduler().runTaskTimer(this, profileManager::saveAll, AUTOSAVE_TICKS, AUTOSAVE_TICKS);
 
         var fishingAdminCommand = new FishingAdminCommand(speciesManager, rodManager, baitManager,
                     treasureManager, junkManager, regionManager, chatPromptManager, this);
@@ -123,6 +130,12 @@ public class FishingPlugin extends JavaPlugin {
         getLogger().info("✔ RPGRoll-Fishing habilitado (modo " + (rpgMode ? "RPG" : "vanilla") + "). "
                 + speciesManager.count() + " especie(s), " + rodManager.count() + " caña(s), "
                 + baitManager.count() + " carnada(s).");
+    }
+
+    /** Vuelve a aplicar lo del config.yml que se usa en caliente (tras {@code reloadConfig()}). */
+    public void applySettings() {
+        catchEngine.setChances(getConfig().getDouble("treasure-chance", 0.05), getConfig().getDouble("junk-chance", 0.10));
+        castListener.setRpgMode(getConfig().getBoolean("rpg-mode", true));
     }
 
     @Override
