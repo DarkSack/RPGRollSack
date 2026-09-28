@@ -7,3 +7,6 @@ weight-multiplier: 0.9
 fertility-multiplier: 1.0
 resistance-multiplier: 1.0
 temperament: "Dócil"
+
+# Modelo animado de FreeMinecraftModels que lleva el adulto. Sin FMM, se ve vanilla.
+model: ranching_merino

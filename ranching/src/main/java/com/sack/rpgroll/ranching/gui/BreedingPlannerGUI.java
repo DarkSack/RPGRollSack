@@ -251,7 +251,7 @@ public class BreedingPlannerGUI extends InventoryGUI {
             return;
         }
 
-        Entity entity = Bukkit.getEntity(selectedA.id());
+        Entity entity = Bukkit.getEntity(selectedA.entityId());
 
         if (!(entity instanceof LivingEntity livingEntity) || !livingEntity.isValid()) {
             player.sendMessage(ComponentUtils.parseWithDefault(lang.raw("gui.planner.animal_a_not_loaded"), NamedTextColor.RED));

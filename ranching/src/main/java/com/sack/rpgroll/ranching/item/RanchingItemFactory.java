@@ -154,6 +154,7 @@ public final class RanchingItemFactory {
             case "leather" -> Material.LEATHER;
             case "horns" -> Material.BONE;
             case "feathers" -> Material.FEATHER;
+            case "fur" -> Material.RABBIT_HIDE;
             default -> null;
         };
     }

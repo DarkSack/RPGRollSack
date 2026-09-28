@@ -30,7 +30,8 @@ public class BreedParser implements ContentParser<Breed> {
                 config.getDouble("fertility-multiplier", 1.0),
                 config.getDouble("resistance-multiplier", 1.0),
                 config.getString("temperament", "Neutral"),
-                EntityReskinYaml.parse(config));
+                EntityReskinYaml.parse(config),
+                config.getString("model"));
     }
 
 }

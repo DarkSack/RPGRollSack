@@ -1,0 +1,19 @@
+id: pig
+display-name: "&dCerdo"
+icon: PIG_SPAWN_EGG
+description: "Cerdo de granja — mucha carne y cuero."
+entity-type: PIG
+product-types: [meat, leather]
+base-production:
+  meat: 5.0
+  leather: 1.5
+base-weight-min: 60
+base-weight-max: 180
+baby-stage-duration-ticks: 6000
+juvenile-stage-duration-ticks: 12000
+elder-threshold-ticks: 480000
+gestation-duration-ticks: 18000
+min-litter-size: 2
+max-litter-size: 4
+base-fertility: 0.55
+diet-tags: [grain, hay]

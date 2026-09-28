@@ -1,0 +1,13 @@
+id: rhode_island
+display-name: "&cRhode Island"
+description: "Rojiza y robusta; pone bien y aguanta el frío."
+species: chicken
+production-multiplier: 1.2
+weight-multiplier: 1.1
+fertility-multiplier: 1.0
+resistance-multiplier: 1.2
+temperament: "Tranquila"
+
+# Modelo animado de FreeMinecraftModels que lleva el adulto (los que trae el plugin
+# se copian solos a plugins/FreeMinecraftModels/models/). Sin FMM, se ve vanilla.
+model: ranching_rhode_island

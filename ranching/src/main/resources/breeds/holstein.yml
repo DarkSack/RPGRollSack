@@ -18,3 +18,6 @@ temperament: "Calmada"
 #   custom-model-data: 200001
 #   scale: 1.0
 #   y-offset: 0.0
+
+# Modelo animado de FreeMinecraftModels que lleva el adulto. Sin FMM, se ve vanilla.
+model: ranching_holstein

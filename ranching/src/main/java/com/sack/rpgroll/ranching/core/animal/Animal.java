@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -55,6 +56,15 @@ public class Animal {
     private double satiety;
     private AnimalQuality quality = AnimalQuality.COMMON;
 
+    private UUID ownerId;
+    private UUID entityId;
+    private LastSeen lastSeen;
+    private double salePrice;
+
+    /** Dónde se vio la entidad por última vez: para encontrarla aunque su chunk esté descargado. */
+    public record LastSeen(String world, double x, double y, double z) {
+    }
+
     public Animal(UUID id, String speciesId, String breedId, Sex sex, Map<String, AllelePair> genotype,
             Map<String, Double> phenotype, List<String> mutationTags, UUID motherId, UUID fatherId,
             List<AncestorRef> ancestors, int generation, double weight, long bornAtEpochMillis) {
@@ -75,6 +85,52 @@ public class Animal {
 
     public UUID id() {
         return id;
+    }
+
+    /**
+     * La entidad que lo representa ahora. Coincide con {@link #id()} salvo que se haya perdido y
+     * recuperado (una entidad nueva no puede heredar el uuid de la vieja).
+     */
+    public UUID entityId() {
+        return entityId != null ? entityId : id;
+    }
+
+    public void setEntityId(UUID entityId) {
+        this.entityId = Objects.equals(entityId, id) ? null : entityId;
+    }
+
+    /** El jugador dueño, o null si no tiene (animales viejos o de admin sin dueño). */
+    public UUID ownerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(UUID ownerId) {
+        this.ownerId = ownerId;
+    }
+
+    public boolean isOwnedBy(UUID playerId) {
+        return ownerId != null && ownerId.equals(playerId);
+    }
+
+    public LastSeen lastSeen() {
+        return lastSeen;
+    }
+
+    public void setLastSeen(LastSeen lastSeen) {
+        this.lastSeen = lastSeen;
+    }
+
+    /** Precio al que su dueño lo vende a otros jugadores; 0 = no está a la venta. */
+    public double salePrice() {
+        return salePrice;
+    }
+
+    public void setSalePrice(double salePrice) {
+        this.salePrice = Math.max(0, salePrice);
+    }
+
+    public boolean isForSale() {
+        return salePrice > 0;
     }
 
     public String speciesId() {

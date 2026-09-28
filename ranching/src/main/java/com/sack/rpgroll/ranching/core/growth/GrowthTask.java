@@ -70,7 +70,7 @@ public class GrowthTask extends BukkitRunnable {
 
     private void applyReskinScale(Animal animal, Breed breed) {
 
-        Entity entity = Bukkit.getEntity(animal.id());
+        Entity entity = Bukkit.getEntity(animal.entityId());
 
         if (entity instanceof org.bukkit.entity.LivingEntity living) {
             animalManager.applyAppearance(living, breed, animal.stage());
@@ -79,7 +79,7 @@ public class GrowthTask extends BukkitRunnable {
 
     private void ensureReskinAttached(Animal animal, Breed breed) {
 
-        Entity entity = Bukkit.getEntity(animal.id());
+        Entity entity = Bukkit.getEntity(animal.entityId());
 
         if (entity instanceof org.bukkit.entity.LivingEntity living) {
             animalManager.ensureAppearanceAttached(living, breed, animal.stage());
@@ -155,7 +155,7 @@ public class GrowthTask extends BukkitRunnable {
 
     private void syncAgeableModel(Animal animal) {
 
-        Entity entity = Bukkit.getEntity(animal.id());
+        Entity entity = Bukkit.getEntity(animal.entityId());
 
         if (entity instanceof Ageable ageable) {
 

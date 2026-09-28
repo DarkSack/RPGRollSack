@@ -1,0 +1,13 @@
+id: angus
+display-name: "&8Angus"
+description: "Negra y sin cuernos — la raza de carne por excelencia."
+species: cow
+production-multiplier: 1.1
+weight-multiplier: 1.2
+fertility-multiplier: 1.0
+resistance-multiplier: 1.1
+temperament: "Tranquila"
+
+# Modelo animado de FreeMinecraftModels que lleva el adulto (los que trae el plugin
+# se copian solos a plugins/FreeMinecraftModels/models/). Sin FMM, se ve vanilla.
+model: ranching_angus

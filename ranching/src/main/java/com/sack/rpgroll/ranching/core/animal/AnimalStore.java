@@ -122,6 +122,16 @@ public class AnimalStore {
         config.set("mutation-tags", animal.mutationTags());
         config.set("active-disease", animal.activeDiseaseId());
         config.set("disease-remaining-ticks", animal.diseaseRemainingTicks());
+        config.set("owner", animal.ownerId() == null ? null : animal.ownerId().toString());
+        config.set("entity", animal.entityId().equals(animal.id()) ? null : animal.entityId().toString());
+        config.set("sale-price", animal.salePrice() > 0 ? animal.salePrice() : null);
+
+        if (animal.lastSeen() != null) {
+            config.set("last-seen.world", animal.lastSeen().world());
+            config.set("last-seen.x", animal.lastSeen().x());
+            config.set("last-seen.y", animal.lastSeen().y());
+            config.set("last-seen.z", animal.lastSeen().z());
+        }
 
         for (var entry : animal.genotype().entrySet()) {
             config.set("genotype." + entry.getKey() + ".a", entry.getValue().alleleA());
@@ -256,6 +266,14 @@ public class AnimalStore {
         }
     }
 
+    private static UUID uuidOrNull(String raw) {
+        try {
+            return raw == null || raw.isBlank() ? null : UUID.fromString(raw);
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
+    }
+
     private Animal load(YamlConfiguration config) {
 
         UUID id = UUID.fromString(config.getString("id"));
@@ -306,6 +324,14 @@ public class AnimalStore {
         animal.setHappiness(config.getDouble("happiness", 80));
         animal.setHealth(config.getDouble("health", 100));
         animal.setSatiety(config.getDouble("satiety", 0));
+        animal.setOwnerId(uuidOrNull(config.getString("owner")));
+        animal.setEntityId(uuidOrNull(config.getString("entity")));
+        animal.setSalePrice(config.getDouble("sale-price", 0));
+
+        if (config.isString("last-seen.world")) {
+            animal.setLastSeen(new Animal.LastSeen(config.getString("last-seen.world"),
+                    config.getDouble("last-seen.x"), config.getDouble("last-seen.y"), config.getDouble("last-seen.z")));
+        }
 
         try {
             animal.setQuality(AnimalQuality.valueOf(config.getString("quality", "COMMON")));

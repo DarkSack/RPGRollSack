@@ -176,10 +176,16 @@ public class BreedingEngine {
                 System.currentTimeMillis());
 
         newborn.setStage(GrowthStage.BABY);
+        // La cría es de quien era la madre (o el padre, si ella ya no está).
+        newborn.setOwnerId(ownerOf(pending.motherId()) != null ? ownerOf(pending.motherId()) : ownerOf(pending.fatherId()));
         newborn.setFertility(species.baseFertility() * (breed != null ? breed.fertilityMultiplier() : 1.0));
 
         animalManager.registerNewborn(entity, newborn);
         animalManager.applyAppearance(entity, breed, GrowthStage.BABY);
+    }
+
+    private java.util.UUID ownerOf(java.util.UUID parentId) {
+        return parentId == null ? null : animalManager.get(parentId).map(Animal::ownerId).orElse(null);
     }
 
     private List<String> extractCosmeticTags(PendingOffspring pending) {

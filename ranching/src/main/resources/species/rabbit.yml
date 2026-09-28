@@ -1,0 +1,19 @@
+id: rabbit
+display-name: "&6Conejo"
+icon: RABBIT_SPAWN_EGG
+description: "Pequeño y prolífico — carne y piel."
+entity-type: RABBIT
+product-types: [meat, fur]
+base-production:
+  meat: 1.5
+  fur: 1.5
+base-weight-min: 1.5
+base-weight-max: 5
+baby-stage-duration-ticks: 2400
+juvenile-stage-duration-ticks: 4800
+elder-threshold-ticks: 240000
+gestation-duration-ticks: 6000
+min-litter-size: 2
+max-litter-size: 5
+base-fertility: 0.7
+diet-tags: [hay, grain]

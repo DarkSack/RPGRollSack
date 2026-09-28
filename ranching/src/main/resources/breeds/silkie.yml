@@ -1,0 +1,13 @@
+id: silkie
+display-name: "&fSedosa"
+description: "Plumas como pelo y cara oscura; pone poco pero es un encanto."
+species: chicken
+production-multiplier: 0.8
+weight-multiplier: 0.8
+fertility-multiplier: 1.1
+resistance-multiplier: 1.0
+temperament: "Dócil"
+
+# Modelo animado de FreeMinecraftModels que lleva el adulto (los que trae el plugin
+# se copian solos a plugins/FreeMinecraftModels/models/). Sin FMM, se ve vanilla.
+model: ranching_silkie

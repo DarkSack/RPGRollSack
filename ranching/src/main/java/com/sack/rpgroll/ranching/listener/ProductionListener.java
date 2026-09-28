@@ -195,6 +195,7 @@ public class ProductionListener implements Listener {
         }
 
         com.sack.rpgroll.common.reskin.EntityReskinService.remove(event.getEntity());
+        com.sack.rpgroll.ranching.integration.ModelsIntegration.removeWithDeath(event.getEntity());
         animalManager.remove(animal.id());
     }
 

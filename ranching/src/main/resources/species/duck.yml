@@ -1,0 +1,20 @@
+id: duck
+display-name: "&ePato"
+icon: CHICKEN_SPAWN_EGG
+description: "Ave de agua — huevos grandes, carne y plumas."
+entity-type: CHICKEN
+product-types: [eggs, meat, feathers]
+base-production:
+  eggs: 1.2
+  meat: 2.0
+  feathers: 1.5
+base-weight-min: 1.5
+base-weight-max: 4
+baby-stage-duration-ticks: 3000
+juvenile-stage-duration-ticks: 6000
+elder-threshold-ticks: 240000
+gestation-duration-ticks: 0
+min-litter-size: 1
+max-litter-size: 1
+base-fertility: 0.6
+diet-tags: [grain]

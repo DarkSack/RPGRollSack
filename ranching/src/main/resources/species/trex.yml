@@ -1,0 +1,18 @@
+id: trex
+display-name: "&2Mini T-Rex"
+icon: SNIFFER_EGG
+description: "Nadie sabe de dónde salió el huevo. Nadie."
+entity-type: PIG
+product-types: [meat]
+base-production:
+  meat: 2.0
+base-weight-min: 80
+base-weight-max: 160
+baby-stage-duration-ticks: 6000
+juvenile-stage-duration-ticks: 12000
+elder-threshold-ticks: 0
+gestation-duration-ticks: 36000
+min-litter-size: 1
+max-litter-size: 1
+base-fertility: 0.15
+diet-tags: [grain, hay]

@@ -5,11 +5,14 @@ api-version: "26.1.1"
 author: Sack
 description: Ganadería como simulación viva — genética hereditaria con linajes, reproducción, nutrición, bienestar animal, enfermedades/vacunas y producción con calidad.
 depend: [RPGRoll-Lib]
-softdepend: [RPGRoll, RPGRoll-FX, RPGRoll-Effects, RPGRoll-Seasons, SackResourcePack]
+softdepend: [RPGRoll, RPGRoll-FX, RPGRoll-Effects, RPGRoll-Seasons, SackResourcePack, Vault, FreeMinecraftModels]
 
 permissions:
   rpgrollranching.admin.*:
     description: Acceso completo a comandos administrativos de Ranch Studio
+    default: op
+  rpgrollranching.bypass-owner:
+    description: Tocar, llamar y mover animales de otros jugadores (moderación)
     default: op
   rpgrollranching.use:
     description: Uso básico de ganadería (inspeccionar animales, enciclopedia)

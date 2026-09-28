@@ -23,4 +23,19 @@ dependencies {
 
     // Registro del pack de modelos de fábrica (softdepend; ver registerPack()).
     compileOnly(project(":sackresourcepack"))
+
+    // Modelos animados de las razas con FreeMinecraftModels (GPLv3, gratis). Integración
+    // blanda: sin el plugin los animales se ven vanilla. Ver integration/ModelsIntegration.
+    compileOnly("com.magmaguy:FreeMinecraftModels:2.12.3") {
+        isTransitive = false
+    }
+
+    // El mercado de animales cobra y paga por Vault (VaultEconomy de :common).
+    compileOnly("com.github.MilkBowl:VaultAPI:1.7.1") {
+        exclude(group = "org.bukkit", module = "bukkit")
+    }
+}
+
+repositories {
+    maven("https://repo.magmaguy.com/releases")
 }

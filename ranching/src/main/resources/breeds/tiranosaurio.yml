@@ -1,0 +1,13 @@
+id: tiranosaurio
+display-name: "&2Tiranosaurio"
+description: "Pequeño, con dientes y muy leal a su dueño."
+species: trex
+production-multiplier: 1.0
+weight-multiplier: 1.0
+fertility-multiplier: 1.0
+resistance-multiplier: 1.5
+temperament: "Hambriento"
+
+# Modelo animado de FreeMinecraftModels que lleva el adulto (los que trae el plugin
+# se copian solos a plugins/FreeMinecraftModels/models/). Sin FMM, se ve vanilla.
+model: ranching_trex

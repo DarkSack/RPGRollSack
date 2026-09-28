@@ -50,7 +50,7 @@ import java.util.stream.Stream;
 public class RanchingAdminCommand implements CommandExecutor, TabCompleter {
 
     private static final List<String> SUBCOMMANDS = List.of("browser", "reload", "spawn", "givefeed", "givemedicine", "givevaccine",
-            "giveproduct");
+            "giveproduct", "setowner", "givedinoegg");
     private static final List<String> GIVE_CONTENT = List.of("givefeed", "givemedicine", "givevaccine");
     private static final List<String> QUALITIES = Arrays.stream(ProductQuality.values()).map(Enum::name).toList();
 
@@ -110,6 +110,9 @@ public class RanchingAdminCommand implements CommandExecutor, TabCompleter {
             case "spawn" -> handleSpawn(sender, args);
             case "givefeed", "givemedicine", "givevaccine" -> handleGiveContent(sender, args);
             case "giveproduct" -> handleGiveProduct(sender, args);
+            case "setowner" -> handleSetOwner(sender, args);
+            case "givedinoegg" -> give(sender, com.sack.rpgroll.ranching.listener.DinoEggListener.createEgg(lang()),
+                    args.length >= 2 ? new String[] {"givedinoegg", "dino_egg", "1", args[1]} : new String[] {"givedinoegg", "dino_egg", "1"}, 2);
             default -> sendUsage(sender);
         }
 
@@ -154,17 +157,93 @@ public class RanchingAdminCommand implements CommandExecutor, TabCompleter {
 
         Breed breed = args.length >= 3 ? breedManager.get(args[2].toLowerCase()).orElse(null) : null;
 
+        // Dueño: el 4.º argumento ("-" o "ninguno" = sin dueño); si no se da, quien lo spawnea.
+        java.util.UUID owner = player.getUniqueId();
+        if (args.length >= 4) {
+            owner = parseOwner(args[3]);
+            if (owner == null && !isNobody(args[3])) {
+                send(sender, "command.admin.player_not_found", NamedTextColor.RED, "name", args[3]);
+                return;
+            }
+        }
+
         Location location = player.getLocation();
         var entityType = animalManager.resolveEntityType(species);
         LivingEntity entity = (LivingEntity) location.getWorld().spawnEntity(location, entityType);
 
-        Sex sex = random.nextBoolean() ? Sex.MALE : Sex.FEMALE;
+        // Sexo: el 5.º argumento (macho/hembra); si no se da o es "-", al azar.
+        Sex sex = args.length >= 5 ? parseSex(args[4]) : null;
+        if (sex == null) {
+            sex = random.nextBoolean() ? Sex.MALE : Sex.FEMALE;
+        }
         animalManager.registerFounder(entity, species, breed, sex, geneticsEngine,
-                geneManager.getForSpecies(species.id()));
+                geneManager.getForSpecies(species.id()), owner);
 
         player.sendMessage(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("command.admin.spawned_prefix"), NamedTextColor.GREEN)
                 .append(ComponentUtils.parse(species.displayName()))
                 .append(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("command.admin.spawned_suffix", "sex", sex), NamedTextColor.GREEN)));
+    }
+
+    private static Sex parseSex(String raw) {
+        return switch (raw.toLowerCase(Locale.ROOT)) {
+            case "macho", "male", "m" -> Sex.MALE;
+            case "hembra", "female", "f", "femea", "fêmea" -> Sex.FEMALE;
+            default -> null;
+        };
+    }
+
+    private static boolean isNobody(String raw) {
+        return raw.equals("-") || raw.equalsIgnoreCase("ninguno") || raw.equalsIgnoreCase("none");
+    }
+
+    /** Un jugador (conectado o que haya entrado alguna vez) por nombre; null si no existe o es "nadie". */
+    private static java.util.UUID parseOwner(String raw) {
+
+        if (isNobody(raw)) {
+            return null;
+        }
+
+        Player online = Bukkit.getPlayerExact(raw);
+        if (online != null) {
+            return online.getUniqueId();
+        }
+
+        var offline = Bukkit.getOfflinePlayerIfCached(raw);
+        return offline != null ? offline.getUniqueId() : null;
+    }
+
+    /** /ranchingadmin setowner <jugador|ninguno> — cambia el dueño del animal al que se mira. */
+    private void handleSetOwner(CommandSender sender, String[] args) {
+
+        if (!(Senders.asPlayer(sender) instanceof Player player)) {
+            send(sender, "command.admin.player_only_spawn", NamedTextColor.RED);
+            return;
+        }
+
+        if (args.length < 2) {
+            send(sender, "command.admin.usage_setowner", NamedTextColor.RED);
+            return;
+        }
+
+        var target = player.getTargetEntity(6);
+        var animal = target == null ? null : animalManager.resolve(target).orElse(null);
+
+        if (animal == null) {
+            send(sender, "command.ranching.look_at_animal", NamedTextColor.RED);
+            return;
+        }
+
+        java.util.UUID owner = parseOwner(args[1]);
+
+        if (owner == null && !isNobody(args[1])) {
+            send(sender, "command.admin.player_not_found", NamedTextColor.RED, "name", args[1]);
+            return;
+        }
+
+        animal.setOwnerId(owner);
+        animal.setSalePrice(0);
+        animalManager.save(animal);
+        send(sender, "command.admin.owner_set", NamedTextColor.GREEN, "owner", owner == null ? "-" : args[1]);
     }
 
     private void handleGiveContent(CommandSender sender, String[] args) {
@@ -324,6 +403,10 @@ public class RanchingAdminCommand implements CommandExecutor, TabCompleter {
         if (args.length == 2 && "spawn".equalsIgnoreCase(args[0])) {
             return TabCompleteUtil.filter(args[1], speciesManager.getAll().stream()
                     .map(Species::id).toList());
+        }
+
+        if (args.length == 5 && "spawn".equalsIgnoreCase(args[0])) {
+            return TabCompleteUtil.filter(args[4], List.of("macho", "hembra", "-"));
         }
 
         if (args.length == 3 && "spawn".equalsIgnoreCase(args[0])) {

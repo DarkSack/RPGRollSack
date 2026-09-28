@@ -1,0 +1,13 @@
+id: yorkshire
+display-name: "&dYorkshire"
+description: "El cerdo rosa grande de siempre."
+species: pig
+production-multiplier: 1.2
+weight-multiplier: 1.1
+fertility-multiplier: 1.0
+resistance-multiplier: 1.0
+temperament: "Tranquilo"
+
+# Modelo animado de FreeMinecraftModels que lleva el adulto (los que trae el plugin
+# se copian solos a plugins/FreeMinecraftModels/models/). Sin FMM, se ve vanilla.
+model: ranching_yorkshire

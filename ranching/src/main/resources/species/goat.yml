@@ -1,0 +1,20 @@
+id: goat
+display-name: "&fCabra"
+icon: GOAT_SPAWN_EGG
+description: "Rústica y lechera — leche, carne y cuernos."
+entity-type: GOAT
+product-types: [milk, meat, horns]
+base-production:
+  milk: 2.0
+  meat: 3.0
+  horns: 0.5
+base-weight-min: 40
+base-weight-max: 100
+baby-stage-duration-ticks: 4800
+juvenile-stage-duration-ticks: 9600
+elder-threshold-ticks: 420000
+gestation-duration-ticks: 15000
+min-litter-size: 1
+max-litter-size: 3
+base-fertility: 0.55
+diet-tags: [hay, grain]

@@ -36,7 +36,7 @@ public class PregnancyTask extends BukkitRunnable {
                 continue;
             }
 
-            Entity entity = Bukkit.getEntity(animal.id());
+            Entity entity = Bukkit.getEntity(animal.entityId());
 
             if (!(entity instanceof LivingEntity livingEntity) || !livingEntity.isValid()) {
                 continue;

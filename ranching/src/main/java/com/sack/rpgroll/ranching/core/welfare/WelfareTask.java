@@ -41,7 +41,7 @@ public class WelfareTask extends BukkitRunnable {
 
         for (Animal animal : List.copyOf(animalManager.getAll())) {
 
-            Entity entity = Bukkit.getEntity(animal.id());
+            Entity entity = Bukkit.getEntity(animal.entityId());
 
             if (!(entity instanceof LivingEntity livingEntity) || !livingEntity.isValid()) {
                 continue;

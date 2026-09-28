@@ -1,0 +1,13 @@
+id: mangalica
+display-name: "&eMangalica"
+description: "El cerdo oveja: rizado como la lana y muy resistente al frío."
+species: pig
+production-multiplier: 1.1
+weight-multiplier: 1.0
+fertility-multiplier: 0.9
+resistance-multiplier: 1.4
+temperament: "Rústico"
+
+# Modelo animado de FreeMinecraftModels que lleva el adulto (los que trae el plugin
+# se copian solos a plugins/FreeMinecraftModels/models/). Sin FMM, se ve vanilla.
+model: ranching_mangalica

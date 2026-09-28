@@ -1,0 +1,13 @@
+id: jacob
+display-name: "&6Jacob"
+description: "Manchada y con cuatro cuernos; rústica y resistente."
+species: sheep
+production-multiplier: 1.0
+weight-multiplier: 0.9
+fertility-multiplier: 1.0
+resistance-multiplier: 1.3
+temperament: "Curiosa"
+
+# Modelo animado de FreeMinecraftModels que lleva el adulto (los que trae el plugin
+# se copian solos a plugins/FreeMinecraftModels/models/). Sin FMM, se ve vanilla.
+model: ranching_jacob

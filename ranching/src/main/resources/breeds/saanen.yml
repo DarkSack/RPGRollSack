@@ -1,0 +1,13 @@
+id: saanen
+display-name: "&fSaanen"
+description: "Blanca y lechera: la reina de la leche de cabra."
+species: goat
+production-multiplier: 1.4
+weight-multiplier: 1.0
+fertility-multiplier: 1.0
+resistance-multiplier: 1.0
+temperament: "Tranquila"
+
+# Modelo animado de FreeMinecraftModels que lleva el adulto (los que trae el plugin
+# se copian solos a plugins/FreeMinecraftModels/models/). Sin FMM, se ve vanilla.
+model: ranching_saanen

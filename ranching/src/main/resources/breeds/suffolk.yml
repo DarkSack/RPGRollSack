@@ -1,0 +1,13 @@
+id: suffolk
+display-name: "&fSuffolk"
+description: "Cara y patas negras; crece rápido y da buena carne."
+species: sheep
+production-multiplier: 1.1
+weight-multiplier: 1.2
+fertility-multiplier: 1.05
+resistance-multiplier: 1.0
+temperament: "Activa"
+
+# Modelo animado de FreeMinecraftModels que lleva el adulto (los que trae el plugin
+# se copian solos a plugins/FreeMinecraftModels/models/). Sin FMM, se ve vanilla.
+model: ranching_suffolk

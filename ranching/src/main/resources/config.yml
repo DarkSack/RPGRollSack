@@ -53,6 +53,7 @@ product-prices:
   leather: 3
   horns: 5
   feathers: 1
+  fur: 2
 
 # Multiplicador del precio según la calidad del producto.
 product-quality-multipliers:
@@ -61,6 +62,67 @@ product-quality-multipliers:
   PREMIUM: 1.6
   ORGANIC: 2.0
   LEGENDARY: 3.5
+
+# --- Dueños, corral y mercado de animales ---
+# Cada animal tiene dueño: el que lo compra, lo cría (las crías son de quien era
+# la madre) o lo reclama. /ranching animales abre la lista para llamarlos, mandarlos
+# al corral (/ranching corral fijar) o ponerlos a la venta.
+ownership:
+  # Solo el dueño ordeña, esquila, alimenta, cura, cría, ata o hace daño a sus
+  # animales (rpgrollranching.bypass-owner se lo salta). Los animales sin dueño
+  # no se protegen.
+  protect: true
+  # /ranching reclamar sobre un animal sin dueño (los de antes de esta versión).
+  claim-unowned: true
+  # Máximo de animales por jugador al comprar o reclamar (0 = sin límite). Las
+  # crías no cuentan para el límite.
+  max-animals-per-player: 0
+
+recall:
+  # Segundos entre llamadas (llamar o mandar al corral).
+  cooldown-seconds: 5
+  # Si se puede llamar a un animal que está en otro mundo.
+  cross-world: true
+  # Si la entidad de un animal ya no existe (la borró un comando, un plugin de
+  # limpieza, un chunk regenerado...), crear una nueva con sus mismos datos.
+  recreate-missing: true
+
+# Compraventa con dinero de Vault. Sin Vault el mercado avisa y no cobra.
+market:
+  enabled: true
+  min-price: 1
+  max-price: 1000000
+  # Porcentaje que se queda el servidor en las ventas entre jugadores.
+  tax-percent: 0
+  # Animales que vende el servidor: fundadores nuevos, del comprador, a sus pies.
+  # sex: MALE, FEMALE o RANDOM.
+  server-shop:
+    - {species: cow, breed: holstein, sex: RANDOM, price: 250}
+    - {species: sheep, breed: merino, sex: RANDOM, price: 150}
+    - {species: chicken, breed: leghorn, sex: RANDOM, price: 40}
+    - {species: pig, breed: yorkshire, sex: RANDOM, price: 180}
+    - {species: rabbit, breed: californian, sex: RANDOM, price: 35}
+    - {species: duck, breed: pekin, sex: RANDOM, price: 45}
+    - {species: goat, breed: saanen, sex: RANDOM, price: 160}
+  # Lo que paga el servidor por un animal propio, por especie, multiplicado por
+  # su calidad (POOR 0.5, COMMON 1, GOOD 1.5, EXCELLENT 2.5, EXCEPTIONAL 5).
+  sell-to-server:
+    cow: 100
+    sheep: 60
+    chicken: 15
+    pig: 70
+    rabbit: 12
+    duck: 18
+    goat: 65
+
+# Un secreto: el huevo fosilizado. Lo pone muy de vez en cuando una gallina (o pato)
+# del rancho en lugar de un huevo, y a veces lo desentierra un sniffer. Usado sobre
+# un bloque, se incuba y sale un mini T-Rex del jugador. 0 lo desactiva.
+secret:
+  dino-egg-chance: 0.0005
+  sniffer-dino-egg-chance: 0.02
+  species: trex
+  breed: tiranosaurio
 
 resource-pack:
   # Registrar los modelos de fábrica en SackResourcePack al arrancar (si está instalado).

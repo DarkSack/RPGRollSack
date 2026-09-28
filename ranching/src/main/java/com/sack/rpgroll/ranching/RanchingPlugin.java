@@ -59,6 +59,17 @@ public class RanchingPlugin extends JavaPlugin {
     private MedicineManager medicineManager;
     private AnimalManager animalManager;
     private LangManager langManager;
+    private com.sack.rpgroll.ranching.core.ownership.PenManager penManager;
+    private com.sack.rpgroll.ranching.core.ownership.AnimalRecall animalRecall;
+    private com.sack.rpgroll.ranching.core.ownership.AnimalMarket animalMarket;
+    private com.sack.rpgroll.ranching.listener.DinoEggListener dinoEggListener;
+
+    @Override
+    public void onLoad() {
+        // Los modelos animados de las razas, a FreeMinecraftModels: en onLoad, antes de que FMM
+        // (que se habilita en STARTUP) lea su carpeta de modelos.
+        com.sack.rpgroll.ranching.integration.ModelsIntegration.installBundled(this);
+    }
 
     @Override
     public void onEnable() {
@@ -115,6 +126,33 @@ public class RanchingPlugin extends JavaPlugin {
                 new ProductionListener(animalManager, speciesManager, breedManager, geneManager, diseaseManager, langManager),
                 this);
 
+        // Dueños, corral, llamada y mercado de animales.
+        var ownershipSettings = com.sack.rpgroll.ranching.core.ownership.OwnershipSettings.from(getConfig());
+        penManager = new com.sack.rpgroll.ranching.core.ownership.PenManager(this);
+        penManager.load();
+        animalRecall = new com.sack.rpgroll.ranching.core.ownership.AnimalRecall(this, animalManager, speciesManager,
+                breedManager);
+        animalRecall.configure(ownershipSettings.recreateMissing());
+        animalMarket = new com.sack.rpgroll.ranching.core.ownership.AnimalMarket(animalManager, speciesManager,
+                breedManager, geneManager, geneticsEngine, ownershipSettings);
+        var ownership = new com.sack.rpgroll.ranching.core.ownership.OwnershipService(animalManager, speciesManager,
+                breedManager, penManager, animalRecall, animalMarket, langManager);
+        getServer().getPluginManager().registerEvents(
+                new com.sack.rpgroll.ranching.listener.OwnershipListener(this, ownership), this);
+
+        getServer().getPluginManager().registerEvents(
+                new com.sack.rpgroll.ranching.listener.ModelInteractionBridge(animalManager), this);
+
+        dinoEggListener = new com.sack.rpgroll.ranching.listener.DinoEggListener(this, animalManager, speciesManager,
+                breedManager, geneManager, geneticsEngine, langManager);
+        dinoEggListener.configure(getConfig().getConfigurationSection("secret"));
+        getServer().getPluginManager().registerEvents(dinoEggListener, this);
+
+        // Dónde anda cada animal cargado, cada 30 s: para encontrarlo si luego se pierde.
+        getServer().getScheduler().runTaskTimer(this, () -> animalManager.getAll().forEach(animal ->
+                animalManager.entityOf(animal).ifPresent(entity -> animalManager.updateLastSeen(animal,
+                        entity.getLocation()))), 600L, 600L);
+
         startTasks(animalManager, breedingEngine, inbreedingGenerations);
 
         // Autoguardado cada 5 minutos: comer, curarse, vacunarse o crecer también tiene que sobrevivir a un cierre inesperado.
@@ -128,7 +166,8 @@ public class RanchingPlugin extends JavaPlugin {
         com.sack.rpgroll.common.command.BrigadierCommands.register(this, "ranchingadmin",
                 "Comandos administrativos de RPGRoll-Ranching (Ranch Studio)", "rpgrollranching.admin.*", ranchingAdminCommand);
 
-        var ranchingCommand = new RanchingCommand(animalManager, speciesManager, breedManager, chatPromptManager);
+        var ranchingCommand = new RanchingCommand(animalManager, speciesManager, breedManager, chatPromptManager,
+                ownership);
 
         // Registrado por Brigadier para que `execute as` entregue al jugador real.
         com.sack.rpgroll.common.command.BrigadierCommands.register(this, "ranching",
@@ -183,6 +222,12 @@ public class RanchingPlugin extends JavaPlugin {
         diseaseManager.reload();
         vaccineManager.reload();
         medicineManager.reload();
+
+        var ownershipSettings = com.sack.rpgroll.ranching.core.ownership.OwnershipSettings.from(getConfig());
+        animalMarket.configure(ownershipSettings);
+        animalRecall.configure(ownershipSettings.recreateMissing());
+        penManager.load();
+        dinoEggListener.configure(getConfig().getConfigurationSection("secret"));
     }
 
     private void startTasks(AnimalManager animalManager, BreedingEngine breedingEngine, int inbreedingGenerations) {

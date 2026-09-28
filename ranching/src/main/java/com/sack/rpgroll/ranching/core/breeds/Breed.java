@@ -11,7 +11,8 @@ import java.util.Objects;
  * base de esa especie — la genética individual del animal se aplica
  * encima de esto, no en su lugar. {@code reskin} es el reskin visual
  * propio de esta raza (sin depender de ModelEngine/BetterModel), aplicado
- * vía {@link com.sack.rpgroll.common.reskin.EntityReskinService}.
+ * vía {@link com.sack.rpgroll.common.reskin.EntityReskinService}. {@code model} es el id de un modelo
+ * animado de FreeMinecraftModels que lleva el adulto (tiene prioridad sobre el reskin).
  */
 public record Breed(
         String id,
@@ -23,7 +24,8 @@ public record Breed(
         double fertilityMultiplier,
         double resistanceMultiplier,
         String temperament,
-        EntityReskin reskin) implements RPGContent {
+        EntityReskin reskin,
+        String model) implements RPGContent {
 
     public Breed {
         Objects.requireNonNull(id, "id no puede ser null");
@@ -36,6 +38,15 @@ public record Breed(
         resistanceMultiplier = resistanceMultiplier <= 0 ? 1.0 : resistanceMultiplier;
         temperament = temperament == null || temperament.isBlank() ? "Neutral" : temperament;
         reskin = reskin == null ? EntityReskin.NONE : reskin;
+        model = model == null || model.isBlank() ? null : model.trim();
+    }
+
+    /** Sin modelo 3D (el editor de razas no lo toca: se queda el del YAML). */
+    public Breed(String id, String displayName, String description, String speciesId, double productionMultiplier,
+            double weightMultiplier, double fertilityMultiplier, double resistanceMultiplier, String temperament,
+            EntityReskin reskin) {
+        this(id, displayName, description, speciesId, productionMultiplier, weightMultiplier, fertilityMultiplier,
+                resistanceMultiplier, temperament, reskin, null);
     }
 
 }

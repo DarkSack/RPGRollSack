@@ -6,21 +6,35 @@ prompt:
 command:
   player_only: "Somente jogadores podem usar este comando."
   ranching:
-    usage_inspect: "Uso: /ranching inspect"
-    look_at_animal: "Olhe diretamente para um animal rastreado pelo Ranching."
+    usage: |-
+      &eUso: /ranching
+      &7 • &binspect &8— ficha do animal que você olha
+      &7 • &aanimales &8— seus animais: chamar, curral, vender
+      &7 • &6mercado &8— comprar e vender animais
+      &7 • &ereclamar &8— tomar um animal sem dono
+      &7 • &6vender <preço>|cancelar|servidor [id]
+      &7 • &6comprar <id>
+      &7 • &allamar [id|todos]
+      &7 • &acorral [fijar|quitar|enviar [id|todos]]
+    look_at_animal: "&cOlhe diretamente para um animal rastreado pelo Ranching."
+    usage_sell: "&eUso: /ranching vender <preço>|cancelar|servidor [id] &7(sem id, o animal que você olha)"
+    usage_buy: "&eUso: /ranching comprar <id>"
+    usage_pen: "&7/ranching corral fijar &8· &7quitar &8· &7enviar [id|todos]"
   admin:
     no_permission: "Você não tem permissão para usar este comando."
     usage: |-
       Uso: /ranchingadmin
       &7 • &bbrowser
       &7 • &areload
-      &7 • &espawn <espécie> [raça]
+      &7 • &espawn <espécie> [raça|-] [dono|-] [macho|femea]
+      &7 • &esetowner <jogador|ninguno> &8(o animal que você olha)
       &7 • &6givefeed|givemedicine|givevaccine <id> [quantidade] [jogador]
       &7 • &6giveproduct <tipo> [qualidade] [quantidade] [jogador]
+      &7 • &2givedinoegg [jogador] &8(shh)
     player_only_browser: "Somente um jogador pode abrir o Ranch Studio."
     reloaded: "✔ RPGRoll-Ranching recarregado."
     player_only_spawn: "Somente um jogador pode spawnar um animal."
-    usage_spawn: "Uso: /ranchingadmin spawn <espécie> [raça]"
+    usage_spawn: "Uso: /ranchingadmin spawn <espécie> [raça|-] [dono|-] [macho|femea]"
     unknown_species: "Não existe a espécie '{id}'."
     spawned_prefix: "✔ Spawnou um/a "
     spawned_suffix: " ({sex})."
@@ -33,6 +47,8 @@ command:
     player_not_found: "Nenhum jogador online chamado '{name}'."
     give_needs_player: "Pelo console é preciso informar quantidade e jogador."
     given: "✔ Entregue {amount}× {item} para {player}."
+    usage_setowner: "Uso: /ranchingadmin setowner <jogador|ninguno> (olhando para o animal)"
+    owner_set: "✔ Dono alterado para {owner}."
 
 item:
   feed:
@@ -79,6 +95,53 @@ breeding:
   ok_gestating: "✔ Acasalamento bem-sucedido! Gestação em andamento."
 
 gui:
+  confirm:
+    title: "Confirmar?"
+    accept: "&a&lConfirmar"
+    decline: "&c&lCancelar"
+
+  my_animals:
+    title: "Meus animais"
+    name: "&e{animal}"
+    empty: "&eVocê ainda não tem animais"
+    empty_lore: |-
+      &7Compre no &6mercado&7, crie os seus
+      &7ou use &e/ranching reclamar &7em um sem dono.
+    where: "&7Onde: &f{where}"
+    for_sale: "&6À venda por {price}"
+    actions: |-
+      &eClique esq. &7chamar aqui
+      &eClique dir. &7mandar ao curral
+      &eShift + esq. &7ver ficha
+      &eShift + dir. &7pôr ou tirar da venda
+    call_all: "&a&lChamar todos"
+    pen_all: "&a&lTodos ao curral"
+    pen: "&6Seu curral"
+    pen_none: "não definido"
+    pen_lore: |-
+      &7Agora: &f{pen}
+      &eClique &7para defini-lo onde você está.
+    market: "&6&lMercado de animais"
+
+  market:
+    title: "Mercado de animais"
+    tab_players: "&eDe jogadores"
+    tab_server: "&eDo servidor"
+    tab_sell: "&eVender ao servidor"
+    tab_selected: "&a▶ {tab}"
+    my_animals: "&eMeus animais"
+    empty_players: "&7Ninguém está vendendo animais agora."
+    empty_server: "&7O servidor não vende animais."
+    empty_sell: "&7Você não tem animais que o servidor compre."
+    seller: "&7Vendedor: &f{owner}"
+    price: "&7Preço: &6{price}"
+    server_pays: "&7O servidor paga: &6{price}"
+    yours: "&8(é seu)"
+    click_buy: "&eClique para comprar"
+    click_sell: "&eClique para vender"
+    offer_sex: "&7Sexo: &f{sex}"
+    random_sex: "aleatório"
+
   common:
     back: "Voltar"
     close: "Fechar"
@@ -121,15 +184,15 @@ gui:
     prompt_disease_ids: "Digite os ids de doença separados por vírgulas:"
 
   animal:
-    sex: "Sexo: {sex}"
-    stage: "Estágio: {stage}"
-    quality: "Qualidade: {quality}"
-    generation: "Geração: F{gen}"
-    health_happiness: "Saúde: {health} · Felicidade: {happiness}"
+    sex: "&7Sexo: {sex}"
+    stage: "&7Estágio: {stage}"
+    quality: "&6Qualidade: {quality}"
+    generation: "&7Geração: F{gen}"
+    health_happiness: "&aSaúde: {health} · Felicidade: {happiness}"
     sick: "⚠ Doente: {disease}"
     healthy: "Saudável"
     pregnant: "Prenha"
-    sex_stage: "{sex} · {stage}"
+    sex_stage: "&7{sex} · {stage}"
     detail_title: "Animal #{id}"
     detail:
       identity_title: "Identidade"
@@ -332,3 +395,61 @@ gui:
     ticks_remaining: "Ticks restantes: {ticks}"
     click_to_cure: "Clique para curar (admin)"
     cured: "✔ Animal curado."
+
+owner:
+  nobody: "ninguém"
+  where_unknown: "desconhecido"
+  where_distance: "{coords} &8({distance} blocos)"
+  already_yours: "&eEsse animal já é seu."
+  not_yours: "&cEsse animal é de &f{owner}&c."
+  claim_disabled: "&cNeste servidor não é possível reclamar animais sem dono."
+  limit: "&cVocê já tem o máximo de animais ({max})."
+  claimed: "&a✔ Agora {animal} &aé seu."
+  none: "&eVocê não tem animais."
+  no_pen: "&cVocê não tem curral. Defina com &e/ranching corral fijar&c."
+  pen_set: "&a✔ Curral definido aqui."
+  pen_removed: "&a✔ Curral removido."
+  pen_info: "&7Seu curral: &f{pen}"
+  called: "&a✔ {animal} &aestá vindo até você."
+  sent_to_pen: "&a✔ {animal} &avoltou ao curral."
+  called_all: "&a✔ {count} animal(is) estão vindo até você."
+  sent_all_to_pen: "&a✔ {count} animal(is) voltaram ao curral."
+  recovered: "&a✔ {animal} &atinha se perdido: foi recuperado."
+  not_found: "&cNão foi possível encontrar {animal}&c."
+  busy: "&eJá está procurando, espere um momento."
+  cooldown: "&cEspere {seconds} s para chamar de novo."
+  other_world: "&cEsse animal está em outro mundo."
+  unknown_id: "&cNão há nenhum animal com id '{id}'."
+
+market:
+  listed: "&a✔ {animal} &aà venda por &6{price}&a."
+  unlisted: "&a✔ {animal} &anão está mais à venda."
+  bought: "&a✔ Você comprou {animal} &ade &f{seller} &apor &6{price}&a."
+  sold_to_player: "&a✔ &f{buyer} &acomprou seu {animal} &a(&6{price}&a)."
+  sold_to_server: "&a✔ Você vendeu {animal} &aao servidor por &6{price}&a."
+  bought_from_server: "&a✔ Você comprou {animal} &apor &6{price}&a. Está aos seus pés."
+  ask_price: "Por quanto você vende {animal}? Digite o preço (0 para não vender)."
+  for_sale_notice: "&6{animal} &6está à venda por &e{price} &7(de {owner})"
+  buy_button: "&a&l[Comprar]"
+  result:
+    ok: "&a✔ Feito."
+    no_economy: "&cNão há economia (Vault) para pagar."
+    disabled: "&cO mercado de animais está desativado."
+    not_for_sale: "&cEsse animal não está à venda."
+    own_animal: "&eEsse animal já é seu."
+    not_owner: "&cEsse animal é de &f{owner}&c."
+    no_money: "&cVocê não tem dinheiro suficiente."
+    limit: "&cVocê já tem o máximo de animais ({max})."
+    bad_price: "&cPreço inválido: entre {min} e {maxprice}."
+    not_sellable: "&cO servidor não compra esse animal."
+    no_species: "&cEssa espécie não existe mais."
+
+secret:
+  egg_name: "&2&lOvo fossilizado"
+  egg_lore: |-
+    &8Pesa mais do que deveria.
+    &8Às vezes... se mexe.
+    &7Use-o no chão.
+  hatching: "&2Algo se agita dentro do ovo..."
+  hatched: "&a&lNasceu um mini T-Rex! &7({sex}) &aÉ seu."
+  no_species: "&cEste ovo se recusa a abrir aqui."

@@ -1,0 +1,13 @@
+id: khaki_campbell
+display-name: "&6Khaki Campbell"
+description: "Pardo y ponedor incansable."
+species: duck
+production-multiplier: 1.4
+weight-multiplier: 0.9
+fertility-multiplier: 1.0
+resistance-multiplier: 1.0
+temperament: "Activo"
+
+# Modelo animado de FreeMinecraftModels que lleva el adulto (los que trae el plugin
+# se copian solos a plugins/FreeMinecraftModels/models/). Sin FMM, se ve vanilla.
+model: ranching_khaki_campbell

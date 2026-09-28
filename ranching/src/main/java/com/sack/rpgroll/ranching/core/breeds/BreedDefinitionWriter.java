@@ -30,6 +30,9 @@ public class BreedDefinitionWriter {
         config.set("resistance-multiplier", breed.resistanceMultiplier());
         config.set("temperament", breed.temperament());
         EntityReskinYaml.write(config, breed.reskin());
+        if (breed.model() != null) {
+            config.set("model", breed.model());
+        }
 
         try {
             folder.mkdirs();
