@@ -7,7 +7,6 @@ import com.destroystokyo.paper.profile.ProfileProperty;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -25,7 +24,6 @@ import java.util.UUID;
  */
 public class ItemBuilder {
 
-    private static final MiniMessage MINI = MiniMessage.miniMessage();
     private final ItemStack item;
     private final ItemMeta meta;
 
@@ -73,7 +71,7 @@ public class ItemBuilder {
         List<Component> lines = new ArrayList<>();
 
         for (String line : raw.split("\n")) {
-            lines.add(MINI.deserialize(line));
+            lines.add(com.sack.rpgroll.util.ComponentUtils.parse(line));
         }
 
         return lines;
