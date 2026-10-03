@@ -1,0 +1,29 @@
+# Reparación avanzada: la experiencia recogida repara más que con Reparación
+# (que da 2 de durabilidad por punto) y solo gasta los puntos que usa. En el
+# nivel III reparte por todo el equipo puesto, no solo por este ítem.
+id: advanced_mending
+display-name: "&dReparación avanzada"
+rarity: LEGENDARY
+max-level: 3
+
+categories:
+  - ANY
+
+trigger:
+  - EXP_PICKUP
+
+levels:
+  1:
+    ratio: 3
+    equipment: 0
+  2:
+    ratio: 4
+    equipment: 0
+  3:
+    ratio: 4
+    equipment: 1
+
+effects:
+  - type: REPAIR
+    ratio: "{ratio}"
+    equipment: "{equipment}"

@@ -1,0 +1,18 @@
+# Autofundición: lo que suelta el bloque sale ya fundido (con su
+# experiencia de horno). Respeta Fortuna y funciona con el minero de vetas y
+# el martillo.
+id: autosmelt
+display-name: "&cAutofundición"
+rarity: EPIC
+max-level: 1
+
+categories:
+  - PICKAXE
+  - AXE
+  - SHOVEL
+
+trigger:
+  - BLOCK_BREAK
+
+effects:
+  - AUTO_SMELT

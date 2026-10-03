@@ -10,21 +10,27 @@ import com.sack.rpgroll.enchantments.item.EnchantmentItem;
 
 import com.destroystokyo.paper.event.player.PlayerJumpEvent;
 
+import io.papermc.paper.event.player.PlayerShieldDisableEvent;
+
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerExpChangeEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -33,8 +39,15 @@ import java.util.Map;
  * el jugador tiene puestos (mano principal, secundaria y armadura) y, por
  * cada encantamiento que declare ese trigger, evalúa probabilidad,
  * condiciones y finalmente ejecuta sus efectos.
+ * <p>
+ * Cada efecto recibe además el evento, el ítem encantado y su ranura: los de
+ * herramienta solo actúan si el ítem está en la mano principal.
  */
 public class EnchantmentTriggerListener implements Listener {
+
+    private static final EquipmentSlot[] SLOTS = {
+            EquipmentSlot.HAND, EquipmentSlot.OFF_HAND,
+            EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET};
 
     private final EnchantmentManager manager;
     private final EnchantmentItem enchantmentItem;
@@ -61,7 +74,7 @@ public class EnchantmentTriggerListener implements Listener {
         }
 
         LivingEntity target = event.getEntity() instanceof LivingEntity living ? living : null;
-        handleTrigger(Trigger.PLAYER_ATTACK, attacker, target);
+        handleTrigger(Trigger.PLAYER_ATTACK, attacker, target, event);
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -71,20 +84,68 @@ public class EnchantmentTriggerListener implements Listener {
             return;
         }
 
-        LivingEntity source = event instanceof EntityDamageByEntityEvent byEntity
-                && byEntity.getDamager() instanceof LivingEntity living ? living : null;
+        LivingEntity source = null;
 
-        handleTrigger(Trigger.ENTITY_DAMAGE, victim, source);
+        if (event instanceof EntityDamageByEntityEvent byEntity) {
+            if (byEntity.getDamager() instanceof LivingEntity living) {
+                source = living;
+            } else if (byEntity.getDamager() instanceof Projectile projectile
+                    && projectile.getShooter() instanceof LivingEntity shooter) {
+                source = shooter;
+            }
+        }
+
+        if (blockedByShield(victim, event)) {
+            handleTrigger(Trigger.SHIELD_BLOCK, victim, source, event);
+        }
+
+        handleTrigger(Trigger.ENTITY_DAMAGE, victim, source, event);
+    }
+
+    /**
+     * El escudo paró el golpe. BLOCKING sigue siendo la forma en que Paper
+     * cuenta lo que quita el escudo, aunque esté marcado como obsoleto.
+     */
+    @SuppressWarnings("deprecation")
+    private static boolean blockedByShield(Player victim, EntityDamageEvent event) {
+        return victim.isBlocking()
+                && event.isApplicable(EntityDamageEvent.DamageModifier.BLOCKING)
+                && event.getDamage(EntityDamageEvent.DamageModifier.BLOCKING) < 0;
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onShieldDisable(PlayerShieldDisableEvent event) {
+        LivingEntity source = event.getDamager() instanceof LivingEntity living ? living : null;
+        handleTrigger(Trigger.SHIELD_DISABLE, event.getPlayer(), source, event);
     }
 
     @EventHandler(ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
-        handleTrigger(Trigger.BLOCK_BREAK, event.getPlayer(), null);
+        handleTrigger(Trigger.BLOCK_BREAK, event.getPlayer(), null, event);
+    }
+
+    @EventHandler
+    public void onInteract(PlayerInteractEvent event) {
+
+        if (event.getAction() != Action.RIGHT_CLICK_BLOCK || event.getHand() != EquipmentSlot.HAND
+                || event.useInteractedBlock() == Event.Result.DENY || event.useItemInHand() == Event.Result.DENY) {
+            return;
+        }
+
+        handleTrigger(Trigger.BLOCK_INTERACT, event.getPlayer(), null, event);
+    }
+
+    @EventHandler
+    public void onExpChange(PlayerExpChangeEvent event) {
+
+        if (event.getAmount() > 0) {
+            handleTrigger(Trigger.EXP_PICKUP, event.getPlayer(), null, event);
+        }
     }
 
     @EventHandler(ignoreCancelled = true)
     public void onJump(PlayerJumpEvent event) {
-        handleTrigger(Trigger.PLAYER_JUMP, event.getPlayer(), null);
+        handleTrigger(Trigger.PLAYER_JUMP, event.getPlayer(), null, event);
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -96,12 +157,12 @@ public class EnchantmentTriggerListener implements Listener {
             return;
         }
 
-        handleTrigger(Trigger.PLAYER_MOVE, event.getPlayer(), null);
+        handleTrigger(Trigger.PLAYER_MOVE, event.getPlayer(), null, event);
     }
 
     @EventHandler
     public void onDeath(PlayerDeathEvent event) {
-        handleTrigger(Trigger.PLAYER_DEATH, event.getEntity(), event.getEntity().getKiller());
+        handleTrigger(Trigger.PLAYER_DEATH, event.getEntity(), event.getEntity().getKiller(), event);
     }
 
     @EventHandler
@@ -111,12 +172,16 @@ public class EnchantmentTriggerListener implements Listener {
             return;
         }
 
-        handleTrigger(Trigger.ENTITY_KILL, killer, event.getEntity());
+        handleTrigger(Trigger.ENTITY_KILL, killer, event.getEntity(), event);
     }
 
-    private void handleTrigger(Trigger trigger, Player player, LivingEntity target) {
+    private void handleTrigger(Trigger trigger, Player player, LivingEntity target, Event event) {
 
-        for (ItemStack item : relevantItems(player)) {
+        PlayerInventory inventory = player.getInventory();
+
+        for (EquipmentSlot slot : SLOTS) {
+
+            ItemStack item = inventory.getItem(slot);
 
             if (item == null || item.getType().isAir()) {
                 continue;
@@ -125,12 +190,13 @@ public class EnchantmentTriggerListener implements Listener {
             Map<String, Integer> enchantments = enchantmentItem.getAll(item);
 
             for (var entry : enchantments.entrySet()) {
-                applyIfMatches(trigger, player, target, entry.getKey(), entry.getValue());
+                applyIfMatches(trigger, player, target, entry.getKey(), entry.getValue(), item, slot, event);
             }
         }
     }
 
-    private void applyIfMatches(Trigger trigger, Player player, LivingEntity target, String enchantId, int level) {
+    private void applyIfMatches(Trigger trigger, Player player, LivingEntity target, String enchantId, int level,
+                                ItemStack item, EquipmentSlot slot, Event event) {
 
         manager.get(enchantId).ifPresent(enchantment -> {
 
@@ -148,24 +214,10 @@ public class EnchantmentTriggerListener implements Listener {
                 return;
             }
 
-            EffectContext effectContext = new EffectContext(player, target, level, enchantment.levelData(level));
+            EffectContext effectContext = new EffectContext(player, target, level, enchantment.levelData(level),
+                    item, slot, event);
             effectExecutor.execute(enchantment.effects(), effectContext);
         });
-    }
-
-    private List<ItemStack> relevantItems(Player player) {
-
-        PlayerInventory inventory = player.getInventory();
-
-        List<ItemStack> items = new ArrayList<>();
-        items.add(inventory.getItemInMainHand());
-        items.add(inventory.getItemInOffHand());
-        items.add(inventory.getHelmet());
-        items.add(inventory.getChestplate());
-        items.add(inventory.getLeggings());
-        items.add(inventory.getBoots());
-
-        return items;
     }
 
 }

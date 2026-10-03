@@ -1,0 +1,28 @@
+# Azada amplia: labra un cuadrado de tierra (3x3 en I, 5x5 en II) y, al romper
+# un cultivo maduro, cosecha los maduros de alrededor y los replanta con
+# semillas del inventario o de lo que acaba de caer. Agachado no se activa.
+id: tiller
+display-name: "&aAzada amplia"
+rarity: UNCOMMON
+max-level: 2
+
+categories:
+  - HOE
+
+trigger:
+  - BLOCK_INTERACT
+  - BLOCK_BREAK
+
+conditions:
+  - "player.sneaking == false"
+
+levels:
+  1:
+    radius: 1
+  2:
+    radius: 2
+
+effects:
+  - type: TILL_AREA
+    radius: "{radius}"
+    replant: true

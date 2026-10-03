@@ -1,0 +1,22 @@
+# Escudo — Embestida: cada golpe parado empuja al atacante.
+id: shield_bash
+display-name: "&cEmbestida"
+rarity: UNCOMMON
+max-level: 2
+
+categories:
+  - SHIELD
+
+trigger:
+  - SHIELD_BLOCK
+
+levels:
+  1:
+    push: 0.7
+  2:
+    push: 1.2
+
+effects:
+  - type: KNOCKBACK
+    strength: "{push}"
+    vertical: 0.25

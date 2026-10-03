@@ -36,9 +36,18 @@ public class EnchantEffectExecutor {
     private static final double DEFAULT_PICKUP_RADIUS = 6.0;
 
     private final Plugin plugin;
+    private final BlockEffects blockEffects;
+    private final AutoSmelt autoSmelt = new AutoSmelt();
+    private final GearEffects gearEffects = new GearEffects();
 
     public EnchantEffectExecutor(Plugin plugin) {
         this.plugin = plugin;
+        this.blockEffects = new BlockEffects(plugin);
+    }
+
+    /** Listener que convierte los drops marcados por AUTO_SMELT; hay que registrarlo. */
+    public AutoSmelt autoSmelt() {
+        return autoSmelt;
     }
 
     public void execute(List<EnchantEffect> effects, EffectContext context) {
@@ -62,6 +71,23 @@ public class EnchantEffectExecutor {
             case PARTICLES -> executeParticles(effect, context);
             case SOUND -> executeSound(effect, context);
             case PICKUP_ITEMS -> executePickupItems(effect, context);
+            case VEIN_MINE -> blockEffects.veinMine(context, (int) resolveDouble(effect, context, "max", 32));
+            case TREE_FELL -> blockEffects.treeFell(context, (int) resolveDouble(effect, context, "max", 64),
+                    Boolean.parseBoolean(effect.param("leaves", "true")));
+            case AREA_MINE -> blockEffects.areaMine(context, (int) resolveDouble(effect, context, "radius", 1));
+            case AUTO_SMELT -> autoSmelt.mark(context);
+            case TILL_AREA -> blockEffects.tillArea(context, (int) resolveDouble(effect, context, "radius", 1),
+                    Boolean.parseBoolean(effect.param("replant", "true")));
+            case REPAIR -> gearEffects.repair(context, resolveDouble(effect, context, "ratio", 3),
+                    resolveDouble(effect, context, "equipment", 0) > 0);
+            case DAMAGE_BONUS -> gearEffects.damageBonus(context, resolveDouble(effect, context, "amount", 1),
+                    resolveDouble(effect, context, "multiplier", 1));
+            case KNOCKBACK -> gearEffects.knockback(context, resolveDouble(effect, context, "strength", 0.8),
+                    resolveDouble(effect, context, "vertical", 0.3));
+            case REFLECT -> gearEffects.reflect(context, resolveDouble(effect, context, "speed", 1.6),
+                    resolveDouble(effect, context, "chance", 100));
+            case SHIELD_COOLDOWN -> gearEffects.shieldCooldown(context,
+                    resolveDouble(effect, context, "factor", 0.5));
         }
     }
 

@@ -1,0 +1,30 @@
+# Minero de vetas: rompe de un golpe la veta entera de la mena (también las
+# de RPGRoll-Items). Agachado no se activa, para poder sacar un solo bloque.
+id: veinminer
+display-name: "&bMinero de vetas"
+rarity: RARE
+max-level: 3
+
+categories:
+  - PICKAXE
+
+conflicts:
+  - HAMMER
+
+trigger:
+  - BLOCK_BREAK
+
+conditions:
+  - "player.sneaking == false"
+
+levels:
+  1:
+    max: 12
+  2:
+    max: 24
+  3:
+    max: 48
+
+effects:
+  - type: VEIN_MINE
+    max: "{max}"

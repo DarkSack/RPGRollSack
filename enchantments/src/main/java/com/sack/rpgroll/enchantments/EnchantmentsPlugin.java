@@ -57,6 +57,8 @@ public class EnchantmentsPlugin extends JavaPlugin {
                 new EnchantmentTriggerListener(enchantmentManager, enchantmentItem, conditionEvaluator, effectExecutor),
                 this);
 
+        getServer().getPluginManager().registerEvents(effectExecutor.autoSmelt(), this);
+
         getServer().getPluginManager().registerEvents(new AnvilEnchantListener(enchantmentManager, enchantmentItem), this);
 
         ChatPromptManager chatPromptManager = new ChatPromptManager(this, langManager);

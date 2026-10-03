@@ -1,0 +1,32 @@
+# Escudo — Égida: a veces, parar un golpe da corazones de absorción.
+id: shield_aegis
+display-name: "&5Égida"
+rarity: LEGENDARY
+max-level: 3
+chance: 30%
+
+categories:
+  - SHIELD
+
+trigger:
+  - SHIELD_BLOCK
+
+levels:
+  1:
+    amp: 0
+    time: 100
+  2:
+    amp: 0
+    time: 200
+  3:
+    amp: 1
+    time: 200
+
+effects:
+  - type: POTION
+    potion: absorption
+    duration: "{time}"
+    amplifier: "{amp}"
+  - type: SOUND
+    sound: BLOCK_AMETHYST_BLOCK_CHIME
+    pitch: 1.4

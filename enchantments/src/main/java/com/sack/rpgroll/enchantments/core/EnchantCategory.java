@@ -23,6 +23,12 @@ public enum EnchantCategory {
     CROSSBOW,
     TRIDENT,
     FISHING_ROD,
+    SWORD,
+    PICKAXE,
+    AXE,
+    SHOVEL,
+    HOE,
+    SHIELD,
     ANY;
 
     public boolean matches(Material material) {
@@ -48,6 +54,12 @@ public enum EnchantCategory {
             case CROSSBOW -> material == Material.CROSSBOW;
             case TRIDENT -> material == Material.TRIDENT;
             case FISHING_ROD -> material == Material.FISHING_ROD;
+            case SWORD -> name.endsWith("_SWORD");
+            case PICKAXE -> name.endsWith("_PICKAXE");
+            case AXE -> name.endsWith("_AXE");
+            case SHOVEL -> name.endsWith("_SHOVEL");
+            case HOE -> name.endsWith("_HOE");
+            case SHIELD -> material == Material.SHIELD;
             default -> false;
         };
     }

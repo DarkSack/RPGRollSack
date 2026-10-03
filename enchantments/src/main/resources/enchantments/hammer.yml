@@ -1,0 +1,30 @@
+# Martillo: rompe un cuadrado de cara al jugador (3x3 en I, 5x5 en II). No se
+# lleva nada más duro que lo golpeado ni bloques con contenido. Agachado no se
+# activa.
+id: hammer
+display-name: "&7Martillo"
+rarity: EPIC
+max-level: 2
+
+categories:
+  - PICKAXE
+  - SHOVEL
+
+conflicts:
+  - VEINMINER
+
+trigger:
+  - BLOCK_BREAK
+
+conditions:
+  - "player.sneaking == false"
+
+levels:
+  1:
+    radius: 1
+  2:
+    radius: 2
+
+effects:
+  - type: AREA_MINE
+    radius: "{radius}"

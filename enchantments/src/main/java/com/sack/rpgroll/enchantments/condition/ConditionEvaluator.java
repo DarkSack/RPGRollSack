@@ -12,7 +12,8 @@ import java.util.regex.Pattern;
 /**
  * Evalúa las condiciones de texto de un encantamiento (ej.
  * "player.health &lt; 10", "world == world_nether", "weather == STORM",
- * "target.type == ZOMBIE", "player.hasPermission(rpg.vip)"). No es un
+ * "target.type == ZOMBIE", "player.hasPermission(rpg.vip)", "player.sneaking == false",
+ * "player.shieldticks <= 8"). No es un
  * lenguaje de expresiones completo — cubre exactamente las rutas de acceso
  * y operadores que necesita el sistema de encantamientos, nada más.
  */
@@ -116,6 +117,9 @@ public class ConditionEvaluator {
             case "player.level" -> rpgLevel(player);
             case "player.xplevel" -> (double) player.getLevel();
             case "player.foodlevel" -> (double) player.getFoodLevel();
+            case "player.sneaking" -> String.valueOf(player.isSneaking());
+            // Ticks que lleva el escudo levantado: para paradas justo al bloquear.
+            case "player.shieldticks" -> player.isBlocking() ? (double) player.getActiveItemUsedTime() : null;
             case "world" -> player.getWorld().getName();
             case "weather" -> resolveWeather(player.getWorld());
             case "target.type" -> target != null ? target.getType().name() : null;

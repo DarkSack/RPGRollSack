@@ -15,7 +15,8 @@ rarity: DIVINE
 max-level: 5
 
 # A qué tipo de ítem se le puede aplicar — WEAPON, ARMOR, HELMET, CHESTPLATE, LEGGINGS,
-# BOOTS, TOOLS, BOW, CROSSBOW, TRIDENT, FISHING_ROD (una o varias)
+# BOOTS, TOOLS, BOW, CROSSBOW, TRIDENT, FISHING_ROD, SWORD, PICKAXE, AXE, SHOVEL, HOE,
+# SHIELD o ANY (una o varias)
 categories:
   - WEAPON
   - BOW
@@ -32,15 +33,19 @@ conflicts:
   - frost
 
 # Evento que puede disparar los "effects" — uno o varios de:
-# PLAYER_ATTACK, ENTITY_DAMAGE, BLOCK_BREAK, PLAYER_JUMP, PLAYER_MOVE, PLAYER_DEATH, ENTITY_KILL
+# PLAYER_ATTACK, ENTITY_DAMAGE, BLOCK_BREAK, PLAYER_JUMP, PLAYER_MOVE, PLAYER_DEATH, ENTITY_KILL,
+# BLOCK_INTERACT (clic derecho a un bloque), SHIELD_BLOCK (el escudo para un golpe),
+# SHIELD_DISABLE (un hacha desactiva el escudo), EXP_PICKUP (recoger experiencia)
 trigger:
   - PLAYER_ATTACK
   - ENTITY_KILL
 
-# Condiciones adicionales evaluadas antes de disparar (mismo lenguaje de condiciones que Quests/Mobs)
+# Condiciones adicionales evaluadas antes de disparar. Rutas: player.health, player.level (RPGRoll),
+# player.xplevel, player.foodlevel, player.sneaking, player.shieldticks (ticks con el escudo
+# levantado), world, weather, target.type, target.health; y player.hasPermission(<permiso>).
 conditions:
-  - "sneaking"
-  - "health-below:50%"
+  - "player.sneaking == false"
+  - "player.health < 10"
 
 # Probabilidad de que dispare cada vez que ocurre el trigger — número (0-100) o con "%"
 chance: 35%
@@ -66,7 +71,13 @@ levels:
 
 # Qué pasa cuando dispara — cada entrada puede ser un string simple (sin parámetros) o un
 # mapa con "type" + parámetros. type: DAMAGE | HEAL | LIGHTNING | POTION | FIRE | EXPLOSION |
-# TELEPORT | COMMAND | MESSAGE | PARTICLE | SOUND | PICKUP_ITEMS
+# TELEPORT | COMMAND | MESSAGE | PARTICLE | PARTICLES | SOUND | PICKUP_ITEMS
+#
+# De herramienta (actúan solo con el ítem en la mano principal):
+#   VEIN_MINE max · TREE_FELL max, leaves · AREA_MINE radius · AUTO_SMELT · TILL_AREA radius, replant
+# De equipo y escudo:
+#   REPAIR ratio, equipment (1 = todo el equipo) · DAMAGE_BONUS amount, multiplier
+#   KNOCKBACK strength, vertical · REFLECT chance, speed · SHIELD_COOLDOWN factor (0 = no se desactiva)
 effects:
   - LIGHTNING # forma simple: sin parámetros
   - type: DAMAGE

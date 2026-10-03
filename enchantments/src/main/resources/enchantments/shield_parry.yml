@@ -1,0 +1,50 @@
+# Escudo — Parada: si el golpe llega justo al levantar el escudo (menos de
+# medio segundo), el atacante queda aturdido y sale despedido.
+id: shield_parry
+display-name: "&6Parada"
+rarity: EPIC
+max-level: 3
+
+categories:
+  - SHIELD
+
+trigger:
+  - SHIELD_BLOCK
+
+conditions:
+  - "player.shieldticks <= 10"
+
+levels:
+  1:
+    stun: 30
+    slow: 1
+    push: 0.6
+  2:
+    stun: 45
+    slow: 2
+    push: 0.9
+  3:
+    stun: 60
+    slow: 3
+    push: 1.2
+
+effects:
+  - type: POTION
+    potion: slowness
+    apply-to: target
+    duration: "{stun}"
+    amplifier: "{slow}"
+  - type: POTION
+    potion: weakness
+    apply-to: target
+    duration: "{stun}"
+    amplifier: "0"
+  - type: KNOCKBACK
+    strength: "{push}"
+    vertical: 0.35
+  - type: SOUND
+    sound: ITEM_SHIELD_BLOCK
+    pitch: 1.6
+  - type: PARTICLE
+    particle: CRIT
+    count: 12

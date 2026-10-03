@@ -1,0 +1,25 @@
+# Escudo — Reflejo: las flechas y bolas de fuego paradas vuelven a quien las
+# disparó, con el mismo daño.
+id: shield_reflect
+display-name: "&eReflejo"
+rarity: EPIC
+max-level: 3
+
+categories:
+  - SHIELD
+
+trigger:
+  - SHIELD_BLOCK
+
+levels:
+  1:
+    chance: 25
+  2:
+    chance: 50
+  3:
+    chance: 80
+
+effects:
+  - type: REFLECT
+    chance: "{chance}"
+    speed: 1.8
