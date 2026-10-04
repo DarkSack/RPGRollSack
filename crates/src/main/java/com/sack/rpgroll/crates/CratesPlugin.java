@@ -1,5 +1,15 @@
 package com.sack.rpgroll.crates;
 
+import com.sack.rpgroll.crates.lucky.LuckyCommand;
+import com.sack.rpgroll.crates.lucky.LuckyExecutor;
+import com.sack.rpgroll.crates.lucky.LuckyItems;
+import com.sack.rpgroll.crates.lucky.LuckyListener;
+import com.sack.rpgroll.crates.lucky.LuckyManager;
+import com.sack.rpgroll.crates.lucky.LuckyStore;
+import java.util.HashSet;
+import java.util.Locale;
+import java.util.Set;
+
 import com.sack.rpgroll.licensing.LicenseGate;
 import com.sack.rpgroll.license.identity.LicenseIdentity;
 
@@ -26,12 +36,14 @@ public class CratesPlugin extends JavaPlugin {
 
     private static final double HOLOGRAM_Y_OFFSET = 2.0;
 
-    private static final List<String> DIRECTORIES = List.of("crates");
+    private static final List<String> DIRECTORIES = List.of("crates", "lucky");
 
     private CrateManager crateManager;
     private PlacedCrateManager placedCrateManager;
     private DecentHologramsHook hologramsHook;
     private LangManager langManager;
+    private LuckyManager luckyManager;
+    private LuckyExecutor luckyExecutor;
 
     @Override
     public void onEnable() {
@@ -58,7 +70,11 @@ public class CratesPlugin extends JavaPlugin {
 
         hologramsHook = new DecentHologramsHook(this);
         CrateKeyItem crateKeyItem = new CrateKeyItem(this, langManager);
-        CrateActionExecutor actionExecutor = new CrateActionExecutor(this, langManager);
+        luckyManager = new LuckyManager(this);
+        luckyManager.initialize();
+        LuckyItems luckyItems = new LuckyItems(this, luckyManager);
+
+        CrateActionExecutor actionExecutor = new CrateActionExecutor(this, langManager, luckyManager, luckyItems);
 
         getServer().getPluginManager().registerEvents(
                 new CrateInteractListener(this, crateManager, placedCrateManager, crateKeyItem, actionExecutor,
@@ -75,16 +91,40 @@ public class CratesPlugin extends JavaPlugin {
         com.sack.rpgroll.common.command.BrigadierCommands.register(this, "crate",
                 "Gestiona crates", "rpgrollcrates.admin.*", crateAdminCommand);
 
+        enableLuckyBlocks(luckyItems);
+
         rebuildHolograms();
 
         getLogger().info("✔ RPGRoll-Crates habilitado. " + crateManager.count() + " tipo(s) de crate cargados, "
-                + placedCrateManager.getAll().size() + " ubicación(es).");
+                + placedCrateManager.getAll().size() + " ubicación(es), " + luckyManager.count()
+                + " lucky block(s).");
     }
 
     @Override
     public void onDisable() {
         // Las ruletas a medias se entregan antes de que se guarden los inventarios.
         com.sack.rpgroll.crates.gui.CrateSpinGUI.finishAll();
+        if (luckyExecutor != null) {
+            luckyExecutor.restoreAll();
+        }
+    }
+
+    /** Lucky blocks: bloques musicales de esqueleto que se abren al romperlos (lucky/*.yml). */
+    private void enableLuckyBlocks(LuckyItems luckyItems) {
+
+        Set<String> disabledWorlds = new HashSet<>();
+        getConfig().getStringList("lucky-blocks.disabled-worlds")
+                .forEach(world -> disabledWorlds.add(world.toLowerCase(Locale.ROOT)));
+
+        luckyExecutor = new LuckyExecutor(this, langManager, luckyManager, luckyItems);
+        LuckyListener luckyListener = new LuckyListener(this, luckyManager, luckyItems, new LuckyStore(this),
+                luckyExecutor, Set.copyOf(disabledWorlds));
+
+        getServer().getPluginManager().registerEvents(luckyExecutor, this);
+        getServer().getPluginManager().registerEvents(luckyListener, this);
+
+        com.sack.rpgroll.common.command.BrigadierCommands.register(this, "lucky", "Gestiona los lucky blocks",
+                LuckyCommand.PERMISSION, new LuckyCommand(luckyManager, luckyItems, luckyListener, langManager));
     }
 
     /** Recrea todos los hologramas al arrancar (DecentHolograms no los persiste entre reinicios). */
@@ -119,6 +159,10 @@ public class CratesPlugin extends JavaPlugin {
 
     public DecentHologramsHook getHologramsHook() {
         return hologramsHook;
+    }
+
+    public LuckyManager getLuckyManager() {
+        return luckyManager;
     }
 
     public LangManager getLangManager() {

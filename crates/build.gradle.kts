@@ -17,5 +17,10 @@ dependencies {
     // empaqueta. El repositorio de JitPack ya está declarado en rpgroll.plugin-conventions.
     compileOnly("com.github.decentsoftware-eu.DecentHolograms:decentholograms:2.10.1")
 
+    // Los lucky blocks pueden dar dinero (acción MONEY), por Vault.
+    compileOnly("com.github.MilkBowl:VaultAPI:1.7.1") {
+        exclude(group = "org.bukkit", module = "bukkit")
+    }
+
     // Visibilidad en tests para ContentParser/RPGContent (:common) — compileOnly
 }

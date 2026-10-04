@@ -1,0 +1,112 @@
+# Lucky block de ejemplo de RPGRoll-Crates. Se coloca con su ítem (/lucky give) y se abre al romperlo.
+# En el mundo es un bloque musical con instrumento de esqueleto y esta nota (0-24, una por tipo):
+# tu resource pack puede dibujar cada nota como un lucky block distinto. item.model es el modelo del
+# ítem en tu pack (por ejemplo "miservidor:lucky_comun"); vacío, se ve como item.material.
+#
+# Resultados: weight relativo (/lucky outcomes <tipo> enseña el % de cada uno), luck GOOD, NEUTRAL
+# o BAD (el aviso y el sonido), message opcional y announce: true para anunciarlo a todos.
+# Acciones: DROP, RAIN, COMMAND, MONEY, XP, LUCKY, MOB, POTION, EXPLOSION, LIGHTNING, LAUNCH,
+# CAGE, ARROWS, FIREWORK, MESSAGE, TITLE, SOUND y PARTICLE (parámetros en la documentación, "Crates").
+# Las cantidades admiten rangos: amount: 2-5.
+
+id: cristal
+display-name: "&bLucky Block de Cristal"
+lore:
+  - "&7Rómpelo y prueba suerte."
+  - "&8Brilla con premios del End y del mar."
+note: 6
+item:
+  material: PAPER
+  model: ""
+  glow: true
+
+outcomes:
+  - id: amatista
+    weight: 10
+    luck: GOOD
+    message: "&dAmatista."
+    actions:
+      - {type: DROP, item: AMETHYST_SHARD, amount: 16-32}
+  - id: diamantes
+    weight: 10
+    luck: GOOD
+    message: "&b¡Diamantes!"
+    actions:
+      - {type: DROP, item: DIAMOND, amount: 4-8}
+  - id: esmeraldas
+    weight: 9
+    luck: GOOD
+    message: "&aEsmeraldas."
+    actions:
+      - {type: DROP, item: EMERALD, amount: 12-24}
+  - id: perlas
+    weight: 8
+    luck: GOOD
+    message: "&5Perlas de ender."
+    actions:
+      - {type: DROP, item: ENDER_PEARL, amount: 8-16}
+  - id: prismarina
+    weight: 6
+    luck: GOOD
+    message: "&3Cristales de prismarina."
+    actions:
+      - {type: DROP, item: PRISMARINE_CRYSTALS, amount: 16}
+      - {type: DROP, item: SEA_LANTERN, amount: 8}
+  - id: eco
+    weight: 5
+    luck: GOOD
+    message: "&3Fragmentos de eco."
+    actions:
+      - {type: DROP, item: ECHO_SHARD, amount: 2-4}
+  - id: corazon
+    weight: 3
+    luck: GOOD
+    message: "&b¡Un corazón del mar!"
+    announce: true
+    actions:
+      - {type: DROP, item: HEART_OF_THE_SEA, amount: 1}
+  - id: tridente
+    weight: 2
+    luck: GOOD
+    message: "&b¡Un tridente!"
+    announce: true
+    actions:
+      - {type: DROP, item: TRIDENT, amount: 1, enchantments: "loyalty:3,impaling:3"}
+  - id: experiencia
+    weight: 8
+    luck: GOOD
+    message: "&aExperiencia cristalina."
+    actions:
+      - {type: XP, amount: 100-200}
+  - id: luces
+    weight: 6
+    luck: NEUTRAL
+    message: "&d¡Qué bonito!"
+    actions:
+      - {type: FIREWORK, amount: 6}
+      - {type: PARTICLE, particle: end_rod, count: 60}
+  - id: levitacion
+    weight: 7
+    luck: BAD
+    message: "&c¡Flotas!"
+    actions:
+      - {type: POTION, effect: levitation, seconds: 5, level: 1}
+  - id: endermites
+    weight: 7
+    luck: BAD
+    message: "&c¡Endermites!"
+    actions:
+      - {type: MOB, entity: ENDERMITE, amount: 4}
+  - id: jaula
+    weight: 6
+    luck: BAD
+    message: "&cUna jaula de cristal."
+    actions:
+      - {type: CAGE, block: LIGHT_BLUE_STAINED_GLASS, seconds: 8}
+      - {type: POTION, effect: blindness, seconds: 6, level: 1}
+  - id: enderman
+    weight: 5
+    luck: BAD
+    message: "&c¡Un enderman enfadado!"
+    actions:
+      - {type: MOB, entity: ENDERMAN, amount: 2}

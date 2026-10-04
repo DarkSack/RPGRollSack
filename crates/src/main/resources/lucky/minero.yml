@@ -1,0 +1,104 @@
+# Lucky block de ejemplo de RPGRoll-Crates. Se coloca con su ítem (/lucky give) y se abre al romperlo.
+# En el mundo es un bloque musical con instrumento de esqueleto y esta nota (0-24, una por tipo):
+# tu resource pack puede dibujar cada nota como un lucky block distinto. item.model es el modelo del
+# ítem en tu pack (por ejemplo "miservidor:lucky_comun"); vacío, se ve como item.material.
+#
+# Resultados: weight relativo (/lucky outcomes <tipo> enseña el % de cada uno), luck GOOD, NEUTRAL
+# o BAD (el aviso y el sonido), message opcional y announce: true para anunciarlo a todos.
+# Acciones: DROP, RAIN, COMMAND, MONEY, XP, LUCKY, MOB, POTION, EXPLOSION, LIGHTNING, LAUNCH,
+# CAGE, ARROWS, FIREWORK, MESSAGE, TITLE, SOUND y PARTICLE (parámetros en la documentación, "Crates").
+# Las cantidades admiten rangos: amount: 2-5.
+
+id: minero
+display-name: "&7Lucky Block Minero"
+lore:
+  - "&7Rómpelo y prueba suerte."
+  - "&8Lo que un minero sueña encontrar."
+note: 5
+item:
+  material: PAPER
+  model: ""
+  glow: false
+
+outcomes:
+  - id: carbon
+    weight: 10
+    luck: GOOD
+    message: "&8Carbón."
+    actions:
+      - {type: DROP, item: COAL, amount: 24-48}
+  - id: hierro
+    weight: 12
+    luck: GOOD
+    message: "&7Hierro en bruto."
+    actions:
+      - {type: DROP, item: RAW_IRON, amount: 16-32}
+  - id: oro
+    weight: 8
+    luck: GOOD
+    message: "&6Oro en bruto."
+    actions:
+      - {type: DROP, item: RAW_GOLD, amount: 12-24}
+  - id: redstone
+    weight: 7
+    luck: GOOD
+    message: "&cRedstone y lapislázuli."
+    actions:
+      - {type: DROP, item: REDSTONE, amount: 32}
+      - {type: DROP, item: LAPIS_LAZULI, amount: 24}
+  - id: diamantes
+    weight: 8
+    luck: GOOD
+    message: "&b¡Diamantes!"
+    actions:
+      - {type: DROP, item: DIAMOND, amount: 3-6}
+  - id: escombros
+    weight: 4
+    luck: GOOD
+    message: "&8¡Escombros ancestrales!"
+    actions:
+      - {type: DROP, item: ANCIENT_DEBRIS, amount: 1-2}
+  - id: pico
+    weight: 6
+    luck: GOOD
+    message: "&aUn pico de minero."
+    actions:
+      - {type: DROP, item: DIAMOND_PICKAXE, amount: 1, enchantments: "efficiency:4,unbreaking:3,fortune:2"}
+  - id: prisa
+    weight: 7
+    luck: GOOD
+    message: "&e¡Prisa minera!"
+    actions:
+      - {type: POTION, effect: haste, seconds: 180, level: 2}
+      - {type: POTION, effect: night_vision, seconds: 180, level: 1}
+  - id: antorchas
+    weight: 6
+    luck: NEUTRAL
+    message: "&eAntorchas."
+    actions:
+      - {type: DROP, item: TORCH, amount: 64}
+  - id: derrumbe
+    weight: 6
+    luck: BAD
+    message: "&c¡Derrumbe!"
+    actions:
+      - {type: EXPLOSION, power: 3, delay: 30}
+  - id: lepismas
+    weight: 7
+    luck: BAD
+    message: "&c¡Lepismas!"
+    actions:
+      - {type: MOB, entity: SILVERFISH, amount: 4-6}
+  - id: "arañas"
+    weight: 6
+    luck: BAD
+    message: "&c¡Arañas de cueva!"
+    actions:
+      - {type: MOB, entity: CAVE_SPIDER, amount: 3}
+  - id: grava
+    weight: 5
+    luck: BAD
+    message: "&7...grava."
+    actions:
+      - {type: RAIN, item: GRAVEL, amount: 32, radius: 2}
+      - {type: POTION, effect: mining_fatigue, seconds: 20, level: 1}

@@ -1,0 +1,131 @@
+# Lucky block de ejemplo de RPGRoll-Crates. Se coloca con su ítem (/lucky give) y se abre al romperlo.
+# En el mundo es un bloque musical con instrumento de esqueleto y esta nota (0-24, una por tipo):
+# tu resource pack puede dibujar cada nota como un lucky block distinto. item.model es el modelo del
+# ítem en tu pack (por ejemplo "miservidor:lucky_comun"); vacío, se ve como item.material.
+#
+# Resultados: weight relativo (/lucky outcomes <tipo> enseña el % de cada uno), luck GOOD, NEUTRAL
+# o BAD (el aviso y el sonido), message opcional y announce: true para anunciarlo a todos.
+# Acciones: DROP, RAIN, COMMAND, MONEY, XP, LUCKY, MOB, POTION, EXPLOSION, LIGHTNING, LAUNCH,
+# CAGE, ARROWS, FIREWORK, MESSAGE, TITLE, SOUND y PARTICLE (parámetros en la documentación, "Crates").
+# Las cantidades admiten rangos: amount: 2-5.
+
+id: raro
+display-name: "&9Lucky Block Raro"
+lore:
+  - "&7Rómpelo y prueba suerte."
+  - "&8Premios mejores, sustos peores."
+note: 1
+item:
+  material: PAPER
+  model: ""
+  glow: false
+
+outcomes:
+  - id: diamantes
+    weight: 12
+    luck: GOOD
+    message: "&b¡Diamantes!"
+    actions:
+      - {type: DROP, item: DIAMOND, amount: 4-8}
+  - id: esmeraldas
+    weight: 9
+    luck: GOOD
+    message: "&aEsmeraldas."
+    actions:
+      - {type: DROP, item: EMERALD, amount: 10-20}
+  - id: armadura
+    weight: 7
+    luck: GOOD
+    message: "&aArmadura de hierro encantada."
+    actions:
+      - {type: DROP, item: IRON_HELMET, amount: 1, enchantments: "protection:3"}
+      - {type: DROP, item: IRON_CHESTPLATE, amount: 1, enchantments: "protection:3"}
+      - {type: DROP, item: IRON_LEGGINGS, amount: 1, enchantments: "protection:3"}
+      - {type: DROP, item: IRON_BOOTS, amount: 1, enchantments: "protection:3"}
+  - id: manzanas
+    weight: 8
+    luck: GOOD
+    message: "&6Manzanas doradas."
+    actions:
+      - {type: DROP, item: GOLDEN_APPLE, amount: 4}
+  - id: perlas
+    weight: 6
+    luck: GOOD
+    message: "&5Perlas de ender."
+    actions:
+      - {type: DROP, item: ENDER_PEARL, amount: 8}
+  - id: experiencia
+    weight: 9
+    luck: GOOD
+    message: "&aMucha experiencia."
+    actions:
+      - {type: XP, amount: 80-150}
+  - id: arco
+    weight: 5
+    luck: GOOD
+    message: "&aUn arco de cazador."
+    actions:
+      - {type: DROP, item: BOW, amount: 1, enchantments: "power:4,infinity:1"}
+      - {type: DROP, item: ARROW, amount: 1}
+  - id: totem
+    weight: 2
+    luck: GOOD
+    message: "&6¡Un tótem!"
+    announce: true
+    actions:
+      - {type: DROP, item: TOTEM_OF_UNDYING, amount: 1}
+  - id: lluvia_oro
+    weight: 5
+    luck: GOOD
+    message: "&6¡Llueve oro!"
+    actions:
+      - {type: RAIN, item: GOLD_INGOT, amount: 24}
+  - id: triple
+    weight: 3
+    luck: GOOD
+    message: "&e¡Tres lucky blocks!"
+    actions:
+      - {type: LUCKY, lucky: comun, amount: 3}
+  - id: fiesta
+    weight: 4
+    luck: NEUTRAL
+    message: "&d¡Fiesta!"
+    actions:
+      - {type: FIREWORK, amount: 6}
+  - id: esqueletos
+    weight: 6
+    luck: BAD
+    message: "&c¡Esqueletos!"
+    actions:
+      - {type: MOB, entity: SKELETON, amount: 3}
+  - id: creeper
+    weight: 4
+    luck: BAD
+    message: "&c¡Sss...!"
+    actions:
+      - {type: MOB, entity: CREEPER, amount: 2}
+  - id: flechas
+    weight: 4
+    luck: BAD
+    message: "&c¡Lluvia de flechas!"
+    actions:
+      - {type: ARROWS, amount: 16}
+  - id: tnt
+    weight: 3
+    luck: BAD
+    message: "&c¡Corre!"
+    actions:
+      - {type: EXPLOSION, power: 4, delay: 50}
+  - id: jaula
+    weight: 3
+    luck: BAD
+    message: "&cEncerrado."
+    actions:
+      - {type: CAGE, block: GLASS, seconds: 8}
+      - {type: MOB, entity: ZOMBIE, amount: 1}
+  - id: veneno
+    weight: 3
+    luck: BAD
+    message: "&cVeneno."
+    actions:
+      - {type: POTION, effect: poison, seconds: 8, level: 1}

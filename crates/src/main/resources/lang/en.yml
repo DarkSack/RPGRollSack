@@ -93,3 +93,26 @@ prompt:
   cancel_keyword: "cancel"
   footer: "&7Type it in chat, or '{keyword}' to abort."
   cancelled: "&cCancelled."
+
+# Lucky blocks
+lucky:
+  usage: |-
+    &cUsage: /lucky
+    &7 • &egive <player> <type> [amount]
+    &7 • &dlist
+    &7 • &boutcomes <type>
+    &7 • &atest <type> <outcome>
+    &7 • &6reload
+  not_found: "&cNo lucky block with id: {id}"
+  outcome_not_found: "&cThat lucky block has no outcome: {id}"
+  given: "&a✔ {amount} × {block}&a given to {player}."
+  list_empty: "&7No lucky blocks defined."
+  list_header: "&6Lucky blocks:"
+  list_entry: "&f• {id} ({name}&f) — note {note}, {count} outcome(s)"
+  outcomes_header: "&6Outcomes of {block}&6:"
+  outcomes_entry: "&f• {id} &7({luck}) &e{chance} %"
+  reloaded: "&a✔ Reloaded {count} lucky block(s)."
+  good: "&a&lGood luck!"
+  bad: "&c&lBad luck!"
+  money: "&a+{amount} &7money."
+  announce: "&6{player}&e opened {block}&e: {outcome}"

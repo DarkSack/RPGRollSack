@@ -1,0 +1,119 @@
+# Lucky block de ejemplo de RPGRoll-Crates. Se coloca con su ítem (/lucky give) y se abre al romperlo.
+# En el mundo es un bloque musical con instrumento de esqueleto y esta nota (0-24, una por tipo):
+# tu resource pack puede dibujar cada nota como un lucky block distinto. item.model es el modelo del
+# ítem en tu pack (por ejemplo "miservidor:lucky_comun"); vacío, se ve como item.material.
+#
+# Resultados: weight relativo (/lucky outcomes <tipo> enseña el % de cada uno), luck GOOD, NEUTRAL
+# o BAD (el aviso y el sonido), message opcional y announce: true para anunciarlo a todos.
+# Acciones: DROP, RAIN, COMMAND, MONEY, XP, LUCKY, MOB, POTION, EXPLOSION, LIGHTNING, LAUNCH,
+# CAGE, ARROWS, FIREWORK, MESSAGE, TITLE, SOUND y PARTICLE (parámetros en la documentación, "Crates").
+# Las cantidades admiten rangos: amount: 2-5.
+
+id: legendario
+display-name: "&6&lLucky Block Legendario"
+lore:
+  - "&7Rómpelo y prueba suerte."
+  - "&8Lo mejor que puede salir de un bloque."
+note: 3
+item:
+  material: PAPER
+  model: ""
+  glow: true
+
+outcomes:
+  - id: netherita
+    weight: 7
+    luck: GOOD
+    message: "&8¡Un lingote de netherita!"
+    announce: true
+    actions:
+      - {type: DROP, item: NETHERITE_INGOT, amount: 1}
+  - id: elitros
+    weight: 3
+    luck: GOOD
+    message: "&d¡Élitros!"
+    announce: true
+    actions:
+      - {type: DROP, item: ELYTRA, amount: 1}
+  - id: pico
+    weight: 8
+    luck: GOOD
+    message: "&b¡Pico legendario!"
+    actions:
+      - {type: DROP, item: DIAMOND_PICKAXE, amount: 1, name: "&6Pico del Afortunado", enchantments: "efficiency:5,unbreaking:3,fortune:3,mending:1"}
+  - id: espada
+    weight: 8
+    luck: GOOD
+    message: "&b¡Espada legendaria!"
+    actions:
+      - {type: DROP, item: DIAMOND_SWORD, amount: 1, name: "&6Hoja del Afortunado", enchantments: "sharpness:5,unbreaking:3,looting:3,mending:1"}
+  - id: manzanas
+    weight: 7
+    luck: GOOD
+    message: "&6¡Manzanas de Notch!"
+    actions:
+      - {type: DROP, item: ENCHANTED_GOLDEN_APPLE, amount: 2-3}
+  - id: totems
+    weight: 6
+    luck: GOOD
+    message: "&6Dos tótems."
+    actions:
+      - {type: DROP, item: TOTEM_OF_UNDYING, amount: 2}
+  - id: diamantes
+    weight: 10
+    luck: GOOD
+    message: "&b¡Tormenta de diamantes!"
+    actions:
+      - {type: RAIN, item: DIAMOND, amount: 16-32, radius: 4}
+  - id: estrella
+    weight: 3
+    luck: GOOD
+    message: "&f¡Una estrella del Nether!"
+    announce: true
+    actions:
+      - {type: DROP, item: NETHER_STAR, amount: 1}
+  - id: epicos
+    weight: 6
+    luck: GOOD
+    message: "&5¡Dos lucky blocks épicos!"
+    actions:
+      - {type: LUCKY, lucky: epico, amount: 2}
+  - id: experiencia
+    weight: 8
+    luck: GOOD
+    message: "&aExperiencia a raudales."
+    actions:
+      - {type: XP, amount: 400-600}
+  - id: fiesta
+    weight: 6
+    luck: NEUTRAL
+    message: "&d¡Gran fiesta!"
+    actions:
+      - {type: FIREWORK, amount: 12}
+      - {type: DROP, item: CAKE, amount: 1}
+  - id: guardianes
+    weight: 5
+    luck: BAD
+    message: "&c¡Los guardianes del tesoro!"
+    actions:
+      - {type: MOB, entity: WITHER_SKELETON, amount: 2, name: "&cGuardián del Tesoro"}
+      - {type: MOB, entity: PIGLIN_BRUTE, amount: 1, name: "&cGuardián del Tesoro"}
+  - id: devastador
+    weight: 3
+    luck: BAD
+    message: "&c¡Un devastador!"
+    actions:
+      - {type: MOB, entity: RAVAGER, amount: 1}
+  - id: tormenta
+    weight: 4
+    luck: BAD
+    message: "&c¡Tormenta!"
+    actions:
+      - {type: LIGHTNING, damage: 4}
+      - {type: LIGHTNING, damage: 4}
+  - id: tnt
+    weight: 3
+    luck: BAD
+    message: "&c¡¡Corre!!"
+    actions:
+      - {type: EXPLOSION, power: 6, delay: 60}

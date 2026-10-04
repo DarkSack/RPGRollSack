@@ -9,7 +9,9 @@ public record CrateAction(CrateActionType type, String value) {
         MESSAGE,
         COMMAND,
         GIVE_ITEM,
-        SOUND
+        SOUND,
+        /** Lucky blocks: "tipo" o "tipo,cantidad". */
+        LUCKY_BLOCK
     }
 
 }

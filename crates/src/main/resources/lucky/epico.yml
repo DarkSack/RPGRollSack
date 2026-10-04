@@ -1,0 +1,120 @@
+# Lucky block de ejemplo de RPGRoll-Crates. Se coloca con su ítem (/lucky give) y se abre al romperlo.
+# En el mundo es un bloque musical con instrumento de esqueleto y esta nota (0-24, una por tipo):
+# tu resource pack puede dibujar cada nota como un lucky block distinto. item.model es el modelo del
+# ítem en tu pack (por ejemplo "miservidor:lucky_comun"); vacío, se ve como item.material.
+#
+# Resultados: weight relativo (/lucky outcomes <tipo> enseña el % de cada uno), luck GOOD, NEUTRAL
+# o BAD (el aviso y el sonido), message opcional y announce: true para anunciarlo a todos.
+# Acciones: DROP, RAIN, COMMAND, MONEY, XP, LUCKY, MOB, POTION, EXPLOSION, LIGHTNING, LAUNCH,
+# CAGE, ARROWS, FIREWORK, MESSAGE, TITLE, SOUND y PARTICLE (parámetros en la documentación, "Crates").
+# Las cantidades admiten rangos: amount: 2-5.
+
+id: epico
+display-name: "&5Lucky Block Épico"
+lore:
+  - "&7Rómpelo y prueba suerte."
+  - "&8Equipo de diamante... o algo peor."
+note: 2
+item:
+  material: PAPER
+  model: ""
+  glow: true
+
+outcomes:
+  - id: espada
+    weight: 9
+    luck: GOOD
+    message: "&b¡Una espada de diamante!"
+    actions:
+      - {type: DROP, item: DIAMOND_SWORD, amount: 1, enchantments: "sharpness:4,unbreaking:3,looting:2"}
+  - id: pico
+    weight: 8
+    luck: GOOD
+    message: "&b¡Un pico de diamante!"
+    actions:
+      - {type: DROP, item: DIAMOND_PICKAXE, amount: 1, enchantments: "efficiency:4,unbreaking:3,fortune:2"}
+  - id: diamantes
+    weight: 11
+    luck: GOOD
+    message: "&b¡Muchos diamantes!"
+    actions:
+      - {type: RAIN, item: DIAMOND, amount: 8-16}
+  - id: netherita
+    weight: 6
+    luck: GOOD
+    message: "&8Restos de netherita."
+    actions:
+      - {type: DROP, item: NETHERITE_SCRAP, amount: 1-2}
+  - id: manzana
+    weight: 4
+    luck: GOOD
+    message: "&6¡Una manzana de Notch!"
+    announce: true
+    actions:
+      - {type: DROP, item: ENCHANTED_GOLDEN_APPLE, amount: 1}
+  - id: totem
+    weight: 5
+    luck: GOOD
+    message: "&6Un tótem."
+    actions:
+      - {type: DROP, item: TOTEM_OF_UNDYING, amount: 1}
+  - id: shulker
+    weight: 4
+    luck: GOOD
+    message: "&dCaparazones de shulker."
+    actions:
+      - {type: DROP, item: SHULKER_SHELL, amount: 2}
+  - id: experiencia
+    weight: 9
+    luck: GOOD
+    message: "&aUna montaña de experiencia."
+    actions:
+      - {type: XP, amount: 200-300}
+  - id: raros
+    weight: 4
+    luck: GOOD
+    message: "&9¡Dos lucky blocks raros!"
+    actions:
+      - {type: LUCKY, lucky: raro, amount: 2}
+  - id: fiesta
+    weight: 4
+    luck: NEUTRAL
+    message: "&d¡Fiesta!"
+    actions:
+      - {type: FIREWORK, amount: 8}
+  - id: wither
+    weight: 6
+    luck: BAD
+    message: "&c¡Esqueletos wither!"
+    actions:
+      - {type: MOB, entity: WITHER_SKELETON, amount: 2}
+  - id: saqueadores
+    weight: 5
+    luck: BAD
+    message: "&c¡Vindicadores!"
+    actions:
+      - {type: MOB, entity: VINDICATOR, amount: 2}
+  - id: rayo
+    weight: 4
+    luck: BAD
+    message: "&c¡Rayo!"
+    actions:
+      - {type: LIGHTNING, damage: 6}
+  - id: tnt
+    weight: 4
+    luck: BAD
+    message: "&c¡Corre, corre!"
+    actions:
+      - {type: EXPLOSION, power: 5, delay: 60}
+  - id: blazes
+    weight: 4
+    luck: BAD
+    message: "&c¡Blazes!"
+    actions:
+      - {type: MOB, entity: BLAZE, amount: 2}
+  - id: evocador
+    weight: 3
+    luck: BAD
+    message: "&c¡Un evocador!"
+    actions:
+      - {type: MOB, entity: EVOKER, amount: 1}

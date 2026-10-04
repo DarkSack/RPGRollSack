@@ -1,0 +1,106 @@
+# Lucky block de ejemplo de RPGRoll-Crates. Se coloca con su ítem (/lucky give) y se abre al romperlo.
+# En el mundo es un bloque musical con instrumento de esqueleto y esta nota (0-24, una por tipo):
+# tu resource pack puede dibujar cada nota como un lucky block distinto. item.model es el modelo del
+# ítem en tu pack (por ejemplo "miservidor:lucky_comun"); vacío, se ve como item.material.
+#
+# Resultados: weight relativo (/lucky outcomes <tipo> enseña el % de cada uno), luck GOOD, NEUTRAL
+# o BAD (el aviso y el sonido), message opcional y announce: true para anunciarlo a todos.
+# Acciones: DROP, RAIN, COMMAND, MONEY, XP, LUCKY, MOB, POTION, EXPLOSION, LIGHTNING, LAUNCH,
+# CAGE, ARROWS, FIREWORK, MESSAGE, TITLE, SOUND y PARTICLE (parámetros en la documentación, "Crates").
+# Las cantidades admiten rangos: amount: 2-5.
+
+id: maldito
+display-name: "&4Lucky Block Maldito"
+lore:
+  - "&7Rómpelo si te atreves."
+  - "&8La mitad de las veces sale muy mal."
+note: 4
+item:
+  material: PAPER
+  model: ""
+  glow: false
+
+outcomes:
+  - id: netherita
+    weight: 10
+    luck: GOOD
+    message: "&8Restos de netherita."
+    actions:
+      - {type: DROP, item: NETHERITE_SCRAP, amount: 2-4}
+  - id: diamantes
+    weight: 12
+    luck: GOOD
+    message: "&b¡Diamantes malditos!"
+    actions:
+      - {type: DROP, item: DIAMOND, amount: 12-24}
+  - id: manzana
+    weight: 7
+    luck: GOOD
+    message: "&6¡Una manzana de Notch!"
+    actions:
+      - {type: DROP, item: ENCHANTED_GOLDEN_APPLE, amount: 1}
+  - id: totem
+    weight: 7
+    luck: GOOD
+    message: "&6Un tótem."
+    actions:
+      - {type: DROP, item: TOTEM_OF_UNDYING, amount: 1}
+  - id: experiencia
+    weight: 9
+    luck: GOOD
+    message: "&aExperiencia oscura."
+    actions:
+      - {type: XP, amount: 250-400}
+  - id: gran_tnt
+    weight: 8
+    luck: BAD
+    message: "&4¡¡BOOM!!"
+    actions:
+      - {type: EXPLOSION, power: 6, delay: 40}
+      - {type: EXPLOSION, power: 4, delay: 60}
+  - id: brujas
+    weight: 8
+    luck: BAD
+    message: "&4Un aquelarre."
+    actions:
+      - {type: MOB, entity: WITCH, amount: 3}
+  - id: fantasmas
+    weight: 6
+    luck: BAD
+    message: "&4Fantasmas."
+    actions:
+      - {type: MOB, entity: PHANTOM, amount: 3}
+  - id: oscuridad
+    weight: 8
+    luck: BAD
+    message: "&4Oscuridad."
+    actions:
+      - {type: POTION, effect: darkness, seconds: 20, level: 1}
+      - {type: POTION, effect: slowness, seconds: 15, level: 2}
+      - {type: MOB, entity: ZOMBIE, amount: 3}
+  - id: castigo
+    weight: 6
+    luck: BAD
+    message: "&4Castigo divino."
+    actions:
+      - {type: LAUNCH, power: 1.4}
+      - {type: LIGHTNING, damage: 8}
+  - id: trampa
+    weight: 7
+    luck: BAD
+    message: "&4Una trampa."
+    actions:
+      - {type: CAGE, block: GLASS, seconds: 6}
+      - {type: MOB, entity: CREEPER, amount: 2}
+  - id: wither
+    weight: 7
+    luck: BAD
+    message: "&4La guardia del Wither."
+    actions:
+      - {type: MOB, entity: WITHER_SKELETON, amount: 3}
+  - id: nada
+    weight: 5
+    luck: NEUTRAL
+    message: "&7Silencio. No ha pasado nada... por ahora."
+    actions:
+      - {type: SOUND, sound: "ambient.cave", volume: 1, pitch: 0.6}

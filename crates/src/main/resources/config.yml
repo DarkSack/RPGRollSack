@@ -4,3 +4,10 @@
 # Los textos viven en lang/<idioma>.yml dentro de esta carpeta de datos —
 # puedes editarlos ahí directamente. Tras cambiar esto, /crate reload.
 language: es
+
+# Lucky blocks (carpeta lucky/): se colocan con su ítem y se abren al romperlos.
+# En el mundo son bloques musicales con instrumento de esqueleto, una nota por tipo;
+# hace falta block-updates.disable-noteblock-updates: true en paper-global.yml.
+lucky-blocks:
+  # Mundos donde no se pueden colocar (por nombre).
+  disabled-worlds: []
