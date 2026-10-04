@@ -1,5 +1,6 @@
 package com.sack.rpgroll.items.ore;
 
+import com.sack.rpgroll.common.block.MachineBreakEvent;
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.items.ItemsPlugin;
 import com.sack.rpgroll.util.ComponentUtils;
@@ -156,12 +157,22 @@ public class OreListener implements Listener {
         event.setDropItems(false);
         event.setExpToDrop(0);
 
-        if (player.getGameMode() == GameMode.CREATIVE) {
+        // Una máquina (la cantera) rompe con su herramienta y su nivel, no con lo que el dueño
+        // lleve en la mano, y a ella no se le avisa de nada.
+        MachineBreakEvent machine = event instanceof MachineBreakEvent m ? m : null;
+
+        if (machine == null && player.getGameMode() == GameMode.CREATIVE) {
             return;
         }
 
-        ItemStack tool = player.getInventory().getItemInMainHand();
-        if (!OreService.isPickaxe(tool.getType()) || service.tier(tool) < ore.requiredTier()) {
+        ItemStack tool = machine != null ? machine.tool() : player.getInventory().getItemInMainHand();
+        int tier = machine != null && machine.miningTier() >= 0 ? machine.miningTier() : service.tier(tool);
+        if (!OreService.isPickaxe(tool.getType()) || tier < ore.requiredTier()) {
+            if (machine != null) {
+                // Una máquina sin nivel para esta mena no la rompe para nada: se la salta.
+                event.setCancelled(true);
+                return;
+            }
             player.sendActionBar(ComponentUtils.parse(lang.raw("ore.need_better_tool", "ore", ore.displayName(),
                     "tier", ore.requiredTier())));
             return;

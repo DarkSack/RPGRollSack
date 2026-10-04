@@ -1,5 +1,6 @@
 package com.sack.rpgroll.furniture.listener;
 
+import com.sack.rpgroll.common.block.MachineBreakEvent;
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.furniture.core.FurnitureDefinition;
 import com.sack.rpgroll.furniture.item.FurnitureItems;
@@ -148,7 +149,10 @@ public class FurnitureListener implements Listener {
         }
         service.at(event.getBlock()).ifPresent(furniture -> {
             event.setCancelled(true);
-            tryBreak(event.getPlayer(), furniture);
+            // Una máquina (la cantera) no retira muebles: solo se lo salta.
+            if (!(event instanceof MachineBreakEvent)) {
+                tryBreak(event.getPlayer(), furniture);
+            }
         });
     }
 

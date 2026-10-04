@@ -1,0 +1,141 @@
+# Arquivo de idioma: Português (Brasil)
+# RPGRoll-Machines
+
+general:
+  no_permission: "&cVocê não tem permissão para isso."
+  player_only: "&cSó um jogador pode usar isto."
+
+cost:
+  free: "&aGrátis"
+  header: "&7Custa:"
+  money_ok: "&a ✔ {amount}"
+  money_missing: "&c ✘ {amount}"
+  item_ok: "&a ✔ {amount}× {item}"
+  item_missing: "&c ✘ {amount}× {item} &7(você tem {have})"
+
+menu:
+  click_upgrade: "&e▶ Clique para melhorar"
+  cant_afford: "&c✘ Falta algo para pagar"
+  cant_afford_message: "&cVocê não tem o que essa melhoria custa."
+  arrow: "&7→"
+  maxed: "&6★ Nível máximo"
+
+furnace:
+  kind:
+    furnace: "Fornalha"
+    blast_furnace: "Alto-forno"
+    smoker: "Defumador"
+  item_name: "&f{kind} de {tier}"
+  menu_title: "Melhorar: {kind}"
+  vanilla: "&7Sem melhoria: como qualquer fornalha."
+  vanilla_name: "&7sem melhoria"
+  stat_speed: "&7Velocidade: &f{value}"
+  stat_fuel: "&7Rendimento do combustível: &f{value}"
+  stat_double: "&7Chance de dobro: &f{value}"
+  current: "&7Agora: {tier}"
+  next: "&7Próximo: {tier} &8({level})"
+  max: "&6★ Já está no máximo"
+  upgraded: "&a✔ Fornalha melhorada para {tier}&a."
+
+spawner:
+  upgrade:
+    speed: "Velocidade"
+    count: "Quantidade"
+    range: "Alcance"
+  menu_title: "Spawner de {mob}"
+  item_name: "&eSpawner de {mob}"
+  item_level: "&7{upgrade}: &f{level}"
+  item_stack: "&7Empilhados: &f{stack}"
+  hologram_title: "&e{mob} &7×{stack}"
+  hologram_levels: "&7Vel. &f{speed} &8· &7Qtd. &f{count} &8· &7Alc. &f{range}"
+  upgrade_title: "&e{upgrade}"
+  level: "&7Nível &f{level}&7/&f{max}"
+  next: "&7Com a melhoria:"
+  value_speed: "&f  uma leva a cada {min}–{max} s"
+  value_count: "&f  {count} mobs por leva &7(máx. {nearby} perto)"
+  value_range: "&f  ativa a {range} blocos"
+  stack_title: "&eEmpilhados: &f{stack}&7/&f{max}"
+  stack_hint: "&7Clique direito no spawner com outro do mesmo mob na mão para empilhar."
+  upgraded: "&a✔ {upgrade} subiu para {level}."
+  stacked: "&a✔ Empilhado: &f{stack}&7/&f{max}"
+  stack_full: "&cNão cabe mais: o máximo é {max}."
+  stack_other_mob: "&cSó se empilham spawners do mesmo mob."
+  no_egg: "&cEste spawner tem melhorias: um ovo não pode trocar o mob."
+
+quarry:
+  item_name: "&6Pedreira"
+  item_lore: "&7Coloque ao lado de um baú: ela escava sozinha até o fundo."
+  item_level: "&7{upgrade}: &f{level}"
+  item_unlock: "&7{upgrade}: &a✔"
+  upgrade:
+    speed: "Velocidade"
+    area: "Área"
+    fortune: "Fortuna"
+    tier: "Potência"
+  unlock:
+    silk-touch: "Toque suave"
+    smelt: "Autofundição"
+    filter: "Filtro de lixo"
+  unlock_desc:
+    silk-touch: "&7Tira os blocos como são (sem fortuna)."
+    smelt: "&7Funde o que puder ser fundido antes de guardar."
+    filter: "&7Joga fora pedra, terra e outros lixos."
+  menu_title: "Pedreira"
+  state:
+    mining: "&aescavando"
+    "off": "&7desligada"
+    no_owner: "&eesperando o dono"
+    no_chest: "&cfalta um baú ao lado"
+    full: "&co baú está cheio"
+    waiting_chunk: "&eesperando os chunks carregarem"
+    finished: "&bterminada"
+  status_owner: "&7Dono: &f{owner}"
+  status_state: "&7Estado: {state}"
+  status_depth: "&7Na altura: &fY {y}"
+  status_progress: "&7Feito: &f{progress}"
+  status_area: "&7Área: &f{side}×{side}"
+  status_buffer: "&7Esperando espaço no baú: &f{count} itens"
+  level: "&7Nível &f{level}&7/&f{max}"
+  next: "&7Com a melhoria:"
+  upgrade_title: "&e{upgrade}"
+  value_speed: "&f  {value} blocos por segundo"
+  value_area: "&f  {value}×{value} blocos"
+  value_fortune: "&f  Fortuna {value}"
+  value_tier: "&f  nível de mineração {value}"
+  value_tier_default: "&f  como uma picareta de netherite"
+  fortune_vs_silk: "&8(não conta com o toque suave ligado)"
+  "on": "&aLigado"
+  "off": "&7Desligado"
+  click_toggle: "&e▶ Clique para trocar"
+  click_buy: "&e▶ Clique para comprar"
+  toggle_on: "&aPedreira ligada"
+  toggle_off: "&7Pedreira desligada"
+  placed: "&a✔ Pedreira colocada: vai escavar {side}×{side} blocos abaixo dela. Coloque um baú ao lado."
+  limit: "&cVocê já tem {max} pedreiras, o máximo."
+  need_claim: "&cA área ({side}×{side}) precisa estar inteira dentro de um claim seu."
+  world_disabled: "&cAs pedreiras não funcionam neste mundo."
+  not_owner: "&cEsta pedreira é de {owner}."
+  upgraded: "&a✔ {upgrade} subiu para {level}."
+  unlocked: "&a✔ {upgrade} comprado."
+
+command:
+  usage: |-
+    &6/machines
+    &7 • &egive <jogador> furnace|blast_furnace|smoker <nível> [quantidade]
+    &7 • &egive <jogador> spawner <mob> [quantidade]
+    &7 • &egive <jogador> quarry [quantidade]
+    &7 • &equarries [jogador]
+    &7 • &einfo &7(o bloco que você olha)
+    &7 • &ereload
+  reloaded: "&a✔ RPGRoll-Machines recarregado."
+  player_not_found: "&cNão está online: {player}"
+  unknown_tier: "&cNão há nível de fornalha '{tier}' em furnaces.yml."
+  unknown_mob: "&cEsse mob não existe ou não sai de spawner: {mob}"
+  bad_amount: "&cA quantidade tem que ser um número."
+  given: "&a✔ {amount}× {kind} para {player}."
+  quarries_header: "&6Pedreiras: &f{count}"
+  quarries_line: "&7 • &f{owner} &7em {world} {x} {y} {z} — {state} &7(Y {depth})"
+  info_nothing: "&7Você não está olhando para uma máquina."
+  info_furnace: "&7Fornalha, nível &f{tier}"
+  info_spawner: "&7Spawner de &f{mob}&7: velocidade {speed}, quantidade {count}, alcance {range}, empilhados {stack}"
+  info_quarry: "&7Pedreira de &f{owner}&7: {state} &7(Y {depth}, área {side})"

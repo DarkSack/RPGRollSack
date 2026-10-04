@@ -1,0 +1,90 @@
+# Canteras.
+#
+# Se coloca el bloque de la cantera con un cofre (o barril, tolva, caja de shulker) pegado. Excava
+# un cuadrado centrado en ella, capa a capa, desde el bloque de debajo hasta el fondo del mundo,
+# y lo deja en el cofre. Clic derecho: su estado, sus mejoras y el interruptor.
+#
+# Rompe cada bloque en nombre de su dueño (las protecciones y CoreProtect lo ven como suyo), así
+# que solo trabaja con el dueño conectado. Nunca carga chunks: espera a que estén cargados. Se
+# salta lo irrompible, los líquidos y todo bloque con inventario o datos (cofres, hornos,
+# spawners...); los lucky blocks, los muebles y las torretas de RPGRoll también.
+
+enabled: true
+disabled-worlds: []
+
+# El bloque que se coloca (sólido). Si tu resource pack trae un modelo, ponlo en item-model y
+# en frame (un item_display encima del bloque).
+block: LODESTONE
+item-model: ""
+frame:
+  enabled: false
+  model: ""
+  scale: 1.002
+
+# Cuántas puede tener cada jugador (-1 sin límite). rpgroll.machines.bypass no tiene tope.
+max-per-player: 2
+
+# Con GriefPrevention: el área entera tiene que estar dentro de un claim de su dueño (al ponerla
+# y al ampliarla). Sin GriefPrevention no se comprueba nada.
+require-claim: true
+
+performance:
+  # Bloques picados por tick entre todas las canteras del servidor.
+  blocks-per-tick: 20
+  # Bloques mirados por cantera y tick (el aire no gasta, pero mirarlo tampoco es gratis).
+  scans-per-tick: 512
+
+# Además de lo irrompible y lo que tiene inventario, no se pican nunca:
+skip: [REINFORCED_DEEPSLATE, BUDDING_AMETHYST]
+
+# Lo que tira el filtro de basura (solo el material vanilla tal cual, nunca un ítem con datos).
+junk: [STONE, COBBLESTONE, DEEPSLATE, COBBLED_DEEPSLATE, DIRT, GRAVEL, ANDESITE, DIORITE, GRANITE, TUFF,
+  CALCITE, NETHERRACK, SAND, SANDSTONE, FLINT]
+
+# Mejoras con niveles. El primer nivel es el de una cantera recién puesta (sin coste).
+#   speed    bloques por segundo
+#   area     lado del cuadrado (al ampliarlo vuelve a empezar desde arriba)
+#   fortune  fortuna del pico (no se aplica con toque de seda encendido)
+#   tier     nivel de picado para las menas de RPGRoll-Items (-1 = el de un pico de netherita).
+#            Las menas que no puede picar se las salta (no las rompe); al subir este nivel
+#            vuelve a empezar desde arriba para recogerlas. Con un solo nivel, no sale en el menú.
+upgrades:
+  speed:
+    levels:
+      - {value: 1}
+      - {value: 2, cost: {items: ["REDSTONE_BLOCK:8"]}}
+      - {value: 4, cost: {items: ["DIAMOND:8"]}}
+      - {value: 8, cost: {items: ["NETHERITE_INGOT:1"]}}
+  area:
+    levels:
+      - {value: 16}
+      - {value: 24, cost: {items: ["IRON_BLOCK:8"]}}
+      - {value: 32, cost: {items: ["DIAMOND_BLOCK:4"]}}
+      - {value: 48, cost: {items: ["NETHERITE_INGOT:2"]}}
+  fortune:
+    levels:
+      - {value: 0}
+      - {value: 1, cost: {items: ["LAPIS_BLOCK:8"]}}
+      - {value: 2, cost: {items: ["LAPIS_BLOCK:16", "DIAMOND:4"]}}
+      - {value: 3, cost: {items: ["DIAMOND_BLOCK:4"]}}
+  tier:
+    levels:
+      - {value: -1}
+  # Mejoras de una vez (luego se encienden y apagan). Sin la sección o con enabled: false, no salen.
+  silk-touch:
+    cost: {items: ["DIAMOND:8"]}
+  smelt:
+    cost: {items: ["BLAST_FURNACE:4", "COAL_BLOCK:8"]}
+  filter:
+    cost: {items: ["HOPPER:4"]}
+
+# Receta para fabricarla en la mesa de crafteo.
+recipe:
+  enabled: true
+  shape: ["IDI", "RPR", "IOI"]
+  ingredients:
+    I: IRON_BLOCK
+    D: DIAMOND
+    R: REDSTONE_BLOCK
+    P: DIAMOND_PICKAXE
+    O: OBSERVER

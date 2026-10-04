@@ -1,5 +1,6 @@
 package com.sack.rpgroll.traps.listener;
 
+import com.sack.rpgroll.common.block.MachineBreakEvent;
 import com.sack.rpgroll.traps.core.TrapDefinition;
 import com.sack.rpgroll.traps.core.TrapState;
 import com.sack.rpgroll.traps.core.TrapTrigger;
@@ -106,6 +107,11 @@ public class TrapTriggerListener implements Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onBlockBreak(BlockBreakEvent event) {
+
+        // Lo rompe una máquina (la cantera) en nombre de su dueño: no es trabajo del jugador.
+        if (event instanceof MachineBreakEvent) {
+            return;
+        }
 
         for (PlacedTrap placed : matchingTrigger(TrapTrigger.BLOCK_BREAK)) {
             if (placed.contains(event.getBlock().getLocation())) {

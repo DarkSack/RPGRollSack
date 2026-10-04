@@ -1,5 +1,6 @@
 package com.sack.rpgroll.quests.listener;
 
+import com.sack.rpgroll.common.block.MachineBreakEvent;
 import org.bukkit.event.EventPriority;
 import com.sack.rpgroll.common.character.Characters;
 import com.sack.rpgroll.common.lang.LangManager;
@@ -72,6 +73,11 @@ public class QuestObjectiveListener implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
+
+        // Lo rompe una máquina (la cantera) en nombre de su dueño: no es trabajo del jugador.
+        if (event instanceof MachineBreakEvent) {
+            return;
+        }
 
         Map<String, String> params = Map.of("material", event.getBlock().getType().name());
 

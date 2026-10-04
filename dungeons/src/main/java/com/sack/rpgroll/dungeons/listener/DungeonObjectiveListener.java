@@ -1,5 +1,6 @@
 package com.sack.rpgroll.dungeons.listener;
 
+import com.sack.rpgroll.common.block.MachineBreakEvent;
 import com.sack.rpgroll.dungeons.core.DungeonDefinition;
 import com.sack.rpgroll.dungeons.core.DungeonObjectiveType;
 import com.sack.rpgroll.dungeons.engine.DungeonEngine;
@@ -60,6 +61,11 @@ public class DungeonObjectiveListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
+
+        // Lo rompe una máquina (la cantera) en nombre de su dueño: no es trabajo del jugador.
+        if (event instanceof MachineBreakEvent) {
+            return;
+        }
 
         withSession(event.getPlayer(), (session, definition) -> engine.progressObjective(session, definition,
                 DungeonObjectiveType.DESTROY_BLOCK, Map.of("material", event.getBlock().getType().name()), 1));

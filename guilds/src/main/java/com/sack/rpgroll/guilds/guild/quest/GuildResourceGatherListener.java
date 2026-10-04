@@ -1,5 +1,6 @@
 package com.sack.rpgroll.guilds.guild.quest;
 
+import com.sack.rpgroll.common.block.MachineBreakEvent;
 import com.sack.rpgroll.guilds.guild.Guild;
 import com.sack.rpgroll.guilds.guild.GuildManager;
 
@@ -20,6 +21,11 @@ public class GuildResourceGatherListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
+
+        // Lo rompe una máquina (la cantera) en nombre de su dueño: no es trabajo del jugador.
+        if (event instanceof MachineBreakEvent) {
+            return;
+        }
 
         Guild guild = guildManager.findByMember(event.getPlayer().getUniqueId()).orElse(null);
 

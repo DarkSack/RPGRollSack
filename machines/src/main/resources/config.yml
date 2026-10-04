@@ -1,0 +1,10 @@
+# RPGRoll-Machines
+#
+#   furnaces.yml  hornos, altos hornos y ahumadores mejorables
+#   spawners.yml  mejoras, pila y recogida de spawners
+#   quarries.yml  canteras
+#
+# /machines reload relee todo.
+
+# Idioma de los mensajes: es, en o pt_BR (lang/<idioma>.yml).
+language: es

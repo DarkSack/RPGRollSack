@@ -1,5 +1,6 @@
 package com.sack.rpgroll.extras.consumption;
 
+import com.sack.rpgroll.common.block.MachineBreakEvent;
 import com.sack.rpgroll.extras.stat.StatEngine;
 
 import com.destroystokyo.paper.event.player.PlayerJumpEvent;
@@ -58,6 +59,11 @@ public class ConsumptionListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onMine(BlockBreakEvent event) {
+        // Lo rompe una máquina (la cantera) en nombre de su dueño: no es trabajo del jugador.
+        if (event instanceof MachineBreakEvent) {
+            return;
+        }
+
         statEngine.consumeAll(event.getPlayer(), "mining");
     }
 

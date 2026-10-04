@@ -1,0 +1,18 @@
+# Tu clave de licencia de RPGRoll-Machines. Es lo único que va en este archivo.
+#
+#   Se compra en la tienda oficial: https://store.sackito.online
+#
+#   Al comprar te llega la clave por correo, y siempre la tienes a mano en
+#   https://store.sackito.online/mis-compras. Empieza con "RPGR-": pégala abajo,
+#   en lugar de %%__LICENSE__%%, y reinicia el servidor.
+#
+#   ¿La conseguiste por Ko-fi o Patreon? Es el mismo tipo de clave. Crea tu
+#   cuenta en la tienda con el MISMO correo con el que apoyaste y aparecerá
+#   en "Mis compras", junto con las descargas de cada versión nueva.
+#
+#   Si descargaste el .jar desde un marketplace que pone la clave por ti,
+#   ya viene rellenado: no toques nada.
+#
+# Cada módulo se compra por separado y lleva su propia clave, salvo que
+# compraras un pack: en ese caso la misma clave sirve para todo lo que incluye.
+key: '%%__LICENSE__%%'

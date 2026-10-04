@@ -1,0 +1,47 @@
+# Spawners mejorables.
+#
+#   Mayús + clic derecho con la mano vacía: las mejoras.
+#   Clic derecho con un spawner del mismo mob en la mano: se apila (cada uno suma una tanda).
+#   Con toque de seda y el permiso rpgroll.machines.spawner.mine: se recoge con sus niveles.
+#
+# Cada mejora es una lista de niveles. El primero (nivel 0) es como queda un spawner sin mejorar
+# y no lleva coste; lo de vanilla es min-delay 200, max-delay 800 (ticks), spawn-count 4,
+# max-nearby 6 y range 16.
+
+enabled: true
+disabled-worlds: []
+
+mine:
+  enabled: true
+  require-silk-touch: true
+
+stack:
+  enabled: true
+  max: 8
+
+# Texto encima de un spawner mejorado o apilado.
+hologram:
+  enabled: true
+  height: 1.35
+
+upgrades:
+  speed:
+    icon: SUGAR
+    levels:
+      - {min-delay: 200, max-delay: 800}
+      - {min-delay: 160, max-delay: 640, cost: {items: ["EMERALD:8"]}}
+      - {min-delay: 120, max-delay: 480, cost: {items: ["EMERALD:16", "DIAMOND:4"]}}
+      - {min-delay: 80, max-delay: 320, cost: {items: ["DIAMOND:16"]}}
+  count:
+    icon: SPAWNER
+    levels:
+      - {spawn-count: 4, max-nearby: 6}
+      - {spawn-count: 5, max-nearby: 8, cost: {items: ["EMERALD:8"]}}
+      - {spawn-count: 6, max-nearby: 10, cost: {items: ["EMERALD:16", "DIAMOND:4"]}}
+      - {spawn-count: 8, max-nearby: 12, cost: {items: ["DIAMOND:16"]}}
+  range:
+    icon: ENDER_EYE
+    levels:
+      - {range: 16}
+      - {range: 24, cost: {items: ["ENDER_PEARL:8"]}}
+      - {range: 32, cost: {items: ["ENDER_PEARL:16", "EMERALD:8"]}}

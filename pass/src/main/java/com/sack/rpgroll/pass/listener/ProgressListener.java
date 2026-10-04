@@ -1,5 +1,6 @@
 package com.sack.rpgroll.pass.listener;
 
+import com.sack.rpgroll.common.block.MachineBreakEvent;
 import com.sack.rpgroll.common.character.CharacterLevelUpEvent;
 import com.sack.rpgroll.common.character.Characters;
 import com.sack.rpgroll.pass.mission.MissionService;
@@ -34,6 +35,11 @@ public class ProgressListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBreak(BlockBreakEvent event) {
+
+        // Lo rompe una máquina (la cantera) en nombre de su dueño: no es trabajo del jugador.
+        if (event instanceof MachineBreakEvent) {
+            return;
+        }
 
         // Los bloques que puso un jugador no cuentan: si no, basta con poner y quitar.
         if (Characters.get().map(c -> c.isPlayerPlaced(event.getBlock())).orElse(false)) {

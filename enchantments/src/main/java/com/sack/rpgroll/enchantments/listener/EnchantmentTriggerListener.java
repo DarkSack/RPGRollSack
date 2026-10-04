@@ -1,5 +1,6 @@
 package com.sack.rpgroll.enchantments.listener;
 
+import com.sack.rpgroll.common.block.MachineBreakEvent;
 import com.sack.rpgroll.enchantments.condition.ConditionContext;
 import com.sack.rpgroll.enchantments.condition.ConditionEvaluator;
 import com.sack.rpgroll.enchantments.core.EnchantmentManager;
@@ -121,6 +122,11 @@ public class EnchantmentTriggerListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
+        // Lo rompe una máquina (la cantera) en nombre de su dueño: no es trabajo del jugador.
+        if (event instanceof MachineBreakEvent) {
+            return;
+        }
+
         handleTrigger(Trigger.BLOCK_BREAK, event.getPlayer(), null, event);
     }
 

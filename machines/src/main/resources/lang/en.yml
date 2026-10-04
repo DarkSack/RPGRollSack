@@ -1,0 +1,141 @@
+# Language file: English
+# RPGRoll-Machines
+
+general:
+  no_permission: "&cYou don't have permission to do that."
+  player_only: "&cOnly a player can use this."
+
+cost:
+  free: "&aFree"
+  header: "&7Costs:"
+  money_ok: "&a ✔ {amount}"
+  money_missing: "&c ✘ {amount}"
+  item_ok: "&a ✔ {amount}× {item}"
+  item_missing: "&c ✘ {amount}× {item} &7(you have {have})"
+
+menu:
+  click_upgrade: "&e▶ Click to upgrade"
+  cant_afford: "&c✘ You're missing something to pay for it"
+  cant_afford_message: "&cYou don't have what that upgrade costs."
+  arrow: "&7→"
+  maxed: "&6★ Max level"
+
+furnace:
+  kind:
+    furnace: "Furnace"
+    blast_furnace: "Blast furnace"
+    smoker: "Smoker"
+  item_name: "&f{tier} {kind}"
+  menu_title: "Upgrade: {kind}"
+  vanilla: "&7Not upgraded: like any other furnace."
+  vanilla_name: "&7not upgraded"
+  stat_speed: "&7Speed: &f{value}"
+  stat_fuel: "&7Fuel efficiency: &f{value}"
+  stat_double: "&7Double output chance: &f{value}"
+  current: "&7Now: {tier}"
+  next: "&7Next: {tier} &8({level})"
+  max: "&6★ Already maxed out"
+  upgraded: "&a✔ Furnace upgraded to {tier}&a."
+
+spawner:
+  upgrade:
+    speed: "Speed"
+    count: "Amount"
+    range: "Range"
+  menu_title: "{mob} spawner"
+  item_name: "&e{mob} spawner"
+  item_level: "&7{upgrade}: &f{level}"
+  item_stack: "&7Stacked: &f{stack}"
+  hologram_title: "&e{mob} &7×{stack}"
+  hologram_levels: "&7Spd &f{speed} &8· &7Amt &f{count} &8· &7Rng &f{range}"
+  upgrade_title: "&e{upgrade}"
+  level: "&7Level &f{level}&7/&f{max}"
+  next: "&7With the upgrade:"
+  value_speed: "&f  a wave every {min}–{max} s"
+  value_count: "&f  {count} mobs per wave &7(max {nearby} nearby)"
+  value_range: "&f  activates within {range} blocks"
+  stack_title: "&eStacked: &f{stack}&7/&f{max}"
+  stack_hint: "&7Right-click the spawner holding another one of the same mob to stack it."
+  upgraded: "&a✔ {upgrade} raised to {level}."
+  stacked: "&a✔ Stacked: &f{stack}&7/&f{max}"
+  stack_full: "&cNo more fit: the maximum is {max}."
+  stack_other_mob: "&cOnly spawners of the same mob can be stacked."
+  no_egg: "&cThis spawner has upgrades: a spawn egg can't change its mob."
+
+quarry:
+  item_name: "&6Quarry"
+  item_lore: "&7Place it next to a chest: it digs down on its own."
+  item_level: "&7{upgrade}: &f{level}"
+  item_unlock: "&7{upgrade}: &a✔"
+  upgrade:
+    speed: "Speed"
+    area: "Area"
+    fortune: "Fortune"
+    tier: "Power"
+  unlock:
+    silk-touch: "Silk touch"
+    smelt: "Auto-smelt"
+    filter: "Junk filter"
+  unlock_desc:
+    silk-touch: "&7Mines blocks as they are (no fortune)."
+    smelt: "&7Smelts whatever can be smelted before storing it."
+    filter: "&7Throws away stone, dirt and other junk."
+  menu_title: "Quarry"
+  state:
+    mining: "&adigging"
+    "off": "&7off"
+    no_owner: "&ewaiting for its owner"
+    no_chest: "&cneeds a chest next to it"
+    full: "&cthe chest is full"
+    waiting_chunk: "&ewaiting for chunks to load"
+    finished: "&bfinished"
+  status_owner: "&7Owner: &f{owner}"
+  status_state: "&7Status: {state}"
+  status_depth: "&7Currently at: &fY {y}"
+  status_progress: "&7Done: &f{progress}"
+  status_area: "&7Area: &f{side}×{side}"
+  status_buffer: "&7Waiting for room in the chest: &f{count} items"
+  level: "&7Level &f{level}&7/&f{max}"
+  next: "&7With the upgrade:"
+  upgrade_title: "&e{upgrade}"
+  value_speed: "&f  {value} blocks per second"
+  value_area: "&f  {value}×{value} blocks"
+  value_fortune: "&f  Fortune {value}"
+  value_tier: "&f  mining tier {value}"
+  value_tier_default: "&f  like a netherite pickaxe"
+  fortune_vs_silk: "&8(doesn't apply while silk touch is on)"
+  "on": "&aOn"
+  "off": "&7Off"
+  click_toggle: "&e▶ Click to toggle"
+  click_buy: "&e▶ Click to buy it"
+  toggle_on: "&aQuarry on"
+  toggle_off: "&7Quarry off"
+  placed: "&a✔ Quarry placed: it will dig {side}×{side} blocks below it. Put a chest next to it."
+  limit: "&cYou already have {max} quarries, the maximum."
+  need_claim: "&cThe area ({side}×{side}) must be entirely inside one of your claims."
+  world_disabled: "&cQuarries don't work in this world."
+  not_owner: "&cThis quarry belongs to {owner}."
+  upgraded: "&a✔ {upgrade} raised to {level}."
+  unlocked: "&a✔ {upgrade} bought."
+
+command:
+  usage: |-
+    &6/machines
+    &7 • &egive <player> furnace|blast_furnace|smoker <tier> [amount]
+    &7 • &egive <player> spawner <mob> [amount]
+    &7 • &egive <player> quarry [amount]
+    &7 • &equarries [player]
+    &7 • &einfo &7(the block you're looking at)
+    &7 • &ereload
+  reloaded: "&a✔ RPGRoll-Machines reloaded."
+  player_not_found: "&cNot online: {player}"
+  unknown_tier: "&cThere's no furnace tier '{tier}' in furnaces.yml."
+  unknown_mob: "&cThat mob doesn't exist or can't come from a spawner: {mob}"
+  bad_amount: "&cThe amount must be a number."
+  given: "&a✔ {amount}× {kind} for {player}."
+  quarries_header: "&6Quarries: &f{count}"
+  quarries_line: "&7 • &f{owner} &7in {world} {x} {y} {z} — {state} &7(Y {depth})"
+  info_nothing: "&7You aren't looking at a machine."
+  info_furnace: "&7Furnace, tier &f{tier}"
+  info_spawner: "&7{mob} spawner&7: speed {speed}, amount {count}, range {range}, stacked {stack}"
+  info_quarry: "&7Quarry of &f{owner}&7: {state} &7(Y {depth}, area {side})"

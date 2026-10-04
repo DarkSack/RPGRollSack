@@ -1,5 +1,6 @@
 package com.sack.rpgroll.items.listener;
 
+import com.sack.rpgroll.common.block.MachineBreakEvent;
 import com.destroystokyo.paper.event.player.PlayerJumpEvent;
 
 import com.sack.rpgroll.common.lang.LangManager;
@@ -180,6 +181,11 @@ public class ItemTriggerListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
+
+        // Lo rompe una máquina (la cantera) en nombre de su dueño: no es trabajo del jugador.
+        if (event instanceof MachineBreakEvent) {
+            return;
+        }
 
         ItemStack tool = event.getPlayer().getInventory().getItemInMainHand();
         fireTrigger(ItemTrigger.BLOCK_BREAK, event.getPlayer(), tool, null);

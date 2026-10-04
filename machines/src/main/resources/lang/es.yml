@@ -1,0 +1,141 @@
+# Archivo de idioma: Español
+# RPGRoll-Machines
+
+general:
+  no_permission: "&cNo tienes permiso para eso."
+  player_only: "&cSolo un jugador puede usar esto."
+
+cost:
+  free: "&aGratis"
+  header: "&7Cuesta:"
+  money_ok: "&a ✔ {amount}"
+  money_missing: "&c ✘ {amount}"
+  item_ok: "&a ✔ {amount}× {item}"
+  item_missing: "&c ✘ {amount}× {item} &7(tienes {have})"
+
+menu:
+  click_upgrade: "&e▶ Clic para mejorar"
+  cant_afford: "&c✘ Te falta algo para pagarlo"
+  cant_afford_message: "&cNo tienes lo que cuesta esa mejora."
+  arrow: "&7→"
+  maxed: "&6★ Nivel máximo"
+
+furnace:
+  kind:
+    furnace: "Horno"
+    blast_furnace: "Alto horno"
+    smoker: "Ahumador"
+  item_name: "&f{kind} de {tier}"
+  menu_title: "Mejorar: {kind}"
+  vanilla: "&7Sin mejorar: como cualquier horno."
+  vanilla_name: "&7sin mejorar"
+  stat_speed: "&7Velocidad: &f{value}"
+  stat_fuel: "&7Rendimiento del combustible: &f{value}"
+  stat_double: "&7Probabilidad de doble: &f{value}"
+  current: "&7Ahora: {tier}"
+  next: "&7Siguiente: {tier} &8({level})"
+  max: "&6★ Ya está al máximo"
+  upgraded: "&a✔ Horno mejorado a {tier}&a."
+
+spawner:
+  upgrade:
+    speed: "Velocidad"
+    count: "Cantidad"
+    range: "Alcance"
+  menu_title: "Spawner de {mob}"
+  item_name: "&eSpawner de {mob}"
+  item_level: "&7{upgrade}: &f{level}"
+  item_stack: "&7Apilados: &f{stack}"
+  hologram_title: "&e{mob} &7×{stack}"
+  hologram_levels: "&7Vel. &f{speed} &8· &7Cant. &f{count} &8· &7Alc. &f{range}"
+  upgrade_title: "&e{upgrade}"
+  level: "&7Nivel &f{level}&7/&f{max}"
+  next: "&7Con la mejora:"
+  value_speed: "&f  una tanda cada {min}–{max} s"
+  value_count: "&f  {count} mobs por tanda &7(máx. {nearby} cerca)"
+  value_range: "&f  se activa a {range} bloques"
+  stack_title: "&eApilados: &f{stack}&7/&f{max}"
+  stack_hint: "&7Clic derecho al spawner con otro del mismo mob en la mano para apilarlo."
+  upgraded: "&a✔ {upgrade} subida a {level}."
+  stacked: "&a✔ Apilado: &f{stack}&7/&f{max}"
+  stack_full: "&cYa no caben más: el máximo es {max}."
+  stack_other_mob: "&cSolo se apilan spawners del mismo mob."
+  no_egg: "&cEste spawner tiene mejoras: un huevo no puede cambiarle el mob."
+
+quarry:
+  item_name: "&6Cantera"
+  item_lore: "&7Ponla con un cofre al lado: excava sola hasta el fondo."
+  item_level: "&7{upgrade}: &f{level}"
+  item_unlock: "&7{upgrade}: &a✔"
+  upgrade:
+    speed: "Velocidad"
+    area: "Área"
+    fortune: "Fortuna"
+    tier: "Potencia"
+  unlock:
+    silk-touch: "Toque de seda"
+    smelt: "Autofundido"
+    filter: "Filtro de basura"
+  unlock_desc:
+    silk-touch: "&7Saca los bloques tal cual (sin fortuna)."
+    smelt: "&7Funde lo que se pueda fundir antes de guardarlo."
+    filter: "&7Tira la piedra, la tierra y demás basura."
+  menu_title: "Cantera"
+  state:
+    mining: "&aexcavando"
+    "off": "&7apagada"
+    no_owner: "&eesperando a su dueño"
+    no_chest: "&cle falta un cofre al lado"
+    full: "&cel cofre está lleno"
+    waiting_chunk: "&eesperando a que carguen los chunks"
+    finished: "&bterminada"
+  status_owner: "&7Dueño: &f{owner}"
+  status_state: "&7Estado: {state}"
+  status_depth: "&7Por la altura: &fY {y}"
+  status_progress: "&7Hecho: &f{progress}"
+  status_area: "&7Área: &f{side}×{side}"
+  status_buffer: "&7Esperando sitio en el cofre: &f{count} ítems"
+  level: "&7Nivel &f{level}&7/&f{max}"
+  next: "&7Con la mejora:"
+  upgrade_title: "&e{upgrade}"
+  value_speed: "&f  {value} bloques por segundo"
+  value_area: "&f  {value}×{value} bloques"
+  value_fortune: "&f  Fortuna {value}"
+  value_tier: "&f  nivel de picado {value}"
+  value_tier_default: "&f  como un pico de netherita"
+  fortune_vs_silk: "&8(no cuenta con el toque de seda encendido)"
+  "on": "&aEncendido"
+  "off": "&7Apagado"
+  click_toggle: "&e▶ Clic para cambiar"
+  click_buy: "&e▶ Clic para comprarlo"
+  toggle_on: "&aCantera encendida"
+  toggle_off: "&7Cantera apagada"
+  placed: "&a✔ Cantera puesta: excavará {side}×{side} bloques bajo ella. Ponle un cofre al lado."
+  limit: "&cYa tienes {max} canteras, el máximo."
+  need_claim: "&cEl área ({side}×{side}) tiene que estar entera dentro de un claim tuyo."
+  world_disabled: "&cEn este mundo no funcionan las canteras."
+  not_owner: "&cEsta cantera es de {owner}."
+  upgraded: "&a✔ {upgrade} subida a {level}."
+  unlocked: "&a✔ {upgrade} comprado."
+
+command:
+  usage: |-
+    &6/machines
+    &7 • &egive <jugador> furnace|blast_furnace|smoker <nivel> [cantidad]
+    &7 • &egive <jugador> spawner <mob> [cantidad]
+    &7 • &egive <jugador> quarry [cantidad]
+    &7 • &equarries [jugador]
+    &7 • &einfo &7(el bloque que miras)
+    &7 • &ereload
+  reloaded: "&a✔ RPGRoll-Machines recargado."
+  player_not_found: "&cNo está conectado: {player}"
+  unknown_tier: "&cNo hay un nivel de horno '{tier}' en furnaces.yml."
+  unknown_mob: "&cEse mob no existe o no sale de un spawner: {mob}"
+  bad_amount: "&cLa cantidad tiene que ser un número."
+  given: "&a✔ {amount}× {kind} para {player}."
+  quarries_header: "&6Canteras: &f{count}"
+  quarries_line: "&7 • &f{owner} &7en {world} {x} {y} {z} — {state} &7(Y {depth})"
+  info_nothing: "&7No miras ninguna máquina."
+  info_furnace: "&7Horno, nivel &f{tier}"
+  info_spawner: "&7Spawner de &f{mob}&7: velocidad {speed}, cantidad {count}, alcance {range}, apilados {stack}"
+  info_quarry: "&7Cantera de &f{owner}&7: {state} &7(Y {depth}, área {side})"

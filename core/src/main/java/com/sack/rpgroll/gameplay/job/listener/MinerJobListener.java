@@ -1,5 +1,6 @@
 package com.sack.rpgroll.gameplay.job.listener;
 
+import com.sack.rpgroll.common.block.MachineBreakEvent;
 import com.sack.rpgroll.gameplay.job.JobRewardService;
 import com.sack.rpgroll.gameplay.job.PlacedBlockTracker;
 import org.bukkit.block.Block;
@@ -36,6 +37,11 @@ public class MinerJobListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
+
+        // Lo rompe una máquina (la cantera) en nombre de su dueño: no es trabajo del jugador.
+        if (event instanceof MachineBreakEvent) {
+            return;
+        }
 
         Block block = event.getBlock();
 

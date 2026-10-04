@@ -1,5 +1,7 @@
 package com.sack.rpgroll.crates.lucky;
 
+import com.sack.rpgroll.common.block.MachineBreakEvent;
+
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Instrument;
@@ -169,6 +171,12 @@ public class LuckyListener implements Listener {
         Block block = event.getBlock();
         Optional<LuckyBlock> lucky = at(block);
         if (lucky.isEmpty()) {
+            return;
+        }
+
+        // Una máquina (la cantera) no abre lucky blocks: se lo salta.
+        if (event instanceof MachineBreakEvent) {
+            event.setCancelled(true);
             return;
         }
 

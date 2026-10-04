@@ -1,0 +1,68 @@
+# Hornos mejorables.
+#
+# Siguen siendo el horno vanilla (su interfaz, sus tolvas, sus recetas); el nivel se guarda en el
+# bloque. Mayús + clic derecho con la mano vacía abre las mejoras. Un horno mejorado sale con su
+# nivel al romperlo (con cualquier herramienta) y no salta por los aires con una explosión.
+#
+#   speed          cuánto más rápido cuece (2 = la mitad de tiempo)
+#   fuel           cuántos ítems más rinde cada combustible (1.5 = un 50 % más). La velocidad no
+#                  cambia lo que rinde: un horno más rápido quema el combustible igual de rápido.
+#   double-chance  probabilidad de sacar el doble (0.1 = 10 %), si cabe en la casilla
+#   cost           lo que cuesta llegar a ese nivel: money (Vault) y/o items
+#                  (MATERIAL:cantidad, o rpgroll-items:<id>:cantidad para ítems de RPGRoll-Items)
+#
+# El orden de la lista es el orden de las mejoras.
+
+enabled: true
+disabled-worlds: []
+
+# Cuáles se pueden mejorar.
+kinds: [FURNACE, BLAST_FURNACE, SMOKER]
+
+# Modelo del ítem de un horno mejorado, si tu resource pack lo trae. {kind} = furnace,
+# blast_furnace o smoker; {tier} = el id del nivel. Vacío: el ítem vanilla.
+item-model: ""
+
+# Un marco encima del horno puesto (un item_display con este modelo, del tamaño del bloque).
+# Pensado para un modelo con huecos que deje ver el horno vanilla (y su frente encendido).
+frame:
+  enabled: false
+  model: ""
+  scale: 1.002
+
+tiers:
+  cobre:
+    name: "&6Cobre"
+    speed: 1.25
+    fuel: 1.1
+    double-chance: 0.0
+    cost:
+      items: ["COPPER_INGOT:16"]
+  hierro:
+    name: "&fHierro"
+    speed: 1.5
+    fuel: 1.2
+    double-chance: 0.05
+    cost:
+      items: ["IRON_INGOT:16"]
+  oro:
+    name: "&eOro"
+    speed: 2.0
+    fuel: 1.35
+    double-chance: 0.1
+    cost:
+      items: ["GOLD_INGOT:16"]
+  diamante:
+    name: "&bDiamante"
+    speed: 2.5
+    fuel: 1.5
+    double-chance: 0.15
+    cost:
+      items: ["DIAMOND:8"]
+  netherita:
+    name: "&8Netherita"
+    speed: 3.0
+    fuel: 1.75
+    double-chance: 0.25
+    cost:
+      items: ["NETHERITE_INGOT:1"]

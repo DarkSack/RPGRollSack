@@ -1,5 +1,6 @@
 package com.sack.rpgroll.traps.listener;
 
+import com.sack.rpgroll.common.block.MachineBreakEvent;
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.traps.turret.PlacedTurret;
 import com.sack.rpgroll.traps.turret.PlacedTurretManager;
@@ -130,6 +131,12 @@ public class TurretPlacementListener implements Listener {
     public void onBreakCheck(BlockBreakEvent event) {
 
         PlacedTurret placed = turretAt(event.getBlock().getLocation());
+
+        // Una máquina (la cantera) no retira torretas: se la salta.
+        if (placed != null && event instanceof MachineBreakEvent) {
+            event.setCancelled(true);
+            return;
+        }
 
         if (placed != null && !canRemove(event.getPlayer(), placed)) {
             event.setCancelled(true);

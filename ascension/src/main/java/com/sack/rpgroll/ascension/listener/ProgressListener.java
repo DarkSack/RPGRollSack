@@ -1,5 +1,6 @@
 package com.sack.rpgroll.ascension.listener;
 
+import com.sack.rpgroll.common.block.MachineBreakEvent;
 import com.sack.rpgroll.api.RPGRollAPI;
 import com.sack.rpgroll.api.event.PlayerJobLevelUpEvent;
 import com.sack.rpgroll.api.event.PlayerLeaveJobEvent;
@@ -62,6 +63,11 @@ public class ProgressListener implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBreak(BlockBreakEvent event) {
+
+        // Lo rompe una máquina (la cantera) en nombre de su dueño: no es trabajo del jugador.
+        if (event instanceof MachineBreakEvent) {
+            return;
+        }
 
         String material = event.getBlock().getType().name();
 
