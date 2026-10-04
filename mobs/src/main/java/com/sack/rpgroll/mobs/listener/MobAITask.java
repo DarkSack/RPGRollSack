@@ -185,7 +185,7 @@ public class MobAITask implements Runnable {
 
         if (distanceSquared <= MELEE_RANGE * MELEE_RANGE) {
 
-            double damage = engine.rollAttackDamage(definition);
+            double damage = engine.rollAttackDamage(definition) * instanceService.sizeDamageFactor(mob);
             if (damage > 0) {
                 target.damage(damage, mob);
             }

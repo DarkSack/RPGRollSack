@@ -4,3 +4,46 @@
 # Los textos viven en lang/<idioma>.yml dentro de esta carpeta de datos —
 # puedes editarlos ahí directamente. Tras cambiar esto, /mobadmin reload.
 language: es
+
+# Tamaño aleatorio de los mobs al aparecer (atributo scale), vanilla y de RPGRoll. Funciona en
+# Java y en Bedrock. Un mob vanilla con nombre o una mascota no cambia, y el tamaño se guarda
+# con el mob (no cambia al recargar el chunk). Tras cambiarlo, /mobadmin reload.
+random-size:
+  enabled: false
+  # Los mobs de RPGRoll también (salvo jefes y los que tengan custom-data random-size: "false").
+  # Su tamaño se multiplica sobre el scale de su modelo, y su daño propio sigue a stats.damage.
+  rpgroll-mobs: true
+  # Los que llevan modelo 3D (FreeMinecraftModels) no cambian: el modelo no sigue al tamaño.
+  rpgroll-modeled: false
+  # Mundos donde no se aplica (por nombre).
+  disabled-worlds: [lobby, creativo, arena]
+  # Por qué apareció el mob. Los de plugins (CUSTOM) y comandos (COMMAND) quedan fuera.
+  spawn-reasons: [NATURAL, CHUNK_GEN, SPAWNER, TRIAL_SPAWNER, BREEDING, JOCKEY, MOUNT, REINFORCEMENTS,
+    VILLAGE_DEFENSE, VILLAGE_INVASION, PATROL, RAID, EGG, SPAWNER_EGG, DISPENSE_EGG, DROWNED,
+    INFECTION, SLIME_SPLIT, BEEHIVE]
+  # Nunca cambian.
+  exclude-types: [ender_dragon, wither, warden, elder_guardian, giant]
+  # Tamaño entre min y max; los del centro salen más a menudo.
+  ranges:
+    passive: {min: 0.75, max: 1.25}
+    neutral: {min: 0.8, max: 1.25}
+    hostile: {min: 0.85, max: 1.3}
+  # Con este % sale un mini o un gigante fuera del rango (no en los tipos de "types").
+  extremes:
+    chance: 1.5
+    small: 0.5
+    large: 1.8
+  # Rango propio por tipo (min = max = 1 lo deja igual). Un mob de RPGRoll va como "rpgroll:<id>".
+  types:
+    villager: {min: 0.92, max: 1.08}
+    wandering_trader: {min: 0.92, max: 1.08}
+  # Un hostil más alto que esto nunca encoge por debajo: no se cuela por huecos de un bloque.
+  hostile-min-height: 1.05
+  # Cuánto sigue cada valor al tamaño: 0 nada, 1 proporcional, negativo al revés
+  # (speed -0.25: un gigante 1,8 va un 20 % más lento).
+  stats:
+    health: 1.0
+    damage: 0.5
+    speed: -0.25
+    experience: 1.0
+    loot: 0.5

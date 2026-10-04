@@ -45,6 +45,8 @@ public class MobsPlugin extends JavaPlugin {
     private MobEngine engine;
     private ChatPromptManager chatPromptManager;
     private LangManager langManager;
+    private volatile com.sack.rpgroll.mobs.size.RandomSizeSettings randomSize =
+            com.sack.rpgroll.mobs.size.RandomSizeSettings.disabled();
 
     @Override
     public void onEnable() {
@@ -96,6 +98,10 @@ public class MobsPlugin extends JavaPlugin {
         // loot por contribución.
         getServer().getPluginManager().registerEvents(new MobReloadListener(engine), this);
 
+        reloadRandomSize();
+        getServer().getPluginManager().registerEvents(
+                new com.sack.rpgroll.mobs.size.RandomSizeListener(this, () -> randomSize), this);
+
         MobAITask aiTask = new MobAITask(engine, instanceService, regionManager, mobManager);
         getServer().getScheduler().runTaskTimer(this, aiTask, AI_TICK_INTERVAL, AI_TICK_INTERVAL);
 
@@ -106,6 +112,11 @@ public class MobsPlugin extends JavaPlugin {
 
         getLogger().info("✔ RPGRoll-Mobs habilitado. " + mobManager.count() + " mob(s), "
                 + regionManager.count() + " región(es) cargadas.");
+    }
+
+    /** Relee {@code random-size} del config.yml (también desde /mobadmin reload). */
+    public void reloadRandomSize() {
+        randomSize = com.sack.rpgroll.mobs.size.RandomSizeSettings.from(getConfig().getConfigurationSection("random-size"));
     }
 
     private void registerPlaceholders() {

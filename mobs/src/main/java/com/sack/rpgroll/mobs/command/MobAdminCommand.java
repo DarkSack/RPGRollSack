@@ -194,6 +194,11 @@ public class MobAdminCommand implements CommandExecutor, TabCompleter {
     }
 
     private void handleReload(CommandSender sender) {
+        // Sin reloadConfig, los cambios del config.yml no se veían hasta reiniciar.
+        plugin.reloadConfig();
+        if (plugin instanceof com.sack.rpgroll.mobs.MobsPlugin mobs) {
+            mobs.reloadRandomSize();
+        }
         mobManager.reload();
         lang.reload(plugin.getConfig().getString("language", "es"));
         lang.send(sender, "command.reload_success", "count", mobManager.count());

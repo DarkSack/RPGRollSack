@@ -17,12 +17,14 @@ public class MobInstanceService {
 
     private final NamespacedKey definitionIdKey;
     private final NamespacedKey phaseIndexKey;
+    private final NamespacedKey sizeDamageKey;
     private final NamespacedKey skinIdKey;
 
     public MobInstanceService(Plugin plugin) {
         this.definitionIdKey = new NamespacedKey(plugin, "mob-definition-id");
         this.phaseIndexKey = new NamespacedKey(plugin, "mob-phase-index");
         this.skinIdKey = new NamespacedKey(plugin, "mob-skin-id");
+        this.sizeDamageKey = new NamespacedKey(plugin, com.sack.rpgroll.mobs.size.RandomSizeListener.DAMAGE_KEY);
     }
 
     public void setDefinitionId(LivingEntity entity, String id) {
@@ -57,6 +59,13 @@ public class MobInstanceService {
 
     public PersistentDataContainer container(LivingEntity entity) {
         return entity.getPersistentDataContainer();
+    }
+
+
+    /** Cuánto multiplica su tamaño aleatorio el ataque propio del mob (1 si no tiene). */
+    public double sizeDamageFactor(LivingEntity entity) {
+        Double factor = entity.getPersistentDataContainer().get(sizeDamageKey, PersistentDataType.DOUBLE);
+        return factor != null ? factor : 1.0;
     }
 
 }
