@@ -11,6 +11,8 @@ public class PlayerLanguageState {
     private final Set<String> knownLanguageIds = new LinkedHashSet<>();
     private String speakingLanguageId;
     private boolean seeded;
+    /** Raza con la que se sembró por última vez; null si fue antes de que el jugador eligiera una. */
+    private String seededRaceId;
 
     public PlayerLanguageState(UUID uuid) {
         this.uuid = uuid;
@@ -44,14 +46,20 @@ public class PlayerLanguageState {
         return seeded;
     }
 
-    public void markSeeded() {
-        this.seeded = true;
+    public String seededRaceId() {
+        return seededRaceId;
     }
 
-    public void restore(Set<String> knownLanguageIds, String speakingLanguageId, boolean seeded) {
+    public void markSeeded(String raceId) {
+        this.seeded = true;
+        this.seededRaceId = raceId;
+    }
+
+    public void restore(Set<String> knownLanguageIds, String speakingLanguageId, boolean seeded, String seededRaceId) {
         this.knownLanguageIds.addAll(knownLanguageIds);
         this.speakingLanguageId = speakingLanguageId;
         this.seeded = seeded;
+        this.seededRaceId = seededRaceId;
     }
 
 }

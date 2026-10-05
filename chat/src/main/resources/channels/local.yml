@@ -8,7 +8,7 @@ distance: 100
 view-permission: ""
 speak-permission: ""
 cooldown-millis: 0
-format: "&7[&fLocal&7] &f{player}&7: &f{message}"
+format: "&7[&fLocal&7] {role_prefix}{level_tag}&f{player}&7: &f{message}"
 text-format: LEGACY
 join-sound: ""
 filter-profanity: true

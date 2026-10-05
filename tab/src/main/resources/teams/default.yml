@@ -11,4 +11,7 @@ see-friendly-invisibles: true
 
 # ALWAYS | NEVER | HIDE_FOR_OTHER_TEAMS | HIDE_FOR_OWN_TEAM
 collision: ALWAYS
-nametag-visibility: ALWAYS
+# NEVER porque el perfil por defecto ya pone el nametag propio de RPGRoll-TAB
+# (nametags/default.yml): con ALWAYS se ven los dos nombres uno encima del otro.
+# Si quitas el nametag del perfil, vuelve a ALWAYS.
+nametag-visibility: NEVER

@@ -36,7 +36,8 @@ public class PlayerLanguageStateStore {
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
         Set<String> known = new LinkedHashSet<>(config.getStringList("known"));
 
-        state.restore(known, config.getString("speaking", null), config.getBoolean("seeded", false));
+        state.restore(known, config.getString("speaking", null), config.getBoolean("seeded", false),
+                config.getString("seeded-race", null));
 
         return state;
     }
@@ -47,6 +48,7 @@ public class PlayerLanguageStateStore {
         config.set("known", new java.util.ArrayList<>(state.knownLanguageIds()));
         config.set("speaking", state.speakingLanguageId());
         config.set("seeded", state.seeded());
+        config.set("seeded-race", state.seededRaceId());
 
         try {
             config.save(new File(folder, state.uuid() + ".yml"));

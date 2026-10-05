@@ -15,7 +15,7 @@ import org.bukkit.entity.Player;
 /**
  * Construye el Component final de un mensaje — spec "Formatos Dinámicos".
  * Los tokens nativos ({player}/{message}/{channel}/{world}/{role_prefix}/
- * {role_suffix}) siempre se resuelven; cualquier %placeholder% que quede
+ * {role_suffix}/{context_prefix}/{level_tag}) siempre se resuelven; cualquier %placeholder% que quede
  * en el formato se pasa por PlaceholderAPI si está instalado, lo que da
  * acceso a nivel/clase/raza/job/guild/team/prestigio/reputación/etc. sin
  * que Chat necesite conocer esos addons directamente.
@@ -49,9 +49,19 @@ public class MessageFormatter {
 
         text = text.replace("{player}", sender.getName())
                 .replace("{context_prefix}", contextResolver.contextPrefix(sender))
+                .replace("{level_tag}", levelTag(sender))
                 .replace("{message}", message);
 
         return toComponent(text, channel.textFormat());
+    }
+
+    /** «[Nv. 12] » con el nivel del Core, o nada si no está instalado: así el formato sirve en los dos casos. */
+    private String levelTag(Player sender) {
+
+        return com.sack.rpgroll.common.character.Characters.get()
+                .filter(characters -> characters.hasCharacter(sender.getUniqueId()))
+                .map(characters -> "&8[&eNv. " + characters.level(sender.getUniqueId()) + "&8] ")
+                .orElse("");
     }
 
     /** Para mensajes sin emisor real (ej. anuncios de Sistema/Eventos): sin {player}/roles. */

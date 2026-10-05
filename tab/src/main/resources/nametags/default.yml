@@ -7,9 +7,10 @@ lines:
   - "{player}"
 
 # Opcional — sección 11 ("nametag por observador"): si el VIEWER tiene este
-# permiso, ve estas líneas en vez de las de arriba para este jugador.
+# permiso, ve estas líneas en vez de las de arriba para este jugador. Sirve para
+# darle al staff datos que los jugadores no ven (aquí, el ping y la vida).
 staff-override:
   permission: "rpgrolltab.staff"
   lines:
-    - "&c&l[STAFF]"
-    - "{player}"
+    - "&8[&f{world}&8] &7{ping}ms"
+    - "{player} &c❤ {health}"

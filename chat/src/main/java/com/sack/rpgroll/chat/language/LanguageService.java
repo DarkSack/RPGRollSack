@@ -5,6 +5,7 @@ import com.sack.rpgroll.common.character.Characters;
 import org.bukkit.entity.Player;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -21,16 +22,21 @@ public class LanguageService {
         this.stateManager = stateManager;
     }
 
-    /** Al primer contacto, siembra los idiomas por defecto de la raza del jugador (si el core de RPGRoll está instalado). */
+    /**
+     * Siembra los idiomas por defecto de la raza del jugador (si el core de RPGRoll está instalado).
+     * <p>
+     * Se vuelve a sembrar cuando la raza cambia: el primer contacto suele ser al entrar, antes de que
+     * el jugador elija raza, y sembrar una sola vez lo dejaba para siempre solo con el común. Sembrar
+     * solo añade, así que nunca quita un idioma aprendido.
+     */
     public PlayerLanguageState resolve(Player player) {
 
         PlayerLanguageState state = stateManager.getOrLoad(player);
+        String raceId = Characters.get().flatMap(c -> c.race(player.getUniqueId())).orElse(null);
 
-        if (state.seeded()) {
+        if (state.seeded() && Objects.equals(raceId, state.seededRaceId())) {
             return state;
         }
-
-        String raceId = Characters.get().flatMap(c -> c.race(player.getUniqueId())).orElse(null);
 
         languageManager.defaultLanguagesForRace(raceId).forEach(language -> state.learn(language.id()));
 
@@ -40,7 +46,7 @@ public class LanguageService {
                     () -> state.knownLanguageIds().stream().findFirst().ifPresent(state::setSpeakingLanguageId));
         }
 
-        state.markSeeded();
+        state.markSeeded(raceId);
         return state;
     }
 
