@@ -16,6 +16,8 @@ dependencies {
     // Solo para las condiciones GUILD/TEAM — softdepend real (isReady() se
     // chequea siempre antes de tocar GuildsAPI, ver EffectConditionEvaluator).
     compileOnly(project(":guilds"))
+    // %rpgrolleffects_...% — softdepend: solo se registra si PlaceholderAPI está instalado.
+    compileOnly("me.clip:placeholderapi:2.11.5")
 
     // compileOnly no se hereda al test source set — los tests necesitan estas
 }

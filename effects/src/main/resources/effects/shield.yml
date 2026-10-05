@@ -4,7 +4,7 @@ icon: SHIELD
 color: WHITE
 category: MAGIC
 rarity: UNCOMMON
-description: "Otorga absorción — vida extra que se descuenta antes que la vida real. Reaplicar suma más stacks (hasta 3)."
+description: "Otorga absorción — vida extra que se descuenta antes que la vida real. Reaplicar suma más cargas (hasta 3)."
 duration: 200
 priority: 0
 visible: true
@@ -19,6 +19,15 @@ stacking:
 conditions: []
 
 components:
+  # Aura de RPGRoll-FX (si está instalado): al aplicarse y cada segundo.
+  - type: VISUAL
+    trigger: ON_APPLY
+    effect-id: status_shield
+
+  - type: VISUAL
+    trigger: ON_SECOND
+    effect-id: status_shield
+
   - type: SHIELD
     trigger: ON_APPLY
     amount: 4

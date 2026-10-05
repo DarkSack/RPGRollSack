@@ -218,7 +218,9 @@ public class EffectComponentExecutor {
             return;
         }
 
-        String sackEffectId = component.param("effect", null);
+        // "effect-id" es la clave documentada (y la que usan los YAML de fábrica); antes solo se
+        // leía "effect", así que un VISUAL escrito según la referencia no hacía nada. Se aceptan las dos.
+        String sackEffectId = component.param("effect-id", component.param("effect", null));
 
         if (sackEffectId != null) {
             RPGRollFXAPI.get().play(sackEffectId, player);
@@ -274,7 +276,8 @@ public class EffectComponentExecutor {
 
     private void executeAura(LivingEntity target, ActiveEffect activeEffect, EffectComponent component) {
 
-        String auraEffectId = component.param("effect", activeEffect.definition().id());
+        String auraEffectId = component.param("effect-id",
+                component.param("effect", activeEffect.definition().id()));
         double radius = component.paramDouble("radius", 5.0);
 
         if (!com.sack.rpgroll.effects.api.EffectsAPI.isReady() || target.getWorld() == null) {

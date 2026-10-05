@@ -4,7 +4,7 @@ icon: ICE
 color: AQUA
 category: ELEMENTAL
 rarity: COMMON
-description: "Reduce velocidad y ataque. Se rompe si te aplican Burning (y viceversa)."
+description: "Reduce velocidad y ataque. Se rompe si te aplican Quemadura (y al revés)."
 duration: 100
 priority: 0
 visible: true
@@ -19,6 +19,15 @@ stacking:
 conditions: []
 
 components:
+  # Aura de RPGRoll-FX (si está instalado): al aplicarse y cada segundo.
+  - type: VISUAL
+    trigger: ON_APPLY
+    effect-id: status_frozen
+
+  - type: VISUAL
+    trigger: ON_SECOND
+    effect-id: status_frozen
+
   - type: MOVEMENT_MODIFIER
     trigger: ON_APPLY
     amount: -0.4

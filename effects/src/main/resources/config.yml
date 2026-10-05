@@ -4,3 +4,11 @@
 # Los textos viven en lang/<idioma>.yml dentro de esta carpeta de datos —
 # puedes editarlos ahí directamente. Tras cambiar esto, /rpgeffects reload.
 language: es
+
+# Lo que ve el jugador de sus propios efectos.
+hud:
+  # Una barra de jefe por cada efecto con "visible: true", con su color, sus cargas y el
+  # tiempo que le queda, vaciándose a medida que se acaba.
+  bossbar: true
+  # Como mucho cuántas barras a la vez (primero las de mayor "priority").
+  max-bars: 3

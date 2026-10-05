@@ -58,7 +58,7 @@ public class EffectEditorHubGUI extends InventoryGUI {
 
     public EffectEditorHubGUI(Player player, EffectDefinition effect, EffectManager effectManager,
             EffectTracker tracker, ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.editor.title", "id", effect.id()), NamedTextColor.GOLD), SIZE);
+        super(player, ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.editor.title", "id", effect.id(), "name", effect.displayName()), NamedTextColor.GOLD), SIZE);
         this.current = effect;
         this.effectManager = effectManager;
         this.tracker = tracker;
@@ -102,12 +102,14 @@ public class EffectEditorHubGUI extends InventoryGUI {
                 .build());
 
         setItem(CATEGORY_SLOT, new ItemBuilder(Material.HOPPER)
-                .setName(lang.component("gui.editor.category_label", "category", current.category()))
+                .setName(lang.component("gui.editor.category_label", "category",
+                        lang.raw("gui.category." + current.category().name())))
                 .setLore(lang.component("gui.common.click_cycle"))
                 .build());
 
         setItem(RARITY_SLOT, new ItemBuilder(Material.NETHER_STAR)
-                .setName(ComponentUtils.parseWithDefault(lang.raw("gui.editor.rarity_label", "rarity", current.rarity()),
+                .setName(ComponentUtils.parseWithDefault(lang.raw("gui.editor.rarity_label", "rarity",
+                        lang.raw("gui.rarity." + current.rarity().name())),
                         current.rarity().color()))
                 .setLore(lang.component("gui.common.click_cycle"))
                 .build());

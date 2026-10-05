@@ -4,7 +4,7 @@ icon: SPIDER_EYE
 color: DARK_GREEN
 category: SURVIVAL
 rarity: COMMON
-description: "Daño periódico que escala con los stacks (hasta 4)."
+description: "Daño periódico que escala con las cargas (hasta 4)."
 duration: 160
 priority: 0
 visible: true
@@ -19,6 +19,15 @@ stacking:
 conditions: []
 
 components:
+  # Aura de RPGRoll-FX (si está instalado): al aplicarse y cada segundo.
+  - type: VISUAL
+    trigger: ON_APPLY
+    effect-id: status_poison
+
+  - type: VISUAL
+    trigger: ON_SECOND
+    effect-id: status_poison
+
   - type: PERIODIC_DAMAGE
     trigger: ON_SECOND
     amount: 1

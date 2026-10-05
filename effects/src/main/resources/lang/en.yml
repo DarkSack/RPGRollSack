@@ -42,6 +42,25 @@ prompt:
 # Effect Studio GUIs
 gui:
 
+  # Nombre de cada categoría en el Effect Studio
+  category:
+    COMBAT: "Combat"
+    SURVIVAL: "Survival"
+    MAGIC: "Magic"
+    ELEMENTAL: "Elemental"
+    PROFESSION: "Profession"
+    SOCIAL: "Social"
+    EVENTS: "Events"
+    OTHER: "Other"
+
+  # Name of each rarity
+  rarity:
+    COMMON: "Common"
+    UNCOMMON: "Uncommon"
+    RARE: "Rare"
+    EPIC: "Epic"
+    LEGENDARY: "Legendary"
+
   common:
     click_to_edit: "&eClick to edit"
     click_cycle: "&7Click to cycle"
@@ -64,6 +83,8 @@ gui:
     title: "Effect Studio"
     item_category_components: "&7{category} · {count} component(s)"
     shift_duplicate: "&8Shift-click to duplicate"
+    item_duration: "&7Duration: {seconds} s"
+    item_permanent: "&7Duration: permanent"
     search_label: "&bSearch: {text}"
     search_none: "(none)"
     search_hint: "&7Click to type a search text"
@@ -77,7 +98,7 @@ gui:
     duplicate_success: "&a✔ Duplicated as '{id}'."
 
   editor:
-    title: "Effect: {id}"
+    title: "Effect: {name}"
     icon_label: "&eIcon: {icon}"
     icon_hint: "&7Click to type a new Material"
     color_label: "&eColor: {color}"
@@ -117,7 +138,7 @@ gui:
     add: "&aAdd component"
     add_hint1: "&7TYPE TRIGGER key=value,key2=value2"
     add_hint2: "&8e.g. PERIODIC_DAMAGE ON_SECOND amount=2,amount-per-stack=1"
-    add_hint3: "&8e.g. VISUAL ON_APPLY effect=level_up"
+    add_hint3: "&8e.g. VISUAL ON_APPLY effect-id=level_up"
     add_hint4: "&8types: {types}"
     prompt_add: "Type: TYPE TRIGGER key=value,key2=value2"
     invalid_format: "&cInvalid format — at least TYPE and TRIGGER are required."
@@ -170,3 +191,9 @@ condition:
   guild_specific: "You need to belong to a guild: {value}"
   team: "You need to be in a team."
   permission: "You don't have the required permission."
+
+# Boss bars of the active effects ({stacks} is empty with a single stack)
+hud:
+  title: "{name}{stacks} &7· &f{seconds}s"
+  title_permanent: "{name}{stacks}"
+  stacks: " &7×{stacks}"

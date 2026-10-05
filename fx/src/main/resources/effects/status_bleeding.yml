@@ -1,0 +1,38 @@
+id: status_bleeding
+display-name: "&cAura: Sangrado"
+icon: REDSTONE
+description: "Gotas de sangre que caen del cuerpo y salpican el suelo. Pensado para repetirse cada segundo mientras dura un sangrado (RPGRoll-Effects lo usa en «bleeding»)."
+
+steps:
+  - type: PARTICLE
+    delay: 0
+    particle: DUST
+    color: "#E01010,#6B0000"
+    size: 1.2
+    shape: BURST
+    target: SELF
+    y-offset: 1.1
+    radius: 0.4
+    points: 10
+
+  - type: PARTICLE
+    delay: 0
+    particle: BLOCK
+    block: REDSTONE_BLOCK
+    target: SELF
+    y-offset: 1.0
+    count: 6
+    offset-x: 0.25
+    offset-y: 0.3
+    offset-z: 0.25
+
+  - type: PARTICLE
+    delay: 4
+    particle: DUST
+    color: "#8B0000"
+    size: 1.4
+    shape: CIRCLE
+    target: SELF
+    y-offset: 0.05
+    radius: 0.5
+    points: 8

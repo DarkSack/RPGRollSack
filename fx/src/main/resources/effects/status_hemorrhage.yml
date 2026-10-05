@@ -1,0 +1,40 @@
+id: status_hemorrhage
+display-name: "&4Aura: Hemorragia"
+icon: RED_DYE
+description: "Un charco de sangre que se extiende a los pies, gotas abundantes y un latido rojo alrededor del cuerpo. Pensado para repetirse cada segundo mientras dura una hemorragia (RPGRoll-Effects lo usa en «hemorrhage»)."
+
+steps:
+  - type: PARTICLE
+    delay: 0
+    particle: DUST_COLOR_TRANSITION
+    color: "#FF2020"
+    color-to: "#3A0000"
+    size: 1.5
+    shape: CIRCLE
+    target: SELF
+    y-offset: 0.05
+    radius: 0.4
+    radius-to: 1.4
+    points: 26
+    repeat: 4
+    interval: 2
+
+  - type: PARTICLE
+    delay: 0
+    particle: BLOCK
+    block: REDSTONE_BLOCK
+    target: SELF
+    y-offset: 1.0
+    count: 14
+    offset-x: 0.3
+    offset-y: 0.4
+    offset-z: 0.3
+
+  - type: PARTICLE
+    delay: 0
+    particle: DAMAGE_INDICATOR
+    shape: SPHERE
+    target: SELF
+    y-offset: 1.0
+    radius: 0.6
+    points: 8

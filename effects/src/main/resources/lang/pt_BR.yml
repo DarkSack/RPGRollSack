@@ -42,6 +42,25 @@ prompt:
 # GUIs do Effect Studio
 gui:
 
+  # Nombre de cada categoría en el Effect Studio
+  category:
+    COMBAT: "Combate"
+    SURVIVAL: "Sobrevivência"
+    MAGIC: "Magia"
+    ELEMENTAL: "Elemental"
+    PROFESSION: "Profissão"
+    SOCIAL: "Social"
+    EVENTS: "Eventos"
+    OTHER: "Outros"
+
+  # Nome de cada raridade
+  rarity:
+    COMMON: "Comum"
+    UNCOMMON: "Incomum"
+    RARE: "Raro"
+    EPIC: "Épico"
+    LEGENDARY: "Lendário"
+
   common:
     click_to_edit: "&eClique para editar"
     click_cycle: "&7Clique para alternar"
@@ -64,6 +83,8 @@ gui:
     title: "Effect Studio"
     item_category_components: "&7{category} · {count} componente(s)"
     shift_duplicate: "&8Shift-click para duplicar"
+    item_duration: "&7Duração: {seconds} s"
+    item_permanent: "&7Duração: permanente"
     search_label: "&bBuscar: {text}"
     search_none: "(nenhuma)"
     search_hint: "&7Clique para digitar um texto de busca"
@@ -77,7 +98,7 @@ gui:
     duplicate_success: "&a✔ Duplicado como '{id}'."
 
   editor:
-    title: "Efeito: {id}"
+    title: "Efeito: {name}"
     icon_label: "&eÍcone: {icon}"
     icon_hint: "&7Clique para digitar um novo Material"
     color_label: "&eCor: {color}"
@@ -117,7 +138,7 @@ gui:
     add: "&aAdicionar componente"
     add_hint1: "&7TIPO TRIGGER chave=valor,chave2=valor2"
     add_hint2: "&8ex. PERIODIC_DAMAGE ON_SECOND amount=2,amount-per-stack=1"
-    add_hint3: "&8ex. VISUAL ON_APPLY effect=level_up"
+    add_hint3: "&8ex. VISUAL ON_APPLY effect-id=level_up"
     add_hint4: "&8tipos: {types}"
     prompt_add: "Digite: TIPO TRIGGER chave=valor,chave2=valor2"
     invalid_format: "&cFormato inválido — são necessários pelo menos TIPO e TRIGGER."
@@ -166,7 +187,13 @@ condition:
   health_above: "Você precisa ter mais de {percent}% de vida."
   mana_below: "Você precisa ter menos de {percent}% de mana."
   mana_above: "Você precisa ter mais de {percent}% de mana."
-  guild_generic: "Você precisa pertencer a uma guild."
-  guild_specific: "Você precisa pertencer a uma guild: {value}"
-  team: "Você precisa estar em um team."
+  guild_generic: "Você precisa pertencer a uma guilda."
+  guild_specific: "Você precisa pertencer a uma guilda: {value}"
+  team: "Você precisa estar em uma equipe."
   permission: "Você não tem a permissão necessária."
+
+# Barras de chefe dos efeitos ativos ({stacks} fica vazio com uma única carga)
+hud:
+  title: "{name}{stacks} &7· &f{seconds}s"
+  title_permanent: "{name}{stacks}"
+  stacks: " &7×{stacks}"

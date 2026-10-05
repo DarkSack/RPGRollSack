@@ -90,6 +90,9 @@ public class EffectsAdminCommand implements CommandExecutor, TabCompleter {
         effectManager.reload();
         plugin.reloadConfig();
         lang.reload(plugin.getConfig().getString("language", "es"));
+        if (plugin instanceof com.sack.rpgroll.effects.EffectsPlugin effectsPlugin && effectsPlugin.getHud() != null) {
+            effectsPlugin.getHud().reload();
+        }
         lang.send(sender, "command.reload_success", "count", effectManager.count());
     }
 

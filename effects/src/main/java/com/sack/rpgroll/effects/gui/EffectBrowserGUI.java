@@ -17,6 +17,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -27,6 +28,8 @@ import java.util.Locale;
  * quedan fuera de esta pasada.
  */
 public class EffectBrowserGUI extends InventoryGUI {
+
+    private static final int DESCRIPTION_WIDTH = 38;
 
     private static final int SIZE = 54;
     private static final int LIST_SLOTS = 45;
@@ -79,13 +82,28 @@ public class EffectBrowserGUI extends InventoryGUI {
             EffectDefinition effect = filtered.get(i);
             Material icon = parseMaterial(effect.icon());
 
+            List<Component> lore = new ArrayList<>();
+
+            for (String line : wrap(effect.description(), DESCRIPTION_WIDTH)) {
+                lore.add(Component.text(line, NamedTextColor.GRAY));
+            }
+
+            if (!lore.isEmpty()) {
+                lore.add(Component.empty());
+            }
+
+            lore.add(lang.component("gui.common.id_label", "id", effect.id()));
+            lore.add(lang.component("gui.browser.item_category_components", "category",
+                    lang.raw("gui.category." + effect.category().name()), "count", effect.components().size()));
+            lore.add(effect.durationTicks() <= 0
+                    ? lang.component("gui.browser.item_permanent")
+                    : lang.component("gui.browser.item_duration", "seconds", effect.durationTicks() / 20));
+            lore.add(lang.component("gui.common.click_to_edit"));
+            lore.add(lang.component("gui.browser.shift_duplicate"));
+
             setItem(i, new ItemBuilder(icon)
                     .setName(ComponentUtils.parseWithDefault(effect.displayName(), effect.rarity().color()))
-                    .setLore(lang.component("gui.common.id_label", "id", effect.id()),
-                            lang.component("gui.browser.item_category_components", "category", effect.category(),
-                                    "count", effect.components().size()),
-                            lang.component("gui.common.click_to_edit"),
-                            lang.component("gui.browser.shift_duplicate"))
+                    .setLore(lore)
                     .build());
         }
 
@@ -98,7 +116,8 @@ public class EffectBrowserGUI extends InventoryGUI {
 
         setItem(FILTER_SLOT, new ItemBuilder(Material.HOPPER)
                 .setName(lang.component("gui.browser.filter_label", "text",
-                        filterCategory == null ? lang.raw("gui.browser.filter_all") : filterCategory))
+                        filterCategory == null ? lang.raw("gui.browser.filter_all")
+                                : lang.raw("gui.category." + filterCategory.name())))
                 .setLore(lang.component("gui.common.click_cycle"))
                 .build());
 
@@ -107,6 +126,38 @@ public class EffectBrowserGUI extends InventoryGUI {
                 .build());
 
         setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.close_button")));
+    }
+
+    /** Parte la descripción en líneas cortas para el lore (sin esto sale una sola línea kilométrica). */
+    private static List<String> wrap(String text, int width) {
+
+        List<String> lines = new ArrayList<>();
+
+        if (text == null || text.isBlank()) {
+            return lines;
+        }
+
+        StringBuilder line = new StringBuilder();
+
+        for (String word : text.trim().split(" +")) {
+
+            if (line.length() > 0 && line.length() + 1 + word.length() > width) {
+                lines.add(line.toString());
+                line.setLength(0);
+            }
+
+            if (line.length() > 0) {
+                line.append(' ');
+            }
+
+            line.append(word);
+        }
+
+        if (line.length() > 0) {
+            lines.add(line.toString());
+        }
+
+        return lines;
     }
 
     private Material parseMaterial(String raw) {

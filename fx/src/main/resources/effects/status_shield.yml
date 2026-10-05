@@ -1,0 +1,25 @@
+id: status_shield
+display-name: "&fAura: Escudo"
+icon: SHIELD
+description: "Una burbuja de energía translúcida alrededor del jugador. Pensado para repetirse cada segundo mientras dura un escudo (RPGRoll-Effects lo usa en «shield»)."
+
+steps:
+  - type: PARTICLE
+    delay: 0
+    particle: DUST_COLOR_TRANSITION
+    color: "#FFFFFF"
+    color-to: "#8FD3FF"
+    size: 0.7
+    shape: DOME
+    target: SELF
+    radius: 1.4
+    points: 60
+
+  - type: PARTICLE
+    delay: 0
+    particle: ELECTRIC_SPARK
+    shape: CIRCLE
+    target: SELF
+    y-offset: 0.1
+    radius: 1.4
+    points: 10

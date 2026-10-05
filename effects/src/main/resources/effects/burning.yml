@@ -4,7 +4,7 @@ icon: BLAZE_POWDER
 color: GOLD
 category: ELEMENTAL
 rarity: COMMON
-description: "Daño periódico que escala con los stacks. Se rompe si te aplican Frozen (y viceversa)."
+description: "Daño periódico que escala con las cargas. Se apaga si te aplican Congelación (y al revés)."
 duration: 100
 priority: 0
 visible: true
@@ -19,6 +19,15 @@ stacking:
 conditions: []
 
 components:
+  # Aura de RPGRoll-FX (si está instalado): al aplicarse y cada segundo.
+  - type: VISUAL
+    trigger: ON_APPLY
+    effect-id: status_burning
+
+  - type: VISUAL
+    trigger: ON_SECOND
+    effect-id: status_burning
+
   - type: PERIODIC_DAMAGE
     trigger: ON_SECOND
     amount: 1

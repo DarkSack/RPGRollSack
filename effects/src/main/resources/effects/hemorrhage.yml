@@ -4,7 +4,7 @@ icon: REDSTONE_BLOCK
 color: DARK_RED
 category: COMBAT
 rarity: UNCOMMON
-description: "Lo que queda de acumular 3 stacks de Sangrado — mucho más daño y te frena en seco."
+description: "Lo que queda de acumular 3 cargas de Sangrado — mucho más daño y te frena en seco."
 duration: 140
 priority: 1
 visible: true
@@ -19,6 +19,15 @@ stacking:
 conditions: []
 
 components:
+  # Aura de RPGRoll-FX (si está instalado): al aplicarse y cada segundo.
+  - type: VISUAL
+    trigger: ON_APPLY
+    effect-id: status_hemorrhage
+
+  - type: VISUAL
+    trigger: ON_SECOND
+    effect-id: status_hemorrhage
+
   - type: PERIODIC_DAMAGE
     trigger: ON_SECOND
     amount: 4

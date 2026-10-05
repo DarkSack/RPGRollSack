@@ -4,7 +4,7 @@ icon: REDSTONE
 color: RED
 category: COMBAT
 rarity: COMMON
-description: "Daño periódico que escala con los stacks. Al llegar a 3 stacks se transforma en Hemorrhage."
+description: "Daño periódico que escala con las cargas. Al llegar a 3 cargas se transforma en Hemorragia."
 duration: 100
 priority: 0
 visible: true
@@ -20,6 +20,15 @@ stacking:
 conditions: []
 
 components:
+  # Aura de RPGRoll-FX (si está instalado): al aplicarse y cada segundo.
+  - type: VISUAL
+    trigger: ON_APPLY
+    effect-id: status_bleeding
+
+  - type: VISUAL
+    trigger: ON_SECOND
+    effect-id: status_bleeding
+
   - type: PERIODIC_DAMAGE
     trigger: ON_SECOND
     amount: 1

@@ -1,0 +1,36 @@
+id: status_blessing
+display-name: "&eAura: Bendición"
+icon: GOLDEN_APPLE
+description: "Una espiral de luz dorada que sube alrededor del cuerpo, un halo sobre la cabeza y algún corazón. Pensado para repetirse cada segundo mientras dura una bendición (RPGRoll-Effects lo usa en «blessing»)."
+
+steps:
+  - type: PARTICLE
+    delay: 0
+    particle: END_ROD
+    shape: HELIX
+    target: SELF
+    radius: 0.8
+    height: 2.0
+    turns: 1
+    points: 16
+    draw-ticks: 10
+
+  - type: PARTICLE
+    delay: 0
+    particle: DUST
+    color: "#FFF2A0,#FFC400"
+    size: 0.9
+    shape: CIRCLE
+    target: SELF
+    y-offset: 2.25
+    radius: 0.4
+    points: 16
+
+  - type: PARTICLE
+    delay: 10
+    particle: HEART
+    target: SELF
+    y-offset: 2.1
+    count: 1
+    offset-x: 0.3
+    offset-z: 0.3

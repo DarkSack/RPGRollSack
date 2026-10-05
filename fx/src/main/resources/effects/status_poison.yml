@@ -1,0 +1,36 @@
+id: status_poison
+display-name: "&2Aura: Veneno"
+icon: SPIDER_EYE
+description: "Burbujas verdes que brotan del cuerpo. Pensado para repetirse cada segundo mientras dura un veneno (RPGRoll-Effects lo usa en «poison»)."
+
+steps:
+  - type: PARTICLE
+    delay: 0
+    particle: DUST
+    color: "#B6FF4F,#2E8B2E"
+    size: 1.5
+    shape: BURST
+    target: SELF
+    y-offset: 1.0
+    radius: 0.6
+    points: 30
+
+  - type: PARTICLE
+    delay: 0
+    particle: ENTITY_EFFECT
+    color: "#4CAF50"
+    shape: CIRCLE
+    target: SELF
+    y-offset: 0.3
+    radius: 0.6
+    points: 16
+
+  - type: PARTICLE
+    delay: 8
+    particle: ITEM_SLIME
+    target: SELF
+    y-offset: 1.2
+    count: 3
+    offset-x: 0.3
+    offset-y: 0.4
+    offset-z: 0.3

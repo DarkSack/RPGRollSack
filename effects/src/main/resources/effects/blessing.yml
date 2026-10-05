@@ -19,6 +19,15 @@ stacking:
 conditions: []
 
 components:
+  # Aura de RPGRoll-FX (si está instalado): al aplicarse y cada segundo.
+  - type: VISUAL
+    trigger: ON_APPLY
+    effect-id: status_blessing
+
+  - type: VISUAL
+    trigger: ON_SECOND
+    effect-id: status_blessing
+
   - type: PERIODIC_HEAL
     trigger: ON_SECOND
     amount: 2

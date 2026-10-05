@@ -1,0 +1,39 @@
+id: status_frozen
+display-name: "&bAura: Congelación"
+icon: ICE
+description: "Escarcha alrededor del cuerpo, copos que caen y hielo crujiendo a los pies. Pensado para repetirse cada segundo mientras dura un estado de congelación (RPGRoll-Effects lo usa en «frozen»)."
+
+steps:
+  - type: PARTICLE
+    delay: 0
+    particle: DUST_COLOR_TRANSITION
+    color: "#FFFFFF"
+    color-to: "#7FD8FF"
+    size: 1.2
+    shape: SPHERE
+    target: SELF
+    y-offset: 1.0
+    radius: 0.8
+    points: 40
+
+  - type: PARTICLE
+    delay: 0
+    particle: SNOWFLAKE
+    shape: CIRCLE
+    target: SELF
+    y-offset: 2.0
+    radius: 0.7
+    points: 14
+    motion: DOWN
+    motion-speed: 0.04
+
+  - type: PARTICLE
+    delay: 0
+    particle: BLOCK
+    block: ICE
+    shape: CIRCLE
+    target: SELF
+    y-offset: 0.1
+    radius: 0.6
+    points: 10
+    count: 3

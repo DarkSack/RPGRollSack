@@ -13,6 +13,8 @@ import com.sack.rpgroll.effects.core.EffectManager;
 import com.sack.rpgroll.effects.engine.EffectComponentExecutor;
 import com.sack.rpgroll.effects.gui.ChatPromptManager;
 import com.sack.rpgroll.effects.listener.EffectTriggerListener;
+import com.sack.rpgroll.effects.integration.EffectsPlaceholders;
+import com.sack.rpgroll.effects.runtime.EffectHud;
 import com.sack.rpgroll.effects.runtime.EffectTickTask;
 import com.sack.rpgroll.effects.runtime.EffectTracker;
 
@@ -26,6 +28,7 @@ public class EffectsPlugin extends JavaPlugin {
 
     private EffectManager effectManager;
     private EffectTracker tracker;
+    private EffectHud hud;
     private LangManager langManager;
 
     @Override
@@ -60,6 +63,14 @@ public class EffectsPlugin extends JavaPlugin {
 
         new EffectTickTask(tracker, executor).runTaskTimer(this, 1L, 1L);
 
+        hud = new EffectHud(this, tracker, langManager);
+        hud.reload();
+
+        if (getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+            new EffectsPlaceholders(this, tracker).register();
+            getLogger().info("✔ Placeholders registrados en PlaceholderAPI (%rpgrolleffects_...%)");
+        }
+
         var effectsAdminCommand = new EffectsAdminCommand(effectManager, tracker, chatPromptManager, langManager,
                     this);
 
@@ -72,6 +83,18 @@ public class EffectsPlugin extends JavaPlugin {
 
     public EffectManager getEffectManager() {
         return effectManager;
+    }
+
+    /** Las barras de efectos activos; el reload del comando admin la vuelve a configurar. */
+    public EffectHud getHud() {
+        return hud;
+    }
+
+    @Override
+    public void onDisable() {
+        if (hud != null) {
+            hud.stop();
+        }
     }
 
     public EffectTracker getTracker() {
