@@ -488,7 +488,7 @@ use_skill_command:
 
 # ChatPromptManager: captura de mensajes de chat para GUIs de admin
 chat_prompt_manager:
-  instructions: "&7Escribí en el chat, o '{keyword}' para abortar."
+  instructions: "&7Escribe en el chat, o '{keyword}' para abortar."
   cancel_keyword: "cancelar"
   cancelled: "&cCancelado."
 
@@ -498,7 +498,7 @@ job_browser_gui:
   summary: "&7Nivel máx. {level} · {count} recompensa(s)"
   click_to_edit: "&eClick para editar"
   create_new: "&aCrear trabajo nuevo"
-  create_new_lore: "&8Recordá: sin listener Java propio, no otorgará XP solo."
+  create_new_lore: "&8Recuerda: sin listener Java propio, no otorgará XP solo."
   close_button: "Cerrar"
   prompt_new: "Escribe el id del nuevo trabajo:"
   already_exists: "&cYa existe un trabajo con ese id."

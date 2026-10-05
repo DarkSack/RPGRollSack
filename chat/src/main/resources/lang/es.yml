@@ -27,7 +27,7 @@ channel:
   usage_info: "Uso: /channel info <canal>"
   joined: "✔ Te uniste a {channel}."
   left: "Saliste del canal."
-  switched: "✔ Ahora hablás en {channel}."
+  switched: "✔ Ahora hablas en {channel}."
   info_header: "=== {channel} ==="
   info_scope: "Alcance: {scope} · Prioridad: {priority}"
   info_cooldown: "Cooldown: {cooldown}ms"
@@ -105,11 +105,11 @@ ignore:
     &7 • &echannel
     &8   <add|remove|list> [nombre]
   list_header: "=== Ignorados ({type}) ==="
-  now_ignoring_guild: "✔ Ahora ignorás a la guild {name}."
+  now_ignoring_guild: "✔ Ahora ignoras a la guild {name}."
   stopped_ignoring_guild: "Dejaste de ignorar a la guild {name}."
-  now_ignoring_channel: "✔ Ahora ignorás el canal {name}."
+  now_ignoring_channel: "✔ Ahora ignoras el canal {name}."
   stopped_ignoring_channel: "Dejaste de ignorar el canal {name}."
-  now_ignoring_player: "✔ Ahora ignorás a {name}."
+  now_ignoring_player: "✔ Ahora ignoras a {name}."
   stopped_ignoring_player: "Dejaste de ignorar a {name}."
 
 reaction:
@@ -139,7 +139,7 @@ language:
   already_known: "Ya conoces ese idioma."
   not_found: "No existe ese idioma."
   usage_speak: "Uso: /language speak <idioma>"
-  now_speaking: "✔ Ahora hablás en {id}."
+  now_speaking: "✔ Ahora hablas en {id}."
   dont_know: "No conoces ese idioma."
   browser_title: "&6Idiomas RPGRoll"
   browser_lore_races: "Razas: {value}"

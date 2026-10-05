@@ -93,7 +93,7 @@ triggers:
       value: "&c&l[Coloso de Ceniza] &7¡Despierta de entre las cenizas!"
   PHASE_CHANGE:
     - type: TITLE
-      title: "&c&l¡EL COLOSO DESPIERTA!"
+      title: "&c&l¡ENFURECIDO!"
       subtitle: "&7Su furia consume la ceniza a su alrededor"
     - type: SOUND
       sound: ENTITY_WITHER_SPAWN

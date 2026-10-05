@@ -8,6 +8,7 @@ import com.sack.rpgroll.quests.core.QuestManager;
 import com.sack.rpgroll.quests.core.QuestRequirements;
 import com.sack.rpgroll.quests.core.QuestRewards;
 import com.sack.rpgroll.quests.core.QuestStage;
+import com.sack.rpgroll.util.ComponentUtils;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -52,9 +53,11 @@ public class QuestBrowserGUI extends InventoryGUI {
 
             Quest quest = quests.get(i);
 
-            setItem(i, new ItemBuilder(Material.WRITTEN_BOOK)
-                    .setName(Component.text(quest.id(), NamedTextColor.YELLOW))
-                    .setLore(Component.text(quest.category() + " · " + quest.difficulty(), NamedTextColor.GRAY),
+            // BOOK y no WRITTEN_BOOK: el libro escrito añade "Original" a la descripción.
+            setItem(i, new ItemBuilder(Material.BOOK)
+                    .setName(ComponentUtils.parseWithDefault(quest.displayName(), NamedTextColor.YELLOW))
+                    .setLore(Component.text(quest.id(), NamedTextColor.DARK_GRAY),
+                            Component.text(quest.category() + " · " + quest.difficulty(), NamedTextColor.GRAY),
                             lang.component("browser.stage_count", "count", quest.stages().size()),
                             lang.component("browser.click_to_edit"))
                     .build());

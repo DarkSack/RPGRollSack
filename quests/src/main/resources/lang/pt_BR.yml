@@ -60,9 +60,11 @@ command:
   abandon_usage: "&cUso: /quest abandon <id>"
   abandon_success: "&a✔ Missão abandonada."
   abandon_not_active: "&cVocê não tem essa missão ativa."
+  option_usage: "&cUso: /quest option <id> <número>"
+  option_invalid: "&cEssa opção não está disponível agora."
   active_empty: "&7Você não tem missões ativas."
   active_header: "&6Missões ativas:"
-  active_entry: "&f• {name} — stage {current}/{total} ({stageId})"
+  active_entry: "&f• {name} — etapa {current}/{total}"
   completed_empty: "&7Você ainda não concluiu nenhuma missão."
   completed_header: "&6Missões concluídas: {count}"
   completed_entry: "&f• {id}"
@@ -76,6 +78,8 @@ engine:
   dialog_player_prefix: "&b[Você] "
   dialog_choose_option: "&6Escolha uma opção:"
   quest_completed: "&6✔ Quest concluída: {name}"
+  objective_header: "&6Objetivo:"
+  objective_line: "&e➤ &f{description} &7({progress}/{amount})"
 
 # Motivos de rejeição ao checar se um jogador pode iniciar uma quest
 requirement:

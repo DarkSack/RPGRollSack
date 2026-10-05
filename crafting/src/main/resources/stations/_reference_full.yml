@@ -47,7 +47,7 @@ tier-upgrades:
         value: IRON_INGOT
         amount: 16
 
-# Categoría de RPGRoll-Crafting Proficiency que progresa al craftear acá
+# Categoría de RPGRoll-Crafting Proficiency que progresa al craftear aquí
 # (vacío = usa el id de la estación — dos estaciones con la misma categoría
 # comparten el mismo progreso de nivel/calidad).
 skill-category: forjado

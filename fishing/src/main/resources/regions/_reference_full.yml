@@ -5,7 +5,7 @@
 # Una región es simplemente una caja (AABB) que FUERZA un tipo de agua dentro
 # de sus límites. Solo hace falta para MAGIC_WATER y CORRUPTED_WATER: el resto
 # de los tipos (RIVER, LAKE, SWAMP, OCEAN, DEEP_OCEAN) se deducen solos del
-# bioma donde cae el anzuelo, sin necesidad de definir nada acá.
+# bioma donde cae el anzuelo, sin necesidad de definir nada aquí.
 #
 # No usa WorldGuard: los límites son coordenadas planas, igual que las
 # regiones de RPGRoll-Seasons.

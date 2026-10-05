@@ -6,6 +6,7 @@ import com.sack.rpgroll.seasons.runtime.RegionSeasonResolver;
 import com.sack.rpgroll.seasons.runtime.SeasonClockManager;
 
 import org.bukkit.Bukkit;
+import org.bukkit.GameRules;
 import org.bukkit.World;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -36,7 +37,8 @@ public class WeatherTickTask extends BukkitRunnable {
 
         for (World world : Bukkit.getWorlds()) {
 
-            if (world.getPlayers().isEmpty()) {
+            // Con el clima congelado (/gamerule advance_weather false) manda el admin, no la estación.
+            if (world.getPlayers().isEmpty() || Boolean.FALSE.equals(world.getGameRuleValue(GameRules.ADVANCE_WEATHER))) {
                 continue;
             }
 

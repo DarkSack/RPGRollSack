@@ -4,7 +4,7 @@ common:
 
 command:
   admin:
-    players_only: "&cSolo un jugador puede recibir esto — usalo desde el juego."
+    players_only: "&cSolo un jugador puede recibir esto — úsalo desde el juego."
     players_only_studio: "&cSolo jugadores pueden abrir el Magic Studio."
     usage: |-
       &cUso: /magicadmin
@@ -56,8 +56,8 @@ channel:
 grimoire_listener:
   no_longer_exists: "&cEste grimorio ya no existe."
   already_known: "&7Ya sabías '{spell}'."
-  missing_level: "&cTe falta nivel para '{spell}' (necesitás nivel {level})."
-  missing_tree_parent: "&cPrimero necesitás aprender el hechizo anterior del árbol de '{spell}'."
+  missing_level: "&cTe falta nivel para '{spell}' (necesitas nivel {level})."
+  missing_tree_parent: "&cPrimero necesitas aprender el hechizo anterior del árbol de '{spell}'."
   learned: "&a✔ Aprendiste '{spell}'."
 
 item:
@@ -71,7 +71,7 @@ item:
 
 prompt:
   cancel_keyword: "cancelar"
-  footer: "&7Escribí en el chat, o '{keyword}' para abortar."
+  footer: "&7Escribe en el chat, o '{keyword}' para abortar."
   cancelled: "&cCancelado."
 
 gui:
@@ -120,9 +120,9 @@ gui:
     color_label: "Color: {color}"
     color_lore: "&7Click para escribir uno nuevo (ej. RED, AQUA...)"
     cast_sound_label: "&eSonido al lanzar: {value}"
-    cast_sound_lore: "&7Escribí 'ninguno' para quitarlo"
+    cast_sound_lore: "&7Escribe 'ninguno' para quitarlo"
     cast_effect_label: "&eEfecto RPGRoll-FX: {value}"
-    cast_effect_lore: "&7Escribí 'ninguno' para quitarlo"
+    cast_effect_lore: "&7Escribe 'ninguno' para quitarlo"
     prompt_cast_sound: "Escribe el Sound (o 'ninguno' para quitarlo):"
     prompt_cast_effect: "Escribe el id del efecto de RPGRoll-FX (o 'ninguno'):"
     race_affinities_label: "&eAfinidades de raza: {count}"
@@ -155,13 +155,13 @@ gui:
     health_cost_label: "&cCosto de vida: {value}"
     xp_cost_label: "&aCosto de experiencia: {value}"
     reagent_label: "&eReactivo: {value}"
-    reagent_lore: "&7Escribí: MATERIAL,CANTIDAD (o 'ninguno')"
+    reagent_lore: "&7Escribe: MATERIAL,CANTIDAD (o 'ninguno')"
     cast_time_label: "&eTiempo de canalización: {ticks} ticks"
     cast_time_lore: "&7Solo aplica si el trigger es HOLD"
     cooldown_label: "&eCooldown: {ticks} ticks"
     trigger_label: "&eTrigger: {trigger}"
     tree_parent_label: "&eRequiere antes: {value}"
-    tree_parent_lore: "&7Escribí el id de otro hechizo (o 'ninguno')"
+    tree_parent_lore: "&7Escribe el id de otro hechizo (o 'ninguno')"
     tree_tier_label: "&eNivel del árbol: {tier}"
     components_label: "&a▶ Componentes ({count})"
     components_lore: "&7El pipeline que se ejecuta al lanzarlo"
@@ -204,7 +204,7 @@ gui:
     title: "&6Runa: {id}"
     type_label: "&aTipo: {type}"
     params_label: "&eParams: {params}"
-    params_lore: "&7Escribí: clave=valor,clave2=valor2"
+    params_lore: "&7Escribe: clave=valor,clave2=valor2"
     params_help_extra_projectiles: "&8ej. count=2"
     params_help_piercing: "&8ej. max-pierces=3"
     params_help_explosive: "&8ej. radius=3,damage=4"
@@ -215,7 +215,7 @@ gui:
   rune_socket:
     title: "&6Runas: {spell}"
     add_label: "&aSocketear runa ({count}/{max})"
-    add_lore: "&7Escribí el id de una runa existente"
+    add_lore: "&7Escribe el id de una runa existente"
     prompt_add: "Escribe el id de la runa a socketear:"
     unknown_rune: "&cNo existe una runa con ese id."
     socket_failed: "&cNo se pudo socketear — ¿ya la tienes, o llegaste al tope de {max}?"
@@ -236,7 +236,7 @@ gui:
     level_label: "&eNivel requerido: {level}"
     give: "&a▶ Darme uno"
     add_spell: "&aAgregar hechizo"
-    add_spell_lore: "&7Escribí el id de un hechizo existente"
+    add_spell_lore: "&7Escribe el id de un hechizo existente"
     given: "&a✔ Te diste un grimorio '{name}'."
     prompt_school: "Escribe el id de la escuela (o 'ninguna'):"
     prompt_add_spell: "Escribe el id del hechizo a agregar:"

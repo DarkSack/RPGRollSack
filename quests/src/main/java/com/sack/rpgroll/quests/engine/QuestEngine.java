@@ -285,6 +285,12 @@ public class QuestEngine {
      */
     public void maybeAdvanceStage(Player player, Quest quest, QuestStage stage, ActiveQuestProgress progress) {
 
+        // Un diálogo con opciones solo avanza cuando el jugador elige (jumpToStage);
+        // sin esto el sondeo periódico lo saltaba al siguiente stage de la lista.
+        if (stage.dialog() != null && stage.dialog().hasOptions()) {
+            return;
+        }
+
         List<QuestObjective> objectives = stage.objectives();
 
         for (int i = 0; i < objectives.size(); i++) {
@@ -338,10 +344,34 @@ public class QuestEngine {
         enterStage(player, quest, progress, targetStage);
     }
 
+    /**
+     * Elige la opción N (desde 1) del diálogo del stage actual — /quest option.
+     * Solo acepta opciones del stage en curso, así no sirve para saltar a cualquier stage.
+     */
+    public boolean chooseOption(Player player, String questId, int optionNumber) {
+
+        Quest quest = questManager.get(questId).orElse(null);
+        ActiveQuestProgress progress = stateManager.getOrLoad(player).getActive(questId).orElse(null);
+
+        if (quest == null || progress == null) {
+            return false;
+        }
+
+        Dialog dialog = quest.stageAt(progress.stageIndex()).map(QuestStage::dialog).orElse(null);
+
+        if (dialog == null || !dialog.hasOptions() || optionNumber < 1 || optionNumber > dialog.options().size()) {
+            return false;
+        }
+
+        jumpToStage(player, quest, dialog.options().get(optionNumber - 1).nextStage());
+        return true;
+    }
+
     private void enterStage(Player player, Quest quest, ActiveQuestProgress progress, QuestStage stage) {
 
         actionRegistry.executeAll(stage.events(QuestEventType.ON_START), new QuestActionContext(player, quest, stage));
         presentDialog(player, quest, stage);
+        sendObjectives(player, stage, progress);
 
         // Un stage sin objetivos avanza solo — salvo que su diálogo tenga
         // opciones: ahí la decisión del jugador ES el gate de avance.
@@ -349,6 +379,23 @@ public class QuestEngine {
 
         if (stage.objectives().isEmpty() && !waitsForDialogChoice) {
             maybeAdvanceStage(player, quest, stage, progress);
+        }
+    }
+
+    /** Los objetivos del stage con su progreso — al entrar al stage y en /quest active. */
+    public void sendObjectives(Player player, QuestStage stage, ActiveQuestProgress progress) {
+
+        List<QuestObjective> objectives = stage.objectives();
+        if (objectives.isEmpty()) {
+            return;
+        }
+
+        lang.send(player, "engine.objective_header");
+
+        for (int i = 0; i < objectives.size(); i++) {
+            QuestObjective objective = objectives.get(i);
+            lang.send(player, "engine.objective_line", "description", objective.description(),
+                    "progress", Math.min(progress.getProgress(i), objective.amount()), "amount", objective.amount());
         }
     }
 
@@ -377,13 +424,13 @@ public class QuestEngine {
 
         lang.send(player, "engine.dialog_choose_option");
 
+        // Un comando y no ClickEvent.callback: el callback no llegaba desde clientes más nuevos
+        // a través de ViaVersion, y en Bedrock se puede escribir el mismo comando a mano.
         int index = 1;
         for (var option : dialog.options()) {
 
-            String targetStage = option.nextStage();
-
             Component optionComponent = ComponentUtils.parseWithDefault(index + ". " + option.label(), NamedTextColor.GREEN)
-                    .clickEvent(ClickEvent.callback(audience -> jumpToStage(player, quest, targetStage)));
+                    .clickEvent(ClickEvent.runCommand("/quest option " + quest.id() + " " + index));
 
             player.sendMessage(optionComponent);
             index++;

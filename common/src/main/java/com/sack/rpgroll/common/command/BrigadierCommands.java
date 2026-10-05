@@ -81,8 +81,12 @@ public final class BrigadierCommands {
                 return List.of();
             }
 
+            // Con "/comando " sin nada más, Brigadier pasa cero argumentos; Bukkit siempre pasaba
+            // uno vacío y los completadores hacen args[0] sin mirar (ArrayIndexOutOfBounds).
+            String[] bukkitArgs = args.length == 0 ? new String[] { "" } : args;
+
             List<String> suggestions =
-                    completer.onTabComplete(resolve(source), new StubCommand(name), name, args);
+                    completer.onTabComplete(resolve(source), new StubCommand(name), name, bukkitArgs);
 
             return suggestions != null ? suggestions : List.of();
         }

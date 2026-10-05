@@ -70,7 +70,13 @@ public final class BuiltinItemActions {
                 Particle particle = Particle.valueOf(action.param("particle", "FLAME").toUpperCase(Locale.ROOT));
                 int count = Integer.parseInt(action.param("count", "20"));
                 Location location = targetLocation(ctx);
-                location.getWorld().spawnParticle(particle, location, count, 0.3, 0.5, 0.3, 0.01);
+                // Algunas partículas exigen un dato (DRAGON_BREATH, la potencia desde 1.21.9): sin él
+                // spawnParticle lanza IllegalArgumentException y la acción se perdía con un aviso.
+                Object data = particle.getDataType() == Float.class ? 1.0f : null;
+                if (data == null && particle.getDataType() != Void.class) {
+                    throw new IllegalArgumentException("la partícula necesita datos: " + particle);
+                }
+                location.getWorld().spawnParticle(particle, location, count, 0.3, 0.5, 0.3, 0.01, data);
             } catch (IllegalArgumentException e) {
                 plugin.getLogger().warning("✘ PARTICLE inválida en acción de ítem: " + action.param("particle", ""));
             }

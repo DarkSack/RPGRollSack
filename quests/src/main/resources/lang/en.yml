@@ -60,9 +60,11 @@ command:
   abandon_usage: "&cUsage: /quest abandon <id>"
   abandon_success: "&a✔ Quest abandoned."
   abandon_not_active: "&cYou don't have that quest active."
+  option_usage: "&cUsage: /quest option <id> <number>"
+  option_invalid: "&cThat option is not available right now."
   active_empty: "&7You have no active quests."
   active_header: "&6Active quests:"
-  active_entry: "&f• {name} — stage {current}/{total} ({stageId})"
+  active_entry: "&f• {name} — stage {current}/{total}"
   completed_empty: "&7You haven't completed any quest yet."
   completed_header: "&6Completed quests: {count}"
   completed_entry: "&f• {id}"
@@ -76,6 +78,8 @@ engine:
   dialog_player_prefix: "&b[You] "
   dialog_choose_option: "&6Choose an option:"
   quest_completed: "&6✔ Quest completed: {name}"
+  objective_header: "&6Objective:"
+  objective_line: "&e➤ &f{description} &7({progress}/{amount})"
 
 # Rejection reasons when checking whether a player can start a quest
 requirement:

@@ -80,8 +80,8 @@ rooms:
     events:
       ROOM_ENTER:
         - type: TITLE
-          title: "&4&l¡El Coloso de Ceniza despierta!"
-          subtitle: "&7Prepárense para la batalla final"
+          title: "&4&l¡Jefe final!"
+          subtitle: "&7El Coloso de Ceniza despierta"
       BOSS_DEFEATED:
         - type: PARTICLE
           particle: TOTEM_OF_UNDYING

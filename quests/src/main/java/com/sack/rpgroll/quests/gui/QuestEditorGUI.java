@@ -88,7 +88,7 @@ public class QuestEditorGUI extends InventoryGUI {
                 .setLore(lang.component("editor.click_next"))
                 .build());
 
-        setItem(DIFFICULTY_SLOT, new ItemBuilder(Material.IRON_SWORD)
+        setItem(DIFFICULTY_SLOT, new ItemBuilder(Material.TARGET)
                 .setName(lang.component("editor.difficulty_label", "difficulty", current.difficulty()))
                 .setLore(lang.component("editor.click_next"))
                 .build());
@@ -109,7 +109,8 @@ public class QuestEditorGUI extends InventoryGUI {
                 .build());
 
         setItem(REWARD_MONEY_SLOT, new ItemBuilder(Material.GOLD_INGOT)
-                .setName(lang.component("editor.reward_money_label", "money", current.rewards().money()))
+                .setName(lang.component("editor.reward_money_label", "money",
+                        java.math.BigDecimal.valueOf(current.rewards().money()).stripTrailingZeros().toPlainString()))
                 .setLore(lang.component("editor.click_plus_minus_50"))
                 .build());
 

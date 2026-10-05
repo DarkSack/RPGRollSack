@@ -1,5 +1,5 @@
 # Ejemplo mínimo: solo "id" es obligatorio, todo lo demás usa sus valores
-# por defecto salvo lo que se especifique acá. Compará con goblin_den.yml
+# por defecto salvo lo que se especifique aquí. Compará con goblin_den.yml
 # (ejemplo completo con 3 salas, oleadas, jefe y loot) para ver el rango
 # de complejidad soportado.
 id: trial_of_ash
@@ -61,3 +61,15 @@ loot:
     amount-max: 50
     chance: 100
     scope: PER_PLAYER
+
+# Lo que ve el jugador: sin triggers la mazmorra no anuncia nada.
+triggers:
+  DUNGEON_START:
+    - type: MESSAGE
+      value: "&6¡La Prueba de Ceniza comienza! &7Acaba con los trasgos."
+  DUNGEON_COMPLETE:
+    - type: TITLE
+      title: "&6¡Prueba superada!"
+      subtitle: "&7Prueba de Ceniza"
+    - type: SOUND
+      sound: UI_TOAST_CHALLENGE_COMPLETE

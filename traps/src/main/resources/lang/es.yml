@@ -7,7 +7,7 @@ general:
   player_only: "&cSolo un jugador puede hacer esto."
 
 prompt:
-  footer: "&7Escribí en el chat, o '{keyword}' para abortar."
+  footer: "&7Escribe en el chat, o '{keyword}' para abortar."
   cancel_keyword: "cancelar"
   cancelled: "&cCancelado."
 
@@ -26,7 +26,7 @@ admin:
     &7 • &2turret
     &7 • &bammo
   trap_not_found: "&cNo existe la trampa '{id}'."
-  must_look_at_block: "&cTenés que estar mirando un bloque."
+  must_look_at_block: "&cTienes que estar mirando un bloque."
   create:
     usage: "&eUso: /trapadmin create <id>"
     id_taken: "&cYa existe una trampa con ese id."
@@ -106,7 +106,7 @@ admin:
 
 protection:
   not_breakable: "&cEse bloque está protegido por una trampa — no se puede romper."
-  missing_key: "&cNecesitás la llave correcta para romper ese bloque."
+  missing_key: "&cNecesitas la llave correcta para romper ese bloque."
 
 gui:
   turret_catalog:
@@ -150,12 +150,12 @@ gui:
     shift_remove: "&8Shift-click para quitar"
     add: "&aAgregar acción"
     add_hint: "&7TIPO clave=valor clave2=valor2"
-    prompt_add: "&eEscribí: TIPO clave=valor clave2=valor2 (ej. EXPLOSION power=2.5 break-blocks=false):"
+    prompt_add: "&eEscribe: TIPO clave=valor clave2=valor2 (ej. EXPLOSION power=2.5 break-blocks=false):"
     invalid_format: "&cFormato inválido."
   conditions:
-    prompt_add: "&eEscribí la condición (ej. player.level >= 30, player.sneaking == true):"
+    prompt_add: "&eEscribe la condición (ej. player.level >= 30, player.sneaking == true):"
   chain:
-    prompt_add: "&eEscribí el id de la trampa a encadenar:"
+    prompt_add: "&eEscribe el id de la trampa a encadenar:"
   hub:
     title: "&6Editando: {id}"
     info: "&eInformación"
@@ -182,8 +182,8 @@ gui:
     cooldown_hint: "&7Click: +1s · Shift-click: +30s · Derecho: -1s/-30s"
     charges: "&eCargas: {value}"
     charges_infinite: "∞"
-    prompt_name: "&eEscribí el nuevo nombre:"
-    prompt_icon: "&eEscribí el Material (ej. TRIPWIRE_HOOK):"
+    prompt_name: "&eEscribe el nuevo nombre:"
+    prompt_icon: "&eEscribe el Material (ej. TRIPWIRE_HOOK):"
     invalid_material: "&cMaterial inválido."
   block:
     title: "&6Bloque / Llave"
@@ -196,21 +196,21 @@ gui:
     break_time: "&eTiempo de rotura: {value}s"
     explosion_immune: "&eInmune a explosiones: {value}"
     piston_immune: "&eInmune a pistones: {value}"
-    prompt_material: "&eEscribí el Material del bloque:"
-    prompt_key: "&eEscribí el id de ítem (RPGRoll-Items) o Material vanilla requerido:"
+    prompt_material: "&eEscribe el Material del bloque:"
+    prompt_key: "&eEscribe el id de ítem (RPGRoll-Items) o Material vanilla requerido:"
   disguise:
     title: "&6Camuflaje"
     mode: "&eModo: {value}"
     visible: "&eMaterial visible: {value}"
     revealed: "&eMaterial revelado: {value}"
-    prompt_visible: "&eEscribí el Material visible mientras está armada:"
-    prompt_revealed: "&eEscribí el Material al dispararse:"
+    prompt_visible: "&eEscribe el Material visible mientras está armada:"
+    prompt_revealed: "&eEscribe el Material al dispararse:"
   browser:
     title: "&6Trampas RPGRoll"
     trigger: "&7Trigger: {value}"
     click_to_edit: "&eClick para editar"
     create_new: "&aCrear nueva"
-    prompt_new_id: "&eEscribí el id de la nueva trampa:"
+    prompt_new_id: "&eEscribe el id de la nueva trampa:"
     id_exists: "&cYa existe una trampa con ese id."
   zone:
     title: "&6Zona: {id}"
@@ -219,7 +219,7 @@ gui:
     corner_hint: "&7Click para fijarla en tu posición actual"
     confirm: "Confirmar zona"
     unset: "(sin fijar)"
-    missing_corners: "&cFijá las dos esquinas antes de confirmar."
+    missing_corners: "&cFija las dos esquinas antes de confirmar."
     created: "&a✔ Zona creada — id de instancia: {placement}"
   turret:
     title: "&6Torreta: {id}"
@@ -232,9 +232,9 @@ gui:
     impact: "&eImpacto: {value}"
     impact_hint: "&7Click para reescribir (TIPO clave=valor clave2=valor2)"
     updown_hint: "&7Click: +paso · Shift-click: +paso grande · Derecho: -paso"
-    prompt_name: "&eEscribí el nuevo nombre:"
-    prompt_model: "&eEscribí el Material del modelo (ej. CROSSBOW):"
-    prompt_impact: "&eEscribí: TIPO clave=valor clave2=valor2 (ej. CUSTOM_PROJECTILE projectile-type=FIREBALL, o SONIC_BOOM damage=12):"
+    prompt_name: "&eEscribe el nuevo nombre:"
+    prompt_model: "&eEscribe el Material del modelo (ej. CROSSBOW):"
+    prompt_impact: "&eEscribe: TIPO clave=valor clave2=valor2 (ej. CUSTOM_PROJECTILE projectile-type=FIREBALL, o SONIC_BOOM damage=12):"
     browser:
       title: "&6Torretas RPGRoll"
       radius: "&7Radio: {value}"

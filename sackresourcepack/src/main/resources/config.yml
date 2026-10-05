@@ -28,7 +28,7 @@ http:
   public-url: ""
 
 # pack_format del pack.mcmeta generado — 34 corresponde a 1.21-1.21.1.
-# Si tu servidor corre otra versión, ajustalo acá (ver la wiki de Minecraft
+# Si tu servidor corre otra versión, ajustalo aquí (ver la wiki de Minecraft
 # para el pack_format correcto de tu versión exacta).
 pack-format: 34
 
@@ -69,7 +69,7 @@ distribution:
   prompt-message: "&6Este servidor usa un resource pack personalizado."
 
 # Modo de desarrollo: un watcher sobre content/ reconstruye y reenvía el
-# pack automáticamente apenas guardás un cambio. Podés dejarlo prendido
+# pack automáticamente apenas guardás un cambio. Puedes dejarlo prendido
 # siempre, o alternarlo con /srp dev.
 development-mode: false
 

@@ -15,7 +15,7 @@ hologram:
   - "&7Click derecho para abrir"
 
 # Los weights no necesitan sumar 100 (son relativos entre sí), pero
-# ayuda a la legibilidad: acá suman 100, así cada weight se lee directo
+# ayuda a la legibilidad: aquí suman 100, así cada weight se lee directo
 # como "% de probabilidad".
 rewards:
   - id: manzanas

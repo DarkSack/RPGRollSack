@@ -56,12 +56,14 @@ command:
   race_usage: "&cUso: /ascend race <id>"
   race_not_found: "&cNo existe una evolución con id: {id}"
   race_success: "&a✔ Evolucionaste a: {id}"
+  race_title: "&b&l¡EVOLUCIÓN!"
   specialize_usage: "&cUso: /ascend specialize <id>"
   specialize_not_found: "&cNo existe una especialización con id: {id}"
   specialize_success: "&a✔ Especialización elegida: {id}"
+  specialize_title: "&a&l¡ESPECIALIZACIÓN!"
   talent_usage: "&cUso: /ascend talent <id>"
   talent_success: "&a✔ Talento desbloqueado: {id}"
-  talent_no_specialization: "&cNecesitás elegir una especialización primero."
+  talent_no_specialization: "&cNecesitas elegir una especialización primero."
   talent_node_not_found: "&cEse nodo de talento no existe en tu árbol."
   talent_already_unlocked: "&cYa desbloqueaste ese talento."
   talent_missing_prerequisites: "&cTe faltan los talentos previos requeridos."
@@ -130,21 +132,21 @@ engine:
   evolution_wrong_race: "Esta evolución no corresponde a tu raza: {race}"
   specialization_wrong_class: "Esta especialización no corresponde a tu clase: {class}"
   core_not_ready: "RPGRoll Core todavía no está listo."
-  prestige_level_required: "Necesitás nivel {level} para prestigiar (tienes {current})."
+  prestige_level_required: "Necesitas nivel {level} para prestigiar (tienes {current})."
   legacy_prestige_required: "Todavía no alcanzaste el prestigio mínimo para un Legado."
 
 # Motivos de rechazo al chequear AscensionRequirements
 requirement:
-  level: "Necesitás nivel {required} (tienes {current})."
-  prestige: "Necesitás prestigio {required} (tienes {current})."
-  trait: "Necesitás el trait: {trait}"
-  reputation: "Necesitás {amount} de reputación con: {faction}"
-  completed_quest: "Necesitás haber completado la quest: {quest}"
+  level: "Necesitas nivel {required} (tienes {current})."
+  prestige: "Necesitas prestigio {required} (tienes {current})."
+  trait: "Necesitas el trait: {trait}"
+  reputation: "Necesitas {amount} de reputación con: {faction}"
+  completed_quest: "Necesitas haber completado la quest: {quest}"
 
 # Sistema de preguntas por chat (usado por las GUIs de admin)
 prompt:
   cancel_keyword: "cancelar"
-  footer: "&7Escribí en el chat, o '{keyword}' para abortar."
+  footer: "&7Escribe en el chat, o '{keyword}' para abortar."
   cancelled: "&cCancelado."
 
 # GUIs de administración de contenido
@@ -259,13 +261,13 @@ gui:
     prompt_resist: "Escribe las causas de daño resistidas, separadas por comas:"
 
   job_evolution:
-    browser_title: "&6Evoluciones de job"
+    browser_title: "&6Evoluciones de oficio"
     item_base: "&7Base: {job}"
     create_new: "&aCrear evolución nueva"
     prompt_new_id: "Escribe el id de la nueva evolución:"
     id_exists: "&cYa existe una evolución de job con ese id."
     prompt_base_job_new: "Escribe el id del job base:"
-    editor_title: "&6Evolución de job: {id}"
+    editor_title: "&6Evolución de oficio: {id}"
     base_job_label: "&eJob base: {job}"
     click_to_change: "&7Click para cambiarlo"
     level_label: "&eNivel de job requerido: {level}"

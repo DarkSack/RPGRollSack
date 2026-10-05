@@ -6,7 +6,7 @@ general:
 
 # Prompts genéricos del sistema de captura de chat (ChatPromptManager)
 prompt:
-  instructions: "&7Escribí en el chat, o 'cancelar' para abortar."
+  instructions: "&7Escribe en el chat, o 'cancelar' para abortar."
   cancelled: "&cCancelado."
 
 # Comando /itemadmin
@@ -28,7 +28,7 @@ command:
       player_only: "&cSolo un jugador puede crear un ítem."
       usage: "&cUso: /itemadmin create <id> [pack] (si omites [pack], eliges/creas uno desde un menú)"
       already_exists: "&cYa existe un ítem con ese id."
-      success: "&a✔ Ítem '{id}' creado — configuralo en el editor."
+      success: "&a✔ Ítem '{id}' creado — configúralo en el editor."
     give:
       usage: "&cUso: /itemadmin give <jugador> <id|gem:id> [cantidad]"
       player_not_found: "&cJugador no encontrado: {player}"
@@ -80,7 +80,7 @@ command:
       not_found: "&cEse ítem no tiene un socket con id: {id}"
       already_filled: "&cEse socket ya tiene una gema."
       type_not_accepted: "&cEse socket no acepta este tipo de gema."
-      gem_not_found: "&cNecesitás tener una gema válida en tu mano secundaria."
+      gem_not_found: "&cNecesitas tener una gema válida en tu mano secundaria."
 
 # Lore/chrome generado por ItemFactory para cualquier ítem RPGRoll
 ore:
@@ -103,14 +103,14 @@ equip:
 
 # ItemRequirementChecker: motivos individuales (se muestran vía equip.requirement_line)
 requirement:
-  level: "Necesitás nivel {level} (tienes {current})."
-  race: "Necesitás ser de la raza: {race}"
-  class: "Necesitás ser de la clase: {class}"
-  profession: "Necesitás la profesión: {profession}"
-  trait: "Necesitás el trait: {trait}"
-  skill: "Necesitás la habilidad: {skill}"
+  level: "Necesitas nivel {level} (tienes {current})."
+  race: "Necesitas ser de la raza: {race}"
+  class: "Necesitas ser de la clase: {class}"
+  profession: "Necesitas la profesión: {profession}"
+  trait: "Necesitas el trait: {trait}"
+  skill: "Necesitas la habilidad: {skill}"
   permission: "No tienes el permiso requerido."
-  money: "Necesitás al menos {amount} de dinero."
+  money: "Necesitas al menos {amount} de dinero."
 
 # Cooldown de habilidad activa (ItemTriggerListener)
 ability:
@@ -137,12 +137,12 @@ gui:
     prompt_new_item: "Escribe el id del nuevo ítem (ej. flame_blade):"
     invalid_id: "&cId inválido o ya existente."
   rarity_picker:
-    title: "&6Elegí una rareza"
+    title: "&6Elige una rareza"
     id_lore: "&7id: {id}"
     glow_yes: "&7Brillo: sí"
     glow_no: "&7Brillo: no"
   material_picker:
-    title: "&6Elegí un material"
+    title: "&6Elige un material"
     prev: "&e« Anterior"
     next: "&eSiguiente »"
     search: "&bBuscar"
@@ -275,7 +275,7 @@ editor:
     degrade_hint: "Click: +1 · Shift: +5 · Derecho: -1/-5"
     auto_repair: "Auto-reparación / minuto"
     auto_repair_hint: "Click: +1 · Shift: +5 · Derecho: -1/-5"
-    durability_disabled_hint: "&8Activá la durabilidad primero"
+    durability_disabled_hint: "&8Activa la durabilidad primero"
     sell_price: "Precio de venta"
     buy_price: "Precio de compra"
     price_hint: "Click: +10 · Shift: +100 · Derecho: -10/-100"
@@ -375,7 +375,7 @@ editor:
 
 # Selector de pack (colección) al crear un ítem nuevo
 pack_selector:
-  title: "&6Elegí un pack"
+  title: "&6Elige un pack"
   empty_hint: "&7Todavía no tienes ningún pack — crea el primero."
   click_to_use: "&eClick para usar este pack"
   create_new: "&aCrear paquete nuevo"

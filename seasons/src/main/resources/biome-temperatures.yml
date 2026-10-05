@@ -1,5 +1,5 @@
 # Temperatura base en °C por bioma (nombre del enum Biome de Bukkit, en minúsculas).
-# Cualquier bioma no listado acá usa el valor por defecto (15°C, templado).
+# Cualquier bioma no listado aquí usa el valor por defecto (15°C, templado).
 plains: 16
 sunflower_plains: 17
 forest: 14

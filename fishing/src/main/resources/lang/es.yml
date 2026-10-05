@@ -10,7 +10,7 @@ command:
       &7 • &egiverod <id>
       &7 • &dgivebait <id>
     players_only_studio: "&cSolo jugadores pueden abrir el Fishing Studio."
-    players_only: "&cSolo un jugador puede recibir esto — usalo desde el juego."
+    players_only: "&cSolo un jugador puede recibir esto — úsalo desde el juego."
     reloaded: "&a✔ Recargado: {species} especie(s), {rods} caña(s), {baits} carnada(s), {treasures} tesoro(s), {junk} basura(s), {regions} región(es)."
     giverod_usage: "&cUso: /fishingadmin giverod <id>"
     giverod_unknown: "&cNo existe una caña con id: {id}"
@@ -31,7 +31,7 @@ command:
 
 prompt:
   cancel_keyword: "cancelar"
-  footer: "&7Escribí en el chat, o '{keyword}' para abortar."
+  footer: "&7Escribe en el chat, o '{keyword}' para abortar."
   cancelled: "&cCancelado."
 
 gui:
@@ -66,7 +66,7 @@ gui:
   encyclopedia:
     title: "Enciclopedia de Pesca"
     undiscovered_name: "&8??? (sin descubrir)"
-    undiscovered_lore: "&7Pescá uno para desbloquear esta entrada."
+    undiscovered_lore: "&7Pesca uno para desbloquear esta entrada."
     caught: "&fCapturados: {count}"
     best_weight: "&fMejor peso: {weight} kg"
     best_length: "&fMejor longitud: {length} cm"
@@ -89,9 +89,9 @@ gui:
     biomes_hint: "&7Vacío = cualquiera. Nombres de Biome de Bukkit."
     field_depths: "&bProfundidades: {value}"
     field_weight: "&ePeso: {min} - {max} kg"
-    weight_hint: "&7Escribí: MIN MAX"
+    weight_hint: "&7Escribe: MIN MAX"
     field_length: "&eLongitud: {min} - {max} cm"
-    length_hint: "&7Escribí: MIN MAX"
+    length_hint: "&7Escribe: MIN MAX"
     field_price: "&6Precio base: {value}"
     field_xp: "&aExperiencia base: {value}"
     field_behavior: "&cComportamiento: {value}"
@@ -147,7 +147,7 @@ gui:
     field_luck: "&eSuerte: x{value}"
     luck_hint: "&7Bono a especies no comunes. Click: +0.1 · Click derecho: -0.1"
     field_categories: "&6Especies favoritas: {value}"
-    categories_hint: "&7Escribí categorías separadas por comas"
+    categories_hint: "&7Escribe categorías separadas por comas"
     give_button: "&a▶ Darme una"
     prompt_name: "Escribe el nuevo nombre:"
     prompt_material: "Escribe el Material:"
@@ -164,7 +164,7 @@ gui:
     field_name: "&eNombre: {name}"
     field_material: "&eMaterial: {value}"
     field_tags: "&bTags: {value}"
-    tags_hint: "&7Escribí los tags separados por comas"
+    tags_hint: "&7Escribe los tags separados por comas"
     field_quality_bonus: "&eBono de calidad: +{value}"
     field_legendary_mult: "&dChance de legendario: x{value}"
     give_button: "&a▶ Darme una"
@@ -184,7 +184,7 @@ gui:
     field_icon: "&eÍcono: {icon}"
     field_rarity: "&dRareza: {value}"
     field_reward: "&6Recompensa: {amount}x {material}"
-    reward_hint: "&7Escribí: MATERIAL,CANTIDAD"
+    reward_hint: "&7Escribe: MATERIAL,CANTIDAD"
     field_weight: "&ePeso relativo: {value}"
     prompt_name: "Escribe el nuevo nombre:"
     prompt_icon: "Escribe el Material del ícono:"
@@ -231,7 +231,7 @@ item:
     attracts: "&bAtrae: {value}"
     quality_bonus: "&eBono de calidad: +{value}"
     legendary_mult: "&dChance de legendario: x{value}"
-    footer: "&8Sostenela en la mano secundaria mientras pescás"
+    footer: "&8Sostenela en la mano secundaria mientras pescas"
   catch:
     weight: "&7Peso: {value} kg"
     length: "&7Longitud: {value} cm"

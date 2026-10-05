@@ -23,7 +23,7 @@ steps:
   - type: TITLE
     delay: 2
     title: "&6&l¡NIVEL SUPERIOR!"
-    subtitle: "&7Seguí así"
+    subtitle: "&7Sigue así"
     target: SELF
     fade-in: 5
     stay: 40

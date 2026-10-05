@@ -20,10 +20,10 @@ command:
   create_player_only: "&cSolo un jugador puede crear un mob."
   create_usage: "&eUso: /mobadmin create <id> [tipo-entidad-base]"
   id_exists: "&cYa existe un mob con ese id."
-  create_success: "&a✔ Mob '{id}' creado — configuralo en el editor."
+  create_success: "&a✔ Mob '{id}' creado — configúralo en el editor."
   spawn_usage: "&eUso: /mobadmin spawn <id> [jugador]"
   not_found: "&cNo existe el mob '{id}'."
-  spawn_need_player: "&cEspecificá un jugador de referencia (consola no tiene ubicación)."
+  spawn_need_player: "&cEspecifica un jugador de referencia (consola no tiene ubicación)."
   spawn_success: "&aMob '{name}&a' invocado."
   spawn_failed: "&cNo se pudo invocar (base-entity-type inválido)."
   list_header: "&6=== Mobs ({count}) ==="
@@ -42,7 +42,7 @@ command:
 # Sistema de preguntas por chat (usado por las GUIs de admin)
 prompt:
   cancel_keyword: "cancelar"
-  footer: "&7Escribí en el chat, o '{keyword}' para abortar."
+  footer: "&7Escribe en el chat, o '{keyword}' para abortar."
   cancelled: "&cCancelado."
 
 # GUIs de administración de mobs

@@ -1,6 +1,6 @@
 prompt:
   cancel_keyword: "cancelar"
-  footer: "&7Escribí en el chat, o '{keyword}' para abortar."
+  footer: "&7Escribe en el chat, o '{keyword}' para abortar."
   cancelled: "&cCancelado."
 
 command:

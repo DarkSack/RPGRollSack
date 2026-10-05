@@ -311,8 +311,8 @@ public class MobEngine {
             }
 
             switch (entry.getKey().toUpperCase(Locale.ROOT)) {
-                case "HAND" -> equipment.setItemInMainHand(item);
-                case "OFFHAND" -> equipment.setItemInOffHand(item);
+                case "HAND", "MAIN_HAND" -> equipment.setItemInMainHand(item);
+                case "OFFHAND", "OFF_HAND" -> equipment.setItemInOffHand(item);
                 case "HEAD" -> equipment.setHelmet(item);
                 case "CHEST" -> equipment.setChestplate(item);
                 case "LEGS" -> equipment.setLeggings(item);

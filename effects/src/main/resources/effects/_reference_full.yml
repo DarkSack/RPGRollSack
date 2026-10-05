@@ -34,7 +34,7 @@ conflicts:
 stacking:
   mode: UPGRADE # NONE | INDEPENDENT | REFRESH | UPGRADE
   max-stacks: 3
-  upgrade-to: reference_full_example_upgraded # otro id de efecto (no incluido acá, es solo referencia)
+  upgrade-to: reference_full_example_upgraded # otro id de efecto (no incluido aquí, es solo referencia)
 
 # Requisitos para que el efecto pueda aplicarse — todas deben cumplirse
 conditions:

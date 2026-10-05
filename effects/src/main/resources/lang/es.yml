@@ -36,7 +36,7 @@ command:
 # Sistema de preguntas por chat (usado por las GUIs de admin)
 prompt:
   cancel_keyword: "cancelar"
-  footer: "&7Escribí en el chat, o '{keyword}' para abortar."
+  footer: "&7Escribe en el chat, o '{keyword}' para abortar."
   cancelled: "&cCancelado."
 
 # GUIs del Effect Studio
@@ -154,19 +154,19 @@ gui:
 
 # Motivos de rechazo al evaluar condiciones de aplicación (EffectConditionEvaluator)
 condition:
-  level_min: "Necesitás nivel {min} (tienes {level})."
+  level_min: "Necesitas nivel {min} (tienes {level})."
   level_max: "Nivel máximo permitido: {max} (tienes {level})."
-  race: "Necesitás ser de la raza: {value}"
-  class: "Necesitás ser de la clase: {value}"
-  job: "Necesitás la profesión: {value}"
+  race: "Necesitas ser de la raza: {value}"
+  class: "Necesitas ser de la clase: {value}"
+  job: "Necesitas la profesión: {value}"
   world: "Tienes que estar en el mundo: {value}"
-  weather: "Necesitás clima: {value}"
+  weather: "Necesitas clima: {value}"
   time_range: "Solo disponible entre las {min} y {max} (hora del mundo)."
-  health_below: "Necesitás tener menos de {percent}% de vida."
-  health_above: "Necesitás tener más de {percent}% de vida."
-  mana_below: "Necesitás tener menos de {percent}% de maná."
-  mana_above: "Necesitás tener más de {percent}% de maná."
-  guild_generic: "Necesitás pertenecer a un guild."
-  guild_specific: "Necesitás pertenecer a un guild: {value}"
-  team: "Necesitás estar en un team."
+  health_below: "Necesitas tener menos de {percent}% de vida."
+  health_above: "Necesitas tener más de {percent}% de vida."
+  mana_below: "Necesitas tener menos de {percent}% de maná."
+  mana_above: "Necesitas tener más de {percent}% de maná."
+  guild_generic: "Necesitas pertenecer a un guild."
+  guild_specific: "Necesitas pertenecer a un guild: {value}"
+  team: "Necesitas estar en un team."
   permission: "No tienes el permiso requerido."

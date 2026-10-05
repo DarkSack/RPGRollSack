@@ -9,7 +9,7 @@ rarity: LEGENDARY
 glow: true
 
 # "flags" reemplaza a "hide-attributes" con una lista general de
-# ItemFlag — cualquier flag vanilla vale acá.
+# ItemFlag — cualquier flag vanilla vale aquí.
 flags:
   - HIDE_ATTRIBUTES
   - HIDE_ENCHANTS

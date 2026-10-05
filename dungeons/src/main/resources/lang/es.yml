@@ -7,7 +7,7 @@ common:
   "no": "no"
 
 prompt:
-  footer: "&7Escribí en el chat, o '{keyword}' para abortar."
+  footer: "&7Escribe en el chat, o '{keyword}' para abortar."
   cancel_keyword: "cancelar"
   cancelled: "&cCancelado."
 
@@ -234,11 +234,11 @@ gui:
         remove_hint: "&8Shift-click para quitar"
         add: "&aAgregar tag"
       prompt:
-        name: "&eEscribí el nuevo nombre:"
-        category: "&eEscribí la nueva categoría:"
-        icon: "&eEscribí el Material (ej. STONE_BRICKS):"
-        description: "&eEscribí la descripción:"
-        tag: "&eEscribí el nuevo tag:"
+        name: "&eEscribe el nuevo nombre:"
+        category: "&eEscribe la nueva categoría:"
+        icon: "&eEscribe el Material (ej. STONE_BRICKS):"
+        description: "&eEscribe la descripción:"
+        tag: "&eEscribe el nuevo tag:"
     rooms:
       title: "&6Salas: {id}"
       add: "&aAgregar sala"
@@ -246,7 +246,7 @@ gui:
       move_down: "&b↓ Mover abajo"
       move_hint: "&7Sobre la sala seleccionada (click derecho en una)"
       prompt:
-        new_id: "&eEscribí el id de la nueva sala:"
+        new_id: "&eEscribe el id de la nueva sala:"
       item:
         stats: "objetivos: {objectives} · oleadas: {waves}"
         boss: " · jefe: {boss}"
@@ -272,8 +272,8 @@ gui:
         label: "&eEventos de esta sala"
         hint: "&7Acciones por trigger, solo para esta sala"
       prompt:
-        id: "&eEscribí el nuevo id:"
-        boss: "&eEscribí el id del mob jefe (RPGRoll-Mobs):"
+        id: "&eEscribe el nuevo id:"
+        boss: "&eEscribe el id del mob jefe (RPGRoll-Mobs):"
     roomevents:
       title: "&6Eventos de sala"
       item:
@@ -288,7 +288,7 @@ gui:
       item:
         remove_hint: "&8Shift-click para quitar"
       prompt:
-        add: "&eEscribí: TIPO clave=valor clave2=valor2 (ej. TELEPORT x=100 y=65 z=0):"
+        add: "&eEscribe: TIPO clave=valor clave2=valor2 (ej. TELEPORT x=100 y=65 z=0):"
     region:
       title: "&6Región: {id}"
       corner1: "&eEsquina 1: {value}"
@@ -308,7 +308,7 @@ gui:
         mobs: "&7mobs: {count}"
         time_limit: "&7tiempo límite: {seconds}s"
       prompt:
-        add: "&eEscribí: id tiempoLimite tiempoAntes mob1:cantidad,mob2:cantidad — ej. wave1 30s 5s skeleton_archer:3,zombie_grunt:2 (0 = sin límite/demora)"
+        add: "&eEscribe: id tiempoLimite tiempoAntes mob1:cantidad,mob2:cantidad — ej. wave1 30s 5s skeleton_archer:3,zombie_grunt:2 (0 = sin límite/demora)"
     objectives:
       title: "&6Objetivos"
       add: "&aAgregar objetivo"
@@ -316,7 +316,7 @@ gui:
       invalid_type: "&cTipo de objetivo inválido."
       invalid_amount: "&cCantidad numérica inválida."
       prompt:
-        add: "&eEscribí: TIPO cantidad clave=valor... — ej. KILL_ENTITY 5 entity=ZOMBIE, COLLECT_ITEM 3 material=DIAMOND, ACTIVATE_MECHANISM 1 x=100 y=65 z=-20"
+        add: "&eEscribe: TIPO cantidad clave=valor... — ej. KILL_ENTITY 5 entity=ZOMBIE, COLLECT_ITEM 3 material=DIAMOND, ACTIVATE_MECHANISM 1 x=100 y=65 z=-20"
     triggers:
       title: "&6Triggers: {id}"
     checkpointsrevive:
@@ -338,7 +338,7 @@ gui:
         label: "&eÍtem requerido: {value}"
         hint1: "&8Usado por el modo WITH_ITEM"
       prompt:
-        item: "&eEscribí el Material requerido:"
+        item: "&eEscribe el Material requerido:"
     loot:
       title: "&6Loot: {id}"
       add: "&aAgregar entrada de loot"
@@ -350,13 +350,13 @@ gui:
         chance: "&7probabilidad: {chance}% · {scope}"
         replace_remove_hint: "&8Click para reemplazar · Shift-click para quitar"
       prompt:
-        add: "&eEscribí: TIPO referencia cantidadMin cantidadMax probabilidad scope\n&7ej. ITEM ancient_relic 1 1 25 SHARED — tipos: ITEM/MONEY/EXPERIENCE/COMMAND/QUEST — scope: SHARED/PER_PLAYER/PER_CONTRIBUTION"
-        replace: "&eEscribí la entrada reemplazante: TIPO referencia cantidadMin cantidadMax probabilidad scope\n&7ej. ITEM ancient_relic 1 1 25 SHARED — tipos: ITEM/MONEY/EXPERIENCE/COMMAND/QUEST — scope: SHARED/PER_PLAYER/PER_CONTRIBUTION"
+        add: "&eEscribe: TIPO referencia cantidadMin cantidadMax probabilidad scope\n&7ej. ITEM ancient_relic 1 1 25 SHARED — tipos: ITEM/MONEY/EXPERIENCE/COMMAND/QUEST — scope: SHARED/PER_PLAYER/PER_CONTRIBUTION"
+        replace: "&eEscribe la entrada reemplazante: TIPO referencia cantidadMin cantidadMax probabilidad scope\n&7ej. ITEM ancient_relic 1 1 25 SHARED — tipos: ITEM/MONEY/EXPERIENCE/COMMAND/QUEST — scope: SHARED/PER_PLAYER/PER_CONTRIBUTION"
     difficulties:
       title: "&6Dificultades: {id}"
       add: "&aAgregar dificultad"
       prompt:
-        new_id: "&eEscribí el id de la nueva dificultad:"
+        new_id: "&eEscribe el id de la nueva dificultad:"
       item:
         multipliers: "&7vida x{health} · daño x{damage} · loot x{loot}"
         modifiers: "&7modificadores: {count}"
@@ -372,7 +372,7 @@ gui:
       name: "&bBuscar"
       no_filter: "&7(sin filtro)"
       filter: "&7Filtro: {text}"
-      prompt: "&eEscribí parte del nombre o id de la mazmorra:"
+      prompt: "&eEscribe parte del nombre o id de la mazmorra:"
     all_categories: "&bTodas las categorías"
     clear_search: "&cLimpiar búsqueda"
     item:

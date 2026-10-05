@@ -193,8 +193,13 @@ public class AscensionPlugin extends JavaPlugin {
 
         String[] info = metaFor(name);
 
-        com.sack.rpgroll.common.command.BrigadierCommands.register(this, name, info[0],
-                info[1].isEmpty() ? null : info[1], executor);
+        // WorldEdit también registra /ascend: los alias dejan entrar igual sin el prefijo del plugin.
+        java.util.List<String> aliases = name.equals("ascend") ? java.util.List.of("ascension", "ascender")
+                : java.util.List.of();
+
+        com.sack.rpgroll.common.command.BrigadierCommands.register(this, name, info[0], aliases, executor,
+                executor instanceof org.bukkit.command.TabCompleter completer ? completer : null,
+                info[1].isEmpty() ? null : info[1]);
     }
 
     /**

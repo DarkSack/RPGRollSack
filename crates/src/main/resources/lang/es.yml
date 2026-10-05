@@ -18,7 +18,7 @@ admin:
     &7 • &9browser
   setlocation_usage: "&cUso: /crate setlocation <crateId>"
   crate_not_found: "&cNo existe un crate con id: {id}"
-  must_look_at_block: "&cTenés que estar mirando el bloque del crate."
+  must_look_at_block: "&cTienes que estar mirando el bloque del crate."
   block_already_registered: "&cEse bloque ya tiene un crate registrado."
   setlocation_success: "&a✔ Crate '{crate}' registrado en este bloque (id: {placement})."
   block_not_registered: "&cEse bloque no tiene un crate registrado."
@@ -91,7 +91,7 @@ interact:
 # Sistema de preguntas por chat (usado por las GUIs de admin)
 prompt:
   cancel_keyword: "cancelar"
-  footer: "&7Escribí en el chat, o '{keyword}' para abortar."
+  footer: "&7Escribe en el chat, o '{keyword}' para abortar."
   cancelled: "&cCancelado."
 
 # Lucky blocks

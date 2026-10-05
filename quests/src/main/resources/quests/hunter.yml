@@ -23,7 +23,7 @@ stages:
     on-complete:
       - type: TITLE
         title: "&c¡Cacería completa!"
-        subtitle: "&7Volvé con el cazador"
+        subtitle: "&7Vuelve con el cazador"
 
 rewards:
   money: 250

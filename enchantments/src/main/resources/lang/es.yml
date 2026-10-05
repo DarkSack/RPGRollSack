@@ -3,7 +3,7 @@
 
 # ChatPromptManager: captura de mensajes de chat para GUIs de admin
 chat_prompt_manager:
-  instructions: "&7Escribí en el chat, o '{keyword}' para abortar."
+  instructions: "&7Escribe en el chat, o '{keyword}' para abortar."
   cancel_keyword: "cancelar"
   cancelled: "&cCancelado."
 

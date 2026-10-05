@@ -3,6 +3,8 @@ package com.sack.rpgroll.gui.util;
 import com.sack.rpgroll.util.ComponentUtils;
 
 import com.destroystokyo.paper.profile.PlayerProfile;
+import io.papermc.paper.datacomponent.DataComponentTypes;
+import io.papermc.paper.datacomponent.item.TooltipDisplay;
 import com.destroystokyo.paper.profile.ProfileProperty;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -54,6 +56,14 @@ public class ItemBuilder {
 
     public ItemStack build() {
         item.setItemMeta(meta);
+
+        // Sin atributos propios, los que se verían son los vanilla del material («Daño por golpe 6»
+        // en el icono de espada de un menú): se ocultan. Los atributos puestos a propósito se ven.
+        if (!meta.hasAttributeModifiers()) {
+            item.setData(DataComponentTypes.TOOLTIP_DISPLAY, TooltipDisplay.tooltipDisplay()
+                    .addHiddenComponents(DataComponentTypes.ATTRIBUTE_MODIFIERS).build());
+        }
+
         return item;
     }
 

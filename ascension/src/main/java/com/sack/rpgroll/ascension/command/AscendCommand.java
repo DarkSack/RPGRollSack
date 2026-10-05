@@ -120,8 +120,11 @@ public class AscendCommand implements CommandExecutor, TabCompleter {
             return;
         }
 
-        reportResult(player, engine.evolveRace(player, evolutionOpt.get()),
-                lang.raw("command.race_success", "id", args[1]));
+        String name = evolutionOpt.get().displayName();
+        if (reportResult(player, engine.evolveRace(player, evolutionOpt.get()),
+                lang.raw("command.race_success", "id", name))) {
+            celebrate(player, "command.race_title", name);
+        }
     }
 
     private void handleSpecialize(Player player, String[] args) {
@@ -137,8 +140,11 @@ public class AscendCommand implements CommandExecutor, TabCompleter {
             return;
         }
 
-        reportResult(player, engine.specialize(player, specOpt.get()),
-                lang.raw("command.specialize_success", "id", args[1]));
+        String name = specOpt.get().displayName();
+        if (reportResult(player, engine.specialize(player, specOpt.get()),
+                lang.raw("command.specialize_success", "id", name))) {
+            celebrate(player, "command.specialize_title", name);
+        }
     }
 
     private void handleTalent(Player player, String[] args) {
@@ -240,10 +246,13 @@ public class AscendCommand implements CommandExecutor, TabCompleter {
         String noneLabel = lang.raw("command.none_label");
 
         lang.send(player, "command.info_header");
-        lang.send(player, "command.info_evolution", "value",
-                state.getCurrentEvolutionId() == null ? noneLabel : state.getCurrentEvolutionId());
-        lang.send(player, "command.info_specialization", "value",
-                state.getCurrentSpecializationId() == null ? noneLabel : state.getCurrentSpecializationId());
+        String evolutionId = state.getCurrentEvolutionId();
+        String specializationId = state.getCurrentSpecializationId();
+        lang.send(player, "command.info_evolution", "value", evolutionId == null ? noneLabel
+                : engine.getEvolutionManager().get(evolutionId).map(RaceEvolution::displayName).orElse(evolutionId));
+        lang.send(player, "command.info_specialization", "value", specializationId == null ? noneLabel
+                : engine.getSpecializationManager().get(specializationId).map(ClassSpecialization::displayName)
+                        .orElse(specializationId));
         lang.send(player, "command.info_talents", "count", state.getUnlockedTalents().size(), "points",
                 state.getAvailableTalentPoints());
         lang.send(player, "command.info_prestige", "count", state.getPrestigeCount());
@@ -395,15 +404,27 @@ public class AscendCommand implements CommandExecutor, TabCompleter {
                 });
     }
 
-    private void reportResult(Player player, java.util.List<String> reasons, String successMessage) {
+    /** @return true si salió bien (no hubo motivos de rechazo). */
+    private boolean reportResult(Player player, java.util.List<String> reasons, String successMessage) {
 
         if (reasons.isEmpty()) {
             player.sendMessage(ComponentUtils.parse(successMessage));
-            return;
+            return true;
         }
 
         lang.send(player, "command.failed_header");
         reasons.forEach(reason -> lang.send(player, "command.failed_reason", "reason", reason));
+        return false;
+    }
+
+    /** Título, sonido y partículas al evolucionar o especializarse: es un momento que se tiene que notar. */
+    private void celebrate(Player player, String titleKey, String name) {
+
+        player.showTitle(net.kyori.adventure.title.Title.title(lang.component(titleKey),
+                ComponentUtils.parse(name)));
+        player.playSound(player.getLocation(), org.bukkit.Sound.UI_TOAST_CHALLENGE_COMPLETE, 1f, 1f);
+        player.getWorld().spawnParticle(org.bukkit.Particle.TOTEM_OF_UNDYING, player.getLocation().add(0, 1, 0),
+                80, 0.5, 1, 0.5, 0.3);
     }
 
     @Override

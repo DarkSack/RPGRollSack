@@ -17,12 +17,12 @@ command:
   test_usage: "&cUso: /rpgfx test <id> [jugador]"
   test_effect_not_found: "&cNo existe un efecto con id: {id}"
   test_player_not_found: "&cJugador no encontrado: {player}"
-  test_specify_player: "&cEspecificá un jugador: /rpgfx test <id> <jugador>"
+  test_specify_player: "&cEspecifica un jugador: /rpgfx test <id> <jugador>"
   test_playing: "&a▶ Reproduciendo '{id}' en {player}."
 
 # Prompts de chat compartidos (usados por las GUIs de admin)
 prompt:
-  cancel_hint: "&7Escribí en el chat, o 'cancelar' para abortar."
+  cancel_hint: "&7Escribe en el chat, o 'cancelar' para abortar."
   cancelled: "&cCancelado."
 
 # EffectBrowserGUI

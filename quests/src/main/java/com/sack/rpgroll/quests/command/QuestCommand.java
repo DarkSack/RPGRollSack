@@ -25,11 +25,12 @@ import java.util.Optional;
  * /quest abandon &lt;id&gt;  — abandona una misión activa
  * /quest active              — tus misiones activas y su progreso
  * /quest completed           — tus misiones completadas
+ * /quest option &lt;id&gt; &lt;n&gt; — elige la opción n del diálogo actual (lo que ejecuta el clic)
  */
 public class QuestCommand implements CommandExecutor, TabCompleter {
 
     private static final List<String> SUBCOMMANDS = List.of("list", "info", "start", "abandon", "active",
-            "completed");
+            "completed", "option");
 
     private final QuestEngine engine;
     private final LangManager lang;
@@ -59,6 +60,7 @@ public class QuestCommand implements CommandExecutor, TabCompleter {
             case "abandon" -> handleAbandon(player, args);
             case "active" -> handleActive(player);
             case "completed" -> handleCompleted(player);
+            case "option" -> handleOption(player, args);
             default -> sendUsage(player);
         }
 
@@ -148,6 +150,26 @@ public class QuestCommand implements CommandExecutor, TabCompleter {
         }
     }
 
+    private void handleOption(Player player, String[] args) {
+
+        if (args.length < 3) {
+            lang.send(player, "command.option_usage");
+            return;
+        }
+
+        int number;
+        try {
+            number = Integer.parseInt(args[2]);
+        } catch (NumberFormatException e) {
+            lang.send(player, "command.option_usage");
+            return;
+        }
+
+        if (!engine.chooseOption(player, args[1], number)) {
+            lang.send(player, "command.option_invalid");
+        }
+    }
+
     private void handleActive(Player player) {
 
         QuestPlayerState state = engine.getStateManager().getOrLoad(player);
@@ -169,6 +191,7 @@ public class QuestCommand implements CommandExecutor, TabCompleter {
 
                 lang.send(player, "command.active_entry", "name", quest.displayName(),
                         "current", progress.stageIndex() + 1, "total", totalStages, "stageId", stageId);
+                stageOpt.ifPresent(stage -> engine.sendObjectives(player, stage, progress));
             });
         }
     }
@@ -196,7 +219,7 @@ public class QuestCommand implements CommandExecutor, TabCompleter {
             return TabCompleteUtil.filter(args[0], SUBCOMMANDS);
         }
 
-        if (args.length == 2 && List.of("info", "start", "abandon").contains(args[0].toLowerCase())) {
+        if (args.length == 2 && List.of("info", "start", "abandon", "option").contains(args[0].toLowerCase())) {
             List<String> questIds = engine.getQuestManager().getAll().stream().map(Quest::id).toList();
             return TabCompleteUtil.filter(args[1], questIds);
         }

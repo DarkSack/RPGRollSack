@@ -1,6 +1,6 @@
 prompt:
   cancel_keyword: "cancelar"
-  footer: "&7Escribí en el chat, o '{keyword}' para abortar."
+  footer: "&7Escribe en el chat, o '{keyword}' para abortar."
   cancelled: "&cCancelado."
 
 common:
@@ -12,7 +12,7 @@ common:
   invalid_amount: "&cCantidad inválida."
   invalid_money: "&cMonto inválido."
   invalid_price: "&cPrecio inválido."
-  need_item_in_hand: "&cTenés que tener un ítem en la mano."
+  need_item_in_hand: "&cTienes que tener un ítem en la mano."
   none: "(ninguno)"
   none_keyword: "ninguno"
   default_keyword: "default"
@@ -135,7 +135,7 @@ tax:
     rate: "&6Tasa: {value}%"
     click_rate: "&7Click: +1% · Click derecho: -1%"
     applies_to: "&dAplica a: {value}"
-    applies_hint1: "&7Escribí ids/categorías separados por comas"
+    applies_hint1: "&7Escribe ids/categorías separados por comas"
     applies_hint2: "&7(vacío = aplica a todo)"
     enabled: "&6Activo: {value}"
     delete: "&cEliminar regla"
