@@ -159,7 +159,7 @@ public class TabPlugin extends JavaPlugin {
         TABAPI.init(refreshCoordinator, playerStateManager, profileManager, contextManager, scoreboardManager,
                 tablistManager, bossBarManager, placeholderEngine);
 
-        getServer().getPluginManager().registerEvents(new PlayerLifecycleListener(refreshCoordinator), this);
+        getServer().getPluginManager().registerEvents(new PlayerLifecycleListener(this, refreshCoordinator), this);
 
         registerCommand();
 

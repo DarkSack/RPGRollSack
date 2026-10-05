@@ -10,8 +10,13 @@ import java.util.Objects;
  * action bar, boss bar y efectos de poción combinados en el orden que
  * quieras, cada uno con su propio delay desde que se dispara la secuencia.
  */
-public record EffectDefinition(String id, String displayName, String description, List<EffectStep> steps)
-        implements RPGContent {
+public record EffectDefinition(String id, String displayName, String description, List<EffectStep> steps,
+        String icon) implements RPGContent {
+
+    /** Sin icono propio: el navegador usa el de por defecto. */
+    public EffectDefinition(String id, String displayName, String description, List<EffectStep> steps) {
+        this(id, displayName, description, steps, null);
+    }
 
     public EffectDefinition {
         Objects.requireNonNull(id, "id no puede ser null");
@@ -23,6 +28,7 @@ public record EffectDefinition(String id, String displayName, String description
         displayName = displayName == null || displayName.isBlank() ? id : displayName;
         description = description == null ? "" : description;
         steps = steps == null ? List.of() : List.copyOf(steps);
+        icon = icon == null || icon.isBlank() ? null : icon.trim();
     }
 
 }

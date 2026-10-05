@@ -6,6 +6,7 @@
 
 id: reference_full_example
 display-name: "&d&lEfecto de Referencia"
+icon: BOOK
 description: "Un efecto de ejemplo que documenta cada tipo de paso, forma y target disponible."
 
 steps:
@@ -149,3 +150,118 @@ steps:
     duration: 100
     amplifier: 0
     target: TARGET
+
+  # ==========================================================================
+  # FORMAS NUEVAS — VORTEX, DOME, SPIRAL, PILLAR
+  # ==========================================================================
+
+  # VORTEX: varias hélices entrelazadas que se cierran al subir (radius → radius-top).
+  - type: PARTICLE
+    delay: 16
+    particle: WITCH
+    shape: VORTEX
+    target: SELF
+    radius: 2.0
+    radius-top: 0.3
+    height: 3.0
+    strands: 3
+    turns: 1.5
+    points: 90
+
+  # DOME: media esfera apoyada en el suelo.
+  - type: PARTICLE
+    delay: 18
+    particle: END_ROD
+    shape: DOME
+    target: SELF
+    radius: 2.0
+    points: 60
+
+  # SPIRAL: espiral plana con uno o varios brazos.
+  - type: PARTICLE
+    delay: 20
+    particle: ENCHANT
+    shape: SPIRAL
+    target: SELF
+    radius: 3.0
+    turns: 1.5
+    strands: 3
+    points: 90
+
+  # PILLAR: anillos apilados, un haz de luz.
+  - type: PARTICLE
+    delay: 22
+    particle: GLOW
+    shape: PILLAR
+    target: SELF
+    radius: 0.8
+    height: 4.0
+    rings: 8
+    points: 80
+
+  # ==========================================================================
+  # COLOR, ANIMACIÓN Y MOVIMIENTO (valen para cualquier PARTICLE)
+  # ==========================================================================
+  #   color:        "#FF8800" | "255,136,0" | GOLD | "#FF0000,#FFFF00" (degradado) | RAINBOW
+  #   color-to:     color final (degradado en DUST; color al que se apaga en DUST_COLOR_TRANSITION)
+  #   size:         tamaño del polvo, 0.01 a 4
+  #   block / item: material para BLOCK, FALLING_DUST, DUST_PILLAR, ITEM...
+  #   power:        para las partículas que piden un número (DRAGON_BREATH)
+  #   y-offset:     sube o baja la figura entera; con y-offset-to cambia en cada repetición
+  #   repeat / interval: repite el paso N veces cada X ticks (también SOUND y el resto)
+  #   radius-to:    radio en la última repetición: un anillo que se expande
+  #   rotation / rotate: giro inicial y grados extra por repetición (figuras que giran)
+  #   motion:       OUTWARD | INWARD | UP | DOWN, con motion-speed (ondas, implosiones)
+  #   force:        true para que se vea desde lejos (úsalo con moderación)
+  # Y en SOUND: pitch-to, el tono de la última repetición (una carga que sube).
+
+  # Anillo arcoíris que se expande y gira.
+  - type: PARTICLE
+    delay: 24
+    particle: DUST
+    color: RAINBOW
+    size: 1.5
+    shape: CIRCLE
+    target: SELF
+    y-offset: 0.1
+    radius: 0.5
+    radius-to: 5.0
+    rotate: 10
+    points: 80
+    repeat: 10
+    interval: 1
+
+  # Chispas disparadas hacia fuera.
+  - type: PARTICLE
+    delay: 24
+    particle: ELECTRIC_SPARK
+    shape: SPHERE
+    target: SELF
+    y-offset: 1.0
+    radius: 0.5
+    points: 60
+    motion: OUTWARD
+    motion-speed: 0.5
+
+  # ==========================================================================
+  # PASOS NUEVOS — FIREWORK y LIGHTNING
+  # ==========================================================================
+
+  # FIREWORK: cohete que explota al instante, sin hacer daño.
+  # shape: BALL | BALL_LARGE | STAR | BURST | CREEPER
+  - type: FIREWORK
+    delay: 26
+    target: SELF
+    y-offset: 2.5
+    shape: STAR
+    colors: "#FF6BF2,#FFFFFF"
+    fade: "#7B2CFF"
+    flicker: true
+    trail: true
+    count: 2
+    spread: 1.0
+
+  # LIGHTNING: rayo solo visual (sin fuego ni daño).
+  - type: LIGHTNING
+    delay: 28
+    target: SELF

@@ -29,8 +29,9 @@ prompt:
 browser:
   title: "&6Efeitos RPGRoll"
   item_lore_id: "&7id: {id}"
-  item_lore_steps: "&7{count} step(s)"
-  item_lore_edit: "&eClique para editar"
+  item_lore_steps: "&7{count} passos"
+  item_lore_edit: "&eClique esquerdo para editar"
+  item_lore_test: "&eClique direito para testar em você"
   new_effect_name: "&aCriar novo efeito"
   close_button: "Fechar"
   new_effect_prompt: "Digite o id do novo efeito:"
@@ -38,13 +39,13 @@ browser:
 
 # EffectEditorGUI
 editor:
-  title: "&6Efeito: {id}"
+  title: "&6Efeito: {name}"
   name_item: "&eNome: {name}"
   name_lore_hint: "&7Clique para digitar um novo"
   description_item: "&eDescrição"
   description_empty: "(sem descrição)"
   test_item: "&a▶ Testar em você mesmo"
-  item_lore_steps: "&7{count} step(s)"
+  item_lore_steps: "&7{count} passos"
   add_step_item: "&aAdicionar step"
   add_step_lore_syntax: "&7TIPO delay chave=valor,chave2=valor2"
   add_step_lore_example_particle: "&8ex. PARTICLE 0 particle=FLAME,shape=SPHERE,radius=1.5,points=40"
@@ -57,5 +58,5 @@ editor:
   description_prompt: "Digite a nova descrição:"
   add_step_prompt: "Digite: TIPO delay chave=valor,chave2=valor2 (ex. SOUND 0 sound=ENTITY_PLAYER_LEVELUP,volume=1):"
   add_step_invalid_format: "&cFormato inválido — é necessário pelo menos TIPO e delay."
-  add_step_invalid_type: "&cTipo inválido: {type} (use PARTICLE, SOUND, TITLE, ACTIONBAR, BOSSBAR ou POTION)."
+  add_step_invalid_type: "&cTipo inválido: {type} (use PARTICLE, SOUND, TITLE, ACTIONBAR, BOSSBAR, POTION, FIREWORK ou LIGHTNING)."
   add_step_invalid_delay: "&cDelay inválido: {delay}"

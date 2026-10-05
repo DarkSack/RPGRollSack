@@ -7,5 +7,9 @@ public enum EffectStepType {
     TITLE,
     ACTIONBAR,
     BOSSBAR,
-    POTION
+    POTION,
+    /** Cohete que explota al instante con los colores del step, sin hacer daño. */
+    FIREWORK,
+    /** Rayo solo visual: sin fuego ni daño. */
+    LIGHTNING
 }

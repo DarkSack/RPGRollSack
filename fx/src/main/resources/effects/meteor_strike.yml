@@ -1,0 +1,167 @@
+id: meteor_strike
+display-name: "&c&lImpacto de Meteorito"
+icon: MAGMA_BLOCK
+description: "Una bola de fuego cae del cielo dejando una estela de humo y lava, y al tocar el suelo estalla: explosión, onda de fuego que se abre, llamas disparadas hacia fuera, fuegos artificiales y una columna de humo. Cae sobre el objetivo; sin objetivo, sobre quien lo lanza."
+
+steps:
+  - type: SOUND
+    delay: 0
+    sound: ENTITY_GHAST_SHOOT
+    target: LOCATION
+    volume: 1.4
+    pitch: 0.5
+
+  # --- La caída (0-12 ticks): la bola entra en diagonal desde 16 bloques de altura ---
+  - type: PARTICLE
+    delay: 0
+    particle: FLAME
+    shape: SPHERE
+    target: TARGET
+    radius: 0.7
+    points: 45
+    x-offset: 9
+    x-offset-to: 0
+    y-offset: 16
+    y-offset-to: 0.5
+    repeat: 12
+    interval: 1
+    force: true
+
+  - type: PARTICLE
+    delay: 0
+    particle: DUST
+    color: "#FFE08A,#FF6A00"
+    size: 3.0
+    shape: SPHERE
+    target: TARGET
+    radius: 0.4
+    points: 20
+    x-offset: 9
+    x-offset-to: 0
+    y-offset: 16
+    y-offset-to: 0.5
+    repeat: 12
+    interval: 1
+    force: true
+
+  # Estela de humo y lava.
+  - type: PARTICLE
+    delay: 0
+    particle: LARGE_SMOKE
+    target: TARGET
+    count: 8
+    offset-x: 0.25
+    offset-y: 0.25
+    offset-z: 0.25
+    x-offset: 9.6
+    x-offset-to: 0.6
+    y-offset: 16.6
+    y-offset-to: 1.1
+    repeat: 12
+    interval: 1
+    force: true
+
+  - type: PARTICLE
+    delay: 0
+    particle: LAVA
+    target: TARGET
+    count: 2
+    x-offset: 9
+    x-offset-to: 0
+    y-offset: 16
+    y-offset-to: 0.5
+    repeat: 12
+    interval: 1
+
+  # --- Impacto (12 ticks) ---
+  - type: SOUND
+    delay: 12
+    sound: ENTITY_GENERIC_EXPLODE
+    target: LOCATION
+    volume: 2.0
+    pitch: 0.7
+
+  - type: SOUND
+    delay: 12
+    sound: ENTITY_DRAGON_FIREBALL_EXPLODE
+    target: LOCATION
+    volume: 1.4
+    pitch: 0.8
+
+  - type: PARTICLE
+    delay: 12
+    particle: EXPLOSION_EMITTER
+    target: TARGET
+    y-offset: 0.5
+
+  - type: FIREWORK
+    delay: 12
+    target: TARGET
+    y-offset: 1.0
+    shape: BURST
+    colors: "#FF4500,#FFA500,#FFD000"
+    fade: "#400000"
+    count: 2
+    spread: 1.0
+
+  # Onda de fuego que se abre por el suelo.
+  - type: PARTICLE
+    delay: 12
+    particle: DUST_COLOR_TRANSITION
+    color: "#FFD27A"
+    color-to: "#5A1A00"
+    size: 2.2
+    shape: CIRCLE
+    target: TARGET
+    y-offset: 0.15
+    radius: 0.6
+    radius-to: 7.5
+    points: 100
+    repeat: 10
+    interval: 1
+
+  - type: PARTICLE
+    delay: 12
+    particle: FLAME
+    shape: CIRCLE
+    target: TARGET
+    y-offset: 0.3
+    radius: 1.0
+    points: 90
+    motion: OUTWARD
+    motion-speed: 0.55
+
+  - type: PARTICLE
+    delay: 12
+    particle: LAVA
+    shape: BURST
+    target: TARGET
+    y-offset: 0.5
+    radius: 1.5
+    points: 25
+
+  - type: PARTICLE
+    delay: 12
+    particle: BLOCK
+    block: MAGMA_BLOCK
+    shape: CIRCLE
+    target: TARGET
+    y-offset: 0.3
+    radius: 1.5
+    points: 24
+    count: 5
+    offset-x: 0.3
+    offset-y: 0.5
+    offset-z: 0.3
+    speed: 0.3
+
+  # Humo que se queda subiendo.
+  - type: PARTICLE
+    delay: 14
+    particle: CAMPFIRE_COSY_SMOKE
+    shape: DOME
+    target: TARGET
+    radius: 2.0
+    points: 30
+    motion: UP
+    motion-speed: 0.05

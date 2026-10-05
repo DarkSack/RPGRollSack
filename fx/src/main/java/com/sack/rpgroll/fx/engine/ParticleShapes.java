@@ -17,8 +17,8 @@ import java.util.Random;
  * es fácil de leer y de testear por separado del motor de ejecución.
  * <p>
  * Formas soportadas ({@code shape} en el step): POINT, CIRCLE, SPHERE,
- * LINE, HELIX, CONE, CUBE_OUTLINE, BURST. Cualquier otro valor (o ausente)
- * cae a POINT.
+ * LINE, HELIX, CONE, CUBE_OUTLINE, BURST, POLYGON, STAR, VORTEX, DOME,
+ * SPIRAL y PILLAR. Cualquier otro valor (o ausente) cae a POINT.
  */
 public final class ParticleShapes {
 
@@ -32,6 +32,15 @@ public final class ParticleShapes {
      * @param secondary segundo punto, solo usado por LINE (el "hasta"); puede ser null
      */
     public static List<Location> generate(EffectStep step, Location origin, Location secondary) {
+        return generate(step, origin, secondary, step.paramDouble("radius", 1.0));
+    }
+
+    /**
+     * Igual que {@link #generate(EffectStep, Location, Location)} pero con el radio ya decidido:
+     * el motor lo interpola entre {@code radius} y {@code radius-to} en cada repetición, que es
+     * lo que hace que un anillo se vea expandirse.
+     */
+    public static List<Location> generate(EffectStep step, Location origin, Location secondary, double radius) {
 
         String shape = step.param("shape", "POINT").trim().toUpperCase(Locale.ROOT);
 
@@ -39,7 +48,6 @@ public final class ParticleShapes {
         // cada número: subir el detalle de un efecto entero es cambiar una línea.
         double density = Math.max(0.1, step.paramDouble("density", 1.0));
         int points = Math.max(1, (int) Math.round(step.paramInt("points", 20) * density));
-        double radius = step.paramDouble("radius", 1.0);
 
         return switch (shape) {
             case "CIRCLE" -> circle(origin, radius, points);
@@ -57,8 +65,101 @@ public final class ParticleShapes {
             case "POLYGON" -> polygon(origin, radius, Math.max(3, step.paramInt("sides", 3)), points);
             case "STAR" -> star(origin, radius, step.paramDouble("inner-radius", radius / 2.4),
                     Math.max(3, step.paramInt("points-count", 5)), points);
+            // Varias hélices entrelazadas que se cierran (o abren) al subir: un torbellino.
+            case "VORTEX" -> vortex(origin, radius, step.paramDouble("radius-top", radius * 0.25),
+                    step.paramDouble("height", 3.0), step.paramDouble("turns", 2.0),
+                    Math.max(1, step.paramInt("strands", 3)), points);
+            case "DOME" -> dome(origin, radius, points);
+            case "SPIRAL" -> spiral(origin, radius, step.paramDouble("turns", 3.0),
+                    Math.max(1, step.paramInt("strands", 1)), points);
+            case "PILLAR" -> pillar(origin, radius, step.paramDouble("height", 4.0),
+                    Math.max(2, step.paramInt("rings", 8)), points);
             default -> List.of(origin.clone());
         };
+    }
+
+    private static List<Location> vortex(Location origin, double radiusBottom, double radiusTop, double height,
+            double turns, int strands, int points) {
+
+        List<Location> result = new ArrayList<>();
+        int perStrand = Math.max(2, points / strands);
+
+        for (int strand = 0; strand < strands; strand++) {
+
+            double phase = 2 * Math.PI * strand / strands;
+
+            for (int i = 0; i < perStrand; i++) {
+
+                double t = (double) i / perStrand;
+                double angle = phase + 2 * Math.PI * turns * t;
+                double r = radiusBottom + (radiusTop - radiusBottom) * t;
+
+                result.add(origin.clone().add(r * Math.cos(angle), height * t, r * Math.sin(angle)));
+            }
+        }
+
+        return result;
+    }
+
+    /** Media esfera apoyada en el suelo: un escudo o una cúpula de energía. */
+    private static List<Location> dome(Location origin, double radius, int points) {
+
+        List<Location> result = new ArrayList<>();
+        double goldenAngle = Math.PI * (3 - Math.sqrt(5));
+
+        for (int i = 0; i < points; i++) {
+
+            double y = (i + 0.5) / points;
+            double ringRadius = Math.sqrt(Math.max(0, 1 - y * y));
+            double angle = goldenAngle * i;
+
+            result.add(origin.clone().add(Math.cos(angle) * ringRadius * radius, y * radius,
+                    Math.sin(angle) * ringRadius * radius));
+        }
+
+        return result;
+    }
+
+    /** Espiral plana que sale del centro, con uno o varios brazos (una galaxia, un portal). */
+    private static List<Location> spiral(Location origin, double radius, double turns, int strands, int points) {
+
+        List<Location> result = new ArrayList<>();
+        int perStrand = Math.max(2, points / strands);
+
+        for (int strand = 0; strand < strands; strand++) {
+
+            double phase = 2 * Math.PI * strand / strands;
+
+            for (int i = 0; i < perStrand; i++) {
+
+                double t = (double) i / perStrand;
+                double angle = phase + 2 * Math.PI * turns * t;
+
+                result.add(origin.clone().add(radius * t * Math.cos(angle), 0, radius * t * Math.sin(angle)));
+            }
+        }
+
+        return result;
+    }
+
+    /** Columna de anillos apilados: un haz de luz que baja del cielo o sube del suelo. */
+    private static List<Location> pillar(Location origin, double radius, double height, int rings, int points) {
+
+        List<Location> result = new ArrayList<>();
+        int perRing = Math.max(3, points / rings);
+
+        for (int ring = 0; ring < rings; ring++) {
+
+            double y = height * ring / (rings - 1);
+            double twist = Math.PI * ring / rings;
+
+            for (int i = 0; i < perRing; i++) {
+                double angle = twist + 2 * Math.PI * i / perRing;
+                result.add(origin.clone().add(radius * Math.cos(angle), y, radius * Math.sin(angle)));
+            }
+        }
+
+        return result;
     }
 
     private static List<Location> circle(Location origin, double radius, int points) {

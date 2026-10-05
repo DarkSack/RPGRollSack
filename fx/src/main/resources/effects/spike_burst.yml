@@ -1,6 +1,7 @@
 id: spike_burst
 display-name: "&4&lErupción de Pinchos"
-description: "Onda de tierra y esquirlas que acompaña a los pinchos brotando del suelo. Pensado para la trampa Corredor de Pinchos de RPGRoll-Traps, pero sirve para cualquier ataque que salga desde abajo."
+icon: POINTED_DRIPSTONE
+description: "El suelo se agrieta al rojo vivo, la piedra y la tierra salen volando, las chispas suben como lanzas y una onda de polvo se abre alrededor mientras los pinchos brotan. Pensado para la trampa Corredor de Pinchos de RPGRoll-Traps, pero sirve para cualquier ataque que salga desde abajo."
 
 steps:
   - type: SOUND
@@ -10,37 +11,119 @@ steps:
     volume: 1.6
     pitch: 0.5
 
-  # Anillo bajo, a ras del suelo: la tierra que se levanta.
+  - type: SOUND
+    delay: 0
+    sound: ENTITY_GENERIC_EXPLODE
+    target: LOCATION
+    volume: 0.7
+    pitch: 1.4
+
+  # Grietas al rojo vivo, pegadas al suelo.
   - type: PARTICLE
     delay: 0
+    particle: DUST
+    color: "#FFD27A,#FF5A1F,#5A1E0A"
+    size: 1.6
+    shape: STAR
+    target: LOCATION
+    y-offset: 0.05
+    radius: 3.0
+    inner-radius: 0.4
+    points-count: 7
+    points: 170
+    repeat: 6
+    interval: 3
+
+  - type: PARTICLE
+    delay: 0
+    particle: EXPLOSION
+    target: LOCATION
+    y-offset: 0.4
+
+  # Piedra y tierra que salen volando y vuelven a caer.
+  - type: PARTICLE
+    delay: 0
+    particle: BLOCK
+    block: DEEPSLATE
+    shape: CIRCLE
+    target: LOCATION
+    y-offset: 0.3
+    radius: 1.4
+    points: 36
+    count: 2
+    motion: UP
+    motion-speed: 0.7
+
+  - type: PARTICLE
+    delay: 1
+    particle: BLOCK
+    block: COARSE_DIRT
+    shape: BURST
+    target: LOCATION
+    y-offset: 0.4
+    radius: 1.2
+    points: 40
+    count: 2
+    motion: OUTWARD
+    motion-speed: 0.5
+
+  # Chispas que suben como lanzas.
+  - type: PARTICLE
+    delay: 1
     particle: CRIT
     shape: CIRCLE
     target: LOCATION
+    y-offset: 0.2
+    radius: 1.6
+    points: 60
+    motion: UP
+    motion-speed: 1.1
+
+  - type: PARTICLE
+    delay: 1
+    particle: LAVA
+    shape: CIRCLE
+    target: LOCATION
+    y-offset: 0.3
     radius: 1.0
-    points: 28
-    count: 2
-    speed: 0.05
+    points: 10
+
+  # Onda de polvo que se abre.
+  - type: PARTICLE
+    delay: 2
+    particle: DUST_COLOR_TRANSITION
+    color: "#F0D9B5"
+    color-to: "#6B5440"
+    size: 2.6
+    shape: CIRCLE
+    target: LOCATION
+    y-offset: 0.15
+    radius: 0.8
+    radius-to: 5.5
+    points: 90
+    repeat: 8
+    interval: 1
 
   - type: PARTICLE
     delay: 2
-    particle: LARGE_SMOKE
+    particle: DUST_PILLAR
+    block: DIRT
     shape: CIRCLE
     target: LOCATION
-    radius: 2.0
-    points: 40
-    count: 1
-    speed: 0.02
+    radius: 2.4
+    points: 30
+    count: 4
 
-  # Segundo anillo más abierto: la onda que se expande.
   - type: PARTICLE
-    delay: 4
-    particle: CRIT
-    shape: BURST
+    delay: 3
+    particle: CAMPFIRE_COSY_SMOKE
+    shape: CIRCLE
     target: LOCATION
-    radius: 3.2
-    points: 70
-    count: 2
-    speed: 0.10
+    y-offset: 0.2
+    radius: 2.2
+    points: 16
+    motion: UP
+    motion-speed: 0.06
 
   - type: SOUND
     delay: 4
@@ -48,13 +131,3 @@ steps:
     target: LOCATION
     volume: 1.5
     pitch: 0.75
-
-  - type: PARTICLE
-    delay: 6
-    particle: DUST_PLUME
-    shape: CIRCLE
-    target: LOCATION
-    radius: 4.0
-    points: 64
-    count: 1
-    speed: 0.03

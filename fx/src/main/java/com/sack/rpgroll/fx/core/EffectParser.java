@@ -25,7 +25,7 @@ public class EffectParser implements ContentParser<EffectDefinition> {
 
         List<EffectStep> steps = parseSteps(config.getMapList("steps"), id);
 
-        return new EffectDefinition(id, displayName, description, steps);
+        return new EffectDefinition(id, displayName, description, steps, config.getString("icon"));
     }
 
     private List<EffectStep> parseSteps(List<?> rawSteps, String effectId) {

@@ -1,5 +1,7 @@
 package com.sack.rpgroll.fx.core;
 
+import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
@@ -15,7 +17,9 @@ public record EffectStep(EffectStepType type, int delayTicks, Map<String, String
     public EffectStep {
         Objects.requireNonNull(type, "type no puede ser null");
         delayTicks = Math.max(0, delayTicks);
-        params = params == null ? Map.of() : Map.copyOf(params);
+        // Conserva el orden del YAML: Map.copyOf lo barajaba, y el editor mostraba y volvía a
+        // guardar los parámetros de cada paso en un orden aleatorio.
+        params = params == null ? Map.of() : Collections.unmodifiableMap(new LinkedHashMap<>(params));
     }
 
     public String param(String key, String fallback) {

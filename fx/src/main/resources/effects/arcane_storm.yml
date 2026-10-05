@@ -1,0 +1,131 @@
+id: arcane_storm
+display-name: "&5&lTormenta Arcana"
+icon: AMETHYST_CLUSTER
+description: "Un torbellino violeta se levanta alrededor del lanzador sobre una estrella de runas que gira, el sonido sube de tono mientras se carga y todo termina en un rayo, una explosión de energía y fuegos artificiales. Pensado como habilidad definitiva o entrada de jefe."
+
+steps:
+  - type: BOSSBAR
+    delay: 0
+    title: "&d✦ Tormenta Arcana ✦"
+    color: PURPLE
+    style: SEGMENTED_10
+    duration: 50
+    target: ALL_NEARBY
+    around: SELF
+    radius: 12
+
+  - type: SOUND
+    delay: 0
+    sound: ENTITY_EVOKER_PREPARE_SUMMON
+    target: LOCATION
+    volume: 1.4
+    pitch: 0.8
+
+  # Carga: el tono sube en cada repetición.
+  - type: SOUND
+    delay: 0
+    sound: BLOCK_RESPAWN_ANCHOR_CHARGE
+    target: LOCATION
+    volume: 1.0
+    pitch: 0.5
+    pitch-to: 2.0
+    repeat: 8
+    interval: 5
+
+  # Torbellino que gira.
+  - type: PARTICLE
+    delay: 0
+    particle: DUST_COLOR_TRANSITION
+    color: "#E7B6FF"
+    color-to: "#3A0070"
+    size: 1.3
+    shape: VORTEX
+    target: SELF
+    radius: 2.8
+    radius-top: 0.4
+    height: 4.5
+    strands: 4
+    turns: 1.2
+    points: 96
+    rotate: 24
+    repeat: 20
+    interval: 2
+
+  # Estrella de runas en el suelo, girando al revés.
+  - type: PARTICLE
+    delay: 0
+    particle: DUST
+    color: "#D27BFF"
+    size: 1.5
+    shape: STAR
+    target: SELF
+    y-offset: 0.1
+    radius: 3.4
+    inner-radius: 1.3
+    points-count: 5
+    points: 130
+    rotate: -3
+    repeat: 14
+    interval: 3
+
+  - type: PARTICLE
+    delay: 0
+    particle: ENCHANT
+    shape: CIRCLE
+    target: SELF
+    y-offset: 0.3
+    radius: 3.8
+    points: 50
+    motion: UP
+    motion-speed: 0.3
+    repeat: 10
+    interval: 4
+
+  # --- Descarga (40 ticks) ---
+  - type: LIGHTNING
+    delay: 40
+    target: SELF
+
+  - type: SOUND
+    delay: 40
+    sound: ITEM_TRIDENT_THUNDER
+    target: LOCATION
+    volume: 1.5
+    pitch: 1.0
+
+  - type: FIREWORK
+    delay: 40
+    target: SELF
+    y-offset: 2.5
+    shape: BALL_LARGE
+    colors: "#B04CFF,#FF6BF2,#FFFFFF"
+    fade: "#3A0070"
+    flicker: true
+    count: 2
+    spread: 1.2
+
+  - type: PARTICLE
+    delay: 40
+    particle: REVERSE_PORTAL
+    shape: SPHERE
+    target: SELF
+    y-offset: 1.0
+    radius: 0.8
+    points: 120
+    motion: OUTWARD
+    motion-speed: 0.9
+
+  - type: PARTICLE
+    delay: 40
+    particle: DUST_COLOR_TRANSITION
+    color: "#FFFFFF"
+    color-to: "#9B30FF"
+    size: 2.0
+    shape: CIRCLE
+    target: SELF
+    y-offset: 0.2
+    radius: 1.0
+    radius-to: 8.0
+    points: 110
+    repeat: 10
+    interval: 1

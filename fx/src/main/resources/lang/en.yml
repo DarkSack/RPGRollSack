@@ -29,8 +29,9 @@ prompt:
 browser:
   title: "&6RPGRoll Effects"
   item_lore_id: "&7id: {id}"
-  item_lore_steps: "&7{count} step(s)"
-  item_lore_edit: "&eClick to edit"
+  item_lore_steps: "&7{count} steps"
+  item_lore_edit: "&eLeft-click to edit"
+  item_lore_test: "&eRight-click to try it on yourself"
   new_effect_name: "&aCreate new effect"
   close_button: "Close"
   new_effect_prompt: "Type the id of the new effect:"
@@ -38,13 +39,13 @@ browser:
 
 # EffectEditorGUI
 editor:
-  title: "&6Effect: {id}"
+  title: "&6Effect: {name}"
   name_item: "&eName: {name}"
   name_lore_hint: "&7Click to type a new one"
   description_item: "&eDescription"
   description_empty: "(no description)"
   test_item: "&a▶ Test on yourself"
-  item_lore_steps: "&7{count} step(s)"
+  item_lore_steps: "&7{count} steps"
   add_step_item: "&aAdd step"
   add_step_lore_syntax: "&7TYPE delay key=value,key2=value2"
   add_step_lore_example_particle: "&8e.g. PARTICLE 0 particle=FLAME,shape=SPHERE,radius=1.5,points=40"
@@ -57,5 +58,5 @@ editor:
   description_prompt: "Type the new description:"
   add_step_prompt: "Type: TYPE delay key=value,key2=value2 (e.g. SOUND 0 sound=ENTITY_PLAYER_LEVELUP,volume=1):"
   add_step_invalid_format: "&cInvalid format — at least TYPE and delay are required."
-  add_step_invalid_type: "&cInvalid type: {type} (use PARTICLE, SOUND, TITLE, ACTIONBAR, BOSSBAR or POTION)."
+  add_step_invalid_type: "&cInvalid type: {type} (use PARTICLE, SOUND, TITLE, ACTIONBAR, BOSSBAR, POTION, FIREWORK or LIGHTNING)."
   add_step_invalid_delay: "&cInvalid delay: {delay}"

@@ -3,6 +3,7 @@ package com.sack.rpgroll.fx.gui;
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.fx.core.EffectDefinition;
 import com.sack.rpgroll.fx.core.EffectManager;
+import com.sack.rpgroll.fx.engine.EffectContext;
 import com.sack.rpgroll.fx.engine.EffectEngine;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
@@ -15,6 +16,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -23,6 +25,7 @@ public class EffectBrowserGUI extends InventoryGUI {
     private static final int SIZE = 45;
     private static final int NEW_SLOT = 40;
     private static final int BACK_SLOT = 44;
+    private static final int DESCRIPTION_WIDTH = 38;
 
     private final EffectManager effectManager;
     private final EffectEngine engine;
@@ -53,11 +56,24 @@ public class EffectBrowserGUI extends InventoryGUI {
 
             EffectDefinition effect = effects.get(i);
 
-            setItem(i, new ItemBuilder(Material.BLAZE_POWDER)
+            List<Component> lore = new ArrayList<>();
+
+            for (String line : wrap(effect.description(), DESCRIPTION_WIDTH)) {
+                lore.add(Component.text(line, NamedTextColor.GRAY));
+            }
+
+            if (!lore.isEmpty()) {
+                lore.add(Component.empty());
+            }
+
+            lore.add(langManager.component("browser.item_lore_id", "id", effect.id()));
+            lore.add(langManager.component("browser.item_lore_steps", "count", effect.steps().size()));
+            lore.add(langManager.component("browser.item_lore_edit"));
+            lore.add(langManager.component("browser.item_lore_test"));
+
+            setItem(i, new ItemBuilder(iconOf(effect))
                     .setName(ComponentUtils.parse(effect.displayName()))
-                    .setLore(langManager.component("browser.item_lore_id", "id", effect.id()),
-                            langManager.component("browser.item_lore_steps", "count", effect.steps().size()),
-                            langManager.component("browser.item_lore_edit"))
+                    .setLore(lore)
                     .build());
         }
 
@@ -73,6 +89,11 @@ public class EffectBrowserGUI extends InventoryGUI {
 
         event.setCancelled(true);
         int slot = event.getSlot();
+
+        if (slot < effects.size() && slot < 36 && event.isRightClick()) {
+            engine.play(effects.get(slot), EffectContext.of(player));
+            return;
+        }
 
         if (slot < effects.size() && slot < 36) {
             new EffectEditorGUI(player, effects.get(slot), effectManager, engine, chatPromptManager, langManager,
@@ -105,6 +126,45 @@ public class EffectBrowserGUI extends InventoryGUI {
             effectManager.save(effect);
             reopen();
         });
+    }
+
+    /** El {@code icon} del YAML si es un material válido; si no, polvo de blaze. */
+    private static Material iconOf(EffectDefinition effect) {
+
+        Material material = effect.icon() == null ? null : Material.matchMaterial(effect.icon());
+        return material != null && material.isItem() && !material.isAir() ? material : Material.BLAZE_POWDER;
+    }
+
+    /** Parte la descripción en líneas cortas para el lore (sin esto sale una sola línea kilométrica). */
+    static List<String> wrap(String text, int width) {
+
+        List<String> lines = new ArrayList<>();
+
+        if (text == null || text.isBlank()) {
+            return lines;
+        }
+
+        StringBuilder line = new StringBuilder();
+
+        for (String word : text.trim().split("\\s+")) {
+
+            if (line.length() > 0 && line.length() + 1 + word.length() > width) {
+                lines.add(line.toString());
+                line.setLength(0);
+            }
+
+            if (line.length() > 0) {
+                line.append(' ');
+            }
+
+            line.append(word);
+        }
+
+        if (line.length() > 0) {
+            lines.add(line.toString());
+        }
+
+        return lines;
     }
 
     private void reopen() {

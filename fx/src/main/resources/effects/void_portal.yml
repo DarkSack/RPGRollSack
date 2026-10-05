@@ -1,0 +1,116 @@
+id: void_portal
+display-name: "&8&lPortal del Vacío"
+icon: ENDER_EYE
+description: "Una galaxia de tres brazos se abre en el suelo y gira cada vez más rápido mientras la energía del vacío es absorbida hacia el centro; al final el portal se cierra con un estallido sónico. Pensado para teletransportes, invocaciones o la aparición de un jefe."
+
+steps:
+  - type: SOUND
+    delay: 0
+    sound: BLOCK_PORTAL_TRIGGER
+    target: LOCATION
+    volume: 0.8
+    pitch: 1.4
+
+  - type: SOUND
+    delay: 0
+    sound: BLOCK_END_PORTAL_FRAME_FILL
+    target: LOCATION
+    volume: 1.2
+    pitch: 0.6
+    pitch-to: 1.6
+    repeat: 6
+    interval: 8
+
+  # Galaxia de tres brazos que gira.
+  - type: PARTICLE
+    delay: 0
+    particle: DUST
+    color: "#E6C8FF,#7B2CFF,#1A0033"
+    size: 1.4
+    shape: SPIRAL
+    target: SELF
+    y-offset: 0.1
+    radius: 3.4
+    turns: 1.2
+    strands: 3
+    points: 180
+    rotate: 9
+    repeat: 25
+    interval: 2
+
+  - type: PARTICLE
+    delay: 0
+    particle: WITCH
+    shape: CIRCLE
+    target: SELF
+    y-offset: 0.1
+    radius: 3.6
+    points: 70
+    rotate: 5
+    repeat: 25
+    interval: 2
+
+  # La energía es absorbida hacia el centro.
+  - type: PARTICLE
+    delay: 4
+    particle: PORTAL
+    shape: CIRCLE
+    target: SELF
+    y-offset: 1.0
+    radius: 4.0
+    points: 50
+    motion: INWARD
+    motion-speed: 0.35
+    repeat: 10
+    interval: 4
+
+  - type: PARTICLE
+    delay: 10
+    particle: REVERSE_PORTAL
+    shape: PILLAR
+    target: SELF
+    radius: 0.5
+    height: 3.0
+    rings: 8
+    points: 60
+    rotate: 20
+    repeat: 18
+    interval: 2
+
+  # --- Cierre (50 ticks) ---
+  - type: SOUND
+    delay: 50
+    sound: ENTITY_WARDEN_SONIC_BOOM
+    target: LOCATION
+    volume: 1.2
+    pitch: 1.2
+
+  - type: PARTICLE
+    delay: 50
+    particle: SONIC_BOOM
+    target: SELF
+    y-offset: 1.0
+
+  - type: FIREWORK
+    delay: 50
+    target: SELF
+    y-offset: 1.6
+    shape: BALL_LARGE
+    colors: "#7B2CFF,#E0B0FF"
+    fade: "#1A0033"
+    flicker: true
+
+  - type: PARTICLE
+    delay: 50
+    particle: DUST_COLOR_TRANSITION
+    color: "#E0B0FF"
+    color-to: "#1A0033"
+    size: 2.0
+    shape: SPHERE
+    target: SELF
+    y-offset: 1.0
+    radius: 0.5
+    radius-to: 3.0
+    points: 120
+    repeat: 6
+    interval: 1

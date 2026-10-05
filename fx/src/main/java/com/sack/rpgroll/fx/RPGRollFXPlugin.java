@@ -47,6 +47,7 @@ public class RPGRollFXPlugin extends JavaPlugin {
         effectManager.initialize();
 
         engine = new EffectEngine(this);
+        getServer().getPluginManager().registerEvents(new com.sack.rpgroll.fx.engine.FireworkDamageListener(this), this);
 
         RPGRollFXAPI.init(effectManager, engine);
 

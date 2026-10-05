@@ -53,7 +53,7 @@ public class EffectEditorGUI extends InventoryGUI {
 
     public EffectEditorGUI(Player player, EffectDefinition effect, EffectManager manager, EffectEngine engine,
             ChatPromptManager chatPromptManager, LangManager langManager, Runnable onBack) {
-        super(player, langManager.component("editor.title", "id", effect.id()), SIZE);
+        super(player, langManager.component("editor.title", "id", effect.id(), "name", effect.displayName()), SIZE);
         this.current = effect;
         this.manager = manager;
         this.engine = engine;
@@ -87,11 +87,12 @@ public class EffectEditorGUI extends InventoryGUI {
                 .setLore(langManager.component("editor.name_lore_hint"))
                 .build());
 
-        setItem(DESCRIPTION_SLOT, new ItemBuilder(Material.WRITTEN_BOOK)
+        // BOOK y no WRITTEN_BOOK: el libro escrito añade su propio «Original» al tooltip.
+        setItem(DESCRIPTION_SLOT, new ItemBuilder(Material.BOOK)
                 .setName(langManager.component("editor.description_item"))
                 .setLore(ItemBuilder.toLoreLines(current.description().isBlank()
                         ? langManager.raw("editor.description_empty")
-                        : current.description()))
+                        : "&7" + String.join("\n&7", EffectBrowserGUI.wrap(current.description(), 38))))
                 .build());
 
         setItem(TEST_SLOT, new ItemBuilder(Material.NETHER_STAR)
@@ -140,6 +141,9 @@ public class EffectEditorGUI extends InventoryGUI {
             case ACTIONBAR -> Material.PAPER;
             case BOSSBAR -> Material.DRAGON_HEAD;
             case POTION -> Material.POTION;
+            // El cohete añade su «Duración del vuelo» al tooltip; la carga ígnea no.
+            case FIREWORK -> Material.FIRE_CHARGE;
+            case LIGHTNING -> Material.LIGHTNING_ROD;
         };
     }
 
@@ -185,18 +189,21 @@ public class EffectEditorGUI extends InventoryGUI {
 
     private void promptRename() {
         chatPromptManager.prompt(player, langManager.raw("editor.rename_prompt"),
-                value -> replace(new EffectDefinition(current.id(), value, current.description(), current.steps())));
+                value -> replace(new EffectDefinition(current.id(), value, current.description(), current.steps(),
+                        current.icon())));
     }
 
     private void promptDescription() {
         chatPromptManager.prompt(player, langManager.raw("editor.description_prompt"),
-                value -> replace(new EffectDefinition(current.id(), current.displayName(), value, current.steps())));
+                value -> replace(new EffectDefinition(current.id(), current.displayName(), value, current.steps(),
+                        current.icon())));
     }
 
     private void removeStep(int index) {
         List<EffectStep> steps = new ArrayList<>(current.steps());
         steps.remove(index);
-        replace(new EffectDefinition(current.id(), current.displayName(), current.description(), steps));
+        replace(new EffectDefinition(current.id(), current.displayName(), current.description(), steps,
+                current.icon()));
     }
 
     private void promptAddStep() {
@@ -245,7 +252,8 @@ public class EffectEditorGUI extends InventoryGUI {
                     List<EffectStep> steps = new ArrayList<>(current.steps());
                     steps.add(new EffectStep(type, delay, params));
 
-                    replace(new EffectDefinition(current.id(), current.displayName(), current.description(), steps));
+                    replace(new EffectDefinition(current.id(), current.displayName(), current.description(), steps,
+                current.icon()));
                 });
     }
 

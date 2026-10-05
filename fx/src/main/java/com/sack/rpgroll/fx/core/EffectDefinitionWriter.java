@@ -21,6 +21,7 @@ public class EffectDefinitionWriter {
         config.set("id", effect.id());
         config.set("display-name", effect.displayName());
         config.set("description", effect.description());
+        config.set("icon", effect.icon());
 
         java.util.List<Map<String, Object>> steps = new java.util.ArrayList<>();
 

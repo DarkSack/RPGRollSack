@@ -73,4 +73,17 @@ class EffectStepTest {
         EffectStep step = new EffectStep(EffectStepType.PARTICLE, 0, Map.of());
         assertEquals(EffectTarget.SELF, step.paramTarget("target", EffectTarget.SELF));
     }
+    @Test
+    void paramsKeepTheOrderTheyWereWrittenIn() {
+        java.util.Map<String, String> params = new java.util.LinkedHashMap<>();
+        for (String key : java.util.List.of("particle", "shape", "radius", "points", "repeat", "interval")) {
+            params.put(key, "1");
+        }
+
+        EffectStep step = new EffectStep(EffectStepType.PARTICLE, 0, params);
+
+        assertEquals(java.util.List.of("particle", "shape", "radius", "points", "repeat", "interval"),
+                java.util.List.copyOf(step.params().keySet()));
+    }
+
 }

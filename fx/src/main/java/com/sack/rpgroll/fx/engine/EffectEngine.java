@@ -11,6 +11,8 @@ import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.kyori.adventure.title.Title;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Color;
+import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
@@ -19,16 +21,22 @@ import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Firework;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.meta.FireworkMeta;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.util.Vector;
 
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
+import java.util.function.IntConsumer;
 
 /**
  * Ejecuta una {@link EffectDefinition}: agenda cada step al delay que le
@@ -44,6 +52,10 @@ public class EffectEngine {
     // acá una sola vez para no repetir la conversión &->§ en cada uso.
     private static final LegacyComponentSerializer LEGACY_SECTION = LegacyComponentSerializer.legacySection();
 
+    /** Tope de repeticiones por paso: un "repeat: 100000" en un YAML no debe tumbar el servidor. */
+    private static final int MAX_REPEAT = 200;
+    private static final Random RANDOM = new Random();
+
     private final Plugin plugin;
 
     public EffectEngine(Plugin plugin) {
@@ -54,33 +66,52 @@ public class EffectEngine {
 
         for (EffectStep step : effect.steps()) {
 
-            if (step.delayTicks() <= 0) {
-                execute(step, context);
-            } else {
-                Bukkit.getScheduler().runTaskLater(plugin, () -> execute(step, context), step.delayTicks());
+            // "repeat" + "interval": el mismo paso varias veces seguidas. Con "radius-to" o
+            // "rotate" cada repetición cambia un poco, y de ahí salen las ondas que se
+            // expanden y las figuras que giran.
+            int repeat = Math.max(1, Math.min(MAX_REPEAT, step.paramInt("repeat", 1)));
+            int interval = Math.max(1, step.paramInt("interval", 2));
+
+            for (int i = 0; i < repeat; i++) {
+
+                int iteration = i;
+                long delay = step.delayTicks() + (long) i * interval;
+
+                if (delay <= 0) {
+                    execute(step, context, iteration, repeat);
+                } else {
+                    Bukkit.getScheduler().runTaskLater(plugin, () -> execute(step, context, iteration, repeat), delay);
+                }
             }
         }
     }
 
-    private void execute(EffectStep step, EffectContext context) {
+    private void execute(EffectStep step, EffectContext context, int iteration, int repeat) {
 
         try {
             switch (step.type()) {
-                case PARTICLE -> executeParticle(step, context);
-                case SOUND -> executeSound(step, context);
+                case PARTICLE -> executeParticle(step, context, iteration, repeat);
+                case SOUND -> executeSound(step, context, iteration, repeat);
                 case TITLE -> executeTitle(step, context);
                 case ACTIONBAR -> executeActionBar(step, context);
                 case BOSSBAR -> executeBossBar(step, context);
                 case POTION -> executePotion(step, context);
+                case FIREWORK -> executeFirework(step, context);
+                case LIGHTNING -> executeLightning(step, context);
             }
         } catch (Exception e) {
             plugin.getLogger().warning("✘ Error ejecutando step " + step.type() + ": " + e.getMessage());
         }
     }
 
+    /** Fracción 0..1 de la repetición actual: 0 en la primera, 1 en la última. */
+    private static double progress(int iteration, int repeat) {
+        return repeat <= 1 ? 0 : (double) iteration / (repeat - 1);
+    }
+
     // ============ PARTICLE ============
 
-    private void executeParticle(EffectStep step, EffectContext context) {
+    private void executeParticle(EffectStep step, EffectContext context, int iteration, int repeat) {
 
         Particle particle;
 
@@ -88,6 +119,13 @@ public class EffectEngine {
             particle = Particle.valueOf(step.param("particle", "FLAME").trim().toUpperCase(Locale.ROOT));
         } catch (IllegalArgumentException e) {
             plugin.getLogger().warning("✘ Partícula inválida: " + step.param("particle", ""));
+            return;
+        }
+
+        ParticleData data = ParticleData.of(particle, step);
+
+        if (data == null) {
+            plugin.getLogger().warning("✘ La partícula " + particle + " necesita datos que FX no sabe darle");
             return;
         }
 
@@ -123,25 +161,73 @@ public class EffectEngine {
             return;
         }
 
+        // "y-offset" mueve la figura entera (a la altura del pecho, sobre la cabeza...);
+        // "offset-x/y/z" siguen siendo la dispersión de cada partícula, como en vanilla.
+        // "x/y/z-offset" mueven la figura entera (a la altura del pecho, sobre la cabeza...);
+        // "offset-x/y/z" siguen siendo la dispersión de cada partícula, como en vanilla. Con
+        // "-to" el desplazamiento cambia en cada repetición: algo que cae del cielo en diagonal.
+        double t = progress(iteration, repeat);
+        Vector shift = new Vector(animated(step, "x-offset", t), animated(step, "y-offset", t),
+                animated(step, "z-offset", t));
+        origin = origin.clone().add(shift);
+        if (secondary != null) {
+            secondary = secondary.clone().add(shift);
+        }
+
         int count = step.paramInt("count", 1);
         double offsetX = step.paramDouble("offset-x", 0);
         double offsetY = step.paramDouble("offset-y", 0);
         double offsetZ = step.paramDouble("offset-z", 0);
         double speed = step.paramDouble("speed", 0);
+        boolean force = Boolean.parseBoolean(step.param("force", "false"));
+
+        double radiusFrom = step.paramDouble("radius", 1.0);
+        double radius = radiusFrom
+                + (step.paramDouble("radius-to", radiusFrom) - radiusFrom) * t;
 
         World world = origin.getWorld();
-        List<Location> points = ParticleShapes.generate(step, origin, secondary);
+        List<Location> points = ParticleShapes.generate(step, origin, secondary, radius);
+
+        double rotation = Math.toRadians(step.paramDouble("rotation", 0) + step.paramDouble("rotate", 0) * iteration);
+        if (rotation != 0) {
+            rotateAroundY(points, origin, rotation);
+        }
 
         // "count" es por punto de la forma; con density se multiplica también,
         // para poder engordar un efecto entero desde una sola línea del YAML.
         double density = Math.max(0.1, step.paramDouble("density", 1.0));
         int perPoint = Math.max(1, (int) Math.round(count * density));
 
+        Motion motion = Motion.parse(step.param("motion", "NONE"));
+        double motionSpeed = step.paramDouble("motion-speed", 0.15);
+        Location center = origin;
+        int total = points.size();
+
+        IntConsumer spawnPoint = index -> {
+
+            Location point = points.get(index);
+            Object pointData = data.forPoint(index, total, iteration);
+
+            if (motion == Motion.NONE) {
+                world.spawnParticle(particle, point, perPoint, offsetX, offsetY, offsetZ, speed, pointData, force);
+                return;
+            }
+
+            // Con count 0, Minecraft usa el offset como dirección y "extra" como
+            // velocidad: así cada partícula sale disparada en vez de quedarse flotando.
+            Vector direction = motion.direction(center, point);
+
+            for (int n = 0; n < perPoint; n++) {
+                world.spawnParticle(particle, point, 0, direction.getX(), direction.getY(), direction.getZ(),
+                        motionSpeed, pointData, force);
+            }
+        };
+
         int drawTicks = step.paramInt("draw-ticks", 0);
 
         if (drawTicks <= 0) {
-            for (Location point : points) {
-                world.spawnParticle(particle, point, perPoint, offsetX, offsetY, offsetZ, speed);
+            for (int i = 0; i < total; i++) {
+                spawnPoint.accept(i);
             }
             return;
         }
@@ -149,31 +235,79 @@ public class EffectEngine {
         // Dibujo progresivo: la figura se traza a lo largo de varios ticks en
         // vez de aparecer entera. Es lo que hace que una hélice se vea SUBIR y
         // que un anillo se vea ABRIRSE — sin esto toda forma es estática.
-        int slices = Math.min(drawTicks, points.size());
-        int perSlice = (int) Math.ceil(points.size() / (double) slices);
+        int slices = Math.min(drawTicks, total);
+        int perSlice = (int) Math.ceil(total / (double) slices);
 
         for (int slice = 0; slice < slices; slice++) {
 
             int from = slice * perSlice;
-            int to = Math.min(points.size(), from + perSlice);
+            int to = Math.min(total, from + perSlice);
 
             if (from >= to) {
                 break;
             }
 
-            List<Location> chunk = List.copyOf(points.subList(from, to));
-
             Bukkit.getScheduler().runTaskLater(plugin, () -> {
-                for (Location point : chunk) {
-                    world.spawnParticle(particle, point, perPoint, offsetX, offsetY, offsetZ, speed);
+                for (int i = from; i < to; i++) {
+                    spawnPoint.accept(i);
                 }
             }, slice);
         }
     }
 
+    /** El valor de {@code key} interpolado hacia {@code key-to} según el avance de las repeticiones. */
+    private static double animated(EffectStep step, String key, double t) {
+        double from = step.paramDouble(key, 0);
+        return from + (step.paramDouble(key + "-to", from) - from) * t;
+    }
+
+    private static void rotateAroundY(List<Location> points, Location origin, double angle) {
+
+        double cos = Math.cos(angle);
+        double sin = Math.sin(angle);
+
+        for (Location point : points) {
+
+            double dx = point.getX() - origin.getX();
+            double dz = point.getZ() - origin.getZ();
+
+            point.setX(origin.getX() + dx * cos - dz * sin);
+            point.setZ(origin.getZ() + dx * sin + dz * cos);
+        }
+    }
+
+    /** Hacia dónde sale disparada cada partícula cuando el step lleva "motion". */
+    private enum Motion {
+        NONE, OUTWARD, INWARD, UP, DOWN;
+
+        static Motion parse(String raw) {
+            try {
+                return valueOf(raw.trim().toUpperCase(Locale.ROOT));
+            } catch (IllegalArgumentException e) {
+                return NONE;
+            }
+        }
+
+        Vector direction(Location center, Location point) {
+            return switch (this) {
+                case UP -> new Vector(0, 1, 0);
+                case DOWN -> new Vector(0, -1, 0);
+                case OUTWARD, INWARD -> {
+                    Vector v = point.toVector().subtract(center.toVector());
+                    if (v.lengthSquared() < 1.0E-6) {
+                        v = new Vector(0, 1, 0);
+                    }
+                    v.normalize();
+                    yield this == INWARD ? v.multiply(-1) : v;
+                }
+                case NONE -> new Vector();
+            };
+        }
+    }
+
     // ============ SOUND ============
 
-    private void executeSound(EffectStep step, EffectContext context) {
+    private void executeSound(EffectStep step, EffectContext context, int iteration, int repeat) {
 
         Sound sound;
 
@@ -185,7 +319,10 @@ public class EffectEngine {
         }
 
         float volume = (float) step.paramDouble("volume", 1.0);
-        float pitch = (float) step.paramDouble("pitch", 1.0);
+        // Con "repeat", "pitch-to" hace que el tono suba (o baje) en cada repetición: una carga.
+        double pitchFrom = step.paramDouble("pitch", 1.0);
+        float pitch = (float) (pitchFrom
+                + (step.paramDouble("pitch-to", pitchFrom) - pitchFrom) * progress(iteration, repeat));
 
         EffectTarget target = step.paramTarget("target", EffectTarget.SELF);
 
@@ -203,6 +340,73 @@ public class EffectEngine {
         Location origin = resolveOrigin(target, context);
         if (origin != null && origin.getWorld() != null) {
             origin.getWorld().playSound(origin, sound, volume, pitch);
+        }
+    }
+
+    // ============ FIREWORK ============
+
+    /**
+     * Un cohete que explota al instante donde se le pide, con los colores del step. No hace
+     * daño: {@link FireworkDamageListener} cancela el daño de los cohetes marcados.
+     */
+    private void executeFirework(EffectStep step, EffectContext context) {
+
+        Location origin = resolveOrigin(step.paramTarget("target", EffectTarget.SELF), context);
+
+        if (origin == null || origin.getWorld() == null) {
+            return;
+        }
+
+        FireworkEffect.Type type = parseEnum(FireworkEffect.Type.class, step.param("shape", "BALL_LARGE"),
+                FireworkEffect.Type.BALL_LARGE);
+
+        List<Color> colors = ParticleData.parseColors(step.param("colors", "#FFFFFF"));
+        List<Color> fade = ParticleData.parseColors(step.param("fade", ""));
+
+        FireworkEffect.Builder builder = FireworkEffect.builder()
+                .with(type)
+                .withColor(colors.isEmpty() ? List.of(Color.WHITE) : colors)
+                .flicker(Boolean.parseBoolean(step.param("flicker", "false")))
+                .trail(Boolean.parseBoolean(step.param("trail", "false")));
+
+        if (!fade.isEmpty()) {
+            builder.withFade(fade);
+        }
+
+        FireworkEffect effect = builder.build();
+        int amount = Math.max(1, Math.min(10, step.paramInt("count", 1)));
+        double spread = step.paramDouble("spread", 0);
+        double yOffset = step.paramDouble("y-offset", 1.5);
+
+        for (int i = 0; i < amount; i++) {
+
+            Location at = origin.clone().add(
+                    (RANDOM.nextDouble() * 2 - 1) * spread,
+                    yOffset + RANDOM.nextDouble() * spread * 0.5,
+                    (RANDOM.nextDouble() * 2 - 1) * spread);
+
+            Firework firework = at.getWorld().spawn(at, Firework.class, entity -> {
+                FireworkMeta meta = entity.getFireworkMeta();
+                meta.addEffect(effect);
+                meta.setPower(0);
+                entity.setFireworkMeta(meta);
+                entity.getPersistentDataContainer().set(FireworkDamageListener.key(plugin), PersistentDataType.BYTE,
+                        (byte) 1);
+            });
+
+            firework.detonate();
+        }
+    }
+
+    // ============ LIGHTNING ============
+
+    /** Rayo solo visual (sin fuego ni daño), en el target del step. */
+    private void executeLightning(EffectStep step, EffectContext context) {
+
+        Location origin = resolveOrigin(step.paramTarget("target", EffectTarget.SELF), context);
+
+        if (origin != null && origin.getWorld() != null) {
+            origin.getWorld().strikeLightningEffect(origin);
         }
     }
 

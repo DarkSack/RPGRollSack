@@ -1,38 +1,125 @@
 id: level_up
 display-name: "&6¡Subida de nivel!"
-description: "Explosión de partículas doradas alrededor del jugador + sonido + título, pensado para dispararse desde otro addon (ej. Ascension) al subir de nivel."
+icon: EXPERIENCE_BOTTLE
+description: "Columna de luz dorada que gira alrededor del jugador, hélices de tótem que suben, un anillo que se abre por el suelo y fuegos artificiales dorados en lo alto, con título y fanfarria. Pensado para dispararse desde otro addon (ej. Ascension) al subir de nivel."
 
 steps:
-  - type: PARTICLE
+  - type: SOUND
     delay: 0
-    particle: TOTEM_OF_UNDYING
-    shape: SPHERE
-    target: SELF
-    radius: 1.2
-    points: 60
-    count: 1
-    speed: 0
+    sound: BLOCK_BEACON_ACTIVATE
+    target: LOCATION
+    volume: 1.0
+    pitch: 1.4
 
   - type: SOUND
     delay: 0
-    sound: ENTITY_PLAYER_LEVELUP
+    sound: BLOCK_AMETHYST_BLOCK_CHIME
+    target: LOCATION
+    volume: 1.2
+    pitch: 0.8
+    pitch-to: 2.0
+    repeat: 7
+    interval: 2
+
+  # Columna dorada que se retuerce.
+  - type: PARTICLE
+    delay: 0
+    particle: DUST
+    color: "#FFF2A0,#FFD700,#FF9F1C"
+    size: 1.2
+    shape: PILLAR
     target: SELF
-    volume: 1.0
-    pitch: 1.0
+    radius: 1.0
+    height: 3.2
+    rings: 10
+    points: 150
+    rotate: 15
+    repeat: 12
+    interval: 2
+
+  # Dos hélices que suben, una de tótem y otra de luz.
+  - type: PARTICLE
+    delay: 0
+    particle: TOTEM_OF_UNDYING
+    shape: HELIX
+    target: SELF
+    radius: 1.3
+    height: 3.2
+    turns: 3
+    points: 90
+    draw-ticks: 14
+
+  - type: PARTICLE
+    delay: 0
+    particle: END_ROD
+    shape: HELIX
+    target: SELF
+    rotation: 180
+    radius: 1.3
+    height: 3.2
+    turns: 3
+    points: 90
+    draw-ticks: 14
+
+  # Anillo que se abre por el suelo.
+  - type: PARTICLE
+    delay: 2
+    particle: DUST_COLOR_TRANSITION
+    color: "#FFF6C2"
+    color-to: "#FF8C00"
+    size: 1.6
+    shape: CIRCLE
+    target: SELF
+    y-offset: 0.1
+    radius: 0.5
+    radius-to: 4.0
+    points: 60
+    repeat: 8
+    interval: 1
 
   - type: TITLE
-    delay: 2
+    delay: 4
     title: "&6&l¡NIVEL SUPERIOR!"
-    subtitle: "&7Sigue así"
+    subtitle: "&eSigue así"
     target: SELF
     fade-in: 5
     stay: 40
     fade-out: 10
 
-  - type: PARTICLE
-    delay: 10
-    particle: FIREWORK
-    shape: BURST
+  # Remate en lo alto.
+  - type: SOUND
+    delay: 14
+    sound: ENTITY_PLAYER_LEVELUP
+    target: LOCATION
+    volume: 1.0
+    pitch: 1.0
+
+  - type: SOUND
+    delay: 14
+    sound: UI_TOAST_CHALLENGE_COMPLETE
     target: SELF
-    count: 40
-    speed: 0.3
+    volume: 0.8
+    pitch: 1.0
+
+  - type: FIREWORK
+    delay: 14
+    target: SELF
+    y-offset: 3.6
+    shape: STAR
+    colors: "#FFD700,#FFF4B0"
+    fade: "#FF8C00"
+    flicker: true
+    trail: true
+    count: 2
+    spread: 0.8
+
+  - type: PARTICLE
+    delay: 14
+    particle: TOTEM_OF_UNDYING
+    shape: SPHERE
+    target: SELF
+    y-offset: 1.2
+    radius: 0.6
+    points: 70
+    motion: OUTWARD
+    motion-speed: 0.6

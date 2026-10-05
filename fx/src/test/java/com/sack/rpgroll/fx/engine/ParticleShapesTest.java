@@ -203,4 +203,45 @@ class ParticleShapesTest {
         assertEquals(facingOrigin.getY(), points.get(0).getY(), 1e-9);
         assertEquals(facingOrigin.getZ(), points.get(0).getZ(), 1e-9);
     }
+
+    @Test
+    void vortexSplitsThePointsAcrossItsStrandsAndNarrowsAsItRises() {
+        List<Location> points = ParticleShapes.generate(step(Map.of("shape", "VORTEX", "points", "60",
+                "strands", "3", "radius", "2", "radius-top", "0.5", "height", "3")), origin, null);
+
+        assertEquals(60, points.size());
+        Location bottom = points.get(0);
+        Location top = points.get(19);
+        double bottomRadius = Math.hypot(bottom.getX(), bottom.getZ());
+        double topRadius = Math.hypot(top.getX(), top.getZ());
+        assertTrue(topRadius < bottomRadius);
+        assertTrue(top.getY() > bottom.getY());
+    }
+
+    @Test
+    void domeNeverGoesBelowItsOrigin() {
+        List<Location> points = ParticleShapes.generate(step(Map.of("shape", "DOME", "points", "50", "radius", "2")),
+                origin, null);
+
+        assertEquals(50, points.size());
+        assertTrue(points.stream().allMatch(p -> p.getY() >= origin.getY()));
+    }
+
+    @Test
+    void spiralStaysFlatAndInsideItsRadius() {
+        List<Location> points = ParticleShapes.generate(step(Map.of("shape", "SPIRAL", "points", "40", "radius", "3")),
+                origin, null);
+
+        assertTrue(points.stream().allMatch(p -> p.getY() == origin.getY()));
+        assertTrue(points.stream().allMatch(p -> Math.hypot(p.getX(), p.getZ()) <= 3.0001));
+    }
+
+    @Test
+    void radiusOverrideWinsOverTheStepRadius() {
+        List<Location> points = ParticleShapes.generate(step(Map.of("shape", "CIRCLE", "points", "8", "radius", "1")),
+                origin, null, 4.0);
+
+        assertEquals(4.0, Math.hypot(points.get(0).getX(), points.get(0).getZ()), 1.0E-9);
+    }
+
 }
