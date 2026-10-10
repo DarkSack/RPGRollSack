@@ -59,6 +59,9 @@ grimoire_listener:
   missing_level: "&cYou need a higher level for '{spell}' (requires level {level})."
   missing_tree_parent: "&cYou first need to learn the previous spell in '{spell}''s tree."
   learned: "&a✔ You learned '{spell}'."
+  # Título al aprender (el subtítulo es el nombre del grimorio)
+  title_one: "&dNew spell learned!"
+  title_many: "&d{count} new spells!"
 
 item:
   power: "&ePower: x{value}"
@@ -185,10 +188,18 @@ gui:
   spellbook:
     title: "&6Your Spellbook"
     school_label: "&7School: {schoolId}"
-    trigger_label: "&7Trigger: {trigger}"
+    trigger_label: "&7Cast with: {trigger}"
+    mana_label: "&bMana: {mana}"
+    cooldown_label: "&7Cooldown: {seconds} s"
+    # How it is cast
+    trigger:
+      LEFT_CLICK: "Left click"
+      RIGHT_CLICK: "Right click"
+      HOLD: "Hold right click {seconds} s"
     on_cooldown_label: "&cOn cooldown: {seconds}s"
     ready: "&aReady to cast"
     runes_label: "&dRunes: {value}"
+    no_runes: "none"
     click_select: "&eClick to select"
     shift_click_sockets: "&eShift-click to socket runes"
     selected: "&a✔ You selected '{spell}'."

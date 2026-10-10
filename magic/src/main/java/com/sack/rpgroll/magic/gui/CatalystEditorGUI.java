@@ -69,7 +69,7 @@ public class CatalystEditorGUI extends InventoryGUI {
 
         setItem(DESCRIPTION_SLOT, new ItemBuilder(Material.WRITTEN_BOOK)
                 .setName(lang.component("gui.common.description_title"))
-                .setLore(ItemBuilder.toLoreLines(
+                .setLore(MagicItemFactory.description(
                         current.description().isBlank() ? lang.raw("gui.common.no_description")
                                 : current.description()))
                 .build());

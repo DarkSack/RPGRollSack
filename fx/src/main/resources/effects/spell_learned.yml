@@ -1,0 +1,90 @@
+id: spell_learned
+display-name: "&dConocimiento Arcano"
+icon: ENCHANTED_BOOK
+description: "Runas que suben en espiral alrededor de quien lo recibe, un anillo de luz violeta que se abre a sus pies y un destello final sobre la cabeza. Sin título ni mensaje: pensado para acompañar otra notificación, como aprender un hechizo."
+
+steps:
+  - type: SOUND
+    delay: 0
+    sound: BLOCK_AMETHYST_BLOCK_CHIME
+    target: SELF
+    volume: 1.2
+    pitch: 0.8
+
+  - type: SOUND
+    delay: 10
+    sound: BLOCK_AMETHYST_BLOCK_RESONATE
+    target: SELF
+    volume: 1.0
+    pitch: 1.4
+
+  # Runas de mesa de encantamientos que suben en espiral.
+  - type: PARTICLE
+    delay: 0
+    particle: ENCHANT
+    shape: HELIX
+    target: SELF
+    radius: 1.2
+    height: 2.4
+    turns: 2
+    points: 60
+    rotate: 12
+    repeat: 12
+    interval: 1
+    force: true
+
+  - type: PARTICLE
+    delay: 0
+    particle: DUST
+    color: "#F3D9FF,#B06BFF,#5A2DFF"
+    size: 1.4
+    shape: HELIX
+    target: SELF
+    radius: 0.8
+    height: 2.2
+    turns: 2.5
+    points: 40
+    rotate: 15
+    repeat: 12
+    interval: 1
+    force: true
+
+  # Anillo de luz que se abre a los pies.
+  - type: PARTICLE
+    delay: 0
+    particle: DUST_COLOR_TRANSITION
+    color: "#E7C6FF"
+    color-to: "#3B1A8F"
+    size: 1.6
+    shape: CIRCLE
+    target: SELF
+    y-offset: 0.1
+    radius: 0.4
+    radius-to: 3.0
+    points: 60
+    repeat: 10
+    interval: 1
+
+  # Destello final sobre la cabeza.
+  - type: PARTICLE
+    delay: 12
+    particle: END_ROD
+    shape: SPHERE
+    target: SELF
+    y-offset: 2.4
+    radius: 0.3
+    points: 30
+    motion: OUTWARD
+    motion-speed: 0.15
+    force: true
+
+  - type: PARTICLE
+    delay: 12
+    particle: TOTEM_OF_UNDYING
+    target: SELF
+    y-offset: 2.2
+    count: 25
+    offset-x: 0.3
+    offset-y: 0.3
+    offset-z: 0.3
+    speed: 0.3

@@ -1,6 +1,7 @@
 package com.sack.rpgroll.magic.listener;
 
 import com.sack.rpgroll.api.RPGRollAPI;
+import com.sack.rpgroll.common.integration.SoftDepend;
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.magic.core.Grimoire;
 import com.sack.rpgroll.magic.core.GrimoireManager;
@@ -9,6 +10,13 @@ import com.sack.rpgroll.magic.core.SpellManager;
 import com.sack.rpgroll.magic.item.MagicItemFactory;
 import com.sack.rpgroll.magic.runtime.PlayerSpellbook;
 import com.sack.rpgroll.magic.runtime.SpellbookManager;
+import com.sack.rpgroll.util.ComponentUtils;
+import com.sack.rpgroll.fx.api.RPGRollFXAPI;
+
+import net.kyori.adventure.title.Title;
+
+import org.bukkit.Particle;
+import org.bukkit.Sound;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -18,6 +26,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
+import java.time.Duration;
 import java.util.Optional;
 
 /**
@@ -27,6 +36,8 @@ import java.util.Optional;
  * se saltean con un mensaje propio, sin cancelar el resto del lote.
  */
 public class GrimoireListener implements Listener {
+
+    private static final String LEARN_EFFECT = "spell_learned";
 
     private final GrimoireManager grimoireManager;
     private final SpellManager spellManager;
@@ -110,6 +121,36 @@ public class GrimoireListener implements Listener {
 
         if (learned > 0 && item != null) {
             item.setAmount(item.getAmount() - 1);
+        }
+
+        if (learned > 0) {
+            celebrate(player, grimoire, learned);
+        }
+    }
+
+    /**
+     * Título, sonido y partículas al aprender. Antes solo salía una línea de chat
+     * por hechizo y abrir un grimorio no se sentía como un momento importante.
+     */
+    private void celebrate(Player player, Grimoire grimoire, int learned) {
+
+        // El nombre del grimorio va de subtítulo: como título no cabe en pantalla.
+        player.showTitle(Title.title(
+                lang.component(learned == 1 ? "grimoire_listener.title_one" : "grimoire_listener.title_many",
+                        "count", learned),
+                ComponentUtils.parse(grimoire.displayName()),
+                Title.Times.times(Duration.ofMillis(300), Duration.ofMillis(2500), Duration.ofMillis(800))));
+
+        player.playSound(player.getLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1.0f, 0.8f);
+        player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.8f, 1.2f);
+
+        // Con RPGRoll-FX, su efecto de conocimiento arcano; si no, un remolino de runas vanilla.
+        boolean played = SoftDepend.enabled("RPGRoll-FX") && RPGRollFXAPI.isReady()
+                && RPGRollFXAPI.get().play(LEARN_EFFECT, player);
+
+        if (!played) {
+            player.getWorld().spawnParticle(Particle.ENCHANT, player.getLocation().add(0, 1.2, 0),
+                    120, 0.6, 0.8, 0.6, 1.0);
         }
     }
 

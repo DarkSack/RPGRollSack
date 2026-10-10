@@ -17,6 +17,10 @@ cost:
   mana: 25
 
 components:
+  # Onda de hielo que se expande por el suelo (efecto de RPGRoll-FX).
+  - type: VISUAL
+    effect-id: frost_wave
+
   - type: DAMAGE_AREA
     radius: 4
     amount: 5
@@ -29,7 +33,3 @@ components:
     particle: SNOWFLAKE
     count: 40
 
-  - type: SOUND
-    sound: BLOCK_GLASS_BREAK
-    volume: 1.2
-    pitch: 0.7

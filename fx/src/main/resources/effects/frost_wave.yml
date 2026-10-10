@@ -1,0 +1,125 @@
+id: frost_wave
+display-name: "&bOnda de Escarcha"
+icon: BLUE_ICE
+description: "La parte visual de la Nova de Escarcha, sin barra ni lentitud: el frío se arremolina y estalla en una onda de hielo que se expande por el suelo, con esquirlas y un copo de nieve gigante girando bajo los pies. Pensado para hechizos de área que ya aplican sus propios efectos (como el Estallido de Escarcha de RPGRoll-Magic)."
+
+steps:
+  # --- Carga: el frío se arremolina (0-10 ticks) ---
+  - type: SOUND
+    delay: 0
+    sound: ENTITY_PLAYER_HURT_FREEZE
+    target: LOCATION
+    volume: 1.2
+    pitch: 0.6
+
+  - type: PARTICLE
+    delay: 0
+    particle: DUST_COLOR_TRANSITION
+    color: "#FFFFFF"
+    color-to: "#4FC3FF"
+    size: 1.2
+    shape: VORTEX
+    target: SELF
+    radius: 1.6
+    radius-top: 0.3
+    height: 2.6
+    strands: 3
+    turns: 1.5
+    points: 120
+    draw-ticks: 10
+
+  - type: PARTICLE
+    delay: 0
+    particle: SNOWFLAKE
+    shape: CIRCLE
+    target: SELF
+    y-offset: 1.0
+    radius: 2.5
+    points: 30
+    motion: INWARD
+    motion-speed: 0.2
+    repeat: 3
+    interval: 3
+
+  # --- Estallido (10 ticks) ---
+  - type: SOUND
+    delay: 10
+    sound: BLOCK_GLASS_BREAK
+    target: LOCATION
+    volume: 2.0
+    pitch: 0.5
+
+  - type: SOUND
+    delay: 10
+    sound: BLOCK_AMETHYST_BLOCK_RESONATE
+    target: LOCATION
+    volume: 1.5
+    pitch: 1.6
+
+  - type: FIREWORK
+    delay: 10
+    target: SELF
+    y-offset: 1.2
+    shape: BALL_LARGE
+    colors: "#AEEBFF,#FFFFFF"
+    fade: "#3FA9FF"
+
+  # Onda de hielo que se abre por el suelo.
+  - type: PARTICLE
+    delay: 10
+    particle: DUST_COLOR_TRANSITION
+    color: "#E8FAFF"
+    color-to: "#2F8FFF"
+    size: 1.8
+    shape: CIRCLE
+    target: SELF
+    y-offset: 0.15
+    radius: 0.6
+    radius-to: 6.5
+    points: 90
+    repeat: 9
+    interval: 1
+
+  # Copos disparados hacia fuera.
+  - type: PARTICLE
+    delay: 10
+    particle: SNOWFLAKE
+    shape: SPHERE
+    target: SELF
+    y-offset: 1.0
+    radius: 0.6
+    points: 80
+    motion: OUTWARD
+    motion-speed: 0.45
+
+  # Esquirlas de hielo.
+  - type: PARTICLE
+    delay: 10
+    particle: BLOCK
+    block: BLUE_ICE
+    shape: CIRCLE
+    target: SELF
+    y-offset: 0.4
+    radius: 2.0
+    points: 24
+    count: 4
+    offset-x: 0.3
+    offset-y: 0.3
+    offset-z: 0.3
+
+  # Copo de nieve gigante girando bajo los pies.
+  - type: PARTICLE
+    delay: 12
+    particle: DUST
+    color: "#D6F6FF"
+    size: 1.3
+    shape: STAR
+    target: SELF
+    y-offset: 0.1
+    radius: 3.6
+    inner-radius: 1.3
+    points-count: 6
+    points: 180
+    rotate: 6
+    repeat: 14
+    interval: 2

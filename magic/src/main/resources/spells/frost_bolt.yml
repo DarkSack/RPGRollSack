@@ -29,7 +29,6 @@ components:
     effect-id: frozen
     target: target
 
-  - type: SOUND
-    sound: BLOCK_GLASS_BREAK
-    volume: 1.0
-    pitch: 1.0
+  # Esquirlas al impactar (efecto de RPGRoll-FX; sin FX se queda solo con las partículas de arriba).
+  - type: VISUAL
+    effect-id: frost_shatter

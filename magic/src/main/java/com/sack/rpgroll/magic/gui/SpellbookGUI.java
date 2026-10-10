@@ -5,9 +5,13 @@ import com.sack.rpgroll.util.ComponentUtils;
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
+import com.sack.rpgroll.magic.api.MagicAPI;
+import com.sack.rpgroll.magic.core.MagicSchool;
+import com.sack.rpgroll.magic.core.Rune;
 import com.sack.rpgroll.magic.core.RuneManager;
 import com.sack.rpgroll.magic.core.Spell;
 import com.sack.rpgroll.magic.core.SpellManager;
+import com.sack.rpgroll.magic.item.MagicItemFactory;
 import com.sack.rpgroll.magic.runtime.PlayerSpellbook;
 import com.sack.rpgroll.magic.runtime.SpellbookManager;
 
@@ -80,8 +84,24 @@ public class SpellbookGUI extends InventoryGUI {
             boolean selected = spell.id().equals(spellbook.selectedSpellId());
 
             List<Component> lore = new ArrayList<>();
-            lore.add(lang.component("gui.spellbook.school_label", "schoolId", spell.schoolId()));
-            lore.add(lang.component("gui.spellbook.trigger_label", "trigger", spell.trigger()));
+
+            if (!spell.description().isBlank()) {
+                lore.addAll(MagicItemFactory.description(spell.description()));
+                lore.add(Component.empty());
+            }
+
+            lore.add(lang.component("gui.spellbook.school_label", "schoolId", schoolName(spell.schoolId())));
+            lore.add(lang.component("gui.spellbook.trigger_label", "trigger",
+                    lang.raw("gui.spellbook.trigger." + spell.trigger().name(),
+                            "seconds", seconds(spell.castTimeTicks()))));
+
+            if (spell.cost().mana() > 0) {
+                lore.add(lang.component("gui.spellbook.mana_label", "mana", spell.cost().mana()));
+            }
+
+            if (spell.cooldownTicks() > 0) {
+                lore.add(lang.component("gui.spellbook.cooldown_label", "seconds", seconds(spell.cooldownTicks())));
+            }
 
             if (spellbook.isOnCooldown(spell.id(), now)) {
                 double secondsLeft = spellbook.remainingCooldownMillis(spell.id(), now) / 1000.0;
@@ -91,23 +111,46 @@ public class SpellbookGUI extends InventoryGUI {
                 lore.add(lang.component("gui.spellbook.ready"));
             }
 
-            List<String> runes = spellbook.runesFor(spell.id());
+            List<String> runes = spellbook.runesFor(spell.id()).stream()
+                    .map(runeId -> runeManager.get(runeId).map(Rune::displayName).orElse(runeId))
+                    .toList();
             lore.add(lang.component("gui.spellbook.runes_label", "value",
-                    runes.isEmpty() ? lang.raw("gui.common.none") : String.join(", ", runes)));
+                    runes.isEmpty() ? lang.raw("gui.spellbook.no_runes") : String.join("&r, ", runes)));
             lore.add(Component.empty());
             lore.add(lang.component("gui.spellbook.click_select"));
             lore.add(lang.component("gui.spellbook.shift_click_sockets"));
 
             var builder = new ItemBuilder(SchoolBrowserGUI.parseMaterial(spell.icon()))
                     .setName(ComponentUtils.parseWithDefault((selected ? "★ " : "") + spell.displayName(),
-                            selected ? NamedTextColor.GOLD : SchoolBrowserGUI.parseColor(spell.color()))
-                            .decoration(TextDecoration.BOLD, selected))
+                            selected ? NamedTextColor.GOLD : SchoolBrowserGUI.parseColor(spell.color())))
                     .setLore(lore);
+
+            // Solo se fuerza la negrita del seleccionado: forzarla a «false» en los demás
+            // borraba la de los nombres que la traen («&4&lMeteoro»).
+            if (selected) {
+                builder.setName(ComponentUtils.parseWithDefault("★ " + spell.displayName(), NamedTextColor.GOLD)
+                        .decoration(TextDecoration.BOLD, true));
+            }
 
             setItem(i, builder.build());
         }
 
         setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.close")));
+    }
+
+    /** Ticks a segundos sin «.0» cuando son enteros (60 → «3», 50 → «2.5»). */
+    private static String seconds(int ticks) {
+        double value = ticks / 20.0;
+        return value == Math.rint(value) ? String.valueOf((int) value)
+                : String.format(java.util.Locale.ROOT, "%.1f", value);
+    }
+
+    /** El nombre de la escuela («&6Fuego»), o su id si Magic aún no está listo o no existe. */
+    private static String schoolName(String schoolId) {
+        if (!MagicAPI.isReady()) {
+            return schoolId;
+        }
+        return MagicAPI.get().getSchoolManager().get(schoolId).map(MagicSchool::displayName).orElse(schoolId);
     }
 
     @Override

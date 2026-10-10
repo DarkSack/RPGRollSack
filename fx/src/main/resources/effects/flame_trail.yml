@@ -1,0 +1,68 @@
+id: flame_trail
+display-name: "&6Estela de Llamas"
+icon: BLAZE_POWDER
+description: "Quien lo lanza deja un rastro de fuego mientras se mueve durante medio segundo: llamas, brasas de color y chispas. Pensado para hechizos de movimiento como una embestida."
+
+steps:
+  - type: SOUND
+    delay: 0
+    sound: ENTITY_BLAZE_SHOOT
+    target: SELF
+    volume: 0.9
+    pitch: 1.4
+
+  - type: SOUND
+    delay: 0
+    sound: ITEM_FIRECHARGE_USE
+    target: SELF
+    volume: 0.7
+    pitch: 1.2
+
+  # El rastro: se dibuja donde está el lanzador en cada tick, así que sigue su movimiento.
+  - type: PARTICLE
+    delay: 0
+    particle: FLAME
+    shape: CIRCLE
+    target: SELF
+    y-offset: 0.2
+    radius: 0.6
+    points: 14
+    repeat: 10
+    interval: 1
+    force: true
+
+  - type: PARTICLE
+    delay: 0
+    particle: DUST
+    color: "#FFE08A,#FF6A00,#C21E00"
+    size: 1.6
+    target: SELF
+    y-offset: 0.9
+    count: 10
+    offset-x: 0.3
+    offset-y: 0.5
+    offset-z: 0.3
+    repeat: 10
+    interval: 1
+    force: true
+
+  - type: PARTICLE
+    delay: 0
+    particle: LAVA
+    target: SELF
+    y-offset: 0.3
+    count: 1
+    repeat: 5
+    interval: 2
+
+  # Al final del impulso, un pequeño estallido.
+  - type: PARTICLE
+    delay: 10
+    particle: FLAME
+    shape: CIRCLE
+    target: SELF
+    y-offset: 0.2
+    radius: 0.5
+    points: 30
+    motion: OUTWARD
+    motion-speed: 0.2

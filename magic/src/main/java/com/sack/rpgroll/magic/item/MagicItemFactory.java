@@ -7,6 +7,9 @@ import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.magic.core.Grimoire;
 import com.sack.rpgroll.magic.core.SpellCatalyst;
 
+import io.papermc.paper.datacomponent.DataComponentTypes;
+import io.papermc.paper.datacomponent.item.TooltipDisplay;
+
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 
@@ -26,6 +29,8 @@ import java.util.Locale;
  */
 public final class MagicItemFactory {
 
+    private static final int DESCRIPTION_WIDTH = 40;
+
 
     private MagicItemFactory() {
     }
@@ -37,7 +42,7 @@ public final class MagicItemFactory {
         List<Component> lore = new ArrayList<>();
 
         if (!catalyst.description().isBlank()) {
-            lore.add(ComponentUtils.parse(catalyst.description()).colorIfAbsent(NamedTextColor.GRAY));
+            lore.addAll(description(catalyst.description()));
             lore.add(Component.empty());
         }
 
@@ -71,7 +76,7 @@ public final class MagicItemFactory {
         List<Component> lore = new ArrayList<>();
 
         if (!grimoire.description().isBlank()) {
-            lore.add(ComponentUtils.parse(grimoire.description()).colorIfAbsent(NamedTextColor.GRAY));
+            lore.addAll(description(grimoire.description()));
             lore.add(Component.empty());
         }
 
@@ -88,6 +93,13 @@ public final class MagicItemFactory {
                 .setLore(lore)
                 .build();
 
+        // Un libro escrito enseña «Original» (su generación) bajo el nombre: se oculta.
+        if (material == Material.WRITTEN_BOOK) {
+            item.setData(DataComponentTypes.TOOLTIP_DISPLAY, TooltipDisplay.tooltipDisplay()
+                    .addHiddenComponents(DataComponentTypes.WRITTEN_BOOK_CONTENT, DataComponentTypes.ATTRIBUTE_MODIFIERS)
+                    .build());
+        }
+
         return tag(item, MagicItemKeys.GRIMOIRE_ID, grimoire.id());
     }
 
@@ -97,6 +109,33 @@ public final class MagicItemFactory {
 
     public static String getGrimoireId(ItemStack item) {
         return readTag(item, MagicItemKeys.GRIMOIRE_ID);
+    }
+
+    /** La descripción partida en líneas cortas (en una sola, el tooltip se sale de la pantalla). */
+    public static List<Component> description(String text) {
+
+        List<Component> lines = new ArrayList<>();
+        StringBuilder line = new StringBuilder();
+
+        for (String word : text.trim().split(" +")) {
+
+            if (line.length() > 0 && line.length() + 1 + word.length() > DESCRIPTION_WIDTH) {
+                lines.add(ComponentUtils.parse(line.toString()).colorIfAbsent(NamedTextColor.GRAY));
+                line.setLength(0);
+            }
+
+            if (line.length() > 0) {
+                line.append(' ');
+            }
+
+            line.append(word);
+        }
+
+        if (line.length() > 0) {
+            lines.add(ComponentUtils.parse(line.toString()).colorIfAbsent(NamedTextColor.GRAY));
+        }
+
+        return lines;
     }
 
     private static ItemStack tag(ItemStack item, org.bukkit.NamespacedKey key, String value) {

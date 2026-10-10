@@ -23,7 +23,6 @@ components:
     particle: FLAME
     count: 15
 
-  - type: SOUND
-    sound: ENTITY_BLAZE_SHOOT
-    volume: 0.8
-    pitch: 1.5
+  # Rastro de fuego que sigue al lanzador (efecto de RPGRoll-FX; sin FX se queda solo con las partículas de arriba).
+  - type: VISUAL
+    effect-id: flame_trail

@@ -5,6 +5,7 @@ import com.sack.rpgroll.util.ComponentUtils;
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
+import com.sack.rpgroll.magic.item.MagicItemFactory;
 import com.sack.rpgroll.magic.core.SchoolManager;
 import com.sack.rpgroll.magic.core.Spell;
 import com.sack.rpgroll.magic.core.SpellCastTrigger;
@@ -112,7 +113,7 @@ public class SpellEditorHubGUI extends InventoryGUI {
 
         setItem(DESCRIPTION_SLOT, new ItemBuilder(Material.WRITTEN_BOOK)
                 .setName(lang.component("gui.common.description_title"))
-                .setLore(ItemBuilder.toLoreLines(
+                .setLore(MagicItemFactory.description(
                         current.description().isBlank() ? lang.raw("gui.common.no_description")
                                 : current.description()))
                 .build());

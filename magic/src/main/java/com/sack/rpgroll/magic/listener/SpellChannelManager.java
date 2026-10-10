@@ -12,7 +12,10 @@ import com.sack.rpgroll.magic.runtime.PlayerSpellbook;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 
+import org.bukkit.Color;
 import org.bukkit.Location;
+import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -22,6 +25,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 
@@ -36,6 +40,7 @@ import java.util.UUID;
 public class SpellChannelManager implements Listener {
 
     private static final double CANCEL_MOVE_DISTANCE_SQUARED = 0.09;
+    private static final int CHANNEL_STRANDS = 3;
 
     private final Plugin plugin;
     private final SpellCastEngine engine;
@@ -84,6 +89,7 @@ public class SpellChannelManager implements Listener {
                 elapsed++;
                 int percent = (int) (100.0 * elapsed / totalTicks);
                 player.sendActionBar(lang.component("channel.progress", "percent", percent));
+                drawChannel(player, spell, elapsed, totalTicks);
 
                 if (elapsed >= totalTicks) {
 
@@ -99,6 +105,39 @@ public class SpellChannelManager implements Listener {
         }.runTaskTimer(plugin, 1L, 1L);
 
         channeling.put(player.getUniqueId(), task);
+    }
+
+    /**
+     * Mientras canaliza: tres hilos de partículas del color del hechizo que suben en
+     * espiral y se cierran sobre el jugador, y un sonido que sube de tono. Antes solo
+     * había un porcentaje en la barra de acción y nada indicaba a los demás que
+     * alguien estaba cargando un hechizo.
+     */
+    private static void drawChannel(Player player, Spell spell, int elapsed, int totalTicks) {
+
+        double progress = Math.min(1.0, elapsed / (double) totalTicks);
+        Location base = player.getLocation();
+        Particle.DustOptions dust = new Particle.DustOptions(colorOf(spell.color()), 1.3f);
+        double radius = 1.6 - 1.1 * progress;
+        double height = 0.1 + 2.0 * progress;
+
+        for (int strand = 0; strand < CHANNEL_STRANDS; strand++) {
+            double angle = elapsed * 0.35 + strand * (2 * Math.PI / CHANNEL_STRANDS);
+            Location point = base.clone().add(Math.cos(angle) * radius, height, Math.sin(angle) * radius);
+            player.getWorld().spawnParticle(Particle.DUST, point, 2, 0.03, 0.03, 0.03, 0, dust, true);
+            player.getWorld().spawnParticle(Particle.ENCHANT, point, 1, 0, 0, 0, 0.4, null, true);
+        }
+
+        if (elapsed % 10 == 1) {
+            player.getWorld().playSound(base, Sound.BLOCK_RESPAWN_ANCHOR_CHARGE, 0.7f, (float) (0.6 + progress));
+        }
+    }
+
+    /** El {@code color} del hechizo (nombre de color de chat) como color de partícula. */
+    private static Color colorOf(String raw) {
+        NamedTextColor named = raw == null ? null : NamedTextColor.NAMES.value(raw.trim().toLowerCase(Locale.ROOT));
+        int rgb = (named != null ? named : NamedTextColor.LIGHT_PURPLE).value();
+        return Color.fromRGB(rgb);
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)

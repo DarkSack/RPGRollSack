@@ -1,7 +1,7 @@
 id: twin_bolt
 display-name: "&eRuna Gemela"
 icon: FEATHER
-description: "El hechizo dispara un proyectil adicional con un pequeño desvío de ángulo — 'Split' clásico."
+description: "El hechizo dispara un proyectil adicional, ligeramente desviado."
 type: EXTRA_PROJECTILES
 
 params:

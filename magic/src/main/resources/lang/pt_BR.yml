@@ -59,6 +59,9 @@ grimoire_listener:
   missing_level: "&cFalta nível para '{spell}' (precisa do nível {level})."
   missing_tree_parent: "&cPrimeiro você precisa aprender o feitiço anterior da árvore de '{spell}'."
   learned: "&a✔ Você aprendeu '{spell}'."
+  # Título al aprender (el subtítulo es el nombre del grimorio)
+  title_one: "&dNovo feitiço aprendido!"
+  title_many: "&d{count} feitiços novos!"
 
 item:
   power: "&ePoder: x{value}"
@@ -185,10 +188,18 @@ gui:
   spellbook:
     title: "&6Seu Grimório"
     school_label: "&7Escola: {schoolId}"
-    trigger_label: "&7Trigger: {trigger}"
+    trigger_label: "&7Lançado com: {trigger}"
+    mana_label: "&bMana: {mana}"
+    cooldown_label: "&7Recarga: {seconds} s"
+    # Como é lançado
+    trigger:
+      LEFT_CLICK: "Clique esquerdo"
+      RIGHT_CLICK: "Clique direito"
+      HOLD: "Segurar clique direito {seconds} s"
     on_cooldown_label: "&cEm recarga: {seconds}s"
     ready: "&aPronto para lançar"
     runes_label: "&dRunas: {value}"
+    no_runes: "nenhuma"
     click_select: "&eClique para selecionar"
     shift_click_sockets: "&eShift-clique para encaixar runas"
     selected: "&a✔ Você selecionou '{spell}'."

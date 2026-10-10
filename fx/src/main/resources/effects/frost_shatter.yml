@@ -1,0 +1,65 @@
+id: frost_shatter
+display-name: "&bEsquirlas de Hielo"
+icon: PACKED_ICE
+description: "El hielo se rompe en esquirlas: copos disparados hacia fuera, trozos de hielo y un destello azul que se cierra sobre el objetivo. Pensado para el impacto de un proyectil de escarcha."
+
+steps:
+  - type: SOUND
+    delay: 0
+    sound: BLOCK_GLASS_BREAK
+    target: LOCATION
+    volume: 1.0
+    pitch: 1.2
+
+  - type: SOUND
+    delay: 0
+    sound: BLOCK_AMETHYST_BLOCK_RESONATE
+    target: LOCATION
+    volume: 1.0
+    pitch: 1.6
+
+  - type: PARTICLE
+    delay: 0
+    particle: SNOWFLAKE
+    shape: SPHERE
+    target: TARGET
+    radius: 0.4
+    points: 50
+    motion: OUTWARD
+    motion-speed: 0.25
+    force: true
+
+  - type: PARTICLE
+    delay: 0
+    particle: BLOCK
+    block: PACKED_ICE
+    shape: SPHERE
+    target: TARGET
+    radius: 0.6
+    points: 20
+    count: 2
+    speed: 0.2
+
+  # Destello que se cierra sobre el objetivo.
+  - type: PARTICLE
+    delay: 0
+    particle: DUST
+    color: "#E8FBFF,#7FD8FF,#2E7BFF"
+    size: 1.6
+    shape: SPHERE
+    target: TARGET
+    radius: 1.6
+    radius-to: 0.3
+    points: 40
+    repeat: 5
+    interval: 1
+    force: true
+
+  - type: PARTICLE
+    delay: 2
+    particle: END_ROD
+    shape: STAR
+    target: TARGET
+    y-offset: 0.1
+    radius: 1.4
+    points: 40

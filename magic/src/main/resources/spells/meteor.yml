@@ -11,12 +11,20 @@ trigger: HOLD
 tree-parent: fireball
 tree-tier: 1
 tags: [fire, area, channeled]
-description: "Canalizá 3 segundos quieto para invocar una explosión devastadora a tus pies. Requiere haber aprendido Bola de Fuego antes."
+description: "Canaliza 3 segundos sin moverte para invocar una explosión devastadora a tus pies. Requiere haber aprendido Bola de Fuego antes."
 
 cost:
   mana: 50
 
 components:
+  # El meteorito cae en diagonal y estalla a los 12 ticks (efecto de RPGRoll-FX);
+  # el daño espera a que toque el suelo.
+  - type: VISUAL
+    effect-id: meteor_strike
+
+  - type: DELAY
+    ticks: 12
+
   - type: DAMAGE_AREA
     radius: 5
     amount: 20
@@ -29,7 +37,3 @@ components:
     particle: EXPLOSION
     count: 3
 
-  - type: SOUND
-    sound: ENTITY_GENERIC_EXPLODE
-    volume: 1.5
-    pitch: 0.8

@@ -14,7 +14,7 @@ command:
       &7 • &dgivegrimoire <id>
     usage_givecatalyst: "&cUso: /magicadmin givecatalyst <id>"
     usage_givegrimoire: "&cUso: /magicadmin givegrimoire <id>"
-    reloaded: "&a✔ Recargado: {schools} escuela(s), {spells} hechizo(s), {grimoires} grimorio(s), {runes} runa(s), {catalysts} catalizador(es)."
+    reloaded: "&a✔ Recargado. Escuelas: {schools} · Hechizos: {spells} · Grimorios: {grimoires} · Runas: {runes} · Catalizadores: {catalysts}"
     unknown_catalyst: "&cNo existe un catalizador con id: {id}"
     unknown_grimoire: "&cNo existe un grimorio con id: {id}"
     given: "&a✔ Entregado."
@@ -59,6 +59,9 @@ grimoire_listener:
   missing_level: "&cTe falta nivel para '{spell}' (necesitas nivel {level})."
   missing_tree_parent: "&cPrimero necesitas aprender el hechizo anterior del árbol de '{spell}'."
   learned: "&a✔ Aprendiste '{spell}'."
+  # Título al aprender (el subtítulo es el nombre del grimorio)
+  title_one: "&d¡Nuevo hechizo aprendido!"
+  title_many: "&d¡{count} hechizos nuevos!"
 
 item:
   power: "&ePoder: x{value}"
@@ -66,8 +69,8 @@ item:
   range: "&dAlcance: x{value}"
   catalyst_footer: "&8Catalizador de RPGRoll-Magic"
   level_required: "&eNivel requerido: {level}"
-  spell_count: "&b{count} hechizo(s)"
-  grimoire_footer: "&8Click derecho para aprender — se consume al usarse"
+  spell_count: "&bHechizos: {count}"
+  grimoire_footer: "&8Clic derecho para aprender — se consume al usarse"
 
 prompt:
   cancel_keyword: "cancelar"
@@ -78,10 +81,10 @@ gui:
   common:
     close: "Cerrar"
     back: "Volver"
-    click_edit: "&eClick para editar"
-    click_cycle_masc: "&7Click para pasar al siguiente"
-    click_cycle_fem: "&7Click para pasar a la siguiente"
-    shift_remove: "&cShift-click para quitar"
+    click_edit: "&eClic para editar"
+    click_cycle_masc: "&7Clic para pasar al siguiente"
+    click_cycle_fem: "&7Clic para pasar a la siguiente"
+    shift_remove: "&cMayús + clic para quitar"
     no_description: "(sin descripción)"
     none: "(ninguno)"
     id_label: "&7id: {id}"
@@ -91,23 +94,23 @@ gui:
     prompt_name: "Escribe el nuevo nombre:"
     prompt_icon: "Escribe el Material del ícono:"
     prompt_description: "Escribe la nueva descripción:"
-    step_1: "&7Click: +1 · Click derecho: -1"
-    step_5: "&7Click: +5 · Click derecho: -5"
-    step_20: "&7Click: +20 · Click derecho: -20"
-    step_01: "&7Click: +0.1 · Click derecho: -0.1"
+    step_1: "&7Clic: +1 · Clic derecho: -1"
+    step_5: "&7Clic: +5 · Clic derecho: -5"
+    step_20: "&7Clic: +20 · Clic derecho: -20"
+    step_01: "&7Clic: +0.1 · Clic derecho: -0.1"
 
   magic_studio:
     title: "&6Magic Studio"
     schools: "&bEscuelas"
-    schools_lore: "&7{count} definida(s)"
+    schools_lore: "&7Definidas: {count}"
     spells: "&dHechizos"
-    spells_lore: "&7{count} definido(s)"
+    spells_lore: "&7Definidos: {count}"
     grimoires: "&eGrimorios"
-    grimoires_lore: "&7{count} definido(s)"
+    grimoires_lore: "&7Definidos: {count}"
     runes: "&aRunas"
-    runes_lore: "&7{count} definida(s)"
+    runes_lore: "&7Definidas: {count}"
     catalysts: "&6Catalizadores"
-    catalysts_lore: "&7{count} definido(s)"
+    catalysts_lore: "&7Definidos: {count}"
 
   school_browser:
     title: "&6Escuelas de Magia"
@@ -118,7 +121,7 @@ gui:
   school_editor:
     title: "&6Escuela: {id}"
     color_label: "Color: {color}"
-    color_lore: "&7Click para escribir uno nuevo (ej. RED, AQUA...)"
+    color_lore: "&7Clic para escribir uno nuevo (ej. RED, AQUA...)"
     cast_sound_label: "&eSonido al lanzar: {value}"
     cast_sound_lore: "&7Escribe 'ninguno' para quitarlo"
     cast_effect_label: "&eEfecto RPGRoll-FX: {value}"
@@ -128,16 +131,16 @@ gui:
     race_affinities_label: "&eAfinidades de raza: {count}"
     class_affinities_label: "&eAfinidades de clase: {count}"
     affinity_line: "&7{key}: {sign}{percent}%"
-    affinity_lore: "&8Click para reescribir (id=fraccion,id2=fraccion2)"
+    affinity_lore: "&8Clic para reescribir (id=fracción,id2=fracción2)"
     prompt_color: "Escribe el color (ej. RED, AQUA, LIGHT_PURPLE):"
-    prompt_race_affinities: "Escribe: raza=fraccion,raza2=fraccion2 (ej. elf=0.25,demon=-0.2):"
-    prompt_class_affinities: "Escribe: clase=fraccion,clase2=fraccion2 (ej. paladin=0.3):"
+    prompt_race_affinities: "Escribe: raza=fracción,raza2=fracción2 (ej. elf=0.25,demon=-0.2):"
+    prompt_class_affinities: "Escribe: clase=fracción,clase2=fracción2 (ej. paladin=0.3):"
 
   spell_browser:
     title: "&6Hechizos"
     school_label: "&7Escuela: {schoolId}"
     rarity_level_label: "&7{rarity} · Nivel {level}"
-    component_count_label: "&7{count} componente(s)"
+    component_count_label: "&7Componentes: {count}"
     new: "&aCrear hechizo nuevo"
     prompt_new: "Escribe: id escuela (ej. fireball fire):"
     need_school_first: "&cPrimero crea al menos una escuela."
@@ -185,12 +188,20 @@ gui:
   spellbook:
     title: "&6Tu Grimorio"
     school_label: "&7Escuela: {schoolId}"
-    trigger_label: "&7Trigger: {trigger}"
-    on_cooldown_label: "&cEn cooldown: {seconds}s"
+    trigger_label: "&7Se lanza con: {trigger}"
+    mana_label: "&bManá: {mana}"
+    cooldown_label: "&7Recarga: {seconds} s"
+    # Cómo se lanza
+    trigger:
+      LEFT_CLICK: "Clic izquierdo"
+      RIGHT_CLICK: "Clic derecho"
+      HOLD: "Mantener clic derecho {seconds} s"
+    on_cooldown_label: "&cEn recarga: {seconds} s"
     ready: "&aListo para lanzar"
     runes_label: "&dRunas: {value}"
-    click_select: "&eClick para seleccionar"
-    shift_click_sockets: "&eShift-click para socketear runas"
+    no_runes: "ninguna"
+    click_select: "&eClic para seleccionar"
+    shift_click_sockets: "&eMayús + clic para engarzar runas"
     selected: "&a✔ Seleccionaste '{spell}'."
 
   rune_browser:
@@ -223,7 +234,7 @@ gui:
 
   grimoire_browser:
     title: "&6Grimorios"
-    spell_count_lore: "&7{count} hechizo(s)"
+    spell_count_lore: "&7Hechizos: {count}"
     new: "&aCrear grimorio nuevo"
     prompt_new_id: "Escribe el id del nuevo grimorio:"
     already_exists: "&cYa existe un grimorio con ese id."
