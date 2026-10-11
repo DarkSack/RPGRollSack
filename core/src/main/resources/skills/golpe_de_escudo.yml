@@ -1,8 +1,14 @@
-id: golpe_de_escudo
+id: "golpe_de_escudo"
 name: "&3Golpe de Escudo"
-description: |
-  Estampa el escudo contra el enemigo.
+description: "Estampa el escudo contra el enemigo."
 required-level: 20
 mana-cost: 20
 cooldown-seconds: 10
 damage-multiplier: 1.8
+translations:
+  en:
+    name: "&3Shield Bash"
+    description: "Slams the shield into the enemy."
+  pt_BR:
+    name: "&3Golpe de Escudo"
+    description: "Esmaga o escudo contra o inimigo."

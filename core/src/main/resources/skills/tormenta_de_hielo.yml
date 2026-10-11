@@ -1,4 +1,4 @@
-id: tormenta_de_hielo
+id: "tormenta_de_hielo"
 name: "&bTormenta de Hielo"
 description: |
   Descarga una ventisca
@@ -7,3 +7,14 @@ required-level: 20
 mana-cost: 35
 cooldown-seconds: 14
 damage-multiplier: 2.6
+translations:
+  en:
+    name: "&bIce Storm"
+    description: |
+      Unleashes a blizzard
+      on the target.
+  pt_BR:
+    name: "&bTempestade de Gelo"
+    description: |
+      Descarrega uma nevasca
+      sobre o alvo.

@@ -1,4 +1,4 @@
-id: disparo_certero
+id: "disparo_certero"
 name: "&aDisparo Certero"
 description: |
   Una sola flecha,
@@ -7,3 +7,14 @@ required-level: 20
 mana-cost: 25
 cooldown-seconds: 12
 damage-multiplier: 2.8
+translations:
+  en:
+    name: "&aTrue Shot"
+    description: |
+      A single arrow,
+      right where it hurts.
+  pt_BR:
+    name: "&aDisparo Certeiro"
+    description: |
+      Uma única flecha,
+      bem onde dói.

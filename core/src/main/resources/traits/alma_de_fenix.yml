@@ -8,3 +8,14 @@ effect:
   wisdom-bonus: 2
   mana-bonus: 20
   defense-bonus: 0.03
+translations:
+  en:
+    name: "&6Phoenix Soul"
+    description: |
+      Hidden trait (RPGRoll-Ascension, secrets/phoenix_rebirth.yml).
+      Passing the Trial of Ashes leaves a flame that never dies.
+  pt_BR:
+    name: "&6Alma de Fênix"
+    description: |
+      Traço oculto (RPGRoll-Ascension, secrets/phoenix_rebirth.yml).
+      Superar a Prova das Cinzas deixa uma chama que não se apaga.

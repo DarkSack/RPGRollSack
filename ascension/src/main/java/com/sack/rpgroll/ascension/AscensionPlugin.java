@@ -131,7 +131,8 @@ public class AscensionPlugin extends JavaPlugin {
         ChatPromptManager chatPromptManager = new ChatPromptManager(this, langManager);
         getServer().getPluginManager().registerEvents(chatPromptManager, this);
 
-        getServer().getPluginManager().registerEvents(new PlayerSessionListener(engine), this);
+        getServer().getPluginManager().registerEvents(new PlayerSessionListener(engine, langManager,
+                getConfig().getInt("talent-points.from-level", 20), getConfig().getInt("talent-points.per-level", 1)), this);
         getServer().getPluginManager().registerEvents(
                 new AffinityCombatListener(affinityManager, stateManager), this);
         getServer().getPluginManager().registerEvents(new ProgressListener(this, progressService), this);

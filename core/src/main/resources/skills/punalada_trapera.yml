@@ -1,4 +1,4 @@
-id: punalada_trapera
+id: "punalada_trapera"
 name: "&8Puñalada Trapera"
 description: |
   Un golpe a traición
@@ -7,3 +7,14 @@ required-level: 20
 mana-cost: 25
 cooldown-seconds: 10
 damage-multiplier: 2.8
+translations:
+  en:
+    name: "&8Backstab"
+    description: |
+      A treacherous strike
+      no one sees coming.
+  pt_BR:
+    name: "&8Punhalada Traiçoeira"
+    description: |
+      Um golpe à traição
+      que ninguém vê chegar.

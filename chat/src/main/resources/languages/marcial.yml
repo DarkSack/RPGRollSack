@@ -1,0 +1,10 @@
+id: "marcial"
+display-name: "Jerga Marcial"
+obfuscation-char: "!"
+default-for-classes:
+  - "guerrero"
+translations:
+  en:
+    display-name: "Battle Cant"
+  pt_BR:
+    display-name: "Jargão Marcial"

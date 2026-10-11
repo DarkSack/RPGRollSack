@@ -1,4 +1,7 @@
 # ============================================================================
+# Cualquier archivo de contenido puede traer sus textos en otros idiomas: lo que
+# haya bajo "translations.<idioma>" (en, pt_BR…) pisa los campos de arriba cuando
+# ese es el "language" del plugin. Ver el final de este archivo.
 # ESPECIALIZACIÓN DE CLASE DE REFERENCIA — usa TODOS los campos que soporta
 # una ClassSpecialization de RPGRoll-Ascension, incluyendo un árbol de
 # talentos con prerequisitos y los 3 tipos de recompensa de nodo (skill,
@@ -23,7 +26,10 @@ requirements:
     orden_arcana: 50
     reino: 20
 
-# Bonos de stat fijos, aplicados con solo tener la especialización (además de los del árbol de talentos)
+# Bonos de stat fijos, aplicados con solo tener la especialización (además de los del árbol de talentos).
+# Tienen efecto en el juego: health (puntos de vida, 2 = un corazón), speed (% de velocidad), damage (daño de
+# ataque), defense (puntos de armadura), attack_speed (%), luck, resistance (% contra el empuje) y
+# mining_speed (%). El resto (magic_power, critical_chance, mana…) es informativo salvo que otro plugin lo lea.
 stats:
   magic_power: 5
   magic_resistance: 3
@@ -76,3 +82,8 @@ talents:
     cost: 4
     requires: [arcane_overload, unbreakable_barrier]
     enchantment: flaming_strike # otorga (o permite aplicar) un encantamiento de RPGRoll-Enchantments
+
+# Traducciones: mismos campos y misma forma que arriba, solo los que cambian.
+translations:
+  en:
+    display-name: "&9&lReference Archmage"

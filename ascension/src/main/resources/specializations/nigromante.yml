@@ -1,45 +1,68 @@
-id: nigromante
-base-class: mago
+id: "nigromante"
+base-class: "mago"
 display-name: "&5Nigromante"
-
 requirements:
   level: 20
-
 stats:
-  magic_power: 4
-
+  health: 4
 restrictions:
   - "no-heavy-armor"
-
 talents:
   inicio:
     display-name: "&7Inicio"
     cost: 1
     stats:
-      mana: 10
-
+      luck: 1
   marchitar:
     display-name: "&5Toque Marchito"
     cost: 2
-    requires: [inicio]
+    requires:
+      - "inicio"
     stats:
-      magic_power: 3
-
+      damage: 1
   marchitar_2:
     display-name: "&5Drenar Vida"
     cost: 3
-    requires: [marchitar]
-    skill: drenar_vida
-
+    requires:
+      - "marchitar"
+    skill: "drenar_vida"
   pacto:
     display-name: "&8Pacto Oscuro"
     cost: 2
-    requires: [inicio]
+    requires:
+      - "inicio"
     stats:
-      health: 5
-
+      health: 4
   pacto_2:
     display-name: "&5Pacto de Ultratumba"
     cost: 3
-    requires: [pacto]
-    trait: pacto_de_ultratumba
+    requires:
+      - "pacto"
+    trait: "pacto_de_ultratumba"
+translations:
+  en:
+    display-name: "&5Necromancer"
+    talents:
+      inicio:
+        display-name: "&7Start"
+      marchitar:
+        display-name: "&5Withering Touch"
+      marchitar_2:
+        display-name: "&5Life Drain"
+      pacto:
+        display-name: "&8Dark Pact"
+      pacto_2:
+        display-name: "&5Pact from Beyond"
+  pt_BR:
+    display-name: "&5Necromante"
+    talents:
+      inicio:
+        display-name: "&7Início"
+      marchitar:
+        display-name: "&5Toque Murcho"
+      marchitar_2:
+        display-name: "&5Drenar Vida"
+      pacto:
+        display-name: "&8Pacto Sombrio"
+      pacto_2:
+        display-name: "&5Pacto do Além"

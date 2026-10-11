@@ -1,42 +1,66 @@
-id: maestro_de_guerra
-base-class: bardo
+id: "maestro_de_guerra"
+base-class: "bardo"
 display-name: "&cMaestro de Guerra"
-
 requirements:
   level: 20
-
 stats:
-  damage: 3
-
+  damage: 1
 talents:
   inicio:
     display-name: "&7Inicio"
     cost: 1
     stats:
-      health: 5
-
+      health: 4
   redoble:
     display-name: "&cRedoble"
     cost: 2
-    requires: [inicio]
+    requires:
+      - "inicio"
     stats:
-      attack_speed: 3
-
+      attack_speed: 8
   redoble_2:
     display-name: "&cGrito de Guerra"
     cost: 3
-    requires: [redoble]
-    skill: grito_de_guerra
-
+    requires:
+      - "redoble"
+    skill: "grito_de_guerra"
   estandarte:
     display-name: "&7Estandarte"
     cost: 2
-    requires: [inicio]
+    requires:
+      - "inicio"
     stats:
-      defense: 3
-
+      defense: 2
   estandarte_2:
     display-name: "&cMarcha Triunfal"
     cost: 3
-    requires: [estandarte]
-    trait: marcha_triunfal
+    requires:
+      - "estandarte"
+    trait: "marcha_triunfal"
+translations:
+  en:
+    display-name: "&cWar Chanter"
+    talents:
+      inicio:
+        display-name: "&7Start"
+      redoble:
+        display-name: "&cDrumroll"
+      redoble_2:
+        display-name: "&cWar Cry"
+      estandarte:
+        display-name: "&7Banner"
+      estandarte_2:
+        display-name: "&cTriumphal March"
+  pt_BR:
+    display-name: "&cMestre de Guerra"
+    talents:
+      inicio:
+        display-name: "&7Início"
+      redoble:
+        display-name: "&cRufar"
+      redoble_2:
+        display-name: "&cGrito de Guerra"
+      estandarte:
+        display-name: "&7Estandarte"
+      estandarte_2:
+        display-name: "&cMarcha Triunfal"

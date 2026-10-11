@@ -1,0 +1,15 @@
+id: "maestria_marcial"
+name: "&cMaestría Marcial"
+description: "Años de instrucción: más aguante y mejor guardia."
+required-level: 1
+effect:
+  health-bonus: 4
+  defense-bonus: 0.03
+  speed-bonus: -0.03
+translations:
+  en:
+    name: "&cMartial Mastery"
+    description: "Years of drilling: more stamina and a better guard."
+  pt_BR:
+    name: "&cMaestria Marcial"
+    description: "Anos de treino: mais fôlego e melhor guarda."

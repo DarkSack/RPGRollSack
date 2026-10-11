@@ -32,9 +32,11 @@ public class CharacterChangeService {
     private final RaceManager raceManager;
     private final ClassManager classManager;
     private final RaceAttributeApplier raceAttributeApplier;
+    private final com.sack.rpgroll.gameplay.trait.PassiveEffects passiveEffects;
 
     public CharacterChangeService(PlayerManager playerManager, RaceManager raceManager, ClassManager classManager,
-            RaceAttributeApplier raceAttributeApplier) {
+            RaceAttributeApplier raceAttributeApplier, com.sack.rpgroll.gameplay.trait.PassiveEffects passiveEffects) {
+        this.passiveEffects = passiveEffects;
         this.playerManager = playerManager;
         this.raceManager = raceManager;
         this.classManager = classManager;
@@ -64,6 +66,7 @@ public class CharacterChangeService {
 
         playerManager.savePlayer(rpgPlayer);
         raceAttributeApplier.apply(player, raceOpt.get());
+        passiveEffects.apply(player, rpgPlayer);
 
         return Optional.of(rpgPlayer);
     }
@@ -85,6 +88,7 @@ public class CharacterChangeService {
         }
 
         playerManager.savePlayer(rpgPlayer);
+        passiveEffects.apply(player, rpgPlayer);
 
         return Optional.of(rpgPlayer);
     }

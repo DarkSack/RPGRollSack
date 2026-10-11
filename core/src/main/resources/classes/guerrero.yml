@@ -1,13 +1,44 @@
-id: guerrero
+id: "guerrero"
 display-name: "&c⚔ Guerrero"
 description: |
   Maestro del combate cuerpo a cuerpo.
   Prioriza fuerza y resistencia sobre todo lo demás.
 base-attributes:
   strength: 3
-  constitution: 2
-passive-traits: []
+  constitution: 3
+  intelligence: -1
+passive-traits:
+  - "maestria_marcial"
 icon: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvN2I5M2ZmMjgzODIwMGRmMmQyOWJhNjI4YWM2ZmUyNjkzM2YxN2MxY2M3ZmVlMDIxNGM0MTU4NzNiMjZlNmY2YiJ9fX0="
 lore:
   - "&7Armas: Espadas, Hachas y Escudos"
   - "&7Rol: Tanque / DPS"
+  - "&a▲ +3% de defensa"
+  - "&a▲ +4 de vida"
+  - "&c▼ -3% de velocidad"
+  - "&7Idioma: Jerga Marcial"
+translations:
+  en:
+    display-name: "&c⚔ Warrior"
+    description: |
+      Master of melee combat.
+      Strength and endurance above all else.
+    lore:
+      - "&7Weapons: Swords, Axes and Shields"
+      - "&7Role: Tank / DPS"
+      - "&a▲ +3% defense"
+      - "&a▲ +4 health"
+      - "&c▼ -3% speed"
+      - "&7Language: Battle Cant"
+  pt_BR:
+    display-name: "&c⚔ Guerreiro"
+    description: |
+      Mestre do combate corpo a corpo.
+      Prioriza força e resistência acima de tudo.
+    lore:
+      - "&7Armas: Espadas, Machados e Escudos"
+      - "&7Função: Tanque / DPS"
+      - "&a▲ +3% de defesa"
+      - "&a▲ +4 de vida"
+      - "&c▼ -3% de velocidade"
+      - "&7Idioma: Jargão Marcial"

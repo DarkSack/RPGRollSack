@@ -1,9 +1,15 @@
-id: adaptable
+id: "adaptable"
 name: "&eAdaptable"
-description: |
-  Otorgado por raza humana.
-  Un poco de todo.
+description: "Aprende rápido y aguanta lo que le echen."
 required-level: 1
 effect:
   health-bonus: 2
-  mana-bonus: 10
+  damage-bonus: 0.02
+  luck-bonus: 1
+translations:
+  en:
+    name: "&eAdaptable"
+    description: "Learns fast and endures whatever comes."
+  pt_BR:
+    name: "&eAdaptável"
+    description: "Aprende rápido e aguenta o que vier."

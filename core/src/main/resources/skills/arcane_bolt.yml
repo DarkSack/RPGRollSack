@@ -1,8 +1,14 @@
-id: arcane_bolt
+id: "arcane_bolt"
 name: "&bSaeta Arcana"
-description: |
-  Un proyectil de energía pura.
+description: "Un proyectil de energía pura."
 required-level: 20
 mana-cost: 15
 cooldown-seconds: 6
 damage-multiplier: 1.8
+translations:
+  en:
+    name: "&bArcane Bolt"
+    description: "A bolt of pure energy."
+  pt_BR:
+    name: "&bSeta Arcana"
+    description: "Um projétil de energia pura."

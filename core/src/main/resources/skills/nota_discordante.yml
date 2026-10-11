@@ -1,4 +1,4 @@
-id: nota_discordante
+id: "nota_discordante"
 name: "&dNota Discordante"
 description: |
   Un acorde tan agrio
@@ -7,3 +7,14 @@ required-level: 20
 mana-cost: 20
 cooldown-seconds: 8
 damage-multiplier: 1.9
+translations:
+  en:
+    name: "&dDiscordant Note"
+    description: |
+      A chord so sour
+      it truly hurts.
+  pt_BR:
+    name: "&dNota Dissonante"
+    description: |
+      Um acorde tão azedo
+      que dói de verdade.

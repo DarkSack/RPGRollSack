@@ -8,3 +8,14 @@ effect:
   intelligence-bonus: 1
   mana-bonus: 15
   defense-bonus: 0.04
+translations:
+  en:
+    name: "&9Mana Barrier"
+    description: |
+      Archmage talent (RPGRoll-Ascension, specializations/archmage.yml).
+      A layer of mana absorbs part of each blow.
+  pt_BR:
+    name: "&9Barreira de Mana"
+    description: |
+      Talento do Arquimago (RPGRoll-Ascension, specializations/archmage.yml).
+      Uma camada de mana absorve parte dos golpes.

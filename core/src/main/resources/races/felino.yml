@@ -1,4 +1,4 @@
-id: felino
+id: "felino"
 display-name: "&6☾ Felino"
 description: |
   Cazadores de pasos silenciosos
@@ -7,13 +7,44 @@ base-attributes:
   dexterity: 3
   wisdom: 1
   constitution: -1
-
 physical:
   scale: 0.95
   movement-speed-percent: 0.1
 passive-traits:
-  - sentidos_felinos
+  - "sentidos_felinos"
 icon: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZTgzYjZhMjYyMGU2ODZhYWQyYjNlMjNkYzA3NzZhNmE0NTFhNjY1ZTYyMTMxMTY3N2M3YjBlMjEzMGVmOWMxYyJ9fX0="
 lore:
-  - "&7Tribus de las selvas y los desiertos"
   - "&7Siempre caen de pie"
+  - "&c▼ -2 de vida"
+  - "&a▲ +10% de velocidad"
+  - "&a▲ +3% de evasión"
+  - "&a▲ +5% de crítico"
+  - "&7Tamaño ×0.95"
+  - "&7Idioma: Félido"
+translations:
+  en:
+    display-name: "&6☾ Catfolk"
+    description: |
+      Hunters with silent steps
+      and impossible reflexes.
+    lore:
+      - "&7They always land on their feet"
+      - "&c▼ -2 health"
+      - "&a▲ +10% speed"
+      - "&a▲ +3% evasion"
+      - "&a▲ +5% critical chance"
+      - "&7Size ×0.95"
+      - "&7Language: Feline"
+  pt_BR:
+    display-name: "&6☾ Felino"
+    description: |
+      Caçadores de passos silenciosos
+      e reflexos impossíveis.
+    lore:
+      - "&7Sempre caem de pé"
+      - "&c▼ -2 de vida"
+      - "&a▲ +10% de velocidade"
+      - "&a▲ +3% de evasão"
+      - "&a▲ +5% de crítico"
+      - "&7Tamanho ×0.95"
+      - "&7Idioma: Felídeo"

@@ -1,45 +1,68 @@
-id: berserker
-base-class: guerrero
+id: "berserker"
+base-class: "guerrero"
 display-name: "&4Berserker"
-
 requirements:
   level: 20
-
 stats:
-  damage: 4
-
+  damage: 2
 restrictions:
   - "no-shield"
-
 talents:
   inicio:
     display-name: "&7Inicio"
     cost: 1
     stats:
-      health: 5
-
+      health: 4
   ataque:
     display-name: "&cFuria de Batalla"
     cost: 2
-    requires: [inicio]
+    requires:
+      - "inicio"
     stats:
-      damage: 3
-
+      attack_speed: 8
   ataque_2:
     display-name: "&cGolpe Devastador"
     cost: 3
-    requires: [ataque]
-    skill: devastating_blow
-
+    requires:
+      - "ataque"
+    skill: "devastating_blow"
   defensa:
     display-name: "&7Piel de Hierro"
     cost: 2
-    requires: [inicio]
+    requires:
+      - "inicio"
     stats:
-      defense: 4
-
+      defense: 2
   defensa_2:
-    display-name: "&7Furia Inquebrantable"
+    display-name: "&cVoluntad Inquebrantable"
     cost: 3
-    requires: [defensa]
-    trait: unbreakable_will
+    requires:
+      - "defensa"
+    trait: "unbreakable_will"
+translations:
+  en:
+    display-name: "&4Berserker"
+    talents:
+      inicio:
+        display-name: "&7Start"
+      ataque:
+        display-name: "&cBattle Fury"
+      ataque_2:
+        display-name: "&cDevastating Blow"
+      defensa:
+        display-name: "&7Iron Skin"
+      defensa_2:
+        display-name: "&cUnbreakable Will"
+  pt_BR:
+    display-name: "&4Berserker"
+    talents:
+      inicio:
+        display-name: "&7Início"
+      ataque:
+        display-name: "&cFúria de Batalha"
+      ataque_2:
+        display-name: "&cGolpe Devastador"
+      defensa:
+        display-name: "&7Pele de Ferro"
+      defensa_2:
+        display-name: "&cVontade Inquebrantável"

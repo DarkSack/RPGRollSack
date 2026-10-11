@@ -1,4 +1,4 @@
-id: drenar_vida
+id: "drenar_vida"
 name: "&5Drenar Vida"
 description: |
   Arranca la energía vital
@@ -7,3 +7,14 @@ required-level: 20
 mana-cost: 30
 cooldown-seconds: 10
 damage-multiplier: 2.3
+translations:
+  en:
+    name: "&5Life Drain"
+    description: |
+      Tears the life force
+      out of the target.
+  pt_BR:
+    name: "&5Drenar Vida"
+    description: |
+      Arranca a energia vital
+      do alvo.

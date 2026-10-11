@@ -1,9 +1,21 @@
-id: fuerza_bruta
+id: "fuerza_bruta"
 name: "&cFuerza Bruta"
 description: |
   Otorgado por raza enana.
-  Aumenta el daño cuerpo a cuerpo infligido.
+  Pega fuerte y aguanta más.
 required-level: 1
 effect:
-  wisdom-bonus: 0
+  damage-bonus: 0.03
   defense-bonus: 0.02
+  attack-speed-bonus: -0.05
+translations:
+  en:
+    name: "&cBrute Strength"
+    description: |
+      Granted by the dwarven race.
+      Hits hard and holds firm.
+  pt_BR:
+    name: "&cForça Bruta"
+    description: |
+      Concedido pela raça anã.
+      Bate forte e aguenta mais.

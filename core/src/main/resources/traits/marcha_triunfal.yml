@@ -1,8 +1,14 @@
-id: marcha_triunfal
+id: "marcha_triunfal"
 name: "&cMarcha Triunfal"
-description: |
-  Con su tambor, la tropa no afloja.
+description: "Con su tambor, la tropa no afloja."
 required-level: 20
 effect:
-  charisma-bonus: 2
   damage-bonus: 0.03
+  attack-speed-bonus: 0.05
+translations:
+  en:
+    name: "&cTriumphal March"
+    description: "With their drum, the troops never slacken."
+  pt_BR:
+    name: "&cMarcha Triunfal"
+    description: "Com seu tambor, a tropa não afrouxa."

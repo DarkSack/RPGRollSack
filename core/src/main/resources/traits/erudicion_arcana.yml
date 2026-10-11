@@ -1,0 +1,14 @@
+id: "erudicion_arcana"
+name: "&9Erudición Arcana"
+description: "Mucho poder en un cuerpo de biblioteca."
+required-level: 1
+effect:
+  damage-bonus: 0.06
+  health-bonus: -4
+translations:
+  en:
+    name: "&9Arcane Lore"
+    description: "Great power in a bookworm's body."
+  pt_BR:
+    name: "&9Erudição Arcana"
+    description: "Muito poder em um corpo de biblioteca."

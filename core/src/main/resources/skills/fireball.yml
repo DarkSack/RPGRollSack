@@ -1,4 +1,4 @@
-id: fireball
+id: "fireball"
 name: "&cBola de Fuego"
 description: |
   Lanza una bola de
@@ -7,3 +7,14 @@ required-level: 5
 mana-cost: 20
 cooldown-seconds: 8
 damage-multiplier: 1.5
+translations:
+  en:
+    name: "&cFireball"
+    description: |
+      Hurls a ball of
+      fire that deals magic damage.
+  pt_BR:
+    name: "&cBola de Fogo"
+    description: |
+      Lança uma bola de
+      fogo que causa dano mágico.

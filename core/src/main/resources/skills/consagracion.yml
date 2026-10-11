@@ -1,4 +1,4 @@
-id: consagracion
+id: "consagracion"
 name: "&bConsagración"
 description: |
   Bendice el suelo
@@ -7,3 +7,14 @@ required-level: 20
 mana-cost: 30
 cooldown-seconds: 14
 damage-multiplier: 2.0
+translations:
+  en:
+    name: "&bConsecration"
+    description: |
+      Blesses the ground
+      beneath the enemy's feet.
+  pt_BR:
+    name: "&bConsagração"
+    description: |
+      Abençoa o chão
+      sob os pés do inimigo.

@@ -1,0 +1,16 @@
+id: "comunion_natural"
+name: "&2Comunión Natural"
+description: "La tierra lo cuida; el acero no es lo suyo."
+required-level: 1
+effect:
+  health-bonus: 4
+  luck-bonus: 1
+  speed-bonus: 0.02
+  damage-bonus: -0.02
+translations:
+  en:
+    name: "&2Nature's Communion"
+    description: "The land looks after them; steel is not their thing."
+  pt_BR:
+    name: "&2Comunhão Natural"
+    description: "A terra cuida dele; o aço não é seu forte."

@@ -1,0 +1,11 @@
+id: "sepulcral"
+display-name: "Sepulcral"
+obfuscation-char: "†"
+default-for-races:
+  - "revenant"
+  - "renacido"
+translations:
+  en:
+    display-name: "Gravetongue"
+  pt_BR:
+    display-name: "Sepulcral"

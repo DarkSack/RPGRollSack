@@ -1,0 +1,15 @@
+id: "fuerza_colosal"
+name: "&6Fuerza Colosal"
+description: "Cada golpe es un derrumbe, y él un blanco fácil."
+required-level: 1
+effect:
+  damage-bonus: 0.06
+  defense-bonus: -0.04
+  attack-speed-bonus: -0.08
+translations:
+  en:
+    name: "&6Colossal Strength"
+    description: "Every blow is a landslide, and they an easy target."
+  pt_BR:
+    name: "&6Força Colossal"
+    description: "Cada golpe é um desabamento, e ele um alvo fácil."

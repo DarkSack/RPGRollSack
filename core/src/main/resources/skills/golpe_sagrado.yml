@@ -1,4 +1,4 @@
-id: golpe_sagrado
+id: "golpe_sagrado"
 name: "&6Golpe Sagrado"
 description: |
   Carga el arma de luz
@@ -7,3 +7,14 @@ required-level: 20
 mana-cost: 25
 cooldown-seconds: 10
 damage-multiplier: 2.3
+translations:
+  en:
+    name: "&6Holy Strike"
+    description: |
+      Charges the weapon with light
+      and unleashes it in one cut.
+  pt_BR:
+    name: "&6Golpe Sagrado"
+    description: |
+      Carrega a arma de luz
+      e a descarrega em um golpe.

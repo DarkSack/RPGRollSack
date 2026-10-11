@@ -1,8 +1,14 @@
-id: aura_de_valor
+id: "aura_de_valor"
 name: "&6Aura de Valor"
-description: |
-  A su lado nadie tiene miedo.
+description: "A su lado nadie tiene miedo."
 required-level: 20
 effect:
-  strength-bonus: 2
+  damage-bonus: 0.03
   health-bonus: 4
+translations:
+  en:
+    name: "&6Aura of Valor"
+    description: "No one fears at their side."
+  pt_BR:
+    name: "&6Aura de Valor"
+    description: "Ao seu lado ninguém tem medo."

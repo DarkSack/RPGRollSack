@@ -1,23 +1,51 @@
-id: draconido
+id: "draconido"
 display-name: "&5❖ Draconido"
 description: |
-  Descendientes de dragones ancestrales
+  Descendientes de dragones ancestrales,
   con escamas resistentes y aliento elemental.
-
 base-attributes:
   strength: 2
   constitution: 2
   charisma: 1
   dexterity: -1
-
+physical:
+  movement-speed-percent: -0.05
+  knockback-resistance: 0.1
 passive-traits:
-  - resistencia_fuego
-  - aliento_elemental
-  - escamas_dracónicas
-
-icon: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvN2UzZDk1ODlkMjM2YWVjODg3ZDJiMzJmZDhkM2I5MTcwMGMyNWI4MzhmY2MwNzhmZjg3NmEwYTg1NzFmZmQ3OCJ9fX0=
-
+  - "escamas_draconicas"
+icon: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvN2UzZDk1ODlkMjM2YWVjODg3ZDJiMzJmZDhkM2I5MTcwMGMyNWI4MzhmY2MwNzhmZjg3NmEwYTg1NzFmZmQ3OCJ9fX0="
 lore:
   - "&7Sangre de dragón corre por sus venas"
-  - "&7Sus escamas resisten el fuego y el calor extremo"
-  - "&7Temidos y respetados por igual en el campo de batalla"
+  - "&a▲ +2% de daño"
+  - "&a▲ +5% de defensa"
+  - "&c▼ -5% de velocidad"
+  - "&c▼ -3% de evasión"
+  - "&a▲ +10% contra el empuje"
+  - "&7Idioma: Dracónico"
+translations:
+  en:
+    display-name: "&5❖ Dragonborn"
+    description: |
+      Descendants of ancient dragons,
+      with tough scales and elemental breath.
+    lore:
+      - "&7Dragon blood runs in their veins"
+      - "&a▲ +2% damage"
+      - "&a▲ +5% defense"
+      - "&c▼ -5% speed"
+      - "&c▼ -3% evasion"
+      - "&a▲ +10% knockback resistance"
+      - "&7Language: Draconic"
+  pt_BR:
+    display-name: "&5❖ Draconato"
+    description: |
+      Descendentes de dragões ancestrais,
+      com escamas resistentes e sopro elemental.
+    lore:
+      - "&7Sangue de dragão corre em suas veias"
+      - "&a▲ +2% de dano"
+      - "&a▲ +5% de defesa"
+      - "&c▼ -5% de velocidade"
+      - "&c▼ -3% de evasão"
+      - "&a▲ +10% contra empurrões"
+      - "&7Idioma: Dracônico"

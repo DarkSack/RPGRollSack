@@ -1,9 +1,15 @@
-id: mas_alla_de_la_muerte
+id: "mas_alla_de_la_muerte"
 name: "&8Más Allá de la Muerte"
-description: |
-  Otorgado por raza renacida.
-  Ya murió una vez.
+description: "Aguanta lo indecible, pero ya no pega como en vida."
 required-level: 1
 effect:
   health-bonus: 4
-  defense-bonus: 0.02
+  defense-bonus: 0.03
+  damage-bonus: -0.03
+translations:
+  en:
+    name: "&8Beyond Death"
+    description: "Endures the unspeakable, but no longer hits like in life."
+  pt_BR:
+    name: "&8Além da Morte"
+    description: "Aguenta o indizível, mas já não bate como em vida."

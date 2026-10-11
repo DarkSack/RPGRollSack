@@ -1,8 +1,15 @@
-id: ojo_del_huracan
+id: "ojo_del_huracan"
 name: "&9Ojo del Huracán"
-description: |
-  En mitad de la tormenta, él está tranquilo.
+description: "En mitad de la tormenta, él está tranquilo."
 required-level: 20
 effect:
-  intelligence-bonus: 2
-  mana-bonus: 20
+  damage-bonus: 0.05
+  speed-bonus: 0.03
+  health-bonus: -2
+translations:
+  en:
+    name: "&9Eye of the Storm"
+    description: "In the middle of the storm, they stand calm."
+  pt_BR:
+    name: "&9Olho do Furacão"
+    description: "No meio da tempestade, ele está tranquilo."

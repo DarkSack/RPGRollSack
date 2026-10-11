@@ -1,0 +1,15 @@
+id: "don_de_gentes"
+name: "&dDon de Gentes"
+description: "Esquiva los problemas hablando; peleando, menos."
+required-level: 1
+effect:
+  luck-bonus: 2
+  evasion-bonus: 0.03
+  damage-bonus: -0.03
+translations:
+  en:
+    name: "&dSilver Tongue"
+    description: "Talks their way out of trouble; fighting, less so."
+  pt_BR:
+    name: "&dLábia"
+    description: "Escapa dos problemas falando; lutando, nem tanto."

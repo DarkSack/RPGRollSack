@@ -1,0 +1,10 @@
+id: "arcano"
+display-name: "Arcano"
+obfuscation-char: "*"
+default-for-classes:
+  - "mago"
+translations:
+  en:
+    display-name: "Arcane"
+  pt_BR:
+    display-name: "Arcano"

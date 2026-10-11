@@ -1,22 +1,59 @@
-id: gigante
+id: "gigante"
 display-name: "&6▲ Gigante"
 description: |
-  Criaturas colosales de gran fuerza física, lentas pero devastadoras.
+  Criaturas colosales de gran fuerza física,
+  lentas pero devastadoras.
 base-attributes:
   strength: 3
   constitution: 3
   dexterity: -2
   intelligence: -1
-
 physical:
   scale: 2
   movement-speed-percent: -0.15
   extra-health: 6.0
   knockback-resistance: 0.3
-
 passive-traits:
-  - fuerza_colosal
-  - resistencia_fisica
-icon: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzczYjMyMjA1MzY0MjU1ZmEyODUxMmJlNTc4YjdkOTg4NTMzOTg2OTllYThmNmIyODU0MjMxODkwZTI5NiJ9fX0=
+  - "fuerza_colosal"
+icon: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzczYjMyMjA1MzY0MjU1ZmEyODUxMmJlNTc4YjdkOTg4NTMzOTg2OTllYThmNmIyODU0MjMxODkwZTI5NiJ9fX0="
 lore:
   - "&7Descendientes de los antiguos titanes de piedra"
+  - "&a▲ +6% de daño"
+  - "&c▼ -4% de defensa"
+  - "&a▲ +6 de vida"
+  - "&c▼ -15% de velocidad"
+  - "&c▼ -8% de velocidad de ataque"
+  - "&a▲ +30% contra el empuje"
+  - "&7Tamaño ×2"
+  - "&7Idioma: Gigante"
+translations:
+  en:
+    display-name: "&6▲ Giant"
+    description: |
+      Colossal creatures of great strength,
+      slow but devastating.
+    lore:
+      - "&7Descendants of the ancient stone titans"
+      - "&a▲ +6% damage"
+      - "&c▼ -4% defense"
+      - "&a▲ +6 health"
+      - "&c▼ -15% speed"
+      - "&c▼ -8% attack speed"
+      - "&a▲ +30% knockback resistance"
+      - "&7Size ×2"
+      - "&7Language: Giant"
+  pt_BR:
+    display-name: "&6▲ Gigante"
+    description: |
+      Criaturas colossais de grande força física,
+      lentas mas devastadoras.
+    lore:
+      - "&7Descendentes dos antigos titãs de pedra"
+      - "&a▲ +6% de dano"
+      - "&c▼ -4% de defesa"
+      - "&a▲ +6 de vida"
+      - "&c▼ -15% de velocidade"
+      - "&c▼ -8% de velocidade de ataque"
+      - "&a▲ +30% contra empurrões"
+      - "&7Tamanho ×2"
+      - "&7Idioma: Gigante"

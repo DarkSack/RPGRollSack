@@ -1,4 +1,11 @@
-id: enano
+id: "enano"
 display-name: "Enano"
 obfuscation-char: "▪"
-default-for-races: ["dwarf", "enano"]
+default-for-races:
+  - "dwarf"
+  - "enano"
+translations:
+  en:
+    display-name: "Dwarvish"
+  pt_BR:
+    display-name: "Anão"

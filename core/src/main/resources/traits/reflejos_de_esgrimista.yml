@@ -1,8 +1,13 @@
-id: reflejos_de_esgrimista
+id: "reflejos_de_esgrimista"
 name: "&eReflejos de Esgrimista"
-description: |
-  Para lo que otros ni ven.
+description: "Para lo que otros ni ven."
 required-level: 20
 effect:
-  dexterity-bonus: 2
-  defense-bonus: 0.03
+  evasion-bonus: 0.06
+translations:
+  en:
+    name: "&eFencer's Reflexes"
+    description: "Parries what others never even see."
+  pt_BR:
+    name: "&eReflexos de Esgrimista"
+    description: "Apara o que outros nem veem."

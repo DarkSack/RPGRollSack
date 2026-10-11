@@ -1,42 +1,66 @@
-id: sacerdote
-base-class: clerigo
+id: "sacerdote"
+base-class: "clerigo"
 display-name: "&fSumo Sacerdote"
-
 requirements:
   level: 20
-
 stats:
-  mana: 20
-
+  health: 4
 talents:
   inicio:
     display-name: "&7Inicio"
     cost: 1
     stats:
-      health: 5
-
+      luck: 1
   plegaria:
     display-name: "&fPlegaria"
     cost: 2
-    requires: [inicio]
+    requires:
+      - "inicio"
     stats:
-      magic_power: 3
-
+      health: 4
   plegaria_2:
     display-name: "&fLuz Sagrada"
     cost: 3
-    requires: [plegaria]
-    skill: luz_sagrada
-
+    requires:
+      - "plegaria"
+    skill: "luz_sagrada"
   bendicion:
     display-name: "&7Bendición"
     cost: 2
-    requires: [inicio]
+    requires:
+      - "inicio"
     stats:
-      magic_resistance: 4
-
+      defense: 2
   bendicion_2:
     display-name: "&fGracia Divina"
     cost: 3
-    requires: [bendicion]
-    trait: gracia_divina
+    requires:
+      - "bendicion"
+    trait: "gracia_divina"
+translations:
+  en:
+    display-name: "&fHigh Priest"
+    talents:
+      inicio:
+        display-name: "&7Start"
+      plegaria:
+        display-name: "&fPrayer"
+      plegaria_2:
+        display-name: "&fHoly Light"
+      bendicion:
+        display-name: "&7Blessing"
+      bendicion_2:
+        display-name: "&fDivine Grace"
+  pt_BR:
+    display-name: "&fSumo Sacerdote"
+    talents:
+      inicio:
+        display-name: "&7Início"
+      plegaria:
+        display-name: "&fPrece"
+      plegaria_2:
+        display-name: "&fLuz Sagrada"
+      bendicion:
+        display-name: "&7Bênção"
+      bendicion_2:
+        display-name: "&fGraça Divina"

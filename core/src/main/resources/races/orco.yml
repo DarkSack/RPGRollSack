@@ -1,4 +1,4 @@
-id: orco
+id: "orco"
 display-name: "&2☠ Orco"
 description: |
   Guerreros de las estepas, grandes y duros.
@@ -7,14 +7,45 @@ base-attributes:
   strength: 2
   constitution: 2
   intelligence: -1
-
 physical:
   scale: 1.1
   extra-health: 4.0
   knockback-resistance: 0.1
 passive-traits:
-  - furia_orca
+  - "furia_orca"
 icon: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODJkNmI2MjJmMDZkYmQzYjE5YmY3NjUzOGNhNzA0NzMzZWQwYjAyZTQ0MzhjOWQ4OTY4YTA0YmZiYjI4ZWY2MyJ9fX0="
 lore:
   - "&7Clanes nómadas forjados en la guerra"
-  - "&7Respetan la fuerza por encima de todo"
+  - "&a▲ +5% de daño"
+  - "&c▼ -3% de defensa"
+  - "&a▲ +4 de vida"
+  - "&a▲ +10% contra el empuje"
+  - "&7Tamaño ×1.1"
+  - "&7Idioma: Orco"
+translations:
+  en:
+    display-name: "&2☠ Orc"
+    description: |
+      Steppe warriors, big and tough.
+      They hit first and ask later.
+    lore:
+      - "&7Nomad clans forged in war"
+      - "&a▲ +5% damage"
+      - "&c▼ -3% defense"
+      - "&a▲ +4 health"
+      - "&a▲ +10% knockback resistance"
+      - "&7Size ×1.1"
+      - "&7Language: Orcish"
+  pt_BR:
+    display-name: "&2☠ Orc"
+    description: |
+      Guerreiros das estepes, grandes e duros.
+      Batem primeiro e perguntam depois.
+    lore:
+      - "&7Clãs nômades forjados na guerra"
+      - "&a▲ +5% de dano"
+      - "&c▼ -3% de defesa"
+      - "&a▲ +4 de vida"
+      - "&a▲ +10% contra empurrões"
+      - "&7Tamanho ×1.1"
+      - "&7Idioma: Órquico"

@@ -1,13 +1,44 @@
-id: clerigo
+id: "clerigo"
 display-name: "&f✚ Clérigo"
 description: |
   Canaliza la fe para sanar y castigar.
   El grupo dura lo que dure su maná.
 base-attributes:
-  wisdom: 3
+  wisdom: 4
   constitution: 2
-passive-traits: []
+  dexterity: -1
+passive-traits:
+  - "fervor"
 icon: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2JhY2FlZjMzYzA1ZTY0Yjk1YWRlNTk1ZDdkMmE5OGE4ZTg0NjY3NDhjOGI4N2Y4Y2E3MWNkODQ3NmFlZTdiMSJ9fX0="
 lore:
   - "&7Armas: Mazas y Báculos"
   - "&7Rol: Sanador / Apoyo"
+  - "&c▼ -3% de daño"
+  - "&a▲ +4 de vida"
+  - "&a▲ +1 de suerte (crítico, evasión, exp. y botín)"
+  - "&7Idioma: Litúrgico"
+translations:
+  en:
+    display-name: "&f✚ Cleric"
+    description: |
+      Channels faith to heal and smite.
+      The party lasts as long as the mana does.
+    lore:
+      - "&7Weapons: Maces and Staves"
+      - "&7Role: Healer / Support"
+      - "&c▼ -3% damage"
+      - "&a▲ +4 health"
+      - "&a▲ +1 luck (crit, evasion, XP and loot)"
+      - "&7Language: Liturgical"
+  pt_BR:
+    display-name: "&f✚ Clérigo"
+    description: |
+      Canaliza a fé para curar e castigar.
+      O grupo dura o que durar sua mana.
+    lore:
+      - "&7Armas: Maças e Báculos"
+      - "&7Função: Curandeiro / Suporte"
+      - "&c▼ -3% de dano"
+      - "&a▲ +4 de vida"
+      - "&a▲ +1 de sorte (crítico, evasão, exp. e saque)"
+      - "&7Idioma: Litúrgico"

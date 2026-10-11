@@ -1,0 +1,11 @@
+id: "mediano"
+display-name: "Mediano"
+obfuscation-char: "·"
+default-for-races:
+  - "halfling"
+  - "mediano"
+translations:
+  en:
+    display-name: "Halfling"
+  pt_BR:
+    display-name: "Halfling"

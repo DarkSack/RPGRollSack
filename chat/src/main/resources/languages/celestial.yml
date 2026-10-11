@@ -1,0 +1,10 @@
+id: "celestial"
+display-name: "Celestial"
+obfuscation-char: "°"
+default-for-classes:
+  - "paladin"
+translations:
+  en:
+    display-name: "Celestial"
+  pt_BR:
+    display-name: "Celestial"

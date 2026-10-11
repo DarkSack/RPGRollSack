@@ -7,3 +7,14 @@ required-level: 1
 effect:
   wisdom-bonus: 1
   defense-bonus: 0.05
+translations:
+  en:
+    name: "&7Night Vision"
+    description: |
+      Granted by the elven race.
+      Improves perception in the dark.
+  pt_BR:
+    name: "&7Visão Noturna"
+    description: |
+      Concedido pela raça élfica.
+      Melhora a percepção no escuro.

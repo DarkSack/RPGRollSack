@@ -69,4 +69,16 @@ class LanguageParserTest {
         assertEquals(2, language.defaultForRaces().size());
         assertTrue(language.defaultForRaces().contains("elf"));
     }
+
+    /** La jerga de una clase se siembra igual que el idioma de una raza. */
+    @Test
+    void classesOwnALanguageToo() throws Exception {
+        YamlConfiguration config = load("""
+                id: germania
+                default-for-classes:
+                  - picaro
+                """);
+
+        assertEquals(java.util.List.of("picaro"), parser.parse(config).defaultForRaces());
+    }
 }

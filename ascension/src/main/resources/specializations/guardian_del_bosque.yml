@@ -1,42 +1,66 @@
-id: guardian_del_bosque
-base-class: druida
+id: "guardian_del_bosque"
+base-class: "druida"
 display-name: "&2Guardián del Bosque"
-
 requirements:
   level: 20
-
 stats:
-  health: 8
-
+  health: 6
 talents:
   inicio:
     display-name: "&7Inicio"
     cost: 1
     stats:
-      mana: 10
-
+      luck: 1
   corteza:
     display-name: "&2Corteza Viva"
     cost: 2
-    requires: [inicio]
+    requires:
+      - "inicio"
     stats:
-      defense: 3
-
+      defense: 2
   corteza_2:
     display-name: "&2Zarzas Espinosas"
     cost: 3
-    requires: [corteza]
-    skill: zarzas_espinosas
-
+    requires:
+      - "corteza"
+    skill: "zarzas_espinosas"
   savia:
     display-name: "&7Savia Antigua"
     cost: 2
-    requires: [inicio]
+    requires:
+      - "inicio"
     stats:
-      resistance: 3
-
+      resistance: 10
   savia_2:
     display-name: "&2Piel de Corteza"
     cost: 3
-    requires: [savia]
-    trait: piel_de_corteza
+    requires:
+      - "savia"
+    trait: "piel_de_corteza"
+translations:
+  en:
+    display-name: "&2Forest Warden"
+    talents:
+      inicio:
+        display-name: "&7Start"
+      corteza:
+        display-name: "&2Living Bark"
+      corteza_2:
+        display-name: "&2Thorny Brambles"
+      savia:
+        display-name: "&7Ancient Sap"
+      savia_2:
+        display-name: "&2Barkskin"
+  pt_BR:
+    display-name: "&2Guardião da Floresta"
+    talents:
+      inicio:
+        display-name: "&7Início"
+      corteza:
+        display-name: "&2Casca Viva"
+      corteza_2:
+        display-name: "&2Sarças Espinhosas"
+      savia:
+        display-name: "&7Seiva Antiga"
+      savia_2:
+        display-name: "&2Pele de Casca"

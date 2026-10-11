@@ -1,0 +1,11 @@
+id: "imperial"
+display-name: "Imperial"
+obfuscation-char: "~"
+default-for-races:
+  - "human"
+  - "humano"
+translations:
+  en:
+    display-name: "Imperial"
+  pt_BR:
+    display-name: "Imperial"

@@ -1,0 +1,10 @@
+id: "liturgico"
+display-name: "Litúrgico"
+obfuscation-char: "+"
+default-for-classes:
+  - "clerigo"
+translations:
+  en:
+    display-name: "Liturgical"
+  pt_BR:
+    display-name: "Litúrgico"

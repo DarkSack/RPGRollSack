@@ -8,3 +8,14 @@ effect:
   constitution-bonus: 2
   health-bonus: 8
   defense-bonus: 0.03
+translations:
+  en:
+    name: "&cUnbreakable Will"
+    description: |
+      Berserker talent (RPGRoll-Ascension, specializations/berserker.yml).
+      The harder the blow, the firmer the step.
+  pt_BR:
+    name: "&cVontade Inquebrantável"
+    description: |
+      Talento do Berserker (RPGRoll-Ascension, specializations/berserker.yml).
+      Quanto mais duro o golpe, mais firme o passo.

@@ -1,8 +1,15 @@
-id: instinto_de_cazador
+id: "instinto_de_cazador"
 name: "&2Instinto de Cazador"
-description: |
-  Conoce a su presa mejor que ella misma.
+description: "Conoce a su presa mejor que ella misma."
 required-level: 20
 effect:
-  wisdom-bonus: 2
-  damage-bonus: 0.03
+  critical-bonus: 0.03
+  damage-bonus: 0.02
+  health-bonus: 2
+translations:
+  en:
+    name: "&2Hunter's Instinct"
+    description: "Knows the prey better than it knows itself."
+  pt_BR:
+    name: "&2Instinto de Caçador"
+    description: "Conhece a presa melhor do que ela mesma."

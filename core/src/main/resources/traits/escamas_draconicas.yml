@@ -1,0 +1,15 @@
+id: "escamas_draconicas"
+name: "&5Escamas Dracónicas"
+description: "Las escamas paran golpes, pero pesan."
+required-level: 1
+effect:
+  defense-bonus: 0.05
+  damage-bonus: 0.02
+  evasion-bonus: -0.03
+translations:
+  en:
+    name: "&5Draconic Scales"
+    description: "Scales stop blows, but they weigh."
+  pt_BR:
+    name: "&5Escamas Dracônicas"
+    description: "As escamas param golpes, mas pesam."

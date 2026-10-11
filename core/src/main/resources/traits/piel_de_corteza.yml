@@ -1,8 +1,14 @@
-id: piel_de_corteza
+id: "piel_de_corteza"
 name: "&2Piel de Corteza"
-description: |
-  Su piel es dura como un roble viejo.
+description: "Su piel es dura como un roble viejo."
 required-level: 20
 effect:
   health-bonus: 6
   defense-bonus: 0.03
+translations:
+  en:
+    name: "&2Barkskin"
+    description: "Skin as hard as an old oak."
+  pt_BR:
+    name: "&2Pele de Casca"
+    description: "Sua pele é dura como um carvalho velho."

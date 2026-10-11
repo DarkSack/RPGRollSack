@@ -1,45 +1,68 @@
-id: elementalista
-base-class: mago
+id: "elementalista"
+base-class: "mago"
 display-name: "&bElementalista"
-
 requirements:
   level: 20
-
 stats:
-  mana: 20
-
+  speed: 5
 restrictions:
   - "no-heavy-armor"
-
 talents:
   inicio:
     display-name: "&7Inicio"
     cost: 1
     stats:
-      magic_power: 2
-
+      health: 2
   chispa:
     display-name: "&eChispa Inestable"
     cost: 2
-    requires: [inicio]
+    requires:
+      - "inicio"
     stats:
-      critical_chance: 3
-
+      attack_speed: 8
   chispa_2:
     display-name: "&bTormenta de Hielo"
     cost: 3
-    requires: [chispa]
-    skill: tormenta_de_hielo
-
+    requires:
+      - "chispa"
+    skill: "tormenta_de_hielo"
   piedra:
     display-name: "&7Piel de Piedra"
     cost: 2
-    requires: [inicio]
+    requires:
+      - "inicio"
     stats:
-      magic_resistance: 4
-
+      defense: 2
   piedra_2:
     display-name: "&bArmonía Elemental"
     cost: 3
-    requires: [piedra]
-    trait: armonia_elemental
+    requires:
+      - "piedra"
+    trait: "armonia_elemental"
+translations:
+  en:
+    display-name: "&bElementalist"
+    talents:
+      inicio:
+        display-name: "&7Start"
+      chispa:
+        display-name: "&eUnstable Spark"
+      chispa_2:
+        display-name: "&bIce Storm"
+      piedra:
+        display-name: "&7Stone Skin"
+      piedra_2:
+        display-name: "&bElemental Harmony"
+  pt_BR:
+    display-name: "&bElementalista"
+    talents:
+      inicio:
+        display-name: "&7Início"
+      chispa:
+        display-name: "&eFaísca Instável"
+      chispa_2:
+        display-name: "&bTempestade de Gelo"
+      piedra:
+        display-name: "&7Pele de Pedra"
+      piedra_2:
+        display-name: "&bHarmonia Elemental"

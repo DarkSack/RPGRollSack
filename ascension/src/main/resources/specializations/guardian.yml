@@ -1,42 +1,66 @@
-id: guardian
-base-class: guerrero
+id: "guardian"
+base-class: "guerrero"
 display-name: "&3Guardián"
-
 requirements:
   level: 20
-
 stats:
-  health: 8
-
+  health: 6
 talents:
   inicio:
     display-name: "&7Inicio"
     cost: 1
     stats:
-      defense: 2
-
+      defense: 1
   provocacion:
     display-name: "&3Provocación"
     cost: 2
-    requires: [inicio]
+    requires:
+      - "inicio"
     stats:
-      resistance: 3
-
+      resistance: 10
   provocacion_2:
     display-name: "&3Golpe de Escudo"
     cost: 3
-    requires: [provocacion]
-    skill: golpe_de_escudo
-
+    requires:
+      - "provocacion"
+    skill: "golpe_de_escudo"
   bastion:
     display-name: "&7Bastión"
     cost: 2
-    requires: [inicio]
+    requires:
+      - "inicio"
     stats:
-      health: 6
-
+      health: 4
   bastion_2:
     display-name: "&3Último Baluarte"
     cost: 3
-    requires: [bastion]
-    trait: ultimo_baluarte
+    requires:
+      - "bastion"
+    trait: "ultimo_baluarte"
+translations:
+  en:
+    display-name: "&3Guardian"
+    talents:
+      inicio:
+        display-name: "&7Start"
+      provocacion:
+        display-name: "&3Taunt"
+      provocacion_2:
+        display-name: "&3Shield Bash"
+      bastion:
+        display-name: "&7Bastion"
+      bastion_2:
+        display-name: "&3Last Bulwark"
+  pt_BR:
+    display-name: "&3Guardião"
+    talents:
+      inicio:
+        display-name: "&7Início"
+      provocacion:
+        display-name: "&3Provocação"
+      provocacion_2:
+        display-name: "&3Golpe de Escudo"
+      bastion:
+        display-name: "&7Bastião"
+      bastion_2:
+        display-name: "&3Último Baluarte"

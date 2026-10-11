@@ -1,4 +1,11 @@
-id: draconico
+id: "draconico"
 display-name: "Dracónico"
 obfuscation-char: "◆"
-default-for-races: ["dragonkin", "draconido"]
+default-for-races:
+  - "dragonkin"
+  - "draconido"
+translations:
+  en:
+    display-name: "Draconic"
+  pt_BR:
+    display-name: "Dracônico"

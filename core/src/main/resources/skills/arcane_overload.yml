@@ -1,4 +1,4 @@
-id: arcane_overload
+id: "arcane_overload"
 name: "&9Sobrecarga Arcana"
 description: |
   Libera de golpe
@@ -7,3 +7,14 @@ required-level: 20
 mana-cost: 40
 cooldown-seconds: 15
 damage-multiplier: 3.0
+translations:
+  en:
+    name: "&9Arcane Overload"
+    description: |
+      Releases at once
+      all the stored mana.
+  pt_BR:
+    name: "&9Sobrecarga Arcana"
+    description: |
+      Libera de uma vez
+      toda a mana acumulada.

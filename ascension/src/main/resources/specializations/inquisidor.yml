@@ -1,42 +1,66 @@
-id: inquisidor
-base-class: clerigo
+id: "inquisidor"
+base-class: "clerigo"
 display-name: "&cInquisidor"
-
 requirements:
   level: 20
-
 stats:
-  magic_power: 4
-
+  damage: 1
 talents:
   inicio:
     display-name: "&7Inicio"
     cost: 1
     stats:
-      mana: 10
-
+      health: 2
   juicio:
     display-name: "&cJuicio"
     cost: 2
-    requires: [inicio]
+    requires:
+      - "inicio"
     stats:
-      damage: 3
-
+      damage: 1
   juicio_2:
     display-name: "&cCastigo Divino"
     cost: 3
-    requires: [juicio]
-    skill: castigo_divino
-
+    requires:
+      - "juicio"
+    skill: "castigo_divino"
   fe:
     display-name: "&7Fe Ciega"
     cost: 2
-    requires: [inicio]
+    requires:
+      - "inicio"
     stats:
-      resistance: 3
-
+      resistance: 10
   fe_2:
     display-name: "&cFe Inquebrantable"
     cost: 3
-    requires: [fe]
-    trait: fe_inquebrantable
+    requires:
+      - "fe"
+    trait: "fe_inquebrantable"
+translations:
+  en:
+    display-name: "&cInquisitor"
+    talents:
+      inicio:
+        display-name: "&7Start"
+      juicio:
+        display-name: "&cJudgment"
+      juicio_2:
+        display-name: "&cDivine Punishment"
+      fe:
+        display-name: "&7Blind Faith"
+      fe_2:
+        display-name: "&cUnshakable Faith"
+  pt_BR:
+    display-name: "&cInquisidor"
+    talents:
+      inicio:
+        display-name: "&7Início"
+      juicio:
+        display-name: "&cJulgamento"
+      juicio_2:
+        display-name: "&cCastigo Divino"
+      fe:
+        display-name: "&7Fé Cega"
+      fe_2:
+        display-name: "&cFé Inabalável"

@@ -1,42 +1,66 @@
-id: caballero
-base-class: guerrero
+id: "caballero"
+base-class: "guerrero"
 display-name: "&6Caballero"
-
 requirements:
   level: 20
-
 stats:
-  defense: 4
-
+  defense: 2
 talents:
   inicio:
     display-name: "&7Inicio"
     cost: 1
     stats:
-      health: 5
-
+      health: 4
   ofensiva:
     display-name: "&6Lanza en Ristre"
     cost: 2
-    requires: [inicio]
+    requires:
+      - "inicio"
     stats:
-      damage: 3
-
+      damage: 1
   ofensiva_2:
     display-name: "&6Carga Heroica"
     cost: 3
-    requires: [ofensiva]
-    skill: carga_heroica
-
+    requires:
+      - "ofensiva"
+    skill: "carga_heroica"
   defensa:
     display-name: "&7Muro de Escudos"
     cost: 2
-    requires: [inicio]
+    requires:
+      - "inicio"
     stats:
-      defense: 4
-
+      resistance: 10
   defensa_2:
     display-name: "&6Juramento de Honor"
     cost: 3
-    requires: [defensa]
-    trait: juramento_de_honor
+    requires:
+      - "defensa"
+    trait: "juramento_de_honor"
+translations:
+  en:
+    display-name: "&6Knight"
+    talents:
+      inicio:
+        display-name: "&7Start"
+      ofensiva:
+        display-name: "&6Couched Lance"
+      ofensiva_2:
+        display-name: "&6Heroic Charge"
+      defensa:
+        display-name: "&7Shield Wall"
+      defensa_2:
+        display-name: "&6Oath of Honor"
+  pt_BR:
+    display-name: "&6Cavaleiro"
+    talents:
+      inicio:
+        display-name: "&7Início"
+      ofensiva:
+        display-name: "&6Lança em Riste"
+      ofensiva_2:
+        display-name: "&6Carga Heroica"
+      defensa:
+        display-name: "&7Muralha de Escudos"
+      defensa_2:
+        display-name: "&6Juramento de Honra"

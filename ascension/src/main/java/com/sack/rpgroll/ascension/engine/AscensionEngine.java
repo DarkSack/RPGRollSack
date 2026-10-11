@@ -49,8 +49,21 @@ public class AscensionEngine {
 
     private SecretEngine secretEngine;
 
-    private final NamespacedKey healthModifierKey;
-    private final NamespacedKey speedModifierKey;
+    /** Un stat de Ascension que es, tal cual, un atributo de Minecraft. */
+    private record VanillaStat(Attribute attribute, double scale, AttributeModifier.Operation operation) {
+    }
+
+    // shortcut: los demás stats (magic_power, critical_chance, mana, atributos…) no tienen equivalente en
+    // Minecraft y siguen siendo informativos, ampliar cuando el core exponga stats efectivas.
+    private static final Map<String, VanillaStat> VANILLA_STATS = Map.of(
+            "health", new VanillaStat(Attribute.MAX_HEALTH, 1, AttributeModifier.Operation.ADD_NUMBER),
+            "speed", new VanillaStat(Attribute.MOVEMENT_SPEED, 0.01, AttributeModifier.Operation.ADD_SCALAR),
+            "damage", new VanillaStat(Attribute.ATTACK_DAMAGE, 1, AttributeModifier.Operation.ADD_NUMBER),
+            "defense", new VanillaStat(Attribute.ARMOR, 1, AttributeModifier.Operation.ADD_NUMBER),
+            "attack_speed", new VanillaStat(Attribute.ATTACK_SPEED, 0.01, AttributeModifier.Operation.ADD_SCALAR),
+            "luck", new VanillaStat(Attribute.LUCK, 1, AttributeModifier.Operation.ADD_NUMBER),
+            "resistance", new VanillaStat(Attribute.KNOCKBACK_RESISTANCE, 0.01, AttributeModifier.Operation.ADD_NUMBER),
+            "mining_speed", new VanillaStat(Attribute.BLOCK_BREAK_SPEED, 0.01, AttributeModifier.Operation.ADD_SCALAR));
 
     public AscensionEngine(
             Plugin plugin,
@@ -70,8 +83,6 @@ public class AscensionEngine {
         this.legacyManager = legacyManager;
         this.requirementChecker = requirementChecker;
         this.lang = lang;
-        this.healthModifierKey = new NamespacedKey(plugin, "ascension-health-modifier");
-        this.speedModifierKey = new NamespacedKey(plugin, "ascension-speed-modifier");
     }
 
     /** Se cablea después: el motor de secretos se construye aparte. */
@@ -397,13 +408,14 @@ public class AscensionEngine {
         // Bonos permanentes de recompensas (logros, rangos de facción…).
         state.getBonusStats().forEach((k, v) -> combined.merge(k, v, Double::sum));
 
-        applyAttribute(player, Attribute.MAX_HEALTH, healthModifierKey, combined.getOrDefault("health", 0.0));
-        applyAttribute(player, Attribute.MOVEMENT_SPEED, speedModifierKey,
-                combined.getOrDefault("speed", 0.0) / 100.0);
+        VANILLA_STATS.forEach((stat, vanilla) -> applyAttribute(player, vanilla.attribute(),
+                new NamespacedKey(plugin, "ascension-" + stat + "-modifier"),
+                combined.getOrDefault(stat, 0.0) * vanilla.scale(), vanilla.operation()));
     }
 
 
-    private void applyAttribute(Player player, Attribute attribute, NamespacedKey key, double amount) {
+    private void applyAttribute(Player player, Attribute attribute, NamespacedKey key, double amount,
+            AttributeModifier.Operation operation) {
 
         AttributeInstance instance = player.getAttribute(attribute);
         if (instance == null) {
@@ -419,7 +431,7 @@ public class AscensionEngine {
             return;
         }
 
-        instance.addModifier(new AttributeModifier(key, amount, AttributeModifier.Operation.ADD_NUMBER));
+        instance.addModifier(new AttributeModifier(key, amount, operation));
     }
 
 }

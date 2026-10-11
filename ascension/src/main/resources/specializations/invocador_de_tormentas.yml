@@ -1,42 +1,66 @@
-id: invocador_de_tormentas
-base-class: druida
+id: "invocador_de_tormentas"
+base-class: "druida"
 display-name: "&9Invocador de Tormentas"
-
 requirements:
   level: 20
-
 stats:
-  magic_power: 4
-
+  speed: 5
 talents:
   inicio:
     display-name: "&7Inicio"
     cost: 1
     stats:
-      mana: 10
-
+      health: 2
   viento:
     display-name: "&9Viento de Cola"
     cost: 2
-    requires: [inicio]
+    requires:
+      - "inicio"
     stats:
-      speed: 3
-
+      speed: 5
   viento_2:
     display-name: "&9Rayo de Tormenta"
     cost: 3
-    requires: [viento]
-    skill: rayo_de_tormenta
-
+    requires:
+      - "viento"
+    skill: "rayo_de_tormenta"
   calma:
     display-name: "&7Calma Chicha"
     cost: 2
-    requires: [inicio]
+    requires:
+      - "inicio"
     stats:
-      magic_resistance: 3
-
+      resistance: 10
   calma_2:
     display-name: "&9Ojo del Huracán"
     cost: 3
-    requires: [calma]
-    trait: ojo_del_huracan
+    requires:
+      - "calma"
+    trait: "ojo_del_huracan"
+translations:
+  en:
+    display-name: "&9Stormcaller"
+    talents:
+      inicio:
+        display-name: "&7Start"
+      viento:
+        display-name: "&9Tailwind"
+      viento_2:
+        display-name: "&9Storm Bolt"
+      calma:
+        display-name: "&7Dead Calm"
+      calma_2:
+        display-name: "&9Eye of the Storm"
+  pt_BR:
+    display-name: "&9Invocador de Tempestades"
+    talents:
+      inicio:
+        display-name: "&7Início"
+      viento:
+        display-name: "&9Vento de Cauda"
+      viento_2:
+        display-name: "&9Raio de Tempestade"
+      calma:
+        display-name: "&7Calmaria"
+      calma_2:
+        display-name: "&9Olho do Furacão"

@@ -1,42 +1,66 @@
-id: cazador_de_bestias
-base-class: arquero
+id: "cazador_de_bestias"
+base-class: "arquero"
 display-name: "&2Cazador de Bestias"
-
 requirements:
   level: 20
-
 stats:
-  damage: 3
-
+  damage: 1
 talents:
   inicio:
     display-name: "&7Inicio"
     cost: 1
     stats:
-      health: 5
-
+      health: 4
   dentadas:
     display-name: "&2Flechas Dentadas"
     cost: 2
-    requires: [inicio]
+    requires:
+      - "inicio"
     stats:
-      armor_penetration: 3
-
+      attack_speed: 8
   dentadas_2:
     display-name: "&2Lluvia de Flechas"
     cost: 3
-    requires: [dentadas]
-    skill: lluvia_de_flechas
-
+    requires:
+      - "dentadas"
+    skill: "lluvia_de_flechas"
   rastreo:
     display-name: "&7Rastreador"
     cost: 2
-    requires: [inicio]
+    requires:
+      - "inicio"
     stats:
-      luck: 3
-
+      luck: 2
   rastreo_2:
     display-name: "&2Instinto de Cazador"
     cost: 3
-    requires: [rastreo]
-    trait: instinto_de_cazador
+    requires:
+      - "rastreo"
+    trait: "instinto_de_cazador"
+translations:
+  en:
+    display-name: "&2Beast Hunter"
+    talents:
+      inicio:
+        display-name: "&7Start"
+      dentadas:
+        display-name: "&2Barbed Arrows"
+      dentadas_2:
+        display-name: "&2Rain of Arrows"
+      rastreo:
+        display-name: "&7Tracker"
+      rastreo_2:
+        display-name: "&2Hunter's Instinct"
+  pt_BR:
+    display-name: "&2Caçador de Feras"
+    talents:
+      inicio:
+        display-name: "&7Início"
+      dentadas:
+        display-name: "&2Flechas Farpadas"
+      dentadas_2:
+        display-name: "&2Chuva de Flechas"
+      rastreo:
+        display-name: "&7Rastreador"
+      rastreo_2:
+        display-name: "&2Instinto de Caçador"

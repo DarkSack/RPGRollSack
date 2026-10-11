@@ -1,4 +1,4 @@
-id: zarzas_espinosas
+id: "zarzas_espinosas"
 name: "&2Zarzas Espinosas"
 description: |
   Las raíces brotan
@@ -7,3 +7,14 @@ required-level: 20
 mana-cost: 25
 cooldown-seconds: 10
 damage-multiplier: 2.0
+translations:
+  en:
+    name: "&2Thorny Brambles"
+    description: |
+      Roots burst out
+      and snare the target.
+  pt_BR:
+    name: "&2Sarças Espinhosas"
+    description: |
+      As raízes brotam
+      e prendem o alvo.

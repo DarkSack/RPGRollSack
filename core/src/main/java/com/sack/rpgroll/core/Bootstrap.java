@@ -240,10 +240,25 @@ public class Bootstrap {
         reloadableContent.add(classManager);
         plugin.getLogger().info("✔ ClassManager registrado");
 
+        // 8.0 PassiveEffects - efectos de los rasgos (adquiridos y pasivos de raza y clase)
+        com.sack.rpgroll.gameplay.trait.PassiveEffects passiveEffects = new com.sack.rpgroll.gameplay.trait.PassiveEffects(
+                plugin, playerManager, traitManager, raceManager, classManager);
+        services.register(com.sack.rpgroll.gameplay.trait.PassiveEffects.class, passiveEffects);
+        Bukkit.getPluginManager().registerEvents(passiveEffects, plugin);
+        // La sabiduría no hacía nada: da un 2 % de experiencia por punto de modificador.
+        services.get(com.sack.rpgroll.api.ExperienceBonusService.class).registerSource("wisdom",
+                player -> playerManager.getPlayer(player.getUniqueId())
+                        .map(rpgPlayer -> 2.0 * rpgPlayer.getStats().getWisdomModifier()).orElse(0.0));
+        services.get(com.sack.rpgroll.api.ExperienceBonusService.class).registerSource("luck",
+                player -> playerManager.getPlayer(player.getUniqueId())
+                        .map(rpgPlayer -> com.sack.rpgroll.gameplay.trait.PassiveEffects.EXPERIENCE_PERCENT_PER_LUCK
+                                * passiveEffects.totals(rpgPlayer).luck())
+                        .orElse(0.0));
+
         // 8.1 CharacterChangeService - cambios de raza/clase ya creados (admin y API)
         services.register(com.sack.rpgroll.gameplay.selection.CharacterChangeService.class,
                 new com.sack.rpgroll.gameplay.selection.CharacterChangeService(playerManager, raceManager,
-                        classManager, raceAttributeApplier));
+                        classManager, raceAttributeApplier, passiveEffects));
 
         // 9. PlacedBlockTracker - Sistema anti-farm para minero
         PlacedBlockTracker placedBlockTracker = new PlacedBlockTracker(plugin, dbManager);
@@ -397,13 +412,14 @@ public class Bootstrap {
         RaceAttributeApplier raceAttributeApplier = services.get(RaceAttributeApplier.class);
         PlayerResourceBar resourceBar = services.get(PlayerResourceBar.class);
         PlayerEventListener playerListener = new PlayerEventListener(plugin, playerManager, raceManager, classManager,
-                raceAttributeApplier, resourceBar, langManager);
+                raceAttributeApplier, resourceBar, langManager,
+                services.get(com.sack.rpgroll.gameplay.trait.PassiveEffects.class));
         Bukkit.getPluginManager().registerEvents(playerListener, plugin);
 
         // ===== Listeners de combate (armadura, evasión, crítico, salud) =====
         CombatTracker combatTracker = services.get(CombatTracker.class);
         CombatEffectsListener combatEffectsListener = new CombatEffectsListener(playerManager, combatTracker,
-                resourceBar, langManager);
+                resourceBar, langManager, services.get(com.sack.rpgroll.gameplay.trait.PassiveEffects.class));
         Bukkit.getPluginManager().registerEvents(combatEffectsListener, plugin);
 
         // ===== Listeners de GUI =====

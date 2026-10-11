@@ -1,4 +1,4 @@
-id: estocada_relampago
+id: "estocada_relampago"
 name: "&eEstocada Relámpago"
 description: |
   Tres toques antes
@@ -7,3 +7,14 @@ required-level: 20
 mana-cost: 20
 cooldown-seconds: 8
 damage-multiplier: 2.0
+translations:
+  en:
+    name: "&eLightning Thrust"
+    description: |
+      Three touches before
+      the rival can blink.
+  pt_BR:
+    name: "&eEstocada Relâmpago"
+    description: |
+      Três toques antes
+      que o rival pisque.

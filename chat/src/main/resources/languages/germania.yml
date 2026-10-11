@@ -1,0 +1,10 @@
+id: "germania"
+display-name: "Germanía"
+obfuscation-char: "%"
+default-for-classes:
+  - "picaro"
+translations:
+  en:
+    display-name: "Thieves' Cant"
+  pt_BR:
+    display-name: "Gíria dos Ladrões"

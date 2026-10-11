@@ -1,0 +1,15 @@
+id: "punteria"
+name: "&aPuntería"
+description: "Acierta donde duele; de cerca está vendido."
+required-level: 1
+effect:
+  critical-bonus: 0.05
+  speed-bonus: 0.03
+  defense-bonus: -0.02
+translations:
+  en:
+    name: "&aMarksmanship"
+    description: "Hits where it hurts; up close, exposed."
+  pt_BR:
+    name: "&aPontaria"
+    description: "Acerta onde dói; de perto, fica exposto."

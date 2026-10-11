@@ -39,9 +39,12 @@ public class CombatEffectsListener implements Listener {
     private final CombatTracker combatTracker;
     private final PlayerResourceBar resourceBar;
     private final LangManager lang;
+    private final com.sack.rpgroll.gameplay.trait.PassiveEffects passiveEffects;
 
     public CombatEffectsListener(PlayerManager playerManager, CombatTracker combatTracker,
-            PlayerResourceBar resourceBar, LangManager lang) {
+            PlayerResourceBar resourceBar, LangManager lang,
+            com.sack.rpgroll.gameplay.trait.PassiveEffects passiveEffects) {
+        this.passiveEffects = passiveEffects;
         this.playerManager = playerManager;
         this.combatTracker = combatTracker;
         this.resourceBar = resourceBar;
@@ -71,7 +74,10 @@ public class CombatEffectsListener implements Listener {
 
         CombatStats stats = rpgAttacker.get().getCombatStats();
 
-        if (ThreadLocalRandom.current().nextDouble() < stats.criticalChance()) {
+        com.sack.rpgroll.gameplay.trait.PassiveEffects.Totals passive = passiveEffects.totals(rpgAttacker.get());
+        event.setDamage(event.getDamage() * Math.max(0, 1 + passive.damage()));
+
+        if (ThreadLocalRandom.current().nextDouble() < stats.criticalChance() + passive.critical()) {
             event.setDamage(event.getDamage() * stats.criticalMultiplier());
             attacker.sendActionBar(lang.component("combat_effects_listener.critical_hit"));
         }
@@ -103,14 +109,16 @@ public class CombatEffectsListener implements Listener {
         RPGPlayer rpgVictim = rpgVictimOpt.get();
         CombatStats stats = rpgVictim.getCombatStats();
 
-        if (ThreadLocalRandom.current().nextDouble() < stats.evasionChance()) {
+        com.sack.rpgroll.gameplay.trait.PassiveEffects.Totals passive = passiveEffects.totals(rpgVictim);
+
+        if (ThreadLocalRandom.current().nextDouble() < stats.evasionChance() + passive.evasion()) {
             event.setCancelled(true);
             victim.sendActionBar(lang.component("combat_effects_listener.evaded"));
             return;
         }
 
         double armorReduction = stats.armorRating() / (stats.armorRating() + 50.0);
-        double reducedDamage = event.getDamage() * (1 - armorReduction);
+        double reducedDamage = event.getDamage() * (1 - armorReduction) * Math.max(0, 1 - passive.defense());
         event.setDamage(reducedDamage);
 
         int newHealth = (int) Math.round(stats.currentHealth() - reducedDamage);

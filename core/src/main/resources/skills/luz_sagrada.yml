@@ -1,4 +1,4 @@
-id: luz_sagrada
+id: "luz_sagrada"
 name: "&fLuz Sagrada"
 description: |
   Un haz de luz
@@ -7,3 +7,14 @@ required-level: 20
 mana-cost: 25
 cooldown-seconds: 10
 damage-multiplier: 2.0
+translations:
+  en:
+    name: "&fHoly Light"
+    description: |
+      A beam of light
+      that scorches the wicked.
+  pt_BR:
+    name: "&fLuz Sagrada"
+    description: |
+      Um feixe de luz
+      que queima os ímpios.

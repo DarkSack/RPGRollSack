@@ -1,4 +1,4 @@
-id: carga_heroica
+id: "carga_heroica"
 name: "&6Carga Heroica"
 description: |
   Embiste al enemigo
@@ -7,3 +7,14 @@ required-level: 20
 mana-cost: 25
 cooldown-seconds: 12
 damage-multiplier: 2.2
+translations:
+  en:
+    name: "&6Heroic Charge"
+    description: |
+      Rams the enemy
+      with the full weight of the armor.
+  pt_BR:
+    name: "&6Carga Heroica"
+    description: |
+      Investe contra o inimigo
+      com todo o peso da armadura.

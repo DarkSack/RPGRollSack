@@ -1,0 +1,10 @@
+id: "silbo"
+display-name: "Silbo de Caza"
+obfuscation-char: "¨"
+default-for-classes:
+  - "arquero"
+translations:
+  en:
+    display-name: "Hunter's Whistle"
+  pt_BR:
+    display-name: "Assobio de Caça"

@@ -1,0 +1,15 @@
+id: "fervor"
+name: "&fFervor"
+description: "La fe lo sostiene, pero no es un guerrero."
+required-level: 1
+effect:
+  health-bonus: 4
+  luck-bonus: 1
+  damage-bonus: -0.03
+translations:
+  en:
+    name: "&fFervor"
+    description: "Faith sustains them, but they are no warrior."
+  pt_BR:
+    name: "&fFervor"
+    description: "A fé o sustenta, mas não é um guerreiro."

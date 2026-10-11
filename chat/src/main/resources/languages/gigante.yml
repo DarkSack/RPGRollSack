@@ -1,0 +1,11 @@
+id: "gigante"
+display-name: "Gigante"
+obfuscation-char: "■"
+default-for-races:
+  - "giant"
+  - "gigante"
+translations:
+  en:
+    display-name: "Giant"
+  pt_BR:
+    display-name: "Gigante"

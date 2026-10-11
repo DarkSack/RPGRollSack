@@ -1,4 +1,4 @@
-id: castigo_divino
+id: "castigo_divino"
 name: "&cCastigo Divino"
 description: |
   Dicta sentencia
@@ -7,3 +7,14 @@ required-level: 20
 mana-cost: 30
 cooldown-seconds: 12
 damage-multiplier: 2.5
+translations:
+  en:
+    name: "&cDivine Punishment"
+    description: |
+      Passes sentence
+      and carries it out on the spot.
+  pt_BR:
+    name: "&cCastigo Divino"
+    description: |
+      Dita a sentença
+      e a executa na hora.

@@ -1,8 +1,15 @@
-id: sigilo_mortal
+id: "sigilo_mortal"
 name: "&8Sigilo Mortal"
-description: |
-  Quien no lo oye llegar ya ha perdido.
+description: "Quien no lo oye llegar ya ha perdido."
 required-level: 20
 effect:
-  dexterity-bonus: 2
-  damage-bonus: 0.04
+  critical-bonus: 0.06
+  evasion-bonus: 0.03
+  health-bonus: -2
+translations:
+  en:
+    name: "&8Deadly Stealth"
+    description: "Whoever fails to hear them has already lost."
+  pt_BR:
+    name: "&8Furtividade Mortal"
+    description: "Quem não o ouve chegar já perdeu."

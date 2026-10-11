@@ -1,14 +1,41 @@
-id: mago
+id: "mago"
 display-name: "&9✦ Mago"
 description: |
   Manipula las artes arcanas a distancia.
   Prioriza inteligencia y sabiduría sobre todo lo demás.
 base-attributes:
-  intelligence: 3
+  intelligence: 4
   wisdom: 2
-passive-traits: []
-# Textura de cabeza en base64 o nombre de un material.
+  constitution: -1
+passive-traits:
+  - "erudicion_arcana"
 icon: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTA4MjQ2ODM0N2MxNWZlZDgwNGYwNDRkMGMwNWYwMDA4MDFkYzM0MjFjYzAxNzBiN2RmMmNhYjY5YTljYjQwMSJ9fX0="
 lore:
   - "&7Armas: Varitas y Bastones"
   - "&7Rol: DPS mágico / Soporte"
+  - "&a▲ +6% de daño"
+  - "&c▼ -4 de vida"
+  - "&7Idioma: Arcano"
+translations:
+  en:
+    display-name: "&9✦ Mage"
+    description: |
+      Wields the arcane arts from afar.
+      Intelligence and wisdom above all else.
+    lore:
+      - "&7Weapons: Wands and Staves"
+      - "&7Role: Magic DPS / Support"
+      - "&a▲ +6% damage"
+      - "&c▼ -4 health"
+      - "&7Language: Arcane"
+  pt_BR:
+    display-name: "&9✦ Mago"
+    description: |
+      Manipula as artes arcanas à distância.
+      Prioriza inteligência e sabedoria acima de tudo.
+    lore:
+      - "&7Armas: Varinhas e Cajados"
+      - "&7Função: DPS mágico / Suporte"
+      - "&a▲ +6% de dano"
+      - "&c▼ -4 de vida"
+      - "&7Idioma: Arcano"

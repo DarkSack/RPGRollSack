@@ -1,13 +1,47 @@
-id: picaro
+id: "picaro"
 display-name: "&8✂ Pícaro"
 description: |
   Rápido, sigiloso y letal por la espalda.
   Un golpe bien dado vale por diez.
 base-attributes:
-  dexterity: 3
+  dexterity: 4
   charisma: 2
-passive-traits: []
+  constitution: -1
+passive-traits:
+  - "golpe_bajo"
 icon: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWE0NzlmNmY1MjIyZjQ0N2U4ZmU4ODRlY2FjNmE5NWY5MjY4ZDA3Y2I0OTMxNmIwODIzOWUyYjVmNTdkNDgxMCJ9fX0="
 lore:
   - "&7Armas: Dagas y Espadas ligeras"
   - "&7Rol: DPS / Sigilo"
+  - "&c▼ -2 de vida"
+  - "&a▲ +3% de velocidad"
+  - "&a▲ +4% de evasión"
+  - "&a▲ +4% de crítico"
+  - "&7Idioma: Germanía"
+translations:
+  en:
+    display-name: "&8✂ Rogue"
+    description: |
+      Quick, stealthy and lethal from behind.
+      One well-placed blow is worth ten.
+    lore:
+      - "&7Weapons: Daggers and Light Swords"
+      - "&7Role: DPS / Stealth"
+      - "&c▼ -2 health"
+      - "&a▲ +3% speed"
+      - "&a▲ +4% evasion"
+      - "&a▲ +4% critical chance"
+      - "&7Language: Thieves' Cant"
+  pt_BR:
+    display-name: "&8✂ Ladino"
+    description: |
+      Rápido, furtivo e letal pelas costas.
+      Um golpe bem dado vale por dez.
+    lore:
+      - "&7Armas: Adagas e Espadas leves"
+      - "&7Função: DPS / Furtividade"
+      - "&c▼ -2 de vida"
+      - "&a▲ +3% de velocidade"
+      - "&a▲ +4% de evasão"
+      - "&a▲ +4% de crítico"
+      - "&7Idioma: Gíria dos Ladrões"

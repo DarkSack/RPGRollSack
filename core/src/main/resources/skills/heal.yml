@@ -1,4 +1,4 @@
-id: heal
+id: "heal"
 name: "&aCuración"
 description: |
   Restaura una porción de la
@@ -7,3 +7,14 @@ required-level: 3
 mana-cost: 15
 cooldown-seconds: 12
 damage-multiplier: 0.0
+translations:
+  en:
+    name: "&aHeal"
+    description: |
+      Restores a portion of the
+      player's maximum health.
+  pt_BR:
+    name: "&aCura"
+    description: |
+      Restaura uma parte da
+      vida máxima do jogador.

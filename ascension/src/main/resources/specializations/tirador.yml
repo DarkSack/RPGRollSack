@@ -1,42 +1,66 @@
-id: tirador
-base-class: arquero
+id: "tirador"
+base-class: "arquero"
 display-name: "&aTirador de Élite"
-
 requirements:
   level: 20
-
 stats:
-  critical_chance: 4
-
+  luck: 1
 talents:
   inicio:
     display-name: "&7Inicio"
     cost: 1
     stats:
-      dexterity: 2
-
+      speed: 3
   pulso:
     display-name: "&aPulso Firme"
     cost: 2
-    requires: [inicio]
+    requires:
+      - "inicio"
     stats:
-      critical_damage: 6
-
+      damage: 1
   pulso_2:
     display-name: "&aDisparo Certero"
     cost: 3
-    requires: [pulso]
-    skill: disparo_certero
-
+    requires:
+      - "pulso"
+    skill: "disparo_certero"
   paso:
     display-name: "&7Paso Ligero"
     cost: 2
-    requires: [inicio]
+    requires:
+      - "inicio"
     stats:
-      speed: 3
-
+      speed: 5
   paso_2:
     display-name: "&aOjo de Halcón"
     cost: 3
-    requires: [paso]
-    trait: ojo_de_halcon
+    requires:
+      - "paso"
+    trait: "ojo_de_halcon"
+translations:
+  en:
+    display-name: "&aSharpshooter"
+    talents:
+      inicio:
+        display-name: "&7Start"
+      pulso:
+        display-name: "&aSteady Hand"
+      pulso_2:
+        display-name: "&aTrue Shot"
+      paso:
+        display-name: "&7Light Step"
+      paso_2:
+        display-name: "&aHawk Eye"
+  pt_BR:
+    display-name: "&aAtirador de Elite"
+    talents:
+      inicio:
+        display-name: "&7Início"
+      pulso:
+        display-name: "&aPulso Firme"
+      pulso_2:
+        display-name: "&aDisparo Certeiro"
+      paso:
+        display-name: "&7Passo Leve"
+      paso_2:
+        display-name: "&aOlho de Falcão"

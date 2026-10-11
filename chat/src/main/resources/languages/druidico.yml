@@ -1,0 +1,10 @@
+id: "druidico"
+display-name: "Druídico"
+obfuscation-char: "§"
+default-for-classes:
+  - "druida"
+translations:
+  en:
+    display-name: "Druidic"
+  pt_BR:
+    display-name: "Druídico"

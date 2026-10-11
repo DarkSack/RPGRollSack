@@ -1,42 +1,66 @@
-id: duelista
-base-class: picaro
+id: "duelista"
+base-class: "picaro"
 display-name: "&eDuelista"
-
 requirements:
   level: 20
-
 stats:
-  attack_speed: 4
-
+  attack_speed: 10
 talents:
   inicio:
     display-name: "&7Inicio"
     cost: 1
     stats:
-      dexterity: 2
-
+      speed: 3
   estocada:
     display-name: "&eEstocada"
     cost: 2
-    requires: [inicio]
+    requires:
+      - "inicio"
     stats:
-      critical_chance: 3
-
+      damage: 1
   estocada_2:
     display-name: "&eEstocada Relámpago"
     cost: 3
-    requires: [estocada]
-    skill: estocada_relampago
-
+    requires:
+      - "estocada"
+    skill: "estocada_relampago"
   finta:
     display-name: "&7Finta"
     cost: 2
-    requires: [inicio]
+    requires:
+      - "inicio"
     stats:
-      defense: 3
-
+      defense: 2
   finta_2:
     display-name: "&eReflejos de Esgrimista"
     cost: 3
-    requires: [finta]
-    trait: reflejos_de_esgrimista
+    requires:
+      - "finta"
+    trait: "reflejos_de_esgrimista"
+translations:
+  en:
+    display-name: "&eDuelist"
+    talents:
+      inicio:
+        display-name: "&7Start"
+      estocada:
+        display-name: "&eThrust"
+      estocada_2:
+        display-name: "&eLightning Thrust"
+      finta:
+        display-name: "&7Feint"
+      finta_2:
+        display-name: "&eFencer's Reflexes"
+  pt_BR:
+    display-name: "&eDuelista"
+    talents:
+      inicio:
+        display-name: "&7Início"
+      estocada:
+        display-name: "&eEstocada"
+      estocada_2:
+        display-name: "&eEstocada Relâmpago"
+      finta:
+        display-name: "&7Finta"
+      finta_2:
+        display-name: "&eReflexos de Esgrimista"

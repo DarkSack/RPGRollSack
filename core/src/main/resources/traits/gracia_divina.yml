@@ -1,8 +1,14 @@
-id: gracia_divina
+id: "gracia_divina"
 name: "&fGracia Divina"
-description: |
-  Su fe lo sostiene cuando el cuerpo falla.
+description: "Su fe lo sostiene cuando el cuerpo falla."
 required-level: 20
 effect:
-  wisdom-bonus: 2
-  mana-bonus: 20
+  health-bonus: 6
+  defense-bonus: 0.02
+translations:
+  en:
+    name: "&fDivine Grace"
+    description: "Faith holds them up when the body fails."
+  pt_BR:
+    name: "&fGraça Divina"
+    description: "Sua fé o sustenta quando o corpo falha."

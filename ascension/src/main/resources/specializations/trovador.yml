@@ -1,42 +1,66 @@
-id: trovador
-base-class: bardo
+id: "trovador"
+base-class: "bardo"
 display-name: "&dTrovador"
-
 requirements:
   level: 20
-
 stats:
-  luck: 4
-
+  luck: 2
 talents:
   inicio:
     display-name: "&7Inicio"
     cost: 1
     stats:
-      mana: 10
-
+      speed: 3
   melodia:
     display-name: "&dMelodía Hechizante"
     cost: 2
-    requires: [inicio]
+    requires:
+      - "inicio"
     stats:
-      magic_power: 3
-
+      luck: 1
   melodia_2:
     display-name: "&dNota Discordante"
     cost: 3
-    requires: [melodia]
-    skill: nota_discordante
-
+    requires:
+      - "melodia"
+    skill: "nota_discordante"
   encanto:
     display-name: "&7Encanto"
     cost: 2
-    requires: [inicio]
+    requires:
+      - "inicio"
     stats:
-      speed: 3
-
+      speed: 5
   encanto_2:
     display-name: "&dInspiración"
     cost: 3
-    requires: [encanto]
-    trait: inspiracion
+    requires:
+      - "encanto"
+    trait: "inspiracion"
+translations:
+  en:
+    display-name: "&dTroubadour"
+    talents:
+      inicio:
+        display-name: "&7Start"
+      melodia:
+        display-name: "&dEnchanting Melody"
+      melodia_2:
+        display-name: "&dDiscordant Note"
+      encanto:
+        display-name: "&7Charm"
+      encanto_2:
+        display-name: "&dInspiration"
+  pt_BR:
+    display-name: "&dTrovador"
+    talents:
+      inicio:
+        display-name: "&7Início"
+      melodia:
+        display-name: "&dMelodia Encantadora"
+      melodia_2:
+        display-name: "&dNota Dissonante"
+      encanto:
+        display-name: "&7Encanto"
+      encanto_2:
+        display-name: "&dInspiração"

@@ -1,0 +1,15 @@
+id: "egida_sagrada"
+name: "&6Égida Sagrada"
+description: "Un muro con armadura: protege más de lo que hiere."
+required-level: 1
+effect:
+  defense-bonus: 0.05
+  health-bonus: 2
+  speed-bonus: -0.03
+translations:
+  en:
+    name: "&6Sacred Aegis"
+    description: "A wall in armor: protects more than it hurts."
+  pt_BR:
+    name: "&6Égide Sagrada"
+    description: "Um muro de armadura: protege mais do que fere."

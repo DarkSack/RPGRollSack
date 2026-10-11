@@ -1,4 +1,11 @@
-id: elfico
+id: "elfico"
 display-name: "Élfico"
 obfuscation-char: "◌"
-default-for-races: ["elf", "elfo"]
+default-for-races:
+  - "elf"
+  - "elfo"
+translations:
+  en:
+    display-name: "Elvish"
+  pt_BR:
+    display-name: "Élfico"

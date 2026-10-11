@@ -1,8 +1,14 @@
-id: voto_de_proteccion
+id: "voto_de_proteccion"
 name: "&bVoto de Protección"
-description: |
-  Juró ser el escudo de los suyos.
+description: "Juró ser el escudo de los suyos."
 required-level: 20
 effect:
-  constitution-bonus: 2
-  defense-bonus: 0.04
+  defense-bonus: 0.06
+  damage-bonus: -0.03
+translations:
+  en:
+    name: "&bVow of Protection"
+    description: "Swore to be the shield of their own."
+  pt_BR:
+    name: "&bVoto de Proteção"
+    description: "Jurou ser o escudo dos seus."

@@ -1,13 +1,44 @@
-id: bardo
+id: "bardo"
 display-name: "&d♫ Bardo"
 description: |
   Su música levanta el ánimo y rompe filas.
   Nadie cuenta mejor una victoria.
 base-attributes:
-  charisma: 3
+  charisma: 4
   dexterity: 2
-passive-traits: []
+  strength: -1
+passive-traits:
+  - "don_de_gentes"
 icon: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWQ5OWNmN2Q3YTk5ZjlhYjkyODBhMWQ0OWY1MWMzNDQwMGUyNjI3MTdlYTJlMGIwYmY2MzI5Yjc3NTZjZjdiNyJ9fX0="
 lore:
   - "&7Armas: Instrumentos y Estoques"
   - "&7Rol: Apoyo / Control"
+  - "&c▼ -3% de daño"
+  - "&a▲ +3% de evasión"
+  - "&a▲ +2 de suerte (crítico, evasión, exp. y botín)"
+  - "&7Idioma: Juglaresco"
+translations:
+  en:
+    display-name: "&d♫ Bard"
+    description: |
+      Their music lifts spirits and breaks ranks.
+      No one tells a victory better.
+    lore:
+      - "&7Weapons: Instruments and Rapiers"
+      - "&7Role: Support / Control"
+      - "&c▼ -3% damage"
+      - "&a▲ +3% evasion"
+      - "&a▲ +2 luck (crit, evasion, XP and loot)"
+      - "&7Language: Minstrel's Tongue"
+  pt_BR:
+    display-name: "&d♫ Bardo"
+    description: |
+      Sua música levanta o ânimo e rompe fileiras.
+      Ninguém conta melhor uma vitória.
+    lore:
+      - "&7Armas: Instrumentos e Floretes"
+      - "&7Função: Suporte / Controle"
+      - "&c▼ -3% de dano"
+      - "&a▲ +3% de evasão"
+      - "&a▲ +2 de sorte (crítico, evasão, exp. e saque)"
+      - "&7Idioma: Jogralesco"

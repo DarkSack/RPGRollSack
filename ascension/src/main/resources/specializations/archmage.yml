@@ -1,45 +1,68 @@
-id: archmage
-base-class: mago
+id: "archmage"
+base-class: "mago"
 display-name: "&9Archimago"
-
 requirements:
   level: 20
-
 stats:
-  magic_power: 5
-
+  speed: 3
 restrictions:
   - "no-heavy-armor"
-
 talents:
   inicio:
     display-name: "&7Inicio"
     cost: 1
     stats:
-      mana: 10
-
+      health: 2
   arcano:
     display-name: "&9Dominio Arcano"
     cost: 2
-    requires: [inicio]
+    requires:
+      - "inicio"
     stats:
-      magic_power: 4
-
+      luck: 1
   arcano_2:
     display-name: "&9Sobrecarga Arcana"
     cost: 3
-    requires: [arcano]
-    skill: arcane_overload
-
+    requires:
+      - "arcano"
+    skill: "arcane_overload"
   proteccion:
     display-name: "&7Escudo de Maná"
     cost: 2
-    requires: [inicio]
+    requires:
+      - "inicio"
     stats:
-      magic_resistance: 4
-
+      defense: 2
   proteccion_2:
-    display-name: "&7Barrera Inquebrantable"
+    display-name: "&9Barrera de Maná"
     cost: 3
-    requires: [proteccion]
-    trait: mana_barrier
+    requires:
+      - "proteccion"
+    trait: "mana_barrier"
+translations:
+  en:
+    display-name: "&9Archmage"
+    talents:
+      inicio:
+        display-name: "&7Start"
+      arcano:
+        display-name: "&9Arcane Mastery"
+      arcano_2:
+        display-name: "&9Arcane Overload"
+      proteccion:
+        display-name: "&7Mana Shield"
+      proteccion_2:
+        display-name: "&9Mana Barrier"
+  pt_BR:
+    display-name: "&9Arquimago"
+    talents:
+      inicio:
+        display-name: "&7Início"
+      arcano:
+        display-name: "&9Domínio Arcano"
+      arcano_2:
+        display-name: "&9Sobrecarga Arcana"
+      proteccion:
+        display-name: "&7Escudo de Mana"
+      proteccion_2:
+        display-name: "&9Barreira de Mana"

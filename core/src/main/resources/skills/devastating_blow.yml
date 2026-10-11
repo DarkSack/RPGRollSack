@@ -1,4 +1,4 @@
-id: devastating_blow
+id: "devastating_blow"
 name: "&cGolpe Devastador"
 description: |
   Un mazazo con toda la furia
@@ -7,3 +7,14 @@ required-level: 20
 mana-cost: 25
 cooldown-seconds: 12
 damage-multiplier: 2.5
+translations:
+  en:
+    name: "&cDevastating Blow"
+    description: |
+      A crushing blow with all
+      the berserker's fury.
+  pt_BR:
+    name: "&cGolpe Devastador"
+    description: |
+      Uma pancada com toda a fúria
+      do berserker.

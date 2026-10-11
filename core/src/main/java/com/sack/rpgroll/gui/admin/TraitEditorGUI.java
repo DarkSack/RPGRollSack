@@ -141,7 +141,11 @@ public class TraitEditorGUI extends InventoryGUI {
                                     Integer.parseInt(parts[2].trim()), Integer.parseInt(parts[3].trim()),
                                     Integer.parseInt(parts[4].trim()), Integer.parseInt(parts[5].trim()),
                                     Integer.parseInt(parts[6].trim()), Integer.parseInt(parts[7].trim()),
-                                    Double.parseDouble(parts[8].trim()), Double.parseDouble(parts[9].trim()));
+                                    Double.parseDouble(parts[8].trim()), Double.parseDouble(parts[9].trim()),
+                                    // El editor solo pide los diez de siempre: los demás se conservan.
+                                    current.effect().speedBonus(), current.effect().luckBonus(),
+                                    current.effect().evasionBonus(), current.effect().criticalBonus(),
+                                    current.effect().attackSpeedBonus());
 
                             replace(new Trait(current.id(), current.name(), current.description(),
                                     current.requiredLevel(), effect));

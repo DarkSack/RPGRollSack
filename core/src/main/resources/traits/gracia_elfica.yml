@@ -1,0 +1,15 @@
+id: "gracia_elfica"
+name: "&bGracia Élfica"
+description: "Certeros y ligeros, pero de constitución frágil."
+required-level: 1
+effect:
+  critical-bonus: 0.04
+  damage-bonus: 0.02
+  health-bonus: -2
+translations:
+  en:
+    name: "&bElven Grace"
+    description: "Accurate and light, but frail of build."
+  pt_BR:
+    name: "&bGraça Élfica"
+    description: "Certeiros e leves, mas de constituição frágil."

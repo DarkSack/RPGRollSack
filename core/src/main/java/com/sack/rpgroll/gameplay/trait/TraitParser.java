@@ -43,7 +43,12 @@ public class TraitParser implements ContentParser<Trait> {
                 section.getInt("health-bonus", 0),
                 section.getInt("mana-bonus", 0),
                 section.getDouble("damage-bonus", 0.0),
-                section.getDouble("defense-bonus", 0.0));
+                section.getDouble("defense-bonus", 0.0),
+                section.getDouble("speed-bonus", 0.0),
+                section.getDouble("luck-bonus", 0.0),
+                section.getDouble("evasion-bonus", 0.0),
+                section.getDouble("critical-bonus", 0.0),
+                section.getDouble("attack-speed-bonus", 0.0));
     }
 
 }

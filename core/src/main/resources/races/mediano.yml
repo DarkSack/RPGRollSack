@@ -1,18 +1,50 @@
-id: mediano
+id: "mediano"
 display-name: "&a✿ Mediano"
 description: |
   Pequeños, rápidos y con una suerte
   que nadie se explica.
 base-attributes:
   dexterity: 2
-  charisma: 1
-
+  charisma: 2
+  strength: -1
 physical:
   scale: 0.75
   movement-speed-percent: 0.05
 passive-traits:
-  - suerte_del_mediano
+  - "suerte_del_mediano"
 icon: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvN2EwYWExYzk2YmNmNDBjNzYxZDE3YTYzMGYyM2E5OTNhMzExNjExMTk0MTRkZmNiNzJlNTNlNjVkNDEwZmIyMyJ9fX0="
 lore:
   - "&7Gente de colinas, huertos y buena mesa"
-  - "&7Difíciles de ver y más de atrapar"
+  - "&c▼ -3% de daño"
+  - "&a▲ +5% de velocidad"
+  - "&a▲ +5% de evasión"
+  - "&a▲ +2 de suerte (crítico, evasión, exp. y botín)"
+  - "&7Tamaño ×0.75"
+  - "&7Idioma: Mediano"
+translations:
+  en:
+    display-name: "&a✿ Halfling"
+    description: |
+      Small, quick and lucky
+      beyond all reason.
+    lore:
+      - "&7Folk of hills, orchards and good food"
+      - "&c▼ -3% damage"
+      - "&a▲ +5% speed"
+      - "&a▲ +5% evasion"
+      - "&a▲ +2 luck (crit, evasion, XP and loot)"
+      - "&7Size ×0.75"
+      - "&7Language: Halfling"
+  pt_BR:
+    display-name: "&a✿ Halfling"
+    description: |
+      Pequenos, rápidos e com uma sorte
+      que ninguém explica.
+    lore:
+      - "&7Gente de colinas, hortas e boa mesa"
+      - "&c▼ -3% de dano"
+      - "&a▲ +5% de velocidade"
+      - "&a▲ +5% de evasão"
+      - "&a▲ +2 de sorte (crítico, evasão, exp. e saque)"
+      - "&7Tamanho ×0.75"
+      - "&7Idioma: Halfling"

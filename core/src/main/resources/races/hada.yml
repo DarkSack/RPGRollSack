@@ -1,4 +1,4 @@
-id: hada
+id: "hada"
 display-name: "&d✧ Hada"
 description: |
   Seres diminutos nacidos de la magia.
@@ -7,13 +7,44 @@ base-attributes:
   intelligence: 2
   charisma: 2
   constitution: -1
-
 physical:
   scale: 0.6
   movement-speed-percent: 0.1
 passive-traits:
-  - polvo_de_hada
+  - "polvo_de_hada"
 icon: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvN2U1OTdiMTc1OTU5MDI3ZTY0MzkzNmNhMmI4ZDdiZmIyMWIxZGM2ODNhNGE1N2ZiMGMwOTlhN2Q0YTk2OTUxMCJ9fX0="
 lore:
   - "&7Viven donde el bosque todavía sueña"
-  - "&7Su magia es tan vieja como los árboles"
+  - "&a▲ +5% de daño"
+  - "&c▼ -4 de vida"
+  - "&a▲ +10% de velocidad"
+  - "&a▲ +3% de evasión"
+  - "&7Tamaño ×0.6"
+  - "&7Idioma: Feérico"
+translations:
+  en:
+    display-name: "&d✧ Fairy"
+    description: |
+      Tiny beings born of magic.
+      Frail, swift and charming.
+    lore:
+      - "&7They live where the forest still dreams"
+      - "&a▲ +5% damage"
+      - "&c▼ -4 health"
+      - "&a▲ +10% speed"
+      - "&a▲ +3% evasion"
+      - "&7Size ×0.6"
+      - "&7Language: Sylvan"
+  pt_BR:
+    display-name: "&d✧ Fada"
+    description: |
+      Seres minúsculos nascidos da magia.
+      Frágeis, velozes e encantadores.
+    lore:
+      - "&7Vivem onde a floresta ainda sonha"
+      - "&a▲ +5% de dano"
+      - "&c▼ -4 de vida"
+      - "&a▲ +10% de velocidade"
+      - "&a▲ +3% de evasão"
+      - "&7Tamanho ×0.6"
+      - "&7Idioma: Feérico"

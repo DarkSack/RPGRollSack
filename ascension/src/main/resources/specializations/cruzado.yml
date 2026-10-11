@@ -1,42 +1,66 @@
-id: cruzado
-base-class: paladin
+id: "cruzado"
+base-class: "paladin"
 display-name: "&6Cruzado"
-
 requirements:
   level: 20
-
 stats:
-  damage: 3
-
+  damage: 1
 talents:
   inicio:
     display-name: "&7Inicio"
     cost: 1
     stats:
-      health: 5
-
+      health: 4
   celo:
     display-name: "&6Celo Ardiente"
     cost: 2
-    requires: [inicio]
+    requires:
+      - "inicio"
     stats:
-      strength: 2
-
+      attack_speed: 8
   celo_2:
     display-name: "&6Golpe Sagrado"
     cost: 3
-    requires: [celo]
-    skill: golpe_sagrado
-
+    requires:
+      - "celo"
+    skill: "golpe_sagrado"
   egida:
     display-name: "&7Égida"
     cost: 2
-    requires: [inicio]
+    requires:
+      - "inicio"
     stats:
-      defense: 4
-
+      defense: 2
   egida_2:
     display-name: "&6Aura de Valor"
     cost: 3
-    requires: [egida]
-    trait: aura_de_valor
+    requires:
+      - "egida"
+    trait: "aura_de_valor"
+translations:
+  en:
+    display-name: "&6Crusader"
+    talents:
+      inicio:
+        display-name: "&7Start"
+      celo:
+        display-name: "&6Burning Zeal"
+      celo_2:
+        display-name: "&6Holy Strike"
+      egida:
+        display-name: "&7Aegis"
+      egida_2:
+        display-name: "&6Aura of Valor"
+  pt_BR:
+    display-name: "&6Cruzado"
+    talents:
+      inicio:
+        display-name: "&7Início"
+      celo:
+        display-name: "&6Zelo Ardente"
+      celo_2:
+        display-name: "&6Golpe Sagrado"
+      egida:
+        display-name: "&7Égide"
+      egida_2:
+        display-name: "&6Aura de Valor"

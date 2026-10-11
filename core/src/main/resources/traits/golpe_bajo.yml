@@ -1,0 +1,16 @@
+id: "golpe_bajo"
+name: "&8Golpe Bajo"
+description: "Pelea sucio y pega duro; aguanta poco."
+required-level: 1
+effect:
+  critical-bonus: 0.04
+  evasion-bonus: 0.04
+  speed-bonus: 0.03
+  health-bonus: -2
+translations:
+  en:
+    name: "&8Low Blow"
+    description: "Fights dirty and hits hard; cannot take much."
+  pt_BR:
+    name: "&8Golpe Baixo"
+    description: "Luta sujo e bate forte; aguenta pouco."

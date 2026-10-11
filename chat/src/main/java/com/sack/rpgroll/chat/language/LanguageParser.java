@@ -17,11 +17,15 @@ public class LanguageParser implements ContentParser<Language> {
 
         String obfuscation = config.getString("obfuscation-char", "?");
 
+        // Un idioma puede ser de una raza o de una clase: los ids no chocan, así que van en la misma lista.
+        java.util.List<String> owners = new java.util.ArrayList<>(config.getStringList("default-for-races"));
+        owners.addAll(config.getStringList("default-for-classes"));
+
         return new Language(
                 id,
                 config.getString("display-name", id),
                 obfuscation.isBlank() ? '?' : obfuscation.charAt(0),
-                config.getStringList("default-for-races"));
+                owners);
     }
 
 }

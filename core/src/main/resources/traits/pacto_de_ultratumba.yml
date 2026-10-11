@@ -1,8 +1,15 @@
-id: pacto_de_ultratumba
+id: "pacto_de_ultratumba"
 name: "&5Pacto de Ultratumba"
-description: |
-  La muerte le debe un favor.
+description: "La muerte le debe un favor."
 required-level: 20
 effect:
-  health-bonus: 4
-  mana-bonus: 15
+  health-bonus: 6
+  damage-bonus: 0.03
+  defense-bonus: -0.02
+translations:
+  en:
+    name: "&5Pact from Beyond"
+    description: "Death owes them a favor."
+  pt_BR:
+    name: "&5Pacto do Além"
+    description: "A morte lhe deve um favor."

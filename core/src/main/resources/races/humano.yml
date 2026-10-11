@@ -1,16 +1,43 @@
-id: humano
+id: "humano"
 display-name: "&e☼ Humano"
 description: |
   Versátiles y tenaces: no destacan en nada
   y por eso sirven para todo.
 base-attributes:
   strength: 1
+  dexterity: 1
   constitution: 1
   charisma: 1
-
+  wisdom: -1
 passive-traits:
-  - adaptable
+  - "adaptable"
 icon: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOGFhNmMyZDFiZDgwZmRkNmE2MzJjYzdjYWZkMjVmMDllZjIwM2VlYzJhNjkzYjdjYmEwM2QxNzZiMmNjMDcxYiJ9fX0="
 lore:
   - "&7Fundadores de reinos y de caminos"
-  - "&7Aprenden cualquier oficio"
+  - "&a▲ +2% de daño"
+  - "&a▲ +2 de vida"
+  - "&a▲ +1 de suerte (crítico, evasión, exp. y botín)"
+  - "&7Idioma: Imperial"
+translations:
+  en:
+    display-name: "&e☼ Human"
+    description: |
+      Versatile and stubborn: masters of nothing,
+      and so good at everything.
+    lore:
+      - "&7Founders of kingdoms and roads"
+      - "&a▲ +2% damage"
+      - "&a▲ +2 health"
+      - "&a▲ +1 luck (crit, evasion, XP and loot)"
+      - "&7Language: Imperial"
+  pt_BR:
+    display-name: "&e☼ Humano"
+    description: |
+      Versáteis e tenazes: não se destacam em nada
+      e por isso servem para tudo.
+    lore:
+      - "&7Fundadores de reinos e estradas"
+      - "&a▲ +2% de dano"
+      - "&a▲ +2 de vida"
+      - "&a▲ +1 de sorte (crítico, evasão, exp. e saque)"
+      - "&7Idioma: Imperial"

@@ -1,9 +1,15 @@
-id: suerte_del_mediano
+id: "suerte_del_mediano"
 name: "&aSuerte del Mediano"
-description: |
-  Otorgado por raza mediana.
-  Sale de todas.
+description: "Difícil de acertar, pero pega flojo."
 required-level: 1
 effect:
-  dexterity-bonus: 1
-  defense-bonus: 0.02
+  luck-bonus: 2
+  evasion-bonus: 0.05
+  damage-bonus: -0.03
+translations:
+  en:
+    name: "&aHalfling's Luck"
+    description: "Hard to hit, but hits softly."
+  pt_BR:
+    name: "&aSorte de Halfling"
+    description: "Difícil de acertar, mas bate fraco."

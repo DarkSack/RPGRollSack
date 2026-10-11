@@ -1,8 +1,15 @@
-id: polvo_de_hada
+id: "polvo_de_hada"
 name: "&dPolvo de Hada"
-description: |
-  Otorgado por raza hada.
-  Rebosa magia.
+description: "Su magia golpea fuerte; su cuerpo no aguanta."
 required-level: 1
 effect:
-  mana-bonus: 20
+  damage-bonus: 0.05
+  evasion-bonus: 0.03
+  health-bonus: -4
+translations:
+  en:
+    name: "&dFairy Dust"
+    description: "Their magic hits hard; their body does not hold."
+  pt_BR:
+    name: "&dPó de Fada"
+    description: "Sua magia bate forte; seu corpo não aguenta."

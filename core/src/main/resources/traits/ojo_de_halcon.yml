@@ -1,8 +1,14 @@
-id: ojo_de_halcon
+id: "ojo_de_halcon"
 name: "&aOjo de Halcón"
-description: |
-  Ve el punto débil antes de tensar el arco.
+description: "Ve el punto débil antes de tensar el arco."
 required-level: 20
 effect:
-  dexterity-bonus: 2
-  damage-bonus: 0.03
+  critical-bonus: 0.06
+  defense-bonus: -0.02
+translations:
+  en:
+    name: "&aHawk Eye"
+    description: "Sees the weak spot before drawing the bow."
+  pt_BR:
+    name: "&aOlho de Falcão"
+    description: "Vê o ponto fraco antes de retesar o arco."

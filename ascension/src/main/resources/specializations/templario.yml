@@ -1,42 +1,66 @@
-id: templario
-base-class: paladin
+id: "templario"
+base-class: "paladin"
 display-name: "&bTemplario"
-
 requirements:
   level: 20
-
 stats:
-  defense: 4
-
+  defense: 2
 talents:
   inicio:
     display-name: "&7Inicio"
     cost: 1
     stats:
-      health: 5
-
+      health: 4
   sello:
     display-name: "&bSello Sagrado"
     cost: 2
-    requires: [inicio]
+    requires:
+      - "inicio"
     stats:
-      magic_resistance: 4
-
+      resistance: 10
   sello_2:
     display-name: "&bConsagración"
     cost: 3
-    requires: [sello]
-    skill: consagracion
-
+    requires:
+      - "sello"
+    skill: "consagracion"
   voto:
     display-name: "&7Voto Solemne"
     cost: 2
-    requires: [inicio]
+    requires:
+      - "inicio"
     stats:
-      health: 6
-
+      health: 4
   voto_2:
     display-name: "&bVoto de Protección"
     cost: 3
-    requires: [voto]
-    trait: voto_de_proteccion
+    requires:
+      - "voto"
+    trait: "voto_de_proteccion"
+translations:
+  en:
+    display-name: "&bTemplar"
+    talents:
+      inicio:
+        display-name: "&7Start"
+      sello:
+        display-name: "&bSacred Seal"
+      sello_2:
+        display-name: "&bConsecration"
+      voto:
+        display-name: "&7Solemn Vow"
+      voto_2:
+        display-name: "&bVow of Protection"
+  pt_BR:
+    display-name: "&bTemplário"
+    talents:
+      inicio:
+        display-name: "&7Início"
+      sello:
+        display-name: "&bSelo Sagrado"
+      sello_2:
+        display-name: "&bConsagração"
+      voto:
+        display-name: "&7Voto Solene"
+      voto_2:
+        display-name: "&bVoto de Proteção"

@@ -1,17 +1,52 @@
-id: enano
+id: "enano"
 display-name: "&7⚒ Enano"
-description: |
-  Bajos y robustos, con resistencia natural al daño.
+description: "Bajos y robustos, con resistencia natural al daño."
 base-attributes:
   constitution: 2
-  strength: 1
-
+  strength: 2
+  dexterity: -1
 physical:
   scale: 0.7
   movement-speed-percent: -0.05
   extra-health: 4.0
   knockback-resistance: 0.2
-
-icon: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzczYjMyMjA1MzY0MjU1ZmEyODUxMmJlNTc4YjdkOTg4NTMzOTg2OTllYThmNmIyODU0MjMxODkwZTI5NiJ9fX0=
+passive-traits:
+  - "fuerza_bruta"
+icon: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzczYjMyMjA1MzY0MjU1ZmEyODUxMmJlNTc4YjdkOTg4NTMzOTg2OTllYThmNmIyODU0MjMxODkwZTI5NiJ9fX0="
 lore:
   - "&7Herreros y mineros por naturaleza"
+  - "&a▲ +3% de daño"
+  - "&a▲ +2% de defensa"
+  - "&a▲ +4 de vida"
+  - "&c▼ -5% de velocidad"
+  - "&c▼ -5% de velocidad de ataque"
+  - "&a▲ +20% contra el empuje"
+  - "&7Tamaño ×0.7"
+  - "&7Idioma: Enano"
+translations:
+  en:
+    display-name: "&7⚒ Dwarf"
+    description: "Short and sturdy, naturally resistant to harm."
+    lore:
+      - "&7Smiths and miners by nature"
+      - "&a▲ +3% damage"
+      - "&a▲ +2% defense"
+      - "&a▲ +4 health"
+      - "&c▼ -5% speed"
+      - "&c▼ -5% attack speed"
+      - "&a▲ +20% knockback resistance"
+      - "&7Size ×0.7"
+      - "&7Language: Dwarvish"
+  pt_BR:
+    display-name: "&7⚒ Anão"
+    description: "Baixos e robustos, com resistência natural ao dano."
+    lore:
+      - "&7Ferreiros e mineiros por natureza"
+      - "&a▲ +3% de dano"
+      - "&a▲ +2% de defesa"
+      - "&a▲ +4 de vida"
+      - "&c▼ -5% de velocidade"
+      - "&c▼ -5% de velocidade de ataque"
+      - "&a▲ +20% contra empurrões"
+      - "&7Tamanho ×0.7"
+      - "&7Idioma: Anão"

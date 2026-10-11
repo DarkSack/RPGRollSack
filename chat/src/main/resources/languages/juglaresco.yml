@@ -1,0 +1,10 @@
+id: "juglaresco"
+display-name: "Juglaresco"
+obfuscation-char: "♪"
+default-for-classes:
+  - "bardo"
+translations:
+  en:
+    display-name: "Minstrel's Tongue"
+  pt_BR:
+    display-name: "Jogralesco"

@@ -1,4 +1,4 @@
-id: grito_de_guerra
+id: "grito_de_guerra"
 name: "&cGrito de Guerra"
 description: |
   Un bramido que sacude
@@ -7,3 +7,14 @@ required-level: 20
 mana-cost: 25
 cooldown-seconds: 10
 damage-multiplier: 2.1
+translations:
+  en:
+    name: "&cWar Cry"
+    description: |
+      A roar that shakes
+      the enemy ranks.
+  pt_BR:
+    name: "&cGrito de Guerra"
+    description: |
+      Um bramido que sacode
+      as fileiras inimigas.

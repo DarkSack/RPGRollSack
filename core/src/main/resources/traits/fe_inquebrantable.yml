@@ -1,8 +1,14 @@
-id: fe_inquebrantable
+id: "fe_inquebrantable"
 name: "&cFe Inquebrantable"
-description: |
-  No duda, no cede, no perdona.
+description: "No duda, no cede, no perdona."
 required-level: 20
 effect:
-  wisdom-bonus: 2
-  defense-bonus: 0.03
+  damage-bonus: 0.04
+  defense-bonus: 0.02
+translations:
+  en:
+    name: "&cUnshakable Faith"
+    description: "No doubt, no yielding, no mercy."
+  pt_BR:
+    name: "&cFé Inabalável"
+    description: "Não duvida, não cede, não perdoa."

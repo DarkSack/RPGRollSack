@@ -1,9 +1,15 @@
-id: sentidos_felinos
+id: "sentidos_felinos"
 name: "&6Sentidos Felinos"
-description: |
-  Otorgado por raza felina.
-  Reflejos de cazador.
+description: "Golpea donde duele, pero es de huesos ligeros."
 required-level: 1
 effect:
-  dexterity-bonus: 1
-  damage-bonus: 0.02
+  critical-bonus: 0.05
+  evasion-bonus: 0.03
+  health-bonus: -2
+translations:
+  en:
+    name: "&6Feline Senses"
+    description: "Strikes where it hurts, but is light-boned."
+  pt_BR:
+    name: "&6Sentidos Felinos"
+    description: "Golpeia onde dói, mas tem ossos leves."

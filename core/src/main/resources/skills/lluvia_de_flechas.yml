@@ -1,4 +1,4 @@
-id: lluvia_de_flechas
+id: "lluvia_de_flechas"
 name: "&2Lluvia de Flechas"
 description: |
   Cubre de flechas
@@ -7,3 +7,14 @@ required-level: 20
 mana-cost: 30
 cooldown-seconds: 14
 damage-multiplier: 2.4
+translations:
+  en:
+    name: "&2Rain of Arrows"
+    description: |
+      Blankets the target's
+      position with arrows.
+  pt_BR:
+    name: "&2Chuva de Flechas"
+    description: |
+      Cobre de flechas
+      a posição do alvo.

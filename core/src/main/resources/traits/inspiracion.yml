@@ -1,8 +1,14 @@
-id: inspiracion
+id: "inspiracion"
 name: "&dInspiración"
-description: |
-  Siempre tiene una canción para la ocasión.
+description: "Siempre tiene una canción para la ocasión."
 required-level: 20
 effect:
-  charisma-bonus: 2
-  mana-bonus: 15
+  luck-bonus: 2
+  evasion-bonus: 0.03
+translations:
+  en:
+    name: "&dInspiration"
+    description: "Always has a song for the occasion."
+  pt_BR:
+    name: "&dInspiração"
+    description: "Sempre tem uma canção para a ocasião."

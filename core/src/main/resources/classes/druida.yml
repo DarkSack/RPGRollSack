@@ -1,4 +1,4 @@
-id: druida
+id: "druida"
 display-name: "&2❦ Druida"
 description: |
   Guardián de la naturaleza y sus tormentas.
@@ -6,8 +6,43 @@ description: |
 base-attributes:
   wisdom: 3
   intelligence: 2
-passive-traits: []
+  constitution: 1
+  strength: -1
+passive-traits:
+  - "comunion_natural"
 icon: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2RiZGQwYTIxMjA2NGYwMzkyNjdlYzNiYTZlMzQ1YmRkMDZlYjM2ZDkyNGQ4ZmExNjU4NjE2MWYxZThjMTlmZiJ9fX0="
 lore:
   - "&7Armas: Bastones y Hoces"
   - "&7Rol: Mago / Apoyo"
+  - "&c▼ -2% de daño"
+  - "&a▲ +4 de vida"
+  - "&a▲ +2% de velocidad"
+  - "&a▲ +1 de suerte (crítico, evasión, exp. y botín)"
+  - "&7Idioma: Druídico"
+translations:
+  en:
+    display-name: "&2❦ Druid"
+    description: |
+      Guardian of nature and its storms.
+      Speaks to the forest, and the forest answers.
+    lore:
+      - "&7Weapons: Staves and Sickles"
+      - "&7Role: Caster / Support"
+      - "&c▼ -2% damage"
+      - "&a▲ +4 health"
+      - "&a▲ +2% speed"
+      - "&a▲ +1 luck (crit, evasion, XP and loot)"
+      - "&7Language: Druidic"
+  pt_BR:
+    display-name: "&2❦ Druida"
+    description: |
+      Guardião da natureza e de suas tempestades.
+      Fala com a floresta, e a floresta responde.
+    lore:
+      - "&7Armas: Cajados e Foices"
+      - "&7Função: Mago / Suporte"
+      - "&c▼ -2% de dano"
+      - "&a▲ +4 de vida"
+      - "&a▲ +2% de velocidade"
+      - "&a▲ +1 de sorte (crítico, evasão, exp. e saque)"
+      - "&7Idioma: Druídico"

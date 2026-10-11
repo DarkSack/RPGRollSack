@@ -1,0 +1,11 @@
+id: "felino"
+display-name: "Félido"
+obfuscation-char: "^"
+default-for-races:
+  - "catfolk"
+  - "felino"
+translations:
+  en:
+    display-name: "Feline"
+  pt_BR:
+    display-name: "Felídeo"

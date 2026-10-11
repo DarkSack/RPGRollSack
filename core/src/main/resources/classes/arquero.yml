@@ -1,13 +1,44 @@
-id: arquero
+id: "arquero"
 display-name: "&a➶ Arquero"
 description: |
   Abate al enemigo antes de que se acerque.
   Vive de su puntería y de la distancia.
 base-attributes:
-  dexterity: 3
+  dexterity: 4
   wisdom: 2
-passive-traits: []
+  constitution: -1
+passive-traits:
+  - "punteria"
 icon: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmQzY2VhZTUxYmMzNzE4NjMxMGRiZmMyMTQ0MmMyOGZhMjBlNmVhNzc2ZWE3NTc3MDg2MzRkNmE1NTdjNDFlOSJ9fX0="
 lore:
   - "&7Armas: Arcos y Ballestas"
   - "&7Rol: DPS a distancia"
+  - "&c▼ -2% de defensa"
+  - "&a▲ +3% de velocidad"
+  - "&a▲ +5% de crítico"
+  - "&7Idioma: Silbo de Caza"
+translations:
+  en:
+    display-name: "&a➶ Archer"
+    description: |
+      Drops the enemy before it gets close.
+      Lives by aim and distance.
+    lore:
+      - "&7Weapons: Bows and Crossbows"
+      - "&7Role: Ranged DPS"
+      - "&c▼ -2% defense"
+      - "&a▲ +3% speed"
+      - "&a▲ +5% critical chance"
+      - "&7Language: Hunter's Whistle"
+  pt_BR:
+    display-name: "&a➶ Arqueiro"
+    description: |
+      Abate o inimigo antes que se aproxime.
+      Vive da pontaria e da distância.
+    lore:
+      - "&7Armas: Arcos e Bestas"
+      - "&7Função: DPS à distância"
+      - "&c▼ -2% de defesa"
+      - "&a▲ +3% de velocidade"
+      - "&a▲ +5% de crítico"
+      - "&7Idioma: Assobio de Caça"

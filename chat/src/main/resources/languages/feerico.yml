@@ -1,0 +1,11 @@
+id: "feerico"
+display-name: "Feérico"
+obfuscation-char: "✦"
+default-for-races:
+  - "fairy"
+  - "hada"
+translations:
+  en:
+    display-name: "Sylvan"
+  pt_BR:
+    display-name: "Feérico"

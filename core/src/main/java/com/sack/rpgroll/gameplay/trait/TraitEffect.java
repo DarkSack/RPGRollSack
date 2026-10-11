@@ -13,13 +13,18 @@ public record TraitEffect(
         int healthBonus,
         int manaBonus,
         double damageBonus,
-        double defenseBonus) {
+        double defenseBonus,
+        double speedBonus,
+        double luckBonus,
+        double evasionBonus,
+        double criticalBonus,
+        double attackSpeedBonus) {
 
     /**
      * Trait sin efectos.
      */
     public static TraitEffect empty() {
-        return new TraitEffect(0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+        return new TraitEffect(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
     }
 
     /**
@@ -28,7 +33,9 @@ public record TraitEffect(
     public boolean hasEffects() {
         return strengthBonus != 0 || dexterityBonus != 0 || constitutionBonus != 0 ||
                 intelligenceBonus != 0 || wisdomBonus != 0 || charismaBonus != 0 ||
-                healthBonus != 0 || manaBonus != 0 || damageBonus != 0 || defenseBonus != 0;
+                healthBonus != 0 || manaBonus != 0 || damageBonus != 0 || defenseBonus != 0
+                || speedBonus != 0 || luckBonus != 0 || evasionBonus != 0 || criticalBonus != 0
+                || attackSpeedBonus != 0;
     }
 
 }

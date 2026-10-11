@@ -1,4 +1,9 @@
-id: comun
+id: "comun"
 display-name: "Común"
 obfuscation-char: "?"
 default-for-races: []
+translations:
+  en:
+    display-name: "Common"
+  pt_BR:
+    display-name: "Comum"

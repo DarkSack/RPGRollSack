@@ -8,3 +8,14 @@ effect:
   constitution-bonus: 2
   health-bonus: 10
   damage-bonus: 0.05
+translations:
+  en:
+    name: "&4Dragon Blood"
+    description: |
+      Hidden trait (RPGRoll-Ascension, secrets/dragon_blood.yml).
+      Whoever slays the dragon carries its blood: more health and more damage.
+  pt_BR:
+    name: "&4Sangue de Dragão"
+    description: |
+      Traço oculto (RPGRoll-Ascension, secrets/dragon_blood.yml).
+      Quem derrota o dragão carrega seu sangue: mais vida e mais dano.

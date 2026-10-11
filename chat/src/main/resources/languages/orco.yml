@@ -1,4 +1,11 @@
-id: orco
+id: "orco"
 display-name: "Orco"
 obfuscation-char: "#"
-default-for-races: ["orc", "orco"]
+default-for-races:
+  - "orc"
+  - "orco"
+translations:
+  en:
+    display-name: "Orcish"
+  pt_BR:
+    display-name: "Órquico"

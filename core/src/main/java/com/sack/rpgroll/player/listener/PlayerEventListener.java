@@ -29,10 +29,12 @@ public class PlayerEventListener implements Listener {
     private final RaceAttributeApplier raceAttributeApplier;
     private final PlayerResourceBar resourceBar;
     private final LangManager lang;
+    private final com.sack.rpgroll.gameplay.trait.PassiveEffects passiveEffects;
 
     public PlayerEventListener(RPGRoll plugin, PlayerManager playerManager, RaceManager raceManager,
             ClassManager classManager, RaceAttributeApplier raceAttributeApplier, PlayerResourceBar resourceBar,
-            LangManager lang) {
+            LangManager lang, com.sack.rpgroll.gameplay.trait.PassiveEffects passiveEffects) {
+        this.passiveEffects = passiveEffects;
         this.plugin = plugin;
         this.playerManager = playerManager;
         this.raceManager = raceManager;
@@ -66,6 +68,7 @@ public class PlayerEventListener implements Listener {
             if (raceId != null && !raceId.isEmpty()) {
                 raceManager.get(raceId).ifPresent(race -> raceAttributeApplier.apply(player, race));
             }
+            passiveEffects.apply(player, rpgPlayer.get());
 
             resourceBar.show(player, rpgPlayer.get());
 

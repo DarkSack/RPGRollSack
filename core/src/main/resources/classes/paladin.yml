@@ -1,14 +1,45 @@
-id: paladin
+id: "paladin"
 display-name: "&6✠ Paladín"
 description: |
   Guerrero sagrado que protege a los suyos.
   Aguanta en primera línea con acero y fe.
 base-attributes:
-  constitution: 2
+  constitution: 3
   strength: 2
   charisma: 1
-passive-traits: []
+  dexterity: -1
+passive-traits:
+  - "egida_sagrada"
 icon: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYWJlNjA5NjAxZGQ4YmU2MWZiZTE3NjljYTRkNGJjNmI4MDBjODUxMGI0NWYyMzA4ZWIyMzg5NTY1NzYzM2UyMCJ9fX0="
 lore:
   - "&7Armas: Espadas, Mazas y Escudos"
   - "&7Rol: Tanque / Apoyo"
+  - "&a▲ +5% de defensa"
+  - "&a▲ +2 de vida"
+  - "&c▼ -3% de velocidad"
+  - "&7Idioma: Celestial"
+translations:
+  en:
+    display-name: "&6✠ Paladin"
+    description: |
+      Holy warrior who shields their own.
+      Holds the front line with steel and faith.
+    lore:
+      - "&7Weapons: Swords, Maces and Shields"
+      - "&7Role: Tank / Support"
+      - "&a▲ +5% defense"
+      - "&a▲ +2 health"
+      - "&c▼ -3% speed"
+      - "&7Language: Celestial"
+  pt_BR:
+    display-name: "&6✠ Paladino"
+    description: |
+      Guerreiro sagrado que protege os seus.
+      Aguenta na linha de frente com aço e fé.
+    lore:
+      - "&7Armas: Espadas, Maças e Escudos"
+      - "&7Função: Tanque / Suporte"
+      - "&a▲ +5% de defesa"
+      - "&a▲ +2 de vida"
+      - "&c▼ -3% de velocidade"
+      - "&7Idioma: Celestial"

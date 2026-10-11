@@ -36,6 +36,11 @@ public class TraitDefinitionWriter {
         config.set("effect.mana-bonus", effect.manaBonus());
         config.set("effect.damage-bonus", effect.damageBonus());
         config.set("effect.defense-bonus", effect.defenseBonus());
+        config.set("effect.speed-bonus", effect.speedBonus());
+        config.set("effect.luck-bonus", effect.luckBonus());
+        config.set("effect.evasion-bonus", effect.evasionBonus());
+        config.set("effect.critical-bonus", effect.criticalBonus());
+        config.set("effect.attack-speed-bonus", effect.attackSpeedBonus());
 
         try {
             if (!folder.exists()) {
