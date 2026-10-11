@@ -26,11 +26,12 @@ import java.util.stream.Stream;
  * Copia {@code assets/} de cada módulo (en el orden ya resuelto por {@link
  * com.sack.rpgroll.sackresourcepack.manifest.DependencyResolver}) hacia un
  * único árbol de trabajo — archivos sueltos (texturas, modelos, .ogg) se
- * copian tal cual (el último módulo pisa), salvo tres formatos que se
+ * copian tal cual (el último módulo pisa), salvo cuatro formatos que se
  * fusionan de verdad en vez de pisarse: {@code sounds.json} (unión de
  * eventos de sonido), {@code lang/*.json} (unión de claves de traducción,
- * nunca se pierde lo que ya había) y cualquier {@code font/*.json}
- * (concatena el array {@code providers}).
+ * nunca se pierde lo que ya había), cualquier {@code font/*.json}
+ * (concatena el array {@code providers}) y los {@code blockstates/*.json}
+ * (unión de {@code variants}, donde un modelo propio gana al vanilla).
  */
 public class MergeEngine {
 
@@ -100,7 +101,8 @@ public class MergeEngine {
     private boolean isJsonMergeTarget(String relativePath) {
         return relativePath.endsWith("sounds.json")
                 || (relativePath.contains("/lang/") && relativePath.endsWith(".json"))
-                || (relativePath.contains("/font/") && relativePath.endsWith(".json"));
+                || (relativePath.contains("/font/") && relativePath.endsWith(".json"))
+                || (relativePath.contains("/blockstates/") && relativePath.endsWith(".json"));
     }
 
     private void copyPlainFile(AssetModule module, String relativePath, File source, File destination,
@@ -132,6 +134,11 @@ public class MergeEngine {
 
             if (relativePath.contains("/font/")) {
                 mergeFontProviders(existing, incoming);
+            } else if (relativePath.contains("/blockstates/")) {
+                if (!mergeBlockstateVariants(existing, incoming)) {
+                    copyPlainFile(module, relativePath, source, destination, fileOwners, overrides);
+                    return;
+                }
             } else {
                 mergeFlatKeys(relativePath, module, existing, incoming, fileOwners, overrides);
             }
@@ -157,6 +164,42 @@ public class MergeEngine {
 
             existing.add(entry.getKey(), entry.getValue());
         }
+    }
+
+    /**
+     * Dos módulos que dan modelo propio a estados distintos del mismo bloque (menas y lucky
+     * blocks sobre el bloque musical) traen cada uno el archivo entero: sus estados y, en el
+     * resto, el modelo vanilla. Se unen los {@code variants}; el modelo vanilla de un módulo
+     * nunca pisa al propio de otro.
+     *
+     * @return false si alguno no usa {@code variants} (multipart): ahí el último pisa, como antes
+     */
+    static boolean mergeBlockstateVariants(JsonObject existing, JsonObject incoming) {
+
+        if (!existing.has("variants") || !existing.get("variants").isJsonObject()
+                || !incoming.has("variants") || !incoming.get("variants").isJsonObject()) {
+            return false;
+        }
+
+        JsonObject variants = existing.getAsJsonObject("variants");
+
+        for (var entry : incoming.getAsJsonObject("variants").entrySet()) {
+            if (!variants.has(entry.getKey()) || !isVanillaModel(entry.getValue())) {
+                variants.add(entry.getKey(), entry.getValue());
+            }
+        }
+
+        return true;
+    }
+
+    private static boolean isVanillaModel(JsonElement variant) {
+
+        if (!variant.isJsonObject() || !variant.getAsJsonObject().has("model")) {
+            return false;
+        }
+
+        String model = variant.getAsJsonObject().get("model").getAsString();
+        return !model.contains(":") || model.startsWith("minecraft:");
     }
 
     private void mergeFontProviders(JsonObject existing, JsonObject incoming) {

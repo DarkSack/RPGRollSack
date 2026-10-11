@@ -32,7 +32,8 @@ final class RpgRollPlugins {
     }
 
     /**
-     * Los 25 productos más la librería. Si se añade un módulo al ecosistema, va acá.
+     * Los productos, la librería y los plugins de terceros donde un pack deja contenido. Si se
+     * añade un módulo al ecosistema, va acá.
      *
      * <p>Es una lista escrita a mano y no hay forma de que el compilador avise
      * si se queda atrás; el precio de equivocarse es una advertencia de más,
@@ -64,7 +65,14 @@ final class RpgRollPlugins {
             "RPGRoll-TAB",
             "RPGRoll-Traps",
             "RPGRoll-Workers",
-            "SackResourcePack");
+            "RPGRoll-Furniture",
+            "RPGRoll-Machines",
+            "RPGRoll-Recipes",
+            "SackResourcePack",
+            // De terceros: donde un pack deja modelos 3D y el pack de Bedrock.
+            "FreeMinecraftModels",
+            "Geyser-Spigot",
+            "Geyser-Velocity");
 
     static boolean esConocido(String carpeta) {
         return CONOCIDOS.contains(carpeta);
