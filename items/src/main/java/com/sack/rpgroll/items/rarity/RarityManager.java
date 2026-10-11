@@ -16,7 +16,9 @@ public class RarityManager extends ContentManager<Rarity> {
     }
 
     public Rarity getOrFallback(String id) {
-        return get(id).orElse(FALLBACK);
+        // Los YAML de ítems la escriben en mayúsculas (rarity: RARE) y los ids van en minúsculas: sin esto,
+        // todo ítem salía como «Común».
+        return get(id == null ? "" : id.toLowerCase(java.util.Locale.ROOT)).orElse(FALLBACK);
     }
 
     /** El propio módulo: la carga se anuncia con su nombre y no hace falta el core. */

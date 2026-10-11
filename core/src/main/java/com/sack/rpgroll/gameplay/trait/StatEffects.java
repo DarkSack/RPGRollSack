@@ -53,8 +53,17 @@ public class StatEffects implements Runnable {
     @Override
     public void run() {
         for (Player player : Bukkit.getOnlinePlayers()) {
-            playerManager.getPlayer(player.getUniqueId()).ifPresent(rpgPlayer -> show(player, rpgPlayer));
+            if (!isBedrock(player)) {
+                playerManager.getPlayer(player.getUniqueId()).ifPresent(rpgPlayer -> show(player, rpgPlayer));
+            }
         }
+    }
+
+    // shortcut: a Bedrock no se le envían, porque el pack de Java no le llega y vería «Con carga de viento ∞»
+    // (y tres de los siete efectos ni existen allí); enviarlos cuando haya un .mcpack que los renombre.
+    // Los UUID de Floodgate tienen la mitad alta a cero: así el core no depende de Floodgate.
+    private static boolean isBedrock(Player player) {
+        return player.getUniqueId().getMostSignificantBits() == 0;
     }
 
     private void show(Player player, RPGPlayer rpgPlayer) {

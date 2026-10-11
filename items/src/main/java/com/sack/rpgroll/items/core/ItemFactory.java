@@ -238,9 +238,12 @@ public class ItemFactory {
         if (!stats.isEmpty()) {
             lore.add(Component.empty());
             for (var entry : stats.entrySet()) {
-                lore.add(Component.text("+ " + formatStatName(entry.getKey()) + ": ", NamedTextColor.GRAY)
+                boolean penalty = entry.getValue() < 0;
+                lore.add(Component.text((penalty ? "- " : "+ ") + formatStatName(entry.getKey()) + ": ",
+                                NamedTextColor.GRAY)
                         .decoration(TextDecoration.ITALIC, false)
-                        .append(Component.text(formatNumber(entry.getValue()), NamedTextColor.WHITE)));
+                        .append(Component.text(formatNumber(Math.abs(entry.getValue())),
+                                penalty ? NamedTextColor.RED : NamedTextColor.WHITE)));
             }
         }
 
