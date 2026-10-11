@@ -23,6 +23,7 @@ book:
     &7Todas las recetas del servidor:
     &7cómo se hace cada cosa y para qué sirve.
     &eClic derecho para abrir
+    &eSobre un bloque: cómo se hace
 
 note:
   cooking_time: "&7Tiempo: &f{seconds} s"

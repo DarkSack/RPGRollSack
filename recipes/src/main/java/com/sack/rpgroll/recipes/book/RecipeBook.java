@@ -10,6 +10,7 @@ import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -110,10 +111,17 @@ public final class RecipeBook implements Listener {
         }
         event.setCancelled(true);
         Player player = event.getPlayer();
-        if (player.hasPermission("rpgrollrecipes.use")) {
+        if (!player.hasPermission("rpgrollrecipes.use")) {
+            lang.send(player, "msg.no_permission");
+            return;
+        }
+        // Sobre un bloque que se fabrica se abre su receta; al aire o sobre cualquier otro, el catálogo.
+        Block block = event.getClickedBlock();
+        Material made = block == null ? Material.AIR : block.getBlockData().getPlacementMaterial();
+        if (made.isAir() || viewer.indexes().current().howToMake(new ItemStack(made), player).isEmpty()) {
             viewer.openCatalog(player, "");
         } else {
-            lang.send(player, "msg.no_permission");
+            viewer.showRecipes(player, new ItemStack(made), Viewer.Mode.MAKE, false);
         }
     }
 
