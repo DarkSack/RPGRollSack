@@ -79,6 +79,21 @@ class AnimalStoreTest {
     }
 
     @Test
+    void aNameSurvivesARestartWithoutColorCodesAndWithinTheLimit() {
+        Animal named = cow(UUID.randomUUID());
+        named.setName("  &4Lola §lla vaca más larga del rancho entero  ");
+
+        store().save(named);
+        String back = store().loadAll().get(0).name();
+
+        assertEquals("Lola la vaca más larga d", back);
+        assertEquals(Animal.MAX_NAME_LENGTH, back.length());
+
+        named.setName(" ");
+        assertEquals(null, named.name());
+    }
+
+    @Test
     void anAnimalThatIsNotPregnantStaysThatWay() {
         store().save(cow(UUID.randomUUID()));
 

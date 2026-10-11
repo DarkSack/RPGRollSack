@@ -23,6 +23,8 @@ import java.util.UUID;
  */
 public class Animal {
 
+    public static final int MAX_NAME_LENGTH = 24;
+
     private final UUID id;
     private final String speciesId;
     private String breedId;
@@ -60,6 +62,7 @@ public class Animal {
     private UUID entityId;
     private LastSeen lastSeen;
     private double salePrice;
+    private String name;
 
     /** Dónde se vio la entidad por última vez: para encontrarla aunque su chunk esté descargado. */
     public record LastSeen(String world, double x, double y, double z) {
@@ -131,6 +134,17 @@ public class Animal {
 
     public boolean isForSale() {
         return salePrice > 0;
+    }
+
+    /** El nombre que le puso su dueño, o null si no tiene. */
+    public String name() {
+        return name;
+    }
+
+    /** Lo escribe un jugador: sin códigos de color y con tope de largo. Vacío = quitarle el nombre. */
+    public void setName(String name) {
+        String clean = name == null ? "" : name.replaceAll("(?i)[&§][0-9a-fk-orx]?", "").trim();
+        this.name = clean.isEmpty() ? null : clean.substring(0, Math.min(MAX_NAME_LENGTH, clean.length()));
     }
 
     public String speciesId() {

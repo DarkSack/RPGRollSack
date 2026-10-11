@@ -38,7 +38,7 @@ import java.util.Optional;
 public class RanchingCommand implements CommandExecutor, TabCompleter {
 
     private static final List<String> SUBCOMMANDS = List.of("inspect", "animales", "mercado", "reclamar", "vender",
-            "comprar", "llamar", "corral");
+            "comprar", "llamar", "corral", "nombrar");
 
     private final AnimalManager animalManager;
     private final SpeciesManager speciesManager;
@@ -82,6 +82,12 @@ public class RanchingCommand implements CommandExecutor, TabCompleter {
                 }
             }
             case "reclamar", "claim" -> targeted(player).ifPresent(animal -> ownership.claim(player, animal));
+            case "nombrar", "name" -> ownAnimal(player, null).ifPresent(animal -> {
+                animal.setName(String.join(" ", java.util.Arrays.copyOfRange(args, 1, args.length)));
+                animalManager.save(animal);
+                lang.send(player, animal.name() != null ? "owner.named" : "owner.name_cleared",
+                        "animal", ownership.describe(animal));
+            });
             case "vender", "sell" -> handleSell(player, args);
             case "comprar", "buy" -> handleBuy(player, args);
             case "llamar", "call" -> handleCall(player, args);

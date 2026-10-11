@@ -12,6 +12,7 @@ command:
       &7 • &aanimales &8— your animals: call, pen, sell
       &7 • &6mercado &8— buy and sell animals
       &7 • &ereclamar &8— claim an ownerless animal
+      &7 • &enombrar <name> &8— name the animal you are looking at (no name clears it)
       &7 • &6vender <price>|cancelar|servidor [id]
       &7 • &6comprar <id>
       &7 • &allamar [id|todos]
@@ -405,6 +406,8 @@ owner:
   claim_disabled: "&cOwnerless animals can't be claimed on this server."
   limit: "&cYou already own the maximum number of animals ({max})."
   claimed: "&a✔ {animal} &ais yours now."
+  named: "&a✔ It is now called {animal}&a."
+  name_cleared: "&a✔ {animal} &ano longer has a name."
   none: "&eYou have no animals."
   no_pen: "&cYou have no pen. Set it with &e/ranching corral fijar&c."
   pen_set: "&a✔ Pen set here."
@@ -453,3 +456,19 @@ secret:
   hatching: "&2Something stirs inside the egg..."
   hatched: "&a&lA mini T-Rex has hatched! &7({sex}) &aIt is yours."
   no_species: "&cThis egg refuses to open here."
+hologram:
+  text: "{name} {sex}\n&c❤ {hp}/{max_hp} &8· {quality} &8· &f{stage}\n&aHealth {health} &8· &eHappiness {happiness}"
+  sex:
+    MALE: "&b♂"
+    FEMALE: "&d♀"
+  quality:
+    POOR: "&7Poor"
+    COMMON: "&fCommon"
+    GOOD: "&aGood"
+    EXCELLENT: "&bExcellent"
+    EXCEPTIONAL: "&6Exceptional"
+  stage:
+    BABY: "Baby"
+    JUVENILE: "Juvenile"
+    ADULT: "Adult"
+    ELDER: "Elder"

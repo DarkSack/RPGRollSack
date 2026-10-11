@@ -12,6 +12,7 @@ command:
       &7 • &aanimales &8— tus animales: llamar, corral, vender
       &7 • &6mercado &8— comprar y vender animales
       &7 • &ereclamar &8— hacer tuyo un animal sin dueño
+      &7 • &enombrar <nombre> &8— ponerle nombre al animal que miras (sin nombre, se lo quita)
       &7 • &6vender <precio>|cancelar|servidor [id]
       &7 • &6comprar <id>
       &7 • &allamar [id|todos]
@@ -405,6 +406,8 @@ owner:
   claim_disabled: "&cEn este servidor no se pueden reclamar animales sin dueño."
   limit: "&cYa tienes el máximo de animales ({max})."
   claimed: "&a✔ Ahora {animal} &aes tuyo."
+  named: "&a✔ Ahora se llama {animal}&a."
+  name_cleared: "&a✔ {animal} &aya no tiene nombre."
   none: "&eNo tienes animales."
   no_pen: "&cNo tienes corral. Fíjalo con &e/ranching corral fijar&c."
   pen_set: "&a✔ Corral fijado aquí."
@@ -453,3 +456,19 @@ secret:
   hatching: "&2Algo se agita dentro del huevo..."
   hatched: "&a&l¡Ha nacido un mini T-Rex! &7({sex}) &aEs tuyo."
   no_species: "&cEste huevo no quiere abrirse aquí."
+hologram:
+  text: "{name} {sex}\n&c❤ {hp}/{max_hp} &8· {quality} &8· &f{stage}\n&aSalud {health} &8· &eFelicidad {happiness}"
+  sex:
+    MALE: "&b♂"
+    FEMALE: "&d♀"
+  quality:
+    POOR: "&7Pobre"
+    COMMON: "&fComún"
+    GOOD: "&aBuena"
+    EXCELLENT: "&bExcelente"
+    EXCEPTIONAL: "&6Excepcional"
+  stage:
+    BABY: "Cría"
+    JUVENILE: "Joven"
+    ADULT: "Adulto"
+    ELDER: "Anciano"

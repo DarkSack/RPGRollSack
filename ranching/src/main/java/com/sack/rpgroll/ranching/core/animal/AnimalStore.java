@@ -116,6 +116,7 @@ public class AnimalStore {
         config.set("satiety", animal.satiety());
         config.set("generation", animal.generation());
         config.set("quality", animal.quality().name());
+        config.set("name", animal.name());
         config.set("born-at-epoch-millis", animal.bornAtEpochMillis());
         config.set("mother", animal.motherId() == null ? null : animal.motherId().toString());
         config.set("father", animal.fatherId() == null ? null : animal.fatherId().toString());
@@ -327,6 +328,7 @@ public class AnimalStore {
         animal.setOwnerId(uuidOrNull(config.getString("owner")));
         animal.setEntityId(uuidOrNull(config.getString("entity")));
         animal.setSalePrice(config.getDouble("sale-price", 0));
+        animal.setName(config.getString("name"));
 
         if (config.isString("last-seen.world")) {
             animal.setLastSeen(new Animal.LastSeen(config.getString("last-seen.world"),

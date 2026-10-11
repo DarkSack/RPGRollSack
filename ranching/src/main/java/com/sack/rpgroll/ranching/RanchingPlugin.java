@@ -63,6 +63,7 @@ public class RanchingPlugin extends JavaPlugin {
     private com.sack.rpgroll.ranching.core.ownership.AnimalRecall animalRecall;
     private com.sack.rpgroll.ranching.core.ownership.AnimalMarket animalMarket;
     private com.sack.rpgroll.ranching.listener.DinoEggListener dinoEggListener;
+    private com.sack.rpgroll.ranching.core.animal.AnimalHolograms holograms;
 
     @Override
     public void onLoad() {
@@ -148,6 +149,9 @@ public class RanchingPlugin extends JavaPlugin {
         dinoEggListener.configure(getConfig().getConfigurationSection("secret"));
         getServer().getPluginManager().registerEvents(dinoEggListener, this);
 
+        holograms = new com.sack.rpgroll.ranching.core.animal.AnimalHolograms(animalManager, ownership, langManager);
+        getServer().getScheduler().runTaskTimer(this, holograms, 40L, 2L);
+
         // Dónde anda cada animal cargado, cada 30 s: para encontrarlo si luego se pierde.
         getServer().getScheduler().runTaskTimer(this, () -> animalManager.getAll().forEach(animal ->
                 animalManager.entityOf(animal).ifPresent(entity -> animalManager.updateLastSeen(animal,
@@ -180,6 +184,9 @@ public class RanchingPlugin extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        if (holograms != null) {
+            holograms.clear();
+        }
         if (animalManager != null) {
             animalManager.saveAll();
         }

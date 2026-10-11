@@ -84,12 +84,17 @@ public class OwnershipService {
 
     /** "Vaca Holstein #1a2b3c4d" */
     public String describe(Animal animal) {
+        return title(animal) + " &7#" + shortId(animal);
+    }
+
+    /** "Vaca Holstein", o "Vaca Lola" si su dueño le puso nombre: el nombre va en lugar de la raza. */
+    public String title(Animal animal) {
 
         String species = speciesManager.get(animal.speciesId()).map(Species::displayName).orElse(animal.speciesId());
-        String breed = animal.breedId() == null ? null
+        String breed = animal.name() != null ? animal.name() : animal.breedId() == null ? null
                 : breedManager.get(animal.breedId()).map(Breed::displayName).orElse(null);
 
-        return species + (breed != null ? " " + breed : "") + " &7#" + shortId(animal);
+        return species + (breed != null ? " " + breed : "");
     }
 
     public static String shortId(Animal animal) {
