@@ -101,7 +101,8 @@ public final class Payment {
         for (Cost.Item item : cost.items()) {
             int have = count(player, item);
             lines.add(lang.component(have >= item.amount() ? "cost.item_ok" : "cost.item_missing",
-                    "amount", item.amount(), "item", item.label(), "have", have));
+                    "amount", item.amount(), "item", item.custom() ? item.label() : net.kyori.adventure.text.Component.translatable(item.material()),
+                    "have", have));
         }
         return lines;
     }

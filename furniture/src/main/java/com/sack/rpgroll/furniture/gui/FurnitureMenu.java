@@ -307,6 +307,9 @@ public class FurnitureMenu extends InventoryGUI {
     @Override
     public void handleClick(InventoryClickEvent event) {
 
+        // Sin cancelar, el clic se llevaba el icono: los del catálogo son muebles de verdad.
+        event.setCancelled(true);
+
         int slot = event.getRawSlot();
         if (slot < 0 || slot >= SIZE) {
             return;

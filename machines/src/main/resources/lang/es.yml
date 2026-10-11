@@ -98,7 +98,7 @@ quarry:
   level: "&7Nivel &f{level}&7/&f{max}"
   next: "&7Con la mejora:"
   upgrade_title: "&e{upgrade}"
-  value_speed: "&f  {value} bloques por segundo"
+  value_speed: "&f  {value} bloques/s"
   value_area: "&f  {value}×{value} bloques"
   value_fortune: "&f  Fortuna {value}"
   value_tier: "&f  nivel de picado {value}"

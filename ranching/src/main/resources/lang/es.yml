@@ -37,7 +37,7 @@ command:
     player_only_spawn: "Solo un jugador puede spawnear un animal."
     usage_spawn: "Uso: /ranchingadmin spawn <especie> [raza|-] [dueño|-] [macho|hembra]"
     unknown_species: "No existe la especie '{id}'."
-    spawned_prefix: "✔ Spawneado un/a "
+    spawned_prefix: "✔ Ha aparecido: "
     spawned_suffix: " ({sex})."
     usage_give: "Uso: /ranchingadmin {sub} <id> [cantidad] [jugador]"
     usage_giveproduct: "Uso: /ranchingadmin giveproduct <tipo> [calidad] [cantidad] [jugador]"
@@ -58,16 +58,16 @@ item:
     health: "Salud: +{value}"
     happiness: "Felicidad: +{value}"
     tags: "Tags: {tags}"
-    use_hint: "Click derecho en un animal para alimentarlo"
+    use_hint: "Clic derecho en un animal para alimentarlo"
   medicine:
     type: "Tipo: {type}"
     treats: "Trata: {diseases}"
-    use_hint: "Click derecho en un animal para tratarlo"
+    use_hint: "Clic derecho en un animal para tratarlo"
   vaccine:
     prevents: "Previene: {diseases}"
     permanent: "Inmunidad permanente"
     temporary: "Inmunidad temporal"
-    use_hint: "Click derecho en un animal para vacunarlo"
+    use_hint: "Clic derecho en un animal para vacunarlo"
 
 listener:
   production:
@@ -146,8 +146,8 @@ gui:
   common:
     back: "Volver"
     close: "Cerrar"
-    manage_hint: "Click para administrar"
-    click_to_edit: "Click para editar"
+    manage_hint: "Clic para administrar"
+    click_to_edit: "Clic para editar"
     prev_page: "Página anterior"
     next_page: "Página siguiente"
     prev: "Anterior"
@@ -167,16 +167,16 @@ gui:
     happiness_bonus_line: "Bono de felicidad: {value}"
     known_diseases: "Enfermedades conocidas: {diseases}"
     ticks_to_minutes: "{minutes} min ({ticks} ticks)"
-    rotate_hint: "Click para rotar"
-    step1_hint: "Click: +1 · Click derecho: -1"
-    step2_hint: "Click: +2 · Click derecho: -2"
-    step5_hint: "Click: +5 · Click derecho: -5"
-    step5pct_hint: "Click: +5% · Click derecho: -5%"
-    step10_hint: "Click: +10 · Click derecho: -10"
-    step10pct_hint: "Click: +10% · Click derecho: -10%"
-    step01_hint: "Click: +0.1 · Click derecho: -0.1"
-    step1min_hint: "Click: +1 min · Click derecho: -1 min"
-    step1200_hint: "Click: +1200 (1 min) · Click derecho: -1200"
+    rotate_hint: "Clic para rotar"
+    step1_hint: "Clic: +1 · Clic derecho: -1"
+    step2_hint: "Clic: +2 · Clic derecho: -2"
+    step5_hint: "Clic: +5 · Clic derecho: -5"
+    step5pct_hint: "Clic: +5% · Clic derecho: -5%"
+    step10_hint: "Clic: +10 · Clic derecho: -10"
+    step10pct_hint: "Clic: +10% · Clic derecho: -10%"
+    step01_hint: "Clic: +0.1 · Clic derecho: -0.1"
+    step1min_hint: "Clic: +1 min · Clic derecho: -1 min"
+    step1200_hint: "Clic: +1200 (1 min) · Clic derecho: -1200"
     prompt_name: "Escribe el nuevo nombre:"
     prompt_icon: "Escribe el Material del ícono:"
     prompt_description: "Escribe la nueva descripción:"
@@ -248,9 +248,9 @@ gui:
       baby_duration_line: "Duración cría: {duration}"
       juvenile_duration_line: "Duración juvenil: {duration}"
       elder_threshold_line: "Umbral anciano: {duration}"
-      elder_threshold_hint: "Tiempo como adulto antes de ser anciano. Click: +1 min · Click derecho: -1 min"
+      elder_threshold_hint: "Tiempo como adulto antes de ser anciano. Clic: +1 min · Clic derecho: -1 min"
       gestation_line: "Gestación: {duration}"
-      gestation_hint: "0 = nace directo, sin gestación. Click: +1 min · Click derecho: -1 min"
+      gestation_hint: "0 = nace directo, sin gestación. Clic: +1 min · Clic derecho: -1 min"
       min_litter_line: "Camada mín.: {value}"
       max_litter_line: "Camada máx.: {value}"
       fertility_line: "Fertilidad base: {value}%"
@@ -285,7 +285,7 @@ gui:
       reskin_cmd_line: "&dReskin — custom model data: {value}"
       reskin_scale_line: "&dReskin — escala: {value}"
       reskin_none: "(ninguno)"
-      reskin_hint: "Reskin propio (sin ModelEngine) — animal invisible + modelo custom. Shift-click: quitar."
+      reskin_hint: "Reskin propio (sin ModelEngine) — animal invisible + modelo custom. Mayús + clic: quitar."
       prompt_reskin_material: "Escribe el Material base del ítem de reskin (ej. PAPER):"
       prompt_reskin_cmd: "Escribe el custom-model-data del reskin (número entero):"
 
@@ -301,7 +301,7 @@ gui:
       attribute_key_line: "attribute-key: {key}"
       attribute_key_hint: "Ej. milk_production, growth_speed, fertility"
       dominance_line: "Dominancia: {dominance}"
-      dominance_hint: "Click para rotar: DOMINANT → RECESSIVE → MIXED"
+      dominance_hint: "Clic para rotar: DOMINANT → RECESSIVE → MIXED"
       min_value_line: "Mínimo: {value}"
       max_value_line: "Máximo: {value}"
       species_line: "Especies: {species}"
@@ -355,7 +355,7 @@ gui:
       risk_reduction_line: "Reducción de riesgo: {value}%"
       duration_permanent: "Duración: permanente"
       duration_line: "Duración: {ticks} ticks"
-      duration_hint: "Click: +1200 (1 min) · Click derecho: -1200 (0 = permanente)"
+      duration_hint: "Clic: +1200 (1 min) · Clic derecho: -1200 (0 = permanente)"
       gave_self: "✔ Te diste una vacuna '{name}'."
 
   medicine:
@@ -368,7 +368,7 @@ gui:
       title: "Medicina: {id}"
       cure_chance_line: "Chance de cura: {value}%"
       recovery_boost_line: "Reduce duración: {ticks} ticks"
-      recovery_boost_hint: "Click: +600 · Click derecho: -600"
+      recovery_boost_hint: "Clic: +600 · Clic derecho: -600"
       gave_self: "✔ Te diste una medicina '{name}'."
 
   planner:
@@ -378,7 +378,7 @@ gui:
     preview_hint: "Manda el resultado por chat"
     force_breed_button: "▶ Aparear ahora (admin)"
     force_breed_hint: "Salta el minijuego de alimentar — igual respeta fertilidad/embarazo"
-    pick_hint: "Click para elegir como A o B"
+    pick_hint: "Clic para elegir como A o B"
     slot_unselected: "{label}: (sin elegir)"
     slot_selected: "{label}: {id}"
     pick_two_first: "Elige dos animales primero."
@@ -394,7 +394,7 @@ gui:
     none_sick: "Ningún animal está enfermo ahora mismo."
     disease: "Enfermedad: {disease}"
     ticks_remaining: "Ticks restantes: {ticks}"
-    click_to_cure: "Click para curar (admin)"
+    click_to_cure: "Clic para curar (admin)"
     cured: "✔ Animal curado."
 
 owner:
@@ -472,3 +472,32 @@ hologram:
     JUVENILE: "Joven"
     ADULT: "Adulto"
     ELDER: "Anciano"
+
+# Nombre de cada constante cuando aparece en un mensaje o un menú
+enum:
+  Sex:
+    MALE: "Macho"
+    FEMALE: "Hembra"
+  GrowthStage:
+    BABY: "Cría"
+    JUVENILE: "Joven"
+    ADULT: "Adulto"
+    ELDER: "Anciano"
+  AnimalQuality:
+    POOR: "Pobre"
+    COMMON: "Común"
+    GOOD: "Buena"
+    EXCELLENT: "Excelente"
+    EXCEPTIONAL: "Excepcional"
+  FeedQuality:
+    COMMON: "Común"
+    GOOD: "Buena"
+    PREMIUM: "Premium"
+    ORGANIC: "Orgánica"
+    LEGENDARY: "Legendaria"
+  ProductQuality:
+    COMMON: "Común"
+    GOOD: "Buena"
+    PREMIUM: "Premium"
+    ORGANIC: "Orgánica"
+    LEGENDARY: "Legendaria"

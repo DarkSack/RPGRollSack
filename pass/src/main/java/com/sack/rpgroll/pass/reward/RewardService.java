@@ -62,7 +62,7 @@ public class RewardService {
             case KEY -> lang.component("reward.key", "amount", reward.amount(), "crate", reward.key());
             case ITEM -> lang.component("reward.item", "amount", reward.amount(), "item", reward.key());
             case MATERIAL -> lang.component("reward.material", "amount", reward.amount(),
-                    "material", pretty(reward.key()));
+                    "material", Component.translatable(Material.valueOf(reward.key())));
             case COMMAND -> lang.component("reward.command");
         };
     }
@@ -115,11 +115,6 @@ public class RewardService {
         }
 
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
-    }
-
-    private static String pretty(String materialName) {
-        String lower = materialName.toLowerCase(java.util.Locale.ROOT).replace('_', ' ');
-        return Character.toUpperCase(lower.charAt(0)) + lower.substring(1);
     }
 
 }

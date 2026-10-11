@@ -155,7 +155,7 @@ public class AuctionService implements AuctionNotifier, Listener {
 
         double fee = settings().fee(biddable ? Math.max(price, buyNow) : price);
         lang.send(player, biddable ? "auction_house.published_auction" : "auction_house.published_fixed",
-                "item", itemName, "price", currency.format(price),
+                "item", item.effectiveName(), "price", currency.format(price),
                 "time", AuctionItems.timeLeft(settings().durationMillis()));
         if (fee > 0) {
             lang.send(player, "auction_house.fee_paid", "fee", currency.format(fee));
@@ -234,25 +234,25 @@ public class AuctionService implements AuctionNotifier, Listener {
 
     @Override
     public void outbid(AuctionListing listing, UUID previousBidder, double refunded) {
-        tell(previousBidder, "auction_house.notify_outbid", "item", listing.itemName(),
+        tell(previousBidder, "auction_house.notify_outbid", "item", listing.item().effectiveName(),
                 "bid", format(listing, listing.currentBid()), "refund", format(listing, refunded));
     }
 
     @Override
     public void sold(AuctionListing listing, double net) {
-        tell(listing.sellerId(), "auction_house.notify_sold", "item", listing.itemName(),
+        tell(listing.sellerId(), "auction_house.notify_sold", "item", listing.item().effectiveName(),
                 "buyer", listing.currentBidderName(), "amount", format(listing, net));
     }
 
     @Override
     public void won(AuctionListing listing) {
-        tell(listing.currentBidderId(), "auction_house.notify_won", "item", listing.itemName(),
+        tell(listing.currentBidderId(), "auction_house.notify_won", "item", listing.item().effectiveName(),
                 "price", format(listing, listing.currentBid()));
     }
 
     @Override
     public void expired(AuctionListing listing) {
-        tell(listing.sellerId(), "auction_house.notify_expired", "item", listing.itemName());
+        tell(listing.sellerId(), "auction_house.notify_expired", "item", listing.item().effectiveName());
     }
 
     @EventHandler(priority = EventPriority.MONITOR)

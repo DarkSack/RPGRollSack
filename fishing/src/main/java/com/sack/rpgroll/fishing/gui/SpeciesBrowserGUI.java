@@ -59,7 +59,7 @@ public class SpeciesBrowserGUI extends InventoryGUI {
                     .setName(ComponentUtils.parseWithDefault((fish.legendary() ? "★ " : "") + fish.displayName(),
                             fish.legendary() ? NamedTextColor.GOLD : NamedTextColor.AQUA))
                     .setLore(lang.component("gui.common.id_label", "id", fish.id()),
-                            Component.text(fish.category() + " · " + fish.rarity(), NamedTextColor.GRAY),
+                            Component.text(lang.name(fish.category()) + " · " + lang.name(fish.rarity()), NamedTextColor.GRAY),
                             lang.component("gui.common.click_to_edit"))
                     .build());
         }

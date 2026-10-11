@@ -227,3 +227,37 @@ skin:
   current_none: "its profession's"
   current_custom: "custom"
   prompt: "Paste the MineSkin link or id, or a player name ('remove' goes back to its profession's look):"
+
+# Nombre de cada constante cuando aparece en un mensaje o un menú
+enum:
+  PersonalityTrait:
+    LAZY: "Lazy"
+    RESPONSIBLE: "Responsible"
+    FAST: "Fast"
+    SMART: "Smart"
+    CLUMSY: "Clumsy"
+    AMBITIOUS: "Ambitious"
+    SOCIAL: "Social"
+    LONER: "Loner"
+    BRAVE: "Brave"
+    COWARD: "Coward"
+  AiAction:
+    SEEK_FOOD: "Looking for food"
+    EAT: "Eating"
+    GO_TO_WAREHOUSE: "Going to the warehouse"
+    STORE_ITEMS: "Storing items"
+    SEEK_SHELTER: "Seeking shelter"
+    GO_HOME: "Going home"
+    SLEEP: "Sleeping"
+    WORK: "Working"
+    IDLE: "Idle"
+  ScheduleActivity:
+    WAKE: "Wake up"
+    EAT: "Eat"
+    WORK: "Work"
+    REST: "Rest"
+    SLEEP: "Sleep"
+    FREE: "Free time"
+  WageType:
+    HOURLY: "Hourly"
+    PER_TASK: "Per task"

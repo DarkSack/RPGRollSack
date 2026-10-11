@@ -6,6 +6,7 @@ import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.crates.core.Crate;
+import com.sack.rpgroll.crates.core.CrateAction;
 import com.sack.rpgroll.crates.core.CrateActionExecutor;
 import com.sack.rpgroll.crates.core.CrateReward;
 import com.sack.rpgroll.crates.core.CrateRewardSelector;
@@ -249,7 +250,11 @@ public class CrateSpinGUI extends InventoryGUI {
 
         player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.0f);
 
-        player.sendMessage(lang.component("spin.win_message", "reward", winningReward.displayName()));
+        // El premio que trae su propio mensaje ya lo dice al entregarse: sin esto salía dos veces.
+        if (winningReward.actions().stream()
+                .noneMatch(action -> action.type() == CrateAction.CrateActionType.MESSAGE)) {
+            player.sendMessage(lang.component("spin.win_message", "reward", winningReward.displayName()));
+        }
 
         // Pequeño delay antes de entregar/cerrar para que el jugador
         // alcance a ver el resultado quieto en el slot central.

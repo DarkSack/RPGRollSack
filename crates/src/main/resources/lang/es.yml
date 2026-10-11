@@ -38,16 +38,16 @@ admin:
 editor:
   title: "&6Crate: {id}"
   name_label: "Nombre: {name}"
-  click_to_rename: "&7Click para escribir uno nuevo"
+  click_to_rename: "&7Clic para escribir uno nuevo"
   require_key_yes: "&aRequiere llave: sí"
   require_key_no: "&7Requiere llave: no"
-  click_to_toggle: "&7Click para alternar"
+  click_to_toggle: "&7Clic para alternar"
   key_material_label: "&eMaterial de la llave: {material}"
-  click_to_set_material: "&7Click para escribir un Material nuevo"
+  click_to_set_material: "&7Clic para escribir un Material nuevo"
   hologram_label: "&eHolograma: {count} línea(s)"
-  click_to_set_hologram: "&7Click para escribir todas, una por línea (separadas por ';')"
+  click_to_set_hologram: "&7Clic para escribir todas, una por línea (separadas por ';')"
   reward_weight_lore: "&7Peso: {weight} · {actions} acción(es)"
-  shift_click_remove: "&8Shift-click para quitar"
+  shift_click_remove: "&8Mayús + clic para quitar"
   add_reward: "&aAgregar recompensa"
   back_button: "Volver"
   prompt_name: "Escribe el nuevo nombre del crate:"
@@ -64,7 +64,7 @@ editor:
 browser:
   title: "&6Crates RPGRoll"
   reward_count: "&7{count} recompensa(s)"
-  click_to_edit: "&eClick para editar"
+  click_to_edit: "&eClic para editar"
   create_new: "&aCrear crate nuevo"
   close_button: "Cerrar"
   prompt_new_id: "Escribe el id del nuevo crate:"
@@ -72,7 +72,7 @@ browser:
 
 # Ítem: llave de crate
 key:
-  lore_open_hint: "&7Click derecho sobre el crate para abrir."
+  lore_open_hint: "&7Clic derecho sobre el crate para abrir."
 
 # GUI: ruleta de apertura
 spin:

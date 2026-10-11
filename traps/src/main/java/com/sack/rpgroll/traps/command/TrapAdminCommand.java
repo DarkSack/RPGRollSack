@@ -241,7 +241,7 @@ public class TrapAdminCommand implements CommandExecutor, TabCompleter {
 
         for (PlacedTrap placed : placedTrapManager.getAll()) {
             lang.send(sender, "admin.list.entry", "placement", placed.placementId(), "trap", placed.trapId(),
-                    "state", placed.state().name());
+                    "state", placed.state());
         }
     }
 
@@ -261,7 +261,7 @@ public class TrapAdminCommand implements CommandExecutor, TabCompleter {
         PlacedTrap placed = placedOpt.get();
 
         lang.send(sender, "admin.info.header", "placement", placed.placementId(), "trap", placed.trapId());
-        lang.send(sender, "admin.info.state", "state", placed.state().name());
+        lang.send(sender, "admin.info.state", "state", placed.state());
         lang.send(sender, "admin.info.charges", "value", placed.chargesRemaining() < 0 ? "∞"
                 : String.valueOf(placed.chargesRemaining()));
         lang.send(sender, "admin.info.position", "world", placed.world(), "x", placed.x(), "y", placed.y(), "z",

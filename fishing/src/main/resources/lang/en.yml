@@ -254,3 +254,27 @@ catch:
   fish: "&a✔ You caught: {name} ({quality})"
   treasure: "&6✔ You found a treasure: {name}!"
   junk: "&7You pulled up junk: {name}"
+
+# Nombre de cada constante cuando aparece en un mensaje o un menú
+enum:
+  CatchQuality:
+    COMMON: "Common"
+    GOOD: "Good"
+    EXCELLENT: "Excellent"
+    PERFECT: "Perfect"
+    MASTERWORK: "Masterwork"
+  FishRarity:
+    COMMON: "Common"
+    UNCOMMON: "Uncommon"
+    RARE: "Rare"
+    EPIC: "Epic"
+    LEGENDARY: "Legendary"
+  FishCategory:
+    FRESHWATER: "Freshwater"
+    SALTWATER: "Saltwater"
+    DEEP: "Deep sea"
+    TROPICAL: "Tropical"
+    ARCTIC: "Arctic"
+    VOLCANIC: "Volcanic"
+    MAGIC: "Magic"
+    LEGENDARY: "Legendary"

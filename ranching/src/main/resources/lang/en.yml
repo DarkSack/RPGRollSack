@@ -472,3 +472,32 @@ hologram:
     JUVENILE: "Juvenile"
     ADULT: "Adult"
     ELDER: "Elder"
+
+# Nombre de cada constante cuando aparece en un mensaje o un menú
+enum:
+  Sex:
+    MALE: "Male"
+    FEMALE: "Female"
+  GrowthStage:
+    BABY: "Baby"
+    JUVENILE: "Juvenile"
+    ADULT: "Adult"
+    ELDER: "Elder"
+  AnimalQuality:
+    POOR: "Poor"
+    COMMON: "Common"
+    GOOD: "Good"
+    EXCELLENT: "Excellent"
+    EXCEPTIONAL: "Exceptional"
+  FeedQuality:
+    COMMON: "Common"
+    GOOD: "Good"
+    PREMIUM: "Premium"
+    ORGANIC: "Organic"
+    LEGENDARY: "Legendary"
+  ProductQuality:
+    COMMON: "Common"
+    GOOD: "Good"
+    PREMIUM: "Premium"
+    ORGANIC: "Organic"
+    LEGENDARY: "Legendary"

@@ -103,13 +103,13 @@ team:
     title: "Mi Equipo"
     not_in_team: "No estás en ningún equipo"
     lore:
-      change_role: "&7Click: cambiar rol (si tienes permiso)"
-      kick: "&7Shift-click: expulsar (si tienes permiso)"
-      click_to_change: "&7Click para cambiar"
-      click_to_toggle: "&7Click para alternar"
-      plus_minus_one: "&7Click: +1 · Shift-click derecho: -1"
-      click_deactivate: "&7Click para desactivar"
-      click_activate: "&7Click para activar"
+      change_role: "&7Clic: cambiar rol (si tienes permiso)"
+      kick: "&7Mayús + clic: expulsar (si tienes permiso)"
+      click_to_change: "&7Clic para cambiar"
+      click_to_toggle: "&7Clic para alternar"
+      plus_minus_one: "&7Clic: +1 · Mayús + clic derecho: -1"
+      click_deactivate: "&7Clic para desactivar"
+      click_activate: "&7Clic para activar"
     button:
       invite: "Invitar jugador"
       disband: "Disolver equipo"
@@ -139,32 +139,32 @@ guild:
     &7 • &9ranking
     &7 • &cchat
     &7 • &fgui
-  not_in_guild: "&cNo estás en ninguna guild."
-  not_in_guild_browser: "&cNo estás en ninguna guild — usa /guild browser."
-  already_in_guild: "&cYa estás en una guild."
+  not_in_guild: "&cNo estás en ningún gremio."
+  not_in_guild_browser: "&cNo estás en ningún gremio — usa /guild browser."
+  already_in_guild: "&cYa estás en un gremio."
   decline:
     success: "&7Invitación rechazada."
   disband:
-    only_leader: "&cSolo el líder puede disolver la guild."
+    only_leader: "&cSolo el líder puede disolver el gremio."
     success: "&7Guild disuelta."
   leave:
-    is_leader: "&cSos el líder — transfiere el liderazgo o usa /guild disband."
-    success: "&7Abandonaste la guild."
+    is_leader: "&cEres el líder — transfiere el liderazgo o usa /guild disband."
+    success: "&7Abandonaste el gremio."
   create:
     usage: "&eUso: /guild create <nombre>"
-    invalid_name: "&cEse nombre no es válido o ya existe una guild con ese id."
+    invalid_name: "&cEse nombre no es válido o ya existe un gremio con ese id."
     success: "&a✔ Guild '{name}' fundada."
-    requires_level: "&cNecesitas nivel {level} para fundar una guild."
-    requires_permission: "&cNo tienes el permiso necesario para fundar una guild."
-    requires_item: "&cNecesitas {amount}x {item} para fundar una guild."
-    requires_money: "&cNecesitas {amount} de dinero para fundar una guild."
-    requires_quest: "&cNecesitas completar la misión '{quest}' para fundar una guild."
+    requires_level: "&cNecesitas nivel {level} para fundar un gremio."
+    requires_permission: "&cNo tienes el permiso necesario para fundar un gremio."
+    requires_item: "&cNecesitas {amount}x {item} para fundar un gremio."
+    requires_money: "&cNecesitas {amount} de dinero para fundar un gremio."
+    requires_quest: "&cNecesitas completar la misión '{quest}' para fundar un gremio."
   accept:
-    usage: "&eUso: /guild accept <id-de-guild>"
-    success: "&a✔ Te uniste a la guild."
-    no_invite: "&cNo tienes ninguna invitación pendiente de esa guild."
+    usage: "&eUso: /guild accept <id-del-gremio>"
+    success: "&a✔ Te uniste al gremio."
+    no_invite: "&cNo tienes ninguna invitación pendiente de ese gremio."
     expired: "&cEsa invitación ya expiró."
-    guild_gone: "&cEsa guild ya no existe."
+    guild_gone: "&cEse gremio ya no existe."
   ranking:
     header: "&6=== Ranking de Guilds ({category}) ==="
     entry: "&7{position}. {name} — {value}"
@@ -177,13 +177,13 @@ guild:
       description: "Más espacio de almacenamiento compartido"
     economy:
       name: "Economía"
-      description: "Mejores recompensas de oro en quests de guild"
+      description: "Mejores recompensas de oro en misiones de gremio"
     members:
       name: "Miembros"
       description: "Más cupo de integrantes"
     buffs:
       name: "Buffs"
-      description: "Más buffs de guild activos a la vez"
+      description: "Más buffs de gremio activos a la vez"
     territory:
       name: "Territorio"
       description: "Más regiones reclamables"
@@ -195,7 +195,7 @@ guild:
     member_count: "{count} miembro(s)"
     button:
       members: "Miembros"
-      vault: "Vault"
+      vault: "Bóveda"
       territory: "Territorio"
       upgrades: "Árbol de Mejoras"
       diplomacy: "Diplomacia"
@@ -203,24 +203,24 @@ guild:
       achievements: "Logros"
       calendar: "Calendario"
       customization: "Personalización"
-      disband_leave: "Abandonar / Disolver guild"
-    disband_is_leader: "&cSos el líder — transfiere el liderazgo o expulsa al resto antes de disolver, o usa /guild disband para forzarlo."
+      disband_leave: "Abandonar / Disolver gremio"
+    disband_is_leader: "&cEres el líder — transfiere el liderazgo o expulsa al resto antes de disolver, o usa /guild disband para forzarlo."
   members:
     title: "Miembros: {name}"
     lore:
-      next_role: "&7Click: siguiente rol"
-      kick: "&7Shift-click: expulsar"
+      next_role: "&7Clic: siguiente rol"
+      kick: "&7Mayús + clic: expulsar"
     button:
       invite: "Invitar jugador"
     no_permission_kick: "&cNo tienes permiso para expulsar a ese miembro."
     no_permission_role: "&cNo tienes permiso para cambiar roles."
     no_permission_invite: "&cNo tienes permiso para invitar."
     prompt_invite: "&eEscribe el nombre del jugador a invitar:"
-    target_already_in_guild: "&cEse jugador ya está en una guild."
-    invite_received: "&e{player} te invitó a la guild {guild} — /guild accept {id}"
+    target_already_in_guild: "&cEse jugador ya está en un gremio."
+    invite_received: "&e{player} te invitó al gremio {guild} — /guild accept {id}"
     invite_sent: "&a✔ Invitación enviada."
   vault:
-    title: "Vault: {name}"
+    title: "Bóveda: {name}"
     button:
       deposit: "Depositar dinero"
       withdraw: "Retirar dinero"
@@ -233,15 +233,15 @@ guild:
     prompt_withdraw: "&eEscribe cuánto dinero retirar:"
     invalid_amount: "&cMonto inválido."
     no_permission_withdraw: "&cNo tienes permiso para retirar del banco."
-    log_header: "&6=== Historial del vault (últimos 10) ==="
+    log_header: "&6=== Historial de la bóveda (últimos 10) ==="
     log_entry: "&7 - [{type}] {description} ({actor})"
     log_system: "sistema"
     need_item_in_hand: "&cTienes que tener un ítem en la mano para depositar."
     slot_not_free: "&cEse espacio no está libre."
     not_enough_money: "&cNo tienes suficiente dinero."
-    insufficient_balance: "&cNo hay saldo suficiente en el vault."
-    no_economy: "&cEl servidor no tiene economía: el vault solo guarda ítems."
-    withdraw_failed: "&cTu cartera no pudo recibir el dinero; sigue en el vault."
+    insufficient_balance: "&cNo hay saldo suficiente en la bóveda."
+    no_economy: "&cEl servidor no tiene economía: la bóveda solo guarda ítems."
+    withdraw_failed: "&cTu cartera no pudo recibir el dinero; sigue en la bóveda."
     deposited: "&a✔ Depositaste {amount}."
     withdrew: "&a✔ Retiraste {amount}."
     log:
@@ -255,8 +255,8 @@ guild:
       world: "&7Mundo: {world}"
       block_protection: "&7Protección de bloques: {state}"
       outsider_pvp: "&7PvP externo permitido: {state}"
-      toggle_hint: "&8Click: alternar protección · Click derecho: alternar PvP"
-      release_hint: "&8Shift-click: liberar territorio"
+      toggle_hint: "&8Clic: alternar protección · Clic derecho: alternar PvP"
+      release_hint: "&8Mayús + clic: liberar territorio"
       quota: "&7Cupo: {count}/{max} (mejora la rama Territorio para más)"
     button:
       claim: "Reclamar territorio aquí"
@@ -271,16 +271,16 @@ guild:
     world_not_allowed: "&cEn este mundo no se pueden reclamar territorios."
     overlaps: "&cEse territorio se superpone con uno ya reclamado."
     claimed: "&a✔ Territorio '{name}' reclamado."
-    protected: "&cEste territorio está protegido por una guild."
+    protected: "&cEste territorio está protegido por un gremio."
     no_pvp: "&cNo puedes atacar jugadores en este territorio."
   upgrade:
     title: "Mejoras: {name}"
     branch_level: "{branch} — Nivel {level}/{max}"
     max_level: "&aNivel máximo alcanzado"
     cost: "&6Costo: {cost}"
-    click_hint: "&bClick para mejorar"
-    no_permission: "&cNo tienes permiso para mejorar la guild."
-    insufficient_funds: "&cEl vault de la guild no tiene fondos suficientes ({cost})."
+    click_hint: "&bClic para mejorar"
+    no_permission: "&cNo tienes permiso para mejorar el gremio."
+    insufficient_funds: "&cLa bóveda del gremio no tiene fondos suficientes ({cost})."
     log:
       upgrade_of: "Mejora de {branch}"
   customization:
@@ -293,18 +293,18 @@ guild:
     no_motto: "(sin lema)"
     no_description: "(sin descripción)"
     lore:
-      click_to_change: "&7Click para cambiar"
-      click_to_type_material: "&7Click para escribir un Material nuevo"
-    no_permission: "&cNo tienes permiso para personalizar la guild."
-    prompt_name: "&eEscribe el nuevo nombre de la guild:"
+      click_to_change: "&7Clic para cambiar"
+      click_to_type_material: "&7Clic para escribir un Material nuevo"
+    no_permission: "&cNo tienes permiso para personalizar el gremio."
+    prompt_name: "&eEscribe el nuevo nombre del gremio:"
     invalid_material: "&cMaterial inválido."
     prompt_icon: "&eEscribe el nombre del Material (ej. DIAMOND_SWORD):"
-    prompt_motto: "&eEscribe el nuevo lema de la guild:"
-    prompt_description: "&eEscribe la nueva descripción de la guild:"
+    prompt_motto: "&eEscribe el nuevo lema del gremio:"
+    prompt_description: "&eEscribe la nueva descripción del gremio:"
   calendar:
     title: "Calendario: {name}"
     lore:
-      shift_click_delete: "&8Shift-click para eliminar"
+      shift_click_delete: "&8Mayús + clic para eliminar"
     button:
       add: "Agendar evento"
     no_permission_edit: "&cNo tienes permiso para editar el calendario."
@@ -312,7 +312,7 @@ guild:
     prompt_new_event: "&eEscribe: nombre;tipo;minutos-desde-ahora;descripción (ej. Torneo;torneo;60;Torneo semanal)"
     invalid_format: "&cFormato inválido."
     minutes_not_a_number: "&cLos minutos deben ser un número."
-    event_reminder: "&6📅 Evento de guild: &e{name} &7— {description}"
+    event_reminder: "&6📅 Evento de gremio: &e{name} &7— {description}"
   achievements:
     title: "Logros: {name}"
     unlocked: "Desbloqueado"
@@ -322,21 +322,21 @@ guild:
     title: "Quests: {name}"
     progress: "&7Progreso: {current}/{target}"
     type_target: "&7Tipo: {type} · Objetivo: {target}"
-    reward: "&7Recompensa: {money} oro, {xp} XP de guild"
-    click_start: "&aClick para iniciar"
-    no_permission_start: "&cNo tienes permiso para iniciar quests de guild."
-    completed: "&a✔ Quest de guild completada: &e{quest}"
+    reward: "&7Recompensa: {money} oro, {xp} XP de gremio"
+    click_start: "&aClic para iniciar"
+    no_permission_start: "&cNo tienes permiso para iniciar misiones de gremio."
+    completed: "&a✔ Misión de gremio completada: &e{quest}"
     log:
       reward: "Recompensa de quest: {quest}"
   diplomacy:
     title: "Diplomacia: {name}"
     level: "&7Nivel {level}"
-    click_change: "&eClick para cambiar relación"
+    click_change: "&eClic para cambiar relación"
     no_permission: "&cNo tienes permiso para gestionar diplomacia."
   browser:
     title: "Guilds del servidor"
     level_members: "&7Nivel {level} · {count} miembro(s)"
-    click_open: "&eClick para abrir"
+    click_open: "&eClic para abrir"
 
 guildadmin:
   usage: |-
@@ -346,20 +346,20 @@ guildadmin:
     &7 • &equests]
     &7 • &ddelete
   reload:
-    success: "&a✔ Quests de guild recargadas: {count}"
+    success: "&a✔ Misiones de gremio recargadas: {count}"
   browser:
     players_only: "&cSolo un jugador puede abrir el navegador."
   delete:
     usage: "&eUso: /guildadmin delete <id>"
-    not_found: "&cNo existe esa guild."
+    not_found: "&cNo existe ese gremio."
     success: "&a✔ Guild eliminada."
   quest:
     browser:
       title: "Quests de Guild (admin)"
-    click_edit: "&eClick para editar"
+    click_edit: "&eClic para editar"
     button:
-      new: "Crear quest de guild nueva"
-    prompt_new_id: "&eEscribe el id de la nueva quest de guild:"
+      new: "Crear misión de gremio nueva"
+    prompt_new_id: "&eEscribe el id de la nueva misión de gremio:"
     id_already_exists: "&cYa existe una quest con ese id."
     editor:
       title: "Quest de Guild: {id}"
@@ -369,17 +369,17 @@ guildadmin:
     reference_none: "(ninguna)"
     target_amount_label: "Cantidad objetivo: {amount}"
     reward_money_label: "Recompensa de oro: {amount}"
-    reward_xp_label: "Recompensa de XP de guild: {amount}"
-    min_level_label: "Nivel mínimo de guild: {level}"
+    reward_xp_label: "Recompensa de XP de gremio: {amount}"
+    min_level_label: "Nivel mínimo de gremio: {level}"
     description_label: "Descripción"
     prompt_name: "&eEscribe el nuevo nombre de la quest:"
     prompt_reference: "&eEscribe la nueva referencia (vacío = ninguna):"
     prompt_description: "&eEscribe la nueva descripción:"
     lore:
-      click_to_type_new: "&7Click para escribir uno nuevo"
-      click_next: "&7Click para pasar al siguiente"
+      click_to_type_new: "&7Clic para escribir uno nuevo"
+      click_next: "&7Clic para pasar al siguiente"
       win_war_note: "&8WIN_WAR no tiene gancho automático (sin motor de guerra)"
       reference_example: "&7Ej. id de mob/dungeon/material según el tipo"
-      click_increments: "&7Click: +1 · Shift-click: +10 · Click derecho: -1"
-      click_100: "&7Click: +100 · Click derecho: -100"
-      click_50: "&7Click: +50 · Click derecho: -50"
+      click_increments: "&7Clic: +1 · Mayús + clic: +10 · Clic derecho: -1"
+      click_100: "&7Clic: +100 · Clic derecho: -100"
+      click_50: "&7Clic: +50 · Clic derecho: -50"

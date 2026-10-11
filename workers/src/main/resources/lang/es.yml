@@ -33,7 +33,7 @@ command:
     player_only_spawn: "Solo un jugador puede spawnear un worker."
     usage_spawn: "Uso: /workersadmin spawn <profesion> [nombre]"
     unknown_profession: "No existe la profesión '{id}'."
-    spawned_prefix: "✔ Spawneado un/a "
+    spawned_prefix: "✔ Ha aparecido: "
     spawned_suffix: " ({personality})."
     player_only_designator: "Solo un jugador puede recibir el Designador de Almacén."
     player_only_skin: "Solo un jugador puede cambiar la skin de un worker (hay que mirarlo)."
@@ -43,8 +43,8 @@ gui:
   common:
     close: "Cerrar"
     back: "Volver"
-    click_to_manage: "Click para administrar"
-    click_to_edit: "Click para editar"
+    click_to_manage: "Clic para administrar"
+    click_to_edit: "Clic para editar"
   editor:
     prompt_name: "Escribe el nuevo nombre:"
     prompt_description: "Escribe la nueva descripción:"
@@ -81,9 +81,9 @@ gui:
       schedule_none_keyword: "ninguno"
       schedule_hint: "Escribe el id de un horario, o '{keyword}'"
       wage: "Salario: {wage}"
-      wage_hint: "Click: +10 · Click derecho: -10"
+      wage_hint: "Clic: +10 · Clic derecho: -10"
       wage_type: "Tipo de pago: {type}"
-      rotate_hint: "Click para rotar"
+      rotate_hint: "Clic para rotar"
       tool: "Herramienta: {tool}"
       tool_none: "(ninguna)"
       tool_none_keyword: "ninguna"
@@ -100,8 +100,8 @@ gui:
       reskin_cmd: "&dReskin — custom model data: {value}"
       reskin_scale: "&dReskin — escala: {value}"
       reskin_none: "(ninguno)"
-      reskin_hint: "Reskin propio (sin ModelEngine) — monta un modelo custom sobre el worker. Shift-click: quitar."
-      reskin_scale_hint: "Click: +0.1 · Click derecho: -0.1"
+      reskin_hint: "Reskin propio (sin ModelEngine) — monta un modelo custom sobre el worker. Mayús + clic: quitar."
+      reskin_scale_hint: "Clic: +0.1 · Clic derecho: -0.1"
       prompt_reskin_material: "Escribe el Material base del ítem de reskin (ej. PAPER):"
       prompt_reskin_cmd: "Escribe el custom-model-data del reskin (número entero):"
   skill:
@@ -118,9 +118,9 @@ gui:
       profession: "Profesión: {profession}"
       attribute_key: "attribute-key: {key}"
       max_level: "Nivel máximo: {level}"
-      max_level_hint: "Click: +5 · Click derecho: -5"
+      max_level_hint: "Clic: +5 · Clic derecho: -5"
       value_per_level: "Valor por nivel: {value}"
-      value_per_level_hint: "Click: +0.5 · Click derecho: -0.5"
+      value_per_level_hint: "Clic: +0.5 · Clic derecho: -0.5"
       prompt_profession: "Escribe el id de la profesión:"
       prompt_attribute_key: "Escribe el attribute-key:"
   schedule:
@@ -152,15 +152,15 @@ gui:
       type: "Tipo: {type}"
       chance_own: "Chance propia: {percent}%"
       chance_global: "Chance propia: (usa la global)"
-      chance_hint: "Click: +5% · Click derecho: -5% (0 = usar la global)"
+      chance_hint: "Clic: +5% · Clic derecho: -5% (0 = usar la global)"
       duration: "Duración: {ticks} ticks"
-      duration_hint: "Click: +1200 · Click derecho: -1200"
+      duration_hint: "Clic: +1200 · Clic derecho: -1200"
       happiness: "Δ Felicidad: {value}"
-      stat_hint: "Click: +5 · Click derecho: -5"
+      stat_hint: "Clic: +5 · Clic derecho: -5"
       energy: "Δ Energía: {value}"
       health: "Δ Salud: {value}"
       speed: "Velocidad de trabajo activo: {percent}%"
-      speed_hint: "0% = no trabaja nada (huelga/vacaciones). Click: +10% · Click derecho: -10%"
+      speed_hint: "0% = no trabaja nada (huelga/vacaciones). Clic: +10% · Clic derecho: -10%"
   worker:
     browser:
       title: "Explorador de Workers"
@@ -171,7 +171,7 @@ gui:
       prev_page: "Página anterior"
       next_page: "Página siguiente"
     detail:
-      title: "Worker #{id}"
+      title: "Trabajador #{id}"
       identity: "Identidad"
       identity_lore: "Nombre: {name}\nProfesión: {profession}\nPersonalidad: {personality}\nAcción actual: {action}"
       no_name: "(sin nombre)"
@@ -199,7 +199,7 @@ gui:
 item:
   warehouse_designator:
     name: "Designador de Almacén"
-    lore1: "Click derecho en un cofre/baúl para"
+    lore1: "Clic derecho en un cofre/baúl para"
     lore2: "marcarlo (o desmarcarlo) como almacén."
 
 listener:
@@ -227,3 +227,37 @@ skin:
   current_none: "la de su profesión"
   current_custom: "personalizada"
   prompt: "Pega el enlace o id de MineSkin, o el nombre de un jugador ('quitar' para volver al aspecto de su profesión):"
+
+# Nombre de cada constante cuando aparece en un mensaje o un menú
+enum:
+  PersonalityTrait:
+    LAZY: "Perezoso"
+    RESPONSIBLE: "Responsable"
+    FAST: "Rápido"
+    SMART: "Listo"
+    CLUMSY: "Torpe"
+    AMBITIOUS: "Ambicioso"
+    SOCIAL: "Sociable"
+    LONER: "Solitario"
+    BRAVE: "Valiente"
+    COWARD: "Cobarde"
+  AiAction:
+    SEEK_FOOD: "Buscando comida"
+    EAT: "Comiendo"
+    GO_TO_WAREHOUSE: "Yendo al almacén"
+    STORE_ITEMS: "Guardando objetos"
+    SEEK_SHELTER: "Buscando refugio"
+    GO_HOME: "Volviendo a casa"
+    SLEEP: "Durmiendo"
+    WORK: "Trabajando"
+    IDLE: "Sin hacer nada"
+  ScheduleActivity:
+    WAKE: "Despertar"
+    EAT: "Comer"
+    WORK: "Trabajar"
+    REST: "Descansar"
+    SLEEP: "Dormir"
+    FREE: "Tiempo libre"
+  WageType:
+    HOURLY: "Por hora"
+    PER_TASK: "Por tarea"

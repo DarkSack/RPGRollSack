@@ -158,19 +158,19 @@ gui:
     back: "Volver"
     save: "Guardar"
     cancel: "Cancelar"
-    click_to_change: "&7Click para cambiar"
+    click_to_change: "&7Clic para cambiar"
   structurelibrary:
     title: "&6Biblioteca de Estructuras"
     item:
       size_at_paste: "Tamaño real al pegar"
       source_native: "&dFuente: Structure Block"
       source_custom: "&bFuente: propia (YAML)"
-      click_to_paste: "&eClick para pegar"
+      click_to_paste: "&eClic para pegar"
   pasteconfirm:
     title: "&6Pegar: {id}"
     centered_on_you: "&eSe pega centrada en tu posición actual"
     rotation: "&bRotación: {value}"
-    rotate_hint: "&7Click para rotar 90°"
+    rotate_hint: "&7Clic para rotar 90°"
     mirror_label: "&bEspejo: {value}"
     mirror:
       left_right: "Izquierda/Derecha"
@@ -207,31 +207,31 @@ gui:
     info:
       title: "&6Información: {id}"
       name: "&eNombre: {value}"
-      click_to_write: "&7Click para escribir uno nuevo"
-      click_to_write_new: "&7Click para escribir una nueva"
+      click_to_write: "&7Clic para escribir uno nuevo"
+      click_to_write_new: "&7Clic para escribir una nueva"
       category: "&eCategoría: {value}"
       icon:
         label: "&eÍcono: {value}"
-        hint: "&7Click para escribir un Material vanilla"
+        hint: "&7Clic para escribir un Material vanilla"
       description:
         label: "&eDescripción"
         empty: "(vacía)"
       level:
         label: "&eNivel recomendado: {value}"
-        hint: "&7Click: +1 · Shift-click: +10 · Derecho: -1/-10"
+        hint: "&7Clic: +1 · Mayús + clic: +10 · Derecho: -1/-10"
       min_players: "&eMín. jugadores: {value}"
       max_players: "&eMáx. jugadores: {value}"
-      click_updown_hint: "&7Click: +1 · Derecho: -1"
+      click_updown_hint: "&7Clic: +1 · Derecho: -1"
       estimated_minutes:
         label: "&eDuración estimada: {value} min"
-        hint: "&7Click: +5 · Derecho: -5"
+        hint: "&7Clic: +5 · Derecho: -5"
       cooldown:
         label: "&eCooldown: {value} min"
-        hint: "&7Click: +30 min · Shift-click: +6h · Derecho: -30 min/-6h"
+        hint: "&7Clic: +30 min · Mayús + clic: +6h · Derecho: -30 min/-6h"
       repeatable: "&eRepetible: {value}"
-      click_to_toggle: "&7Click para alternar"
+      click_to_toggle: "&7Clic para alternar"
       tag:
-        remove_hint: "&8Shift-click para quitar"
+        remove_hint: "&8Mayús + clic para quitar"
         add: "&aAgregar tag"
       prompt:
         name: "&eEscribe el nuevo nombre:"
@@ -244,28 +244,28 @@ gui:
       add: "&aAgregar sala"
       move_up: "&b↑ Mover arriba"
       move_down: "&b↓ Mover abajo"
-      move_hint: "&7Sobre la sala seleccionada (click derecho en una)"
+      move_hint: "&7Sobre la sala seleccionada (clic derecho en una)"
       prompt:
         new_id: "&eEscribe el id de la nueva sala:"
       item:
         stats: "objetivos: {objectives} · oleadas: {waves}"
         boss: " · jefe: {boss}"
-        edit_remove_hint: "&8Click para editar · Shift-click para quitar"
-        select_hint: "&8Click derecho para seleccionar (reordenar con ↑/↓)"
+        edit_remove_hint: "&8Clic para editar · Mayús + clic para quitar"
+        select_hint: "&8Clic derecho para seleccionar (reordenar con ↑/↓)"
     roomedit:
       title: "&6Sala: {id}"
       id: "&eID: {value}"
       type:
         label: "&eTipo: {value}"
-        hint: "&7Click para pasar al siguiente tipo"
+        hint: "&7Clic para pasar al siguiente tipo"
       entry_point:
         label: "&ePunto de entrada"
-        hint: "&7Click para fijarlo en tu posición actual"
+        hint: "&7Clic para fijarlo en tu posición actual"
       boss:
         label: "&eJefe: {value}"
         none: "(ninguno)"
         hint: "&8Id de una definición de RPGRoll-Mobs"
-        click_hint: "&7Click: escribir · Shift-click: quitar"
+        click_hint: "&7Clic: escribir · Mayús + clic: quitar"
       objectives: "&eObjetivos: {value}"
       waves: "&eOleadas: {value}"
       events:
@@ -286,7 +286,7 @@ gui:
         hint2: "&8ej. SOUND sound=ENTITY_WITHER_SPAWN"
       invalid_format: "&cFormato inválido."
       item:
-        remove_hint: "&8Shift-click para quitar"
+        remove_hint: "&8Mayús + clic para quitar"
       prompt:
         add: "&eEscribe: TIPO clave=valor clave2=valor2 (ej. TELEPORT x=100 y=65 z=0):"
     region:
@@ -294,10 +294,10 @@ gui:
       corner1: "&eEsquina 1: {value}"
       corner2: "&eEsquina 2: {value}"
       corner:
-        hint: "&7Click para fijarla en tu posición actual"
+        hint: "&7Clic para fijarla en tu posición actual"
       lobby:
         label: "&eLobby: {value}"
-        hint: "&7Click para fijarlo en tu posición y mirada actual"
+        hint: "&7Clic para fijarlo en tu posición y mirada actual"
       unset: "(sin fijar)"
       updated: "&a✔ Región actualizada."
     waves:
@@ -327,13 +327,13 @@ gui:
         hint: "&7Si está activa, cada muerte individual descuenta del pool de reintentos"
       max_retries:
         label: "&eReintentos máximos: {value}"
-        hint: "&7Click: +1 · Derecho: -1 (por debajo de 0 = ilimitado)"
+        hint: "&7Clic: +1 · Derecho: -1 (por debajo de 0 = ilimitado)"
       unlimited: "ilimitados"
       revive_mode: "&eRevivir: {value}"
       revive_timer:
         label: "&eTemporizador: {seconds}s"
         hint1: "&8Usado por el modo AFTER_TIMER"
-        hint2: "&7Click: +5s · Shift-click: +30s · Derecho: -5s/-30s"
+        hint2: "&7Clic: +5s · Mayús + clic: +30s · Derecho: -5s/-30s"
       revive_item:
         label: "&eÍtem requerido: {value}"
         hint1: "&8Usado por el modo WITH_ITEM"
@@ -348,7 +348,7 @@ gui:
       item:
         amount: "&7cantidad: {min}-{max}"
         chance: "&7probabilidad: {chance}% · {scope}"
-        replace_remove_hint: "&8Click para reemplazar · Shift-click para quitar"
+        replace_remove_hint: "&8Clic para reemplazar · Mayús + clic para quitar"
       prompt:
         add: "&eEscribe: TIPO referencia cantidadMin cantidadMax probabilidad scope\n&7ej. ITEM ancient_relic 1 1 25 SHARED — tipos: ITEM/MONEY/EXPERIENCE/COMMAND/QUEST — scope: SHARED/PER_PLAYER/PER_CONTRIBUTION"
         replace: "&eEscribe la entrada reemplazante: TIPO referencia cantidadMin cantidadMax probabilidad scope\n&7ej. ITEM ancient_relic 1 1 25 SHARED — tipos: ITEM/MONEY/EXPERIENCE/COMMAND/QUEST — scope: SHARED/PER_PLAYER/PER_CONTRIBUTION"
@@ -365,7 +365,7 @@ gui:
       health: "&eMultiplicador de vida: x{value}"
       damage: "&eMultiplicador de daño: x{value}"
       loot: "&eMultiplicador de loot: x{value}"
-      multiplier_hint: "&7Click: +0.1 · Shift-click: +0.5 · Derecho: -0.1/-0.5"
+      multiplier_hint: "&7Clic: +0.1 · Mayús + clic: +0.5 · Derecho: -0.1/-0.5"
   browser:
     title: "&6Mazmorras RPGRoll"
     search:
@@ -378,4 +378,4 @@ gui:
     item:
       level_players: "&7Nivel {level} · {min}-{max} jugadores"
       rooms: "&7{rooms} sala(s)"
-      click_to_edit: "&eClick para editar"
+      click_to_edit: "&eClic para editar"

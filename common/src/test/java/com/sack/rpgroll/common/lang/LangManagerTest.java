@@ -148,6 +148,40 @@ class LangManagerTest {
         assertTrue(lang.raw("msg", "a", "1", "b", "2").equals("A=1 B=2 A=1"));
     }
 
+    /** El nombre de un ítem entra como componente: el cliente lo traduce a su idioma. */
+    @Test
+    void componentPlaceholdersAreInsertedAsComponents() throws IOException {
+        writeLangFile("es", "msg: '&aVendes {item} por {price}'");
+
+        LangManager lang = new LangManager(plugin, List.of("es"), "es");
+        Component result = lang.component("msg", "item", Component.text("Diamante"), "price", 5);
+
+        assertEquals("Vendes Diamante por 5", PlainTextComponentSerializer.plainText().serialize(result));
+    }
+
+    private enum Rarity { RARE, EPIC }
+
+    /** "RARE" no llega al jugador en inglés si el idioma trae su nombre; sin traducción, la constante. */
+    @Test
+    void enumPlaceholdersUseTheirTranslatedName() throws IOException {
+        writeLangFile("es", "msg: 'Rareza: {value}'\nenum:\n  Rarity:\n    RARE: 'Raro'");
+
+        LangManager lang = new LangManager(plugin, List.of("es"), "es");
+
+        assertEquals("Rareza: Raro", lang.raw("msg", "value", Rarity.RARE));
+        assertEquals("Rareza: EPIC", lang.raw("msg", "value", Rarity.EPIC));
+    }
+
+    @Test
+    void wholeDecimalsDropTheirTrailingZero() throws IOException {
+        writeLangFile("es", "msg: 'Necesitas {amount}'");
+
+        LangManager lang = new LangManager(plugin, List.of("es"), "es");
+
+        assertEquals("Necesitas 5000", lang.raw("msg", "amount", 5000.0));
+        assertEquals("Necesitas 12.5", lang.raw("msg", "amount", 12.5));
+    }
+
     /**
      * Simula el JAR del plugin: {@code getResource} devuelve un stream nuevo
      * en cada llamada, igual que Bukkit.

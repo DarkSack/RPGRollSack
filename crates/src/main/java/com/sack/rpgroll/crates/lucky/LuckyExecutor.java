@@ -100,7 +100,8 @@ public class LuckyExecutor implements Listener {
             case NEUTRAL -> world.playSound(center, Sound.BLOCK_NOTE_BLOCK_CHIME, 1f, 1.4f);
         }
 
-        if (outcome.message() != null && !outcome.message().isBlank()) {
+        // Si se anuncia a todos, el anuncio ya incluye el mensaje y también le llega al jugador.
+        if (!outcome.announce() && outcome.message() != null && !outcome.message().isBlank()) {
             player.sendMessage(ComponentUtils.parse(placeholders(outcome.message(), player, block)));
         }
         if (outcome.announce()) {

@@ -51,7 +51,7 @@ public class TrapBrowserGUI extends InventoryGUI {
 
             setItem(i, new ItemBuilder(trap.icon())
                     .setName(Component.text(trap.id(), NamedTextColor.YELLOW))
-                    .setLore(lang.component("gui.browser.trigger", "value", trap.trigger().name()),
+                    .setLore(lang.component("gui.browser.trigger", "value", trap.trigger()),
                             lang.component("gui.browser.click_to_edit"))
                     .build());
         }

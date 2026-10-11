@@ -195,7 +195,7 @@ gui:
     trigger:
       LEFT_CLICK: "Clique esquerdo"
       RIGHT_CLICK: "Clique direito"
-      HOLD: "Segurar clique direito {seconds} s"
+      HOLD: "Clique direito e fique parado {seconds} s"
     on_cooldown_label: "&cEm recarga: {seconds}s"
     ready: "&aPronto para lançar"
     runes_label: "&dRunas: {value}"

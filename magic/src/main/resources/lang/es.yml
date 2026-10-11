@@ -30,15 +30,15 @@ command:
     dont_know_spell: "&cNo sabes ese hechizo todavía."
     selected: "&a✔ Hechizo seleccionado: {id}"
     unknown_spell: "&cNo existe un hechizo con id: {id}"
-    no_cooldowns: "&7No tienes ningún hechizo en cooldown."
-    cooldowns_header: "&6Cooldowns activos:"
+    no_cooldowns: "&7No tienes ningún hechizo en recarga."
+    cooldowns_header: "&6Recargas activas:"
     cooldown_line: "&f• {name}: {seconds}s"
 
 cast:
   no_spell_selected: "&cNo tienes ningún hechizo seleccionado — usa /magic select <id>."
   reason:
     school_missing: "La escuela '{school}' no existe."
-    on_cooldown: "En cooldown ({seconds}s restantes)."
+    on_cooldown: "En recarga (faltan {seconds} s)."
     rpgroll_not_ready: "RPGRoll no está listo."
     no_character: "No tienes un personaje creado."
     not_enough_mana: "No tienes suficiente maná ({current}/{required})."
@@ -161,7 +161,7 @@ gui:
     reagent_lore: "&7Escribe: MATERIAL,CANTIDAD (o 'ninguno')"
     cast_time_label: "&eTiempo de canalización: {ticks} ticks"
     cast_time_lore: "&7Solo aplica si el trigger es HOLD"
-    cooldown_label: "&eCooldown: {ticks} ticks"
+    cooldown_label: "&eRecarga: {ticks} ticks"
     trigger_label: "&eTrigger: {trigger}"
     tree_parent_label: "&eRequiere antes: {value}"
     tree_parent_lore: "&7Escribe el id de otro hechizo (o 'ninguno')"
@@ -195,7 +195,7 @@ gui:
     trigger:
       LEFT_CLICK: "Clic izquierdo"
       RIGHT_CLICK: "Clic derecho"
-      HOLD: "Mantener clic derecho {seconds} s"
+      HOLD: "Clic derecho y quédate quieto {seconds} s"
     on_cooldown_label: "&cEn recarga: {seconds} s"
     ready: "&aListo para lanzar"
     runes_label: "&dRunas: {value}"

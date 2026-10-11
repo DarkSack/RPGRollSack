@@ -79,7 +79,7 @@ public class TrapInfoEditorGUI extends InventoryGUI {
                 .build());
 
         setItem(TRIGGER_SLOT, new ItemBuilder(Material.COMPARATOR)
-                .setName(lang().component("gui.info.trigger", "value", current.trigger().name()))
+                .setName(lang().component("gui.info.trigger", "value", current.trigger()))
                 .setLore(lang().component("gui.info.trigger_hint"))
                 .build());
 

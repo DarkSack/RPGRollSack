@@ -4,6 +4,7 @@ import com.sack.rpgroll.common.resource.ResourceCopier;
 import com.sack.rpgroll.util.ComponentUtils;
 
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.ComponentLike;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -162,14 +163,59 @@ public class LangManager {
         }
 
         for (int i = 0; i + 1 < placeholderPairs.length; i += 2) {
-            template = template.replace("{" + placeholderPairs[i] + "}", String.valueOf(placeholderPairs[i + 1]));
+            template = template.replace("{" + placeholderPairs[i] + "}", text(placeholderPairs[i + 1]));
         }
 
         return template;
     }
 
+    /**
+     * Nombre de una constante en el idioma activo (clave {@code enum.<Clase>.<CONSTANTE>}); sin
+     * traducción, la constante tal cual. Así "RARE" o "FEMALE" no llegan al jugador en inglés.
+     */
+    public String name(Enum<?> value) {
+        String key = "enum." + value.getDeclaringClass().getSimpleName() + "." + value.name();
+        String found = raw(key);
+        return found.equals(key) ? value.name() : found;
+    }
+
+    /** Un decimal entero (5000.0) se escribe sin el ".0": casi siempre es dinero o una cantidad. */
+    String text(Object value) {
+        if (value instanceof Enum<?> constant) {
+            return name(constant);
+        }
+        if (value instanceof Double || value instanceof Float) {
+            double number = ((Number) value).doubleValue();
+            if (number == Math.rint(number) && Math.abs(number) < 1e15) {
+                return String.valueOf((long) number);
+            }
+        }
+        return String.valueOf(value);
+    }
+
+    /**
+     * Como {@link #raw} ya convertido a componente. Un valor que ya es un componente (el nombre de un
+     * ítem, {@code Component.translatable(material)}) se inserta tal cual, así el cliente lo ve en su idioma.
+     */
     public Component component(String key, Object... placeholderPairs) {
-        return ComponentUtils.parse(raw(key, placeholderPairs));
+
+        Object[] textPairs = placeholderPairs.clone();
+        for (int i = 0; i + 1 < textPairs.length; i += 2) {
+            if (textPairs[i + 1] instanceof ComponentLike) {
+                textPairs[i + 1] = "{" + textPairs[i] + "}";
+            }
+        }
+
+        Component result = ComponentUtils.parse(raw(key, textPairs));
+
+        for (int i = 0; i + 1 < placeholderPairs.length; i += 2) {
+            if (placeholderPairs[i + 1] instanceof ComponentLike value) {
+                String token = "{" + placeholderPairs[i] + "}";
+                result = result.replaceText(config -> config.matchLiteral(token).replacement(value));
+            }
+        }
+
+        return result;
     }
 
     public void send(CommandSender target, String key, Object... placeholderPairs) {

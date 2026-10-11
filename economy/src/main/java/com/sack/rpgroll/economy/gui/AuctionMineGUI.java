@@ -112,7 +112,7 @@ public class AuctionMineGUI extends InventoryGUI {
                 AuctionListing listing = listings.get(index);
                 AuctionResult result = service.manager().cancel(listing, player.getUniqueId(), false);
                 if (result == AuctionResult.SUCCESS) {
-                    lang.send(player, "auction_house.cancelled", "item", listing.itemName());
+                    lang.send(player, "auction_house.cancelled", "item", listing.item().effectiveName());
                     service.collect(player, listing);
                 } else {
                     lang.send(player, result.langKey());

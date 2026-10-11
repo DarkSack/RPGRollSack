@@ -264,7 +264,7 @@ public class AuctionHouseGUI extends InventoryGUI {
         if (click == ClickType.SHIFT_RIGHT && player.hasPermission(AuctionService.ADMIN_PERMISSION)) {
             AuctionResult result = service.manager().cancel(listing, player.getUniqueId(), true);
             lang.send(player, result == AuctionResult.SUCCESS ? "auction_house.admin_removed" : result.langKey(),
-                    "item", listing.itemName(), "player", listing.sellerName());
+                    "item", listing.item().effectiveName(), "player", listing.sellerName());
             build();
             return;
         }
@@ -290,13 +290,13 @@ public class AuctionHouseGUI extends InventoryGUI {
             AuctionResult result = service.manager().bid(listing, player.getUniqueId(), player.getName(), amount);
             if (result == AuctionResult.SUCCESS && listing.isSettled()) {
                 // La puja llegó al precio de compra inmediata: ya es suya.
-                lang.send(player, "auction_house.bought", "item", listing.itemName(),
+                lang.send(player, "auction_house.bought", "item", listing.item().effectiveName(),
                         "price", service.format(listing, listing.currentBid()));
                 if (!service.collect(player, listing)) {
                     lang.send(player, "auction_house.bought_to_box");
                 }
             } else if (result == AuctionResult.SUCCESS) {
-                lang.send(player, "auction_house.bid_placed", "item", listing.itemName(),
+                lang.send(player, "auction_house.bid_placed", "item", listing.item().effectiveName(),
                         "price", service.format(listing, listing.currentBid()));
             } else {
                 lang.send(player, result.langKey(), "min", service.format(listing, service.settings().minNextBid(listing)));

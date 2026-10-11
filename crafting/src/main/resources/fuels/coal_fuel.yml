@@ -1,0 +1,8 @@
+id: coal_fuel
+display-name: "Carbón"
+icon: COAL
+material-or-item-id: COAL
+is-custom-item: false
+# Igual que el carbón vegetal y que el horno vanilla.
+burn-ticks: 1600
+consume-amount: 1

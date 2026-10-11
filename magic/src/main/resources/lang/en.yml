@@ -195,7 +195,7 @@ gui:
     trigger:
       LEFT_CLICK: "Left click"
       RIGHT_CLICK: "Right click"
-      HOLD: "Hold right click {seconds} s"
+      HOLD: "Right click and stand still {seconds} s"
     on_cooldown_label: "&cOn cooldown: {seconds}s"
     ready: "&aReady to cast"
     runes_label: "&dRunes: {value}"

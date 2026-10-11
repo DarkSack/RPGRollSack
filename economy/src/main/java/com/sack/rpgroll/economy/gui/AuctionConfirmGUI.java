@@ -65,7 +65,7 @@ public class AuctionConfirmGUI extends InventoryGUI {
             AuctionResult result = service.manager().buyNow(listing, player.getUniqueId(), player.getName());
 
             if (result == AuctionResult.SUCCESS) {
-                lang.send(player, "auction_house.bought", "item", listing.itemName(),
+                lang.send(player, "auction_house.bought", "item", listing.item().effectiveName(),
                         "price", service.format(listing, listing.buyNowPrice()));
                 if (!service.collect(player, listing)) {
                     lang.send(player, "auction_house.bought_to_box");

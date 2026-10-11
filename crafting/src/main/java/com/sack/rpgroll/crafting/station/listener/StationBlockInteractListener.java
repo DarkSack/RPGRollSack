@@ -99,6 +99,11 @@ public class StationBlockInteractListener implements Listener {
             runtime.setLastPlayerId(player.getUniqueId());
         }
         player.openInventory(runtime.inventory());
+        // El menú es un cofre sin marcas: se le dice dónde va cada cosa (ranuras contadas desde 1).
+        lang.send(player, station.fuelSlot() >= 0 ? "station.slots_hint_fuel" : "station.slots_hint",
+                "ingredients", station.ingredientSlots().stream().map(slot -> String.valueOf(slot + 1))
+                        .collect(java.util.stream.Collectors.joining(", ")),
+                "fuel", station.fuelSlot() + 1, "output", station.outputSlot() + 1);
     }
 
     /** @return la estación a abrir, o null si ninguna candidata aplica (ya se le avisó al jugador por qué). */

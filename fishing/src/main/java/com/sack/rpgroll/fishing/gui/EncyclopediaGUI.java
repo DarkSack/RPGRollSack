@@ -72,7 +72,7 @@ public class EncyclopediaGUI extends InventoryGUI {
                     .setName(ComponentUtils.parseWithDefault((fish.legendary() ? "★ " : "") + fish.displayName(),
                             fish.legendary() ? NamedTextColor.GOLD : NamedTextColor.AQUA))
                     .setLore(
-                            Component.text(fish.category() + " · " + fish.rarity(), NamedTextColor.GRAY),
+                            Component.text(lang.name(fish.category()) + " · " + lang.name(fish.rarity()), NamedTextColor.GRAY),
                             lang.component("gui.encyclopedia.caught", "count", record.caughtCount()),
                             lang.component("gui.encyclopedia.best_weight", "weight",
                                     String.format(Locale.ROOT, "%.2f", record.bestWeight())),
