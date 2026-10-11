@@ -85,7 +85,8 @@ public class LanguageCommand implements CommandExecutor, TabCompleter {
         var result = languageService.learn(player, args[1]);
 
         switch (result) {
-            case OK -> lang.send(player, "language.learned", "id", args[1]);
+            case OK -> lang.send(player, "language.learned", "id",
+                    languageManager.get(args[1]).map(com.sack.rpgroll.chat.language.Language::displayName).orElse(args[1]));
             case ALREADY_KNOWN -> lang.send(player, "language.already_known");
             case NOT_FOUND -> lang.send(player, "language.not_found");
         }
@@ -101,7 +102,8 @@ public class LanguageCommand implements CommandExecutor, TabCompleter {
         boolean ok = languageService.setSpeaking(player, args[1]);
 
         if (ok) {
-            lang.send(player, "language.now_speaking", "id", args[1]);
+            lang.send(player, "language.now_speaking", "id",
+                    languageManager.get(args[1]).map(com.sack.rpgroll.chat.language.Language::displayName).orElse(args[1]));
         } else {
             lang.send(player, "language.dont_know");
         }

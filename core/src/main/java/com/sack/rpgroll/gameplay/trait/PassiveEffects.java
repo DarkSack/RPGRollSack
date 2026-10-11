@@ -27,9 +27,11 @@ import java.util.Set;
  * AttributeModifier: se reaplican al entrar y al cambiar de raza o clase,
  * igual que RaceAttributeApplier.
  * <p>
- * De paso da uso a dos atributos que no hacían nada: la fuerza suma daño y
- * el carisma, suerte; y la suerte da crítico, evasión y experiencia. (La
- * sabiduría también da experiencia, ver Bootstrap.)
+ * También es donde cada letra de S.P.E.C.I.A.L. que no tenía efecto lo gana:
+ * la fuerza suma daño, la percepción (wisdom) crítico y la suerte crítico,
+ * evasión y experiencia. (El carisma da experiencia, ver Bootstrap.) Un
+ * atributo que llega a {@link #PERK_THRESHOLD} da además su perk: el rasgo
+ * {@code perk_<atributo>}.
  */
 public class PassiveEffects implements Listener {
 
@@ -39,6 +41,10 @@ public class PassiveEffects implements Listener {
     }
 
     private static final double DAMAGE_PER_STRENGTH_MODIFIER = 0.02;
+    private static final double CRITICAL_PER_PERCEPTION_MODIFIER = 0.01;
+    // shortcut: un solo perk por atributo y a un umbral fijo, ampliar a varios escalones en un YAML si se
+    // quieren árboles de perks como los de Fallout.
+    public static final int PERK_THRESHOLD = 15;
     /** Cada punto de suerte: crítico y evasión. Además es el atributo de suerte de Minecraft (botín, pesca). */
     private static final double CHANCE_PER_LUCK = 0.01;
     /** Y este porcentaje de experiencia, ver Bootstrap. */
@@ -72,13 +78,19 @@ public class PassiveEffects implements Listener {
             classManager.get(rpgPlayer.getPlayerClass()).ifPresent(c -> traitIds.addAll(c.passiveTraits()));
         }
 
+        for (com.sack.rpgroll.api.stats.StatType stat : com.sack.rpgroll.api.stats.StatType.values()) {
+            if (rpgPlayer.getStats().get(stat) >= PERK_THRESHOLD) {
+                traitIds.add("perk_" + stat.name().toLowerCase(java.util.Locale.ROOT));
+            }
+        }
+
         int health = 0;
         double damage = DAMAGE_PER_STRENGTH_MODIFIER * rpgPlayer.getStats().getStrengthModifier();
         double defense = 0;
         double speed = 0;
-        double luck = rpgPlayer.getStats().getCharismaModifier();
+        double luck = rpgPlayer.getStats().getLuckModifier();
         double evasion = 0;
-        double critical = 0;
+        double critical = CRITICAL_PER_PERCEPTION_MODIFIER * rpgPlayer.getStats().getWisdomModifier();
         double attackSpeed = 0;
 
         for (String traitId : traitIds) {

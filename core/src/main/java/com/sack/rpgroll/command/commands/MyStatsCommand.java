@@ -118,25 +118,29 @@ public class MyStatsCommand implements RPGCommand {
                                 lang.raw("my_stats_command.label_strength"),
                                 stats.strength()));
 
-                player.sendMessage(MessageUtil.line(NamedTextColor.GREEN,
-                                lang.raw("my_stats_command.label_dexterity"),
-                                stats.dexterity()));
+                player.sendMessage(MessageUtil.line(NamedTextColor.AQUA,
+                                lang.raw("my_stats_command.label_wisdom"),
+                                stats.wisdom()));
 
                 player.sendMessage(MessageUtil.line(NamedTextColor.GOLD,
                                 lang.raw("my_stats_command.label_constitution"),
                                 stats.constitution()));
 
+                player.sendMessage(MessageUtil.line(NamedTextColor.LIGHT_PURPLE,
+                                lang.raw("my_stats_command.label_charisma"),
+                                stats.charisma()));
+
                 player.sendMessage(MessageUtil.line(NamedTextColor.BLUE,
                                 lang.raw("my_stats_command.label_intelligence"),
                                 stats.intelligence()));
 
-                player.sendMessage(MessageUtil.line(NamedTextColor.AQUA,
-                                lang.raw("my_stats_command.label_wisdom"),
-                                stats.wisdom()));
+                player.sendMessage(MessageUtil.line(NamedTextColor.GREEN,
+                                lang.raw("my_stats_command.label_dexterity"),
+                                stats.dexterity()));
 
-                player.sendMessage(MessageUtil.line(NamedTextColor.LIGHT_PURPLE,
-                                lang.raw("my_stats_command.label_charisma"),
-                                stats.charisma()));
+                player.sendMessage(MessageUtil.line(NamedTextColor.YELLOW,
+                                lang.raw("my_stats_command.label_luck"),
+                                stats.luck()));
 
                 player.sendMessage(MessageUtil.separator());
 

@@ -1,0 +1,20 @@
+id: "perk_intelligence"
+name: "&9Mente Brillante"
+description: |
+  Perk de Inteligencia 15.
+  Sabe exactamente dónde y cuándo.
+required-level: 1
+effect:
+  damage-bonus: 0.03
+  critical-bonus: 0.02
+translations:
+  en:
+    name: "&9Bright Mind"
+    description: |
+      Intelligence 15 perk.
+      Knows exactly where and when.
+  pt_BR:
+    name: "&9Mente Brilhante"
+    description: |
+      Perk de Inteligência 15.
+      Sabe exatamente onde e quando.

@@ -44,7 +44,7 @@ public class RaceDefinitionWriter {
             if (!folder.exists()) {
                 folder.mkdirs();
             }
-            config.save(new File(folder, race.id() + ".yml"));
+            com.sack.rpgroll.common.content.ContentLoader.save(config, new File(folder, race.id() + ".yml"));
         } catch (IOException e) {
             logger.warning("✘ Error guardando raza '" + race.id() + "': " + e.getMessage());
         }

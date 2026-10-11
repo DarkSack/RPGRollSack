@@ -121,7 +121,10 @@ public class ItemsPlugin extends JavaPlugin {
         skinService = new SkinService(instanceService, itemFactory);
         durabilityService = new DurabilityService(instanceService, itemFactory, langManager);
 
-        statEngine = new ItemStatEngine(this, itemManager, itemFactory, instanceService, socketService);
+        com.sack.rpgroll.items.accessory.AccessoryService accessories = new com.sack.rpgroll.items.accessory.AccessoryService(this, itemManager, instanceService);
+        getServer().getPluginManager().registerEvents(accessories, this);
+        statEngine = new ItemStatEngine(this, itemManager, itemFactory, instanceService, socketService,
+                accessories);
 
         customRecipeRegistry = new CustomRecipeRegistry();
         new RecipeRegistrar(this, itemFactory).registerAll(itemManager);
@@ -145,7 +148,7 @@ public class ItemsPlugin extends JavaPlugin {
         getServer().getPluginManager().registerEvents(triggerListener, this);
 
         ItemEquipTask equipTask = new ItemEquipTask(itemManager, instanceService, actionRegistry, statEngine,
-                requirementChecker, langManager);
+                requirementChecker, langManager, accessories);
         getServer().getScheduler().runTaskTimer(this, equipTask, EQUIP_POLL_TICKS, EQUIP_POLL_TICKS);
 
         getServer().getPluginManager().registerEvents(new PlayerSessionListener(equipTask), this);
@@ -153,6 +156,14 @@ public class ItemsPlugin extends JavaPlugin {
         AutoRepairTask autoRepairTask = new AutoRepairTask(itemManager, instanceService, durabilityService);
         getServer().getScheduler().runTaskTimer(this, autoRepairTask, AUTO_REPAIR_TICKS, AUTO_REPAIR_TICKS);
 
+        org.bukkit.command.CommandExecutor openAccessories = (sender, command, label, args) -> {
+            if (sender instanceof org.bukkit.entity.Player player) {
+                new com.sack.rpgroll.items.accessory.AccessoryGUI(player, accessories, langManager).open();
+            }
+            return true;
+        };
+        registerCommand("amuletos", openAccessories);
+        registerCommand("amulets", openAccessories);
         registerCommand("itemadmin", new ItemAdminCommand(itemManager, itemFactory, rarityManager, statRegistry,
                 chatPromptManager, packManager, this));
         registerCommand("item", new ItemCommand(itemManager, instanceService, upgradeService, skinService,
@@ -191,6 +202,7 @@ public class ItemsPlugin extends JavaPlugin {
         return switch (name) {
             case "itemadmin" -> new String[] { "Gestiona definiciones de ítems (crear, dar, editar, recargar)", "rpgrollitems.admin.*" };
             case "item" -> new String[] { "Interactúa con el ítem RPGRoll que tienes en mano", "" };
+            case "amuletos", "amulets" -> new String[] { "Abre tus ranuras de amuleto", "" };
             default -> new String[] { "", "" };
         };
     }

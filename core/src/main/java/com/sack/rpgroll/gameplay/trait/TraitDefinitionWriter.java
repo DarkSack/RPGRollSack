@@ -46,7 +46,7 @@ public class TraitDefinitionWriter {
             if (!folder.exists()) {
                 folder.mkdirs();
             }
-            config.save(new File(folder, trait.id() + ".yml"));
+            com.sack.rpgroll.common.content.ContentLoader.save(config, new File(folder, trait.id() + ".yml"));
         } catch (IOException e) {
             logger.warning("✘ Error guardando trait '" + trait.id() + "': " + e.getMessage());
         }

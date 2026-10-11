@@ -37,7 +37,7 @@ public class ClassDefinitionWriter {
             if (!folder.exists()) {
                 folder.mkdirs();
             }
-            config.save(new File(folder, playerClass.id() + ".yml"));
+            com.sack.rpgroll.common.content.ContentLoader.save(config, new File(folder, playerClass.id() + ".yml"));
         } catch (IOException e) {
             logger.warning("✘ Error guardando clase '" + playerClass.id() + "': " + e.getMessage());
         }

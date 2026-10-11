@@ -1,0 +1,19 @@
+id: "perk_luck"
+name: "&eBuena Estrella"
+description: |
+  Perk de Suerte 15.
+  A veces las cosas, simplemente, salen bien.
+required-level: 1
+effect:
+  luck-bonus: 2
+translations:
+  en:
+    name: "&eLucky Star"
+    description: |
+      Luck 15 perk.
+      Sometimes things simply go right.
+  pt_BR:
+    name: "&eBoa Estrela"
+    description: |
+      Perk de Sorte 15.
+      Às vezes as coisas simplesmente dão certo.

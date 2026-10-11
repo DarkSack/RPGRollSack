@@ -61,11 +61,12 @@ public class StatsCommand implements RPGCommand {
 
         lang.send(player, "stats.view_stats", "player", player.getName());
         lang.send(player, "stats.strength", "value", stats.strength());
-        lang.send(player, "stats.dexterity", "value", stats.dexterity());
-        lang.send(player, "stats.constitution", "value", stats.constitution());
-        lang.send(player, "stats.intelligence", "value", stats.intelligence());
         lang.send(player, "stats.wisdom", "value", stats.wisdom());
+        lang.send(player, "stats.constitution", "value", stats.constitution());
         lang.send(player, "stats.charisma", "value", stats.charisma());
+        lang.send(player, "stats.intelligence", "value", stats.intelligence());
+        lang.send(player, "stats.dexterity", "value", stats.dexterity());
+        lang.send(player, "stats.luck", "value", stats.luck());
         lang.send(player, "stats.footer");
 
     }

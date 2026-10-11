@@ -116,6 +116,8 @@ public class AllocateStatCommand implements RPGCommand {
                     .spendStatPoints(amount);
 
             playerManager.savePlayer(updatedPlayer);
+            plugin.getBootstrap().getServices().get(com.sack.rpgroll.gameplay.trait.PassiveEffects.class)
+                    .apply(player, updatedPlayer);
 
             lang.send(player, "allocate_stat_command.success", "amount", amount, "stat", statInput.toUpperCase());
             lang.send(player, "allocate_stat_command.remaining", "points", updatedPlayer.getUnspentStatPoints());

@@ -74,22 +74,58 @@ public class ContentLoader<T extends RPGContent> {
         return results;
     }
 
-    /** Se lee del archivo cada vez: getConfig() guarda la copia del arranque y un reload no vería el cambio. */
     private String locale() {
-        return YamlConfiguration.loadConfiguration(new File(plugin.getDataFolder(), "config.yml"))
-                .getString("language", "es");
+        return locale(plugin.getDataFolder());
     }
 
-    // shortcut: los editores del panel guardan el contenido ya resuelto en un idioma y pierden el bloque
-    // translations de ese archivo, ampliar si se quiere editar traducciones desde el juego.
+    /** Se lee del archivo cada vez: getConfig() guarda la copia del arranque y un reload no vería el cambio. */
+    private static String locale(File dataFolder) {
+        return YamlConfiguration.loadConfiguration(new File(dataFolder, "config.yml")).getString("language", "es");
+    }
+
+    /**
+     * Guarda lo que escribe un editor del panel sin perder las traducciones del archivo. El editor trabaja
+     * con el contenido ya resuelto en el idioma del servidor: si ese idioma es uno traducido, lo editado va
+     * a su bloque y el texto base se queda como estaba.
+     */
+    // shortcut: da por hecho que el archivo cuelga de <carpeta de datos>/<tipo>/, ampliar si un tipo de
+    // contenido con subcarpetas (los packs de ítems) gana editor de textos traducidos.
+    public static void save(YamlConfiguration fresh, File target) throws java.io.IOException {
+
+        YamlConfiguration old = YamlConfiguration.loadConfiguration(target);
+        ConfigurationSection translations = old.getConfigurationSection("translations");
+
+        if (translations != null) {
+            copyLeaves(translations, fresh, "translations.");
+
+            String locale = locale(target.getParentFile().getParentFile());
+            ConfigurationSection active = translations.getConfigurationSection(locale);
+
+            if (active != null) {
+                for (String path : active.getKeys(true)) {
+                    if (!active.isConfigurationSection(path)) {
+                        fresh.set("translations." + locale + "." + path, fresh.get(path));
+                        fresh.set(path, old.get(path));
+                    }
+                }
+            }
+        }
+
+        fresh.save(target);
+    }
+
+    private static void copyLeaves(ConfigurationSection from, YamlConfiguration to, String prefix) {
+        from.getValues(true).forEach((path, value) -> {
+            if (!(value instanceof ConfigurationSection)) {
+                to.set(prefix + path, value);
+            }
+        });
+    }
+
     static YamlConfiguration translate(YamlConfiguration config, String locale) {
         ConfigurationSection translated = config.getConfigurationSection("translations." + locale);
         if (translated != null) {
-            translated.getValues(true).forEach((path, value) -> {
-                if (!(value instanceof ConfigurationSection)) {
-                    config.set(path, value);
-                }
-            });
+            copyLeaves(translated, config, "");
         }
         return config;
     }

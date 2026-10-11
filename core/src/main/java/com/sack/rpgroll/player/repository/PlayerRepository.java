@@ -101,7 +101,8 @@ public class PlayerRepository {
                                             statsResult.getInt("constitution"),
                                             statsResult.getInt("intelligence"),
                                             statsResult.getInt("wisdom"),
-                                            statsResult.getInt("charisma"));
+                                            statsResult.getInt("charisma"),
+                                            statsResult.getInt("luck"));
 
                                     persistedCombatStats = CombatStats.of(
                                             statsResult.getInt("max_health"),
@@ -249,8 +250,8 @@ public class PlayerRepository {
                 // Insertar en tabla player_stats
                 String insertStats = "INSERT INTO player_stats (uuid, strength, dexterity, constitution, intelligence, wisdom, charisma, "
                         +
-                        "max_health, current_health, max_mana, current_mana) " +
-                        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                        "max_health, current_health, max_mana, current_mana, luck) " +
+                        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
                 try (PreparedStatement statement = connection.prepareStatement(insertStats)) {
 
@@ -267,6 +268,7 @@ public class PlayerRepository {
                     statement.setInt(9, combatStats.currentHealth());
                     statement.setInt(10, combatStats.maxMana());
                     statement.setInt(11, combatStats.currentMana());
+                    statement.setInt(12, player.getStats().luck());
 
                     statement.executeUpdate();
 
@@ -330,7 +332,7 @@ public class PlayerRepository {
                 // Actualizar tabla player_stats
                 String updateStats = "UPDATE player_stats SET strength = ?, dexterity = ?, constitution = ?, " +
                         "intelligence = ?, wisdom = ?, charisma = ?, max_health = ?, current_health = ?, " +
-                        "max_mana = ?, current_mana = ? WHERE uuid = ?";
+                        "max_mana = ?, current_mana = ?, luck = ? WHERE uuid = ?";
 
                 try (PreparedStatement statement = connection.prepareStatement(updateStats)) {
 
@@ -346,7 +348,8 @@ public class PlayerRepository {
                     statement.setInt(8, combatStats.currentHealth());
                     statement.setInt(9, combatStats.maxMana());
                     statement.setInt(10, combatStats.currentMana());
-                    statement.setString(11, player.getUUID().toString());
+                    statement.setInt(11, player.getStats().luck());
+                    statement.setString(12, player.getUUID().toString());
 
                     statement.executeUpdate();
 

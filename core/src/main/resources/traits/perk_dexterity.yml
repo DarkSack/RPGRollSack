@@ -1,0 +1,20 @@
+id: "perk_dexterity"
+name: "&aPies Ligeros"
+description: |
+  Perk de Agilidad 15.
+  Ya no está donde iba el golpe.
+required-level: 1
+effect:
+  speed-bonus: 0.05
+  evasion-bonus: 0.03
+translations:
+  en:
+    name: "&aLight Feet"
+    description: |
+      Agility 15 perk.
+      No longer where the blow was headed.
+  pt_BR:
+    name: "&aPés Leves"
+    description: |
+      Perk de Agilidade 15.
+      Já não está onde o golpe ia.

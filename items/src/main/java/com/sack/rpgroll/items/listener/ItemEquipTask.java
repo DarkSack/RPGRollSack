@@ -40,7 +40,8 @@ import java.util.UUID;
 public class ItemEquipTask implements Runnable {
 
     private static final int EFFECT_REFRESH_TICKS = 30;
-    private static final String[] SLOTS = {"mainhand", "offhand", "helmet", "chestplate", "leggings", "boots"};
+    private static final String[] SLOTS = {"mainhand", "offhand", "helmet", "chestplate", "leggings", "boots",
+            "accessory0", "accessory1", "accessory2"};
 
     private final ItemManager itemManager;
     private final ItemInstanceService instanceService;
@@ -48,11 +49,14 @@ public class ItemEquipTask implements Runnable {
     private final ItemStatEngine statEngine;
     private final ItemRequirementChecker requirementChecker;
     private final LangManager langManager;
+    private final com.sack.rpgroll.items.accessory.AccessoryService accessories;
 
     private final Map<UUID, Map<String, String>> lastKnown = new HashMap<>();
 
     public ItemEquipTask(ItemManager itemManager, ItemInstanceService instanceService, ActionRegistry actionRegistry,
-            ItemStatEngine statEngine, ItemRequirementChecker requirementChecker, LangManager langManager) {
+            ItemStatEngine statEngine, ItemRequirementChecker requirementChecker, LangManager langManager,
+            com.sack.rpgroll.items.accessory.AccessoryService accessories) {
+        this.accessories = accessories;
         this.itemManager = itemManager;
         this.instanceService = instanceService;
         this.actionRegistry = actionRegistry;
@@ -72,9 +76,11 @@ public class ItemEquipTask implements Runnable {
 
         PlayerInventory inventory = player.getInventory();
 
+        ItemStack[] worn = accessories.worn(player);
         ItemStack[] current = {
                 inventory.getItemInMainHand(), inventory.getItemInOffHand(),
-                inventory.getHelmet(), inventory.getChestplate(), inventory.getLeggings(), inventory.getBoots()
+                inventory.getHelmet(), inventory.getChestplate(), inventory.getLeggings(), inventory.getBoots(),
+                worn[0], worn[1], worn[2]
         };
 
         Map<String, String> previous = lastKnown.computeIfAbsent(player.getUniqueId(), id -> new HashMap<>());

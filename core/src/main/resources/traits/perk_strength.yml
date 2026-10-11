@@ -1,0 +1,19 @@
+id: "perk_strength"
+name: "&cBrazo de Hierro"
+description: |
+  Perk de Fuerza 15.
+  Cada golpe pesa el doble de lo que parece.
+required-level: 1
+effect:
+  damage-bonus: 0.05
+translations:
+  en:
+    name: "&cIron Arm"
+    description: |
+      Strength 15 perk.
+      Every blow weighs twice what it seems.
+  pt_BR:
+    name: "&cBraço de Ferro"
+    description: |
+      Perk de Força 15.
+      Cada golpe pesa o dobro do que parece.

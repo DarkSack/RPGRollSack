@@ -406,3 +406,15 @@ stat:
   magic_resistance: "Resistência mágica"
   mining_speed: "Velocidade de mineração"
   fishing_luck: "Sorte de pesca"
+
+# Amuletos (/amuletos): ranuras propias fuera del inventario
+accessory:
+  title: "Amuletos"
+  empty_slot: "&7Espaço vazio"
+  empty_slot_lore: "&8Clique em um amuleto do seu inventário"
+  equipped: "&a✔ Você coloca {item}&a."
+  removed: "&e✔ Você tira {item}&e."
+  full: "&cVocê não tem mais espaços de amuleto."
+  duplicate: "&cVocê já está usando esse amuleto."
+  not_accessory: "&cIsso não é um amuleto."
+  inventory_full: "&cSeu inventário está cheio."

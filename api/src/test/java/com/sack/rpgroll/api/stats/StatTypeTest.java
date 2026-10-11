@@ -41,6 +41,11 @@ class StatTypeTest {
             "charisma, CHARISMA",
             "cha, CHARISMA",
             "carisma, CHARISMA",
+            "luck, LUCK",
+            "suerte, LUCK",
+            "agility, DEXTERITY",
+            "endurance, CONSTITUTION",
+            "perception, WISDOM",
     })
     void fromStringResolvesEveryAliasCaseInsensitively(String alias, StatType expected) {
         assertEquals(expected, StatType.fromString(alias));

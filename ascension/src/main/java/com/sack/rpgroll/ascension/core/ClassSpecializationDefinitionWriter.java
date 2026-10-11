@@ -53,7 +53,7 @@ public class ClassSpecializationDefinitionWriter {
 
         try {
             folder.mkdirs();
-            config.save(new File(folder, specialization.id() + ".yml"));
+            com.sack.rpgroll.common.content.ContentLoader.save(config, new File(folder, specialization.id() + ".yml"));
         } catch (IOException e) {
             throw new RuntimeException("No se pudo guardar la especialización " + specialization.id(), e);
         }

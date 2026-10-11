@@ -1,0 +1,19 @@
+id: "perk_wisdom"
+name: "&bOjo Clínico"
+description: |
+  Perk de Percepción 15.
+  Ve el hueco en la guardia antes que nadie.
+required-level: 1
+effect:
+  critical-bonus: 0.05
+translations:
+  en:
+    name: "&bKeen Eye"
+    description: |
+      Perception 15 perk.
+      Spots the gap in the guard before anyone.
+  pt_BR:
+    name: "&bOlho Clínico"
+    description: |
+      Perk de Percepção 15.
+      Vê a brecha na guarda antes de todos.

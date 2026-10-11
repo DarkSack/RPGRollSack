@@ -32,7 +32,7 @@ public class SkillDefinitionWriter {
             if (!folder.exists()) {
                 folder.mkdirs();
             }
-            config.save(new File(folder, skill.id() + ".yml"));
+            com.sack.rpgroll.common.content.ContentLoader.save(config, new File(folder, skill.id() + ".yml"));
         } catch (IOException e) {
             logger.warning("✘ Error guardando skill '" + skill.id() + "': " + e.getMessage());
         }

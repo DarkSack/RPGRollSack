@@ -214,6 +214,9 @@ economy:
   buy: 15000
 
 # Datos libres clave-valor, para que otros addons (o placeholders) lean metadata propia
+# La clave "accessory" (con cualquier valor) convierte el ítem en amuleto: se lleva en las ranuras de
+# /amuletos, fuera del inventario, y cuenta como equipado (stats, efectos, requisitos, habilidades).
+# Ver packs/amulets/ para ejemplos.
 custom-data:
   faction: "reference_order"
   origin: "documentation"

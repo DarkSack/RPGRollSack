@@ -1,0 +1,20 @@
+id: "perk_constitution"
+name: "&6Piel Curtida"
+description: |
+  Perk de Resistencia 15.
+  Ha recibido tantos golpes que ya ni los cuenta.
+required-level: 1
+effect:
+  health-bonus: 4
+  defense-bonus: 0.03
+translations:
+  en:
+    name: "&6Toughness"
+    description: |
+      Endurance 15 perk.
+      Has taken so many hits they stopped counting.
+  pt_BR:
+    name: "&6Pele Curtida"
+    description: |
+      Perk de Resistência 15.
+      Já levou tantos golpes que nem conta mais.

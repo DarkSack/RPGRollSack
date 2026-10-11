@@ -35,13 +35,16 @@ public class ItemStatEngine {
     private final ItemFactory itemFactory;
     private final ItemInstanceService instanceService;
     private final SocketService socketService;
+    private final com.sack.rpgroll.items.accessory.AccessoryService accessories;
     private final NamespacedKey healthModifierKey;
     private final NamespacedKey speedModifierKey;
 
     private final Map<UUID, ItemStatSheet> sheets = new HashMap<>();
 
     public ItemStatEngine(Plugin plugin, ItemManager itemManager, ItemFactory itemFactory,
-            ItemInstanceService instanceService, SocketService socketService) {
+            ItemInstanceService instanceService, SocketService socketService,
+            com.sack.rpgroll.items.accessory.AccessoryService accessories) {
+        this.accessories = accessories;
         this.itemManager = itemManager;
         this.itemFactory = itemFactory;
         this.instanceService = instanceService;
@@ -60,6 +63,9 @@ public class ItemStatEngine {
         PlayerInventory inventory = player.getInventory();
 
         for (ItemStack item : relevantItems(inventory)) {
+            addContribution(sheet, item);
+        }
+        for (ItemStack item : accessories.worn(player)) {
             addContribution(sheet, item);
         }
 

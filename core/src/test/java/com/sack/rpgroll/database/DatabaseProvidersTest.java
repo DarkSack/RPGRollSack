@@ -160,7 +160,7 @@ class DatabaseProvidersTest {
                     return result.getInt(1);
                 }
             });
-            assertEquals(7, versions, "V1-V5, V7 y V9");
+            assertEquals(8, versions, "V1-V5, V7, V9 y V10");
         } finally {
             manager.shutdown();
         }

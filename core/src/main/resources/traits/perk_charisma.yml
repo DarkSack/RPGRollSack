@@ -1,0 +1,19 @@
+id: "perk_charisma"
+name: "&dMagnetismo"
+description: |
+  Perk de Carisma 15.
+  Cae bien, y a quien cae bien le salen las cosas.
+required-level: 1
+effect:
+  luck-bonus: 1
+translations:
+  en:
+    name: "&dMagnetism"
+    description: |
+      Charisma 15 perk.
+      People like them, and things go well for the well-liked.
+  pt_BR:
+    name: "&dMagnetismo"
+    description: |
+      Perk de Carisma 15.
+      Agrada a todos, e quem agrada se dá bem.

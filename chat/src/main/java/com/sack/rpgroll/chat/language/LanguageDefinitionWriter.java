@@ -28,7 +28,7 @@ public class LanguageDefinitionWriter {
             if (!folder.exists()) {
                 folder.mkdirs();
             }
-            config.save(new File(folder, language.id() + ".yml"));
+            com.sack.rpgroll.common.content.ContentLoader.save(config, new File(folder, language.id() + ".yml"));
         } catch (IOException e) {
             logger.warning("✘ Error guardando idioma '" + language.id() + "': " + e.getMessage());
         }

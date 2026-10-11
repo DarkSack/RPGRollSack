@@ -12,7 +12,8 @@ public record PlayerStats(
         int constitution,
         int intelligence,
         int wisdom,
-        int charisma) {
+        int charisma,
+        int luck) {
 
     public static final int DEFAULT_STAT = 10;
     public static final int MIN_STAT = 1;
@@ -21,7 +22,7 @@ public record PlayerStats(
     public static PlayerStats createDefault() {
         return new PlayerStats(
                 DEFAULT_STAT, DEFAULT_STAT, DEFAULT_STAT,
-                DEFAULT_STAT, DEFAULT_STAT, DEFAULT_STAT);
+                DEFAULT_STAT, DEFAULT_STAT, DEFAULT_STAT, DEFAULT_STAT);
     }
 
     public PlayerStats {
@@ -42,6 +43,9 @@ public record PlayerStats(
         }
         if (charisma < MIN_STAT || charisma > MAX_STAT) {
             throw new IllegalArgumentException("Charisma debe estar entre " + MIN_STAT + " y " + MAX_STAT);
+        }
+        if (luck < MIN_STAT || luck > MAX_STAT) {
+            throw new IllegalArgumentException("Luck debe estar entre " + MIN_STAT + " y " + MAX_STAT);
         }
     }
 
@@ -69,8 +73,12 @@ public record PlayerStats(
         return (charisma - 10) / 2;
     }
 
+    public int getLuckModifier() {
+        return (luck - 10) / 2;
+    }
+
     public int getTotalStats() {
-        return strength + dexterity + constitution + intelligence + wisdom + charisma;
+        return strength + dexterity + constitution + intelligence + wisdom + charisma + luck;
     }
 
     /**
@@ -84,6 +92,7 @@ public record PlayerStats(
             case INTELLIGENCE -> intelligence;
             case WISDOM -> wisdom;
             case CHARISMA -> charisma;
+            case LUCK -> luck;
         };
     }
 
@@ -92,12 +101,13 @@ public record PlayerStats(
      */
     public PlayerStats with(StatType stat, int value) {
         return switch (stat) {
-            case STRENGTH -> new PlayerStats(value, dexterity, constitution, intelligence, wisdom, charisma);
-            case DEXTERITY -> new PlayerStats(strength, value, constitution, intelligence, wisdom, charisma);
-            case CONSTITUTION -> new PlayerStats(strength, dexterity, value, intelligence, wisdom, charisma);
-            case INTELLIGENCE -> new PlayerStats(strength, dexterity, constitution, value, wisdom, charisma);
-            case WISDOM -> new PlayerStats(strength, dexterity, constitution, intelligence, value, charisma);
-            case CHARISMA -> new PlayerStats(strength, dexterity, constitution, intelligence, wisdom, value);
+            case STRENGTH -> new PlayerStats(value, dexterity, constitution, intelligence, wisdom, charisma, luck);
+            case DEXTERITY -> new PlayerStats(strength, value, constitution, intelligence, wisdom, charisma, luck);
+            case CONSTITUTION -> new PlayerStats(strength, dexterity, value, intelligence, wisdom, charisma, luck);
+            case INTELLIGENCE -> new PlayerStats(strength, dexterity, constitution, value, wisdom, charisma, luck);
+            case WISDOM -> new PlayerStats(strength, dexterity, constitution, intelligence, value, charisma, luck);
+            case CHARISMA -> new PlayerStats(strength, dexterity, constitution, intelligence, wisdom, value, luck);
+            case LUCK -> new PlayerStats(strength, dexterity, constitution, intelligence, wisdom, charisma, value);
         };
     }
 }

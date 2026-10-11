@@ -245,10 +245,10 @@ public class Bootstrap {
                 plugin, playerManager, traitManager, raceManager, classManager);
         services.register(com.sack.rpgroll.gameplay.trait.PassiveEffects.class, passiveEffects);
         Bukkit.getPluginManager().registerEvents(passiveEffects, plugin);
-        // La sabiduría no hacía nada: da un 2 % de experiencia por punto de modificador.
-        services.get(com.sack.rpgroll.api.ExperienceBonusService.class).registerSource("wisdom",
+        // El carisma no hacía nada: da un 2 % de experiencia por punto de modificador.
+        services.get(com.sack.rpgroll.api.ExperienceBonusService.class).registerSource("charisma",
                 player -> playerManager.getPlayer(player.getUniqueId())
-                        .map(rpgPlayer -> 2.0 * rpgPlayer.getStats().getWisdomModifier()).orElse(0.0));
+                        .map(rpgPlayer -> 2.0 * rpgPlayer.getStats().getCharismaModifier()).orElse(0.0));
         services.get(com.sack.rpgroll.api.ExperienceBonusService.class).registerSource("luck",
                 player -> playerManager.getPlayer(player.getUniqueId())
                         .map(rpgPlayer -> com.sack.rpgroll.gameplay.trait.PassiveEffects.EXPERIENCE_PERCENT_PER_LUCK

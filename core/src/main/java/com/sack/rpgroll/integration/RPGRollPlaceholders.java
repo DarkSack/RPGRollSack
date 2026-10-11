@@ -126,6 +126,7 @@ public class RPGRollPlaceholders extends PlaceholderExpansion {
             case "intelligence" -> String.valueOf(stats.intelligence());
             case "wisdom" -> String.valueOf(stats.wisdom());
             case "charisma" -> String.valueOf(stats.charisma());
+            case "luck" -> String.valueOf(stats.luck());
             case "stat_points" -> String.valueOf(rpgPlayer.getUnspentStatPoints());
             case "trait_count" -> String.valueOf(rpgPlayer.getTraits().count());
             default -> null;

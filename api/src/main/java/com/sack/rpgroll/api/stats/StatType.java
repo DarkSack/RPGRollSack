@@ -5,11 +5,12 @@ import java.util.Map;
 
 public enum StatType {
     STRENGTH("strength", "str", "fuerza"),
-    DEXTERITY("dexterity", "dex", "destreza"),
-    CONSTITUTION("constitution", "con", "constitucion"),
+    DEXTERITY("dexterity", "dex", "destreza", "agility", "agi", "agilidad"),
+    CONSTITUTION("constitution", "con", "constitucion", "endurance", "end", "resistencia"),
     INTELLIGENCE("intelligence", "int", "inteligencia"),
-    WISDOM("wisdom", "wis", "sabiduria"),
-    CHARISMA("charisma", "cha", "carisma");
+    WISDOM("wisdom", "wis", "sabiduria", "perception", "per", "percepcion"),
+    CHARISMA("charisma", "cha", "carisma"),
+    LUCK("luck", "lck", "suerte");
 
     private final String[] aliases;
 

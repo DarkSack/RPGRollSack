@@ -32,7 +32,7 @@ class PassiveEffectsTest {
         TraitManager traits = mock(TraitManager.class);
         when(traits.get(anyString())).thenReturn(Optional.empty());
         for (Trait trait : List.of(trait("furia_orca", 0, 0.05, -0.03), trait("erudicion_arcana", -4, 0.06, 0),
-                trait("dragon_blood", 10, 0.05, 0))) {
+                trait("dragon_blood", 10, 0.05, 0), trait("perk_strength", 0, 0.05, 0))) {
             when(traits.get(trait.id())).thenReturn(Optional.of(trait));
         }
 
@@ -50,8 +50,8 @@ class PassiveEffectsTest {
         when(player.getRace()).thenReturn("orco");
         when(player.getPlayerClass()).thenReturn("mago");
         when(player.getTraits()).thenReturn(new PlayerTraits(Set.of("dragon_blood")));
-        // Fuerza 14 (+2) y carisma 8 (-1): la fuerza suma daño y el carisma, suerte.
-        when(player.getStats()).thenReturn(new com.sack.rpgroll.player.stats.PlayerStats(14, 10, 10, 10, 10, 8));
+        // Fuerza 16 (+3, y su perk), percepción 12 (+1) y suerte 14 (+2).
+        when(player.getStats()).thenReturn(new com.sack.rpgroll.player.stats.PlayerStats(16, 10, 10, 10, 12, 10, 14));
 
         Plugin plugin = mock(Plugin.class);
         when(plugin.namespace()).thenReturn("rpgroll");
@@ -60,12 +60,12 @@ class PassiveEffectsTest {
         PassiveEffects.Totals totals = effects.totals(player);
 
         assertEquals(6, totals.health());
-        assertEquals(0.16 + 0.04, totals.damage(), 1e-9);
+        assertEquals(0.16 + 0.05 + 0.06, totals.damage(), 1e-9);
         assertEquals(-0.03, totals.defense(), 1e-9);
-        assertEquals(3 - 1, totals.luck(), 1e-9);
-        // Dos de suerte: +2 % de crítico y de evasión.
-        assertEquals(0.02, totals.critical(), 1e-9);
-        assertEquals(0.02, totals.evasion(), 1e-9);
+        // Cuatro rasgos con un punto de suerte cada uno, más dos del atributo.
+        assertEquals(4 + 2, totals.luck(), 1e-9);
+        assertEquals(0.06 + 0.01, totals.critical(), 1e-9);
+        assertEquals(0.06, totals.evasion(), 1e-9);
     }
 
 }
