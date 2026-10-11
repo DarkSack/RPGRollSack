@@ -65,7 +65,10 @@ public class ItemStatEngine {
         PlayerInventory inventory = player.getInventory();
 
         for (ItemStack item : relevantItems(inventory)) {
-            addContribution(sheet, item);
+            // Un amuleto solo cuenta puesto en su ranura: en la mano sería una cuarta ranura, y con copias.
+            if (!accessories.isAccessory(item)) {
+                addContribution(sheet, item);
+            }
         }
         for (ItemStack item : accessories.worn(player)) {
             addContribution(sheet, item);

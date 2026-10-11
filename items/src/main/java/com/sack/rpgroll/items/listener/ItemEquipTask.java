@@ -83,6 +83,13 @@ public class ItemEquipTask implements Runnable {
                 worn[0], worn[1], worn[2]
         };
 
+        // Un amuleto en la mano o en la cabeza no está equipado: ni stats, ni efectos, ni triggers.
+        for (int i = 0; i < current.length - worn.length; i++) {
+            if (accessories.isAccessory(current[i])) {
+                current[i] = null;
+            }
+        }
+
         Map<String, String> previous = lastKnown.computeIfAbsent(player.getUniqueId(), id -> new HashMap<>());
         boolean changed = false;
 
