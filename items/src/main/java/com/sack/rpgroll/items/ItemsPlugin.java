@@ -121,7 +121,9 @@ public class ItemsPlugin extends JavaPlugin {
         skinService = new SkinService(instanceService, itemFactory);
         durabilityService = new DurabilityService(instanceService, itemFactory, langManager);
 
-        com.sack.rpgroll.items.accessory.AccessoryService accessories = new com.sack.rpgroll.items.accessory.AccessoryService(this, itemManager, instanceService);
+        ItemRequirementChecker requirementChecker = new ItemRequirementChecker(langManager);
+        com.sack.rpgroll.items.accessory.AccessoryService accessories = new com.sack.rpgroll.items.accessory.AccessoryService(this, itemManager, instanceService,
+                requirementChecker);
         getServer().getPluginManager().registerEvents(accessories, this);
         statEngine = new ItemStatEngine(this, itemManager, itemFactory, instanceService, socketService,
                 accessories);
@@ -138,7 +140,6 @@ public class ItemsPlugin extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new OreGenerator(this, oreService,
                 () -> java.util.Set.copyOf(getConfig().getStringList("ores.retrogen-worlds"))), this);
 
-        ItemRequirementChecker requirementChecker = new ItemRequirementChecker(langManager);
 
         ChatPromptManager chatPromptManager = new ChatPromptManager(this, langManager);
         getServer().getPluginManager().registerEvents(chatPromptManager, this);

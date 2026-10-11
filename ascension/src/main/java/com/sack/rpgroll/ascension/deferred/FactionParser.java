@@ -47,7 +47,7 @@ public class FactionParser implements ContentParser<Faction> {
             }
 
             ranks.add(new FactionRank(rankId, rank.getString("display-name", rankId), rank.getInt("threshold", 0),
-                    RewardsParser.parse(rank.getConfigurationSection("rewards"))));
+                    rank.getDouble("price-discount", 0), RewardsParser.parse(rank.getConfigurationSection("rewards"))));
         }
 
         return ranks;

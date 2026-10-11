@@ -11,9 +11,10 @@ import java.util.List;
  * @param permission permiso para entrar (o null: todos)
  * @param premium    se muestra como sección destacada
  * @param currency   moneda de sus precios (o null: la moneda por defecto)
+ * @param faction    facción dueña de la sección (o null): la reputación del jugador con ella le mueve los precios
  */
 public record ServerShopCategory(String id, String displayName, String icon, int slot, List<String> description,
-        String permission, boolean premium, String currency, List<ServerShopEntry> entries) implements RPGContent {
+        String permission, boolean premium, String currency, String faction, List<ServerShopEntry> entries) implements RPGContent {
 
     public ServerShopCategory {
         displayName = displayName == null || displayName.isBlank() ? id : displayName;
@@ -21,6 +22,7 @@ public record ServerShopCategory(String id, String displayName, String icon, int
         description = description == null ? List.of() : List.copyOf(description);
         permission = permission == null || permission.isBlank() ? null : permission.trim();
         currency = currency == null || currency.isBlank() ? null : currency.trim();
+        faction = faction == null || faction.isBlank() ? null : faction.trim();
         entries = entries == null ? List.of() : List.copyOf(entries);
     }
 

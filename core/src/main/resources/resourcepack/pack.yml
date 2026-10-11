@@ -1,0 +1,8 @@
+# GENERADO por sackito-network/infra/texturas/efectos_special.py: no se edita a mano.
+id: rpgroll
+name: rpgroll
+version: '1.0'
+author: 'RPGRoll'
+namespace: minecraft
+priority: 25
+description: 'Nombre e icono de los efectos con los que RPGRoll enseña S.P.E.C.I.A.L.'

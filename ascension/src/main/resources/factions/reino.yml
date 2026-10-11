@@ -24,32 +24,39 @@ sources:
     target: "*"
     amount: 10
 
+# price-discount: % que ese rango abarata (o, en negativo, encarece) las secciones de
+# /tienda que son de esta facción (faction: en su YAML de RPGRoll-Economy).
 # Rango = el de umbral más alto que no supera tu reputación.
 # Las recompensas se entregan una sola vez, la primera vez que se entra.
 ranks:
   proscrito:
     display-name: "&4Proscrito"
     threshold: -5000
+    price-discount: -40
   sospechoso:
     display-name: "&cSospechoso"
     threshold: -500
+    price-discount: -15
   neutral:
     display-name: "&7Neutral"
     threshold: 0
   aliado:
     display-name: "&aAliado"
     threshold: 500
+    price-discount: 5
     rewards:
       money: 250
   campeon:
     display-name: "&6Campeón del Reino"
     threshold: 2500
+    price-discount: 10
     rewards:
       title: campeon_del_reino
       talent-points: 1
   heroe:
     display-name: "&e&lHéroe del Reino"
     threshold: 7500
+    price-discount: 20
     rewards:
       stats:
         health: 2

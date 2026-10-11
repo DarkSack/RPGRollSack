@@ -93,6 +93,14 @@ server-shop:
   # fracción de su precio de mercado se paga al jugador que vende. Por debajo
   # de 1 para que comprar y revender en el acto no dé dinero.
   market-sell-ratio: 0.4
+  # El carisma del jugador y su reputación con la facción de la sección (faction:
+  # en su YAML) le mueven los precios de /tienda y del comprador. Aquí va el tope,
+  # en %. Con max-discount: 100 un jugador muy querido se lo puede llevar gratis.
+  # Por encima de 25, revisa que ninguna sección pague por algo más de lo que
+  # cuesta en otra: comprar barato aquí y vender allí sería dinero infinito.
+  player-prices:
+    max-discount: 25
+    max-surcharge: 50
 
 # El comprador: una ventana donde el jugador deja lo que quiera y pulsa "Vender".
 # Se abre con /economyadmin comprador <jugador>, normalmente desde un NPC (acción

@@ -85,6 +85,11 @@ public class AccessoryGUI extends InventoryGUI {
                 build();
             }
             case NOT_ACCESSORY -> lang.send(player, "accessory.not_accessory");
+            case REQUIREMENTS -> {
+                lang.send(player, "equip.requirements_header", "item", name(clicked));
+                service.unmetRequirements(player, clicked)
+                        .forEach(reason -> lang.send(player, "equip.requirement_line", "reason", reason));
+            }
             case DUPLICATE -> lang.send(player, "accessory.duplicate");
             case FULL -> lang.send(player, "accessory.full");
         }

@@ -47,6 +47,10 @@ public class ModuleAssetSync {
         static boolean ready() {
             return AssetsAPI.isReady();
         }
+
+        static boolean registerPlugin(org.bukkit.plugin.java.JavaPlugin source) {
+            return AssetsAPI.assets().registerPlugin(source);
+        }
     }
 
     private final Plugin plugin;
@@ -59,6 +63,14 @@ public class ModuleAssetSync {
 
     public static boolean isAvailable() {
         return Bukkit.getPluginManager().isPluginEnabled("SackResourcePack") && Api.ready();
+    }
+
+    /**
+     * Registra en SackResourcePack el {@code resourcepack/} (pack.yml + assets/) que {@code source} trae dentro
+     * de su jar. Silencioso si no está instalado: el plugin que llama tiene que tenerlo en su softdepend.
+     */
+    public static boolean registerEmbeddedPack(org.bukkit.plugin.java.JavaPlugin source) {
+        return isAvailable() && Api.registerPlugin(source);
     }
 
     /** Recorre {@code resourcepack/} y sincroniza todo hacia SackResourcePack. Silencioso si no está instalado. */

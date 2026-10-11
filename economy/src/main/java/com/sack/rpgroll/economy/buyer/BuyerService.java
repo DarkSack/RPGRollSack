@@ -101,8 +101,9 @@ public class BuyerService {
         OptionalDouble own = SellValue.get(item);
 
         if (own.isPresent()) {
-            return new Line(slot, item, round(own.getAsDouble() * item.getAmount() * valueMultiplier),
-                    currencies.defaultCurrency(), null);
+            // No es de ninguna facción: aquí solo cuenta el carisma.
+            return new Line(slot, item, round(own.getAsDouble() * item.getAmount() * valueMultiplier
+                    * (1 + shopService.deal(player, null))), currencies.defaultCurrency(), null);
         }
 
         Offer offer = shopOffers.get(item.getType());
@@ -112,7 +113,7 @@ public class BuyerService {
             return null;
         }
 
-        double lotPrice = shopService.sellPrice(offer.entry(), player.getLocation());
+        double lotPrice = shopService.sellPrice(offer.entry(), player, offer.category());
         double unit = lotPrice / offer.entry().amount();
 
         if (unit <= 0) {

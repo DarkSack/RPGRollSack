@@ -259,6 +259,8 @@ server_shop:
   category_locked: "&cNo tienes acceso a esta sección"
   buy_line: "&7Comprar &fx{amount}&7: &6{price}"
   sell_line: "&7Vender &fx{amount}&7: &a{price}"
+  deal_good: "&aTrato de favor: {percent} % a tu favor"
+  deal_bad: "&cNo te tienen aprecio: {percent} % en tu contra"
   market_hint: "&8Precio de mercado: cambia con la oferta y la demanda"
   buy_hint: "&8Clic izq.: comprar · Shift: x{bulk}"
   sell_hint: "&8Clic der.: vender · Shift: vender todo"

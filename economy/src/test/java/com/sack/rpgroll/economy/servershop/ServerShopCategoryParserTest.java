@@ -114,7 +114,13 @@ class ServerShopCategoryParserTest {
         assertEquals("CHEST", category.icon());
         assertNull(category.permission());
         assertNull(category.currency());
+        assertNull(category.faction());
         assertEquals(-1, category.slot());
+    }
+
+    @Test
+    void aSectionCanBelongToAFaction() throws InvalidConfigurationException {
+        assertEquals("orden_arcana", parse("id: magia", "faction: orden_arcana").faction());
     }
 
     @Test
@@ -143,7 +149,7 @@ class ServerShopCategoryParserTest {
         }
 
         assertEquals(List.of(), warnings);
-        assertEquals(15, sections);
+        assertEquals(16, sections);
     }
 
 }

@@ -77,7 +77,8 @@ public class CombatEffectsListener implements Listener {
         com.sack.rpgroll.gameplay.trait.PassiveEffects.Totals passive = passiveEffects.totals(rpgAttacker.get());
         event.setDamage(event.getDamage() * Math.max(0, 1 + passive.damage()));
 
-        if (ThreadLocalRandom.current().nextDouble() < stats.criticalChance() + passive.critical()) {
+        if (ThreadLocalRandom.current().nextDouble() < stats.criticalChance() + passive.critical()
+                + com.sack.rpgroll.gameplay.trait.PassiveEffects.CHANCE_PER_LUCK * passiveEffects.outsideLuck(attacker, passive)) {
             event.setDamage(event.getDamage() * stats.criticalMultiplier());
             attacker.sendActionBar(lang.component("combat_effects_listener.critical_hit"));
         }
@@ -111,7 +112,8 @@ public class CombatEffectsListener implements Listener {
 
         com.sack.rpgroll.gameplay.trait.PassiveEffects.Totals passive = passiveEffects.totals(rpgVictim);
 
-        if (ThreadLocalRandom.current().nextDouble() < stats.evasionChance() + passive.evasion()) {
+        if (ThreadLocalRandom.current().nextDouble() < stats.evasionChance() + passive.evasion()
+                + com.sack.rpgroll.gameplay.trait.PassiveEffects.CHANCE_PER_LUCK * passiveEffects.outsideLuck(victim, passive)) {
             event.setCancelled(true);
             victim.sendActionBar(lang.component("combat_effects_listener.evaded"));
             return;

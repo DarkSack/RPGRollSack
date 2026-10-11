@@ -5,7 +5,7 @@ api-version: "26.1.1"
 author: Sack
 description: DnD RPG Framework para Minecraft Paper
 depend: [RPGRoll-Lib]
-softdepend: [Vault, PlaceholderAPI]
+softdepend: [Vault, PlaceholderAPI, SackResourcePack]
 
 # Comandos del plugin
 # Permisos del plugin

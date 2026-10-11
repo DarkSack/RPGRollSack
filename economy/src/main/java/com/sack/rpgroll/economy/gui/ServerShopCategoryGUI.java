@@ -127,14 +127,21 @@ public class ServerShopCategoryGUI extends InventoryGUI {
         entry.lore().forEach(line -> lore.add(ComponentUtils.parse(line)));
         lore.add(Component.empty());
 
+        // "buy" decide si la línea se vende; lo que se enseña y se cobra es el precio de este jugador.
         double buy = service.buyPrice(entry, player.getLocation());
-        double sell = service.sellPrice(entry, player.getLocation());
+        double sell = service.sellPrice(entry, player, category);
+        long deal = Math.round(service.deal(player, category) * 100);
 
         if (buy > 0) {
-            lore.add(lang.component("server_shop.buy_line", "amount", entry.amount(), "price", currency.format(buy)));
+            lore.add(lang.component("server_shop.buy_line", "amount", entry.amount(),
+                    "price", currency.format(service.buyPrice(entry, player, category))));
         }
         if (sell > 0) {
             lore.add(lang.component("server_shop.sell_line", "amount", entry.amount(), "price", currency.format(sell)));
+        }
+        if (deal != 0 && (buy > 0 || sell > 0)) {
+            lore.add(lang.component(deal > 0 ? "server_shop.deal_good" : "server_shop.deal_bad",
+                    "percent", Math.abs(deal)));
         }
         if (entry.market() != null) {
             lore.add(lang.component("server_shop.market_hint"));

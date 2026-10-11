@@ -33,6 +33,8 @@ ranks:
   enemigo:
     display-name: "&cEnemigo"
     threshold: -10000
+    price-discount: -30   # % en las secciones de /tienda de esta facción (faction: <id> en su YAML de
+                          # RPGRoll-Economy): positivo abarata, negativo encarece. Por defecto 0.
   neutral:
     display-name: "&7Neutral"
     threshold: 0

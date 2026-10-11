@@ -46,7 +46,7 @@ public class PassiveEffects implements Listener {
     // quieren árboles de perks como los de Fallout.
     public static final int PERK_THRESHOLD = 15;
     /** Cada punto de suerte: crítico y evasión. Además es el atributo de suerte de Minecraft (botín, pesca). */
-    private static final double CHANCE_PER_LUCK = 0.01;
+    public static final double CHANCE_PER_LUCK = 0.01;
     /** Y este porcentaje de experiencia, ver Bootstrap. */
     public static final double EXPERIENCE_PERCENT_PER_LUCK = 2.0;
 
@@ -107,6 +107,15 @@ public class PassiveEffects implements Listener {
 
         return new Totals(health, damage, defense, speed, luck, evasion + CHANCE_PER_LUCK * luck,
                 critical + CHANCE_PER_LUCK * luck, attackSpeed);
+    }
+
+    /**
+     * La suerte que el jugador lleva encima y no sale de sus rasgos ni de su atributo: amuletos, ítems,
+     * Ascension, una poción. Vale lo mismo que la propia para crítico, evasión y experiencia.
+     */
+    public double outsideLuck(Player player, Totals totals) {
+        AttributeInstance luck = player.getAttribute(Attribute.LUCK);
+        return luck == null ? 0 : luck.getValue() - totals.luck();
     }
 
     // shortcut: un rasgo ganado a mitad de sesión da su vida, velocidad y suerte al volver a entrar; lo que

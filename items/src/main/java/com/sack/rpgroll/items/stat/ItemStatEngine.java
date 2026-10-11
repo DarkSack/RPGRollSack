@@ -23,7 +23,7 @@ import java.util.UUID;
  * Recalcula, por jugador, la suma de stats de todos sus ítems RPGRoll
  * equipados (armadura + mano principal + secundaria), y aplica el
  * resultado donde hay un efecto mecánico directo posible sin tocar otros
- * módulos: vida máxima y velocidad de movimiento vía atributos de Bukkit.
+ * módulos: vida máxima, velocidad de movimiento y suerte vía atributos de Bukkit.
  * El resto de los stats (daño, defensa, crítico, etc.) quedan expuestos
  * vía {@link #getStat(Player, String)} para que un listener de combate
  * (ver {@link com.sack.rpgroll.items.listener.ItemCombatListener}) los
@@ -38,6 +38,7 @@ public class ItemStatEngine {
     private final com.sack.rpgroll.items.accessory.AccessoryService accessories;
     private final NamespacedKey healthModifierKey;
     private final NamespacedKey speedModifierKey;
+    private final NamespacedKey luckModifierKey;
 
     private final Map<UUID, ItemStatSheet> sheets = new HashMap<>();
 
@@ -51,6 +52,7 @@ public class ItemStatEngine {
         this.socketService = socketService;
         this.healthModifierKey = new NamespacedKey(plugin, "items-health-modifier");
         this.speedModifierKey = new NamespacedKey(plugin, "items-speed-modifier");
+        this.luckModifierKey = new NamespacedKey(plugin, "items-luck-modifier");
     }
 
     public double getStat(Player player, String statId) {
@@ -113,6 +115,8 @@ public class ItemStatEngine {
                 AttributeModifier.Operation.ADD_NUMBER);
         applyAttribute(player, Attribute.MOVEMENT_SPEED, speedModifierKey, sheet.get("speed") / 100.0,
                 AttributeModifier.Operation.ADD_SCALAR);
+        applyAttribute(player, Attribute.LUCK, luckModifierKey, sheet.get("luck"),
+                AttributeModifier.Operation.ADD_NUMBER);
     }
 
     private void applyAttribute(Player player, Attribute attribute, NamespacedKey key, double amount,

@@ -245,14 +245,24 @@ public class Bootstrap {
                 plugin, playerManager, traitManager, raceManager, classManager);
         services.register(com.sack.rpgroll.gameplay.trait.PassiveEffects.class, passiveEffects);
         Bukkit.getPluginManager().registerEvents(passiveEffects, plugin);
+        Bukkit.getScheduler().runTaskTimer(plugin, new com.sack.rpgroll.gameplay.trait.StatEffects(playerManager),
+                com.sack.rpgroll.gameplay.trait.StatEffects.PERIOD_TICKS,
+                com.sack.rpgroll.gameplay.trait.StatEffects.PERIOD_TICKS);
+        // Sus nombres e iconos van en el resourcepack/ de este jar.
+        com.sack.rpgroll.common.assets.ModuleAssetSync.registerEmbeddedPack(plugin);
         // El carisma no hacía nada: da un 2 % de experiencia por punto de modificador.
         services.get(com.sack.rpgroll.api.ExperienceBonusService.class).registerSource("charisma",
                 player -> playerManager.getPlayer(player.getUniqueId())
                         .map(rpgPlayer -> 2.0 * rpgPlayer.getStats().getCharismaModifier()).orElse(0.0));
+        // Y un 2 % en los precios de las tiendas del servidor, sean de la facción que sean.
+        com.sack.rpgroll.common.price.Prices.register(plugin,
+                (player, faction) -> playerManager.getPlayer(player.getUniqueId())
+                        .map(rpgPlayer -> 0.02 * rpgPlayer.getStats().getCharismaModifier()).orElse(0.0));
         services.get(com.sack.rpgroll.api.ExperienceBonusService.class).registerSource("luck",
                 player -> playerManager.getPlayer(player.getUniqueId())
                         .map(rpgPlayer -> com.sack.rpgroll.gameplay.trait.PassiveEffects.EXPERIENCE_PERCENT_PER_LUCK
-                                * passiveEffects.totals(rpgPlayer).luck())
+                                * (passiveEffects.totals(rpgPlayer).luck()
+                                        + passiveEffects.outsideLuck(player, passiveEffects.totals(rpgPlayer))))
                         .orElse(0.0));
 
         // 8.1 CharacterChangeService - cambios de raza/clase ya creados (admin y API)

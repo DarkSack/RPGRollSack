@@ -11,6 +11,9 @@ slot: 13                            # casilla de la portada (0-44); sin slot, el
 premium: false                      # true: brillo en el botón y marco dorado dentro
 permission: ""                      # permiso para entrar; vacío = todos
 currency: ""                        # id de una moneda de currencies/; vacío = la moneda por defecto
+faction: ""                         # id de una facción de RPGRoll-Ascension: la reputación del jugador con ella
+                                    # le abarata o encarece esta sección (price-discount de cada rango). El
+                                    # carisma cuenta en todas. Topes en config.yml: server-shop.player-prices
 description:                        # líneas bajo el nombre en la portada
   - "&7Lo que se vende aquí"
 

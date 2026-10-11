@@ -52,6 +52,7 @@ public class ServerShopCategoryParser implements ContentParser<ServerShopCategor
                 config.getString("permission"),
                 config.getBoolean("premium", false),
                 config.getString("currency"),
+                config.getString("faction"),
                 entries);
     }
 

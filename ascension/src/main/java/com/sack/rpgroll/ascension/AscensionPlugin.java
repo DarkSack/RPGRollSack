@@ -117,6 +117,10 @@ public class AscensionPlugin extends JavaPlugin {
         TitleEngine titleEngine = new TitleEngine(titleManager, stateManager, requirementChecker, langManager);
         FactionEngine factionEngine = new FactionEngine(factionManager, stateManager, rewardService, langManager);
         rewardService.wire(titleEngine, factionEngine, engine::reapplyBonuses);
+        // La reputación de cada jugador con una facción le mueve los precios en las tiendas de esa facción.
+        com.sack.rpgroll.common.price.Prices.register(this, (player, faction) -> faction == null ? 0
+                : factionManager.get(faction).flatMap(f -> factionEngine.currentRank(player, f))
+                        .map(rank -> rank.priceDiscount() / 100.0).orElse(0.0));
         AchievementEngine achievementEngine = new AchievementEngine(achievementManager, stateManager, rewardService,
                 langManager);
         JobEvolutionEngine jobEvolutionEngine = new JobEvolutionEngine(this, jobEvolutionManager, stateManager,

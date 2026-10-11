@@ -1,0 +1,24 @@
+# Sección de la tienda del servidor (/tienda amuletos). Ver _reference_full.yml.
+# Es de la Orden Arcana: quien tiene su aprecio paga menos (ver price-discount en
+# factions/orden_arcana.yml de RPGRoll-Ascension). Sin Ascension solo cuenta el carisma.
+id: amuletos
+display-name: "&dAmuletos"
+icon: AMETHYST_SHARD
+slot: 28
+faction: orden_arcana
+description:
+  - "&7Se llevan en ranuras propias: &f/amuletos"
+  - "&7La Orden Arcana hace mejor precio a los suyos"
+items:
+  - item: colgante_de_flor
+    buy: 6000
+  - item: collar_de_hueso
+    buy: 6000
+  - item: colgante_de_ambar
+    buy: 9000
+  - item: amuleto_del_guardian
+    buy: 18000
+  - item: amuleto_lunar
+    buy: 18000
+  - item: medallon_del_dragon
+    buy: 60000

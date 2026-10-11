@@ -167,6 +167,7 @@ public class EconomyPlugin extends JavaPlugin {
         serverShopManager.initialize();
         serverShopService = new ServerShopService(walletService, currencyManager, marketProductManager, marketEngine,
                 getConfig().getDouble("server-shop.market-sell-ratio", 0.4));
+        configureDeals();
         buyerService = new BuyerService(serverShopManager, serverShopService, currencyManager, walletService);
         configureBuyer();
         getServer().getPluginManager().registerEvents(new BuyerListener(this), this);
@@ -316,9 +317,15 @@ public class EconomyPlugin extends JavaPlugin {
         taxRuleManager.reload();
         serverShopManager.reload();
         serverShopService.setSellRatio(getConfig().getDouble("server-shop.market-sell-ratio", 0.4));
+        configureDeals();
         configureBuyer();
         auctionManager.settings(auctionSettings());
         loanService.configure(LoanService.Settings.from(getConfig().getConfigurationSection("loans")));
+    }
+
+    private void configureDeals() {
+        serverShopService.setDealLimits(getConfig().getDouble("server-shop.player-prices.max-discount", 25) / 100.0,
+                getConfig().getDouble("server-shop.player-prices.max-surcharge", 50) / 100.0);
     }
 
     private void configureBuyer() {

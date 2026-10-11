@@ -1,5 +1,6 @@
 package com.sack.rpgroll.economy.servershop;
 
+import com.sack.rpgroll.common.price.Prices;
 import com.sack.rpgroll.economy.currency.Currency;
 import com.sack.rpgroll.economy.currency.CurrencyManager;
 import com.sack.rpgroll.economy.ledger.TransactionType;
@@ -43,6 +44,8 @@ public class ServerShopService {
     private final MarketProductManager products;
     private final MarketEngine market;
     private double sellRatio;
+    private double maxDiscount = 0.25;
+    private double maxSurcharge = 0.5;
 
     public ServerShopService(WalletService wallet, CurrencyManager currencies, MarketProductManager products,
             MarketEngine market, double sellRatio) {
@@ -58,6 +61,42 @@ public class ServerShopService {
         this.sellRatio = Math.max(0, Math.min(1, sellRatio));
     }
 
+    /** server-shop.player-prices del config.yml, en fracción: hasta dónde llegan la rebaja y el recargo. */
+    public void setDealLimits(double maxDiscount, double maxSurcharge) {
+        this.maxDiscount = Math.max(0, Math.min(1, maxDiscount));
+        this.maxSurcharge = Math.max(0, maxSurcharge);
+    }
+
+    /**
+     * Lo que el carisma del jugador y su reputación con la facción de la sección le mueven los precios, ya
+     * dentro de los topes: 0.10 = compra un 10 % más barato y le pagan un 10 % más.
+     */
+    public double deal(Player player, ServerShopCategory category) {
+        return Math.max(-maxSurcharge,
+                Math.min(maxDiscount, Prices.discount(player, category == null ? null : category.faction())));
+    }
+
+    static double dealBuy(double buy, double deal) {
+        return round(buy * (1 - deal));
+    }
+
+    /** Nunca por encima de lo que a él mismo le cuesta comprarlo: sería dinero infinito. */
+    static double dealSell(double buy, double sell, double deal) {
+        double adjusted = round(sell * (1 + deal));
+        return buy > 0 ? Math.min(adjusted, dealBuy(buy, deal)) : adjusted;
+    }
+
+    /** Lo que le cuesta un lote a este jugador. Puede ser 0 (gratis) aunque {@link #buyPrice} no lo sea. */
+    public double buyPrice(ServerShopEntry entry, Player player, ServerShopCategory category) {
+        return dealBuy(buyPrice(entry, player.getLocation()), deal(player, category));
+    }
+
+    /** Lo que se le paga por un lote a este jugador. */
+    public double sellPrice(ServerShopEntry entry, Player player, ServerShopCategory category) {
+        return dealSell(buyPrice(entry, player.getLocation()), sellPrice(entry, player.getLocation()),
+                deal(player, category));
+    }
+
     /** La moneda de la sección; con {@code null}, la moneda por defecto. */
     public Currency currency(ServerShopCategory category) {
         return category == null || category.currency() == null ? currencies.defaultCurrency()
@@ -68,14 +107,14 @@ public class ServerShopService {
         return category.permission() == null || player.hasPermission(category.permission());
     }
 
-    /** Lo que cuesta un lote ({@code amount} unidades). 0 si no se vende. */
+    /** Lo que cuesta un lote ({@code amount} unidades) sin contar al jugador. 0 si no se vende. */
     public double buyPrice(ServerShopEntry entry, Location location) {
         return marketProduct(entry)
                 .map(product -> round(market.price(product, location) * entry.amount()))
                 .orElse(entry.buy());
     }
 
-    /** Lo que se paga por un lote. 0 si la tienda no lo compra. */
+    /** Lo que se paga por un lote sin contar al jugador. 0 si la tienda no lo compra. */
     public double sellPrice(ServerShopEntry entry, Location location) {
 
         if (!entry.sellable()) {
@@ -93,10 +132,11 @@ public class ServerShopService {
             return Outcome.of(Result.NO_PERMISSION);
         }
 
-        double price = round(buyPrice(entry, player.getLocation()) * Math.max(1, lots));
-        if (price <= 0) {
+        if (buyPrice(entry, player.getLocation()) <= 0) {
             return Outcome.of(Result.NOT_FOR_SALE);
         }
+
+        double price = round(buyPrice(entry, player, category) * Math.max(1, lots));
 
         Optional<ItemStack> unit = ServerShopItems.create(entry);
         if (unit.isEmpty()) {
@@ -110,8 +150,10 @@ public class ServerShopService {
             return Outcome.of(Result.INVENTORY_FULL);
         }
 
-        EconomyResult paid = wallet.withdraw(player.getUniqueId(), currency(category).id(), price,
-                TransactionType.MARKET_BUY, "Tienda del servidor: " + entry.key() + " x" + units);
+        // Con la rebaja al 100 % sale gratis: no hay nada que cobrar.
+        EconomyResult paid = price <= 0 ? EconomyResult.SUCCESS
+                : wallet.withdraw(player.getUniqueId(), currency(category).id(), price,
+                        TransactionType.MARKET_BUY, "Tienda del servidor: " + entry.key() + " x" + units);
 
         if (paid != EconomyResult.SUCCESS) {
             return Outcome.of(failure(paid));
@@ -133,7 +175,7 @@ public class ServerShopService {
             return Outcome.of(Result.NO_PERMISSION);
         }
 
-        double lotPrice = sellPrice(entry, player.getLocation());
+        double lotPrice = sellPrice(entry, player, category);
         if (lotPrice <= 0) {
             return Outcome.of(Result.NOT_BOUGHT);
         }

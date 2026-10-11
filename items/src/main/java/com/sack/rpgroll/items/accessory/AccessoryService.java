@@ -2,6 +2,7 @@ package com.sack.rpgroll.items.accessory;
 
 import com.sack.rpgroll.items.core.ItemManager;
 import com.sack.rpgroll.items.instance.ItemInstanceService;
+import com.sack.rpgroll.items.requirement.ItemRequirementChecker;
 
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -15,6 +16,7 @@ import org.bukkit.plugin.Plugin;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
@@ -34,16 +36,19 @@ public class AccessoryService implements Listener {
     public static final String DATA_KEY = "accessory";
 
     public enum Result {
-        OK, NOT_ACCESSORY, DUPLICATE, FULL
+        OK, NOT_ACCESSORY, REQUIREMENTS, DUPLICATE, FULL
     }
 
     private final Plugin plugin;
     private final ItemManager itemManager;
     private final ItemInstanceService instanceService;
+    private final ItemRequirementChecker requirementChecker;
     private final File folder;
     private final Map<UUID, ItemStack[]> worn = new HashMap<>();
 
-    public AccessoryService(Plugin plugin, ItemManager itemManager, ItemInstanceService instanceService) {
+    public AccessoryService(Plugin plugin, ItemManager itemManager, ItemInstanceService instanceService,
+            ItemRequirementChecker requirementChecker) {
+        this.requirementChecker = requirementChecker;
         this.plugin = plugin;
         this.itemManager = itemManager;
         this.instanceService = instanceService;
@@ -60,11 +65,22 @@ public class AccessoryService implements Listener {
                 .map(definition -> definition.customData().containsKey(DATA_KEY)).orElse(false);
     }
 
+    /** Los requisitos del ítem (nivel, clase…) que el jugador no cumple, ya en texto. */
+    public List<String> unmetRequirements(Player player, ItemStack item) {
+        return instanceService.getId(item).flatMap(itemManager::get)
+                .map(definition -> requirementChecker.check(player, definition.requirements())).orElse(List.of());
+    }
+
     /** Pone una unidad de {@code item} en la primera ranura libre. No toca el inventario del jugador. */
     public Result equip(Player player, ItemStack item) {
 
         if (!isAccessory(item)) {
             return Result.NOT_ACCESSORY;
+        }
+
+        // La armadura sin requisitos solo avisa; aquí hay una puerta por la que pasar, así que no entra.
+        if (!unmetRequirements(player, item).isEmpty()) {
+            return Result.REQUIREMENTS;
         }
 
         ItemStack[] slots = worn(player);
