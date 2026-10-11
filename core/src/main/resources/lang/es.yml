@@ -221,7 +221,7 @@ allocate_stat_command:
 # Comando /rpg levelup (debug, admin)
 levelup_debug_command:
   no_permission: "&cNo tienes permisos para usar este comando."
-  success: "&a✔ Level up procesado exitosamente."
+  success: "&a✔ Subida de nivel procesada."
   no_xp: "&eNo tienes suficiente XP para subir de nivel."
   error: "&cError al procesar level up."
 
@@ -564,7 +564,7 @@ my_stats_command:
   label_class: "Clase"
   label_unspent_points: "Puntos sin gastar"
   unspent_points_hint: " (usa /rpg allocate <atributo> <cantidad>)"
-  section_attributes: "ATRIBUTOS D&D"
+  section_attributes: "ATRIBUTOS"
   label_strength: "Fuerza"
   label_dexterity: "Destreza"
   label_constitution: "Constitución"

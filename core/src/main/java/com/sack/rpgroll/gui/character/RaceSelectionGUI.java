@@ -5,11 +5,11 @@ import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.api.race.Race;
 import com.sack.rpgroll.api.race.RaceManager;
+import com.sack.rpgroll.util.ComponentUtils;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -28,7 +28,6 @@ import java.util.function.Consumer;
  * textura custom (base64).
  */
 public class RaceSelectionGUI extends InventoryGUI {
-        private static final MiniMessage MINI = MiniMessage.miniMessage();
         private static final int[] CONTENT_SLOTS = { 10, 11, 12, 13, 14, 15, 16 };
         private static final int CANCEL_SLOT = 22;
 
@@ -101,7 +100,9 @@ public class RaceSelectionGUI extends InventoryGUI {
 
                 race.baseAttributes().forEach((stat, value) -> {
                         String sign = value >= 0 ? "+" : "";
-                        lore.add(Component.text(sign + value + " " + stat.name(), NamedTextColor.DARK_GRAY));
+                        lore.add(Component.text(sign + value + " "
+                                        + lang.raw("my_stats_command.label_" + stat.name().toLowerCase(java.util.Locale.ROOT)),
+                                        NamedTextColor.DARK_GRAY));
                 });
 
                 for (String loreLine : race.lore()) {
@@ -109,7 +110,7 @@ public class RaceSelectionGUI extends InventoryGUI {
                 }
 
                 ItemStack item = ItemBuilder.icon(race.icon())
-                                .setName(MINI.deserialize(race.displayName()))
+                                .setName(ComponentUtils.parse(race.displayName()))
                                 .setLore(lore.toArray(new Component[0]))
                                 .build();
 

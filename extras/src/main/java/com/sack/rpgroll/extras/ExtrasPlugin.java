@@ -185,6 +185,7 @@ public class ExtrasPlugin extends JavaPlugin {
         conditionManager.reload();
         modifierManager.reload();
         menuManager.reload();
+        temperatureEngine.settings(new TemperatureSettingsLoader().load(this));
         serverMenu.configure(ServerMenuConfig.from(getConfig().getConfigurationSection("server-menu")));
         // Quien ya está dentro recibe (o pierde) la brújula sin tener que reconectar.
         getServer().getOnlinePlayers().forEach(player -> {

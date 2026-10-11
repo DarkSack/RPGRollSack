@@ -253,7 +253,8 @@ public class Bootstrap {
 
         // 10. VaultEconomyProvider - Conexión con Vault (opcional)
         VaultEconomyProvider economyProvider = new VaultEconomyProvider(plugin);
-        boolean economyAvailable = economyProvider.setup();
+        // Con el servidor ya cargado: RPGRoll-Economy se registra en Vault después del núcleo.
+        plugin.getServer().getScheduler().runTask(plugin, economyProvider::setup);
         services.register(VaultEconomyProvider.class, economyProvider);
 
         // 11. JobManager - Sistema de trabajos
@@ -271,11 +272,6 @@ public class Bootstrap {
                 services.get(PlacedBlockTracker.class));
         cleanupTask.start();
         services.register(PlacedBlockCleanupTask.class, cleanupTask);
-
-        if (!economyAvailable) {
-            plugin.getLogger().warning(
-                    "✘ Sistema de trabajos cargado, pero sin economía activa. Las recompensas en dinero no se pagarán.");
-        }
 
         // 12. CombatTracker / SkillCooldownTracker / PlayerResourceBar - combate y HUD
         CombatTracker combatTracker = new CombatTracker();

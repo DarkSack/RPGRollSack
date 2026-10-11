@@ -103,7 +103,9 @@ public class ClassSelectionGUI extends InventoryGUI {
 
                 playerClass.baseAttributes().forEach((stat, value) -> {
                         String sign = value >= 0 ? "+" : "";
-                        lore.add(Component.text(sign + value + " " + stat.name(), NamedTextColor.DARK_GRAY));
+                        lore.add(Component.text(sign + value + " "
+                                        + lang.raw("my_stats_command.label_" + stat.name().toLowerCase(java.util.Locale.ROOT)),
+                                        NamedTextColor.DARK_GRAY));
                 });
 
                 for (String loreLine : playerClass.lore()) {

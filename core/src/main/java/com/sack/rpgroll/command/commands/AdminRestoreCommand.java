@@ -4,6 +4,7 @@ import com.sack.rpgroll.RPGRoll;
 import com.sack.rpgroll.command.RPGCommand;
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gameplay.combat.CombatStats;
+import com.sack.rpgroll.gameplay.hud.PlayerResourceBar;
 import com.sack.rpgroll.player.PlayerManager;
 import com.sack.rpgroll.player.RPGPlayer;
 
@@ -78,7 +79,10 @@ public class AdminRestoreCommand implements RPGCommand {
                     current.maxMana(), mana,
                     rpgPlayer.getStats().getDexterityModifier(), rpgPlayer.getLevel());
 
-            playerManager.savePlayer(rpgPlayer.updateCombatStats(restored));
+            RPGPlayer updated = rpgPlayer.updateCombatStats(restored);
+            playerManager.savePlayer(updated);
+            // Sin esto la barra y los corazones se quedan con el valor viejo hasta la próxima regeneración.
+            plugin.getBootstrap().getServices().get(PlayerResourceBar.class).update(target, updated);
 
             lang.send(sender, "admin_restore.success",
                     "player", target.getName(), "health", health, "mana", mana);

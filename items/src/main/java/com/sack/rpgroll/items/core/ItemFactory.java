@@ -302,6 +302,12 @@ public class ItemFactory {
 
     private String formatStatName(String key) {
 
+        // Los del idioma mandan; un stat registrado por otro addon cae al nombre armado desde su id.
+        String translated = langManager.raw("stat." + key);
+        if (!translated.equals("stat." + key)) {
+            return translated;
+        }
+
         String[] parts = key.split("_");
         StringBuilder result = new StringBuilder();
 

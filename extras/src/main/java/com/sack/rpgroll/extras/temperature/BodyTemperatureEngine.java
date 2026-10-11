@@ -30,11 +30,16 @@ public class BodyTemperatureEngine {
 
     private static final double DEFAULT_START = 36.7;
 
+    /** Entre estos °C de ambiente el cuerpo se mantiene solo; fuera, se desvía un cuarto de grado por grado. */
+    private static final double COMFORT_MIN = 8;
+    private static final double COMFORT_MAX = 34;
+    private static final double DRIFT_PER_DEGREE = 0.25;
+
     private final Plugin plugin;
     private final AmbientTemperatureCalculator ambientCalculator;
     private final ThermalProtectionService thermalProtectionService;
     private final ExtrasActionExecutor actionExecutor;
-    private final TemperatureSettings settings;
+    private TemperatureSettings settings;
 
     private final Map<UUID, Double> bodyTemperature = new ConcurrentHashMap<>();
     private final Map<UUID, Double> ambientTemperature = new ConcurrentHashMap<>();
@@ -55,6 +60,21 @@ public class BodyTemperatureEngine {
     public void start() {
         task = Bukkit.getScheduler().runTaskTimer(plugin, this::tick,
                 settings.updateIntervalTicks(), settings.updateIntervalTicks());
+    }
+
+    /** /extrasadmin reload: se llama con el motor parado, entre stop() y start(). */
+    public void settings(TemperatureSettings settings) {
+        this.settings = settings;
+    }
+
+    /**
+     * Temperatura a la que tiende el cuerpo con ese ambiente. No es la del aire: una persona a 16 °C
+     * no baja a 16 °C. Antes se usaba el ambiente tal cual y casi cualquier bioma acababa en hipotermia.
+     */
+    static double bodyTarget(double ambient) {
+        double excess = ambient < COMFORT_MIN ? ambient - COMFORT_MIN
+                : ambient > COMFORT_MAX ? ambient - COMFORT_MAX : 0;
+        return DEFAULT_START + excess * DRIFT_PER_DEGREE;
     }
 
     public void stop() {
@@ -78,10 +98,11 @@ public class BodyTemperatureEngine {
         double current = bodyTemperature.computeIfAbsent(player.getUniqueId(), id -> DEFAULT_START);
 
         ThermalProperties protection = thermalProtectionService.netProtection(player);
-        double dampening = current < ambient ? protection.coldResistance() : protection.heatResistance();
+        double target = bodyTarget(ambient);
+        double dampening = current < target ? protection.coldResistance() : protection.heatResistance();
         double effectiveRate = settings.exchangeRate() * (1 - Math.max(protection.insulation(), dampening));
 
-        double next = current + (ambient - current) * effectiveRate;
+        double next = current + (target - current) * effectiveRate;
         bodyTemperature.put(player.getUniqueId(), next);
 
         applyState(player, next);

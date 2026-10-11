@@ -41,7 +41,7 @@ public final class MessageUtil {
 
         return Component.text("╠ ", labelColor)
                 .append(ComponentUtils.parseWithDefault(label + ": ", labelColor))
-                .append(Component.text(String.valueOf(value), NamedTextColor.WHITE));
+                .append(ComponentUtils.parseWithDefault(String.valueOf(value), NamedTextColor.WHITE));
     }
 
     public static Component blank() {

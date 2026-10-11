@@ -3,6 +3,8 @@ package com.sack.rpgroll.command.commands;
 import com.sack.rpgroll.RPGRoll;
 import com.sack.rpgroll.command.RPGCommand;
 import com.sack.rpgroll.common.lang.LangManager;
+import com.sack.rpgroll.gameplay.levelup.LevelUpRewardsConfig;
+import com.sack.rpgroll.gameplay.levelup.PlayerLevelUpHandler;
 import com.sack.rpgroll.player.PlayerManager;
 import com.sack.rpgroll.player.RPGPlayer;
 import com.sack.rpgroll.util.TabCompleteUtil;
@@ -76,6 +78,12 @@ public class AddXPCommand implements RPGCommand {
             // Agregar XP
             RPGPlayer updatedPlayer = rpgPlayer.get().addExperience(amount);
             playerManager.savePlayer(updatedPlayer);
+
+            // Igual que al matar un mob: si la EXP alcanza, sube en el acto.
+            new PlayerLevelUpHandler(playerManager,
+                    plugin.getBootstrap().getServices().get(LevelUpRewardsConfig.class), lang)
+                    .levelUpAll(targetPlayer, updatedPlayer);
+            updatedPlayer = playerManager.getPlayer(targetPlayer.getUniqueId()).orElse(updatedPlayer);
 
             // Mensajes
             lang.send(sender, "addxp.success_admin", "amount", amount, "player", targetPlayer.getName());

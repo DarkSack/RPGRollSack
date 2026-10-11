@@ -564,7 +564,7 @@ my_stats_command:
   label_class: "Class"
   label_unspent_points: "Unspent points"
   unspent_points_hint: " (use /rpg allocate <stat> <amount>)"
-  section_attributes: "D&D ATTRIBUTES"
+  section_attributes: "ATTRIBUTES"
   label_strength: "Strength"
   label_dexterity: "Dexterity"
   label_constitution: "Constitution"
