@@ -1,0 +1,42 @@
+id: guardian_del_bosque
+base-class: druida
+display-name: "&2Guardián del Bosque"
+
+requirements:
+  level: 20
+
+stats:
+  health: 8
+
+talents:
+  inicio:
+    display-name: "&7Inicio"
+    cost: 1
+    stats:
+      mana: 10
+
+  corteza:
+    display-name: "&2Corteza Viva"
+    cost: 2
+    requires: [inicio]
+    stats:
+      defense: 3
+
+  corteza_2:
+    display-name: "&2Zarzas Espinosas"
+    cost: 3
+    requires: [corteza]
+    skill: zarzas_espinosas
+
+  savia:
+    display-name: "&7Savia Antigua"
+    cost: 2
+    requires: [inicio]
+    stats:
+      resistance: 3
+
+  savia_2:
+    display-name: "&2Piel de Corteza"
+    cost: 3
+    requires: [savia]
+    trait: piel_de_corteza

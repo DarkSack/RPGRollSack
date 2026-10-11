@@ -1,0 +1,8 @@
+id: sigilo_mortal
+name: "&8Sigilo Mortal"
+description: |
+  Quien no lo oye llegar ya ha perdido.
+required-level: 20
+effect:
+  dexterity-bonus: 2
+  damage-bonus: 0.04

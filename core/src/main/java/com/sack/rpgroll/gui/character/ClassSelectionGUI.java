@@ -28,8 +28,8 @@ import java.util.function.Consumer;
  */
 public class ClassSelectionGUI extends InventoryGUI {
 
-        private static final int[] CONTENT_SLOTS = { 10, 11, 12, 13, 14, 15, 16 };
-        private static final int CANCEL_SLOT = 22;
+        private static final int[] CONTENT_SLOTS = { 10, 11, 12, 13, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25 };
+        private static final int CANCEL_SLOT = 31;
 
         private final ClassManager classManager;
         private final Consumer<String> onClassSelected;
@@ -41,7 +41,7 @@ public class ClassSelectionGUI extends InventoryGUI {
         public ClassSelectionGUI(Player player, ClassManager classManager, String selectedRace,
                         Consumer<String> onClassSelected, boolean mandatory, LangManager lang) {
                 super(player, lang.component("class_selection_gui.title").decorate(TextDecoration.BOLD),
-                                27);
+                                36);
                 this.classManager = classManager;
                 this.onClassSelected = onClassSelected;
                 this.slotToClass = new HashMap<>();
@@ -86,7 +86,7 @@ public class ClassSelectionGUI extends InventoryGUI {
                         }
                 }
 
-                for (int i = 18; i < 27; i++) {
+                for (int i = 27; i < 36; i++) {
                         setItem(i, ItemBuilder.createFiller());
                 }
 

@@ -1,0 +1,9 @@
+id: grito_de_guerra
+name: "&cGrito de Guerra"
+description: |
+  Un bramido que sacude
+  las filas enemigas.
+required-level: 20
+mana-cost: 25
+cooldown-seconds: 10
+damage-multiplier: 2.1

@@ -1,0 +1,9 @@
+id: mas_alla_de_la_muerte
+name: "&8Más Allá de la Muerte"
+description: |
+  Otorgado por raza renacida.
+  Ya murió una vez.
+required-level: 1
+effect:
+  health-bonus: 4
+  defense-bonus: 0.02

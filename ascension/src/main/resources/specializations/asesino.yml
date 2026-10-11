@@ -1,0 +1,45 @@
+id: asesino
+base-class: picaro
+display-name: "&8Asesino"
+
+requirements:
+  level: 20
+
+stats:
+  critical_damage: 8
+
+restrictions:
+  - "no-heavy-armor"
+
+talents:
+  inicio:
+    display-name: "&7Inicio"
+    cost: 1
+    stats:
+      agility: 2
+
+  veneno:
+    display-name: "&2Hoja Envenenada"
+    cost: 2
+    requires: [inicio]
+    stats:
+      damage: 3
+
+  veneno_2:
+    display-name: "&8Puñalada Trapera"
+    cost: 3
+    requires: [veneno]
+    skill: punalada_trapera
+
+  sombras:
+    display-name: "&7Entre Sombras"
+    cost: 2
+    requires: [inicio]
+    stats:
+      speed: 3
+
+  sombras_2:
+    display-name: "&8Sigilo Mortal"
+    cost: 3
+    requires: [sombras]
+    trait: sigilo_mortal

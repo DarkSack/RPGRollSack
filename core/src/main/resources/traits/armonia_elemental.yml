@@ -1,0 +1,8 @@
+id: armonia_elemental
+name: "&bArmonía Elemental"
+description: |
+  Fuego, hielo y rayo le obedecen por igual.
+required-level: 20
+effect:
+  intelligence-bonus: 2
+  mana-bonus: 20

@@ -1,0 +1,8 @@
+id: marcha_triunfal
+name: "&cMarcha Triunfal"
+description: |
+  Con su tambor, la tropa no afloja.
+required-level: 20
+effect:
+  charisma-bonus: 2
+  damage-bonus: 0.03

@@ -1,0 +1,9 @@
+id: zarzas_espinosas
+name: "&2Zarzas Espinosas"
+description: |
+  Las raíces brotan
+  y atrapan al objetivo.
+required-level: 20
+mana-cost: 25
+cooldown-seconds: 10
+damage-multiplier: 2.0

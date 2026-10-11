@@ -1,0 +1,13 @@
+id: druida
+display-name: "&2❦ Druida"
+description: |
+  Guardián de la naturaleza y sus tormentas.
+  Habla con el bosque, y el bosque responde.
+base-attributes:
+  wisdom: 3
+  intelligence: 2
+passive-traits: []
+icon: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2RiZGQwYTIxMjA2NGYwMzkyNjdlYzNiYTZlMzQ1YmRkMDZlYjM2ZDkyNGQ4ZmExNjU4NjE2MWYxZThjMTlmZiJ9fX0="
+lore:
+  - "&7Armas: Bastones y Hoces"
+  - "&7Rol: Mago / Apoyo"

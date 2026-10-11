@@ -1,0 +1,45 @@
+id: nigromante
+base-class: mago
+display-name: "&5Nigromante"
+
+requirements:
+  level: 20
+
+stats:
+  magic_power: 4
+
+restrictions:
+  - "no-heavy-armor"
+
+talents:
+  inicio:
+    display-name: "&7Inicio"
+    cost: 1
+    stats:
+      mana: 10
+
+  marchitar:
+    display-name: "&5Toque Marchito"
+    cost: 2
+    requires: [inicio]
+    stats:
+      magic_power: 3
+
+  marchitar_2:
+    display-name: "&5Drenar Vida"
+    cost: 3
+    requires: [marchitar]
+    skill: drenar_vida
+
+  pacto:
+    display-name: "&8Pacto Oscuro"
+    cost: 2
+    requires: [inicio]
+    stats:
+      health: 5
+
+  pacto_2:
+    display-name: "&5Pacto de Ultratumba"
+    cost: 3
+    requires: [pacto]
+    trait: pacto_de_ultratumba

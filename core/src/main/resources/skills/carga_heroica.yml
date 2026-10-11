@@ -1,0 +1,9 @@
+id: carga_heroica
+name: "&6Carga Heroica"
+description: |
+  Embiste al enemigo
+  con todo el peso de la armadura.
+required-level: 20
+mana-cost: 25
+cooldown-seconds: 12
+damage-multiplier: 2.2

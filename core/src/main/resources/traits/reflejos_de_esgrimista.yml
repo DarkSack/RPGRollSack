@@ -1,0 +1,8 @@
+id: reflejos_de_esgrimista
+name: "&eReflejos de Esgrimista"
+description: |
+  Para lo que otros ni ven.
+required-level: 20
+effect:
+  dexterity-bonus: 2
+  defense-bonus: 0.03

@@ -1,0 +1,8 @@
+id: ojo_de_halcon
+name: "&aOjo de Halcón"
+description: |
+  Ve el punto débil antes de tensar el arco.
+required-level: 20
+effect:
+  dexterity-bonus: 2
+  damage-bonus: 0.03

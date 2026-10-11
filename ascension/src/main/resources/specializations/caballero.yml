@@ -1,0 +1,42 @@
+id: caballero
+base-class: guerrero
+display-name: "&6Caballero"
+
+requirements:
+  level: 20
+
+stats:
+  defense: 4
+
+talents:
+  inicio:
+    display-name: "&7Inicio"
+    cost: 1
+    stats:
+      health: 5
+
+  ofensiva:
+    display-name: "&6Lanza en Ristre"
+    cost: 2
+    requires: [inicio]
+    stats:
+      damage: 3
+
+  ofensiva_2:
+    display-name: "&6Carga Heroica"
+    cost: 3
+    requires: [ofensiva]
+    skill: carga_heroica
+
+  defensa:
+    display-name: "&7Muro de Escudos"
+    cost: 2
+    requires: [inicio]
+    stats:
+      defense: 4
+
+  defensa_2:
+    display-name: "&6Juramento de Honor"
+    cost: 3
+    requires: [defensa]
+    trait: juramento_de_honor

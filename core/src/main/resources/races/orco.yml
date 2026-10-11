@@ -1,0 +1,20 @@
+id: orco
+display-name: "&2☠ Orco"
+description: |
+  Guerreros de las estepas, grandes y duros.
+  Golpean primero y preguntan después.
+base-attributes:
+  strength: 2
+  constitution: 2
+  intelligence: -1
+
+physical:
+  scale: 1.1
+  extra-health: 4.0
+  knockback-resistance: 0.1
+passive-traits:
+  - furia_orca
+icon: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODJkNmI2MjJmMDZkYmQzYjE5YmY3NjUzOGNhNzA0NzMzZWQwYjAyZTQ0MzhjOWQ4OTY4YTA0YmZiYjI4ZWY2MyJ9fX0="
+lore:
+  - "&7Clanes nómadas forjados en la guerra"
+  - "&7Respetan la fuerza por encima de todo"

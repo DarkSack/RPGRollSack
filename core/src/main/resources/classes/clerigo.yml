@@ -1,0 +1,13 @@
+id: clerigo
+display-name: "&f✚ Clérigo"
+description: |
+  Canaliza la fe para sanar y castigar.
+  El grupo dura lo que dure su maná.
+base-attributes:
+  wisdom: 3
+  constitution: 2
+passive-traits: []
+icon: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2JhY2FlZjMzYzA1ZTY0Yjk1YWRlNTk1ZDdkMmE5OGE4ZTg0NjY3NDhjOGI4N2Y4Y2E3MWNkODQ3NmFlZTdiMSJ9fX0="
+lore:
+  - "&7Armas: Mazas y Báculos"
+  - "&7Rol: Sanador / Apoyo"

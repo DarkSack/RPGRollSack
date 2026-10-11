@@ -1,0 +1,42 @@
+id: duelista
+base-class: picaro
+display-name: "&eDuelista"
+
+requirements:
+  level: 20
+
+stats:
+  attack_speed: 4
+
+talents:
+  inicio:
+    display-name: "&7Inicio"
+    cost: 1
+    stats:
+      dexterity: 2
+
+  estocada:
+    display-name: "&eEstocada"
+    cost: 2
+    requires: [inicio]
+    stats:
+      critical_chance: 3
+
+  estocada_2:
+    display-name: "&eEstocada Relámpago"
+    cost: 3
+    requires: [estocada]
+    skill: estocada_relampago
+
+  finta:
+    display-name: "&7Finta"
+    cost: 2
+    requires: [inicio]
+    stats:
+      defense: 3
+
+  finta_2:
+    display-name: "&eReflejos de Esgrimista"
+    cost: 3
+    requires: [finta]
+    trait: reflejos_de_esgrimista

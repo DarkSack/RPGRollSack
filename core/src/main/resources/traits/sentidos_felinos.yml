@@ -1,0 +1,9 @@
+id: sentidos_felinos
+name: "&6Sentidos Felinos"
+description: |
+  Otorgado por raza felina.
+  Reflejos de cazador.
+required-level: 1
+effect:
+  dexterity-bonus: 1
+  damage-bonus: 0.02

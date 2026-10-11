@@ -1,0 +1,42 @@
+id: sacerdote
+base-class: clerigo
+display-name: "&fSumo Sacerdote"
+
+requirements:
+  level: 20
+
+stats:
+  mana: 20
+
+talents:
+  inicio:
+    display-name: "&7Inicio"
+    cost: 1
+    stats:
+      health: 5
+
+  plegaria:
+    display-name: "&fPlegaria"
+    cost: 2
+    requires: [inicio]
+    stats:
+      magic_power: 3
+
+  plegaria_2:
+    display-name: "&fLuz Sagrada"
+    cost: 3
+    requires: [plegaria]
+    skill: luz_sagrada
+
+  bendicion:
+    display-name: "&7Bendición"
+    cost: 2
+    requires: [inicio]
+    stats:
+      magic_resistance: 4
+
+  bendicion_2:
+    display-name: "&fGracia Divina"
+    cost: 3
+    requires: [bendicion]
+    trait: gracia_divina

@@ -28,8 +28,8 @@ import java.util.function.Consumer;
  * textura custom (base64).
  */
 public class RaceSelectionGUI extends InventoryGUI {
-        private static final int[] CONTENT_SLOTS = { 10, 11, 12, 13, 14, 15, 16 };
-        private static final int CANCEL_SLOT = 22;
+        private static final int[] CONTENT_SLOTS = { 10, 11, 12, 13, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25 };
+        private static final int CANCEL_SLOT = 31;
 
         private final Consumer<String> onRaceSelected;
         private final Map<Integer, String> slotToRace;
@@ -46,7 +46,7 @@ public class RaceSelectionGUI extends InventoryGUI {
                 super(
                                 player,
                                 lang.component("race_selection_gui.title").decorate(TextDecoration.BOLD),
-                                27);
+                                36);
 
                 this.raceManager = raceManager;
                 this.onRaceSelected = onRaceSelected;
@@ -83,7 +83,7 @@ public class RaceSelectionGUI extends InventoryGUI {
                         }
                 }
 
-                for (int i = 18; i < 27; i++) {
+                for (int i = 27; i < 36; i++) {
                         setItem(i, ItemBuilder.createFiller());
                 }
 

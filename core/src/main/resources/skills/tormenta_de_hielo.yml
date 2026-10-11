@@ -1,0 +1,9 @@
+id: tormenta_de_hielo
+name: "&bTormenta de Hielo"
+description: |
+  Descarga una ventisca
+  sobre el objetivo.
+required-level: 20
+mana-cost: 35
+cooldown-seconds: 14
+damage-multiplier: 2.6

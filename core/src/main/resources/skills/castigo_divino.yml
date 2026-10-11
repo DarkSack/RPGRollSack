@@ -1,0 +1,9 @@
+id: castigo_divino
+name: "&cCastigo Divino"
+description: |
+  Dicta sentencia
+  y la ejecuta en el acto.
+required-level: 20
+mana-cost: 30
+cooldown-seconds: 12
+damage-multiplier: 2.5

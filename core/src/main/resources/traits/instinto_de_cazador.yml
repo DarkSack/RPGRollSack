@@ -1,0 +1,8 @@
+id: instinto_de_cazador
+name: "&2Instinto de Cazador"
+description: |
+  Conoce a su presa mejor que ella misma.
+required-level: 20
+effect:
+  wisdom-bonus: 2
+  damage-bonus: 0.03

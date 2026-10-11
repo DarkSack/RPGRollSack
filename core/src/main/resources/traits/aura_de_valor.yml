@@ -1,0 +1,8 @@
+id: aura_de_valor
+name: "&6Aura de Valor"
+description: |
+  A su lado nadie tiene miedo.
+required-level: 20
+effect:
+  strength-bonus: 2
+  health-bonus: 4

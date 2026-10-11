@@ -1,0 +1,9 @@
+id: suerte_del_mediano
+name: "&aSuerte del Mediano"
+description: |
+  Otorgado por raza mediana.
+  Sale de todas.
+required-level: 1
+effect:
+  dexterity-bonus: 1
+  defense-bonus: 0.02

@@ -1,0 +1,8 @@
+id: arcane_bolt
+name: "&bSaeta Arcana"
+description: |
+  Un proyectil de energía pura.
+required-level: 20
+mana-cost: 15
+cooldown-seconds: 6
+damage-multiplier: 1.8

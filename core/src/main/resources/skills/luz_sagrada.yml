@@ -1,0 +1,9 @@
+id: luz_sagrada
+name: "&fLuz Sagrada"
+description: |
+  Un haz de luz
+  que abrasa a los impíos.
+required-level: 20
+mana-cost: 25
+cooldown-seconds: 10
+damage-multiplier: 2.0

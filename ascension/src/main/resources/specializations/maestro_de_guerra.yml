@@ -1,0 +1,42 @@
+id: maestro_de_guerra
+base-class: bardo
+display-name: "&cMaestro de Guerra"
+
+requirements:
+  level: 20
+
+stats:
+  damage: 3
+
+talents:
+  inicio:
+    display-name: "&7Inicio"
+    cost: 1
+    stats:
+      health: 5
+
+  redoble:
+    display-name: "&cRedoble"
+    cost: 2
+    requires: [inicio]
+    stats:
+      attack_speed: 3
+
+  redoble_2:
+    display-name: "&cGrito de Guerra"
+    cost: 3
+    requires: [redoble]
+    skill: grito_de_guerra
+
+  estandarte:
+    display-name: "&7Estandarte"
+    cost: 2
+    requires: [inicio]
+    stats:
+      defense: 3
+
+  estandarte_2:
+    display-name: "&cMarcha Triunfal"
+    cost: 3
+    requires: [estandarte]
+    trait: marcha_triunfal

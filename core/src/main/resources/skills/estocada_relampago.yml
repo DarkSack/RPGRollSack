@@ -1,0 +1,9 @@
+id: estocada_relampago
+name: "&eEstocada Relámpago"
+description: |
+  Tres toques antes
+  de que el rival parpadee.
+required-level: 20
+mana-cost: 20
+cooldown-seconds: 8
+damage-multiplier: 2.0

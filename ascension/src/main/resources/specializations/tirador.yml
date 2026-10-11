@@ -1,0 +1,42 @@
+id: tirador
+base-class: arquero
+display-name: "&aTirador de Élite"
+
+requirements:
+  level: 20
+
+stats:
+  critical_chance: 4
+
+talents:
+  inicio:
+    display-name: "&7Inicio"
+    cost: 1
+    stats:
+      dexterity: 2
+
+  pulso:
+    display-name: "&aPulso Firme"
+    cost: 2
+    requires: [inicio]
+    stats:
+      critical_damage: 6
+
+  pulso_2:
+    display-name: "&aDisparo Certero"
+    cost: 3
+    requires: [pulso]
+    skill: disparo_certero
+
+  paso:
+    display-name: "&7Paso Ligero"
+    cost: 2
+    requires: [inicio]
+    stats:
+      speed: 3
+
+  paso_2:
+    display-name: "&aOjo de Halcón"
+    cost: 3
+    requires: [paso]
+    trait: ojo_de_halcon

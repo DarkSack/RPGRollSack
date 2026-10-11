@@ -1,0 +1,8 @@
+id: golpe_de_escudo
+name: "&3Golpe de Escudo"
+description: |
+  Estampa el escudo contra el enemigo.
+required-level: 20
+mana-cost: 20
+cooldown-seconds: 10
+damage-multiplier: 1.8

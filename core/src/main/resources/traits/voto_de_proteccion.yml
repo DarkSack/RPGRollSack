@@ -1,0 +1,8 @@
+id: voto_de_proteccion
+name: "&bVoto de Protección"
+description: |
+  Juró ser el escudo de los suyos.
+required-level: 20
+effect:
+  constitution-bonus: 2
+  defense-bonus: 0.04

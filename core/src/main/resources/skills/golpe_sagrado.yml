@@ -1,0 +1,9 @@
+id: golpe_sagrado
+name: "&6Golpe Sagrado"
+description: |
+  Carga el arma de luz
+  y la descarga de un tajo.
+required-level: 20
+mana-cost: 25
+cooldown-seconds: 10
+damage-multiplier: 2.3

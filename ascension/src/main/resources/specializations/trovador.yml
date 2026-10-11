@@ -1,0 +1,42 @@
+id: trovador
+base-class: bardo
+display-name: "&dTrovador"
+
+requirements:
+  level: 20
+
+stats:
+  luck: 4
+
+talents:
+  inicio:
+    display-name: "&7Inicio"
+    cost: 1
+    stats:
+      mana: 10
+
+  melodia:
+    display-name: "&dMelodía Hechizante"
+    cost: 2
+    requires: [inicio]
+    stats:
+      magic_power: 3
+
+  melodia_2:
+    display-name: "&dNota Discordante"
+    cost: 3
+    requires: [melodia]
+    skill: nota_discordante
+
+  encanto:
+    display-name: "&7Encanto"
+    cost: 2
+    requires: [inicio]
+    stats:
+      speed: 3
+
+  encanto_2:
+    display-name: "&dInspiración"
+    cost: 3
+    requires: [encanto]
+    trait: inspiracion

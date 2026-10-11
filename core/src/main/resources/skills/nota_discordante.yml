@@ -1,0 +1,9 @@
+id: nota_discordante
+name: "&dNota Discordante"
+description: |
+  Un acorde tan agrio
+  que hace daño de verdad.
+required-level: 20
+mana-cost: 20
+cooldown-seconds: 8
+damage-multiplier: 1.9

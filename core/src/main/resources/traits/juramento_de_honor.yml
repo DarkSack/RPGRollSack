@@ -1,0 +1,8 @@
+id: juramento_de_honor
+name: "&6Juramento de Honor"
+description: |
+  Un caballero no retrocede.
+required-level: 20
+effect:
+  health-bonus: 4
+  defense-bonus: 0.03

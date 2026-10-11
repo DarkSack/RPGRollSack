@@ -1,0 +1,8 @@
+id: inspiracion
+name: "&dInspiración"
+description: |
+  Siempre tiene una canción para la ocasión.
+required-level: 20
+effect:
+  charisma-bonus: 2
+  mana-bonus: 15

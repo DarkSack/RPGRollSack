@@ -1,0 +1,9 @@
+id: disparo_certero
+name: "&aDisparo Certero"
+description: |
+  Una sola flecha,
+  justo donde duele.
+required-level: 20
+mana-cost: 25
+cooldown-seconds: 12
+damage-multiplier: 2.8

@@ -1,0 +1,9 @@
+id: punalada_trapera
+name: "&8Puñalada Trapera"
+description: |
+  Un golpe a traición
+  que no se ve venir.
+required-level: 20
+mana-cost: 25
+cooldown-seconds: 10
+damage-multiplier: 2.8

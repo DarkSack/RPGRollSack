@@ -1,0 +1,42 @@
+id: cazador_de_bestias
+base-class: arquero
+display-name: "&2Cazador de Bestias"
+
+requirements:
+  level: 20
+
+stats:
+  damage: 3
+
+talents:
+  inicio:
+    display-name: "&7Inicio"
+    cost: 1
+    stats:
+      health: 5
+
+  dentadas:
+    display-name: "&2Flechas Dentadas"
+    cost: 2
+    requires: [inicio]
+    stats:
+      armor_penetration: 3
+
+  dentadas_2:
+    display-name: "&2Lluvia de Flechas"
+    cost: 3
+    requires: [dentadas]
+    skill: lluvia_de_flechas
+
+  rastreo:
+    display-name: "&7Rastreador"
+    cost: 2
+    requires: [inicio]
+    stats:
+      luck: 3
+
+  rastreo_2:
+    display-name: "&2Instinto de Cazador"
+    cost: 3
+    requires: [rastreo]
+    trait: instinto_de_cazador

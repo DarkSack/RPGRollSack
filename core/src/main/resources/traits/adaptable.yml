@@ -1,0 +1,9 @@
+id: adaptable
+name: "&eAdaptable"
+description: |
+  Otorgado por raza humana.
+  Un poco de todo.
+required-level: 1
+effect:
+  health-bonus: 2
+  mana-bonus: 10

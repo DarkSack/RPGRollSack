@@ -1,0 +1,18 @@
+id: mediano
+display-name: "&a✿ Mediano"
+description: |
+  Pequeños, rápidos y con una suerte
+  que nadie se explica.
+base-attributes:
+  dexterity: 2
+  charisma: 1
+
+physical:
+  scale: 0.75
+  movement-speed-percent: 0.05
+passive-traits:
+  - suerte_del_mediano
+icon: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvN2EwYWExYzk2YmNmNDBjNzYxZDE3YTYzMGYyM2E5OTNhMzExNjExMTk0MTRkZmNiNzJlNTNlNjVkNDEwZmIyMyJ9fX0="
+lore:
+  - "&7Gente de colinas, huertos y buena mesa"
+  - "&7Difíciles de ver y más de atrapar"

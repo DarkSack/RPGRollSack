@@ -1,0 +1,8 @@
+id: polvo_de_hada
+name: "&dPolvo de Hada"
+description: |
+  Otorgado por raza hada.
+  Rebosa magia.
+required-level: 1
+effect:
+  mana-bonus: 20

@@ -1,0 +1,8 @@
+id: gracia_divina
+name: "&fGracia Divina"
+description: |
+  Su fe lo sostiene cuando el cuerpo falla.
+required-level: 20
+effect:
+  wisdom-bonus: 2
+  mana-bonus: 20

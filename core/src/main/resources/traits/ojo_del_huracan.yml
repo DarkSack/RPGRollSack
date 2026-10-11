@@ -1,0 +1,8 @@
+id: ojo_del_huracan
+name: "&9Ojo del Huracán"
+description: |
+  En mitad de la tormenta, él está tranquilo.
+required-level: 20
+effect:
+  intelligence-bonus: 2
+  mana-bonus: 20

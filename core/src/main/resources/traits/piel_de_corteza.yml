@@ -1,0 +1,8 @@
+id: piel_de_corteza
+name: "&2Piel de Corteza"
+description: |
+  Su piel es dura como un roble viejo.
+required-level: 20
+effect:
+  health-bonus: 6
+  defense-bonus: 0.03

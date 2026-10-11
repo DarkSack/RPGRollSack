@@ -1,0 +1,9 @@
+id: rayo_de_tormenta
+name: "&9Rayo de Tormenta"
+description: |
+  Llama a un rayo
+  sobre el objetivo.
+required-level: 20
+mana-cost: 35
+cooldown-seconds: 12
+damage-multiplier: 2.7

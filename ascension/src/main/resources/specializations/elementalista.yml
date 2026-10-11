@@ -1,0 +1,45 @@
+id: elementalista
+base-class: mago
+display-name: "&bElementalista"
+
+requirements:
+  level: 20
+
+stats:
+  mana: 20
+
+restrictions:
+  - "no-heavy-armor"
+
+talents:
+  inicio:
+    display-name: "&7Inicio"
+    cost: 1
+    stats:
+      magic_power: 2
+
+  chispa:
+    display-name: "&eChispa Inestable"
+    cost: 2
+    requires: [inicio]
+    stats:
+      critical_chance: 3
+
+  chispa_2:
+    display-name: "&bTormenta de Hielo"
+    cost: 3
+    requires: [chispa]
+    skill: tormenta_de_hielo
+
+  piedra:
+    display-name: "&7Piel de Piedra"
+    cost: 2
+    requires: [inicio]
+    stats:
+      magic_resistance: 4
+
+  piedra_2:
+    display-name: "&bArmonía Elemental"
+    cost: 3
+    requires: [piedra]
+    trait: armonia_elemental

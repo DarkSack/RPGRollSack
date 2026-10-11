@@ -1,0 +1,8 @@
+id: ultimo_baluarte
+name: "&3Último Baluarte"
+description: |
+  Mientras siga en pie, nadie pasa.
+required-level: 20
+effect:
+  constitution-bonus: 2
+  defense-bonus: 0.04

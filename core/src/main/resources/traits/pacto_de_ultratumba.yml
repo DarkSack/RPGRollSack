@@ -1,0 +1,8 @@
+id: pacto_de_ultratumba
+name: "&5Pacto de Ultratumba"
+description: |
+  La muerte le debe un favor.
+required-level: 20
+effect:
+  health-bonus: 4
+  mana-bonus: 15

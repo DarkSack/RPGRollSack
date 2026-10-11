@@ -1,0 +1,8 @@
+id: fe_inquebrantable
+name: "&cFe Inquebrantable"
+description: |
+  No duda, no cede, no perdona.
+required-level: 20
+effect:
+  wisdom-bonus: 2
+  defense-bonus: 0.03

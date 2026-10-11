@@ -1,0 +1,8 @@
+id: furia_orca
+name: "&2Furia Orca"
+description: |
+  Otorgado por raza orca.
+  Pega más fuerte.
+required-level: 1
+effect:
+  damage-bonus: 0.03
