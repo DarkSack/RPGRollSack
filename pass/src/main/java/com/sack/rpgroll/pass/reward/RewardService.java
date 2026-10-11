@@ -60,11 +60,18 @@ public class RewardService {
             case MONEY -> lang.component("reward.money", "amount", reward.amount());
             case EXP -> lang.component("reward.exp", "amount", reward.amount());
             case KEY -> lang.component("reward.key", "amount", reward.amount(), "crate", reward.key());
-            case ITEM -> lang.component("reward.item", "amount", reward.amount(), "item", reward.key());
+            case ITEM -> lang.component("reward.item", "amount", reward.amount(), "item", itemName(reward.key()));
             case MATERIAL -> lang.component("reward.material", "amount", reward.amount(),
                     "material", Component.translatable(Material.valueOf(reward.key())));
             case COMMAND -> lang.component("reward.command");
         };
+    }
+
+    /** El nombre del ítem de RPGRoll-Items; sin ese módulo (o sin ese ítem), su id. */
+    private static Object itemName(String itemId) {
+        return Bukkit.getPluginManager().isPluginEnabled("RPGRoll-Items")
+                ? ItemsBridge.name(itemId).<Object>map(name -> name).orElse(itemId)
+                : itemId;
     }
 
     public Material icon(Reward reward) {

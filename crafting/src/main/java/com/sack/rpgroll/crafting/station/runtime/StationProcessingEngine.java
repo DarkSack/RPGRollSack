@@ -94,8 +94,13 @@ public class StationProcessingEngine {
         this.lang = lang;
     }
 
-    /** Llamado periódicamente por el scheduler del plugin (ver {@code station-tick-interval-ticks}). */
-    public void tick() {
+    /**
+     * Llamado periódicamente por el scheduler del plugin (ver {@code station-tick-interval-ticks}).
+     *
+     * @param elapsedTicks los ticks de juego de una pasada a la siguiente: el progreso y el combustible
+     *                     se cuentan en ticks de juego, no en pasadas (200 ticks de receta son 10 s)
+     */
+    public void tick(int elapsedTicks) {
 
         for (StationRuntime runtime : registry.getAll()) {
 
@@ -119,9 +124,9 @@ public class StationProcessingEngine {
                 continue; // sin combustible, no avanza este tick
             }
 
-            runtime.advance();
+            runtime.advance(elapsedTicks);
             if (station.requiresFuel()) {
-                runtime.consumeFuelTick();
+                runtime.consumeFuelTicks(elapsedTicks);
             }
 
             Optional<CustomRecipe> recipeOpt = recipeManager.get(runtime.activeRecipeId());

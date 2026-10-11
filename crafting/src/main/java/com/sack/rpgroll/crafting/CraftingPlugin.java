@@ -254,7 +254,7 @@ public class CraftingPlugin extends JavaPlugin {
         long stationTickInterval = getConfig().getLong("station-tick-interval-ticks", 20);
         long autosaveInterval = getConfig().getLong("station-autosave-interval-ticks", 6000);
 
-        getServer().getScheduler().runTaskTimer(this, stationProcessingEngine::tick, stationTickInterval,
+        getServer().getScheduler().runTaskTimer(this, () -> stationProcessingEngine.tick((int) stationTickInterval), stationTickInterval,
                 stationTickInterval);
         getServer().getScheduler().runTaskTimer(this, stationRuntimeRegistry::saveAll, autosaveInterval,
                 autosaveInterval);

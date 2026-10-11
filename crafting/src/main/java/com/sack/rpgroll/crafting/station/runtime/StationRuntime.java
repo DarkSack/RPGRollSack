@@ -108,8 +108,8 @@ public class StationRuntime {
         return progressTicks;
     }
 
-    public void advance() {
-        progressTicks++;
+    public void advance(int ticks) {
+        progressTicks += ticks;
     }
 
     public void setProgressTicks(int progressTicks) {
@@ -124,10 +124,8 @@ public class StationRuntime {
         fuelTicksRemaining += ticks;
     }
 
-    public void consumeFuelTick() {
-        if (fuelTicksRemaining > 0) {
-            fuelTicksRemaining--;
-        }
+    public void consumeFuelTicks(int ticks) {
+        fuelTicksRemaining = Math.max(0, fuelTicksRemaining - ticks);
     }
 
     public UUID lastPlayerId() {

@@ -6,13 +6,17 @@ import com.magmaguy.freeminecraftmodels.customentity.DynamicEntity;
 import com.sack.rpgroll.ranching.core.animal.AnimalKeys;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Proxy;
 import java.nio.file.Files;
 import java.util.List;
 import java.util.logging.Logger;
@@ -190,7 +194,10 @@ public final class ModelsIntegration {
             if (!ModeledEntityManager.modelExists(modelId)) {
                 return false;
             }
-            return DynamicEntity.createWithInvisibility(modelId, entity) != null;
+            // Lo mismo que DynamicEntity.createWithInvisibility, con un modelo que no se lleva al animal.
+            new AnimalModel(modelId, entity).spawn(entity);
+            entity.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, -1, 0, false, false));
+            return true;
         }
 
         static void remove(LivingEntity entity) {
@@ -205,6 +212,34 @@ public final class ModelsIntegration {
             if (model != null && !model.isRemoved() && !model.isDying()) {
                 model.removeWithDeathAnimation();
             }
+        }
+    }
+
+    /**
+     * FMM, al quitar un modelo, borra también la entidad que lo lleva; y lo quita solo cuando el
+     * chunk se descarga. El animal tiene que sobrevivir a su modelo: mientras se quita, FMM ve una
+     * entidad cuyo remove() no hace nada.
+     */
+    private static final class AnimalModel extends DynamicEntity {
+
+        AnimalModel(String modelId, LivingEntity entity) {
+            super(modelId, entity.getLocation());
+        }
+
+        @Override
+        public boolean isCosmeticInvisibility() {
+            return true;
+        }
+
+        @Override
+        public void remove() {
+            Entity animal = underlyingEntity;
+            if (animal != null && !isRemoved()) {
+                underlyingEntity = (Entity) Proxy.newProxyInstance(Entity.class.getClassLoader(),
+                        new Class<?>[] {Entity.class}, (proxy, method, args) -> method.getName().equals("remove")
+                                && method.getParameterCount() == 0 ? null : method.invoke(animal, args));
+            }
+            super.remove();
         }
     }
 

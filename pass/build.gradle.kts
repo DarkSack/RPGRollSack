@@ -17,5 +17,6 @@ dependencies {
     // está habilitado en el servidor; nunca se empaquetan.
     compileOnly(project(":quests"))
     compileOnly(project(":mobs"))
+    compileOnly(project(":items"))
 
 }
