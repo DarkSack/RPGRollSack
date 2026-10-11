@@ -93,7 +93,8 @@ public class SpellChannelManager implements Listener {
 
                 if (elapsed >= totalTicks) {
 
-                    channeling.remove(player.getUniqueId());
+                    // Hay que parar la tarea, no solo olvidarla: seguía lanzando el hechizo cada tick.
+                    cancelChannel(player.getUniqueId());
                     CastResult result = engine.cast(spell, player, spellbook, catalyst);
 
                     if (!result.success()) {
