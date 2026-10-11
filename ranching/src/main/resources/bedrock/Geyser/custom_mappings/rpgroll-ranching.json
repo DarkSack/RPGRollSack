@@ -311,7 +311,7 @@
    {
     "type": "definition",
     "model": "rpgroll_ranching:product/wool",
-    "bedrock_identifier": "rpgroll_ranching:product_wool",
+    "bedrock_identifier": "rpgroll_ranching:product_wool_orange_wool",
     "display_name": "Vellón",
     "bedrock_options": {
      "icon": "rpgroll_ranching_product_wool",
@@ -322,7 +322,7 @@
    {
     "type": "definition",
     "model": "rpgroll_ranching:product/wool_legendary",
-    "bedrock_identifier": "rpgroll_ranching:product_wool_legendary",
+    "bedrock_identifier": "rpgroll_ranching:product_wool_legendary_orange_wool",
     "display_name": "Vellocino de oro",
     "bedrock_options": {
      "icon": "rpgroll_ranching_product_wool_legendary",
@@ -335,7 +335,7 @@
    {
     "type": "definition",
     "model": "rpgroll_ranching:product/wool",
-    "bedrock_identifier": "rpgroll_ranching:product_wool",
+    "bedrock_identifier": "rpgroll_ranching:product_wool_magenta_wool",
     "display_name": "Vellón",
     "bedrock_options": {
      "icon": "rpgroll_ranching_product_wool",
@@ -346,7 +346,7 @@
    {
     "type": "definition",
     "model": "rpgroll_ranching:product/wool_legendary",
-    "bedrock_identifier": "rpgroll_ranching:product_wool_legendary",
+    "bedrock_identifier": "rpgroll_ranching:product_wool_legendary_magenta_wool",
     "display_name": "Vellocino de oro",
     "bedrock_options": {
      "icon": "rpgroll_ranching_product_wool_legendary",
@@ -359,7 +359,7 @@
    {
     "type": "definition",
     "model": "rpgroll_ranching:product/wool",
-    "bedrock_identifier": "rpgroll_ranching:product_wool",
+    "bedrock_identifier": "rpgroll_ranching:product_wool_light_blue_wool",
     "display_name": "Vellón",
     "bedrock_options": {
      "icon": "rpgroll_ranching_product_wool",
@@ -370,7 +370,7 @@
    {
     "type": "definition",
     "model": "rpgroll_ranching:product/wool_legendary",
-    "bedrock_identifier": "rpgroll_ranching:product_wool_legendary",
+    "bedrock_identifier": "rpgroll_ranching:product_wool_legendary_light_blue_wool",
     "display_name": "Vellocino de oro",
     "bedrock_options": {
      "icon": "rpgroll_ranching_product_wool_legendary",
@@ -383,7 +383,7 @@
    {
     "type": "definition",
     "model": "rpgroll_ranching:product/wool",
-    "bedrock_identifier": "rpgroll_ranching:product_wool",
+    "bedrock_identifier": "rpgroll_ranching:product_wool_yellow_wool",
     "display_name": "Vellón",
     "bedrock_options": {
      "icon": "rpgroll_ranching_product_wool",
@@ -394,7 +394,7 @@
    {
     "type": "definition",
     "model": "rpgroll_ranching:product/wool_legendary",
-    "bedrock_identifier": "rpgroll_ranching:product_wool_legendary",
+    "bedrock_identifier": "rpgroll_ranching:product_wool_legendary_yellow_wool",
     "display_name": "Vellocino de oro",
     "bedrock_options": {
      "icon": "rpgroll_ranching_product_wool_legendary",
@@ -407,7 +407,7 @@
    {
     "type": "definition",
     "model": "rpgroll_ranching:product/wool",
-    "bedrock_identifier": "rpgroll_ranching:product_wool",
+    "bedrock_identifier": "rpgroll_ranching:product_wool_lime_wool",
     "display_name": "Vellón",
     "bedrock_options": {
      "icon": "rpgroll_ranching_product_wool",
@@ -418,7 +418,7 @@
    {
     "type": "definition",
     "model": "rpgroll_ranching:product/wool_legendary",
-    "bedrock_identifier": "rpgroll_ranching:product_wool_legendary",
+    "bedrock_identifier": "rpgroll_ranching:product_wool_legendary_lime_wool",
     "display_name": "Vellocino de oro",
     "bedrock_options": {
      "icon": "rpgroll_ranching_product_wool_legendary",
@@ -431,7 +431,7 @@
    {
     "type": "definition",
     "model": "rpgroll_ranching:product/wool",
-    "bedrock_identifier": "rpgroll_ranching:product_wool",
+    "bedrock_identifier": "rpgroll_ranching:product_wool_pink_wool",
     "display_name": "Vellón",
     "bedrock_options": {
      "icon": "rpgroll_ranching_product_wool",
@@ -442,7 +442,7 @@
    {
     "type": "definition",
     "model": "rpgroll_ranching:product/wool_legendary",
-    "bedrock_identifier": "rpgroll_ranching:product_wool_legendary",
+    "bedrock_identifier": "rpgroll_ranching:product_wool_legendary_pink_wool",
     "display_name": "Vellocino de oro",
     "bedrock_options": {
      "icon": "rpgroll_ranching_product_wool_legendary",
@@ -455,7 +455,7 @@
    {
     "type": "definition",
     "model": "rpgroll_ranching:product/wool",
-    "bedrock_identifier": "rpgroll_ranching:product_wool",
+    "bedrock_identifier": "rpgroll_ranching:product_wool_gray_wool",
     "display_name": "Vellón",
     "bedrock_options": {
      "icon": "rpgroll_ranching_product_wool",
@@ -466,7 +466,7 @@
    {
     "type": "definition",
     "model": "rpgroll_ranching:product/wool_legendary",
-    "bedrock_identifier": "rpgroll_ranching:product_wool_legendary",
+    "bedrock_identifier": "rpgroll_ranching:product_wool_legendary_gray_wool",
     "display_name": "Vellocino de oro",
     "bedrock_options": {
      "icon": "rpgroll_ranching_product_wool_legendary",
@@ -479,7 +479,7 @@
    {
     "type": "definition",
     "model": "rpgroll_ranching:product/wool",
-    "bedrock_identifier": "rpgroll_ranching:product_wool",
+    "bedrock_identifier": "rpgroll_ranching:product_wool_light_gray_wool",
     "display_name": "Vellón",
     "bedrock_options": {
      "icon": "rpgroll_ranching_product_wool",
@@ -490,7 +490,7 @@
    {
     "type": "definition",
     "model": "rpgroll_ranching:product/wool_legendary",
-    "bedrock_identifier": "rpgroll_ranching:product_wool_legendary",
+    "bedrock_identifier": "rpgroll_ranching:product_wool_legendary_light_gray_wool",
     "display_name": "Vellocino de oro",
     "bedrock_options": {
      "icon": "rpgroll_ranching_product_wool_legendary",
@@ -503,7 +503,7 @@
    {
     "type": "definition",
     "model": "rpgroll_ranching:product/wool",
-    "bedrock_identifier": "rpgroll_ranching:product_wool",
+    "bedrock_identifier": "rpgroll_ranching:product_wool_cyan_wool",
     "display_name": "Vellón",
     "bedrock_options": {
      "icon": "rpgroll_ranching_product_wool",
@@ -514,7 +514,7 @@
    {
     "type": "definition",
     "model": "rpgroll_ranching:product/wool_legendary",
-    "bedrock_identifier": "rpgroll_ranching:product_wool_legendary",
+    "bedrock_identifier": "rpgroll_ranching:product_wool_legendary_cyan_wool",
     "display_name": "Vellocino de oro",
     "bedrock_options": {
      "icon": "rpgroll_ranching_product_wool_legendary",
@@ -527,7 +527,7 @@
    {
     "type": "definition",
     "model": "rpgroll_ranching:product/wool",
-    "bedrock_identifier": "rpgroll_ranching:product_wool",
+    "bedrock_identifier": "rpgroll_ranching:product_wool_purple_wool",
     "display_name": "Vellón",
     "bedrock_options": {
      "icon": "rpgroll_ranching_product_wool",
@@ -538,7 +538,7 @@
    {
     "type": "definition",
     "model": "rpgroll_ranching:product/wool_legendary",
-    "bedrock_identifier": "rpgroll_ranching:product_wool_legendary",
+    "bedrock_identifier": "rpgroll_ranching:product_wool_legendary_purple_wool",
     "display_name": "Vellocino de oro",
     "bedrock_options": {
      "icon": "rpgroll_ranching_product_wool_legendary",
@@ -551,7 +551,7 @@
    {
     "type": "definition",
     "model": "rpgroll_ranching:product/wool",
-    "bedrock_identifier": "rpgroll_ranching:product_wool",
+    "bedrock_identifier": "rpgroll_ranching:product_wool_blue_wool",
     "display_name": "Vellón",
     "bedrock_options": {
      "icon": "rpgroll_ranching_product_wool",
@@ -562,7 +562,7 @@
    {
     "type": "definition",
     "model": "rpgroll_ranching:product/wool_legendary",
-    "bedrock_identifier": "rpgroll_ranching:product_wool_legendary",
+    "bedrock_identifier": "rpgroll_ranching:product_wool_legendary_blue_wool",
     "display_name": "Vellocino de oro",
     "bedrock_options": {
      "icon": "rpgroll_ranching_product_wool_legendary",
@@ -575,7 +575,7 @@
    {
     "type": "definition",
     "model": "rpgroll_ranching:product/wool",
-    "bedrock_identifier": "rpgroll_ranching:product_wool",
+    "bedrock_identifier": "rpgroll_ranching:product_wool_brown_wool",
     "display_name": "Vellón",
     "bedrock_options": {
      "icon": "rpgroll_ranching_product_wool",
@@ -586,7 +586,7 @@
    {
     "type": "definition",
     "model": "rpgroll_ranching:product/wool_legendary",
-    "bedrock_identifier": "rpgroll_ranching:product_wool_legendary",
+    "bedrock_identifier": "rpgroll_ranching:product_wool_legendary_brown_wool",
     "display_name": "Vellocino de oro",
     "bedrock_options": {
      "icon": "rpgroll_ranching_product_wool_legendary",
@@ -599,7 +599,7 @@
    {
     "type": "definition",
     "model": "rpgroll_ranching:product/wool",
-    "bedrock_identifier": "rpgroll_ranching:product_wool",
+    "bedrock_identifier": "rpgroll_ranching:product_wool_green_wool",
     "display_name": "Vellón",
     "bedrock_options": {
      "icon": "rpgroll_ranching_product_wool",
@@ -610,7 +610,7 @@
    {
     "type": "definition",
     "model": "rpgroll_ranching:product/wool_legendary",
-    "bedrock_identifier": "rpgroll_ranching:product_wool_legendary",
+    "bedrock_identifier": "rpgroll_ranching:product_wool_legendary_green_wool",
     "display_name": "Vellocino de oro",
     "bedrock_options": {
      "icon": "rpgroll_ranching_product_wool_legendary",
@@ -623,7 +623,7 @@
    {
     "type": "definition",
     "model": "rpgroll_ranching:product/wool",
-    "bedrock_identifier": "rpgroll_ranching:product_wool",
+    "bedrock_identifier": "rpgroll_ranching:product_wool_red_wool",
     "display_name": "Vellón",
     "bedrock_options": {
      "icon": "rpgroll_ranching_product_wool",
@@ -634,7 +634,7 @@
    {
     "type": "definition",
     "model": "rpgroll_ranching:product/wool_legendary",
-    "bedrock_identifier": "rpgroll_ranching:product_wool_legendary",
+    "bedrock_identifier": "rpgroll_ranching:product_wool_legendary_red_wool",
     "display_name": "Vellocino de oro",
     "bedrock_options": {
      "icon": "rpgroll_ranching_product_wool_legendary",
@@ -647,7 +647,7 @@
    {
     "type": "definition",
     "model": "rpgroll_ranching:product/wool",
-    "bedrock_identifier": "rpgroll_ranching:product_wool",
+    "bedrock_identifier": "rpgroll_ranching:product_wool_black_wool",
     "display_name": "Vellón",
     "bedrock_options": {
      "icon": "rpgroll_ranching_product_wool",
@@ -658,7 +658,7 @@
    {
     "type": "definition",
     "model": "rpgroll_ranching:product/wool_legendary",
-    "bedrock_identifier": "rpgroll_ranching:product_wool_legendary",
+    "bedrock_identifier": "rpgroll_ranching:product_wool_legendary_black_wool",
     "display_name": "Vellocino de oro",
     "bedrock_options": {
      "icon": "rpgroll_ranching_product_wool_legendary",
