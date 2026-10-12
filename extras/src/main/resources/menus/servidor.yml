@@ -20,6 +20,66 @@ items:
       - type: COMMAND_AS_PLAYER
         value: "rpg mystats"
 
+  # Atajos de viaje. rtp, warps y death son de este plugin (random-teleport, player-warps y
+  # death-teleport en config.yml); home, sethome y back, de EssentialsX.
+  - slot: 10
+    material: GRASS_BLOCK
+    name: "&a&lTeletransporte aleatorio"
+    lore:
+      - "&7Un sitio al azar y seguro"
+      - "&7del mundo salvaje."
+    actions:
+      - type: COMMAND_AS_PLAYER
+        value: "rtp"
+
+  - slot: 11
+    material: RED_BED
+    name: "&c&lMi casa"
+    lore:
+      - "&7Vuelve a tu casa."
+    actions:
+      - type: COMMAND_AS_PLAYER
+        value: "home"
+
+  - slot: 12
+    material: OAK_DOOR
+    name: "&e&lFijar mi casa aquí"
+    lore:
+      - "&7Tu casa pasa a ser este sitio."
+    actions:
+      - type: COMMAND_AS_PLAYER
+        value: "sethome"
+
+  - slot: 14
+    material: ENDER_EYE
+    name: "&d&lWarps"
+    lore:
+      - "&7Sitios creados por jugadores."
+      - "&7Viaja con un clic o crea el tuyo."
+    actions:
+      - type: COMMAND_AS_PLAYER
+        value: "warps"
+
+  - slot: 15
+    material: RECOVERY_COMPASS
+    name: "&b&lVolver atrás"
+    lore:
+      - "&7Al sitio donde estabas antes"
+      - "&7de teletransportarte."
+    actions:
+      - type: COMMAND_AS_PLAYER
+        value: "back"
+
+  - slot: 16
+    material: SKELETON_SKULL
+    name: "&7&lMi última muerte"
+    lore:
+      - "&7Vuelve a donde moriste"
+      - "&7para recoger tus cosas."
+    actions:
+      - type: COMMAND_AS_PLAYER
+        value: "death"
+
   - slot: 19
     material: BEACON
     name: "&b&lLobby"

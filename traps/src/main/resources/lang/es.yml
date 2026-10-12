@@ -105,9 +105,13 @@ admin:
       entry: "&f• {placement} — tipo: {turret}"
 
 camera:
-  alert: "&c⚠ &fTu cámara en &e{x} {y} {z} &fha visto a &c{who}&f."
+  alert: "&c⚠ &fTu cámara &e{name} &fha visto a &c{who}&f."
   watching: "&7Estás mirando por la cámara. &fAgáchate &7para salir."
   unavailable: "&cAhora no se puede mirar por esa cámara (tiene que estar en tu mismo mundo)."
+  in_combat: "&cAcabas de pelear: espera &e{seconds}s &cpara mirar por una cámara."
+  prompt_name: "&eEscribe el nombre de la cámara:"
+  named: "&a✔ La cámara se llama ahora &e{name}&a."
+  bad_name: "&cEse nombre no vale; la cámara se queda sin nombre."
 
 protection:
   not_breakable: "&cEse bloque está protegido por una trampa — no se puede romper."
@@ -116,7 +120,8 @@ protection:
 gui:
   camera_monitor:
     title: "&8Monitor de cámaras"
-    entry: "&bCámara {number}"
+    entry: "&b{name}"
+    unnamed: "Cámara {number}"
     where: "&7{world}: &f{x} {y} {z}"
     click: "&eClic para mirar por ella"
     empty: "&cNo tienes cámaras colocadas."

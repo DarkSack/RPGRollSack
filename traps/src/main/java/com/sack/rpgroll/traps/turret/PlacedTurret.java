@@ -14,13 +14,15 @@ import java.util.Objects;
 public record PlacedTurret(String placementId, String turretId, String world, int x, int y, int z,
         java.util.UUID owner,
         java.util.Map<String, Integer> ammo,
-        TurretTargeting targeting) {
+        TurretTargeting targeting,
+        String name) {
 
     /**
      * @param owner quién la colocó. Solo esa persona (o un admin) puede
      *              retirarla. Null en las colocadas por comando antes de que
      *              existiera el ítem: esas quedan sin dueño y solo las puede
      *              sacar un admin.
+     * @param name  el que le pone su dueño (hoy solo a las cámaras); null si no tiene.
      */
     public PlacedTurret {
         // Copia defensiva: el motor consume munición y no debe poder mutar

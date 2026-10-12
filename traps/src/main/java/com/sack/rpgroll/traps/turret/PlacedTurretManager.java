@@ -65,7 +65,8 @@ public class PlacedTurretManager {
                                 ? null
                                 : UUID.fromString(entry.getString("owner")),
                         readAmmo(entry),
-                        readTargeting(entry));
+                        readTargeting(entry),
+                        entry.getString("name"));
 
                 placements.put(placementId, placed);
 
@@ -100,6 +101,7 @@ public class PlacedTurretManager {
                 config.set(path + ".ammo." + slot.getKey(), slot.getValue());
             }
 
+            config.set(path + ".name", placed.name());
             config.set(path + ".targeting.allies", placed.targeting().allies());
             config.set(path + ".targeting.enemies", placed.targeting().enemies());
             config.set(path + ".targeting.hostile-mobs", placed.targeting().hostileMobs());
@@ -131,7 +133,7 @@ public class PlacedTurretManager {
 
         PlacedTurret placed = new PlacedTurret(
                 placementId, turretId, location.getWorld().getName(),
-                location.getBlockX(), location.getBlockY(), location.getBlockZ(), owner, java.util.Map.of(), targeting);
+                location.getBlockX(), location.getBlockY(), location.getBlockZ(), owner, java.util.Map.of(), targeting, null);
 
         placements.put(placementId, placed);
         save();
@@ -166,7 +168,23 @@ public class PlacedTurretManager {
 
         placements.put(placementId, new PlacedTurret(current.placementId(), current.turretId(),
                 current.world(), current.x(), current.y(), current.z(), current.owner(),
-                current.ammo(), targeting));
+                current.ammo(), targeting, current.name()));
+
+        save();
+    }
+
+    /** Le pone nombre a una instancia (null se lo quita) y persiste. */
+    public void setName(String placementId, String name) {
+
+        PlacedTurret current = placements.get(placementId);
+
+        if (current == null) {
+            return;
+        }
+
+        placements.put(placementId, new PlacedTurret(current.placementId(), current.turretId(),
+                current.world(), current.x(), current.y(), current.z(), current.owner(),
+                current.ammo(), current.targeting(), name));
 
         save();
     }
@@ -208,7 +226,7 @@ public class PlacedTurretManager {
 
         placements.put(placementId, new PlacedTurret(current.placementId(), current.turretId(),
                 current.world(), current.x(), current.y(), current.z(), current.owner(), ammo,
-                current.targeting()));
+                current.targeting(), current.name()));
 
         save();
     }

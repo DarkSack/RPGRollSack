@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
-import java.util.StringJoiner;
 import java.util.regex.Pattern;
 
 /**
@@ -92,16 +91,20 @@ public class WarpCommand implements CommandExecutor, TabCompleter {
     }
 
     private void list(Player player) {
+        new WarpsGUI(player, warps.all(), this, lang).open();
+    }
 
-        StringJoiner names = new StringJoiner("&7, ");
-        for (Warp warp : warps.all()) {
-            names.add("&e" + warp.name() + " &8(" + warp.ownerName() + ")");
-        }
+    /** Desde el menú: crea un warp con el nombre del jugador, para no tener que escribirlo. */
+    void createHere(Player player) {
 
-        if (names.length() == 0) {
-            lang.send(player, "warp.list_empty");
-        } else {
-            lang.send(player, "warp.list", "warps", names.toString());
+        String base = player.getName().toLowerCase(Locale.ROOT).replaceAll("[^a-z0-9_]", "");
+        base = base.length() < 2 ? "warp" : base.substring(0, Math.min(base.length(), 14));
+
+        try {
+            set(player, warps.get(base).isEmpty() ? base : base + "_2");
+        } catch (IOException exception) {
+            lang.send(player, "warp.save_failed");
+            Bukkit.getLogger().warning("[RPGRoll-Extras] warps.yml: " + exception.getMessage());
         }
     }
 
@@ -164,7 +167,7 @@ public class WarpCommand implements CommandExecutor, TabCompleter {
         lang.send(player, "warp.deleted", "warp", name);
     }
 
-    private void travel(Player player, String name) {
+    void travel(Player player, String name) {
 
         Warp warp = warps.get(name).orElse(null);
         World world = warp == null ? null : Bukkit.getWorld(warp.world());

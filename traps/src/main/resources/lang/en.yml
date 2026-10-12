@@ -105,9 +105,13 @@ admin:
       entry: "&f• {placement} — type: {turret}"
 
 camera:
-  alert: "&c⚠ &fYour camera at &e{x} {y} {z} &fhas spotted &c{who}&f."
+  alert: "&c⚠ &fYour camera &e{name} &fhas spotted &c{who}&f."
   watching: "&7You are looking through the camera. &fSneak &7to leave."
   unavailable: "&cThat camera cannot be viewed right now (it has to be in your current world)."
+  in_combat: "&cYou were just fighting: wait &e{seconds}s &cto look through a camera."
+  prompt_name: "&eType the camera's name:"
+  named: "&a✔ The camera is now called &e{name}&a."
+  bad_name: "&cThat name will not do; the camera is left unnamed."
 
 protection:
   not_breakable: "&cThat block is protected by a trap — it can't be broken."
@@ -116,7 +120,8 @@ protection:
 gui:
   camera_monitor:
     title: "&8Camera monitor"
-    entry: "&bCamera {number}"
+    entry: "&b{name}"
+    unnamed: "Camera {number}"
     where: "&7{world}: &f{x} {y} {z}"
     click: "&eClick to look through it"
     empty: "&cYou have no cameras placed."

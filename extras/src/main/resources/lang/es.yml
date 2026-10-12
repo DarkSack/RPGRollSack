@@ -78,8 +78,12 @@ death:
   done: "&a✔ De vuelta a donde caíste."
 
 warp:
-  list: "&6Warps: {warps}"
-  list_empty: "&7Todavía no hay ningún warp. Crea el tuyo con &e/setwarp <nombre>&7."
+  menu_title: "&8Warps"
+  menu_entry: "&e{warp}"
+  menu_owner: "&7De &f{owner}"
+  menu_click: "&aClic para viajar"
+  menu_create: "&a&lCrear un warp aquí"
+  menu_create_lore: "&7Con tu nombre. Para elegir otro: &e/setwarp <nombre>"
   unknown: "&cNo existe el warp «{warp}»."
   unsafe: "&cEl warp «{warp}» ya no es un sitio seguro."
   done: "&a✔ Has llegado a &e{warp}&a, de &e{owner}&a."

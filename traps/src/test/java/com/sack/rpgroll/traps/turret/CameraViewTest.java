@@ -17,6 +17,14 @@ class CameraViewTest {
     }
 
     @Test
+    void namesLoseFormattingAndExcessLength() {
+        assertEquals("Puerta norte", CameraView.cleanName("  &c&lPuerta <norte>{}  "));
+        assertEquals(24, CameraView.cleanName("x".repeat(60)).length());
+        assertNull(CameraView.cleanName(" &§ "));
+        assertNull(CameraView.cleanName(null));
+    }
+
+    @Test
     void garbageIsNotAnOrigin() {
         assertNull(CameraView.Origin.decode(null));
         assertNull(CameraView.Origin.decode("world;1;2;3"));

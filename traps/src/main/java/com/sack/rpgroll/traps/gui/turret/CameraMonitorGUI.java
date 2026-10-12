@@ -59,7 +59,8 @@ public class CameraMonitorGUI extends InventoryGUI {
             PlacedTurret camera = cameras.get(i);
 
             setItem(i, ItemModels.apply(new ItemBuilder(Material.SPYGLASS)
-                    .setName(lang.component("gui.camera_monitor.entry", "number", i + 1))
+                    .setName(lang.component("gui.camera_monitor.entry", "name", camera.name() != null
+                            ? camera.name() : lang.raw("gui.camera_monitor.unnamed", "number", i + 1)))
                     .setLore(lang.component("gui.camera_monitor.where", "world", camera.world(),
                             "x", camera.x(), "y", camera.y(), "z", camera.z()),
                             lang.component("gui.camera_monitor.click"))

@@ -121,7 +121,7 @@ public class TrapsPlugin extends JavaPlugin {
         getServer().getPluginManager().registerEvents(cameraView, this);
         getServer().getPluginManager().registerEvents(
                 new TurretPlacementListener(this, turretManager, placedTurretManager, turretEngine, ammoManager, langManager,
-                        cameraView),
+                        cameraView, chatPromptManager),
                 this);
 
         var executor = new TrapAdminCommand(this, trapManager, placedTrapManager, engine, turretManager,

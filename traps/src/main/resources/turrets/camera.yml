@@ -2,7 +2,7 @@
 # y se puede mirar por ella con clic derecho, o desde lejos con un monitor (turrets/monitor.yml).
 id: camera
 display-name: "&bCámara de Seguridad"
-description: "Te avisa de quien entra en lo que ve. Clic derecho, o un monitor, para mirar por ella."
+description: "Te avisa de quien entra en lo que ve. Clic derecho, o un monitor, para mirar. Agachado: ponerle nombre."
 
 # Hasta dónde ve. Solo avisa de lo que tiene a la vista: una pared lo tapa.
 radius: 16.0

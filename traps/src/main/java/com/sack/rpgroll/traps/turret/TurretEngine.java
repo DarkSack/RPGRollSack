@@ -221,8 +221,8 @@ public class TurretEngine {
                 return false;
             }
 
-            lang.send(owner, "camera.alert", "who", target.getName(),
-                    "x", placed.x(), "y", placed.y(), "z", placed.z());
+            lang.send(owner, "camera.alert", "who", target.getName(), "name", placed.name() != null
+                    ? placed.name() : placed.x() + " " + placed.y() + " " + placed.z());
             owner.playSound(owner, org.bukkit.Sound.BLOCK_NOTE_BLOCK_PLING, 1f, 0.6f);
             return true;
         }

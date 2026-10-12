@@ -11,12 +11,19 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * Mirar por una cámara: el jugador pasa a espectador pegado a la cabeza de la cámara y, al salir
@@ -36,6 +43,10 @@ public final class CameraView implements Listener {
     private final TurretEngine engine;
     private final LangManager lang;
     private final NamespacedKey originKey;
+    private final Map<UUID, Long> lastCombat = new HashMap<>();
+
+    /** Tras dar o recibir un golpe no se mira por una cámara: desaparecer del sitio sería huir de la pelea. */
+    private static final long COMBAT_MILLIS = 15_000;
 
     public CameraView(Plugin plugin, TurretEngine engine, LangManager lang) {
         this.plugin = plugin;
@@ -70,7 +81,47 @@ public final class CameraView implements Listener {
         }
     }
 
+    /** Lo que escribe el dueño, sin códigos de formato y a 24 letras como mucho; null si no queda nada. */
+    public static String cleanName(String raw) {
+
+        String name = raw == null ? "" : raw.replaceAll("[&§][0-9a-fk-orA-FK-OR]?|[<>{}]", "").trim();
+
+        return name.isEmpty() ? null : name.substring(0, Math.min(name.length(), 24)).trim();
+    }
+
+    /** true, y se lo dice, si acaba de pelear. */
+    public boolean inCombat(Player player) {
+
+        long left = COMBAT_MILLIS - (System.currentTimeMillis() - lastCombat.getOrDefault(player.getUniqueId(), 0L));
+
+        if (left <= 0) {
+            return false;
+        }
+
+        lang.send(player, "camera.in_combat", "seconds", (left + 999) / 1000);
+        return true;
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onDamage(EntityDamageByEntityEvent event) {
+
+        long now = System.currentTimeMillis();
+        Object attacker = event.getDamager() instanceof Projectile projectile ? projectile.getShooter() : event.getDamager();
+
+        if (event.getEntity() instanceof Player victim) {
+            lastCombat.put(victim.getUniqueId(), now);
+        }
+
+        if (attacker instanceof Player player) {
+            lastCombat.put(player.getUniqueId(), now);
+        }
+    }
+
     public void watch(Player player, PlacedTurret camera) {
+
+        if (inCombat(player)) {
+            return;
+        }
 
         Location post = camera.location();
 
@@ -149,6 +200,7 @@ public final class CameraView implements Listener {
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
         restore(event.getPlayer());
+        lastCombat.remove(event.getPlayer().getUniqueId());
     }
 
     @EventHandler
