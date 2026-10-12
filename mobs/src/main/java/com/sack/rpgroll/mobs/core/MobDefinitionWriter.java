@@ -1,5 +1,6 @@
 package com.sack.rpgroll.mobs.core;
 
+import com.sack.rpgroll.common.yaml.YamlSaver;
 import com.sack.rpgroll.common.reskin.EntityReskin;
 
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -51,7 +52,7 @@ public class MobDefinitionWriter {
             parent.mkdirs();
         }
 
-        config.save(file);
+        YamlSaver.save(config, file);
     }
 
     private void writeMap(YamlConfiguration config, String path, Map<String, ?> map) {

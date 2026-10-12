@@ -1,5 +1,6 @@
 package com.sack.rpgroll.seasons.core;
 
+import com.sack.rpgroll.common.yaml.YamlSaver;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -24,7 +25,7 @@ public class CalendarDefinitionWriter {
 
         try {
             folder.mkdirs();
-            config.save(new File(folder, calendar.id() + ".yml"));
+            YamlSaver.save(config, new File(folder, calendar.id() + ".yml"));
         } catch (IOException e) {
             throw new RuntimeException("No se pudo guardar el calendario " + calendar.id(), e);
         }

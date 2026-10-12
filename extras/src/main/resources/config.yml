@@ -34,3 +34,6 @@ server-menu:
 afk:
   pause-stats: true
   idle-seconds: 300 # 5 minutos
+
+# Mundos donde las necesidades (sed, fatiga, estrés...) ni corren ni hacen daño: un lobby.
+stats-disabled-worlds: []

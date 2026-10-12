@@ -1,5 +1,6 @@
 package com.sack.rpgroll.ranching.core.animal;
 
+import com.sack.rpgroll.common.yaml.YamlSaver;
 import com.sack.rpgroll.ranching.core.genetics.AllelePair;
 import com.sack.rpgroll.ranching.core.genetics.AncestorRef;
 import com.sack.rpgroll.ranching.core.genetics.BreedingOutcome;
@@ -94,7 +95,7 @@ public class AnimalStore {
     private void write(UUID id, YamlConfiguration config) {
         try {
             folder.mkdirs();
-            config.save(new File(folder, id + ".yml"));
+            YamlSaver.save(config, new File(folder, id + ".yml"));
         } catch (IOException e) {
             plugin.getLogger().warning("✘ No se pudo guardar el animal " + id + ": " + e.getMessage());
         }

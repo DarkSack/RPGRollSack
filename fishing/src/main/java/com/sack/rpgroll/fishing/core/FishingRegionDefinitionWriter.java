@@ -1,5 +1,6 @@
 package com.sack.rpgroll.fishing.core;
 
+import com.sack.rpgroll.common.yaml.YamlSaver;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -30,7 +31,7 @@ public class FishingRegionDefinitionWriter {
 
         try {
             folder.mkdirs();
-            config.save(file);
+            YamlSaver.save(config, file);
         } catch (IOException e) {
             throw new RuntimeException("No se pudo guardar la región " + region.id(), e);
         }

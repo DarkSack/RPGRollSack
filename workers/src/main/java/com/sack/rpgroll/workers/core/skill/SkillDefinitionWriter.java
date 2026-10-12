@@ -1,5 +1,6 @@
 package com.sack.rpgroll.workers.core.skill;
 
+import com.sack.rpgroll.common.yaml.YamlSaver;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -26,7 +27,7 @@ public class SkillDefinitionWriter {
 
         try {
             folder.mkdirs();
-            config.save(new File(folder, skill.id() + ".yml"));
+            YamlSaver.save(config, new File(folder, skill.id() + ".yml"));
         } catch (IOException e) {
             throw new RuntimeException("No se pudo guardar la habilidad " + skill.id(), e);
         }

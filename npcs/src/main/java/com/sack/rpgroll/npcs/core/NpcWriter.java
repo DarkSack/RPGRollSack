@@ -1,5 +1,6 @@
 package com.sack.rpgroll.npcs.core;
 
+import com.sack.rpgroll.common.yaml.YamlSaver;
 import com.sack.rpgroll.common.menu.MenuAction;
 
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -51,7 +52,7 @@ public class NpcWriter {
         config.set("actions", actionMaps);
 
         try {
-            config.save(file);
+            YamlSaver.save(config, file);
             return true;
         } catch (IOException e) {
             plugin.getLogger().severe("✘ Error al guardar NPC '" + definition.id() + "': " + e.getMessage());

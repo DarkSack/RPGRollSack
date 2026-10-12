@@ -1,5 +1,6 @@
 package com.sack.rpgroll.crafting.station;
 
+import com.sack.rpgroll.common.yaml.YamlSaver;
 import com.sack.rpgroll.crafting.ingredient.IngredientSpec;
 import com.sack.rpgroll.crafting.station.structure.StructureRequirement;
 import com.sack.rpgroll.crafting.station.tier.TierUpgrade;
@@ -44,7 +45,7 @@ public class CustomStationDefinitionWriter {
 
         try {
             folder.mkdirs();
-            config.save(new File(folder, station.id() + ".yml"));
+            YamlSaver.save(config, new File(folder, station.id() + ".yml"));
         } catch (IOException e) {
             throw new RuntimeException("No se pudo guardar la estación " + station.id(), e);
         }

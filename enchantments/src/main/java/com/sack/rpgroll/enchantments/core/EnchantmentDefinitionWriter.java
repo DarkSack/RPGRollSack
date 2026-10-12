@@ -1,5 +1,6 @@
 package com.sack.rpgroll.enchantments.core;
 
+import com.sack.rpgroll.common.yaml.YamlSaver;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -65,7 +66,7 @@ public class EnchantmentDefinitionWriter {
             if (!folder.exists()) {
                 folder.mkdirs();
             }
-            config.save(new File(folder, enchantment.id() + ".yml"));
+            YamlSaver.save(config, new File(folder, enchantment.id() + ".yml"));
         } catch (IOException e) {
             logger.warning("✘ Error guardando encantamiento '" + enchantment.id() + "': " + e.getMessage());
         }

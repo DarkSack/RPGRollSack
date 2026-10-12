@@ -1,5 +1,6 @@
 package com.sack.rpgroll.chat.channel;
 
+import com.sack.rpgroll.common.yaml.YamlSaver;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -45,7 +46,7 @@ public class ChannelDefinitionWriter {
             if (!folder.exists()) {
                 folder.mkdirs();
             }
-            config.save(new File(folder, channel.id() + ".yml"));
+            YamlSaver.save(config, new File(folder, channel.id() + ".yml"));
         } catch (IOException e) {
             logger.warning("✘ Error guardando canal '" + channel.id() + "': " + e.getMessage());
         }

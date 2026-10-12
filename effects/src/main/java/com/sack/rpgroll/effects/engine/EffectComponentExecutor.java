@@ -187,10 +187,7 @@ public class EffectComponentExecutor {
         double perStack = component.paramDouble("amount-per-stack", 0.0);
         double amount = base + perStack * (activeEffect.stacks() - 1);
 
-        AttributeInstance maxHealthAttribute = target.getAttribute(Attribute.MAX_HEALTH);
-        double maxHealth = maxHealthAttribute != null ? maxHealthAttribute.getValue() : target.getHealth();
-
-        target.setHealth(Math.min(maxHealth, target.getHealth() + Math.max(0, amount)));
+        target.heal(Math.max(0, amount));
     }
 
     // ============ POTION_VANILLA ============

@@ -1,5 +1,6 @@
 package com.sack.rpgroll.dungeons.structure;
 
+import com.sack.rpgroll.common.yaml.YamlSaver;
 import com.sack.rpgroll.dungeons.structure.schematic.SchematicBridge;
 
 import org.bukkit.Bukkit;
@@ -158,7 +159,7 @@ public class StructureImportService {
         config.set("source", source.name());
 
         try {
-            config.save(metaFile);
+            YamlSaver.save(config, metaFile);
         } catch (IOException e) {
             dungeonsPlugin.getLogger().warning("✘ Error escribiendo metadata de '" + id + "': " + e.getMessage());
         }

@@ -87,6 +87,7 @@ quarry:
     "off": "&7desligada"
     no_owner: "&eesperando o dono"
     no_chest: "&cfalta um baú ao lado"
+    no_claim: "&ca área já não está dentro do seu claim"
     full: "&co baú está cheio"
     waiting_chunk: "&eesperando os chunks carregarem"
     finished: "&bterminada"

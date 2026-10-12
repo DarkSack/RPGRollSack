@@ -1,5 +1,6 @@
 package com.sack.rpgroll.crafting.discovery;
 
+import com.sack.rpgroll.common.yaml.YamlSaver;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -63,7 +64,7 @@ public class DiscoveryService {
 
         try {
             folder.mkdirs();
-            config.save(new File(folder, discovery.playerId() + ".yml"));
+            YamlSaver.save(config, new File(folder, discovery.playerId() + ".yml"));
         } catch (IOException e) {
             logger.warning("✘ No se pudo guardar el descubrimiento de recetas de " + discovery.playerId() + ": "
                     + e.getMessage());

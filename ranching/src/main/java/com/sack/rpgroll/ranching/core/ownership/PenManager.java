@@ -1,5 +1,6 @@
 package com.sack.rpgroll.ranching.core.ownership;
 
+import com.sack.rpgroll.common.yaml.YamlSaver;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -85,7 +86,7 @@ public class PenManager {
 
         try {
             plugin.getDataFolder().mkdirs();
-            config.save(file);
+            YamlSaver.save(config, file);
         } catch (IOException e) {
             plugin.getLogger().warning("✘ No se pudieron guardar los corrales: " + e.getMessage());
         }

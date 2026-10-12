@@ -1,5 +1,6 @@
 package com.sack.rpgroll.quests.region;
 
+import com.sack.rpgroll.common.yaml.YamlSaver;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -32,7 +33,7 @@ public class RegionDefinitionWriter {
             if (!folder.exists()) {
                 folder.mkdirs();
             }
-            config.save(new File(folder, region.id() + ".yml"));
+            YamlSaver.save(config, new File(folder, region.id() + ".yml"));
         } catch (IOException e) {
             logger.warning("✘ Error guardando región '" + region.id() + "': " + e.getMessage());
         }

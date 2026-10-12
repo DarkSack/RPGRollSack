@@ -1,5 +1,6 @@
 package com.sack.rpgroll.ascension.player;
 
+import com.sack.rpgroll.common.yaml.YamlSaver;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 
@@ -127,7 +128,7 @@ public class AscensionPlayerStateStore {
         state.getBonusStats().forEach((key, value) -> config.set("bonus-stats." + key, value));
 
         try {
-            config.save(new File(folder, state.uuid() + ".yml"));
+            YamlSaver.save(config, new File(folder, state.uuid() + ".yml"));
         } catch (IOException e) {
             plugin.getLogger().warning("✘ Error guardando progreso de Ascension de " + state.uuid() + ": "
                     + e.getMessage());

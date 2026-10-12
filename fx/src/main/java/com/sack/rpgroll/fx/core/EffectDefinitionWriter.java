@@ -1,5 +1,6 @@
 package com.sack.rpgroll.fx.core;
 
+import com.sack.rpgroll.common.yaml.YamlSaver;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -39,7 +40,7 @@ public class EffectDefinitionWriter {
 
         try {
             folder.mkdirs();
-            config.save(new File(folder, effect.id() + ".yml"));
+            YamlSaver.save(config, new File(folder, effect.id() + ".yml"));
         } catch (IOException e) {
             throw new RuntimeException("No se pudo guardar el efecto " + effect.id(), e);
         }

@@ -1,5 +1,6 @@
 package com.sack.rpgroll.traps.turret;
 
+import com.sack.rpgroll.common.yaml.YamlSaver;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -112,7 +113,7 @@ public class PlacedTurretManager {
                 parent.mkdirs();
             }
 
-            config.save(file);
+            YamlSaver.save(config, file);
 
         } catch (IOException e) {
             plugin.getLogger().severe("✘ Error guardando turret-locations.yml: " + e.getMessage());

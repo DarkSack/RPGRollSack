@@ -498,11 +498,7 @@ public class SpellComponentExecutor {
                 : List.of(context.caster());
 
         for (LivingEntity recipient : recipients) {
-
-            var maxHealthAttribute = recipient.getAttribute(org.bukkit.attribute.Attribute.MAX_HEALTH);
-            double maxHealth = maxHealthAttribute != null ? maxHealthAttribute.getValue() : recipient.getHealth();
-
-            recipient.setHealth(Math.min(maxHealth, recipient.getHealth() + amount));
+            recipient.heal(amount);
         }
     }
 

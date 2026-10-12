@@ -1,5 +1,6 @@
 package com.sack.rpgroll.crafting.proficiency;
 
+import com.sack.rpgroll.common.yaml.YamlSaver;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -83,7 +84,7 @@ public class ProficiencyService {
 
         try {
             folder.mkdirs();
-            config.save(new File(folder, proficiency.playerId() + ".yml"));
+            YamlSaver.save(config, new File(folder, proficiency.playerId() + ".yml"));
         } catch (IOException e) {
             logger.warning("✘ No se pudo guardar la proficiencia de " + proficiency.playerId() + ": " + e.getMessage());
         }

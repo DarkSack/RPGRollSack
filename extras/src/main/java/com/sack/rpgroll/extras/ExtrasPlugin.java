@@ -146,6 +146,7 @@ public class ExtrasPlugin extends JavaPlugin {
         ModifierResolver modifierResolver = new ModifierResolver(modifierManager);
         statEngine.linkModifiers(modifierResolver);
         statEngine.linkAfkPolicy(AfkPolicy.from(getConfig()));
+        conditionRuntime.linkAfkPolicy(AfkPolicy.from(getConfig()));
 
         statEngine.start();
 
@@ -196,6 +197,7 @@ public class ExtrasPlugin extends JavaPlugin {
             }
         });
         statEngine.linkAfkPolicy(AfkPolicy.from(getConfig()));
+        conditionRuntime.linkAfkPolicy(AfkPolicy.from(getConfig()));
         // Las mochilas abiertas se guardan y cierran: su nivel pudo cambiar de tamaño.
         backpackService.closeAll();
         configureBackpacks();

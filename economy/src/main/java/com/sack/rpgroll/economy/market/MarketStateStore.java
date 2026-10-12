@@ -1,5 +1,6 @@
 package com.sack.rpgroll.economy.market;
 
+import com.sack.rpgroll.common.yaml.YamlSaver;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -62,7 +63,7 @@ public class MarketStateStore {
         }
 
         try {
-            config.save(file);
+            YamlSaver.save(config, file);
         } catch (Exception e) {
             throw new RuntimeException("No se pudo guardar el estado de mercado", e);
         }

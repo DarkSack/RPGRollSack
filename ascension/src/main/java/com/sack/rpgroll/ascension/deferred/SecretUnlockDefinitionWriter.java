@@ -1,5 +1,6 @@
 package com.sack.rpgroll.ascension.deferred;
 
+import com.sack.rpgroll.common.yaml.YamlSaver;
 import com.sack.rpgroll.ascension.core.AscensionRequirementsWriter;
 
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -30,7 +31,7 @@ public class SecretUnlockDefinitionWriter {
 
         try {
             folder.mkdirs();
-            config.save(file);
+            YamlSaver.save(config, file);
         } catch (IOException e) {
             throw new RuntimeException("No se pudo guardar el desbloqueo secreto " + unlock.id(), e);
         }

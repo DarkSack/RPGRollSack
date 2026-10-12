@@ -1,5 +1,6 @@
 package com.sack.rpgroll.crafting.brewing;
 
+import com.sack.rpgroll.common.yaml.YamlSaver;
 import com.sack.rpgroll.crafting.condition.RecipeCondition;
 
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -37,7 +38,7 @@ public class BrewRecipeDefinitionWriter {
 
         try {
             folder.mkdirs();
-            config.save(new File(folder, recipe.id() + ".yml"));
+            YamlSaver.save(config, new File(folder, recipe.id() + ".yml"));
         } catch (IOException e) {
             throw new RuntimeException("No se pudo guardar la receta de fermentación " + recipe.id(), e);
         }

@@ -53,4 +53,21 @@ class AfkPolicyTest {
         assertEquals(Duration.ofMinutes(5), policy.idleThreshold());
     }
 
+
+    @Test
+    void aLobbyWorldFreezesStatsEvenForAnActivePlayer() {
+        YamlConfiguration config = new YamlConfiguration();
+        config.set("stats-disabled-worlds", java.util.List.of("lobby"));
+        AfkPolicy policy = AfkPolicy.from(config);
+
+        org.bukkit.World lobby = org.mockito.Mockito.mock(org.bukkit.World.class);
+        org.mockito.Mockito.when(lobby.getName()).thenReturn("lobby");
+        org.bukkit.entity.Player player = org.mockito.Mockito.mock(org.bukkit.entity.Player.class);
+        org.mockito.Mockito.when(player.getWorld()).thenReturn(lobby);
+        org.mockito.Mockito.when(player.getIdleDuration()).thenReturn(java.time.Duration.ZERO);
+
+        org.junit.jupiter.api.Assertions.assertTrue(policy.freezes(player));
+        org.mockito.Mockito.when(lobby.getName()).thenReturn("world");
+        org.junit.jupiter.api.Assertions.assertFalse(policy.freezes(player));
+    }
 }

@@ -1,5 +1,6 @@
 package com.sack.rpgroll.workers.core.logistics;
 
+import com.sack.rpgroll.common.yaml.YamlSaver;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -86,7 +87,7 @@ public class WarehouseManager {
         config.set("warehouses", rawList);
 
         try {
-            config.save(file);
+            YamlSaver.save(config, file);
         } catch (Exception e) {
             plugin.getLogger().warning("✘ No se pudo guardar warehouses.yml: " + e.getMessage());
         }

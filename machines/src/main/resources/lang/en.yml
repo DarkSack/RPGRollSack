@@ -87,6 +87,7 @@ quarry:
     "off": "&7off"
     no_owner: "&ewaiting for its owner"
     no_chest: "&cneeds a chest next to it"
+    no_claim: "&cits area is no longer inside your claim"
     full: "&cthe chest is full"
     waiting_chunk: "&ewaiting for chunks to load"
     finished: "&bfinished"

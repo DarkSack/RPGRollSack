@@ -1,5 +1,6 @@
 package com.sack.rpgroll.ranching.core.breeds;
 
+import com.sack.rpgroll.common.yaml.YamlSaver;
 import com.sack.rpgroll.common.reskin.EntityReskinYaml;
 
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -36,7 +37,7 @@ public class BreedDefinitionWriter {
 
         try {
             folder.mkdirs();
-            config.save(file);
+            YamlSaver.save(config, file);
         } catch (IOException e) {
             throw new RuntimeException("No se pudo guardar la raza " + breed.id(), e);
         }

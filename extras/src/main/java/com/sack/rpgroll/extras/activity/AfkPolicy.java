@@ -4,6 +4,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
 import java.time.Duration;
+import java.util.Set;
 
 /**
  * Decide si un jugador está AFK para congelar sus stats: mientras lo está,
@@ -12,9 +13,9 @@ import java.time.Duration;
  * cualquier acción real del jugador (moverse, girar la cámara, chatear,
  * golpear...) pero no cuando lo arrastra el agua o lo empuja otra entidad.
  */
-public record AfkPolicy(boolean pauseStats, Duration idleThreshold) {
+public record AfkPolicy(boolean pauseStats, Duration idleThreshold, Set<String> offWorlds) {
 
-    public static final AfkPolicy DISABLED = new AfkPolicy(false, Duration.ZERO);
+    public static final AfkPolicy DISABLED = new AfkPolicy(false, Duration.ZERO, Set.of());
 
     private static final int DEFAULT_IDLE_SECONDS = 300;
 
@@ -22,17 +23,23 @@ public record AfkPolicy(boolean pauseStats, Duration idleThreshold) {
     public static AfkPolicy from(ConfigurationSection config) {
 
         ConfigurationSection afk = config == null ? null : config.getConfigurationSection("afk");
+        Set<String> offWorlds = config == null ? Set.of() : Set.copyOf(config.getStringList("stats-disabled-worlds"));
 
         if (afk == null) {
-            return new AfkPolicy(true, Duration.ofSeconds(DEFAULT_IDLE_SECONDS));
+            return new AfkPolicy(true, Duration.ofSeconds(DEFAULT_IDLE_SECONDS), offWorlds);
         }
 
         int seconds = Math.max(1, afk.getInt("idle-seconds", DEFAULT_IDLE_SECONDS));
-        return new AfkPolicy(afk.getBoolean("pause-stats", true), Duration.ofSeconds(seconds));
+        return new AfkPolicy(afk.getBoolean("pause-stats", true), Duration.ofSeconds(seconds), offWorlds);
     }
 
     public boolean freezes(Player player) {
-        return pauseStats && player.getIdleDuration().compareTo(idleThreshold) >= 0;
+        return inOffWorld(player) || (pauseStats && player.getIdleDuration().compareTo(idleThreshold) >= 0);
+    }
+
+    /** En los mundos de {@code stats-disabled-worlds} (un lobby) las necesidades ni corren ni hacen daño. */
+    public boolean inOffWorld(Player player) {
+        return !offWorlds.isEmpty() && offWorlds.contains(player.getWorld().getName());
     }
 
 }

@@ -1,5 +1,6 @@
 package com.sack.rpgroll.magic.runtime;
 
+import com.sack.rpgroll.common.yaml.YamlSaver;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 
@@ -90,7 +91,7 @@ public class SpellbookStore {
         }
 
         try {
-            config.save(new File(folder, spellbook.uuid() + ".yml"));
+            YamlSaver.save(config, new File(folder, spellbook.uuid() + ".yml"));
         } catch (IOException e) {
             plugin.getLogger().warning("✘ Error guardando el spellbook de " + spellbook.uuid() + ": "
                     + e.getMessage());

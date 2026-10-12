@@ -1,5 +1,6 @@
 package com.sack.rpgroll.common.content;
 
+import com.sack.rpgroll.common.yaml.YamlSaver;
 import com.sack.rpgroll.common.yaml.YamlLoader;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -111,7 +112,7 @@ public class ContentLoader<T extends RPGContent> {
             }
         }
 
-        fresh.save(target);
+        YamlSaver.save(fresh, target);
     }
 
     private static void copyLeaves(ConfigurationSection from, YamlConfiguration to, String prefix) {

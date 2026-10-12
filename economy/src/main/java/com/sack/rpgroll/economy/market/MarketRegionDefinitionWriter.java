@@ -1,5 +1,6 @@
 package com.sack.rpgroll.economy.market;
 
+import com.sack.rpgroll.common.yaml.YamlSaver;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -30,7 +31,7 @@ public class MarketRegionDefinitionWriter {
 
         try {
             folder.mkdirs();
-            config.save(new File(folder, region.id() + ".yml"));
+            YamlSaver.save(config, new File(folder, region.id() + ".yml"));
         } catch (IOException e) {
             throw new RuntimeException("No se pudo guardar la región de mercado " + region.id(), e);
         }

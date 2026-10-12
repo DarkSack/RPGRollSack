@@ -1,5 +1,6 @@
 package com.sack.rpgroll.ranching.core.health;
 
+import com.sack.rpgroll.common.yaml.YamlSaver;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -31,7 +32,7 @@ public class DiseaseDefinitionWriter {
 
         try {
             folder.mkdirs();
-            config.save(file);
+            YamlSaver.save(config, file);
         } catch (IOException e) {
             throw new RuntimeException("No se pudo guardar la enfermedad " + disease.id(), e);
         }

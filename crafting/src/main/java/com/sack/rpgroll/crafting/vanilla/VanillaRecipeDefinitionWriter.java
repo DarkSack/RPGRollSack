@@ -1,5 +1,6 @@
 package com.sack.rpgroll.crafting.vanilla;
 
+import com.sack.rpgroll.common.yaml.YamlSaver;
 import com.sack.rpgroll.crafting.condition.RecipeCondition;
 
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -41,7 +42,7 @@ public class VanillaRecipeDefinitionWriter {
 
         try {
             folder.mkdirs();
-            config.save(new File(folder, recipe.id() + ".yml"));
+            YamlSaver.save(config, new File(folder, recipe.id() + ".yml"));
         } catch (IOException e) {
             throw new RuntimeException("No se pudo guardar la receta vanilla " + recipe.id(), e);
         }

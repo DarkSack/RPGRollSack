@@ -1,5 +1,6 @@
 package com.sack.rpgroll.crafting.grindstone;
 
+import com.sack.rpgroll.common.yaml.YamlSaver;
 import com.sack.rpgroll.crafting.condition.RecipeCondition;
 import com.sack.rpgroll.crafting.ingredient.IngredientSpec;
 
@@ -34,7 +35,7 @@ public class GrindstoneRecipeDefinitionWriter {
 
         try {
             folder.mkdirs();
-            config.save(new File(folder, recipe.id() + ".yml"));
+            YamlSaver.save(config, new File(folder, recipe.id() + ".yml"));
         } catch (IOException e) {
             throw new RuntimeException("No se pudo guardar la receta de amolar " + recipe.id(), e);
         }

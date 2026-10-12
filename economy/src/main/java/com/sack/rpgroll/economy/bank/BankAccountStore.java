@@ -1,5 +1,6 @@
 package com.sack.rpgroll.economy.bank;
 
+import com.sack.rpgroll.common.yaml.YamlSaver;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -69,7 +70,7 @@ public class BankAccountStore {
         config.set("co-owners", account.coOwners().stream().map(UUID::toString).toList());
 
         try {
-            config.save(new File(folder, account.id() + ".yml"));
+            YamlSaver.save(config, new File(folder, account.id() + ".yml"));
         } catch (Exception e) {
             throw new RuntimeException("No se pudo guardar la cuenta bancaria " + account.id(), e);
         }

@@ -1,5 +1,6 @@
 package com.sack.rpgroll.economy.ledger;
 
+import com.sack.rpgroll.common.yaml.YamlSaver;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -87,7 +88,7 @@ public class TransactionLedger {
         config.set("entries", existing);
 
         try {
-            config.save(file);
+            YamlSaver.save(config, file);
         } catch (Exception e) {
             economyLoggerWarn("No se pudo guardar el libro mayor del día: " + e.getMessage());
         }

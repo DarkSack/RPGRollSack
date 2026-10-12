@@ -1,5 +1,6 @@
 package com.sack.rpgroll.workers.core.schedule;
 
+import com.sack.rpgroll.common.yaml.YamlSaver;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -36,7 +37,7 @@ public class ScheduleDefinitionWriter {
 
         try {
             folder.mkdirs();
-            config.save(new File(folder, schedule.id() + ".yml"));
+            YamlSaver.save(config, new File(folder, schedule.id() + ".yml"));
         } catch (IOException e) {
             throw new RuntimeException("No se pudo guardar el horario " + schedule.id(), e);
         }

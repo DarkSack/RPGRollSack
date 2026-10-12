@@ -1,5 +1,6 @@
 package com.sack.rpgroll.economy.inflation;
 
+import com.sack.rpgroll.common.yaml.YamlSaver;
 import com.sack.rpgroll.economy.bank.BankAccount;
 import com.sack.rpgroll.economy.bank.BankManager;
 import com.sack.rpgroll.economy.wallet.Wallet;
@@ -75,7 +76,7 @@ public class InflationTracker {
         config.set("snapshots", snapshots);
 
         try {
-            config.save(file);
+            YamlSaver.save(config, file);
         } catch (Exception e) {
             throw new RuntimeException("No se pudo guardar el historial de inflación", e);
         }

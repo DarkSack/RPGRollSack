@@ -1,5 +1,6 @@
 package com.sack.rpgroll.chat.ignore;
 
+import com.sack.rpgroll.common.yaml.YamlSaver;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 
@@ -54,7 +55,7 @@ public class IgnoreStateStore {
         config.set("channels", new java.util.ArrayList<>(state.ignoredChannels()));
 
         try {
-            config.save(new File(folder, state.uuid() + ".yml"));
+            YamlSaver.save(config, new File(folder, state.uuid() + ".yml"));
         } catch (IOException e) {
             plugin.getLogger().warning("✘ Error guardando ignorados de " + state.uuid() + ": " + e.getMessage());
         }

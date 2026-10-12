@@ -1,5 +1,6 @@
 package com.sack.rpgroll.crates.location;
 
+import com.sack.rpgroll.common.yaml.YamlSaver;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -95,7 +96,7 @@ public class PlacedCrateManager {
                 parent.mkdirs();
             }
 
-            config.save(file);
+            YamlSaver.save(config, file);
 
         } catch (IOException e) {
             plugin.getLogger().severe("✘ Error guardando locations.yml: " + e.getMessage());

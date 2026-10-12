@@ -1,5 +1,6 @@
 package com.sack.rpgroll.traps.turret;
 
+import com.sack.rpgroll.common.yaml.YamlSaver;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -42,7 +43,7 @@ public class TurretDefinitionWriter {
             if (!folder.exists()) {
                 folder.mkdirs();
             }
-            config.save(new File(folder, turret.id() + ".yml"));
+            YamlSaver.save(config, new File(folder, turret.id() + ".yml"));
         } catch (IOException e) {
             logger.warning("✘ Error guardando torreta '" + turret.id() + "': " + e.getMessage());
         }

@@ -1,5 +1,6 @@
 package com.sack.rpgroll.economy.wallet;
 
+import com.sack.rpgroll.common.yaml.YamlSaver;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -80,7 +81,7 @@ public class WalletStore {
         }
 
         try {
-            config.save(new File(folder, wallet.ownerId() + ".yml"));
+            YamlSaver.save(config, new File(folder, wallet.ownerId() + ".yml"));
         } catch (Exception e) {
             throw new RuntimeException("No se pudo guardar el wallet de " + wallet.ownerId(), e);
         }

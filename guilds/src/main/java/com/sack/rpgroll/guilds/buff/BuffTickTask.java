@@ -28,8 +28,7 @@ public class BuffTickTask implements Runnable {
             double regenBonus = buffCalculator.regenBonus(player.getUniqueId());
 
             if (regenBonus > 0 && player.getHealth() > 0 && player.getHealth() < player.getMaxHealth()) {
-                double healed = Math.min(player.getMaxHealth(), player.getHealth() + regenBonus);
-                player.setHealth(healed);
+                player.heal(regenBonus);
             }
         }
     }

@@ -1,5 +1,6 @@
 package com.sack.rpgroll.chat.language;
 
+import com.sack.rpgroll.common.yaml.YamlSaver;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 
@@ -51,7 +52,7 @@ public class PlayerLanguageStateStore {
         config.set("seeded-race", state.seededRaceId());
 
         try {
-            config.save(new File(folder, state.uuid() + ".yml"));
+            YamlSaver.save(config, new File(folder, state.uuid() + ".yml"));
         } catch (IOException e) {
             plugin.getLogger().warning("✘ Error guardando idiomas de " + state.uuid() + ": " + e.getMessage());
         }

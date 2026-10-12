@@ -1,5 +1,6 @@
 package com.sack.rpgroll.crates.core;
 
+import com.sack.rpgroll.common.yaml.YamlSaver;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -59,7 +60,7 @@ public class CrateDefinitionWriter {
             if (!folder.exists()) {
                 folder.mkdirs();
             }
-            config.save(new File(folder, crate.id() + ".yml"));
+            YamlSaver.save(config, new File(folder, crate.id() + ".yml"));
         } catch (IOException e) {
             logger.warning("✘ Error guardando crate '" + crate.id() + "': " + e.getMessage());
         }

@@ -1,5 +1,6 @@
 package com.sack.rpgroll.quests.core;
 
+import com.sack.rpgroll.common.yaml.YamlSaver;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -47,7 +48,7 @@ public class QuestDefinitionWriter {
             if (!folder.exists()) {
                 folder.mkdirs();
             }
-            config.save(new File(folder, quest.id() + ".yml"));
+            YamlSaver.save(config, new File(folder, quest.id() + ".yml"));
         } catch (IOException e) {
             logger.warning("✘ Error guardando quest '" + quest.id() + "': " + e.getMessage());
         }

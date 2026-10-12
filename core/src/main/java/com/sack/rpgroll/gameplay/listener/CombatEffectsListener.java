@@ -17,6 +17,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityRegainHealthEvent;
+import org.bukkit.event.entity.EntityRegainHealthEvent.RegainReason;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -105,14 +107,18 @@ public class CombatEffectsListener implements Listener {
             return;
         }
 
-        combatTracker.markInCombat(victim.getUniqueId());
+        // Una caída, el hambre o la sed no son un combate: ni lo marcan ni se esquivan.
+        boolean attacked = event instanceof EntityDamageByEntityEvent;
+        if (attacked) {
+            combatTracker.markInCombat(victim.getUniqueId());
+        }
 
         RPGPlayer rpgVictim = rpgVictimOpt.get();
         CombatStats stats = rpgVictim.getCombatStats();
 
         com.sack.rpgroll.gameplay.trait.PassiveEffects.Totals passive = passiveEffects.totals(rpgVictim);
 
-        if (ThreadLocalRandom.current().nextDouble() < stats.evasionChance() + passive.evasion()
+        if (attacked && ThreadLocalRandom.current().nextDouble() < stats.evasionChance() + passive.evasion()
                 + com.sack.rpgroll.gameplay.trait.PassiveEffects.CHANCE_PER_LUCK * passiveEffects.outsideLuck(victim, passive)) {
             event.setCancelled(true);
             victim.sendActionBar(lang.component("combat_effects_listener.evaded"));
@@ -123,7 +129,8 @@ public class CombatEffectsListener implements Listener {
         double reducedDamage = event.getDamage() * (1 - armorReduction) * Math.max(0, 1 - passive.defense());
         event.setDamage(reducedDamage);
 
-        int newHealth = (int) Math.round(stats.currentHealth() - reducedDamage);
+        // El daño final ya descuenta armadura puesta, encantamientos, Resistencia y el escudo.
+        int newHealth = (int) Math.round(stats.currentHealth() - event.getFinalDamage());
         CombatStats updatedStats;
 
         if (newHealth <= 0) {
@@ -141,6 +148,29 @@ public class CombatEffectsListener implements Listener {
         playerManager.getCache().update(updatedVictim);
         resourceBar.update(victim, updatedVictim);
 
+    }
+
+    /**
+     * Lo que cura los corazones (pociones, hechizos, objetos) cura la salud RPG en la misma
+     * proporción. La comida no: la regeneración natural es la de {@code ResourceRegenTask}.
+     */
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onHeal(EntityRegainHealthEvent event) {
+
+        if (!(event.getEntity() instanceof Player player) || event.getRegainReason() == RegainReason.SATIATED
+                || event.getRegainReason() == RegainReason.REGEN) {
+            return;
+        }
+        Optional<RPGPlayer> rpgPlayer = playerManager.getPlayer(player.getUniqueId());
+        if (rpgPlayer.isEmpty()) {
+            return;
+        }
+        CombatStats stats = rpgPlayer.get().getCombatStats();
+        int gain = (int) Math.ceil(event.getAmount() / player.getMaxHealth() * stats.maxHealth());
+
+        RPGPlayer healed = rpgPlayer.get().updateCombatStats(stats.withHealth(stats.currentHealth() + gain));
+        playerManager.getCache().update(healed);
+        resourceBar.update(player, healed);
     }
 
     private Player resolveAttacker(EntityDamageByEntityEvent event) {

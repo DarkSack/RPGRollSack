@@ -12,6 +12,7 @@ import com.sack.rpgroll.player.cache.PlayerCache;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -20,6 +21,7 @@ import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyDouble;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.doubleThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -106,7 +108,7 @@ class CombatEffectsListenerTest {
 
     @Test
     void aSureEvasionCancelsTheHit() {
-        EntityDamageEvent event = mock(EntityDamageEvent.class);
+        EntityDamageEvent event = mock(EntityDamageByEntityEvent.class);
         when(event.getEntity()).thenReturn(bukkitPlayer);
         when(event.getCause()).thenReturn(EntityDamageEvent.DamageCause.ENTITY_ATTACK);
         when(event.getDamage()).thenReturn(20.0);
@@ -116,6 +118,57 @@ class CombatEffectsListenerTest {
 
         verify(event).setCancelled(true);
         verify(event, never()).setDamage(anyDouble());
+    }
+
+    @Test
+    void thirstOrAFallIsNeitherDodgedNorCombat() {
+        CombatTracker tracker = mock(CombatTracker.class);
+        listener = new CombatEffectsListener(players, tracker, mock(PlayerResourceBar.class),
+                mock(LangManager.class), passive);
+        EntityDamageEvent event = mock(EntityDamageEvent.class);
+        when(event.getEntity()).thenReturn(bukkitPlayer);
+        when(event.getCause()).thenReturn(EntityDamageEvent.DamageCause.CUSTOM);
+        when(event.getDamage()).thenReturn(1.0);
+
+        stats(0, 0, 1.0, 0);
+        listener.onDamageTaken(event);
+
+        verify(event, never()).setCancelled(true);
+        verify(tracker, never()).markInCombat(any());
+    }
+
+    @Test
+    void theHealthLostIsWhatGetsPastArmorAndShield() {
+        EntityDamageEvent event = mock(EntityDamageByEntityEvent.class);
+        when(event.getEntity()).thenReturn(bukkitPlayer);
+        when(event.getCause()).thenReturn(EntityDamageEvent.DamageCause.ENTITY_ATTACK);
+        when(event.getDamage()).thenReturn(20.0);
+        stats(0, 0, 0, 0);
+
+        when(event.getFinalDamage()).thenReturn(4.0);
+        listener.onDamageTaken(event);
+        verify(rpgPlayer).updateCombatStats(argThat(stats -> stats.currentHealth() == 96));
+
+        when(event.getFinalDamage()).thenReturn(0.0); // bloqueado con el escudo
+        listener.onDamageTaken(event);
+        verify(rpgPlayer).updateCombatStats(argThat(stats -> stats.currentHealth() == 100));
+    }
+
+    @Test
+    void aHealingPotionHealsTheSameShareOfRpgHealth() {
+        EntityRegainHealthEvent event = mock(EntityRegainHealthEvent.class);
+        when(bukkitPlayer.getMaxHealth()).thenReturn(20.0);
+        when(event.getEntity()).thenReturn(bukkitPlayer);
+        when(event.getRegainReason()).thenReturn(EntityRegainHealthEvent.RegainReason.MAGIC);
+        when(event.getAmount()).thenReturn(5.0);
+        when(rpgPlayer.getCombatStats()).thenReturn(new CombatStats(100, 40, 100, 100, 50.0, 0.0, 0.0, 1.5));
+
+        listener.onHeal(event);
+        verify(rpgPlayer).updateCombatStats(argThat(stats -> stats.currentHealth() == 65));
+
+        when(event.getRegainReason()).thenReturn(EntityRegainHealthEvent.RegainReason.SATIATED);
+        listener.onHeal(event);
+        verify(rpgPlayer).updateCombatStats(any()); // la comida no suma: sigue siendo una sola vez
     }
 
 }

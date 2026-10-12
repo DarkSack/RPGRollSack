@@ -1,5 +1,6 @@
 package com.sack.rpgroll.economy.market;
 
+import com.sack.rpgroll.common.yaml.YamlSaver;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -32,7 +33,7 @@ public class MarketProductDefinitionWriter {
 
         try {
             folder.mkdirs();
-            config.save(new File(folder, product.id() + ".yml"));
+            YamlSaver.save(config, new File(folder, product.id() + ".yml"));
         } catch (IOException e) {
             throw new RuntimeException("No se pudo guardar el producto " + product.id(), e);
         }

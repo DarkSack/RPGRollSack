@@ -106,10 +106,7 @@ public class EnchantEffectExecutor {
         double amount = resolveDouble(effect, context, "amount", 1.0);
         Player player = context.player();
 
-        var maxHealthAttribute = player.getAttribute(Attribute.MAX_HEALTH);
-        double maxHealth = maxHealthAttribute != null ? maxHealthAttribute.getValue() : 20.0;
-
-        player.setHealth(Math.min(maxHealth, player.getHealth() + amount));
+        player.heal(amount);
     }
 
     private void executeLightning(EnchantEffect effect, EffectContext context) {

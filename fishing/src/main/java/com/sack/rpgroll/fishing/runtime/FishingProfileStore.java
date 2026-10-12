@@ -1,5 +1,6 @@
 package com.sack.rpgroll.fishing.runtime;
 
+import com.sack.rpgroll.common.yaml.YamlSaver;
 import com.sack.rpgroll.fishing.core.CatchQuality;
 
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -85,7 +86,7 @@ public class FishingProfileStore {
         config.set("total-junk", profile.totalJunk());
 
         try {
-            config.save(new File(folder, profile.uuid() + ".yml"));
+            YamlSaver.save(config, new File(folder, profile.uuid() + ".yml"));
         } catch (IOException e) {
             plugin.getLogger().warning("✘ Error guardando el perfil de pesca de " + profile.uuid() + ": "
                     + e.getMessage());

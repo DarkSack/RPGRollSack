@@ -1,5 +1,6 @@
 package com.sack.rpgroll.dungeons.ranking;
 
+import com.sack.rpgroll.common.yaml.YamlSaver;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 
@@ -128,7 +129,7 @@ public class DungeonRankingManager {
         config.set("runs", raw);
 
         try {
-            config.save(new File(folder, dungeonId.toLowerCase() + ".yml"));
+            YamlSaver.save(config, new File(folder, dungeonId.toLowerCase() + ".yml"));
         } catch (IOException e) {
             plugin.getLogger().warning("✘ Error guardando ranking de " + dungeonId + ": " + e.getMessage());
         }

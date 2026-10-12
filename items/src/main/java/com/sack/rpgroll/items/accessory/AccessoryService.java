@@ -1,5 +1,6 @@
 package com.sack.rpgroll.items.accessory;
 
+import com.sack.rpgroll.common.yaml.YamlSaver;
 import com.sack.rpgroll.items.core.ItemManager;
 import com.sack.rpgroll.items.instance.ItemInstanceService;
 import com.sack.rpgroll.items.requirement.ItemRequirementChecker;
@@ -133,7 +134,7 @@ public class AccessoryService implements Listener {
             config.set("slot-" + i, slots[i]);
         }
         try {
-            config.save(file(uuid));
+            YamlSaver.save(config, file(uuid));
         } catch (IOException e) {
             plugin.getLogger().severe("✘ No se pudieron guardar los amuletos de " + uuid + ": " + e.getMessage());
         }

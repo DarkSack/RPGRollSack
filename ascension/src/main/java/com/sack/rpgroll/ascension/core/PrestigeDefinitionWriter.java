@@ -1,5 +1,6 @@
 package com.sack.rpgroll.ascension.core;
 
+import com.sack.rpgroll.common.yaml.YamlSaver;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -27,7 +28,7 @@ public class PrestigeDefinitionWriter {
 
         try {
             folder.mkdirs();
-            config.save(new File(folder, level.id() + ".yml"));
+            YamlSaver.save(config, new File(folder, level.id() + ".yml"));
         } catch (IOException e) {
             throw new RuntimeException("No se pudo guardar el prestigio " + level.id(), e);
         }

@@ -1,5 +1,6 @@
 package com.sack.rpgroll.ascension.core;
 
+import com.sack.rpgroll.common.yaml.YamlSaver;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -27,7 +28,7 @@ public class AffinityDefinitionWriter {
 
         try {
             folder.mkdirs();
-            config.save(new File(folder, affinity.id() + ".yml"));
+            YamlSaver.save(config, new File(folder, affinity.id() + ".yml"));
         } catch (IOException e) {
             throw new RuntimeException("No se pudo guardar la afinidad " + affinity.id(), e);
         }

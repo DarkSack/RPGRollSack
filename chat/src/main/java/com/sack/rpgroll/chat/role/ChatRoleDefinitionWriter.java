@@ -1,5 +1,6 @@
 package com.sack.rpgroll.chat.role;
 
+import com.sack.rpgroll.common.yaml.YamlSaver;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -31,7 +32,7 @@ public class ChatRoleDefinitionWriter {
             if (!folder.exists()) {
                 folder.mkdirs();
             }
-            config.save(new File(folder, role.id() + ".yml"));
+            YamlSaver.save(config, new File(folder, role.id() + ".yml"));
         } catch (IOException e) {
             logger.warning("✘ Error guardando rol '" + role.id() + "': " + e.getMessage());
         }

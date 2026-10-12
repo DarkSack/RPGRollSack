@@ -1,5 +1,6 @@
 package com.sack.rpgroll.workers.core.worker;
 
+import com.sack.rpgroll.common.yaml.YamlSaver;
 import com.sack.rpgroll.workers.core.economy.WageType;
 import com.sack.rpgroll.workers.core.skin.SkinTexture;
 
@@ -98,7 +99,7 @@ public class WorkerStore {
 
         try {
             folder.mkdirs();
-            config.save(new File(folder, worker.id() + ".yml"));
+            YamlSaver.save(config, new File(folder, worker.id() + ".yml"));
         } catch (Exception e) {
             plugin.getLogger().warning("✘ No se pudo guardar el worker " + worker.id() + ": " + e.getMessage());
         }

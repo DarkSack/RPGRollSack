@@ -1,5 +1,6 @@
 package com.sack.rpgroll.npcs.core;
 
+import com.sack.rpgroll.common.yaml.YamlSaver;
 import com.sack.rpgroll.common.menu.MenuAction;
 import com.sack.rpgroll.common.menu.MenuDefinition;
 import com.sack.rpgroll.common.menu.MenuItem;
@@ -52,7 +53,7 @@ public class NpcMenuWriter {
         config.set("items", itemMaps);
 
         try {
-            config.save(new File(folder, definition.id() + ".yml"));
+            YamlSaver.save(config, new File(folder, definition.id() + ".yml"));
         } catch (IOException e) {
             plugin.getLogger().severe("✘ Error al guardar menú '" + definition.id() + "': " + e.getMessage());
         }

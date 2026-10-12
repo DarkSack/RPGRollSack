@@ -1,5 +1,6 @@
 package com.sack.rpgroll.quests.player;
 
+import com.sack.rpgroll.common.yaml.YamlSaver;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 
@@ -127,7 +128,7 @@ public class QuestPlayerStateStore {
         config.set("total-completed-count", state.totalCompletedCount());
 
         try {
-            config.save(new File(folder, state.uuid() + ".yml"));
+            YamlSaver.save(config, new File(folder, state.uuid() + ".yml"));
         } catch (IOException e) {
             plugin.getLogger().warning("✘ Error guardando progreso de quests de " + state.uuid() + ": "
                     + e.getMessage());

@@ -1,5 +1,6 @@
 package com.sack.rpgroll.traps.location;
 
+import com.sack.rpgroll.common.yaml.YamlSaver;
 import com.sack.rpgroll.traps.core.TrapState;
 
 import org.bukkit.Location;
@@ -123,7 +124,7 @@ public class PlacedTrapManager {
                 parent.mkdirs();
             }
 
-            config.save(file);
+            YamlSaver.save(config, file);
 
         } catch (IOException e) {
             plugin.getLogger().severe("✘ Error guardando locations.yml: " + e.getMessage());

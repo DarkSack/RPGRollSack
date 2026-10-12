@@ -1,5 +1,6 @@
 package com.sack.rpgroll.dungeons.core;
 
+import com.sack.rpgroll.common.yaml.YamlSaver;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -43,7 +44,7 @@ public class DungeonDefinitionWriter {
             parent.mkdirs();
         }
 
-        config.save(file);
+        YamlSaver.save(config, file);
     }
 
     private void writePoint(YamlConfiguration config, String path, DungeonPoint point) {

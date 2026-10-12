@@ -1,5 +1,6 @@
 package com.sack.rpgroll.items.core;
 
+import com.sack.rpgroll.common.yaml.YamlSaver;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -90,7 +91,7 @@ public class ItemDefinitionWriter {
             parent.mkdirs();
         }
 
-        config.save(file);
+        YamlSaver.save(config, file);
     }
 
     private void writeMap(YamlConfiguration config, String path, Map<String, ?> map) {

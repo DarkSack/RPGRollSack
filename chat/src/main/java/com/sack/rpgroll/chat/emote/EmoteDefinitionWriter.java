@@ -1,5 +1,6 @@
 package com.sack.rpgroll.chat.emote;
 
+import com.sack.rpgroll.common.yaml.YamlSaver;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -28,7 +29,7 @@ public class EmoteDefinitionWriter {
             if (!folder.exists()) {
                 folder.mkdirs();
             }
-            config.save(new File(folder, emote.id() + ".yml"));
+            YamlSaver.save(config, new File(folder, emote.id() + ".yml"));
         } catch (IOException e) {
             logger.warning("✘ Error guardando emote '" + emote.id() + "': " + e.getMessage());
         }

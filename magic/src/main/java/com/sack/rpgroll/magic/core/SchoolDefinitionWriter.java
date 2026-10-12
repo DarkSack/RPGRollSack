@@ -1,5 +1,6 @@
 package com.sack.rpgroll.magic.core;
 
+import com.sack.rpgroll.common.yaml.YamlSaver;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -34,7 +35,7 @@ public class SchoolDefinitionWriter {
 
         try {
             folder.mkdirs();
-            config.save(new File(folder, school.id() + ".yml"));
+            YamlSaver.save(config, new File(folder, school.id() + ".yml"));
         } catch (IOException e) {
             throw new RuntimeException("No se pudo guardar la escuela " + school.id(), e);
         }

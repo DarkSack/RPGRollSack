@@ -1,5 +1,6 @@
 package com.sack.rpgroll.workers.core.profession;
 
+import com.sack.rpgroll.common.yaml.YamlSaver;
 import com.sack.rpgroll.common.reskin.EntityReskinYaml;
 
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -47,7 +48,7 @@ public class ProfessionDefinitionWriter {
 
         try {
             folder.mkdirs();
-            config.save(new File(folder, profession.id() + ".yml"));
+            YamlSaver.save(config, new File(folder, profession.id() + ".yml"));
         } catch (IOException e) {
             throw new RuntimeException("No se pudo guardar la profesión " + profession.id(), e);
         }

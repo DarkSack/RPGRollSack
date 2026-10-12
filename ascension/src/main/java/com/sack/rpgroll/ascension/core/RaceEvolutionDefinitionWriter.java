@@ -1,5 +1,6 @@
 package com.sack.rpgroll.ascension.core;
 
+import com.sack.rpgroll.common.yaml.YamlSaver;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -41,7 +42,7 @@ public class RaceEvolutionDefinitionWriter {
 
         try {
             folder.mkdirs();
-            config.save(new File(folder, evolution.id() + ".yml"));
+            YamlSaver.save(config, new File(folder, evolution.id() + ".yml"));
         } catch (IOException e) {
             throw new RuntimeException("No se pudo guardar la evolución " + evolution.id(), e);
         }

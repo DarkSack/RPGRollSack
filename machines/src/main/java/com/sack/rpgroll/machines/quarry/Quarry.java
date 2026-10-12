@@ -20,7 +20,7 @@ import java.util.UUID;
  */
 public final class Quarry {
 
-    public enum Status { MINING, OFF, NO_OWNER, NO_CHEST, FULL, WAITING_CHUNK, FINISHED }
+    public enum Status { MINING, OFF, NO_OWNER, NO_CHEST, NO_CLAIM, FULL, WAITING_CHUNK, FINISHED }
 
     private final String world;
     private final int x;

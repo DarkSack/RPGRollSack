@@ -1,5 +1,6 @@
 package com.sack.rpgroll.pass.player;
 
+import com.sack.rpgroll.common.yaml.YamlSaver;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -75,7 +76,7 @@ public class PassPlayerStore {
 
         try {
             folder.mkdirs();
-            yaml.save(file(player.uuid()));
+            YamlSaver.save(yaml, file(player.uuid()));
             player.markClean();
         } catch (IOException e) {
             logger.log(Level.WARNING, "No se pudo guardar el pase de " + player.uuid(), e);

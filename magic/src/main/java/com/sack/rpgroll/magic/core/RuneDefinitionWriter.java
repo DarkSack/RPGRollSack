@@ -1,5 +1,6 @@
 package com.sack.rpgroll.magic.core;
 
+import com.sack.rpgroll.common.yaml.YamlSaver;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -28,7 +29,7 @@ public class RuneDefinitionWriter {
 
         try {
             folder.mkdirs();
-            config.save(new File(folder, rune.id() + ".yml"));
+            YamlSaver.save(config, new File(folder, rune.id() + ".yml"));
         } catch (IOException e) {
             throw new RuntimeException("No se pudo guardar la runa " + rune.id(), e);
         }

@@ -1,5 +1,6 @@
 package com.sack.rpgroll.magic.core;
 
+import com.sack.rpgroll.common.yaml.YamlSaver;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -27,7 +28,7 @@ public class GrimoireDefinitionWriter {
 
         try {
             folder.mkdirs();
-            config.save(new File(folder, grimoire.id() + ".yml"));
+            YamlSaver.save(config, new File(folder, grimoire.id() + ".yml"));
         } catch (IOException e) {
             throw new RuntimeException("No se pudo guardar el grimorio " + grimoire.id(), e);
         }

@@ -1,5 +1,6 @@
 package com.sack.rpgroll.magic.core;
 
+import com.sack.rpgroll.common.yaml.YamlSaver;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -54,7 +55,7 @@ public class SpellDefinitionWriter {
 
         try {
             folder.mkdirs();
-            config.save(new File(folder, spell.id() + ".yml"));
+            YamlSaver.save(config, new File(folder, spell.id() + ".yml"));
         } catch (IOException e) {
             throw new RuntimeException("No se pudo guardar el hechizo " + spell.id(), e);
         }

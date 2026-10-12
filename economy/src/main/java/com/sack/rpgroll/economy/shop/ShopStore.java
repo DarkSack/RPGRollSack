@@ -1,5 +1,6 @@
 package com.sack.rpgroll.economy.shop;
 
+import com.sack.rpgroll.common.yaml.YamlSaver;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
@@ -101,7 +102,7 @@ public class ShopStore {
         config.set("listings", listings);
 
         try {
-            config.save(new File(folder, shop.id() + ".yml"));
+            YamlSaver.save(config, new File(folder, shop.id() + ".yml"));
         } catch (Exception e) {
             throw new RuntimeException("No se pudo guardar la tienda " + shop.id(), e);
         }

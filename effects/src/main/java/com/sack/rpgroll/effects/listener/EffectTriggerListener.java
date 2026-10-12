@@ -25,6 +25,7 @@ public class EffectTriggerListener implements Listener {
 
     private final EffectTracker tracker;
     private final EffectComponentExecutor executor;
+    private boolean healing;
 
     public EffectTriggerListener(EffectTracker tracker, EffectComponentExecutor executor) {
         this.tracker = tracker;
@@ -52,8 +53,15 @@ public class EffectTriggerListener implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onHeal(EntityRegainHealthEvent event) {
 
-        if (event.getEntity() instanceof LivingEntity entity) {
+        // Un efecto que cura al curarse volvería a entrar aquí sin fin.
+        if (healing || !(event.getEntity() instanceof LivingEntity entity)) {
+            return;
+        }
+        healing = true;
+        try {
             fire(entity, EffectTriggerType.ON_HEAL);
+        } finally {
+            healing = false;
         }
     }
 

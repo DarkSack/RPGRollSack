@@ -1,5 +1,6 @@
 package com.sack.rpgroll.economy.auction;
 
+import com.sack.rpgroll.common.yaml.YamlSaver;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 
@@ -93,7 +94,7 @@ public class AuctionStore {
         config.set("settled", listing.isSettled());
 
         try {
-            config.save(new File(folder, listing.id() + ".yml"));
+            YamlSaver.save(config, new File(folder, listing.id() + ".yml"));
         } catch (Exception e) {
             throw new RuntimeException("No se pudo guardar la subasta " + listing.id(), e);
         }

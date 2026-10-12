@@ -135,6 +135,11 @@ public class QuarryWorker implements Listener, Runnable {
         quarry.credit(Math.min(quarry.credit() + speed / 20.0, Math.max(1.0, speed)));
 
         int side = service.side(quarry);
+        // El claim se pide al ponerla, pero se puede abandonar después: sin él no pica.
+        if (quarry.credit() >= 1.0 && !service.areaAllowed(quarry, world, side)) {
+            quarry.status(Status.NO_CLAIM);
+            return 0;
+        }
         int minHeight = world.getMinHeight();
         int mined = 0;
         int scans = 0;

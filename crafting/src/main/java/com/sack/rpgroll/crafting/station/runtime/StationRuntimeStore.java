@@ -1,5 +1,6 @@
 package com.sack.rpgroll.crafting.station.runtime;
 
+import com.sack.rpgroll.common.yaml.YamlSaver;
 import com.sack.rpgroll.crafting.station.CustomStation;
 import com.sack.rpgroll.crafting.station.CustomStationManager;
 
@@ -61,7 +62,7 @@ public class StationRuntimeStore {
 
         try {
             folder.mkdirs();
-            config.save(new File(folder, fileName(runtime.world(), runtime.x(), runtime.y(), runtime.z())));
+            YamlSaver.save(config, new File(folder, fileName(runtime.world(), runtime.x(), runtime.y(), runtime.z())));
         } catch (IOException e) {
             logger.warning("✘ No se pudo guardar la estación en " + runtime.key() + ": " + e.getMessage());
         }

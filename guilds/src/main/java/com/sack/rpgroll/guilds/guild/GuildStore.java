@@ -1,5 +1,6 @@
 package com.sack.rpgroll.guilds.guild;
 
+import com.sack.rpgroll.common.yaml.YamlSaver;
 import com.sack.rpgroll.guilds.guild.bank.VaultTransaction;
 import com.sack.rpgroll.guilds.guild.bank.VaultTransactionType;
 import com.sack.rpgroll.guilds.guild.capital.GuildPoint;
@@ -364,7 +365,7 @@ public class GuildStore {
         config.set("customization.description", guild.description());
 
         try {
-            config.save(new File(folder, guild.id() + ".yml"));
+            YamlSaver.save(config, new File(folder, guild.id() + ".yml"));
         } catch (IOException e) {
             plugin.getLogger().warning("✘ Error guardando guild '" + guild.id() + "': " + e.getMessage());
         }

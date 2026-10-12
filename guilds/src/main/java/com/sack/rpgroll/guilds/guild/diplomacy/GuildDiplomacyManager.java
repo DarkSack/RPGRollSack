@@ -1,5 +1,6 @@
 package com.sack.rpgroll.guilds.guild.diplomacy;
 
+import com.sack.rpgroll.common.yaml.YamlSaver;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 
@@ -107,7 +108,7 @@ public class GuildDiplomacyManager {
         }
 
         try {
-            config.save(file);
+            YamlSaver.save(config, file);
         } catch (IOException e) {
             plugin.getLogger().warning("✘ Error guardando diplomacia de guilds: " + e.getMessage());
         }

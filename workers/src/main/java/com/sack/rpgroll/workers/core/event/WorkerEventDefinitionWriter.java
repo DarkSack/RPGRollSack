@@ -1,5 +1,6 @@
 package com.sack.rpgroll.workers.core.event;
 
+import com.sack.rpgroll.common.yaml.YamlSaver;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -29,7 +30,7 @@ public class WorkerEventDefinitionWriter {
 
         try {
             folder.mkdirs();
-            config.save(new File(folder, event.id() + ".yml"));
+            YamlSaver.save(config, new File(folder, event.id() + ".yml"));
         } catch (IOException e) {
             throw new RuntimeException("No se pudo guardar el evento " + event.id(), e);
         }

@@ -1,5 +1,6 @@
 package com.sack.rpgroll.chat.player;
 
+import com.sack.rpgroll.common.yaml.YamlSaver;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 
@@ -46,7 +47,7 @@ public class PlayerChannelStateStore {
         config.set("active", state.activeChannelId());
 
         try {
-            config.save(new File(folder, state.uuid() + ".yml"));
+            YamlSaver.save(config, new File(folder, state.uuid() + ".yml"));
         } catch (IOException e) {
             plugin.getLogger().warning("✘ Error guardando canales de " + state.uuid() + ": " + e.getMessage());
         }

@@ -1,5 +1,6 @@
 package com.sack.rpgroll.pass.vote;
 
+import com.sack.rpgroll.common.yaml.YamlSaver;
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.pass.PassClock;
 import com.sack.rpgroll.pass.mission.MissionService;
@@ -139,7 +140,7 @@ public class VoteService {
 
         try {
             pendingFile.getParentFile().mkdirs();
-            yaml.save(pendingFile);
+            YamlSaver.save(yaml, pendingFile);
         } catch (IOException e) {
             logger.log(Level.WARNING, "No se pudieron guardar los votos pendientes", e);
         }

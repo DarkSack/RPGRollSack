@@ -34,6 +34,11 @@ public class ConditionRuntime {
 
     private long tickCounter = 0;
     private BukkitTask task;
+    private com.sack.rpgroll.extras.activity.AfkPolicy afkPolicy = com.sack.rpgroll.extras.activity.AfkPolicy.DISABLED;
+
+    public void linkAfkPolicy(com.sack.rpgroll.extras.activity.AfkPolicy afkPolicy) {
+        this.afkPolicy = afkPolicy;
+    }
 
     public ConditionRuntime(ExtrasActionExecutor actionExecutor) {
         this.actionExecutor = actionExecutor;
@@ -82,7 +87,7 @@ public class ConditionRuntime {
 
             applyPotions(player, definition.potionEffects());
 
-            if (definition.periodicDamage() > 0) {
+            if (definition.periodicDamage() > 0 && !afkPolicy.inOffWorld(player)) {
                 player.damage(definition.periodicDamage());
             }
 

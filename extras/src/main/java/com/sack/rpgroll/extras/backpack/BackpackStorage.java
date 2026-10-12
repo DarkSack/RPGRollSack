@@ -1,5 +1,6 @@
 package com.sack.rpgroll.extras.backpack;
 
+import com.sack.rpgroll.common.yaml.YamlSaver;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
@@ -113,7 +114,7 @@ public class BackpackStorage {
 
         try {
             folder.mkdirs();
-            yaml.save(file);
+            YamlSaver.save(yaml, file);
         } catch (IOException e) {
             logger.log(Level.SEVERE, "No se pudo guardar la mochila " + data.id(), e);
         }

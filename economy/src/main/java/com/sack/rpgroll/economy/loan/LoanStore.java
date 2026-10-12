@@ -1,5 +1,6 @@
 package com.sack.rpgroll.economy.loan;
 
+import com.sack.rpgroll.common.yaml.YamlSaver;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -69,7 +70,7 @@ public class LoanStore {
         config.set("borrower", loan.borrowerId() == null ? null : loan.borrowerId().toString());
 
         try {
-            config.save(new File(folder, loan.id() + ".yml"));
+            YamlSaver.save(config, new File(folder, loan.id() + ".yml"));
         } catch (Exception e) {
             throw new RuntimeException("No se pudo guardar el préstamo " + loan.id(), e);
         }

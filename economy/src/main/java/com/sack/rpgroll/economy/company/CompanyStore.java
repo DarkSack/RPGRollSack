@@ -1,5 +1,6 @@
 package com.sack.rpgroll.economy.company;
 
+import com.sack.rpgroll.common.yaml.YamlSaver;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -75,7 +76,7 @@ public class CompanyStore {
         }
 
         try {
-            config.save(new File(folder, company.id() + ".yml"));
+            YamlSaver.save(config, new File(folder, company.id() + ".yml"));
         } catch (Exception e) {
             throw new RuntimeException("No se pudo guardar la empresa " + company.id(), e);
         }

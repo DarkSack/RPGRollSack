@@ -1,5 +1,6 @@
 package com.sack.rpgroll.seasons.runtime;
 
+import com.sack.rpgroll.common.yaml.YamlSaver;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 
@@ -72,7 +73,7 @@ public class SeasonStateStore {
         }
 
         try {
-            config.save(file);
+            YamlSaver.save(config, file);
         } catch (IOException e) {
             plugin.getLogger().warning("✘ Error guardando el estado de estaciones: " + e.getMessage());
         }
