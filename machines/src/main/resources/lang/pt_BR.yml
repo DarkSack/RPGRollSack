@@ -36,6 +36,7 @@ furnace:
   next: "&7Próximo: {tier} &8({level})"
   max: "&6★ Já está no máximo"
   upgraded: "&a✔ Fornalha melhorada para {tier}&a."
+  hint: "&7Agache e clique com o botão direito de mão vazia para melhorá-la."
 
 spawner:
   upgrade:

@@ -17,6 +17,7 @@ import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -152,6 +153,8 @@ public class QuarryMenu extends InventoryGUI {
             service.store().dirty();
             player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.6f, 1f);
             build();
+            // El estado lo pone el trabajador en su tick: se repinta cuando ya lo ha puesto.
+            Bukkit.getScheduler().runTaskLater(JavaPlugin.getProvidingPlugin(QuarryMenu.class), this::build, 2L);
             return;
         }
         Numeric numeric = numericAt.get(slot);

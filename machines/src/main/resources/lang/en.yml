@@ -36,6 +36,7 @@ furnace:
   next: "&7Next: {tier} &8({level})"
   max: "&6★ Already maxed out"
   upgraded: "&a✔ Furnace upgraded to {tier}&a."
+  hint: "&7Sneak and right-click it with an empty hand to upgrade it."
 
 spawner:
   upgrade:

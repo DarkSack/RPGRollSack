@@ -112,10 +112,14 @@ public class FurnaceListener implements Listener {
     public void onPlace(BlockPlaceEvent event) {
 
         var id = service.itemTier(event.getItemInHand());
+        Block block = event.getBlockPlaced();
         if (id.isEmpty()) {
+            if (service.isFurnace(block) && service.settings().allowed(block.getWorld().getName())
+                    && event.getPlayer().hasPermission("rpgroll.machines.furnace.upgrade")) {
+                service.hint(event.getPlayer());
+            }
             return;
         }
-        Block block = event.getBlockPlaced();
         FurnaceTier tier = service.settings().tier(id.get()).orElse(null);
         if (tier != null) {
             service.setTier(block, tier);

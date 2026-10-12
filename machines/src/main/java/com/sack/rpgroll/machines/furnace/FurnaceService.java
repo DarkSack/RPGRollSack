@@ -15,6 +15,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.TileState;
 import org.bukkit.block.data.Directional;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
@@ -52,6 +53,11 @@ public class FurnaceService {
 
     public boolean isFurnace(Block block) {
         return settings.kinds().contains(block.getType());
+    }
+
+    /** Cómo se mejora, para quien acaba de poner un horno sin mejorar. */
+    public void hint(Player player) {
+        player.sendActionBar(lang.component("furnace.hint"));
     }
 
     public Optional<FurnaceTier> tier(Block block) {
