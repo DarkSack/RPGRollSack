@@ -1,4 +1,4 @@
-package com.sack.rpgroll.furniture.placed;
+package com.sack.rpgroll.common.block;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -13,12 +13,12 @@ import org.bukkit.inventory.ItemStack;
 import java.util.List;
 
 /**
- * Pregunta a los plugins de protección si alguien puede poner o quitar un mueble aquí.
+ * Pregunta a los plugins de protección si alguien puede construir aquí (poner un mueble, fijar un warp).
  * <p>
  * No hay una API común para WorldGuard, GriefPrevention, Towny o los territorios de guild, pero
  * todos escuchan {@link BlockPlaceEvent} y {@link BlockBreakEvent}: se lanza uno de prueba por
  * casilla y se mira si alguien lo cancela. El bloque no cambia. Mientras dura la prueba
- * {@link #testing()} es true, para que los propios listeners del módulo no reaccionen.
+ * {@link #testing()} es true, para que los listeners propios no reaccionen.
  */
 public final class Protection {
 

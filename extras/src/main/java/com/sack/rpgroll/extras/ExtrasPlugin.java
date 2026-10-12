@@ -58,7 +58,8 @@ public class ExtrasPlugin extends JavaPlugin {
     private LangManager langManager;
     private ExtrasMenuManager menuManager;
     private ServerMenu serverMenu;
-    private com.sack.rpgroll.extras.rtp.RandomTeleportCommand randomTeleport;
+    private com.sack.rpgroll.extras.travel.RandomTeleportCommand randomTeleport;
+    private com.sack.rpgroll.extras.travel.WarpCommand warpCommand;
     private BackpackService backpackService;
     private BackpackRecipes backpackRecipes;
     private StatManager statManager;
@@ -192,6 +193,9 @@ public class ExtrasPlugin extends JavaPlugin {
         if (randomTeleport != null && getConfig().isConfigurationSection("random-teleport")) {
             randomTeleport.configure(getConfig().getConfigurationSection("random-teleport"));
         }
+        if (warpCommand != null && getConfig().isConfigurationSection("player-warps")) {
+            warpCommand.configure(getConfig().getConfigurationSection("player-warps"));
+        }
         // Quien ya está dentro recibe (o pierde) la brújula sin tener que reconectar.
         getServer().getOnlinePlayers().forEach(player -> {
             if (serverMenu.config().enabled()) {
@@ -231,17 +235,32 @@ public class ExtrasPlugin extends JavaPlugin {
 
         // Solo si se pide: con otro plugin de RTP instalado, /rtp sigue siendo el suyo.
         if (getConfig().getBoolean("random-teleport.enabled")) {
-            randomTeleport = new com.sack.rpgroll.extras.rtp.RandomTeleportCommand(this, langManager);
+            randomTeleport = new com.sack.rpgroll.extras.travel.RandomTeleportCommand(this, langManager);
             randomTeleport.configure(getConfig().getConfigurationSection("random-teleport"));
             com.sack.rpgroll.common.command.BrigadierCommands.register(this, "rtp", "Teletransporte aleatorio",
                     List.of(), randomTeleport, randomTeleport,
-                    com.sack.rpgroll.extras.rtp.RandomTeleportCommand.PERMISSION);
+                    com.sack.rpgroll.extras.travel.RandomTeleportCommand.PERMISSION);
+        }
+
+        if (getConfig().getBoolean("player-warps.enabled")) {
+            warpCommand = new com.sack.rpgroll.extras.travel.WarpCommand(
+                    new com.sack.rpgroll.extras.travel.Warps(new File(getDataFolder(), "warps.yml")), langManager);
+            warpCommand.configure(getConfig().getConfigurationSection("player-warps"));
+            String permission = com.sack.rpgroll.extras.travel.WarpCommand.PERMISSION;
+            com.sack.rpgroll.common.command.BrigadierCommands.register(this, "warp", "Viaja a un warp de jugador",
+                    List.of(), warpCommand, warpCommand, permission);
+            com.sack.rpgroll.common.command.BrigadierCommands.register(this, "setwarp", "Crea un warp donde estás",
+                    permission, warpCommand.as("set"));
+            com.sack.rpgroll.common.command.BrigadierCommands.register(this, "delwarp", "Borra uno de tus warps",
+                    permission, warpCommand.as("delete"));
+            com.sack.rpgroll.common.command.BrigadierCommands.register(this, "warps", "Lista los warps",
+                    permission, warpCommand.as("list"));
         }
 
         if (getConfig().getBoolean("death-teleport.enabled")) {
             com.sack.rpgroll.common.command.BrigadierCommands.register(this, "death",
                     "Vuelve al punto de tu última muerte", "rpgrollextras.death",
-                    new com.sack.rpgroll.extras.rtp.DeathCommand(langManager));
+                    new com.sack.rpgroll.extras.travel.DeathCommand(langManager));
         }
     }
 

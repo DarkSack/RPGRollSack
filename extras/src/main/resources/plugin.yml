@@ -30,15 +30,21 @@ permissions:
   rpgrollextras.backpack.admin:
     description: Entregar mochilas con /mochila give
     default: op
-  rpgrollextras.rtp:
+  rpgrollextras.travel:
     description: Usar /rtp (solo existe con random-teleport.enabled)
     default: true
-  rpgrollextras.rtp.nodelay:
+  rpgrollextras.travel.nodelay:
     description: /rtp sin los segundos de espera
     default: op
-  rpgrollextras.rtp.nocooldown:
+  rpgrollextras.travel.nocooldown:
     description: /rtp sin enfriamiento entre usos
     default: op
   rpgrollextras.death:
     description: Usar /death (solo existe con death-teleport.enabled)
     default: true
+  rpgrollextras.warp:
+    description: Usar y crear warps de jugador (solo existen con player-warps.enabled)
+    default: true
+  rpgrollextras.warp.admin:
+    description: Warps sin límite, en cualquier sitio, y borrar los de otros
+    default: op

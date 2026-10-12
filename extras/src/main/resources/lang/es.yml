@@ -76,3 +76,20 @@ rtp:
 death:
   none: "&7No hay ninguna muerte a la que volver."
   done: "&a✔ De vuelta a donde caíste."
+
+warp:
+  list: "&6Warps: {warps}"
+  list_empty: "&7Todavía no hay ningún warp. Crea el tuyo con &e/setwarp <nombre>&7."
+  unknown: "&cNo existe el warp «{warp}»."
+  unsafe: "&cEl warp «{warp}» ya no es un sitio seguro."
+  done: "&a✔ Has llegado a &e{warp}&a, de &e{owner}&a."
+  bad_name: "&cEl nombre lleva de 2 a 16 letras, números o guiones bajos."
+  exists: "&cYa existe un warp llamado «{warp}»."
+  limit: "&cYa tienes tus &e{max}&c warps. Borra uno con &e/delwarp <nombre>&c."
+  world_disabled: "&cEn este mundo no se pueden crear warps."
+  protected: "&cNo puedes crear un warp aquí: es una zona protegida."
+  unsafe_here: "&cAquí no hay suelo firme para un warp."
+  set: "&a✔ Warp &e{warp}&a creado. Cualquiera puede venir con &e/warp {warp}&a."
+  not_yours: "&cEse warp es de &e{owner}&c."
+  deleted: "&a✔ Warp &e{warp}&a borrado."
+  save_failed: "&cNo se pudo guardar. Avisa a un administrador."

@@ -9,7 +9,7 @@ import com.sack.rpgroll.furniture.placed.FurnitureService;
 import com.sack.rpgroll.furniture.placed.FurnitureService.PlaceResult;
 import com.sack.rpgroll.furniture.placed.FurnitureService.RemoveResult;
 import com.sack.rpgroll.furniture.placed.PlacedFurniture;
-import com.sack.rpgroll.furniture.placed.Protection;
+import com.sack.rpgroll.common.block.Protection;
 
 import io.papermc.paper.event.player.PrePlayerAttackEntityEvent;
 

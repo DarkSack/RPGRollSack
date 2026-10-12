@@ -40,7 +40,7 @@ stats-disabled-worlds: []
 
 # Teletransporte aleatorio: /rtp [mundo]. Apagado de fábrica: enciéndelo solo si no hay otro
 # plugin de RTP. El chunk de destino se carga (y se genera, si hace falta) sin parar el servidor.
-# Permisos: rpgrollextras.rtp (usarlo, todos), .rtp.nodelay y .rtp.nocooldown.
+# Permisos: rpgrollextras.travel (usarlo, todos), .rtp.nodelay y .rtp.nocooldown.
 # Encenderlo o apagarlo pide reiniciar; lo demás, /extrasadmin reload.
 random-teleport:
   enabled: false
@@ -60,3 +60,14 @@ random-teleport:
 # desaparezca. Permiso: rpgrollextras.death (todos). Encenderlo o apagarlo pide reiniciar.
 death-teleport:
   enabled: false
+
+# Warps de jugador: /warp <nombre> viaja, /setwarp <nombre> fija uno donde estás,
+# /delwarp <nombre> lo quita y /warps los lista. No se puede fijar donde el jugador no
+# puede construir (el claim de otro, una región protegida) ni en disabled-worlds.
+# Permisos: rpgrollextras.warp (todos) y rpgrollextras.warp.admin (sin límite, en
+# cualquier sitio y borrar los de otros). Encenderlo o apagarlo pide reiniciar.
+# Si otro plugin ya tiene /warp (Essentials), desactívalo allí (disabled-commands).
+player-warps:
+  enabled: false
+  max-per-player: 2
+  disabled-worlds: []

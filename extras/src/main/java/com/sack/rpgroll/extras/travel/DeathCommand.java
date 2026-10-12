@@ -1,4 +1,4 @@
-package com.sack.rpgroll.extras.rtp;
+package com.sack.rpgroll.extras.travel;
 
 import com.sack.rpgroll.common.command.Senders;
 import com.sack.rpgroll.common.lang.LangManager;

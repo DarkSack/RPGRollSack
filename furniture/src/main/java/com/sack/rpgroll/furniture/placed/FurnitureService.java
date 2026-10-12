@@ -1,5 +1,6 @@
 package com.sack.rpgroll.furniture.placed;
 
+import com.sack.rpgroll.common.block.Protection;
 import com.sack.rpgroll.furniture.FurnitureKeys;
 import com.sack.rpgroll.furniture.FurnitureSettings;
 import com.sack.rpgroll.furniture.core.DisplaySettings;

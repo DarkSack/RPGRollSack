@@ -1,4 +1,4 @@
-package com.sack.rpgroll.extras.rtp;
+package com.sack.rpgroll.extras.travel;
 
 import com.sack.rpgroll.common.command.Senders;
 import com.sack.rpgroll.common.lang.LangManager;
@@ -38,12 +38,13 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class RandomTeleportCommand implements CommandExecutor, TabCompleter {
 
-    public static final String PERMISSION = "rpgrollextras.rtp";
+    public static final String PERMISSION = "rpgrollextras.travel";
 
     private static final int ATTEMPTS = 12;
-    /** Sólidos sobre los que no se deja a nadie. Agua y lava no son sólidos: se descartan solos. */
-    private static final Set<Material> UNSAFE = EnumSet.of(Material.MAGMA_BLOCK, Material.CACTUS,
-            Material.CAMPFIRE, Material.SOUL_CAMPFIRE);
+    /** Bloques sobre los que (o en los que) no se deja a nadie. Agua y lava se miran aparte. */
+    static final Set<Material> UNSAFE = EnumSet.of(Material.MAGMA_BLOCK, Material.CACTUS,
+            Material.CAMPFIRE, Material.SOUL_CAMPFIRE, Material.FIRE, Material.SOUL_FIRE,
+            Material.SWEET_BERRY_BUSH, Material.WITHER_ROSE, Material.POWDER_SNOW);
 
     /** El anillo de un mundo en el que se puede caer, en bloques desde el centro de su borde. */
     record Zone(int minRadius, int maxRadius) {

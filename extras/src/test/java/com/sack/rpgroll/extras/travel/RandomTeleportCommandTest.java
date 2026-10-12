@@ -1,6 +1,6 @@
-package com.sack.rpgroll.extras.rtp;
+package com.sack.rpgroll.extras.travel;
 
-import com.sack.rpgroll.extras.rtp.RandomTeleportCommand.Zone;
+import com.sack.rpgroll.extras.travel.RandomTeleportCommand.Zone;
 
 import org.junit.jupiter.api.Test;
 
