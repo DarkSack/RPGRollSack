@@ -13,6 +13,7 @@ import com.sack.rpgroll.util.ComponentUtils;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
@@ -68,6 +69,10 @@ public class VoteService {
         Player player = Bukkit.getPlayerExact(username);
 
         if (player == null) {
+            player = Bukkit.getPlayerExact("." + username);
+        }
+
+        if (player == null) {
             pending.merge(username.toLowerCase(Locale.ROOT), 1, Integer::sum);
             savePending();
             logger.info("Voto de " + username + " (" + service + ") guardado hasta que entre.");
@@ -80,9 +85,9 @@ public class VoteService {
     /** Al entrar: los votos que llegaron mientras no estaba. */
     public void deliverPending(Player player) {
 
-        Integer count = pending.remove(player.getName().toLowerCase(Locale.ROOT));
+        int count = take(pending, player.getName());
 
-        if (count == null) {
+        if (count == 0) {
             return;
         }
 
@@ -121,13 +126,41 @@ public class VoteService {
         missions.progress(player, MissionType.VOTE, "", 1);
     }
 
+    /**
+     * Los votos guardados de quien entra. En la web de votos casi nadie de Bedrock escribe el punto
+     * que Floodgate le pone delante, así que a esos nombres también se les busca sin él.
+     * shortcut: asume el prefijo «.» de Floodgate; si se cambia en el proxy, hacerlo configurable.
+     */
+    static int take(Map<String, Integer> pending, String playerName) {
+
+        String name = playerName.toLowerCase(Locale.ROOT);
+        Integer exact = pending.remove(name);
+        Integer undotted = name.startsWith(".") ? pending.remove(name.substring(1)) : null;
+
+        return (exact == null ? 0 : exact) + (undotted == null ? 0 : undotted);
+    }
+
+    /** El punto separa rutas en YAML: con el separador de fábrica, «.nombre» se guardaba como «nombre». */
+    static YamlConfiguration pendingYaml() {
+        YamlConfiguration yaml = new YamlConfiguration();
+        yaml.options().pathSeparator('/');
+        return yaml;
+    }
+
     private void loadPending() {
 
         if (!pendingFile.isFile()) {
             return;
         }
 
-        YamlConfiguration yaml = YamlConfiguration.loadConfiguration(pendingFile);
+        YamlConfiguration yaml = pendingYaml();
+        try {
+            yaml.load(pendingFile);
+        } catch (IOException | InvalidConfigurationException e) {
+            logger.log(Level.WARNING, "No se pudieron leer los votos pendientes", e);
+            return;
+        }
+
         for (String name : yaml.getKeys(false)) {
             pending.put(name, yaml.getInt(name));
         }
@@ -135,7 +168,7 @@ public class VoteService {
 
     private void savePending() {
 
-        YamlConfiguration yaml = new YamlConfiguration();
+        YamlConfiguration yaml = pendingYaml();
         pending.forEach(yaml::set);
 
         try {

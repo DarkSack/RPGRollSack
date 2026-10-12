@@ -26,6 +26,7 @@ import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -67,8 +68,13 @@ public class BuildEngine {
     private final PackMcMetaGenerator mcMetaGenerator = new PackMcMetaGenerator();
     private final ValidationEngine validationEngine = new ValidationEngine();
 
-    private BuildResult lastResult;
-    private MergeResult lastMergeResult;
+    private volatile BuildResult lastResult;
+    private volatile MergeResult lastMergeResult;
+
+    /** Lo que deja listo el hilo principal; {@code done} trae el resultado si no hace falta empaquetar. */
+    private record Prepared(BuildResult done, List<AssetModule> modules, ResolutionResult resolution,
+            String signature) {
+    }
 
     public BuildEngine(Plugin plugin, File contentDirectory, int packFormat) {
         this.plugin = plugin;
@@ -104,6 +110,31 @@ public class BuildEngine {
      * @param force true para reconstruir aunque la caché diga que no cambió nada
      */
     public BuildResult build(boolean force) {
+        Prepared prepared = prepare(force);
+        return prepared.done() != null ? prepared.done() : announce(pack(prepared));
+    }
+
+    /**
+     * Lo mismo que {@link #build}, con la copia de archivos y el ZIP fuera del hilo del servidor:
+     * con un pack grande, /srp rebuild lo dejaba congelado más de diez segundos. Los eventos y
+     * {@code whenDone} siguen en el hilo principal.
+     */
+    public void buildAsync(boolean force, Consumer<BuildResult> whenDone) {
+
+        Prepared prepared = prepare(force);
+
+        if (prepared.done() != null) {
+            whenDone.accept(prepared.done());
+            return;
+        }
+
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+            BuildResult result = pack(prepared);
+            Bukkit.getScheduler().runTask(plugin, () -> whenDone.accept(announce(result)));
+        });
+    }
+
+    private Prepared prepare(boolean force) {
 
         List<AssetModule> rawModules = scanner.scan();
         ResolutionResult resolution = resolver.resolve(rawModules);
@@ -121,7 +152,7 @@ public class BuildEngine {
                 resolution.errors().forEach(error -> issues.add(ValidationIssue.error(error)));
 
                 lastResult = new BuildResult(zipFile, cached.sha1(), issues, true, modules, resolution.errors());
-                return lastResult;
+                return new Prepared(lastResult, modules, resolution, signature);
             }
         }
 
@@ -132,8 +163,17 @@ public class BuildEngine {
             lastResult = new BuildResult(zipFile, "",
                     List.of(ValidationIssue.error("Build cancelado por otro plugin (PackBuildEvent).")),
                     false, modules, resolution.errors());
-            return lastResult;
+            return new Prepared(lastResult, modules, resolution, signature);
         }
+
+        return new Prepared(null, modules, resolution, signature);
+    }
+
+    /** synchronized: dos empaquetados a la vez escribirían la misma carpeta y el mismo ZIP. */
+    private synchronized BuildResult pack(Prepared prepared) {
+
+        List<AssetModule> modules = prepared.modules();
+        ResolutionResult resolution = prepared.resolution();
 
         MergeResult mergeResult = mergeEngine.merge(modules, mergedDirectory);
         lastMergeResult = mergeResult;
@@ -154,13 +194,20 @@ public class BuildEngine {
             return lastResult;
         }
 
-        saveState(new BuildState(signature, sha1, System.currentTimeMillis()));
+        saveState(new BuildState(prepared.signature(), sha1, System.currentTimeMillis()));
 
         lastResult = new BuildResult(zipFile, sha1, issues, false, modules, resolution.errors());
-
-        Bukkit.getPluginManager().callEvent(new PackGeneratedEvent(zipFile, sha1, false));
-
         return lastResult;
+    }
+
+    /** El evento de "pack generado", siempre en el hilo principal. Un ZIP fallido (sin SHA1) no se anuncia. */
+    private BuildResult announce(BuildResult result) {
+
+        if (!result.sha1().isEmpty()) {
+            Bukkit.getPluginManager().callEvent(new PackGeneratedEvent(zipFile, result.sha1(), false));
+        }
+
+        return result;
     }
 
     /**

@@ -62,6 +62,7 @@ public class SeasonsPlugin extends JavaPlugin {
 
 
         saveDefaultConfig();
+        RegionSeasonResolver.setDisabledWorlds(getConfig().getStringList("disabled-worlds"));
 
         langManager = new LangManager(this, List.of("es", "en", "pt_BR"), "es");
         langManager.reload(getConfig().getString("language", "es"));

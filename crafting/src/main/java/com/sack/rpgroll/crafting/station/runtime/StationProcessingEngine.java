@@ -111,6 +111,11 @@ public class StationProcessingEngine {
 
             CustomStation station = stationOpt.get();
 
+            // Vacía y parada no tiene nada que empezar: sin esto cada una repasaba todas sus recetas en cada pasada.
+            if (!runtime.isProcessing() && runtime.inventory().isEmpty()) {
+                continue;
+            }
+
             if (station.requiresFuel()) {
                 refuelIfNeeded(runtime, station);
             }

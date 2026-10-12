@@ -8,6 +8,8 @@ import com.sack.rpgroll.workers.core.worker.WorkerManager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.EntityPortalEvent;
+import org.bukkit.event.entity.EntityTransformEvent;
 
 /**
  * Limpia el registro de un worker (y su passenger de reskin, si tenía) al
@@ -21,6 +23,24 @@ public class WorkerDeathListener implements Listener {
 
     public WorkerDeathListener(WorkerManager workerManager) {
         this.workerManager = workerManager;
+    }
+
+    /**
+     * Un worker no se transforma (rayo, zombi) ni cruza portales: su ficha se quedaba apuntando a
+     * un mob que ya no existe, o a uno en otro mundo lejos de su hogar y su almacén.
+     */
+    @EventHandler(ignoreCancelled = true)
+    public void onTransform(EntityTransformEvent event) {
+        if (workerManager.isTracked(event.getEntity())) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onPortal(EntityPortalEvent event) {
+        if (workerManager.isTracked(event.getEntity())) {
+            event.setCancelled(true);
+        }
     }
 
     @EventHandler

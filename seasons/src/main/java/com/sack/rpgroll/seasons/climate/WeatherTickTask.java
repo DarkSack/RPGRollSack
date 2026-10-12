@@ -38,7 +38,8 @@ public class WeatherTickTask extends BukkitRunnable {
         for (World world : Bukkit.getWorlds()) {
 
             // Con el clima congelado (/gamerule advance_weather false) manda el admin, no la estación.
-            if (world.getPlayers().isEmpty() || Boolean.FALSE.equals(world.getGameRuleValue(GameRules.ADVANCE_WEATHER))) {
+            if (world.getPlayers().isEmpty() || RegionSeasonResolver.isDisabled(world.getName())
+                    || Boolean.FALSE.equals(world.getGameRuleValue(GameRules.ADVANCE_WEATHER))) {
                 continue;
             }
 

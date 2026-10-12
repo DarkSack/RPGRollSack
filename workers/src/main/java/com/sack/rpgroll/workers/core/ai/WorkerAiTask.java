@@ -25,6 +25,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.logging.Level;
 
 /**
  * Corre cada {@code ai-tick-interval-ticks}: para cada worker resuelve su
@@ -71,47 +72,57 @@ public class WorkerAiTask extends BukkitRunnable {
 
         for (Worker worker : List.copyOf(workerManager.getAll())) {
 
-            Entity entity = Bukkit.getEntity(worker.id());
-
-            if (!(entity instanceof LivingEntity living) || !living.isValid()) {
-                continue;
+            // Uno que falle no deja a los demás parados: antes la excepción cortaba la pasada entera.
+            try {
+                tick(worker);
+            } catch (RuntimeException e) {
+                Bukkit.getLogger().log(Level.WARNING, "[RPGRoll-Workers] Falló el worker " + worker.id(), e);
             }
-
-            Profession profession = professionManager.get(worker.professionId()).orElse(null);
-
-            if (profession == null) {
-                continue;
-            }
-
-            // Con skin, lo que se ve es su maniquí: el modelo de profesión flotaría encima.
-            if (!worker.hasSkin()) {
-                workerManager.ensureAppearanceAttached(living, profession);
-            }
-
-            // Workers de antes de que se guardara el hogar: se quedan con el sitio donde están.
-            if (worker.homeLocation() == null) {
-                worker.setHomeLocation(living.getLocation());
-                workerManager.save(worker);
-            }
-
-            if (worker.hasActiveEvent() && worker.eventWorkSpeedMultiplier() <= 0) {
-                worker.setCurrentAction(AiAction.IDLE);
-                MovementUtil.stop(living);
-                continue;
-            }
-
-            Schedule schedule = profession.scheduleId() != null
-                    ? scheduleManager.get(profession.scheduleId()).orElse(null)
-                    : null;
-
-            World world = living.getWorld();
-            WorldContext context = new WorldContext(world.hasStorm(), isNight(world.getTime()));
-
-            AiAction action = aiEngine.decide(worker, profession, schedule, world.getFullTime(), context);
-            worker.setCurrentAction(action);
-
-            execute(worker, living, profession, action);
         }
+    }
+
+    private void tick(Worker worker) {
+
+        Entity entity = Bukkit.getEntity(worker.id());
+
+        if (!(entity instanceof LivingEntity living) || !living.isValid()) {
+            return;
+        }
+
+        Profession profession = professionManager.get(worker.professionId()).orElse(null);
+
+        if (profession == null) {
+            return;
+        }
+
+        // Con skin, lo que se ve es su maniquí: el modelo de profesión flotaría encima.
+        if (!worker.hasSkin()) {
+            workerManager.ensureAppearanceAttached(living, profession);
+        }
+
+        // Workers de antes de que se guardara el hogar: se quedan con el sitio donde están.
+        if (worker.homeLocation() == null) {
+            worker.setHomeLocation(living.getLocation());
+            workerManager.save(worker);
+        }
+
+        if (worker.hasActiveEvent() && worker.eventWorkSpeedMultiplier() <= 0) {
+            worker.setCurrentAction(AiAction.IDLE);
+            MovementUtil.stop(living);
+            return;
+        }
+
+        Schedule schedule = profession.scheduleId() != null
+                ? scheduleManager.get(profession.scheduleId()).orElse(null)
+                : null;
+
+        World world = living.getWorld();
+        WorldContext context = new WorldContext(world.hasStorm(), isNight(world.getTime()));
+
+        AiAction action = aiEngine.decide(worker, profession, schedule, world.getFullTime(), context);
+        worker.setCurrentAction(action);
+
+        execute(worker, living, profession, action);
     }
 
     private void execute(Worker worker, LivingEntity entity, Profession profession, AiAction action) {
@@ -128,7 +139,7 @@ public class WorkerAiTask extends BukkitRunnable {
             // tiene hogar asignado) — una sola regla "HUNGRY -> EAT" alcanza para todo el flujo
             // "buscar comida → comer → volver al trabajo" del diseño original.
             case EAT -> {
-                if (worker.homeLocation() != null && entity.getLocation().distance(worker.homeLocation()) > 2.5) {
+                if (worker.homeLocation() != null && !near(entity.getLocation(), worker.homeLocation())) {
                     MovementUtil.moveToward(entity, worker.homeLocation());
                 } else {
                     worker.setHunger(100);
@@ -140,7 +151,7 @@ public class WorkerAiTask extends BukkitRunnable {
 
             case STORE_ITEMS -> findWarehouse(entity.getLocation()).ifPresent(warehouse -> {
 
-                if (entity.getLocation().distance(warehouse.location()) <= 2.5) {
+                if (near(entity.getLocation(), warehouse.location())) {
 
                     boolean hadItems = !worker.carriedItems().isEmpty();
                     logisticsEngine.deposit(worker, warehouse);
@@ -168,6 +179,11 @@ public class WorkerAiTask extends BukkitRunnable {
 
             case IDLE -> MovementUtil.stop(entity);
         }
+    }
+
+    /** Medir entre dos mundos lanza una excepción: un hogar en otro mundo cuenta como "no está cerca". */
+    private static boolean near(Location from, Location to) {
+        return from.getWorld() == to.getWorld() && from.distance(to) <= 2.5;
     }
 
     private void performWork(Worker worker, LivingEntity entity, Profession profession) {

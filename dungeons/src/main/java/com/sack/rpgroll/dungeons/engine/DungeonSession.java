@@ -5,6 +5,7 @@ import com.sack.rpgroll.dungeons.core.DungeonDifficulty;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -51,7 +52,7 @@ public class DungeonSession {
     public DungeonSession(String dungeonId, DungeonDifficulty difficulty, List<UUID> partyMemberIds) {
         this.dungeonId = dungeonId;
         this.difficulty = difficulty;
-        this.partyMemberIds = List.copyOf(partyMemberIds);
+        this.partyMemberIds = new ArrayList<>(partyMemberIds);
         this.startedAtMillis = System.currentTimeMillis();
         this.roomEnteredAtMillis = startedAtMillis;
     }
@@ -74,6 +75,12 @@ public class DungeonSession {
 
     public int partySize() {
         return partyMemberIds.size();
+    }
+
+    /** Quien se va a media corrida deja de contar: si no, el grupo nunca "caía entero". */
+    public void removeMember(UUID playerId) {
+        partyMemberIds.remove(playerId);
+        markRevived(playerId);
     }
 
     public void rememberReturnLocation(Player player) {

@@ -181,8 +181,13 @@ public class DungeonEngine {
                 return EnterResult.ALREADY_RUNNING;
             }
 
-            waitingQueues.computeIfAbsent(definition.id().toLowerCase(), key -> new ArrayDeque<>())
-                    .add(new QueueEntry(team, difficultyId));
+            Deque<QueueEntry> queue = waitingQueues.computeIfAbsent(definition.id().toLowerCase(),
+                    key -> new ArrayDeque<>());
+
+            // Repetir el comando no da dos turnos en la cola.
+            if (queue.stream().noneMatch(entry -> entry.team().leaderId().equals(team.leaderId()))) {
+                queue.add(new QueueEntry(team, difficultyId));
+            }
             return EnterResult.OK_QUEUED;
         }
 
@@ -192,7 +197,9 @@ public class DungeonEngine {
 
     private void startSession(DungeonDefinition definition, DungeonDifficulty difficulty, Team team) {
 
-        DungeonSession session = new DungeonSession(definition.id(), difficulty, new ArrayList<>(team.members()));
+        // Solo quien está conectado: un miembro ausente contaba para el wipe sin poder morir.
+        DungeonSession session = new DungeonSession(definition.id(), difficulty, team.members().stream()
+                .filter(memberId -> Bukkit.getPlayer(memberId) != null).toList());
         activeSessions.put(definition.id().toLowerCase(), session);
 
         if (definition.checkpointPolicy().sharedLives() && !definition.checkpointPolicy().unlimitedRetries()) {
@@ -496,10 +503,32 @@ public class DungeonEngine {
                     .map(AttributeInstance::getValue).orElse(20.0));
         }
 
+        // Los mobs del intento anterior se van: si no, se sumaban a los del nuevo en cada reintento.
+        cleanupEntities(session);
         enterRoomAt(session, definition, targetRoomIndex);
     }
 
     // ============ Cierre ============
+
+    /**
+     * Quien se desconecta sale de la corrida y vuelve a donde estaba. Antes seguía contando como
+     * vivo: con él fuera, el resto moría y la sala no se reiniciaba nunca.
+     */
+    public void leave(Player player, DungeonSession session, DungeonDefinition definition) {
+
+        Location returnLocation = session.returnLocation(player.getUniqueId());
+        if (returnLocation != null) {
+            player.teleport(returnLocation);
+        }
+
+        session.removeMember(player.getUniqueId());
+
+        if (onlinePartyMembers(session).isEmpty()) {
+            abandon(session, definition);
+        } else if (session.isFullyWiped()) {
+            handleWipe(session, definition);
+        }
+    }
 
     public void abandon(DungeonSession session, DungeonDefinition definition) {
         completeSession(session, definition, DungeonSessionState.ABANDONED);
@@ -564,11 +593,20 @@ public class DungeonEngine {
     private void promoteNextQueued(DungeonDefinition definition) {
 
         Deque<QueueEntry> queue = waitingQueues.get(definition.id().toLowerCase());
-        if (queue == null || queue.isEmpty()) {
+        if (queue == null) {
             return;
         }
 
-        QueueEntry next = queue.poll();
+        // Quien esperaba pudo desconectarse o entrar a otra mazmorra: su turno pasa al siguiente.
+        QueueEntry next;
+        do {
+            next = queue.poll();
+        } while (next != null && !isReady(next.team()));
+
+        if (next == null) {
+            return;
+        }
+
         DungeonDifficulty difficulty = definition.difficulty(next.difficultyId())
                 .orElse(definition.difficulties().get(0));
 
@@ -582,6 +620,11 @@ public class DungeonEngine {
         }
 
         startSession(definition, difficulty, next.team());
+    }
+
+    private boolean isReady(Team team) {
+        return Bukkit.getPlayer(team.leaderId()) != null
+                && team.members().stream().noneMatch(memberId -> findSessionByPlayer(memberId).isPresent());
     }
 
     private void cleanupEntities(DungeonSession session) {

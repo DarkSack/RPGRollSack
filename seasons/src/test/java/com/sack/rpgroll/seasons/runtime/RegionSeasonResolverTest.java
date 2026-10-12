@@ -62,6 +62,17 @@ class RegionSeasonResolverTest {
     }
 
     @Test
+    void aDisabledWorldHasNoSeason() {
+        RegionSeasonResolver.setDisabledWorlds(List.of("world"));
+        try {
+            assertTrue(resolver.resolveSeason(location).isEmpty());
+            assertTrue(clockManager.allClocks().isEmpty());
+        } finally {
+            RegionSeasonResolver.setDisabledWorlds(List.of());
+        }
+    }
+
+    @Test
     void resolveSeasonReturnsEmptyWhenLocationHasNoWorld() {
         Location noWorld = new Location(null, 0, 0, 0);
         assertTrue(resolver.resolveSeason(noWorld).isEmpty());

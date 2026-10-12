@@ -152,7 +152,7 @@ guild:
     success: "&7You left the guild."
   create:
     usage: "&eUsage: /guild create <name>"
-    invalid_name: "&cThat name isn't valid or a guild with that id already exists."
+    invalid_name: "&cThat name isn't valid, is longer than 24 letters or a guild with that id already exists."
     success: "&a✔ Guild '{name}' founded."
     requires_level: "&cYou need level {level} to found a guild."
     requires_permission: "&cYou don't have the required permission to found a guild."

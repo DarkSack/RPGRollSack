@@ -164,7 +164,8 @@ public class SelfHostedLicenseProvider implements LicenseProvider {
                 Thread.currentThread().interrupt();
             }
 
-            return LicenseResult.unknown("No se pudo contactar al servidor de licencias: " + describe(e));
+            return LicenseManager.unreachable(name(),
+                    "No se pudo contactar al servidor de licencias: " + describe(e));
         }
     }
 

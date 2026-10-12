@@ -106,8 +106,11 @@ public class SrpCommand implements CommandExecutor, TabCompleter {
     }
 
     private void handleBuild(CommandSender sender, boolean force) {
+        lang().send(sender, "command.build-started");
+        plugin.getBuildEngine().buildAsync(force, result -> reportBuild(sender, force, result));
+    }
 
-        BuildResult result = plugin.getBuildEngine().build(force);
+    private void reportBuild(CommandSender sender, boolean force, BuildResult result) {
 
         long errors = result.issues().stream().filter(i -> i.severity() == ValidationIssue.Severity.ERROR).count()
                 + result.resolutionErrors().size();

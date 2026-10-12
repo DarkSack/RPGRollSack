@@ -14,6 +14,9 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -32,6 +35,13 @@ public class ChatLogManager {
     private final File logsFolder;
     private final Deque<ChatLogEntry> recent = new ArrayDeque<>();
     private final AtomicLong idGenerator = new AtomicLong(1);
+
+    // Un solo hilo: las líneas llegan al archivo en orden y sin frenar el servidor si el disco va lento.
+    private final ExecutorService writer = Executors.newSingleThreadExecutor(task -> {
+        Thread thread = new Thread(task, "RPGRoll-Chat-log");
+        thread.setDaemon(true);
+        return thread;
+    });
 
     public ChatLogManager(Plugin plugin) {
         this.plugin = plugin;
@@ -62,11 +72,24 @@ public class ChatLogManager {
         String fileName = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDate.now()) + ".log";
         File file = new File(logsFolder, fileName);
 
-        try (FileWriter writer = new FileWriter(file, true)) {
-            writer.write(entry.formatLine());
-            writer.write(System.lineSeparator());
-        } catch (IOException e) {
-            plugin.getLogger().warning("✘ Error escribiendo el log de chat: " + e.getMessage());
+        String line = entry.formatLine() + System.lineSeparator();
+
+        writer.execute(() -> {
+            try (FileWriter out = new FileWriter(file, true)) {
+                out.write(line);
+            } catch (IOException e) {
+                plugin.getLogger().warning("✘ Error escribiendo el log de chat: " + e.getMessage());
+            }
+        });
+    }
+
+    /** Al apagar: espera a que lo pendiente llegue al disco. */
+    public void close() {
+        writer.shutdown();
+        try {
+            writer.awaitTermination(5, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
         }
     }
 

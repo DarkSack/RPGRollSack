@@ -86,7 +86,11 @@ public class LicenseManager {
 
         plugin.getLogger().info("Verificando licencia contra " + provider.name() + "...");
 
-        LicenseResult result = provider.validate(key, identifierFor(provider));
+        // Con el servidor caído cada plugin esperaba su propio tiempo de espera, uno tras otro: casi
+        // cuatro minutos de arranque con la suite entera. El primero que falla avisa a los demás.
+        LicenseResult result = recentlyUnreachable(provider.name())
+                ? LicenseResult.unknown("El servidor de licencias no respondió hace un momento.")
+                : provider.validate(key, identifierFor(provider));
 
         return switch (result.status()) {
 
@@ -109,6 +113,32 @@ public class LicenseManager {
      * del otro. Visible para los tests: es el paso que, mal puesto, deja al
      * comprador con un {@code not-covered} y el plugin apagado.
      */
+    private static final String UNREACHABLE_PREFIX = "rpgroll.license.unreachable.";
+    private static final long UNREACHABLE_MEMORY_MILLIS = 60_000;
+
+    /**
+     * Fallo de red al validar. Se anota en una propiedad del sistema porque cada plugin lleva su
+     * propia copia de estas clases: un campo estático no lo verían los demás. Caduca al minuto,
+     * así una caída breve no deja las revalidaciones posteriores sin consultar.
+     */
+    static LicenseResult unreachable(String providerName, String message) {
+        System.setProperty(UNREACHABLE_PREFIX + providerName, Long.toString(System.currentTimeMillis()));
+        return LicenseResult.unknown(message);
+    }
+
+    static boolean recentlyUnreachable(String providerName) {
+        try {
+            String at = System.getProperty(UNREACHABLE_PREFIX + providerName);
+            return at != null && System.currentTimeMillis() - Long.parseLong(at) < UNREACHABLE_MEMORY_MILLIS;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    static void forgetUnreachable(String providerName) {
+        System.clearProperty(UNREACHABLE_PREFIX + providerName);
+    }
+
     /** Para los tests: firman con una clave propia. */
     LicenseManager withSigningKey(PublicKey key) {
         this.signingKey = key;

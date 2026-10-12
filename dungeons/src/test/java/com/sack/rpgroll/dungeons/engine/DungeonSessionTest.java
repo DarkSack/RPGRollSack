@@ -21,6 +21,18 @@ class DungeonSessionTest {
     }
 
     @Test
+    void aMemberWhoLeavesNoLongerBlocksTheWipe() {
+        DungeonSession session = twoPlayerSession();
+        session.markDead(playerA);
+        assertFalse(session.isFullyWiped());
+
+        session.removeMember(playerB);
+
+        assertEquals(1, session.partySize());
+        assertTrue(session.isFullyWiped());
+    }
+
+    @Test
     void startsInRunningStateAtRoomZero() {
         DungeonSession session = twoPlayerSession();
 

@@ -47,7 +47,7 @@ public class DailyRollTask implements Runnable {
 
         for (World world : Bukkit.getWorlds()) {
 
-            if (world.getPlayers().isEmpty()) {
+            if (world.getPlayers().isEmpty() || RegionSeasonResolver.isDisabled(world.getName())) {
                 continue;
             }
 

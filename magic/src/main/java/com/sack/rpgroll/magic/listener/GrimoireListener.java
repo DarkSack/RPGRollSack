@@ -123,6 +123,11 @@ public class GrimoireListener implements Listener {
             item.setAmount(item.getAmount() - 1);
         }
 
+        // El grimorio ya se gastó: lo aprendido se guarda ahora, no al salir.
+        if (learned > 0) {
+            spellbookManager.save(player.getUniqueId());
+        }
+
         if (learned > 0) {
             celebrate(player, grimoire, learned);
         }

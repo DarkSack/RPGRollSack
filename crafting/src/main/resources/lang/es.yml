@@ -5,6 +5,7 @@ chat_prompt:
 
 station:
   structure_incomplete: "Esta estructura está incompleta — falta {material} en ({dx}, {dy}, {dz}) relativo al bloque."
+  protected: "&cNo puedes usar esta estación: está en una zona protegida."
   recipe_discovered: "&b&lNueva receta descubierta: &f{recipe}"
   slots_hint: "&7Ingredientes: ranuras &f{ingredients}&7 · Resultado: ranura &f{output}&7 (contando de izquierda a derecha y de arriba abajo)."
   slots_hint_fuel: "&7Ingredientes: ranuras &f{ingredients}&7 · Combustible: ranura &f{fuel}&7 · Resultado: ranura &f{output}&7 (contando de izquierda a derecha y de arriba abajo)."

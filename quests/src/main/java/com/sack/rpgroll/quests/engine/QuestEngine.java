@@ -167,6 +167,9 @@ public class QuestEngine {
                 new com.sack.rpgroll.quests.api.QuestCompleteEvent(player, quest.id()));
         actionRegistry.executeAll(quest.events(QuestEventType.ON_COMPLETE), new QuestActionContext(player, quest, null));
         grantRewards(player, quest);
+
+        // Las recompensas ya están entregadas: sin guardar ahora, un cierre brusco dejaba repetir la misión.
+        stateManager.save(player.getUniqueId());
     }
 
     private boolean isOnCooldown(Quest quest, QuestPlayerState state) {

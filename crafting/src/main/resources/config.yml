@@ -9,6 +9,10 @@ language: es
 # (inicia recetas, consume combustible, entrega resultados).
 station-tick-interval-ticks: 20
 
+# Una estación solo la abre quien puede construir en ese bloque (como un cofre en un claim). Ponlo en
+# false si tienes forjas públicas en una zona protegida: entonces cualquiera abre cualquiera.
+station-require-build-permission: true
+
 # Cada cuántos ticks se persisten a disco las estaciones personalizadas activas (autosave).
 station-autosave-interval-ticks: 6000
 

@@ -166,7 +166,8 @@ public class CraftingPlugin extends JavaPlugin {
         registerVanillaRecipes();
 
         getServer().getPluginManager().registerEvents(
-                new StationBlockInteractListener(stationManager, stationRuntimeRegistry, langManager), this);
+                new StationBlockInteractListener(stationManager, stationRuntimeRegistry, langManager,
+                        getConfig().getBoolean("station-require-build-permission", true)), this);
         getServer().getPluginManager().registerEvents(
                 new StationInventoryGuardListener(stationManager, stationRuntimeRegistry), this);
         getServer().getPluginManager().registerEvents(

@@ -4,3 +4,8 @@ config-version: 1
 # Los textos viven en lang/<idioma>.yml dentro de esta carpeta de datos —
 # puedes editarlos ahí directamente. Tras cambiar esto, /seasonsadmin reload.
 language: es
+
+# Mundos sin estaciones: ahí no cae nieve ni salen flores, no se cambia el clima, no hay eventos
+# de mundo ni mobs de temporada. Pensado para el lobby, las arenas y los mundos de minijuegos.
+# Se lee al arrancar: tras cambiarlo hay que reiniciar el servidor.
+disabled-worlds: []

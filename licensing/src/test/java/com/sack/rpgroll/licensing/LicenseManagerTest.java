@@ -37,6 +37,10 @@ class LicenseManagerTest {
         plugin = mock(Plugin.class);
         when(plugin.getDataFolder()).thenReturn(dataFolder);
         when(plugin.getLogger()).thenReturn(Logger.getLogger("LicenseManagerTest"));
+
+        // Otras pruebas simulan caídas de red y dejan anotado el aviso para todo el proceso.
+        LicenseManager.forgetUnreachable("servidor propio");
+        LicenseManager.forgetUnreachable("voxel.shop");
     }
 
     private void writeLicense(String contents) throws IOException {
@@ -228,6 +232,26 @@ class LicenseManagerTest {
         new LicenseManager(plugin, RESOURCE, SLUG, new StubProvider(LicenseResult.valid("ok"))).check();
 
         assertTrue(new File(dataFolder, ".license-cache.yml").exists());
+    }
+
+    @Test
+    void afterOnePluginFindsTheServerDownTheNextOnesDoNotWaitForIt() throws Exception {
+        writeLicense("key: 'REAL-KEY'\n");
+        writeCache(true, System.currentTimeMillis());
+        StubProvider provider = new StubProvider(LicenseResult.valid("ok"));
+
+        LicenseManager.unreachable("stub", "servidor caído");
+        try {
+            LicenseResult result = new LicenseManager(plugin, RESOURCE, SLUG, provider).check();
+
+            assertEquals(LicenseResult.Status.VALID, result.status());
+            assertEquals(null, provider.seenKey);
+        } finally {
+            LicenseManager.forgetUnreachable("stub");
+        }
+
+        new LicenseManager(plugin, RESOURCE, SLUG, provider).check();
+        assertEquals("REAL-KEY", provider.seenKey);
     }
 
     @Test

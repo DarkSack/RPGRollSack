@@ -21,6 +21,7 @@ command:
   reload-done: "✔ config.yml reloaded. Changes to the HTTP port, content folder, or pack-format require restarting the plugin."
   build-type-rebuild: "Rebuild"
   build-type-validate: "Validation"
+  build-started: "⏳ Building the pack in the background; you will be told when it is done."
   build-result: "{type} complete — {modules} module(s), {errors} error(s), {warnings} warning(s). SHA1: {sha1}"
   build-resolution-error: "  ✘ {error}"
   build-issue-error: "  ✘ {message}"

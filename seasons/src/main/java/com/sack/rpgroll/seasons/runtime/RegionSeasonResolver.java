@@ -9,7 +9,9 @@ import com.sack.rpgroll.seasons.core.SeasonRegionOverrideMode;
 import org.bukkit.Location;
 import org.bukkit.World;
 
+import java.util.Collection;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * Decide la estación efectiva en un punto del mundo — chequea primero si
@@ -36,7 +38,7 @@ public class RegionSeasonResolver {
 
         World world = location.getWorld();
 
-        if (world == null) {
+        if (world == null || isDisabled(world.getName())) {
             return Optional.empty();
         }
 
@@ -83,6 +85,17 @@ public class RegionSeasonResolver {
         return regionManager.getAll().stream()
                 .filter(region -> region.contains(worldName, x, y, z))
                 .findFirst();
+    }
+
+    /** Mundos sin estaciones (lobby, arenas…): {@code disabled-worlds} de config.yml, se lee al arrancar. */
+    private static volatile Set<String> disabledWorlds = Set.of();
+
+    public static void setDisabledWorlds(Collection<String> worlds) {
+        disabledWorlds = Set.copyOf(worlds);
+    }
+
+    public static boolean isDisabled(String worldName) {
+        return disabledWorlds.contains(worldName);
     }
 
     public static String worldClockKey(String worldName) {

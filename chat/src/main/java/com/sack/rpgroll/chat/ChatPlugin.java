@@ -130,7 +130,8 @@ public class ChatPlugin extends JavaPlugin {
         registerCommand("socialspy", new SocialSpyCommand(whisperManager, langManager));
         registerCommand("ignore", new IgnoreCommand(ignoreManager, langManager));
 
-        RPActionCommand rpActionCommand = new RPActionCommand(playerChannelStateManager, channelRouter, langManager);
+        RPActionCommand rpActionCommand = new RPActionCommand(playerChannelStateManager, channelRouter,
+                antiSpamManager, messageFilter, logManager, langManager);
         registerCommand("me", rpActionCommand);
         registerCommand("do", rpActionCommand);
 
@@ -179,6 +180,9 @@ public class ChatPlugin extends JavaPlugin {
         }
         if (playerLanguageStateManager != null) {
             playerLanguageStateManager.saveAll();
+        }
+        if (logManager != null) {
+            logManager.close();
         }
     }
 

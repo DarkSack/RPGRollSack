@@ -152,7 +152,7 @@ guild:
     success: "&7Abandonaste el gremio."
   create:
     usage: "&eUso: /guild create <nombre>"
-    invalid_name: "&cEse nombre no es válido o ya existe un gremio con ese id."
+    invalid_name: "&cEse nombre no es válido, tiene más de 24 letras o ya existe un gremio con ese id."
     success: "&a✔ Guild '{name}' fundada."
     requires_level: "&cNecesitas nivel {level} para fundar un gremio."
     requires_permission: "&cNo tienes el permiso necesario para fundar un gremio."

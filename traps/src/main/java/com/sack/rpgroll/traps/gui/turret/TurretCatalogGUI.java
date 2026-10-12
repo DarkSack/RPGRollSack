@@ -6,6 +6,7 @@ import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.traps.ammo.AmmoDefinition;
 import com.sack.rpgroll.traps.ammo.AmmoItem;
 import com.sack.rpgroll.traps.ammo.AmmoManager;
+import com.sack.rpgroll.traps.turret.CameraView;
 import com.sack.rpgroll.traps.turret.TurretDefinition;
 import com.sack.rpgroll.traps.turret.TurretItem;
 import com.sack.rpgroll.traps.turret.TurretManager;
@@ -98,10 +99,18 @@ public class TurretCatalogGUI extends InventoryGUI {
                 lore.add(com.sack.rpgroll.util.ComponentUtils.parse(turret.description()));
             }
 
-            lore.add(lang.component("gui.turret_catalog.radius", "value", turret.radius()));
-            lore.add(lang.component("gui.turret_catalog.interval", "value", turret.fireIntervalTicks() / 20.0));
-            lore.add(lang.component("gui.turret_catalog.targets", "value", targetsOf(turret)));
-            lore.add(lang.component("gui.turret_catalog.ammo_hint", "count", ammo.size()));
+            // Un monitor no vigila nada y una cámara no dispara: su ficha no lleva cadencia ni munición.
+            String type = turret.impact().type();
+
+            if (!CameraView.MONITOR.equals(type)) {
+                lore.add(lang.component("gui.turret_catalog.radius", "value", turret.radius()));
+                lore.add(lang.component("gui.turret_catalog.targets", "value", targetsOf(turret)));
+            }
+
+            if (!CameraView.MONITOR.equals(type) && !CameraView.CAMERA.equals(type)) {
+                lore.add(lang.component("gui.turret_catalog.interval", "value", turret.fireIntervalTicks() / 20.0));
+                lore.add(lang.component("gui.turret_catalog.ammo_hint", "count", ammo.size()));
+            }
             lore.add(lang.component("gui.turret_catalog.click_to_get"));
 
             setItem(i, new ItemBuilder(icon)

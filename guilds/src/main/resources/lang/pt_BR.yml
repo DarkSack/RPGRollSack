@@ -152,7 +152,7 @@ guild:
     success: "&7Você saiu da guilda."
   create:
     usage: "&eUso: /guild create <nome>"
-    invalid_name: "&cEsse nome não é válido ou já existe uma guilda com esse id."
+    invalid_name: "&cEsse nome não é válido, tem mais de 24 letras ou já existe uma guilda com esse id."
     success: "&a✔ Guilda '{name}' fundada."
     requires_level: "&cVocê precisa do nível {level} para fundar uma guilda."
     requires_permission: "&cVocê não tem a permissão necessária para fundar uma guilda."

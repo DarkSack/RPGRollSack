@@ -114,7 +114,8 @@ public class GuildCommand implements CommandExecutor, TabCompleter {
         String name = com.sack.rpgroll.util.PlayerText.clean(String.join(" ", java.util.Arrays.asList(args).subList(1, args.length)));
         String id = name.toLowerCase(Locale.ROOT).replace(' ', '_').replaceAll("[^a-z0-9_]", "");
 
-        if (id.isBlank() || guildManager.exists(id)) {
+        // Un nombre sin tope llenaba el chat, el tab y los hologramas de quien lo viera.
+        if (id.isBlank() || name.length() > 24 || guildManager.exists(id)) {
             lang().send(player, "guild.create.invalid_name");
             return;
         }

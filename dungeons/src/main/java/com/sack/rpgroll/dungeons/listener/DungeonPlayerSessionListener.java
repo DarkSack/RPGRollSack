@@ -1,11 +1,9 @@
 package com.sack.rpgroll.dungeons.listener;
 
-import com.sack.rpgroll.dungeons.core.DungeonDefinition;
 import com.sack.rpgroll.dungeons.engine.DungeonEngine;
 import com.sack.rpgroll.dungeons.player.DungeonPlayerStateManager;
 import com.sack.rpgroll.guilds.team.TeamManager;
 
-import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -14,8 +12,8 @@ import java.util.UUID;
 
 /**
  * Al desconectarse: sale del grupo temporal, guarda/descarga su estado
- * de cooldowns, y si era el último miembro conectado de una corrida
- * activa, la abandona (evita corridas "fantasma" que nunca terminan).
+ * de cooldowns y sale de la corrida; si era el último conectado, la
+ * corrida se abandona (evita corridas "fantasma" que nunca terminan).
  */
 public class DungeonPlayerSessionListener implements Listener {
 
@@ -38,18 +36,9 @@ public class DungeonPlayerSessionListener implements Listener {
         teamManager.onQuit(playerId);
         stateManager.unload(playerId);
 
-        engine.findSessionByPlayer(playerId).ifPresent(session -> {
-
-            boolean anyoneLeftOnline = session.partyMemberIds().stream()
-                    .anyMatch(memberId -> !memberId.equals(playerId) && Bukkit.getPlayer(memberId) != null);
-
-            if (!anyoneLeftOnline) {
-                DungeonDefinition definition = engine.getDungeonManager().get(session.dungeonId()).orElse(null);
-                if (definition != null) {
-                    engine.abandon(session, definition);
-                }
-            }
-        });
+        engine.findSessionByPlayer(playerId).ifPresent(session -> engine.getDungeonManager()
+                .get(session.dungeonId())
+                .ifPresent(definition -> engine.leave(event.getPlayer(), session, definition)));
     }
 
 }

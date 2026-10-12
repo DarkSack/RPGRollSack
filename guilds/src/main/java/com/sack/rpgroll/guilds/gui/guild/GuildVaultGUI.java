@@ -7,6 +7,7 @@ import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.guilds.gui.ChatPromptManager;
 import com.sack.rpgroll.guilds.guild.Guild;
 import com.sack.rpgroll.guilds.guild.GuildManager;
+import com.sack.rpgroll.guilds.guild.GuildRole;
 import com.sack.rpgroll.guilds.guild.bank.GuildVault;
 import com.sack.rpgroll.guilds.guild.bank.VaultTransaction;
 import com.sack.rpgroll.guilds.guild.bank.VaultTransactionType;
@@ -97,6 +98,13 @@ public class GuildVaultGUI extends InventoryGUI {
     public void handleClick(InventoryClickEvent event) {
 
         event.setCancelled(true);
+
+        // Expulsado, o gremio disuelto, con la bóveda abierta: ya no es suya.
+        if (!stillMember()) {
+            player.closeInventory();
+            return;
+        }
+
         int slot = event.getSlot();
 
         if (slot < slots()) {
@@ -184,6 +192,12 @@ public class GuildVaultGUI extends InventoryGUI {
             return;
         }
 
+        // Un recluta recién aceptado no vacía el almacén: retirar es de miembro para arriba.
+        if (guild.roleOf(player.getUniqueId()) == GuildRole.RECRUIT) {
+            lang().send(player, "guild.vault.no_permission_withdraw");
+            return;
+        }
+
         ItemStack item = storage[slot];
         storage[slot] = null;
 
@@ -197,7 +211,16 @@ public class GuildVaultGUI extends InventoryGUI {
         build();
     }
 
+    private boolean stillMember() {
+        return guildManager.findByMember(player.getUniqueId()).filter(current -> current == guild).isPresent();
+    }
+
     private void depositMoney(double amount) {
+
+        // El importe se escribe en el chat: entre el clic y la respuesta pudo dejar de ser miembro.
+        if (!stillMember()) {
+            return;
+        }
 
         // Sin economía en Vault el depósito salía gratis: dinero creado en el vault.
         var economy = com.sack.rpgroll.common.integration.VaultEconomy.get();
@@ -218,6 +241,11 @@ public class GuildVaultGUI extends InventoryGUI {
     }
 
     private void withdrawMoney(double amount) {
+
+        if (!stillMember() || !guild.roleOf(player.getUniqueId()).canManageBank()) {
+            lang().send(player, "guild.vault.no_permission_withdraw");
+            return;
+        }
 
         var economy = com.sack.rpgroll.common.integration.VaultEconomy.get();
         if (economy.isEmpty()) {
@@ -259,6 +287,9 @@ public class GuildVaultGUI extends InventoryGUI {
     }
 
     private void reopen() {
+        if (!stillMember()) {
+            return;
+        }
         new GuildVaultGUI(player, guild, guildManager, chatPromptManager, onBack).open();
     }
 

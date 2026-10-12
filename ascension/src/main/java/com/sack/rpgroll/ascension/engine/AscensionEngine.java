@@ -151,6 +151,8 @@ public class AscensionEngine {
         RPGRollAPI.get().getPlayerManager().savePlayer(rpgPlayer);
 
         state.setCurrentEvolutionId(evolution.id());
+        // El nivel y los puntos ya se cobraron y guardaron: el estado de ascensión va con ellos.
+        stateManager.save(player.getUniqueId());
         applyAttributeBonuses(player, state);
 
         return List.of();
@@ -189,6 +191,7 @@ public class AscensionEngine {
 
         state.setCurrentSpecializationId(specialization.id());
         state.getUnlockedTalents().clear();
+        stateManager.save(player.getUniqueId());
         applyAttributeBonuses(player, state);
 
         return List.of();
@@ -238,6 +241,7 @@ public class AscensionEngine {
 
         state.spendTalentPoints(node.cost());
         state.getUnlockedTalents().add(node.id());
+        stateManager.save(player.getUniqueId());
 
         grantTalentRewards(player, node);
         applyAttributeBonuses(player, state);
@@ -323,6 +327,7 @@ public class AscensionEngine {
         }
 
         state.incrementPrestige();
+        stateManager.save(player.getUniqueId());
         RPGRollAPI.get().getPlayerManager().savePlayer(resetPlayer);
 
         return List.of();
@@ -367,6 +372,7 @@ public class AscensionEngine {
         state.resetForLegacy();
         state.incrementLegacy();
         state.addPermanentExpBonusPercent(tier.get().permanentExpBonusPercent());
+        stateManager.save(player.getUniqueId());
 
         // Sin evolución ni especialización ya solo quedan los bonos
         // permanentes de recompensas, que son de la cuenta y sobreviven.

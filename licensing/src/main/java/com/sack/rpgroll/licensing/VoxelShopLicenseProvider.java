@@ -86,7 +86,7 @@ public class VoxelShopLicenseProvider implements LicenseProvider {
                 Thread.currentThread().interrupt();
             }
 
-            return LicenseResult.unknown("No se pudo contactar a voxel.shop: " + describe(e));
+            return LicenseManager.unreachable(name(), "No se pudo contactar a voxel.shop: " + describe(e));
         }
     }
 
