@@ -138,6 +138,58 @@
     }
    }
   ],
+  "minecraft:spyglass": [
+   {
+    "type": "definition",
+    "model": "rpgroll_traps:turret/camera",
+    "bedrock_identifier": "rpgroll_traps:turret_camera",
+    "display_name": "Cámara de Seguridad",
+    "bedrock_options": {
+     "icon": "rpgroll_traps_turret_camera",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:polished_deepslate_wall": [
+   {
+    "type": "definition",
+    "model": "rpgroll_traps:turret/camera",
+    "bedrock_identifier": "rpgroll_traps:turret_camera_polished_deepslate_wall",
+    "display_name": "Cámara de Seguridad",
+    "bedrock_options": {
+     "icon": "rpgroll_traps_turret_camera",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:painting": [
+   {
+    "type": "definition",
+    "model": "rpgroll_traps:turret/monitor",
+    "bedrock_identifier": "rpgroll_traps:turret_monitor",
+    "display_name": "Monitor de Cámaras",
+    "bedrock_options": {
+     "icon": "rpgroll_traps_turret_monitor",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:lectern": [
+   {
+    "type": "definition",
+    "model": "rpgroll_traps:turret/monitor",
+    "bedrock_identifier": "rpgroll_traps:turret_monitor_lectern",
+    "display_name": "Monitor de Cámaras",
+    "bedrock_options": {
+     "icon": "rpgroll_traps_turret_monitor",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
   "minecraft:arrow": [
    {
     "type": "definition",

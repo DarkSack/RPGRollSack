@@ -26,5 +26,5 @@ model:
   material: ECHO_SHARD
   # El modelo 3D de esa cabeza. Sin esta clave se ve el material de arriba.
   item-model: "rpgroll_traps:turret/warden_turret"
-  hover-height: 1.45
+  hover-height: 0.95
   spin-degrees-per-tick: 4.0

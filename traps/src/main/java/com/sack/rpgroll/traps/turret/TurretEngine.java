@@ -46,19 +46,22 @@ public class TurretEngine {
     private final TrapConditionEvaluator conditionEvaluator;
     private final TrapActionRegistry actionRegistry;
     private final com.sack.rpgroll.traps.ammo.AmmoManager ammoManager;
+    private final com.sack.rpgroll.common.lang.LangManager lang;
     private final NamespacedKey placementKey;
 
     private final Map<String, TurretRuntimeState> runtime = new HashMap<>();
     private BukkitTask task;
 
     public TurretEngine(JavaPlugin plugin, TurretManager turretManager, PlacedTurretManager placedTurretManager,
-            TrapConditionEvaluator conditionEvaluator, TrapActionRegistry actionRegistry, com.sack.rpgroll.traps.ammo.AmmoManager ammoManager) {
+            TrapConditionEvaluator conditionEvaluator, TrapActionRegistry actionRegistry, com.sack.rpgroll.traps.ammo.AmmoManager ammoManager,
+            com.sack.rpgroll.common.lang.LangManager lang) {
         this.plugin = plugin;
         this.turretManager = turretManager;
         this.placedTurretManager = placedTurretManager;
         this.conditionEvaluator = conditionEvaluator;
         this.actionRegistry = actionRegistry;
         this.ammoManager = ammoManager;
+        this.lang = lang;
         this.placementKey = new NamespacedKey(plugin, "turret-placement");
     }
 
@@ -88,6 +91,11 @@ public class TurretEngine {
                 continue;
             }
 
+            // Sin nadie cerca no hay a quién apuntar, y preguntar por su bloque cargaría la zona en cada pasada.
+            if (!anchor.getWorld().isChunkLoaded(placed.x() >> 4, placed.z() >> 4)) {
+                continue;
+            }
+
             TurretRuntimeState state = runtime.computeIfAbsent(placed.placementId(), id -> new TurretRuntimeState());
             ensureBaseBlock(anchor, definition);
             ItemDisplay visual = ensureVisual(placed, definition, state, anchor);
@@ -113,7 +121,9 @@ public class TurretEngine {
             Vector direction = target.getLocation().add(0, target.getHeight() / 2.0, 0).toVector()
                     .subtract(eye.toVector()).normalize();
 
-            visual.setRotation(eye.clone().setDirection(direction).getYaw(), 0);
+            Location aim = eye.clone().setDirection(direction);
+            // Las torretas giran sin cabecear; la cámara sí, que por ella se mira.
+            visual.setRotation(aim.getYaw(), CameraView.CAMERA.equals(definition.impact().type()) ? aim.getPitch() : 0);
 
             long now = System.currentTimeMillis();
 
@@ -202,6 +212,21 @@ public class TurretEngine {
             return false;
         }
 
+        // Una cámara no gasta munición: avisa a su dueño de a quién ve, como mucho una vez por intervalo.
+        if (CameraView.CAMERA.equals(definition.impact().type())) {
+
+            Player owner = placed.owner() == null ? null : Bukkit.getPlayer(placed.owner());
+
+            if (owner == null || !target.hasLineOfSight(origin)) {
+                return false;
+            }
+
+            lang.send(owner, "camera.alert", "who", target.getName(),
+                    "x", placed.x(), "y", placed.y(), "z", placed.z());
+            owner.playSound(owner, org.bukkit.Sound.BLOCK_NOTE_BLOCK_PLING, 1f, 0.6f);
+            return true;
+        }
+
         String ammoId = placed.ammo().entrySet().stream()
                 .filter(slot -> slot.getValue() > 0)
                 .map(java.util.Map.Entry::getKey)
@@ -255,6 +280,8 @@ public class TurretEngine {
 
         ItemDisplay display = anchor.getWorld().spawn(hoverLocation(anchor, definition), ItemDisplay.class);
         display.getPersistentDataContainer().set(placementKey, PersistentDataType.STRING, placed.placementId());
+        // No se guarda con el mundo: se vuelve a crear al cargar la zona, y así un reinicio no deja la anterior de sobra.
+        display.setPersistent(false);
         display.setBillboard(Display.Billboard.FIXED);
         display.setItemStack(buildModel(definition));
         if (ItemModels.get("turret", definition.id()) != null) {
@@ -266,9 +293,21 @@ public class TurretEngine {
         return display;
     }
 
-    /** Posición del ítem flotante: centrado sobre el bloque base. */
+    /** La cabeza de una torreta colocada, si ahora mismo está en el mundo. */
+    public ItemDisplay visual(String placementId) {
+
+        TurretRuntimeState state = runtime.get(placementId);
+
+        return state != null && state.visualEntity != null
+                && Bukkit.getEntity(state.visualEntity) instanceof ItemDisplay display ? display : null;
+    }
+
+    /**
+     * Posición del ítem flotante: sobre el centro del bloque base. {@code anchor} ya es ese centro:
+     * sumarle otro medio bloque a lo ancho dejaba la cabeza en una esquina.
+     */
     private Location hoverLocation(Location anchor, TurretDefinition definition) {
-        return anchor.clone().add(0.5, definition.hoverHeight(), 0.5);
+        return anchor.clone().add(0, definition.hoverHeight(), 0);
     }
 
     /**

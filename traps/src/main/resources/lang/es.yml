@@ -104,11 +104,23 @@ admin:
       header: "&6=== Torretas colocadas ({count}) ==="
       entry: "&f• {placement} — tipo: {turret}"
 
+camera:
+  alert: "&c⚠ &fTu cámara en &e{x} {y} {z} &fha visto a &c{who}&f."
+  watching: "&7Estás mirando por la cámara. &fAgáchate &7para salir."
+  unavailable: "&cAhora no se puede mirar por esa cámara (tiene que estar en tu mismo mundo)."
+
 protection:
   not_breakable: "&cEse bloque está protegido por una trampa — no se puede romper."
   missing_key: "&cNecesitas la llave correcta para romper ese bloque."
 
 gui:
+  camera_monitor:
+    title: "&8Monitor de cámaras"
+    entry: "&bCámara {number}"
+    where: "&7{world}: &f{x} {y} {z}"
+    click: "&eClic para mirar por ella"
+    empty: "&cNo tienes cámaras colocadas."
+
   turret_catalog:
     title: "&6Torretas y munición"
     radius: "&7Radio: &f{value} bloques"

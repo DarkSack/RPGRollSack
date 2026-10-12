@@ -32,6 +32,7 @@ public class TrapsPlugin extends JavaPlugin {
     private static final long DEFAULT_TICK_INTERVAL = 20L;
     private static final long DEFAULT_TURRET_TICK_INTERVAL = 5L;
 
+    private com.sack.rpgroll.traps.turret.CameraView cameraView;
     private TrapManager trapManager;
     private PlacedTrapManager placedTrapManager;
     private TrapEngine engine;
@@ -45,6 +46,10 @@ public class TrapsPlugin extends JavaPlugin {
     public void onDisable() {
         // Lo que haya en un cofre de munición abierto se guarda antes de que se cierre solo.
         com.sack.rpgroll.traps.gui.turret.TurretAmmoGUI.closeAll();
+        // Y quien esté mirando por una cámara vuelve a su sitio: no se queda en espectador.
+        if (cameraView != null) {
+            cameraView.restoreAll();
+        }
     }
 
     @Override
@@ -97,7 +102,7 @@ public class TrapsPlugin extends JavaPlugin {
         placedTurretManager = new PlacedTurretManager(this);
         placedTurretManager.load();
 
-        turretEngine = new TurretEngine(this, turretManager, placedTurretManager, conditionEvaluator, actionRegistry, ammoManager);
+        turretEngine = new TurretEngine(this, turretManager, placedTurretManager, conditionEvaluator, actionRegistry, ammoManager, langManager);
 
         long turretTickInterval = getConfig().getLong("engine.turret-tick-interval-ticks",
                 DEFAULT_TURRET_TICK_INTERVAL);
@@ -112,8 +117,11 @@ public class TrapsPlugin extends JavaPlugin {
         getServer().getPluginManager().registerEvents(chatPromptManager, this);
 
         // Coloca/retira torretas como bloques; solo el dueño puede sacarlas.
+        cameraView = new com.sack.rpgroll.traps.turret.CameraView(this, turretEngine, langManager);
+        getServer().getPluginManager().registerEvents(cameraView, this);
         getServer().getPluginManager().registerEvents(
-                new TurretPlacementListener(this, turretManager, placedTurretManager, turretEngine, ammoManager, langManager),
+                new TurretPlacementListener(this, turretManager, placedTurretManager, turretEngine, ammoManager, langManager,
+                        cameraView),
                 this);
 
         var executor = new TrapAdminCommand(this, trapManager, placedTrapManager, engine, turretManager,

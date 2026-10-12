@@ -1,0 +1,22 @@
+# Monitor: el bloque desde el que se eligen las cámaras para mirarlas de lejos.
+# Clic derecho y sale la lista de tus cámaras (turrets/camera.yml) y las de tu equipo o guild.
+id: monitor
+display-name: "&bMonitor de Cámaras"
+description: "Clic derecho para elegir por cuál de tus cámaras mirar."
+
+# No apunta a nadie: solo es el puesto de vigilancia.
+target-players: false
+target-hostile-mobs: false
+
+conditions: []
+
+# MONITOR es lo que lo hace monitor: no dispara ni lleva munición.
+impact:
+  type: MONITOR
+
+model:
+  base-block: LECTERN
+  material: PAINTING
+  item-model: "rpgroll_traps:turret/monitor"
+  hover-height: 0.95
+  spin-degrees-per-tick: 1.0

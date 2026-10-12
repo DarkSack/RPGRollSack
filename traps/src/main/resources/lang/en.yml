@@ -104,11 +104,23 @@ admin:
       header: "&6=== Placed turrets ({count}) ==="
       entry: "&f• {placement} — type: {turret}"
 
+camera:
+  alert: "&c⚠ &fYour camera at &e{x} {y} {z} &fhas spotted &c{who}&f."
+  watching: "&7You are looking through the camera. &fSneak &7to leave."
+  unavailable: "&cThat camera cannot be viewed right now (it has to be in your current world)."
+
 protection:
   not_breakable: "&cThat block is protected by a trap — it can't be broken."
   missing_key: "&cYou need the right key to break that block."
 
 gui:
+  camera_monitor:
+    title: "&8Camera monitor"
+    entry: "&bCamera {number}"
+    where: "&7{world}: &f{x} {y} {z}"
+    click: "&eClick to look through it"
+    empty: "&cYou have no cameras placed."
+
   turret_catalog:
     title: "&6Turrets and ammo"
     radius: "&7Radius: &f{value} blocks"

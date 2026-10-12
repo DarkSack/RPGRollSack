@@ -2,6 +2,8 @@ package com.sack.rpgroll.traps.listener;
 
 import com.sack.rpgroll.common.block.MachineBreakEvent;
 import com.sack.rpgroll.common.lang.LangManager;
+import com.sack.rpgroll.traps.gui.turret.CameraMonitorGUI;
+import com.sack.rpgroll.traps.turret.CameraView;
 import com.sack.rpgroll.traps.turret.PlacedTurret;
 import com.sack.rpgroll.traps.turret.PlacedTurretManager;
 import com.sack.rpgroll.traps.turret.TurretDefinition;
@@ -50,9 +52,12 @@ public class TurretPlacementListener implements Listener {
     private final TurretEngine turretEngine;
     private final com.sack.rpgroll.traps.ammo.AmmoManager ammoManager;
     private final LangManager lang;
+    private final CameraView cameraView;
 
     public TurretPlacementListener(Plugin plugin, TurretManager turretManager,
-            PlacedTurretManager placedTurretManager, TurretEngine turretEngine, com.sack.rpgroll.traps.ammo.AmmoManager ammoManager, LangManager lang) {
+            PlacedTurretManager placedTurretManager, TurretEngine turretEngine, com.sack.rpgroll.traps.ammo.AmmoManager ammoManager, LangManager lang,
+            CameraView cameraView) {
+        this.cameraView = cameraView;
         this.plugin = plugin;
         this.turretManager = turretManager;
         this.placedTurretManager = placedTurretManager;
@@ -100,6 +105,23 @@ public class TurretPlacementListener implements Listener {
                 "id", turretId, "placementId", placed.placementId());
     }
 
+    /**
+     * Las cabezas ya no se guardan con el mundo (se crean al cargar la zona). Las que guardó una
+     * versión anterior, además descentradas, sobran: sin esto quedarían quietas junto a la nueva.
+     */
+    @EventHandler
+    public void onEntitiesLoad(org.bukkit.event.world.EntitiesLoadEvent event) {
+
+        org.bukkit.NamespacedKey placementKey = new org.bukkit.NamespacedKey(plugin, "turret-placement");
+
+        for (org.bukkit.entity.Entity entity : event.getEntities()) {
+            if (entity instanceof org.bukkit.entity.ItemDisplay && entity.isPersistent()
+                    && entity.getPersistentDataContainer().has(placementKey)) {
+                entity.remove();
+            }
+        }
+    }
+
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
 
@@ -118,9 +140,21 @@ public class TurretPlacementListener implements Listener {
         event.setCancelled(true);
 
         Player player = event.getPlayer();
+        String kind = turretManager.get(placed.turretId()).map(definition -> definition.impact().type()).orElse("");
+
+        // Un monitor lo usa cualquiera: cada cual ve solo sus cámaras y las de su equipo.
+        if (CameraView.MONITOR.equals(kind)) {
+            new CameraMonitorGUI(player, turretManager, placedTurretManager, cameraView, lang).open();
+            return;
+        }
 
         if (!TurretAccess.canManage(player, placed)) {
             lang.send(player, "admin.turret.no_access");
+            return;
+        }
+
+        if (CameraView.CAMERA.equals(kind)) {
+            cameraView.watch(player, placed);
             return;
         }
 
