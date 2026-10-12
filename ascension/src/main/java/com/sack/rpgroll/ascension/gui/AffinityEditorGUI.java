@@ -1,5 +1,6 @@
 package com.sack.rpgroll.ascension.gui;
 
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.ascension.core.Affinity;
 import com.sack.rpgroll.ascension.core.AffinityManager;
 import com.sack.rpgroll.common.lang.LangManager;
@@ -82,13 +83,13 @@ public class AffinityEditorGUI extends InventoryGUI {
         int slot = event.getSlot();
 
         if (slot == NAME_SLOT) {
-            chatPromptManager.prompt(player, "gui.affinity.prompt_new_name", value -> replace(
+            chatPromptManager.promptKey(player, "gui.affinity.prompt_new_name", value -> replace(
                     new Affinity(current.id(), value, current.opposingId(), current.resistCauses())));
             return;
         }
 
         if (slot == OPPOSING_SLOT) {
-            chatPromptManager.prompt(player, "gui.affinity.prompt_opposing", value -> {
+            chatPromptManager.promptKey(player, "gui.affinity.prompt_opposing", value -> {
                 String opposing = value.trim().equals("-") ? null : value.trim();
                 replace(new Affinity(current.id(), current.displayName(), opposing, current.resistCauses()));
             });
@@ -96,7 +97,7 @@ public class AffinityEditorGUI extends InventoryGUI {
         }
 
         if (slot == RESIST_SLOT) {
-            chatPromptManager.prompt(player, "gui.affinity.prompt_resist",
+            chatPromptManager.promptKey(player, "gui.affinity.prompt_resist",
                     value -> replace(new Affinity(current.id(), current.displayName(), current.opposingId(),
                             List.of(value.trim().toUpperCase().split(",")))));
             return;

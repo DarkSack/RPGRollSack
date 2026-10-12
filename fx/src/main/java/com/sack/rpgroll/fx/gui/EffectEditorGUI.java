@@ -1,5 +1,6 @@
 package com.sack.rpgroll.fx.gui;
 
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.fx.core.EffectDefinition;
 import com.sack.rpgroll.fx.core.EffectManager;

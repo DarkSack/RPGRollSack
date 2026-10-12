@@ -11,7 +11,7 @@ import com.sack.rpgroll.traps.condition.TrapConditionEvaluator;
 import com.sack.rpgroll.traps.condition.TrapConditionRegistry;
 import com.sack.rpgroll.traps.core.TrapManager;
 import com.sack.rpgroll.traps.engine.TrapEngine;
-import com.sack.rpgroll.traps.gui.ChatPromptManager;
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.traps.listener.TrapBlockProtectionListener;
 import com.sack.rpgroll.traps.listener.TurretPlacementListener;
 import com.sack.rpgroll.traps.listener.TrapTriggerListener;

@@ -1,5 +1,6 @@
 package com.sack.rpgroll.effects.gui;
 
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.util.ComponentUtils;
 
 import com.sack.rpgroll.common.lang.LangManager;
@@ -145,7 +146,7 @@ public class EffectComponentsEditorGUI extends InventoryGUI {
     }
 
     private void promptAdd() {
-        chatPromptManager.prompt(player, "gui.components.prompt_add", value -> {
+        chatPromptManager.promptKey(player, "gui.components.prompt_add", value -> {
 
             String[] parts = value.trim().split("\\s+", 3);
 

@@ -22,7 +22,7 @@ import com.sack.rpgroll.economy.company.CompanyManager;
 import com.sack.rpgroll.economy.company.CompanyService;
 import com.sack.rpgroll.economy.company.CompanyStore;
 import com.sack.rpgroll.economy.currency.CurrencyManager;
-import com.sack.rpgroll.economy.gui.ChatPromptManager;
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.economy.inflation.InflationTracker;
 import com.sack.rpgroll.economy.integration.EconomyPlaceholders;
 import com.sack.rpgroll.economy.integration.EconomyVaultProvider;

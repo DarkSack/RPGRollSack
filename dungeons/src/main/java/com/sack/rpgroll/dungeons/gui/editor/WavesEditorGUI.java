@@ -6,7 +6,7 @@ import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.util.ComponentUtils;
 import com.sack.rpgroll.dungeons.core.DungeonWave;
 import com.sack.rpgroll.dungeons.core.DungeonWaveMob;
-import com.sack.rpgroll.dungeons.util.DurationParser;
+import com.sack.rpgroll.util.DurationParser;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -105,7 +105,7 @@ public class WavesEditorGUI extends InventoryGUI {
     }
 
     private void promptAdd() {
-        session.chatPromptManager.prompt(player, "gui.editor.waves.prompt.add", value -> {
+        session.chatPromptManager.promptKey(player, "gui.editor.waves.prompt.add", value -> {
 
             String[] tokens = value.trim().split("\\s+");
 

@@ -1,5 +1,6 @@
 package com.sack.rpgroll.fishing.gui;
 
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.fishing.core.FishingRegion;
 import com.sack.rpgroll.fishing.core.FishingRegionManager;

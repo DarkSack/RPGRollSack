@@ -1,5 +1,6 @@
 package com.sack.rpgroll.ascension.gui;
 
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.ascension.deferred.Faction;
 import com.sack.rpgroll.ascension.deferred.FactionManager;
 import com.sack.rpgroll.common.lang.LangManager;
@@ -62,7 +63,7 @@ public class FactionEditorGUI extends InventoryGUI {
         int slot = event.getSlot();
 
         if (slot == NAME_SLOT) {
-            chatPromptManager.prompt(player, "gui.faction.prompt_new_name",
+            chatPromptManager.promptKey(player, "gui.faction.prompt_new_name",
                     value -> replace(current.withDisplayName(value)));
             return;
         }

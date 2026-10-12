@@ -1,5 +1,6 @@
 package com.sack.rpgroll.crafting.gui;
 
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.crafting.station.CustomStation;
 import com.sack.rpgroll.crafting.station.CustomStationManager;
 import com.sack.rpgroll.gui.InventoryGUI;

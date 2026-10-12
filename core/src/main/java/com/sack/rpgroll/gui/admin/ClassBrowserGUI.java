@@ -1,5 +1,6 @@
 package com.sack.rpgroll.gui.admin;
 
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;

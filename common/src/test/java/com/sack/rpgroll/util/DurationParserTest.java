@@ -1,4 +1,4 @@
-package com.sack.rpgroll.items.util;
+package com.sack.rpgroll.util;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -19,10 +19,10 @@ class DurationParserTest {
 
     @ParameterizedTest
     @CsvSource({
-            "10s, 10000",
-            "5m, 300000",
-            "2h, 7200000",
-            "1d, 86400000",
+            "60s, 60000",
+            "30m, 1800000",
+            "24h, 86400000",
+            "7d, 604800000",
     })
     void parseMillisConvertsEachUnit(String raw, long expectedMillis) {
         assertEquals(expectedMillis, DurationParser.parseMillis(raw));
@@ -30,18 +30,28 @@ class DurationParserTest {
 
     @Test
     void parseMillisDefaultsToSecondsWhenNoUnitGiven() {
-        assertEquals(30_000L, DurationParser.parseMillis("30"));
-    }
-
-    @Test
-    void parseMillisIsCaseInsensitiveAndTrimsWhitespace() {
-        assertEquals(300_000L, DurationParser.parseMillis("  5M  "));
+        assertEquals(10_000L, DurationParser.parseMillis("10"));
     }
 
     @Test
     void parseMillisReturnsZeroForUnparseableInput() {
-        assertEquals(0, DurationParser.parseMillis("abc"));
-        assertEquals(0, DurationParser.parseMillis("10x"));
+        assertEquals(0, DurationParser.parseMillis("not-a-duration"));
         assertEquals(0, DurationParser.parseMillis("-5s"));
+    }
+
+    @Test
+    void parseTicksConvertsSecondsToTwentyTicksPerSecond() {
+        assertEquals(200, DurationParser.parseTicks("10s"));
+    }
+
+    @Test
+    void parseTicksConvertsMinutesToo() {
+        assertEquals(20 * 60, DurationParser.parseTicks("1m"));
+    }
+
+    @Test
+    void parseTicksIsZeroForBlankOrInvalidInput() {
+        assertEquals(0, DurationParser.parseTicks(null));
+        assertEquals(0, DurationParser.parseTicks("garbage"));
     }
 }

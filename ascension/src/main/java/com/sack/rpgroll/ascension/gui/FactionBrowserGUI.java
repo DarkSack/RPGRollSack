@@ -1,5 +1,6 @@
 package com.sack.rpgroll.ascension.gui;
 
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.ascension.deferred.Faction;
 import com.sack.rpgroll.ascension.deferred.FactionManager;
 import com.sack.rpgroll.common.lang.LangManager;
@@ -84,7 +85,7 @@ public class FactionBrowserGUI extends InventoryGUI {
     }
 
     private void promptNew() {
-        chatPromptManager.prompt(player, "gui.faction.prompt_new_id", value -> {
+        chatPromptManager.promptKey(player, "gui.faction.prompt_new_id", value -> {
 
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 

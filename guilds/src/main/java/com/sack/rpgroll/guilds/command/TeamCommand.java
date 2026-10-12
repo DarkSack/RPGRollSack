@@ -12,7 +12,7 @@ import com.sack.rpgroll.guilds.team.matchmaking.MatchmakingRequest;
 import com.sack.rpgroll.guilds.team.matchmaking.TeamMatchmakingQueue;
 import com.sack.rpgroll.guilds.team.ping.PingType;
 import com.sack.rpgroll.guilds.team.ping.TeamPingManager;
-import com.sack.rpgroll.guilds.gui.ChatPromptManager;
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.util.TabCompleteUtil;
 
 import org.bukkit.Bukkit;

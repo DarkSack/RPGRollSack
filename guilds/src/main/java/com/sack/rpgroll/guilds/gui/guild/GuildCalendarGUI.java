@@ -2,7 +2,7 @@ package com.sack.rpgroll.guilds.gui.guild;
 
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
-import com.sack.rpgroll.guilds.gui.ChatPromptManager;
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.guilds.guild.Guild;
 import com.sack.rpgroll.guilds.guild.GuildManager;
 import com.sack.rpgroll.guilds.guild.event.GuildEvent;
@@ -118,7 +118,7 @@ public class GuildCalendarGUI extends InventoryGUI {
     }
 
     private void promptNewEvent() {
-        chatPromptManager.prompt(player, "guild.calendar.prompt_new_event", value -> {
+        chatPromptManager.promptKey(player, "guild.calendar.prompt_new_event", value -> {
 
                     String[] parts = value.split(";", 4);
 

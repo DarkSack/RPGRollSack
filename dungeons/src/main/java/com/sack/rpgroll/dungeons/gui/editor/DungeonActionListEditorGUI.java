@@ -5,7 +5,7 @@ import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.util.ComponentUtils;
 import com.sack.rpgroll.dungeons.core.DungeonAction;
-import com.sack.rpgroll.dungeons.gui.ChatPromptManager;
+import com.sack.rpgroll.gui.ChatPromptManager;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -105,7 +105,7 @@ public class DungeonActionListEditorGUI extends InventoryGUI {
     }
 
     private void promptAdd() {
-        chatPromptManager.prompt(player, "gui.editor.actionlist.prompt.add",
+        chatPromptManager.promptKey(player, "gui.editor.actionlist.prompt.add",
                 value -> {
 
                     String[] tokens = value.trim().split("\\s+");

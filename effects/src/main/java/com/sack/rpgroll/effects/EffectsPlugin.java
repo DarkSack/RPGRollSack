@@ -11,7 +11,7 @@ import com.sack.rpgroll.effects.command.EffectsAdminCommand;
 import com.sack.rpgroll.effects.condition.EffectConditionEvaluator;
 import com.sack.rpgroll.effects.core.EffectManager;
 import com.sack.rpgroll.effects.engine.EffectComponentExecutor;
-import com.sack.rpgroll.effects.gui.ChatPromptManager;
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.effects.listener.EffectTriggerListener;
 import com.sack.rpgroll.effects.integration.EffectsPlaceholders;
 import com.sack.rpgroll.effects.runtime.EffectHud;

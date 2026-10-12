@@ -5,7 +5,7 @@ import com.sack.rpgroll.common.command.Senders;
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.enchantments.core.CustomEnchantment;
 import com.sack.rpgroll.enchantments.core.EnchantmentManager;
-import com.sack.rpgroll.enchantments.gui.ChatPromptManager;
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.enchantments.gui.EnchantmentBrowserGUI;
 import com.sack.rpgroll.enchantments.item.EnchantmentItem;
 import com.sack.rpgroll.util.ComponentUtils;

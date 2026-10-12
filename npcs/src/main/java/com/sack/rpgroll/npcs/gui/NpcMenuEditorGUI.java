@@ -11,7 +11,7 @@ import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.npcs.core.NpcMenuManager;
-import com.sack.rpgroll.npcs.listener.ChatPromptManager;
+import com.sack.rpgroll.gui.ChatPromptManager;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;

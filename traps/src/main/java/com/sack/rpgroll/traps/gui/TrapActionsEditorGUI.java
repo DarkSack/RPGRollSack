@@ -1,5 +1,6 @@
 package com.sack.rpgroll.traps.gui;
 
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.util.ComponentUtils;
 
 import com.sack.rpgroll.common.lang.LangManager;
@@ -116,7 +117,7 @@ public class TrapActionsEditorGUI extends InventoryGUI {
     }
 
     private void promptAdd() {
-        chatPromptManager.prompt(player, "gui.actionlist.prompt_add", value -> {
+        chatPromptManager.promptKey(player, "gui.actionlist.prompt_add", value -> {
 
             String[] tokens = value.trim().split("\\s+");
 

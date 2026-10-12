@@ -29,7 +29,7 @@ import com.sack.rpgroll.gameplay.job.listener.PescadorJobListener;
 import com.sack.rpgroll.gameplay.levelup.LevelUpRewardsConfig;
 import com.sack.rpgroll.gameplay.skill.SkillManager;
 import com.sack.rpgroll.gameplay.trait.TraitManager;
-import com.sack.rpgroll.gui.admin.ChatPromptManager;
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.integration.RPGRollPlaceholders;
 import com.sack.rpgroll.integration.VaultEconomyProvider;
 import com.sack.rpgroll.licensing.LicenseGate;
@@ -437,7 +437,8 @@ public class Bootstrap {
         // ===== Listeners de GUI =====
         // El GUIListener lo registra RPGRoll-Lib, uno solo para todos los plugins.
 
-        ChatPromptManager chatPromptManager = new ChatPromptManager(plugin, langManager);
+        ChatPromptManager chatPromptManager = new ChatPromptManager(plugin, langManager,
+                "chat_prompt_manager.instructions", "chat_prompt_manager.cancel_keyword", "chat_prompt_manager.cancelled");
         Bukkit.getPluginManager().registerEvents(chatPromptManager, plugin);
         services.register(ChatPromptManager.class, chatPromptManager);
 

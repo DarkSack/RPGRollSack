@@ -23,7 +23,7 @@ import com.sack.rpgroll.chat.command.SocialSpyCommand;
 import com.sack.rpgroll.chat.command.WhisperCommand;
 import com.sack.rpgroll.chat.context.ChatContextResolver;
 import com.sack.rpgroll.chat.emote.EmoteManager;
-import com.sack.rpgroll.chat.gui.ChatPromptManager;
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.chat.ignore.IgnoreManager;
 import com.sack.rpgroll.chat.integration.ChatPlaceholders;
 import com.sack.rpgroll.chat.language.LanguageManager;

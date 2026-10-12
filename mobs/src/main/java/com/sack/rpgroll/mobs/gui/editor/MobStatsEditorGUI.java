@@ -143,7 +143,7 @@ public class MobStatsEditorGUI extends InventoryGUI {
     }
 
     private void promptCustomStat() {
-        session.chatPromptManager.prompt(player, "gui.stats.prompt_custom", value -> {
+        session.chatPromptManager.promptKey(player, "gui.stats.prompt_custom", value -> {
 
             String[] parts = value.trim().split("\\s+");
 

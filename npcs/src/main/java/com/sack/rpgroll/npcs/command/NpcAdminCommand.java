@@ -8,7 +8,7 @@ import com.sack.rpgroll.npcs.core.*;
 import com.sack.rpgroll.npcs.gui.NpcAdminGUI;
 import com.sack.rpgroll.npcs.gui.NpcMenuBrowserGUI;
 import com.sack.rpgroll.npcs.integration.MineSkinClient;
-import com.sack.rpgroll.npcs.listener.ChatPromptManager;
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.util.ComponentUtils;
 import com.sack.rpgroll.util.TabCompleteUtil;
 

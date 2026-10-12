@@ -17,7 +17,7 @@ import com.sack.rpgroll.ranching.core.nutrition.FeedManager;
 import com.sack.rpgroll.ranching.core.species.Sex;
 import com.sack.rpgroll.ranching.core.species.Species;
 import com.sack.rpgroll.ranching.core.species.SpeciesManager;
-import com.sack.rpgroll.ranching.gui.ChatPromptManager;
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.ranching.gui.RanchHubGUI;
 import com.sack.rpgroll.ranching.item.RanchingItemFactory;
 import com.sack.rpgroll.util.ComponentUtils;

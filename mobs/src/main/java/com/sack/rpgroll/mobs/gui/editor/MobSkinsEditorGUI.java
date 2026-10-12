@@ -111,7 +111,7 @@ public class MobSkinsEditorGUI extends InventoryGUI {
     }
 
     private void promptAdd() {
-        session.chatPromptManager.prompt(player, lang.raw("gui.model.skins.prompt_add"), value -> {
+        session.chatPromptManager.promptKey(player, lang.raw("gui.model.skins.prompt_add"), value -> {
 
             String[] parts = value.trim().split("\\s+");
 

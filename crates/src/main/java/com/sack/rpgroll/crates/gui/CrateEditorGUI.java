@@ -1,5 +1,6 @@
 package com.sack.rpgroll.crates.gui;
 
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.util.ComponentUtils;
 
 import com.sack.rpgroll.common.lang.LangManager;
@@ -115,7 +116,7 @@ public class CrateEditorGUI extends InventoryGUI {
         int slot = event.getSlot();
 
         if (slot == NAME_SLOT) {
-            chatPromptManager.prompt(player, "editor.prompt_name",
+            chatPromptManager.promptKey(player, "editor.prompt_name",
                     value -> replace(new Crate(current.id(), value, current.guiTitle(), current.requireKey(),
                             current.keyMaterial(), current.keyDisplayName(), current.keyLore(),
                             current.hologramLines(), current.rewards())));
@@ -130,7 +131,7 @@ public class CrateEditorGUI extends InventoryGUI {
         }
 
         if (slot == KEY_MATERIAL_SLOT) {
-            chatPromptManager.prompt(player, "editor.prompt_key_material", value -> {
+            chatPromptManager.promptKey(player, "editor.prompt_key_material", value -> {
                 Material material;
                 try {
                     material = Material.valueOf(value.trim().toUpperCase(Locale.ROOT));
@@ -146,7 +147,7 @@ public class CrateEditorGUI extends InventoryGUI {
         }
 
         if (slot == HOLOGRAM_SLOT) {
-            chatPromptManager.prompt(player, "editor.prompt_hologram", value -> {
+            chatPromptManager.promptKey(player, "editor.prompt_hologram", value -> {
                 List<String> lines = value.isBlank() ? List.of() : List.of(value.split("\\s*;\\s*"));
                 replace(new Crate(current.id(), current.displayName(), current.guiTitle(), current.requireKey(),
                         current.keyMaterial(), current.keyDisplayName(), current.keyLore(), lines,
@@ -184,7 +185,7 @@ public class CrateEditorGUI extends InventoryGUI {
     }
 
     private void promptAddReward() {
-        chatPromptManager.prompt(player, "editor.prompt_add_reward",
+        chatPromptManager.promptKey(player, "editor.prompt_add_reward",
                 value -> {
 
                     String[] parts = value.split(";");

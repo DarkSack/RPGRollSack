@@ -7,7 +7,7 @@ import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.mobs.core.MobAction;
-import com.sack.rpgroll.mobs.gui.ChatPromptManager;
+import com.sack.rpgroll.gui.ChatPromptManager;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -108,7 +108,7 @@ public class MobActionListEditorGUI extends InventoryGUI {
     }
 
     private void promptAdd() {
-        chatPromptManager.prompt(player, "gui.action_list.prompt_add", value -> {
+        chatPromptManager.promptKey(player, "gui.action_list.prompt_add", value -> {
 
             String[] tokens = value.trim().split("\\s+");
 

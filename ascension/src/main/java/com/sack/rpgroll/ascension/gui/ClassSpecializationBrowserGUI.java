@@ -1,5 +1,6 @@
 package com.sack.rpgroll.ascension.gui;
 
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.ascension.core.AscensionRequirements;
 import com.sack.rpgroll.ascension.core.ClassSpecialization;
 import com.sack.rpgroll.ascension.core.ClassSpecializationManager;
@@ -89,7 +90,7 @@ public class ClassSpecializationBrowserGUI extends InventoryGUI {
     }
 
     private void promptNew() {
-        chatPromptManager.prompt(player, "gui.class_specialization.prompt_new_id", value -> {
+        chatPromptManager.promptKey(player, "gui.class_specialization.prompt_new_id", value -> {
 
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 
@@ -99,7 +100,7 @@ public class ClassSpecializationBrowserGUI extends InventoryGUI {
                 return;
             }
 
-            chatPromptManager.prompt(player, "gui.class_specialization.prompt_base_class_new", baseClass -> {
+            chatPromptManager.promptKey(player, "gui.class_specialization.prompt_base_class_new", baseClass -> {
                 manager.save(new ClassSpecialization(id, baseClass.trim().toLowerCase(Locale.ROOT), id,
                         AscensionRequirements.none(), Map.of(), List.of(), List.of(), List.of()));
                 reopen();

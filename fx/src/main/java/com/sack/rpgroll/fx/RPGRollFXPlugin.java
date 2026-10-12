@@ -10,7 +10,7 @@ import com.sack.rpgroll.fx.api.RPGRollFXAPI;
 import com.sack.rpgroll.fx.command.FXAdminCommand;
 import com.sack.rpgroll.fx.core.EffectManager;
 import com.sack.rpgroll.fx.engine.EffectEngine;
-import com.sack.rpgroll.fx.gui.ChatPromptManager;
+import com.sack.rpgroll.gui.ChatPromptManager;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -51,7 +51,8 @@ public class RPGRollFXPlugin extends JavaPlugin {
 
         RPGRollFXAPI.init(effectManager, engine);
 
-        ChatPromptManager chatPromptManager = new ChatPromptManager(this, langManager);
+        ChatPromptManager chatPromptManager = new ChatPromptManager(this, langManager,
+                "prompt.cancel_hint", "prompt.cancel_keyword", "prompt.cancelled");
         getServer().getPluginManager().registerEvents(chatPromptManager, this);
 
         var fxAdminCommand = new FXAdminCommand(

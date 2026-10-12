@@ -1,5 +1,6 @@
 package com.sack.rpgroll.ascension.gui;
 
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.ascension.deferred.Title;
 import com.sack.rpgroll.ascension.deferred.TitleManager;
 import com.sack.rpgroll.common.lang.LangManager;
@@ -84,7 +85,7 @@ public class TitleBrowserGUI extends InventoryGUI {
     }
 
     private void promptNew() {
-        chatPromptManager.prompt(player, "gui.title.prompt_new_id", value -> {
+        chatPromptManager.promptKey(player, "gui.title.prompt_new_id", value -> {
 
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 

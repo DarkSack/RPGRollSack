@@ -1,5 +1,6 @@
 package com.sack.rpgroll.traps.gui;
 
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
@@ -95,7 +96,7 @@ public class TrapDisguiseEditorGUI extends InventoryGUI {
         }
 
         if (slot == VISIBLE_SLOT) {
-            chatPromptManager.prompt(player, "gui.disguise.prompt_visible", value -> {
+            chatPromptManager.promptKey(player, "gui.disguise.prompt_visible", value -> {
                 try {
                     Material material = Material.valueOf(value.trim().toUpperCase(Locale.ROOT));
                     replace(new TrapDisguiseConfig(current.mode(), material, current.revealedMaterial()));
@@ -107,7 +108,7 @@ public class TrapDisguiseEditorGUI extends InventoryGUI {
         }
 
         if (slot == REVEALED_SLOT) {
-            chatPromptManager.prompt(player, "gui.disguise.prompt_revealed", value -> {
+            chatPromptManager.promptKey(player, "gui.disguise.prompt_revealed", value -> {
                 try {
                     Material material = Material.valueOf(value.trim().toUpperCase(Locale.ROOT));
                     replace(new TrapDisguiseConfig(current.mode(), current.visibleMaterial(), material));

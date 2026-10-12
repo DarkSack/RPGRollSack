@@ -1,5 +1,6 @@
 package com.sack.rpgroll.workers.gui;
 
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.util.ComponentUtils;
 
 import com.sack.rpgroll.common.reskin.EntityReskin;

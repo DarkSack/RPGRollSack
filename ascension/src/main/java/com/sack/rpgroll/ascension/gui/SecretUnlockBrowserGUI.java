@@ -1,5 +1,6 @@
 package com.sack.rpgroll.ascension.gui;
 
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.ascension.core.AscensionRequirements;
 import com.sack.rpgroll.ascension.deferred.SecretTargetType;
 import com.sack.rpgroll.ascension.deferred.SecretUnlockRequirement;
@@ -86,7 +87,7 @@ public class SecretUnlockBrowserGUI extends InventoryGUI {
     }
 
     private void promptNew() {
-        chatPromptManager.prompt(player, "gui.secret_unlock.prompt_new_id", value -> {
+        chatPromptManager.promptKey(player, "gui.secret_unlock.prompt_new_id", value -> {
 
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 
@@ -96,7 +97,7 @@ public class SecretUnlockBrowserGUI extends InventoryGUI {
                 return;
             }
 
-            chatPromptManager.prompt(player, "gui.secret_unlock.prompt_target_new",
+            chatPromptManager.promptKey(player, "gui.secret_unlock.prompt_target_new",
                     targetId -> {
                         manager.save(new SecretUnlockRequirement(id, SecretTargetType.TRAIT, targetId.trim(),
                                 AscensionRequirements.none()));

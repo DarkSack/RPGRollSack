@@ -12,7 +12,7 @@ import com.sack.rpgroll.workers.core.skin.WorkerSkins;
 import com.sack.rpgroll.workers.core.worker.PersonalityTrait;
 import com.sack.rpgroll.workers.core.worker.Worker;
 import com.sack.rpgroll.workers.core.worker.WorkerManager;
-import com.sack.rpgroll.workers.gui.ChatPromptManager;
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.workers.gui.WorkerHubGUI;
 import com.sack.rpgroll.util.ComponentUtils;
 import com.sack.rpgroll.util.TabCompleteUtil;

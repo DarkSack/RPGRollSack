@@ -1,5 +1,6 @@
 package com.sack.rpgroll.traps.gui;
 
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.util.ComponentUtils;
 
 import com.sack.rpgroll.common.lang.LangManager;
@@ -105,7 +106,7 @@ public class StringListEditorGUI extends InventoryGUI {
     }
 
     private void promptAdd() {
-        chatPromptManager.prompt(player, promptKey, value -> {
+        chatPromptManager.promptKey(player, promptKey, value -> {
             if (value == null || value.isBlank()) {
                 return;
             }

@@ -1,5 +1,6 @@
 package com.sack.rpgroll.crafting.gui;
 
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.crafting.fuel.FuelDefinition;
 import com.sack.rpgroll.crafting.fuel.FuelManager;
 import com.sack.rpgroll.gui.InventoryGUI;

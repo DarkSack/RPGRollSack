@@ -1,7 +1,7 @@
 package com.sack.rpgroll.quests.core;
 
 import com.sack.rpgroll.common.content.ContentParser;
-import com.sack.rpgroll.quests.util.DurationParser;
+import com.sack.rpgroll.util.DurationParser;
 
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;

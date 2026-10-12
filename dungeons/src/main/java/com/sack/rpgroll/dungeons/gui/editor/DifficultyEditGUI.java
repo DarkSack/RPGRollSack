@@ -125,7 +125,7 @@ public class DifficultyEditGUI extends InventoryGUI {
         int slot = event.getSlot();
 
         if (slot == NAME_SLOT) {
-            session.chatPromptManager.prompt(player, "gui.editor.info.prompt.name", value -> {
+            session.chatPromptManager.promptKey(player, "gui.editor.info.prompt.name", value -> {
                 replace(withName(difficulty(), value));
                 build();
             });

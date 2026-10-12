@@ -1,5 +1,6 @@
 package com.sack.rpgroll.economy.gui;
 
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.economy.auction.AuctionCategory;
 import com.sack.rpgroll.economy.auction.AuctionItems;

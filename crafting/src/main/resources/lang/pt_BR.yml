@@ -1,7 +1,7 @@
 chat_prompt:
-  footer: "Digite no chat, ou 'cancelar' para abortar."
+  footer: "&7Digite no chat, ou 'cancelar' para abortar."
   cancel_keyword: "cancelar"
-  cancelled: "Cancelado."
+  cancelled: "&cCancelado."
 
 station:
   structure_incomplete: "Esta estrutura está incompleta — falta {material} em ({dx}, {dy}, {dz}) relativo ao bloco."

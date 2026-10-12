@@ -12,7 +12,7 @@ import com.sack.rpgroll.quests.condition.QuestConditionEvaluator;
 import com.sack.rpgroll.quests.core.QuestManager;
 import com.sack.rpgroll.quests.engine.QuestEngine;
 import com.sack.rpgroll.quests.engine.QuestPollingTask;
-import com.sack.rpgroll.quests.gui.ChatPromptManager;
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.quests.integration.QuestsPlaceholders;
 import com.sack.rpgroll.quests.listener.QuestObjectiveListener;
 import com.sack.rpgroll.quests.player.QuestPlayerStateManager;

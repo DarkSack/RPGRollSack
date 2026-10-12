@@ -110,7 +110,7 @@ public class IdentityEditorGUI extends InventoryGUI {
         int slot = event.getSlot();
 
         if (slot == NAME_SLOT) {
-            session.chatPromptManager.prompt(player, "gui.common.prompt_new_name", value -> {
+            session.chatPromptManager.promptKey(player, "gui.common.prompt_new_name", value -> {
                 session.displayName = value;
                 build();
             });
@@ -123,7 +123,7 @@ public class IdentityEditorGUI extends InventoryGUI {
                 build();
                 return;
             }
-            session.chatPromptManager.prompt(player, "gui.identity.prompt_color", value -> {
+            session.chatPromptManager.promptKey(player, "gui.identity.prompt_color", value -> {
                 session.nameColor = value.trim();
                 build();
             });
@@ -144,7 +144,7 @@ public class IdentityEditorGUI extends InventoryGUI {
         }
 
         if (slot == RARITY_SLOT) {
-            session.chatPromptManager.prompt(player, "gui.identity.prompt_rarity", value -> {
+            session.chatPromptManager.promptKey(player, "gui.identity.prompt_rarity", value -> {
                 session.rarityId = value.trim().toLowerCase();
                 build();
             });
@@ -152,7 +152,7 @@ public class IdentityEditorGUI extends InventoryGUI {
         }
 
         if (slot == DESCRIPTION_SLOT) {
-            session.chatPromptManager.prompt(player, "gui.identity.prompt_description", value -> {
+            session.chatPromptManager.promptKey(player, "gui.identity.prompt_description", value -> {
                 session.description = value;
                 build();
             });
@@ -168,7 +168,7 @@ public class IdentityEditorGUI extends InventoryGUI {
         }
 
         if (slot == ADD_TAG_SLOT) {
-            session.chatPromptManager.prompt(player, "gui.identity.prompt_tag", value -> {
+            session.chatPromptManager.promptKey(player, "gui.identity.prompt_tag", value -> {
                 List<String> updated = new ArrayList<>(session.tags);
                 updated.add(value.trim());
                 session.tags = updated;

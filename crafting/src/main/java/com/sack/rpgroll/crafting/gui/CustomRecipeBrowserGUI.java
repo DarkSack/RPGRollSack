@@ -1,5 +1,6 @@
 package com.sack.rpgroll.crafting.gui;
 
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.crafting.recipe.CustomRecipe;
 import com.sack.rpgroll.crafting.recipe.CustomRecipeManager;
 import com.sack.rpgroll.crafting.recipe.RecipeResult;

@@ -158,7 +158,7 @@ public class AIEditorGUI extends InventoryGUI {
                 build();
                 return;
             }
-            session.chatPromptManager.prompt(player, "gui.common.prompt_region_id", value -> {
+            session.chatPromptManager.promptKey(player, "gui.common.prompt_region_id", value -> {
                 session.ai = withGuardRegionId(session.ai, value.trim());
                 build();
             });
@@ -200,7 +200,7 @@ public class AIEditorGUI extends InventoryGUI {
     }
 
     private void promptAddPatrolPoint() {
-        session.chatPromptManager.prompt(player, "gui.ai.prompt_coords", value -> {
+        session.chatPromptManager.promptKey(player, "gui.ai.prompt_coords", value -> {
 
             String[] parts = value.trim().split(",");
 

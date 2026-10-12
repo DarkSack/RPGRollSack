@@ -102,7 +102,7 @@ public class DialoguesEditorGUI extends InventoryGUI {
     }
 
     private void promptAssociation() {
-        session.chatPromptManager.prompt(player, "gui.dialogues.prompt_assoc", value -> {
+        session.chatPromptManager.promptKey(player, "gui.dialogues.prompt_assoc", value -> {
 
                     String trimmed = value.trim();
                     MobTrigger trigger = null;
@@ -128,7 +128,7 @@ public class DialoguesEditorGUI extends InventoryGUI {
     }
 
     private void promptText(MobTrigger trigger, String phaseId) {
-        session.chatPromptManager.prompt(player, "gui.dialogues.prompt_text", text -> {
+        session.chatPromptManager.promptKey(player, "gui.dialogues.prompt_text", text -> {
 
             List<MobDialogueLine> updated = new ArrayList<>(session.dialogues);
             updated.add(new MobDialogueLine(trigger, phaseId, text));

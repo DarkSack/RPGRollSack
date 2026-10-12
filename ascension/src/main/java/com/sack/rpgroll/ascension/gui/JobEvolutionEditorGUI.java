@@ -1,5 +1,6 @@
 package com.sack.rpgroll.ascension.gui;
 
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.ascension.deferred.JobEvolution;
 import com.sack.rpgroll.ascension.deferred.JobEvolutionManager;
 import com.sack.rpgroll.common.lang.LangManager;
@@ -105,7 +106,7 @@ public class JobEvolutionEditorGUI extends InventoryGUI {
         ClickType click = event.getClick();
 
         if (slot == BASE_JOB_SLOT) {
-            chatPromptManager.prompt(player, "gui.job_evolution.prompt_base_job",
+            chatPromptManager.promptKey(player, "gui.job_evolution.prompt_base_job",
                     value -> replace(new JobEvolution(current.id(), value.trim().toLowerCase(Locale.ROOT),
                             current.displayName(), current.requiredJobLevel(), current.unlockedRecipes(),
                             current.unlockedTools(), current.unlockedQuests())));
@@ -113,7 +114,7 @@ public class JobEvolutionEditorGUI extends InventoryGUI {
         }
 
         if (slot == NAME_SLOT) {
-            chatPromptManager.prompt(player, "gui.job_evolution.prompt_new_name",
+            chatPromptManager.promptKey(player, "gui.job_evolution.prompt_new_name",
                     value -> replace(new JobEvolution(current.id(), current.baseJob(), value,
                             current.requiredJobLevel(), current.unlockedRecipes(), current.unlockedTools(),
                             current.unlockedQuests())));
@@ -129,7 +130,7 @@ public class JobEvolutionEditorGUI extends InventoryGUI {
         }
 
         if (slot == RECIPES_SLOT) {
-            chatPromptManager.prompt(player, "gui.job_evolution.prompt_recipes",
+            chatPromptManager.promptKey(player, "gui.job_evolution.prompt_recipes",
                     value -> replace(new JobEvolution(current.id(), current.baseJob(), current.displayName(),
                             current.requiredJobLevel(), List.of(value.trim().split(",")), current.unlockedTools(),
                             current.unlockedQuests())));
@@ -137,7 +138,7 @@ public class JobEvolutionEditorGUI extends InventoryGUI {
         }
 
         if (slot == TOOLS_SLOT) {
-            chatPromptManager.prompt(player, "gui.job_evolution.prompt_tools",
+            chatPromptManager.promptKey(player, "gui.job_evolution.prompt_tools",
                     value -> replace(new JobEvolution(current.id(), current.baseJob(), current.displayName(),
                             current.requiredJobLevel(), current.unlockedRecipes(), List.of(value.trim().split(",")),
                             current.unlockedQuests())));
@@ -145,7 +146,7 @@ public class JobEvolutionEditorGUI extends InventoryGUI {
         }
 
         if (slot == QUESTS_SLOT) {
-            chatPromptManager.prompt(player, "gui.job_evolution.prompt_quests",
+            chatPromptManager.promptKey(player, "gui.job_evolution.prompt_quests",
                     value -> replace(new JobEvolution(current.id(), current.baseJob(), current.displayName(),
                             current.requiredJobLevel(), current.unlockedRecipes(), current.unlockedTools(),
                             List.of(value.trim().split(",")))));

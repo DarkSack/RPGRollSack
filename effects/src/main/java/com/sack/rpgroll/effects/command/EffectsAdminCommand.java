@@ -5,7 +5,7 @@ import com.sack.rpgroll.common.command.Senders;
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.effects.api.EffectsAPI;
 import com.sack.rpgroll.effects.core.EffectManager;
-import com.sack.rpgroll.effects.gui.ChatPromptManager;
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.effects.gui.EffectBrowserGUI;
 import com.sack.rpgroll.effects.runtime.ActiveEffect;
 import com.sack.rpgroll.effects.runtime.EffectTracker;

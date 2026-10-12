@@ -6,7 +6,7 @@ import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.economy.buyer.BuyerMenu;
 import com.sack.rpgroll.economy.buyer.BuyerService;
 import com.sack.rpgroll.economy.currency.CurrencyManager;
-import com.sack.rpgroll.economy.gui.ChatPromptManager;
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.economy.gui.EconomyAdminHubGUI;
 import com.sack.rpgroll.economy.inflation.InflationTracker;
 import com.sack.rpgroll.economy.ledger.TransactionType;

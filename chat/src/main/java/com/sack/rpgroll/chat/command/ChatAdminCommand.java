@@ -6,7 +6,7 @@ import com.sack.rpgroll.chat.channel.ChannelManager;
 import com.sack.rpgroll.chat.emote.EmoteManager;
 import com.sack.rpgroll.chat.gui.ChannelBrowserGUI;
 import com.sack.rpgroll.chat.gui.ChannelEditorGUI;
-import com.sack.rpgroll.chat.gui.ChatPromptManager;
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.chat.gui.ChatRoleBrowserGUI;
 import com.sack.rpgroll.chat.gui.EmoteBrowserGUI;
 import com.sack.rpgroll.chat.gui.LanguageBrowserGUI;

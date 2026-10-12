@@ -8,7 +8,7 @@ import com.sack.rpgroll.magic.core.GrimoireManager;
 import com.sack.rpgroll.magic.core.RuneManager;
 import com.sack.rpgroll.magic.core.SchoolManager;
 import com.sack.rpgroll.magic.core.SpellManager;
-import com.sack.rpgroll.magic.gui.ChatPromptManager;
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.magic.gui.MagicBrowserGUI;
 import com.sack.rpgroll.magic.item.MagicItemFactory;
 import com.sack.rpgroll.util.TabCompleteUtil;

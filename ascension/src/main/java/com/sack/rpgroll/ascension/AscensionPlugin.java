@@ -31,7 +31,7 @@ import com.sack.rpgroll.ascension.deferred.LegacyManager;
 import com.sack.rpgroll.ascension.deferred.SecretUnlockManager;
 import com.sack.rpgroll.ascension.deferred.TitleManager;
 import com.sack.rpgroll.ascension.engine.AscensionEngine;
-import com.sack.rpgroll.ascension.gui.ChatPromptManager;
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.ascension.integration.AscensionPlaceholders;
 import com.sack.rpgroll.ascension.listener.AffinityCombatListener;
 import com.sack.rpgroll.ascension.listener.PlayerSessionListener;

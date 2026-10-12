@@ -10,7 +10,7 @@ import com.sack.rpgroll.dungeons.command.DungeonAdminCommand;
 import com.sack.rpgroll.dungeons.command.DungeonCommand;
 import com.sack.rpgroll.dungeons.core.DungeonManager;
 import com.sack.rpgroll.dungeons.engine.DungeonEngine;
-import com.sack.rpgroll.dungeons.gui.ChatPromptManager;
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.dungeons.integration.DungeonsPlaceholders;
 import com.sack.rpgroll.dungeons.listener.DungeonCombatListener;
 import com.sack.rpgroll.dungeons.listener.DungeonMobDeathListener;

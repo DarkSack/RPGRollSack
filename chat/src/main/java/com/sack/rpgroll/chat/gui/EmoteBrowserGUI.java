@@ -1,5 +1,6 @@
 package com.sack.rpgroll.chat.gui;
 
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.chat.emote.EmoteDefinition;
 import com.sack.rpgroll.chat.emote.EmoteManager;

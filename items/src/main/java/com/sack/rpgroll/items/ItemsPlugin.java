@@ -12,7 +12,7 @@ import com.sack.rpgroll.items.condition.ItemConditionEvaluator;
 import com.sack.rpgroll.items.core.ItemFactory;
 import com.sack.rpgroll.items.core.ItemManager;
 import com.sack.rpgroll.items.durability.DurabilityService;
-import com.sack.rpgroll.items.gui.ChatPromptManager;
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.items.instance.ItemInstanceService;
 import com.sack.rpgroll.items.integration.ItemsPlaceholders;
 import com.sack.rpgroll.items.listener.AutoRepairTask;
@@ -141,7 +141,8 @@ public class ItemsPlugin extends JavaPlugin {
                 () -> java.util.Set.copyOf(getConfig().getStringList("ores.retrogen-worlds"))), this);
 
 
-        ChatPromptManager chatPromptManager = new ChatPromptManager(this, langManager);
+        ChatPromptManager chatPromptManager = new ChatPromptManager(this, langManager,
+                "prompt.instructions", "prompt.cancel_keyword", "prompt.cancelled");
         getServer().getPluginManager().registerEvents(chatPromptManager, this);
 
         ItemTriggerListener triggerListener = new ItemTriggerListener(itemManager, instanceService, actionRegistry,

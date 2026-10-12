@@ -13,7 +13,7 @@ import com.sack.rpgroll.ascension.deferred.TitleManager;
 import com.sack.rpgroll.ascension.engine.AscensionEngine;
 import com.sack.rpgroll.ascension.gui.AchievementBrowserGUI;
 import com.sack.rpgroll.ascension.gui.AffinityBrowserGUI;
-import com.sack.rpgroll.ascension.gui.ChatPromptManager;
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.ascension.gui.ClassSpecializationBrowserGUI;
 import com.sack.rpgroll.ascension.gui.FactionBrowserGUI;
 import com.sack.rpgroll.ascension.gui.JobEvolutionBrowserGUI;

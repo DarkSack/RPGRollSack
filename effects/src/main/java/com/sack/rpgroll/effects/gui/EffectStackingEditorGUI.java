@@ -1,5 +1,6 @@
 package com.sack.rpgroll.effects.gui;
 
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.util.ComponentUtils;
 
 import com.sack.rpgroll.common.lang.LangManager;
@@ -150,7 +151,7 @@ public class EffectStackingEditorGUI extends InventoryGUI {
     }
 
     private void promptUpgradeTo() {
-        chatPromptManager.prompt(player, "gui.stacking.prompt_upgrade",
+        chatPromptManager.promptKey(player, "gui.stacking.prompt_upgrade",
                 value -> {
                     String upgradeTo = value.isBlank() ? null : value.trim().toLowerCase(Locale.ROOT);
                     replace(current.stackingMode(), current.maxStacks(), upgradeTo, current.tags(),
@@ -159,7 +160,7 @@ public class EffectStackingEditorGUI extends InventoryGUI {
     }
 
     private void promptTags() {
-        chatPromptManager.prompt(player, "gui.stacking.prompt_tags", value -> {
+        chatPromptManager.promptKey(player, "gui.stacking.prompt_tags", value -> {
             Set<String> tags = value.isBlank() ? Set.of()
                     : new LinkedHashSet<>(java.util.List.of(value.toLowerCase(Locale.ROOT).split("\\s*,\\s*")));
             replace(current.stackingMode(), current.maxStacks(), current.upgradeToEffectId(), tags,
@@ -168,7 +169,7 @@ public class EffectStackingEditorGUI extends InventoryGUI {
     }
 
     private void promptConflicts() {
-        chatPromptManager.prompt(player, "gui.stacking.prompt_conflicts", value -> {
+        chatPromptManager.promptKey(player, "gui.stacking.prompt_conflicts", value -> {
             Set<String> conflicts = value.isBlank() ? Set.of()
                     : new LinkedHashSet<>(java.util.List.of(value.toLowerCase(Locale.ROOT).split("\\s*,\\s*")));
             replace(current.stackingMode(), current.maxStacks(), current.upgradeToEffectId(), current.tags(),

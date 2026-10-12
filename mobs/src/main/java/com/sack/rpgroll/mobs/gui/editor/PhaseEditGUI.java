@@ -155,7 +155,7 @@ public class PhaseEditGUI extends InventoryGUI {
         int slot = event.getSlot();
 
         if (slot == ID_SLOT) {
-            session.chatPromptManager.prompt(player, "gui.common.prompt_new_id_generic", value -> {
+            session.chatPromptManager.promptKey(player, "gui.common.prompt_new_id_generic", value -> {
                 replace(withId(phase(), value.trim().toLowerCase().replace(' ', '_')));
                 build();
             });
@@ -175,7 +175,7 @@ public class PhaseEditGUI extends InventoryGUI {
                 build();
                 return;
             }
-            session.chatPromptManager.prompt(player, "gui.phase_edit.prompt_bossbar_color", value -> {
+            session.chatPromptManager.promptKey(player, "gui.phase_edit.prompt_bossbar_color", value -> {
                 replace(withBossBarColor(phase(), value.trim().toUpperCase(Locale.ROOT)));
                 build();
             });
@@ -188,7 +188,7 @@ public class PhaseEditGUI extends InventoryGUI {
                 build();
                 return;
             }
-            session.chatPromptManager.prompt(player, "gui.bossbar.prompt_title", value -> {
+            session.chatPromptManager.promptKey(player, "gui.bossbar.prompt_title", value -> {
                 replace(withBossBarTitle(phase(), value));
                 build();
             });
@@ -201,7 +201,7 @@ public class PhaseEditGUI extends InventoryGUI {
                 build();
                 return;
             }
-            session.chatPromptManager.prompt(player, "gui.phase_edit.prompt_dialogue", value -> {
+            session.chatPromptManager.promptKey(player, "gui.phase_edit.prompt_dialogue", value -> {
                 replace(withDialogue(phase(), value));
                 build();
             });
@@ -214,7 +214,7 @@ public class PhaseEditGUI extends InventoryGUI {
                 build();
                 return;
             }
-            session.chatPromptManager.prompt(player, "gui.phase_edit.prompt_particle", value -> {
+            session.chatPromptManager.promptKey(player, "gui.phase_edit.prompt_particle", value -> {
                 replace(withParticle(phase(), value.trim().toUpperCase(Locale.ROOT)));
                 build();
             });
@@ -259,7 +259,7 @@ public class PhaseEditGUI extends InventoryGUI {
     }
 
     private void promptAddMultiplier() {
-        session.chatPromptManager.prompt(player, "gui.phase_edit.prompt_add_multiplier", value -> {
+        session.chatPromptManager.promptKey(player, "gui.phase_edit.prompt_add_multiplier", value -> {
 
             String[] parts = value.trim().split("\\s+");
 
@@ -282,7 +282,7 @@ public class PhaseEditGUI extends InventoryGUI {
     }
 
     private void promptAddSkill() {
-        session.chatPromptManager.prompt(player, "gui.phase_edit.prompt_add_skill", value -> {
+        session.chatPromptManager.promptKey(player, "gui.phase_edit.prompt_add_skill", value -> {
 
             String skillId = value.trim().toLowerCase();
 

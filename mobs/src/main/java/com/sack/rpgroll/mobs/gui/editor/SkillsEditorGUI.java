@@ -102,7 +102,7 @@ public class SkillsEditorGUI extends InventoryGUI {
     }
 
     private void promptAdd() {
-        session.chatPromptManager.prompt(player, "gui.skills.prompt_add", value -> {
+        session.chatPromptManager.promptKey(player, "gui.skills.prompt_add", value -> {
 
             String id = value.trim().toLowerCase().replace(' ', '_');
 

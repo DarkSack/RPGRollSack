@@ -6,7 +6,7 @@ import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.items.core.ItemDefinition;
 import com.sack.rpgroll.items.core.ItemFactory;
 import com.sack.rpgroll.items.core.ItemManager;
-import com.sack.rpgroll.items.gui.ChatPromptManager;
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.items.gui.ItemBrowserGUI;
 import com.sack.rpgroll.items.gui.editor.EditorSession;
 import com.sack.rpgroll.items.gui.editor.ItemEditorHubGUI;

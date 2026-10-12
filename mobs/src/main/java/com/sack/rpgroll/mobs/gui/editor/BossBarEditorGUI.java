@@ -105,7 +105,7 @@ public class BossBarEditorGUI extends InventoryGUI {
                 build();
                 return;
             }
-            session.chatPromptManager.prompt(player, "gui.bossbar.prompt_title", value -> {
+            session.chatPromptManager.promptKey(player, "gui.bossbar.prompt_title", value -> {
                 MobBossBarDef current = session.bossBar;
                 session.bossBar = new MobBossBarDef(current.enabled(), current.color(), current.style(), value);
                 build();

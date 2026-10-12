@@ -6,7 +6,7 @@ import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.quests.QuestsPlugin;
 import com.sack.rpgroll.quests.core.Quest;
 import com.sack.rpgroll.quests.engine.QuestEngine;
-import com.sack.rpgroll.quests.gui.ChatPromptManager;
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.quests.gui.QuestBrowserGUI;
 import com.sack.rpgroll.quests.gui.RegionBrowserGUI;
 import com.sack.rpgroll.quests.region.RegionManager;

@@ -1,5 +1,6 @@
 package com.sack.rpgroll.ascension.gui;
 
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.ascension.deferred.Achievement;
 import com.sack.rpgroll.ascension.deferred.AchievementManager;
 import com.sack.rpgroll.common.lang.LangManager;
@@ -70,13 +71,13 @@ public class AchievementEditorGUI extends InventoryGUI {
         int slot = event.getSlot();
 
         if (slot == NAME_SLOT) {
-            chatPromptManager.prompt(player, "gui.achievement.prompt_new_name",
+            chatPromptManager.promptKey(player, "gui.achievement.prompt_new_name",
                     value -> replace(current.withDisplayName(value)));
             return;
         }
 
         if (slot == DESCRIPTION_SLOT) {
-            chatPromptManager.prompt(player, "gui.achievement.prompt_description",
+            chatPromptManager.promptKey(player, "gui.achievement.prompt_description",
                     value -> replace(current.withDescription(value)));
             return;
         }

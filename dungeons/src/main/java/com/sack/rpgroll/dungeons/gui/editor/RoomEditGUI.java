@@ -124,7 +124,7 @@ public class RoomEditGUI extends InventoryGUI {
         int slot = event.getSlot();
 
         if (slot == ID_SLOT) {
-            session.chatPromptManager.prompt(player, "gui.editor.roomedit.prompt.id", value -> {
+            session.chatPromptManager.promptKey(player, "gui.editor.roomedit.prompt.id", value -> {
                 replace(withId(room(), value.trim().toLowerCase().replace(' ', '_')));
                 build();
             });
@@ -150,7 +150,7 @@ public class RoomEditGUI extends InventoryGUI {
                 build();
                 return;
             }
-            session.chatPromptManager.prompt(player, "gui.editor.roomedit.prompt.boss", value -> {
+            session.chatPromptManager.promptKey(player, "gui.editor.roomedit.prompt.boss", value -> {
                 replace(withBoss(room(), value.trim()));
                 build();
             });

@@ -1,5 +1,6 @@
 package com.sack.rpgroll.ascension.gui;
 
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.ascension.deferred.Achievement;
 import com.sack.rpgroll.ascension.deferred.AchievementManager;
 import com.sack.rpgroll.common.lang.LangManager;
@@ -85,7 +86,7 @@ public class AchievementBrowserGUI extends InventoryGUI {
     }
 
     private void promptNew() {
-        chatPromptManager.prompt(player, "gui.achievement.prompt_new_id", value -> {
+        chatPromptManager.promptKey(player, "gui.achievement.prompt_new_id", value -> {
 
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 

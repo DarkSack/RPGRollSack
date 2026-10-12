@@ -9,7 +9,7 @@ import com.sack.rpgroll.workers.core.profession.Profession;
 import com.sack.rpgroll.workers.core.profession.ProfessionManager;
 import com.sack.rpgroll.workers.core.worker.Worker;
 import com.sack.rpgroll.workers.core.worker.WorkerManager;
-import com.sack.rpgroll.workers.gui.ChatPromptManager;
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.workers.gui.WorkerDetailGUI;
 import com.sack.rpgroll.workers.integration.GuildsIntegration;
 import com.sack.rpgroll.util.TabCompleteUtil;

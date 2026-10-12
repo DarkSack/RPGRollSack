@@ -11,7 +11,7 @@ import com.sack.rpgroll.ranching.core.ownership.OwnershipService;
 import com.sack.rpgroll.ranching.core.species.SpeciesManager;
 import com.sack.rpgroll.ranching.gui.AnimalDetailGUI;
 import com.sack.rpgroll.ranching.gui.AnimalMarketGUI;
-import com.sack.rpgroll.ranching.gui.ChatPromptManager;
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.ranching.gui.ConfirmGUI;
 import com.sack.rpgroll.ranching.gui.MyAnimalsGUI;
 import com.sack.rpgroll.util.TabCompleteUtil;

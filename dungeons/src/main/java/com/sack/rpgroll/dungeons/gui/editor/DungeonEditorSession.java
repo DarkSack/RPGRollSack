@@ -12,7 +12,7 @@ import com.sack.rpgroll.dungeons.core.DungeonPoint;
 import com.sack.rpgroll.dungeons.core.DungeonReviveConfig;
 import com.sack.rpgroll.dungeons.core.DungeonRoom;
 import com.sack.rpgroll.dungeons.core.DungeonTrigger;
-import com.sack.rpgroll.dungeons.gui.ChatPromptManager;
+import com.sack.rpgroll.gui.ChatPromptManager;
 
 import org.bukkit.plugin.Plugin;
 

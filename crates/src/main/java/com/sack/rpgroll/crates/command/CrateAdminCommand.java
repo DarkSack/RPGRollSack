@@ -6,7 +6,7 @@ import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.crates.CratesPlugin;
 import com.sack.rpgroll.crates.core.Crate;
 import com.sack.rpgroll.crates.core.CrateManager;
-import com.sack.rpgroll.crates.gui.ChatPromptManager;
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.crates.gui.CrateBrowserGUI;
 import com.sack.rpgroll.crates.hologram.DecentHologramsHook;
 import com.sack.rpgroll.crates.key.CrateKeyItem;

@@ -1,5 +1,6 @@
 package com.sack.rpgroll.ascension.gui;
 
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.ascension.core.PrestigeLevel;
 import com.sack.rpgroll.ascension.core.PrestigeManager;
 import com.sack.rpgroll.common.lang.LangManager;
@@ -96,7 +97,7 @@ public class PrestigeEditorGUI extends InventoryGUI {
         }
 
         if (slot == SKILLS_SLOT) {
-            chatPromptManager.prompt(player, "gui.prestige.prompt_skills",
+            chatPromptManager.promptKey(player, "gui.prestige.prompt_skills",
                     value -> replace(current.with(current.requiredLevel(),
                             current.expBonusPercent(), List.of(value.trim().split(",")))));
             return;

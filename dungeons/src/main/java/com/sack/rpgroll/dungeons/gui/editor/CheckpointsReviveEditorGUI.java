@@ -150,7 +150,7 @@ public class CheckpointsReviveEditorGUI extends InventoryGUI {
                 build();
                 return;
             }
-            session.chatPromptManager.prompt(player, "gui.editor.checkpointsrevive.prompt.item", value -> {
+            session.chatPromptManager.promptKey(player, "gui.editor.checkpointsrevive.prompt.item", value -> {
                 DungeonReviveConfig current = session.reviveConfig;
                 session.reviveConfig = new DungeonReviveConfig(current.mode(), current.reviveTimerMillis(),
                         value.trim().toUpperCase());

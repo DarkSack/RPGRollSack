@@ -9,7 +9,7 @@ import com.sack.rpgroll.crafting.brewing.BrewRecipeManager;
 import com.sack.rpgroll.crafting.cartography.CartographyRecipeManager;
 import com.sack.rpgroll.crafting.fuel.FuelManager;
 import com.sack.rpgroll.crafting.grindstone.GrindstoneRecipeManager;
-import com.sack.rpgroll.crafting.gui.ChatPromptManager;
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.crafting.gui.CraftingStudioHubGUI;
 import com.sack.rpgroll.crafting.integration.ItemsBridge;
 import com.sack.rpgroll.crafting.loom.LoomRecipeManager;

@@ -1,5 +1,6 @@
 package com.sack.rpgroll.traps.gui;
 
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
@@ -111,12 +112,12 @@ public class TrapInfoEditorGUI extends InventoryGUI {
         ClickType click = event.getClick();
 
         if (slot == NAME_SLOT) {
-            chatPromptManager.prompt(player, "gui.info.prompt_name", value -> replace(withDisplayName(value)));
+            chatPromptManager.promptKey(player, "gui.info.prompt_name", value -> replace(withDisplayName(value)));
             return;
         }
 
         if (slot == ICON_SLOT) {
-            chatPromptManager.prompt(player, "gui.info.prompt_icon", value -> {
+            chatPromptManager.promptKey(player, "gui.info.prompt_icon", value -> {
                 try {
                     replace(withIcon(Material.valueOf(value.trim().toUpperCase(Locale.ROOT))));
                 } catch (IllegalArgumentException e) {

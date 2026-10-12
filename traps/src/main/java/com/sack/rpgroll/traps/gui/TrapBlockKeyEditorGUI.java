@@ -1,5 +1,6 @@
 package com.sack.rpgroll.traps.gui;
 
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
@@ -99,7 +100,7 @@ public class TrapBlockKeyEditorGUI extends InventoryGUI {
         int slot = event.getSlot();
 
         if (slot == MATERIAL_SLOT) {
-            chatPromptManager.prompt(player, "gui.block.prompt_material", value -> {
+            chatPromptManager.promptKey(player, "gui.block.prompt_material", value -> {
                 try {
                     Material material = Material.valueOf(value.trim().toUpperCase(Locale.ROOT));
                     replace(new TrapBlockConfig(material, current.breakable(), current.requiredItemId(),
@@ -123,7 +124,7 @@ public class TrapBlockKeyEditorGUI extends InventoryGUI {
                         current.breakTimeSeconds(), current.explosionImmune(), current.pistonImmune()));
                 return;
             }
-            chatPromptManager.prompt(player, "gui.block.prompt_key", value -> replace(
+            chatPromptManager.promptKey(player, "gui.block.prompt_key", value -> replace(
                     new TrapBlockConfig(current.material(), current.breakable(), value.trim(),
                             current.breakTimeSeconds(), current.explosionImmune(), current.pistonImmune())));
             return;

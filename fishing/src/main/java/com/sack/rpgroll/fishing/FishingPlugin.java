@@ -18,7 +18,7 @@ import com.sack.rpgroll.fishing.core.JunkManager;
 import com.sack.rpgroll.fishing.core.TreasureManager;
 import com.sack.rpgroll.fishing.engine.FishingCatchEngine;
 import com.sack.rpgroll.fishing.engine.FishingConditionsResolver;
-import com.sack.rpgroll.fishing.gui.ChatPromptManager;
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.fishing.listener.FishingCastListener;
 import com.sack.rpgroll.fishing.minigame.FishingMinigameManager;
 import com.sack.rpgroll.fishing.runtime.FishingProfileManager;

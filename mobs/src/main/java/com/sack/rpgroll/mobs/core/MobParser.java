@@ -2,7 +2,7 @@ package com.sack.rpgroll.mobs.core;
 
 import com.sack.rpgroll.common.content.ContentParser;
 import com.sack.rpgroll.common.reskin.EntityReskin;
-import com.sack.rpgroll.mobs.util.DurationParser;
+import com.sack.rpgroll.util.DurationParser;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;

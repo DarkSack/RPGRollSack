@@ -1,7 +1,7 @@
 package com.sack.rpgroll.dungeons.core;
 
 import com.sack.rpgroll.common.content.ContentParser;
-import com.sack.rpgroll.dungeons.util.DurationParser;
+import com.sack.rpgroll.util.DurationParser;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;

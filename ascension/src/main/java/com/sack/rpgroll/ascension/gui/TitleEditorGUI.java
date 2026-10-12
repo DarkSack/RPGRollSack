@@ -1,5 +1,6 @@
 package com.sack.rpgroll.ascension.gui;
 
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.ascension.deferred.Title;
 import com.sack.rpgroll.ascension.deferred.TitleManager;
 import com.sack.rpgroll.common.lang.LangManager;
@@ -62,7 +63,7 @@ public class TitleEditorGUI extends InventoryGUI {
         int slot = event.getSlot();
 
         if (slot == NAME_SLOT) {
-            chatPromptManager.prompt(player, "gui.title.prompt_new_name",
+            chatPromptManager.promptKey(player, "gui.title.prompt_new_name",
                     value -> replace(current.withDisplayName(value)));
             return;
         }

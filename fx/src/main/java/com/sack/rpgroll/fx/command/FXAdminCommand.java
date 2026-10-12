@@ -8,7 +8,7 @@ import com.sack.rpgroll.fx.core.EffectDefinition;
 import com.sack.rpgroll.fx.core.EffectManager;
 import com.sack.rpgroll.fx.engine.EffectContext;
 import com.sack.rpgroll.fx.engine.EffectEngine;
-import com.sack.rpgroll.fx.gui.ChatPromptManager;
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.fx.gui.EffectBrowserGUI;
 import com.sack.rpgroll.util.TabCompleteUtil;
 

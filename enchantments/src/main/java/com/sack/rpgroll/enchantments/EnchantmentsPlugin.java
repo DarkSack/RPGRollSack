@@ -10,7 +10,7 @@ import com.sack.rpgroll.enchantments.command.EnchantAdminCommand;
 import com.sack.rpgroll.enchantments.condition.ConditionEvaluator;
 import com.sack.rpgroll.enchantments.core.EnchantmentManager;
 import com.sack.rpgroll.enchantments.effect.EnchantEffectExecutor;
-import com.sack.rpgroll.enchantments.gui.ChatPromptManager;
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.enchantments.integration.EnchantmentsPlaceholders;
 import com.sack.rpgroll.enchantments.item.EnchantmentItem;
 import com.sack.rpgroll.enchantments.listener.AnvilEnchantListener;
@@ -61,7 +61,8 @@ public class EnchantmentsPlugin extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new AnvilEnchantListener(enchantmentManager, enchantmentItem), this);
 
-        ChatPromptManager chatPromptManager = new ChatPromptManager(this, langManager);
+        ChatPromptManager chatPromptManager = new ChatPromptManager(this, langManager,
+                "chat_prompt_manager.instructions", "chat_prompt_manager.cancel_keyword", "chat_prompt_manager.cancelled");
         getServer().getPluginManager().registerEvents(chatPromptManager, this);
 
         var enchantAdminCommand = new EnchantAdminCommand(this, enchantmentManager, enchantmentItem,

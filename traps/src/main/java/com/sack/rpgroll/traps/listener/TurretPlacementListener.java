@@ -1,5 +1,6 @@
 package com.sack.rpgroll.traps.listener;
 
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.common.block.MachineBreakEvent;
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.traps.gui.turret.CameraMonitorGUI;
@@ -53,11 +54,11 @@ public class TurretPlacementListener implements Listener {
     private final com.sack.rpgroll.traps.ammo.AmmoManager ammoManager;
     private final LangManager lang;
     private final CameraView cameraView;
-    private final com.sack.rpgroll.traps.gui.ChatPromptManager chatPrompts;
+    private final com.sack.rpgroll.gui.ChatPromptManager chatPrompts;
 
     public TurretPlacementListener(Plugin plugin, TurretManager turretManager,
             PlacedTurretManager placedTurretManager, TurretEngine turretEngine, com.sack.rpgroll.traps.ammo.AmmoManager ammoManager, LangManager lang,
-            CameraView cameraView, com.sack.rpgroll.traps.gui.ChatPromptManager chatPrompts) {
+            CameraView cameraView, com.sack.rpgroll.gui.ChatPromptManager chatPrompts) {
         this.cameraView = cameraView;
         this.chatPrompts = chatPrompts;
         this.plugin = plugin;
@@ -161,7 +162,7 @@ public class TurretPlacementListener implements Listener {
 
             // Agachado, su dueño le pone nombre (solo él, aunque el equipo pueda mirarla); de pie se mira por ella.
             if (player.isSneaking() && player.getUniqueId().equals(placed.owner())) {
-                chatPrompts.prompt(player, "camera.prompt_name", answer -> {
+                chatPrompts.promptKey(player, "camera.prompt_name", answer -> {
                     String name = CameraView.cleanName(answer);
                     placedTurretManager.setName(placed.placementId(), name);
                     lang.send(player, name == null ? "camera.bad_name" : "camera.named", "name", name);

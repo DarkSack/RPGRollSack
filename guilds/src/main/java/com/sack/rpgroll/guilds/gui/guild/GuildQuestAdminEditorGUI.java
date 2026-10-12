@@ -4,7 +4,7 @@ import com.sack.rpgroll.util.ComponentUtils;
 
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
-import com.sack.rpgroll.guilds.gui.ChatPromptManager;
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.guilds.guild.quest.GuildQuestDefinition;
 import com.sack.rpgroll.guilds.guild.quest.GuildQuestManager;
 import com.sack.rpgroll.guilds.guild.quest.GuildQuestType;
@@ -124,7 +124,7 @@ public class GuildQuestAdminEditorGUI extends InventoryGUI {
         ClickType click = event.getClick();
 
         if (slot == NAME_SLOT) {
-            chatPromptManager.prompt(player, "guildadmin.quest.prompt_name",
+            chatPromptManager.promptKey(player, "guildadmin.quest.prompt_name",
                     value -> replace(new GuildQuestDefinition(current.id(), value.trim(), current.description(),
                             current.type(), current.targetReference(), current.targetAmount(), current.rewardMoney(),
                             current.rewardXp(), current.minGuildLevel())));
@@ -141,7 +141,7 @@ public class GuildQuestAdminEditorGUI extends InventoryGUI {
         }
 
         if (slot == TARGET_REF_SLOT) {
-            chatPromptManager.prompt(player, "guildadmin.quest.prompt_reference",
+            chatPromptManager.promptKey(player, "guildadmin.quest.prompt_reference",
                     value -> replace(new GuildQuestDefinition(current.id(), current.displayName(),
                             current.description(), current.type(), value.isBlank() ? null : value.trim(),
                             current.targetAmount(), current.rewardMoney(), current.rewardXp(),
@@ -182,7 +182,7 @@ public class GuildQuestAdminEditorGUI extends InventoryGUI {
         }
 
         if (slot == DESCRIPTION_SLOT) {
-            chatPromptManager.prompt(player, "guildadmin.quest.prompt_description",
+            chatPromptManager.promptKey(player, "guildadmin.quest.prompt_description",
                     value -> replace(new GuildQuestDefinition(current.id(), current.displayName(), value,
                             current.type(), current.targetReference(), current.targetAmount(), current.rewardMoney(),
                             current.rewardXp(), current.minGuildLevel())));

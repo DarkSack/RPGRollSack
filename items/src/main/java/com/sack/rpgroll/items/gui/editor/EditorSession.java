@@ -15,7 +15,7 @@ import com.sack.rpgroll.items.core.ItemSkin;
 import com.sack.rpgroll.items.core.ItemTrigger;
 import com.sack.rpgroll.items.core.SocketDefinition;
 import com.sack.rpgroll.items.core.UpgradeLevel;
-import com.sack.rpgroll.items.gui.ChatPromptManager;
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.items.rarity.RarityManager;
 import com.sack.rpgroll.items.registry.StatRegistry;
 

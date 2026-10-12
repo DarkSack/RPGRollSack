@@ -4,7 +4,7 @@ import com.sack.rpgroll.util.ComponentUtils;
 
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
-import com.sack.rpgroll.guilds.gui.ChatPromptManager;
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.guilds.guild.Guild;
 import com.sack.rpgroll.guilds.guild.GuildManager;
 
@@ -95,7 +95,7 @@ public class GuildCustomizationGUI extends InventoryGUI {
         }
 
         switch (event.getSlot()) {
-            case NAME_SLOT -> chatPromptManager.prompt(player, "guild.customization.prompt_name", value -> {
+            case NAME_SLOT -> chatPromptManager.promptKey(player, "guild.customization.prompt_name", value -> {
                 if (com.sack.rpgroll.util.PlayerText.clean(value).isBlank()) {
                     lang().send(player, "guild.create.invalid_name");
                     reopen();
@@ -111,7 +111,7 @@ public class GuildCustomizationGUI extends InventoryGUI {
                 save();
                 build();
             }
-            case ICON_SLOT -> chatPromptManager.prompt(player, "guild.customization.prompt_icon",
+            case ICON_SLOT -> chatPromptManager.promptKey(player, "guild.customization.prompt_icon",
                     value -> {
                         try {
                             guild.setIcon(Material.valueOf(value.trim().toUpperCase(java.util.Locale.ROOT)));
@@ -121,12 +121,12 @@ public class GuildCustomizationGUI extends InventoryGUI {
                         save();
                         reopen();
                     });
-            case MOTTO_SLOT -> chatPromptManager.prompt(player, "guild.customization.prompt_motto", value -> {
+            case MOTTO_SLOT -> chatPromptManager.promptKey(player, "guild.customization.prompt_motto", value -> {
                 guild.setMotto(value.trim());
                 save();
                 reopen();
             });
-            case DESCRIPTION_SLOT -> chatPromptManager.prompt(player, "guild.customization.prompt_description",
+            case DESCRIPTION_SLOT -> chatPromptManager.promptKey(player, "guild.customization.prompt_description",
                     value -> {
                         guild.setDescription(value.trim());
                         save();

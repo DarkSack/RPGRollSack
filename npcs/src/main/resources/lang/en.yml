@@ -36,6 +36,7 @@ command:
 
 # Generic prompts from the chat capture system (ChatPromptManager)
 prompt:
+  cancel_keyword: "cancelar"
   instructions: "&7Type in chat, or 'cancelar' to abort."
   cancelled: "&cCancelled."
 

@@ -1,5 +1,6 @@
 package com.sack.rpgroll.mobs.gui;
 
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.util.ComponentUtils;
 
@@ -209,14 +210,14 @@ public class MobBrowserGUI extends PaginatedGUI {
     }
 
     private void promptSearch() {
-        chatPromptManager.prompt(player, "gui.browser.prompt_search", value -> {
+        chatPromptManager.promptKey(player, "gui.browser.prompt_search", value -> {
             searchText = value.trim();
             applyFilters();
         });
     }
 
     private void promptNewMob() {
-        chatPromptManager.prompt(player, "gui.browser.prompt_new_mob", value -> {
+        chatPromptManager.promptKey(player, "gui.browser.prompt_new_mob", value -> {
 
             String[] parts = value.split(";", 2);
             String id = parts[0].trim().toLowerCase(Locale.ROOT).replace(' ', '_');

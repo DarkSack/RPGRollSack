@@ -1,5 +1,6 @@
 package com.sack.rpgroll.ascension.gui;
 
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.ascension.deferred.SecretTargetType;
 import com.sack.rpgroll.ascension.deferred.SecretUnlockRequirement;
 import com.sack.rpgroll.ascension.deferred.SecretUnlockManager;
@@ -79,7 +80,7 @@ public class SecretUnlockEditorGUI extends InventoryGUI {
         int slot = event.getSlot();
 
         if (slot == TYPE_SLOT) {
-            chatPromptManager.prompt(player, "gui.secret_unlock.prompt_type", value -> {
+            chatPromptManager.promptKey(player, "gui.secret_unlock.prompt_type", value -> {
                 try {
                     SecretTargetType type = SecretTargetType.valueOf(value.trim().toUpperCase());
                     replace(new SecretUnlockRequirement(current.id(), type, current.targetId(),
@@ -92,14 +93,14 @@ public class SecretUnlockEditorGUI extends InventoryGUI {
         }
 
         if (slot == TARGET_SLOT) {
-            chatPromptManager.prompt(player, "gui.secret_unlock.prompt_target",
+            chatPromptManager.promptKey(player, "gui.secret_unlock.prompt_target",
                     value -> replace(new SecretUnlockRequirement(current.id(), current.targetType(), value.trim(),
                             current.requirements())));
             return;
         }
 
         if (slot == REQUIREMENTS_SLOT) {
-            chatPromptManager.prompt(player, "gui.secret_unlock.prompt_requirements",
+            chatPromptManager.promptKey(player, "gui.secret_unlock.prompt_requirements",
                     value -> {
                         try {
                             replace(new SecretUnlockRequirement(current.id(), current.targetType(),

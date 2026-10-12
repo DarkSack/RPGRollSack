@@ -115,7 +115,7 @@ public class ModelEditorGUI extends InventoryGUI {
         int slot = event.getSlot();
 
         if (slot == BASE_TYPE_SLOT) {
-            session.chatPromptManager.prompt(player, "gui.model.prompt_base_type",
+            session.chatPromptManager.promptKey(player, "gui.model.prompt_base_type",
                     value -> {
                         session.model = withBaseType(session.model, value.trim().toUpperCase(Locale.ROOT));
                         build();
@@ -148,7 +148,7 @@ public class ModelEditorGUI extends InventoryGUI {
                 build();
                 return;
             }
-            session.chatPromptManager.prompt(player, "gui.model.prompt_modelengine", value -> {
+            session.chatPromptManager.promptKey(player, "gui.model.prompt_modelengine", value -> {
                 session.model = withModelEngineId(session.model, value.trim());
                 build();
             });
@@ -172,7 +172,7 @@ public class ModelEditorGUI extends InventoryGUI {
                 return;
             }
 
-            session.chatPromptManager.prompt(player, "gui.model.prompt_equipment", value -> {
+            session.chatPromptManager.promptKey(player, "gui.model.prompt_equipment", value -> {
                 Map<String, String> equipment = new LinkedHashMap<>(session.model.equipment());
                 equipment.put(key, value.trim());
                 session.model = withEquipment(session.model, equipment);

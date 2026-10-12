@@ -102,7 +102,7 @@ public class ObjectivesEditorGUI extends InventoryGUI {
     }
 
     private void promptAdd() {
-        session.chatPromptManager.prompt(player, "gui.editor.objectives.prompt.add", value -> {
+        session.chatPromptManager.promptKey(player, "gui.editor.objectives.prompt.add", value -> {
 
             String[] tokens = value.trim().split("\\s+");
 

@@ -1,5 +1,6 @@
 package com.sack.rpgroll.ascension.gui;
 
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.ascension.deferred.JobEvolution;
 import com.sack.rpgroll.ascension.deferred.JobEvolutionManager;
 import com.sack.rpgroll.common.lang.LangManager;
@@ -84,7 +85,7 @@ public class JobEvolutionBrowserGUI extends InventoryGUI {
     }
 
     private void promptNew() {
-        chatPromptManager.prompt(player, "gui.job_evolution.prompt_new_id", value -> {
+        chatPromptManager.promptKey(player, "gui.job_evolution.prompt_new_id", value -> {
 
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 
@@ -94,7 +95,7 @@ public class JobEvolutionBrowserGUI extends InventoryGUI {
                 return;
             }
 
-            chatPromptManager.prompt(player, "gui.job_evolution.prompt_base_job_new", baseJob -> {
+            chatPromptManager.promptKey(player, "gui.job_evolution.prompt_base_job_new", baseJob -> {
                 manager.save(new JobEvolution(id, baseJob.trim().toLowerCase(Locale.ROOT), id, 0, List.of(),
                         List.of(), List.of()));
                 reopen();

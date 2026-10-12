@@ -1,5 +1,6 @@
 package com.sack.rpgroll.workers.gui;
 
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.workers.core.event.WorkerEventDefinition;

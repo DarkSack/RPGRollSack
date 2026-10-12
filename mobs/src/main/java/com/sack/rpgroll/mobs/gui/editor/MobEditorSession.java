@@ -15,7 +15,7 @@ import com.sack.rpgroll.mobs.core.MobSkill;
 import com.sack.rpgroll.mobs.core.MobTrigger;
 import com.sack.rpgroll.mobs.core.MobWeakness;
 import com.sack.rpgroll.mobs.core.SpawnRules;
-import com.sack.rpgroll.mobs.gui.ChatPromptManager;
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.mobs.registry.MobStatRegistry;
 
 import org.bukkit.plugin.Plugin;

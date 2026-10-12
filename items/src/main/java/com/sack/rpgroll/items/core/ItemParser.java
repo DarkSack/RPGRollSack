@@ -1,7 +1,7 @@
 package com.sack.rpgroll.items.core;
 
 import com.sack.rpgroll.common.content.ContentParser;
-import com.sack.rpgroll.items.util.DurationParser;
+import com.sack.rpgroll.util.DurationParser;
 
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;

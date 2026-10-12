@@ -7,7 +7,7 @@ import com.sack.rpgroll.economy.auction.AuctionService;
 import com.sack.rpgroll.economy.gui.AuctionCollectGUI;
 import com.sack.rpgroll.economy.gui.AuctionHouseGUI;
 import com.sack.rpgroll.economy.gui.AuctionMineGUI;
-import com.sack.rpgroll.economy.gui.ChatPromptManager;
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.util.TabCompleteUtil;
 
 import org.bukkit.command.Command;

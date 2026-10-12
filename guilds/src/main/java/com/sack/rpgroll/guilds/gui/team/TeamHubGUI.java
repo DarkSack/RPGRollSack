@@ -4,7 +4,7 @@ import com.sack.rpgroll.util.ComponentUtils;
 
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
-import com.sack.rpgroll.guilds.gui.ChatPromptManager;
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.guilds.team.Team;
 import com.sack.rpgroll.guilds.team.TeamBuff;
 import com.sack.rpgroll.guilds.team.TeamManager;
@@ -176,7 +176,7 @@ public class TeamHubGUI extends InventoryGUI {
                 lang().send(player, "team.hub.no_permission_invite");
                 return;
             }
-            chatPromptManager.prompt(player, "team.hub.prompt_invite", value -> {
+            chatPromptManager.promptKey(player, "team.hub.prompt_invite", value -> {
                 Player target = Bukkit.getPlayerExact(value.trim());
                 if (target == null) {
                     lang().send(player, "common.player_not_found");
@@ -203,7 +203,7 @@ public class TeamHubGUI extends InventoryGUI {
         }
 
         if (slot == NAME_SLOT) {
-            chatPromptManager.prompt(player, "team.hub.prompt_name", value -> {
+            chatPromptManager.promptKey(player, "team.hub.prompt_name", value -> {
                 team.setName(value.trim());
                 reopen();
             });

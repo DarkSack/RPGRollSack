@@ -118,7 +118,7 @@ public class SkillEditGUI extends InventoryGUI {
         int slot = event.getSlot();
 
         if (slot == NAME_SLOT) {
-            session.chatPromptManager.prompt(player, "gui.common.prompt_new_name", value -> {
+            session.chatPromptManager.promptKey(player, "gui.common.prompt_new_name", value -> {
                 replace(withName(skill(), value));
                 build();
             });
@@ -126,7 +126,7 @@ public class SkillEditGUI extends InventoryGUI {
         }
 
         if (slot == ID_SLOT) {
-            session.chatPromptManager.prompt(player, "gui.common.prompt_new_id_generic", value -> {
+            session.chatPromptManager.promptKey(player, "gui.common.prompt_new_id_generic", value -> {
                 replace(withId(skill(), value.trim().toLowerCase().replace(' ', '_')));
                 build();
             });
@@ -159,7 +159,7 @@ public class SkillEditGUI extends InventoryGUI {
 
         if (slot == CONDITIONS_SLOT) {
             String current = String.join("\n", skill().conditions());
-            session.chatPromptManager.prompt(player, "gui.skill_edit.prompt_conditions", value -> {
+            session.chatPromptManager.promptKey(player, "gui.skill_edit.prompt_conditions", value -> {
                         List<String> conditions = value.isBlank() ? List.of()
                                 : List.of(value.split("\\s*;\\s*"));
                         replace(withConditions(skill(), conditions));

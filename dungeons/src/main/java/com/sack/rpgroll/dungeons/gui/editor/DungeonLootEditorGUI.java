@@ -118,7 +118,7 @@ public class DungeonLootEditorGUI extends InventoryGUI {
     }
 
     private void promptAdd() {
-        session.chatPromptManager.prompt(player, "gui.editor.loot.prompt.add", value -> {
+        session.chatPromptManager.promptKey(player, "gui.editor.loot.prompt.add", value -> {
 
             DungeonLootEntry entry = parse(value);
             if (entry == null) {
@@ -134,7 +134,7 @@ public class DungeonLootEditorGUI extends InventoryGUI {
     }
 
     private void promptReplace(int index) {
-        session.chatPromptManager.prompt(player, "gui.editor.loot.prompt.replace", value -> {
+        session.chatPromptManager.promptKey(player, "gui.editor.loot.prompt.replace", value -> {
 
             DungeonLootEntry entry = parse(value);
             if (entry == null) {

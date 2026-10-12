@@ -6,7 +6,7 @@ import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gameplay.job.JobManager;
 import com.sack.rpgroll.gameplay.skill.SkillManager;
 import com.sack.rpgroll.gameplay.trait.TraitManager;
-import com.sack.rpgroll.gui.admin.ChatPromptManager;
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.gui.admin.ClassBrowserGUI;
 import com.sack.rpgroll.gui.admin.JobBrowserGUI;
 import com.sack.rpgroll.gui.admin.RaceBrowserGUI;

@@ -14,7 +14,7 @@ import com.sack.rpgroll.npcs.core.NpcSessionManager;
 import com.sack.rpgroll.npcs.core.NpcSpawnManager;
 import com.sack.rpgroll.npcs.core.NpcWriter;
 import com.sack.rpgroll.npcs.integration.MineSkinClient;
-import com.sack.rpgroll.npcs.listener.ChatPromptManager;
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.npcs.listener.NpcEntityListener;
 
 import org.bukkit.plugin.java.JavaPlugin;
@@ -63,7 +63,8 @@ public class RPGRollNPCs extends JavaPlugin {
         // NPCs en chunks aún sin cargar aparecen con el ChunkLoadEvent.
         spawnManager.respawnAll(npcManager.getAll());
 
-        ChatPromptManager chatPromptManager = new ChatPromptManager(this, langManager);
+        ChatPromptManager chatPromptManager = new ChatPromptManager(this, langManager,
+                "prompt.instructions", "prompt.cancel_keyword", "prompt.cancelled");
 
         getServer().getPluginManager()
                 .registerEvents(chatPromptManager, this);

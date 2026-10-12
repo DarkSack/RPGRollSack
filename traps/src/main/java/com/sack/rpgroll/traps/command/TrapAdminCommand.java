@@ -12,7 +12,7 @@ import com.sack.rpgroll.traps.core.TrapDefinition;
 import com.sack.rpgroll.traps.core.TrapManager;
 import com.sack.rpgroll.traps.core.TrapTrigger;
 import com.sack.rpgroll.traps.engine.TrapEngine;
-import com.sack.rpgroll.traps.gui.ChatPromptManager;
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.traps.gui.TrapBrowserGUI;
 import com.sack.rpgroll.traps.gui.TrapEditorHubGUI;
 import com.sack.rpgroll.traps.gui.TrapZoneEditorGUI;

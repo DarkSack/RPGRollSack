@@ -2,7 +2,7 @@ package com.sack.rpgroll.guilds.gui.guild;
 
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
-import com.sack.rpgroll.guilds.gui.ChatPromptManager;
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.guilds.guild.Guild;
 import com.sack.rpgroll.guilds.guild.GuildManager;
 import com.sack.rpgroll.guilds.guild.territory.GuildTerritory;
@@ -154,7 +154,7 @@ public class GuildTerritoryGUI extends InventoryGUI {
             return;
         }
 
-        chatPromptManager.prompt(player, "guild.territory.prompt_claim_limits", value -> {
+        chatPromptManager.promptKey(player, "guild.territory.prompt_claim_limits", value -> {
 
             String[] parts = value.split(";", 2);
 

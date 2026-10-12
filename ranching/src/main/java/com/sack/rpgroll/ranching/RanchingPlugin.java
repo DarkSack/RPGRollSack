@@ -26,7 +26,7 @@ import com.sack.rpgroll.ranching.core.health.VaccineManager;
 import com.sack.rpgroll.ranching.core.nutrition.FeedManager;
 import com.sack.rpgroll.ranching.core.species.SpeciesManager;
 import com.sack.rpgroll.ranching.core.welfare.WelfareTask;
-import com.sack.rpgroll.ranching.gui.ChatPromptManager;
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.ranching.item.ItemModels;
 import com.sack.rpgroll.ranching.item.ProductPrices;
 import com.sack.rpgroll.ranching.listener.AnimalCareListener;

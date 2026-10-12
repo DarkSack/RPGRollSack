@@ -1,5 +1,6 @@
 package com.sack.rpgroll.quests.gui;
 
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
@@ -146,7 +147,7 @@ public class QuestEditorGUI extends InventoryGUI {
         ClickType click = event.getClick();
 
         if (slot == NAME_SLOT) {
-            chatPromptManager.prompt(player, "editor.prompt_name",
+            chatPromptManager.promptKey(player, "editor.prompt_name",
                     value -> replace(new Quest(current.id(), value, current.category(), current.difficulty(),
                             current.repeatable(), current.cooldownMillis(), current.requirements(), current.stages(),
                             current.rewards(), current.events())));
@@ -241,7 +242,7 @@ public class QuestEditorGUI extends InventoryGUI {
         }
 
         if (slot == ADD_STAGE_SLOT) {
-            chatPromptManager.prompt(player, "editor.prompt_add_stage", value -> {
+            chatPromptManager.promptKey(player, "editor.prompt_add_stage", value -> {
 
                 String stageId = value.trim().toLowerCase().replace(' ', '_');
                 List<QuestStage> updated = new ArrayList<>(current.stages());

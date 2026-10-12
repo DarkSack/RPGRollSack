@@ -2,7 +2,7 @@ package com.sack.rpgroll.guilds;
 
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.guilds.buff.BuffCalculator;
-import com.sack.rpgroll.guilds.gui.ChatPromptManager;
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.guilds.guild.GuildManager;
 import com.sack.rpgroll.guilds.guild.chat.GuildChatListener;
 import com.sack.rpgroll.guilds.guild.diplomacy.GuildDiplomacyManager;

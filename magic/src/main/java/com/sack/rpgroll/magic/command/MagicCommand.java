@@ -10,7 +10,7 @@ import com.sack.rpgroll.magic.core.Spell;
 import com.sack.rpgroll.magic.core.SpellManager;
 import com.sack.rpgroll.magic.engine.CastResult;
 import com.sack.rpgroll.magic.engine.SpellCastEngine;
-import com.sack.rpgroll.magic.gui.ChatPromptManager;
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.magic.gui.SpellbookGUI;
 import com.sack.rpgroll.magic.runtime.PlayerSpellbook;
 import com.sack.rpgroll.magic.runtime.SpellbookManager;

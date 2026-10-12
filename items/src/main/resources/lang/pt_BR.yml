@@ -6,6 +6,7 @@ general:
 
 # Prompts genéricos do sistema de captura de chat (ChatPromptManager)
 prompt:
+  cancel_keyword: "cancelar"
   instructions: "&7Digite no chat, ou 'cancelar' para abortar."
   cancelled: "&cCancelado."
 

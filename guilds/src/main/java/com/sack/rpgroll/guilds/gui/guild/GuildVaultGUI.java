@@ -4,7 +4,7 @@ import com.sack.rpgroll.util.ComponentUtils;
 
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
-import com.sack.rpgroll.guilds.gui.ChatPromptManager;
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.guilds.guild.Guild;
 import com.sack.rpgroll.guilds.guild.GuildManager;
 import com.sack.rpgroll.guilds.guild.GuildRole;
@@ -113,7 +113,7 @@ public class GuildVaultGUI extends InventoryGUI {
         }
 
         if (slot == DEPOSIT_MONEY_SLOT) {
-            chatPromptManager.prompt(player, "guild.vault.prompt_deposit", value -> {
+            chatPromptManager.promptKey(player, "guild.vault.prompt_deposit", value -> {
                 double amount = parse(value);
                 if (amount <= 0) {
                     lang().send(player, "guild.vault.invalid_amount");
@@ -133,7 +133,7 @@ public class GuildVaultGUI extends InventoryGUI {
                 return;
             }
 
-            chatPromptManager.prompt(player, "guild.vault.prompt_withdraw", value -> {
+            chatPromptManager.promptKey(player, "guild.vault.prompt_withdraw", value -> {
                 double amount = parse(value);
                 if (amount <= 0) {
                     lang().send(player, "guild.vault.invalid_amount");

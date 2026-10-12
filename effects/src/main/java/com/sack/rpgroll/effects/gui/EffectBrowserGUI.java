@@ -1,5 +1,6 @@
 package com.sack.rpgroll.effects.gui;
 
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.util.ComponentUtils;
 
 import com.sack.rpgroll.common.lang.LangManager;
@@ -228,14 +229,14 @@ public class EffectBrowserGUI extends InventoryGUI {
     }
 
     private void promptSearch() {
-        chatPromptManager.prompt(player, "gui.browser.prompt_search", value -> {
+        chatPromptManager.promptKey(player, "gui.browser.prompt_search", value -> {
             searchQuery = value.trim().toLowerCase(Locale.ROOT);
             reopen();
         });
     }
 
     private void promptNew() {
-        chatPromptManager.prompt(player, "gui.browser.prompt_new", value -> {
+        chatPromptManager.promptKey(player, "gui.browser.prompt_new", value -> {
 
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 
@@ -256,7 +257,7 @@ public class EffectBrowserGUI extends InventoryGUI {
     }
 
     private void promptDuplicate(EffectDefinition original) {
-        chatPromptManager.prompt(player, "gui.browser.prompt_duplicate", value -> {
+        chatPromptManager.promptKey(player, "gui.browser.prompt_duplicate", value -> {
 
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 

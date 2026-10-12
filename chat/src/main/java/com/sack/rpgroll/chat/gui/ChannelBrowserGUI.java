@@ -1,5 +1,6 @@
 package com.sack.rpgroll.chat.gui;
 
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.util.ComponentUtils;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.chat.channel.ChannelManager;

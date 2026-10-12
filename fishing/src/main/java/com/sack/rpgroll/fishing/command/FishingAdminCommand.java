@@ -10,7 +10,7 @@ import com.sack.rpgroll.fishing.core.FishingRegionManager;
 import com.sack.rpgroll.fishing.core.FishingRodManager;
 import com.sack.rpgroll.fishing.core.JunkManager;
 import com.sack.rpgroll.fishing.core.TreasureManager;
-import com.sack.rpgroll.fishing.gui.ChatPromptManager;
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.fishing.gui.FishingBrowserGUI;
 import com.sack.rpgroll.fishing.item.FishingItemFactory;
 import com.sack.rpgroll.util.TabCompleteUtil;

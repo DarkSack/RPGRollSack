@@ -12,7 +12,7 @@ import com.sack.rpgroll.economy.company.CompanyService;
 import com.sack.rpgroll.economy.currency.CurrencyManager;
 import com.sack.rpgroll.economy.gui.AuctionHouseGUI;
 import com.sack.rpgroll.economy.gui.BankGUI;
-import com.sack.rpgroll.economy.gui.ChatPromptManager;
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.economy.gui.CompanyListGUI;
 import com.sack.rpgroll.economy.gui.ShopListGUI;
 import com.sack.rpgroll.economy.ledger.TransactionType;

@@ -7,7 +7,7 @@ import com.sack.rpgroll.mobs.core.MobDefinition;
 import com.sack.rpgroll.mobs.core.MobManager;
 import com.sack.rpgroll.mobs.engine.ActiveMobState;
 import com.sack.rpgroll.mobs.engine.MobEngine;
-import com.sack.rpgroll.mobs.gui.ChatPromptManager;
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.mobs.gui.MobBrowserGUI;
 import com.sack.rpgroll.mobs.gui.editor.MobEditorHubGUI;
 import com.sack.rpgroll.mobs.gui.editor.MobEditorSession;

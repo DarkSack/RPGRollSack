@@ -15,7 +15,7 @@ import com.sack.rpgroll.magic.core.RuneManager;
 import com.sack.rpgroll.magic.core.SchoolManager;
 import com.sack.rpgroll.magic.core.SpellManager;
 import com.sack.rpgroll.magic.engine.SpellCastEngine;
-import com.sack.rpgroll.magic.gui.ChatPromptManager;
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.magic.listener.GrimoireListener;
 import com.sack.rpgroll.magic.listener.SpellCastListener;
 import com.sack.rpgroll.magic.listener.SpellChannelManager;

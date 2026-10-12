@@ -115,7 +115,7 @@ public class LootEditorGUI extends InventoryGUI {
     }
 
     private void promptAdd() {
-        session.chatPromptManager.prompt(player, "gui.loot.prompt_add", value -> {
+        session.chatPromptManager.promptKey(player, "gui.loot.prompt_add", value -> {
 
             MobLootEntry entry = parse(value);
             if (entry == null) {
@@ -131,7 +131,7 @@ public class LootEditorGUI extends InventoryGUI {
     }
 
     private void promptReplace(int index) {
-        session.chatPromptManager.prompt(player, "gui.loot.prompt_replace", value -> {
+        session.chatPromptManager.promptKey(player, "gui.loot.prompt_replace", value -> {
 
             MobLootEntry entry = parse(value);
             if (entry == null) {

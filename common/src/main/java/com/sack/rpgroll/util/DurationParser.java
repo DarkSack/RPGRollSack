@@ -1,9 +1,12 @@
-package com.sack.rpgroll.dungeons.util;
+package com.sack.rpgroll.util;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/** Convierte duraciones en texto tipo "10s", "5m" a milisegundos. */
+/**
+ * Convierte duraciones en texto tipo "60s", "24h", "7d", "30m" a
+ * milisegundos: cooldowns, esperas y tiempos límite de los YAML.
+ */
 public final class DurationParser {
 
     private static final Pattern PATTERN = Pattern.compile("^(\\d+)\\s*(s|m|h|d)?$", Pattern.CASE_INSENSITIVE);
@@ -11,6 +14,7 @@ public final class DurationParser {
     private DurationParser() {
     }
 
+    /** @return milisegundos, o 0 si el texto no es una duración válida. */
     public static long parseMillis(String raw) {
 
         if (raw == null || raw.isBlank()) {
@@ -33,6 +37,11 @@ public final class DurationParser {
             case "d" -> value * 86_400_000L;
             default -> 0;
         };
+    }
+
+    /** @return segundos redondeados hacia abajo, útil para tasks en ticks (20 ticks = 1s). */
+    public static long parseTicks(String raw) {
+        return (parseMillis(raw) / 1000L) * 20L;
     }
 
 }

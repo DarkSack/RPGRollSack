@@ -100,7 +100,7 @@ public class DifficultiesEditorGUI extends InventoryGUI {
     }
 
     private void promptAdd() {
-        session.chatPromptManager.prompt(player, "gui.editor.difficulties.prompt.new_id", value -> {
+        session.chatPromptManager.promptKey(player, "gui.editor.difficulties.prompt.new_id", value -> {
 
             String id = value.trim().toLowerCase().replace(' ', '_');
 

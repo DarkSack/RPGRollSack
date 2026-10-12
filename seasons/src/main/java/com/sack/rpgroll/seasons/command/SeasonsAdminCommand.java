@@ -9,7 +9,7 @@ import com.sack.rpgroll.seasons.core.SeasonManager;
 import com.sack.rpgroll.seasons.core.SeasonRegionManager;
 import com.sack.rpgroll.seasons.core.WorldEventManager;
 import com.sack.rpgroll.seasons.event.WorldEventEngine;
-import com.sack.rpgroll.seasons.gui.ChatPromptManager;
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.seasons.gui.SeasonsBrowserGUI;
 import com.sack.rpgroll.util.TabCompleteUtil;
 

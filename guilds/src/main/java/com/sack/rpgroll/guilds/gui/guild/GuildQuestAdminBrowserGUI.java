@@ -1,6 +1,6 @@
 package com.sack.rpgroll.guilds.gui.guild;
 
-import com.sack.rpgroll.guilds.gui.ChatPromptManager;
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.guilds.gui.PaginatedGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.guilds.guild.quest.GuildQuestDefinition;
@@ -89,7 +89,7 @@ public class GuildQuestAdminBrowserGUI extends PaginatedGUI {
     }
 
     private void promptNew() {
-        chatPromptManager.prompt(player, "guildadmin.quest.prompt_new_id", value -> {
+        chatPromptManager.promptKey(player, "guildadmin.quest.prompt_new_id", value -> {
 
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 

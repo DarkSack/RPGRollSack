@@ -13,7 +13,7 @@ import com.sack.rpgroll.guilds.buff.BuffTickTask;
 import com.sack.rpgroll.guilds.command.GuildAdminCommand;
 import com.sack.rpgroll.guilds.command.GuildCommand;
 import com.sack.rpgroll.guilds.command.TeamCommand;
-import com.sack.rpgroll.guilds.gui.ChatPromptManager;
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.guilds.guild.GuildCreationRequirements;
 import com.sack.rpgroll.guilds.guild.GuildManager;
 import com.sack.rpgroll.guilds.guild.achievement.GuildAchievementChecker;

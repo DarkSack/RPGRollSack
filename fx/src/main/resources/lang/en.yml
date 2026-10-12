@@ -22,6 +22,7 @@ command:
 
 # Shared chat prompts (used by the admin GUIs)
 prompt:
+  cancel_keyword: "cancelar"
   cancel_hint: "&7Type in chat, or 'cancelar' to abort."
   cancelled: "&cCancelled."
 

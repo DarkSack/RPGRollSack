@@ -175,7 +175,7 @@ public class RoomsEditorGUI extends InventoryGUI {
     }
 
     private void promptAdd() {
-        session.chatPromptManager.prompt(player, "gui.editor.rooms.prompt.new_id", value -> {
+        session.chatPromptManager.promptKey(player, "gui.editor.rooms.prompt.new_id", value -> {
 
             String id = value.trim().toLowerCase().replace(' ', '_');
 

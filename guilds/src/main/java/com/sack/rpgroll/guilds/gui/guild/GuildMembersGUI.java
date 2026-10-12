@@ -4,7 +4,7 @@ import com.sack.rpgroll.util.ComponentUtils;
 
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
-import com.sack.rpgroll.guilds.gui.ChatPromptManager;
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.guilds.guild.Guild;
 import com.sack.rpgroll.guilds.guild.GuildManager;
 import com.sack.rpgroll.guilds.guild.GuildRole;
@@ -129,7 +129,7 @@ public class GuildMembersGUI extends InventoryGUI {
                 return;
             }
 
-            chatPromptManager.prompt(player, "guild.members.prompt_invite", value -> {
+            chatPromptManager.promptKey(player, "guild.members.prompt_invite", value -> {
                 Player target = Bukkit.getPlayerExact(value.trim());
                 if (target == null) {
                     lang().send(player, "common.player_not_found");

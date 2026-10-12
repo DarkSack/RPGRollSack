@@ -1,5 +1,6 @@
 package com.sack.rpgroll.ascension.gui;
 
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.ascension.core.ClassSpecialization;
 import com.sack.rpgroll.ascension.core.ClassSpecializationManager;
 import com.sack.rpgroll.ascension.core.TalentNode;
@@ -144,7 +145,7 @@ public class ClassSpecializationEditorGUI extends InventoryGUI {
         int slot = event.getSlot();
 
         if (slot == BASE_CLASS_SLOT) {
-            chatPromptManager.prompt(player, "gui.class_specialization.prompt_base_class",
+            chatPromptManager.promptKey(player, "gui.class_specialization.prompt_base_class",
                     value -> replace(new ClassSpecialization(current.id(), value.trim().toLowerCase(Locale.ROOT),
                             current.displayName(), current.requirements(), current.statBonus(),
                             current.restrictions(), current.exclusiveEquipment(), current.talentTree())));
@@ -152,7 +153,7 @@ public class ClassSpecializationEditorGUI extends InventoryGUI {
         }
 
         if (slot == NAME_SLOT) {
-            chatPromptManager.prompt(player, "gui.class_specialization.prompt_new_name",
+            chatPromptManager.promptKey(player, "gui.class_specialization.prompt_new_name",
                     value -> replace(new ClassSpecialization(current.id(), current.baseClass(), value,
                             current.requirements(), current.statBonus(), current.restrictions(),
                             current.exclusiveEquipment(), current.talentTree())));
@@ -160,7 +161,7 @@ public class ClassSpecializationEditorGUI extends InventoryGUI {
         }
 
         if (slot == REQUIREMENTS_SLOT) {
-            chatPromptManager.prompt(player, "gui.class_specialization.prompt_requirements", value -> {
+            chatPromptManager.promptKey(player, "gui.class_specialization.prompt_requirements", value -> {
                         try {
                             replace(new ClassSpecialization(current.id(), current.baseClass(), current.displayName(),
                                     RequirementsPrompt.parse(value), current.statBonus(), current.restrictions(),
@@ -173,7 +174,7 @@ public class ClassSpecializationEditorGUI extends InventoryGUI {
         }
 
         if (slot == STATS_SLOT) {
-            chatPromptManager.prompt(player, "gui.class_specialization.prompt_stats", value -> {
+            chatPromptManager.promptKey(player, "gui.class_specialization.prompt_stats", value -> {
                 try {
                     replace(new ClassSpecialization(current.id(), current.baseClass(), current.displayName(),
                             current.requirements(), NumberMapPrompt.parse(value), current.restrictions(),
@@ -186,7 +187,7 @@ public class ClassSpecializationEditorGUI extends InventoryGUI {
         }
 
         if (slot == RESTRICTIONS_SLOT) {
-            chatPromptManager.prompt(player, "gui.class_specialization.prompt_restrictions",
+            chatPromptManager.promptKey(player, "gui.class_specialization.prompt_restrictions",
                     value -> replace(new ClassSpecialization(current.id(), current.baseClass(), current.displayName(),
                             current.requirements(), current.statBonus(), List.of(value.trim().split(",")),
                             current.exclusiveEquipment(), current.talentTree())));
@@ -194,7 +195,7 @@ public class ClassSpecializationEditorGUI extends InventoryGUI {
         }
 
         if (slot == EQUIPMENT_SLOT) {
-            chatPromptManager.prompt(player, "gui.class_specialization.prompt_equipment",
+            chatPromptManager.promptKey(player, "gui.class_specialization.prompt_equipment",
                     value -> replace(new ClassSpecialization(current.id(), current.baseClass(), current.displayName(),
                             current.requirements(), current.statBonus(), current.restrictions(),
                             List.of(value.trim().split(",")), current.talentTree())));
@@ -202,7 +203,7 @@ public class ClassSpecializationEditorGUI extends InventoryGUI {
         }
 
         if (slot == TALENT_ADD_SLOT) {
-            chatPromptManager.prompt(player, "gui.class_specialization.prompt_talent_add", value -> {
+            chatPromptManager.promptKey(player, "gui.class_specialization.prompt_talent_add", value -> {
                         try {
                             TalentNode node = parseTalentNode(value);
                             List<TalentNode> nodes = new ArrayList<>(current.talentTree());
@@ -219,7 +220,7 @@ public class ClassSpecializationEditorGUI extends InventoryGUI {
         }
 
         if (slot == TALENT_REMOVE_SLOT) {
-            chatPromptManager.prompt(player, "gui.class_specialization.prompt_talent_remove", value -> {
+            chatPromptManager.promptKey(player, "gui.class_specialization.prompt_talent_remove", value -> {
 
                 List<TalentNode> nodes = new ArrayList<>(current.talentTree());
                 boolean removed = nodes.removeIf(node -> node.id().equalsIgnoreCase(value.trim()));

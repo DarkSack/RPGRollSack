@@ -1,5 +1,6 @@
 package com.sack.rpgroll.crafting.gui;
 
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.crafting.recipe.RecipeResult;
 import com.sack.rpgroll.crafting.recipe.RecipeResultType;
 import com.sack.rpgroll.crafting.villager.VillagerTradeDefinition;

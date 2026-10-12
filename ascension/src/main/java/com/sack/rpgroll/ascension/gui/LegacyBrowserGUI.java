@@ -1,5 +1,6 @@
 package com.sack.rpgroll.ascension.gui;
 
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.ascension.deferred.LegacyTier;
 import com.sack.rpgroll.ascension.deferred.LegacyManager;
 import com.sack.rpgroll.common.lang.LangManager;
@@ -83,7 +84,7 @@ public class LegacyBrowserGUI extends InventoryGUI {
     }
 
     private void promptNew() {
-        chatPromptManager.prompt(player, "gui.legacy.prompt_new_id", value -> {
+        chatPromptManager.promptKey(player, "gui.legacy.prompt_new_id", value -> {
 
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 

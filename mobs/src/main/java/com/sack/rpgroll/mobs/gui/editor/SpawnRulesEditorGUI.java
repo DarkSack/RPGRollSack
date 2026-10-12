@@ -169,7 +169,7 @@ public class SpawnRulesEditorGUI extends InventoryGUI {
                 build();
                 return;
             }
-            session.chatPromptManager.prompt(player, "gui.spawn_rules.prompt_hour_range", value -> {
+            session.chatPromptManager.promptKey(player, "gui.spawn_rules.prompt_hour_range", value -> {
 
                 String[] parts = value.trim().split("-");
                 if (parts.length != 2) {
@@ -233,7 +233,7 @@ public class SpawnRulesEditorGUI extends InventoryGUI {
         }
 
         if (slot == ADD_BIOME_SLOT) {
-            session.chatPromptManager.prompt(player, "gui.spawn_rules.prompt_biome", value -> {
+            session.chatPromptManager.promptKey(player, "gui.spawn_rules.prompt_biome", value -> {
                 addToList(rules.biomes(), value, updatedList -> with(updatedList, rules.regions(),
                         rules.worlds(), rules.hourMin(), rules.hourMax(), rules.weather(), rules.minHeight(),
                         rules.maxHeight(), rules.minDistanceFromPlayers(), rules.naturalSpawn(), rules.spawnWeight()));
@@ -252,7 +252,7 @@ public class SpawnRulesEditorGUI extends InventoryGUI {
         }
 
         if (slot == ADD_WORLD_SLOT) {
-            session.chatPromptManager.prompt(player, "gui.spawn_rules.prompt_world", value -> {
+            session.chatPromptManager.promptKey(player, "gui.spawn_rules.prompt_world", value -> {
                 addToList(rules.worlds(), value, updatedList -> with(rules.biomes(), rules.regions(),
                         updatedList, rules.hourMin(), rules.hourMax(), rules.weather(), rules.minHeight(),
                         rules.maxHeight(), rules.minDistanceFromPlayers(), rules.naturalSpawn(), rules.spawnWeight()));
@@ -271,7 +271,7 @@ public class SpawnRulesEditorGUI extends InventoryGUI {
         }
 
         if (slot == ADD_REGION_SLOT) {
-            session.chatPromptManager.prompt(player, "gui.common.prompt_region_id", value -> {
+            session.chatPromptManager.promptKey(player, "gui.common.prompt_region_id", value -> {
                 addToList(rules.regions(), value, updatedList -> with(rules.biomes(), updatedList,
                         rules.worlds(), rules.hourMin(), rules.hourMax(), rules.weather(), rules.minHeight(),
                         rules.maxHeight(), rules.minDistanceFromPlayers(), rules.naturalSpawn(), rules.spawnWeight()));

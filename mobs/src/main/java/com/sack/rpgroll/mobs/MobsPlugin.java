@@ -11,7 +11,7 @@ import com.sack.rpgroll.mobs.command.MobAdminCommand;
 import com.sack.rpgroll.mobs.condition.MobConditionEvaluator;
 import com.sack.rpgroll.mobs.core.MobManager;
 import com.sack.rpgroll.mobs.engine.MobEngine;
-import com.sack.rpgroll.mobs.gui.ChatPromptManager;
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.mobs.instance.MobInstanceService;
 import com.sack.rpgroll.mobs.integration.MobsPlaceholders;
 import com.sack.rpgroll.mobs.listener.MobAITask;

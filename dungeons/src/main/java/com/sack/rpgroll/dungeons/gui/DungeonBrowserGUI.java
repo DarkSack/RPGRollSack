@@ -1,5 +1,6 @@
 package com.sack.rpgroll.dungeons.gui;
 
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.util.ComponentUtils;
 
@@ -197,7 +198,7 @@ public class DungeonBrowserGUI extends PaginatedGUI {
     }
 
     private void promptSearch() {
-        chatPromptManager.prompt(player, "gui.browser.search.prompt", value -> {
+        chatPromptManager.promptKey(player, "gui.browser.search.prompt", value -> {
 
             searchText = value.trim();
             applyFilters();

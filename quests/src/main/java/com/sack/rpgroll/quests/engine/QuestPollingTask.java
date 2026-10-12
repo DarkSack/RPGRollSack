@@ -6,7 +6,7 @@ import com.sack.rpgroll.quests.core.QuestStage;
 import com.sack.rpgroll.quests.player.ActiveQuestProgress;
 import com.sack.rpgroll.quests.player.QuestPlayerState;
 import com.sack.rpgroll.quests.region.RegionManager;
-import com.sack.rpgroll.quests.util.DurationParser;
+import com.sack.rpgroll.util.DurationParser;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

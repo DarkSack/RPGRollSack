@@ -21,7 +21,7 @@ import com.sack.rpgroll.crafting.discovery.ExperimentationService;
 import com.sack.rpgroll.crafting.fuel.FuelManager;
 import com.sack.rpgroll.crafting.grindstone.GrindstoneEngine;
 import com.sack.rpgroll.crafting.grindstone.GrindstoneRecipeManager;
-import com.sack.rpgroll.crafting.gui.ChatPromptManager;
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.crafting.ingredient.IngredientMatcher;
 import com.sack.rpgroll.crafting.loom.LoomEngine;
 import com.sack.rpgroll.crafting.loom.LoomRecipeManager;
@@ -187,7 +187,8 @@ public class CraftingPlugin extends JavaPlugin {
         getServer().getPluginManager().registerEvents(
                 new CrafterAutomationEngine(this, vanillaRecipeManager), this);
 
-        ChatPromptManager chatPromptManager = new ChatPromptManager(this, langManager);
+        ChatPromptManager chatPromptManager = new ChatPromptManager(this, langManager,
+                "chat_prompt.footer", "chat_prompt.cancel_keyword", "chat_prompt.cancelled");
         getServer().getPluginManager().registerEvents(chatPromptManager, this);
 
         registerCommands(chatPromptManager, stationUpgradeService, experimentationService);

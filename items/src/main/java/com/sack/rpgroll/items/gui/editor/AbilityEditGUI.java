@@ -6,7 +6,7 @@ import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.items.core.ItemAbility;
 import com.sack.rpgroll.items.core.ItemAction;
 import com.sack.rpgroll.items.core.ItemTrigger;
-import com.sack.rpgroll.items.util.DurationParser;
+import com.sack.rpgroll.util.DurationParser;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;

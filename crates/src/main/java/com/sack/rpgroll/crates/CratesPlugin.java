@@ -20,7 +20,7 @@ import com.sack.rpgroll.crates.command.CrateAdminCommand;
 import com.sack.rpgroll.crates.core.Crate;
 import com.sack.rpgroll.crates.core.CrateActionExecutor;
 import com.sack.rpgroll.crates.core.CrateManager;
-import com.sack.rpgroll.crates.gui.ChatPromptManager;
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.crates.hologram.DecentHologramsHook;
 import com.sack.rpgroll.crates.key.CrateKeyItem;
 import com.sack.rpgroll.crates.listener.CrateInteractListener;

@@ -1,5 +1,6 @@
 package com.sack.rpgroll.items.gui;
 
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 
 import net.kyori.adventure.text.Component;

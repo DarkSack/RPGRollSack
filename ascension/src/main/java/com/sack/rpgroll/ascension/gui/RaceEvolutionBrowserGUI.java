@@ -1,5 +1,6 @@
 package com.sack.rpgroll.ascension.gui;
 
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.ascension.core.AscensionRequirements;
 import com.sack.rpgroll.ascension.core.RaceEvolution;
 import com.sack.rpgroll.ascension.core.RaceEvolutionManager;
@@ -86,7 +87,7 @@ public class RaceEvolutionBrowserGUI extends InventoryGUI {
     }
 
     private void promptNew() {
-        chatPromptManager.prompt(player, "gui.race_evolution.prompt_new_id", value -> {
+        chatPromptManager.promptKey(player, "gui.race_evolution.prompt_new_id", value -> {
 
             String id = value.trim().toLowerCase(Locale.ROOT).replace(' ', '_');
 
@@ -96,7 +97,7 @@ public class RaceEvolutionBrowserGUI extends InventoryGUI {
                 return;
             }
 
-            chatPromptManager.prompt(player, "gui.race_evolution.prompt_base_race_new", baseRace -> {
+            chatPromptManager.promptKey(player, "gui.race_evolution.prompt_base_race_new", baseRace -> {
                 manager.save(new RaceEvolution(id, baseRace.trim().toLowerCase(Locale.ROOT), id,
                         AscensionRequirements.none(), Map.of(), List.of(), List.of(), Map.of(), Map.of(), Map.of(),
                         List.of()));

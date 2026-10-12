@@ -9,7 +9,7 @@ import com.sack.rpgroll.npcs.core.NpcSessionManager;
 import com.sack.rpgroll.npcs.core.NpcSpawnManager;
 import com.sack.rpgroll.npcs.core.NpcWriter;
 import com.sack.rpgroll.npcs.integration.MineSkinClient;
-import com.sack.rpgroll.npcs.listener.ChatPromptManager;
+import com.sack.rpgroll.gui.ChatPromptManager;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;

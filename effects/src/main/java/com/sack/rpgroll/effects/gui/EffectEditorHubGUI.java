@@ -1,5 +1,6 @@
 package com.sack.rpgroll.effects.gui;
 
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.util.ComponentUtils;
 
@@ -234,7 +235,7 @@ public class EffectEditorHubGUI extends InventoryGUI {
     }
 
     private void promptIcon() {
-        chatPromptManager.prompt(player, "gui.editor.prompt_icon", value -> {
+        chatPromptManager.promptKey(player, "gui.editor.prompt_icon", value -> {
             try {
                 Material.valueOf(value.trim().toUpperCase(Locale.ROOT));
             } catch (IllegalArgumentException e) {
@@ -251,7 +252,7 @@ public class EffectEditorHubGUI extends InventoryGUI {
     }
 
     private void promptColor() {
-        chatPromptManager.prompt(player, "gui.editor.prompt_color",
+        chatPromptManager.promptKey(player, "gui.editor.prompt_color",
                 value -> replace(new EffectDefinition(current.id(), current.displayName(), current.icon(), value,
                         current.category(), current.rarity(), current.description(), current.durationTicks(),
                         current.priority(), current.visible(), current.conditions(), current.tags(),
@@ -278,7 +279,7 @@ public class EffectEditorHubGUI extends InventoryGUI {
     }
 
     private void promptName() {
-        chatPromptManager.prompt(player, "gui.common.prompt_new_name",
+        chatPromptManager.promptKey(player, "gui.common.prompt_new_name",
                 value -> replace(new EffectDefinition(current.id(), value, current.icon(), current.color(),
                         current.category(), current.rarity(), current.description(), current.durationTicks(),
                         current.priority(), current.visible(), current.conditions(), current.tags(),
@@ -287,7 +288,7 @@ public class EffectEditorHubGUI extends InventoryGUI {
     }
 
     private void promptDescription() {
-        chatPromptManager.prompt(player, "gui.editor.prompt_description",
+        chatPromptManager.promptKey(player, "gui.editor.prompt_description",
                 value -> replace(new EffectDefinition(current.id(), current.displayName(), current.icon(),
                         current.color(), current.category(), current.rarity(), value, current.durationTicks(),
                         current.priority(), current.visible(), current.conditions(), current.tags(),

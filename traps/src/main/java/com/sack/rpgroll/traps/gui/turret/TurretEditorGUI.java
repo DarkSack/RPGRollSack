@@ -4,7 +4,7 @@ import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.traps.core.TrapAction;
-import com.sack.rpgroll.traps.gui.ChatPromptManager;
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.traps.gui.StringListEditorGUI;
 import com.sack.rpgroll.traps.turret.TurretDefinition;
 import com.sack.rpgroll.traps.turret.TurretManager;
@@ -150,12 +150,12 @@ public class TurretEditorGUI extends InventoryGUI {
         TurretDefinition current = current();
 
         if (slot == NAME_SLOT) {
-            chatPromptManager.prompt(player, "gui.turret.prompt_name", value -> replace(withDisplayName(value)));
+            chatPromptManager.promptKey(player, "gui.turret.prompt_name", value -> replace(withDisplayName(value)));
             return;
         }
 
         if (slot == MODEL_SLOT) {
-            chatPromptManager.prompt(player, "gui.turret.prompt_model", value -> {
+            chatPromptManager.promptKey(player, "gui.turret.prompt_model", value -> {
                 try {
                     replace(withModel(Material.valueOf(value.trim().toUpperCase(Locale.ROOT))));
                 } catch (IllegalArgumentException e) {
@@ -208,7 +208,7 @@ public class TurretEditorGUI extends InventoryGUI {
 
     /** Mismo formato libre "TIPO clave=valor clave2=valor2" que {@code TrapActionsEditorGUI.promptAdd()}, para UNA sola acción. */
     private void promptImpact() {
-        chatPromptManager.prompt(player, "gui.turret.prompt_impact", value -> {
+        chatPromptManager.promptKey(player, "gui.turret.prompt_impact", value -> {
 
             String[] tokens = value.trim().split("\\s+");
 

@@ -96,7 +96,7 @@ public class PhasesEditorGUI extends InventoryGUI {
     }
 
     private void promptAdd() {
-        session.chatPromptManager.prompt(player, "gui.phases.prompt_add", value -> {
+        session.chatPromptManager.promptKey(player, "gui.phases.prompt_add", value -> {
 
             String id = value.trim().toLowerCase().replace(' ', '_');
 

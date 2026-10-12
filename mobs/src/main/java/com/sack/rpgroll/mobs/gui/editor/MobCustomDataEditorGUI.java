@@ -92,7 +92,7 @@ public class MobCustomDataEditorGUI extends InventoryGUI {
     }
 
     private void promptAdd() {
-        session.chatPromptManager.prompt(player, "gui.custom_data.prompt_add", value -> {
+        session.chatPromptManager.promptKey(player, "gui.custom_data.prompt_add", value -> {
 
             String[] parts = value.trim().split("\\s+", 2);
 

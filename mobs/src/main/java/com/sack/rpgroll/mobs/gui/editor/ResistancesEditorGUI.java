@@ -166,7 +166,7 @@ public class ResistancesEditorGUI extends InventoryGUI {
     }
 
     private void promptCustomResistance() {
-        session.chatPromptManager.prompt(player, "gui.resistances.prompt_custom", value -> {
+        session.chatPromptManager.promptKey(player, "gui.resistances.prompt_custom", value -> {
 
             String[] parts = value.trim().split("\\s+");
 
@@ -187,7 +187,7 @@ public class ResistancesEditorGUI extends InventoryGUI {
     }
 
     private void promptAddWeakness() {
-        session.chatPromptManager.prompt(player, "gui.resistances.prompt_weakness", value -> {
+        session.chatPromptManager.promptKey(player, "gui.resistances.prompt_weakness", value -> {
 
             String[] parts = value.trim().split("\\s+");
 

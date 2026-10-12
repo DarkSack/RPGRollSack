@@ -1,5 +1,6 @@
 package com.sack.rpgroll.ascension.gui;
 
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.ascension.core.RaceEvolution;
 import com.sack.rpgroll.ascension.core.RaceEvolutionManager;
 import com.sack.rpgroll.common.lang.LangManager;
@@ -141,7 +142,7 @@ public class RaceEvolutionEditorGUI extends InventoryGUI {
         int slot = event.getSlot();
 
         if (slot == BASE_RACE_SLOT) {
-            chatPromptManager.prompt(player, "gui.race_evolution.prompt_base_race",
+            chatPromptManager.promptKey(player, "gui.race_evolution.prompt_base_race",
                     value -> replace(new RaceEvolution(current.id(), value.trim().toLowerCase(Locale.ROOT),
                             current.displayName(), current.requirements(), current.statBonus(),
                             current.grantedTraits(), current.grantedSkills(), current.affinityBonus(),
@@ -150,7 +151,7 @@ public class RaceEvolutionEditorGUI extends InventoryGUI {
         }
 
         if (slot == NAME_SLOT) {
-            chatPromptManager.prompt(player, "gui.race_evolution.prompt_new_name",
+            chatPromptManager.promptKey(player, "gui.race_evolution.prompt_new_name",
                     value -> replace(new RaceEvolution(current.id(), current.baseRace(), value,
                             current.requirements(), current.statBonus(), current.grantedTraits(),
                             current.grantedSkills(), current.affinityBonus(), current.resistances(),
@@ -159,7 +160,7 @@ public class RaceEvolutionEditorGUI extends InventoryGUI {
         }
 
         if (slot == REQUIREMENTS_SLOT) {
-            chatPromptManager.prompt(player, "gui.race_evolution.prompt_requirements", value -> {
+            chatPromptManager.promptKey(player, "gui.race_evolution.prompt_requirements", value -> {
                         try {
                             replace(new RaceEvolution(current.id(), current.baseRace(), current.displayName(),
                                     RequirementsPrompt.parse(value), current.statBonus(), current.grantedTraits(),
@@ -173,7 +174,7 @@ public class RaceEvolutionEditorGUI extends InventoryGUI {
         }
 
         if (slot == STATS_SLOT) {
-            chatPromptManager.prompt(player, "gui.race_evolution.prompt_stats", value -> {
+            chatPromptManager.promptKey(player, "gui.race_evolution.prompt_stats", value -> {
                 try {
                     replace(new RaceEvolution(current.id(), current.baseRace(), current.displayName(),
                             current.requirements(), NumberMapPrompt.parse(value), current.grantedTraits(),
@@ -187,7 +188,7 @@ public class RaceEvolutionEditorGUI extends InventoryGUI {
         }
 
         if (slot == TRAITS_SLOT) {
-            chatPromptManager.prompt(player, "gui.race_evolution.prompt_traits",
+            chatPromptManager.promptKey(player, "gui.race_evolution.prompt_traits",
                     value -> replace(new RaceEvolution(current.id(), current.baseRace(), current.displayName(),
                             current.requirements(), current.statBonus(), List.of(value.trim().split(",")),
                             current.grantedSkills(), current.affinityBonus(), current.resistances(),
@@ -196,7 +197,7 @@ public class RaceEvolutionEditorGUI extends InventoryGUI {
         }
 
         if (slot == SKILLS_SLOT) {
-            chatPromptManager.prompt(player, "gui.race_evolution.prompt_skills",
+            chatPromptManager.promptKey(player, "gui.race_evolution.prompt_skills",
                     value -> replace(new RaceEvolution(current.id(), current.baseRace(), current.displayName(),
                             current.requirements(), current.statBonus(), current.grantedTraits(),
                             List.of(value.trim().split(",")), current.affinityBonus(), current.resistances(),
@@ -205,7 +206,7 @@ public class RaceEvolutionEditorGUI extends InventoryGUI {
         }
 
         if (slot == AFFINITIES_SLOT) {
-            chatPromptManager.prompt(player, "gui.race_evolution.prompt_affinities", value -> {
+            chatPromptManager.promptKey(player, "gui.race_evolution.prompt_affinities", value -> {
                 try {
                     replace(new RaceEvolution(current.id(), current.baseRace(), current.displayName(),
                             current.requirements(), current.statBonus(), current.grantedTraits(),
@@ -219,7 +220,7 @@ public class RaceEvolutionEditorGUI extends InventoryGUI {
         }
 
         if (slot == RESISTANCES_SLOT) {
-            chatPromptManager.prompt(player, "gui.race_evolution.prompt_resistances", value -> {
+            chatPromptManager.promptKey(player, "gui.race_evolution.prompt_resistances", value -> {
                 try {
                     replace(new RaceEvolution(current.id(), current.baseRace(), current.displayName(),
                             current.requirements(), current.statBonus(), current.grantedTraits(),
@@ -233,7 +234,7 @@ public class RaceEvolutionEditorGUI extends InventoryGUI {
         }
 
         if (slot == WEAKNESSES_SLOT) {
-            chatPromptManager.prompt(player, "gui.race_evolution.prompt_weaknesses", value -> {
+            chatPromptManager.promptKey(player, "gui.race_evolution.prompt_weaknesses", value -> {
                 try {
                     replace(new RaceEvolution(current.id(), current.baseRace(), current.displayName(),
                             current.requirements(), current.statBonus(), current.grantedTraits(),
@@ -247,7 +248,7 @@ public class RaceEvolutionEditorGUI extends InventoryGUI {
         }
 
         if (slot == PROFESSIONS_SLOT) {
-            chatPromptManager.prompt(player, "gui.race_evolution.prompt_professions",
+            chatPromptManager.promptKey(player, "gui.race_evolution.prompt_professions",
                     value -> replace(new RaceEvolution(current.id(), current.baseRace(), current.displayName(),
                             current.requirements(), current.statBonus(), current.grantedTraits(),
                             current.grantedSkills(), current.affinityBonus(), current.resistances(),

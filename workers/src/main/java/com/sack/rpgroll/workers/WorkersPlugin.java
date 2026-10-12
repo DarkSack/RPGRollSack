@@ -31,7 +31,7 @@ import com.sack.rpgroll.workers.core.skin.SkinResolver;
 import com.sack.rpgroll.workers.core.skin.WorkerBodyService;
 import com.sack.rpgroll.workers.core.skin.WorkerSkins;
 import com.sack.rpgroll.workers.core.worker.WorkerManager;
-import com.sack.rpgroll.workers.gui.ChatPromptManager;
+import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.workers.listener.WarehouseDesignatorListener;
 import com.sack.rpgroll.workers.listener.WorkerBodyListener;
 import com.sack.rpgroll.workers.listener.WorkerDeathListener;
