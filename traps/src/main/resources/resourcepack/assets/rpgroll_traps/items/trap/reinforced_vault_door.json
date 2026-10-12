@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "rpgroll_traps:item/trap/reinforced_vault_door"
+  }
+}

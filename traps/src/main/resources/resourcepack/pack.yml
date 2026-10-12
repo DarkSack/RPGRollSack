@@ -1,0 +1,8 @@
+# GENERADO por sackito-network/infra/objetos/construir.py: no se edita a mano.
+id: rpgroll-traps
+name: rpgroll-traps
+version: '1.0'
+author: 'RPGRoll'
+namespace: rpgroll_traps
+priority: 25
+description: 'Modelos de RPGRoll-Traps'

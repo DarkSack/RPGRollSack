@@ -4,6 +4,7 @@ id: arrow_corridor
 display-name: "&eCorredor de Flechas"
 description: "Dispara una ráfaga de flechas al activarse, y encadena una segunda oleada."
 icon: BOW
+model: "rpgroll_traps:trap/arrow_corridor"
 
 trigger:
   type: INTERACTION

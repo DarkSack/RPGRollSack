@@ -4,6 +4,7 @@ id: poison_gas_room
 display-name: "&2Sala de Gas Venenoso"
 description: "Envenena a quien permanezca dentro de la sala mientras esté armada."
 icon: BREWING_STAND
+model: "rpgroll_traps:trap/poison_gas_room"
 
 trigger:
   type: TIMER

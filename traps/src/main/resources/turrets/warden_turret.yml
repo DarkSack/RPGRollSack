@@ -23,6 +23,8 @@ model:
   base-block: SCULK_CATALYST
   # Ítem que flota encima. Gira solo mientras busca y se orienta
   # hacia el objetivo cuando lo detecta.
-  material: ECHO_SHARD
-  hover-height: 1.1
+  material: ECHO_SHARD
+  # El modelo 3D de esa cabeza. Sin esta clave se ve el material de arriba.
+  item-model: "rpgroll_traps:turret/warden_turret"
+  hover-height: 1.45
   spin-degrees-per-tick: 4.0

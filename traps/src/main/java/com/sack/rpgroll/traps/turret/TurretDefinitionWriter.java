@@ -38,6 +38,8 @@ public class TurretDefinitionWriter {
 
         config.set("model.material", turret.model().name());
         config.set("model.custom-model-data", turret.customModelData());
+        var itemModel = com.sack.rpgroll.traps.item.ItemModels.get("turret", turret.id());
+        config.set("model.item-model", itemModel == null ? null : itemModel.toString());
 
         try {
             if (!folder.exists()) {

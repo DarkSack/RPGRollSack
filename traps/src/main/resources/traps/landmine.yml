@@ -2,7 +2,8 @@
 id: landmine
 display-name: "&cMina Terrestre"
 description: "Explota al pisarla."
-icon: TNT
+icon: TNT
+model: "rpgroll_traps:trap/landmine"
 
 trigger:
   type: PRESSURE

@@ -3,11 +3,14 @@
 id: incendiary_bolt
 display-name: "&cVirote incendiario"
 description: "&7Prende fuego al impactar."
-icon: FIRE_CHARGE
+icon: FIRE_CHARGE
+model: "rpgroll_traps:ammo/incendiary_bolt"
 stack-size: 1
 
 impact:
   type: CUSTOM_PROJECTILE
   params:
-    projectile-type: SMALL_FIREBALL
+    projectile-type: SMALL_FIREBALL
+    # Lo que se ve volar (sin esta clave, el proyectil de Minecraft tal cual).
+    model: "rpgroll_traps:projectile/fire_bolt"
     speed: "2.0"

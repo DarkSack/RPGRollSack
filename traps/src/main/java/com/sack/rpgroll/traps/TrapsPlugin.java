@@ -64,6 +64,14 @@ public class TrapsPlugin extends JavaPlugin {
         langManager = new LangManager(this, List.of("es", "en", "pt_BR"), "es");
         langManager.reload(getConfig().getString("language", "es"));
 
+        // Los modelos de fábrica: el pack de Java va en el jar y se registra en SackResourcePack si está;
+        // el de Bedrock y los proyectos de Blockbench se copian para el dueño.
+        new DirectoryCreator(this).create(List.of("bedrock", "blockbench"));
+        new ResourceCopier(this).copyDirectories(List.of("bedrock", "blockbench"));
+        if (com.sack.rpgroll.common.assets.ModuleAssetSync.registerEmbeddedPack(this)) {
+            getLogger().info("✔ Modelos registrados en SackResourcePack (aplica con /srp rebuild).");
+        }
+
         trapManager = new TrapManager(this);
         trapManager.initialize();
 

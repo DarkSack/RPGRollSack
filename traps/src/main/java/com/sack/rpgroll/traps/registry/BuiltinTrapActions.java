@@ -5,6 +5,10 @@ import com.sack.rpgroll.common.integration.ParticlesIntegration;
 import com.sack.rpgroll.traps.integration.ItemsIntegration;
 import com.sack.rpgroll.util.ComponentUtils;
 
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.entity.AbstractArrow;
+import org.bukkit.entity.ItemDisplay;
+import org.bukkit.NamespacedKey;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -59,6 +63,56 @@ import java.util.Locale;
 public final class BuiltinTrapActions {
 
     private BuiltinTrapActions() {
+    }
+
+    /**
+     * Con {@code model}, el proyectil sigue volando y golpeando igual pero lo que se ve es ese modelo:
+     * el de verdad se oculta y un ItemDisplay lo acompaña, orientado hacia donde va.
+     */
+    private static void dress(Plugin plugin, Projectile projectile, String model) {
+
+        NamespacedKey key = NamespacedKey.fromString(model);
+
+        if (key == null || key.getKey().isEmpty()) {
+            return;
+        }
+
+        ItemStack item = new ItemStack(Material.PAPER);
+        ItemMeta meta = item.getItemMeta();
+        meta.setItemModel(key);
+        item.setItemMeta(meta);
+
+        projectile.setVisibleByDefault(false);
+
+        ItemDisplay display = projectile.getWorld().spawn(
+                projectile.getLocation().setDirection(projectile.getVelocity()), ItemDisplay.class, spawned -> {
+                    spawned.setItemStack(item);
+                    spawned.setItemDisplayTransform(ItemDisplay.ItemDisplayTransform.FIXED);
+                    spawned.setTeleportDuration(1);
+                    spawned.setPersistent(false);
+                });
+
+        new BukkitRunnable() {
+            int ticks = 0;
+
+            @Override
+            public void run() {
+
+                boolean stuck = projectile instanceof AbstractArrow arrow && arrow.isInBlock();
+
+                if (!projectile.isValid() || stuck || ++ticks > 200) {
+                    display.remove();
+                    // Una flecha clavada que nadie ve no pinta nada en el mundo.
+                    if (stuck) {
+                        projectile.remove();
+                    }
+                    cancel();
+                    return;
+                }
+
+                display.teleport(projectile.getLocation().setDirection(projectile.getVelocity()));
+            }
+        }.runTaskTimer(plugin, 1L, 1L);
     }
 
     public static void registerAll(TrapActionRegistry registry, Plugin plugin) {
@@ -300,6 +354,11 @@ public final class BuiltinTrapActions {
                     meta.addCustomEffect(effect, true);
                 }
 
+                NamespacedKey potionModel = NamespacedKey.fromString(action.param("model", ""));
+                if (potionModel != null && !potionModel.getKey().isEmpty()) {
+                    meta.setItemModel(potionModel);
+                }
+
                 potionItem.setItemMeta(meta);
                 potion.setItem(potionItem);
                 potion.setVelocity(direction.multiply(speed));
@@ -322,6 +381,7 @@ public final class BuiltinTrapActions {
 
             Projectile projectile = location.getWorld().spawn(location, projectileClass);
             projectile.setVelocity(direction.multiply(speed));
+            dress(plugin, projectile, action.param("model", ""));
         });
 
         registry.register("SONIC_BOOM", (action, ctx) -> {

@@ -1,5 +1,6 @@
 package com.sack.rpgroll.traps.core;
 
+import com.sack.rpgroll.traps.item.ItemModels;
 import com.sack.rpgroll.common.content.ContentParser;
 
 import org.bukkit.Material;
@@ -25,6 +26,7 @@ public class TrapParser implements ContentParser<TrapDefinition> {
         String displayName = config.getString("display-name", id);
         String description = config.getString("description", "");
         Material icon = parseMaterial(config.getString("icon"), Material.TRIPWIRE_HOOK);
+        ItemModels.register("trap", id, config.getString("model"));
 
         TrapTrigger trigger = parseTrigger(config.getString("trigger.type"));
         Map<String, String> triggerParams = parseStringMap(config.getConfigurationSection("trigger.params"));

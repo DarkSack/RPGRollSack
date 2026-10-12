@@ -1,5 +1,6 @@
 package com.sack.rpgroll.traps.turret;
 
+import com.sack.rpgroll.traps.item.ItemModels;
 import com.sack.rpgroll.traps.condition.TrapConditionContext;
 import com.sack.rpgroll.traps.condition.TrapConditionEvaluator;
 import com.sack.rpgroll.traps.integration.MobsIntegration;
@@ -256,6 +257,10 @@ public class TurretEngine {
         display.getPersistentDataContainer().set(placementKey, PersistentDataType.STRING, placed.placementId());
         display.setBillboard(Display.Billboard.FIXED);
         display.setItemStack(buildModel(definition));
+        if (ItemModels.get("turret", definition.id()) != null) {
+            // Con su colocación "fixed" el frente del modelo mira a donde apunta la torreta.
+            display.setItemDisplayTransform(ItemDisplay.ItemDisplayTransform.FIXED);
+        }
 
         state.visualEntity = display.getUniqueId();
         return display;
@@ -295,7 +300,7 @@ public class TurretEngine {
             item.setItemMeta(meta);
         }
 
-        return item;
+        return ItemModels.apply(item, "turret", definition.id());
     }
 
     /** Elimina la entidad visual de una torreta — llamado al remover una instancia colocada. */

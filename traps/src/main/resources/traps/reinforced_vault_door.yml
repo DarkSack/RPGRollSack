@@ -5,6 +5,7 @@ id: reinforced_vault_door
 display-name: "&6Puerta Blindada de la Bóveda"
 description: "Requiere la llave de la bóveda para abrirse."
 icon: IRON_DOOR
+model: "rpgroll_traps:trap/reinforced_vault_door"
 
 trigger:
   type: INTERACTION

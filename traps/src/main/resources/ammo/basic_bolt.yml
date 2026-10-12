@@ -3,11 +3,14 @@
 id: basic_bolt
 display-name: "&fVirote básico"
 description: "&7Munición estándar para torretas de proyectil."
-icon: ARROW
+icon: ARROW
+model: "rpgroll_traps:ammo/basic_bolt"
 stack-size: 1
 
 impact:
   type: CUSTOM_PROJECTILE
   params:
-    projectile-type: ARROW
+    projectile-type: ARROW
+    # Lo que se ve volar (sin esta clave, el proyectil de Minecraft tal cual).
+    model: "rpgroll_traps:projectile/bolt"
     speed: "2.5"

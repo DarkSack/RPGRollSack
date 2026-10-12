@@ -1,0 +1,257 @@
+{
+ "format_version": 2,
+ "items": {
+  "minecraft:crossbow": [
+   {
+    "type": "definition",
+    "model": "rpgroll_traps:turret/sentry_turret",
+    "bedrock_identifier": "rpgroll_traps:turret_sentry_turret",
+    "display_name": "Torreta de Vigilancia",
+    "bedrock_options": {
+     "icon": "rpgroll_traps_turret_sentry_turret",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:diamond_block": [
+   {
+    "type": "definition",
+    "model": "rpgroll_traps:turret/sentry_turret",
+    "bedrock_identifier": "rpgroll_traps:turret_sentry_turret_diamond_block",
+    "display_name": "Torreta de Vigilancia",
+    "bedrock_options": {
+     "icon": "rpgroll_traps_turret_sentry_turret",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:blaze_rod": [
+   {
+    "type": "definition",
+    "model": "rpgroll_traps:turret/alchemist_turret",
+    "bedrock_identifier": "rpgroll_traps:turret_alchemist_turret",
+    "display_name": "Torreta Alquimista",
+    "bedrock_options": {
+     "icon": "rpgroll_traps_turret_alchemist_turret",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:brewing_stand": [
+   {
+    "type": "definition",
+    "model": "rpgroll_traps:turret/alchemist_turret",
+    "bedrock_identifier": "rpgroll_traps:turret_alchemist_turret_brewing_stand",
+    "display_name": "Torreta Alquimista",
+    "bedrock_options": {
+     "icon": "rpgroll_traps_turret_alchemist_turret",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_traps:trap/poison_gas_room",
+    "bedrock_identifier": "rpgroll_traps:trap_poison_gas_room",
+    "display_name": "Sala de Gas",
+    "bedrock_options": {
+     "icon": "rpgroll_traps_trap_poison_gas_room",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:glistering_melon_slice": [
+   {
+    "type": "definition",
+    "model": "rpgroll_traps:turret/healing_turret",
+    "bedrock_identifier": "rpgroll_traps:turret_healing_turret",
+    "display_name": "Torreta Sanadora",
+    "bedrock_options": {
+     "icon": "rpgroll_traps_turret_healing_turret",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_traps:ammo/mending_vial",
+    "bedrock_identifier": "rpgroll_traps:ammo_mending_vial",
+    "display_name": "Vial reparador",
+    "bedrock_options": {
+     "icon": "rpgroll_traps_ammo_mending_vial",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:emerald_block": [
+   {
+    "type": "definition",
+    "model": "rpgroll_traps:turret/healing_turret",
+    "bedrock_identifier": "rpgroll_traps:turret_healing_turret_emerald_block",
+    "display_name": "Torreta Sanadora",
+    "bedrock_options": {
+     "icon": "rpgroll_traps_turret_healing_turret",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:echo_shard": [
+   {
+    "type": "definition",
+    "model": "rpgroll_traps:turret/warden_turret",
+    "bedrock_identifier": "rpgroll_traps:turret_warden_turret",
+    "display_name": "Torreta del Vacío",
+    "bedrock_options": {
+     "icon": "rpgroll_traps_turret_warden_turret",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_traps:ammo/resonant_charge",
+    "bedrock_identifier": "rpgroll_traps:ammo_resonant_charge",
+    "display_name": "Carga resonante",
+    "bedrock_options": {
+     "icon": "rpgroll_traps_ammo_resonant_charge",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:sculk_catalyst": [
+   {
+    "type": "definition",
+    "model": "rpgroll_traps:turret/warden_turret",
+    "bedrock_identifier": "rpgroll_traps:turret_warden_turret_sculk_catalyst",
+    "display_name": "Torreta del Vacío",
+    "bedrock_options": {
+     "icon": "rpgroll_traps_turret_warden_turret",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:arrow": [
+   {
+    "type": "definition",
+    "model": "rpgroll_traps:ammo/basic_bolt",
+    "bedrock_identifier": "rpgroll_traps:ammo_basic_bolt",
+    "display_name": "Virote básico",
+    "bedrock_options": {
+     "icon": "rpgroll_traps_ammo_basic_bolt",
+     "allow_offhand": true,
+     "display_handheld": true
+    }
+   }
+  ],
+  "minecraft:fire_charge": [
+   {
+    "type": "definition",
+    "model": "rpgroll_traps:ammo/incendiary_bolt",
+    "bedrock_identifier": "rpgroll_traps:ammo_incendiary_bolt",
+    "display_name": "Virote incendiario",
+    "bedrock_options": {
+     "icon": "rpgroll_traps_ammo_incendiary_bolt",
+     "allow_offhand": true,
+     "display_handheld": true
+    }
+   }
+  ],
+  "minecraft:paper": [
+   {
+    "type": "definition",
+    "model": "rpgroll_traps:projectile/bolt",
+    "bedrock_identifier": "rpgroll_traps:projectile_bolt",
+    "display_name": "Virote",
+    "bedrock_options": {
+     "icon": "rpgroll_traps_projectile_bolt",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_traps:projectile/fire_bolt",
+    "bedrock_identifier": "rpgroll_traps:projectile_fire_bolt",
+    "display_name": "Virote en llamas",
+    "bedrock_options": {
+     "icon": "rpgroll_traps_projectile_fire_bolt",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:splash_potion": [
+   {
+    "type": "definition",
+    "model": "rpgroll_traps:projectile/flask",
+    "bedrock_identifier": "rpgroll_traps:projectile_flask",
+    "display_name": "Frasco alquímico",
+    "bedrock_options": {
+     "icon": "rpgroll_traps_projectile_flask",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:tnt": [
+   {
+    "type": "definition",
+    "model": "rpgroll_traps:trap/landmine",
+    "bedrock_identifier": "rpgroll_traps:trap_landmine",
+    "display_name": "Mina Terrestre",
+    "bedrock_options": {
+     "icon": "rpgroll_traps_trap_landmine",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:iron_sword": [
+   {
+    "type": "definition",
+    "model": "rpgroll_traps:trap/spike_corridor",
+    "bedrock_identifier": "rpgroll_traps:trap_spike_corridor",
+    "display_name": "Pasillo de Pinchos",
+    "bedrock_options": {
+     "icon": "rpgroll_traps_trap_spike_corridor",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:bow": [
+   {
+    "type": "definition",
+    "model": "rpgroll_traps:trap/arrow_corridor",
+    "bedrock_identifier": "rpgroll_traps:trap_arrow_corridor",
+    "display_name": "Pasillo de Flechas",
+    "bedrock_options": {
+     "icon": "rpgroll_traps_trap_arrow_corridor",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:iron_door": [
+   {
+    "type": "definition",
+    "model": "rpgroll_traps:trap/reinforced_vault_door",
+    "bedrock_identifier": "rpgroll_traps:trap_reinforced_vault_door",
+    "display_name": "Puerta Acorazada",
+    "bedrock_options": {
+     "icon": "rpgroll_traps_trap_reinforced_vault_door",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ]
+ }
+}

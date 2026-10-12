@@ -18,6 +18,8 @@ impact:
   type: CUSTOM_PROJECTILE
   params:
     projectile-type: ARROW
+    # Lo que se ve volar (sin esta clave, el proyectil de Minecraft tal cual).
+    model: "rpgroll_traps:projectile/bolt"
     speed: "2.5"
 
 model:
@@ -26,5 +28,7 @@ model:
   # Ítem que flota encima. Gira solo mientras busca y se orienta
   # hacia el objetivo cuando lo detecta.
   material: CROSSBOW
-  hover-height: 1.1
+  # El modelo 3D de esa cabeza. Sin esta clave se ve el material de arriba.
+  item-model: "rpgroll_traps:turret/sentry_turret"
+  hover-height: 1.45
   spin-degrees-per-tick: 4.0

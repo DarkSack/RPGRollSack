@@ -1,5 +1,6 @@
 package com.sack.rpgroll.traps.ammo;
 
+import com.sack.rpgroll.traps.item.ItemModels;
 import com.sack.rpgroll.common.content.ContentParser;
 import com.sack.rpgroll.traps.core.TrapAction;
 
@@ -23,6 +24,7 @@ public class AmmoParser implements ContentParser<AmmoDefinition> {
         }
 
         Material icon = parseMaterial(config.getString("icon"), Material.ARROW);
+        ItemModels.register("ammo", id, config.getString("model"));
 
         Integer customModelData = config.contains("custom-model-data")
                 ? config.getInt("custom-model-data")

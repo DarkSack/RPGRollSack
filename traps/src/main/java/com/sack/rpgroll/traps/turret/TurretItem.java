@@ -64,7 +64,7 @@ public final class TurretItem {
         meta.getPersistentDataContainer().set(key(plugin), PersistentDataType.STRING, definition.id());
 
         item.setItemMeta(meta);
-        return item;
+        return com.sack.rpgroll.traps.item.ItemModels.apply(item, "turret", definition.id());
     }
 
     /** El id de torreta que lleva el ítem, o null si no es un ítem de torreta. */

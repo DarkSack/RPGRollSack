@@ -1,5 +1,6 @@
 package com.sack.rpgroll.traps.turret;
 
+import com.sack.rpgroll.traps.item.ItemModels;
 import com.sack.rpgroll.common.content.ContentParser;
 import com.sack.rpgroll.traps.core.TrapAction;
 
@@ -32,6 +33,7 @@ public class TurretParser implements ContentParser<TurretDefinition> {
         TrapAction impact = parseImpact(config);
 
         Material model = parseMaterial(config.getString("model.material"), Material.CROSSBOW);
+        ItemModels.register("turret", id, config.getString("model.item-model"));
         Integer customModelData = config.contains("model.custom-model-data")
                 ? config.getInt("model.custom-model-data")
                 : null;

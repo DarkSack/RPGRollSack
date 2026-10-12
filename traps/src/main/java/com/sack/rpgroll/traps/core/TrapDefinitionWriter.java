@@ -29,6 +29,8 @@ public class TrapDefinitionWriter {
         config.set("display-name", trap.displayName());
         config.set("description", trap.description());
         config.set("icon", trap.icon().name());
+        var model = com.sack.rpgroll.traps.item.ItemModels.get("trap", trap.id());
+        config.set("model", model == null ? null : model.toString());
 
         config.set("trigger.type", trap.trigger().name());
         for (var entry : trap.triggerParams().entrySet()) {

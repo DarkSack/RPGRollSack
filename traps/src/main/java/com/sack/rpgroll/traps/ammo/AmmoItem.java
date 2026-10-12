@@ -52,7 +52,7 @@ public final class AmmoItem {
         meta.getPersistentDataContainer().set(key(plugin), PersistentDataType.STRING, ammo.id());
         item.setItemMeta(meta);
 
-        return item;
+        return com.sack.rpgroll.traps.item.ItemModels.apply(item, "ammo", ammo.id());
     }
 
     /** El id de munición del ítem, o null si no es munición del plugin. */

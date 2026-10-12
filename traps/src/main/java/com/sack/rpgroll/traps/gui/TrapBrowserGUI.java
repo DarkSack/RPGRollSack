@@ -49,11 +49,11 @@ public class TrapBrowserGUI extends InventoryGUI {
 
             TrapDefinition trap = traps.get(i);
 
-            setItem(i, new ItemBuilder(trap.icon())
+            setItem(i, com.sack.rpgroll.traps.item.ItemModels.apply(new ItemBuilder(trap.icon())
                     .setName(Component.text(trap.id(), NamedTextColor.YELLOW))
                     .setLore(lang.component("gui.browser.trigger", "value", trap.trigger()),
                             lang.component("gui.browser.click_to_edit"))
-                    .build());
+                    .build(), "trap", trap.id()));
         }
 
         setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)

@@ -8,7 +8,8 @@
 id: spike_corridor
 display-name: "&4Corredor de Pinchos"
 description: "Se activa cuando alguien se acerca demasiado."
-icon: IRON_SWORD
+icon: IRON_SWORD
+model: "rpgroll_traps:trap/spike_corridor"
 
 trigger:
   type: PROXIMITY

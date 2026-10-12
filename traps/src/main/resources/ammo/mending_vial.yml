@@ -2,7 +2,8 @@
 id: mending_vial
 display-name: "&aVial de sanación"
 description: "&7Cura al objetivo en vez de dañarlo."
-icon: GLISTERING_MELON_SLICE
+icon: GLISTERING_MELON_SLICE
+model: "rpgroll_traps:ammo/mending_vial"
 stack-size: 1
 
 impact:

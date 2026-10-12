@@ -10,6 +10,9 @@ id: REFERENCE_FULL_EXAMPLE
 display-name: "Trampa de Referencia"
 description: "Ejemplo con todos los campos posibles de una trampa."
 icon: TRIPWIRE_HOOK
+# Opcional: el modelo (item_model) del icono, de cualquier resource pack. Los de fábrica son
+# rpgroll_traps:trap/<id>; la munición usa la misma clave y las torretas model.item-model.
+# model: "rpgroll_traps:trap/landmine"
 
 trigger:
   type: PRESSURE   # PRESSURE, MOVEMENT, PROXIMITY, LINE_OF_SIGHT, INTERACTION, BLOCK_BREAK,
