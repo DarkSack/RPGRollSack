@@ -1,0 +1,19 @@
+id: "perk_luck_20"
+name: "&eHijo de la Fortuna"
+description: |
+  Perk de Suerte 20.
+  El azar le debe favores.
+required-level: 1
+effect:
+  luck-bonus: 3
+translations:
+  en:
+    name: "&eFortune's Child"
+    description: |
+      Luck 20 perk.
+      Chance owes it favors.
+  pt_BR:
+    name: "&eFilho da Fortuna"
+    description: |
+      Perk de Sorte 20.
+      O acaso lhe deve favores.

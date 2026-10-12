@@ -255,7 +255,7 @@ public class PlayerRepository {
 
                 try (PreparedStatement statement = connection.prepareStatement(insertStats)) {
 
-                    CombatStats combatStats = player.getCombatStats();
+                    CombatStats combatStats = player.getCombatStats().withBonus(0, 0);
 
                     statement.setString(1, player.getUUID().toString());
                     statement.setInt(2, player.getStats().strength());
@@ -336,7 +336,7 @@ public class PlayerRepository {
 
                 try (PreparedStatement statement = connection.prepareStatement(updateStats)) {
 
-                    CombatStats combatStats = player.getCombatStats();
+                    CombatStats combatStats = player.getCombatStats().withBonus(0, 0);
 
                     statement.setInt(1, player.getStats().strength());
                     statement.setInt(2, player.getStats().dexterity());

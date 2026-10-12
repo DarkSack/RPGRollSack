@@ -1,0 +1,20 @@
+id: "perk_constitution_20"
+name: "&6Roble Viejo"
+description: |
+  Perk de Resistencia 20.
+  Los años y los golpes solo lo han endurecido.
+required-level: 1
+effect:
+  health-bonus: 6
+  defense-bonus: 0.05
+translations:
+  en:
+    name: "&6Old Oak"
+    description: |
+      Endurance 20 perk.
+      Years and blows have only hardened it.
+  pt_BR:
+    name: "&6Carvalho Velho"
+    description: |
+      Perk de Resistência 20.
+      Os anos e os golpes só o endureceram.

@@ -33,11 +33,13 @@ public class StatEffects implements Runnable {
     public static final long PERIOD_TICKS = 40;
 
     private final PlayerManager playerManager;
+    private final PassiveEffects passiveEffects;
     // En el constructor y no en un static: PotionEffectType necesita el servidor arrancado.
     private final Map<StatType, PotionEffectType> slots = new EnumMap<>(StatType.class);
 
-    public StatEffects(PlayerManager playerManager) {
+    public StatEffects(PlayerManager playerManager, PassiveEffects passiveEffects) {
         this.playerManager = playerManager;
+        this.passiveEffects = passiveEffects;
         slots.put(StatType.STRENGTH, PotionEffectType.HEALTH_BOOST);
         slots.put(StatType.WISDOM, PotionEffectType.GLOWING);
         slots.put(StatType.CONSTITUTION, PotionEffectType.OOZING);
@@ -83,14 +85,14 @@ public class StatEffects implements Runnable {
     }
 
     /** La suerte es la que de verdad tiene encima: la del atributo más rasgos, amuletos e ítems. */
-    private static int level(Player player, RPGPlayer rpgPlayer, StatType stat) {
+    private int level(Player player, RPGPlayer rpgPlayer, StatType stat) {
 
         if (stat == StatType.LUCK) {
             AttributeInstance luck = player.getAttribute(Attribute.LUCK);
             return luck == null ? 0 : (int) Math.round(luck.getValue());
         }
 
-        return (rpgPlayer.getStats().get(stat) - 10) / 2;
+        return passiveEffects.modifier(rpgPlayer, stat);
     }
 
 }

@@ -130,8 +130,12 @@ public class UseSkillCommand implements RPGCommand {
 
             if (target != null) {
 
-                int intelligenceModifier = rpgPlayer.getStats().getIntelligenceModifier();
-                double damage = (BASE_MAGIC_DAMAGE + intelligenceModifier) * skill.damageMultiplier();
+                int intelligenceModifier = plugin.getBootstrap().getServices()
+                        .get(com.sack.rpgroll.gameplay.trait.PassiveEffects.class)
+                        .modifier(rpgPlayer, com.sack.rpgroll.api.stats.StatType.INTELLIGENCE);
+                double damage = (BASE_MAGIC_DAMAGE + intelligenceModifier) * skill.damageMultiplier()
+                        * (1 + com.sack.rpgroll.common.stat.Stats.bonus(player,
+                                com.sack.rpgroll.common.stat.Stats.MAGIC_POWER) / 100);
 
                 target.damage(Math.max(0, damage), player);
 

@@ -8,6 +8,8 @@ import com.sack.rpgroll.util.ComponentUtils;
 
 import net.kyori.adventure.text.format.NamedTextColor;
 
+import com.sack.rpgroll.common.stat.Stats;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -160,6 +162,14 @@ public class SpellComponentExecutor {
 
     // ============ Daño ============
 
+    /** El daño de un hechizo, con la resistencia mágica de quien lo recibe (como mucho le quita un 80 %). */
+    private static void hurt(LivingEntity target, double amount, Player caster) {
+        if (target instanceof Player player) {
+            amount *= 1 - Math.min(80, Stats.bonus(player, Stats.MAGIC_RESISTANCE)) / 100;
+        }
+        target.damage(amount, caster);
+    }
+
     private void executeDamageDirect(SpellComponent component, SpellCastContext context) {
 
         List<LivingEntity> targets = context.currentTargets();
@@ -175,7 +185,7 @@ public class SpellComponentExecutor {
         double amount = component.paramDouble("amount", 5) * context.powerMultiplier();
 
         for (LivingEntity target : targets) {
-            target.damage(amount, context.caster());
+            hurt(target, amount, context.caster());
         }
 
         triggerExplosiveIfPending(context);
@@ -196,7 +206,7 @@ public class SpellComponentExecutor {
 
         for (Entity entity : world.getNearbyEntities(center, radius, radius, radius)) {
             if (entity instanceof LivingEntity living && !entity.equals(context.caster())) {
-                living.damage(amount, context.caster());
+                hurt(living, amount, context.caster());
                 hit.add(living);
             }
         }
@@ -238,7 +248,7 @@ public class SpellComponentExecutor {
             double perpendicular = toEntity.subtract(direction.clone().multiply(along)).length();
 
             if (perpendicular <= width) {
-                living.damage(amount, caster);
+                hurt(living, amount, caster);
                 hit.add(living);
             }
         }
@@ -287,7 +297,7 @@ public class SpellComponentExecutor {
                 break;
             }
 
-            nearest.damage(amount, caster);
+            hurt(nearest, amount, caster);
             hit.add(nearest);
             context.alreadyHit().add(nearest.getUniqueId());
             jumpPoint = nearest.getLocation();
@@ -331,7 +341,7 @@ public class SpellComponentExecutor {
             double cosAngle = toEntity.normalize().dot(direction);
 
             if (cosAngle >= cosThreshold) {
-                living.damage(amount, caster);
+                hurt(living, amount, caster);
                 hit.add(living);
             }
         }
@@ -615,7 +625,7 @@ public class SpellComponentExecutor {
 
         for (Entity entity : world.getNearbyEntities(context.currentLocation(), radius, radius, radius)) {
             if (entity instanceof LivingEntity living && !entity.equals(context.caster())) {
-                living.damage(context.explosiveDamage() * context.powerMultiplier(), context.caster());
+                hurt(living, context.explosiveDamage() * context.powerMultiplier(), context.caster());
             }
         }
     }

@@ -63,3 +63,16 @@ backpack:
   usage: "&eUso: /mochila give <jogador> <nível> [quantidade] · /mochila list"
   list_header: "&6Níveis de mochila:"
   list_line: "&7- &f{tier}&7: {name}&7, {slots} espaços, receita {recipe}"
+
+rtp:
+  unknown_world: "&cNão há teletransporte aleatório para o mundo «{world}»."
+  cooldown: "&cVocê poderá usar de novo em &e{seconds} s&c."
+  wait: "&7Não se mova: você sai em &e{seconds} s&7."
+  moved: "&cVocê se moveu: teletransporte cancelado."
+  searching: "&7Procurando um lugar seguro..."
+  no_spot: "&cNenhum lugar seguro foi encontrado. Tente de novo."
+  done: "&a✔ Você chegou a &e{x}, {y}, {z}&a."
+
+death:
+  none: "&7Não há nenhuma morte para onde voltar."
+  done: "&a✔ De volta a onde você caiu."

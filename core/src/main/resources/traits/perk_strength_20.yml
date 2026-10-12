@@ -1,0 +1,19 @@
+id: "perk_strength_20"
+name: "&cFuerza Titánica"
+description: |
+  Perk de Fuerza 20.
+  Lo que agarra, se rompe.
+required-level: 1
+effect:
+  damage-bonus: 0.08
+translations:
+  en:
+    name: "&cTitanic Strength"
+    description: |
+      Strength 20 perk.
+      Whatever it grabs, breaks.
+  pt_BR:
+    name: "&cForça Titânica"
+    description: |
+      Perk de Força 20.
+      O que agarra, quebra.

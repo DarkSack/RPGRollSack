@@ -58,6 +58,7 @@ public class ExtrasPlugin extends JavaPlugin {
     private LangManager langManager;
     private ExtrasMenuManager menuManager;
     private ServerMenu serverMenu;
+    private com.sack.rpgroll.extras.rtp.RandomTeleportCommand randomTeleport;
     private BackpackService backpackService;
     private BackpackRecipes backpackRecipes;
     private StatManager statManager;
@@ -188,6 +189,9 @@ public class ExtrasPlugin extends JavaPlugin {
         menuManager.reload();
         temperatureEngine.settings(new TemperatureSettingsLoader().load(this));
         serverMenu.configure(ServerMenuConfig.from(getConfig().getConfigurationSection("server-menu")));
+        if (randomTeleport != null && getConfig().isConfigurationSection("random-teleport")) {
+            randomTeleport.configure(getConfig().getConfigurationSection("random-teleport"));
+        }
         // Quien ya está dentro recibe (o pierde) la brújula sin tener que reconectar.
         getServer().getOnlinePlayers().forEach(player -> {
             if (serverMenu.config().enabled()) {
@@ -224,6 +228,21 @@ public class ExtrasPlugin extends JavaPlugin {
         var backpackExecutor = new BackpackCommand(backpackService, langManager);
         com.sack.rpgroll.common.command.BrigadierCommands.register(this, "mochila", "Entrega y lista mochilas",
                 List.of("backpack"), backpackExecutor, backpackExecutor, BackpackCommand.ADMIN_PERMISSION);
+
+        // Solo si se pide: con otro plugin de RTP instalado, /rtp sigue siendo el suyo.
+        if (getConfig().getBoolean("random-teleport.enabled")) {
+            randomTeleport = new com.sack.rpgroll.extras.rtp.RandomTeleportCommand(this, langManager);
+            randomTeleport.configure(getConfig().getConfigurationSection("random-teleport"));
+            com.sack.rpgroll.common.command.BrigadierCommands.register(this, "rtp", "Teletransporte aleatorio",
+                    List.of(), randomTeleport, randomTeleport,
+                    com.sack.rpgroll.extras.rtp.RandomTeleportCommand.PERMISSION);
+        }
+
+        if (getConfig().getBoolean("death-teleport.enabled")) {
+            com.sack.rpgroll.common.command.BrigadierCommands.register(this, "death",
+                    "Vuelve al punto de tu última muerte", "rpgrollextras.death",
+                    new com.sack.rpgroll.extras.rtp.DeathCommand(langManager));
+        }
     }
 
     @Override

@@ -37,3 +37,26 @@ afk:
 
 # Mundos donde las necesidades (sed, fatiga, estrés...) ni corren ni hacen daño: un lobby.
 stats-disabled-worlds: []
+
+# Teletransporte aleatorio: /rtp [mundo]. Apagado de fábrica: enciéndelo solo si no hay otro
+# plugin de RTP. El chunk de destino se carga (y se genera, si hace falta) sin parar el servidor.
+# Permisos: rpgrollextras.rtp (usarlo, todos), .rtp.nodelay y .rtp.nocooldown.
+# Encenderlo o apagarlo pide reiniciar; lo demás, /extrasadmin reload.
+random-teleport:
+  enabled: false
+  # Segundos quieto antes de salir, y de espera entre un uso y el siguiente.
+  delay-seconds: 3
+  cooldown-seconds: 300
+  # A dónde lleva /rtp a secas cuando el jugador no está ya en uno de los mundos de la lista.
+  default-world: world
+  # El anillo donde se cae, en bloques desde el centro del borde del mundo (que además lo limita).
+  # Solo mundos con cielo: ni Nether ni cuevas.
+  worlds:
+    world:
+      min-radius: 250
+      max-radius: 3000
+
+# /death: lleva al punto de tu última muerte, para recoger lo que se cayó antes de que
+# desaparezca. Permiso: rpgrollextras.death (todos). Encenderlo o apagarlo pide reiniciar.
+death-teleport:
+  enabled: false

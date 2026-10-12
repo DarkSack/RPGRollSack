@@ -55,7 +55,7 @@ class CombatEffectsListenerTest {
 
     /** Vida 100, armadura 50 (la mitad del daño pasa), sin evasión ni crítico. */
     private void stats(double damage, double defense, double evasion, double critical) {
-        when(rpgPlayer.getCombatStats()).thenReturn(new CombatStats(100, 100, 100, 100, 50.0, 0.0, 0.0, 1.5));
+        when(rpgPlayer.getCombatStats()).thenReturn(new CombatStats(100, 100, 100, 100, 50.0, 0.0, 0.0, 1.5, 0, 0));
         when(passive.totals(rpgPlayer)).thenReturn(new PassiveEffects.Totals(0, damage, defense, 0, 0, evasion, critical, 0));
     }
 
@@ -161,7 +161,7 @@ class CombatEffectsListenerTest {
         when(event.getEntity()).thenReturn(bukkitPlayer);
         when(event.getRegainReason()).thenReturn(EntityRegainHealthEvent.RegainReason.MAGIC);
         when(event.getAmount()).thenReturn(5.0);
-        when(rpgPlayer.getCombatStats()).thenReturn(new CombatStats(100, 40, 100, 100, 50.0, 0.0, 0.0, 1.5));
+        when(rpgPlayer.getCombatStats()).thenReturn(new CombatStats(100, 40, 100, 100, 50.0, 0.0, 0.0, 1.5, 0, 0));
 
         listener.onHeal(event);
         verify(rpgPlayer).updateCombatStats(argThat(stats -> stats.currentHealth() == 65));

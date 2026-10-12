@@ -1,5 +1,5 @@
-# Submenú de viajes del menú del servidor. rtp necesita un plugin de
-# teletransporte aleatorio (LeafRTP, BetterRTP...); spawn, EssentialsXSpawn.
+# Submenú de viajes del menú del servidor. rtp es el de este plugin
+# (random-teleport en config.yml) o el de otro; spawn, EssentialsXSpawn.
 id: destinos
 title: "&a&l✦ Viajes"
 rows: 3

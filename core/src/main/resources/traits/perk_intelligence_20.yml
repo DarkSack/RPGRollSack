@@ -1,0 +1,20 @@
+id: "perk_intelligence_20"
+name: "&9Genio"
+description: |
+  Perk de Inteligencia 20.
+  Donde otros ven un límite, ve margen.
+required-level: 1
+effect:
+  mana-bonus: 30
+  damage-bonus: 0.03
+translations:
+  en:
+    name: "&9Genius"
+    description: |
+      Intelligence 20 perk.
+      Where others see a limit, it sees room.
+  pt_BR:
+    name: "&9Gênio"
+    description: |
+      Perk de Inteligência 20.
+      Onde outros veem um limite, vê margem.

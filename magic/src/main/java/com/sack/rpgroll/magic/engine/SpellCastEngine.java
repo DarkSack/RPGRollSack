@@ -96,7 +96,8 @@ public class SpellCastEngine {
         spellbook.startCooldown(spell.id(), Math.max(0, cooldownMillis), now);
 
         double affinityMultiplier = AffinityResolver.multiplierFor(caster, school);
-        double powerMultiplier = affinityMultiplier * (catalyst != null ? catalyst.powerMultiplier() : 1.0);
+        double powerMultiplier = affinityMultiplier * (catalyst != null ? catalyst.powerMultiplier() : 1.0)
+                * (1 + com.sack.rpgroll.common.stat.Stats.bonus(caster, com.sack.rpgroll.common.stat.Stats.MAGIC_POWER) / 100);
         double rangeMultiplier = catalyst != null ? catalyst.rangeMultiplier() : 1.0;
 
         SpellCastContext context = new SpellCastContext(caster, spell, school, catalyst, powerMultiplier,

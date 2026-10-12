@@ -85,13 +85,8 @@ public class AdminResetStatsCommand implements RPGCommand {
                     services.get(com.sack.rpgroll.api.playerclass.ClassManager.class));
 
             CombatStats currentCombatStats = rpgPlayer.getCombatStats();
-            CombatStats refreshedCombatStats = CombatStats.of(
-                    currentCombatStats.maxHealth(),
-                    currentCombatStats.currentHealth(),
-                    currentCombatStats.maxMana(),
-                    currentCombatStats.currentMana(),
-                    defaultStats.getDexterityModifier(),
-                    rpgPlayer.getLevel());
+            CombatStats refreshedCombatStats = currentCombatStats.refresh(
+                    defaultStats.getDexterityModifier(), rpgPlayer.getLevel());
 
             RPGPlayer resetPlayer = rpgPlayer
                     .updateStats(defaultStats)

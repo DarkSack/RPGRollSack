@@ -12,6 +12,7 @@ import com.sack.rpgroll.ascension.deferred.LegacyManager;
 import com.sack.rpgroll.ascension.player.AscensionPlayerState;
 import com.sack.rpgroll.ascension.player.AscensionPlayerStateManager;
 import com.sack.rpgroll.ascension.requirement.AscensionRequirementChecker;
+import com.sack.rpgroll.common.stat.Stats;
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.player.RPGPlayer;
 import com.sack.rpgroll.player.identity.PlayerIdentity;
@@ -53,8 +54,10 @@ public class AscensionEngine {
     private record VanillaStat(Attribute attribute, double scale, AttributeModifier.Operation operation) {
     }
 
-    // shortcut: los demás stats (magic_power, critical_chance, mana, atributos…) no tienen equivalente en
-    // Minecraft y siguen siendo informativos, ampliar cuando el core exponga stats efectivas.
+    // Los demás no tienen equivalente en Minecraft: salen por Stats (ver el constructor) y los aplica quien
+    // los entiende. Hoy son mana (el core) y magic_power y magic_resistance (Magic).
+    // shortcut: critical_chance y los atributos (strength…) siguen siendo informativos, leerlos de Stats en
+    // el core cuando hagan falta.
     private static final Map<String, VanillaStat> VANILLA_STATS = Map.of(
             "health", new VanillaStat(Attribute.MAX_HEALTH, 1, AttributeModifier.Operation.ADD_NUMBER),
             "speed", new VanillaStat(Attribute.MOVEMENT_SPEED, 0.01, AttributeModifier.Operation.ADD_SCALAR),
@@ -83,6 +86,9 @@ public class AscensionEngine {
         this.legacyManager = legacyManager;
         this.requirementChecker = requirementChecker;
         this.lang = lang;
+
+        Stats.register(plugin, (player, stat) -> VANILLA_STATS.containsKey(stat) ? 0
+                : combinedStats(stateManager.getOrLoad(player)).getOrDefault(stat, 0.0));
     }
 
     /** Se cablea después: el motor de secretos se construye aparte. */
@@ -380,7 +386,8 @@ public class AscensionEngine {
         applyAttributeBonuses(player, stateManager.getOrLoad(player));
     }
 
-    private void applyAttributeBonuses(Player player, AscensionPlayerState state) {
+    /** Lo que suman la evolución, la especialización, sus talentos y las recompensas, por stat. */
+    private Map<String, Double> combinedStats(AscensionPlayerState state) {
 
         Map<String, Double> combined = new HashMap<>();
 
@@ -407,6 +414,13 @@ public class AscensionEngine {
 
         // Bonos permanentes de recompensas (logros, rangos de facción…).
         state.getBonusStats().forEach((k, v) -> combined.merge(k, v, Double::sum));
+
+        return combined;
+    }
+
+    private void applyAttributeBonuses(Player player, AscensionPlayerState state) {
+
+        Map<String, Double> combined = combinedStats(state);
 
         VANILLA_STATS.forEach((stat, vanilla) -> applyAttribute(player, vanilla.attribute(),
                 new NamespacedKey(plugin, "ascension-" + stat + "-modifier"),

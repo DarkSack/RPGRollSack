@@ -74,10 +74,8 @@ public class AdminRestoreCommand implements RPGCommand {
             int health = what.equals("mana") ? current.currentHealth() : current.maxHealth();
             int mana = what.equals("vida") ? current.currentMana() : current.maxMana();
 
-            CombatStats restored = CombatStats.of(
-                    current.maxHealth(), health,
-                    current.maxMana(), mana,
-                    rpgPlayer.getStats().getDexterityModifier(), rpgPlayer.getLevel());
+            CombatStats restored = current.withHealth(health).withMana(mana)
+                    .refresh(rpgPlayer.getStats().getDexterityModifier(), rpgPlayer.getLevel());
 
             RPGPlayer updated = rpgPlayer.updateCombatStats(restored);
             playerManager.savePlayer(updated);

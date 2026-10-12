@@ -63,3 +63,16 @@ backpack:
   usage: "&eUsage: /mochila give <player> <tier> [amount] · /mochila list"
   list_header: "&6Backpack tiers:"
   list_line: "&7- &f{tier}&7: {name}&7, {slots} slots, recipe {recipe}"
+
+rtp:
+  unknown_world: "&cThere is no random teleport to the world «{world}»."
+  cooldown: "&cYou can use it again in &e{seconds} s&c."
+  wait: "&7Stand still: leaving in &e{seconds} s&7."
+  moved: "&cYou moved: teleport cancelled."
+  searching: "&7Looking for a safe spot..."
+  no_spot: "&cNo safe spot was found. Try again."
+  done: "&a✔ You arrived at &e{x}, {y}, {z}&a."
+
+death:
+  none: "&7There is no death to go back to."
+  done: "&a✔ Back to where you fell."

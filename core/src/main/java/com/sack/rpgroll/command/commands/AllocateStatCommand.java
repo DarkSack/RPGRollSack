@@ -103,13 +103,7 @@ public class AllocateStatCommand implements RPGCommand {
 
             // Refresca armorRating/evasionChance/criticalChance con la destreza
             // actual, preservando la salud/maná ya calculados arriba.
-            combatStats = CombatStats.of(
-                    combatStats.maxHealth(),
-                    combatStats.currentHealth(),
-                    combatStats.maxMana(),
-                    combatStats.currentMana(),
-                    statsAfter.getDexterityModifier(),
-                    afterAllocation.getLevel());
+            combatStats = combatStats.refresh(statsAfter.getDexterityModifier(), afterAllocation.getLevel());
 
             RPGPlayer updatedPlayer = afterAllocation
                     .updateCombatStats(combatStats)

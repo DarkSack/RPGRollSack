@@ -1,0 +1,20 @@
+id: "perk_dexterity_20"
+name: "&aSombra Veloz"
+description: |
+  Perk de Agilidad 20.
+  Cuando miras, ya ha pasado.
+required-level: 1
+effect:
+  speed-bonus: 0.05
+  evasion-bonus: 0.04
+translations:
+  en:
+    name: "&aSwift Shadow"
+    description: |
+      Agility 20 perk.
+      By the time you look, it is gone.
+  pt_BR:
+    name: "&aSombra Veloz"
+    description: |
+      Perk de Agilidade 20.
+      Quando você olha, já passou.

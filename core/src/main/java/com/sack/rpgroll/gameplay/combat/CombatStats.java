@@ -8,6 +8,10 @@ package com.sack.rpgroll.gameplay.combat;
  * acumulado. armorRating/evasionChance/criticalChance sí se recalculan
  * libremente a partir de las estadísticas actuales, ya que no acumulan
  * historial propio.
+ * <p>
+ * bonusHealth/bonusMana es la parte de los máximos que viene de rasgos y de
+ * Ascension (ver PassiveEffects). No se guarda: el repositorio la descuenta
+ * y se vuelve a calcular al entrar, así que quitar un rasgo no deja nada atrás.
  */
 public record CombatStats(
         int maxHealth,
@@ -17,13 +21,15 @@ public record CombatStats(
         double armorRating,
         double evasionChance,
         double criticalChance,
-        double criticalMultiplier) {
+        double criticalMultiplier,
+        int bonusHealth,
+        int bonusMana) {
 
     /**
      * Crea CombatStats vacíos (valores por defecto).
      */
     public static CombatStats empty() {
-        return new CombatStats(100, 100, 100, 100, 5.0, 0.1, 0.05, 1.5);
+        return new CombatStats(100, 100, 100, 100, 5.0, 0.1, 0.05, 1.5, 0, 0);
     }
 
     /**
@@ -53,7 +59,7 @@ public record CombatStats(
                 armorRating,
                 evasionChance,
                 criticalChance,
-                1.5);
+                1.5, 0, 0);
     }
 
     /**
@@ -82,7 +88,46 @@ public record CombatStats(
                 armorRating,
                 evasionChance,
                 criticalChance,
-                1.5);
+                1.5, 0, 0);
+    }
+
+    /** Recalcula armadura, evasión y crítico con la destreza y el nivel de ahora; vida y maná no cambian. */
+    public CombatStats refresh(int dexterityModifier, int level) {
+        CombatStats fresh = of(maxHealth, currentHealth, maxMana, currentMana, dexterityModifier, level);
+        return new CombatStats(
+                maxHealth,
+                currentHealth,
+                maxMana,
+                currentMana,
+                fresh.armorRating,
+                fresh.evasionChance,
+                fresh.criticalChance,
+                fresh.criticalMultiplier,
+                bonusHealth,
+                bonusMana);
+    }
+
+    /**
+     * Cambia el bono de los máximos por este. Lo actual no sube con él (se regenera), solo se
+     * recorta si ya no cabe. {@code withBonus(0, 0)} es lo que se guarda.
+     */
+    public CombatStats withBonus(int health, int mana) {
+        // Por mucho que reste un rasgo, queda 1 de vida y 0 de maná.
+        health = Math.max(health, 1 - (maxHealth - bonusHealth));
+        mana = Math.max(mana, -(maxMana - bonusMana));
+        int newMaxHealth = maxHealth - bonusHealth + health;
+        int newMaxMana = maxMana - bonusMana + mana;
+        return new CombatStats(
+                newMaxHealth,
+                Math.min(currentHealth, newMaxHealth),
+                newMaxMana,
+                Math.min(currentMana, newMaxMana),
+                armorRating,
+                evasionChance,
+                criticalChance,
+                criticalMultiplier,
+                health,
+                mana);
     }
 
     /**
@@ -97,7 +142,9 @@ public record CombatStats(
                 armorRating,
                 evasionChance,
                 criticalChance,
-                criticalMultiplier);
+                criticalMultiplier,
+                bonusHealth,
+                bonusMana);
     }
 
     /**
@@ -112,7 +159,9 @@ public record CombatStats(
                 armorRating,
                 evasionChance,
                 criticalChance,
-                criticalMultiplier);
+                criticalMultiplier,
+                bonusHealth,
+                bonusMana);
     }
 
     /**
@@ -128,7 +177,9 @@ public record CombatStats(
                 armorRating,
                 evasionChance,
                 criticalChance,
-                criticalMultiplier);
+                criticalMultiplier,
+                bonusHealth,
+                bonusMana);
     }
 
     /**
@@ -144,7 +195,9 @@ public record CombatStats(
                 armorRating,
                 evasionChance,
                 criticalChance,
-                criticalMultiplier);
+                criticalMultiplier,
+                bonusHealth,
+                bonusMana);
     }
 
 }

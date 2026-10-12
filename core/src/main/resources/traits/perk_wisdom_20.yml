@@ -1,0 +1,19 @@
+id: "perk_wisdom_20"
+name: "&bSexto Sentido"
+description: |
+  Perk de Percepción 20.
+  Sabe dónde va a estar el hueco.
+required-level: 1
+effect:
+  critical-bonus: 0.07
+translations:
+  en:
+    name: "&bSixth Sense"
+    description: |
+      Perception 20 perk.
+      Knows where the opening will be.
+  pt_BR:
+    name: "&bSexto Sentido"
+    description: |
+      Perk de Percepção 20.
+      Sabe onde a brecha vai estar.

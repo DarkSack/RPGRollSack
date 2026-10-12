@@ -29,7 +29,9 @@ requirements:
 # Bonos de stat fijos, aplicados con solo tener la especialización (además de los del árbol de talentos).
 # Tienen efecto en el juego: health (puntos de vida, 2 = un corazón), speed (% de velocidad), damage (daño de
 # ataque), defense (puntos de armadura), attack_speed (%), luck, resistance (% contra el empuje) y
-# mining_speed (%). El resto (magic_power, critical_chance, mana…) es informativo salvo que otro plugin lo lea.
+# mining_speed (%). También mana (maná máximo; se nota al volver a entrar), magic_power (% de daño de los
+# hechizos de RPGRoll-Magic) y magic_resistance (% menos de daño de hechizo recibido). El resto
+# (critical_chance, atributos…) es informativo salvo que otro plugin lo lea.
 stats:
   magic_power: 5
   magic_resistance: 3

@@ -1,0 +1,19 @@
+id: "perk_charisma_20"
+name: "&dLeyenda Viva"
+description: |
+  Perk de Carisma 20.
+  Su nombre llega antes que él.
+required-level: 1
+effect:
+  luck-bonus: 2
+translations:
+  en:
+    name: "&dLiving Legend"
+    description: |
+      Charisma 20 perk.
+      The name arrives before the person.
+  pt_BR:
+    name: "&dLenda Viva"
+    description: |
+      Perk de Carisma 20.
+      O nome chega antes da pessoa.

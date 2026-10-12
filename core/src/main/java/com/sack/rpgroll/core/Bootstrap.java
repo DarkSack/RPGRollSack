@@ -245,7 +245,7 @@ public class Bootstrap {
                 plugin, playerManager, traitManager, raceManager, classManager);
         services.register(com.sack.rpgroll.gameplay.trait.PassiveEffects.class, passiveEffects);
         Bukkit.getPluginManager().registerEvents(passiveEffects, plugin);
-        Bukkit.getScheduler().runTaskTimer(plugin, new com.sack.rpgroll.gameplay.trait.StatEffects(playerManager),
+        Bukkit.getScheduler().runTaskTimer(plugin, new com.sack.rpgroll.gameplay.trait.StatEffects(playerManager, passiveEffects),
                 com.sack.rpgroll.gameplay.trait.StatEffects.PERIOD_TICKS,
                 com.sack.rpgroll.gameplay.trait.StatEffects.PERIOD_TICKS);
         // Sus nombres e iconos van en el resourcepack/ de este jar.
@@ -253,11 +253,13 @@ public class Bootstrap {
         // El carisma no hacía nada: da un 2 % de experiencia por punto de modificador.
         services.get(com.sack.rpgroll.api.ExperienceBonusService.class).registerSource("charisma",
                 player -> playerManager.getPlayer(player.getUniqueId())
-                        .map(rpgPlayer -> 2.0 * rpgPlayer.getStats().getCharismaModifier()).orElse(0.0));
+                        .map(rpgPlayer -> 2.0 * passiveEffects.modifier(rpgPlayer,
+                                com.sack.rpgroll.api.stats.StatType.CHARISMA)).orElse(0.0));
         // Y un 2 % en los precios de las tiendas del servidor, sean de la facción que sean.
         com.sack.rpgroll.common.price.Prices.register(plugin,
                 (player, faction) -> playerManager.getPlayer(player.getUniqueId())
-                        .map(rpgPlayer -> 0.02 * rpgPlayer.getStats().getCharismaModifier()).orElse(0.0));
+                        .map(rpgPlayer -> 0.02 * passiveEffects.modifier(rpgPlayer,
+                                com.sack.rpgroll.api.stats.StatType.CHARISMA)).orElse(0.0));
         services.get(com.sack.rpgroll.api.ExperienceBonusService.class).registerSource("luck",
                 player -> playerManager.getPlayer(player.getUniqueId())
                         .map(rpgPlayer -> com.sack.rpgroll.gameplay.trait.PassiveEffects.EXPERIENCE_PERCENT_PER_LUCK
