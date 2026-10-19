@@ -17,7 +17,7 @@ plugins {
 // La misma version que el ecosistema: el instalador acompana a los packs, y
 // que diga "unspecified" en las propiedades del archivo no ayuda a nadie a
 // saber cual tiene.
-version = "1.0.0"
+version = "1.1.0"
 
 repositories {
     // mavenLocal primero, igual que el resto del repo: las dependencias de test

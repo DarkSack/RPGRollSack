@@ -1,5 +1,5 @@
 name: RPGRoll-Recipes
-version: 1.0.0
+version: 1.1.0
 main: com.sack.rpgroll.recipes.RecipesPlugin
 api-version: "26.1.1"
 author: Sack
