@@ -118,7 +118,7 @@ public class SackResourcePackPlugin extends JavaPlugin {
                 getConfig().getInt("datapack.pack-format", 48));
 
         this.developmentModeWatcher = new DevelopmentModeWatcher(this, contentDirectory.toPath(),
-                () -> getServer().getScheduler().runTask(this, this::rebuildAndDistribute));
+                () -> buildEngine.buildAsync(false, this::distribute));
 
         if (getConfig().getBoolean("development-mode", false)) {
             developmentModeWatcher.start();
@@ -151,10 +151,16 @@ public class SackResourcePackPlugin extends JavaPlugin {
         }
     }
 
-    /** Reconstruye (sin forzar) y, si hay jugadores conectados, les reenvía el pack actualizado. */
+    /**
+     * Reconstruye (sin forzar) y, si hay jugadores conectados, les reenvía el pack actualizado.
+     * Síncrono: solo se usa al arrancar, cuando el servidor aún no atiende a nadie y el pack
+     * tiene que estar listo antes del primer jugador.
+     */
     public void rebuildAndDistribute() {
+        distribute(buildEngine.build(false));
+    }
 
-        BuildResult result = buildEngine.build(false);
+    private void distribute(BuildResult result) {
 
         if (result.hasErrors()) {
             getLogger().warning("✘ El build de SackResourcePack tiene errores — revisá /srp validate.");
@@ -174,10 +180,20 @@ public class SackResourcePackPlugin extends JavaPlugin {
         }
     }
 
-    /** Sube (si está configurado) y reenvía el pack a todos los jugadores conectados. */
-    public void publish() {
+    /**
+     * Sube (si está configurado) y reenvía el pack a todos los jugadores conectados. La
+     * construcción va en segundo plano; {@code alTerminar} corre en el hilo principal si se
+     * pudo distribuir.
+     */
+    public void publish(Runnable alTerminar) {
+        buildEngine.buildAsync(false, result -> {
+            if (publishBuilt(result)) {
+                alTerminar.run();
+            }
+        });
+    }
 
-        BuildResult result = buildEngine.build(false);
+    private boolean publishBuilt(BuildResult result) {
 
         if (remoteUploadEnabled && "s3".equalsIgnoreCase(remoteUploadMode) && s3UploadSettings.isConfigured()) {
             getServer().getScheduler().runTaskAsynchronously(this,
@@ -191,11 +207,12 @@ public class SackResourcePackPlugin extends JavaPlugin {
 
         if (publicUrl == null) {
             getLogger().warning("✘ No hay URL pública configurada (ni http.public-url, ni http.enabled) — no se puede distribuir.");
-            return;
+            return false;
         }
 
         distributionEngine.updateCurrentPack(publicUrl, result.sha1());
         distributionEngine.sendToAllOnline();
+        return true;
     }
 
     private String resolvePublicUrl() {

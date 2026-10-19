@@ -11,6 +11,11 @@ public class PackBuildEvent extends Event implements Cancellable {
 
     private boolean cancelled;
 
+    /** Asíncrono cuando lo lanza /srp rebuild (fuera del hilo del servidor); síncrono al arrancar. */
+    public PackBuildEvent(boolean async) {
+        super(async);
+    }
+
     @Override
     public boolean isCancelled() {
         return cancelled;

@@ -115,22 +115,19 @@ public class BuildEngine {
     }
 
     /**
-     * Lo mismo que {@link #build}, con la copia de archivos y el ZIP fuera del hilo del servidor:
-     * con un pack grande, /srp rebuild lo dejaba congelado más de diez segundos. Los eventos y
-     * {@code whenDone} siguen en el hilo principal.
+     * Lo mismo que {@link #build}, entero fuera del hilo del servidor: con un pack grande,
+     * /srp rebuild lo dejaba congelado más de diez segundos, y aun con el ZIP aparte, recorrer
+     * los ~46.000 archivos para la firma costaba un tick de 0,7 s (medido el 2026-10-19).
+     * {@link PackBuildEvent} sale asíncrono; {@code whenDone} y {@link PackGeneratedEvent},
+     * en el hilo principal.
      */
     public void buildAsync(boolean force, Consumer<BuildResult> whenDone) {
 
-        Prepared prepared = prepare(force);
-
-        if (prepared.done() != null) {
-            whenDone.accept(prepared.done());
-            return;
-        }
-
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-            BuildResult result = pack(prepared);
-            Bukkit.getScheduler().runTask(plugin, () -> whenDone.accept(announce(result)));
+            Prepared prepared = prepare(force);
+            boolean empaquetado = prepared.done() == null;
+            BuildResult result = empaquetado ? pack(prepared) : prepared.done();
+            Bukkit.getScheduler().runTask(plugin, () -> whenDone.accept(empaquetado ? announce(result) : result));
         });
     }
 
@@ -156,7 +153,7 @@ public class BuildEngine {
             }
         }
 
-        PackBuildEvent buildEvent = new PackBuildEvent();
+        PackBuildEvent buildEvent = new PackBuildEvent(!Bukkit.isPrimaryThread());
         Bukkit.getPluginManager().callEvent(buildEvent);
 
         if (buildEvent.isCancelled()) {

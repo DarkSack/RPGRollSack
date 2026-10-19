@@ -93,7 +93,7 @@ public class SrpCommand implements CommandExecutor, TabCompleter {
         new DashboardGUI(player, plugin, plugin.getBuildEngine(), plugin.getHttpServer().assetBaseUrl(), lang(),
                 () -> handleBuild(player, true),
                 () -> handleBuild(player, false),
-                plugin::publish,
+                () -> plugin.publish(() -> { }),
                 plugin::toggleDevelopmentMode,
                 plugin::isDevelopmentModeActive)
                 .open();
@@ -131,8 +131,8 @@ public class SrpCommand implements CommandExecutor, TabCompleter {
     }
 
     private void handlePublish(CommandSender sender) {
-        plugin.publish();
-        lang().send(sender, "command.publish-done");
+        lang().send(sender, "command.build-started");
+        plugin.publish(() -> lang().send(sender, "command.publish-done"));
     }
 
     private void handleStatus(CommandSender sender) {
