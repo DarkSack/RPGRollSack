@@ -26,7 +26,7 @@ public class AchievementEditorGUI extends InventoryGUI {
 
     public AchievementEditorGUI(Player player, Achievement achievement, AchievementManager manager,
             ChatPromptManager chatPromptManager, Runnable onBack, LangManager lang) {
-        super(player, lang.component("gui.achievement.editor_title", "id", achievement.id()), SIZE);
+        super(player, lang.component("gui.achievement.editor_title", "id", Nombres.texto(achievement.displayName(), achievement.id())), SIZE);
         this.current = achievement;
         this.manager = manager;
         this.chatPromptManager = chatPromptManager;

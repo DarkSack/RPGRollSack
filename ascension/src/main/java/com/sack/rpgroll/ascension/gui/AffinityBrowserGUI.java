@@ -50,8 +50,8 @@ public class AffinityBrowserGUI extends InventoryGUI {
         for (int i = 0; i < affinities.size() && i < 36; i++) {
             Affinity affinity = affinities.get(i);
             setItem(i, new ItemBuilder(Material.BLAZE_POWDER)
-                    .setName(Component.text(affinity.id(), NamedTextColor.YELLOW))
-                    .setLore(ComponentUtils.parse(affinity.displayName()),
+                    .setName(Nombres.titulo(affinity.displayName(), affinity.id()))
+                    .setLore(Nombres.id(affinity.id()),
                             lang.component("gui.common.click_to_edit"))
                     .build());
         }

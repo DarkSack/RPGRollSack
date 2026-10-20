@@ -37,7 +37,7 @@ public class JobEvolutionEditorGUI extends InventoryGUI {
 
     public JobEvolutionEditorGUI(Player player, JobEvolution evolution, JobEvolutionManager manager,
             ChatPromptManager chatPromptManager, Runnable onBack, LangManager lang) {
-        super(player, lang.component("gui.job_evolution.editor_title", "id", evolution.id()), SIZE);
+        super(player, lang.component("gui.job_evolution.editor_title", "id", Nombres.texto(evolution.displayName(), evolution.id())), SIZE);
         this.current = evolution;
         this.manager = manager;
         this.chatPromptManager = chatPromptManager;

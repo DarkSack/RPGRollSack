@@ -25,7 +25,7 @@ public class FactionEditorGUI extends InventoryGUI {
 
     public FactionEditorGUI(Player player, Faction faction, FactionManager manager,
             ChatPromptManager chatPromptManager, Runnable onBack, LangManager lang) {
-        super(player, lang.component("gui.faction.editor_title", "id", faction.id()), SIZE);
+        super(player, lang.component("gui.faction.editor_title", "id", Nombres.texto(faction.displayName(), faction.id())), SIZE);
         this.current = faction;
         this.manager = manager;
         this.chatPromptManager = chatPromptManager;

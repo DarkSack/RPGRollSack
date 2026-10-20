@@ -33,7 +33,7 @@ public class MobModifiersEditorGUI extends InventoryGUI {
 
     public MobModifiersEditorGUI(Player player, Season season, SeasonManager seasonManager,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, chatPromptManager.lang().component("gui.mob_modifiers_editor.title", "id", season.id()), SIZE);
+        super(player, chatPromptManager.lang().component("gui.mob_modifiers_editor.title", "id", season.displayName()), SIZE);
         this.current = season;
         this.seasonManager = seasonManager;
         this.chatPromptManager = chatPromptManager;

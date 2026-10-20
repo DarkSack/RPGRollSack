@@ -50,8 +50,8 @@ public class FactionBrowserGUI extends InventoryGUI {
         for (int i = 0; i < factions.size() && i < 36; i++) {
             Faction faction = factions.get(i);
             setItem(i, new ItemBuilder(Material.WHITE_BANNER)
-                    .setName(Component.text(faction.id(), NamedTextColor.YELLOW))
-                    .setLore(ComponentUtils.parse(faction.displayName()),
+                    .setName(Nombres.titulo(faction.displayName(), faction.id()))
+                    .setLore(Nombres.id(faction.id()),
                             lang.component("gui.common.click_to_edit"))
                     .build());
         }

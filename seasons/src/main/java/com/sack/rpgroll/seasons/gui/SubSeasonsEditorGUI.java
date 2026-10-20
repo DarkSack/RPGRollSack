@@ -37,7 +37,7 @@ public class SubSeasonsEditorGUI extends InventoryGUI {
 
     public SubSeasonsEditorGUI(Player player, Season season, SeasonManager seasonManager,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, chatPromptManager.lang().component("gui.sub_seasons_editor.title", "id", season.id()), SIZE);
+        super(player, chatPromptManager.lang().component("gui.sub_seasons_editor.title", "id", season.displayName()), SIZE);
         this.current = season;
         this.seasonManager = seasonManager;
         this.chatPromptManager = chatPromptManager;

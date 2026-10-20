@@ -51,8 +51,9 @@ public class TrapBrowserGUI extends InventoryGUI {
             TrapDefinition trap = traps.get(i);
 
             setItem(i, com.sack.rpgroll.traps.item.ItemModels.apply(new ItemBuilder(trap.icon())
-                    .setName(Component.text(trap.id(), NamedTextColor.YELLOW))
-                    .setLore(lang.component("gui.browser.trigger", "value", trap.trigger()),
+                    .setName(com.sack.rpgroll.util.ComponentUtils.parse(trap.displayName()).colorIfAbsent(NamedTextColor.YELLOW))
+                    .setLore(Component.text(trap.id(), NamedTextColor.DARK_GRAY),
+                            lang.component("gui.browser.trigger", "value", trap.trigger()),
                             lang.component("gui.browser.click_to_edit"))
                     .build(), "trap", trap.id()));
         }

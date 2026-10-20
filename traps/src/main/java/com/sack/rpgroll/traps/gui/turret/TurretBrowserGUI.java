@@ -50,8 +50,9 @@ public class TurretBrowserGUI extends InventoryGUI {
             TurretDefinition turret = turrets.get(i);
 
             setItem(i, new ItemBuilder(turret.model())
-                    .setName(Component.text(turret.id(), NamedTextColor.YELLOW))
-                    .setLore(lang.component("gui.turret.browser.radius", "value", turret.radius()),
+                    .setName(com.sack.rpgroll.util.ComponentUtils.parse(turret.displayName()).colorIfAbsent(NamedTextColor.YELLOW))
+                    .setLore(Component.text(turret.id(), NamedTextColor.DARK_GRAY),
+                            lang.component("gui.turret.browser.radius", "value", turret.radius()),
                             lang.component("gui.browser.click_to_edit"))
                     .build());
         }

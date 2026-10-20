@@ -30,7 +30,7 @@ public class TrapEditorHubGUI extends InventoryGUI {
 
     public TrapEditorHubGUI(Player player, TrapDefinition trap, TrapManager trapManager,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, chatPromptManager.lang().component("gui.hub.title", "id", trap.id()), SIZE);
+        super(player, chatPromptManager.lang().component("gui.hub.title", "id", trap.displayName()), SIZE);
         this.trapId = trap.id();
         this.trapManager = trapManager;
         this.chatPromptManager = chatPromptManager;

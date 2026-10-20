@@ -32,7 +32,7 @@ public class AffinityEditorGUI extends InventoryGUI {
 
     public AffinityEditorGUI(Player player, Affinity affinity, AffinityManager manager,
             ChatPromptManager chatPromptManager, Runnable onBack, LangManager lang) {
-        super(player, lang.component("gui.affinity.editor_title", "id", affinity.id()), SIZE);
+        super(player, lang.component("gui.affinity.editor_title", "id", Nombres.texto(affinity.displayName(), affinity.id())), SIZE);
         this.current = affinity;
         this.manager = manager;
         this.chatPromptManager = chatPromptManager;

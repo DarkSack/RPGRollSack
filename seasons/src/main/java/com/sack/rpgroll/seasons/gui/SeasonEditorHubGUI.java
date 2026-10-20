@@ -66,7 +66,7 @@ public class SeasonEditorHubGUI extends InventoryGUI {
 
     public SeasonEditorHubGUI(Player player, Season season, SeasonManager seasonManager,
             WorldEventManager worldEventManager, ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, chatPromptManager.lang().component("gui.season_editor.title", "id", season.id()), SIZE);
+        super(player, chatPromptManager.lang().component("gui.season_editor.title", "id", season.displayName()), SIZE);
         this.current = season;
         this.seasonManager = seasonManager;
         this.worldEventManager = worldEventManager;

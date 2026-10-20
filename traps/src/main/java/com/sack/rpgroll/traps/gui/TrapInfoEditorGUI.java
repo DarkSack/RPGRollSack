@@ -43,7 +43,7 @@ public class TrapInfoEditorGUI extends InventoryGUI {
 
     public TrapInfoEditorGUI(Player player, TrapDefinition current, ChatPromptManager chatPromptManager,
             Consumer<TrapDefinition> onSave, Runnable onBack) {
-        super(player, chatPromptManager.lang().component("gui.info.title", "id", current.id()), SIZE);
+        super(player, chatPromptManager.lang().component("gui.info.title", "id", current.displayName()), SIZE);
         this.current = current;
         this.chatPromptManager = chatPromptManager;
         this.onSave = onSave;

@@ -25,7 +25,7 @@ public class TitleEditorGUI extends InventoryGUI {
 
     public TitleEditorGUI(Player player, Title title, TitleManager manager, ChatPromptManager chatPromptManager,
             Runnable onBack, LangManager lang) {
-        super(player, lang.component("gui.title.editor_title", "id", title.id()), SIZE);
+        super(player, lang.component("gui.title.editor_title", "id", Nombres.texto(title.displayName(), title.id())), SIZE);
         this.current = title;
         this.manager = manager;
         this.chatPromptManager = chatPromptManager;

@@ -51,9 +51,9 @@ public class ClassSpecializationBrowserGUI extends InventoryGUI {
         for (int i = 0; i < specializations.size() && i < 36; i++) {
             ClassSpecialization specialization = specializations.get(i);
             setItem(i, new ItemBuilder(Material.DIAMOND_SWORD)
-                    .setName(Component.text(specialization.id(), NamedTextColor.YELLOW))
-                    .setLore(lang.component("gui.class_specialization.item_base", "class",
-                            specialization.baseClass()),
+                    .setName(Nombres.titulo(specialization.displayName(), specialization.id()))
+                    .setLore(Nombres.id(specialization.id()), lang.component("gui.class_specialization.item_base", "class",
+                            Nombres.clase(specialization.baseClass())),
                             lang.component("gui.class_specialization.item_talent_count", "count",
                                     specialization.talentTree().size()),
                             lang.component("gui.common.click_to_edit"))

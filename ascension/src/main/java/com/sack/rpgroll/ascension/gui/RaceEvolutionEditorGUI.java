@@ -45,7 +45,7 @@ public class RaceEvolutionEditorGUI extends InventoryGUI {
 
     public RaceEvolutionEditorGUI(Player player, RaceEvolution evolution, RaceEvolutionManager manager,
             ChatPromptManager chatPromptManager, Runnable onBack, LangManager lang) {
-        super(player, lang.component("gui.race_evolution.editor_title", "id", evolution.id()), SIZE);
+        super(player, lang.component("gui.race_evolution.editor_title", "id", Nombres.texto(evolution.displayName(), evolution.id())), SIZE);
         this.current = evolution;
         this.manager = manager;
         this.chatPromptManager = chatPromptManager;

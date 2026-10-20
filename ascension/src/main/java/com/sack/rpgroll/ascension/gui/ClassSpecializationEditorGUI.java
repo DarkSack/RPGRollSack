@@ -49,7 +49,7 @@ public class ClassSpecializationEditorGUI extends InventoryGUI {
     public ClassSpecializationEditorGUI(Player player, ClassSpecialization specialization,
             ClassSpecializationManager manager, ChatPromptManager chatPromptManager, Runnable onBack,
             LangManager lang) {
-        super(player, lang.component("gui.class_specialization.editor_title", "id", specialization.id()), SIZE);
+        super(player, lang.component("gui.class_specialization.editor_title", "id", Nombres.texto(specialization.displayName(), specialization.id())), SIZE);
         this.current = specialization;
         this.manager = manager;
         this.chatPromptManager = chatPromptManager;

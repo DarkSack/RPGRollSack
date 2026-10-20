@@ -51,8 +51,8 @@ public class RaceEvolutionBrowserGUI extends InventoryGUI {
         for (int i = 0; i < evolutions.size() && i < 36; i++) {
             RaceEvolution evolution = evolutions.get(i);
             setItem(i, new ItemBuilder(Material.PLAYER_HEAD)
-                    .setName(Component.text(evolution.id(), NamedTextColor.YELLOW))
-                    .setLore(lang.component("gui.race_evolution.item_base", "race", evolution.baseRace()),
+                    .setName(Nombres.titulo(evolution.displayName(), evolution.id()))
+                    .setLore(Nombres.id(evolution.id()), lang.component("gui.race_evolution.item_base", "race", Nombres.raza(evolution.baseRace())),
                             lang.component("gui.common.click_to_edit"))
                     .build());
         }

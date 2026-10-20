@@ -50,8 +50,8 @@ public class AchievementBrowserGUI extends InventoryGUI {
         for (int i = 0; i < achievements.size() && i < 36; i++) {
             Achievement achievement = achievements.get(i);
             setItem(i, new ItemBuilder(Material.GOLDEN_APPLE)
-                    .setName(Component.text(achievement.id(), NamedTextColor.YELLOW))
-                    .setLore(ComponentUtils.parse(achievement.displayName()),
+                    .setName(Nombres.titulo(achievement.displayName(), achievement.id()))
+                    .setLore(Nombres.id(achievement.id()),
                             lang.component("gui.common.click_to_edit"))
                     .build());
         }

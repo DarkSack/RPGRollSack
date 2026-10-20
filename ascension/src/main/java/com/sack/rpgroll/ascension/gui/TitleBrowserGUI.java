@@ -50,8 +50,8 @@ public class TitleBrowserGUI extends InventoryGUI {
         for (int i = 0; i < titles.size() && i < 36; i++) {
             Title title = titles.get(i);
             setItem(i, new ItemBuilder(Material.NAME_TAG)
-                    .setName(Component.text(title.id(), NamedTextColor.YELLOW))
-                    .setLore(ComponentUtils.parse(title.displayName()),
+                    .setName(Nombres.titulo(title.displayName(), title.id()))
+                    .setLore(Nombres.id(title.id()),
                             lang.component("gui.common.click_to_edit"))
                     .build());
         }

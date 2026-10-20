@@ -49,8 +49,8 @@ public class JobEvolutionBrowserGUI extends InventoryGUI {
         for (int i = 0; i < evolutions.size() && i < 36; i++) {
             JobEvolution evolution = evolutions.get(i);
             setItem(i, new ItemBuilder(Material.IRON_PICKAXE)
-                    .setName(Component.text(evolution.id(), NamedTextColor.YELLOW))
-                    .setLore(lang.component("gui.job_evolution.item_base", "job", evolution.baseJob()),
+                    .setName(Nombres.titulo(evolution.displayName(), evolution.id()))
+                    .setLore(Nombres.id(evolution.id()), lang.component("gui.job_evolution.item_base", "job", Nombres.oficio(evolution.baseJob())),
                             lang.component("gui.common.click_to_edit"))
                     .build());
         }

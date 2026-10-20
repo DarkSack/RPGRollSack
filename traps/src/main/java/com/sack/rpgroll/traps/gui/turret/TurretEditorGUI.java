@@ -52,7 +52,7 @@ public class TurretEditorGUI extends InventoryGUI {
 
     public TurretEditorGUI(Player player, TurretDefinition current, TurretManager turretManager,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, chatPromptManager.lang().component("gui.turret.title", "id", current.id()), SIZE);
+        super(player, chatPromptManager.lang().component("gui.turret.title", "id", current.displayName()), SIZE);
         this.turretId = current.id();
         this.turretManager = turretManager;
         this.chatPromptManager = chatPromptManager;
