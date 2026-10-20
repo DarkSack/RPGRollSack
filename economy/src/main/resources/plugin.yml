@@ -1,5 +1,5 @@
 name: RPGRoll-Economy
-version: 1.1.1
+version: 1.1.2
 main: com.sack.rpgroll.economy.EconomyPlugin
 api-version: "26.1.1"
 author: Sack
