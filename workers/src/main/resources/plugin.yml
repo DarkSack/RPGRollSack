@@ -1,5 +1,5 @@
 name: RPGRoll-Workers
-version: 1.1.0
+version: 1.1.1
 main: com.sack.rpgroll.workers.WorkersPlugin
 api-version: "26.1.1"
 author: Sack
