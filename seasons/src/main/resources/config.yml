@@ -9,3 +9,17 @@ language: es
 # de mundo ni mobs de temporada. Pensado para el lobby, las arenas y los mundos de minijuegos.
 # Se lee al arrancar: tras cambiarlo hay que reiniciar el servidor.
 disabled-worlds: []
+
+# Desastres naturales (los de la carpeta disasters/). Lo de cada desastre se configura en su archivo;
+# esto es lo común a todos. Tras cambiarlo, /seasonsadmin reload.
+disasters:
+  # A menos de estos bloques (en horizontal) del punto de aparición de cada mundo nadie sufre
+  # nada y los desastres no entran: deja a salvo la zona de spawn y las tiendas. 0 = sin zona segura.
+  safe-radius: 96
+  # Modos de juego de los jugadores a los que afectan (los demás ni se mueven ni reciben daño).
+  gamemodes: [SURVIVAL, ADVENTURE]
+  # El desastre que sale en el sorteo diario empieza en un momento al azar dentro de estos ticks
+  # (20 ticks = 1 s; 18000 = 15 min), no siempre al amanecer.
+  max-start-delay: 18000
+  # Hasta cuántos bloques se ven las grietas y los cráteres (son solo visuales).
+  fake-view-distance: 96

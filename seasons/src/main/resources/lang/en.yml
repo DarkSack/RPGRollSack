@@ -18,8 +18,9 @@ command:
       &7 • &esetseason <world> <id>
       &7 • &dadvance <world>
       &7 • &6trigger <id> <world>
+      &7 • &cdisaster start <id> [world] [intensity] &7· &cstop [world] &7· &clist
     players_only_studio: "&cOnly players can open the Season Studio."
-    reloaded: "&a✔ Reloaded: {calendars} calendar(s), {seasons} season(s), {events} event(s), {regions} region(s)."
+    reloaded: "&a✔ Reloaded: {calendars} calendar(s), {seasons} season(s), {events} event(s), {disasters} disaster(s), {regions} region(s)."
     usage_setseason: "&cUsage: /seasonsadmin setseason <world> <id>"
     unknown_world: "&cNo such world: {world}"
     setseason_failed: "&cCouldn't do it — the season doesn't exist or isn't in that world's calendar."
@@ -29,11 +30,26 @@ command:
     usage_trigger: "&cUsage: /seasonsadmin trigger <id> <world>"
     unknown_event: "&cNo event with id: {id}"
     trigger_success: "&a✔ Event triggered in {world}."
+    usage_disaster: "&cUsage: /seasonsadmin disaster start <id> [world] [intensity] · stop [world] · list"
+    unknown_disaster: "&cNo disaster with id: {id}"
+    invalid_intensity: "&cInvalid intensity: {value} (a number above 0)"
+    disaster_started: "&a✔ {disaster}&a running in {world} (intensity {intensity})."
+    disaster_busy: "&cCouldn't start it: {world} already has a disaster, or none of its phenomena can happen in that world."
+    disaster_stopped: "&a✔ Disaster stopped in {world}."
+    disaster_none: "&7There is no disaster in {world}."
+    disaster_list: "&6Disasters ({count}):"
+    disaster_list_entry: "&7• &e{id}&7 — {disaster}&7 · {chance}% per day · intensity {intensity}"
 
 event:
   boss_announce: "&4☠ &cA {season} enemy has appeared..."
   started: "&6✦ &e{event}&6 has begun."
   ended: "&6✦ &e{event}&7 has ended."
+
+disaster:
+  started: "&4⚠ &c{disaster}&4 ⚠ &7{description}"
+  title: "{disaster}"
+  subtitle: "&7Take shelter!"
+  ended: "&a✔ &7{disaster}&7 has passed."
 
 prompt:
   cancel_keyword: "cancel"

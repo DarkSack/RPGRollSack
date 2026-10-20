@@ -18,8 +18,9 @@ command:
       &7 • &esetseason <mundo> <id>
       &7 • &dadvance <mundo>
       &7 • &6trigger <id> <mundo>
+      &7 • &cdisaster start <id> [mundo] [intensidade] &7· &cstop [mundo] &7· &clist
     players_only_studio: "&cSomente jogadores podem abrir o Season Studio."
-    reloaded: "&a✔ Recarregado: {calendars} calendário(s), {seasons} estação(ões), {events} evento(s), {regions} região(ões)."
+    reloaded: "&a✔ Recarregado: {calendars} calendário(s), {seasons} estação(ões), {events} evento(s), {disasters} desastre(s), {regions} região(ões)."
     usage_setseason: "&cUso: /seasonsadmin setseason <mundo> <id>"
     unknown_world: "&cO mundo não existe: {world}"
     setseason_failed: "&cNão foi possível — a estação não existe ou não está no calendário desse mundo."
@@ -29,11 +30,26 @@ command:
     usage_trigger: "&cUso: /seasonsadmin trigger <id> <mundo>"
     unknown_event: "&cNão existe um evento com id: {id}"
     trigger_success: "&a✔ Evento disparado em {world}."
+    usage_disaster: "&cUso: /seasonsadmin disaster start <id> [mundo] [intensidade] · stop [mundo] · list"
+    unknown_disaster: "&cNão existe um desastre com id: {id}"
+    invalid_intensity: "&cIntensidade inválida: {value} (um número maior que 0)"
+    disaster_started: "&a✔ {disaster}&a em andamento em {world} (intensidade {intensity})."
+    disaster_busy: "&cNão foi possível: já há um desastre em {world}, ou nenhum dos seus fenômenos acontece nesse mundo."
+    disaster_stopped: "&a✔ Desastre interrompido em {world}."
+    disaster_none: "&7Não há nenhum desastre em {world}."
+    disaster_list: "&6Desastres ({count}):"
+    disaster_list_entry: "&7• &e{id}&7 — {disaster}&7 · {chance}% por dia · intensidade {intensity}"
 
 event:
   boss_announce: "&4☠ &cUm inimigo de {season} apareceu..."
   started: "&6✦ &e{event}&6 começou."
   ended: "&6✦ &e{event}&7 terminou."
+
+disaster:
+  started: "&4⚠ &c{disaster}&4 ⚠ &7{description}"
+  title: "{disaster}"
+  subtitle: "&7Procure abrigo!"
+  ended: "&a✔ &7{disaster}&7 passou."
 
 prompt:
   cancel_keyword: "cancelar"

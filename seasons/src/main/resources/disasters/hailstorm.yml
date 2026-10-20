@@ -1,0 +1,30 @@
+# Granizo: un METEOR_STORM de hielo. Bolas pequeñas, muchas y seguidas, sin cráter.
+# Ejemplo de desastre nuevo hecho solo cambiando parámetros. Todos los campos: _reference.yml
+id: hailstorm
+display-name: "&b&lGranizada"
+icon: PACKED_ICE
+description: "Cae granizo: a cubierto no te hará daño."
+duration: 900
+intensity: 1.0
+chance: 0.02
+seasons: [spring, summer]
+
+start-sound: "ENTITY_LIGHTNING_BOLT_THUNDER 0.8 1.4"
+
+phenomena:
+  - type: METEOR_STORM
+    storm: true
+    interval: 6
+    chance: 0.6
+    spread: 16
+    blocks: [ICE, PACKED_ICE]
+    speed: 1.8
+    start-distance: 30
+    slant: 0.4
+    trail-particles: ["SNOWFLAKE*2"]
+    impact-particles: ["ITEM_SNOWBALL*12"]
+    impact-sound: "BLOCK_GLASS_BREAK 0.6 1.6"
+    impact-radius: 1.5
+    damage: 1.5
+    knockback: 0.1
+    crater-radius: 0

@@ -1,0 +1,17 @@
+# Tormenta de meteoritos: bloques de magma que estallan alrededor de los jugadores.
+# Todos los campos y sus valores por defecto: _reference.yml
+id: meteor_storm
+display-name: "&6&lTormenta de Meteoritos"
+icon: MAGMA_BLOCK
+description: "Caen meteoritos del cielo: ponte a cubierto, bajo techo no te alcanzan."
+duration: 1200
+intensity: 1.0
+chance: 0.02
+seasons: [summer, autumn]
+
+phenomena:
+  - type: METEOR_STORM
+    interval: 30
+    chance: 0.5
+    damage: 8
+    impact-radius: 4

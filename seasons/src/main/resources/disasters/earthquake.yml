@@ -1,0 +1,16 @@
+# Terremoto: el suelo tiembla, se abren grietas y en cuevas y casas caen rocas del techo.
+# También ocurre en el Nether y el End. Todos los campos: _reference.yml
+id: earthquake
+display-name: "&8&lTerremoto"
+icon: CRACKED_STONE_BRICKS
+description: "La tierra tiembla: sal de las cuevas, de los techos caen rocas."
+duration: 600
+intensity: 1.0
+chance: 0.015
+seasons: []
+
+phenomena:
+  - type: EARTHQUAKE
+    shake: 0.18
+    rocks: 0.12
+    damage: 3
