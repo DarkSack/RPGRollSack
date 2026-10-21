@@ -1,5 +1,5 @@
 name: RPGRoll-Magic
-version: 1.1.4
+version: 1.1.5
 main: com.sack.rpgroll.magic.MagicPlugin
 api-version: "26.1.1"
 author: Sack

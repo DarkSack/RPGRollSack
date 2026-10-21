@@ -300,7 +300,7 @@ phenomena:
     height: 12                 # alto en el centro; más bajo en las puntas (×tamaño)
     curl: 0.65                 # cuánto se adelanta la cresta, por alto (0 = muro recto)
     back-length: 1.0           # largo del lomo de detrás, por alto
-    climb: 1                   # bloques que sube por paso: un muro más alto la para
+    climb: 2                   # escalón más alto que sube; uno mayor (muro, tronco) la para
     speed: 0.25                # bloques por tick que avanza
     overshoot: 24              # cuánto sigue después de pasar al jugador (×tamaño)
     push: 1.1                  # con cuánta fuerza arrastra (×fuerza)

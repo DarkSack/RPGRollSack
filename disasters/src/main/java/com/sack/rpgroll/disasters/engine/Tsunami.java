@@ -65,8 +65,10 @@ final class Tsunami extends Phenomenon {
     private double limit;
     private int step = -1;
     private int nextWave;
-    /** Altura del pie de la ola en cada columna: sube poco a poco por las cuestas y no trepa paredes. */
+    /** Altura del pie de la ola en cada columna: sube por las cuestas y no trepa paredes. */
     private int[] bases;
+    /** Pasos seguidos que cada columna lleva frente a algo más alto que no ha subido. */
+    private int[] blocked;
 
     Tsunami(DisasterEngine engine, World world, DisasterPhenomenon params, Power power, int durationTicks) {
         super(engine, world, params, power, durationTicks, 2);
@@ -226,7 +228,7 @@ final class Tsunami extends Phenomenon {
         double height = scaled("height", 12);
         double curl = number("curl", 0.65);
         double back = number("back-length", 1.0);
-        int climb = (int) number("climb", 1);
+        int climb = (int) number("climb", 2);
         Vector across = new Vector(-direction.getZ(), 0, direction.getX());
         Location front = origin.clone().add(direction.clone().multiply(step));
         Set<Material> breakable = materials("breakable-blocks", List.of("*_LEAVES", "*_LOG", "*_WOOD", "*_PLANKS",
@@ -241,6 +243,7 @@ final class Tsunami extends Phenomenon {
         int columns = (int) Math.floor(width / STEP) + 1;
         if (bases == null || bases.length != columns) {
             bases = new int[columns];
+            blocked = new int[columns];
             for (int c = 0; c < columns; c++) {
                 bases[c] = ground(front.clone().add(across.clone().multiply(-width / 2 + c * STEP))) + 1;
             }
@@ -260,9 +263,13 @@ final class Tsunami extends Phenomenon {
                 continue;
             }
             Location foot = front.clone().add(across.clone().multiply(side));
-            // Baja de golpe y sube como mucho climb por paso: contra un muro se estrella en vez de treparlo.
+            // Baja de golpe y sube por cuestas de hasta climb por paso. Un escalón más alto (muro, tronco)
+            // no lo trepa: se estrella contra él. Si sigue más alto 3 pasos seguidos es terreno y sube.
             int surface = ground(foot) + 1;
-            bases[c] = surface <= bases[c] ? surface : Math.min(surface, bases[c] + climb);
+            if (surface <= bases[c] + climb || ++blocked[c] >= 3) {
+                bases[c] = surface;
+                blocked[c] = 0;
+            }
             int base = bases[c];
 
             for (Slice slice : shapes.computeIfAbsent(columnHeight, h -> profile(h, curl, back))) {
