@@ -3,7 +3,7 @@ plugins {
 }
 
 group = "com.sack"
-version = "1.1.3"
+version = "1.1.4"
 
 base.archivesName.set("RPGRoll-Ascension")
 

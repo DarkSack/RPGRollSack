@@ -1,5 +1,5 @@
 name: RPGRoll-Lib
-version: 1.1.3
+version: 1.1.4
 main: com.sack.rpgroll.common.RPGRollLib
 api-version: "26.1.1"
 author: Sack

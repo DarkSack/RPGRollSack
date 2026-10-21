@@ -1,5 +1,5 @@
 name: RPGRoll-Disasters
-version: 1.1.3
+version: 1.1.4
 main: com.sack.rpgroll.disasters.DisastersPlugin
 api-version: "26.1.1"
 author: Sack
