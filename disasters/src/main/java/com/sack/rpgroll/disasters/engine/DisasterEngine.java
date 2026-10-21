@@ -193,6 +193,7 @@ public class DisasterEngine implements Listener {
                 case EARTHQUAKE -> new Earthquake(this, world, phenomenon, power, duration);
                 case SINKHOLE -> new Sinkhole(this, world, phenomenon, power, duration);
                 case MOBS -> new Mobs(this, world, phenomenon, power, duration);
+                case TSUNAMI -> new Tsunami(this, world, phenomenon, power, duration);
             });
         }
 

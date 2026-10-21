@@ -1,0 +1,24 @@
+# Tsunami: una ola gigante sale del mar o del lago más cercano y avanza hacia un jugador.
+# Arrastra a jugadores y mobs, los ahoga, arranca plantas y hojas y deja charcos al pasar.
+# Si no hay agua cerca de nadie, no sale (require-water). Todos los campos: _reference.yml
+id: tsunami
+display-name: "&9&lTsunami"
+icon: HEART_OF_THE_SEA
+description: "Una ola gigante viene del agua: sube a lo alto o aléjate de la costa."
+duration: 1200
+intensity: 1.0
+chance: 0.015
+seasons: []
+
+start-sound: "ITEM_TRIDENT_THUNDER 2 0.6"
+
+messages:
+  subtitle: "&7Nivel {level} · ¡aléjate de la costa!"
+
+phenomena:
+  - type: TSUNAMI
+    interval: 400
+    require-water: true
+    width: 28
+    height: 7
+    speed: 0.25

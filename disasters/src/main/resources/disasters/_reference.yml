@@ -2,9 +2,10 @@
 # DESASTRES NATURALES — referencia de TODOS los campos, con su valor por defecto.
 # Este archivo no se carga (empieza por "_"): cópialo con otro nombre para crear
 # uno nuevo. Los de esta carpeta (tornado, meteor_storm, acid_rain, earthquake,
-# sinkhole, hailstorm, blizzard, sandstorm, apocalypse) son ejemplos reales.
+# sinkhole, tsunami, hailstorm, blizzard, sandstorm, apocalypse, doomsday) son
+# ejemplos reales.
 #
-# Un desastre junta uno o varios FENÓMENOS que ocurren a la vez. Hay seis tipos
+# Un desastre junta uno o varios FENÓMENOS que ocurren a la vez. Hay siete tipos
 # de fenómeno y cada uno es una plantilla: cambiando sus partículas, bloques,
 # sonidos y números sale un desastre distinto (el granizo es un METEOR_STORM de
 # hielo; la ventisca y la tormenta de arena son ACID_RAIN con MOBS).
@@ -226,7 +227,10 @@ phenomena:
     corrode-chance: 0          # (×fuerza)
     cover: SNOW
     cover-chance: 0            # (×fuerza)
-    cover-max-layers: 3
+    cover-max-layers: 3        # solo para la nieve (SNOW); otro bloque se pone de uno en uno
+    wind: 0                    # viento que empuja de lado a quien está fuera (×fuerza); 0.05-0.15 se nota
+    # wind-direction: 90       # hacia dónde sopla, en grados (0 sur, 90 oeste, 180 norte, 270 este);
+                               # sin el campo, uno al azar cada vez que sale
 
   # Sacudidas, polvo y estruendo bajo cada jugador; grietas de verdad que se
   # abren cerca y, bajo techo o en cuevas, trozos de techo que caen. También en
@@ -277,6 +281,37 @@ phenomena:
     pull: 0.2                  # (×fuerza)
     sound: "BLOCK_ROOTED_DIRT_BREAK 2 0.4"
     crumble-sound: "BLOCK_GRAVEL_BREAK 1 0.6"
+
+  # Una ola gigante sale del agua (mar, lago, río) a spawn-distance de un jugador
+  # (o al doble, si no hay más cerca) y avanza en línea recta hacia él. Es un muro
+  # de agua de verdad sobre el terreno: arrastra, daña y quita el aire a lo que
+  # pilla, arranca plantas y breakable-blocks, y los edificios la paran (pasa por
+  # los huecos). Al pasar deja charcos que se secan solos. No sale en Nether ni End.
+  - type: TSUNAMI
+    period: 2
+    storm: true
+    interval: 400              # ticks entre olas
+    chance: 1                  # probabilidad de que salga cada ola (×fuerza)
+    spawn-distance: 48         # a qué distancia del jugador nace (busca agua ahí, a ×1.5 y a ×2)
+    require-water: true        # sin agua cerca de nadie no hay ola; false = sale igual, de cualquier lado
+    width: 28                  # ancho del frente (×tamaño)
+    height: 7                  # alto en el centro; más bajo en las puntas (×tamaño)
+    thickness: 2               # bloques de grosor del muro de agua
+    speed: 0.25                # bloques por tick que avanza
+    overshoot: 24              # cuánto sigue después de pasar al jugador (×tamaño)
+    push: 0.9                  # con cuánta fuerza arrastra (×fuerza)
+    lift: 0.3                  # cuánto levanta lo que arrastra
+    damage: 3                  # por golpe (×fuerza)
+    drown: 60                  # aire que quita por golpe (300 = la barra entera) (×fuerza)
+    hit-cooldown: 20           # ticks entre golpes a la misma entidad
+    break-blocks: true         # arranca plantas, flores, hierba, antorchas...
+    breakable-blocks: ["*_LEAVES"]   # y además estos bloques macizos (admite *)
+    flood-chance: 0.3          # parte del agua que queda como charco al pasar
+    flood-seconds: 45          # cuánto tarda en secarse un charco
+    crest-particles: ["SPLASH*6", "CLOUD*1", "BUBBLE_POP*2"]   # espuma en la cresta
+    start-sound: "AMBIENT_UNDERWATER_ENTER 4 0.5"   # al jugador al que va, cuando sale
+    sound: "WEATHER_RAIN_ABOVE 4 0.5"
+    roar-sound: "ENTITY_PLAYER_SPLASH_HIGH_SPEED 4 0.5"
 
   # Mobs que aparecen alrededor de los jugadores mientras dura. También en el
   # Nether y el End.

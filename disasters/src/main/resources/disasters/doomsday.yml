@@ -1,0 +1,90 @@
+# Juicio Final: el peor día posible. Meteoritos gigantes que abren cráteres llenos de tesoros
+# del Nether, ceniza que oscurece el cielo y convierte la hierba en netherrack, heraldos que
+# brillan en la oscuridad y, además, terremoto, tornado y tsunami (combine). Solo sale de nivel
+# 4 a 6 y solo por comando (chance 0):
+#   /disastersadmin start doomsday [mundo] [nivel]
+# Todos los campos: _reference.yml
+id: doomsday
+display-name: "&4&l☠ Juicio Final ☠"
+icon: WITHER_SKELETON_SKULL
+description: "El cielo arde, la tierra se abre y el mar se levanta. Sobrevive."
+duration: 2400
+intensity: 1.2
+chance: 0
+
+combine: [earthquake, tornado, tsunami]
+
+levels:
+  4: {weight: 50, intensity: 1.3, size: 1.15, duration: 1.0}
+  5: {weight: 35, intensity: 1.7, size: 1.3, duration: 1.1}
+  6: {weight: 15, intensity: 2.2, size: 1.5, duration: 1.25}
+
+warning-seconds: 15
+bossbar: "RED NOTCHED_10"
+
+messages:
+  start: "&4☠ &c{disaster}&4 · nivel {level} ☠ &7{description}"
+  title: "&4&l☠ JUICIO FINAL ☠"
+  subtitle: "&cNivel {level} · el cielo arde"
+  end: "&a✔ &7Has sobrevivido al &4Juicio Final&7."
+
+start-sound: "ENTITY_ENDER_DRAGON_GROWL 1 0.5"
+
+phenomena:
+  # Meteoritos gigantes: cráteres enormes con un núcleo de tesoros del Nether.
+  - type: METEOR_STORM
+    interval: 50
+    chance: 0.6
+    spread-min: 8
+    spread: 40
+    blocks: [MAGMA_BLOCK, NETHERRACK]
+    meteor-size: 5
+    speed: 1.2
+    start-distance: 60
+    trail-particles: ["FLAME*6", "SOUL_FIRE_FLAME*3", "LARGE_SMOKE*3"]
+    impact-particles: ["EXPLOSION_EMITTER*2", "LAVA*40"]
+    impact-sound: "ENTITY_GENERIC_EXPLODE 6 0.5"
+    impact-radius: 7
+    damage: 12
+    knockback: 1.4
+    crater-radius: 4.5
+    crater-blocks: [NETHERRACK, BLACKSTONE, MAGMA_BLOCK, BASALT]
+    crater-scorch: 0.8
+    core-blocks: ["MAGMA_BLOCK*6", "NETHER_GOLD_ORE*4", "NETHER_QUARTZ_ORE*4", "GILDED_BLACKSTONE*2", "CRYING_OBSIDIAN*2", ANCIENT_DEBRIS]
+    core-size: 6
+
+  # Lluvia de ceniza: oscurece, quema un poco y la hierba se vuelve netherrack.
+  - type: ACID_RAIN
+    storm: false
+    thunder: true
+    interval: 30
+    particles: ["ASH*80", "WHITE_ASH*20", "SMOKE*20"]
+    particle-height: 6
+    particle-spread: 10
+    min-temperature: -10
+    max-temperature: 10
+    damage: 1
+    helmet-protects: true
+    armor-wear: 2
+    effects: ["DARKNESS 1 4"]
+    hit-particles: ["SMALL_FLAME*4"]
+    hit-sound: "BLOCK_FIRE_EXTINGUISH 0.5 0.6"
+    corrode: ["GRASS_BLOCK>NETHERRACK", "SHORT_GRASS>AIR", "TALL_GRASS>AIR", "*_LEAVES>AIR"]
+    corrode-chance: 0.35
+    ground-radius: 16
+    ground-per-tick: 6
+    wind: 0.04
+
+  # Heraldos del Juicio: esqueletos wither, vindicadores y phantoms que brillan.
+  - type: MOBS
+    entities: ["WITHER_SKELETON*3", "VINDICATOR*2", PHANTOM]
+    interval: 100
+    chance: 0.7
+    per-player: 4
+    max: 30
+    health: 1.5
+    damage: 1.3
+    glowing: true
+    name: "&4Heraldo del Juicio"
+    spawn-particles: ["SOUL*10", "LARGE_SMOKE*10"]
+    spawn-sound: "ENTITY_WITHER_AMBIENT 0.6 0.6"

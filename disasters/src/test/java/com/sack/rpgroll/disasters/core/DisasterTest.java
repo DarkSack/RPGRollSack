@@ -129,7 +129,7 @@ class DisasterTest {
             Disaster disaster = new DisasterParser().parse(YamlConfiguration.loadConfiguration(file));
             loaded.put(disaster.id(), disaster);
         }
-        assertTrue(loaded.keySet().containsAll(List.of("tornado", "meteor_storm", "acid_rain", "earthquake", "sinkhole")));
+        assertTrue(loaded.keySet().containsAll(List.of("tornado", "meteor_storm", "acid_rain", "earthquake", "sinkhole", "tsunami", "sandstorm", "doomsday")));
 
         for (Disaster disaster : loaded.values()) {
             for (String other : disaster.combine()) {

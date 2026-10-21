@@ -27,7 +27,7 @@ import java.util.Map;
  * puede protegerle a costa de desgastarse. Además puede cambiar el suelo alrededor de los jugadores
  * ({@code corrode}: la hierba se seca, las hojas se deshacen), cubrirlo ({@code cover}: nieve que se
  * acumula por capas), congelar ({@code freeze-ticks}; la ropa de cuero lo evita) y disolver los
- * objetos tirados ({@code dissolve-items}). Lo cambiado se repone con el tiempo. Por defecto es
+ * objetos tirados ({@code dissolve-items}) y empujar con viento ({@code wind}). Lo cambiado se repone con el tiempo. Por defecto es
  * lluvia ácida verde; con otros valores, ventisca, tormenta de arena o lluvia de ceniza.
  * <p>
  * Parámetros y valores por defecto en {@code disasters/_reference.yml}.
@@ -36,6 +36,8 @@ final class AcidRain extends Phenomenon {
 
     /** De qué bloque a cuál, de {@code corrode: ["GRASS_BLOCK>DIRT", "*_LEAVES>AIR"]}. */
     private Map<Material, BlockData> corrosion;
+    /** Hacia dónde sopla {@code wind}: el rumbo de {@code wind-direction} o uno al azar por desastre. */
+    private org.bukkit.util.Vector wind;
 
     AcidRain(DisasterEngine engine, World world, DisasterPhenomenon params, Power power, int durationTicks) {
         super(engine, world, params, power, durationTicks, 5);
@@ -67,9 +69,13 @@ final class AcidRain extends Phenomenon {
                 drop.spawn(world, at.clone().add(0, height, 0), 30, spread, 1, spread, 0);
             }
 
-            if (hit && (!onlyOpenSky || DisasterEngine.underOpenSky(at))) {
+            boolean exposed = !onlyOpenSky || DisasterEngine.underOpenSky(at);
+            if (hit && exposed) {
                 burn(player);
                 freeze(player);
+            }
+            if (exposed) {
+                blow(player);
             }
             changeGround(at);
         }
@@ -82,7 +88,23 @@ final class AcidRain extends Phenomenon {
         }
     }
 
-    // ----- El suelo -----
+    /** Empuja de lado, cada paso, a quien está a la intemperie ({@code wind} ×fuerza; 0 = sin viento). */
+    private void blow(Player player) {
+
+        double strength = strength("wind", 0);
+        if (strength <= 0) {
+            return;
+        }
+        if (wind == null) {
+            double degrees = number("wind-direction", random() * 360);
+            double radians = Math.toRadians(degrees);
+            wind = new org.bukkit.util.Vector(-Math.sin(radians), 0, Math.cos(radians));
+        }
+        // Rachas: unas veces sopla más que otras.
+        player.setVelocity(player.getVelocity().add(wind.clone().multiply(strength * (0.5 + random()))));
+    }
+
+        // ----- El suelo -----
 
     /**
      * Cada paso, {@code ground-per-tick} columnas al azar a menos de {@code ground-radius} del jugador:

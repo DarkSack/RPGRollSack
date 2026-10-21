@@ -13,7 +13,9 @@ public enum DisasterType {
     /** El suelo se hunde en un pozo redondo cerca de un jugador. */
     SINKHOLE,
     /** Aparecen mobs alrededor de los jugadores mientras dura (vanilla o de RPGRoll-Mobs). */
-    MOBS;
+    MOBS,
+    /** Una ola gigante sale del agua hacia los jugadores, los arrastra y deja charcos al pasar. */
+    TSUNAMI;
 
     /** Los que pasan a cielo abierto: no tienen sentido en el Nether ni en el End. */
     public boolean needsSky() {

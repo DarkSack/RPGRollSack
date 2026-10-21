@@ -34,6 +34,7 @@ phenomena:
     cover-max-layers: 3
     corrode: ["WATER>ICE"]
     corrode-chance: 0.3
+    wind: 0.06                 # rachas que empujan de lado a quien está fuera
 
   - type: MOBS
     entities: ["STRAY*3", POLAR_BEAR]
