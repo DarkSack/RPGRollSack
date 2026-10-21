@@ -308,7 +308,7 @@ phenomena:
     breakable-blocks: ["*_LEAVES"]   # y además estos bloques macizos (admite *)
     flood-chance: 0.3          # parte del agua que queda como charco al pasar
     flood-seconds: 45          # cuánto tarda en secarse un charco
-    crest-particles: ["SPLASH*6", "CLOUD*1", "BUBBLE_POP*2"]   # espuma en la cresta
+    crest-particles: ["SPLASH*6", "BUBBLE_POP*2"]   # espuma en la cresta (CLOUD hace nubes, de cerca tapan)
     start-sound: "AMBIENT_UNDERWATER_ENTER 4 0.5"   # al jugador al que va, cuando sale
     sound: "WEATHER_RAIN_ABOVE 4 0.5"
     roar-sound: "ENTITY_PLAYER_SPLASH_HIGH_SPEED 4 0.5"

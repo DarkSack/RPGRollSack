@@ -154,7 +154,7 @@ final class Tsunami extends Phenomenon {
         Set<Material> breakable = materials("breakable-blocks", List.of("*_LEAVES"));
         boolean breakSoft = flag("break-blocks", true);
         Set<Block> seen = new HashSet<>();
-        List<ParticleLook> crest = particles("crest-particles", List.of("SPLASH*6", "CLOUD*1", "BUBBLE_POP*2"));
+        List<ParticleLook> crest = particles("crest-particles", List.of("SPLASH*6", "BUBBLE_POP*2"));
 
         // Paso de 0.7: en diagonal, de 1 en 1 quedarían agujeros en el muro.
         for (double side = -width / 2; side <= width / 2; side += 0.7) {
