@@ -13,7 +13,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
+import java.util.regex.Pattern;
 
 /**
  * Partículas, sonidos y efectos escritos como texto en el YAML de un desastre, separados por espacios:
@@ -146,6 +149,22 @@ final class Looks {
             throw new IllegalArgumentException("bloque desconocido: " + name);
         }
         return material;
+    }
+
+    /** Como {@link #material}, pero {@code *} vale por cualquier texto: {@code *_LEAVES} son todas las hojas. */
+    static List<Material> materials(String name) {
+        String pattern = name.trim().toUpperCase(Locale.ROOT);
+        if (!pattern.contains("*")) {
+            return List.of(material(pattern));
+        }
+        String regex = Pattern.quote(pattern).replace("*", "\\E.*\\Q");
+        List<Material> found = Arrays.stream(Material.values())
+                .filter(material -> material.name().matches(regex) && !material.isLegacy() && material.isBlock())
+                .toList();
+        if (found.isEmpty()) {
+            throw new IllegalArgumentException("ningún bloque encaja con " + name);
+        }
+        return found;
     }
 
     static Material item(String name) {

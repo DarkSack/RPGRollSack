@@ -5,10 +5,14 @@ import com.sack.rpgroll.seasons.disaster.Looks.ParticleLook;
 
 import org.bukkit.HeightMap;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.Bisected;
 import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.type.Leaves;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.LivingEntity;
@@ -19,16 +23,25 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 /**
  * Un embudo que nace lejos de un jugador y va hacia los jugadores. Arrastra en espiral a quien
- * pilla, lo sube por el centro y lo lanza hacia fuera; alrededor giran escombros. Con otras
- * partículas y bloques sirve para un remolino de fuego, de arena o de nieve.
+ * pilla, lo sube por el centro y lo lanza hacia fuera; alrededor giran escombros. Con
+ * {@code break-blocks} arranca la vegetación natural por donde pasa (hierba, flores, hojas de
+ * árboles) y la repone al rato. Con otras partículas y bloques sirve para un remolino de fuego,
+ * de arena o de nieve.
  * <p>
  * Parámetros y valores por defecto en {@code disasters/_reference.yml}.
  */
 final class Tornado extends Phenomenon {
+
+    /** Vegetación natural: lo que un tornado arranca sin dejar el mundo hecho un desastre. */
+    private static final List<String> BREAKABLE = List.of("SHORT_GRASS", "TALL_GRASS", "FERN", "LARGE_FERN",
+            "DEAD_BUSH", "BUSH", "SHORT_DRY_GRASS", "TALL_DRY_GRASS", "LEAF_LITTER", "FIREFLY_BUSH", "WILDFLOWERS",
+            "VINE", "SNOW", "DANDELION", "POPPY", "BLUE_ORCHID", "ALLIUM", "AZURE_BLUET", "OXEYE_DAISY", "CORNFLOWER",
+            "*_TULIP", "SUNFLOWER", "LILAC", "ROSE_BUSH", "PEONY", "*_LEAVES");
 
     private final List<FallingBlock> debris = new ArrayList<>();
     private final Map<UUID, Integer> flungUntil = new HashMap<>();
@@ -57,6 +70,7 @@ final class Tornado extends Phenomenon {
         double height = number("height", 26);
         drawFunnel(height);
         pull(height);
+        rip(height);
         spinDebris(height);
 
         int soundEvery = (int) number("sound-every", 30);
@@ -127,12 +141,12 @@ final class Tornado extends Phenomenon {
     /** Un brazo en espiral por cada partícula de {@code funnel-particles}. */
     private void drawFunnel(double height) {
 
-        List<ParticleLook> arms = particles("funnel-particles", List.of("CLOUD", "CLOUD", "LARGE_SMOKE"));
+        List<ParticleLook> arms = particles("funnel-particles", List.of("CLOUD", "LARGE_SMOKE", "DUST #6B6B6B 3", "CLOUD", "LARGE_SMOKE"));
         double base = number("funnel-base-radius", 0.6);
-        double growth = number("funnel-growth", 0.22);
-        double spacing = Math.max(0.3, number("ring-spacing", 1.3));
+        double growth = number("funnel-growth", 0.25);
+        double spacing = Math.max(0.3, number("ring-spacing", 0.8));
         double twist = number("twist", 0.45);
-        double speed = number("particle-speed", 0.25);
+        double speed = number("particle-speed", 0.08);
         double spin = age * number("spin-speed", 0.35);
 
         for (double h = 0; h < height; h += spacing) {
@@ -147,7 +161,7 @@ final class Tornado extends Phenomenon {
             }
         }
 
-        int dust = (int) number("ground-particles", 12);
+        int dust = (int) number("ground-particles", 24);
         Block floor = center.clone().subtract(0, 1, 0).getBlock();
         if (dust > 0 && floor.getType().isSolid()) {
             double spread = base + growth * 10;
@@ -157,16 +171,16 @@ final class Tornado extends Phenomenon {
 
     private void pull(double height) {
 
-        double reach = number("radius", 10);
+        double reach = number("radius", 12);
         double core = number("core-radius", 2.5);
-        double pull = strength("pull", 0.35);
+        double pull = strength("pull", 0.45);
         double swirl = number("swirl", 0.8);
         double lift = number("lift-speed", 0.55);
-        double liftHeight = number("lift-height", 10);
-        double fling = strength("fling", 1.1);
-        double flingUp = number("fling-up", 0.4);
+        double liftHeight = number("lift-height", 14);
+        double fling = strength("fling", 1.5);
+        double flingUp = number("fling-up", 0.6);
         int cooldown = (int) number("fling-cooldown", 60);
-        double damage = strength("damage", 0);
+        double damage = strength("damage", 4);
 
         for (Entity entity : world.getNearbyEntities(center.clone().add(0, height / 2, 0), reach, height / 2 + 2, reach)) {
 
@@ -209,7 +223,7 @@ final class Tornado extends Phenomenon {
 
         debris.removeIf(block -> !block.isValid());
 
-        int max = (int) number("debris", 8);
+        int max = (int) number("debris", 14);
         if (debris.size() < max && age % 10 < period) {
             BlockData data = debrisData();
             if (data != null) {
@@ -220,7 +234,7 @@ final class Tornado extends Phenomenon {
         }
 
         double base = number("funnel-base-radius", 0.6) + 1;
-        double growth = number("funnel-growth", 0.22);
+        double growth = number("funnel-growth", 0.25);
 
         for (FallingBlock block : debris) {
             Vector offset = block.getLocation().toVector().subtract(center.toVector());
@@ -229,6 +243,60 @@ final class Tornado extends Phenomenon {
             double radius = base + h * growth;
             Vector target = center.toVector().add(new Vector(Math.cos(angle) * radius, h, Math.sin(angle) * radius));
             block.setVelocity(target.subtract(block.getLocation().toVector()).multiply(1.0 / period));
+        }
+    }
+
+    /**
+     * Arranca hasta {@code break-per-tick} bloques de {@code breakable-blocks} en la cima de columnas al
+     * azar dentro de {@code break-radius}: primero la hierba y las copas, luego lo de debajo. Respeta
+     * las zonas protegidas y las hojas puestas por jugadores, y lo arrancado sale girando por el embudo.
+     */
+    private void rip(double height) {
+
+        if (!flag("break-blocks", false)) {
+            return;
+        }
+
+        Set<Material> breakable = materials("breakable-blocks", BREAKABLE);
+        double radius = number("break-radius", 5);
+        double top = center.getY() + Math.min(height, number("break-height", 16));
+        List<Block> candidates = new ArrayList<>();
+
+        for (int i = 0; i < (int) number("break-per-tick", 6); i++) {
+            double angle = random() * Math.PI * 2;
+            double distance = Math.sqrt(random()) * radius;
+            Block block = world.getHighestBlockAt(center.getBlockX() + (int) Math.round(Math.cos(angle) * distance),
+                    center.getBlockZ() + (int) Math.round(Math.sin(angle) * distance), HeightMap.WORLD_SURFACE);
+            if (block.getY() < center.getY() - 3 || block.getY() > top || !breakable.contains(block.getType())
+                    || block.getBlockData() instanceof Leaves leaves && leaves.isPersistent()
+                    || candidates.contains(block)) {
+                continue;
+            }
+            candidates.add(block);
+            // Las plantas altas son dos bloques: se arrancan juntos para no dejar medio girasol flotando.
+            if (block.getBlockData() instanceof Bisected half) {
+                Block other = block.getRelative(half.getHalf() == Bisected.Half.TOP ? BlockFace.DOWN : BlockFace.UP);
+                if (other.getType() == block.getType() && !candidates.contains(other)) {
+                    candidates.add(other);
+                }
+            }
+        }
+
+        if (candidates.isEmpty()) {
+            return;
+        }
+
+        int restore = (int) (number("restore-seconds", 120) * 20);
+        int maxDebris = (int) number("debris", 14) * 2;
+        for (Block block : engine.breakable(center.getBlock(), candidates)) {
+            BlockData data = block.getBlockData();
+            engine.breakTemporarily(block, restore);
+            world.spawnParticle(Particle.BLOCK, block.getLocation().add(0.5, 0.5, 0.5), 6, 0.3, 0.3, 0.3, 0, data, true);
+            if (debris.size() < maxDebris && !(data instanceof Bisected) && random() < 0.5) {
+                FallingBlock flying = engine.fallingBlock(block.getLocation().add(0.5, 0.5, 0.5), data, null);
+                flying.setGravity(false);
+                debris.add(flying);
+            }
         }
     }
 

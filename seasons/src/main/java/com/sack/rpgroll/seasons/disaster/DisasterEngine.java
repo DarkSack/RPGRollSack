@@ -12,7 +12,9 @@ import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.HeightMap;
+import org.bukkit.ExplosionResult;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -24,12 +26,17 @@ import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventException;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.RegisteredListener;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -41,14 +48,16 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 /**
  * Pone en marcha los desastres de {@code disasters/}, uno por mundo a la vez.
  * <p>
- * Ningún fenómeno rompe ni pone bloques de verdad: las grietas y los cráteres se envían
- * solo al cliente y se deshacen solos, y los bloques que caen (meteoritos, escombros, rocas)
- * se borran al tocar el suelo. Así no hay que preguntar a WorldGuard ni a los claims, y en
- * Bedrock se ve igual (bloques que caen y partículas, sin modelos del pack).
+ * Las grietas y los cráteres se envían solo al cliente y se deshacen solos, y los bloques que
+ * caen (meteoritos, escombros, rocas) se borran al tocar el suelo. Lo único que cambia el mundo
+ * es el tornado con {@code break-blocks}: arranca vegetación natural, pregunta antes a los plugins
+ * de protección como si fuera una explosión y la repone pasado un tiempo. En Bedrock se ve igual
+ * (bloques que caen y partículas, sin modelos del pack).
  */
 public class DisasterEngine implements Listener {
 
@@ -59,6 +68,8 @@ public class DisasterEngine implements Listener {
     private final Map<String, Running> running = new HashMap<>();
     private final Map<UUID, Consumer<Location>> landings = new HashMap<>();
     private final Set<String> warned = new HashSet<>();
+    private final Map<Block, BlockData> pendingRestores = new HashMap<>();
+    private Optional<Predicate<Location>> claimLookup;
 
     private double safeRadius = 96;
     private Set<GameMode> gameModes = EnumSet.of(GameMode.SURVIVAL, GameMode.ADVENTURE);
@@ -161,8 +172,10 @@ public class DisasterEngine implements Listener {
         return true;
     }
 
+    /** Al apagar: corta todo y repone ya lo arrancado, para no dejar huecos si el servidor se para antes de tiempo. */
     public void stopAll() {
         List.copyOf(running.values()).forEach(current -> List.copyOf(current.phenomena()).forEach(this::finished));
+        List.copyOf(pendingRestores.keySet()).forEach(this::restore);
     }
 
     void finished(Phenomenon phenomenon) {
@@ -331,6 +344,90 @@ public class DisasterEngine implements Listener {
         Consumer<Location> onLand = landings.remove(block.getUniqueId());
         if (onLand != null) {
             onLand.accept(event.getBlock().getLocation().add(0.5, 0, 0.5));
+        }
+    }
+
+    /**
+     * De estos bloques, los que se pueden romper: fuera de la zona segura y de los claims de
+     * GriefPrevention, y que ningún otro plugin de protección (WorldGuard...) quita de una explosión
+     * de prueba. No hay una API común para preguntarles sin un jugador.
+     * <p>
+     * A GriefPrevention no se le pasa la explosión porque con su configuración de serie la frena en
+     * toda la superficie, haya claim o no. Tampoco a los de prioridad MONITOR: solo miran, y
+     * CoreProtect la apuntaría como una explosión.
+     */
+    List<Block> breakable(Block source, List<Block> candidates) {
+
+        List<Block> outside = candidates.stream()
+                .filter(block -> !inSafeZone(block.getLocation()) && !inClaim(block)).toList();
+        if (outside.isEmpty()) {
+            return outside;
+        }
+
+        BlockExplodeEvent test = new BlockExplodeEvent(source, source.getState(), new ArrayList<>(outside), 0f,
+                ExplosionResult.DESTROY);
+        for (RegisteredListener listener : test.getHandlers().getRegisteredListeners()) {
+            if (listener.getPriority() == EventPriority.MONITOR
+                    || listener.getPlugin().getName().equals("GriefPrevention")) {
+                continue;
+            }
+            try {
+                listener.callEvent(test);
+            } catch (EventException | RuntimeException e) {
+                warn("la comprobación de protecciones de " + listener.getPlugin().getName() + " falló (" + e
+                        + "); el tornado no arranca bloques");
+                return List.of();
+            }
+        }
+        return test.isCancelled() ? List.of() : List.copyOf(test.blockList());
+    }
+
+    /** Si el bloque está en un claim de GriefPrevention. Por reflexión, para no exigirlo; sin él, false. */
+    private boolean inClaim(Block block) {
+
+        if (claimLookup == null) {
+            claimLookup = Optional.empty();
+            Plugin griefPrevention = Bukkit.getPluginManager().getPlugin("GriefPrevention");
+            if (griefPrevention != null && griefPrevention.isEnabled()) {
+                try {
+                    ClassLoader loader = griefPrevention.getClass().getClassLoader();
+                    Class<?> main = Class.forName("me.ryanhamshire.GriefPrevention.GriefPrevention", true, loader);
+                    Class<?> claim = Class.forName("me.ryanhamshire.GriefPrevention.Claim", true, loader);
+                    Object store = main.getField("dataStore").get(main.getField("instance").get(null));
+                    Method getClaimAt = store.getClass().getMethod("getClaimAt", Location.class, boolean.class, claim);
+                    claimLookup = Optional.of(location -> {
+                        try {
+                            return getClaimAt.invoke(store, location, true, null) != null;
+                        } catch (ReflectiveOperationException e) {
+                            throw new IllegalStateException(e);
+                        }
+                    });
+                } catch (ReflectiveOperationException | RuntimeException e) {
+                    warn("no se pudo hablar con GriefPrevention (" + e + "); el tornado no arranca bloques");
+                    claimLookup = Optional.of(location -> true);
+                }
+            }
+        }
+        return claimLookup.map(lookup -> lookup.test(block.getLocation())).orElse(false);
+    }
+
+    /** Quita el bloque sin soltar objetos y, si {@code restoreTicks} > 0, lo repone pasado ese tiempo. */
+    void breakTemporarily(Block block, int restoreTicks) {
+
+        BlockData original = block.getBlockData();
+        block.setType(Material.AIR, false);
+
+        if (restoreTicks > 0 && !pendingRestores.containsKey(block)) {
+            pendingRestores.put(block, original);
+            Bukkit.getScheduler().runTaskLater(plugin, () -> restore(block), restoreTicks);
+        }
+    }
+
+    /** Solo si sigue vacío: si alguien puso algo en el hueco, se respeta. */
+    private void restore(Block block) {
+        BlockData original = pendingRestores.remove(block);
+        if (original != null && block.getType().isAir()) {
+            block.setBlockData(original, false);
         }
     }
 

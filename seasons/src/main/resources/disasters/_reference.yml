@@ -96,34 +96,48 @@ phenomena:
     period: 2
     storm: true
     height: 26                 # alto del embudo
-    radius: 10                 # alcance del arrastre
+    radius: 12                 # alcance del arrastre
     core-radius: 2.5           # dentro de esto ya no arrastra: sube
     speed: 0.2                 # bloques por tick que avanza
     retarget-ticks: 200        # cada cuánto elige otro jugador al que ir
     wander: 20                 # cuánto se desvía de ese jugador
     spawn-distance-min: 30     # a qué distancia de un jugador nace
     spawn-distance-max: 45
-    pull: 0.35                 # fuerza del arrastre (×intensidad)
+    pull: 0.45                 # fuerza del arrastre (×intensidad)
     swirl: 0.8                 # cuánto gira lo arrastrado (fracción de pull)
     lift-speed: 0.55           # velocidad de subida en el centro
-    lift-height: 10            # hasta cuántos bloques sube antes de lanzar
-    fling: 1.1                 # fuerza del lanzamiento (×intensidad)
-    fling-up: 0.4
+    lift-height: 14            # hasta cuántos bloques sube antes de lanzar
+    fling: 1.5                 # fuerza del lanzamiento (×intensidad)
+    fling-up: 0.6
     fling-cooldown: 60         # ticks que alguien lanzado no vuelve a ser atrapado
-    damage: 0                  # daño al lanzar, además de la caída (×intensidad)
-    funnel-particles: [CLOUD, CLOUD, LARGE_SMOKE]   # un brazo de la espiral por partícula
+    damage: 4                  # daño al lanzar, además de la caída (×intensidad)
+    funnel-particles: [CLOUD, LARGE_SMOKE, "DUST #6B6B6B 3", CLOUD, LARGE_SMOKE]   # un brazo por partícula
     funnel-base-radius: 0.6    # radio abajo
-    funnel-growth: 0.22        # cuánto se abre por bloque de alto
-    ring-spacing: 1.3          # bloques entre anillos (menos = más partículas)
+    funnel-growth: 0.25        # cuánto se abre por bloque de alto
+    ring-spacing: 0.8          # bloques entre anillos (menos = más partículas)
     twist: 0.45                # cuánto se retuerce con la altura
     spin-speed: 0.35           # velocidad de giro
-    particle-speed: 0.25       # velocidad con que salen las partículas
-    ground-particles: 12       # polvo del suelo en la base (0 = nada)
-    debris: 8                  # escombros girando (0 = nada)
+    particle-speed: 0.08       # velocidad con que salen las partículas
+    ground-particles: 24       # polvo del suelo en la base (0 = nada)
+    debris: 14                 # escombros girando (0 = nada)
     debris-blocks: [DIRT, OAK_LEAVES, COBBLESTONE]
     debris-from-ground: true   # a veces, el bloque que pisa
     sound: "ITEM_ELYTRA_FLYING 4 0.5"
     sound-every: 30            # ticks entre sonidos (0 = sin sonido)
+    # Arrancar bloques de verdad. Solo la cima de cada columna (primero la hierba y
+    # las copas de los árboles), nunca hojas puestas por jugadores ni nada dentro de
+    # un claim de GriefPrevention o de lo que otro plugin (WorldGuard...) proteja
+    # de explosiones.
+    break-blocks: false        # tornado.yml lo trae activado
+    break-radius: 5            # alrededor del centro
+    break-height: 16           # hasta cuántos bloques por encima de la base
+    break-per-tick: 6          # columnas que prueba en cada pasada
+    restore-seconds: 120       # cuándo se repone lo arrancado (0 = nunca)
+    # Qué puede arrancar; * vale por cualquier texto (*_LEAVES = todas las hojas).
+    breakable-blocks: [SHORT_GRASS, TALL_GRASS, FERN, LARGE_FERN, DEAD_BUSH, BUSH,
+      SHORT_DRY_GRASS, TALL_DRY_GRASS, LEAF_LITTER, FIREFLY_BUSH, WILDFLOWERS, VINE,
+      SNOW, DANDELION, POPPY, BLUE_ORCHID, ALLIUM, AZURE_BLUET, OXEYE_DAISY,
+      CORNFLOWER, "*_TULIP", SUNFLOWER, LILAC, ROSE_BUSH, PEONY, "*_LEAVES"]
 
   # Bloques que caen en diagonal con estela y estallan cerca de los jugadores.
   # No sale en Nether ni End.

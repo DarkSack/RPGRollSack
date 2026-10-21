@@ -100,8 +100,11 @@ class DisasterTest {
                         checkSound(disaster.id() + " " + key, String.valueOf(entry.getValue()));
                     } else if (key.endsWith("particles") && !key.equals("ground-particles")) {
                         phenomenon.list(key, List.of()).forEach(spec -> checkParticle(disaster.id(), spec));
-                    } else if (key.endsWith("blocks") || key.equals("crater-center") || key.equals("rock-fallback")) {
-                        phenomenon.list(key, List.of()).forEach(name -> assertNotNull(Material.matchMaterial(name),
+                    } else if (key.endsWith("blocks") && !(entry.getValue() instanceof Boolean) || key.equals("crater-center") || key.equals("rock-fallback")) {
+                        phenomenon.list(key, List.of()).forEach(name -> assertTrue(name.contains("*")
+                                        ? java.util.Arrays.stream(Material.values()).anyMatch(m -> m.name()
+                                                .matches(name.replace("*", ".*")))
+                                        : Material.matchMaterial(name) != null,
                                 disaster.id() + " " + key + ": bloque desconocido " + name));
                     }
                 }

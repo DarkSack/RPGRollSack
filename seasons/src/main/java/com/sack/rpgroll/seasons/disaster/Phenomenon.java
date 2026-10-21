@@ -4,6 +4,7 @@ import com.sack.rpgroll.seasons.core.DisasterPhenomenon;
 import com.sack.rpgroll.seasons.disaster.Looks.ParticleLook;
 import com.sack.rpgroll.seasons.disaster.Looks.SoundLook;
 
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Entity;
@@ -14,9 +15,11 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Function;
 
@@ -116,6 +119,21 @@ abstract class Phenomenon extends BukkitRunnable {
 
     BlockData block(String key, String fallback) {
         return parsed(key, fallback, name -> Looks.material(name).createBlockData());
+    }
+
+    /** Bloques en los que se acepta {@code *} como comodín (p. ej. {@code *_LEAVES}). */
+    @SuppressWarnings("unchecked")
+    Set<Material> materials(String key, List<String> fallback) {
+        Object cached = looks.get(key + "#set");
+        if (cached == null) {
+            // Fuera de computeIfAbsent: parsedList también escribe en este mapa.
+            Set<Material> found = EnumSet.noneOf(Material.class);
+            List<List<Material>> parts = parsedList(key, fallback, Looks::materials);
+            parts.forEach(found::addAll);
+            looks.put(key + "#set", found);
+            cached = found;
+        }
+        return (Set<Material>) cached;
     }
 
     /** Un elemento al azar; null si la lista está vacía. */
