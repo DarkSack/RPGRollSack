@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "com.sack"
-version = "1.1.2"
+version = "1.1.3"
 
 dependencies {
     // Gson ya viene embebido en el server de Paper en runtime.
