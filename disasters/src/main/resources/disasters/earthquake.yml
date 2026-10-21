@@ -1,0 +1,20 @@
+# Terremoto: el suelo tiembla, se abren grietas de verdad que serpentean y en cuevas y casas
+# se desprenden trozos del techo. Todo se repone solo con el tiempo.
+# También ocurre en el Nether y el End. Todos los campos: _reference.yml
+id: earthquake
+display-name: "&8&lTerremoto"
+icon: CRACKED_STONE_BRICKS
+description: "La tierra tiembla y se abre: aléjate de las grietas y sal de las cuevas."
+duration: 600
+intensity: 1.0
+chance: 0.015
+seasons: []
+
+phenomena:
+  - type: EARTHQUAKE
+    shake: 0.18
+    rocks: 0.12
+    damage: 3
+    fissure-chance: 0.6
+    fissure-length: 18
+    fissure-depth: 7

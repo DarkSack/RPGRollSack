@@ -1,0 +1,24 @@
+# Fin del mundo: combina el tornado, los meteoritos, el terremoto y el socavón (combine) y les suma
+# una lluvia ácida propia, todo a la vez y más fuerte. Solo por comando (chance 0):
+#   /disastersadmin start apocalypse [mundo] [nivel]
+# Todos los campos: _reference.yml
+id: apocalypse
+display-name: "&4&lFin del Mundo"
+icon: WITHER_SKELETON_SKULL
+description: "Todo a la vez: tornado, meteoritos, terremoto, socavones y lluvia ácida."
+duration: 1800
+intensity: 1.3
+chance: 0
+
+combine: [tornado, meteor_storm, earthquake, sinkhole]
+
+messages:
+  title: "&4&l¡FIN DEL MUNDO!"
+  subtitle: "&cNivel {level} · todo a la vez"
+
+start-sound: "ENTITY_WITHER_SPAWN 1 0.6"
+
+phenomena:
+  - type: ACID_RAIN
+    thunder: true
+    damage: 1

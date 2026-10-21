@@ -14,11 +14,9 @@ import com.sack.rpgroll.seasons.climate.WeatherTickTask;
 import com.sack.rpgroll.seasons.command.SeasonsAdminCommand;
 import com.sack.rpgroll.seasons.command.SeasonsCommand;
 import com.sack.rpgroll.seasons.core.CalendarManager;
-import com.sack.rpgroll.seasons.core.DisasterManager;
 import com.sack.rpgroll.seasons.core.SeasonManager;
 import com.sack.rpgroll.seasons.core.SeasonRegionManager;
 import com.sack.rpgroll.seasons.core.WorldEventManager;
-import com.sack.rpgroll.seasons.disaster.DisasterEngine;
 import com.sack.rpgroll.seasons.event.DailyRollTask;
 import com.sack.rpgroll.seasons.event.WorldEventEngine;
 import com.sack.rpgroll.gui.ChatPromptManager;
@@ -35,7 +33,7 @@ import java.util.List;
 
 public class SeasonsPlugin extends JavaPlugin {
 
-    private static final List<String> DIRECTORIES = List.of("calendars", "seasons", "events", "regions", "disasters");
+    private static final List<String> DIRECTORIES = List.of("calendars", "seasons", "events", "regions");
     private static final long CLOCK_TICK_INTERVAL = 1200L;
     private static final long WEATHER_TICK_INTERVAL = 6000L;
     private static final long VEGETATION_TICK_INTERVAL = 100L;
@@ -49,8 +47,6 @@ public class SeasonsPlugin extends JavaPlugin {
     private CalendarManager calendarManager;
     private SeasonManager seasonManager;
     private WorldEventManager worldEventManager;
-    private DisasterManager disasterManager;
-    private DisasterEngine disasterEngine;
     private SeasonRegionManager regionManager;
     private SeasonClockManager clockManager;
     private SeasonStateStore stateStore;
@@ -85,12 +81,6 @@ public class SeasonsPlugin extends JavaPlugin {
         worldEventManager = new WorldEventManager(this);
         worldEventManager.initialize();
 
-        disasterManager = new DisasterManager(this);
-        disasterManager.initialize();
-        disasterEngine = new DisasterEngine(this, langManager, disasterManager);
-        disasterEngine.configure(getConfig().getConfigurationSection("disasters"));
-        getServer().getPluginManager().registerEvents(disasterEngine, this);
-
         regionManager = new SeasonRegionManager(this);
         regionManager.initialize();
 
@@ -121,14 +111,13 @@ public class SeasonsPlugin extends JavaPlugin {
         Bukkit.getScheduler().runTaskTimer(this, new SeasonMobSpawnTask(regionResolver), MOB_SPAWN_TICK_INTERVAL,
                 MOB_SPAWN_TICK_INTERVAL);
         Bukkit.getScheduler().runTaskTimer(this,
-                new DailyRollTask(clockManager, worldEventManager, worldEventEngine, DEFAULT_CALENDAR_ID, langManager,
-                        disasterManager, disasterEngine),
+                new DailyRollTask(clockManager, worldEventManager, worldEventEngine, DEFAULT_CALENDAR_ID, langManager),
                 DAILY_ROLL_TICK_INTERVAL, DAILY_ROLL_TICK_INTERVAL);
         Bukkit.getScheduler().runTaskTimer(this, () -> stateStore.save(clockManager), AUTOSAVE_TICK_INTERVAL,
                 AUTOSAVE_TICK_INTERVAL);
 
         var seasonsAdminCommand = new SeasonsAdminCommand(this, calendarManager, seasonManager, worldEventManager,
-                    regionManager, worldEventEngine, SeasonsAPI.get(), chatPromptManager, disasterManager, disasterEngine);
+                    regionManager, worldEventEngine, SeasonsAPI.get(), chatPromptManager);
 
         // Registrado por Brigadier para que `execute as` entregue al jugador real.
         com.sack.rpgroll.common.command.BrigadierCommands.register(this, "seasonsadmin",
@@ -142,14 +131,11 @@ public class SeasonsPlugin extends JavaPlugin {
 
         getLogger().info("✔ RPGRoll-Seasons habilitado. " + calendarManager.count() + " calendario(s), "
                 + seasonManager.count() + " estación(es), " + worldEventManager.count() + " evento(s), "
-                + disasterManager.count() + " desastre(s), " + regionManager.count() + " región(es).");
+                + regionManager.count() + " región(es).");
     }
 
     @Override
     public void onDisable() {
-        if (disasterEngine != null) {
-            disasterEngine.stopAll();
-        }
         if (stateStore != null && clockManager != null) {
             stateStore.save(clockManager);
         }

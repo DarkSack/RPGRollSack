@@ -1,0 +1,29 @@
+# Lluvia ácida: quema a quien esté a la intemperie sin casco y corroe toda la armadura,
+# seca la hierba, deshace hojas y cosechas y disuelve lo que haya tirado. Salen babosas.
+# Lo corroído se repone solo con el tiempo.
+# Todos los campos y sus valores por defecto: _reference.yml
+id: acid_rain
+display-name: "&a&lLluvia Ácida"
+icon: SLIME_BALL
+description: "La lluvia quema: refúgiate bajo techo. Corroe la armadura, las cosechas y lo que esté tirado."
+duration: 1800
+intensity: 1.0
+chance: 0.03
+seasons: [spring, autumn]
+
+phenomena:
+  - type: ACID_RAIN
+    damage: 1.5
+    armor-wear: 3
+    armor-slots: [HEAD, CHEST, LEGS, FEET]
+    dissolve-items: 0.1
+    corrode: ["GRASS_BLOCK>DIRT", "*_LEAVES>AIR", "SHORT_GRASS>AIR", "TALL_GRASS>AIR", "FERN>DEAD_BUSH", "LARGE_FERN>AIR", "WHEAT>AIR", "CARROTS>AIR", "POTATOES>AIR", "BEETROOTS>AIR"]
+    corrode-chance: 0.25
+
+  # Babosas que salen del barro ácido.
+  - type: MOBS
+    entities: [SLIME]
+    interval: 160
+    chance: 0.4
+    per-player: 2
+    max: 12

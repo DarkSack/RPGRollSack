@@ -18,9 +18,8 @@ command:
       &7 • &esetseason <mundo> <id>
       &7 • &dadvance <mundo>
       &7 • &6trigger <id> <mundo>
-      &7 • &cdisaster start <id> [mundo] [intensidad] &7· &cstop [mundo] &7· &clist
     players_only_studio: "&cSolo jugadores pueden abrir el Season Studio."
-    reloaded: "&a✔ Recargado: {calendars} calendario(s), {seasons} estación(es), {events} evento(s), {disasters} desastre(s), {regions} región(es)."
+    reloaded: "&a✔ Recargado: {calendars} calendario(s), {seasons} estación(es), {events} evento(s), {regions} región(es)."
     usage_setseason: "&cUso: /seasonsadmin setseason <mundo> <id>"
     unknown_world: "&cNo existe el mundo: {world}"
     setseason_failed: "&cNo se pudo — la estación no existe o no está en el calendario de ese mundo."
@@ -30,26 +29,11 @@ command:
     usage_trigger: "&cUso: /seasonsadmin trigger <id> <mundo>"
     unknown_event: "&cNo existe un evento con id: {id}"
     trigger_success: "&a✔ Evento disparado en {world}."
-    usage_disaster: "&cUso: /seasonsadmin disaster start <id> [mundo] [intensidad] · stop [mundo] · list"
-    unknown_disaster: "&cNo existe un desastre con id: {id}"
-    invalid_intensity: "&cIntensidad inválida: {value} (un número mayor que 0)"
-    disaster_started: "&a✔ {disaster}&a en marcha en {world} (intensidad {intensity})."
-    disaster_busy: "&cNo se pudo: ya hay un desastre en {world}, o ninguno de sus fenómenos ocurre en ese mundo."
-    disaster_stopped: "&a✔ Desastre detenido en {world}."
-    disaster_none: "&7No hay ningún desastre en {world}."
-    disaster_list: "&6Desastres ({count}):"
-    disaster_list_entry: "&7• &e{id}&7 — {disaster}&7 · {chance}% al día · intensidad {intensity}"
 
 event:
   boss_announce: "&4☠ &cUn enemigo de {season} ha aparecido..."
   started: "&6✦ &e{event}&6 ha comenzado."
   ended: "&6✦ &e{event}&7 ha terminado."
-
-disaster:
-  started: "&4⚠ &c{disaster}&4 ⚠ &7{description}"
-  title: "{disaster}"
-  subtitle: "&7¡Busca refugio!"
-  ended: "&a✔ &7{disaster}&7 ha pasado."
 
 prompt:
   cancel_keyword: "cancelar"

@@ -1,0 +1,31 @@
+common:
+  no_permission: "&cVocê não tem permissão para usar este comando."
+
+command:
+  usage: |-
+    &cUso: /disastersadmin
+    &7 • &cstart <id> [mundo] [nível] &7— avisa e depois começa (nível aleatório se você não informar)
+    &7 • &cstop [mundo] &7— interrompe
+    &7 • &elist &7— desastres carregados
+    &7 • &aregenerate &7— repõe agora tudo o que quebraram
+    &7 • &breload
+  unknown_world: "&cNão existe o mundo: {world}"
+  unknown_disaster: "&cNão existe um desastre com id: {id}"
+  invalid_level: "&cNível inválido: {value} (níveis deste desastre: {levels})"
+  started: "&a✔ {disaster}&a nível {level} em {world}: avisando {seconds} s antes de começar."
+  busy: "&cNão foi possível: já há um desastre em {world}, ou nenhum dos seus fenômenos acontece nesse mundo."
+  stopped: "&a✔ Desastre interrompido em {world}."
+  none: "&7Não há nenhum desastre em {world}."
+  list: "&6Desastres ({count}) &7· {pending} bloco(s) para repor:"
+  list_entry: "&7• &e{id}&7 — {disaster}&7 · {chance}% por dia · níveis {levels}"
+  regenerated: "&a✔ Repostos {count} bloco(s)."
+  reloaded: "&a✔ Recarregado: {disasters} desastre(s)."
+
+disaster:
+  warning: "&c⚠ {disaster}&c · nível {level} &7em &f{seconds}s &7— procure abrigo!"
+  warning_bossbar: "&c⚠ {disaster}&c · nível {level} &7em {seconds}s"
+  bossbar: "{disaster} &7· nível {level}"
+  started: "&4⚠ &c{disaster}&4 · nível {level} ⚠ &7{description}"
+  title: "{disaster}"
+  subtitle: "&7Nível {level} · procure abrigo!"
+  ended: "&a✔ &7{disaster}&7 passou."

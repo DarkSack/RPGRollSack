@@ -36,6 +36,7 @@ include(
     "furniture",
     "recipes",
     "machines",
+    "disasters",
 
     // Herramienta de escritorio para los compradores, no un plugin.
     "packinstaller"

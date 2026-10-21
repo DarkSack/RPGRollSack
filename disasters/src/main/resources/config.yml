@@ -1,0 +1,83 @@
+# RPGRoll-Disasters — desastres naturales configurables.
+# Cada desastre es un archivo de disasters/ (todos los campos en disasters/_reference.yml).
+
+# Idioma de los mensajes: es, en o pt_BR (archivos en lang/).
+language: es
+
+# Mundos donde nunca salen solos (por comando sí).
+disabled-worlds: []
+
+# A menos de estos bloques (en horizontal) del punto de aparición de cada mundo nadie sufre nada y
+# no se rompe nada: deja a salvo la zona de spawn y las tiendas. 0 = sin zona segura.
+safe-radius: 96
+
+# Modos de juego de los jugadores a los que afectan (los demás ni se mueven ni reciben daño).
+gamemodes: [SURVIVAL, ADVENTURE]
+
+# Cada día de Minecraft se sortea como mucho un desastre por mundo (según su "chance"). El que sale
+# empieza en un momento al azar dentro de estos ticks (20 ticks = 1 s; 18000 = 15 min), no al amanecer.
+# Con RPGRoll-Seasons instalado solo salen los de la estación de cada mundo ("seasons" en su archivo).
+max-start-delay: 18000
+
+# Segundos de aviso antes de que empiece (cuenta atrás en la barra de acción y la barra de jefe).
+# 0 = sin aviso. Cada desastre puede poner el suyo con warning-seconds.
+warning-seconds: 10
+# Suena cada segundo de la cuenta atrás ("" = nada).
+warning-sound: "BLOCK_NOTE_BLOCK_BASS 1 0.6"
+
+# Barra de jefe mientras dura: "COLOR ESTILO". Colores: PINK, BLUE, RED, GREEN, YELLOW, PURPLE, WHITE.
+# Estilos: PROGRESS, NOTCHED_6, NOTCHED_10, NOTCHED_12, NOTCHED_20. "" = sin barra.
+bossbar: "RED PROGRESS"
+
+# Niveles. Al salir solo, el nivel se sortea por "weight" (peso). Cada nivel multiplica la fuerza de
+# los fenómenos ("intensity": daño, empuje, cuántos bloques rompe...), su tamaño ("size": radios,
+# alturas, largos) y la duración ("duration"). Un desastre puede traer sus propios niveles.
+levels:
+  1: {weight: 30, intensity: 0.6, size: 0.75, duration: 0.7}
+  2: {weight: 25, intensity: 0.8, size: 0.9, duration: 0.85}
+  3: {weight: 20, intensity: 1.0, size: 1.0, duration: 1.0}
+  4: {weight: 14, intensity: 1.3, size: 1.15, duration: 1.1}
+  5: {weight: 9, intensity: 1.7, size: 1.3, duration: 1.25}
+  6: {weight: 2, intensity: 2.2, size: 1.5, duration: 1.4}
+
+# Bloques que rompen los desastres (tornado, grietas, cráteres, socavones, corrosión, nieve).
+world-damage:
+  # false = ningún desastre cambia bloques: solo daño, empujes, partículas y mobs.
+  enabled: true
+  # Si lo roto se repone solo (false = se queda roto para siempre).
+  # Solo se repone si sigue como lo dejó el desastre (o vacío, o con agua/lava que se coló): lo que
+  # alguien construya en el hueco se respeta. Sobrevive a reinicios y caídas (regen.dat).
+  regenerate: true
+  # Segundos desde que se rompe hasta que vuelve, más un extra al azar de hasta
+  # regenerate-spread-seconds para que no vuelva todo de golpe.
+  # Las tres claves se pueden poner también en el archivo de cada desastre (vale para todo lo que
+  # lanza) o en un fenómeno concreto; manda la más concreta.
+  regenerate-seconds: 300
+  regenerate-spread-seconds: 60
+  # Bloques que se reponen por tick como mucho (más = vuelve antes, pero pesa más).
+  restore-per-tick: 40
+  # Nunca tocar bloques que guardan algo: cofres, hornos, carteles, camas, cabezas, estandartes...
+  protect-containers: true
+  # Tope de bloques rotos sin reponer a la vez; al llegar, los desastres dejan de romper. 0 = sin tope.
+  max-changes: 60000
+  # Nunca se rompen. Se admite * como comodín (*_ORE = todas las menas).
+  immune: [BEDROCK, BARRIER, LIGHT, "*COMMAND_BLOCK", STRUCTURE_BLOCK, STRUCTURE_VOID, JIGSAW,
+    "END_PORTAL*", END_GATEWAY, NETHER_PORTAL, SPAWNER, TRIAL_SPAWNER, VAULT, REINFORCED_DEEPSLATE,
+    ANCIENT_DEBRIS, NETHERITE_BLOCK, BEACON, CONDUIT, RESPAWN_ANCHOR]
+  # Probabilidad de aguantar cada intento, de 0 (siempre cede) a 1 (nunca). Lo que no esté: 0.
+  resistance:
+    OBSIDIAN: 0.95
+    CRYING_OBSIDIAN: 0.95
+    IRON_BLOCK: 0.9
+    GOLD_BLOCK: 0.9
+    DIAMOND_BLOCK: 0.95
+    EMERALD_BLOCK: 0.95
+    "*DEEPSLATE*": 0.6
+    STONE: 0.4
+    "*_ORE": 0.5
+    "*BRICKS": 0.5
+    "*_CONCRETE": 0.5
+    "*_TERRACOTTA": 0.4
+    "*_LOG": 0.3
+    "*_WOOD": 0.3
+    "*_PLANKS": 0.15

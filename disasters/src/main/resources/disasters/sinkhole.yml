@@ -1,0 +1,25 @@
+# Socavón: el suelo se hunde en un pozo redondo cerca de un jugador, del centro hacia fuera,
+# y lo que haya encima resbala dentro. Se repone solo con el tiempo. Todos los campos: _reference.yml
+id: sinkhole
+display-name: "&6&lSocavón"
+icon: COARSE_DIRT
+description: "El suelo se hunde: si notas que resbalas, corre hacia fuera."
+duration: 900
+intensity: 1.0
+chance: 0.015
+seasons: [spring, autumn]
+
+start-sound: "BLOCK_ROOTED_DIRT_BREAK 1 0.4"
+
+phenomena:
+  - type: SINKHOLE
+    interval: 300
+    chance: 0.7
+    radius: 4
+    depth: 10
+    bottom-blocks: []
+
+  - type: EARTHQUAKE
+    shake: 0.08
+    rocks: 0
+    fissure-chance: 0

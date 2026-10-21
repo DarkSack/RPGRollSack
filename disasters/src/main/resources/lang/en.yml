@@ -1,0 +1,31 @@
+common:
+  no_permission: "&cYou don't have permission to use this command."
+
+command:
+  usage: |-
+    &cUsage: /disastersadmin
+    &7 • &cstart <id> [world] [level] &7— warns, then starts it (random level if you leave it out)
+    &7 • &cstop [world] &7— stops it
+    &7 • &elist &7— loaded disasters
+    &7 • &aregenerate &7— restores everything they broke right now
+    &7 • &breload
+  unknown_world: "&cNo such world: {world}"
+  unknown_disaster: "&cNo disaster with id: {id}"
+  invalid_level: "&cInvalid level: {value} (this disaster's levels: {levels})"
+  started: "&a✔ {disaster}&a level {level} in {world}: warning {seconds} s before it starts."
+  busy: "&cCouldn't start it: {world} already has a disaster, or none of its phenomena can happen in that world."
+  stopped: "&a✔ Disaster stopped in {world}."
+  none: "&7There is no disaster in {world}."
+  list: "&6Disasters ({count}) &7· {pending} block(s) waiting to be restored:"
+  list_entry: "&7• &e{id}&7 — {disaster}&7 · {chance}% per day · levels {levels}"
+  regenerated: "&a✔ Restored {count} block(s)."
+  reloaded: "&a✔ Reloaded: {disasters} disaster(s)."
+
+disaster:
+  warning: "&c⚠ {disaster}&c · level {level} &7in &f{seconds}s &7— take shelter!"
+  warning_bossbar: "&c⚠ {disaster}&c · level {level} &7in {seconds}s"
+  bossbar: "{disaster} &7· level {level}"
+  started: "&4⚠ &c{disaster}&4 · level {level} ⚠ &7{description}"
+  title: "{disaster}"
+  subtitle: "&7Level {level} · take shelter!"
+  ended: "&a✔ &7{disaster}&7 has passed."

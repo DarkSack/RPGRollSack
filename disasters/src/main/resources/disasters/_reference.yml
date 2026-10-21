@@ -1,0 +1,303 @@
+# ============================================================================
+# DESASTRES NATURALES — referencia de TODOS los campos, con su valor por defecto.
+# Este archivo no se carga (empieza por "_"): cópialo con otro nombre para crear
+# uno nuevo. Los de esta carpeta (tornado, meteor_storm, acid_rain, earthquake,
+# sinkhole, hailstorm, blizzard, sandstorm, apocalypse) son ejemplos reales.
+#
+# Un desastre junta uno o varios FENÓMENOS que ocurren a la vez. Hay seis tipos
+# de fenómeno y cada uno es una plantilla: cambiando sus partículas, bloques,
+# sonidos y números sale un desastre distinto (el granizo es un METEOR_STORM de
+# hielo; la ventisca y la tormenta de arena son ACID_RAIN con MOBS).
+#
+# Probar:   /disastersadmin start <id> [mundo] [nivel]
+# Cortar:   /disastersadmin stop [mundo]
+# Ver:      /disastersadmin list
+# Reponer:  /disastersadmin regenerate   (todo lo roto, ya)
+# Recargar: /disastersadmin reload
+#
+# Lo que rompen (tornado, grietas, cráteres, socavones, corrosión, nieve) es de
+# verdad, pero respeta la zona segura del spawn, los claims de GriefPrevention,
+# lo que WorldGuard y otros protegen de explosiones y los cofres y demás bloques
+# que guardan algo, y se repone solo con el tiempo: ver world-damage en
+# config.yml. Lo que cae (meteoritos, escombros, rocas) nunca se coloca. Se ve
+# igual en Java y en Bedrock.
+#
+# FORMATOS (separados por espacios):
+#   partícula:  NOMBRE[*cantidad] [dato] [tamaño]
+#               el dato es un bloque (BLOCK, FALLING_DUST), un color #RRGGBB
+#               (DUST) o un objeto (ITEM). Ej. "FALLING_DUST*30 SAND",
+#               "DUST*8 #7CFC00 1.2", "FLAME*4". Nombres: los de Particle de Paper.
+#   sonido:     NOMBRE [volumen] [tono]   ej. "ENTITY_GENERIC_EXPLODE 4 0.7"
+#               también una clave del pack de recursos: "sackito:viento 2 1".
+#               "" = sin sonido.
+#   efecto:     NOMBRE [nivel] [segundos]  ej. "SLOWNESS 2 5"
+#   bloque:     nombre de Material, ej. MAGMA_BLOCK. En las listas de bloques,
+#               NOMBRE*peso sale más a menudo: ["MAGMA_BLOCK*6", "DIAMOND_ORE"].
+#               Donde se dice, * vale como comodín: "*_LEAVES" = todas las hojas.
+# Lo que esté mal escrito se avisa una vez en consola y se usa el de por defecto.
+#
+# NIVELES: cada vez que sale, el desastre tiene un nivel (1-6 por defecto, ver
+# levels en config.yml). Lo marcado ×fuerza se multiplica por la intensidad del
+# nivel (y por la intensity de aquí), y lo marcado ×tamaño por su tamaño.
+# ============================================================================
+
+id: reference_example
+display-name: "&4&lDesastre de Referencia"
+icon: TNT
+description: "Se lee en el aviso del chat ({description})."
+
+# Cuánto dura, en ticks (20 = 1 s), a nivel 3; el nivel la alarga o acorta.
+duration: 1200
+
+# Multiplica la fuerza (lo marcado ×fuerza) además del nivel. 1 = la de los parámetros.
+intensity: 1.0
+
+# Probabilidad (0.0-1.0) de que salga solo en un día de Minecraft en cada mundo.
+# 0 = solo por comando. Como mucho sale un desastre al día por mundo, y nunca
+# dos a la vez en el mismo mundo.
+chance: 0.0
+
+# Estaciones de RPGRoll-Seasons en las que puede salir solo. Vacío = cualquiera.
+# Sin RPGRoll-Seasons instalado no se mira.
+seasons: []
+
+# Mundos en los que puede salir solo. Vacío = todos (menos disabled-worlds de config.yml).
+worlds: []
+
+# Suma los fenómenos de otros desastres (por id). Así se combinan dos o más:
+# combine: [tornado, acid_rain]
+combine: []
+
+# Niveles propios; sin esta sección, los de config.yml. Mismo formato:
+# levels:
+#   1: {weight: 70, intensity: 0.8, size: 1.0, duration: 1.0}
+#   2: {weight: 30, intensity: 1.5, size: 1.2, duration: 1.2}
+
+# Segundos de aviso antes de empezar. -1 = los de config.yml; 0 = sin aviso.
+warning-seconds: -1
+
+# Barra de jefe mientras dura ("COLOR ESTILO"; "" = sin barra). Sin el campo, la de config.yml.
+# bossbar: "PURPLE NOTCHED_10"
+
+# Si lo que rompe se repone y cuándo, para todo lo que lanza este desastre (también
+# los fenómenos que trae con combine). Sin el campo, los de world-damage en config.yml.
+# regenerate: false               # se queda roto para siempre
+# regenerate-seconds: 600         # vuelve a los 10 minutos...
+# regenerate-spread-seconds: 120  # ...más hasta 2 minutos al azar
+
+# Textos propios. El que falte sale de lang/<idioma>.yml (sección disaster:);
+# "" lo quita. {disaster} = display-name, {description}, {level} = el nivel.
+messages:
+  start: "&4⚠ &c{disaster}&4 · nivel {level} ⚠ &7{description}"
+  title: "{disaster}"
+  subtitle: "&7Nivel {level} · ¡busca refugio!"
+  end: "&a✔ &7{disaster}&7 ha pasado."
+
+# Sonido para cada jugador del mundo al empezar.
+start-sound: "EVENT_RAID_HORN 1 0.8"
+
+# Comandos de consola al empezar y al terminar. %world%, %disaster% (el id) y %level%.
+commands:
+  start: []
+  end: []
+
+phenomena:
+
+  # --------------------------------------------------------------------------
+  # Campos que admiten TODOS los fenómenos:
+  #   period:    ticks entre pasos (por defecto el de cada tipo)
+  #   storm:     lluvia mientras dura (TORNADO y ACID_RAIN: true; el resto: false).
+  #              Al terminar el tiempo vuelve a como estaba.
+  #   thunder:   truenos mientras dura (false)
+  #   hit-mobs:  si también afecta a los mobs (true; ACID_RAIN: false)
+  #   hit-items: si mueve objetos sueltos del suelo (true)
+  #   effects:   efectos de poción para cada ser vivo al que golpea ([])
+  #   regenerate, regenerate-seconds, regenerate-spread-seconds: si se repone lo
+  #              que rompa este fenómeno, a los cuántos segundos y con cuánto extra
+  #              al azar (sin ellos, los de arriba del archivo y luego los de
+  #              world-damage en config.yml)
+  # --------------------------------------------------------------------------
+
+  # Embudo que nace lejos de un jugador y va hacia los jugadores; arrastra en
+  # espiral, sube por el centro y lanza hacia fuera. Arranca bloques por donde
+  # pasa, que giran por el embudo y salen despedidos. No sale en Nether ni End.
+  - type: TORNADO
+    period: 2
+    storm: true
+    height: 26                 # alto del embudo (×tamaño)
+    radius: 12                 # alcance del arrastre (×tamaño)
+    core-radius: 2.5           # dentro de esto ya no arrastra: sube (×tamaño)
+    speed: 0.2                 # bloques por tick que avanza
+    retarget-ticks: 200        # cada cuánto elige otro jugador al que ir
+    wander: 20                 # cuánto se desvía de ese jugador
+    spawn-distance-min: 30     # a qué distancia de un jugador nace
+    spawn-distance-max: 45
+    pull: 0.45                 # fuerza del arrastre (×fuerza)
+    swirl: 0.8                 # cuánto gira lo arrastrado (fracción de pull)
+    lift-speed: 0.55           # velocidad de subida en el centro
+    lift-height: 14            # hasta cuántos bloques sube antes de lanzar (×tamaño)
+    fling: 1.5                 # fuerza del lanzamiento (×fuerza)
+    fling-up: 0.6
+    fling-cooldown: 60         # ticks que alguien lanzado no vuelve a ser atrapado
+    damage: 4                  # daño al lanzar, además de la caída (×fuerza)
+    funnel-particles: [CLOUD, LARGE_SMOKE, "DUST #6B6B6B 3", CLOUD, LARGE_SMOKE]   # un brazo por partícula
+    funnel-base-radius: 0.6    # radio abajo
+    funnel-growth: 0.25        # cuánto se abre por bloque de alto
+    ring-spacing: 0.8          # bloques entre anillos (menos = más partículas)
+    twist: 0.45                # cuánto se retuerce con la altura
+    spin-speed: 0.35           # velocidad de giro
+    particle-speed: 0.08       # velocidad con que salen las partículas
+    ground-particles: 24       # polvo del suelo en la base (0 = nada)
+    debris: 14                 # escombros girando (×tamaño; los arrancados suman hasta el triple)
+    debris-blocks: [DIRT, OAK_LEAVES, COBBLESTONE]
+    debris-from-ground: true   # a veces, el bloque que pisa
+    debris-release: 0.01       # probabilidad por paso de que un escombro salga despedido
+    debris-speed: 1.2          # con qué fuerza sale
+    debris-damage: 3           # a quien pille al caer (×fuerza)
+    sound: "ITEM_ELYTRA_FLYING 4 0.5"
+    sound-every: 30            # ticks entre sonidos (0 = sin sonido)
+    # Arrancar bloques: la cima de columnas al azar (hierba, copas, tejados...),
+    # sin bajar más de break-depth del suelo que había.
+    break-blocks: true
+    break-radius: 4            # alrededor del centro (×tamaño)
+    break-depth: 2             # bloques de suelo que puede llevarse por columna
+    break-height: 24           # hasta cuántos bloques por encima de la base (×tamaño)
+    break-per-tick: 6          # columnas que prueba en cada paso (×fuerza)
+    breakable-blocks: []       # solo estos (admite *); vacío = todo lo que permita world-damage
+
+  # Meteoritos que caen en diagonal con estela, estallan cerca de los jugadores
+  # y dejan un cráter con un núcleo de menas. No sale en Nether ni End.
+  - type: METEOR_STORM
+    period: 1
+    interval: 30               # ticks entre oleadas
+    chance: 0.5                # probabilidad por jugador y oleada (×fuerza)
+    spread-min: 0              # a cuántos bloques del jugador caen, de spread-min a spread
+    spread: 32
+    blocks: [MAGMA_BLOCK]      # lo que cae (uno al azar)
+    meteor-size: 1             # bloques que vuelan juntos en cada meteorito (×tamaño)
+    speed: 1.4                 # bloques por tick
+    start-distance: 48         # de cuán lejos viene
+    slant: 1                   # inclinación (0 = cae recto)
+    max-flight-ticks: 120      # se borra si no ha caído en este tiempo
+    trail-particles: ["FLAME*4", "LARGE_SMOKE*2"]
+    impact-particles: ["EXPLOSION_EMITTER*1", "LAVA*25"]
+    impact-sound: "ENTITY_GENERIC_EXPLODE 4 0.7"
+    impact-radius: 4           # (×tamaño)
+    damage: 8                  # en el centro; menos cuanto más lejos (×fuerza)
+    knockback: 0.8
+    only-open-sky: true        # a cubierto no le llega el golpe
+    crater-radius: 2.5         # cráter de verdad (×tamaño); menos de 1 = sin cráter
+    crater-blocks: [BLACKSTONE, COBBLED_DEEPSLATE, MAGMA_BLOCK]   # el borde chamuscado
+    crater-scorch: 0.6         # parte del suelo del cráter que se chamusca
+    core-blocks: ["MAGMA_BLOCK*6", "DEEPSLATE_COPPER_ORE*3", "DEEPSLATE_IRON_ORE*3", "DEEPSLATE_GOLD_ORE*2", DEEPSLATE_DIAMOND_ORE]
+    core-size: 3               # bloques del núcleo en el fondo (×tamaño; 0 = sin núcleo)
+
+  # Algo cae del cielo sobre quien está a la intemperie y le daña, le pone
+  # efectos o le congela; un casco le protege a costa de desgastarse. Puede
+  # corroer el suelo, cubrirlo de nieve y disolver objetos. No sale en Nether ni End.
+  - type: ACID_RAIN
+    period: 5
+    storm: true
+    interval: 20               # ticks entre golpes
+    particles: ["FALLING_DUST*30 LIME_CONCRETE_POWDER"]
+    particle-height: 7
+    particle-spread: 7
+    min-temperature: 0.15      # solo en biomas con esta temperatura (vanilla):
+    max-temperature: 1.0       #   0.15-1.0 = donde llueve; >1 desiertos; <0.15 donde nieva
+    only-open-sky: true
+    damage: 1.5                # (×fuerza)
+    helmet-protects: true      # con casco no hay daño ni efectos...
+    armor-wear: 3              # ...pero pierde esta durabilidad por golpe (×fuerza)
+    armor-slots: [HEAD]        # piezas que se desgastan: HEAD, CHEST, LEGS, FEET
+    hit-particles: ["DUST*8 #7CFC00 1.2"]
+    hit-sound: "BLOCK_FIRE_EXTINGUISH 0.6 1.6"
+    helmet-sound: "BLOCK_FIRE_EXTINGUISH 0.4 1.8"
+    hit-mobs: false
+    mob-radius: 24             # si hit-mobs, mobs a esta distancia de los jugadores
+    freeze-ticks: 0            # congelación por golpe, como la nieve polvo (×fuerza)
+    leather-protects: true     # con alguna pieza de cuero no se congela
+    dissolve-items: 0          # probabilidad por golpe de disolver cada objeto tirado al aire libre
+    # El suelo alrededor de cada jugador (ground-per-tick columnas por paso
+    # dentro de ground-radius ×tamaño): si su bloque de arriba está en corrode,
+    # cambia; si no, se cubre con cover, apilando capas.
+    ground-radius: 12
+    ground-per-tick: 4
+    corrode: []                # "DE>A", DE admite *: ["GRASS_BLOCK>DIRT", "*_LEAVES>AIR"]
+    corrode-chance: 0          # (×fuerza)
+    cover: SNOW
+    cover-chance: 0            # (×fuerza)
+    cover-max-layers: 3
+
+  # Sacudidas, polvo y estruendo bajo cada jugador; grietas de verdad que se
+  # abren cerca y, bajo techo o en cuevas, trozos de techo que caen. También en
+  # el Nether y el End.
+  - type: EARTHQUAKE
+    period: 10
+    shake: 0.18                # fuerza de la sacudida (×fuerza)
+    shake-up: 0.6              # parte vertical de la sacudida
+    ground-particles: 12       # polvo del bloque que pisa (0 = nada)
+    rumble-sound: "BLOCK_BASALT_BREAK 1 0.5"
+    boom-sound: "ENTITY_WARDEN_DIG 0.8 0.6"
+    boom-every: 40             # ticks entre estruendos (0 = nunca)
+    fissure-interval: 200      # cada cuánto puede abrirse una grieta junto a cada jugador
+    fissure-chance: 0.6        # probabilidad cada vez (×fuerza)
+    fissure-distance-min: 5    # a cuántos bloques del jugador empieza
+    fissure-distance-max: 14
+    fissure-length: 18         # (×tamaño)
+    fissure-width: 3           # en el centro; se estrecha en las puntas (×tamaño)
+    fissure-depth: 7           # en el centro (×tamaño)
+    fissure-jitter: 0.35       # cuánto serpentea
+    fissure-branch-chance: 0.12  # probabilidad de rama por bloque de largo
+    fissure-speed: 6           # columnas que se abren por tick
+    fissure-particles: ["BLOCK*10", "CAMPFIRE_COSY_SMOKE*1"]   # BLOCK usa el bloque del suelo
+    fissure-sound: "ENTITY_GENERIC_EXPLODE 1.5 0.5"
+    fissure-pull: 0.12         # cuánto resbala hacia la grieta lo que está cerca (×fuerza)
+    rocks: 0.12                # probabilidad de roca bajo techo por paso (×fuerza)
+    rocks-break-ceiling: true  # el trozo se desprende del techo de verdad (y se repone)
+    rock-blocks: []            # si no rompe el techo: vacío = el bloque del propio techo
+    rock-fallback: COBBLESTONE # si el techo es un cofre, una puerta...
+    rock-scatter: 3
+    rock-radius: 1.2           # a quién alcanza al caer
+    rock-sound: "BLOCK_STONE_BREAK 1 0.7"
+    ceiling-search: 8          # hasta cuántos bloques encima busca techo
+    damage: 3                  # de una roca (×fuerza)
+
+  # El suelo se hunde en un pozo redondo cerca de un jugador, del centro hacia
+  # fuera, y lo de encima resbala dentro. No sale en Nether ni End.
+  - type: SINKHOLE
+    period: 2
+    interval: 400              # ticks entre socavones
+    chance: 0.7                # probabilidad cada vez de que se abra junto a un jugador (×fuerza)
+    distance-min: 6            # a cuántos bloques del jugador
+    distance-max: 18
+    radius: 4                  # (×tamaño)
+    depth: 10                  # en el centro; en el borde casi a ras (×tamaño)
+    speed: 2                   # columnas que se hunden por tick
+    bottom-blocks: []          # lo que queda en el fondo: [WATER], [LAVA], [MAGMA_BLOCK]...
+    pull: 0.2                  # (×fuerza)
+    sound: "BLOCK_ROOTED_DIRT_BREAK 2 0.4"
+    crumble-sound: "BLOCK_GRAVEL_BREAK 1 0.6"
+
+  # Mobs que aparecen alrededor de los jugadores mientras dura. También en el
+  # Nether y el End.
+  - type: MOBS
+    period: 20
+    interval: 100              # ticks entre tandas
+    chance: 0.5                # probabilidad por jugador y tanda (×fuerza)
+    entities: [ZOMBIE]         # vanilla (STRAY*3 = con peso 3) o de RPGRoll-Mobs: "rpgroll:<id>"
+    max: 24                    # vivos a la vez en total (×tamaño)
+    per-player: 3              # vivos a la vez cerca de cada jugador (×tamaño)
+    distance-min: 10           # a cuántos bloques del jugador
+    distance-max: 24
+    only-open-sky: true        # en la superficie; false = a la altura del jugador (cuevas)
+    # Solo a los vanilla (los de RPGRoll-Mobs traen lo suyo):
+    health: 1                  # multiplica la vida (×fuerza)
+    damage: 1                  # multiplica el daño (×fuerza)
+    speed: 1                   # multiplica la velocidad
+    equipment: []              # "RANURA OBJETO": ["HEAD LEATHER_HELMET", "HAND IRON_SWORD"]; no lo sueltan
+    mob-effects: []            # efectos al aparecer: ["SPEED 1 99999"]
+    glowing: false
+    name: ""                   # nombre visible, admite & colores
+    remove-at-end: true        # se van al acabar el desastre
+    spawn-particles: ["LARGE_SMOKE*12"]
+    spawn-sound: ""

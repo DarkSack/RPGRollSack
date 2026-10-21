@@ -1,0 +1,13 @@
+name: RPGRoll-Disasters
+version: 1.1.2
+main: com.sack.rpgroll.disasters.DisastersPlugin
+api-version: "26.1.1"
+author: Sack
+description: Desastres naturales 100% configurables por YAML — tornados, terremotos, meteoritos, lluvia ácida, socavones y más, con niveles, aviso, mobs, destrucción real que respeta las protecciones y se regenera sola.
+depend: [RPGRoll-Lib]
+softdepend: [RPGRoll-Seasons, RPGRoll-Mobs, GriefPrevention, WorldGuard]
+
+permissions:
+  rpgrolldisasters.admin:
+    description: Comandos de administración de desastres (/disastersadmin)
+    default: op

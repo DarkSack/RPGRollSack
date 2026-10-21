@@ -1,0 +1,22 @@
+# Tormenta de meteoritos: rocas de magma que estallan alrededor de los jugadores y dejan
+# cráteres con un núcleo de menas (a veces diamante). Los cráteres se reponen solos.
+# Todos los campos y sus valores por defecto: _reference.yml
+id: meteor_storm
+display-name: "&6&lTormenta de Meteoritos"
+icon: MAGMA_BLOCK
+description: "Caen meteoritos del cielo: ponte a cubierto. En sus cráteres quedan menas."
+duration: 1200
+intensity: 1.0
+chance: 0.02
+seasons: [summer, autumn]
+
+phenomena:
+  - type: METEOR_STORM
+    interval: 30
+    chance: 0.5
+    damage: 8
+    impact-radius: 4
+    meteor-size: 3
+    crater-radius: 2.5
+    core-size: 3
+    core-blocks: ["MAGMA_BLOCK*6", "DEEPSLATE_COPPER_ORE*3", "DEEPSLATE_IRON_ORE*3", "DEEPSLATE_GOLD_ORE*2", DEEPSLATE_DIAMOND_ORE]
