@@ -283,35 +283,45 @@ phenomena:
     crumble-sound: "BLOCK_GRAVEL_BREAK 1 0.6"
 
   # Una ola gigante sale del agua (mar, lago, río) a spawn-distance de un jugador
-  # (o al doble, si no hay más cerca) y avanza en línea recta hacia él. Es un muro
-  # de agua de verdad sobre el terreno: arrastra, daña y quita el aire a lo que
-  # pilla, arranca plantas y breakable-blocks, y los edificios la paran (pasa por
-  # los huecos). Al pasar deja charcos que se secan solos. No sale en Nether ni End.
+  # (o al doble, si no hay más cerca) y avanza en línea recta hacia él. Tiene forma
+  # de ola: el frente se curva hacia delante, la punta cae y debajo queda el tubo;
+  # detrás lleva un lomo de agua. El frente arranca lo blando y breakable-blocks
+  # (respetando claims, cofres y la resistencia de config.yml) y lanza parte como
+  # escombros; contra lo que no rompe se estrella. Arrastra, golpea y quita el aire.
+  # Al pasar deja charcos que se secan solos. No sale en Nether ni End.
   - type: TSUNAMI
     period: 2
     storm: true
     interval: 400              # ticks entre olas
     chance: 1                  # probabilidad de que salga cada ola (×fuerza)
-    spawn-distance: 48         # a qué distancia del jugador nace (busca agua ahí, a ×1.5 y a ×2)
+    spawn-distance: 56         # a qué distancia del jugador nace (busca agua ahí, a ×1.5 y a ×2)
     require-water: true        # sin agua cerca de nadie no hay ola; false = sale igual, de cualquier lado
-    width: 28                  # ancho del frente (×tamaño)
-    height: 7                  # alto en el centro; más bajo en las puntas (×tamaño)
-    thickness: 2               # bloques de grosor del muro de agua
+    width: 40                  # ancho del frente (×tamaño)
+    height: 12                 # alto en el centro; más bajo en las puntas (×tamaño)
+    curl: 0.65                 # cuánto se adelanta la cresta, por alto (0 = muro recto)
+    back-length: 1.0           # largo del lomo de detrás, por alto
+    climb: 1                   # bloques que sube por paso: un muro más alto la para
     speed: 0.25                # bloques por tick que avanza
     overshoot: 24              # cuánto sigue después de pasar al jugador (×tamaño)
-    push: 0.9                  # con cuánta fuerza arrastra (×fuerza)
-    lift: 0.3                  # cuánto levanta lo que arrastra
-    damage: 3                  # por golpe (×fuerza)
+    push: 1.1                  # con cuánta fuerza arrastra (×fuerza)
+    lift: 0.35                 # cuánto levanta lo que arrastra
+    damage: 4                  # por golpe (×fuerza)
     drown: 60                  # aire que quita por golpe (300 = la barra entera) (×fuerza)
     hit-cooldown: 20           # ticks entre golpes a la misma entidad
     break-blocks: true         # arranca plantas, flores, hierba, antorchas...
-    breakable-blocks: ["*_LEAVES"]   # y además estos bloques macizos (admite *)
+    # y además estos bloques macizos (admite *):
+    breakable-blocks: ["*_LEAVES", "*_LOG", "*_WOOD", "*_PLANKS", "*_FENCE", "*_FENCE_GATE", "*_DOOR",
+                       "*_TRAPDOOR", "*GLASS*", "*_WOOL", "*_CARPET", "*_SLAB", "*_STAIRS", "HAY_BLOCK",
+                       "MELON", "PUMPKIN", "BAMBOO", "SUGAR_CANE", "CACTUS", "FARMLAND", "DIRT_PATH"]
+    debris-chance: 0.35        # parte de lo arrancado que sale volando (no se coloca al caer)
+    debris: 30                 # escombros en el aire a la vez como mucho (×tamaño)
     flood-chance: 0.3          # parte del agua que queda como charco al pasar
     flood-seconds: 45          # cuánto tarda en secarse un charco
-    crest-particles: ["SPLASH*6", "BUBBLE_POP*2"]   # espuma en la cresta (CLOUD hace nubes, de cerca tapan)
+    crest-particles: ["SPLASH*6", "BUBBLE_POP*2"]   # espuma en la punta (CLOUD hace nubes, de cerca tapan)
     start-sound: "AMBIENT_UNDERWATER_ENTER 4 0.5"   # al jugador al que va, cuando sale
     sound: "WEATHER_RAIN_ABOVE 4 0.5"
     roar-sound: "ENTITY_PLAYER_SPLASH_HIGH_SPEED 4 0.5"
+    smash-sound: "ENTITY_ZOMBIE_BREAK_WOODEN_DOOR 2 0.6"   # cuando arrasa algo
 
   # Mobs que aparecen alrededor de los jugadores mientras dura. También en el
   # Nether y el End.

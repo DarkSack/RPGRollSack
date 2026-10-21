@@ -1,5 +1,6 @@
-# Tsunami: una ola gigante sale del mar o del lago más cercano y avanza hacia un jugador.
-# Arrastra a jugadores y mobs, los ahoga, arranca plantas y hojas y deja charcos al pasar.
+# Tsunami: una ola gigante y curvada sale del mar o del lago más cercano y avanza hacia un
+# jugador. Arrastra a jugadores y mobs, los ahoga, arrasa árboles, vallas, tejados de madera
+# y cristales, y deja charcos al pasar.
 # Si no hay agua cerca de nadie, no sale (require-water). Todos los campos: _reference.yml
 id: tsunami
 display-name: "&9&lTsunami"
@@ -19,6 +20,7 @@ phenomena:
   - type: TSUNAMI
     interval: 400
     require-water: true
-    width: 28
-    height: 7
+    width: 40
+    height: 12
+    curl: 0.65
     speed: 0.25
