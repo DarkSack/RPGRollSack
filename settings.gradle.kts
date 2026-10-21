@@ -37,7 +37,6 @@ include(
     "recipes",
     "machines",
     "disasters",
-    "worldforge",
 
     // Herramienta de escritorio para los compradores, no un plugin.
     "packinstaller"
