@@ -1,0 +1,2 @@
+# Los guiones los ejecuta bash, que falla con CRLF: siempre LF, también al sacarlos en Windows.
+*.sh text eol=lf
