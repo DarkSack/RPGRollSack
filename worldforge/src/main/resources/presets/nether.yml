@@ -1,0 +1,8 @@
+schema: 1
+id: nether
+name: Nether
+description: Un Nether de Minecraft como mundo aparte, con sus estructuras.
+minecraft: 26.1.2
+provider: vanilla
+environment: nether
+structures: true

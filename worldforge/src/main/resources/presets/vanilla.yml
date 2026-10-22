@@ -1,0 +1,9 @@
+schema: 1
+id: vanilla
+name: Vanilla
+description: Generación de Minecraft sin cambios.
+minecraft: 26.1.2
+provider: vanilla
+environment: normal
+world-type: normal
+structures: true

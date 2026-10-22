@@ -1,0 +1,8 @@
+schema: 1
+id: end
+name: End
+description: Un End de Minecraft como mundo aparte, con sus islas y estructuras.
+minecraft: 26.1.2
+provider: vanilla
+environment: the_end
+structures: true

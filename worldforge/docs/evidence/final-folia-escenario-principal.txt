@@ -1,0 +1,24 @@
+== Plataforma: Folia ==
+== Plantilla hecha por un jugador ==
+WFTEST PASS el jugador construye en su región :: Successfully filled 18 block(s)
+WFTEST PASS marcas puestas :: Changed the block at 5, 66, 5
+WFTEST PASS guarda la plantilla desde el jugador :: [WorldForge] Plantilla fol guardada: 3×2×3 · sha a6a1da815f716bd6. |   Úsala en un preset (templates: structure: fol); se coloca solo en chunks que se generen después.
+WFTEST PASS desde la consola, en la región del chunk :: [20:08:46] [Folia Region Scheduler Thread #0/INFO]: [WorldForge] Plantilla fol2 guardada: 3×2×3 · sha a6a1da815f716bd6.
+== Preset en el mundo principal ==
+WFTEST PASS importar :: [20:08:47] [Folia Async Scheduler Thread #0/INFO]: [WorldForge] Importado como borrador tpl-principal. Revísalo y publícalo con /worldforge preset publish tpl-principal.
+WFTEST PASS publicar :: [20:08:48] [Folia Async Scheduler Thread #1/INFO]: [WorldForge] Borrador tpl-principal publicado: ya se puede usar para crear mundos.
+WFTEST PASS se para guardando :: -
+WFTEST PASS vuelve a arrancar :: [20:09:21] [Server thread/INFO]: Done (19.525s)! For help, type "help"
+WFTEST PASS WorldForge arranca antes de abrir los mundos :: línea 34 < 39
+WFTEST PASS la plantilla se lee en el arranque :: sin «✘ Plantilla» en el registro
+WFTEST PASS el mundo principal usa el preset nuevo :: [20:09:24] [Folia Region Scheduler Thread #0/INFO]:   Generador: WorldForgeGenerator · modo FLAT · estructuras no
+== Lo generado lejos ==
+WFTEST PASS el mundo principal coloca plantillas en chunks nuevos ::   Plantilla islas: 111 colocadas, 0 sin sitio (desde que se cargó el mundo)
+WFTEST PASS plantilla en 895 100 1114: oro y diamante donde tocan :: gold_block / diamond_block / NONE
+WFTEST PASS plantilla en 885 100 885: oro y diamante donde tocan :: gold_block / diamond_block / NONE
+WFTEST PASS hay colocaciones que comprobar :: última: islas world 895 100 1114 NONE | última: islas world 885 100 885 NONE | última: islas world 1088 100 885 NONE | última: islas world 1119 100 908 NONE | última: islas world 900 100 883 NONE | última: islas world 10
+WFTEST PASS menas de WorldForge en la piedra del mundo principal :: 606 bloques de diamante a la vista
+== Registro ==
+WFTEST PASS ninguna escritura fuera de la región del generador :: -
+WFTEST PASS sin excepciones de WorldForge en el registro :: -
+FIN escenario-principal (Folia): 0 fallo(s)

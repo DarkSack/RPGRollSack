@@ -1,0 +1,13 @@
+schema: 1
+id: empty
+name: Vacío
+description: Ni un bloque. Sin plataforma ni estructuras.
+minecraft: 26.1.2
+provider: empty
+environment: normal
+spawn:
+  x: 0
+  y: 64
+  z: 0
+biomes:
+- minecraft:the_void

@@ -1,0 +1,14 @@
+# Terreno de WorldForge: la tierra hundida un poco y troceada: islas de todos los tamaños. Cabe en el tipo overworld.
+id: archipielago
+description: islas y estrechos; menos tierra firme y más mar
+base: overworld
+height-scale: 0.8
+height-offset: -20
+peaks: 0.6
+continent-size: 0.6
+erosion-size: 1.0
+ridge-size: 1.0
+biome-size: 1.0
+sea-level: 63
+aquifers: true
+ore-veins: true

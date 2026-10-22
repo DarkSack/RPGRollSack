@@ -1,0 +1,16 @@
+schema: 1
+id: flat
+name: Plano
+description: Mundo plano de capas fijas, sin estructuras.
+minecraft: 26.1.2
+provider: flat
+environment: normal
+layers:
+- block: minecraft:bedrock
+  height: 1
+- block: minecraft:dirt
+  height: 2
+- block: minecraft:grass_block
+  height: 1
+biomes:
+- minecraft:plains

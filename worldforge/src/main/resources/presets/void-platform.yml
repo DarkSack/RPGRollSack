@@ -1,0 +1,17 @@
+schema: 1
+id: void-platform
+name: Vacío con plataforma
+description: Mundo vacío con una plataforma de piedra de 5x5 en el punto de aparición.
+minecraft: 26.1.2
+provider: empty
+environment: normal
+spawn:
+  x: 0
+  y: 65
+  z: 0
+platform:
+  block: minecraft:stone
+  radius: 2
+  y: 64
+biomes:
+- minecraft:the_void

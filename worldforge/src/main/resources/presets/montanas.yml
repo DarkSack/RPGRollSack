@@ -1,0 +1,9 @@
+schema: 1
+id: montanas
+name: Montañas
+description: Cordilleras altas con el motor de terreno de WorldForge; se puede crear en caliente.
+minecraft: 26.1.2
+provider: terrain
+terrain: montanas
+environment: normal
+structures: true

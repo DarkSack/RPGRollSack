@@ -1,0 +1,73 @@
+== Otro plugin con generador ==
+WFTEST PASS se para guardando :: -
+WFTEST PASS vuelve a arrancar :: [19:40:55] [Server thread/INFO]: Done (22.955s)! For help, type "help"
+WFTEST PASS OtroGenerador cargado :: -
+== Nether y End ==
+WFTEST PASS presets de serie nether y end :: [19:40:57] [Server thread/INFO]:   Proveedor vanilla: Minecraft sin cambios (opcional: amplificado o biomas grandes).
+WFTEST PASS crear t_nether :: [19:40:59] [WorldForge-SQLite/INFO]: [WorldForge] Mundo t_nether creado con el preset nether (semilla 4970966930840921454).
+WFTEST PASS crear t_end :: [19:41:00] [WorldForge-SQLite/INFO]: [WorldForge] Mundo t_end creado con el preset end (semilla 9010956494073506984).
+WFTEST PASS t_nether es un Nether :: [19:41:01] [Server thread/INFO]:   Clave minecraft:t_nether · entorno NETHER · semilla 4970966930840921454
+WFTEST PASS t_end es un End :: [19:41:02] [Server thread/INFO]:   Clave minecraft:t_end · entorno THE_END · semilla 9010956494073506984
+WFTEST PASS t_nether: suelo de bedrock :: [19:41:09] [Server thread/INFO]: Test passed
+WFTEST PASS t_nether: techo de bedrock :: [19:41:09] [Server thread/INFO]: Test passed
+WFTEST PASS t_end: bioma del End :: [19:41:10] [Server thread/INFO]: Test passed
+== Generador de otro plugin ==
+WFTEST PASS importar ajeno :: [19:41:11] [Folia Async Scheduler Thread #0/INFO]: [WorldForge] Importado como borrador ajeno. Revísalo y publícalo con /worldforge preset publish ajeno.
+WFTEST PASS publicar ajeno :: [19:41:11] [Folia Async Scheduler Thread #1/INFO]: [WorldForge] Borrador ajeno publicado: ya se puede usar para crear mundos.
+WFTEST PASS importar uno con un plugin que no está :: [19:41:12] [Folia Async Scheduler Thread #2/INFO]: [WorldForge] Importado como borrador ajeno-falta. Revísalo y publícalo con /worldforge preset publish ajeno-falta.
+WFTEST PASS no se publica :: [19:41:13] [Folia Async Scheduler Thread #3/INFO]: [WorldForge] No se pudo: generator: no hay ningún plugin «NoExiste» instalado.
+WFTEST PASS importar uno que pide menas al otro generador :: [19:41:14] [Folia Async Scheduler Thread #4/INFO]: [WorldForge] Importado como borrador ajeno-menas. Revísalo y publícalo con /worldforge preset publish ajeno-menas.
+WFTEST PASS no se publica: WorldForge no mete menas en un generador ajeno :: [19:41:14] [Folia Async Scheduler Thread #5/INFO]: [WorldForge] No se pudo: ores: el proveedor «plugin» no controla reglas de menas en chunks nuevos.
+WFTEST PASS crear t_ajeno :: [19:41:16] [WorldForge-SQLite/INFO]: [WorldForge] Mundo t_ajeno creado con el preset ajeno (semilla 7).
+WFTEST PASS inspect dice de quién es el generador :: [19:41:17] [Server thread/INFO]:   Generador: prueba.OtroGenerador$1 · estructuras no
+WFTEST PASS t_ajeno: el cristal del otro plugin :: [19:41:21] [Server thread/INFO]: Test passed
+WFTEST PASS t_ajeno: encima, aire :: [19:41:21] [Server thread/INFO]: Test passed
+== Importar una carpeta que WorldForge no creó ==
+WFTEST PASS crear t_imp (flat) :: [19:41:22] [WorldForge-SQLite/INFO]: [WorldForge] Mundo t_imp creado con el preset flat (semilla -5577210476210977704).
+WFTEST PASS marca en t_imp :: [19:41:27] [Server thread/INFO]: Changed the block at 3, -60, 3
+WFTEST PASS se para guardando :: -
+WFTEST PASS simular: t_imp deja de ser de WorldForge (su carpeta sigue) :: -
+WFTEST PASS vuelve a arrancar :: [19:42:09] [Server thread/INFO]: Done (23.805s)! For help, type "help"
+WFTEST PASS t_imp no está cargado :: [19:42:12] [Server thread/INFO]: [WorldForge] No se pudo: world: no hay un mundo «t_imp» (ni cargado ni administrado).
+WFTEST PASS crear encima no pisa la carpeta :: [19:42:12] [Server thread/INFO]: [WorldForge] No se pudo: name: ya existe la carpeta de un mundo «t_imp» que WorldForge no administra; no se pisa.
+WFTEST PASS importarla :: [19:42:14] [WorldForge-SQLite/INFO]: [WorldForge] Mundo t_imp importado con el preset flat: lo que ya existe no cambia; los chunks nuevos usan el preset.
+WFTEST PASS conserva lo que tenía :: [19:42:18] [Server thread/INFO]: Test passed
+WFTEST PASS ya es de WorldForge :: [19:42:19] [Server thread/INFO]:   t_imp [minecraft:t_imp] cargado · READY · preset flat
+WFTEST PASS no se importa dos veces :: [19:42:19] [WorldForge-SQLite/INFO]: [WorldForge] No se pudo: name: WorldForge ya administra «t_imp» (estado READY).
+WFTEST PASS una carpeta que no existe :: [19:42:20] [Server thread/INFO]: [WorldForge] No se pudo: name: no hay un mundo en ./world/dimensions/minecraft/nada.
+WFTEST PASS un mundo del formato de antes de 26.1 :: [19:42:21] [Server thread/INFO]: [WorldForge] No se pudo: name: «viejo» está en el formato de antes de 26.1 (./viejo); WorldForge solo importa mundos de 26.1 (./world/dimensions/minecraft/viejo).
+WFTEST PASS con un preset sin publicar :: [19:42:21] [Server thread/INFO]: [WorldForge] No se pudo: preset: «no-existe» no es un preset publicado y válido.
+== Ir de un mundo a otro y gravedad ==
+WFTEST PASS importar lunar :: [19:42:22] [Folia Async Scheduler Thread #1/INFO]: [WorldForge] Importado como borrador lunar. Revísalo y publícalo con /worldforge preset publish lunar.
+WFTEST PASS publicar lunar :: [19:42:23] [Folia Async Scheduler Thread #2/INFO]: [WorldForge] Borrador lunar publicado: ya se puede usar para crear mundos.
+WFTEST PASS crear t_luna :: [19:42:24] [WorldForge-SQLite/INFO]: [WorldForge] Mundo t_luna creado con el preset lunar (semilla -3109294333292030566).
+WFTEST PASS un jugador conectado :: Viajero
+WFTEST PASS en el principal: gravedad normal :: [19:42:29] [Server thread/INFO]: The value of attribute Gravity for entity Viajero is 0.08
+WFTEST PASS tp a un mundo que no existe :: [19:42:30] [Server thread/INFO]: [WorldForge] No se pudo: no hay ningún mundo cargado llamado «no_existe».
+WFTEST PASS tp de alguien que no está :: [19:42:31] [Server thread/INFO]: [WorldForge] No se pudo: «Nadie» no está conectado.
+WFTEST PASS tp desde la consola sin jugador :: [19:42:32] [Server thread/INFO]: [WorldForge] No se pudo: desde la consola indica el jugador.
+WFTEST PASS tp a t_luna :: [19:42:33] [Server thread/INFO]: [WorldForge] Viajero → t_luna.
+WFTEST PASS está en t_luna :: [19:42:36] [Server thread/INFO]:   Aparición 0, -60, 0 · jugadores 1 · chunks cargados 169
+WFTEST PASS t_luna: gravedad a la mitad :: [19:42:36] [Server thread/INFO]: The value of attribute Gravity for entity Viajero is 0.04
+WFTEST PASS t_luna: caída segura al doble :: [19:42:37] [Server thread/INFO]: The value of attribute Safe Fall Distance for entity Viajero is 6.0
+WFTEST PASS tp a t_ajeno :: [19:42:38] [Server thread/INFO]: [WorldForge] Viajero → t_ajeno.
+WFTEST PASS t_ajeno (generador de otro plugin): gravedad 1.5 :: [19:42:42] [Server thread/INFO]: The value of attribute Gravity for entity Viajero is 0.12
+WFTEST PASS tp al principal :: [19:42:42] [Server thread/INFO]: [WorldForge] Viajero → world.
+WFTEST PASS de vuelta: gravedad normal :: [19:42:45] [Server thread/INFO]: The value of attribute Gravity for entity Viajero is 0.08
+WFTEST PASS y caída segura normal :: [19:42:46] [Server thread/INFO]: The value of attribute Safe Fall Distance for entity Viajero is 3.0
+WFTEST PASS otra vez a t_luna :: [19:42:46] [Server thread/INFO]: [WorldForge] Viajero → t_luna.
+WFTEST PASS muere en t_luna :: [19:42:49] [Server thread/INFO]: Killed Viajero
+WFTEST PASS reaparece en el principal con gravedad normal :: [19:42:54] [Server thread/INFO]: The value of attribute Gravity for entity Viajero is 0.08
+== Tras reiniciar ==
+WFTEST PASS se para guardando :: -
+WFTEST PASS vuelve a arrancar :: [19:43:34] [Server thread/INFO]: Done (23.284s)! For help, type "help"
+WFTEST PASS t_nether vuelve solo :: [19:43:37] [WorldForge-SQLite/INFO]: [RPGRoll-WorldForge] ✔ Mundo administrado cargado: t_nether (preset nether)
+WFTEST PASS t_end vuelve solo :: [19:43:36] [WorldForge-SQLite/INFO]: [RPGRoll-WorldForge] ✔ Mundo administrado cargado: t_end (preset end)
+WFTEST PASS t_ajeno vuelve solo :: [19:43:35] [WorldForge-SQLite/INFO]: [RPGRoll-WorldForge] ✔ Mundo administrado cargado: t_ajeno (preset ajeno)
+WFTEST PASS t_imp vuelve solo :: [19:43:36] [WorldForge-SQLite/INFO]: [RPGRoll-WorldForge] ✔ Mundo administrado cargado: t_imp (preset flat)
+WFTEST PASS t_luna vuelve solo :: [19:43:36] [WorldForge-SQLite/INFO]: [RPGRoll-WorldForge] ✔ Mundo administrado cargado: t_luna (preset lunar)
+WFTEST PASS tp a t_luna :: [19:43:41] [Server thread/INFO]: [WorldForge] Viajero → t_luna.
+WFTEST PASS la gravedad sigue tras reiniciar :: [19:43:44] [Server thread/INFO]: The value of attribute Gravity for entity Viajero is 0.04
+== Registro ==
+WFTEST PASS sin excepciones de WorldForge en el registro :: -
+FIN escenario-mv: 0 fallo(s)

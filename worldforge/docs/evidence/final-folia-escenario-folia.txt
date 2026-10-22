@@ -1,0 +1,54 @@
+== Arranque ==
+WFTEST PASS se habilita en Folia :: [20:05:27] [Server thread/INFO]: [RPGRoll-WorldForge] ✔ WorldForge habilitado en Folia: 10 presets utilizables.
+WFTEST PASS diagnóstico :: [20:05:31] [Folia Region Scheduler Thread #0/INFO]:   Plataforma: Folia — crear, cargar y descargar mundos en caliente están DESACTIVADOS (Folia lanza UnsupportedOperationException).
+WFTEST PASS SQLite :: [20:05:32] [Folia Region Scheduler Thread #0/INFO]:   ✔ SQLite: esquema 2 (worldforge.db)
+WFTEST PASS el mundo principal lo genera WorldForge :: [20:05:32] [Folia Region Scheduler Thread #0/INFO]:   Generador: WorldForgeGenerator · modo EMPTY · estructuras no
+WFTEST PASS lista de mundos :: [20:05:33] [Folia Region Scheduler Thread #0/INFO]:   world [minecraft:overworld] cargado · SERVIDOR
+== Lo que Folia no permite, explicado ==
+WFTEST PASS crear un mundo :: [20:05:34] [Folia Region Scheduler Thread #0/INFO]: [WorldForge] No se pudo: Folia no permite crear mundos con el servidor en marcha (lanza UnsupportedOperationException). Usa una dimensión por datapack (se carga al reiniciar) o haz esto en Paper.
+WFTEST PASS descargar un mundo :: [20:05:34] [Folia Region Scheduler Thread #0/INFO]: [WorldForge] No se pudo: Folia no permite descargar mundos con el servidor en marcha (lanza UnsupportedOperationException). Usa una dimensión por datapack (se carga al reiniciar) o haz esto en Paper.
+== Presets, protecciones y plantillas ==
+WFTEST PASS duplicar :: [20:05:35] [Folia Async Scheduler Thread #2/INFO]: [WorldForge] Borrador f-copia creado a partir de flat.
+WFTEST PASS semilla :: [20:05:36] [Folia Async Scheduler Thread #3/INFO]: [WorldForge] Hecho.
+WFTEST PASS publicar :: [20:05:37] [Folia Async Scheduler Thread #4/INFO]: [WorldForge] Borrador f-copia publicado: ya se puede usar para crear mundos.
+WFTEST PASS exportar :: [20:05:38] [Folia Async Scheduler Thread #5/INFO]: [WorldForge] Exportado a exports/f-copia.yml (con su manifiesto SHA-256).
+WFTEST PASS zona protegida :: [20:05:38] [Folia Async Scheduler Thread #5/INFO]: [WorldForge] Zona casa protegida en world: -16, -16 → 15, 15.
+WFTEST PASS lista de zonas :: [20:05:39] [Folia Region Scheduler Thread #0/INFO]:   casa · world · -16, -16 → 15, 15 · prueba
+WFTEST PASS quitarla :: [20:05:40] [Folia Async Scheduler Thread #5/INFO]: [WorldForge] Zona casa ya no está protegida.
+WFTEST PASS lista de plantillas vacía :: [20:05:40] [Folia Async Scheduler Thread #5/INFO]:   ninguna; guarda una con /wf structure save
+== Menú con un jugador ==
+WFTEST PASS Folia: abre el menú principal :: {"type":"compound","value":{"color":{"type":"string","value":"dark_aqua"},"text":{"type":"string","value":"WorldForge"}}}
+WFTEST PASS Folia: lista de presets :: {"type":"compound","value":{"color":{"type":"string","value":"dark_aqua"},"text":{"type":"string","value":"Presets"}}}
+WFTEST PASS Folia: abre un preset :: {"type":"compound","value":{"color":{"type":"string","value":"dark_aqua"},"text":{"type":"string","value":"Preset flat"}}}
+WFTEST PASS Folia: validar desde el menú :: [WorldForge] flat es válido.
+WFTEST PASS Folia: lista de mundos :: {"type":"compound","value":{"color":{"type":"string","value":"dark_aqua"},"text":{"type":"string","value":"Mundos"}}}
+WFTEST PASS Folia: abre el mundo principal :: {"type":"compound","value":{"color":{"type":"string","value":"dark_aqua"},"text":{"type":"string","value":"Mundo world"}}}
+WFTEST PASS Folia: inspeccionar desde el menú :: [WorldForge] Clave minecraft:overworld · entorno NORMAL · semilla 20261020 | [WorldForge] Altura -64 a 319 · carpeta ./world/dimensions/minecraft/overworld | [WorldForge] Generador: WorldForgeGenerator · modo EMPTY · est
+WFTEST PASS Folia: diagnóstico desde el menú ::   WorldForge 0.1.0 · Minecraft 26.1.2 · Folia 26.1.2-8-62dc0f2 (MC: 26.1.2) |   Plataforma: Folia — crear, cargar y descargar mundos en caliente están DESACTIVADOS (Folia lanza UnsupportedOperationException). |   ✔ SQLit
+== Dimensión por datapack ==
+WFTEST PASS crear :: [20:05:49] [Folia Region Scheduler Thread #0/INFO]: [WorldForge] Dimensión minas escrita en el datapack (como el normal pero más alto: −64 a 383; terreno y biomas del mundo normal).
+WFTEST PASS crear una con terreno :: [20:05:51] [Folia Region Scheduler Thread #0/INFO]: [WorldForge] Dimensión alpes escrita en el datapack (como el normal pero muy alto: −64 a 575; terreno «montanas»: cordilleras casi el doble de altas, valles hondos y cimas afiladas).
+WFTEST PASS lista de terrenos :: [20:05:52] [Folia Region Scheduler Thread #0/INFO]: [WorldForge] Terrenos (terrains/*.yml) · mundo principal: vanilla
+== Regeneración del principal (al arrancar) ==
+WFTEST PASS el jugador pone la marca en su región :: Changed the block at 165, 64, 165
+WFTEST PASS la marca está :: gold_block
+WFTEST PASS Folia no tiene save-all (documentado) :: -
+WFTEST PASS se para guardando :: -
+WFTEST PASS vuelve a arrancar :: [20:07:10] [Server thread/INFO]: Done (50.860s)! For help, type "help"
+WFTEST PASS planificar :: [20:07:13] [WorldForge-SQLite/INFO]:   Para confirmar: /wf regen confirm job-1202d331 981f46  (caduca en 15 min)
+WFTEST PASS en Folia siempre espera al reinicio :: -
+WFTEST PASS confirmar :: [20:07:14] [WorldForge-SQLite/INFO]: [WorldForge] Confirmado. Se aplicará en el PRÓXIMO ARRANQUE, antes de que el servidor abra los mundos (respaldo incluido). Reinicia cuando te venga bien.
+== Reinicio ==
+WFTEST PASS se para guardando :: -
+WFTEST PASS vuelve a arrancar :: [20:07:47] [Server thread/INFO]: Done (21.208s)! For help, type "help"
+WFTEST PASS la regeneración se aplicó al arrancar :: [20:07:45] [Server thread/WARN]: [RPGRoll-WorldForge] job-1202d331 (regen, world): 1 chunks regenerados (se generan de nuevo al visitarlos).
+WFTEST PASS el trabajo queda COMPLETED :: [20:07:49] [WorldForge-SQLite/INFO]: [WorldForge] Trabajo job-1202d331 (regen) · COMPLETED
+WFTEST PASS la dimensión carga en Folia :: [20:07:11] [WorldForge-SQLite/INFO]: [RPGRoll-WorldForge] Dimensión minas: READY — cargada como world_worldforge_minas
+WFTEST PASS con su altura :: [20:07:50] [Folia Region Scheduler Thread #0/INFO]:   Altura -64 a 383 · carpeta ./world/dimensions/worldforge/minas
+WFTEST PASS la de terreno carga en Folia :: [20:07:11] [WorldForge-SQLite/INFO]: [RPGRoll-WorldForge] Dimensión alpes: READY — cargada como world_worldforge_alpes
+WFTEST PASS con el tipo towering :: [20:07:50] [Folia Region Scheduler Thread #0/INFO]:   Altura -64 a 575 · carpeta ./world/dimensions/worldforge/alpes
+WFTEST PASS la marca del principal desapareció :: air
+WFTEST PASS la plataforma de aparición sigue :: stone
+== Registro ==
+WFTEST PASS sin excepciones de WorldForge en el registro :: -
+FIN escenario-folia: 0 fallo(s)

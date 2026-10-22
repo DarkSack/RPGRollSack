@@ -1,0 +1,9 @@
+schema: 1
+id: amplified
+name: Amplificado
+description: Tipo de mundo amplificado de vanilla (montañas extremas).
+minecraft: 26.1.2
+provider: vanilla
+environment: normal
+world-type: amplified
+structures: true

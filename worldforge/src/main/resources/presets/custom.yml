@@ -1,0 +1,8 @@
+schema: 1
+id: custom
+name: Personalizado
+description: Base para crear el tuyo (duplícalo). Terreno vanilla; añade menas o biomas.
+minecraft: 26.1.2
+provider: hybrid
+environment: normal
+structures: true

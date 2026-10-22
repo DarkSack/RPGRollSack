@@ -1,0 +1,14 @@
+# Terreno de WorldForge: relieve 2,4 veces más alto (cimas estimadas hasta y≈486). Solo con el tipo towering (−64 a 575).
+id: extremo
+description: relieve 2,4 veces más alto, picos muy dentados y continentes anchos
+base: overworld
+height-scale: 2.4
+height-offset: 0
+peaks: 2.0
+continent-size: 2.0
+erosion-size: 1.5
+ridge-size: 2.0
+biome-size: 2.0
+sea-level: 63
+aquifers: true
+ore-veins: true

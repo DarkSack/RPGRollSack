@@ -1,0 +1,19 @@
+== Mundo principal con el motor ==
+WFTEST PASS lo genera el motor con montanas :: [20:38:27] [Server thread/INFO]:   Generador: WorldForgeGenerator · modo TERRAIN · terreno montanas · estructuras sí
+WFTEST PASS dónde aparece :: [20:38:28] [Server thread/INFO]:   Aparición 0, 79, 0 · jugadores 0 · chunks cargados 0
+WFTEST PASS aparece en tierra firme (por encima del mar) :: 0 79 0
+== Un jugador genera chunks alrededor ==
+WFTEST PASS entra un jugador :: Viajero
+WFTEST PASS los chunks de alrededor existen :: [20:39:01] [Server thread/INFO]:   Aparición 0, 79, 0 · jugadores 1 · chunks cargados 169
+WFTEST PASS no aparece en el agua :: [20:39:01] [Server thread/INFO]: Test passed
+WFTEST PASS menas de Minecraft encima del motor (carbón en el chunk de aparición) :: 90
+WFTEST PASS el Nether está cargado :: [20:39:03] [Server thread/INFO]:   world_nether [minecraft:the_nether] cargado · SERVIDOR
+WFTEST PASS world tp al Nether :: [20:39:04] [Server thread/INFO]: [WorldForge] Viajero → world_nether.
+WFTEST PASS el jugador está en el Nether :: [20:39:08] [Server thread/INFO]:   Aparición 0, 66, 0 · jugadores 1 · chunks cargados 169
+== Tras reiniciar ==
+WFTEST PASS se para guardando :: -
+WFTEST PASS vuelve a arrancar :: [20:39:52] [Server thread/INFO]: Done (23.781s)! For help, type "help"
+WFTEST PASS sigue con el motor :: [20:39:52] [Server thread/INFO]:   Generador: WorldForgeGenerator · modo TERRAIN · terreno montanas · estructuras sí
+== Registro ==
+WFTEST PASS sin excepciones de WorldForge en el registro :: -
+FIN escenario-motor: 0 fallo(s)

@@ -1,0 +1,22 @@
+# Textos de RPGRoll-WorldForge en formato MiniMessage
+# (https://docs.advntr.dev/minimessage/format.html).
+# Las claves que borres vuelven a su texto de serie.
+
+prefix: "<dark_aqua>[WorldForge]</dark_aqua> "
+no-permission: "<red>No tienes permiso: <gray><permission></gray></red>"
+unknown-subcommand: "<red>No conozco «<sub>». Prueba <white>/worldforge help</white>.</red>"
+usage: "<yellow>Uso: <white><usage></white></yellow>"
+working: "<gray>Trabajando en ello…</gray>"
+db-unavailable: "<red>La base de datos no está disponible: <reason>. Mira <white>/worldforge diagnostics</white>.</red>"
+failed: "<red>No se pudo: <reason></red>"
+done: "<green>Hecho.</green>"
+world-created: "<green>Mundo <white><name></white> creado con el preset <white><preset></white> (semilla <seed>).</green>"
+world-loaded: "<green>Mundo <white><name></white> cargado.</green>"
+world-unloaded: "<green>Mundo <white><name></white> descargado y guardado.</green>"
+preset-valid: "<green>El preset <white><id></white> es válido para el proveedor <white><provider></white>.</green>"
+preset-invalid: "<red>El preset <white><id></white> tiene errores:</red>"
+preset-exported: "<green>Exportado a <white><file></white> (con su manifiesto SHA-256).</green>"
+preset-imported: "<green>Importado como borrador <white><id></white>. Revísalo y publícalo con <white>/worldforge preset publish <id></white>.</green>"
+preset-published: "<green>Borrador <white><id></white> publicado: ya se puede usar para crear mundos.</green>"
+preset-duplicated: "<green>Borrador <white><id></white> creado a partir de <white><source></white>.</green>"
+reloaded: "<green>Configuración, textos y presets recargados.</green>"

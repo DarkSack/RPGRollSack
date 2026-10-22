@@ -1,0 +1,42 @@
+== Preparación ==
+WFTEST PASS crear t_gui (flat) :: [19:34:57] [WorldForge-SQLite/INFO]: [WorldForge] Mundo t_gui creado con el preset flat (semilla 1578792222939793814).
+WFTEST PASS forzar el chunk 6,6 :: [19:34:59] [Server thread/INFO]: Marked chunk [6, 6] in minecraft:t_gui to be force loaded
+WFTEST PASS marca en 100 -60 100 :: [19:35:03] [Server thread/INFO]: Changed the block at 100, -60, 100
+WFTEST PASS guardar :: [19:35:03] [Server thread/INFO]: Saved the game
+== Jugadores en la GUI ==
+WFTEST PASS abre el menú principal :: {"type":"compound","value":{"color":{"type":"string","value":"dark_aqua"},"text":{"type":"string","value":"WorldForge"}}}
+WFTEST PASS abre Presets :: {"type":"compound","value":{"color":{"type":"string","value":"dark_aqua"},"text":{"type":"string","value":"Presets"}}}
+WFTEST PASS abre el preset flat :: {"type":"compound","value":{"color":{"type":"string","value":"dark_aqua"},"text":{"type":"string","value":"Preset flat"}}}
+WFTEST PASS duplicar pide el id por chat :: [WorldForge] Id del duplicado de «flat» (escríbelo en el chat; «cancelar» para salir)
+WFTEST PASS crea el borrador y lo abre :: {"type":"compound","value":{"color":{"type":"string","value":"dark_aqua"},"text":{"type":"string","value":"Borrador gui-flat"}}}
+WFTEST PASS fija la semilla :: {"type":"compound","value":{"italic":{"type":"byte","value":0},"color":{"type":"string","value":"white"},"text":{"type":"string","value":"gui-flat"}}}[{"type":"compound","value":{"italic":{"type":"byte","value":0},"color
+WFTEST PASS no publica lo que no has visto (otro lo cambió) :: [WorldForge] El borrador cambió desde que abriste este menú; vuelve a abrirlo antes de publicar.
+WFTEST PASS al reabrir ve el cambio ajeno :: {"type":"compound","value":{"italic":{"type":"byte","value":0},"color":{"type":"string","value":"white"},"text":{"type":"string","value":"gui-flat"}}}[{"type":"compound","value":{"italic":{"type":"byte","value":0},"color
+WFTEST PASS publica :: [WorldForge] Borrador gui-flat publicado: ya se puede usar para crear mundos.
+WFTEST PASS recargar cierra los menús abiertos :: -
+WFTEST PASS abre el mundo t_gui :: {"type":"compound","value":{"color":{"type":"string","value":"dark_aqua"},"text":{"type":"string","value":"Mundo t_gui"}}}
+WFTEST PASS regenerar exige estar en ese mundo :: [WorldForge] Entra en «t_gui» y vuelve a abrir el menú: el radio se mide desde donde estás.
+WFTEST PASS elige radio :: {"type":"compound","value":{"color":{"type":"string","value":"dark_aqua"},"text":{"type":"string","value":"Regenerar: radio en chunks"}}}
+WFTEST PASS muestra el plan :: {"type":"compound","value":{"italic":{"type":"byte","value":0},"color":{"type":"string","value":"white"},"text":{"type":"string","value":"Plan job-989beaf1"}}}[{"type":"compound","value":{"italic":{"type":"byte","value":
+WFTEST PASS pide una segunda confirmación :: {"type":"compound","value":{"color":{"type":"string","value":"dark_aqua"},"text":{"type":"string","value":"¿Seguro? job-989beaf1"}}}
+WFTEST PASS confirma :: [WorldForge] Confirmado: se descarga el mundo, se respalda y se edita; te aviso al terminar. | Este mundo se va a descargar; te llevamos al punto de aparición.
+WFTEST PASS regenera y avisa al terminar :: [WorldForge] Confirmado: se descarga el mundo, se respalda y se edita; te aviso al terminar. | Este mundo se va a descargar; te llevamos al punto de aparición. | [WorldForge] job-989beaf1: 1 chunks regenerados (se genera
+WFTEST PASS proteger pide el nombre :: [WorldForge] Nombre de la zona (minúsculas, números, - o _) (escríbelo en el chat; «cancelar» para salir)
+WFTEST PASS crea la zona :: [WorldForge] Zona casa-gui protegida: 76, 76 → 124, 124.
+WFTEST PASS quitar pide confirmación :: {"type":"compound","value":{"color":{"type":"string","value":"dark_aqua"},"text":{"type":"string","value":"¿Quitar casa-gui?"}}}
+WFTEST PASS quita la zona :: [WorldForge] Zona casa-gui ya no está protegida.
+WFTEST PASS diagnóstico en el chat ::   WorldForge 0.1.0 · Minecraft 26.1.2 · Paper 26.1.2-74-e4e17fc (MC: 26.1.2) |   Plataforma: Paper — todas las funciones de mundos disponibles. |   ✔ SQLite: esquema 2 (worldforge.db) |   Protecciones: 0 zonas · 2 chunks
+WFTEST PASS un viewer abre el menú :: {"type":"compound","value":{"color":{"type":"string","value":"dark_aqua"},"text":{"type":"string","value":"WorldForge"}}}
+WFTEST PASS cada clic pide su permiso (descargar) :: [WorldForge] No tienes permiso: worldforge.worlds.manage
+WFTEST PASS pero inspeccionar sí :: [WorldForge] Administrado: preset flat (versión 3cb6a45d40d73eab), estado READY, creado por CONSOLE | [WorldForge] Clave minecraft:t_gui · entorno NORMAL · semilla 1578792222939793814 | [WorldForge] Altura -64 a 319 · ca
+WFTEST PASS ve un trabajo :: {"type":"compound","value":{"color":{"type":"string","value":"dark_aqua"},"text":{"type":"string","value":"Trabajo job-989beaf1"}}}
+WFTEST PASS no puede restaurar :: [WorldForge] No tienes permiso: worldforge.regeneration.plan
+FIN gui: 0 fallo(s)
+== Efecto ==
+WFTEST PASS la regeneración desde el menú quitó la marca :: [19:35:31] [Server thread/INFO]: Test passed
+WFTEST PASS y dejó las capas planas :: [19:35:31] [Server thread/INFO]: Test passed
+WFTEST PASS el preset publicado desde el menú existe :: [19:35:32] [Server thread/INFO]:   Semilla 888 · entorno normal · versión 75fc36b90f6f090b
+WFTEST PASS la zona creada y quitada ya no está :: [19:35:33] [Server thread/INFO]:   Alrededor de cada aparición: 2 chunks
+WFTEST PASS protections.yml sin casa-gui :: -
+WFTEST PASS sin excepciones de WorldForge en el registro :: -
+FIN escenario-gui: 0 fallo(s)

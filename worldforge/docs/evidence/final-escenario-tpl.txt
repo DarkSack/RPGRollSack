@@ -1,0 +1,81 @@
+== Construir ==
+WFTEST PASS crear t_obra (flat) :: [20:16:29] [WorldForge-SQLite/INFO]: [WorldForge] Mundo t_obra creado con el preset flat (semilla -2014088668195201126).
+WFTEST PASS torre: piedra :: [20:16:36] [Server thread/INFO]: Successfully filled 60 block(s)
+WFTEST PASS torre: oro en el origen :: [20:16:36] [Server thread/INFO]: Changed the block at 100, -60, 100
+WFTEST PASS torre: diamante enfrente :: [20:16:37] [Server thread/INFO]: Changed the block at 104, -60, 102
+WFTEST PASS torre: cofre :: [20:16:38] [Server thread/INFO]: Changed the block at 102, -59, 101
+WFTEST PASS torre: tabla de botín :: [20:16:38] [Server thread/INFO]: Modified block data of 102, -59, 101
+WFTEST PASS ancha (32×32): suelo :: [20:16:39] [Server thread/INFO]: Successfully filled 1024 block(s)
+WFTEST PASS ancha: oro en el origen :: [20:16:40] [Server thread/INFO]: Changed the block at 100, -60, 200
+WFTEST PASS ancha: diamante enfrente :: [20:16:40] [Server thread/INFO]: Changed the block at 131, -60, 231
+== Guardar ==
+WFTEST PASS guardar torre :: [20:16:41] [Server thread/INFO]: [WorldForge] Plantilla torre guardada: 5×4×3 · sha a7915c6f25d81d22.
+WFTEST PASS guardar ancha (el máximo) :: [20:16:42] [Server thread/INFO]: [WorldForge] Plantilla ancha guardada: 32×1×32 · sha 6589d994427c78f7.
+WFTEST PASS el archivo está en structures/ :: -rw-r--r-- 1 Sack 197121 2972 Oct 21 14:16 ancha.nbt -rw-r--r-- 1 Sack 197121  445 Oct 21 14:16 torre.nbt 
+WFTEST PASS no se sobrescribe :: [20:16:42] [Server thread/INFO]: [WorldForge] No se pudo: nombre: ya existe la plantilla «torre». No se sobrescriben (un preset puede usarla): guarda con otro nombre.
+WFTEST PASS demasiado ancha :: [20:16:43] [Server thread/INFO]: [WorldForge] No se pudo: zona: mide 41×1×2; como mucho 32 de ancho y de fondo y 64 de alto.
+WFTEST PASS demasiado alta :: [20:16:44] [Server thread/INFO]: [WorldForge] No se pudo: zona: mide 2×75×2; como mucho 32 de ancho y de fondo y 64 de alto.
+WFTEST PASS se sale del mundo :: [20:16:45] [Server thread/INFO]: [WorldForge] No se pudo: zona: se sale del mundo (y de -64 a 319).
+WFTEST PASS nombre con ruta :: [20:16:46] [Server thread/INFO]: [WorldForge] No se pudo: nombre: «../x» no vale como identificador: minúsculas, números, '_' o '-', hasta 32, empezando por letra o número.
+WFTEST PASS zona sin cargar :: [20:16:46] [Server thread/INFO]: [WorldForge] No se pudo: zona: el chunk 312, 312 no está cargado: acércate o usa /forceload.
+WFTEST PASS desde la consola hace falta el mundo :: [20:16:47] [Server thread/INFO]: [WorldForge] No se pudo: desde la consola indica el mundo.
+WFTEST PASS mundo que no existe :: [20:16:48] [Server thread/INFO]: [WorldForge] No se pudo: no hay ningún mundo cargado llamado «no_existe».
+WFTEST PASS coordenada que no es un número :: [20:16:49] [Server thread/INFO]: [WorldForge] No se pudo: «a» no es un número entero.
+WFTEST PASS la lista enseña la buena :: [20:16:49] [Folia Async Scheduler Thread #0/INFO]:   torre · 5×4×3 · sha a7915c6f25d81d22
+WFTEST PASS y marca la rota :: [20:16:50] [Folia Async Scheduler Thread #1/INFO]:   ✘ rota: «rota» no se puede leer: Not in GZIP format
+WFTEST PASS info de la rota :: [20:16:51] [Folia Async Scheduler Thread #2/INFO]: [WorldForge] No se pudo: structure: «rota» no se puede leer: Not in GZIP format
+== Presets ==
+WFTEST PASS importar tpl-plano :: [20:16:52] [Folia Async Scheduler Thread #3/INFO]: [WorldForge] Importado como borrador tpl-plano. Revísalo y publícalo con /worldforge preset publish tpl-plano.
+WFTEST PASS publicar tpl-plano :: [20:16:52] [Folia Async Scheduler Thread #4/INFO]: [WorldForge] Borrador tpl-plano publicado: ya se puede usar para crear mundos.
+WFTEST PASS importar tpl-vacio :: [20:16:53] [Folia Async Scheduler Thread #5/INFO]: [WorldForge] Importado como borrador tpl-vacio. Revísalo y publícalo con /worldforge preset publish tpl-vacio.
+WFTEST PASS publicar tpl-vacio :: [20:16:54] [Folia Async Scheduler Thread #5/INFO]: [WorldForge] Borrador tpl-vacio publicado: ya se puede usar para crear mundos.
+WFTEST PASS importar tpl-ancha :: [20:16:55] [Folia Async Scheduler Thread #5/INFO]: [WorldForge] Importado como borrador tpl-ancha. Revísalo y publícalo con /worldforge preset publish tpl-ancha.
+WFTEST PASS publicar tpl-ancha :: [20:16:55] [Folia Async Scheduler Thread #5/INFO]: [WorldForge] Borrador tpl-ancha publicado: ya se puede usar para crear mundos.
+WFTEST PASS importar uno que pide una plantilla que no hay :: [20:16:56] [Folia Async Scheduler Thread #5/INFO]: [WorldForge] Importado como borrador tpl-falta. Revísalo y publícalo con /worldforge preset publish tpl-falta.
+WFTEST PASS no se publica :: [20:16:57] [Folia Async Scheduler Thread #5/INFO]: [WorldForge] No se pudo: templates[0].structure: no existe la plantilla «nada» (structures/nada.nbt).
+WFTEST PASS importar uno vanilla con plantillas :: [20:16:58] [Folia Async Scheduler Thread #5/INFO]: [WorldForge] Importado como borrador tpl-vanilla. Revísalo y publícalo con /worldforge preset publish tpl-vanilla.
+WFTEST PASS no se publica: vanilla no coloca plantillas :: [20:16:58] [Folia Async Scheduler Thread #5/INFO]: [WorldForge] No se pudo: templates: el proveedor «vanilla» no controla plantillas .nbt en chunks nuevos.
+WFTEST PASS info dice qué presets la usan :: [20:16:59] [Folia Async Scheduler Thread #5/INFO]:   La usan: tpl-plano, tpl-vacio, tpl-vanilla (borrador)
+== Generar ==
+WFTEST PASS crear t_tpl (plano) :: [20:17:00] [WorldForge-SQLite/INFO]: [WorldForge] Mundo t_tpl creado con el preset tpl-plano (semilla 4242).
+WFTEST PASS crear t_tplv (vacío) :: [20:17:02] [WorldForge-SQLite/INFO]: [WorldForge] Mundo t_tplv creado con el preset tpl-vacio (semilla 4242).
+WFTEST PASS crear t_ancha :: [20:17:03] [WorldForge-SQLite/INFO]: [WorldForge] Mundo t_ancha creado con el preset tpl-ancha (semilla 4242).
+WFTEST PASS plano: torres colocadas, ninguna sin sitio :: 68 colocadas, 0 sin sitio
+WFTEST PASS el filtro de biomas deja fuera la regla de the_void :: 0 colocadas
+WFTEST PASS con rotation: random salen giros distintos ::       2 CLOCKWISE_180       4 CLOCKWISE_90       2 COUNTERCLOCKWISE_90       2 NONE 
+WFTEST PASS superficie: justo encima de la hierba (y=-60) :: -60 
+WFTEST PASS torre en 172 -60 152 (COUNTERCLOCKWISE_90): oro en el origen :: [20:17:41] [Server thread/INFO]: Test passed
+WFTEST PASS torre (COUNTERCLOCKWISE_90): diamante en la esquina opuesta :: [20:17:42] [Server thread/INFO]: Test passed
+WFTEST PASS torre (COUNTERCLOCKWISE_90): el cofre conserva su tabla de botín :: [20:17:42] [Server thread/INFO]: 173, -59, 150 has the following block data: "minecraft:chests/simple_dungeon"
+WFTEST PASS torre en 162 -60 95 (NONE): oro en el origen :: [20:17:44] [Server thread/INFO]: Test passed
+WFTEST PASS torre (NONE): diamante en la esquina opuesta :: [20:17:45] [Server thread/INFO]: Test passed
+WFTEST PASS torre (NONE): el cofre conserva su tabla de botín :: [20:17:45] [Server thread/INFO]: 164, -59, 96 has the following block data: "minecraft:chests/simple_dungeon"
+WFTEST PASS torre en 155 -60 164 (CLOCKWISE_90): oro en el origen :: [20:17:47] [Server thread/INFO]: Test passed
+WFTEST PASS torre (CLOCKWISE_90): diamante en la esquina opuesta :: [20:17:48] [Server thread/INFO]: Test passed
+WFTEST PASS torre (CLOCKWISE_90): el cofre conserva su tabla de botín :: [20:17:48] [Server thread/INFO]: 154, -59, 166 has the following block data: "minecraft:chests/simple_dungeon"
+WFTEST PASS torre en 128 -60 174 (CLOCKWISE_180): oro en el origen :: [20:17:50] [Server thread/INFO]: Test passed
+WFTEST PASS torre (CLOCKWISE_180): diamante en la esquina opuesta :: [20:17:51] [Server thread/INFO]: Test passed
+WFTEST PASS torre (CLOCKWISE_180): el cofre conserva su tabla de botín :: [20:17:52] [Server thread/INFO]: 126, -59, 173 has the following block data: "minecraft:chests/simple_dungeon"
+WFTEST PASS vacío: salas colocadas :: 93 colocadas, 0 sin sitio
+WFTEST PASS underground a y=60 y sin girar :: sala t_tplv 173 60 156 NONE;sala t_tplv 168 60 118 NONE;
+WFTEST PASS sala en 173 60 156 (NONE): oro en el origen :: [20:17:57] [Server thread/INFO]: Test passed
+WFTEST PASS sala (NONE): diamante en la esquina opuesta :: [20:17:58] [Server thread/INFO]: Test passed
+WFTEST PASS sala en 168 60 118 (NONE): oro en el origen :: [20:18:00] [Server thread/INFO]: Test passed
+WFTEST PASS sala (NONE): diamante en la esquina opuesta :: [20:18:00] [Server thread/INFO]: Test passed
+WFTEST PASS 32×32 cabe siempre en la región del generador :: 7 colocadas, 0 sin sitio
+WFTEST PASS ancha en 165 -60 51 (COUNTERCLOCKWISE_90): oro en el origen :: [20:18:06] [Server thread/INFO]: Test passed
+WFTEST PASS ancha (COUNTERCLOCKWISE_90): diamante en la esquina opuesta :: [20:18:07] [Server thread/INFO]: Test passed
+WFTEST PASS ancha en 132 -60 202 (CLOCKWISE_90): oro en el origen :: [20:18:09] [Server thread/INFO]: Test passed
+WFTEST PASS ancha (CLOCKWISE_90): diamante en la esquina opuesta :: [20:18:10] [Server thread/INFO]: Test passed
+== Tras reiniciar ==
+WFTEST PASS se para guardando :: -
+WFTEST PASS vuelve a arrancar :: [20:18:52] [Server thread/INFO]: Done (22.284s)! For help, type "help"
+WFTEST PASS el mundo vuelve con sus plantillas y sigue colocándolas :: 33 colocadas desde el arranque
+== Si falta el archivo ==
+WFTEST PASS validar lo detecta :: [20:19:14] [Server thread/INFO]: [WorldForge] El preset tpl-plano tiene errores:
+WFTEST PASS no crea mundos con ese preset :: [20:19:15] [Server thread/INFO]: [WorldForge] No se pudo: preset: «tpl-plano» ya no es válido (sus plantillas cambiaron).
+WFTEST PASS con el archivo de vuelta vale otra vez :: [20:19:15] [Server thread/INFO]: [WorldForge] El preset tpl-plano es válido para el proveedor flat.
+== Registro ==
+WFTEST PASS ninguna escritura fuera de la región del generador :: -
+WFTEST PASS sin excepciones de WorldForge en el registro :: -
+FIN escenario-tpl: 0 fallo(s)

@@ -1,0 +1,15 @@
+# Terreno de WorldForge: el router de ruido de vanilla con otros números (ver README, «Terrenos»).
+# Úsalo con /wf dimension create <nombre> towering terrain:montanas — en tipos más bajos se cortan las cimas.
+id: montanas
+description: cordilleras casi el doble de altas, valles hondos y cimas afiladas
+base: overworld
+height-scale: 1.7      # 0.25 a 3: estira el relieve alrededor de y=64
+height-offset: 0       # -96 a 96 bloques: sube o hunde todo
+peaks: 1.5             # 0 a 4: picos dentados de vanilla (0 los quita)
+continent-size: 1.5    # 0.25 a 8: tamaño de continentes y océanos
+erosion-size: 1.5      # 0.25 a 8: tamaño de las zonas llanas y escarpadas
+ridge-size: 1.5        # 0.25 a 8: tamaño de crestas y valles
+biome-size: 1.5        # 0.25 a 8: tamaño de las zonas de clima (temperatura y humedad)
+sea-level: 63
+aquifers: true
+ore-veins: true

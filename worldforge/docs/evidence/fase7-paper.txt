@@ -1,0 +1,81 @@
+== Preparación: mundo plano con tres marcas ==
+WFTEST PASS inspect: el generador vacío no dice que haya estructuras :: [14:08:24] [Server thread/INFO]:   Generador: WorldForgeGenerator · estructuras no
+WFTEST PASS crear t_reg (flat) :: [14:08:25] [WorldForge-SQLite/INFO]: [WorldForge] Mundo t_reg creado con el preset flat (semilla -7762183694113548998).
+WFTEST PASS forzar los chunks 5..7,5 :: [14:08:27] [Server thread/INFO]: Marked 3 chunks in minecraft:t_reg from [5, 5] to [7, 5] to be force loaded
+WFTEST PASS marca en 85 -60 85 :: [14:08:31] [Server thread/INFO]: Changed the block at 85, -60, 85
+WFTEST PASS marca en 101 -60 85 :: [14:08:32] [Server thread/INFO]: Changed the block at 101, -60, 85
+WFTEST PASS marca en 117 -60 85 :: [14:08:32] [Server thread/INFO]: Changed the block at 117, -60, 85
+WFTEST PASS proteger el chunk 6,5 (casa) :: [14:08:33] [Folia Async Scheduler Thread #0/INFO]: [WorldForge] Zona casa protegida en t_reg: 96, 80 → 111, 95.
+WFTEST PASS una zona con el mismo nombre no :: [14:08:34] [Folia Async Scheduler Thread #1/INFO]: [WorldForge] No se pudo: id: ya hay una zona «casa».
+WFTEST PASS guardar el mundo :: [14:08:34] [Server thread/INFO]: Saved the game
+== Plan y confirmación ==
+WFTEST PASS planificar 5..6,5 :: [14:08:36] [WorldForge-SQLite/INFO]:   Chunks a regenerar: 1 · protegidos (no se tocan): 1 · nunca generados (se ignoran): 0
+WFTEST PASS el plan da el código :: [14:08:36] [WorldForge-SQLite/INFO]:   job-1aa0dfcf regen t_reg · PLANNED · 0/1
+WFTEST PASS leer trabajo y código del plan :: job-1aa0dfcf 286598
+WFTEST PASS un código equivocado no confirma :: [14:08:37] [WorldForge-SQLite/INFO]: [WorldForge] No se pudo: token: el código no coincide; míralo en el plan (/wf regen info job-1aa0dfcf).
+WFTEST PASS un jugador entra en t_reg :: [14:08:43] [Server thread/INFO]: Teleported Visitante to 85.500000, -59.000000, 85.500000
+WFTEST PASS el jugador está en t_reg :: [14:08:45] [Server thread/INFO]: Test passed. Count: 1
+WFTEST PASS confirmar con el código :: [14:08:46] [WorldForge-SQLite/INFO]: [WorldForge] Confirmado: se descarga el mundo, se respalda y se edita; te aviso al terminar.
+WFTEST PASS termina y vuelve a cargar el mundo :: [14:08:49] [WorldForge-SQLite/INFO]: [RPGRoll-WorldForge] job-1aa0dfcf: 1 chunks regenerados (se generan de nuevo al visitarlos). El mundo vuelve a estar cargado.
+WFTEST PASS el doble clic no lo lanza dos veces :: 1 confirmado, 1 rechazado
+WFTEST PASS al jugador lo llevaron a la aparición principal :: [14:08:50] [Server thread/INFO]: Test passed. Count: 1
+WFTEST PASS chunk 5,5 regenerado: la marca ya no está :: [14:08:55] [Server thread/INFO]: Test passed
+WFTEST PASS chunk 5,5 regenerado: capas planas :: [14:08:56] [Server thread/INFO]: Test passed
+WFTEST PASS chunk 6,5 protegido: conserva la marca :: [14:08:56] [Server thread/INFO]: Test passed
+WFTEST PASS chunk 7,5 fuera del plan: conserva la marca :: [14:08:57] [Server thread/INFO]: Test passed
+WFTEST PASS el trabajo queda COMPLETED :: [14:08:58] [WorldForge-SQLite/INFO]: [WorldForge] Trabajo job-1aa0dfcf (regen) · COMPLETED
+WFTEST PASS respaldo con manifiesto :: bak-d37dbf94: 2 archivo(s)
+== Deshacer con el respaldo ==
+WFTEST PASS planificar la restauración :: [14:08:59] [WorldForge-SQLite/INFO]:   Para confirmar: /wf regen confirm job-d2231ec6 50a6fc  (caduca en 15 min)
+WFTEST PASS confirmar la restauración :: [14:09:00] [WorldForge-SQLite/INFO]: [WorldForge] Confirmado: se descarga el mundo, se respalda y se edita; te aviso al terminar.
+WFTEST PASS restaura y vuelve a cargar :: [14:09:01] [WorldForge-SQLite/INFO]: [RPGRoll-WorldForge] job-d2231ec6: 2 archivos devueltos al respaldo bak-d37dbf94 (2.1 MB). El mundo vuelve a estar cargado.
+WFTEST PASS la marca del chunk 5,5 vuelve :: [14:09:06] [Server thread/INFO]: Test passed
+== Cancelar y caducar ==
+WFTEST PASS otro plan :: [14:09:07] [WorldForge-SQLite/INFO]:   Para confirmar: /wf regen confirm job-6a7baa42 8f60c0  (caduca en 15 min)
+WFTEST PASS cancelarlo :: [14:09:08] [WorldForge-SQLite/INFO]: [WorldForge] job-6a7baa42 cancelado; no se tocó nada.
+WFTEST PASS uno cancelado no se confirma :: [14:09:08] [WorldForge-SQLite/INFO]: [WorldForge] No se pudo: job: job-6a7baa42 ya no espera confirmación (está en CANCELLED).
+WFTEST PASS recargar con 0 minutos :: [14:09:09] [Folia Async Scheduler Thread #5/INFO]: [WorldForge] Configuración, textos y presets recargados.
+WFTEST PASS plan que caduca :: [14:09:10] [WorldForge-SQLite/INFO]:   Para confirmar: /wf regen confirm job-b0f93e2f 808fc8  (caduca en 0 min)
+WFTEST PASS un plan caducado no se confirma :: [14:09:12] [WorldForge-SQLite/INFO]: [WorldForge] No se pudo: job: el plan caducó (0 min); planifica otra vez.
+WFTEST PASS recargar con 15 minutos :: [14:09:12] [Folia Async Scheduler Thread #5/INFO]: [WorldForge] Configuración, textos y presets recargados.
+== protections.yml roto bloquea la regeneración ==
+WFTEST PASS recargar avisa del error :: [14:09:13] [Folia Async Scheduler Thread #5/INFO]:   ✘ protections.yml: no se pudo leer: while parsing a flow sequence
+WFTEST PASS y no deja planificar :: [14:09:14] [Server thread/INFO]: [WorldForge] No se pudo: protections: protections.yml tiene un error (no se pudo leer: while parsing a flow sequence); corrígelo y usa /wf reload-config.
+WFTEST PASS el diagnóstico lo dice :: [14:09:14] [Server thread/INFO]:   ✘ Regeneración BLOQUEADA: protections.yml tiene un error (no se pudo leer: while parsing a flow sequence); corrígelo y usa /wf reload-config.
+WFTEST PASS el archivo roto no se reescribe :: -
+WFTEST PASS arreglado y recargado :: [14:09:15] [Folia Async Scheduler Thread #5/INFO]: [WorldForge] Configuración, textos y presets recargados.
+WFTEST PASS la zona sigue :: [14:09:16] [Server thread/INFO]:   casa · t_reg · 96, 80 → 111, 95 · la casa de alguien
+== Mundo principal: espera al reinicio ==
+WFTEST PASS marca en el principal :: [14:09:20] [Server thread/INFO]: Changed the block at 165, 64, 165
+WFTEST PASS guardar el mundo :: [14:09:21] [Server thread/INFO]: Saved the game
+WFTEST PASS planificar en el principal :: [14:09:22] [WorldForge-SQLite/INFO]:   Para confirmar: /wf regen confirm job-da59020b 20dfaf  (caduca en 15 min)
+WFTEST PASS el plan avisa de que es al reiniciar :: -
+WFTEST PASS confirmar :: [14:09:23] [WorldForge-SQLite/INFO]: [WorldForge] Confirmado. Se aplicará en el PRÓXIMO ARRANQUE, antes de que el servidor abra los mundos (respaldo incluido). Reinicia cuando te venga bien.
+WFTEST PASS queda esperando :: [14:09:23] [WorldForge-SQLite/INFO]:   job-da59020b regen world · PENDING_RESTART · 0/1
+WFTEST PASS todavía no se tocó :: [14:09:24] [Server thread/INFO]: Test passed
+WFTEST PASS se para guardando :: All dimensions are saved
+WFTEST PASS vuelve a arrancar :: [14:10:08] [Server thread/INFO]: Done (28.898s)! For help, type "help"
+WFTEST PASS se aplica al arrancar, antes de abrir el mundo :: línea 35 < línea 50
+WFTEST PASS la marca del principal desapareció :: [14:10:14] [Server thread/INFO]: Test passed
+WFTEST PASS la plataforma de aparición sigue :: [14:10:15] [Server thread/INFO]: Test passed
+== Apagado a mitad (simulado) y recuperación ==
+WFTEST PASS se para guardando :: All dimensions are saved
+WFTEST PASS simular: el trabajo quedó en RUNNING :: job-da59020b
+WFTEST PASS vuelve a arrancar :: [14:10:54] [Server thread/INFO]: Done (23.520s)! For help, type "help"
+WFTEST PASS al arrancar lo detecta :: [14:10:50] [Server thread/WARN]: [RPGRoll-WorldForge] ⚠ job-da59020b estaba en RUNNING al apagarse: el servidor se apagó mientras editaba (1/1). Respaldo bak
+WFTEST PASS no se reanuda: NEEDS_RECOVERY :: [14:10:56] [WorldForge-SQLite/INFO]: [WorldForge] Trabajo job-da59020b (regen) · NEEDS_RECOVERY
+WFTEST PASS el diagnóstico lo marca :: [14:10:57] [Server thread/INFO]:   ✘ Trabajo job-da59020b (regen, world): NEEDS_RECOVERY — el servidor se apagó mientras editaba (1/1). Respaldo bak-b2f8e645: /wf regen restore job-da59020b o /wf regen accept job-da59020b. El mundo queda bloqueado para otras operaciones.
+WFTEST PASS el mundo queda bloqueado :: [14:10:58] [WorldForge-SQLite/INFO]: [WorldForge] No se pudo: world: el mundo tiene un trabajo en marcha o pendiente: job-da59020b (NEEDS_RECOVERY). Termínalo, cancélalo o recupéralo antes.
+WFTEST PASS cancel no sirve para esto :: [14:10:58] [WorldForge-SQLite/INFO]: [WorldForge] No se pudo: job: job-da59020b está en NEEDS_RECOVERY; solo se cancela un plan o un trabajo que espera al reinicio (para este usa restore o accept).
+WFTEST PASS planificar la restauración :: [14:10:59] [WorldForge-SQLite/INFO]:   Para confirmar: /wf regen confirm job-ae02ee1a b7668f  (caduca en 15 min)
+WFTEST PASS confirmarla (al reiniciar) :: [14:11:00] [WorldForge-SQLite/INFO]: [WorldForge] Confirmado. Se aplicará en el PRÓXIMO ARRANQUE, antes de que el servidor abra los mundos (respaldo incluido). Reinicia cuando te venga bien.
+WFTEST PASS se para guardando :: All dimensions are saved
+WFTEST PASS vuelve a arrancar :: [14:11:37] [Server thread/INFO]: Done (24.773s)! For help, type "help"
+WFTEST PASS restaurado al arrancar :: [14:11:33] [Server thread/WARN]: [RPGRoll-WorldForge] job-ae02ee1a (restore, world): 1 archivos devueltos al respaldo bak-b2f8e645 (2.3 MB).
+WFTEST PASS la marca del principal vuelve :: [14:11:45] [Server thread/INFO]: Test passed
+WFTEST PASS el trabajo original queda RESTORED :: [14:11:46] [WorldForge-SQLite/INFO]: [WorldForge] Trabajo job-da59020b (regen) · RESTORED
+WFTEST PASS y el mundo se desbloquea :: [14:11:47] [WorldForge-SQLite/INFO]:   Para confirmar: /wf regen confirm job-c2457129 e0cbe0  (caduca en 15 min)
+WFTEST PASS (se cancela ese plan) :: [14:11:47] [WorldForge-SQLite/INFO]: [WorldForge] job-c2457129 cancelado; no se tocó nada.
+== Registro ==
+WFTEST PASS sin excepciones de WorldForge en el registro :: -
+FIN escenario-regen: 0 fallo(s)

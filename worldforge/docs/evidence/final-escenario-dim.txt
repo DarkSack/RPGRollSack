@@ -1,0 +1,54 @@
+== Antes de reiniciar ==
+WFTEST PASS sin dimensiones :: [19:30:43] [Server thread/INFO]:   ninguna; crea una con /wf dimension create <nombre> <tipo> <generador>
+WFTEST PASS una combinación que no cabe :: [19:30:44] [Server thread/INFO]: [WorldForge] No se pudo: generator: «nether» no cabe en la altura del tipo «overworld»; úsalo con: nether.
+WFTEST PASS un nombre con ruta :: [19:30:45] [Server thread/INFO]: [WorldForge] No se pudo: id: «../x» no vale: minúsculas, números o '_', hasta 24.
+WFTEST PASS crear minas (tall + overworld) :: [19:30:46] [Server thread/INFO]: [WorldForge] Dimensión minas escrita en el datapack (como el normal pero más alto: −64 a 383; terreno y biomas del mundo normal).
+WFTEST PASS avisa de que hay que reiniciar :: [19:30:46] [Server thread/INFO]:   ⚠ Minecraft solo lee dimensiones nuevas al ARRANCAR: reinicia y aparecerá como el mundo world_worldforge_vacio (entra con /execute in worldforge:vacio run tp @s 0 100 0).
+WFTEST PASS crear plana (caves + flat) :: [19:30:47] [Server thread/INFO]: [WorldForge] Dimensión plana escrita en el datapack (como el normal pero con techo y sin cielo; plano: bedrock, tierra y hierba).
+WFTEST PASS crear infierno (nether + nether) :: [19:30:48] [Server thread/INFO]: [WorldForge] Dimensión infierno escrita en el datapack (como el Nether: techo, sin día ni noche; terreno y biomas del Nether).
+WFTEST PASS crear islas (end + end) :: [19:30:48] [Server thread/INFO]: [WorldForge] Dimensión islas escrita en el datapack (como el End; islas del End).
+WFTEST PASS repetida no :: [19:30:49] [Server thread/INFO]: [WorldForge] No se pudo: id: ya existe la dimensión «minas» (PENDING_RESTART).
+WFTEST PASS archivos del datapack :: ./data/worldforge/dimension/infierno.json ./data/worldforge/dimension/islas.json ./data/worldforge/dimension/minas.json ./data/worldforge/dimension/plana.json ./data/worldforge/dimension/vacio.json ./data/worldforge/dimension_type/tall.json ./pack.mcmeta 
+WFTEST PASS lista: esperan al reinicio :: [19:30:50] [Server thread/INFO]:   minas · tall · overworld · PENDING_RESTART — se carga en el próximo arranque como world_worldforge_minas
+WFTEST PASS todavía no existe el mundo :: [19:30:51] [Server thread/INFO]: [WorldForge] No se pudo: world: no hay un mundo «world_worldforge_minas» (ni cargado ni administrado).
+== Reinicio ==
+WFTEST PASS se para guardando :: -
+WFTEST PASS vuelve a arrancar :: [19:32:00] [Server thread/INFO]: Done (56.888s)! For help, type "help"
+WFTEST PASS el servidor encuentra el datapack :: [19:31:15] [ServerMain/INFO]: Found new data pack file/worldforge, loading it automatically
+WFTEST PASS minas queda READY :: [19:32:00] [WorldForge-SQLite/INFO]: [RPGRoll-WorldForge] Dimensión minas: READY — cargada como world_worldforge_minas
+WFTEST PASS vacio queda READY :: [19:32:00] [WorldForge-SQLite/INFO]: [RPGRoll-WorldForge] Dimensión vacio: READY — cargada como world_worldforge_vacio
+WFTEST PASS plana queda READY :: [19:32:00] [WorldForge-SQLite/INFO]: [RPGRoll-WorldForge] Dimensión plana: READY — cargada como world_worldforge_plana
+WFTEST PASS infierno queda READY :: [19:32:00] [WorldForge-SQLite/INFO]: [RPGRoll-WorldForge] Dimensión infierno: READY — cargada como world_worldforge_infierno
+WFTEST PASS islas queda READY :: [19:32:00] [WorldForge-SQLite/INFO]: [RPGRoll-WorldForge] Dimensión islas: READY — cargada como world_worldforge_islas
+WFTEST PASS aparecen como mundos :: [19:32:02] [Server thread/INFO]:   world_worldforge_minas [worldforge:minas] cargado · DIMENSIÓN (datapack de WorldForge)
+WFTEST PASS minas usa el tipo alto :: [19:32:03] [Server thread/INFO]:   Altura -64 a 383 · carpeta ./world/dimensions/worldforge/minas
+WFTEST PASS infierno usa el tipo del Nether :: [19:32:04] [Server thread/INFO]:   Altura 0 a 255 · carpeta ./world/dimensions/worldforge/infierno
+WFTEST PASS minas: se puede construir en y=380 (no cabe en un mundo normal) :: [19:32:17] [Server thread/INFO]: Changed the block at 0, 380, 0
+WFTEST PASS minas: fondo de bedrock del terreno normal :: [19:32:17] [Server thread/INFO]: Test passed
+WFTEST PASS vacio: nada :: [19:32:18] [Server thread/INFO]: Test passed
+WFTEST PASS vacio: bioma the_void :: [19:32:18] [Server thread/INFO]: Test passed
+WFTEST PASS plana: bedrock abajo :: [19:32:19] [Server thread/INFO]: Test passed
+WFTEST PASS plana: hierba arriba :: [19:32:20] [Server thread/INFO]: Test passed
+WFTEST PASS infierno: techo de bedrock :: [19:32:20] [Server thread/INFO]: Test passed
+WFTEST PASS infierno: suelo de bedrock :: [19:32:21] [Server thread/INFO]: Test passed
+WFTEST PASS islas: bioma del End :: [19:32:22] [Server thread/INFO]: Test passed
+WFTEST PASS regenerar en una dimensión de datapack espera al reinicio :: [19:32:23] [WorldForge-SQLite/INFO]:   Para confirmar: /wf regen confirm job-de143443 b8b907  (caduca en 15 min)
+WFTEST PASS el plan lo dice :: -
+WFTEST PASS (se descarta ese plan) :: [19:32:24] [WorldForge-SQLite/INFO]: [WorldForge] job-de143443 cancelado; no se tocó nada.
+WFTEST PASS el diagnóstico lista las dimensiones :: [19:32:24] [Server thread/INFO]:   Dimensión minas (tall, overworld): READY · cargada como world_worldforge_minas
+== Quitar una ==
+WFTEST PASS quitar vacio :: [19:32:25] [Server thread/INFO]: [WorldForge] Dimensión vacio: PENDING_REMOVAL — definición quitada; deja de cargarse al reiniciar. La carpeta world/dimensions/worldforge/vacio se conserva.
+WFTEST PASS su definición ya no está :: -
+WFTEST PASS se para guardando :: -
+WFTEST PASS vuelve a arrancar :: [19:33:10] [Server thread/INFO]: Done (26.269s)! For help, type "help"
+WFTEST PASS tras reiniciar: REMOVED :: [19:33:10] [WorldForge-SQLite/INFO]: [RPGRoll-WorldForge] Dimensión vacio: REMOVED — ya no se carga; su carpeta se conserva
+WFTEST PASS ya no es un mundo :: [19:33:12] [Server thread/INFO]: [WorldForge] No se pudo: world: no hay un mundo «world_worldforge_vacio» (ni cargado ni administrado).
+WFTEST PASS su carpeta se conserva :: world/dimensions/worldforge/vacio
+WFTEST PASS se puede volver a crear :: [19:33:13] [Server thread/INFO]: [WorldForge] Dimensión vacio escrita en el datapack (como el mundo normal: cielo, día y noche, −64 a 319; vacío (bioma the_void)).
+== JSON roto a mano (qué hace Minecraft) ==
+WFTEST PASS se para guardando :: -
+WFTEST PASS con un JSON roto Minecraft no arranca (documentado) :: Caused by: java.lang.IllegalStateException: No key settings in MapLike[{"type":"minecraft:flat"}]; Failed to get element ResourceKey[minecraft:dimension_type / minecraft:no_existe]
+WFTEST PASS vuelve a arrancar :: [19:34:15] [Server thread/INFO]: Done (26.487s)! For help, type "help"
+== Registro ==
+WFTEST PASS sin excepciones de WorldForge en el registro :: -
+FIN escenario-dim: 0 fallo(s)

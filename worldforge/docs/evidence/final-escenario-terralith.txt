@@ -1,0 +1,22 @@
+== Terralith activo ==
+WFTEST PASS el servidor carga Terralith :: [20:35:45] [ServerMain/INFO]: Found new data pack file/Terralith_26.1_v2.6.2.zip, loading it automatically
+WFTEST PASS el mundo normal tiene biomas de Terralith :: [20:36:11] [Server thread/INFO]: The nearest terralith:highlands is at [-544, 79, 416] (684 blocks away)
+== Dimensiones de WorldForge con Terralith ==
+WFTEST PASS recargar :: [20:36:12] [Folia Async Scheduler Thread #0/INFO]: [WorldForge] Configuración, textos y presets recargados.
+WFTEST PASS ref: el generador normal :: [20:36:13] [Server thread/INFO]: [WorldForge] Dimensión ref escrita en el datapack (como el mundo normal: cielo, día y noche, −64 a 319; terreno y biomas del mundo normal).
+WFTEST PASS ident: terreno de WorldForge con los números de vanilla :: [20:36:14] [Server thread/INFO]: [WorldForge] Dimensión ident escrita en el datapack (como el mundo normal: cielo, día y noche, −64 a 319; terreno «identidad»: los números de vanilla).
+WFTEST PASS suave :: [20:36:16] [Server thread/INFO]: [WorldForge] Dimensión suave escrita en el datapack (como el mundo normal: cielo, día y noche, −64 a 319; terreno «suave»: relieve a algo más de la mitad, sin picos dentados).
+WFTEST PASS se para guardando :: -
+WFTEST PASS vuelve a arrancar :: [20:37:25] [Server thread/INFO]: Done (56.457s)! For help, type "help"
+WFTEST PASS ref queda READY :: [20:37:25] [WorldForge-SQLite/INFO]: [RPGRoll-WorldForge] Dimensión ref: READY — cargada como world_worldforge_ref
+WFTEST PASS ident queda READY :: [20:37:25] [WorldForge-SQLite/INFO]: [RPGRoll-WorldForge] Dimensión ident: READY — cargada como world_worldforge_ident
+WFTEST PASS suave queda READY :: [20:37:25] [WorldForge-SQLite/INFO]: [RPGRoll-WorldForge] Dimensión suave: READY — cargada como world_worldforge_suave
+  400,400 ref [13729 200 0] ident [13306 418 0]
+  -800,1200 ref [12987 534 0] ident [12837 400 0]
+WFTEST PASS ref hereda el terreno de Terralith; ident no (sale del jar) :: 2 de 2 columnas distintas
+WFTEST PASS ref no tiene biomas de Terralith (su lista de parámetros, sin lithostitched, es la de vanilla) :: [20:37:44] [Server thread/INFO]: Could not find a biome of type "terralith:highlands" within reasonable distance
+WFTEST PASS terrain main avisa de Terralith :: [20:37:45] [WorldForge-SQLite/INFO]:   ⚠ el datapack «Terralith_26.1_v2.6.2.zip» también cambia el terreno del mundo normal; gana el que se cargue el último (/datapack list). Con Terralith, quítalo o deja el mundo principal en vanilla.
+WFTEST PASS y se deshace :: [20:37:46] [WorldForge-SQLite/INFO]: [WorldForge] El mundo principal vuelve al terreno de vanilla en el próximo arranque.
+== Registro ==
+WFTEST PASS sin excepciones de WorldForge en el registro :: -
+FIN escenario-terralith: 0 fallo(s)

@@ -1,0 +1,14 @@
+# RPGRoll-WorldForge — configuración.
+# Los presets viven en presets/ (los que usan los mundos) y drafts/ (borradores e importaciones).
+
+config-version: 1
+
+limits:
+  # Tamaño máximo de un preset importado desde imports/.
+  max-import-bytes: 262144
+
+regeneration:
+  # Máximo de chunks en un solo trabajo de regeneración.
+  max-chunks: 50000
+  # Minutos para confirmar un plan con su código antes de que caduque.
+  confirm-minutes: 15

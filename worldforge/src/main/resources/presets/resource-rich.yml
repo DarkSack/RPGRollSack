@@ -1,0 +1,57 @@
+schema: 1
+id: resource-rich
+name: Rico en recursos
+description: Terreno vanilla con venas extra de hierro, oro, diamante y carbón en los chunks nuevos.
+minecraft: 26.1.2
+provider: hybrid
+environment: normal
+structures: true
+ores:
+- id: extra-coal
+  block: minecraft:coal_ore
+  replaces: [minecraft:stone, minecraft:granite, minecraft:diorite, minecraft:andesite]
+  veins-per-chunk: 6
+  size: 12
+  min-y: 0
+  max-y: 192
+  distribution: uniform
+  biomes: []
+  exclude-biomes: []
+  priority: 0
+  enabled: true
+- id: extra-iron
+  block: minecraft:iron_ore
+  replaces: [minecraft:stone, minecraft:granite, minecraft:diorite, minecraft:andesite]
+  veins-per-chunk: 5
+  size: 8
+  min-y: 0
+  max-y: 160
+  distribution: triangle
+  biomes: []
+  exclude-biomes: []
+  priority: 1
+  enabled: true
+- id: extra-gold
+  block: minecraft:deepslate_gold_ore
+  replaces: [minecraft:deepslate, minecraft:tuff]
+  veins-per-chunk: 3
+  size: 8
+  min-y: -64
+  max-y: -1
+  distribution: uniform
+  biomes: []
+  exclude-biomes: []
+  priority: 2
+  enabled: true
+- id: extra-diamond
+  block: minecraft:deepslate_diamond_ore
+  replaces: [minecraft:deepslate, minecraft:tuff]
+  veins-per-chunk: 2
+  size: 6
+  min-y: -64
+  max-y: -16
+  distribution: triangle
+  biomes: []
+  exclude-biomes: []
+  priority: 3
+  enabled: true

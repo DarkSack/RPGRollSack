@@ -1,0 +1,14 @@
+# Terreno de WorldForge: colinas bajas, cómodas para construir. Cabe en el tipo overworld.
+id: suave
+description: relieve a algo más de la mitad, sin picos dentados
+base: overworld
+height-scale: 0.6
+height-offset: 0
+peaks: 0.3
+continent-size: 1.5
+erosion-size: 1.0
+ridge-size: 1.0
+biome-size: 1.0
+sea-level: 63
+aquifers: true
+ore-veins: true

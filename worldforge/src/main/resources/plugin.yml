@@ -1,0 +1,82 @@
+name: RPGRoll-WorldForge
+version: ${version}
+main: com.sack.rpgroll.worldforge.core.WorldForgePlugin
+api-version: "26.1.2"
+author: Sack
+description: Motor de generación y administración de mundos y dimensiones para Paper y Folia 26.1.2.
+# STARTUP: Bukkit solo pide el generador de bukkit.yml (generator: RPGRoll-WorldForge:<preset>)
+# a plugins que ya estén habilitados cuando carga los mundos.
+load: STARTUP
+# Probado en Folia 26.1.2-8 (escenario-folia, escenario-principal y escenario-motor); lo que Folia no
+# deja hacer (crear, cargar o descargar mundos en caliente) se rechaza con un mensaje.
+folia-supported: true
+
+commands:
+  worldforge:
+    description: Administración de mundos, presets y generación.
+    usage: /worldforge help
+    aliases: [wf]
+
+permissions:
+  worldforge.admin:
+    description: Todo WorldForge.
+    default: op
+    children:
+      worldforge.operator: true
+      worldforge.worlds.create: true
+      worldforge.worlds.manage: true
+      worldforge.dimensions.create: true
+      worldforge.terrain.main: true
+      worldforge.presets.import: true
+      worldforge.generation.apply: true
+      worldforge.regeneration.execute: true
+      worldforge.regeneration.cancel: true
+      worldforge.protection.manage: true
+      worldforge.reload: true
+      worldforge.worlds.teleport.others: true
+  worldforge.operator:
+    description: Preparar generación sin ejecutar nada destructivo.
+    default: false
+    children:
+      worldforge.viewer: true
+      worldforge.presets.edit: true
+      worldforge.presets.export: true
+      worldforge.generation.validate: true
+      worldforge.regeneration.plan: true
+      worldforge.templates.save: true
+      worldforge.worlds.teleport: true
+  worldforge.viewer:
+    description: Solo lectura.
+    default: false
+    children:
+      worldforge.worlds.view: true
+      worldforge.dimensions.view: true
+      worldforge.presets.view: true
+      worldforge.protection.view: true
+      worldforge.regeneration.view: true
+      worldforge.templates.view: true
+      worldforge.diagnostics: true
+  worldforge.worlds.view: {default: false}
+  worldforge.worlds.create: {default: false}
+  worldforge.worlds.manage: {default: false}
+  worldforge.worlds.teleport: {default: false}
+  worldforge.worlds.teleport.others: {default: false}
+  worldforge.dimensions.view: {default: false}
+  worldforge.dimensions.create: {default: false}
+  worldforge.terrain.main: {default: false}
+  worldforge.presets.view: {default: false}
+  worldforge.presets.edit: {default: false}
+  worldforge.presets.import: {default: false}
+  worldforge.presets.export: {default: false}
+  worldforge.generation.validate: {default: false}
+  worldforge.generation.apply: {default: false}
+  worldforge.regeneration.view: {default: false}
+  worldforge.regeneration.plan: {default: false}
+  worldforge.regeneration.execute: {default: false}
+  worldforge.regeneration.cancel: {default: false}
+  worldforge.protection.view: {default: false}
+  worldforge.protection.manage: {default: false}
+  worldforge.templates.view: {default: false}
+  worldforge.templates.save: {default: false}
+  worldforge.diagnostics: {default: false}
+  worldforge.reload: {default: false}

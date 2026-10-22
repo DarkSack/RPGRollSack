@@ -1,0 +1,84 @@
+== Terrenos y dimensiones ==
+WFTEST PASS los de serie :: [23:54:24] [Server thread/INFO]:   montanas — cordilleras casi el doble de altas, valles hondos y cimas afiladas
+WFTEST PASS el principal sigue en vanilla :: [23:54:25] [Server thread/INFO]: [WorldForge] Terrenos (terrains/*.yml) · mundo principal: vanilla
+WFTEST PASS el diagnóstico lee los datos de vanilla :: [23:54:26] [Server thread/INFO]:   Terrenos: 5 en terrains/ · mundo principal: vanilla · datos de vanilla del servidor: legibles
+WFTEST PASS recargar avisa del que está mal :: [23:54:26] [Folia Async Scheduler Thread #1/INFO]:   ✘ terrains/roto.yml: ✘ height-scale: 7.0 fuera de rango: de 0.25 a 3. (el archivo no se toca).
+WFTEST PASS y lee los buenos :: [23:54:27] [Server thread/INFO]:   identidad — los números de vanilla
+WFTEST PASS un terreno que no existe :: [23:54:28] [Server thread/INFO]: [WorldForge] No se pudo: generator: no hay un terreno «nada» en terrains/; hay: alto2, archipielago, continentes, extremo, identidad, montanas, suave, torre.
+WFTEST PASS terreno en un tipo del Nether :: [23:54:28] [Server thread/INFO]: [WorldForge] No se pudo: generator: los terrenos usan el ruido del mundo normal; úsalos con: caves, overworld, tall, towering.
+WFTEST PASS ref: el generador normal :: [23:54:29] [Server thread/INFO]: [WorldForge] Dimensión ref escrita en el datapack (como el mundo normal: cielo, día y noche, −64 a 319; terreno y biomas del mundo normal).
+WFTEST PASS ident: terreno con los números de vanilla :: [23:54:30] [Server thread/INFO]: [WorldForge] Dimensión ident escrita en el datapack (como el mundo normal: cielo, día y noche, −64 a 319; terreno «identidad»: los números de vanilla).
+WFTEST PASS alto2 en towering :: [23:54:32] [Server thread/INFO]: [WorldForge] Dimensión alto2 escrita en el datapack (como el normal pero muy alto: −64 a 575; terreno «alto2»: el doble de alto y nada más).
+WFTEST PASS torre en towering :: [23:54:33] [Server thread/INFO]: [WorldForge] Dimensión torre escrita en el datapack (como el normal pero muy alto: −64 a 575; terreno «torre»: el triple de alto y 96 más arriba).
+WFTEST PASS suave :: [23:54:35] [Server thread/INFO]: [WorldForge] Dimensión suave escrita en el datapack (como el mundo normal: cielo, día y noche, −64 a 319; terreno «suave»: relieve a algo más de la mitad, sin picos dentados).
+WFTEST PASS archi :: [23:54:36] [Server thread/INFO]: [WorldForge] Dimensión archi escrita en el datapack (como el mundo normal: cielo, día y noche, −64 a 319; terreno «archipielago»: islas y estrechos; menos tierra firme y más mar).
+WFTEST PASS montanas en tall avisa de que se cortan las cimas :: [23:54:37] [Server thread/INFO]:   ⚠ type: este terreno sube hasta y≈363 y el tipo «tall» aplana desde y=304: las cimas saldrán cortadas. Para que quepan: towering.
+WFTEST PASS montanas en towering :: [23:54:39] [Server thread/INFO]: [WorldForge] Dimensión montes escrita en el datapack (como el normal pero muy alto: −64 a 575; terreno «montanas»: cordilleras casi el doble de altas, valles hondos y cimas afiladas).
+WFTEST PASS escrito data/worldforge/worldgen/noise_settings/montanas/towering.json :: -
+WFTEST PASS escrito data/worldforge/worldgen/noise_settings/montanas/tall.json :: -
+WFTEST PASS escrito data/worldforge/worldgen/density_function/montanas/overworld/offset.json :: -
+WFTEST PASS escrito data/worldforge/dimension_type/towering.json :: -
+WFTEST PASS recargar con montanas cambiado :: [23:54:40] [Folia Async Scheduler Thread #5/INFO]: [WorldForge] Configuración, textos y presets recargados.
+WFTEST PASS no pisa un terreno ya escrito :: [23:54:41] [Folia Async Scheduler Thread #5/INFO]: [WorldForge] No se pudo: no se pudo escribir el datapack: ese terreno ya está escrito en el datapack con otros valores (data/worldforge/worldgen/density_function/montanas/overworld/offset.json) y puede usarlo otra dimensión; guarda tus cambios con otro id en terrains/
+WFTEST PASS recargar :: [23:54:42] [Folia Async Scheduler Thread #5/INFO]: [WorldForge] Configuración, textos y presets recargados.
+== Reinicio ==
+WFTEST PASS se para guardando :: -
+WFTEST PASS vuelve a arrancar :: [23:55:53] [Server thread/INFO]: Done (58.087s)! For help, type "help"
+WFTEST PASS ref queda READY :: [23:55:53] [WorldForge-SQLite/INFO]: [RPGRoll-WorldForge] Dimensión ref: READY — cargada como world_worldforge_ref
+WFTEST PASS ident queda READY :: [23:55:53] [WorldForge-SQLite/INFO]: [RPGRoll-WorldForge] Dimensión ident: READY — cargada como world_worldforge_ident
+WFTEST PASS alto2 queda READY :: [23:55:53] [WorldForge-SQLite/INFO]: [RPGRoll-WorldForge] Dimensión alto2: READY — cargada como world_worldforge_alto2
+WFTEST PASS torre queda READY :: [23:55:53] [WorldForge-SQLite/INFO]: [RPGRoll-WorldForge] Dimensión torre: READY — cargada como world_worldforge_torre
+WFTEST PASS suave queda READY :: [23:55:53] [WorldForge-SQLite/INFO]: [RPGRoll-WorldForge] Dimensión suave: READY — cargada como world_worldforge_suave
+WFTEST PASS archi queda READY :: [23:55:53] [WorldForge-SQLite/INFO]: [RPGRoll-WorldForge] Dimensión archi: READY — cargada como world_worldforge_archi
+WFTEST PASS altas queda READY :: [23:55:53] [WorldForge-SQLite/INFO]: [RPGRoll-WorldForge] Dimensión altas: READY — cargada como world_worldforge_altas
+WFTEST PASS montes queda READY :: [23:55:53] [WorldForge-SQLite/INFO]: [RPGRoll-WorldForge] Dimensión montes: READY — cargada como world_worldforge_montes
+WFTEST PASS montes usa el tipo towering :: [23:55:56] [Server thread/INFO]:   Altura -64 a 575 · carpeta ./world/dimensions/worldforge/montes
+WFTEST PASS Minecraft acepta los JSON (ningún ERROR al arrancar) :: -
+== Con los números de vanilla sale lo mismo que el generador normal ==
+WFTEST PASS ident = ref en 200,200 :: ref [7429 766 0] ident [7429 766 0]
+WFTEST PASS ident = ref en -600,300 :: ref [7669 226 0] ident [7669 226 0]
+WFTEST PASS ident = ref en 1000,-1000 :: ref [10363 2879 0] ident [10363 2879 0]
+== height-scale 2: el doble de alto ==
+WFTEST PASS picos en ref :: -1440 352
+WFTEST PASS sobre y=64 hay entre 1,4 y 2,8 veces la piedra de ref :: ref 15872 · alto2 32811
+WFTEST PASS columna a columna, el suelo sobre y=64 sale ×2 (mediana ×194/100) :: 22 columnas · ref [94 84 75 72 63 111 123 110 96 64 106 102 141 110 82 105 101 109 110 91 112 87 94 118 111] · alto2 [120 103 85 79 63 152 178 157 119 64 148 139 218 153 82 150 137 151 157 116 167 111 126 169 153]
+== height-scale 3 y 96 más arriba, en towering: por encima de y=320 ==
+WFTEST PASS torre, columna a columna: 160 + ×3 sobre y=64 (mediana ×296/100) :: 22 columnas · ref [94 84 75 72 63 111 123 110 96 64 106 102 141 110 82 105 101 109 110 91 112 87 94 118 111] · torre [258 208 194 186 120 287 315 315 238 160 281 270 395 301 210 285 270 292 307 240 301 232 252 328 299]
+WFTEST PASS torre pasa de y=320, que en vanilla no se puede :: 2 columnas por encima · máximo 395
+== suave: más bajo ==
+WFTEST PASS suave, en las mismas columnas: no pasa de y=210 :: máximo 109 · ref hasta 141
+== El terreno del mundo normal, como Terralith ==
+WFTEST PASS darle archipielago :: [00:01:25] [WorldForge-SQLite/INFO]: [WorldForge] El mundo principal usará el terreno archipielago desde el próximo arranque.
+WFTEST PASS avisa de los cortes con lo ya generado :: [00:01:27] [WorldForge-SQLite/INFO]:   ⚠ Solo cambia en los chunks que aún no existen: donde lo nuevo toque lo ya generado habrá un corte. También lo usan los mundos de proveedor vanilla y las dimensiones con generador overworld.
+WFTEST PASS lo anota :: [00:01:28] [Server thread/INFO]: [WorldForge] Terrenos (terrains/*.yml) · mundo principal: archipielago
+WFTEST PASS escribe noise_settings/overworld.json de minecraft :: -
+WFTEST PASS un terreno que no existe :: [00:01:28] [Server thread/INFO]: [WorldForge] No se pudo: terrain: no hay un terreno «nada» en terrains/.
+WFTEST PASS se para guardando :: -
+WFTEST PASS vuelve a arrancar :: [00:02:37] [Server thread/INFO]: Done (39.159s)! For help, type "help"
+WFTEST PASS ref (minecraft:overworld) sale como archi en 3000,3000 :: ref [8911 0 0] archi [8910 0 0]
+WFTEST PASS ref (minecraft:overworld) sale como archi en -3000,2000 :: ref [5099 0 0] archi [5099 0 0]
+WFTEST PASS y ya no como vanilla :: 2 de 2 columnas distintas de ident
+WFTEST PASS lo ya generado no cambia :: 200,200: 7429 766 0
+WFTEST PASS volver a vanilla :: [00:03:09] [WorldForge-SQLite/INFO]: [WorldForge] El mundo principal vuelve al terreno de vanilla en el próximo arranque.
+WFTEST PASS quita el archivo :: -
+WFTEST PASS se para guardando :: -
+WFTEST PASS vuelve a arrancar :: [00:04:07] [Server thread/INFO]: Done (37.847s)! For help, type "help"
+WFTEST PASS de vuelta: ref otra vez como vanilla :: ref [9967 1271 0] ident [9967 1271 0]
+== Motor propio: un mundo creado en caliente ==
+WFTEST PASS el preset montanas usa el motor :: [00:04:20] [Server thread/INFO]:   Proveedor terrain: Terreno propio de WorldForge con los mismos ajustes que terrains/, para mundos creados en caliente; superficie, cuevas, árboles y estructuras de Minecraft encima.
+WFTEST PASS crear t_mont :: [00:04:21] [WorldForge-SQLite/INFO]: [WorldForge] Mundo t_mont creado con el preset montanas (semilla -7160365298149341651).
+WFTEST PASS inspect dice modo y terreno :: [00:04:22] [Server thread/INFO]:   Generador: WorldForgeGenerator · modo TERRAIN · terreno montanas · estructuras sí
+WFTEST PASS dónde aparece :: [00:04:23] [Server thread/INFO]:   Aparición 0, 151, 0 · jugadores 0 · chunks cargados 0
+WFTEST PASS aparece en tierra, no en el agua :: [00:04:25] [Server thread/INFO]: Test passed
+WFTEST PASS bedrock abajo (superficie de Minecraft encima del motor) :: [00:04:26] [Server thread/INFO]: Test passed
+WFTEST PASS pizarra profunda bajo y=0 :: 14106
+WFTEST PASS tiene biomas de picos :: 32 256
+WFTEST PASS y montaña alrededor, sin tocar el techo :: máximo 304
+WFTEST PASS y océanos :: 448 -96
+WFTEST PASS con pueblos de Minecraft :: [00:05:42] [Server thread/INFO]: The nearest #minecraft:village (minecraft:village_plains) is at [128, ~, 32] (131 blocks away)
+WFTEST PASS se para guardando :: -
+WFTEST PASS vuelve a arrancar :: [00:06:36] [Server thread/INFO]: Done (35.661s)! For help, type "help"
+WFTEST PASS t_mont vuelve tras reiniciar :: [00:06:37] [WorldForge-SQLite/INFO]: [RPGRoll-WorldForge] ✔ Mundo administrado cargado: t_mont (preset montanas)
+== Registro ==
+WFTEST PASS sin excepciones de WorldForge en el registro :: -
+FIN escenario-terreno: 0 fallo(s)

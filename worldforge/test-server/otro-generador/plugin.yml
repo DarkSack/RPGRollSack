@@ -1,0 +1,6 @@
+name: OtroGenerador
+version: 1.0.0
+main: prueba.OtroGenerador
+api-version: "26.1.2"
+description: Plugin de PRUEBA de WorldForge, hace de "otro plugin con generador" (como Terra o Iris).
+folia-supported: true

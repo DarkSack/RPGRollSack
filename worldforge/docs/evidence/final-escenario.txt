@@ -1,0 +1,96 @@
+== Arranque ==
+WFTEST PASS WorldForge se habilita :: [20:12:52] [Server thread/INFO]: [RPGRoll-WorldForge] Enabling RPGRoll-WorldForge v0.1.0
+WFTEST PASS crea config, textos, BD y 10 presets :: config.yml drafts exports imports messages.yml presets protections.yml terrains worldforge.db worldforge.db-shm worldforge.db-wal 
+WFTEST PASS diagnóstico: SQLite desde el plugin :: [20:13:00] [Server thread/INFO]:   ✔ SQLite: esquema 2 (worldforge.db)
+WFTEST PASS diagnóstico: presets :: [20:13:01] [Server thread/INFO]:   Presets: 10 utilizables, 0 borradores, 0 con errores.
+WFTEST PASS lista de presets :: [20:13:01] [Server thread/INFO]:   resource-rich — Rico en recursos · hybrid · listo
+== Mundo principal desde bukkit.yml (void-platform) ==
+WFTEST PASS el mundo principal usa el generador de WorldForge :: [20:13:02] [Server thread/INFO]:   Generador: WorldForgeGenerator · modo EMPTY · estructuras no
+WFTEST PASS aparición del preset :: [20:13:02] [Server thread/INFO]:   Aparición 0, 65, 0 · jugadores 0 · chunks cargados 0
+WFTEST PASS plataforma en el centro :: [20:13:07] [Server thread/INFO]: Test passed
+WFTEST PASS plataforma en la esquina (radio 2) :: [20:13:07] [Server thread/INFO]: Test passed
+WFTEST PASS fuera de la plataforma no hay nada :: [20:13:08] [Server thread/INFO]: Test passed
+WFTEST PASS debajo, vacío hasta el fondo :: [20:13:08] [Server thread/INFO]: Test passed
+WFTEST PASS bioma the_void :: [20:13:09] [Server thread/INFO]: Test passed
+== Mundos nuevos: vacío, plataforma, plano ==
+WFTEST PASS crear t_empty (empty) :: [20:13:10] [WorldForge-SQLite/INFO]: [WorldForge] Mundo t_empty creado con el preset empty (semilla 5722420480255842413).
+WFTEST PASS crear t_plat (void-platform) :: [20:13:12] [WorldForge-SQLite/INFO]: [WorldForge] Mundo t_plat creado con el preset void-platform (semilla -2600894305311581732).
+WFTEST PASS crear t_flat (flat) :: [20:13:13] [WorldForge-SQLite/INFO]: [WorldForge] Mundo t_flat creado con el preset flat (semilla -4877505927725671961).
+WFTEST PASS t_empty: nada en la aparición :: [20:13:19] [Server thread/INFO]: Test passed
+WFTEST PASS t_empty: nada en el fondo :: [20:13:19] [Server thread/INFO]: Test passed
+WFTEST PASS t_empty: bioma the_void :: [20:13:20] [Server thread/INFO]: Test passed
+WFTEST PASS t_plat: plataforma :: [20:13:20] [Server thread/INFO]: Test passed
+WFTEST PASS t_plat: borde :: [20:13:21] [Server thread/INFO]: Test passed
+WFTEST PASS t_flat: bedrock abajo :: [20:13:22] [Server thread/INFO]: Test passed
+WFTEST PASS t_flat: tierra :: [20:13:22] [Server thread/INFO]: Test passed
+WFTEST PASS t_flat: hierba arriba :: [20:13:23] [Server thread/INFO]: Test passed
+WFTEST PASS t_flat: aire encima :: [20:13:23] [Server thread/INFO]: Test passed
+WFTEST PASS t_flat: bioma plains :: [20:13:24] [Server thread/INFO]: Test passed
+WFTEST PASS t_flat: aparición encima de las capas :: [20:13:25] [Server thread/INFO]:   Aparición 0, -60, 0 · jugadores 0 · chunks cargados 25
+== Borradores con semilla fija: vanilla, amplified y rico en recursos ==
+WFTEST PASS duplicar vanilla como v-seed :: [20:13:25] [Folia Async Scheduler Thread #2/INFO]: [WorldForge] Borrador v-seed creado a partir de vanilla.
+WFTEST PASS v-seed: semilla 20261020 :: [20:13:26] [Folia Async Scheduler Thread #3/INFO]: [WorldForge] Hecho.
+WFTEST PASS v-seed: no crea mundos sin publicar :: [20:13:27] [Server thread/INFO]: [WorldForge] No se pudo: preset: no hay un preset publicado «v-seed».
+WFTEST PASS v-seed: publicar :: [20:13:27] [Folia Async Scheduler Thread #4/INFO]: [WorldForge] Borrador v-seed publicado: ya se puede usar para crear mundos.
+WFTEST PASS duplicar amplified como a-seed :: [20:13:28] [Folia Async Scheduler Thread #5/INFO]: [WorldForge] Borrador a-seed creado a partir de amplified.
+WFTEST PASS a-seed: semilla 20261020 :: [20:13:29] [Folia Async Scheduler Thread #5/INFO]: [WorldForge] Hecho.
+WFTEST PASS a-seed: no crea mundos sin publicar :: [20:13:29] [Server thread/INFO]: [WorldForge] No se pudo: preset: no hay un preset publicado «a-seed».
+WFTEST PASS a-seed: publicar :: [20:13:30] [Folia Async Scheduler Thread #5/INFO]: [WorldForge] Borrador a-seed publicado: ya se puede usar para crear mundos.
+WFTEST PASS duplicar resource-rich como r-seed :: [20:13:31] [Folia Async Scheduler Thread #5/INFO]: [WorldForge] Borrador r-seed creado a partir de resource-rich.
+WFTEST PASS r-seed: semilla 20261020 :: [20:13:31] [Folia Async Scheduler Thread #5/INFO]: [WorldForge] Hecho.
+WFTEST PASS r-seed: no crea mundos sin publicar :: [20:13:32] [Server thread/INFO]: [WorldForge] No se pudo: preset: no hay un preset publicado «r-seed».
+WFTEST PASS r-seed: publicar :: [20:13:33] [Folia Async Scheduler Thread #5/INFO]: [WorldForge] Borrador r-seed publicado: ya se puede usar para crear mundos.
+WFTEST PASS crear t_vanilla :: [20:13:36] [WorldForge-SQLite/INFO]: [WorldForge] Mundo t_vanilla creado con el preset v-seed (semilla 20261020).
+WFTEST PASS crear t_amp :: [20:13:39] [WorldForge-SQLite/INFO]: [WorldForge] Mundo t_amp creado con el preset a-seed (semilla 20261020).
+WFTEST PASS crear t_rich :: [20:13:43] [WorldForge-SQLite/INFO]: [WorldForge] Mundo t_rich creado con el preset r-seed (semilla 20261020).
+WFTEST PASS amplified: mucha más piedra entre y=130 y 249 (4 chunks) :: vanilla=0 amplified=11786
+WFTEST PASS rico en recursos: diamante extra (2 venas × 6, máx. 48) :: vanilla=88 rico=137 extra=49
+WFTEST PASS rico en recursos: oro extra (3 venas × 8, máx. 96) :: vanilla=46 rico=98 extra=52
+== Exportar e importar ==
+WFTEST PASS exportar flat :: [20:14:25] [Folia Async Scheduler Thread #5/INFO]: [WorldForge] Exportado a exports/flat.yml (con su manifiesto SHA-256).
+WFTEST PASS el manifiesto lleva el SHA-256 del archivo :: 3cb6a45d40d73eab9c1241d62da62d04b5ba7ca6ce2d9374b46f2da50b877d2f
+WFTEST PASS importar una copia :: [20:14:26] [Folia Async Scheduler Thread #5/INFO]: [WorldForge] Importado como borrador flat-copia. Revísalo y publícalo con /worldforge preset publish flat-copia.
+WFTEST PASS publicar la copia importada :: [20:14:27] [Folia Async Scheduler Thread #5/INFO]: [WorldForge] Borrador flat-copia publicado: ya se puede usar para crear mundos.
+WFTEST PASS importar YAML roto :: [20:14:27] [Folia Async Scheduler Thread #5/INFO]: [WorldForge] No se pudo: YAML mal formado: while parsing a flow sequence
+WFTEST PASS importar un archivo demasiado grande :: [20:14:28] [Folia Async Scheduler Thread #5/INFO]: [WorldForge] No se pudo: file: pesa 300010 bytes; el límite es 262144.
+WFTEST PASS importar con ruta fuera de imports :: [20:14:29] [Folia Async Scheduler Thread #5/INFO]: [WorldForge] No se pudo: file: «../presets/flat.yml» no es un nombre de archivo válido (solo el nombre, dentro de la carpeta imports).
+WFTEST PASS importar un preset con errores lo deja como borrador :: [20:14:29] [Folia Async Scheduler Thread #5/INFO]: [WorldForge] Importado como borrador raro. Revísalo y publícalo con /worldforge preset publish raro.
+WFTEST PASS y ese borrador no se publica :: [20:14:30] [Folia Async Scheduler Thread #5/INFO]: [WorldForge] No se pudo: biomes: el proveedor «vanilla» no controla elegir biomas existentes.
+== Negativos ==
+WFTEST PASS nombre ya usado :: [20:14:31] [WorldForge-SQLite/INFO]: [WorldForge] No se pudo: name: ya hay un mundo administrado «t_flat» (estado READY).
+WFTEST PASS nombre con ruta :: [20:14:32] [Server thread/INFO]: [WorldForge] No se pudo: name: «../malo» no vale como nombre de mundo: minúsculas, números o '_', hasta 40.
+WFTEST PASS nombre con guion :: [20:14:32] [Server thread/INFO]: [WorldForge] No se pudo: name: «t_con-guion» no vale como nombre de mundo: minúsculas, números o '_', hasta 40.
+WFTEST PASS preset que no existe :: [20:14:33] [Server thread/INFO]: [WorldForge] No se pudo: preset: no hay un preset publicado «nada».
+WFTEST PASS cargar un mundo que no es de WorldForge :: [20:14:34] [WorldForge-SQLite/INFO]: [WorldForge] No se pudo: name: «nada» no es un mundo administrado por WorldForge.
+WFTEST PASS semilla en un preset publicado :: [20:14:34] [Server thread/INFO]: [WorldForge] No se pudo: la semilla solo se cambia en un borrador (duplica el preset primero).
+WFTEST PASS subcomando desconocido :: [20:14:35] [Server thread/INFO]: [WorldForge] No conozco «hechizo». Prueba /worldforge help.
+WFTEST PASS faltan argumentos :: [20:14:36] [Server thread/INFO]: [WorldForge] Uso: /wf world create <nombre> <preset>
+WFTEST PASS aplicar a un mundo del servidor explica bukkit.yml :: [20:14:36] [WorldForge-SQLite/INFO]: [WorldForge] No se pudo: world: «world» no lo administra WorldForge. Para un mundo del servidor pon en bukkit.yml → worlds: world: generator: RPGRoll-WorldForge:flat y reinicia; solo afecta a los chunks nuevos.
+== Descargar y volver a cargar ==
+WFTEST PASS descargar t_empty :: [20:14:38] [WorldForge-SQLite/INFO]: [WorldForge] Mundo t_empty descargado y guardado.
+WFTEST PASS lista: t_empty sin cargar :: [20:14:39] [Server thread/INFO]:   t_empty [minecraft:t_empty] sin cargar · UNLOADED · preset empty
+WFTEST PASS cargar t_empty :: [20:14:40] [WorldForge-SQLite/INFO]: [WorldForge] Mundo t_empty cargado.
+WFTEST PASS cambiar el preset de t_plat a flat :: [20:14:43] [WorldForge-SQLite/INFO]: [WorldForge] Mundo recargado: los chunks nuevos ya usan «flat»; los existentes no cambian.
+== Permisos con un jugador sin op ==
+WFTEST PASS sin permisos no ve los mundos :: [WorldForge] No tienes permiso: worldforge.worlds.view
+WFTEST PASS viewer ve los mundos :: [WorldForge] Mundos
+WFTEST PASS viewer ve el diagnóstico ::   ✔ SQLite: esquema 2 (worldforge.db)
+WFTEST PASS viewer no crea mundos :: [WorldForge] No tienes permiso: worldforge.worlds.create
+WFTEST PASS viewer no edita presets :: [WorldForge] No tienes permiso: worldforge.presets.edit
+WFTEST PASS el autocompletado solo ofrece lo permitido :: ["inspect","list"]
+WFTEST PASS operator edita borradores :: [WorldForge] Borrador bot-flat creado a partir de flat.
+WFTEST PASS operator no importa :: [WorldForge] No tienes permiso: worldforge.presets.import
+WFTEST PASS operator no aplica generación :: [WorldForge] No tienes permiso: worldforge.generation.apply
+FIN jugador: 0 fallo(s)
+== Reinicio ==
+WFTEST PASS se para guardando :: -
+WFTEST PASS vuelve a arrancar :: [20:15:39] [Server thread/INFO]: Done (20.753s)! For help, type "help"
+WFTEST PASS t_flat vuelve cargado :: [20:15:42] [Server thread/INFO]:   t_flat [minecraft:t_flat] cargado · READY · preset flat
+WFTEST PASS t_rich vuelve cargado :: [20:15:43] [Server thread/INFO]:   t_rich [minecraft:t_rich] cargado · READY · preset r-seed
+WFTEST PASS t_plat vuelve con su preset nuevo :: [20:15:44] [Server thread/INFO]:   t_plat [minecraft:t_plat] cargado · READY · preset flat
+WFTEST PASS t_flat conserva sus bloques :: [20:15:49] [Server thread/INFO]: Test passed
+WFTEST PASS el principal conserva la plataforma :: [20:15:49] [Server thread/INFO]: Test passed
+WFTEST PASS historial en el diagnóstico :: [20:15:50] [Server thread/INFO]:   Últimas operaciones:
+== Registro ==
+WFTEST PASS sin excepciones de WorldForge en el registro :: -
+FIN escenario: 0 fallo(s)

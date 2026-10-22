@@ -1,0 +1,14 @@
+# Terreno de WorldForge: continentes enormes, con mares de verdad entre ellos. Cabe en el tipo overworld.
+id: continentes
+description: continentes tres veces más anchos y biomas grandes, relieve de vanilla
+base: overworld
+height-scale: 1.0
+height-offset: 0
+peaks: 1.0
+continent-size: 3.0
+erosion-size: 2.0
+ridge-size: 1.5
+biome-size: 2.0
+sea-level: 63
+aquifers: true
+ore-veins: true
