@@ -1,5 +1,5 @@
 name: RPGRoll-Fishing
-version: 1.1.5
+version: 1.1.6
 main: com.sack.rpgroll.fishing.FishingPlugin
 api-version: "26.1.1"
 author: Sack

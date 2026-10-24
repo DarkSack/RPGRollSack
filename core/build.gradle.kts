@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "com.sack"
-version = "1.1.5"
+version = "1.1.6"
 
 base.archivesName.set("RPGRoll")
 
