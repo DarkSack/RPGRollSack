@@ -3,7 +3,7 @@ plugins {
 }
 
 group = "com.sack"
-version = "1.1.5"
+version = "1.1.6"
 
 // :common se distribuye como un plugin propio, RPGRoll-Lib: todos los módulos
 // lo declaran en depend y usan sus clases en runtime en vez de llevar cada uno

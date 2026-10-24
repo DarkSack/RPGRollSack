@@ -58,8 +58,10 @@ val generateLicenseIdentity by tasks.registering {
     val isInternal = moduleName in internalModules
     val input = licenseIdsFile
     val outputDir = generatedLicenseDir
+    val licenseYml = project.file("src/main/resources/license/license.yml")
 
     inputs.file(input)
+    inputs.files(licenseYml) // files(): admite que falte, y si aparece o desaparece la tarea vuelve a correr
     inputs.property("module", moduleName)
     outputs.dir(outputDir)
 
@@ -75,6 +77,14 @@ val generateLicenseIdentity by tasks.registering {
             ?: throw GradleException(
                 "Falta '$moduleName' en licensing.properties — todo módulo vendible necesita su id de producto.",
             )
+
+        // Sin él, LicenseManager no crea plugins/<plugin>/license.yml: el comprador no tiene dónde pegar
+        // la clave y el plugin se apaga. Se escapó en Disasters 1.1.5 y en WorldForge.
+        if (!licenseYml.exists()) {
+            throw GradleException(
+                "Falta $moduleName/src/main/resources/license/license.yml (copia el de otro módulo y cambia el nombre).",
+            )
+        }
 
         // Un id en 0 es el marcador de "todavía no publiqué el listing en
         // voxel.shop". Solo afecta a ESE canal: las ventas propias se validan
