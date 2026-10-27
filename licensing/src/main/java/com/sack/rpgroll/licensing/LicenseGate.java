@@ -59,9 +59,9 @@ public final class LicenseGate {
         plugin.getLogger().severe("✘ " + name + " no pudo verificar tu licencia:");
         plugin.getLogger().severe("  " + result.message());
         plugin.getLogger().severe("  El plugin se va a deshabilitar.");
-        plugin.getLogger().severe("  Si compraste en voxel.shop, descargá el jar desde tu panel de compras");
+        plugin.getLogger().severe("  Si compraste en voxel.shop, descarga el jar desde tu panel de compras");
         plugin.getLogger().severe("  (la copia que baja de ahí ya trae tu clave incrustada).");
-        plugin.getLogger().severe("  Si fue una venta directa, revisá la clave en");
+        plugin.getLogger().severe("  Si fue una venta directa, revisa la clave en");
         plugin.getLogger().severe("  plugins/" + name + "/license.yml");
         plugin.getLogger().severe("==================================");
 

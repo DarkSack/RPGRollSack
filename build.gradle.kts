@@ -106,7 +106,7 @@ val collectRelease by tasks.registering(Copy::class) {
                 appendLine("instalado en un servidor es exactamente el que salió de este release:")
                 jars.forEach { appendLine("  - ${it.name}  ${sha256(it.readBytes())}") }
                 appendLine()
-                appendLine("Instalación: copiá RPGRoll-Lib-<version>.jar (la librería, gratuita y")
+                appendLine("Instalación: copia RPGRoll-Lib-<version>.jar (la librería, gratuita y")
                 appendLine("obligatoria) y los módulos que necesites a plugins/ del servidor Paper.")
                 appendLine("El core (RPGRoll) solo es obligatorio para Ascension y Magic.")
             },
@@ -154,7 +154,7 @@ val verifyRelease by tasks.registering {
         val zip = zipFile.get().asFile
 
         if (!zip.isFile) {
-            throw GradleException("No hay zip que comprobar en ${zip.parentFile}: lanzá `./gradlew release`.")
+            throw GradleException("No hay zip que comprobar en ${zip.parentFile}: lanza `./gradlew release`.")
         }
 
         val compilados = jars.map { it.get() }.associate { it.name to sha256(it.readBytes()) }
@@ -177,7 +177,7 @@ val verifyRelease by tasks.registering {
                     sobran.forEach { appendLine("  - sobra en el zip (¿módulo renombrado o eliminado?): $it") }
                     distintos.forEach { appendLine("  - distinto al jar compilado: $it") }
                     appendLine()
-                    append("Borrá build/release y build/distributions y volvé a lanzar `./gradlew release`.")
+                    append("Borra build/release y build/distributions y vuelve a lanzar `./gradlew release`.")
                 },
             )
         }

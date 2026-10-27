@@ -163,7 +163,7 @@ public class SackResourcePackPlugin extends JavaPlugin {
     private void distribute(BuildResult result) {
 
         if (result.hasErrors()) {
-            getLogger().warning("✘ El build de SackResourcePack tiene errores — revisá /srp validate.");
+            getLogger().warning("✘ El build de SackResourcePack tiene errores — revisa /srp validate.");
             return;
         }
 

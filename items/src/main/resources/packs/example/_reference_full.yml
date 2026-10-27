@@ -1,8 +1,8 @@
 # ============================================================================
 # ITEM DE REFERENCIA — usa TODOS los campos que soporta RPGRoll-Items.
 # No está pensado para dar in-game tal cual (es intencionalmente muy fuerte):
-# es documentación ejecutable. Copiá solo las secciones que necesites para tu
-# propio ítem y borrá el resto — nada es obligatorio salvo "id" y "material".
+# es documentación ejecutable. Copia solo las secciones que necesites para tu
+# propio ítem y borra el resto — nada es obligatorio salvo "id" y "material".
 # Ver la referencia completa en la documentación (página "Ítems").
 # ============================================================================
 

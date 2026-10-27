@@ -43,6 +43,17 @@ public class QuestCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
+        // list e info solo leen el catálogo: también sirven desde la consola.
+        String sub = args.length < 1 ? "" : args[0].toLowerCase();
+        if (sub.equals("list")) {
+            handleList(sender);
+            return true;
+        }
+        if (sub.equals("info")) {
+            handleInfo(sender, args);
+            return true;
+        }
+
         if (!(Senders.asPlayer(sender) instanceof Player player)) {
             lang.send(sender, "general.player_only");
             return true;
@@ -53,9 +64,7 @@ public class QuestCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        switch (args[0].toLowerCase()) {
-            case "list" -> handleList(player);
-            case "info" -> handleInfo(player, args);
+        switch (sub) {
             case "start" -> handleStart(player, args);
             case "abandon" -> handleAbandon(player, args);
             case "active" -> handleActive(player);
@@ -71,44 +80,44 @@ public class QuestCommand implements CommandExecutor, TabCompleter {
         lang.send(player, "command.usage");
     }
 
-    private void handleList(Player player) {
+    private void handleList(CommandSender sender) {
 
         var quests = engine.getQuestManager().getAll();
 
         if (quests.isEmpty()) {
-            lang.send(player, "command.list_empty");
+            lang.send(sender, "command.list_empty");
             return;
         }
 
-        lang.send(player, "command.list_header");
+        lang.send(sender, "command.list_header");
 
         for (Quest quest : quests) {
-            lang.send(player, "command.list_entry", "id", quest.id(), "name", quest.displayName(),
+            lang.send(sender, "command.list_entry", "id", quest.id(), "name", quest.displayName(),
                     "category", quest.category(), "difficulty", quest.difficulty());
         }
     }
 
-    private void handleInfo(Player player, String[] args) {
+    private void handleInfo(CommandSender sender, String[] args) {
 
         if (args.length < 2) {
-            lang.send(player, "command.info_usage");
+            lang.send(sender, "command.info_usage");
             return;
         }
 
         Optional<Quest> questOpt = engine.getQuestManager().get(args[1]);
 
         if (questOpt.isEmpty()) {
-            lang.send(player, "command.quest_not_found", "id", args[1]);
+            lang.send(sender, "command.quest_not_found", "id", args[1]);
             return;
         }
 
         Quest quest = questOpt.get();
 
-        lang.send(player, "command.info_title", "name", quest.displayName());
-        lang.send(player, "command.info_category", "category", quest.category());
-        lang.send(player, "command.info_difficulty", "difficulty", quest.difficulty());
-        lang.send(player, "command.info_stages", "count", quest.stages().size());
-        lang.send(player, quest.repeatable() ? "command.info_repeatable_yes" : "command.info_repeatable_no");
+        lang.send(sender, "command.info_title", "name", quest.displayName());
+        lang.send(sender, "command.info_category", "category", quest.category());
+        lang.send(sender, "command.info_difficulty", "difficulty", quest.difficulty());
+        lang.send(sender, "command.info_stages", "count", quest.stages().size());
+        lang.send(sender, quest.repeatable() ? "command.info_repeatable_yes" : "command.info_repeatable_no");
     }
 
     private void handleStart(Player player, String[] args) {

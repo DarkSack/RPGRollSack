@@ -7,9 +7,13 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
+import java.lang.reflect.Proxy;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -96,10 +100,10 @@ public final class ModelsIntegration {
             if (!ModeledEntityManager.modelExists(modelId)) {
                 return false;
             }
-            DynamicEntity model = DynamicEntity.createWithInvisibility(modelId, entity);
-            if (model == null) {
-                return false;
-            }
+            // Lo mismo que DynamicEntity.createWithInvisibility, con un modelo que no se lleva al mob.
+            DynamicEntity model = new MobModel(modelId, entity);
+            model.spawn(entity);
+            entity.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, -1, 0, false, false));
             if (name != null) {
                 // El nombre va en el modelo (a la altura del hueso tag_ o encima), no en el
                 // mob invisible, que en los modelos grandes quedaría dentro del cuerpo.
@@ -120,6 +124,35 @@ public final class ModelsIntegration {
             if (model != null && !model.isRemoved() && !model.isDying()) {
                 model.removeWithDeathAnimation();
             }
+        }
+    }
+
+    /**
+     * FMM, al quitar un modelo, borra también la entidad que lo lleva; y lo quita solo cuando el
+     * chunk se descarga, así que un jefe con modelo desaparecía al alejarse. El mob tiene que
+     * sobrevivir a su modelo: mientras se quita, FMM ve una entidad cuyo remove() no hace nada.
+     * El modelo vuelve con {@link ModelsIntegration#ensureAttached} al recargarse el chunk. Copia del de Ranching.
+     */
+    private static final class MobModel extends DynamicEntity {
+
+        MobModel(String modelId, LivingEntity entity) {
+            super(modelId, entity.getLocation());
+        }
+
+        @Override
+        public boolean isCosmeticInvisibility() {
+            return true;
+        }
+
+        @Override
+        public void remove() {
+            Entity mob = underlyingEntity;
+            if (mob != null && !isRemoved()) {
+                underlyingEntity = (Entity) Proxy.newProxyInstance(Entity.class.getClassLoader(),
+                        new Class<?>[] {Entity.class}, (proxy, method, args) -> method.getName().equals("remove")
+                                && method.getParameterCount() == 0 ? null : method.invoke(mob, args));
+            }
+            super.remove();
         }
     }
 
