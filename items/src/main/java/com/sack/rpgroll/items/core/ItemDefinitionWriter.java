@@ -190,7 +190,8 @@ public class ItemDefinitionWriter {
                 entry.put("trigger", ability.trigger().name());
             }
 
-            entry.put("cooldown", (ability.cooldownMillis() / 1000) + "s");
+            long cooldown = ability.cooldownMillis();
+            entry.put("cooldown", cooldown % 1000 == 0 ? (cooldown / 1000) + "s" : cooldown + "ms");
             entry.put("conditions", ability.conditions());
             entry.put("actions", actionsToRaw(ability.actions()));
 

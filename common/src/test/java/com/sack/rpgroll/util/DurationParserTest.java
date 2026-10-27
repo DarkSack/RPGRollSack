@@ -19,6 +19,7 @@ class DurationParserTest {
 
     @ParameterizedTest
     @CsvSource({
+            "400ms, 400",
             "60s, 60000",
             "30m, 1800000",
             "24h, 86400000",

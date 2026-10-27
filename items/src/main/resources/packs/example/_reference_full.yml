@@ -140,6 +140,21 @@ abilities:
       - type: PARTICLE
         particle: PORTAL
         count: 5
+  # SHOOT: disparo instantáneo para armas de fuego o de energía. Daña a la primera criatura a la
+  # que apuntas y deja un trazo de partículas. El cooldown admite milisegundos ("500ms").
+  - id: reference_shot
+    display-name: "&cDisparo"
+    passive: false
+    trigger: LEFT_CLICK
+    cooldown: "500ms"
+    actions:
+      - type: SHOOT
+        amount: 6 # daño
+        range: 32 # bloques
+        explosion: 0 # potencia de la explosión donde pega (0 = ninguna; nunca rompe bloques)
+        particle: DUST # el trazo; DUST usa "color"
+        color: "#FF3030"
+        hit-effect: level_up # efecto de RPGRoll-FX donde pega (opcional)
 
 # Sockets para engarzar gemas (ver gems/) — accepted-types filtra qué tipo de gema entra en cada socket
 sockets:

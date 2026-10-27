@@ -4,12 +4,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Convierte duraciones en texto tipo "60s", "24h", "7d", "30m" a
+ * Convierte duraciones en texto tipo "60s", "24h", "7d", "30m", "400ms" a
  * milisegundos: cooldowns, esperas y tiempos límite de los YAML.
  */
 public final class DurationParser {
 
-    private static final Pattern PATTERN = Pattern.compile("^(\\d+)\\s*(s|m|h|d)?$", Pattern.CASE_INSENSITIVE);
+    private static final Pattern PATTERN = Pattern.compile("^(\\d+)\\s*(ms|s|m|h|d)?$", Pattern.CASE_INSENSITIVE);
 
     private DurationParser() {
     }
@@ -31,6 +31,7 @@ public final class DurationParser {
         String unit = matcher.group(2) == null ? "s" : matcher.group(2).toLowerCase();
 
         return switch (unit) {
+            case "ms" -> value;
             case "s" -> value * 1000L;
             case "m" -> value * 60_000L;
             case "h" -> value * 3_600_000L;
