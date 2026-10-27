@@ -1,0 +1,41 @@
+# Armadura de Vanguardia: la de los dos oficios del pack. Puesta se ve
+# como la armadura del pack (el casco, como su modelo).
+id: vanguardia_botas
+pack: vanguardia
+material: DIAMOND_BOOTS
+item-model: "vanguardia:armadura/vanguardia_botas"
+equipment-model: "vanguardia:vanguardia"
+display-name: "&fBotas de Vanguardia"
+lore:
+  - "&7Suelas magnéticas para no resbalar."
+  - "&8Conjunto de Vanguardia."
+rarity: EPIC
+
+stats:
+  defense: 5
+  health: 6
+  speed: 4
+
+requirements:
+  level: 40
+
+durability:
+  max: 1100
+  repairable: true
+  degrade-per-use: 1
+
+economy:
+  sell: 1500
+  buy: 3300
+
+translations:
+  en:
+    display-name: "&fVanguard Boots"
+    lore:
+      - "&7Magnetic soles so you never slip."
+      - "&8Vanguard set."
+  pt_BR:
+    display-name: "&fBotas da Vanguarda"
+    lore:
+      - "&7Solas magnéticas para não escorregar."
+      - "&8Conjunto da Vanguarda."

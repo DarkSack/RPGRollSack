@@ -1,0 +1,42 @@
+id: "agente_de_asalto"
+display-name: "&9✜ Agente de Asalto"
+description: |
+  Entrenado para entrar primero y salir el último.
+  Domina el rifle, el cohete y la hoja de plasma.
+base-attributes:
+  dexterity: 3
+  strength: 1
+  constitution: 1
+  wisdom: -1
+passive-traits:
+  - "entrenamiento_tactico"
+icon: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMmIxMDkyMThlZDBjZTc1NmUzYTJmOGM0ZDFjNTFkZmM3NzA5Njc0ZWJkYmU3ODY3NjQ4MGNlNzk2Mzc3YTc4OSJ9fX0="
+lore:
+  - "&7Armas: rifles, lanzacohetes y katanas"
+  - "&7Rol: DPS versátil"
+  - "&a▲ +3% de crítico"
+  - "&a▲ +3% de velocidad"
+  - "&c▼ -2% de defensa"
+translations:
+  en:
+    display-name: "&9✜ Assault Agent"
+    description: |
+      Trained to go in first and come out last.
+      Masters the rifle, the rocket and the plasma blade.
+    lore:
+      - "&7Weapons: rifles, rocket launchers and katanas"
+      - "&7Role: Versatile DPS"
+      - "&a▲ +3% critical chance"
+      - "&a▲ +3% speed"
+      - "&c▼ -2% defense"
+  pt_BR:
+    display-name: "&9✜ Agente de Assalto"
+    description: |
+      Treinado para entrar primeiro e sair por último.
+      Domina o rifle, o foguete e a lâmina de plasma.
+    lore:
+      - "&7Armas: rifles, lança-foguetes e katanas"
+      - "&7Função: DPS versátil"
+      - "&a▲ +3% de crítico"
+      - "&a▲ +3% de velocidade"
+      - "&c▼ -2% de defesa"

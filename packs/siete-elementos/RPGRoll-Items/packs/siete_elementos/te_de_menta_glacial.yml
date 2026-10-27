@@ -1,0 +1,36 @@
+# Bebida de viaje: cura poco y protege del fuego un minuto.
+id: te_de_menta_glacial
+pack: siete_elementos
+material: HONEY_BOTTLE
+item-model: "siete:consumible/te_de_menta_glacial"
+display-name: "&bTé de Menta Glacial"
+lore:
+  - "&7Tan frío que el fuego no se te acerca."
+  - "&7Resistencia al fuego durante 60 s."
+rarity: UNCOMMON
+
+triggers:
+  CONSUME:
+    - type: HEAL
+      amount: "3"
+    - type: COMMAND
+      value: "effect give {player} minecraft:fire_resistance 60 0 true"
+    - type: PARTICLE
+      particle: SNOWFLAKE
+      count: 12
+
+economy:
+  sell: 45
+  buy: 110
+
+translations:
+  en:
+    display-name: "&bGlacial Mint Tea"
+    lore:
+      - "&7So cold that fire keeps its distance."
+      - "&7Fire resistance for 60 s."
+  pt_BR:
+    display-name: "&bChá de Menta Glacial"
+    lore:
+      - "&7Tão frio que o fogo não se aproxima."
+      - "&7Resistência ao fogo por 60 s."

@@ -1,0 +1,30 @@
+id: marea_creciente
+display-name: "&9Marea Creciente"
+icon: HEART_OF_THE_SEA
+color: BLUE
+school: siete_elementos
+rarity: UNCOMMON
+level: 14
+cast-time: 0
+cooldown: 120
+trigger: RIGHT_CLICK
+tree-tier: 1
+tags: [siete_elementos]
+description: "Una ola en abanico delante de ti que daña y empuja."
+
+cost:
+  mana: 26
+
+components:
+  - type: VISUAL
+    effect-id: siete_marea
+  - type: DAMAGE_CONE
+    range: 6
+    angle-degrees: 70
+    amount: 10
+  - type: PUSH
+    strength: 1.6
+  - type: SOUND
+    sound: ENTITY_PLAYER_SPLASH_HIGH_SPEED
+    volume: 1.0
+    pitch: 0.8

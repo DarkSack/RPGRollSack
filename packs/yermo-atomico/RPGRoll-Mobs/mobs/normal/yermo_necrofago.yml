@@ -1,0 +1,81 @@
+# El relleno del pack: rápido, flojo y en grupo. Al recibir daño a veces
+# grita (animación «alarido») y eso le da velocidad un rato.
+# Modelo 3D: FreeMinecraftModels/models/yermo_necrofago.bbmodel. Sin FMM se ve el zombi.
+id: yermo_necrofago
+category: NORMAL
+display-name: "&2Necrófago"
+name-color: "#6FA04A"
+level: 26
+rarity: common
+tags: [ "yermo_atomico", "radiacion", "modelo3d" ]
+description: "Alguien que sobrevivió a la radiación y no debería haberlo hecho."
+base-entity-type: ZOMBIE
+
+model:
+  scale: 1.0
+  model-engine-id: yermo_necrofago
+  equipment:
+
+stats:
+  health: 70
+  damage: 8
+  defense: 3
+  speed: 105
+  armor: 2
+  dodge: 5
+  accuracy: 85
+  critical_chance: 5
+  critical_damage: 30
+  knockback_resistance: 10
+
+resistances:
+  poison: 100
+
+ai:
+  goals: [ "ATTACK_PLAYERS" ]
+  aggro-range: 18
+  move-speed: 1.05
+
+skills:
+  - id: alarido_radiactivo
+    display-name: "Alarido Radiactivo"
+    trigger: DAMAGED
+    cooldown: 15s
+    chance: 30
+    actions:
+      - type: ANIMATION
+        value: alarido
+      - type: SOUND
+        sound: ENTITY_ZOMBIE_VILLAGER_AMBIENT
+        volume: "1.2"
+        pitch: "0.6"
+      - type: PARTICLE
+        particle: HAPPY_VILLAGER
+        count: "25"
+      - type: COMMAND
+        value: "effect give {target} minecraft:nausea 4 0"
+
+loot:
+  - type: ITEM
+    reference: chatarra_util
+    amount-min: 1
+    amount-max: 3
+    chance: 60
+    scope: PER_PLAYER
+  - type: ITEM
+    reference: pastilla_antirradiacion
+    amount-min: 1
+    amount-max: 1
+    chance: 10
+    scope: PER_PLAYER
+  - type: EXPERIENCE
+    amount-min: 18
+    amount-max: 26
+    chance: 100
+    scope: PER_PLAYER
+
+spawn-rules:
+  biomes: [DESERT, BADLANDS, ERODED_BADLANDS, WOODED_BADLANDS]
+  natural-spawn: true
+  spawn-weight: 1.0
+  chance: 8

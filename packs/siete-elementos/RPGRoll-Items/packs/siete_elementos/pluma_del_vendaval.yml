@@ -1,0 +1,34 @@
+# Una de las tres reliquias del pack: un amuleto (/amuletos). Las tres
+# llenan las tres ranuras.
+id: pluma_del_vendaval
+pack: siete_elementos
+material: AMETHYST_SHARD
+item-model: "siete:reliquia/pluma_del_vendaval"
+display-name: "&dPluma del Vendaval"
+lore:
+  - "&7Cae hacia arriba si la sueltas."
+  - "&8Amuleto: póntelo con /amuletos"
+rarity: RARE
+
+stats:
+  damage: 3
+  critical_chance: 4
+
+custom-data:
+  accessory: amulet
+
+economy:
+  sell: 450
+  buy: 1000
+
+translations:
+  en:
+    display-name: "&dGale Feather"
+    lore:
+      - "&7It falls upward if you let go."
+      - "&8Amulet: wear it with /amulets"
+  pt_BR:
+    display-name: "&dPena do Vendaval"
+    lore:
+      - "&7Cai para cima se você a solta."
+      - "&8Amuleto: use-o com /amulets"

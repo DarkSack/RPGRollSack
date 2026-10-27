@@ -1,0 +1,15 @@
+id: "flujo_de_los_siete"
+name: "&dFlujo de los Siete"
+description: "Los elementos le pasan por las manos como agua; los golpes también."
+required-level: 1
+effect:
+  mana-bonus: 20
+  intelligence-bonus: 1
+  defense-bonus: -0.03
+translations:
+  en:
+    name: "&dFlow of the Seven"
+    description: "The elements run through their hands like water; so do the blows."
+  pt_BR:
+    name: "&dFluxo dos Sete"
+    description: "Os elementos passam pelas mãos como água; os golpes também."

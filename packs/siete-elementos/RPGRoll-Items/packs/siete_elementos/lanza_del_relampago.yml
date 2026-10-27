@@ -1,0 +1,57 @@
+# Rápida y con un rayo a distancia: la lanza del Duelista.
+id: lanza_del_relampago
+pack: siete_elementos
+material: NETHERITE_SWORD
+item-model: "siete:arma/lanza_del_relampago"
+display-name: "&dLanza del Relámpago"
+lore:
+  - "&7Zumba antes de cada tormenta."
+  - "&8Rayo. Clic derecho: lanza un relámpago (6 s)."
+rarity: EPIC
+
+stats:
+  damage: 10
+  critical_chance: 15
+  attack_speed: 1.3
+
+requirements:
+  level: 22
+  class: duelista_elemental
+
+durability:
+  max: 900
+  repairable: true
+  degrade-per-use: 1
+
+abilities:
+  - id: relampago
+    display-name: "&dRelámpago"
+    passive: false
+    trigger: RIGHT_CLICK
+    cooldown: 6s
+    actions:
+      - type: SHOOT
+        amount: "12"
+        range: "22"
+        particle: ELECTRIC_SPARK
+        hit-effect: siete_rayo
+      - type: SOUND
+        sound: ITEM_TRIDENT_THUNDER
+        volume: "0.6"
+        pitch: "1.6"
+
+economy:
+  sell: 1200
+  buy: 2600
+
+translations:
+  en:
+    display-name: "&dLightning Spear"
+    lore:
+      - "&7It hums before every storm."
+      - "&8Lightning. Right click: throw a bolt (6 s)."
+  pt_BR:
+    display-name: "&dLança do Relâmpago"
+    lore:
+      - "&7Zumbe antes de cada tempestade."
+      - "&8Raio. Clique direito: lança um relâmpago (6 s)."

@@ -1,0 +1,26 @@
+# El material del pack: lo sueltan los drones, los autómatas y el Titán.
+id: chip_de_automata
+pack: vanguardia
+material: IRON_INGOT
+item-model: "vanguardia:material/chip_de_automata"
+display-name: "&3Chip de Autómata"
+lore:
+  - "&7Todavía tibio. Todavía piensa un poco."
+  - "&8Material."
+rarity: UNCOMMON
+
+economy:
+  sell: 60
+  buy: 160
+
+translations:
+  en:
+    display-name: "&3Automaton Chip"
+    lore:
+      - "&7Still warm. Still thinking a little."
+      - "&8Material."
+  pt_BR:
+    display-name: "&3Chip de Autômato"
+    lore:
+      - "&7Ainda morno. Ainda pensa um pouco."
+      - "&8Material."

@@ -1,0 +1,56 @@
+# El arma del Saqueador: más alcance y más daño por disparo que la pistola,
+# a cambio de una cadencia más lenta.
+id: rifle_laser
+pack: yermo_atomico
+material: CARROT_ON_A_STICK
+item-model: "yermo:arma/rifle_laser"
+display-name: "&cRifle Láser"
+lore:
+  - "&7Un rifle de antes de la bomba, todavía"
+  - "&7con la pegatina del inventario militar."
+  - "&8Clic derecho: dispara."
+rarity: EPIC
+
+stats:
+  critical_chance: 15
+  critical_damage: 40
+
+requirements:
+  level: 30
+  class: saqueador
+
+abilities:
+  - id: haz_laser
+    display-name: "&cHaz Láser"
+    passive: false
+    trigger: RIGHT_CLICK
+    cooldown: 900ms
+    actions:
+      - type: SHOOT
+        amount: "11"
+        range: "40"
+        particle: DUST
+        color: "#FF3030"
+        hit-effect: yermo_impacto_laser
+      - type: SOUND
+        sound: BLOCK_BEACON_POWER_SELECT
+        volume: "0.5"
+        pitch: "2.0"
+
+economy:
+  sell: 1300
+  buy: 2800
+
+translations:
+  en:
+    display-name: "&cLaser Rifle"
+    lore:
+      - "&7A pre-war rifle that still carries"
+      - "&7its military inventory sticker."
+      - "&8Right click: fire."
+  pt_BR:
+    display-name: "&cRifle Laser"
+    lore:
+      - "&7Um rifle de antes da bomba, ainda"
+      - "&7com o adesivo do inventário militar."
+      - "&8Clique direito: dispara."

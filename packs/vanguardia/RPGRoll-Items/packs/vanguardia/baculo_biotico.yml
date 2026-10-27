@@ -1,0 +1,53 @@
+# El arma del Médico: cura a quien la usa y regenera a los jugadores
+# de alrededor (8 bloques).
+id: baculo_biotico
+pack: vanguardia
+material: CARROT_ON_A_STICK
+item-model: "vanguardia:arma/baculo_biotico"
+display-name: "&aBáculo Biótico"
+lore:
+  - "&7Emite nanitos que cierran heridas."
+  - "&8Clic derecho: Pulso Biótico (8 s)."
+rarity: EPIC
+
+stats:
+  magic_power: 10
+  mana: 20
+
+requirements:
+  level: 38
+  class: medico_de_campo
+
+abilities:
+  - id: pulso_biotico
+    display-name: "&aPulso Biótico"
+    passive: false
+    trigger: RIGHT_CLICK
+    cooldown: 8s
+    actions:
+      - type: HEAL
+        amount: "6"
+      - type: COMMAND
+        value: "execute at {player} run effect give @a[distance=..8] minecraft:regeneration 4 2"
+      - type: PARTICLES
+        effect-id: vanguardia_aura_biotica
+      - type: SOUND
+        sound: BLOCK_BEACON_POWER_SELECT
+        volume: "0.8"
+        pitch: "1.8"
+
+economy:
+  sell: 1800
+  buy: 4000
+
+translations:
+  en:
+    display-name: "&aBiotic Staff"
+    lore:
+      - "&7It releases nanites that close wounds."
+      - "&8Right click: Biotic Pulse (8 s)."
+  pt_BR:
+    display-name: "&aCajado Biótico"
+    lore:
+      - "&7Emite nanitos que fecham feridas."
+      - "&8Clique direito: Pulso Biótico (8 s)."

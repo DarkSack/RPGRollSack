@@ -1,0 +1,52 @@
+# El apoyo de la Catalista: cura a quien la usa y regenera
+# a los jugadores de alrededor (6 bloques).
+id: tomo_de_la_espesura
+pack: siete_elementos
+material: CARROT_ON_A_STICK
+item-model: "siete:arma/tomo_de_la_espesura"
+display-name: "&2Tomo de la Espesura"
+lore:
+  - "&7Cada página es una hoja de verdad."
+  - "&8Flora. Clic derecho: Brote Sanador (12 s)."
+rarity: EPIC
+
+stats:
+  magic_power: 12
+
+requirements:
+  level: 22
+  class: catalista
+
+abilities:
+  - id: brote_sanador
+    display-name: "&2Brote Sanador"
+    passive: false
+    trigger: RIGHT_CLICK
+    cooldown: 12s
+    actions:
+      - type: HEAL
+        amount: "8"
+      - type: COMMAND
+        value: "execute at {player} run effect give @a[distance=..6] minecraft:regeneration 5 1"
+      - type: PARTICLES
+        effect-id: siete_flora
+      - type: SOUND
+        sound: BLOCK_AZALEA_LEAVES_PLACE
+        volume: "1.0"
+        pitch: "1.2"
+
+economy:
+  sell: 1200
+  buy: 2600
+
+translations:
+  en:
+    display-name: "&2Tome of the Thicket"
+    lore:
+      - "&7Every page is a real leaf."
+      - "&8Flora. Right click: Healing Sprout (12 s)."
+  pt_BR:
+    display-name: "&2Tomo da Mata"
+    lore:
+      - "&7Cada página é uma folha de verdade."
+      - "&8Flora. Clique direito: Broto Curativo (12 s)."

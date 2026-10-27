@@ -1,0 +1,46 @@
+# Ralentiza a lo que corta: para mantener al enemigo a raya.
+id: hoja_de_escarcha
+pack: siete_elementos
+material: NETHERITE_SWORD
+item-model: "siete:arma/hoja_de_escarcha"
+display-name: "&bHoja de Escarcha"
+lore:
+  - "&7El filo nunca se derrite, ni en el Nether."
+  - "&8Hielo: ralentiza al golpear."
+rarity: RARE
+
+stats:
+  damage: 9
+  critical_chance: 8
+
+requirements:
+  level: 16
+
+durability:
+  max: 700
+  repairable: true
+  degrade-per-use: 1
+
+triggers:
+  ENTITY_HIT:
+    - type: COMMAND
+      value: "effect give {target_uuid} minecraft:slowness 2 1"
+    - type: PARTICLE
+      particle: SNOWFLAKE
+      count: 10
+
+economy:
+  sell: 500
+  buy: 1100
+
+translations:
+  en:
+    display-name: "&bFrost Blade"
+    lore:
+      - "&7Its edge never melts, not even in the Nether."
+      - "&8Ice: slows on hit."
+  pt_BR:
+    display-name: "&bLâmina de Geada"
+    lore:
+      - "&7O fio nunca derrete, nem no Nether."
+      - "&8Gelo: desacelera ao golpear."

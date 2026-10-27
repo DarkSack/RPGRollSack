@@ -1,0 +1,19 @@
+# La escuela del pack: ciencia de después de la bomba más que magia.
+# El Saqueador la aprovecha algo; un clérigo, poco.
+id: radiacion
+display-name: "&aRadiación"
+color: GREEN
+icon: SLIME_BALL
+description: "Lo que dejó la bomba, embotellado y apuntado. Envenena, irradia y revienta."
+cast-sound: BLOCK_BEACON_POWER_SELECT
+
+race-affinities:
+  renacido: 0.15
+  enano: 0.1
+  elfo: -0.15
+
+class-affinities:
+  saqueador: 0.15
+  acorazado: 0.05
+  mago: 0.1
+  clerigo: -0.15

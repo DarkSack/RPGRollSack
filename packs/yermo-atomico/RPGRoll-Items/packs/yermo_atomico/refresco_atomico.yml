@@ -1,0 +1,40 @@
+# Un capricho: cura poco, da velocidad y deja al que lo bebe brillando
+# un rato (se le ve a través de las paredes, que es el precio).
+id: refresco_atomico
+pack: yermo_atomico
+material: HONEY_BOTTLE
+item-model: "yermo:consumible/refresco_atomico"
+display-name: "&bRefresco Atómico"
+lore:
+  - "&7Azul, con burbujas y un leve zumbido."
+  - "&7Velocidad durante 30 s. Brillas durante 30 s."
+rarity: UNCOMMON
+
+triggers:
+  CONSUME:
+    - type: HEAL
+      amount: "4"
+    - type: COMMAND
+      value: "effect give {player} minecraft:speed 30 1 true"
+    - type: COMMAND
+      value: "effect give {player} minecraft:glowing 30 0 true"
+    - type: SOUND
+      sound: ENTITY_GENERIC_DRINK
+      volume: "1.0"
+      pitch: "1.3"
+
+economy:
+  sell: 40
+  buy: 100
+
+translations:
+  en:
+    display-name: "&bAtomic Soda"
+    lore:
+      - "&7Blue, fizzy, with a faint hum."
+      - "&7Speed for 30 s. You glow for 30 s."
+  pt_BR:
+    display-name: "&bRefrigerante Atômico"
+    lore:
+      - "&7Azul, com bolhas e um leve zumbido."
+      - "&7Velocidade por 30 s. Você brilha por 30 s."

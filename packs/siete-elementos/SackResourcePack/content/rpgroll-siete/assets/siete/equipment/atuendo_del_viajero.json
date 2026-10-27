@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "siete:atuendo_del_viajero"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "siete:atuendo_del_viajero"
+      }
+    ]
+  }
+}

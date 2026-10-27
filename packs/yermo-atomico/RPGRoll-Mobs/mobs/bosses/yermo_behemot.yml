@@ -1,0 +1,200 @@
+# El jefe del pack. No aparece solo: /mobadmin spawn yermo_behemot.
+# Tres fases: golpea -> se irradia -> el reactor se le escapa.
+# Modelo 3D: FreeMinecraftModels/models/yermo_behemot.bbmodel. Sin FMM se ve un zombi gigante.
+id: yermo_behemot
+category: WORLD_BOSS
+display-name: "&4&lBehemot del Yermo"
+name-color: "#C0392B"
+level: 45
+rarity: legendary
+tags: [ "yermo_atomico", "mutante", "jefe", "modelo3d" ]
+description: "El primer Coloso. Lleva una boca de incendios como maza y un reactor por corazón."
+base-entity-type: ZOMBIE
+
+model:
+  scale: 2.4
+  glow: true
+  model-engine-id: yermo_behemot
+  equipment:
+
+stats:
+  health: 1800
+  damage: 26
+  defense: 18
+  speed: 85
+  armor: 16
+  dodge: 0
+  accuracy: 95
+  critical_chance: 10
+  critical_damage: 70
+  knockback_resistance: 100
+
+resistances:
+  poison: 100
+  fire: 40
+
+ai:
+  goals: [ "ATTACK_PLAYERS" ]
+  aggro-range: 30
+  move-speed: 0.85
+
+skills:
+  - id: pisoton_sismico
+    display-name: "Pisotón Sísmico"
+    trigger: ATTACK
+    cooldown: 12s
+    chance: 50
+    conditions:
+      - "target.distance <= 5"
+    actions:
+      - type: ANIMATION
+        value: pisoton
+      - type: DAMAGE
+        amount: "12"
+      - type: PUSH
+        strength: "2.0"
+      - type: PARTICLE
+        particle: EXPLOSION
+        count: "10"
+      - type: SOUND
+        sound: ENTITY_IRON_GOLEM_ATTACK
+        volume: "1.5"
+        pitch: "0.4"
+
+phases:
+  - id: irradiado
+    health-threshold-percent: 60
+    stat-multipliers:
+      damage: 1.2
+    skills:
+      - id: pulso_de_radiacion
+        display-name: "Pulso de Radiación"
+        trigger: PERIODIC
+        cooldown: 10s
+        chance: 70
+        actions:
+          - type: PARTICLE
+            particle: HAPPY_VILLAGER
+            count: "60"
+            offset-x: "3.0"
+            offset-y: "1.0"
+            offset-z: "3.0"
+          - type: DAMAGE
+            amount: "10"
+          - type: COMMAND
+            value: "effect give {target} minecraft:poison 6 1"
+          - type: SOUND
+            sound: BLOCK_BEACON_POWER_SELECT
+            volume: "1.5"
+            pitch: "0.5"
+    bossbar-color: GREEN
+    bossbar-title: "&4&lBehemot del Yermo &7[Irradiado]"
+    dialogue: "&2\"EL REACTOR... QUEMA.\""
+    particle: HAPPY_VILLAGER
+
+  - id: fusion_inminente
+    health-threshold-percent: 25
+    stat-multipliers:
+      damage: 1.5
+      speed: 1.2
+    skills:
+      - id: estallido_del_reactor
+        display-name: "Estallido del Reactor"
+        trigger: PERIODIC
+        cooldown: 15s
+        chance: 80
+        actions:
+          - type: ANIMATION
+            value: pisoton
+          - type: EXPLOSION
+            power: "2.5"
+            break-blocks: "false"
+          - type: PARTICLE
+            particle: FLAME
+            count: "80"
+            offset-x: "2.5"
+            offset-y: "1.5"
+            offset-z: "2.5"
+    bossbar-color: RED
+    bossbar-title: "&4&lBehemot del Yermo &7[Fusión Inminente]"
+    dialogue: "&4\"¡TODO... ARDE!\""
+    particle: FLAME
+
+triggers:
+  SPAWN:
+    - type: TITLE
+      title: "&4&lEL BEHEMOT SE LEVANTA"
+      subtitle: "&7Algo enorme se mueve entre las ruinas"
+    - type: SOUND
+      sound: ENTITY_RAVAGER_ROAR
+      volume: "1.5"
+      pitch: "0.5"
+  PHASE_CHANGE:
+    - type: SOUND
+      sound: ENTITY_RAVAGER_ROAR
+      volume: "1.5"
+      pitch: "0.7"
+  DEATH:
+    - type: TITLE
+      title: "&2&lEL BEHEMOT CAE"
+      subtitle: "&7El reactor se apaga por fin"
+    - type: EXPLOSION
+      power: "3.0"
+      break-blocks: "false"
+
+loot:
+  - type: ITEM
+    reference: nucleo_de_fusion
+    amount-min: 2
+    amount-max: 4
+    chance: 100
+    scope: SHARED
+  - type: ITEM
+    reference: martillo_de_reactor
+    amount-min: 1
+    amount-max: 1
+    chance: 15
+    scope: SHARED
+  - type: ITEM
+    reference: lanzador_atomico
+    amount-min: 1
+    amount-max: 1
+    chance: 10
+    scope: SHARED
+  - type: ITEM
+    reference: servoarmadura_peto
+    amount-min: 1
+    amount-max: 1
+    chance: 20
+    scope: SHARED
+  - type: ITEM
+    reference: chapa_de_la_suerte
+    amount-min: 1
+    amount-max: 1
+    chance: 25
+    scope: PER_PLAYER
+  - type: MONEY
+    amount-min: 250
+    amount-max: 450
+    chance: 100
+    scope: PER_PLAYER
+  - type: EXPERIENCE
+    amount-min: 400
+    amount-max: 600
+    chance: 100
+    scope: PER_PLAYER
+
+bossbar:
+  enabled: true
+  color: RED
+  style: NOTCHED_20
+  title: "&4&lBehemot del Yermo"
+
+dialogues:
+  - trigger: SPAWN
+    text: "&2\"PEQUEÑO. BLANDO. MÍO.\""
+  - trigger: DEATH
+    text: "&7\"Solo... quería... silencio...\""
+
+spawn-rules:
+  natural-spawn: false

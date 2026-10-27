@@ -1,0 +1,40 @@
+# Armadura de Vanguardia: la de los dos oficios del pack. Puesta se ve
+# como la armadura del pack (el casco, como su modelo).
+id: vanguardia_grebas
+pack: vanguardia
+material: DIAMOND_LEGGINGS
+item-model: "vanguardia:armadura/vanguardia_grebas"
+equipment-model: "vanguardia:vanguardia"
+display-name: "&fGrebas de Vanguardia"
+lore:
+  - "&7Amortiguadores en cada rodilla."
+  - "&8Conjunto de Vanguardia."
+rarity: EPIC
+
+stats:
+  defense: 9
+  health: 10
+
+requirements:
+  level: 40
+
+durability:
+  max: 1100
+  repairable: true
+  degrade-per-use: 1
+
+economy:
+  sell: 1500
+  buy: 3300
+
+translations:
+  en:
+    display-name: "&fVanguard Greaves"
+    lore:
+      - "&7Shock absorbers in every knee."
+      - "&8Vanguard set."
+  pt_BR:
+    display-name: "&fGrevas da Vanguarda"
+    lore:
+      - "&7Amortecedores em cada joelho."
+      - "&8Conjunto da Vanguarda."

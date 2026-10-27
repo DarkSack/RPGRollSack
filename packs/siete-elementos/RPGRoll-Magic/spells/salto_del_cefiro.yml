@@ -1,0 +1,27 @@
+id: salto_del_cefiro
+display-name: "&aSalto del Céfiro"
+icon: FEATHER
+color: GREEN
+school: siete_elementos
+rarity: COMMON
+level: 12
+cast-time: 0
+cooldown: 100
+trigger: RIGHT_CLICK
+tree-tier: 1
+tags: [siete_elementos]
+description: "El viento te levanta y te lleva unos metros hacia delante."
+
+cost:
+  mana: 15
+
+components:
+  - type: LEAP
+    forward: 1.4
+    up: 0.9
+  - type: VISUAL
+    effect-id: siete_cefiro
+  - type: SOUND
+    sound: ENTITY_BREEZE_WIND_BURST
+    volume: 1.0
+    pitch: 1.2

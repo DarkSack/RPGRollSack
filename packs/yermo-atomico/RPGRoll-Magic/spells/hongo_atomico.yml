@@ -1,0 +1,32 @@
+# El definitivo de la escuela: tarda un segundo en cargarse y revienta
+# una zona grande. Pide haber aprendido Ráfaga Gamma.
+id: hongo_atomico
+display-name: "&6&lHongo Atómico"
+icon: TNT
+color: GOLD
+school: radiacion
+rarity: EPIC
+level: 38
+cast-time: 20
+cooldown: 600
+trigger: RIGHT_CLICK
+tree-parent: rafaga_gamma
+tree-tier: 2
+tags: [radiacion, yermo, area]
+description: "Un segundo de silencio, un destello y una nube con forma de seta."
+
+cost:
+  mana: 70
+
+components:
+  - type: VISUAL
+    effect-id: yermo_hongo_atomico
+  - type: DAMAGE_AREA
+    radius: 6
+    amount: 26
+  - type: PUSH
+    strength: 1.8
+  - type: SOUND
+    sound: ENTITY_GENERIC_EXPLODE
+    volume: 1.5
+    pitch: 0.5

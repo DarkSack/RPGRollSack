@@ -1,0 +1,27 @@
+id: brote_vital
+display-name: "&2Brote Vital"
+icon: MOSS_BLOCK
+color: DARK_GREEN
+school: siete_elementos
+rarity: UNCOMMON
+level: 16
+cast-time: 0
+cooldown: 240
+trigger: RIGHT_CLICK
+tree-tier: 1
+tags: [siete_elementos]
+description: "La hierba crece a tus pies y te cura."
+
+cost:
+  mana: 28
+
+components:
+  - type: HEAL
+    amount: 10
+    target: self
+  - type: VISUAL
+    effect-id: siete_flora
+  - type: SOUND
+    sound: BLOCK_AZALEA_LEAVES_PLACE
+    volume: 1.0
+    pitch: 1.0

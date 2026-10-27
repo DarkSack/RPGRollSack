@@ -1,0 +1,8 @@
+# GENERADO por sackito-network/infra/objetos/construir.py: no se edita a mano.
+id: rpgroll-siete
+name: rpgroll-siete
+version: '1.0'
+author: 'RPGRoll'
+namespace: siete
+priority: 25
+description: 'Modelos de RPGRoll-Siete'

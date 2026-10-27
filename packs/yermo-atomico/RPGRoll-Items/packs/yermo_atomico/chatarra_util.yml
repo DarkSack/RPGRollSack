@@ -1,0 +1,26 @@
+# El material común: lo sueltan casi todos los mobs del pack.
+id: chatarra_util
+pack: yermo_atomico
+material: IRON_NUGGET
+item-model: "yermo:material/chatarra_util"
+display-name: "&7Chatarra Útil"
+lore:
+  - "&7Tornillos, muelles y un engranaje."
+  - "&8Material."
+rarity: COMMON
+
+economy:
+  sell: 15
+  buy: 40
+
+translations:
+  en:
+    display-name: "&7Useful Scrap"
+    lore:
+      - "&7Screws, springs and a gear."
+      - "&8Material."
+  pt_BR:
+    display-name: "&7Sucata Útil"
+    lore:
+      - "&7Parafusos, molas e uma engrenagem."
+      - "&8Material."

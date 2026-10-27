@@ -1,0 +1,27 @@
+id: salto_propulsado
+display-name: "&eSalto Propulsado"
+icon: FIREWORK_ROCKET
+color: YELLOW
+school: nanotecnologia
+rarity: UNCOMMON
+level: 36
+cast-time: 0
+cooldown: 160
+trigger: RIGHT_CLICK
+tree-tier: 1
+tags: [nanotecnologia, vanguardia]
+description: "Los propulsores de las botas te lanzan hacia arriba y adelante."
+
+cost:
+  mana: 20
+
+components:
+  - type: LEAP
+    forward: 1.0
+    up: 1.4
+  - type: VISUAL
+    effect-id: vanguardia_onda_de_impulso
+  - type: SOUND
+    sound: ENTITY_FIREWORK_ROCKET_BLAST
+    volume: 1.0
+    pitch: 0.8

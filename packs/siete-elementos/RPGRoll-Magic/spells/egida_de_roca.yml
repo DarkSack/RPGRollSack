@@ -1,0 +1,30 @@
+id: egida_de_roca
+display-name: "&6Égida de Roca"
+icon: GOLD_BLOCK
+color: GOLD
+school: siete_elementos
+rarity: RARE
+level: 18
+cast-time: 0
+cooldown: 400
+trigger: RIGHT_CLICK
+tree-tier: 1
+tags: [siete_elementos]
+description: "Una coraza de piedra que absorbe golpes y te cura un poco."
+
+cost:
+  mana: 30
+
+components:
+  - type: APPLY_EFFECT
+    effect-id: shield
+    target: self
+  - type: HEAL
+    amount: 4
+    target: self
+  - type: VISUAL
+    effect-id: siete_roca
+  - type: SOUND
+    sound: BLOCK_STONE_PLACE
+    volume: 1.2
+    pitch: 0.6

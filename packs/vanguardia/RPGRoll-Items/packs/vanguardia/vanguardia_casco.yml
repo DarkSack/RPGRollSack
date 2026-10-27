@@ -1,0 +1,40 @@
+# Armadura de Vanguardia: la de los dos oficios del pack. Puesta se ve
+# como la armadura del pack (el casco, como su modelo).
+id: vanguardia_casco
+pack: vanguardia
+material: DIAMOND_HELMET
+item-model: "vanguardia:armadura/vanguardia_casco"
+equipment-model: "none"
+display-name: "&fCasco de Vanguardia"
+lore:
+  - "&7El visor marca a quien te apunta."
+  - "&8Conjunto de Vanguardia."
+rarity: EPIC
+
+stats:
+  defense: 6
+  health: 8
+
+requirements:
+  level: 40
+
+durability:
+  max: 1100
+  repairable: true
+  degrade-per-use: 1
+
+economy:
+  sell: 1500
+  buy: 3300
+
+translations:
+  en:
+    display-name: "&fVanguard Helmet"
+    lore:
+      - "&7The visor marks whoever aims at you."
+      - "&8Vanguard set."
+  pt_BR:
+    display-name: "&fCapacete da Vanguarda"
+    lore:
+      - "&7O visor marca quem mira em você."
+      - "&8Conjunto da Vanguarda."

@@ -1,0 +1,95 @@
+# El élite pesado: lento, mucha vida y un pisotón que empuja.
+# Modelo 3D: FreeMinecraftModels/models/yermo_coloso.bbmodel. Sin FMM se ve el zombi.
+id: yermo_coloso
+category: ELITE
+display-name: "&2Coloso del Yermo"
+name-color: "#7FB045"
+level: 34
+rarity: epic
+tags: [ "yermo_atomico", "mutante", "modelo3d" ]
+description: "Tres metros de músculo verde con un mazo de tubería y pocas palabras."
+base-entity-type: ZOMBIE
+
+model:
+  scale: 1.35
+  model-engine-id: yermo_coloso
+  equipment:
+
+stats:
+  health: 280
+  damage: 16
+  defense: 12
+  speed: 80
+  armor: 10
+  dodge: 0
+  accuracy: 90
+  critical_chance: 5
+  critical_damage: 50
+  knockback_resistance: 80
+
+resistances:
+  poison: 60
+
+ai:
+  goals: [ "ATTACK_PLAYERS" ]
+  aggro-range: 16
+  move-speed: 0.85
+
+skills:
+  - id: pisoton
+    display-name: "Pisotón"
+    trigger: ATTACK
+    cooldown: 14s
+    chance: 35
+    conditions:
+      - "target.distance <= 4"
+    actions:
+      - type: ANIMATION
+        value: pisoton
+      - type: DAMAGE
+        amount: "8"
+      - type: PUSH
+        strength: "1.4"
+      - type: PARTICLE
+        particle: EXPLOSION
+        count: "6"
+      - type: SOUND
+        sound: ENTITY_IRON_GOLEM_ATTACK
+        volume: "1.2"
+        pitch: "0.6"
+
+loot:
+  - type: ITEM
+    reference: chatarra_util
+    amount-min: 3
+    amount-max: 6
+    chance: 90
+    scope: SHARED
+  - type: ITEM
+    reference: nucleo_de_fusion
+    amount-min: 1
+    amount-max: 1
+    chance: 15
+    scope: SHARED
+  - type: ITEM
+    reference: garrote_de_tuberia
+    amount-min: 1
+    amount-max: 1
+    chance: 10
+    scope: SHARED
+  - type: MONEY
+    amount-min: 50
+    amount-max: 90
+    chance: 100
+    scope: PER_PLAYER
+  - type: EXPERIENCE
+    amount-min: 80
+    amount-max: 120
+    chance: 100
+    scope: PER_PLAYER
+
+spawn-rules:
+  biomes: [BADLANDS, ERODED_BADLANDS, WOODED_BADLANDS]
+  natural-spawn: true
+  spawn-weight: 0.4
+  chance: 3

@@ -1,0 +1,46 @@
+# Más rápido y más crítico que el garrote: el arma blanca del Saqueador
+# para cuando se le acaba la carga.
+id: machete_del_yermo
+pack: yermo_atomico
+material: IRON_SWORD
+item-model: "yermo:arma/machete_del_yermo"
+display-name: "&eMachete del Yermo"
+lore:
+  - "&7Afilado contra una señal de tráfico."
+  - "&7Corta matorral, cuerda y necrófago."
+rarity: UNCOMMON
+
+stats:
+  damage: 7
+  critical_chance: 12
+  attack_speed: 1.2
+
+requirements:
+  level: 22
+
+durability:
+  max: 450
+  repairable: true
+  degrade-per-use: 1
+
+triggers:
+  ENTITY_HIT:
+    - type: PARTICLE
+      particle: DAMAGE_INDICATOR
+      count: 4
+
+economy:
+  sell: 180
+  buy: 450
+
+translations:
+  en:
+    display-name: "&eWasteland Machete"
+    lore:
+      - "&7Sharpened against a traffic sign."
+      - "&7Cuts brush, rope and ghoul."
+  pt_BR:
+    display-name: "&eFacão do Ermo"
+    lore:
+      - "&7Afiado numa placa de trânsito."
+      - "&7Corta mato, corda e carniçal."

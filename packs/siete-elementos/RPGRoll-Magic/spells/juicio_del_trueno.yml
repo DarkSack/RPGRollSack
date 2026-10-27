@@ -1,0 +1,29 @@
+id: juicio_del_trueno
+display-name: "&dJuicio del Trueno"
+icon: LIGHTNING_ROD
+color: LIGHT_PURPLE
+school: siete_elementos
+rarity: EPIC
+level: 24
+cast-time: 0
+cooldown: 240
+trigger: RIGHT_CLICK
+tree-parent: llamarada
+tree-tier: 2
+tags: [siete_elementos]
+description: "Un rayo que salta de enemigo en enemigo."
+
+cost:
+  mana: 45
+
+components:
+  - type: DAMAGE_CHAIN
+    max-jumps: 4
+    radius: 6
+    amount: 12
+  - type: VISUAL
+    effect-id: siete_rayo
+  - type: SOUND
+    sound: ENTITY_LIGHTNING_BOLT_IMPACT
+    volume: 1.0
+    pitch: 1.3

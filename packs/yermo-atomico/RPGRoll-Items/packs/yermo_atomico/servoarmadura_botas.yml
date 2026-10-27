@@ -1,0 +1,44 @@
+# Servoarmadura: la armadura del Acorazado. Mucha defensa y vida; la
+# pieza puesta se ve como la armadura del pack (el yelmo, como su modelo).
+id: servoarmadura_botas
+pack: yermo_atomico
+material: NETHERITE_BOOTS
+item-model: "yermo:armadura/servoarmadura_botas"
+equipment-model: "yermo:servoarmadura"
+display-name: "&2Botas de Servoarmadura"
+lore:
+  - "&7Dejan huellas de medio metro."
+  - "&8Conjunto de Servoarmadura."
+rarity: EPIC
+
+stats:
+  defense: 7
+  health: 8
+
+attributes:
+  KNOCKBACK_RESISTANCE: 0.05
+
+requirements:
+  level: 35
+  class: acorazado
+
+durability:
+  max: 1200
+  repairable: true
+  degrade-per-use: 1
+
+economy:
+  sell: 1600
+  buy: 3500
+
+translations:
+  en:
+    display-name: "&2Power Armor Boots"
+    lore:
+      - "&7They leave footprints half a meter long."
+      - "&8Power Armor set."
+  pt_BR:
+    display-name: "&2Botas de Servoarmadura"
+    lore:
+      - "&7Deixam pegadas de meio metro."
+      - "&8Conjunto de Servoarmadura."

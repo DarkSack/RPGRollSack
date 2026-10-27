@@ -1,0 +1,83 @@
+# El enemigo básico del pack: va en grupo, lleva máscara y garrote.
+# Cuando alguien se acerca baila (animación «danza») para avisar al resto.
+# Modelo 3D: FreeMinecraftModels/models/siete_trasgo.bbmodel. Sin FMM se ve el zombi.
+id: siete_trasgo
+category: NORMAL
+display-name: "&6Trasgo Enmascarado"
+name-color: "#B98A4A"
+level: 12
+rarity: common
+tags: [ "siete_elementos", "trasgo", "modelo3d" ]
+description: "Pequeño, ruidoso y con una máscara de hueso que nunca se quita."
+base-entity-type: ZOMBIE
+
+model:
+  scale: 0.9
+  model-engine-id: siete_trasgo
+  equipment:
+
+stats:
+  health: 40
+  damage: 5
+  defense: 2
+  speed: 100
+  armor: 2
+  dodge: 5
+  accuracy: 85
+  critical_chance: 5
+  critical_damage: 30
+  knockback_resistance: 0
+
+ai:
+  goals: [ "ATTACK_PLAYERS" ]
+  aggro-range: 14
+  move-speed: 1.0
+
+skills:
+  - id: danza_de_guerra
+    display-name: "Danza de Guerra"
+    trigger: PLAYER_ENTER_RANGE
+    cooldown: 30s
+    chance: 60
+    actions:
+      - type: ANIMATION
+        value: danza
+      - type: SOUND
+        sound: ENTITY_PIGLIN_CELEBRATE
+        volume: "1.0"
+        pitch: "1.4"
+  - id: garrotazo
+    display-name: "Garrotazo"
+    trigger: ATTACK
+    cooldown: 8s
+    chance: 30
+    actions:
+      - type: DAMAGE
+        amount: "3"
+      - type: PUSH
+        strength: "0.8"
+
+loot:
+  - type: ITEM
+    reference: brocheta_de_montana
+    amount-min: 1
+    amount-max: 1
+    chance: 15
+    scope: PER_PLAYER
+  - type: ITEM
+    reference: BONE
+    amount-min: 1
+    amount-max: 2
+    chance: 50
+    scope: PER_PLAYER
+  - type: EXPERIENCE
+    amount-min: 8
+    amount-max: 14
+    chance: 100
+    scope: PER_PLAYER
+
+spawn-rules:
+  biomes: [PLAINS, MEADOW, FOREST, BIRCH_FOREST, CHERRY_GROVE]
+  natural-spawn: true
+  spawn-weight: 1.0
+  chance: 8

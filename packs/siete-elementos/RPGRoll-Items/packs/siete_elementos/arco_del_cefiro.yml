@@ -1,0 +1,49 @@
+# Un arco que no necesita flechas: dispara una de viento con
+# el clic derecho (no se recoge del suelo).
+id: arco_del_cefiro
+pack: siete_elementos
+material: CARROT_ON_A_STICK
+item-model: "siete:arma/arco_del_cefiro"
+display-name: "&aArco del Céfiro"
+lore:
+  - "&7La cuerda es una corriente de aire."
+  - "&8Viento. Clic derecho: dispara."
+rarity: EPIC
+
+stats:
+  critical_chance: 12
+  critical_damage: 30
+
+requirements:
+  level: 18
+
+abilities:
+  - id: flecha_de_viento
+    display-name: "&aFlecha de Viento"
+    passive: false
+    trigger: RIGHT_CLICK
+    cooldown: 700ms
+    actions:
+      - type: PROJECTILE
+        projectile: Arrow
+        speed: "3.0"
+      - type: SOUND
+        sound: ENTITY_ARROW_SHOOT
+        volume: "0.8"
+        pitch: "1.3"
+
+economy:
+  sell: 1000
+  buy: 2200
+
+translations:
+  en:
+    display-name: "&aZephyr Bow"
+    lore:
+      - "&7Its string is a current of air."
+      - "&8Wind. Right click: shoot."
+  pt_BR:
+    display-name: "&aArco do Zéfiro"
+    lore:
+      - "&7A corda é uma corrente de ar."
+      - "&8Vento. Clique direito: dispara."

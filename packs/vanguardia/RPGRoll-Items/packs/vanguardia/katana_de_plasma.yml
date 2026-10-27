@@ -1,0 +1,67 @@
+# El arma legendaria del Agente: cae del Titán. El clic derecho la
+# desenvaina: velocidad y fuerza unos segundos.
+id: katana_de_plasma
+pack: vanguardia
+material: NETHERITE_SWORD
+item-model: "vanguardia:arma/katana_de_plasma"
+display-name: "&d&lKatana de Plasma"
+lore:
+  - "&7La hoja es luz contenida en un campo."
+  - "&7Corta antes de que se oiga el zumbido."
+  - "&8Clic derecho: Desenvaine (18 s)."
+rarity: LEGENDARY
+glow: true
+
+stats:
+  damage: 13
+  critical_chance: 20
+  critical_damage: 60
+  attack_speed: 1.4
+
+requirements:
+  level: 50
+  class: agente_de_asalto
+
+durability:
+  max: 1600
+  repairable: true
+  degrade-per-use: 1
+
+triggers:
+  ENTITY_HIT:
+    - type: PARTICLES
+      effect-id: vanguardia_corte_plasma
+
+abilities:
+  - id: desenvaine
+    display-name: "&dDesenvaine"
+    passive: false
+    trigger: RIGHT_CLICK
+    cooldown: 18s
+    actions:
+      - type: COMMAND
+        value: "effect give {player} minecraft:speed 6 2 true"
+      - type: COMMAND
+        value: "effect give {player} minecraft:strength 6 1 true"
+      - type: SOUND
+        sound: ITEM_TRIDENT_RETURN
+        volume: "1.0"
+        pitch: "1.6"
+
+economy:
+  sell: 5000
+  buy: 11000
+
+translations:
+  en:
+    display-name: "&d&lPlasma Katana"
+    lore:
+      - "&7The blade is light held in a field."
+      - "&7It cuts before you hear the hum."
+      - "&8Right click: Unsheathe (18 s)."
+  pt_BR:
+    display-name: "&d&lKatana de Plasma"
+    lore:
+      - "&7A lâmina é luz contida num campo."
+      - "&7Corta antes que se ouça o zumbido."
+      - "&8Clique direito: Desembainhar (18 s)."

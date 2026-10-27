@@ -1,0 +1,181 @@
+{
+ "format_version": 2,
+ "items": {
+  "minecraft:carrot_on_a_stick": [
+   {
+    "type": "definition",
+    "model": "vanguardia:arma/pistola_de_pulso",
+    "bedrock_identifier": "vanguardia:arma_pistola_de_pulso",
+    "display_name": "Pistola de Pulso",
+    "bedrock_options": {
+     "icon": "vanguardia_arma_pistola_de_pulso",
+     "allow_offhand": true,
+     "display_handheld": true
+    }
+   },
+   {
+    "type": "definition",
+    "model": "vanguardia:arma/rifle_de_riel",
+    "bedrock_identifier": "vanguardia:arma_rifle_de_riel",
+    "display_name": "Rifle de Riel",
+    "bedrock_options": {
+     "icon": "vanguardia_arma_rifle_de_riel",
+     "allow_offhand": true,
+     "display_handheld": true
+    }
+   },
+   {
+    "type": "definition",
+    "model": "vanguardia:arma/lanzacohetes_de_impulso",
+    "bedrock_identifier": "vanguardia:arma_lanzacohetes_de_impulso",
+    "display_name": "Lanzacohetes de Impulso",
+    "bedrock_options": {
+     "icon": "vanguardia_arma_lanzacohetes_de_impulso",
+     "allow_offhand": true,
+     "display_handheld": true
+    }
+   },
+   {
+    "type": "definition",
+    "model": "vanguardia:arma/baculo_biotico",
+    "bedrock_identifier": "vanguardia:arma_baculo_biotico",
+    "display_name": "Báculo Biótico",
+    "bedrock_options": {
+     "icon": "vanguardia_arma_baculo_biotico",
+     "allow_offhand": true,
+     "display_handheld": true
+    }
+   }
+  ],
+  "minecraft:mace": [
+   {
+    "type": "definition",
+    "model": "vanguardia:arma/martillo_de_impulso",
+    "bedrock_identifier": "vanguardia:arma_martillo_de_impulso",
+    "display_name": "Martillo de Impulso",
+    "bedrock_options": {
+     "icon": "vanguardia_arma_martillo_de_impulso",
+     "allow_offhand": true,
+     "display_handheld": true
+    }
+   }
+  ],
+  "minecraft:netherite_sword": [
+   {
+    "type": "definition",
+    "model": "vanguardia:arma/katana_de_plasma",
+    "bedrock_identifier": "vanguardia:arma_katana_de_plasma",
+    "display_name": "Katana de Plasma",
+    "bedrock_options": {
+     "icon": "vanguardia_arma_katana_de_plasma",
+     "allow_offhand": true,
+     "display_handheld": true
+    }
+   }
+  ],
+  "minecraft:diamond_helmet": [
+   {
+    "type": "definition",
+    "model": "vanguardia:armadura/vanguardia_casco",
+    "bedrock_identifier": "vanguardia:armadura_vanguardia_casco",
+    "display_name": "Casco de Vanguardia",
+    "bedrock_options": {
+     "icon": "vanguardia_armadura_vanguardia_casco",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:diamond_chestplate": [
+   {
+    "type": "definition",
+    "model": "vanguardia:armadura/vanguardia_peto",
+    "bedrock_identifier": "vanguardia:armadura_vanguardia_peto",
+    "display_name": "Peto de Vanguardia",
+    "bedrock_options": {
+     "icon": "vanguardia_armadura_vanguardia_peto",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:diamond_leggings": [
+   {
+    "type": "definition",
+    "model": "vanguardia:armadura/vanguardia_grebas",
+    "bedrock_identifier": "vanguardia:armadura_vanguardia_grebas",
+    "display_name": "Grebas de Vanguardia",
+    "bedrock_options": {
+     "icon": "vanguardia_armadura_vanguardia_grebas",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:diamond_boots": [
+   {
+    "type": "definition",
+    "model": "vanguardia:armadura/vanguardia_botas",
+    "bedrock_identifier": "vanguardia:armadura_vanguardia_botas",
+    "display_name": "Botas de Vanguardia",
+    "bedrock_options": {
+     "icon": "vanguardia_armadura_vanguardia_botas",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:honey_bottle": [
+   {
+    "type": "definition",
+    "model": "vanguardia:consumible/celula_de_salud",
+    "bedrock_identifier": "vanguardia:consumible_celula_de_salud",
+    "display_name": "Célula de Salud",
+    "bedrock_options": {
+     "icon": "vanguardia_consumible_celula_de_salud",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:cookie": [
+   {
+    "type": "definition",
+    "model": "vanguardia:consumible/barrita_energetica",
+    "bedrock_identifier": "vanguardia:consumible_barrita_energetica",
+    "display_name": "Barrita Energética",
+    "bedrock_options": {
+     "icon": "vanguardia_consumible_barrita_energetica",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:iron_ingot": [
+   {
+    "type": "definition",
+    "model": "vanguardia:material/chip_de_automata",
+    "bedrock_identifier": "vanguardia:material_chip_de_automata",
+    "display_name": "Chip de Autómata",
+    "bedrock_options": {
+     "icon": "vanguardia_material_chip_de_automata",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:amethyst_shard": [
+   {
+    "type": "definition",
+    "model": "vanguardia:reliquia/insignia_de_vanguardia",
+    "bedrock_identifier": "vanguardia:reliquia_insignia_de_vanguardia",
+    "display_name": "Insignia de Vanguardia",
+    "bedrock_options": {
+     "icon": "vanguardia_reliquia_insignia_de_vanguardia",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ]
+ }
+}

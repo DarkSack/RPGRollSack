@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "yermo:servoarmadura"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "yermo:servoarmadura"
+      }
+    ]
+  }
+}

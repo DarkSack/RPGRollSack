@@ -1,0 +1,79 @@
+# El enemigo de relleno del pack: vuela, va en grupo y atraviesa paredes
+# (lo mueve un vex). Poca vida.
+# Modelo 3D: FreeMinecraftModels/models/vanguardia_dron.bbmodel. Sin FMM se ve el vex.
+id: vanguardia_dron
+category: NORMAL
+display-name: "&bDron de Vigilancia"
+name-color: "#7FD4FF"
+level: 36
+rarity: common
+tags: [ "vanguardia", "robot", "modelo3d" ]
+description: "Una esfera blanca con un ojo azul que nunca parpadea."
+base-entity-type: VEX
+
+model:
+  scale: 1.2
+  model-engine-id: vanguardia_dron
+  equipment:
+
+stats:
+  health: 60
+  damage: 9
+  defense: 4
+  speed: 110
+  armor: 4
+  dodge: 15
+  accuracy: 90
+  critical_chance: 5
+  critical_damage: 30
+  knockback_resistance: 0
+
+resistances:
+  poison: 100
+
+ai:
+  goals: [ "ATTACK_PLAYERS" ]
+  aggro-range: 20
+  move-speed: 1.0
+
+skills:
+  - id: laser_de_vigilancia
+    display-name: "Láser de Vigilancia"
+    trigger: ATTACK
+    cooldown: 5s
+    chance: 50
+    actions:
+      - type: DAMAGE
+        amount: "3"
+      - type: PARTICLE
+        particle: ELECTRIC_SPARK
+        count: "12"
+      - type: SOUND
+        sound: ENTITY_SHULKER_SHOOT
+        volume: "0.8"
+        pitch: "1.8"
+
+loot:
+  - type: ITEM
+    reference: chip_de_automata
+    amount-min: 1
+    amount-max: 1
+    chance: 30
+    scope: PER_PLAYER
+  - type: ITEM
+    reference: REDSTONE
+    amount-min: 1
+    amount-max: 3
+    chance: 50
+    scope: PER_PLAYER
+  - type: EXPERIENCE
+    amount-min: 20
+    amount-max: 30
+    chance: 100
+    scope: PER_PLAYER
+
+spawn-rules:
+  biomes: [WINDSWEPT_HILLS, WINDSWEPT_GRAVELLY_HILLS, STONY_SHORE]
+  natural-spawn: true
+  spawn-weight: 0.8
+  chance: 4

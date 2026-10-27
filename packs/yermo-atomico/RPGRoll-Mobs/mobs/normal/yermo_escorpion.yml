@@ -1,0 +1,85 @@
+# El élite común del desierto: aguijón venenoso y mucha vida.
+# Modelo 3D: FreeMinecraftModels/models/yermo_escorpion.bbmodel. Sin FMM se ve la araña.
+id: yermo_escorpion
+category: ELITE
+display-name: "&6Radescorpión"
+name-color: "#C2732F"
+level: 30
+rarity: rare
+tags: [ "yermo_atomico", "radiacion", "modelo3d" ]
+description: "Un escorpión del tamaño de una moto, con una glándula que brilla en la oscuridad."
+base-entity-type: SPIDER
+
+model:
+  scale: 1.0
+  model-engine-id: yermo_escorpion
+  equipment:
+
+stats:
+  health: 130
+  damage: 11
+  defense: 8
+  speed: 95
+  armor: 8
+  dodge: 0
+  accuracy: 90
+  critical_chance: 5
+  critical_damage: 40
+  knockback_resistance: 40
+
+resistances:
+  poison: 100
+
+ai:
+  goals: [ "ATTACK_PLAYERS" ]
+  aggro-range: 16
+  move-speed: 0.95
+
+skills:
+  - id: aguijon
+    display-name: "Aguijón"
+    trigger: ATTACK
+    cooldown: 8s
+    chance: 45
+    actions:
+      - type: DAMAGE
+        amount: "4"
+      - type: COMMAND
+        value: "effect give {target} minecraft:poison 5 1"
+      - type: PARTICLE
+        particle: HAPPY_VILLAGER
+        count: "15"
+      - type: SOUND
+        sound: ENTITY_SPIDER_HURT
+        volume: "1.0"
+        pitch: "0.5"
+
+loot:
+  - type: ITEM
+    reference: chatarra_util
+    amount-min: 2
+    amount-max: 4
+    chance: 70
+    scope: PER_PLAYER
+  - type: ITEM
+    reference: inyector_curativo
+    amount-min: 1
+    amount-max: 1
+    chance: 15
+    scope: PER_PLAYER
+  - type: MONEY
+    amount-min: 20
+    amount-max: 40
+    chance: 100
+    scope: PER_PLAYER
+  - type: EXPERIENCE
+    amount-min: 40
+    amount-max: 60
+    chance: 100
+    scope: PER_PLAYER
+
+spawn-rules:
+  biomes: [DESERT, BADLANDS, ERODED_BADLANDS]
+  natural-spawn: true
+  spawn-weight: 0.6
+  chance: 4

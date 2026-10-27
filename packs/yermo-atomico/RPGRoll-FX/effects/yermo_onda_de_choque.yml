@@ -1,0 +1,25 @@
+id: yermo_onda_de_choque
+display-name: "&6Onda de Choque"
+description: "Un anillo de polvo que se abre desde el puño."
+
+steps:
+  - type: PARTICLE
+    delay: 0
+    particle: CLOUD
+    shape: CIRCLE
+    target: SELF
+    y-offset: 0.1
+    radius: 0.6
+    radius-to: 4.5
+    points: 40
+    repeat: 6
+    interval: 1
+  - type: PARTICLE
+    delay: 0
+    particle: CRIT
+    shape: BURST
+    target: SELF
+    radius: 1.5
+    points: 30
+    count: 1
+    speed: 0.4

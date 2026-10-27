@@ -1,0 +1,20 @@
+# La escuela del pack: un hechizo por cada uno de los siete elementos.
+# La Catalista la aprovecha de lleno; el Duelista, algo.
+id: siete_elementos
+display-name: "&bLos Siete Elementos"
+color: AQUA
+icon: PRISMARINE_SHARD
+description: "Fuego, agua, viento, rayo, flora, hielo y roca: siete voces de un mismo idioma."
+cast-sound: BLOCK_AMETHYST_BLOCK_CHIME
+
+race-affinities:
+  hada: 0.15
+  elfo: 0.1
+  orco: -0.1
+
+class-affinities:
+  catalista: 0.25
+  duelista_elemental: 0.1
+  mago: 0.15
+  druida: 0.1
+  guerrero: -0.1

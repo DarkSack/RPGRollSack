@@ -1,0 +1,34 @@
+# Una de las tres reliquias del pack: un amuleto (/amuletos). Las tres
+# llenan las tres ranuras.
+id: caliz_de_los_siete
+pack: siete_elementos
+material: AMETHYST_SHARD
+item-model: "siete:reliquia/caliz_de_los_siete"
+display-name: "&dCáliz de los Siete"
+lore:
+  - "&7Siete gotas, una de cada elemento."
+  - "&8Amuleto: póntelo con /amuletos"
+rarity: RARE
+
+stats:
+  magic_power: 8
+  mana: 15
+
+custom-data:
+  accessory: amulet
+
+economy:
+  sell: 450
+  buy: 1000
+
+translations:
+  en:
+    display-name: "&dChalice of the Seven"
+    lore:
+      - "&7Seven drops, one of each element."
+      - "&8Amulet: wear it with /amulets"
+  pt_BR:
+    display-name: "&dCálice dos Sete"
+    lore:
+      - "&7Sete gotas, uma de cada elemento."
+      - "&8Amuleto: use-o com /amulets"

@@ -1,0 +1,40 @@
+# Atuendo del Viajero: armadura ligera de nivel bajo para cualquiera.
+# Puesta se ve como la ropa del pack (el sombrero, como su modelo).
+id: botas_del_viajero
+pack: siete_elementos
+material: IRON_BOOTS
+item-model: "siete:armadura/botas_del_viajero"
+equipment-model: "siete:atuendo_del_viajero"
+display-name: "&9Botas del Viajero"
+lore:
+  - "&7La suela recuerda todos los caminos."
+  - "&8Conjunto del Viajero."
+rarity: UNCOMMON
+
+stats:
+  defense: 3
+  speed: 3
+
+requirements:
+  level: 12
+
+durability:
+  max: 500
+  repairable: true
+  degrade-per-use: 1
+
+economy:
+  sell: 300
+  buy: 700
+
+translations:
+  en:
+    display-name: "&9Traveler's Boots"
+    lore:
+      - "&7The sole remembers every road."
+      - "&8Traveler set."
+  pt_BR:
+    display-name: "&9Botas do Viajante"
+    lore:
+      - "&7A sola lembra todos os caminhos."
+      - "&8Conjunto do Viajante."

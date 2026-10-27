@@ -1,0 +1,190 @@
+# El jefe del pack. No aparece solo: /mobadmin spawn vanguardia_titan.
+# Fases: cañonea -> bombardea (animación «bombardeo»; las explosiones caen
+# sobre el objetivo y no rompen bloques) -> sobrecarga.
+# Lo mueve un devastador. Modelo 3D: FreeMinecraftModels/models/vanguardia_titan.bbmodel.
+id: vanguardia_titan
+category: WORLD_BOSS
+display-name: "&f&lTitán de Asedio"
+name-color: "#E8F1F7"
+level: 55
+rarity: legendary
+tags: [ "vanguardia", "robot", "jefe", "modelo3d" ]
+description: "Un tanque con piernas que se quedó sin guerra y busca una nueva."
+base-entity-type: RAVAGER
+
+model:
+  scale: 1.3
+  glow: true
+  model-engine-id: vanguardia_titan
+  equipment:
+
+stats:
+  health: 2400
+  damage: 28
+  defense: 22
+  speed: 80
+  armor: 20
+  dodge: 0
+  accuracy: 95
+  critical_chance: 10
+  critical_damage: 70
+  knockback_resistance: 100
+
+resistances:
+  poison: 100
+  fire: 50
+
+ai:
+  goals: [ "ATTACK_PLAYERS" ]
+  aggro-range: 32
+  move-speed: 0.8
+
+skills:
+  - id: canonazo
+    display-name: "Cañonazo"
+    trigger: ATTACK
+    cooldown: 8s
+    chance: 50
+    actions:
+      - type: DAMAGE
+        amount: "10"
+      - type: PUSH
+        strength: "1.5"
+      - type: PARTICLE
+        particle: EXPLOSION
+        count: "6"
+      - type: SOUND
+        sound: ENTITY_GENERIC_EXPLODE
+        volume: "1.2"
+        pitch: "0.8"
+
+phases:
+  - id: bombardeo
+    health-threshold-percent: 60
+    stat-multipliers:
+      damage: 1.2
+    skills:
+      - id: bombardeo
+        display-name: "Bombardeo"
+        trigger: PERIODIC
+        cooldown: 14s
+        chance: 80
+        actions:
+          - type: ANIMATION
+            value: bombardeo
+          - type: COMMAND
+            value: "execute at {target} run particle minecraft:explosion_emitter ~ ~ ~"
+          - type: COMMAND
+            value: "execute at {target} run playsound minecraft:entity.generic.explode hostile @a ~ ~ ~ 2 0.7"
+          - type: DAMAGE
+            amount: "16"
+    bossbar-color: YELLOW
+    bossbar-title: "&f&lTitán de Asedio &7[Bombardeo]"
+    dialogue: "&e\"OBJETIVO MARCADO. FUEGO A DISCRECIÓN.\""
+    particle: SMOKE
+
+  - id: sobrecarga
+    health-threshold-percent: 25
+    stat-multipliers:
+      damage: 1.5
+      speed: 1.25
+    skills:
+      - id: descarga_de_sobrecarga
+        display-name: "Descarga de Sobrecarga"
+        trigger: PERIODIC
+        cooldown: 10s
+        chance: 80
+        actions:
+          - type: LIGHTNING
+            damage: "false"
+          - type: DAMAGE
+            amount: "12"
+          - type: EXPLOSION
+            power: "2.0"
+            break-blocks: "false"
+    bossbar-color: RED
+    bossbar-title: "&f&lTitán de Asedio &7[Sobrecarga]"
+    dialogue: "&c\"TEMPERATURA CRÍTICA. PROTOCOLO: NINGUNO.\""
+    particle: ELECTRIC_SPARK
+
+triggers:
+  SPAWN:
+    - type: ANIMATION
+      value: spawn
+    - type: TITLE
+      title: "&f&lCAE UN TITÁN"
+      subtitle: "&7Algo enorme acaba de aterrizar"
+    - type: SOUND
+      sound: ENTITY_IRON_GOLEM_REPAIR
+      volume: "1.5"
+      pitch: "0.5"
+  DEATH:
+    - type: TITLE
+      title: "&f&lEL TITÁN SE APAGA"
+      subtitle: "&7Los cañones se enfrían"
+    - type: EXPLOSION
+      power: "3.0"
+      break-blocks: "false"
+
+loot:
+  - type: ITEM
+    reference: chip_de_automata
+    amount-min: 3
+    amount-max: 6
+    chance: 100
+    scope: SHARED
+  - type: ITEM
+    reference: katana_de_plasma
+    amount-min: 1
+    amount-max: 1
+    chance: 10
+    scope: SHARED
+  - type: ITEM
+    reference: rifle_de_riel
+    amount-min: 1
+    amount-max: 1
+    chance: 12
+    scope: SHARED
+  - type: ITEM
+    reference: lanzacohetes_de_impulso
+    amount-min: 1
+    amount-max: 1
+    chance: 8
+    scope: SHARED
+  - type: ITEM
+    reference: vanguardia_peto
+    amount-min: 1
+    amount-max: 1
+    chance: 20
+    scope: SHARED
+  - type: ITEM
+    reference: insignia_de_vanguardia
+    amount-min: 1
+    amount-max: 1
+    chance: 25
+    scope: PER_PLAYER
+  - type: MONEY
+    amount-min: 300
+    amount-max: 550
+    chance: 100
+    scope: PER_PLAYER
+  - type: EXPERIENCE
+    amount-min: 500
+    amount-max: 750
+    chance: 100
+    scope: PER_PLAYER
+
+bossbar:
+  enabled: true
+  color: WHITE
+  style: NOTCHED_20
+  title: "&f&lTitán de Asedio"
+
+dialogues:
+  - trigger: SPAWN
+    text: "&f\"UNIDAD 07 EN LÍNEA. BUSCANDO GUERRA.\""
+  - trigger: DEATH
+    text: "&7\"Misión... sin... completar...\""
+
+spawn-rules:
+  natural-spawn: false

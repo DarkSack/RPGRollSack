@@ -1,0 +1,36 @@
+# La reliquia del pack: un amuleto (/amuletos) de suerte y crítico.
+id: chapa_de_la_suerte
+pack: yermo_atomico
+material: GOLD_NUGGET
+item-model: "yermo:reliquia/chapa_de_la_suerte"
+display-name: "&6Chapa de la Suerte"
+lore:
+  - "&7La chapa de un refresco que ya nadie fabrica."
+  - "&7Dicen que da suerte; la tuya, por lo menos."
+  - "&8Amuleto: póntelo con /amuletos"
+rarity: RARE
+
+stats:
+  luck: 6
+  critical_chance: 3
+
+custom-data:
+  accessory: amulet
+
+economy:
+  sell: 500
+  buy: 1200
+
+translations:
+  en:
+    display-name: "&6Lucky Bottle Cap"
+    lore:
+      - "&7The cap of a soda nobody makes anymore."
+      - "&7They say it brings luck; yours, at least."
+      - "&8Amulet: wear it with /amulets"
+  pt_BR:
+    display-name: "&6Tampinha da Sorte"
+    lore:
+      - "&7A tampinha de um refrigerante que ninguém fabrica mais."
+      - "&7Dizem que dá sorte; a sua, pelo menos."
+      - "&8Amuleto: use-o com /amulets"

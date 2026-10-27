@@ -1,0 +1,53 @@
+# El arma de entrada del pack: mucha cadencia y poco daño por disparo.
+id: pistola_de_pulso
+pack: vanguardia
+material: CARROT_ON_A_STICK
+item-model: "vanguardia:arma/pistola_de_pulso"
+display-name: "&bPistola de Pulso"
+lore:
+  - "&7Ráfagas cortas de energía azul."
+  - "&7No necesita recargar; solo respirar."
+  - "&8Clic derecho: dispara."
+rarity: RARE
+
+stats:
+  critical_chance: 10
+
+requirements:
+  level: 35
+
+abilities:
+  - id: pulso
+    display-name: "&bPulso"
+    passive: false
+    trigger: RIGHT_CLICK
+    cooldown: 400ms
+    actions:
+      - type: SHOOT
+        amount: "9"
+        range: "30"
+        color: "#4FD8FF"
+        particle: DUST
+        hit-effect: vanguardia_impacto_pulso
+      - type: SOUND
+        sound: ENTITY_SHULKER_SHOOT
+        volume: "0.7"
+        pitch: "1.8"
+
+economy:
+  sell: 900
+  buy: 2000
+
+translations:
+  en:
+    display-name: "&bPulse Pistol"
+    lore:
+      - "&7Short bursts of blue energy."
+      - "&7It never reloads; it just breathes."
+      - "&8Right click: fire."
+  pt_BR:
+    display-name: "&bPistola de Pulso"
+    lore:
+      - "&7Rajadas curtas de energia azul."
+      - "&7Não precisa recarregar; só respirar."
+      - "&8Clique direito: dispara."

@@ -1,0 +1,75 @@
+# Babosa elemental (fuego). La mueve un lepisma con scale 2.5: así no se parte
+# al morir como un slime. Su golpe lleva su elemento.
+# Modelo 3D: FreeMinecraftModels/models/siete_babosa_fuego.bbmodel. Sin FMM se ve un lepisma grande.
+id: siete_babosa_fuego
+category: NORMAL
+display-name: "&cBabosa Ígnea"
+name-color: "#FF7A2E"
+level: 14
+rarity: uncommon
+tags: [ "siete_elementos", "babosa", "fuego", "modelo3d" ]
+description: "Arde por dentro y deja el suelo chamuscado."
+base-entity-type: SILVERFISH
+
+model:
+  scale: 2.5
+  model-engine-id: siete_babosa_fuego
+  equipment:
+
+stats:
+  health: 55
+  damage: 6
+  defense: 4
+  speed: 90
+  armor: 2
+  dodge: 0
+  accuracy: 85
+  critical_chance: 0
+  critical_damage: 0
+  knockback_resistance: 30
+
+resistances:
+  fire: 100
+
+ai:
+  goals: [ "ATTACK_PLAYERS" ]
+  aggro-range: 12
+  move-speed: 0.9
+
+skills:
+  - id: golpe_fuego
+    display-name: "Golpe Elemental"
+    trigger: ATTACK
+    cooldown: 6s
+    chance: 40
+    actions:
+      - type: FIRE
+        ticks: "60"
+      - type: PARTICLE
+        particle: FLAME
+        count: "10"
+
+loot:
+  - type: ITEM
+    reference: nucleo_elemental
+    amount-min: 1
+    amount-max: 1
+    chance: 20
+    scope: PER_PLAYER
+  - type: ITEM
+    reference: SLIME_BALL
+    amount-min: 1
+    amount-max: 3
+    chance: 70
+    scope: PER_PLAYER
+  - type: EXPERIENCE
+    amount-min: 12
+    amount-max: 18
+    chance: 100
+    scope: PER_PLAYER
+
+spawn-rules:
+  biomes: [SAVANNA, SAVANNA_PLATEAU, BADLANDS]
+  natural-spawn: true
+  spawn-weight: 0.8
+  chance: 6

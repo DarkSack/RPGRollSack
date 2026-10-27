@@ -1,0 +1,27 @@
+id: vanguardia_onda_de_impulso
+display-name: "&eOnda de Impulso"
+description: "Un anillo azul que se abre desde los pies."
+
+steps:
+  - type: PARTICLE
+    delay: 0
+    particle: DUST
+    color: "#4FD8FF"
+    size: 1.4
+    shape: CIRCLE
+    target: SELF
+    y-offset: 0.1
+    radius: 0.5
+    radius-to: 4.0
+    points: 40
+    repeat: 6
+    interval: 1
+  - type: PARTICLE
+    delay: 0
+    particle: CLOUD
+    shape: BURST
+    target: SELF
+    radius: 1.0
+    points: 20
+    count: 1
+    speed: 0.2

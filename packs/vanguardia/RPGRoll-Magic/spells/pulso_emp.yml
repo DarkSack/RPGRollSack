@@ -1,0 +1,30 @@
+id: pulso_emp
+display-name: "&3Pulso EMP"
+icon: REDSTONE
+color: DARK_AQUA
+school: nanotecnologia
+rarity: EPIC
+level: 42
+cast-time: 0
+cooldown: 300
+trigger: RIGHT_CLICK
+tree-parent: salto_propulsado
+tree-tier: 2
+tags: [nanotecnologia, vanguardia]
+description: "Una descarga alrededor que daña y aparta a todo lo cercano."
+
+cost:
+  mana: 45
+
+components:
+  - type: VISUAL
+    effect-id: vanguardia_pulso_emp
+  - type: DAMAGE_AREA
+    radius: 5
+    amount: 16
+  - type: PUSH
+    strength: 1.2
+  - type: SOUND
+    sound: BLOCK_BEACON_DEACTIVATE
+    volume: 1.2
+    pitch: 0.6

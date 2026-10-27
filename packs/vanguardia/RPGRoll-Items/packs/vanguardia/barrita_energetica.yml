@@ -1,0 +1,35 @@
+# Comida rápida: cura poco, da velocidad y prisa un rato.
+id: barrita_energetica
+pack: vanguardia
+material: COOKIE
+item-model: "vanguardia:consumible/barrita_energetica"
+display-name: "&eBarrita Energética"
+lore:
+  - "&7Sabor «naranja táctica»."
+  - "&7Velocidad y prisa durante 20 s."
+rarity: COMMON
+
+triggers:
+  CONSUME:
+    - type: HEAL
+      amount: "3"
+    - type: COMMAND
+      value: "effect give {player} minecraft:speed 20 0 true"
+    - type: COMMAND
+      value: "effect give {player} minecraft:haste 20 0 true"
+
+economy:
+  sell: 25
+  buy: 70
+
+translations:
+  en:
+    display-name: "&eEnergy Bar"
+    lore:
+      - "&7«Tactical orange» flavor."
+      - "&7Speed and haste for 20 s."
+  pt_BR:
+    display-name: "&eBarrinha Energética"
+    lore:
+      - "&7Sabor «laranja tática»."
+      - "&7Velocidade e pressa por 20 s."

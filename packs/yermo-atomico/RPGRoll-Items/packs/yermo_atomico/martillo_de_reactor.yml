@@ -1,0 +1,68 @@
+# El arma legendaria del Acorazado: cae del Behemot. El clic derecho
+# fisiona el núcleo y revienta todo alrededor.
+id: martillo_de_reactor
+pack: yermo_atomico
+material: MACE
+item-model: "yermo:arma/martillo_de_reactor"
+display-name: "&a&lMartillo de Reactor"
+lore:
+  - "&7La cabeza es un núcleo de fusión que"
+  - "&7alguien decidió usar para golpear cosas."
+  - "&8Clic derecho: fisión (20 s)."
+rarity: LEGENDARY
+glow: true
+
+stats:
+  damage: 15
+  critical_chance: 10
+  critical_damage: 70
+
+requirements:
+  level: 40
+  class: acorazado
+
+durability:
+  max: 1500
+  repairable: true
+  degrade-per-use: 1
+
+triggers:
+  ENTITY_HIT:
+    - type: PARTICLE
+      particle: HAPPY_VILLAGER
+      count: 12
+
+abilities:
+  - id: fision
+    display-name: "&aFisión"
+    passive: false
+    trigger: RIGHT_CLICK
+    cooldown: 20s
+    actions:
+      - type: PARTICLES
+        effect-id: yermo_hongo_atomico
+      - type: EXPLOSION
+        power: "2.4"
+        break-blocks: "false"
+      - type: SOUND
+        sound: ENTITY_GENERIC_EXPLODE
+        volume: "1.2"
+        pitch: "0.7"
+
+economy:
+  sell: 4500
+  buy: 10000
+
+translations:
+  en:
+    display-name: "&a&lReactor Hammer"
+    lore:
+      - "&7The head is a fusion core that someone"
+      - "&7decided to use for hitting things."
+      - "&8Right click: fission (20 s)."
+  pt_BR:
+    display-name: "&a&lMartelo de Reator"
+    lore:
+      - "&7A cabeça é um núcleo de fusão que alguém"
+      - "&7decidiu usar para bater em coisas."
+      - "&8Clique direito: fissão (20 s)."

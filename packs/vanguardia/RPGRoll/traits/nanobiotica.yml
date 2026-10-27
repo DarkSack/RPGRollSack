@@ -1,0 +1,15 @@
+id: "nanobiotica"
+name: "&aNanobiótica"
+description: "Sus nanitos lo cuidan a él primero; pegar no es lo suyo."
+required-level: 1
+effect:
+  health-bonus: 4
+  mana-bonus: 15
+  damage-bonus: -0.03
+translations:
+  en:
+    name: "&aNanobiotics"
+    description: "Their nanites look after them first; hitting is not their thing."
+  pt_BR:
+    name: "&aNanobiótica"
+    description: "Seus nanitos cuidam dele primeiro; bater não é com ele."

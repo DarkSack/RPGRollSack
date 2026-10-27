@@ -1,0 +1,45 @@
+# Casco ligero para cualquiera: poca defensa, pero se ve en la cabeza
+# tal cual (su modelo) y deja respirar bajo el agua.
+id: mascara_antigas
+pack: yermo_atomico
+material: IRON_HELMET
+item-model: "yermo:armadura/mascara_antigas"
+equipment-model: "none"
+display-name: "&7Máscara Antigás"
+lore:
+  - "&7Filtra el polvo, el humo y casi todo"
+  - "&7lo que trae el viento del sur."
+rarity: UNCOMMON
+
+stats:
+  defense: 4
+  health: 4
+
+requirements:
+  level: 22
+
+durability:
+  max: 400
+  repairable: true
+  degrade-per-use: 1
+
+effects:
+  - potion: WATER_BREATHING
+    amplifier: 0
+    requires-held: true
+
+economy:
+  sell: 250
+  buy: 600
+
+translations:
+  en:
+    display-name: "&7Gas Mask"
+    lore:
+      - "&7Filters dust, smoke and nearly everything"
+      - "&7the southern wind brings."
+  pt_BR:
+    display-name: "&7Máscara de Gás"
+    lore:
+      - "&7Filtra a poeira, a fumaça e quase tudo"
+      - "&7o que o vento do sul traz."

@@ -1,0 +1,32 @@
+# El hechizo de apoyo: cura un poco y pone un escudo encima.
+id: estimulante_de_combate
+display-name: "&eEstimulante de Combate"
+icon: HONEY_BOTTLE
+color: YELLOW
+school: radiacion
+rarity: UNCOMMON
+level: 28
+cast-time: 0
+cooldown: 300
+trigger: RIGHT_CLICK
+tree-tier: 1
+tags: [radiacion, yermo, apoyo]
+description: "Química de antes de la guerra: te cura y te protege unos segundos."
+
+cost:
+  mana: 30
+
+components:
+  - type: HEAL
+    amount: 8
+    target: self
+  - type: APPLY_EFFECT
+    effect-id: shield
+    target: self
+  - type: PARTICLE
+    particle: HAPPY_VILLAGER
+    count: 20
+  - type: SOUND
+    sound: BLOCK_BREWING_STAND_BREW
+    volume: 1.0
+    pitch: 1.4

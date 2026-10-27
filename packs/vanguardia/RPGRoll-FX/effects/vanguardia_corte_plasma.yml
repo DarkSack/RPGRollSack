@@ -1,0 +1,16 @@
+id: vanguardia_corte_plasma
+display-name: "&dCorte de Plasma"
+description: "Un tajo de luz magenta sobre el objetivo."
+
+steps:
+  - type: PARTICLE
+    delay: 0
+    particle: DUST
+    color: "#FF4FD8"
+    size: 1.0
+    shape: BURST
+    target: LOCATION
+    radius: 0.7
+    points: 18
+    count: 1
+    speed: 0.08

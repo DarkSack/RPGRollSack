@@ -1,0 +1,54 @@
+# El arma de entrada del pack: dispara rápido y pega poco, para que el
+# Saqueador tenga algo antes del rifle. Sin clase: cualquiera la usa.
+id: pistola_de_plasma
+pack: yermo_atomico
+material: CARROT_ON_A_STICK
+item-model: "yermo:arma/pistola_de_plasma"
+display-name: "&aPistola de Plasma"
+lore:
+  - "&7Dispara un chorro de plasma verde que"
+  - "&7deja un olor a ozono durante horas."
+  - "&8Clic derecho: dispara."
+rarity: RARE
+
+stats:
+  critical_chance: 8
+
+requirements:
+  level: 25
+
+abilities:
+  - id: disparo_de_plasma
+    display-name: "&aDisparo de Plasma"
+    passive: false
+    trigger: RIGHT_CLICK
+    cooldown: 600ms
+    actions:
+      - type: SHOOT
+        amount: "7"
+        range: "28"
+        particle: DUST
+        color: "#7CFF5A"
+        hit-effect: yermo_impacto_plasma
+      - type: SOUND
+        sound: ENTITY_BLAZE_SHOOT
+        volume: "0.6"
+        pitch: "1.7"
+
+economy:
+  sell: 600
+  buy: 1400
+
+translations:
+  en:
+    display-name: "&aPlasma Pistol"
+    lore:
+      - "&7Fires a jet of green plasma that"
+      - "&7leaves a smell of ozone for hours."
+      - "&8Right click: fire."
+  pt_BR:
+    display-name: "&aPistola de Plasma"
+    lore:
+      - "&7Dispara um jato de plasma verde que"
+      - "&7deixa cheiro de ozônio por horas."
+      - "&8Clique direito: dispara."

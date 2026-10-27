@@ -1,0 +1,55 @@
+# El arma de precisión del Agente: un disparo cada 2 s que atraviesa
+# medio mapa y pega muy fuerte.
+id: rifle_de_riel
+pack: vanguardia
+material: CARROT_ON_A_STICK
+item-model: "vanguardia:arma/rifle_de_riel"
+display-name: "&9Rifle de Riel"
+lore:
+  - "&7Acelera un proyectil con imanes hasta"
+  - "&7que deja una estela de luz."
+  - "&8Clic derecho: dispara (2 s de recarga)."
+rarity: EPIC
+
+stats:
+  critical_chance: 20
+  critical_damage: 60
+
+requirements:
+  level: 40
+  class: agente_de_asalto
+
+abilities:
+  - id: disparo_de_riel
+    display-name: "&9Disparo de Riel"
+    passive: false
+    trigger: RIGHT_CLICK
+    cooldown: 2s
+    actions:
+      - type: SHOOT
+        amount: "22"
+        range: "60"
+        particle: END_ROD
+        hit-effect: vanguardia_rayo_de_riel
+      - type: SOUND
+        sound: ENTITY_WARDEN_SONIC_BOOM
+        volume: "0.7"
+        pitch: "2.0"
+
+economy:
+  sell: 2200
+  buy: 4800
+
+translations:
+  en:
+    display-name: "&9Railgun"
+    lore:
+      - "&7Accelerates a slug with magnets until"
+      - "&7it leaves a trail of light."
+      - "&8Right click: fire (2 s reload)."
+  pt_BR:
+    display-name: "&9Rifle de Trilho"
+    lore:
+      - "&7Acelera um projétil com ímãs até"
+      - "&7deixar um rastro de luz."
+      - "&8Clique direito: dispara (2 s de recarga)."

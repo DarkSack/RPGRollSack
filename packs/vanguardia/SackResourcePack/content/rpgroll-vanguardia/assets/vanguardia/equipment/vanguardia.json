@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "vanguardia:vanguardia"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "vanguardia:vanguardia"
+      }
+    ]
+  }
+}

@@ -1,0 +1,182 @@
+# El jefe del pack. No aparece solo: /mobadmin spawn siete_nucleo.
+# Un núcleo de luz en una jaula de runas con un fragmento de cada elemento
+# en órbita. Fases: se protege (animación «escudo») -> descarga (animación «descarga»).
+# Lo mueve un blaze, así que vuela y lanza sus bolas de fuego.
+# Modelo 3D: FreeMinecraftModels/models/siete_nucleo.bbmodel. Sin FMM se ve un blaze.
+id: siete_nucleo
+category: WORLD_BOSS
+display-name: "&b&lNúcleo de los Siete"
+name-color: "#7FE3FF"
+level: 30
+rarity: legendary
+tags: [ "siete_elementos", "jefe", "modelo3d" ]
+description: "Lo que queda cuando los siete elementos se ponen de acuerdo en algo."
+base-entity-type: BLAZE
+
+model:
+  scale: 1.6
+  glow: true
+  model-engine-id: siete_nucleo
+  equipment:
+
+stats:
+  health: 1100
+  damage: 16
+  defense: 12
+  speed: 90
+  armor: 10
+  dodge: 10
+  accuracy: 95
+  critical_chance: 10
+  critical_damage: 60
+  knockback_resistance: 100
+
+resistances:
+  fire: 100
+  magic: 30
+
+ai:
+  goals: [ "ATTACK_PLAYERS" ]
+  aggro-range: 28
+  move-speed: 0.9
+
+skills:
+  - id: rafaga_elemental
+    display-name: "Ráfaga Elemental"
+    trigger: PERIODIC
+    cooldown: 9s
+    chance: 70
+    actions:
+      - type: ANIMATION
+        value: attack
+      - type: DAMAGE
+        amount: "9"
+      - type: PARTICLE
+        particle: END_ROD
+        count: "40"
+      - type: SOUND
+        sound: BLOCK_AMETHYST_BLOCK_RESONATE
+        volume: "1.5"
+        pitch: "0.8"
+
+phases:
+  - id: escudo_de_los_siete
+    health-threshold-percent: 60
+    stat-multipliers:
+      damage: 1.15
+    skills:
+      - id: escudo
+        display-name: "Escudo de los Siete"
+        trigger: PERIODIC
+        cooldown: 20s
+        chance: 80
+        actions:
+          - type: ANIMATION
+            value: escudo
+          - type: HEAL
+            amount: "60"
+          - type: PARTICLE
+            particle: ENCHANT
+            count: "80"
+          - type: SOUND
+            sound: BLOCK_BEACON_ACTIVATE
+            volume: "1.5"
+            pitch: "1.2"
+    bossbar-color: BLUE
+    bossbar-title: "&b&lNúcleo de los Siete &7[Escudo]"
+    dialogue: "&b\"Siete voces. Una sola respuesta.\""
+    particle: ENCHANT
+
+  - id: descarga_total
+    health-threshold-percent: 25
+    stat-multipliers:
+      damage: 1.4
+      speed: 1.2
+    skills:
+      - id: descarga
+        display-name: "Descarga Total"
+        trigger: PERIODIC
+        cooldown: 12s
+        chance: 80
+        actions:
+          - type: ANIMATION
+            value: descarga
+          - type: LIGHTNING
+            damage: "false"
+          - type: DAMAGE
+            amount: "14"
+          - type: PUSH
+            strength: "1.8"
+    bossbar-color: PURPLE
+    bossbar-title: "&b&lNúcleo de los Siete &7[Descarga]"
+    dialogue: "&d\"Que hablen todas a la vez.\""
+    particle: ELECTRIC_SPARK
+
+triggers:
+  SPAWN:
+    - type: TITLE
+      title: "&b&lEL NÚCLEO DESPIERTA"
+      subtitle: "&7Siete fragmentos empiezan a girar"
+    - type: SOUND
+      sound: BLOCK_BEACON_ACTIVATE
+      volume: "1.5"
+      pitch: "0.6"
+  DEATH:
+    - type: TITLE
+      title: "&b&lEL NÚCLEO SE APAGA"
+      subtitle: "&7Los fragmentos caen al suelo"
+    - type: SOUND
+      sound: BLOCK_BEACON_DEACTIVATE
+      volume: "1.5"
+      pitch: "0.6"
+
+loot:
+  - type: ITEM
+    reference: nucleo_elemental
+    amount-min: 3
+    amount-max: 6
+    chance: 100
+    scope: SHARED
+  - type: ITEM
+    reference: caliz_de_los_siete
+    amount-min: 1
+    amount-max: 1
+    chance: 25
+    scope: PER_PLAYER
+  - type: ITEM
+    reference: lanza_del_relampago
+    amount-min: 1
+    amount-max: 1
+    chance: 12
+    scope: SHARED
+  - type: ITEM
+    reference: tomo_de_la_espesura
+    amount-min: 1
+    amount-max: 1
+    chance: 12
+    scope: SHARED
+  - type: MONEY
+    amount-min: 150
+    amount-max: 280
+    chance: 100
+    scope: PER_PLAYER
+  - type: EXPERIENCE
+    amount-min: 250
+    amount-max: 400
+    chance: 100
+    scope: PER_PLAYER
+
+bossbar:
+  enabled: true
+  color: BLUE
+  style: NOTCHED_20
+  title: "&b&lNúcleo de los Siete"
+
+dialogues:
+  - trigger: SPAWN
+    text: "&b\"¿Vienes a escuchar, o a romper?\""
+  - trigger: DEATH
+    text: "&7\"Volveremos... a separarnos...\""
+
+spawn-rules:
+  natural-spawn: false

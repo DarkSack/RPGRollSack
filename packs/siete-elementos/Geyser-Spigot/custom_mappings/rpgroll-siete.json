@@ -1,0 +1,212 @@
+{
+ "format_version": 2,
+ "items": {
+  "minecraft:netherite_sword": [
+   {
+    "type": "definition",
+    "model": "siete:arma/espada_del_alba",
+    "bedrock_identifier": "siete:arma_espada_del_alba",
+    "display_name": "Espada del Alba",
+    "bedrock_options": {
+     "icon": "siete_arma_espada_del_alba",
+     "allow_offhand": true,
+     "display_handheld": true
+    }
+   },
+   {
+    "type": "definition",
+    "model": "siete:arma/mandoble_de_la_cumbre",
+    "bedrock_identifier": "siete:arma_mandoble_de_la_cumbre",
+    "display_name": "Mandoble de la Cumbre",
+    "bedrock_options": {
+     "icon": "siete_arma_mandoble_de_la_cumbre",
+     "allow_offhand": true,
+     "display_handheld": true
+    }
+   },
+   {
+    "type": "definition",
+    "model": "siete:arma/lanza_del_relampago",
+    "bedrock_identifier": "siete:arma_lanza_del_relampago",
+    "display_name": "Lanza del Relámpago",
+    "bedrock_options": {
+     "icon": "siete_arma_lanza_del_relampago",
+     "allow_offhand": true,
+     "display_handheld": true
+    }
+   },
+   {
+    "type": "definition",
+    "model": "siete:arma/hoja_de_escarcha",
+    "bedrock_identifier": "siete:arma_hoja_de_escarcha",
+    "display_name": "Hoja de Escarcha",
+    "bedrock_options": {
+     "icon": "siete_arma_hoja_de_escarcha",
+     "allow_offhand": true,
+     "display_handheld": true
+    }
+   }
+  ],
+  "minecraft:carrot_on_a_stick": [
+   {
+    "type": "definition",
+    "model": "siete:arma/arco_del_cefiro",
+    "bedrock_identifier": "siete:arma_arco_del_cefiro",
+    "display_name": "Arco del Céfiro",
+    "bedrock_options": {
+     "icon": "siete_arma_arco_del_cefiro",
+     "allow_offhand": true,
+     "display_handheld": true
+    }
+   },
+   {
+    "type": "definition",
+    "model": "siete:arma/orbe_de_las_mareas",
+    "bedrock_identifier": "siete:arma_orbe_de_las_mareas",
+    "display_name": "Orbe de las Mareas",
+    "bedrock_options": {
+     "icon": "siete_arma_orbe_de_las_mareas",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "siete:arma/tomo_de_la_espesura",
+    "bedrock_identifier": "siete:arma_tomo_de_la_espesura",
+    "display_name": "Tomo de la Espesura",
+    "bedrock_options": {
+     "icon": "siete_arma_tomo_de_la_espesura",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:iron_helmet": [
+   {
+    "type": "definition",
+    "model": "siete:armadura/sombrero_del_viajero",
+    "bedrock_identifier": "siete:armadura_sombrero_del_viajero",
+    "display_name": "Sombrero del Viajero",
+    "bedrock_options": {
+     "icon": "siete_armadura_sombrero_del_viajero",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:iron_chestplate": [
+   {
+    "type": "definition",
+    "model": "siete:armadura/casaca_del_viajero",
+    "bedrock_identifier": "siete:armadura_casaca_del_viajero",
+    "display_name": "Casaca del Viajero",
+    "bedrock_options": {
+     "icon": "siete_armadura_casaca_del_viajero",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:iron_leggings": [
+   {
+    "type": "definition",
+    "model": "siete:armadura/calzas_del_viajero",
+    "bedrock_identifier": "siete:armadura_calzas_del_viajero",
+    "display_name": "Calzas del Viajero",
+    "bedrock_options": {
+     "icon": "siete_armadura_calzas_del_viajero",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:iron_boots": [
+   {
+    "type": "definition",
+    "model": "siete:armadura/botas_del_viajero",
+    "bedrock_identifier": "siete:armadura_botas_del_viajero",
+    "display_name": "Botas del Viajero",
+    "bedrock_options": {
+     "icon": "siete_armadura_botas_del_viajero",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:amethyst_shard": [
+   {
+    "type": "definition",
+    "model": "siete:reliquia/flor_de_la_vida",
+    "bedrock_identifier": "siete:reliquia_flor_de_la_vida",
+    "display_name": "Flor de la Vida",
+    "bedrock_options": {
+     "icon": "siete_reliquia_flor_de_la_vida",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "siete:reliquia/pluma_del_vendaval",
+    "bedrock_identifier": "siete:reliquia_pluma_del_vendaval",
+    "display_name": "Pluma del Vendaval",
+    "bedrock_options": {
+     "icon": "siete_reliquia_pluma_del_vendaval",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "siete:reliquia/caliz_de_los_siete",
+    "bedrock_identifier": "siete:reliquia_caliz_de_los_siete",
+    "display_name": "Cáliz de los Siete",
+    "bedrock_options": {
+     "icon": "siete_reliquia_caliz_de_los_siete",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:cooked_mutton": [
+   {
+    "type": "definition",
+    "model": "siete:consumible/brocheta_de_montana",
+    "bedrock_identifier": "siete:consumible_brocheta_de_montana",
+    "display_name": "Brocheta de Montaña",
+    "bedrock_options": {
+     "icon": "siete_consumible_brocheta_de_montana",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:honey_bottle": [
+   {
+    "type": "definition",
+    "model": "siete:consumible/te_de_menta_glacial",
+    "bedrock_identifier": "siete:consumible_te_de_menta_glacial",
+    "display_name": "Té de Menta Glacial",
+    "bedrock_options": {
+     "icon": "siete_consumible_te_de_menta_glacial",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:echo_shard": [
+   {
+    "type": "definition",
+    "model": "siete:material/nucleo_elemental",
+    "bedrock_identifier": "siete:material_nucleo_elemental",
+    "display_name": "Núcleo Elemental",
+    "bedrock_options": {
+     "icon": "siete_material_nucleo_elemental",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ]
+ }
+}

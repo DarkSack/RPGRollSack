@@ -1,0 +1,22 @@
+id: yermo_impacto_plasma
+display-name: "&aImpacto de Plasma"
+description: "Salpicadura verde donde pega la Pistola de Plasma."
+
+steps:
+  - type: PARTICLE
+    delay: 0
+    particle: DUST
+    color: "#7CFF5A"
+    size: 1.2
+    shape: BURST
+    target: LOCATION
+    radius: 1.2
+    points: 40
+    count: 1
+    speed: 0.15
+  - type: SOUND
+    delay: 0
+    sound: BLOCK_FIRE_EXTINGUISH
+    target: SELF
+    volume: 0.5
+    pitch: 1.8

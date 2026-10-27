@@ -1,0 +1,33 @@
+# Comida de viaje: cura y da fuerza un rato.
+id: brocheta_de_montana
+pack: siete_elementos
+material: COOKED_MUTTON
+item-model: "siete:consumible/brocheta_de_montana"
+display-name: "&6Brocheta de Montaña"
+lore:
+  - "&7Carne, setas y una zanahoria valiente."
+  - "&7Fuerza durante 20 s."
+rarity: COMMON
+
+triggers:
+  CONSUME:
+    - type: HEAL
+      amount: "6"
+    - type: COMMAND
+      value: "effect give {player} minecraft:strength 20 0 true"
+
+economy:
+  sell: 30
+  buy: 80
+
+translations:
+  en:
+    display-name: "&6Mountain Skewer"
+    lore:
+      - "&7Meat, mushrooms and a brave carrot."
+      - "&7Strength for 20 s."
+  pt_BR:
+    display-name: "&6Espetinho da Montanha"
+    lore:
+      - "&7Carne, cogumelos e uma cenoura valente."
+      - "&7Força por 20 s."

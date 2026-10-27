@@ -1,0 +1,44 @@
+# Servoarmadura: la armadura del Acorazado. Mucha defensa y vida; la
+# pieza puesta se ve como la armadura del pack (el yelmo, como su modelo).
+id: servoarmadura_grebas
+pack: yermo_atomico
+material: NETHERITE_LEGGINGS
+item-model: "yermo:armadura/servoarmadura_grebas"
+equipment-model: "yermo:servoarmadura"
+display-name: "&2Grebas de Servoarmadura"
+lore:
+  - "&7Los servos chirrían al agacharse."
+  - "&8Conjunto de Servoarmadura."
+rarity: EPIC
+
+stats:
+  defense: 11
+  health: 12
+
+attributes:
+  KNOCKBACK_RESISTANCE: 0.05
+
+requirements:
+  level: 35
+  class: acorazado
+
+durability:
+  max: 1200
+  repairable: true
+  degrade-per-use: 1
+
+economy:
+  sell: 1600
+  buy: 3500
+
+translations:
+  en:
+    display-name: "&2Power Armor Greaves"
+    lore:
+      - "&7The servos squeak when crouching."
+      - "&8Power Armor set."
+  pt_BR:
+    display-name: "&2Grevas de Servoarmadura"
+    lore:
+      - "&7Os servos rangem ao agachar."
+      - "&8Conjunto de Servoarmadura."

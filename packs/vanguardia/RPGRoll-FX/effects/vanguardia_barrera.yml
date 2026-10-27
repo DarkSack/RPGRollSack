@@ -1,0 +1,26 @@
+id: vanguardia_barrera
+display-name: "&bBarrera"
+description: "Una cúpula de luz azul alrededor de quien la lanza."
+
+steps:
+  - type: PARTICLE
+    delay: 0
+    particle: DUST
+    color: "#7FD4FF"
+    size: 1.2
+    shape: DOME
+    target: SELF
+    radius: 2.2
+    points: 90
+    repeat: 3
+    interval: 4
+  - type: PARTICLE
+    delay: 0
+    particle: END_ROD
+    shape: CIRCLE
+    target: SELF
+    y-offset: 0.1
+    radius: 2.2
+    points: 24
+    count: 1
+    speed: 0

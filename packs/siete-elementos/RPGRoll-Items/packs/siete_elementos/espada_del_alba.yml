@@ -1,0 +1,49 @@
+# La primera espada del pack: prende fuego a lo que corta.
+id: espada_del_alba
+pack: siete_elementos
+material: NETHERITE_SWORD
+item-model: "siete:arma/espada_del_alba"
+display-name: "&6Espada del Alba"
+lore:
+  - "&7Forjada al amanecer, todavía guarda"
+  - "&7el calor del primer rayo de sol."
+  - "&8Fuego: incendia al golpear."
+rarity: RARE
+
+stats:
+  damage: 8
+  critical_chance: 10
+
+requirements:
+  level: 12
+
+durability:
+  max: 600
+  repairable: true
+  degrade-per-use: 1
+
+triggers:
+  ENTITY_HIT:
+    - type: FIRE
+      ticks: "40"
+    - type: PARTICLE
+      particle: FLAME
+      count: 8
+
+economy:
+  sell: 400
+  buy: 950
+
+translations:
+  en:
+    display-name: "&6Dawn Sword"
+    lore:
+      - "&7Forged at daybreak, it still holds"
+      - "&7the warmth of the first sunray."
+      - "&8Fire: ignites on hit."
+  pt_BR:
+    display-name: "&6Espada da Aurora"
+    lore:
+      - "&7Forjada ao amanhecer, ainda guarda"
+      - "&7o calor do primeiro raio de sol."
+      - "&8Fogo: incendeia ao golpear."

@@ -1,0 +1,38 @@
+# La curación del pack: mucha vida de golpe, nada más.
+id: inyector_curativo
+pack: yermo_atomico
+material: HONEY_BOTTLE
+item-model: "yermo:consumible/inyector_curativo"
+display-name: "&cInyector Curativo"
+lore:
+  - "&7Un pinchazo en el muslo y a seguir."
+  - "&8Bébelo para usarlo."
+rarity: UNCOMMON
+
+triggers:
+  CONSUME:
+    - type: HEAL
+      amount: "12"
+    - type: PARTICLE
+      particle: HEART
+      count: 6
+    - type: SOUND
+      sound: BLOCK_BREWING_STAND_BREW
+      volume: "0.8"
+      pitch: "1.6"
+
+economy:
+  sell: 60
+  buy: 150
+
+translations:
+  en:
+    display-name: "&cHealing Injector"
+    lore:
+      - "&7A jab in the thigh and keep going."
+      - "&8Drink it to use it."
+  pt_BR:
+    display-name: "&cInjetor Curativo"
+    lore:
+      - "&7Uma picada na coxa e seguir em frente."
+      - "&8Beba para usar."

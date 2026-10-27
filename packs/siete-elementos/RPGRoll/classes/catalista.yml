@@ -1,0 +1,41 @@
+id: "catalista"
+display-name: "&d✦ Catalista"
+description: |
+  Canaliza los siete elementos con un orbe o un libro.
+  Cura, empuja y castiga desde atrás.
+base-attributes:
+  intelligence: 4
+  wisdom: 2
+  constitution: -2
+passive-traits:
+  - "flujo_de_los_siete"
+icon: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZWNkYjhiMjVlYjdiZTc1MTE1MWU1MTdmMTJiYTAyMTJkMmE0OGEwZDRlZjJlODA1MGE0YjI5ZTdmNTNjY2FmZSJ9fX0="
+lore:
+  - "&7Armas: orbes y tomos"
+  - "&7Rol: Mago de apoyo"
+  - "&a▲ +20 de maná"
+  - "&a▲ +1 de inteligencia"
+  - "&c▼ -3% de defensa"
+translations:
+  en:
+    display-name: "&d✦ Catalyst"
+    description: |
+      Channels the seven elements with an orb or a book.
+      Heals, pushes and punishes from the back line.
+    lore:
+      - "&7Weapons: orbs and tomes"
+      - "&7Role: Support mage"
+      - "&a▲ +20 mana"
+      - "&a▲ +1 intelligence"
+      - "&c▼ -3% defense"
+  pt_BR:
+    display-name: "&d✦ Catalisadora"
+    description: |
+      Canaliza os sete elementos com um orbe ou um livro.
+      Cura, empurra e castiga da retaguarda.
+    lore:
+      - "&7Armas: orbes e tomos"
+      - "&7Função: Mago de suporte"
+      - "&a▲ +20 de mana"
+      - "&a▲ +1 de inteligência"
+      - "&c▼ -3% de defesa"

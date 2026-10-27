@@ -1,0 +1,102 @@
+# El soldado del pack: dispara desde lejos (lo mueve un esqueleto). Al ver a
+# alguien lo escanea (animación «escaneo») y lo deja marcado: brilla unos
+# segundos y se le ve a través de las paredes.
+# Modelo 3D: FreeMinecraftModels/models/vanguardia_automata.bbmodel. Sin FMM se ve el esqueleto.
+id: vanguardia_automata
+category: ELITE
+display-name: "&fAutómata de Asalto"
+name-color: "#D9E4EC"
+level: 40
+rarity: rare
+tags: [ "vanguardia", "robot", "modelo3d" ]
+description: "Un soldado de chapa blanca que repite la misma orden desde hace cien años."
+base-entity-type: SKELETON
+
+model:
+  scale: 1.0
+  model-engine-id: vanguardia_automata
+  equipment:
+    hand: BOW
+
+stats:
+  health: 140
+  damage: 12
+  defense: 10
+  speed: 95
+  armor: 10
+  dodge: 5
+  accuracy: 95
+  critical_chance: 10
+  critical_damage: 40
+  knockback_resistance: 30
+
+resistances:
+  poison: 100
+
+ai:
+  goals: [ "ATTACK_PLAYERS" ]
+  aggro-range: 24
+  move-speed: 0.95
+
+skills:
+  - id: escaneo
+    display-name: "Escaneo"
+    trigger: PLAYER_ENTER_RANGE
+    cooldown: 20s
+    chance: 80
+    actions:
+      - type: ANIMATION
+        value: escaneo
+      - type: COMMAND
+        value: "effect give {target} minecraft:glowing 6 0"
+      - type: SOUND
+        sound: BLOCK_BEACON_AMBIENT
+        volume: "1.5"
+        pitch: "1.6"
+  - id: rafaga
+    display-name: "Ráfaga"
+    trigger: ATTACK
+    cooldown: 7s
+    chance: 40
+    actions:
+      - type: DAMAGE
+        amount: "4"
+      - type: PARTICLE
+        particle: ELECTRIC_SPARK
+        count: "15"
+
+loot:
+  - type: ITEM
+    reference: chip_de_automata
+    amount-min: 1
+    amount-max: 3
+    chance: 70
+    scope: PER_PLAYER
+  - type: ITEM
+    reference: barrita_energetica
+    amount-min: 1
+    amount-max: 2
+    chance: 25
+    scope: PER_PLAYER
+  - type: ITEM
+    reference: celula_de_salud
+    amount-min: 1
+    amount-max: 1
+    chance: 10
+    scope: PER_PLAYER
+  - type: MONEY
+    amount-min: 30
+    amount-max: 60
+    chance: 100
+    scope: PER_PLAYER
+  - type: EXPERIENCE
+    amount-min: 50
+    amount-max: 80
+    chance: 100
+    scope: PER_PLAYER
+
+spawn-rules:
+  biomes: [WINDSWEPT_HILLS, WINDSWEPT_GRAVELLY_HILLS, STONY_SHORE]
+  natural-spawn: true
+  spawn-weight: 0.5
+  chance: 3

@@ -1,0 +1,36 @@
+# Quita el veneno y el marchitamiento: la respuesta a la Radiación del
+# pack (el veneno de los escorpiones y de los hechizos).
+id: pastilla_antirradiacion
+pack: yermo_atomico
+material: DRIED_KELP
+item-model: "yermo:consumible/pastilla_antirradiacion"
+display-name: "&ePastilla Antirradiación"
+lore:
+  - "&7Sabe a tiza y a esperanza."
+  - "&7Quita el veneno y el marchitamiento."
+rarity: COMMON
+
+triggers:
+  CONSUME:
+    - type: COMMAND
+      value: "effect clear {player} minecraft:poison"
+    - type: COMMAND
+      value: "effect clear {player} minecraft:wither"
+    - type: HEAL
+      amount: "2"
+
+economy:
+  sell: 25
+  buy: 70
+
+translations:
+  en:
+    display-name: "&eAnti-Radiation Pill"
+    lore:
+      - "&7Tastes of chalk and hope."
+      - "&7Removes poison and wither."
+  pt_BR:
+    display-name: "&ePílula Antirradiação"
+    lore:
+      - "&7Tem gosto de giz e de esperança."
+      - "&7Remove o veneno e o definhamento."

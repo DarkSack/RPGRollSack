@@ -1,0 +1,35 @@
+# El hechizo de entrada de la escuela: un proyectil que daña y envenena.
+id: rafaga_gamma
+display-name: "&aRáfaga Gamma"
+icon: LIME_DYE
+color: GREEN
+school: radiacion
+rarity: RARE
+level: 25
+cast-time: 0
+cooldown: 80
+trigger: RIGHT_CLICK
+tree-tier: 1
+tags: [radiacion, yermo, proyectil]
+description: "Un chorro de partículas calientes que daña y deja al objetivo envenenado."
+
+cost:
+  mana: 28
+
+components:
+  - type: PROJECTILE
+    speed: 1.6
+    max-distance: 24
+    hit-radius: 1.0
+    trail-particle: HAPPY_VILLAGER
+  - type: DAMAGE_DIRECT
+    amount: 14
+  - type: APPLY_EFFECT
+    effect-id: poison
+    target: target
+  - type: VISUAL
+    effect-id: yermo_pulso_radiactivo
+  - type: SOUND
+    sound: BLOCK_BEACON_POWER_SELECT
+    volume: 0.8
+    pitch: 1.8

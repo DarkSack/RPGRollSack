@@ -1,0 +1,40 @@
+# Atuendo del Viajero: armadura ligera de nivel bajo para cualquiera.
+# Puesta se ve como la ropa del pack (el sombrero, como su modelo).
+id: sombrero_del_viajero
+pack: siete_elementos
+material: IRON_HELMET
+item-model: "siete:armadura/sombrero_del_viajero"
+equipment-model: "none"
+display-name: "&9Sombrero del Viajero"
+lore:
+  - "&7Ala ancha para el sol de siete reinos."
+  - "&8Conjunto del Viajero."
+rarity: UNCOMMON
+
+stats:
+  defense: 3
+  luck: 2
+
+requirements:
+  level: 12
+
+durability:
+  max: 500
+  repairable: true
+  degrade-per-use: 1
+
+economy:
+  sell: 300
+  buy: 700
+
+translations:
+  en:
+    display-name: "&9Traveler's Hat"
+    lore:
+      - "&7A wide brim for the sun of seven realms."
+      - "&8Traveler set."
+  pt_BR:
+    display-name: "&9Chapéu do Viajante"
+    lore:
+      - "&7Aba larga para o sol de sete reinos."
+      - "&8Conjunto do Viajante."

@@ -1,0 +1,27 @@
+id: vanguardia_pulso_emp
+display-name: "&3Pulso EMP"
+description: "Chispas eléctricas en esfera y un anillo que se abre."
+
+steps:
+  - type: PARTICLE
+    delay: 0
+    particle: ELECTRIC_SPARK
+    shape: SPHERE
+    target: SELF
+    radius: 2.5
+    points: 90
+    count: 1
+    speed: 0.05
+  - type: PARTICLE
+    delay: 1
+    particle: DUST
+    color: "#2FE0D0"
+    size: 1.5
+    shape: CIRCLE
+    target: SELF
+    y-offset: 0.3
+    radius: 1.0
+    radius-to: 5.0
+    points: 50
+    repeat: 5
+    interval: 1

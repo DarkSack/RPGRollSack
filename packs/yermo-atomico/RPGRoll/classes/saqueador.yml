@@ -1,0 +1,42 @@
+id: "saqueador"
+display-name: "&e⚙ Saqueador"
+description: |
+  Recorre las ruinas y vuelve con lo que sirve.
+  Dispara desde lejos y cobra en chatarra.
+base-attributes:
+  dexterity: 3
+  wisdom: 1
+  charisma: 1
+  constitution: -1
+passive-traits:
+  - "ojo_de_carronero"
+icon: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzM0YmMzMmZhOTY3M2ZjOTllZGVjMmM2Mzc0MmU5Y2FjMTc3NWZjZjZmY2Q1MzkxNzVmNjJmNmJlZTI4NTQ0NiJ9fX0="
+lore:
+  - "&7Armas: pistolas y rifles de energía"
+  - "&7Rol: DPS a distancia"
+  - "&a▲ +4% de crítico"
+  - "&a▲ +2 de suerte"
+  - "&c▼ -2% de defensa"
+translations:
+  en:
+    display-name: "&e⚙ Scavenger"
+    description: |
+      Roams the ruins and comes back with what works.
+      Shoots from afar and gets paid in scrap.
+    lore:
+      - "&7Weapons: energy pistols and rifles"
+      - "&7Role: Ranged DPS"
+      - "&a▲ +4% critical chance"
+      - "&a▲ +2 luck"
+      - "&c▼ -2% defense"
+  pt_BR:
+    display-name: "&e⚙ Saqueador"
+    description: |
+      Percorre as ruínas e volta com o que presta.
+      Atira de longe e cobra em sucata.
+    lore:
+      - "&7Armas: pistolas e rifles de energia"
+      - "&7Função: DPS à distância"
+      - "&a▲ +4% de crítico"
+      - "&a▲ +2 de sorte"
+      - "&c▼ -2% de defesa"

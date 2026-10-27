@@ -1,0 +1,42 @@
+# Lo primero que encuentra cualquiera en el Yermo. Común y barato.
+id: garrote_de_tuberia
+pack: yermo_atomico
+material: IRON_SWORD
+item-model: "yermo:arma/garrote_de_tuberia"
+display-name: "&7Garrote de Tubería"
+lore:
+  - "&7Un tubo, cinta aislante y mala intención."
+rarity: COMMON
+
+stats:
+  damage: 6
+  attack_speed: 0.9
+
+requirements:
+  level: 20
+
+durability:
+  max: 300
+  repairable: true
+  degrade-per-use: 1
+
+triggers:
+  ENTITY_HIT:
+    - type: SOUND
+      sound: BLOCK_ANVIL_LAND
+      volume: "0.3"
+      pitch: "1.8"
+
+economy:
+  sell: 80
+  buy: 200
+
+translations:
+  en:
+    display-name: "&7Pipe Club"
+    lore:
+      - "&7A pipe, duct tape and bad intentions."
+  pt_BR:
+    display-name: "&7Porrete de Cano"
+    lore:
+      - "&7Um cano, fita isolante e má intenção."

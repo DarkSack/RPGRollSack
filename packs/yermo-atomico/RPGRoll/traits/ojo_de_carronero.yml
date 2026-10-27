@@ -1,0 +1,15 @@
+id: "ojo_de_carronero"
+name: "&eOjo de Carroñero"
+description: "Ve el punto débil y la moneda en el suelo; el golpe que viene, no tanto."
+required-level: 1
+effect:
+  critical-bonus: 0.04
+  luck-bonus: 2
+  defense-bonus: -0.02
+translations:
+  en:
+    name: "&eScavenger's Eye"
+    description: "Spots the weak point and the coin on the ground; the incoming blow, not so much."
+  pt_BR:
+    name: "&eOlho de Carniceiro"
+    description: "Vê o ponto fraco e a moeda no chão; o golpe que vem, nem tanto."

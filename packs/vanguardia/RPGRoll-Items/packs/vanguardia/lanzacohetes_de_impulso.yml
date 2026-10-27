@@ -1,0 +1,56 @@
+# El arma de área del Agente: revienta donde pega sin romper bloques.
+id: lanzacohetes_de_impulso
+pack: vanguardia
+material: CARROT_ON_A_STICK
+item-model: "vanguardia:arma/lanzacohetes_de_impulso"
+display-name: "&6&lLanzacohetes de Impulso"
+lore:
+  - "&7Cuatro tubos, un cohete cada vez."
+  - "&7La paciencia también es táctica."
+  - "&8Clic derecho: dispara (5 s de recarga)."
+rarity: LEGENDARY
+glow: true
+
+stats:
+  damage: 4
+  critical_damage: 50
+
+requirements:
+  level: 48
+  class: agente_de_asalto
+
+abilities:
+  - id: cohete_de_impulso
+    display-name: "&6Cohete de Impulso"
+    passive: false
+    trigger: RIGHT_CLICK
+    cooldown: 5s
+    actions:
+      - type: SHOOT
+        amount: "16"
+        range: "45"
+        explosion: "2.0"
+        particle: FIREWORK
+        hit-effect: vanguardia_explosion_de_impulso
+      - type: SOUND
+        sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        volume: "0.7"
+        pitch: "0.8"
+
+economy:
+  sell: 4200
+  buy: 9500
+
+translations:
+  en:
+    display-name: "&6&lImpulse Rocket Launcher"
+    lore:
+      - "&7Four tubes, one rocket at a time."
+      - "&7Patience is tactics too."
+      - "&8Right click: fire (5 s reload)."
+  pt_BR:
+    display-name: "&6&lLança-foguetes de Impulso"
+    lore:
+      - "&7Quatro tubos, um foguete por vez."
+      - "&7Paciência também é tática."
+      - "&8Clique direito: dispara (5 s de recarga)."

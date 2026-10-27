@@ -1,0 +1,33 @@
+# Una de las tres reliquias del pack: un amuleto (/amuletos). Las tres
+# llenan las tres ranuras.
+id: flor_de_la_vida
+pack: siete_elementos
+material: AMETHYST_SHARD
+item-model: "siete:reliquia/flor_de_la_vida"
+display-name: "&dFlor de la Vida"
+lore:
+  - "&7Florece aunque nadie la riegue."
+  - "&8Amuleto: póntelo con /amuletos"
+rarity: RARE
+
+stats:
+  health: 8
+
+custom-data:
+  accessory: amulet
+
+economy:
+  sell: 450
+  buy: 1000
+
+translations:
+  en:
+    display-name: "&dFlower of Life"
+    lore:
+      - "&7It blooms even if no one waters it."
+      - "&8Amulet: wear it with /amulets"
+  pt_BR:
+    display-name: "&dFlor da Vida"
+    lore:
+      - "&7Floresce mesmo que ninguém a regue."
+      - "&8Amuleto: use-o com /amulets"

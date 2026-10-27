@@ -1,0 +1,42 @@
+id: "duelista_elemental"
+display-name: "&b⚔ Duelista Elemental"
+description: |
+  Un arma en la mano y un elemento en la hoja.
+  Rápido, preciso y siempre en primera línea.
+base-attributes:
+  dexterity: 2
+  strength: 2
+  wisdom: 1
+  charisma: -1
+passive-traits:
+  - "resonancia_elemental"
+icon: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDkyZGZmOGI0Yjg5MzNiZTNjYWRmYTgzNjhiZDYxM2YzMGM4MzRmMTQ3MjY0NmJmZDIzMmY5NjNmZGFjODRhMSJ9fX0="
+lore:
+  - "&7Armas: espadas, mandobles y lanzas"
+  - "&7Rol: DPS cuerpo a cuerpo"
+  - "&a▲ +4% de daño"
+  - "&a▲ +3% de velocidad de ataque"
+  - "&c▼ -2 de vida"
+translations:
+  en:
+    display-name: "&b⚔ Elemental Duelist"
+    description: |
+      A weapon in hand and an element on the blade.
+      Fast, precise and always on the front line.
+    lore:
+      - "&7Weapons: swords, greatswords and spears"
+      - "&7Role: Melee DPS"
+      - "&a▲ +4% damage"
+      - "&a▲ +3% attack speed"
+      - "&c▼ -2 health"
+  pt_BR:
+    display-name: "&b⚔ Duelista Elemental"
+    description: |
+      Uma arma na mão e um elemento na lâmina.
+      Rápido, preciso e sempre na linha de frente.
+    lore:
+      - "&7Armas: espadas, montantes e lanças"
+      - "&7Função: DPS corpo a corpo"
+      - "&a▲ +4% de dano"
+      - "&a▲ +3% de velocidade de ataque"
+      - "&c▼ -2 de vida"

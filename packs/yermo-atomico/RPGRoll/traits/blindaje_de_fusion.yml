@@ -1,0 +1,15 @@
+id: "blindaje_de_fusion"
+name: "&2Blindaje de Fusión"
+description: "El reactor de la espalda lo sostiene todo, menos las prisas."
+required-level: 1
+effect:
+  defense-bonus: 0.05
+  health-bonus: 6
+  speed-bonus: -0.03
+translations:
+  en:
+    name: "&2Fusion Plating"
+    description: "The reactor on the back holds everything up, except haste."
+  pt_BR:
+    name: "&2Blindagem de Fusão"
+    description: "O reator nas costas sustenta tudo, menos a pressa."

@@ -1,0 +1,34 @@
+# La reliquia del pack: un amuleto (/amuletos) que suma de todo un poco.
+id: insignia_de_vanguardia
+pack: vanguardia
+material: AMETHYST_SHARD
+item-model: "vanguardia:reliquia/insignia_de_vanguardia"
+display-name: "&9Insignia de Vanguardia"
+lore:
+  - "&7Se la dan a quien vuelve de la primera línea."
+  - "&8Amuleto: póntelo con /amuletos"
+rarity: EPIC
+
+stats:
+  damage: 2
+  defense: 2
+  health: 4
+
+custom-data:
+  accessory: amulet
+
+economy:
+  sell: 900
+  buy: 2000
+
+translations:
+  en:
+    display-name: "&9Vanguard Insignia"
+    lore:
+      - "&7Given to those who come back from the front line."
+      - "&8Amulet: wear it with /amulets"
+  pt_BR:
+    display-name: "&9Insígnia da Vanguarda"
+    lore:
+      - "&7Dada a quem volta da linha de frente."
+      - "&8Amuleto: use-o com /amulets"

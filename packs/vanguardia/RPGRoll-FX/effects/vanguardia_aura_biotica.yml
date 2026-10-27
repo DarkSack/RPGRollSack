@@ -1,0 +1,27 @@
+id: vanguardia_aura_biotica
+display-name: "&aAura Biótica"
+description: "Una espiral verde que sube alrededor de quien cura."
+
+steps:
+  - type: PARTICLE
+    delay: 0
+    particle: DUST
+    color: "#6CFF8A"
+    size: 1.2
+    shape: HELIX
+    target: SELF
+    radius: 1.2
+    height: 2.4
+    points: 60
+    count: 1
+    speed: 0
+  - type: PARTICLE
+    delay: 2
+    particle: HAPPY_VILLAGER
+    shape: CIRCLE
+    target: SELF
+    y-offset: 0.2
+    radius: 4.0
+    points: 30
+    count: 1
+    speed: 0

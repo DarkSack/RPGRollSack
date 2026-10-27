@@ -1,0 +1,20 @@
+# La escuela del pack: tecnología que se lanza como un hechizo.
+# El Médico de Campo la aprovecha de lleno; el Agente, algo.
+id: nanotecnologia
+display-name: "&3Nanotecnología"
+color: DARK_AQUA
+icon: COMPARATOR
+description: "Nubes de nanitos programados: escudos, saltos, pulsos y curas."
+cast-sound: BLOCK_BEACON_POWER_SELECT
+
+race-affinities:
+  renacido: 0.1
+  enano: 0.1
+  hada: -0.1
+
+class-affinities:
+  medico_de_campo: 0.25
+  agente_de_asalto: 0.1
+  clerigo: 0.1
+  mago: 0.05
+  druida: -0.1

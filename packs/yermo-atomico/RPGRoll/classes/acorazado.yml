@@ -1,0 +1,41 @@
+id: "acorazado"
+display-name: "&2⛨ Acorazado"
+description: |
+  Una tonelada de acero con alguien dentro.
+  Aguanta lo que sea y lo devuelve a puñetazos.
+base-attributes:
+  strength: 2
+  constitution: 4
+  dexterity: -2
+passive-traits:
+  - "blindaje_de_fusion"
+icon: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2VkMzllY2Y0ZTdmYTBmZDRhODBmMDA3ZGZmMGU5NTllYTllYTYxODE2NmFkNTg2NTFlN2JiMmM2OTRjM2RkNyJ9fX0="
+lore:
+  - "&7Armas: puños y martillos pesados"
+  - "&7Rol: Tanque"
+  - "&a▲ +5% de defensa"
+  - "&a▲ +6 de vida"
+  - "&c▼ -3% de velocidad"
+translations:
+  en:
+    display-name: "&2⛨ Ironclad"
+    description: |
+      A ton of steel with someone inside.
+      Takes anything and returns it with fists.
+    lore:
+      - "&7Weapons: fists and heavy hammers"
+      - "&7Role: Tank"
+      - "&a▲ +5% defense"
+      - "&a▲ +6 health"
+      - "&c▼ -3% speed"
+  pt_BR:
+    display-name: "&2⛨ Couraçado"
+    description: |
+      Uma tonelada de aço com alguém dentro.
+      Aguenta qualquer coisa e devolve a socos.
+    lore:
+      - "&7Armas: punhos e martelos pesados"
+      - "&7Função: Tanque"
+      - "&a▲ +5% de defesa"
+      - "&a▲ +6 de vida"
+      - "&c▼ -3% de velocidade"

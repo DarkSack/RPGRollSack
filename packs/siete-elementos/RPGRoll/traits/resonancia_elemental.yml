@@ -1,0 +1,15 @@
+id: "resonancia_elemental"
+name: "&bResonancia Elemental"
+description: "El elemento del arma responde al suyo; su propio cuerpo, menos."
+required-level: 1
+effect:
+  damage-bonus: 0.04
+  attack-speed-bonus: 0.03
+  health-bonus: -2
+translations:
+  en:
+    name: "&bElemental Resonance"
+    description: "The weapon's element answers to theirs; their own body, less so."
+  pt_BR:
+    name: "&bRessonância Elemental"
+    description: "O elemento da arma responde ao seu; o próprio corpo, menos."

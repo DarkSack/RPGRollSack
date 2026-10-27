@@ -1,0 +1,31 @@
+id: prision_de_escarcha
+display-name: "&bPrisión de Escarcha"
+icon: BLUE_ICE
+color: AQUA
+school: siete_elementos
+rarity: RARE
+level: 20
+cast-time: 0
+cooldown: 200
+trigger: RIGHT_CLICK
+tree-parent: marea_creciente
+tree-tier: 2
+tags: [siete_elementos]
+description: "Un proyectil de hielo que congela al objetivo."
+
+cost:
+  mana: 32
+
+components:
+  - type: PROJECTILE
+    speed: 1.2
+    max-distance: 20
+    hit-radius: 1.0
+    trail-particle: SNOWFLAKE
+  - type: DAMAGE_DIRECT
+    amount: 8
+  - type: APPLY_EFFECT
+    effect-id: frozen
+    target: target
+  - type: VISUAL
+    effect-id: siete_escarcha

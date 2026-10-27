@@ -1,0 +1,40 @@
+# Armadura de Vanguardia: la de los dos oficios del pack. Puesta se ve
+# como la armadura del pack (el casco, como su modelo).
+id: vanguardia_peto
+pack: vanguardia
+material: DIAMOND_CHESTPLATE
+item-model: "vanguardia:armadura/vanguardia_peto"
+equipment-model: "vanguardia:vanguardia"
+display-name: "&fPeto de Vanguardia"
+lore:
+  - "&7Placas blancas con el núcleo a la vista."
+  - "&8Conjunto de Vanguardia."
+rarity: EPIC
+
+stats:
+  defense: 11
+  health: 14
+
+requirements:
+  level: 40
+
+durability:
+  max: 1100
+  repairable: true
+  degrade-per-use: 1
+
+economy:
+  sell: 1500
+  buy: 3300
+
+translations:
+  en:
+    display-name: "&fVanguard Chestplate"
+    lore:
+      - "&7White plates with the core in sight."
+      - "&8Vanguard set."
+  pt_BR:
+    display-name: "&fPeitoral da Vanguarda"
+    lore:
+      - "&7Placas brancas com o núcleo à vista."
+      - "&8Conjunto da Vanguarda."

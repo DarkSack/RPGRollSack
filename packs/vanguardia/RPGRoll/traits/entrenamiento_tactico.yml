@@ -1,0 +1,15 @@
+id: "entrenamiento_tactico"
+name: "&9Entrenamiento Táctico"
+description: "Apunta rápido y se mueve más rápido; cubrirse lo deja para otro día."
+required-level: 1
+effect:
+  critical-bonus: 0.03
+  speed-bonus: 0.03
+  defense-bonus: -0.02
+translations:
+  en:
+    name: "&9Tactical Training"
+    description: "Aims fast and moves faster; taking cover can wait for another day."
+  pt_BR:
+    name: "&9Treinamento Tático"
+    description: "Mira rápido e se move mais rápido; se proteger fica para outro dia."

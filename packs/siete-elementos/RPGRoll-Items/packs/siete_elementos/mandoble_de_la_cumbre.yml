@@ -1,0 +1,58 @@
+# El arma pesada del Duelista: lenta, con un golpe de roca
+# que sacude todo alrededor (sin romper bloques).
+id: mandoble_de_la_cumbre
+pack: siete_elementos
+material: NETHERITE_SWORD
+item-model: "siete:arma/mandoble_de_la_cumbre"
+display-name: "&eMandoble de la Cumbre"
+lore:
+  - "&7Pesa lo que una montaña pequeña."
+  - "&8Roca. Clic derecho: Pilar de la Cumbre (12 s)."
+rarity: EPIC
+
+stats:
+  damage: 13
+  critical_damage: 50
+  attack_speed: 0.7
+
+requirements:
+  level: 20
+  class: duelista_elemental
+
+durability:
+  max: 1000
+  repairable: true
+  degrade-per-use: 1
+
+abilities:
+  - id: pilar_de_la_cumbre
+    display-name: "&ePilar de la Cumbre"
+    passive: false
+    trigger: RIGHT_CLICK
+    cooldown: 12s
+    actions:
+      - type: PARTICLES
+        effect-id: siete_roca
+      - type: EXPLOSION
+        power: "1.1"
+        break-blocks: "false"
+      - type: SOUND
+        sound: ITEM_MACE_SMASH_GROUND
+        volume: "1.0"
+        pitch: "0.7"
+
+economy:
+  sell: 1100
+  buy: 2400
+
+translations:
+  en:
+    display-name: "&eSummit Greatsword"
+    lore:
+      - "&7Weighs as much as a small mountain."
+      - "&8Rock. Right click: Summit Pillar (12 s)."
+  pt_BR:
+    display-name: "&eMontante do Cume"
+    lore:
+      - "&7Pesa o mesmo que uma pequena montanha."
+      - "&8Rocha. Clique direito: Pilar do Cume (12 s)."

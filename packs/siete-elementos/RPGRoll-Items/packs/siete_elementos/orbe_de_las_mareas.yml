@@ -1,0 +1,51 @@
+# El arma de entrada de la Catalista: un chorro de agua a distancia.
+id: orbe_de_las_mareas
+pack: siete_elementos
+material: CARROT_ON_A_STICK
+item-model: "siete:arma/orbe_de_las_mareas"
+display-name: "&9Orbe de las Mareas"
+lore:
+  - "&7Dentro, el mar sube y baja con la luna."
+  - "&8Agua. Clic derecho: chorro de agua."
+rarity: RARE
+
+stats:
+  magic_power: 8
+
+requirements:
+  level: 14
+  class: catalista
+
+abilities:
+  - id: chorro_de_marea
+    display-name: "&9Chorro de Marea"
+    passive: false
+    trigger: RIGHT_CLICK
+    cooldown: 1500ms
+    actions:
+      - type: SHOOT
+        amount: "8"
+        range: "24"
+        particle: DUST
+        color: "#3FA9F5"
+        hit-effect: siete_marea
+      - type: SOUND
+        sound: ENTITY_PLAYER_SPLASH
+        volume: "0.6"
+        pitch: "1.4"
+
+economy:
+  sell: 450
+  buy: 1000
+
+translations:
+  en:
+    display-name: "&9Orb of Tides"
+    lore:
+      - "&7Inside, the sea rises and falls with the moon."
+      - "&8Water. Right click: water jet."
+  pt_BR:
+    display-name: "&9Orbe das Marés"
+    lore:
+      - "&7Dentro, o mar sobe e desce com a lua."
+      - "&8Água. Clique direito: jato de água."

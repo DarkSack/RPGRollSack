@@ -1,0 +1,59 @@
+# El arma de primera línea: golpea fuerte y el clic derecho empuja a todos
+# alrededor y te da resistencia unos segundos.
+id: martillo_de_impulso
+pack: vanguardia
+material: MACE
+item-model: "vanguardia:arma/martillo_de_impulso"
+display-name: "&eMartillo de Impulso"
+lore:
+  - "&7Un propulsor en la cabeza del martillo."
+  - "&8Clic derecho: Carga de Impulso (14 s)."
+rarity: EPIC
+
+stats:
+  damage: 14
+  critical_damage: 40
+  attack_speed: 0.8
+
+requirements:
+  level: 42
+
+durability:
+  max: 1200
+  repairable: true
+  degrade-per-use: 1
+
+abilities:
+  - id: carga_de_impulso
+    display-name: "&eCarga de Impulso"
+    passive: false
+    trigger: RIGHT_CLICK
+    cooldown: 14s
+    actions:
+      - type: PARTICLES
+        effect-id: vanguardia_onda_de_impulso
+      - type: EXPLOSION
+        power: "1.5"
+        break-blocks: "false"
+      - type: COMMAND
+        value: "effect give {player} minecraft:resistance 4 1 true"
+      - type: SOUND
+        sound: ENTITY_FIREWORK_ROCKET_BLAST
+        volume: "1.0"
+        pitch: "0.6"
+
+economy:
+  sell: 2000
+  buy: 4400
+
+translations:
+  en:
+    display-name: "&eImpulse Hammer"
+    lore:
+      - "&7A thruster in the hammer head."
+      - "&8Right click: Impulse Charge (14 s)."
+  pt_BR:
+    display-name: "&eMartelo de Impulso"
+    lore:
+      - "&7Um propulsor na cabeça do martelo."
+      - "&8Clique direito: Carga de Impulso (14 s)."

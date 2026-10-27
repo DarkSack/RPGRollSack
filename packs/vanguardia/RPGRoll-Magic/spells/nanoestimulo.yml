@@ -1,0 +1,30 @@
+id: nanoestimulo
+display-name: "&aNanoestímulo"
+icon: GLISTERING_MELON_SLICE
+color: GREEN
+school: nanotecnologia
+rarity: EPIC
+level: 45
+cast-time: 0
+cooldown: 500
+trigger: RIGHT_CLICK
+tree-parent: barrera_de_particulas
+tree-tier: 2
+tags: [nanotecnologia, vanguardia]
+description: "Te cura mucho y regenera a los aliados que tengas cerca."
+
+cost:
+  mana: 50
+
+components:
+  - type: HEAL
+    amount: 14
+    target: self
+  - type: COMMAND
+    command: "execute at %player% run effect give @a[distance=..8] minecraft:regeneration 5 1"
+  - type: VISUAL
+    effect-id: vanguardia_aura_biotica
+  - type: SOUND
+    sound: BLOCK_BEACON_POWER_SELECT
+    volume: 1.0
+    pitch: 2.0

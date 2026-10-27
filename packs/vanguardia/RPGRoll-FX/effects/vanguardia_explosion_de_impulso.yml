@@ -1,0 +1,34 @@
+id: vanguardia_explosion_de_impulso
+display-name: "&6Explosión de Impulso"
+description: "Bola de fuego y chispas de cohete."
+
+steps:
+  - type: PARTICLE
+    delay: 0
+    particle: EXPLOSION
+    shape: SPHERE
+    target: LOCATION
+    radius: 1.2
+    points: 8
+    count: 1
+    speed: 0
+  - type: PARTICLE
+    delay: 0
+    particle: FIREWORK
+    shape: BURST
+    target: LOCATION
+    radius: 3.0
+    points: 70
+    count: 1
+    speed: 0.35
+  - type: PARTICLE
+    delay: 2
+    particle: DUST
+    color: "#FF9A3C"
+    size: 1.6
+    shape: SPHERE
+    target: LOCATION
+    radius: 2.0
+    points: 60
+    count: 1
+    speed: 0

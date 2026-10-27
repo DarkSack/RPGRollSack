@@ -1,0 +1,27 @@
+# El material del pack: lo sueltan las babosas y el Núcleo de los Siete.
+id: nucleo_elemental
+pack: siete_elementos
+material: ECHO_SHARD
+item-model: "siete:material/nucleo_elemental"
+display-name: "&dNúcleo Elemental"
+lore:
+  - "&7Cambia de color según lo mires."
+  - "&8Material."
+rarity: RARE
+glow: true
+
+economy:
+  sell: 120
+  buy: 320
+
+translations:
+  en:
+    display-name: "&dElemental Core"
+    lore:
+      - "&7It changes color depending on how you look at it."
+      - "&8Material."
+  pt_BR:
+    display-name: "&dNúcleo Elemental"
+    lore:
+      - "&7Muda de cor conforme você olha."
+      - "&8Material."

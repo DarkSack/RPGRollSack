@@ -1,0 +1,27 @@
+id: barrera_de_particulas
+display-name: "&bBarrera de Partículas"
+icon: SHIELD
+color: AQUA
+school: nanotecnologia
+rarity: RARE
+level: 35
+cast-time: 0
+cooldown: 400
+trigger: RIGHT_CLICK
+tree-tier: 1
+tags: [nanotecnologia, vanguardia]
+description: "Una cúpula de nanitos que absorbe los golpes unos segundos."
+
+cost:
+  mana: 35
+
+components:
+  - type: APPLY_EFFECT
+    effect-id: shield
+    target: self
+  - type: VISUAL
+    effect-id: vanguardia_barrera
+  - type: SOUND
+    sound: BLOCK_BEACON_ACTIVATE
+    volume: 1.0
+    pitch: 1.6

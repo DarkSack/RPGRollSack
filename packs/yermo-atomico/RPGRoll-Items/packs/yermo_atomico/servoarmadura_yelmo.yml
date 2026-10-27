@@ -1,0 +1,49 @@
+# Servoarmadura: la armadura del Acorazado. Mucha defensa y vida; la
+# pieza puesta se ve como la armadura del pack (el yelmo, como su modelo).
+id: servoarmadura_yelmo
+pack: yermo_atomico
+material: NETHERITE_HELMET
+item-model: "yermo:armadura/servoarmadura_yelmo"
+equipment-model: "none"
+display-name: "&2Yelmo de Servoarmadura"
+lore:
+  - "&7El visor ve a través del polvo."
+  - "&8Conjunto de Servoarmadura."
+rarity: EPIC
+
+stats:
+  defense: 8
+  health: 10
+
+attributes:
+  KNOCKBACK_RESISTANCE: 0.05
+
+requirements:
+  level: 35
+  class: acorazado
+
+durability:
+  max: 1200
+  repairable: true
+  degrade-per-use: 1
+
+effects:
+  - potion: NIGHT_VISION
+    amplifier: 0
+    requires-held: true
+
+economy:
+  sell: 1600
+  buy: 3500
+
+translations:
+  en:
+    display-name: "&2Power Armor Helmet"
+    lore:
+      - "&7The visor sees through the dust."
+      - "&8Power Armor set."
+  pt_BR:
+    display-name: "&2Elmo de Servoarmadura"
+    lore:
+      - "&7O visor enxerga através da poeira."
+      - "&8Conjunto de Servoarmadura."

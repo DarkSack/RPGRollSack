@@ -1,0 +1,44 @@
+# Servoarmadura: la armadura del Acorazado. Mucha defensa y vida; la
+# pieza puesta se ve como la armadura del pack (el yelmo, como su modelo).
+id: servoarmadura_peto
+pack: yermo_atomico
+material: NETHERITE_CHESTPLATE
+item-model: "yermo:armadura/servoarmadura_peto"
+equipment-model: "yermo:servoarmadura"
+display-name: "&2Peto de Servoarmadura"
+lore:
+  - "&7Lleva el reactor a la espalda."
+  - "&8Conjunto de Servoarmadura."
+rarity: EPIC
+
+stats:
+  defense: 14
+  health: 16
+
+attributes:
+  KNOCKBACK_RESISTANCE: 0.05
+
+requirements:
+  level: 35
+  class: acorazado
+
+durability:
+  max: 1200
+  repairable: true
+  degrade-per-use: 1
+
+economy:
+  sell: 1600
+  buy: 3500
+
+translations:
+  en:
+    display-name: "&2Power Armor Chestplate"
+    lore:
+      - "&7Carries the reactor on its back."
+      - "&8Power Armor set."
+  pt_BR:
+    display-name: "&2Peitoral de Servoarmadura"
+    lore:
+      - "&7Leva o reator nas costas."
+      - "&8Conjunto de Servoarmadura."

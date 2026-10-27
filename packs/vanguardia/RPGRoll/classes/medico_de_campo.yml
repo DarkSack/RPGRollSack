@@ -1,0 +1,42 @@
+id: "medico_de_campo"
+display-name: "&a✚ Médico de Campo"
+description: |
+  Mantiene en pie al equipo con nanitos y paciencia.
+  Si él cae, caen todos: por eso no se adelanta.
+base-attributes:
+  wisdom: 3
+  charisma: 2
+  intelligence: 1
+  strength: -2
+passive-traits:
+  - "nanobiotica"
+icon: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODhkZjhkN2U0Y2EwN2E2NTVlYzI0ODEzNzgxZDFhMjc3NTEzOWM2ODUyMDgwZjgxM2Q0NjNhNjFmMjAyNzY5OSJ9fX0="
+lore:
+  - "&7Armas: báculos bióticos"
+  - "&7Rol: Sanador"
+  - "&a▲ +4 de vida"
+  - "&a▲ +15 de maná"
+  - "&c▼ -3% de daño"
+translations:
+  en:
+    display-name: "&a✚ Field Medic"
+    description: |
+      Keeps the team standing with nanites and patience.
+      If they fall, everyone falls: so they stay back.
+    lore:
+      - "&7Weapons: biotic staves"
+      - "&7Role: Healer"
+      - "&a▲ +4 health"
+      - "&a▲ +15 mana"
+      - "&c▼ -3% damage"
+  pt_BR:
+    display-name: "&a✚ Médico de Campo"
+    description: |
+      Mantém a equipe de pé com nanitos e paciência.
+      Se ele cai, caem todos: por isso não se adianta.
+    lore:
+      - "&7Armas: cajados bióticos"
+      - "&7Função: Curandeiro"
+      - "&a▲ +4 de vida"
+      - "&a▲ +15 de mana"
+      - "&c▼ -3% de dano"

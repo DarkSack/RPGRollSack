@@ -1,0 +1,37 @@
+# La curación grande del pack, con absorción encima.
+id: celula_de_salud
+pack: vanguardia
+material: HONEY_BOTTLE
+item-model: "vanguardia:consumible/celula_de_salud"
+display-name: "&aCélula de Salud"
+lore:
+  - "&7Un cartucho verde que se vacía de golpe."
+  - "&7Absorción durante 10 s."
+rarity: RARE
+
+triggers:
+  CONSUME:
+    - type: HEAL
+      amount: "16"
+    - type: COMMAND
+      value: "effect give {player} minecraft:absorption 10 1 true"
+    - type: SOUND
+      sound: BLOCK_BEACON_POWER_SELECT
+      volume: "0.8"
+      pitch: "2.0"
+
+economy:
+  sell: 120
+  buy: 300
+
+translations:
+  en:
+    display-name: "&aHealth Cell"
+    lore:
+      - "&7A green cartridge that empties at once."
+      - "&7Absorption for 10 s."
+  pt_BR:
+    display-name: "&aCélula de Saúde"
+    lore:
+      - "&7Um cartucho verde que se esvazia de uma vez."
+      - "&7Absorção por 10 s."

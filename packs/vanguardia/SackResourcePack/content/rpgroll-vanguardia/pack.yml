@@ -1,0 +1,8 @@
+# GENERADO por sackito-network/infra/objetos/construir.py: no se edita a mano.
+id: rpgroll-vanguardia
+name: rpgroll-vanguardia
+version: '1.0'
+author: 'RPGRoll'
+namespace: vanguardia
+priority: 25
+description: 'Modelos de RPGRoll-Vanguardia'

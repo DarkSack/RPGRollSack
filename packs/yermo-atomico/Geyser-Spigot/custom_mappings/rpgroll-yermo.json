@@ -1,0 +1,231 @@
+{
+ "format_version": 2,
+ "items": {
+  "minecraft:carrot_on_a_stick": [
+   {
+    "type": "definition",
+    "model": "yermo:arma/pistola_de_plasma",
+    "bedrock_identifier": "yermo:arma_pistola_de_plasma",
+    "display_name": "Pistola de Plasma",
+    "bedrock_options": {
+     "icon": "yermo_arma_pistola_de_plasma",
+     "allow_offhand": true,
+     "display_handheld": true
+    }
+   },
+   {
+    "type": "definition",
+    "model": "yermo:arma/rifle_laser",
+    "bedrock_identifier": "yermo:arma_rifle_laser",
+    "display_name": "Rifle Láser",
+    "bedrock_options": {
+     "icon": "yermo_arma_rifle_laser",
+     "allow_offhand": true,
+     "display_handheld": true
+    }
+   },
+   {
+    "type": "definition",
+    "model": "yermo:arma/lanzador_atomico",
+    "bedrock_identifier": "yermo:arma_lanzador_atomico",
+    "display_name": "Lanzador Atómico",
+    "bedrock_options": {
+     "icon": "yermo_arma_lanzador_atomico",
+     "allow_offhand": true,
+     "display_handheld": true
+    }
+   }
+  ],
+  "minecraft:iron_sword": [
+   {
+    "type": "definition",
+    "model": "yermo:arma/garrote_de_tuberia",
+    "bedrock_identifier": "yermo:arma_garrote_de_tuberia",
+    "display_name": "Garrote de Tubería",
+    "bedrock_options": {
+     "icon": "yermo_arma_garrote_de_tuberia",
+     "allow_offhand": true,
+     "display_handheld": true
+    }
+   },
+   {
+    "type": "definition",
+    "model": "yermo:arma/machete_del_yermo",
+    "bedrock_identifier": "yermo:arma_machete_del_yermo",
+    "display_name": "Machete del Yermo",
+    "bedrock_options": {
+     "icon": "yermo_arma_machete_del_yermo",
+     "allow_offhand": true,
+     "display_handheld": true
+    }
+   }
+  ],
+  "minecraft:netherite_sword": [
+   {
+    "type": "definition",
+    "model": "yermo:arma/puno_hidraulico",
+    "bedrock_identifier": "yermo:arma_puno_hidraulico",
+    "display_name": "Puño Hidráulico",
+    "bedrock_options": {
+     "icon": "yermo_arma_puno_hidraulico",
+     "allow_offhand": true,
+     "display_handheld": true
+    }
+   }
+  ],
+  "minecraft:mace": [
+   {
+    "type": "definition",
+    "model": "yermo:arma/martillo_de_reactor",
+    "bedrock_identifier": "yermo:arma_martillo_de_reactor",
+    "display_name": "Martillo de Reactor",
+    "bedrock_options": {
+     "icon": "yermo_arma_martillo_de_reactor",
+     "allow_offhand": true,
+     "display_handheld": true
+    }
+   }
+  ],
+  "minecraft:netherite_helmet": [
+   {
+    "type": "definition",
+    "model": "yermo:armadura/servoarmadura_yelmo",
+    "bedrock_identifier": "yermo:armadura_servoarmadura_yelmo",
+    "display_name": "Yelmo de Servoarmadura",
+    "bedrock_options": {
+     "icon": "yermo_armadura_servoarmadura_yelmo",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:netherite_chestplate": [
+   {
+    "type": "definition",
+    "model": "yermo:armadura/servoarmadura_peto",
+    "bedrock_identifier": "yermo:armadura_servoarmadura_peto",
+    "display_name": "Peto de Servoarmadura",
+    "bedrock_options": {
+     "icon": "yermo_armadura_servoarmadura_peto",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:netherite_leggings": [
+   {
+    "type": "definition",
+    "model": "yermo:armadura/servoarmadura_grebas",
+    "bedrock_identifier": "yermo:armadura_servoarmadura_grebas",
+    "display_name": "Grebas de Servoarmadura",
+    "bedrock_options": {
+     "icon": "yermo_armadura_servoarmadura_grebas",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:netherite_boots": [
+   {
+    "type": "definition",
+    "model": "yermo:armadura/servoarmadura_botas",
+    "bedrock_identifier": "yermo:armadura_servoarmadura_botas",
+    "display_name": "Botas de Servoarmadura",
+    "bedrock_options": {
+     "icon": "yermo_armadura_servoarmadura_botas",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:iron_helmet": [
+   {
+    "type": "definition",
+    "model": "yermo:armadura/mascara_antigas",
+    "bedrock_identifier": "yermo:armadura_mascara_antigas",
+    "display_name": "Máscara Antigás",
+    "bedrock_options": {
+     "icon": "yermo_armadura_mascara_antigas",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:honey_bottle": [
+   {
+    "type": "definition",
+    "model": "yermo:consumible/inyector_curativo",
+    "bedrock_identifier": "yermo:consumible_inyector_curativo",
+    "display_name": "Inyector Curativo",
+    "bedrock_options": {
+     "icon": "yermo_consumible_inyector_curativo",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "yermo:consumible/refresco_atomico",
+    "bedrock_identifier": "yermo:consumible_refresco_atomico",
+    "display_name": "Refresco Atómico",
+    "bedrock_options": {
+     "icon": "yermo_consumible_refresco_atomico",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:dried_kelp": [
+   {
+    "type": "definition",
+    "model": "yermo:consumible/pastilla_antirradiacion",
+    "bedrock_identifier": "yermo:consumible_pastilla_antirradiacion",
+    "display_name": "Pastilla Antirradiación",
+    "bedrock_options": {
+     "icon": "yermo_consumible_pastilla_antirradiacion",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:iron_nugget": [
+   {
+    "type": "definition",
+    "model": "yermo:material/chatarra_util",
+    "bedrock_identifier": "yermo:material_chatarra_util",
+    "display_name": "Chatarra Útil",
+    "bedrock_options": {
+     "icon": "yermo_material_chatarra_util",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:prismarine_crystals": [
+   {
+    "type": "definition",
+    "model": "yermo:material/nucleo_de_fusion",
+    "bedrock_identifier": "yermo:material_nucleo_de_fusion",
+    "display_name": "Núcleo de Fusión",
+    "bedrock_options": {
+     "icon": "yermo_material_nucleo_de_fusion",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:gold_nugget": [
+   {
+    "type": "definition",
+    "model": "yermo:reliquia/chapa_de_la_suerte",
+    "bedrock_identifier": "yermo:reliquia_chapa_de_la_suerte",
+    "display_name": "Chapa de la Suerte",
+    "bedrock_options": {
+     "icon": "yermo_reliquia_chapa_de_la_suerte",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ]
+ }
+}

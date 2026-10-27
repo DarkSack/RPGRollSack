@@ -1,0 +1,40 @@
+# Atuendo del Viajero: armadura ligera de nivel bajo para cualquiera.
+# Puesta se ve como la ropa del pack (el sombrero, como su modelo).
+id: calzas_del_viajero
+pack: siete_elementos
+material: IRON_LEGGINGS
+item-model: "siete:armadura/calzas_del_viajero"
+equipment-model: "siete:atuendo_del_viajero"
+display-name: "&9Calzas del Viajero"
+lore:
+  - "&7Hechas para andar, no para pelear."
+  - "&8Conjunto del Viajero."
+rarity: UNCOMMON
+
+stats:
+  defense: 6
+  health: 6
+
+requirements:
+  level: 12
+
+durability:
+  max: 500
+  repairable: true
+  degrade-per-use: 1
+
+economy:
+  sell: 300
+  buy: 700
+
+translations:
+  en:
+    display-name: "&9Traveler's Breeches"
+    lore:
+      - "&7Made for walking, not for fighting."
+      - "&8Traveler set."
+  pt_BR:
+    display-name: "&9Calças do Viajante"
+    lore:
+      - "&7Feitas para andar, não para lutar."
+      - "&8Conjunto do Viajante."

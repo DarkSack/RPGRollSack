@@ -1,0 +1,27 @@
+# El material raro: lo suelta el Coloso a veces y el Behemot siempre.
+id: nucleo_de_fusion
+pack: yermo_atomico
+material: PRISMARINE_CRYSTALS
+item-model: "yermo:material/nucleo_de_fusion"
+display-name: "&eNúcleo de Fusión"
+lore:
+  - "&7Tibio al tacto. Mejor no preguntar por qué."
+  - "&8Material."
+rarity: RARE
+glow: true
+
+economy:
+  sell: 220
+  buy: 600
+
+translations:
+  en:
+    display-name: "&eFusion Core"
+    lore:
+      - "&7Warm to the touch. Better not ask why."
+      - "&8Material."
+  pt_BR:
+    display-name: "&eNúcleo de Fusão"
+    lore:
+      - "&7Morno ao toque. Melhor não perguntar por quê."
+      - "&8Material."

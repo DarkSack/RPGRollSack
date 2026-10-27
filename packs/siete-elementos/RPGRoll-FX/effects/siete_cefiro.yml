@@ -1,0 +1,33 @@
+id: siete_cefiro
+display-name: "&aCéfiro"
+description: "Un remolino de viento a los pies."
+
+steps:
+  - type: PARTICLE
+    delay: 0
+    particle: CLOUD
+    shape: VORTEX
+    target: SELF
+    radius: 2.0
+    radius-top: 0.4
+    height: 2.5
+    points: 60
+    count: 1
+    speed: 0.1
+  - type: PARTICLE
+    delay: 2
+    particle: DUST
+    color: "#8BE8C9"
+    size: 1.3
+    shape: SPHERE
+    target: SELF
+    radius: 1.2
+    points: 40
+    count: 1
+    speed: 0
+  - type: SOUND
+    delay: 0
+    sound: ENTITY_BREEZE_WIND_BURST
+    target: SELF
+    volume: 0.8
+    pitch: 1.3

@@ -1,0 +1,25 @@
+id: yermo_impacto_laser
+display-name: "&cImpacto Láser"
+description: "Chispa roja y un poco de humo donde pega el Rifle Láser."
+
+steps:
+  - type: PARTICLE
+    delay: 0
+    particle: DUST
+    color: "#FF3030"
+    size: 1.0
+    shape: SPHERE
+    target: LOCATION
+    radius: 0.5
+    points: 30
+    count: 1
+    speed: 0
+  - type: PARTICLE
+    delay: 1
+    particle: SMOKE
+    shape: BURST
+    target: LOCATION
+    radius: 0.6
+    points: 12
+    count: 1
+    speed: 0.05

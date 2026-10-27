@@ -36,3 +36,9 @@ dependencies {
     // que no se propaga al classpath de test — hace falta repetirlos acá
     // para que los tests unitarios puedan referenciar sus tipos (ej.
 }
+
+// ContentPacksParseTest lee los ítems de packs/: sin esto, cambiar un pack no vuelve a pasar el test.
+tasks.test {
+    inputs.files(fileTree(rootProject.file("packs")) { include("*/RPGRoll-Items/**/*.yml") })
+        .withPathSensitivity(PathSensitivity.RELATIVE)
+}

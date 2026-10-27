@@ -1,0 +1,40 @@
+# Atuendo del Viajero: armadura ligera de nivel bajo para cualquiera.
+# Puesta se ve como la ropa del pack (el sombrero, como su modelo).
+id: casaca_del_viajero
+pack: siete_elementos
+material: IRON_CHESTPLATE
+item-model: "siete:armadura/casaca_del_viajero"
+equipment-model: "siete:atuendo_del_viajero"
+display-name: "&9Casaca del Viajero"
+lore:
+  - "&7Remendada en cada ciudad que pisó."
+  - "&8Conjunto del Viajero."
+rarity: UNCOMMON
+
+stats:
+  defense: 7
+  health: 8
+
+requirements:
+  level: 12
+
+durability:
+  max: 500
+  repairable: true
+  degrade-per-use: 1
+
+economy:
+  sell: 300
+  buy: 700
+
+translations:
+  en:
+    display-name: "&9Traveler's Coat"
+    lore:
+      - "&7Patched in every city it walked through."
+      - "&8Traveler set."
+  pt_BR:
+    display-name: "&9Casaca do Viajante"
+    lore:
+      - "&7Remendada em cada cidade que pisou."
+      - "&8Conjunto do Viajante."

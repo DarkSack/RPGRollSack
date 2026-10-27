@@ -1,0 +1,26 @@
+id: vanguardia_rayo_de_riel
+display-name: "&9Impacto de Riel"
+description: "Destello blanco y un anillo de luz donde pega el Rifle de Riel."
+
+steps:
+  - type: PARTICLE
+    delay: 0
+    particle: END_ROD
+    shape: BURST
+    target: LOCATION
+    radius: 1.6
+    points: 40
+    count: 1
+    speed: 0.3
+  - type: PARTICLE
+    delay: 1
+    particle: DUST
+    color: "#9FE6FF"
+    size: 1.4
+    shape: CIRCLE
+    target: LOCATION
+    radius: 0.4
+    radius-to: 2.2
+    points: 30
+    repeat: 4
+    interval: 1
