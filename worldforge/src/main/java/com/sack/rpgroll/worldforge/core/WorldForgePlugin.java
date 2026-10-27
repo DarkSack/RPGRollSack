@@ -2,6 +2,7 @@ package com.sack.rpgroll.worldforge.core;
 
 import com.sack.rpgroll.license.identity.LicenseIdentity;
 import com.sack.rpgroll.licensing.LicenseGate;
+import com.sack.rpgroll.worldforge.api.Problem;
 import com.sack.rpgroll.worldforge.api.Result;
 import com.sack.rpgroll.worldforge.command.WorldForgeCommand;
 import com.sack.rpgroll.worldforge.diagnostics.Diagnostics;
@@ -25,6 +26,7 @@ import com.sack.rpgroll.worldforge.terrain.Terrains;
 import com.sack.rpgroll.worldforge.worlds.WorldService;
 
 import org.bukkit.command.PluginCommand;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.server.ServerLoadEvent;
@@ -32,6 +34,7 @@ import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.structure.Structure;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -39,7 +42,9 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -70,7 +75,12 @@ public final class WorldForgePlugin extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
+        // shortcut: bukkit.yml from the server folder; a custom --bukkit-settings path is not seen, read it if someone uses one.
+        Map<String, String> generated = BukkitWorlds.using(YamlConfiguration.loadConfiguration(new File("bukkit.yml")), getName());
         if (!LicenseGate.verify(this, LicenseIdentity.RESOURCE_ID, LicenseIdentity.PRODUCT_SLUG, LicenseIdentity.VERIFY_TOKEN)) {
+            if (!generated.isEmpty()) {
+                stopBeforeWorlds("WorldForge no tiene una licencia válida", generated.keySet());
+            }
             getServer().getPluginManager().disablePlugin(this);
             return;
         }
@@ -95,6 +105,18 @@ public final class WorldForgePlugin extends JavaPlugin implements Listener {
                 this::validator);
         protections = new Protections(dataPath().resolve("protections.yml"));
         reloadEverything();
+        // Same test as getDefaultWorldGenerator: there it can only throw, and Paper then falls back to its terrain.
+        List<String> broken = generated.entrySet().stream()
+                .filter(w -> profiles.preset(w.getValue()).filter(ProfileService.Entry::usable).isEmpty())
+                .map(w -> w.getKey() + " (preset «" + w.getValue() + "»: " + profiles.preset(w.getValue())
+                        .map(p -> p.problems().stream().filter(Problem::isError).map(Problem::toString).toList().toString())
+                        .orElse("no existe") + ")")
+                .toList();
+        if (!broken.isEmpty()) {
+            stopBeforeWorlds("El preset de bukkit.yml no existe o tiene errores", broken);
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
 
         try {
             db = Database.open(dataPath().resolve("worldforge.db"));
@@ -152,6 +174,26 @@ public final class WorldForgePlugin extends JavaPlugin implements Listener {
             worlds.restoreAtStartup();
             dimensions.reconcile().thenAccept(lines -> lines.forEach(getLogger()::info));
         }
+    }
+
+    /** STARTUP runs before the worlds open: stopping here keeps Minecraft from generating them with its own terrain. */
+    private void stopBeforeWorlds(String why, Collection<String> worlds) {
+        getLogger().severe("==================================");
+        getLogger().severe("✘ " + why + ", y bukkit.yml genera con WorldForge: " + String.join(", ", worlds) + ".");
+        getLogger().severe("  Se para el servidor: si siguiera, Minecraft generaría esos mundos con su terreno normal");
+        getLogger().severe("  y después habría que regenerar esos chunks.");
+        getLogger().severe("  Arréglalo (o quita la línea generator: de bukkit.yml) y vuelve a arrancar.");
+        getLogger().severe("==================================");
+        // Server.shutdown() still loads the worlds (and generates the spawn area) before stopping, and System.exit()
+        // here deadlocks with Paper's shutdown hook (it waits for the plugin manager this thread holds). At STARTUP
+        // no world is open yet, so stop the process.
+        // shortcut: Paper logs through an Async appender and halt() drops its queue; 2 s lets it write these lines.
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        Runtime.getRuntime().halt(1);
     }
 
     @Override

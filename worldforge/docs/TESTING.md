@@ -45,6 +45,7 @@ probar permisos y autocompletado. Cada paso imprime una línea
 | `escenario-terralith.sh` | — | con Terralith 2.6.2 en el mundo (`MAIN=vanilla DATAPACKS=… levantar.sh`): convivencia y avisos |
 | `escenario-motor.sh` (+ `viajero.js`) | — | el motor como mundo principal (`MAIN=montanas`): aparición, chunks alrededor de un jugador, menas, `world tp`, reinicio |
 | `escenario-folia.sh`, `escenario-principal.sh` y `escenario-motor.sh` en Folia (`levantar-folia.sh`) | 8 | lo que Folia permite y lo que WorldForge le dice al admin que no |
+| `escenario-licencia.sh <caso>` | 1.0.0 | el jar de venta: `sin` clave (con y sin WorldForge en `bukkit.yml`), `valida` y `invalida` (`LICENCIA=…`, preguntan a la tienda), y `preset` roto en `bukkit.yml` (con el jar de desarrollo); arranca el servidor él mismo |
 
 Cada escenario necesita un servidor recién levantado (`levantar.sh`); el jar se
 elige con `JAR=...` (por defecto `worldforge/build/libs`).

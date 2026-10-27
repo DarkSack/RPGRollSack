@@ -6,16 +6,21 @@ superada, y lo que falta está en [«Sin probar»](#sin-probar).
 
 ## Resumen
 
-- **91 pruebas unitarias**, 0 fallos (2026-10-21, sin `-Prpgroll.dev`).
+- **92 pruebas unitarias**, 0 fallos (2026-10-24, sin `-Prpgroll.dev`).
 - **13 escenarios en servidor real** (10 en Paper 26.1.2-74, 3 en Folia
   26.1.2-8), cada uno sobre un servidor limpio y con bots de mineflayer donde
   hace falta un jugador: todos terminan **sin fallos**. En la primera pasada de
   la tanda final fallaron cinco por cómo medían los propios escenarios (no por
   el plugin); se corrigieron los escenarios y se repitieron.
 - En ningún escenario aparece una excepción de WorldForge en el registro.
-- Jar final: `build/libs/RPGRoll-WorldForge-0.1.0.jar`, compilado sin
-  `-Prpgroll.dev` (SHA-256 `e7a97245…fa8c5487`), con `folia-supported: true`.
-  Sin publicar ni commitear.
+- **El jar de venta 1.0.0** (`escenario-licencia.sh`, ver [Licencia](#licencia)): sin
+  clave se desactiva y deja `license.yml`; con WorldForge en `bukkit.yml` para el
+  servidor antes de abrir los mundos (0 chunks generados). Tras ese cambio se
+  repitieron `escenario.sh` (84 pasos) y `escenario-principal.sh` (18): sin fallos.
+- Jar final: `build/libs/RPGRoll-WorldForge-1.0.0.jar`, compilado sin
+  `-Prpgroll.dev` (SHA-256 `1815ca19…4fe58cde`), con `folia-supported: true`.
+  La 0.1.0 está commiteada en main (`b8b7720d`); lo de la 1.0.0 sin commitear, y
+  nada publicado.
 
 ## Entorno
 
@@ -29,7 +34,7 @@ superada, y lo que falta está en [«Sin probar»](#sin-probar).
 | Bots | mineflayer del e2e de SackitoNetwork, versión `26.1` |
 | Generador ajeno | `test-server/otro-generador/`, un plugin mínimo de prueba (no Terra ni Iris) |
 | Terralith | 2.6.2 para 26.1 (Stardust Labs), solo en el servidor de prueba: su licencia no deja redistribuirlo |
-| Jar probado | el de desarrollo (`-Prpgroll.dev`): mismo código que el de venta, con la comprobación de licencia omitida |
+| Jar probado | el de desarrollo (`-Prpgroll.dev`): mismo código que el de venta, con la comprobación de licencia omitida; el de venta solo en `escenario-licencia.sh` |
 
 ## Pruebas unitarias (estado actual)
 
@@ -267,6 +272,34 @@ tras esta tanda). **75 pasos, 0 fallos.**
 Folia no tiene `save-all` (comprobado): lo recién generado llega a disco al
 parar o en el autoguardado, y el plan de regeneración lo avisa.
 
+## Licencia
+
+`escenario-licencia.sh` (2026-10-21) arranca el servidor él mismo en cada caso. `run.sh`
+sigue pasando `-Drpgroll.devmode=true`: en el jar de venta no salta la licencia.
+
+| Caso | Pasos | Qué se comprobó |
+|---|---|---|
+| `sin` (jar de venta, sin clave, `void-platform` en `bukkit.yml`) | 6 | «No se detectó una licencia»; WorldForge dice por qué para el servidor y nombra el mundo; Java termina al arrancar; **0 archivos de región** |
+| `sin` (jar de venta, sin clave, `bukkit.yml` sin WorldForge) | 5 | el servidor arranca; WorldForge se desactiva sin habilitarse; crea `plugins/RPGRoll-WorldForge/license.yml` con `%%__LICENSE__%%` |
+| `preset` (jar de desarrollo, `no-existe` en `bukkit.yml`) | 3 | Java termina al arrancar; el registro nombra el mundo, el preset y su problema; 0 archivos de región |
+
+Defectos que encontró esta prueba (corregidos):
+
+- **El jar no traía `license/license.yml`.** `LicenseManager` no creaba el archivo
+  y el comprador no tenía dónde pegar la clave. Ahora está en
+  `src/main/resources/license/`, y `build-logic` hace fallar la compilación de
+  cualquier módulo vendible que no lo tenga (le pasaba también a Disasters 1.1.5).
+- **Sin licencia, Paper generaba el mundo de `bukkit.yml` con su terreno.** El
+  plugin desactivado no puede dar el generador, y Paper sigue con el normal: en
+  la prueba, bedrock en y=−64 y 2,2 MB de regiones en un mundo que debía ser
+  vacío. Pasa igual con un preset roto (ahí `getDefaultWorldGenerator` lanza una
+  excepción, y Paper la registra y sigue). `Server.shutdown()` no sirve: Paper
+  carga el mundo y genera la zona de aparición antes de parar. `System.exit()`
+  desde `onEnable` se bloquea para siempre (el hilo de apagado espera al gestor
+  de plugins, que tiene el hilo del arranque). Ahora WorldForge escribe el
+  motivo, espera 2 s a que el registro asíncrono lo vuelque y corta el proceso
+  (`Runtime.halt`) antes de que se abra ningún mundo.
+
 ## Defectos encontrados después de la fase 3
 
 Del plugin:
@@ -298,10 +331,10 @@ De los propios escenarios, en la tanda final (corregidos y repetidos):
 
 ## Sin probar
 
-- **El jar de venta en un servidor**: en todas las pruebas va el de
-  desarrollo, que se salta la licencia. El módulo de licencia no usa
-  schedulers (hace su comprobación en `onEnable`), así que no debería cambiar
-  nada en Folia, pero no se ejecutó.
+- **El jar de venta con una clave**: `escenario-licencia.sh valida` (clave
+  real) e `invalida` (clave falsa) preguntan a la tienda y están sin ejecutar:
+  falta dar de alta el producto `worldforge`. Tampoco se probó el jar de venta en
+  Folia (el módulo de licencia no usa schedulers, así que no debería cambiar).
 - **Terra o Iris de verdad** con `provider: plugin`: se probó con un plugin de
   prueba que trae su propio generador.
 - `/wf terrain main` en Folia (solo escribe un archivo del datapack; en Paper sí

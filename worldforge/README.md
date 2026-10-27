@@ -8,7 +8,7 @@ archipiélagos); menas y plantillas (mazmorras, ruinas, islas…) en los chunks 
 nuevas por datapack; y regeneración de chunks con plan, confirmación, respaldo y recuperación.
 Todo desde comandos o desde un menú en el juego.
 
-> Estado: en desarrollo (0.1.0). Lo que está aquí está probado en un servidor real; los resultados
+> Versión 1.0.0. Lo que está aquí está probado en un servidor real; los resultados
 > están en [`docs/TEST-REPORT.md`](docs/TEST-REPORT.md). Lo que no está probado lo dice este
 > documento en «Límites».
 
@@ -23,11 +23,13 @@ Todo desde comandos o desde un menú en el juego.
 ## Instalación
 
 1. Copia `RPGRoll-WorldForge-<versión>.jar` en `plugins/`.
-2. Arranca el servidor. Se crea `plugins/RPGRoll-WorldForge/` con `config.yml`, `messages.yml`,
-   `protections.yml`, la base de datos `worldforge.db`, los presets de serie en `presets/` y las
-   carpetas `drafts/`, `imports/` y `exports/`; `structures/` y `backups/` aparecen la primera vez
-   que hacen falta.
-3. `/wf diagnostics` dice si todo está en orden (plataforma, base de datos, presets, zonas
+2. Arranca el servidor una vez. Se crea `plugins/RPGRoll-WorldForge/license.yml`: pega ahí tu clave
+   (empieza por `RPGR-`) en lugar de `%%__LICENSE__%%` y vuelve a arrancar. Sin una clave válida,
+   WorldForge se desactiva.
+3. Con la licencia, se crean también `config.yml`, `messages.yml`, `protections.yml`, la base de
+   datos `worldforge.db`, los presets de serie en `presets/` y las carpetas `drafts/`, `imports/` y
+   `exports/`; `structures/` y `backups/` aparecen la primera vez que hacen falta.
+4. `/wf diagnostics` dice si todo está en orden (plataforma, base de datos, presets, zonas
    protegidas, trabajos pendientes, dimensiones).
 
 WorldForge carga en `STARTUP`: así puede generar también el mundo principal y aplicar
@@ -49,6 +51,12 @@ worlds:
   world:
     generator: RPGRoll-WorldForge:void-platform
 ```
+
+Si al arrancar WorldForge no puede dar ese generador (no hay licencia válida o el preset no existe o
+tiene errores), **para el servidor** antes de abrir los mundos y el registro dice por qué. Si siguiera,
+Paper generaría ese mundo con el terreno normal de Minecraft y luego habría que regenerar esos chunks.
+Arréglalo, o quita la línea `generator:`, y vuelve a arrancar. La licencia aguanta 7 días sin poder
+hablar con la tienda (por ejemplo, si está caída) desde la última vez que se comprobó.
 
 ## Presets
 
@@ -371,6 +379,7 @@ de regeneración lo avisa si toca chunks que todavía no están guardados.
 
 | Síntoma | Qué mirar |
 |---|---|
+| El servidor se para al arrancar y el registro dice «Se para el servidor» | las líneas de antes dicen si falta la licencia o qué preset de `bukkit.yml` falla |
 | «tiene errores» al publicar | `/wf preset validate <id>` lista cada campo con su problema |
 | Un mundo administrado no carga al arrancar | el registro dice por qué (preset con errores, carpeta que falta, plantilla que falta) |
 | «Regeneración BLOQUEADA» en el diagnóstico | `protections.yml` mal escrito: arréglalo y `/wf reload-config` |

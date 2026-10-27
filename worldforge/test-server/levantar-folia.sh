@@ -26,7 +26,7 @@ mkdir -p "$S/plugins"
 cp "$FC/$FOLIA" "$S/server.jar"
 for d in libraries versions cache; do [ -d "$FC/$d" ] && cp -r "$FC/$d" "$S/"; done
 cp "$CACHE/trust.p12" "$S/"
-python - "${JAR:-$RPGROLL/worldforge/build/libs/RPGRoll-WorldForge-0.1.0.jar}" "$(cygpath -w "$S/plugins/RPGRoll-WorldForge-folia-prueba.jar")" <<'EOF'
+python - "${JAR:-$RPGROLL/worldforge/build/libs/RPGRoll-WorldForge-1.0.0.jar}" "$(cygpath -w "$S/plugins/RPGRoll-WorldForge-folia-prueba.jar")" <<'EOF'
 import sys, zipfile
 src, dst = sys.argv[1], sys.argv[2]
 with zipfile.ZipFile(src) as zin, zipfile.ZipFile(dst, "w", zipfile.ZIP_DEFLATED) as zout:

@@ -24,11 +24,20 @@ rm -rf "$S"
 mkdir -p "$S/plugins"
 cp "$CACHE/cache/paper.jar" "$CACHE/trust.p12" "$S/"
 cp -r "$CACHE/survival/libraries" "$CACHE/survival/versions" "$CACHE/survival/cache" "$S/"
-cp "${JAR:-$RPGROLL/worldforge/build/libs/RPGRoll-WorldForge-0.1.0.jar}" "$CACHE/cache/LuckPerms-Bukkit-5.5.71.jar" "$S/plugins/"
+cp "${JAR:-$RPGROLL/worldforge/build/libs/RPGRoll-WorldForge-1.0.0.jar}" "$CACHE/cache/LuckPerms-Bukkit-5.5.71.jar" "$S/plugins/"
+# LICENCIA=<clave>: license.yml para probar el jar de venta (está en .work, que se borra en cada arranque).
+if [ -n "${LICENCIA:-}" ]; then
+    mkdir -p "$S/plugins/RPGRoll-WorldForge"
+    printf "key: '%s'\n" "$LICENCIA" > "$S/plugins/RPGRoll-WorldForge/license.yml"
+fi
 echo "eula=true" > "$S/eula.txt"   # EULA aceptada por Sack para los servidores de prueba (2026-09-27)
 printf 'online-mode=false\nserver-port=25565\nlevel-seed=20261020\nspawn-protection=0\nview-distance=4\nsimulation-distance=4\n' > "$S/server.properties"
-# MAIN=<preset>: el del mundo principal (por defecto void-platform).
-printf 'worlds:\n  world:\n    generator: RPGRoll-WorldForge:%s\n' "${MAIN:-void-platform}" > "$S/bukkit.yml"
+# MAIN=<preset>: el del mundo principal (por defecto void-platform); MAIN=ninguno: bukkit.yml sin WorldForge.
+if [ "${MAIN:-}" = ninguno ]; then
+    : > "$S/bukkit.yml"
+else
+    printf 'worlds:\n  world:\n    generator: RPGRoll-WorldForge:%s\n' "${MAIN:-void-platform}" > "$S/bukkit.yml"
+fi
 # DATAPACKS="a.zip b.zip": en el mundo desde el primer arranque (Terralith, solo para pruebas: su licencia no deja redistribuirlo).
 for dp in ${DATAPACKS:-}; do mkdir -p "$S/world/datapacks" && cp "$dp" "$S/world/datapacks/"; done
 TRUST="-Djavax.net.ssl.trustStore=/srv/trust.p12 -Djavax.net.ssl.trustStorePassword=changeit -Djavax.net.ssl.trustStoreType=PKCS12"
@@ -39,6 +48,10 @@ MSYS_NO_PATHCONV=1 docker run -d --name $C -p 25602:25565 -v "$(cygpath -w "$S")
     eclipse-temurin:25-jre sh /srv/run.sh >/dev/null
 for _ in $(seq 1 120); do
     grep -q "Done (" "$S/logs/latest.log" 2>/dev/null && break
+    docker exec $C pgrep -f paper.jar >/dev/null 2>&1 || break
     sleep 2
 done
-grep "Done (" "$S/logs/latest.log" || { echo "Paper no arrancó en 4 min"; tail -30 "$S/logs/latest.log"; exit 1; }
+grep "Done (" "$S/logs/latest.log" && exit 0
+# Sale con 3 si Java terminó al arrancar (WorldForge para el proceso si no puede generar un mundo de bukkit.yml).
+docker exec $C pgrep -f paper.jar >/dev/null 2>&1 || { echo "Paper se paró al arrancar"; exit 3; }
+echo "Paper no arrancó en 4 min"; tail -30 "$S/logs/latest.log"; exit 1

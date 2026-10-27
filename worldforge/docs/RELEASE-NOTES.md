@@ -1,8 +1,8 @@
 # WorldForge — Notas de la versión
 
-## 0.1.0 (sin publicar)
+## 1.0.0 (sin publicar)
 
-Primera versión. Para Paper 26.1.2 y Folia 26.1.2 (Java 25). Lo probado y cómo está en
+Primera versión publicada. Para Paper 26.1.2 y Folia 26.1.2 (Java 25). Lo probado y cómo está en
 [`TEST-REPORT.md`](TEST-REPORT.md); lo que no hace, en el README («Límites»).
 
 ### Qué trae
@@ -27,6 +27,11 @@ Primera versión. Para Paper 26.1.2 y Folia 26.1.2 (Java 25). Lo probado y cómo
   verificado, deshacer y recuperación de trabajos interrumpidos; zonas protegidas.
 - **Menú** en el juego, permisos por nodo (viewer, operator, admin) y
   diagnóstico.
+
+- **Licencia** en `plugins/RPGRoll-WorldForge/license.yml` (se crea al primer
+  arranque). Si `bukkit.yml` genera un mundo con WorldForge y no hay licencia
+  válida, o su preset no sirve, WorldForge para el servidor antes de abrir los
+  mundos: así Minecraft no lo genera con su terreno normal.
 
 ### Antes de instalar
 
