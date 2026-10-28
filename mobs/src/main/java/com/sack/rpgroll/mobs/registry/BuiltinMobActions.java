@@ -48,7 +48,8 @@ public final class BuiltinMobActions {
 
         registry.register("COMMAND", (action, ctx) -> {
             String command = action.param("value", "");
-            if (!command.isBlank()) {
+            // Sin jugador (daño del sol o del fuego) {target} quedaría literal y el comando fallaría.
+            if (!command.isBlank() && !(command.contains("{target}") && ctx.targetPlayer() == null)) {
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), applyPlaceholders(command, ctx));
             }
         });
@@ -160,10 +161,8 @@ public final class BuiltinMobActions {
             }
 
             double strength = Double.parseDouble(action.param("strength", "1.5"));
-            Vector direction = target.getLocation().toVector().subtract(ctx.mob().getLocation().toVector())
-                    .normalize().multiply(strength).setY(0.3);
-
-            target.setVelocity(direction);
+            target.setVelocity(toward(ctx.mob().getLocation().toVector(), target.getLocation().toVector(), strength)
+                    .setY(0.3));
         });
 
         registry.register("PULL", (action, ctx) -> {
@@ -173,10 +172,8 @@ public final class BuiltinMobActions {
             }
 
             double strength = Double.parseDouble(action.param("strength", "1.5"));
-            Vector direction = ctx.mob().getLocation().toVector().subtract(target.getLocation().toVector())
-                    .normalize().multiply(strength).setY(0.2);
-
-            target.setVelocity(direction);
+            target.setVelocity(toward(target.getLocation().toVector(), ctx.mob().getLocation().toVector(), strength)
+                    .setY(0.2));
         });
 
         // Lanza una animación del modelo 3D del mob (FreeMinecraftModels): el rugido de
@@ -210,6 +207,13 @@ public final class BuiltinMobActions {
             target.showTitle(Title.title(main, subtitle, times));
         });
 
+    }
+
+    /** De {@code from} hacia {@code to} con esa fuerza; nulo si están en el mismo sitio (normalize() daría NaN). */
+    static Vector toward(Vector from, Vector to, double strength) {
+
+        Vector direction = to.clone().subtract(from);
+        return direction.lengthSquared() < 1.0E-6 ? direction.zero() : direction.normalize().multiply(strength);
     }
 
     private static String applyPlaceholders(String raw, MobActionContext ctx) {

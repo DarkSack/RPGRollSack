@@ -1,7 +1,7 @@
-# El soldado del pack: dispara desde lejos (lo mueve un esqueleto). Al ver a
-# alguien lo escanea (animación «escaneo») y lo deja marcado: brilla unos
-# segundos y se le ve a través de las paredes.
-# Modelo 3D: FreeMinecraftModels/models/vanguardia_automata.bbmodel. Sin FMM se ve el esqueleto.
+# El soldado del pack: dispara desde lejos (lo mueve un pillager con ballesta,
+# que no arde al sol). Al ver a alguien lo escanea (animación «escaneo») y lo
+# deja marcado: brilla unos segundos y se le ve a través de las paredes.
+# Modelo 3D: FreeMinecraftModels/models/vanguardia_automata.bbmodel. Sin FMM se ve el pillager.
 id: vanguardia_automata
 category: ELITE
 display-name: "&fAutómata de Asalto"
@@ -10,13 +10,13 @@ level: 40
 rarity: rare
 tags: [ "vanguardia", "robot", "modelo3d" ]
 description: "Un soldado de chapa blanca que repite la misma orden desde hace cien años."
-base-entity-type: SKELETON
+base-entity-type: PILLAGER
 
 model:
   scale: 1.0
   model-engine-id: vanguardia_automata
   equipment:
-    hand: BOW
+    hand: CROSSBOW
 
 stats:
   health: 140

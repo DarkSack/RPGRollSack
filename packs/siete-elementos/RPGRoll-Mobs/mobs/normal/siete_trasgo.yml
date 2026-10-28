@@ -1,6 +1,6 @@
 # El enemigo básico del pack: va en grupo, lleva máscara y garrote.
 # Cuando alguien se acerca baila (animación «danza») para avisar al resto.
-# Modelo 3D: FreeMinecraftModels/models/siete_trasgo.bbmodel. Sin FMM se ve el zombi.
+# Modelo 3D: FreeMinecraftModels/models/siete_trasgo.bbmodel. Sin FMM se ve el husk (no arde al sol).
 id: siete_trasgo
 category: NORMAL
 display-name: "&6Trasgo Enmascarado"
@@ -9,7 +9,7 @@ level: 12
 rarity: common
 tags: [ "siete_elementos", "trasgo", "modelo3d" ]
 description: "Pequeño, ruidoso y con una máscara de hueso que nunca se quita."
-base-entity-type: ZOMBIE
+base-entity-type: HUSK
 
 model:
   scale: 0.9

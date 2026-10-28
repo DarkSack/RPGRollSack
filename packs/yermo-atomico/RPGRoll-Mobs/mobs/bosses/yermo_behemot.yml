@@ -9,7 +9,7 @@ level: 45
 rarity: legendary
 tags: [ "yermo_atomico", "mutante", "jefe", "modelo3d" ]
 description: "El primer Coloso. Lleva una boca de incendios como maza y un reactor por corazón."
-base-entity-type: ZOMBIE
+base-entity-type: HUSK
 
 model:
   scale: 2.4

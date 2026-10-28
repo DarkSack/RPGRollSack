@@ -146,7 +146,7 @@ public class ItemsPlugin extends JavaPlugin {
         getServer().getPluginManager().registerEvents(chatPromptManager, this);
 
         ItemTriggerListener triggerListener = new ItemTriggerListener(itemManager, instanceService, actionRegistry,
-                conditionEvaluator, durabilityService, statEngine, langManager);
+                conditionEvaluator, durabilityService, statEngine, requirementChecker, langManager);
         getServer().getPluginManager().registerEvents(triggerListener, this);
 
         ItemEquipTask equipTask = new ItemEquipTask(itemManager, instanceService, actionRegistry, statEngine,

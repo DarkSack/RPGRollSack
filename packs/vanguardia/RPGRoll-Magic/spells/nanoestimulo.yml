@@ -21,7 +21,7 @@ components:
     amount: 14
     target: self
   - type: COMMAND
-    command: "execute at %player% run effect give @a[distance=..8] minecraft:regeneration 5 1"
+    command: "execute at %caster% run effect give @a[distance=..8] minecraft:regeneration 5 1"
   - type: VISUAL
     effect-id: vanguardia_aura_biotica
   - type: SOUND

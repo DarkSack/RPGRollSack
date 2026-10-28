@@ -1,6 +1,6 @@
 # El relleno del pack: rápido, flojo y en grupo. Al recibir daño a veces
 # grita (animación «alarido») y eso le da velocidad un rato.
-# Modelo 3D: FreeMinecraftModels/models/yermo_necrofago.bbmodel. Sin FMM se ve el zombi.
+# Modelo 3D: FreeMinecraftModels/models/yermo_necrofago.bbmodel. Sin FMM se ve el husk (no arde al sol).
 id: yermo_necrofago
 category: NORMAL
 display-name: "&2Necrófago"
@@ -9,7 +9,7 @@ level: 26
 rarity: common
 tags: [ "yermo_atomico", "radiacion", "modelo3d" ]
 description: "Alguien que sobrevivió a la radiación y no debería haberlo hecho."
-base-entity-type: ZOMBIE
+base-entity-type: HUSK
 
 model:
   scale: 1.0

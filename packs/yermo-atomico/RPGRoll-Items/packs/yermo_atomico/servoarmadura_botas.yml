@@ -15,9 +15,6 @@ stats:
   defense: 7
   health: 8
 
-attributes:
-  KNOCKBACK_RESISTANCE: 0.05
-
 requirements:
   level: 35
   class: acorazado

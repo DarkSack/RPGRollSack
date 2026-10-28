@@ -14,12 +14,14 @@ import com.sack.rpgroll.items.instance.ItemInstanceService;
 import com.sack.rpgroll.items.core.ItemManager;
 import com.sack.rpgroll.items.registry.ActionRegistry;
 import com.sack.rpgroll.items.registry.ItemActionContext;
+import com.sack.rpgroll.items.requirement.ItemRequirementChecker;
 import com.sack.rpgroll.items.stat.ItemStatEngine;
 
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -41,6 +43,7 @@ import org.bukkit.event.player.PlayerToggleSprintEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -59,6 +62,7 @@ public class ItemTriggerListener implements Listener {
     private final ItemConditionEvaluator conditionEvaluator;
     private final DurabilityService durabilityService;
     private final ItemStatEngine statEngine;
+    private final ItemRequirementChecker requirementChecker;
     private final LangManager langManager;
 
     private final Map<String, Long> abilityCooldowns = new HashMap<>();
@@ -70,6 +74,7 @@ public class ItemTriggerListener implements Listener {
             ItemConditionEvaluator conditionEvaluator,
             DurabilityService durabilityService,
             ItemStatEngine statEngine,
+            ItemRequirementChecker requirementChecker,
             LangManager langManager) {
 
         this.itemManager = itemManager;
@@ -78,11 +83,18 @@ public class ItemTriggerListener implements Listener {
         this.conditionEvaluator = conditionEvaluator;
         this.durabilityService = durabilityService;
         this.statEngine = statEngine;
+        this.requirementChecker = requirementChecker;
         this.langManager = langManager;
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler
     public void onInteract(PlayerInteractEvent event) {
+
+        // Paper lanza los clics al aire ya cancelados (no hay bloque): con ignoreCancelled no llegaba ninguno.
+        if (event.useItemInHand() == Event.Result.DENY
+                || event.getClickedBlock() != null && event.useInteractedBlock() == Event.Result.DENY) {
+            return;
+        }
 
         ItemStack heldItem = event.getItem();
 
@@ -313,6 +325,14 @@ public class ItemTriggerListener implements Listener {
             long remainingSeconds = (expiry - now) / 1000 + 1;
             langManager.send(player, "ability.cooldown", "ability", ability.displayName(),
                     "seconds", remainingSeconds);
+            return;
+        }
+
+        // Los requisitos son para usar el ítem, no solo para llevarlo: sin ellos, sus habilidades no salen.
+        List<String> unmet = requirementChecker.check(player, context.definition().requirements());
+        if (!unmet.isEmpty()) {
+            langManager.send(player, "equip.requirements_header", "item", context.definition().displayName());
+            unmet.forEach(reason -> langManager.send(player, "equip.requirement_line", "reason", reason));
             return;
         }
 

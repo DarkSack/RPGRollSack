@@ -1,5 +1,5 @@
 # El élite pesado: lento, mucha vida y un pisotón que empuja.
-# Modelo 3D: FreeMinecraftModels/models/yermo_coloso.bbmodel. Sin FMM se ve el zombi.
+# Modelo 3D: FreeMinecraftModels/models/yermo_coloso.bbmodel. Sin FMM se ve el husk (no arde al sol).
 id: yermo_coloso
 category: ELITE
 display-name: "&2Coloso del Yermo"
@@ -8,7 +8,7 @@ level: 34
 rarity: epic
 tags: [ "yermo_atomico", "mutante", "modelo3d" ]
 description: "Tres metros de músculo verde con un mazo de tubería y pocas palabras."
-base-entity-type: ZOMBIE
+base-entity-type: HUSK
 
 model:
   scale: 1.35
