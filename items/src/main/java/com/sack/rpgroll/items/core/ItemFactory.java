@@ -147,6 +147,15 @@ public class ItemFactory {
 
         boolean glow = definition.glowOverride() != null ? definition.glowOverride() : rarity.glow();
         // El brillo sin encantamiento falso: Bedrock no oculta encantamientos y enseñaba "Suerte marina I".
+        // Los ítems hechos antes lo llevan todavía; se quita al reconstruirlos si el YAML no lo pide.
+        Enchantment oldGlow = Registry.ENCHANTMENT.get(NamespacedKey.minecraft("luck_of_the_sea"));
+        if (oldGlow != null && meta.getEnchantLevel(oldGlow) == 1 && meta.hasItemFlag(ItemFlag.HIDE_ENCHANTS)
+                && definition.vanillaEnchantments().keySet().stream().noneMatch("luck_of_the_sea"::equalsIgnoreCase)) {
+            meta.removeEnchant(oldGlow);
+            if (definition.flags().stream().noneMatch(f -> f.trim().equalsIgnoreCase("HIDE_ENCHANTS"))) {
+                meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
+            }
+        }
         if (glow && meta.getEnchants().isEmpty()) {
             meta.setEnchantmentGlintOverride(true);
         }
