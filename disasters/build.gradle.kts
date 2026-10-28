@@ -3,7 +3,7 @@ plugins {
 }
 
 group = "com.sack"
-version = "1.1.6"
+version = "1.1.7"
 
 base.archivesName.set("RPGRoll-Disasters")
 
