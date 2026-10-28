@@ -206,11 +206,12 @@ public final class BuiltinItemActions {
         });
 
         /**
-         * Disparo instantáneo, para armas de fuego y de energía: un rayo desde los ojos
-         * hacia donde se mira que daña a la primera criatura que toca, deja un trazo de
-         * partículas, revienta con {@code explosion} (potencia, sin romper bloques) y, si hay
-         * RPGRoll-FX, lanza {@code hit-effect} donde pega. El daño
-         * se atribuye al jugador, así que las protecciones y las muertes lo cuentan.
+         * Disparo de arma de fuego o de energía, a nombre del jugador. Sin {@code speed} es un rayo
+         * instantáneo desde los ojos que daña a la primera criatura que toca; con {@code speed}
+         * (bloques por tick) es un proyectil que vuela, con {@code gravity} y el modelo {@code model}
+         * (ver {@link ShotProjectile}). La estela la pinta {@link ShotVisuals} y el impacto
+         * (daño, explosión que puede romper bloques y {@code hit-effect}) {@link ShotImpact};
+         * {@code muzzle-effect} es el fogonazo de RPGRoll-FX en la boca del arma.
          */
         registry.register("SHOOT", (action, ctx) -> shoot(action, ctx, plugin));
     }
@@ -219,49 +220,50 @@ public final class BuiltinItemActions {
 
         Player player = ctx.player();
         double range = Double.parseDouble(action.param("range", "32"));
-        double amount = Double.parseDouble(action.param("amount", "6"));
         Location eye = player.getEyeLocation();
         Vector direction = eye.getDirection();
+
+        ShotVisuals visuals;
+        try {
+            visuals = ShotVisuals.from(action, eye.toVector());
+        } catch (IllegalArgumentException e) {
+            plugin.getLogger().warning("✘ SHOOT con partícula inválida: " + action.param("particle", "")
+                    + " / " + action.param("particle2", ""));
+            return;
+        }
+        ShotImpact impact = ShotImpact.from(action);
+        Location barrel = barrel(eye, direction);
+        String muzzle = action.param("muzzle-effect", "");
+        if (!muzzle.isBlank()) {
+            com.sack.rpgroll.common.integration.ParticlesIntegration.play(muzzle, player, barrel);
+        }
+
+        double speed = Double.parseDouble(action.param("speed", "0"));
+        if (speed > 0) {
+            ShotProjectile.launch(plugin, player, barrel, direction, speed,
+                    Double.parseDouble(action.param("gravity", "0")), range, action.param("model", ""), visuals, impact);
+            return;
+        }
 
         RayTraceResult hit = player.getWorld().rayTrace(eye, direction, range, FluidCollisionMode.NEVER, true, 0.3,
                 entity -> entity instanceof LivingEntity && !entity.equals(player));
         Vector end = hit != null ? hit.getHitPosition() : eye.toVector().add(direction.clone().multiply(range));
+        visuals.trail(player.getWorld(), barrel.toVector(), end);
+        if (hit != null) {
+            impact.apply(player, end.toLocation(player.getWorld()),
+                    hit.getHitEntity() instanceof LivingEntity living ? living : null);
+        }
+    }
 
-        if (hit != null && hit.getHitEntity() instanceof LivingEntity target) {
-            target.damage(amount, player);
+    /** La boca del arma en la mano derecha: un poco delante, a la derecha y por debajo de los ojos. */
+    static Location barrel(Location eye, Vector direction) {
+        Vector right = direction.getCrossProduct(new Vector(0, 1, 0));
+        if (right.lengthSquared() < 1e-6) {
+            right = new Vector(1, 0, 0);
         }
-        float explosion = Float.parseFloat(action.param("explosion", "0"));
-        if (hit != null && explosion > 0) {
-            // Sin romper bloques ni prender fuego, y con el jugador como fuente (no le hace daño a él).
-            player.getWorld().createExplosion(end.toLocation(player.getWorld()), explosion, false, false, player);
-        }
-
-        try {
-            Particle particle = Particle.valueOf(action.param("particle", "CRIT").toUpperCase(Locale.ROOT));
-            Object data = null;
-            if (particle.getDataType() == Particle.DustOptions.class) {
-                data = new Particle.DustOptions(Color.fromRGB(Integer.parseInt(
-                        action.param("color", "#FF3030").replace("#", ""), 16)), 0.8f);
-            } else if (particle.getDataType() != Void.class) {
-                throw new IllegalArgumentException("la partícula necesita datos: " + particle);
-            }
-            Vector step = end.clone().subtract(eye.toVector());
-            int points = (int) Math.ceil(step.length() * 2);
-            step.multiply(1.0 / Math.max(1, points));
-            Location at = eye.clone();
-            for (int i = 0; i < points; i++) {
-                at.add(step);
-                player.getWorld().spawnParticle(particle, at, 1, 0, 0, 0, 0, data);
-            }
-        } catch (IllegalArgumentException e) {
-            plugin.getLogger().warning("✘ SHOOT con partícula inválida: " + action.param("particle", ""));
-        }
-
-        String hitEffect = action.param("hit-effect", "");
-        if (hit != null && !hitEffect.isBlank()) {
-            com.sack.rpgroll.common.integration.ParticlesIntegration.play(hitEffect, player,
-                    end.toLocation(player.getWorld()));
-        }
+        right.normalize();
+        Vector down = right.getCrossProduct(direction).normalize().multiply(-1);
+        return eye.clone().add(direction.clone().multiply(1.0)).add(right.multiply(0.32)).add(down.multiply(0.22));
     }
 
     private static Location targetLocation(ItemActionContext ctx) {

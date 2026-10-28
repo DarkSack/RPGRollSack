@@ -31,6 +31,12 @@ abilities:
         range: "40"
         particle: DUST
         color: "#FF3030"
+        size: "0.7"
+        particle2: DUST
+        color2: "#FFD6D6"
+        size2: "0.35"
+        density: "5"
+        muzzle-effect: yermo_fogonazo_plasma
         hit-effect: yermo_impacto_laser
       - type: SOUND
         sound: BLOCK_BEACON_POWER_SELECT

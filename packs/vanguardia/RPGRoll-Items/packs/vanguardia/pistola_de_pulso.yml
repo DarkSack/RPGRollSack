@@ -26,8 +26,14 @@ abilities:
       - type: SHOOT
         amount: "9"
         range: "30"
-        color: "#4FD8FF"
+        speed: "2.6"
+        model: "vanguardia:proyectil/pulso"
         particle: DUST
+        color: "#4FD8FF"
+        size: "0.7"
+        particle2: ELECTRIC_SPARK
+        density: "2"
+        muzzle-effect: vanguardia_fogonazo_pulso
         hit-effect: vanguardia_impacto_pulso
       - type: SOUND
         sound: ENTITY_SHULKER_SHOOT

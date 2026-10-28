@@ -226,6 +226,30 @@
      "display_handheld": false
     }
    }
+  ],
+  "minecraft:paper": [
+   {
+    "type": "definition",
+    "model": "yermo:proyectil/plasma",
+    "bedrock_identifier": "yermo:proyectil_plasma",
+    "display_name": "Orbe de Plasma",
+    "bedrock_options": {
+     "icon": "yermo_proyectil_plasma",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "yermo:proyectil/minibomba",
+    "bedrock_identifier": "yermo:proyectil_minibomba",
+    "display_name": "Minibomba",
+    "bedrock_options": {
+     "icon": "yermo_proyectil_minibomba",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
   ]
  }
 }

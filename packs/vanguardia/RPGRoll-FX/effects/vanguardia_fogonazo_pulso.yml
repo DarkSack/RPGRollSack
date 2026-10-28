@@ -1,0 +1,25 @@
+id: vanguardia_fogonazo_pulso
+display-name: "&bFogonazo de Pulso"
+description: "Destello azul en la boca de la Pistola de Pulso."
+
+steps:
+  - type: PARTICLE
+    delay: 0
+    particle: DUST
+    color: "#BFF4FF"
+    size: 0.9
+    shape: SPHERE
+    target: LOCATION
+    radius: 0.18
+    points: 8
+    count: 1
+    speed: 0
+  - type: PARTICLE
+    delay: 0
+    particle: ELECTRIC_SPARK
+    shape: BURST
+    target: LOCATION
+    radius: 0.3
+    points: 6
+    count: 1
+    speed: 0.15

@@ -27,8 +27,17 @@ abilities:
       - type: SHOOT
         amount: "7"
         range: "28"
+        speed: "1.6"
+        model: "yermo:proyectil/plasma"
         particle: DUST
         color: "#7CFF5A"
+        size: "1.2"
+        particle2: DUST
+        color2: "#E8FFD0"
+        size2: "0.5"
+        spiral: "0.25"
+        density: "3"
+        muzzle-effect: yermo_fogonazo_plasma
         hit-effect: yermo_impacto_plasma
       - type: SOUND
         sound: ENTITY_BLAZE_SHOOT

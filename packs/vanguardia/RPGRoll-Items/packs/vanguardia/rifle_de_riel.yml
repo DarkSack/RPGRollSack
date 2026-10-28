@@ -29,7 +29,15 @@ abilities:
       - type: SHOOT
         amount: "22"
         range: "60"
-        particle: END_ROD
+        particle: DUST
+        color: "#B47CFF"
+        size: "1.0"
+        particle2: DUST
+        color2: "#F2E6FF"
+        size2: "0.5"
+        spiral: "0.35"
+        density: "4"
+        muzzle-effect: vanguardia_fogonazo_riel
         hit-effect: vanguardia_rayo_de_riel
       - type: SOUND
         sound: ENTITY_WARDEN_SONIC_BOOM

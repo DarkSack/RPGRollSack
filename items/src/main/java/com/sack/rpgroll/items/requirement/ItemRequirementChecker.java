@@ -2,6 +2,7 @@ package com.sack.rpgroll.items.requirement;
 
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.items.core.ItemRequirements;
+import com.sack.rpgroll.licensing.LicenseGate;
 import com.sack.rpgroll.common.character.Characters;
 import com.sack.rpgroll.common.character.RPGCharacters;
 import com.sack.rpgroll.common.integration.VaultEconomy;
@@ -24,6 +25,8 @@ public class ItemRequirementChecker {
     public List<String> check(Player player, ItemRequirements req) {
 
         List<String> reasons = new ArrayList<>();
+        // En modo dev no se piden requisitos, para probar cualquier ítem sin subir de nivel.
+        if (LicenseGate.isDevMode()) return reasons;
 
         // Sin el core de RPGRoll no hay personajes: los requisitos de personaje
         // no aplican y el ítem se usa como cualquier otro.

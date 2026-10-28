@@ -28,9 +28,15 @@ abilities:
     actions:
       - type: SHOOT
         amount: "16"
-        range: "45"
-        explosion: "2.0"
-        particle: FIREWORK
+        range: "50"
+        speed: "1.0"
+        model: "vanguardia:proyectil/cohete"
+        particle: SMOKE
+        particle2: FLAME
+        density: "3"
+        explosion: "3.5"
+        break-blocks: "true"
+        muzzle-effect: vanguardia_fogonazo_cohete
         hit-effect: vanguardia_explosion_de_impulso
       - type: SOUND
         sound: ENTITY_FIREWORK_ROCKET_LAUNCH

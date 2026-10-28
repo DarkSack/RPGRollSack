@@ -1,0 +1,25 @@
+id: vanguardia_fogonazo_riel
+display-name: "&9Fogonazo de Riel"
+description: "Anillo violeta que suelta el Rifle de Riel al disparar."
+
+steps:
+  - type: PARTICLE
+    delay: 0
+    particle: DUST
+    color: "#C59BFF"
+    size: 0.8
+    shape: CIRCLE
+    target: LOCATION
+    radius: 0.35
+    points: 14
+    count: 1
+    speed: 0
+  - type: PARTICLE
+    delay: 0
+    particle: END_ROD
+    shape: BURST
+    target: LOCATION
+    radius: 0.2
+    points: 5
+    count: 1
+    speed: 0.08

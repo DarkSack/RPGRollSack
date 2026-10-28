@@ -18,6 +18,11 @@ public final class LicenseGate {
     private LicenseGate() {
     }
 
+    /** Jar de desarrollo arrancado con -Drpgroll.devmode=true. En uno de venta siempre false. */
+    public static boolean isDevMode() {
+        return LicenseBuild.DEV_BUILD && Boolean.getBoolean("rpgroll.devmode");
+    }
+
     /**
      * Los tres valores salen de la clase {@code LicenseIdentity} que Gradle
      * genera para cada módulo — no hay forma correcta de llamar a esto con
@@ -40,7 +45,7 @@ public final class LicenseGate {
         // Solo en jars de desarrollo. En uno de venta DEV_BUILD es una constante
         // false: el compilador borra esta rama y el flag no sirve para nada, que
         // es justo lo que tiene que pasar si alguien lo prueba en su servidor.
-        if (LicenseBuild.DEV_BUILD && Boolean.getBoolean("rpgroll.devmode")) {
+        if (isDevMode()) {
             plugin.getLogger().warning(
                     "✔ Chequeo de licencia OMITIDO (-Drpgroll.devmode=true, jar de desarrollo) — NO usar en producción.");
             return true;

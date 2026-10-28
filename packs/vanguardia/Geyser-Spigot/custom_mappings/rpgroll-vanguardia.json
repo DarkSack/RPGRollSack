@@ -176,6 +176,30 @@
      "display_handheld": false
     }
    }
+  ],
+  "minecraft:paper": [
+   {
+    "type": "definition",
+    "model": "vanguardia:proyectil/cohete",
+    "bedrock_identifier": "vanguardia:proyectil_cohete",
+    "display_name": "Cohete",
+    "bedrock_options": {
+     "icon": "vanguardia_proyectil_cohete",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "vanguardia:proyectil/pulso",
+    "bedrock_identifier": "vanguardia:proyectil_pulso",
+    "display_name": "Bala de Pulso",
+    "bedrock_options": {
+     "icon": "vanguardia_proyectil_pulso",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
   ]
  }
 }

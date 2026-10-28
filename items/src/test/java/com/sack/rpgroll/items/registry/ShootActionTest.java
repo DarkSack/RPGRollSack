@@ -53,4 +53,15 @@ class ShootActionTest {
                 new ItemActionContext(player, null, null, null), mock(Plugin.class));
     }
 
+    @Test
+    void explosiveShotBreaksBlocksOnlyWhenAsked() {
+        when(world.rayTrace(any(Location.class), any(Vector.class), eq(40.0), eq(FluidCollisionMode.NEVER),
+                eq(true), anyDouble(), any())).thenReturn(new RayTraceResult(new Vector(0, 65, 8)));
+
+        BuiltinItemActions.shoot(new ItemAction("SHOOT", Map.of("range", "40", "explosion", "2.5",
+                "break-blocks", "true")), new ItemActionContext(player, null, null, null), mock(Plugin.class));
+
+        verify(world).createExplosion(any(Location.class), eq(2.5f), eq(false), eq(true), eq(player));
+    }
+
 }

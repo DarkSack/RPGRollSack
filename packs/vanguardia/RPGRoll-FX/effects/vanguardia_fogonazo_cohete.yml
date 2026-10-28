@@ -1,0 +1,23 @@
+id: vanguardia_fogonazo_cohete
+display-name: "&6Salida del Cohete"
+description: "Chorro de fuego y humo al lanzar un cohete."
+
+steps:
+  - type: PARTICLE
+    delay: 0
+    particle: FLAME
+    shape: BURST
+    target: LOCATION
+    radius: 0.4
+    points: 10
+    count: 1
+    speed: 0.06
+  - type: PARTICLE
+    delay: 0
+    particle: SMOKE
+    shape: SPHERE
+    target: LOCATION
+    radius: 0.4
+    points: 6
+    count: 1
+    speed: 0.01
