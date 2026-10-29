@@ -257,14 +257,27 @@ public final class BuiltinItemActions {
             return;
         }
 
-        RayTraceResult hit = player.getWorld().rayTrace(eye, direction, range, FluidCollisionMode.NEVER, true, 0.3,
-                entity -> entity instanceof LivingEntity && !entity.equals(player));
+        RayTraceResult hit = aim(player, eye, direction, range);
         Vector end = hit != null ? hit.getHitPosition() : eye.toVector().add(direction.clone().multiply(range));
-        visuals.trail(player.getWorld(), barrel.toVector(), end);
-        if (hit != null) {
-            impact.apply(player, end.toLocation(player.getWorld()),
-                    hit.getHitEntity() instanceof LivingEntity living ? living : null);
+        int sustain = Integer.parseInt(action.param("sustain", "0").trim());
+        if (sustain > 0) {
+            ShotBeam.hold(plugin, player, visuals, range, sustain);
+        } else {
+            visuals.trail(player.getWorld(), barrel.toVector(), end);
         }
+        if (hit != null) {
+            LivingEntity target = hit.getHitEntity() instanceof LivingEntity living ? living : null;
+            if (target != null && sustain > 0) {
+                target.setNoDamageTicks(0); // los pulsos van cada 4 tics: sin esto la invulnerabilidad se come 2 de cada 3
+            }
+            impact.apply(player, end.toLocation(player.getWorld()), target);
+        }
+    }
+
+    /** Lo primero que cruza la mira: un bloque o una criatura que no sea el tirador. */
+    static RayTraceResult aim(Player player, Location eye, Vector direction, double range) {
+        return player.getWorld().rayTrace(eye, direction, range, FluidCollisionMode.NEVER, true, 0.3,
+                entity -> entity instanceof LivingEntity && !entity.equals(player));
     }
 
     /** El sonido de un disparo (o de quedarse sin munición), para quien está cerca del tirador. */

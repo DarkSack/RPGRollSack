@@ -28,6 +28,11 @@ record ShotVisuals(Vector origin, Particle core, Object coreData, Particle accen
                 Double.parseDouble(action.param("spiral", "0")), Double.parseDouble(action.param("density", "3")));
     }
 
+    /** La misma estela vista desde otro sitio (el rayo sostenido sigue al tirador). */
+    ShotVisuals at(Vector origin) {
+        return new ShotVisuals(origin, core, coreData, accent, accentData, spiral, density);
+    }
+
     void trail(World world, Vector from, Vector to) {
         Vector line = to.clone().subtract(from);
         double length = line.length();

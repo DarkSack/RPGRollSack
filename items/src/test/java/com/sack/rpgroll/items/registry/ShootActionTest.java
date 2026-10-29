@@ -7,6 +7,7 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -16,12 +17,17 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitScheduler;
+import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 
 import java.util.Map;
+import java.util.UUID;
+import java.util.function.Consumer;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyDouble;
@@ -30,6 +36,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -172,6 +179,38 @@ class ShootActionTest {
         shoot(Map.of("ammo", "minecraft:paper", "no-ammo-sound", ""));
 
         verify(target, never()).damage(anyDouble(), any(Player.class));
+    }
+
+    // ------------------------------------------------------------ láser sostenido
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void sustainedBeamFollowsTheAimWhileHeldAndThenGoesOut() {
+        Plugin plugin = plugin();
+        Server server = mock(Server.class);
+        BukkitScheduler scheduler = mock(BukkitScheduler.class);
+        when(plugin.getServer()).thenReturn(server);
+        when(server.getScheduler()).thenReturn(scheduler);
+        when(player.getUniqueId()).thenReturn(UUID.randomUUID());
+        when(player.isOnline()).thenReturn(true);
+        LivingEntity target = targetAhead();
+        ItemAction beam = new ItemAction("SHOOT", Map.of("sustain", "2", "amount", "3"));
+        ItemActionContext ctx = new ItemActionContext(player, null, null, null);
+
+        BuiltinItemActions.shoot(beam, ctx, plugin);
+        BuiltinItemActions.shoot(beam, ctx, plugin);    // el clic mantenido repite: renueva, no abre otro rayo
+
+        ArgumentCaptor<Consumer<BukkitTask>> tick = ArgumentCaptor.forClass(Consumer.class);
+        verify(scheduler, times(1)).runTaskTimer(eq(plugin), tick.capture(), eq(0L), eq(1L));
+        verify(target, times(2)).setNoDamageTicks(0);
+        verify(target, times(2)).damage(3.0, player);
+
+        BukkitTask task = mock(BukkitTask.class);
+        tick.getValue().accept(task);
+        tick.getValue().accept(task);
+        verify(task, never()).cancel();
+        tick.getValue().accept(task);
+        verify(task).cancel();
     }
 
 }
