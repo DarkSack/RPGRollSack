@@ -224,13 +224,25 @@ public final class BuiltinItemActions {
         Vector direction = eye.getDirection();
 
         ShotVisuals visuals;
+        ShotAmmo ammo;
         try {
             visuals = ShotVisuals.from(action, eye.toVector());
+            ammo = ShotAmmo.from(action);
         } catch (IllegalArgumentException e) {
-            plugin.getLogger().warning("✘ SHOOT con partícula inválida: " + action.param("particle", "")
-                    + " / " + action.param("particle2", ""));
+            plugin.getLogger().warning("✘ SHOOT mal configurado (" + e.getMessage() + "): partícula "
+                    + action.param("particle", "") + " / " + action.param("particle2", "")
+                    + ", munición " + action.param("ammo", ""));
             return;
         }
+        if (ammo != null && !ammo.take(player, plugin)) {
+            playSound(player, action.param("no-ammo-sound", "BLOCK_DISPENSER_FAIL"), "1.0", "1.4", plugin);
+            String message = action.param("no-ammo-message", "");
+            if (!message.isBlank()) {
+                player.sendActionBar(ComponentUtils.parse(applyPlaceholders(message, ctx)));
+            }
+            return;
+        }
+        playSound(player, action.param("sound", ""), action.param("volume", "1.0"), action.param("pitch", "1.0"), plugin);
         ShotImpact impact = ShotImpact.from(action);
         Location barrel = barrel(eye, direction);
         String muzzle = action.param("muzzle-effect", "");
@@ -252,6 +264,19 @@ public final class BuiltinItemActions {
         if (hit != null) {
             impact.apply(player, end.toLocation(player.getWorld()),
                     hit.getHitEntity() instanceof LivingEntity living ? living : null);
+        }
+    }
+
+    /** El sonido de un disparo (o de quedarse sin munición), para quien está cerca del tirador. */
+    private static void playSound(Player player, String name, String volume, String pitch, Plugin plugin) {
+        if (name.isBlank()) {
+            return;
+        }
+        try {
+            player.getWorld().playSound(player.getLocation(), Sound.valueOf(name.trim().toUpperCase(Locale.ROOT)),
+                    Float.parseFloat(volume), Float.parseFloat(pitch));
+        } catch (IllegalArgumentException e) {
+            plugin.getLogger().warning("✘ Sonido inválido en SHOOT: " + name);
         }
     }
 
