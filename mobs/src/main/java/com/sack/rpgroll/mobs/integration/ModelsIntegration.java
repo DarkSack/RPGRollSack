@@ -2,6 +2,7 @@ package com.sack.rpgroll.mobs.integration;
 
 import com.magmaguy.freeminecraftmodels.api.ModeledEntityManager;
 import com.magmaguy.freeminecraftmodels.customentity.DynamicEntity;
+import com.magmaguy.freeminecraftmodels.easyminecraftgoals.NMSManager;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
@@ -93,6 +94,11 @@ public final class ModelsIntegration {
     private static final class Fmm {
 
         static boolean ensure(LivingEntity entity, String modelId, String name) {
+            // FMM habilita el plugin antes de terminar su inicialización asíncrona.
+            // No crear un modelo parcial: la siguiente pasada de IA lo reintentará.
+            if (NMSManager.getAdapter() == null) {
+                return false;
+            }
             DynamicEntity current = DynamicEntity.getDynamicEntity(entity);
             if (current != null && !current.isRemoved()) {
                 return true;

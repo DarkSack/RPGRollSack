@@ -156,21 +156,9 @@ public class ItemFactory {
                 meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
             }
         }
-        if (glow && meta.getEnchants().isEmpty()) {
-            meta.setEnchantmentGlintOverride(true);
-        }
+        meta.setEnchantmentGlintOverride(glow && meta.getEnchants().isEmpty() ? true : null);
 
-        if (currentSkin != null && currentSkin.customModelData() != null) {
-            meta.setCustomModelData(currentSkin.customModelData());
-        } else if (definition.customModelData() != null) {
-            meta.setCustomModelData(definition.customModelData());
-        }
-
-        String itemModel = currentSkin != null && currentSkin.itemModel() != null
-                ? currentSkin.itemModel() : definition.itemModel();
-        if (itemModel != null) {
-            meta.setItemModel(NamespacedKey.fromString(itemModel));
-        }
+        applyModelOverrides(meta, definition, currentSkin);
 
         if (definition.equipmentModel() != null) {
             applyEquipmentModel(meta, definition.material(), definition.equipmentModel());
@@ -181,6 +169,14 @@ public class ItemFactory {
         meta.lore(buildLore(definition, rarity, upgradeLevel, sockets, currentDurability));
 
         item.setItemMeta(meta);
+    }
+
+    static void applyModelOverrides(ItemMeta meta, ItemDefinition definition, ItemSkin skin) {
+        Integer data = skin != null && skin.customModelData() != null ? skin.customModelData() : definition.customModelData();
+        String model = skin != null && skin.itemModel() != null ? skin.itemModel() : definition.itemModel();
+        // null retira el override: volver a una base vanilla debe borrar la skin anterior.
+        meta.setCustomModelData(data);
+        meta.setItemModel(model == null ? null : NamespacedKey.fromString(model));
     }
 
     /**

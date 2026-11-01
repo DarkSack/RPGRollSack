@@ -23,7 +23,7 @@ record ShotVisuals(Vector origin, Particle core, Object coreData, Particle accen
         Particle core = particle(action.param("particle", "CRIT"));
         Particle accent = action.param("particle2", "").isBlank() ? null : particle(action.param("particle2", ""));
         return new ShotVisuals(origin, core,
-                data(core, action.param("color", "#FF3030"), action.param("size", "0.8")),
+                core == null ? null : data(core, action.param("color", "#FF3030"), action.param("size", "0.8")),
                 accent, accent == null ? null : data(accent, action.param("color2", "#FFFFFF"), action.param("size2", "0.6")),
                 Double.parseDouble(action.param("spiral", "0")), Double.parseDouble(action.param("density", "3")));
     }
@@ -34,6 +34,7 @@ record ShotVisuals(Vector origin, Particle core, Object coreData, Particle accen
     }
 
     void trail(World world, Vector from, Vector to) {
+        if (core == null && accent == null) return;
         Vector line = to.clone().subtract(from);
         double length = line.length();
         if (length < 1e-6) {
@@ -50,7 +51,7 @@ record ShotVisuals(Vector origin, Particle core, Object coreData, Particle accen
             if (p.distanceSquared(origin) < NEAR * NEAR) {
                 continue; // pegado a la cámara del tirador una partícula tapa media pantalla
             }
-            world.spawnParticle(core, p.getX(), p.getY(), p.getZ(), 1, 0, 0, 0, 0, coreData, true);
+            if (core != null) world.spawnParticle(core, p.getX(), p.getY(), p.getZ(), 1, 0, 0, 0, 0, coreData, true);
             if (accent == null) {
                 continue;
             }
@@ -63,6 +64,7 @@ record ShotVisuals(Vector origin, Particle core, Object coreData, Particle accen
     }
 
     private static Particle particle(String name) {
+        if (name.equalsIgnoreCase("NONE")) return null;
         return Particle.valueOf(name.toUpperCase(Locale.ROOT));
     }
 

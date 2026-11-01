@@ -74,4 +74,24 @@ class WalletServiceTest {
         assertEquals(EconomyResult.LOCKED, service.withdraw(bob, GOLD, 1_000, TransactionType.ADMIN, "retiro"));
     }
 
+    @Test
+    void transferToAFullWalletPreservesBothBalances() {
+        wallets.get(bob).setBalance(GOLD, 999_995);
+        assertEquals(EconomyResult.LIMIT_EXCEEDED, service.transfer(alice, bob, GOLD, 20, "pago"));
+        assertEquals(100, service.balance(alice, GOLD));
+        assertEquals(999_995, service.balance(bob, GOLD));
+        assertEquals(100, new WalletStore(dataFolder).load(alice).balance(GOLD));
+    }
+
+    @Test
+    void depositAtTheExactLimitWorksButOverflowNeverPartiallyCredits() {
+        wallets.get(bob).setBalance(GOLD, 999_995);
+        assertEquals(EconomyResult.LIMIT_EXCEEDED,
+                service.deposit(bob, GOLD, 6, TransactionType.ADMIN, "demasiado"));
+        assertEquals(999_995, service.balance(bob, GOLD));
+        assertEquals(EconomyResult.SUCCESS,
+                service.deposit(bob, GOLD, 5, TransactionType.ADMIN, "exacto"));
+        assertEquals(1_000_000, service.balance(bob, GOLD));
+    }
+
 }

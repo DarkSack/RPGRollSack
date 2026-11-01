@@ -53,7 +53,7 @@ class AuctionManagerTest {
         tax = mock(TaxEngine.class);
         when(wallet.withdraw(any(), anyString(), anyDouble(), any(), anyString())).thenReturn(EconomyResult.SUCCESS);
         when(wallet.deposit(any(), anyString(), anyDouble(), any(), anyString())).thenReturn(EconomyResult.SUCCESS);
-        when(tax.apply(any(), anyString(), anyDouble(), any(), anyString()))
+        when(tax.quote(any(), anyString(), anyDouble()))
                 .thenAnswer(call -> new TaxResult(call.getArgument(2), (double) call.getArgument(2) * 0.9,
                         (double) call.getArgument(2) * 0.1, List.of()));
 
@@ -106,7 +106,8 @@ class AuctionManagerTest {
         assertEquals(AuctionResult.SUCCESS, manager.buyNow(listing, alice, "Alice"));
 
         verify(wallet).withdraw(eq(alice), eq(GOLD), eq(1000.0), eq(TransactionType.AUCTION_PURCHASE), anyString());
-        verify(tax).apply(eq(TaxType.SALE), anyString(), eq(1000.0), eq(seller), eq(GOLD));
+        verify(tax).quote(eq(TaxType.SALE), anyString(), eq(1000.0));
+        verify(tax).record(eq(TaxType.SALE), anyString(), eq(seller), eq(GOLD), any());
         verify(wallet).deposit(eq(seller), eq(GOLD), eq(900.0), eq(TransactionType.AUCTION_SALE), anyString());
         assertEquals(List.of(listing), manager.collectible(alice));
         assertTrue(manager.collectible(seller).isEmpty());
@@ -217,6 +218,43 @@ class AuctionManagerTest {
 
         assertTrue(manager.collectible(seller).isEmpty());
         assertEquals(0, manager.countOpen(seller));
+    }
+
+    @Test
+    void rejectedRefundKeepsPreviousBidAndReturnsNewPayment() {
+        AuctionListing listing = auction(100, 500);
+        manager.bid(listing, alice, "Alice", 100);
+        when(wallet.deposit(eq(alice), anyString(), anyDouble(), any(), anyString()))
+                .thenReturn(EconomyResult.LIMIT_EXCEEDED);
+        assertEquals(AuctionResult.FAILED, manager.bid(listing, bob, "Bob", 110));
+        assertEquals(alice, listing.currentBidderId());
+        assertEquals(100, listing.currentBid());
+        verify(wallet).deposit(eq(bob), eq(GOLD), eq(110.0), any(), anyString());
+        assertEquals(AuctionResult.FAILED, manager.buyNow(listing, bob, "Bob"));
+        verify(wallet).deposit(eq(bob), eq(GOLD), eq(500.0), any(), anyString());
+        assertEquals(AuctionResult.FAILED, manager.cancel(listing, seller, true));
+        assertFalse(listing.isSettled());
+        assertEquals(alice, listing.currentBidderId());
+    }
+
+    @Test
+    void sellerAtCapKeepsEscrowUntilPaymentSucceedsWithoutChargingAgain() {
+        AuctionListing listing = fixed(100);
+        when(wallet.deposit(eq(seller), anyString(), anyDouble(), any(), anyString()))
+                .thenReturn(EconomyResult.LIMIT_EXCEEDED, EconomyResult.LIMIT_EXCEEDED, EconomyResult.SUCCESS);
+        assertEquals(AuctionResult.SUCCESS, manager.buyNow(listing, alice, "Alice"));
+        assertFalse(listing.isSettled());
+        assertTrue(manager.collectible(alice).isEmpty());
+        assertTrue(manager.active().isEmpty());
+        manager.processExpired();
+        assertFalse(listing.isSettled());
+        verify(tax, never()).record(any(), anyString(), any(), anyString(), any());
+        manager.processExpired();
+        manager.processExpired();
+        assertTrue(listing.isSettled());
+        assertEquals(List.of(listing), manager.collectible(alice));
+        verify(wallet).withdraw(eq(alice), eq(GOLD), eq(100.0), any(), anyString());
+        verify(tax).record(any(), anyString(), eq(seller), eq(GOLD), any());
     }
 
     @Test

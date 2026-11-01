@@ -12,7 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 
@@ -22,7 +22,12 @@ import org.bukkit.util.Vector;
  * {@code model} (en Bedrock solo si Geyser tiene la extensión de display entities) y con la estela
  * de partículas, que es lo que ven todos.
  */
-final class ShotProjectile extends BukkitRunnable {
+final class ShotProjectile implements Runnable {
+
+    private static final java.util.Map<Plugin, java.util.Set<ShotProjectile>> ACTIVE = new java.util.HashMap<>();
+    private final Plugin owner;
+    private BukkitTask task;
+    private boolean finished;
 
     private final Player shooter;
     private final World world;
@@ -35,8 +40,9 @@ final class ShotProjectile extends BukkitRunnable {
     private final ItemDisplay display;
     private int ticks;
 
-    private ShotProjectile(Player shooter, Location from, Vector velocity, double gravity, double range,
+    private ShotProjectile(Plugin owner, Player shooter, Location from, Vector velocity, double gravity, double range,
                            String model, ShotVisuals visuals, ShotImpact impact) {
+        this.owner = owner;
         this.shooter = shooter;
         this.world = from.getWorld();
         this.at = from.clone();
@@ -50,12 +56,26 @@ final class ShotProjectile extends BukkitRunnable {
 
     static void launch(Plugin plugin, Player shooter, Location from, Vector direction, double speed, double gravity,
                        double range, String model, ShotVisuals visuals, ShotImpact impact) {
-        new ShotProjectile(shooter, from, direction.clone().normalize().multiply(speed), gravity, range, model,
-                visuals, impact).runTaskTimer(plugin, 1L, 1L);
+        ShotProjectile projectile = new ShotProjectile(plugin, shooter, from,
+                direction.clone().normalize().multiply(speed), gravity, range, model, visuals, impact);
+        ACTIVE.computeIfAbsent(plugin, ignored -> new java.util.HashSet<>()).add(projectile);
+        try {
+            projectile.task = plugin.getServer().getScheduler().runTaskTimer(plugin, projectile, 1L, 1L);
+        } catch (RuntimeException e) {
+            projectile.finish(null, null);
+            throw e;
+        }
+    }
+
+    static void stop(Plugin plugin) {
+        for (ShotProjectile projectile : java.util.List.copyOf(ACTIVE.getOrDefault(plugin, java.util.Set.of()))) {
+            projectile.finish(null, null);
+        }
     }
 
     @Override
     public void run() {
+        if (finished) return;
         if (!shooter.isOnline() || ticks++ >= maxTicks || !at.isChunkLoaded()) {
             finish(null, null);
             return;
@@ -78,7 +98,14 @@ final class ShotProjectile extends BukkitRunnable {
 
     /** Sin {@code end} se ha quedado sin alcance: desaparece sin impacto. */
     private void finish(Vector end, LivingEntity target) {
-        cancel();
+        if (finished) return;
+        finished = true;
+        if (task != null) task.cancel();
+        java.util.Set<ShotProjectile> active = ACTIVE.get(owner);
+        if (active != null) {
+            active.remove(this);
+            if (active.isEmpty()) ACTIVE.remove(owner);
+        }
         if (display != null) {
             display.remove();
         }

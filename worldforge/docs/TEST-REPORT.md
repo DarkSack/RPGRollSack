@@ -14,8 +14,9 @@ superada, y lo que falta está en [«Sin probar»](#sin-probar).
   el plugin); se corrigieron los escenarios y se repitieron.
 - En ningún escenario aparece una excepción de WorldForge en el registro.
 - **El jar de venta 1.0.0** (`escenario-licencia.sh`, ver [Licencia](#licencia)): sin
-  clave se desactiva y deja `license.yml`; con WorldForge en `bukkit.yml` para el
-  servidor antes de abrir los mundos (0 chunks generados). Tras ese cambio se
+  clave se desactiva y deja `license.yml`; con una clave falsa la tienda la rechaza
+  y se desactiva; con WorldForge en `bukkit.yml` y sin licencia para el
+  servidor antes de abrir los mundos (0 chunks generados). Falta la clave real. Tras ese cambio se
   repitieron `escenario.sh` (84 pasos) y `escenario-principal.sh` (18): sin fallos.
 - Jar final: `build/libs/RPGRoll-WorldForge-1.0.0.jar`, compilado sin
   `-Prpgroll.dev` (SHA-256 `1815ca19…4fe58cde`), con `folia-supported: true`.
@@ -282,6 +283,7 @@ sigue pasando `-Drpgroll.devmode=true`: en el jar de venta no salta la licencia.
 | `sin` (jar de venta, sin clave, `void-platform` en `bukkit.yml`) | 6 | «No se detectó una licencia»; WorldForge dice por qué para el servidor y nombra el mundo; Java termina al arrancar; **0 archivos de región** |
 | `sin` (jar de venta, sin clave, `bukkit.yml` sin WorldForge) | 5 | el servidor arranca; WorldForge se desactiva sin habilitarse; crea `plugins/RPGRoll-WorldForge/license.yml` con `%%__LICENSE__%%` |
 | `preset` (jar de desarrollo, `no-existe` en `bukkit.yml`) | 3 | Java termina al arrancar; el registro nombra el mundo, el preset y su problema; 0 archivos de región |
+| `invalida` (jar de venta, clave falsa `RPGR-…`, `bukkit.yml` sin WorldForge; 2026-10-31) | 4 | pregunta a la tienda de verdad; la rechaza («no pudo verificar tu licencia») y WorldForge se desactiva sin habilitarse; `-Drpgroll.devmode` sin efecto |
 
 Defectos que encontró esta prueba (corregidos):
 
@@ -331,9 +333,9 @@ De los propios escenarios, en la tanda final (corregidos y repetidos):
 
 ## Sin probar
 
-- **El jar de venta con una clave**: `escenario-licencia.sh valida` (clave
-  real) e `invalida` (clave falsa) preguntan a la tienda y están sin ejecutar:
-  falta dar de alta el producto `worldforge`. Tampoco se probó el jar de venta en
+- **El jar de venta con una clave real**: `escenario-licencia.sh valida` está
+  sin ejecutar: falta dar de alta el producto `worldforge` (una licencia a mano
+  exige que exista). La clave falsa (`invalida`) sí se probó. Tampoco se probó el jar de venta en
   Folia (el módulo de licencia no usa schedulers, así que no debería cambiar).
 - **Terra o Iris de verdad** con `provider: plugin`: se probó con un plugin de
   prueba que trae su propio generador.

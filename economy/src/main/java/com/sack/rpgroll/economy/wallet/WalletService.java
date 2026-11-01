@@ -119,7 +119,15 @@ public class WalletService {
             return result;
         }
 
-        double newBalance = Math.min(currency.maxBalance(), wallet.balance(currencyId) + amount);
+        double current = wallet.balance(currencyId);
+        if (!Double.isFinite(current)) {
+            return EconomyResult.LOCKED;
+        }
+        double newBalance = current + amount;
+        // Un abono es completo o no se hace: transferencias y bancos revierten si no cabe.
+        if (!Double.isFinite(newBalance) || newBalance > currency.maxBalance()) {
+            return EconomyResult.LIMIT_EXCEEDED;
+        }
         wallet.setBalance(currencyId, newBalance);
         walletManager.save(wallet);
 

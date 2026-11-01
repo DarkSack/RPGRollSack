@@ -197,13 +197,16 @@ public class ShopManager {
             }
 
             if (!shop.isServerShop()) {
-                TaxResult tax = taxEngine.apply(TaxType.SALE, listing.material().name(), grossTotal, shop.ownerId(),
-                        shop.currencyId());
-
-                // Si el dueño no puede recibirlo (cartera bloqueada o tope) el ítem se entrega igual: el
-                // comprador ya pagó, y el intento queda en el libro mayor.
-                walletService.deposit(shop.ownerId(), shop.currencyId(), tax.netAmount(), TransactionType.SHOP_SALE,
-                        "Venta en tienda " + shop.name() + " a " + buyer.getName());
+                TaxResult tax = taxEngine.quote(TaxType.SALE, listing.material().name(), grossTotal);
+                EconomyResult received = tax.netAmount() == 0 ? EconomyResult.SUCCESS
+                        : walletService.deposit(shop.ownerId(), shop.currencyId(), tax.netAmount(), TransactionType.SHOP_SALE,
+                                "Venta en tienda " + shop.name() + " a " + buyer.getName());
+                if (received != EconomyResult.SUCCESS) {
+                    walletService.deposit(buyer.getUniqueId(), shop.currencyId(), grossTotal,
+                            TransactionType.SHOP_PURCHASE, "Reversión de compra en tienda " + shop.name());
+                    return ShopPurchaseResult.SELLER_UNAVAILABLE;
+                }
+                taxEngine.record(TaxType.SALE, listing.material().name(), shop.ownerId(), shop.currencyId(), tax);
             }
             // En una tienda del servidor no se le paga a nadie: el dinero sale de la economía.
         }

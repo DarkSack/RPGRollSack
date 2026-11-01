@@ -27,7 +27,7 @@ public class ServerShopService {
 
     public enum Result {
         BOUGHT, SOLD, NO_PERMISSION, NOT_FOR_SALE, NOT_BOUGHT, UNAVAILABLE, INSUFFICIENT_FUNDS, INVENTORY_FULL,
-        NOTHING_TO_SELL, LOCKED, UNKNOWN_CURRENCY
+        NOTHING_TO_SELL, LOCKED, UNKNOWN_CURRENCY, LIMIT_EXCEEDED
     }
 
     /** Qué pasó, cuántas unidades se movieron y por cuánto dinero. */
@@ -253,6 +253,7 @@ public class ServerShopService {
         return switch (result) {
             case INSUFFICIENT_FUNDS -> Result.INSUFFICIENT_FUNDS;
             case LOCKED -> Result.LOCKED;
+            case LIMIT_EXCEEDED -> Result.LIMIT_EXCEEDED;
             default -> Result.UNKNOWN_CURRENCY;
         };
     }

@@ -4,16 +4,18 @@
 // Ver la sección "Distribución" del README para el flujo completo.
 // ============================================================================
 
-val addonModuleNames = listOf(
-    // :common se distribuye como RPGRoll-Lib, la librería que todos declaran en depend.
-    "common", "core", "npcs", "crates", "enchantments", "quests", "items", "ascension", "mobs",
-    "dungeons", "guilds", "chat", "fx", "effects", "magic", "seasons", "fishing",
-    "sackresourcepack", "ranching", "workers", "economy", "crafting", "tab", "extras", "traps", "pass",
-    "furniture", "disasters",
-)
-
-val addonProjects = addonModuleNames.map { project(it) }
+// Todo plugin incluido en settings pertenece al release, incluida RPGRoll-Lib.
+// API/licensing/herramientas no tienen descriptor; WorldForge es un build independiente.
+val addonProjects = subprojects.filter { it.file("src/main/resources/plugin.yml").isFile }
+val addonModuleNames = addonProjects.map { it.name }
 val releaseDir = layout.buildDirectory.dir("release")
+
+val checkModels by tasks.registering(Exec::class) {
+    group = "verification"
+    description = "Valida modelos Java/Blockbench y referencias de paquetes Bedrock (Python 3.8+)."
+    workingDir(rootDir)
+    commandLine(providers.environmentVariable("PYTHON").getOrElse("python"), "tools/validate-models.py")
+}
 
 val checkReleaseVersions by tasks.registering {
     group = "distribution"
@@ -68,7 +70,7 @@ val collectRelease by tasks.registering(Copy::class) {
     group = "distribution"
     description = "Junta el jar final de cada módulo (shadowJar para core/npcs, jar para el resto) en build/release/."
 
-    dependsOn(checkReleaseVersions)
+    dependsOn(checkReleaseVersions, checkModels)
 
     // Copy no borra lo que ya esté en el destino: sin esto, el jar de un módulo
     // renombrado (o eliminado) sobrevive en build/release y se cuela en el zip.

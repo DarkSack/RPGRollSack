@@ -91,6 +91,7 @@ public class ShopViewGUI extends InventoryGUI {
                 case INSUFFICIENT_FUNDS -> lang.send(player, "shop.view.insufficient_funds");
                 case SHOP_CLOSED -> lang.send(player, "shop.view.shop_closed");
                 case INVENTORY_FULL -> lang.send(player, "shop.view.inventory_full");
+                case SELLER_UNAVAILABLE -> lang.send(player, "shop.view.seller_unavailable");
             }
 
             build();

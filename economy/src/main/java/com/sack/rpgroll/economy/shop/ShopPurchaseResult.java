@@ -5,5 +5,6 @@ public enum ShopPurchaseResult {
     OUT_OF_STOCK,
     INSUFFICIENT_FUNDS,
     SHOP_CLOSED,
-    INVENTORY_FULL
+    INVENTORY_FULL,
+    SELLER_UNAVAILABLE
 }

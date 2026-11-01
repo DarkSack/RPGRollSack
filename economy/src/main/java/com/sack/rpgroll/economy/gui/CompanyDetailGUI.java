@@ -150,7 +150,11 @@ public class CompanyDetailGUI extends InventoryGUI {
             build();
         } else if (slot == DISBAND_SLOT) {
             if (company.ownerId().equals(player.getUniqueId())) {
-                companyService.disband(company);
+                if (companyService.disband(company) != com.sack.rpgroll.economy.wallet.EconomyResult.SUCCESS) {
+                    lang.send(player, "company.detail.disband_failed");
+                    build();
+                    return;
+                }
                 lang.send(player, "company.detail.disbanded");
                 onBack.run();
             } else {

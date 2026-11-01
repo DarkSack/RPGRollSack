@@ -179,6 +179,7 @@ public class ItemsPlugin extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        com.sack.rpgroll.items.registry.BuiltinItemActions.shutdown(this);
         if (oreListener != null) {
             getServer().getOnlinePlayers().forEach(oreListener::clear);
         }

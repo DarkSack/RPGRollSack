@@ -27,7 +27,6 @@ import org.mockito.ArgumentCaptor;
 
 import java.util.Map;
 import java.util.UUID;
-import java.util.function.Consumer;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyDouble;
@@ -184,13 +183,14 @@ class ShootActionTest {
     // ------------------------------------------------------------ láser sostenido
 
     @Test
-    @SuppressWarnings("unchecked")
     void sustainedBeamFollowsTheAimWhileHeldAndThenGoesOut() {
         Plugin plugin = plugin();
         Server server = mock(Server.class);
         BukkitScheduler scheduler = mock(BukkitScheduler.class);
+        BukkitTask task = mock(BukkitTask.class);
         when(plugin.getServer()).thenReturn(server);
         when(server.getScheduler()).thenReturn(scheduler);
+        when(scheduler.runTaskTimer(eq(plugin), any(Runnable.class), eq(0L), eq(1L))).thenReturn(task);
         when(player.getUniqueId()).thenReturn(UUID.randomUUID());
         when(player.isOnline()).thenReturn(true);
         LivingEntity target = targetAhead();
@@ -200,16 +200,32 @@ class ShootActionTest {
         BuiltinItemActions.shoot(beam, ctx, plugin);
         BuiltinItemActions.shoot(beam, ctx, plugin);    // el clic mantenido repite: renueva, no abre otro rayo
 
-        ArgumentCaptor<Consumer<BukkitTask>> tick = ArgumentCaptor.forClass(Consumer.class);
+        ArgumentCaptor<Runnable> tick = ArgumentCaptor.forClass(Runnable.class);
         verify(scheduler, times(1)).runTaskTimer(eq(plugin), tick.capture(), eq(0L), eq(1L));
         verify(target, times(2)).setNoDamageTicks(0);
         verify(target, times(2)).damage(3.0, player);
 
-        BukkitTask task = mock(BukkitTask.class);
-        tick.getValue().accept(task);
-        tick.getValue().accept(task);
+        tick.getValue().run();
+        tick.getValue().run();
         verify(task, never()).cancel();
-        tick.getValue().accept(task);
+        tick.getValue().run();
+        verify(task).cancel();
+    }
+
+    @Test
+    void disablingThePluginStopsTheBeamBeforeItsFirstTick() {
+        Plugin plugin = plugin();
+        Server server = mock(Server.class);
+        BukkitScheduler scheduler = mock(BukkitScheduler.class);
+        BukkitTask task = mock(BukkitTask.class);
+        when(plugin.getServer()).thenReturn(server);
+        when(server.getScheduler()).thenReturn(scheduler);
+        when(player.getUniqueId()).thenReturn(UUID.randomUUID());
+        when(scheduler.runTaskTimer(eq(plugin), any(Runnable.class), eq(0L), eq(1L))).thenReturn(task);
+        BuiltinItemActions.shoot(new ItemAction("SHOOT", Map.of("sustain", "20")),
+                new ItemActionContext(player, null, null, null), plugin);
+        BuiltinItemActions.shutdown(plugin);
+        BuiltinItemActions.shutdown(plugin);
         verify(task).cancel();
     }
 

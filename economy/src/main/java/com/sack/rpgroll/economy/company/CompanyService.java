@@ -42,19 +42,23 @@ public class CompanyService {
     }
 
     /** Lo que quede en la tesorería vuelve al dueño: antes se borraba con la cuenta. */
-    public void disband(Company company) {
-
-        bankManager.get(company.bankAccountId()).ifPresent(treasury -> {
+    public EconomyResult disband(Company company) {
+        BankAccount treasury = bankManager.get(company.bankAccountId()).orElse(null);
+        if (treasury != null) {
             for (var balance : java.util.Map.copyOf(treasury.balances()).entrySet()) {
                 if (Amounts.valid(balance.getValue())) {
-                    walletService.deposit(company.ownerId(), balance.getKey(), balance.getValue(),
+                    EconomyResult result = walletService.deposit(company.ownerId(), balance.getKey(), balance.getValue(),
                             TransactionType.WITHDRAW, "Tesorería de la empresa disuelta " + company.name());
+                    if (result != EconomyResult.SUCCESS) return result;
+                    treasury.setBalance(balance.getKey(), 0);
+                    bankManager.save(treasury);
                 }
             }
-        });
+        }
 
         bankManager.delete(company.bankAccountId());
         companyManager.delete(company.id());
+        return EconomyResult.SUCCESS;
     }
 
     public void hire(Company company, UUID playerId, CompanyRole role, double wage) {

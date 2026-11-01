@@ -210,6 +210,7 @@ shop:
     insufficient_funds: "&c✘ Você não tem dinheiro suficiente."
     shop_closed: "&c✘ Essa loja está fechada."
     inventory_full: "&c✘ Seu inventário está cheio."
+    seller_unavailable: "&cO vendedor não pode receber o pagamento. Compra cancelada e dinheiro devolvido."
 
 company:
   list:
@@ -242,9 +243,11 @@ company:
     fired: "&a✔ {name} demitido."
     salaries_paid: "&a✔ Pago para {count} funcionário(s)."
     disbanded: "&a✔ Empresa dissolvida."
+    disband_failed: "&cVocê não pode receber toda a tesouraria. Libere saldo e tente novamente; o restante continua na empresa."
     owner_only_disband: "&cSó o dono pode dissolver a empresa."
 
 server_shop:
+  limit_exceeded: "&cVocê não pode receber o pagamento completo: ultrapassa o saldo máximo."
   title: "&8✦ Loja do servidor"
   no_categories: "&7A loja ainda não tem seções."
   balance: "&6Seu saldo"

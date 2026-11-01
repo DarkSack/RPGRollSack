@@ -210,6 +210,7 @@ shop:
     insufficient_funds: "&c✘ You don't have enough money."
     shop_closed: "&c✘ This shop is closed."
     inventory_full: "&c✘ Your inventory is full."
+    seller_unavailable: "&cThe seller cannot receive payment. Purchase cancelled and your money returned."
 
 company:
   list:
@@ -242,9 +243,11 @@ company:
     fired: "&a✔ {name} fired."
     salaries_paid: "&a✔ Paid {count} employee(s)."
     disbanded: "&a✔ Company disbanded."
+    disband_failed: "&cYou cannot receive the full treasury. Free balance and retry; unpaid funds remain in the company."
     owner_only_disband: "&cOnly the owner can disband the company."
 
 server_shop:
+  limit_exceeded: "&cYou cannot receive the full payment: it exceeds your maximum balance."
   title: "&8✦ Server shop"
   no_categories: "&7The shop has no sections yet."
   balance: "&6Your balance"

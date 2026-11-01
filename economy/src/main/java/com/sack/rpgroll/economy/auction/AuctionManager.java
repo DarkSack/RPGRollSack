@@ -199,15 +199,20 @@ public class AuctionManager {
         UUID previous = listing.currentBidderId();
         double previousBid = listing.currentBid();
 
+        if (previous != null) {
+            EconomyResult refunded = walletService.deposit(previous, listing.currencyId(), previousBid,
+                    TransactionType.AUCTION_PURCHASE, "Devolución de puja superada: " + listing.itemName());
+            if (refunded != EconomyResult.SUCCESS) {
+                walletService.deposit(bidderId, listing.currencyId(), amount, TransactionType.AUCTION_PURCHASE,
+                        "Reversión de puja: " + listing.itemName());
+                return AuctionResult.FAILED;
+            }
+            notifier.outbid(listing, previous, previousBid);
+        }
+
         listing.placeBid(bidderId, bidderName, amount);
         antiSnipe(listing);
         store.save(listing);
-
-        if (previous != null) {
-            walletService.deposit(previous, listing.currencyId(), previousBid, TransactionType.AUCTION_PURCHASE,
-                    "Devolución de puja superada: " + listing.itemName());
-            notifier.outbid(listing, previous, previousBid);
-        }
 
         return AuctionResult.SUCCESS;
     }
@@ -249,12 +254,21 @@ public class AuctionManager {
         }
 
         if (previous != null && !ownBid) {
-            walletService.deposit(previous, listing.currencyId(), previousBid, TransactionType.AUCTION_PURCHASE,
+            EconomyResult refunded = walletService.deposit(previous, listing.currencyId(), previousBid, TransactionType.AUCTION_PURCHASE,
                     "Devolución de puja (se vendió por compra inmediata): " + listing.itemName());
+            if (refunded != EconomyResult.SUCCESS) {
+                walletService.deposit(buyerId, listing.currencyId(), charge, TransactionType.AUCTION_PURCHASE,
+                        "Reversión de compra: " + listing.itemName());
+                return AuctionResult.FAILED;
+            }
             notifier.outbid(listing, previous, previousBid);
         }
 
         listing.placeBid(buyerId, buyerName, listing.buyNowPrice());
+        // Si el vendedor no puede cobrar, el pago y el objeto quedan en escrow persistido.
+        // processExpired reintenta sin volver a cobrar al comprador.
+        listing.extendTo(clock.getAsLong());
+        store.save(listing);
         settle(listing, true);
         return AuctionResult.SUCCESS;
     }
@@ -274,8 +288,9 @@ public class AuctionManager {
 
         if (listing.hasBidder()) {
             // Un admin la retira con pujas: al postor se le devuelve lo suyo.
-            walletService.deposit(listing.currentBidderId(), listing.currencyId(), listing.currentBid(),
+            EconomyResult refunded = walletService.deposit(listing.currentBidderId(), listing.currencyId(), listing.currentBid(),
                     TransactionType.AUCTION_PURCHASE, "Devolución de puja (subasta retirada): " + listing.itemName());
+            if (refunded != EconomyResult.SUCCESS) return AuctionResult.FAILED;
             listing.placeBid(null, null, listing.startPrice());
         }
 
@@ -301,19 +316,23 @@ public class AuctionManager {
     /** @param immediate compra inmediata: el comprador está ahí mismo y no necesita aviso */
     private void settle(AuctionListing listing, boolean immediate) {
 
-        listing.setSettled(true);
-        store.save(listing);
-
         if (!listing.hasBidder()) {
+            listing.setSettled(true);
+            store.save(listing);
             notifier.expired(listing);
             return;
         }
 
-        TaxResult tax = taxEngine.apply(TaxType.SALE, listing.item() == null ? "" : listing.item().getType().name(),
-                listing.currentBid(), listing.sellerId(), listing.currencyId());
+        String category = listing.item() == null ? "" : listing.item().getType().name();
+        TaxResult tax = taxEngine.quote(TaxType.SALE, category, listing.currentBid());
 
-        walletService.deposit(listing.sellerId(), listing.currencyId(), tax.netAmount(),
-                TransactionType.AUCTION_SALE, "Venta en subasta: " + listing.itemName());
+        EconomyResult paid = tax.netAmount() == 0 ? EconomyResult.SUCCESS
+                : walletService.deposit(listing.sellerId(), listing.currencyId(), tax.netAmount(),
+                        TransactionType.AUCTION_SALE, "Venta en subasta: " + listing.itemName());
+        if (paid != EconomyResult.SUCCESS) return;
+        taxEngine.record(TaxType.SALE, category, listing.sellerId(), listing.currencyId(), tax);
+        listing.setSettled(true);
+        store.save(listing);
 
         notifier.sold(listing, tax.netAmount());
         if (!immediate) {

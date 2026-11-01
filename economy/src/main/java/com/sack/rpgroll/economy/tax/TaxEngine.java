@@ -24,6 +24,13 @@ public class TaxEngine {
     }
 
     public TaxResult apply(TaxType type, String categoryOrId, double grossAmount, UUID actorId, String currencyId) {
+        TaxResult result = quote(type, categoryOrId, grossAmount);
+        record(type, categoryOrId, actorId, currencyId, result);
+        return result;
+    }
+
+    /** Calcula sin anotar un cobro que todavía puede ser rechazado. */
+    public TaxResult quote(TaxType type, String categoryOrId, double grossAmount) {
 
         if (grossAmount <= 0) {
             return TaxResult.none(grossAmount);
@@ -43,12 +50,14 @@ public class TaxEngine {
         double taxAmount = grossAmount * (totalRatePercent / 100.0);
         double netAmount = grossAmount - taxAmount;
 
-        if (taxAmount > 0) {
-            ledger.record(actorId, TransactionType.TAX, currencyId, -taxAmount, netAmount,
-                    "Impuesto (" + type + ") sobre " + categoryOrId + ": " + totalRatePercent + "%");
-        }
-
         return new TaxResult(grossAmount, netAmount, taxAmount, applicable);
+    }
+
+    public void record(TaxType type, String categoryOrId, UUID actorId, String currencyId, TaxResult result) {
+        if (result.taxAmount() > 0) {
+            ledger.record(actorId, TransactionType.TAX, currencyId, -result.taxAmount(), result.netAmount(),
+                    "Impuesto (" + type + ") sobre " + categoryOrId);
+        }
     }
 
 }

@@ -42,6 +42,12 @@ public final class BuiltinItemActions {
     private BuiltinItemActions() {
     }
 
+    /** Retira los modelos y los rayos antes de que Bukkit cancele las tareas del plugin. */
+    public static void shutdown(Plugin plugin) {
+        ShotProjectile.stop(plugin);
+        ShotBeam.stop(plugin);
+    }
+
     public static void registerAll(ActionRegistry registry, Plugin plugin) {
 
         registry.register("MESSAGE", (action, ctx) -> {
@@ -225,9 +231,13 @@ public final class BuiltinItemActions {
 
         ShotVisuals visuals;
         ShotAmmo ammo;
+        ShotBeamModel.Appearance beamAppearance;
+        int sustain;
         try {
             visuals = ShotVisuals.from(action, eye.toVector());
             ammo = ShotAmmo.from(action);
+            beamAppearance = ShotBeamModel.Appearance.from(action);
+            sustain = Integer.parseInt(action.param("sustain", "0").trim());
         } catch (IllegalArgumentException e) {
             plugin.getLogger().warning("✘ SHOOT mal configurado (" + e.getMessage() + "): partícula "
                     + action.param("particle", "") + " / " + action.param("particle2", "")
@@ -259,9 +269,8 @@ public final class BuiltinItemActions {
 
         RayTraceResult hit = aim(player, eye, direction, range);
         Vector end = hit != null ? hit.getHitPosition() : eye.toVector().add(direction.clone().multiply(range));
-        int sustain = Integer.parseInt(action.param("sustain", "0").trim());
-        if (sustain > 0) {
-            ShotBeam.hold(plugin, player, visuals, range, sustain);
+        if (sustain > 0 || beamAppearance != null) {
+            ShotBeam.hold(plugin, player, visuals, range, Math.max(2, sustain), beamAppearance);
         } else {
             visuals.trail(player.getWorld(), barrel.toVector(), end);
         }

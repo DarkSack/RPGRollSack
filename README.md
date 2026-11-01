@@ -30,7 +30,7 @@ Cambios recientes aplicados en todo el ecosistema:
 - 🎣 **RPGRoll-Fishing ahora sincroniza sus texturas solo** — las especies ya soportaban `custom-model-data`, pero faltaba conectar esa carpeta `resourcepack/` con SackResourcePack; ahora se sincroniza sola al arrancar el plugin, igual que Items/Mobs/Ranching
 - 👷 **RPGRoll-Workers ahora también soporta reskin visual por profesión** — mismo mecanismo (`ItemDisplay` pasajero) que Ranching: un minero, granjero, etc. puede mostrar un modelo completamente custom en vez del `entity-type` vanilla. De paso se corrigió un leak preexistente: el worker nunca se limpiaba de memoria/disco al morir su entidad
 - 🌍 **RPGRoll-Economy: economías regionales + integración activa con Guilds/Seasons** — `MarketEngine.price(producto, ubicación)` aplica ahora un multiplicador por `MarketRegion` (caja AABB con precios distintos por zona, ej. "el mineral es más barato en esta ciudad minera") y otro por estación activa (`season-modifiers` del producto, ej. las cosechas bajan de precio en `harvest`) si RPGRoll-Seasons está instalado. Además, una tarea periódica cobra un impuesto `PROPERTY` a cada guild por cada `GuildTerritory` que tenga reclamada (descontado de su `GuildVault` real vía `GuildsAPI`) — antes Guilds/Seasons solo eran dependencias de compilación, sin ningún código en runtime usándolas
-- 📀 **Empaquetado/distribución final** — `./gradlew release` arma un único `.zip` versionado con los 24 jars del ecosistema (core + 23 addons), fallando la build si algún módulo quedó en una versión distinta al resto. Core y NPCs (los únicos dos que shadean dependencias propias) resuelven solos su jar final vía `shadowJar`, el resto vía `jar` — ver la sección "Distribución" más abajo
+- 📀 **Empaquetado/distribución final** — `./gradlew release` arma un único `.zip` versionado con todos los plugins incluidos en settings.gradle.kts, fallando la build si algún módulo quedó en una versión distinta al resto. Core y NPCs (los únicos dos que shadean dependencias propias) resuelven solos su jar final vía `shadowJar`, el resto vía `jar` — ver la sección "Distribución" más abajo
 - 🧰 **Nueva herramienta web: Diseñador de TAB** — RPGRoll-TAB es el único addon sin GUI Studio dentro del juego, así que en su lugar la web de documentación suma un tool 100% en el navegador (como el Diseñador de Salas de Dungeons) que arma con formularios los 10 tipos de contenido de TAB — perfiles, contextos, scoreboards, tablists, nametags, belowname, bossbars, sorting, teams y animaciones — y genera el YAML exacto que lee cada `*Parser.java`, listo para copiar o descargar
 
 ---
@@ -144,15 +144,17 @@ Los precios son estimados (USD) en función de la complejidad de cada módulo �
 
 # 📀 Distribución (para quien mantiene el repo)
 
-Todos los módulos comparten un único número de versión (`1.0.0` hoy, en cada `build.gradle.kts`). Para armar
+Todos los módulos comparten un único número de versión (`1.1.7` publicado, en cada `build.gradle.kts`). Para armar
 el paquete de release completo del ecosistema:
 
 ```bash
 ./gradlew release
 ```
 
-Esto arma `build/distributions/RPGRoll-Ecosystem-<versión>.zip` con el `.jar` final de los 24 addons, el
-core y RPGRoll-Lib (26 en total) más un `MANIFEST.txt` con la lista. Antes de copiar los jars, `checkReleaseVersions` falla
+Esto arma `build/distributions/RPGRoll-Ecosystem-<versión>.zip` con el `.jar` final de todos los plugins
+incluidos en `settings.gradle.kts` que tienen `src/main/resources/plugin.yml` (30 actualmente,
+incluidos RPGRoll-Lib, core, Machines y Recipes), más un `MANIFEST.txt` con la lista. WorldForge es
+un build independiente. Antes de copiar los jars, `checkReleaseVersions` falla
 la build si algún módulo quedó en una versión distinta al resto — evita publicar un release con addons
 desincronizados. Los dos módulos que empaquetan dependencias propias (`core` shadea `:api` y el licenciamiento; `npcs`
 shadea y reubica OkHttp) usan su `shadowJar`, no el jar plano — la tarea ya lo resuelve sola por módulo, no
@@ -167,6 +169,17 @@ El `MANIFEST.txt` del zip lleva esos mismos SHA-256, para comprobar más tarde q
 servidor es el que salió del release.
 
 No corre como parte de `./gradlew build` — es completamente opt-in.
+
+El release también ejecuta `checkModels` (Python 3.8+, sin dependencias). Valida límites de cajas
+Java, referencias de modelos/texturas, huesos de Blockbench y recursos de attachables Bedrock.
+Se puede lanzar por separado con `./gradlew checkModels` o incluir la configuración de la network:
+
+```bash
+python tools/validate-models.py --network ../sackito-network --out informe-modelos.json
+```
+
+Es una comprobación estática. La armadura puesta, las animaciones y el resultado de los loaders
+siguen necesitando revisión dentro de los clientes Java y Bedrock.
 
 ---
 
