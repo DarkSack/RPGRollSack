@@ -3,7 +3,7 @@ plugins {
 }
 
 group = "com.sack"
-version = "1.1.7"
+version = "1.1.8"
 
 base.archivesName.set("RPGRoll-Guilds")
 
