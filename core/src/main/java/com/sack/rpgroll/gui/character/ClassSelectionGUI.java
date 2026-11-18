@@ -1,6 +1,7 @@
 package com.sack.rpgroll.gui.character;
 
 import com.sack.rpgroll.common.lang.LangManager;
+import com.sack.rpgroll.gui.CoreMenus;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.api.playerclass.ClassManager;
@@ -27,6 +28,8 @@ import java.util.function.Consumer;
  * ClassManager (classes/*.yml), mismo patrón que RaceSelectionGUI.
  */
 public class ClassSelectionGUI extends InventoryGUI {
+        /** Fondo dibujado (sackito:menus/clase). Las casillas 4 y 31 solo llevan hueco: no siempre hay botón. */
+        public static final String BACKGROUND = "clase";
 
         private static final int[] CONTENT_SLOTS = { 10, 11, 12, 13, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25 };
         private static final int CANCEL_SLOT = 31;
@@ -37,10 +40,21 @@ public class ClassSelectionGUI extends InventoryGUI {
         private final String selectedRace;
         private final boolean mandatory;
         private final LangManager lang;
+        private final Runnable onBack;
 
         public ClassSelectionGUI(Player player, ClassManager classManager, String selectedRace,
                         Consumer<String> onClassSelected, boolean mandatory, LangManager lang) {
-                super(player, lang.component("class_selection_gui.title").decorate(TextDecoration.BOLD),
+                this(player, classManager, selectedRace, onClassSelected, mandatory, lang, null);
+        }
+
+        /**
+         * @param onBack en la creación obligatoria, vuelve a elegir raza (botón "Volver a razas");
+         *               null = sin ese botón. Fuera de la creación sigue el botón de cancelar.
+         */
+        public ClassSelectionGUI(Player player, ClassManager classManager, String selectedRace,
+                        Consumer<String> onClassSelected, boolean mandatory, LangManager lang, Runnable onBack) {
+                super(player, CoreMenus.skin().title(BACKGROUND,
+                                lang.component("class_selection_gui.title").decorate(TextDecoration.BOLD)),
                                 36);
                 this.classManager = classManager;
                 this.onClassSelected = onClassSelected;
@@ -48,6 +62,7 @@ public class ClassSelectionGUI extends InventoryGUI {
                 this.selectedRace = selectedRace;
                 this.mandatory = mandatory;
                 this.lang = lang;
+                this.onBack = onBack;
         }
 
         @Override
@@ -62,15 +77,21 @@ public class ClassSelectionGUI extends InventoryGUI {
                 slotToClass.clear();
 
                 for (int i = 0; i < 9; i++) {
-                        setItem(i, ItemBuilder.createFiller());
+                        setItem(i, CoreMenus.filler());
                 }
 
                 setItem(4, new ItemBuilder(Material.PAPER)
                                 .setName(lang.component("class_selection_gui.selected_race_name")
                                                 .decorate(TextDecoration.BOLD))
-                                .setLore(
-                                                ComponentUtils.parseWithDefault(selectedRace, NamedTextColor.YELLOW),
-                                                lang.component("class_selection_gui.selected_race_lore"))
+                                .setLore(mandatory
+                                                ? new Component[] {
+                                                                ComponentUtils.parseWithDefault(selectedRace, NamedTextColor.YELLOW),
+                                                                lang.component("class_selection_gui.selected_race_lore"),
+                                                                Component.text(""),
+                                                                lang.component("class_selection_gui.step_lore") }
+                                                : new Component[] {
+                                                                ComponentUtils.parseWithDefault(selectedRace, NamedTextColor.YELLOW),
+                                                                lang.component("class_selection_gui.selected_race_lore") })
                                 .build());
 
                 List<PlayerClass> classes = new ArrayList<>(classManager.getAll());
@@ -87,11 +108,15 @@ public class ClassSelectionGUI extends InventoryGUI {
                 }
 
                 for (int i = 27; i < 36; i++) {
-                        setItem(i, ItemBuilder.createFiller());
+                        setItem(i, CoreMenus.filler());
                 }
 
                 if (!mandatory) {
                         setItem(CANCEL_SLOT, ItemBuilder.createCancelButton(lang.raw("class_selection_gui.back_button")));
+                } else if (onBack != null) {
+                        setItem(CANCEL_SLOT, new ItemBuilder(Material.ARROW)
+                                        .setName(lang.component("class_selection_gui.back_to_races").decorate(TextDecoration.BOLD))
+                                        .build());
                 }
         }
 
@@ -132,6 +157,13 @@ public class ClassSelectionGUI extends InventoryGUI {
                 if (!mandatory && slot == CANCEL_SLOT) {
                         close();
                         lang.send(player, "class_selection_gui.cancelled");
+                        return;
+                }
+
+                if (mandatory && onBack != null && slot == CANCEL_SLOT) {
+                        markSelectionMade();
+                        close();
+                        onBack.run();
                         return;
                 }
 

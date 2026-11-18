@@ -2,7 +2,7 @@ id: global
 display-name: "Global"
 icon: PAPER
 color: WHITE
-priority: 0
+priority: 10
 scope: GLOBAL
 distance: 0
 view-permission: ""

@@ -1,5 +1,5 @@
 name: RPGRoll-Extras
-version: 1.1.8
+version: 1.1.9
 main: com.sack.rpgroll.extras.ExtrasPlugin
 api-version: "26.1.1"
 author: Sack
@@ -8,13 +8,18 @@ depend: [RPGRoll-Lib]
 softdepend: [RPGRoll, RPGRoll-TAB, RPGRoll-Seasons, RPGRoll-Items, PlaceholderAPI, Vault]
 
 permissions:
+  rpgrollextras.reinforce.admin:
+    description: Quitar el refuerzo de cualquier bloque reforzado con el Reforzador
+    default: op
   rpgrollextras.admin.*:
     description: Acceso completo a comandos administrativos de RPGRoll-Extras
     default: op
     children:
       rpgrollextras.menu.any: true
       rpgrollextras.backpack.admin: true
+      rpgrollextras.reinforce.admin: true
       rpgrollextras.backpack.bypass: true
+      rpgrollextras.sort.admin: true
   rpgrollextras.menu:
     description: Abrir el menú del servidor (/menu) y recuperar su brújula (/menu item)
     default: true
@@ -29,6 +34,12 @@ permissions:
     default: op
   rpgrollextras.backpack.admin:
     description: Entregar mochilas con /mochila give
+    default: op
+  rpgrollextras.sort:
+    description: Ordenar cofres e inventario (clic central o Shift + clic en casilla vacía, /ordenar)
+    default: true
+  rpgrollextras.sort.admin:
+    description: Recibir la Varita de orden con /ordenar varita
     default: op
   rpgrollextras.travel:
     description: Usar /rtp (solo existe con random-teleport.enabled)

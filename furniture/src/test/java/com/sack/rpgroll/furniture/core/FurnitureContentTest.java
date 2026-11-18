@@ -55,4 +55,22 @@ class FurnitureContentTest {
         }
         assertFalse(manager.categoriesWith(d -> d.recipe(d.resolveVariant(null)).isPresent()).isEmpty());
     }
+
+    @Test
+    void craftingOffDropsEveryRecipe() {
+
+        File folder = new File("src/main/resources/furniture");
+        YamlConfiguration config = YamlConfiguration.loadConfiguration(new File("src/main/resources/config.yml"));
+        List<String> warnings = new ArrayList<>();
+        FurnitureManager manager = new FurnitureManager();
+        manager.crafting(false);
+        manager.load(folder, config.getConfigurationSection("categories"), warnings::add);
+
+        assertEquals(List.of(), warnings);
+        assertTrue(manager.count() >= 40);
+        for (FurnitureDefinition def : manager.all()) {
+            assertEquals(null, def.recipe(), def.id());
+            def.variants().values().forEach(v -> assertEquals(null, v.recipe(), def.id() + ":" + v.id()));
+        }
+    }
 }

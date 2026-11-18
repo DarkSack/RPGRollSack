@@ -3,7 +3,9 @@ package com.sack.rpgroll.gui.job;
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gameplay.job.Job;
 import com.sack.rpgroll.gameplay.job.JobManager;
+import com.sack.rpgroll.gui.CoreMenus;
 import com.sack.rpgroll.gui.InventoryGUI;
+import com.sack.rpgroll.gui.confirm.ConfirmGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.player.PlayerManager;
 import com.sack.rpgroll.player.RPGPlayer;
@@ -28,10 +30,14 @@ import java.util.Optional;
 /**
  * GUI principal de trabajos: muestra el catálogo completo (JobManager) y
  * el estado de cada uno para el jugador (activo con nivel/XP, o disponible
- * para unirse). Click en un trabajo activo lo abandona; click en uno
- * inactivo lo une, o abre JobAbandonGUI si ya está en el máximo (3).
+ * para unirse). Click en un trabajo activo pide confirmación antes de
+ * abandonarlo (pierde nivel y XP); click en uno inactivo lo une, o abre
+ * JobAbandonGUI si ya está en el máximo (3).
  */
 public class JobsGUI extends InventoryGUI {
+
+    /** Fondo dibujado (sackito:menus/trabajos). */
+    public static final String BACKGROUND = "trabajos";
 
     private static final int[] CONTENT_SLOTS = {
             10, 11, 12, 13, 14, 15, 16,
@@ -44,7 +50,7 @@ public class JobsGUI extends InventoryGUI {
     private final Map<Integer, String> slotToJob;
 
     public JobsGUI(Player player, JobManager jobManager, PlayerManager playerManager, LangManager lang) {
-        super(player, lang.component("jobs_gui.title").decorate(TextDecoration.BOLD), 45);
+        super(player, CoreMenus.skin().title(BACKGROUND, lang.component("jobs_gui.title").decorate(TextDecoration.BOLD)), 45);
         this.jobManager = jobManager;
         this.playerManager = playerManager;
         this.lang = lang;
@@ -58,10 +64,10 @@ public class JobsGUI extends InventoryGUI {
         slotToJob.clear();
 
         for (int i = 0; i < 9; i++) {
-            setItem(i, ItemBuilder.createFiller());
+            setItem(i, CoreMenus.filler());
         }
         for (int i = 36; i < 45; i++) {
-            setItem(i, ItemBuilder.createFiller());
+            setItem(i, CoreMenus.filler());
         }
 
         Optional<RPGPlayer> rpgPlayerOpt = playerManager.getPlayer(player.getUniqueId());
@@ -165,7 +171,7 @@ public class JobsGUI extends InventoryGUI {
         PlayerJobs playerJobs = rpgPlayer.getJobs();
 
         if (playerJobs.hasJob(jobId)) {
-            leaveJob(rpgPlayer, jobId);
+            confirmLeave(jobId, playerJobs.getProgress(jobId).map(JobProgress::level).orElse(1));
             return;
         }
 
@@ -200,6 +206,44 @@ public class JobsGUI extends InventoryGUI {
         lang.send(player, "jobs_gui.joined", "job", jobOpt.get().displayName());
 
         build();
+    }
+
+    /**
+     * Abandonar borra el nivel y la experiencia del oficio: antes se pregunta, para que tocar un
+     * oficio activo para leerlo no lo pierda. Las dos salidas vuelven a esta misma lista.
+     */
+    private void confirmLeave(String jobId, int level) {
+
+        Optional<Job> jobOpt = jobManager.get(jobId);
+        String name = jobOpt.map(Job::displayName).orElse(jobId);
+        ItemBuilder icon = jobOpt.map(job -> ItemBuilder.icon(job.icon()))
+                .orElseGet(() -> new ItemBuilder(Material.BARRIER));
+
+        ItemStack subject = icon
+                .setName(lang.component("jobs_gui.confirm_leave_name", "job", name).decorate(TextDecoration.BOLD))
+                .setLore(lang.component("jobs_gui.confirm_leave_lore1", "level", level),
+                        lang.component("jobs_gui.confirm_leave_lore2"))
+                .build();
+
+        close();
+        new ConfirmGUI(player, lang.component("jobs_gui.confirm_title").decorate(TextDecoration.BOLD), subject,
+                lang.raw("jobs_gui.confirm_leave_button", "level", level), lang.raw("jobs_gui.confirm_keep_button"),
+                true,
+                () -> {
+                    playerManager.getPlayer(player.getUniqueId())
+                            .filter(current -> current.getJobs().hasJob(jobId))
+                            .ifPresent(current -> leaveJob(current, jobId));
+                    reopen();
+                },
+                () -> {
+                    lang.send(player, "jobs_gui.kept", "job", name);
+                    reopen();
+                },
+                false).open();
+    }
+
+    private void reopen() {
+        new JobsGUI(player, jobManager, playerManager, lang).open();
     }
 
     private void leaveJob(RPGPlayer rpgPlayer, String jobId) {

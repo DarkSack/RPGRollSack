@@ -16,7 +16,8 @@ max-level: 5
 
 # A qué tipo de ítem se le puede aplicar — WEAPON, ARMOR, HELMET, CHESTPLATE, LEGGINGS,
 # BOOTS, TOOLS, BOW, CROSSBOW, TRIDENT, FISHING_ROD, SWORD, PICKAXE, AXE, SHOVEL, HOE,
-# SHIELD o ANY (una o varias)
+# SHIELD, MACE, SPEAR o ANY (una o varias). WEAPON incluye espadas, hachas, lanzas, tridente,
+# maza y las armas de RPGRoll-Items con daño o poder mágico (varas y báculos); TOOLS, las tijeras.
 categories:
   - WEAPON
   - BOW

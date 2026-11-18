@@ -38,6 +38,20 @@ afk:
 # Mundos donde las necesidades (sed, fatiga, estrés...) ni corren ni hacen daño: un lobby.
 stats-disabled-worlds: []
 
+# Velocidad de cada necesidad (id del archivo de stats/): multiplica lo que baja y lo que sube.
+# 1 = normal, 2 = el doble de rápido, 0.5 = la mitad. Se cambia también desde /extrasadmin menu.
+needs-speed: {}
+
+# Ordenar: clic central o Shift + clic en una casilla vacía ordena ese cofre (o las 27 casillas de
+# arriba de tu inventario); /ordenar ordena tu inventario y /ordenar off|on lo apaga para ti.
+# Solo cofres, barriles, shulkers, tolvas, dispensadores, soltadores y el cofre de ender.
+# Permiso: rpgrollextras.sort (todos).
+inventory-sort:
+  enabled: true
+  # Varita de orden (un palo y un cofre en la mesa): clic derecho a un cofre lo ordena sin abrirlo;
+  # al aire, ordena tu inventario. /ordenar varita la da (rpgrollextras.sort.admin).
+  wand: true
+
 # Teletransporte aleatorio: /rtp [mundo]. Apagado de fábrica: enciéndelo solo si no hay otro
 # plugin de RTP. El chunk de destino se carga (y se genera, si hace falta) sin parar el servidor.
 # Permisos: rpgrollextras.travel (usarlo, todos), .rtp.nodelay y .rtp.nocooldown.
@@ -71,3 +85,20 @@ player-warps:
   enabled: false
   max-per-player: 2
   disabled-worlds: []
+
+# Elevadores: bloque fabricable (8 de lana alrededor de una perla de ender en la mesa da
+# recipe-amount). Saltar encima sube al siguiente elevador de la misma columna; agacharse baja.
+# Necesita dos bloques libres encima del de destino y como mucho max-distance de separación.
+# Un bloque igual puesto a mano no es un elevador: solo cuenta el fabricado.
+elevator:
+  enabled: true
+  block: LIGHT_BLUE_GLAZED_TERRACOTTA
+  max-distance: 32
+  recipe-amount: 2
+
+# Bloques reforzados. El Reforzador (obsidiana, lingote de hierro y palo en columna; 64 usos): clic
+# derecho en un bloque ya puesto donde puedas construir y nada lo rompe, ni jugadores, explosiones,
+# pistones, fuego, endermans, withers, agua ni desastres. Agachado + clic derecho en uno tuyo le
+# quita el refuerzo. rpgrollextras.reinforce.admin (op) puede quitárselo a cualquiera.
+reinforcement:
+  enabled: true

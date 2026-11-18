@@ -27,6 +27,9 @@ import java.util.Map;
  */
 final class RecipeGUI extends InventoryGUI {
 
+    /** Fondo dibujado (sackito:menus/recetario_receta): volver (45) y cerrar (53) van dibujados; la rejilla y las salidas son huecos. */
+    static final String BACKGROUND = "recetario_receta";
+
     private static final int[] GRID = {10, 11, 12, 19, 20, 21, 28, 29, 30};
     private static final int[] OUTPUTS = {25, 16, 34};
     private static final int FOCUS = 4;
@@ -54,7 +57,7 @@ final class RecipeGUI extends InventoryGUI {
 
     RecipeGUI(Player player, Viewer viewer, ItemStack focus, Viewer.Mode mode,
             List<RecipeEntry> recipes) {
-        super(player, title(viewer.lang(), focus, mode), 54);
+        super(player, RecipesMenus.skin().title(BACKGROUND, title(viewer.lang(), focus, mode)), 54);
         this.viewer = viewer;
         this.lang = viewer.lang();
         this.focus = focus.asOne();
@@ -120,7 +123,7 @@ final class RecipeGUI extends InventoryGUI {
         setItem(ARROW, Buttons.of(Material.SPECTRAL_ARROW, Buttons.text(lang.raw(recipe.shaped()
                 ? "gui.recipe.arrow_shaped" : "gui.recipe.arrow_shapeless")), notes));
 
-        setItem(BACK, Buttons.of(lang, Material.ARROW, "gui.recipe.back"));
+        setItem(BACK, RecipesMenus.skin().button(Buttons.of(lang, Material.ARROW, "gui.recipe.back")));
         setItem(SWITCH, Buttons.of(lang, mode == Viewer.Mode.MAKE ? Material.HOPPER : Material.CRAFTING_TABLE,
                 mode == Viewer.Mode.MAKE ? "gui.recipe.switch_uses" : "gui.recipe.switch_make"));
         if (position > 0) {
@@ -131,7 +134,7 @@ final class RecipeGUI extends InventoryGUI {
         if (position < recipes.size() - 1) {
             setItem(NEXT, Buttons.of(lang, Material.ARROW, "gui.recipe.next"));
         }
-        setItem(CLOSE, Buttons.of(lang, Material.BARRIER, "gui.close"));
+        setItem(CLOSE, RecipesMenus.skin().button(Buttons.of(lang, Material.BARRIER, "gui.close")));
     }
 
     private void placeInputs(RecipeEntry recipe) {

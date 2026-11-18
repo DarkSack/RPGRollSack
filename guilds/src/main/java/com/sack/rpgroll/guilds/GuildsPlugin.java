@@ -176,7 +176,7 @@ public class GuildsPlugin extends JavaPlugin {
             return;
         }
 
-        new GuildsPlaceholders(this, teamManager, guildManager).register();
+        new GuildsPlaceholders(this, teamManager, guildManager, role -> langManager.name(role)).register();
         getLogger().info("✔ Placeholders registrados en PlaceholderAPI (%rpgrollguilds_...%)");
     }
 

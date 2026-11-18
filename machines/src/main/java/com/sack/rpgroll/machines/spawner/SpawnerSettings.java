@@ -19,7 +19,8 @@ import java.util.stream.Collectors;
  * queda un spawner sin mejorar y no tiene coste.
  */
 public record SpawnerSettings(boolean enabled, Set<String> disabledWorlds, boolean mine, boolean mineNeedsSilk,
-        boolean stack, int maxStack, boolean hologram, double hologramHeight, Map<Upgrade, Track> tracks) {
+        boolean stack, int maxStack, boolean hologram, double hologramHeight, boolean frame, String frameModel,
+        float frameScale, Map<Upgrade, Track> tracks) {
 
     /** Las tres mejoras. */
     public enum Upgrade {
@@ -95,6 +96,9 @@ public record SpawnerSettings(boolean enabled, Set<String> disabledWorlds, boole
                 Math.max(1, config.getInt("stack.max", 8)),
                 config.getBoolean("hologram.enabled", true),
                 config.getDouble("hologram.height", 1.35),
+                config.getBoolean("frame.enabled", false),
+                config.getString("frame.model", ""),
+                (float) config.getDouble("frame.scale", 1.0),
                 java.util.Collections.unmodifiableMap(tracks));
     }
 
@@ -132,6 +136,29 @@ public record SpawnerSettings(boolean enabled, Set<String> disabledWorlds, boole
             }
         }
         return fallback;
+    }
+
+    /**
+     * Nivel del marco de un spawner mejorado, de 1 a 3, según la parte de todas sus mejoras que ya
+     * tiene (sin mejoras ni pila, 0: sin marco). Así se reparte igual aunque cambien los niveles del fichero.
+     */
+    public int frameTier(SpawnerData data) {
+        if (!data.upgraded()) {
+            return 0;
+        }
+        int total = 0;
+        int max = 0;
+        for (Upgrade upgrade : Upgrade.values()) {
+            total += Math.min(data.level(upgrade), track(upgrade).max());
+            max += track(upgrade).max();
+        }
+        return max == 0 ? 1 : Math.clamp((int) Math.ceil(3.0 * total / max), 1, 3);
+    }
+
+    /** El modelo del marco con {tier} cambiado por su nivel, o null si no lleva. */
+    public org.bukkit.NamespacedKey frameModel(SpawnerData data) {
+        int tier = frameTier(data);
+        return frame && tier > 0 ? com.sack.rpgroll.machines.core.Ui.model(frameModel.replace("{tier}", String.valueOf(tier))) : null;
     }
 
     public Track track(Upgrade upgrade) {

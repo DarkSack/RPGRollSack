@@ -17,6 +17,7 @@ channel:
   no_permission_view: "You don't have permission to view that channel."
   not_found: "That channel doesn't exist."
   mentioned: "&e→ You were mentioned in #{channel}"
+  nobody_heard: "&7Nobody heard you in &f{channel}&7 (it only reaches {distance} blocks and not through walls). To talk to everyone: &e/ch switch global"
   list_header: "=== Channels ==="
   tag_active: "[active]"
   tag_joined: "[joined]"

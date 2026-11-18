@@ -190,6 +190,34 @@ public class EnchantmentItem {
         return false;
     }
 
+    private static final List<java.util.function.Function<ItemStack, java.util.Set<EnchantCategory>>> CATEGORY_PROVIDERS =
+            new java.util.concurrent.CopyOnWriteArrayList<>();
+
+    /**
+     * Otro plugin dice a qué categorías pertenecen sus ítems aunque su material no lo diga (una vara
+     * de RPGRoll-Items sobre BREEZE_ROD es un arma). Devuelve un conjunto vacío para los ítems ajenos.
+     */
+    public static void addCategoryProvider(java.util.function.Function<ItemStack, java.util.Set<EnchantCategory>> provider) {
+        CATEGORY_PROVIDERS.add(provider);
+    }
+
+    /** Si el ítem es de la categoría: por su material o porque lo dice el plugin que lo creó. */
+    public static boolean isOf(ItemStack item, EnchantCategory category) {
+        if (item == null || item.getType().isAir()) {
+            return false;
+        }
+        if (category.matches(item.getType())) {
+            return true;
+        }
+        for (var provider : CATEGORY_PROVIDERS) {
+            java.util.Set<EnchantCategory> extra = provider.apply(item);
+            if (extra != null && (extra.contains(category) || category == EnchantCategory.ANY && !extra.isEmpty())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public boolean isCategoryAllowed(ItemStack item, CustomEnchantment enchantment) {
 
         if (!enchantment.allowedItems().isEmpty()) {
@@ -201,12 +229,43 @@ public class EnchantmentItem {
         }
 
         for (EnchantCategory category : enchantment.categories()) {
-            if (category.matches(item.getType())) {
+            if (isOf(item, category)) {
                 return true;
             }
         }
 
         return false;
+    }
+
+    /**
+     * Vuelve a poner las líneas de encantamientos e infusiones después de que otro plugin haya rehecho
+     * todo el lore (RPGRoll-Items lo hace al gastar durabilidad, mejorar o engarzar).
+     */
+    public void refreshLore(ItemStack item) {
+        if (item == null || !item.hasItemMeta()) {
+            return;
+        }
+        ItemMeta meta = item.getItemMeta();
+        meta.getPersistentDataContainer().set(loreCountKey, PersistentDataType.INTEGER, 0);
+        rebuildLore(meta, getAll(item));
+        item.setItemMeta(meta);
+    }
+
+    /** Rehace las líneas propias del lore con lo que el ítem lleva ahora (tras cambiar una infusión). */
+    public void redrawLore(ItemStack item) {
+        if (item == null || !item.hasItemMeta()) {
+            return;
+        }
+        ItemMeta meta = item.getItemMeta();
+        rebuildLore(meta, getAll(item));
+        item.setItemMeta(meta);
+    }
+
+    private java.util.function.Function<ItemMeta, List<Component>> extraLore = meta -> List.of();
+
+    /** Líneas que van tras los encantamientos (las infusiones del Infusor). */
+    public void extraLore(java.util.function.Function<ItemMeta, List<Component>> extraLore) {
+        this.extraLore = extraLore;
     }
 
     private void write(ItemStack item, Map<String, Integer> enchantments) {
@@ -249,6 +308,7 @@ public class EnchantmentItem {
             block.add(ComponentUtils.parse(displayName)
                     .append(Component.text(" " + RomanNumerals.of(entry.getValue()), NamedTextColor.GRAY)));
         }
+        block.addAll(extraLore.apply(meta));
 
         lore.addAll(0, block);
 

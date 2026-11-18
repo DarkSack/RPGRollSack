@@ -169,6 +169,8 @@ public class ItemFactory {
         meta.lore(buildLore(definition, rarity, upgradeLevel, sockets, currentDurability));
 
         item.setItemMeta(meta);
+        // El lore se rehízo entero: sin esto se perdían las líneas de encantamientos e infusiones.
+        EnchantmentsIntegration.refreshLore(item);
     }
 
     static void applyModelOverrides(ItemMeta meta, ItemDefinition definition, ItemSkin skin) {

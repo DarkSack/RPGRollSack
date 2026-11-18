@@ -87,11 +87,11 @@ public class MachinesPlugin extends JavaPlugin {
                 List.of("maquinas", "rpgmachines"),
                 new MachinesCommand(this, lang, furnaces, spawners, quarries), null, MachinesCommand.PERMISSION);
 
-        // La receta y las de horno (para el autofundido), cuando todos los plugins ya registraron las suyas.
-        getServer().getScheduler().runTask(this, () -> {
-            quarries.registerRecipe();
-            worker.reloadRecipes();
-        });
+        // La receta de la cantera ya: RPGRoll-Recipes monta su índice al cargar el servidor (antes del
+        // primer tick) y una receta registrada después no sale en el recetario hasta /recetas recargar.
+        quarries.registerRecipe();
+        // Las de horno (para el autofundido), cuando todos los plugins ya registraron las suyas.
+        getServer().getScheduler().runTask(this, worker::reloadRecipes);
         workerTask = getServer().getScheduler().runTaskTimer(this, worker, 20L, 1L);
         saveTask = getServer().getScheduler().runTaskTimer(this, () -> store.save(false), 200L, 200L);
         checkClaims();

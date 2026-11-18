@@ -4,6 +4,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
@@ -31,6 +32,8 @@ final class ShotBeam implements Runnable {
     private final int slot;
     private ShotBeamModel.Appearance appearance;
     private ShotBeamModel model;
+    private ShotMuzzle muzzle;
+    private EquipmentSlot hand;
     private boolean stopped;
 
     private ShotBeam(Plugin owner, Player player) {
@@ -41,7 +44,7 @@ final class ShotBeam implements Runnable {
     }
 
     static void hold(Plugin plugin, Player player, ShotVisuals visuals, double range, int ticks,
-                     ShotBeamModel.Appearance appearance) {
+                     ShotBeamModel.Appearance appearance, ShotMuzzle muzzle, EquipmentSlot hand) {
         ShotBeam beam = ACTIVE.get(player.getUniqueId());
         if (beam != null && (beam.world != player.getWorld() || beam.slot != heldSlot(player))) {
             beam.finish(); beam = null;
@@ -57,6 +60,8 @@ final class ShotBeam implements Runnable {
             }
         }
         beam.visuals = visuals;
+        beam.muzzle = muzzle;
+        beam.hand = hand;
         if (!java.util.Objects.equals(beam.appearance, appearance)) {
             if (beam.model != null) beam.model.remove();
             beam.model = appearance == null ? null : new ShotBeamModel(appearance);
@@ -86,7 +91,7 @@ final class ShotBeam implements Runnable {
         Vector direction = eye.getDirection();
         RayTraceResult hit = BuiltinItemActions.aim(player, eye, direction, range);
         Vector end = hit != null ? hit.getHitPosition() : eye.toVector().add(direction.clone().multiply(range));
-        Location from = BuiltinItemActions.barrel(eye, direction);
+        Location from = muzzle.at(player, hand, eye, direction);
         if (end.clone().subtract(from.toVector()).dot(direction) <= 0) from = eye;
         try {
             if (model != null) model.update(from, end);

@@ -2,12 +2,16 @@ package com.sack.rpgroll.machines;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.sack.rpgroll.machines.core.Cost;
 import com.sack.rpgroll.machines.core.Ui;
 import com.sack.rpgroll.machines.furnace.FurnaceMath;
 import com.sack.rpgroll.machines.quarry.Quarry;
+import com.sack.rpgroll.machines.quarry.QuarrySettings;
+import com.sack.rpgroll.machines.quarry.QuarryUpgradesMenu;
 import com.sack.rpgroll.machines.spawner.SpawnerData;
 import com.sack.rpgroll.machines.spawner.SpawnerSettings;
 import com.sack.rpgroll.machines.spawner.SpawnerSettings.Level;
@@ -15,6 +19,7 @@ import com.sack.rpgroll.machines.spawner.SpawnerSettings.Track;
 import com.sack.rpgroll.machines.spawner.SpawnerSettings.Upgrade;
 
 import org.bukkit.Material;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.junit.jupiter.api.Test;
 
 import java.util.EnumMap;
@@ -74,7 +79,8 @@ class MachinesMathTest {
         tracks.put(Upgrade.COUNT, new Track(Material.SPAWNER, List.of(new Level(200, 800, 4, 6, 16, Cost.FREE),
                 new Level(200, 800, 5, 8, 16, Cost.FREE))));
         tracks.put(Upgrade.RANGE, new Track(Material.ENDER_EYE, List.of(new Level(200, 800, 4, 6, 16, Cost.FREE))));
-        SpawnerSettings settings = new SpawnerSettings(true, Set.of(), true, true, true, 8, true, 1.35, tracks);
+        SpawnerSettings settings = new SpawnerSettings(true, Set.of(), true, true, true, 8, true, 1.35,
+                true, "ns:generador_{tier}", 1f, tracks);
 
         SpawnerData.Applied applied = new SpawnerData(1, 1, 5, 3).applied(settings);
         assertEquals(100, applied.minDelay());
@@ -83,6 +89,57 @@ class MachinesMathTest {
         assertEquals(24, applied.maxNearby());
         // Un nivel que ya no existe en el fichero se queda en el último.
         assertEquals(16, applied.range());
+
+        // Dos mejoras posibles en total (velocidad y cantidad, una cada una).
+        assertEquals(0, settings.frameTier(SpawnerData.NONE));
+        assertEquals(1, settings.frameTier(SpawnerData.NONE.withStack(2)));
+        assertEquals(2, settings.frameTier(new SpawnerData(1, 0, 0, 1)));
+        assertEquals(3, settings.frameTier(new SpawnerData(1, 1, 0, 1)));
+        assertEquals("ns:generador_3", settings.frameModel(new SpawnerData(1, 1, 0, 1)).toString());
+    }
+
+    @Test
+    void gaugeLevels() {
+        assertEquals(0, Quarry.gaugeLevel(0.0));
+        assertEquals(0, Quarry.gaugeLevel(0.12));
+        assertEquals(4, Quarry.gaugeLevel(0.5));
+        assertEquals(8, Quarry.gaugeLevel(1.0));
+        assertEquals(8, Quarry.gaugeLevel(1.7));
+        assertEquals(0, Quarry.gaugeLevel(-0.2));
+    }
+
+    @Test
+    void quarryMenuSettings() {
+        YamlConfiguration yaml = new YamlConfiguration();
+        yaml.set("menu.pack", "sackito:menus");
+        QuarrySettings.Menu menu = QuarrySettings.Menu.from(yaml.getConfigurationSection("menu"));
+        assertTrue(menu.drawn());
+        assertEquals("sackito:menus/cantera_mejoras", menu.background("cantera_mejoras"));
+        assertEquals("sackito:menus/cantera_profundidad_3", menu.model("cantera_profundidad_3").toString());
+        QuarrySettings.Menu none = QuarrySettings.Menu.from(null);
+        assertFalse(none.drawn());
+        assertEquals("", none.background("cantera"));
+        assertNull(none.model("invisible"));
+    }
+
+    @Test
+    void tierStates() {
+        // Nivel 1 de 3 comprado: el 1 hecho, el 2 se puede comprar, el 3 bloqueado; más allá del máximo, nada.
+        assertEquals(QuarryUpgradesMenu.Tier.OWNED, QuarryUpgradesMenu.tier(1, 1, 3));
+        assertEquals(QuarryUpgradesMenu.Tier.NEXT, QuarryUpgradesMenu.tier(1, 2, 3));
+        assertEquals(QuarryUpgradesMenu.Tier.LOCKED, QuarryUpgradesMenu.tier(1, 3, 3));
+        assertEquals(QuarryUpgradesMenu.Tier.NONE, QuarryUpgradesMenu.tier(1, 4, 3));
+        assertEquals(QuarryUpgradesMenu.Tier.OWNED, QuarryUpgradesMenu.tier(3, 3, 3));
+    }
+
+    @Test
+    void trackIconOnlyBuysLevelsBeyondTheRow() {
+        // Con 5 niveles dibujados el icono no cobra: se compra en la casilla del nivel siguiente.
+        assertFalse(QuarryUpgradesMenu.iconBuys(1, 3));
+        assertFalse(QuarryUpgradesMenu.iconBuys(4, 7));
+        // Del 6 en adelante no hay casilla: el icono compra (y enseña el coste).
+        assertTrue(QuarryUpgradesMenu.iconBuys(5, 7));
+        assertFalse(QuarryUpgradesMenu.iconBuys(7, 7));
     }
 
     @Test

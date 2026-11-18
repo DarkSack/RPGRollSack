@@ -53,6 +53,8 @@ public class StatEngine {
     private ConditionRuntime conditionRuntime;
     private ModifierResolver modifierResolver;
     private AfkPolicy afkPolicy = AfkPolicy.DISABLED;
+    private Map<String, Double> speeds = Map.of();
+    private final Set<UUID> immune = ConcurrentHashMap.newKeySet();
 
     private final Map<UUID, Map<String, Double>> values = new ConcurrentHashMap<>();
     private final Map<UUID, Set<String>> activeThresholds = new ConcurrentHashMap<>();
@@ -80,6 +82,53 @@ public class StatEngine {
     /** Mientras un jugador está AFK su decay y su regeneración periódica se saltan. */
     public void linkAfkPolicy(AfkPolicy afkPolicy) {
         this.afkPolicy = afkPolicy;
+    }
+
+    /** Velocidad global por necesidad (config.yml {@code needs-speed}); la que falta va a 1. */
+    public void linkSpeeds(Map<String, Double> speeds) {
+        this.speeds = Map.copyOf(speeds);
+    }
+
+    /** Lee {@code needs-speed} de config.yml: id de la necesidad → multiplicador. */
+    public static Map<String, Double> speeds(org.bukkit.configuration.ConfigurationSection config) {
+        var section = config == null ? null : config.getConfigurationSection("needs-speed");
+        if (section == null) {
+            return Map.of();
+        }
+        Map<String, Double> out = new java.util.HashMap<>();
+        for (String id : section.getKeys(false)) {
+            out.put(id, Math.max(0, section.getDouble(id, 1.0)));
+        }
+        return out;
+    }
+
+    public double speed(String statId) {
+        return speeds.getOrDefault(statId, 1.0);
+    }
+
+    /** Inmune: no le baja ni le sube nada solo y los umbrales no le hacen nada. */
+    public boolean isImmune(Player player) {
+        return immune.contains(player.getUniqueId());
+    }
+
+    public void setImmune(Player player, boolean value) {
+        if (!value) {
+            immune.remove(player.getUniqueId());
+            return;
+        }
+        immune.add(player.getUniqueId());
+        // Lo que ya le pusieron los umbrales se va: si no, la deshidratación seguiría haciendo daño.
+        Set<String> active = activeThresholds.remove(player.getUniqueId());
+        if (active == null || active.isEmpty()) {
+            return;
+        }
+        for (StatDefinition stat : statManager.getAll()) {
+            for (StatThreshold threshold : stat.thresholds()) {
+                if (active.contains(stat.id() + ":" + threshold.comparison())) {
+                    removeThresholdConditions(player, threshold);
+                }
+            }
+        }
     }
 
     public void start() {
@@ -112,36 +161,44 @@ public class StatEngine {
 
     private void tickDecay(StatDefinition stat) {
         for (Player player : Bukkit.getOnlinePlayers()) {
-            if (!afkPolicy.freezes(player)) {
-                adjust(player, stat.id(), -stat.decay().amount() * rateMultiplier(player, stat.id()));
-            }
+            decay(player, stat);
+        }
+    }
+
+    void decay(Player player, StatDefinition stat) {
+        if (!afkPolicy.freezes(player) && !isImmune(player)) {
+            adjust(player, stat.id(), -stat.decay().amount() * rateMultiplier(player, stat.id()));
         }
     }
 
     private void tickRegeneration(StatDefinition stat) {
-
         for (Player player : Bukkit.getOnlinePlayers()) {
+            regenerate(player, stat);
+        }
+    }
 
-            if (afkPolicy.freezes(player)) {
-                continue;
+    void regenerate(Player player, StatDefinition stat) {
+
+        if (afkPolicy.freezes(player) || isImmune(player)) {
+            return;
+        }
+
+        double delta = 0;
+
+        for (RateRule rule : stat.regeneration().rules()) {
+            if (rateConditionEvaluator.matches(rule.condition(), player)) {
+                delta += rule.amount();
             }
+        }
 
-            double delta = 0;
-
-            for (RateRule rule : stat.regeneration().rules()) {
-                if (rateConditionEvaluator.matches(rule.condition(), player)) {
-                    delta += rule.amount();
-                }
-            }
-
-            if (delta != 0) {
-                adjust(player, stat.id(), delta * rateMultiplier(player, stat.id()));
-            }
+        if (delta != 0) {
+            adjust(player, stat.id(), delta * rateMultiplier(player, stat.id()));
         }
     }
 
     private double rateMultiplier(Player player, String statId) {
-        return modifierResolver == null ? 1.0 : modifierResolver.multiplier(player, statId + "_rate");
+        double modifier = modifierResolver == null ? 1.0 : modifierResolver.multiplier(player, statId + "_rate");
+        return modifier * speed(statId);
     }
 
     private double effectiveMax(Player player, String statId, double baseMax) {
@@ -162,7 +219,11 @@ public class StatEngine {
         }
     }
 
-    private void tickThresholdsFor(Player player, StatDefinition stat) {
+    void tickThresholdsFor(Player player, StatDefinition stat) {
+
+        if (isImmune(player)) {
+            return;
+        }
 
         double value = get(player, stat.id());
         Set<String> active = activeThresholds.computeIfAbsent(player.getUniqueId(), id -> new HashSet<>());
@@ -312,6 +373,10 @@ public class StatEngine {
 
         PersistentDataContainer data = player.getPersistentDataContainer();
 
+        if (data.has(immuneKey(), PersistentDataType.BYTE)) {
+            immune.add(player.getUniqueId());
+        }
+
         for (StatDefinition stat : statManager.getAll()) {
 
             Double saved = data.get(storageKey(stat.id()), PersistentDataType.DOUBLE);
@@ -327,13 +392,19 @@ public class StatEngine {
     /** Guarda los valores actuales en el jugador (al salir y al apagar). */
     public void save(Player player) {
 
+        PersistentDataContainer data = player.getPersistentDataContainer();
+        if (isImmune(player)) {
+            data.set(immuneKey(), PersistentDataType.BYTE, (byte) 1);
+        } else {
+            data.remove(immuneKey());
+        }
+
         Map<String, Double> current = values.get(player.getUniqueId());
 
         if (current == null) {
             return;
         }
 
-        PersistentDataContainer data = player.getPersistentDataContainer();
         current.forEach((statId, value) -> data.set(storageKey(statId), PersistentDataType.DOUBLE, value));
     }
 
@@ -345,7 +416,12 @@ public class StatEngine {
         return new NamespacedKey(plugin, "stat_" + statId.toLowerCase(Locale.ROOT));
     }
 
+    private NamespacedKey immuneKey() {
+        return new NamespacedKey(plugin, "needs_immune");
+    }
+
     public void clear(Player player) {
+        immune.remove(player.getUniqueId());
         values.remove(player.getUniqueId());
         activeThresholds.remove(player.getUniqueId());
     }

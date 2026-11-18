@@ -2,44 +2,48 @@ package com.sack.rpgroll.machines.quarry;
 
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
+import com.sack.rpgroll.gui.MenuBackground;
 import com.sack.rpgroll.machines.core.Cost;
 import com.sack.rpgroll.machines.core.Payment;
 import com.sack.rpgroll.machines.core.Ui;
-import com.sack.rpgroll.machines.quarry.QuarrySettings.Numeric;
-import com.sack.rpgroll.machines.quarry.QuarrySettings.Track;
-import com.sack.rpgroll.machines.quarry.QuarrySettings.Unlock;
 
 import net.kyori.adventure.text.Component;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-/** Estado, mejoras e interruptor de una cantera. */
+/**
+ * Panel de una cantera: la máquina con su estado en el centro, encendido, salida al cofre y
+ * progreso, y los accesos a las mejoras y a los módulos (submenús propios).
+ */
 public class QuarryMenu extends InventoryGUI {
 
-    private static final int STATUS = 4;
-    private static final int TOGGLE = 31;
-    private static final int[] NUMERIC_SLOTS = {19, 20, 21, 22};
-    private static final int[] UNLOCK_SLOTS = {23, 24, 25};
+    private static final int MACHINE = 13;
+    private static final int UPGRADES = 19;
+    private static final int MODULES = 21;
+    private static final int TOGGLE = 22;
+    private static final int OUTPUT = 23;
+    private static final int GAUGE = 25;
 
     private final QuarryService service;
     private final LangManager lang;
     private final Quarry quarry;
-    private final Map<Integer, Numeric> numericAt = new HashMap<>();
-    private final Map<Integer, Unlock> unlockAt = new HashMap<>();
+    private BukkitTask refresh;
 
     public QuarryMenu(Player player, Quarry quarry, QuarryService service, LangManager lang) {
-        super(player, lang.component("quarry.menu_title"), 36);
+        super(player, MenuBackground.title(service.settings().menu().background("cantera"),
+                lang.component("quarry.menu_title")), 36);
         this.service = service;
         this.lang = lang;
         this.quarry = quarry;
@@ -49,94 +53,46 @@ public class QuarryMenu extends InventoryGUI {
     public void build() {
 
         clear();
-        numericAt.clear();
-        unlockAt.clear();
-        for (int slot = 0; slot < inventory.getSize(); slot++) {
-            setItem(slot, Ui.filler());
-        }
         QuarrySettings settings = service.settings();
+        QuarrySettings.Menu menu = settings.menu();
+        // Con fondo dibujado las casillas libres quedan vacías: los cristales taparían el dibujo.
+        if (!menu.drawn()) {
+            fill(this::setItem, inventory.getSize());
+        }
         World world = Bukkit.getWorld(quarry.world());
         int minHeight = world == null ? -64 : world.getMinHeight();
         int side = service.side(quarry);
+        double progress = quarry.progress(side, minHeight);
 
         List<Component> status = new ArrayList<>();
         status.add(lang.component("quarry.status_owner", "owner", quarry.ownerName()));
         status.add(lang.component("quarry.status_state", "state", lang.raw("quarry.state." + quarry.status().name().toLowerCase())));
         status.add(lang.component("quarry.status_depth", "y", Math.max(minHeight, quarry.cursorY())));
-        status.add(lang.component("quarry.status_progress", "progress", Ui.percent(Math.floor(quarry.progress(side, minHeight) * 1000) / 1000)));
+        status.add(lang.component("quarry.status_progress", "progress", Ui.percent(Math.floor(progress * 1000) / 1000)));
         status.add(lang.component("quarry.status_area", "side", side));
+        setItem(MACHINE, Ui.button(settings.block(), Ui.model(settings.itemModel()), lang.component("quarry.item_name"), status));
+
+        setItem(UPGRADES, icon(menu, Material.EXPERIENCE_BOTTLE, lang.component("quarry.hub_upgrades"),
+                List.of(lang.component("quarry.hub_upgrades_lore"), lang.component("quarry.click_open"))));
+        setItem(MODULES, icon(menu, Material.TRIPWIRE_HOOK, lang.component("quarry.hub_modules"),
+                List.of(lang.component("quarry.hub_modules_lore"), lang.component("quarry.click_open"))));
+
+        List<Component> output = new ArrayList<>();
+        output.add(lang.component("quarry.status_state", "state", lang.raw("quarry.state." + quarry.status().name().toLowerCase())));
         if (!quarry.buffer().isEmpty()) {
-            status.add(lang.component("quarry.status_buffer", "count", quarry.buffer().stream().mapToInt(i -> i.getAmount()).sum()));
+            output.add(lang.component("quarry.status_buffer", "count", quarry.buffer().stream().mapToInt(ItemStack::getAmount).sum()));
         }
-        setItem(STATUS, Ui.button(settings.block(), Ui.model(settings.itemModel()), lang.component("quarry.item_name"), status));
+        setItem(OUTPUT, icon(menu, Material.CHEST, lang.component("quarry.hub_output"), output));
 
-        int n = 0;
-        for (Numeric numeric : Numeric.values()) {
-            Track track = settings.track(numeric);
-            if (track.max() <= 0 || n >= NUMERIC_SLOTS.length) {
-                continue;
-            }
-            int slot = NUMERIC_SLOTS[n++];
-            numericAt.put(slot, numeric);
-            int level = quarry.level(numeric);
-            List<Component> lore = new ArrayList<>();
-            lore.add(lang.component("quarry.level", "level", Ui.roman(level), "max", Ui.roman(track.max())));
-            lore.add(value(numeric, track.value(level)));
-            if (numeric == Numeric.FORTUNE && quarry.active(Unlock.SILK_TOUCH)) {
-                lore.add(lang.component("quarry.fortune_vs_silk"));
-            }
-            lore.add(Component.empty());
-            if (level >= track.max()) {
-                lore.add(lang.component("menu.maxed"));
-            } else {
-                lore.add(lang.component("quarry.next"));
-                lore.add(value(numeric, track.value(level + 1)));
-                lore.add(Component.empty());
-                Cost cost = track.step(level + 1).cost();
-                lore.addAll(Payment.lore(player, cost, lang));
-                lore.add(Component.empty());
-                lore.add(lang.component(Payment.has(player, cost) ? "menu.click_upgrade" : "menu.cant_afford"));
-            }
-            setItem(slot, Ui.button(track.icon(), lang.component("quarry.upgrade_title",
-                    "upgrade", lang.raw("quarry.upgrade." + numeric.id())), lore));
-        }
-
-        int u = 0;
-        for (Unlock unlock : Unlock.values()) {
-            Cost cost = settings.unlocks().get(unlock);
-            if (cost == null || u >= UNLOCK_SLOTS.length) {
-                continue;
-            }
-            int slot = UNLOCK_SLOTS[u++];
-            unlockAt.put(slot, unlock);
-            List<Component> lore = new ArrayList<>();
-            lore.add(lang.component("quarry.unlock_desc." + unlock.id()));
-            lore.add(Component.empty());
-            if (quarry.unlocked(unlock)) {
-                lore.add(lang.component(quarry.active(unlock) ? "quarry.on" : "quarry.off"));
-                lore.add(lang.component("quarry.click_toggle"));
-            } else {
-                lore.addAll(Payment.lore(player, cost, lang));
-                lore.add(Component.empty());
-                lore.add(lang.component(Payment.has(player, cost) ? "quarry.click_buy" : "menu.cant_afford"));
-            }
-            setItem(slot, Ui.button(unlock.icon(), lang.component("quarry.upgrade_title",
-                    "upgrade", lang.raw("quarry.unlock." + unlock.id())), lore));
-        }
+        NamespacedKey gauge = menu.model("cantera_profundidad_" + Quarry.gaugeLevel(progress));
+        setItem(GAUGE, Ui.button(gauge == null ? Material.CLOCK : Material.PAPER, gauge,
+                lang.component("quarry.status_progress", "progress", Ui.percent(Math.floor(progress * 1000) / 1000)),
+                List.of(lang.component("quarry.status_depth", "y", Math.max(minHeight, quarry.cursorY())))));
 
         setItem(TOGGLE, Ui.button(quarry.enabled() ? Material.LIME_DYE : Material.GRAY_DYE,
+                menu.model(quarry.enabled() ? "interruptor_on" : "interruptor_off"),
                 lang.component(quarry.enabled() ? "quarry.toggle_on" : "quarry.toggle_off"),
                 List.of(lang.component("quarry.click_toggle"))));
-    }
-
-    private Component value(Numeric numeric, double value) {
-        return switch (numeric) {
-            case SPEED -> lang.component("quarry.value_speed", "value", Ui.number(value));
-            case AREA -> lang.component("quarry.value_area", "value", (int) value);
-            case FORTUNE -> lang.component("quarry.value_fortune", "value", Ui.roman((int) value));
-            case TIER -> value < 0 ? lang.component("quarry.value_tier_default")
-                    : lang.component("quarry.value_tier", "value", (int) value);
-        };
     }
 
     @Override
@@ -148,68 +104,76 @@ public class QuarryMenu extends InventoryGUI {
             close();
             return;
         }
-        if (slot == TOGGLE) {
-            quarry.enabled(!quarry.enabled());
-            service.store().dirty();
-            player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.6f, 1f);
-            build();
-            // El estado lo pone el trabajador en su tick: se repinta cuando ya lo ha puesto.
-            Bukkit.getScheduler().runTaskLater(JavaPlugin.getProvidingPlugin(QuarryMenu.class), this::build, 2L);
-            return;
-        }
-        Numeric numeric = numericAt.get(slot);
-        if (numeric != null) {
-            upgrade(numeric);
-            return;
-        }
-        Unlock unlock = unlockAt.get(slot);
-        if (unlock != null) {
-            if (quarry.unlocked(unlock)) {
-                quarry.unlock(unlock, !quarry.active(unlock));
+        switch (slot) {
+            case TOGGLE -> {
+                quarry.enabled(!quarry.enabled());
                 service.store().dirty();
                 player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.6f, 1f);
-            } else if (pay(service.settings().unlocks().get(unlock))) {
-                quarry.unlock(unlock, true);
-                service.store().dirty();
-                lang.send(player, "quarry.unlocked", "upgrade", lang.raw("quarry.unlock." + unlock.id()));
+                build();
+                // El estado lo pone el trabajador en su tick: se repinta cuando ya lo ha puesto.
+                Bukkit.getScheduler().runTaskLater(JavaPlugin.getProvidingPlugin(QuarryMenu.class), this::build, 2L);
             }
-            build();
+            case UPGRADES -> {
+                player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.6f, 1f);
+                new QuarryUpgradesMenu(player, quarry, service, lang).open();
+            }
+            case MODULES -> {
+                player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.6f, 1f);
+                new QuarryModulesMenu(player, quarry, service, lang).open();
+            }
+            default -> {
+            }
         }
     }
 
-    private void upgrade(Numeric numeric) {
-
-        Track track = service.settings().track(numeric);
-        int level = quarry.level(numeric);
-        if (level >= track.max()) {
-            return;
+    /** Abre y repinta cada segundo mientras siga abierto: el estado y el indicador van al día. */
+    @Override
+    public void open() {
+        super.open();
+        if (refresh != null) {
+            refresh.cancel();
         }
-        if (numeric == Numeric.AREA) {
-            World world = Bukkit.getWorld(quarry.world());
-            int side = (int) track.value(level + 1);
-            if (world == null || !service.areaAllowed(quarry, world, side)) {
-                lang.send(player, "quarry.need_claim", "side", side);
-                player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1f, 1f);
+        refresh = Bukkit.getScheduler().runTaskTimer(JavaPlugin.getProvidingPlugin(QuarryMenu.class), () -> {
+            if (!player.isOnline() || !player.getOpenInventory().getTopInventory().equals(inventory)) {
+                refresh.cancel();
+                refresh = null;
                 return;
             }
-        }
-        if (!pay(track.step(level + 1).cost())) {
+            if (service.store().at(quarry.key()).isEmpty()) {
+                close();
+                return;
+            }
             build();
-            return;
-        }
-        quarry.level(numeric, level + 1);
-        if (numeric == Numeric.AREA || numeric == Numeric.TIER) {
-            // Las columnas nuevas están enteras, y las menas que no podía picar siguen ahí: se
-            // vuelve a empezar desde arriba (lo ya excavado es aire y se recorre rápido).
-            quarry.restart();
-        }
-        service.store().dirty();
-        lang.send(player, "quarry.upgraded", "upgrade", lang.raw("quarry.upgrade." + numeric.id()),
-                "level", Ui.roman(level + 1));
-        build();
+        }, 20L, 20L);
     }
 
-    private boolean pay(Cost cost) {
+    // ---------------------------------------------------------------- piezas comunes a los tres menús
+
+    interface Slots {
+        void set(int slot, ItemStack item);
+    }
+
+    /** Rellena con cristales (menús sin dibujo). */
+    static void fill(Slots slots, int size) {
+        for (int slot = 0; slot < size; slot++) {
+            slots.set(slot, Ui.filler());
+        }
+    }
+
+    /**
+     * Botón cuyo icono ya va dibujado en el fondo: con menús dibujados es un ítem invisible que solo
+     * enseña su nombre y su descripción; sin ellos, el ítem vanilla de siempre.
+     */
+    static ItemStack icon(QuarrySettings.Menu menu, Material plain, Component name, List<Component> lore) {
+        NamespacedKey invisible = menu.model("invisible");
+        return Ui.button(invisible == null ? plain : Material.PAPER, invisible, name, lore);
+    }
+
+    static ItemStack back(QuarrySettings.Menu menu, LangManager lang) {
+        return icon(menu, Material.ARROW, lang.component("quarry.back"), List.of());
+    }
+
+    static boolean pay(Player player, Cost cost, LangManager lang) {
         if (Payment.take(player, cost)) {
             player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 0.8f, 1.2f);
             return true;

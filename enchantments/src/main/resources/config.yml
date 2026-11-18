@@ -4,3 +4,79 @@
 # Los textos viven en lang/<idioma>.yml dentro de esta carpeta de datos —
 # puedes editarlos ahí directamente. Tras cambiar esto, /renchant reload.
 language: es
+
+# Infusor: un soporte de pociones marcado (receta: lágrima de ghast arriba, vara de blaze, soporte
+# de pociones y vara de blaze en medio, 3 diamantes abajo). Con una armadura (vanilla o de plugin)
+# en la mano, clic derecho en él: eliges una poción de tu inventario y su efecto queda grabado en la
+# pieza. Mientras la lleves puesta tienes ese efecto. Se gastan la poción y cost-levels niveles.
+infuser:
+  enabled: true
+  # Modelo 3D del resource pack (namespace:id). Con él, el bloque puesto es una barrera con el modelo
+  # encima (se rompe con clic izquierdo). Vacío: el soporte de pociones vanilla.
+  model: ""
+  # Fondo dibujado del menú: fuente del resource pack (namespace:ruta) con el glifo  y los
+  # espacios / de MenuBackground. Vacío: el menú de siempre.
+  menu-background: ""
+  cost-levels: 10
+  # Efectos por pieza; uno nuevo sustituye al más antiguo.
+  max-effects-per-piece: 1
+  # Tope de amplificador (0 = nivel I, 1 = nivel II) por efecto; default para el resto.
+  max-amplifier:
+    default: 1
+    strength: 0
+    regeneration: 0
+    resistance: 0
+  # Solo estos efectos se pueden infundir (sin efectos dañinos, instantáneos ni invisibilidad).
+  allowed-effects: [speed, jump_boost, strength, regeneration, resistance, fire_resistance,
+    water_breathing, night_vision, slow_falling, luck]
+
+# Súper encantador: una mesa de encantamientos marcada (receta: bloque de lapislázuli, estrella del
+# Nether y bloque de lapislázuli; bloque de diamante, mesa de encantamientos y bloque de diamante;
+# 3 obsidianas llorosas). Con un ítem en la mano, clic derecho: sube uno a uno los encantamientos
+# vanilla que ya estén al máximo (Afilado V → VI...). Cada nivel cuesta base-levels + step-levels por
+# cada nivel extra anterior, y lapis-per-level lapislázulis por nivel extra.
+super-enchanter:
+  enabled: true
+  # Modelo 3D del resource pack (namespace:id), igual que el del infusor. Vacío: la mesa vanilla.
+  model: ""
+  # Fondo dibujado del menú, igual que el del infusor. Vacío: el menú de siempre.
+  menu-background: ""
+  # Niveles por encima del máximo vanilla (Afilado hasta VIII con 3).
+  extra-levels: 3
+  # Nunca por encima de esto (el cliente escribe los números romanos hasta X).
+  hard-cap: 10
+  base-levels: 15
+  step-levels: 10
+  lapis-per-level: 16
+  # Tope propio por encantamiento. La protección vanilla deja de sumar por encima de un total de 20.
+  caps:
+    protection: 5
+    fire_protection: 5
+    blast_protection: 5
+    projectile_protection: 5
+    feather_falling: 6
+  excluded: []
+  # Encantamientos de tesoro (Reparación, Paso helado, Velocidad del alma...): fuera por defecto para
+  # que aldeanos y botín sigan valiendo.
+  treasure: false
+  # Vanilla hasta su máximo: niveles de experiencia = vanilla-levels × nivel, y vanilla-lapis por nivel.
+  # Por encima del máximo se cobra con base-levels, step-levels y lapis-per-level.
+  vanilla-levels: 2
+  vanilla-lapis: 3
+  # Encantamientos del plugin, por rareza: niveles = valor × nivel; lapislázuli = valor por nivel.
+  rarity-levels:
+    COMMON: 3
+    UNCOMMON: 5
+    RARE: 8
+    EPIC: 12
+    LEGENDARY: 18
+    MYTHIC: 24
+    DIVINE: 30
+  rarity-lapis:
+    COMMON: 4
+    UNCOMMON: 6
+    RARE: 10
+    EPIC: 16
+    LEGENDARY: 24
+    MYTHIC: 32
+    DIVINE: 48

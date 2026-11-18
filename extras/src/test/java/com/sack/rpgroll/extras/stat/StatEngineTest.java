@@ -185,4 +185,80 @@ class StatEngineTest {
 
         assertEquals(80.0, engine.get(player, "thirst"));
     }
+
+    private StatDefinition thirstWithDecay(double amount, List<StatThreshold> thresholds) {
+        StatDefinition thirst = new StatDefinition("thirst", true, 100, 100, new DecayRule(amount, 1200), null,
+                Map.of(), thresholds, Map.of(), true);
+        when(statManager.get("thirst")).thenReturn(Optional.of(thirst));
+        when(statManager.getAll()).thenReturn(List.of(thirst));
+        return thirst;
+    }
+
+    @Test
+    void globalSpeedScalesDecay() {
+
+        StatDefinition thirst = thirstWithDecay(2, List.of());
+        engine.linkSpeeds(Map.of("thirst", 1.5));
+
+        engine.decay(player, thirst);
+
+        assertEquals(97.0, engine.get(player, "thirst"));
+    }
+
+    @Test
+    void immunePlayerDoesNotDecay() {
+
+        StatDefinition thirst = thirstWithDecay(2, List.of());
+        engine.setImmune(player, true);
+
+        engine.decay(player, thirst);
+
+        assertEquals(100.0, engine.get(player, "thirst"));
+        org.junit.jupiter.api.Assertions.assertTrue(engine.isImmune(player));
+    }
+
+    @Test
+    void immunePlayerSkipsThresholds() {
+
+        var actions = List.<com.sack.rpgroll.extras.action.ExtrasAction>of();
+        StatDefinition thirst = thirstWithDecay(1, List.of(new StatThreshold("<=25", List.of(), actions, List.of())));
+        engine.set(player, "thirst", 10);
+        engine.setImmune(player, true);
+
+        engine.tickThresholdsFor(player, thirst);
+
+        org.mockito.Mockito.verify(actionExecutor, org.mockito.Mockito.never())
+                .execute(org.mockito.ArgumentMatchers.any(), org.mockito.ArgumentMatchers.anyList());
+
+        engine.setImmune(player, false);
+        engine.tickThresholdsFor(player, thirst);
+        org.mockito.Mockito.verify(actionExecutor).execute(player, actions);
+    }
+
+    @Test
+    void becomingImmuneRemovesConditionsFromReachedThresholds() {
+
+        var conditions = mock(com.sack.rpgroll.extras.condition.ConditionManager.class);
+        var runtime = mock(com.sack.rpgroll.extras.condition.ConditionRuntime.class);
+        when(conditions.get("dehydration")).thenReturn(Optional.empty());
+        engine.linkConditions(conditions, runtime);
+        StatDefinition thirst = thirstWithDecay(1,
+                List.of(new StatThreshold("<=0", List.of(), List.of(), List.of("dehydration"))));
+        engine.set(player, "thirst", 0);
+        engine.tickThresholdsFor(player, thirst);
+
+        engine.setImmune(player, true);
+
+        org.mockito.Mockito.verify(runtime).remove(player, "dehydration");
+    }
+
+    @Test
+    void speedsAreReadFromConfig() throws Exception {
+
+        var config = new org.bukkit.configuration.file.YamlConfiguration();
+        config.loadFromString("needs-speed:\n  thirst: 2\n  stress: 0.5\n");
+
+        assertEquals(Map.of("thirst", 2.0, "stress", 0.5), StatEngine.speeds(config));
+        assertEquals(Map.of(), StatEngine.speeds(new org.bukkit.configuration.file.YamlConfiguration()));
+    }
 }

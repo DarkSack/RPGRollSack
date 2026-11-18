@@ -22,6 +22,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 /** Comprar de la tienda de otro jugador: click = comprar 1, shift-click = comprar 8. */
 public class ShopViewGUI extends InventoryGUI {
 
+    /** Fondo dibujado (sackito:menus/tienda_jugador): volver (44) va dibujado. */
+    public static final String BACKGROUND = "tienda_jugador";
+
     private static final int SIZE = 45;
     private static final int BACK_SLOT = 44;
 
@@ -33,7 +36,7 @@ public class ShopViewGUI extends InventoryGUI {
 
     public ShopViewGUI(Player player, PlayerShop shop, ShopManager shopManager, CurrencyManager currencyManager,
             Runnable onBack, LangManager lang) {
-        super(player, ComponentUtils.parse(shop.name()), SIZE);
+        super(player, EconomyMenus.skin().title(BACKGROUND, ComponentUtils.parse(shop.name())), SIZE);
         this.shop = shop;
         this.shopManager = shopManager;
         this.currencyManager = currencyManager;
@@ -47,7 +50,7 @@ public class ShopViewGUI extends InventoryGUI {
         clear();
 
         for (int slot = 0; slot < SIZE; slot++) {
-            setItem(slot, ItemBuilder.createFiller());
+            setItem(slot, EconomyMenus.filler());
         }
 
         var currency = currencyManager.get(shop.currencyId()).orElse(currencyManager.defaultCurrency());
@@ -71,7 +74,7 @@ public class ShopViewGUI extends InventoryGUI {
                     lang.component("shop.view.click_hint")));
         }
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("common.back")));
+        setItem(BACK_SLOT, EconomyMenus.skin().button(ItemBuilder.createCancelButton(lang.raw("common.back"))));
     }
 
     @Override

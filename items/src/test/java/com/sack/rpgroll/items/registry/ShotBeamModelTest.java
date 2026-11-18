@@ -80,7 +80,10 @@ class ShotBeamModelTest {
         when(player.getEyeLocation()).thenReturn(new Location(world, 0, 70, 0));
         when(world.spawn(any(Location.class), eq(ItemDisplay.class), any(java.util.function.Consumer.class)))
                 .thenReturn(display);
-        ShotBeam.hold(plugin, player, mock(ShotVisuals.class, RETURNS_SELF), 24, 100, appearance());
+        ShotMuzzle muzzle = mock(ShotMuzzle.class);
+        when(muzzle.at(eq(player), any(), any(), any())).thenReturn(new Location(world, 0, 70, 1));
+        ShotBeam.hold(plugin, player, mock(ShotVisuals.class, RETURNS_SELF), 24, 100, appearance(),
+                muzzle, org.bukkit.inventory.EquipmentSlot.HAND);
         ArgumentCaptor<Runnable> tick = ArgumentCaptor.forClass(Runnable.class);
         verify(scheduler).runTaskTimer(eq(plugin), tick.capture(), eq(0L), eq(1L));
         try (var items = mockConstruction(ItemStack.class, (item, ctx) ->

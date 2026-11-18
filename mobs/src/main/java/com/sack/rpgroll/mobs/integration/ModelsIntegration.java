@@ -83,6 +83,11 @@ public final class ModelsIntegration {
         return isAvailable() && Fmm.play(entity, "attack", false);
     }
 
+    /** Cambia el nombre que enseña el modelo. Devuelve false si el mob no lleva modelo (el nombre va en el mob). */
+    public static boolean rename(LivingEntity entity, Component name) {
+        return isAvailable() && Fmm.rename(entity, name == null ? null : NAME.serialize(name));
+    }
+
     /** Al morir: el modelo hace su animación de muerte (si la tiene) y se retira. */
     public static void removeWithDeath(LivingEntity entity) {
         SPECIAL_STARTED.remove(entity.getUniqueId());
@@ -123,6 +128,16 @@ public final class ModelsIntegration {
         static boolean play(LivingEntity entity, String animation, boolean loop) {
             DynamicEntity model = DynamicEntity.getDynamicEntity(entity);
             return model != null && !model.isRemoved() && !model.isDying() && model.playAnimation(animation, false, loop);
+        }
+
+        static boolean rename(LivingEntity entity, String name) {
+            DynamicEntity model = DynamicEntity.getDynamicEntity(entity);
+            if (model == null || model.isRemoved() || model.isDying()) {
+                return false;
+            }
+            model.setDisplayName(name == null ? "" : name);
+            model.setDisplayNameVisible(name != null);
+            return true;
         }
 
         static void removeWithDeath(LivingEntity entity) {

@@ -335,6 +335,11 @@ public final class WorldDamage {
             if (restored >= limit) {
                 break;
             }
+            Spot spot = entry.getKey();
+            // Leer un chunk descargado lo carga en el hilo principal; se repone cuando alguien vuelva por ahí.
+            if (now != Long.MAX_VALUE && !Bukkit.getWorld(spot.world()).isChunkLoaded(spot.x() >> 4, spot.z() >> 4)) {
+                continue;
+            }
             changes.remove(entry.getKey());
             dirty = true;
             Block block = entry.getKey().block();

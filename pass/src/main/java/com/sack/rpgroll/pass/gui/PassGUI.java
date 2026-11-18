@@ -2,7 +2,6 @@ package com.sack.rpgroll.pass.gui;
 
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
-import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.pass.PassModule;
 import com.sack.rpgroll.pass.player.PassPlayer;
 import com.sack.rpgroll.pass.requirement.RequirementStatus;
@@ -28,6 +27,9 @@ import java.util.Optional;
  */
 public class PassGUI extends InventoryGUI {
 
+    /** Fondo dibujado (sackito:menus/pase): todos sus botones cambian o no siempre salen, así que llevan hueco. */
+    public static final String BACKGROUND = "pase";
+
     private static final int SIZE = 54;
     private static final int PER_PAGE = 7;
     private static final int HEADER = 4;
@@ -45,7 +47,7 @@ public class PassGUI extends InventoryGUI {
     private int page = -1;
 
     public PassGUI(Player player, PassModule module) {
-        super(player, module.lang().component("gui.pass.title"), SIZE);
+        super(player, PassMenus.skin().title(BACKGROUND, module.lang().component("gui.pass.title")), SIZE);
         this.module = module;
         this.lang = module.lang();
     }
@@ -55,7 +57,7 @@ public class PassGUI extends InventoryGUI {
 
         clear();
         for (int slot = 0; slot < SIZE; slot++) {
-            setItem(slot, ItemBuilder.createFiller());
+            setItem(slot, PassMenus.filler());
         }
 
         PassService pass = module.pass();
@@ -242,7 +244,7 @@ public class PassGUI extends InventoryGUI {
             PassPlayer state, boolean unlocked, boolean hasTrack, List<RequirementStatus> requirements) {
 
         if (rewards.isEmpty()) {
-            return ItemBuilder.createFiller();
+            return PassMenus.filler();
         }
 
         List<Component> lore = new ArrayList<>();

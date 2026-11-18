@@ -29,6 +29,8 @@ public enum EnchantCategory {
     SHOVEL,
     HOE,
     SHIELD,
+    MACE,
+    SPEAR,
     ANY;
 
     public boolean matches(Material material) {
@@ -40,7 +42,8 @@ public enum EnchantCategory {
         String name = material.name();
 
         return switch (this) {
-            case WEAPON -> name.endsWith("_SWORD") || name.endsWith("_AXE") || material == Material.TRIDENT;
+            case WEAPON -> name.endsWith("_SWORD") || name.endsWith("_AXE") || name.endsWith("_SPEAR")
+                    || material == Material.TRIDENT || material == Material.MACE;
             case ARMOR -> name.endsWith("_HELMET") || name.endsWith("_CHESTPLATE")
                     || name.endsWith("_LEGGINGS") || name.endsWith("_BOOTS")
                     || material == Material.TURTLE_HELMET || material == Material.ELYTRA;
@@ -49,7 +52,7 @@ public enum EnchantCategory {
             case LEGGINGS -> name.endsWith("_LEGGINGS");
             case BOOTS -> name.endsWith("_BOOTS");
             case TOOLS -> name.endsWith("_PICKAXE") || name.endsWith("_SHOVEL")
-                    || name.endsWith("_HOE") || name.endsWith("_AXE");
+                    || name.endsWith("_HOE") || name.endsWith("_AXE") || material == Material.SHEARS;
             case BOW -> material == Material.BOW;
             case CROSSBOW -> material == Material.CROSSBOW;
             case TRIDENT -> material == Material.TRIDENT;
@@ -60,6 +63,8 @@ public enum EnchantCategory {
             case SHOVEL -> name.endsWith("_SHOVEL");
             case HOE -> name.endsWith("_HOE");
             case SHIELD -> material == Material.SHIELD;
+            case MACE -> material == Material.MACE;
+            case SPEAR -> name.endsWith("_SPEAR");
             default -> false;
         };
     }

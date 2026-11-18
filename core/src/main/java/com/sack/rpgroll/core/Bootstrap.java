@@ -184,6 +184,8 @@ public class Bootstrap {
         FileConfiguration mainConfig = configManager.getConfig("config.yml");
         String configuredLocale = mainConfig != null ? mainConfig.getString("language", "es") : "es";
         langManager.reload(configuredLocale);
+        com.sack.rpgroll.gui.MenuSkin.register(com.sack.rpgroll.gui.CoreMenus.MODULE,
+                com.sack.rpgroll.gui.MenuSkin.from(mainConfig != null ? mainConfig.getConfigurationSection("menus") : null));
         services.register(LangManager.class, langManager);
         plugin.getLogger().info("✔ LangManager registrado (idioma: " + configuredLocale + ")");
 
@@ -431,7 +433,8 @@ public class Bootstrap {
         // ===== Listeners de combate (armadura, evasión, crítico, salud) =====
         CombatTracker combatTracker = services.get(CombatTracker.class);
         CombatEffectsListener combatEffectsListener = new CombatEffectsListener(playerManager, combatTracker,
-                resourceBar, langManager, services.get(com.sack.rpgroll.gameplay.trait.PassiveEffects.class));
+                resourceBar, langManager, services.get(com.sack.rpgroll.gameplay.trait.PassiveEffects.class),
+                Math.max(0, services.get(ConfigManager.class).getConfig("gameplay.yml").getDouble("combat.incoming_damage_multiplier", 1.0)));
         Bukkit.getPluginManager().registerEvents(combatEffectsListener, plugin);
 
         // ===== Listeners de GUI =====

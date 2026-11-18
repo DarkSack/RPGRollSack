@@ -27,6 +27,8 @@ public class EnchantmentsPlugin extends JavaPlugin {
     private EnchantmentManager enchantmentManager;
     private EnchantmentItem enchantmentItem;
     private LangManager langManager;
+    private com.sack.rpgroll.enchantments.station.Infuser infuser;
+    private com.sack.rpgroll.enchantments.station.SuperEnchanter superEnchanter;
 
     @Override
     public void onEnable() {
@@ -49,6 +51,12 @@ public class EnchantmentsPlugin extends JavaPlugin {
         enchantmentManager.initialize();
 
         enchantmentItem = new EnchantmentItem(this, enchantmentManager);
+
+        infuser = new com.sack.rpgroll.enchantments.station.Infuser(this, langManager, enchantmentItem);
+        superEnchanter = new com.sack.rpgroll.enchantments.station.SuperEnchanter(this, langManager, enchantmentManager, enchantmentItem);
+        getServer().getPluginManager().registerEvents(infuser, this);
+        getServer().getPluginManager().registerEvents(superEnchanter, this);
+        reloadStations();
 
         ConditionEvaluator conditionEvaluator = new ConditionEvaluator();
         EnchantEffectExecutor effectExecutor = new EnchantEffectExecutor(this);
@@ -89,6 +97,28 @@ public class EnchantmentsPlugin extends JavaPlugin {
     }
 
     /** API pública: otros plugins/addons pueden registrar sus propios encantamientos por código. */
+    /** Lee de nuevo {@code infuser} y {@code super-enchanter} de config.yml (también con /renchant reload). */
+    public void reloadStations() {
+        infuser.configure(getConfig().getConfigurationSection("infuser"));
+        superEnchanter.configure(getConfig().getConfigurationSection("super-enchanter"));
+    }
+
+    @Override
+    public void onDisable() {
+        if (infuser != null) {
+            infuser.shutdown();
+            superEnchanter.shutdown();
+        }
+    }
+
+    public com.sack.rpgroll.enchantments.station.Infuser getInfuser() {
+        return infuser;
+    }
+
+    public com.sack.rpgroll.enchantments.station.SuperEnchanter getSuperEnchanter() {
+        return superEnchanter;
+    }
+
     public EnchantmentManager getEnchantmentManager() {
         return enchantmentManager;
     }

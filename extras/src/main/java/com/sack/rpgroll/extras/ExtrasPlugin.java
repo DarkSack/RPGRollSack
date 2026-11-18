@@ -56,7 +56,11 @@ public class ExtrasPlugin extends JavaPlugin {
     private static final List<String> DIRECTORIES = List.of("stats", "conditions", "modifiers", "menus");
 
     private LangManager langManager;
+    private com.sack.rpgroll.extras.elevator.Elevators elevators;
+    private com.sack.rpgroll.extras.reinforce.Reinforcement reinforcement;
     private ExtrasMenuManager menuManager;
+    private com.sack.rpgroll.extras.sort.InventorySort inventorySort;
+    private com.sack.rpgroll.extras.sort.SortWand sortWand;
     private ServerMenu serverMenu;
     private com.sack.rpgroll.extras.travel.RandomTeleportCommand randomTeleport;
     private com.sack.rpgroll.extras.travel.WarpCommand warpCommand;
@@ -101,9 +105,24 @@ public class ExtrasPlugin extends JavaPlugin {
         backpackService = new BackpackService(new BackpackItems(this), new BackpackStorage(getDataFolder(), getLogger()),
                 langManager);
         backpackRecipes = new BackpackRecipes(this, backpackService);
+        com.sack.rpgroll.common.recipe.RecipeSource.register(this, backpackRecipes);
         configureBackpacks();
         getServer().getPluginManager().registerEvents(
                 new BackpackListener(this, backpackService, backpackRecipes, langManager), this);
+
+        elevators = new com.sack.rpgroll.extras.elevator.Elevators(this, langManager);
+        elevators.configure(getConfig().getConfigurationSection("elevator"));
+        getServer().getPluginManager().registerEvents(elevators, this);
+        reinforcement = new com.sack.rpgroll.extras.reinforce.Reinforcement(this, langManager);
+        reinforcement.configure(getConfig().getConfigurationSection("reinforcement"));
+        getServer().getPluginManager().registerEvents(reinforcement, this);
+        inventorySort = new com.sack.rpgroll.extras.sort.InventorySort(this, langManager);
+        inventorySort.configure(getConfig().getConfigurationSection("inventory-sort"));
+        getServer().getPluginManager().registerEvents(inventorySort, this);
+        sortWand = new com.sack.rpgroll.extras.sort.SortWand(this, langManager);
+        sortWand.configure(getConfig().getConfigurationSection("inventory-sort"));
+        inventorySort.wand(sortWand);
+        getServer().getPluginManager().registerEvents(sortWand, this);
 
         loadAndWire();
 
@@ -148,6 +167,7 @@ public class ExtrasPlugin extends JavaPlugin {
         ModifierResolver modifierResolver = new ModifierResolver(modifierManager);
         statEngine.linkModifiers(modifierResolver);
         statEngine.linkAfkPolicy(AfkPolicy.from(getConfig()));
+        statEngine.linkSpeeds(StatEngine.speeds(getConfig()));
         conditionRuntime.linkAfkPolicy(AfkPolicy.from(getConfig()));
 
         statEngine.start();
@@ -157,7 +177,9 @@ public class ExtrasPlugin extends JavaPlugin {
         TemperatureSettings temperatureSettings = new TemperatureSettingsLoader().load(this);
         temperatureEngine = new BodyTemperatureEngine(
                 this, ambientCalculator, thermalProtectionService, actionExecutor, temperatureSettings);
-        temperatureEngine.start();
+        if (TemperatureSettingsLoader.enabled(this)) {
+            temperatureEngine.start();
+        }
 
         getServer().getPluginManager().registerEvents(new ConsumptionListener(statEngine), this);
         getServer().getPluginManager().registerEvents(
@@ -205,14 +227,21 @@ public class ExtrasPlugin extends JavaPlugin {
             }
         });
         statEngine.linkAfkPolicy(AfkPolicy.from(getConfig()));
+        statEngine.linkSpeeds(StatEngine.speeds(getConfig()));
         conditionRuntime.linkAfkPolicy(AfkPolicy.from(getConfig()));
         // Las mochilas abiertas se guardan y cierran: su nivel pudo cambiar de tamaño.
         backpackService.closeAll();
         configureBackpacks();
+        elevators.configure(getConfig().getConfigurationSection("elevator"));
+        reinforcement.configure(getConfig().getConfigurationSection("reinforcement"));
+        inventorySort.configure(getConfig().getConfigurationSection("inventory-sort"));
+        sortWand.configure(getConfig().getConfigurationSection("inventory-sort"));
 
         statEngine.start();
         conditionRuntime.start(this);
-        temperatureEngine.start();
+        if (TemperatureSettingsLoader.enabled(this)) {
+            temperatureEngine.start();
+        }
         hudEngine.start();
     }
 
@@ -220,6 +249,9 @@ public class ExtrasPlugin extends JavaPlugin {
 
         var executor = new ExtrasAdminCommand(
                 statManager, statEngine, conditionManager, conditionRuntime, this::reload, langManager);
+        var needsAdmin = new com.sack.rpgroll.extras.admin.NeedsAdmin(this, statManager, statEngine, conditionManager,
+                conditionRuntime, temperatureEngine, this::reload, langManager);
+        executor.menuOpener(player -> new com.sack.rpgroll.extras.admin.NeedsAdminMenu(player, needsAdmin).open());
 
         // Registrado por Brigadier para que `execute as` entregue al jugador real.
         com.sack.rpgroll.common.command.BrigadierCommands.register(this, "extrasadmin",
@@ -228,6 +260,9 @@ public class ExtrasPlugin extends JavaPlugin {
         var menuExecutor = new MenuCommand(serverMenu, menuManager, langManager);
         com.sack.rpgroll.common.command.BrigadierCommands.register(this, "menu", "Menú del servidor",
                 java.util.List.of(), menuExecutor, menuExecutor, "rpgrollextras.menu");
+
+        com.sack.rpgroll.common.command.BrigadierCommands.register(this, "ordenar", "Ordena tu inventario",
+                List.of("sort"), inventorySort, inventorySort, com.sack.rpgroll.extras.sort.InventorySort.PERMISSION);
 
         var backpackExecutor = new BackpackCommand(backpackService, langManager);
         com.sack.rpgroll.common.command.BrigadierCommands.register(this, "mochila", "Entrega y lista mochilas",
@@ -269,6 +304,17 @@ public class ExtrasPlugin extends JavaPlugin {
 
         if (backpackService != null) {
             backpackService.closeAll();
+        }
+
+        if (elevators != null) {
+            elevators.shutdown();
+        }
+
+        if (sortWand != null) {
+            sortWand.shutdown();
+        }
+        if (reinforcement != null) {
+            reinforcement.shutdown();
         }
 
         if (statEngine != null) {

@@ -130,6 +130,7 @@ public class FurniturePlugin extends JavaPlugin {
     }
 
     private void loadFurniture() {
+        manager.crafting(getConfig().getBoolean("crafting.enabled", true));
         manager.load(new File(getDataFolder(), "furniture"), getConfig().getConfigurationSection("categories"),
                 message -> getLogger().warning(message));
         manager.checkItems(message -> getLogger().warning(message));

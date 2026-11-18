@@ -7,10 +7,12 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.Inventory;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -63,6 +65,24 @@ public class GUIListener implements Listener {
             event.setCancelled(true);
             gui.handlePlayerInventoryClick(event);
         }
+    }
+
+    /** Arrastrar ítems que caen en el menú: se cancela (si no, quedan en casillas que el menú repinta y se pierden). */
+    @EventHandler
+    public void onInventoryDrag(InventoryDragEvent event) {
+        if (!(event.getWhoClicked() instanceof Player player)) {
+            return;
+        }
+        InventoryGUI gui = activeGUIs.get(player.getUniqueId());
+        if (gui != null && event.getView().getTopInventory().equals(gui.getInventory())
+                && touchesMenu(event.getRawSlots(), event.getView().getTopInventory().getSize())) {
+            event.setCancelled(true);
+        }
+    }
+
+    /** Alguna casilla (numeración de la vista: primero las del menú) es del menú de arriba. */
+    static boolean touchesMenu(Set<Integer> rawSlots, int menuSize) {
+        return rawSlots.stream().anyMatch(slot -> slot < menuSize);
     }
 
     @EventHandler

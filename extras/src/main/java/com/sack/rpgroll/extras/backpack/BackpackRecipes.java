@@ -1,5 +1,10 @@
 package com.sack.rpgroll.extras.backpack;
 
+import com.sack.rpgroll.common.recipe.RecipeEntry;
+import com.sack.rpgroll.common.recipe.RecipeSlot;
+import com.sack.rpgroll.common.recipe.RecipeSource;
+import com.sack.rpgroll.common.recipe.RecipeStation;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Keyed;
 import org.bukkit.Material;
@@ -12,6 +17,7 @@ import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +30,7 @@ import java.util.UUID;
  * cabeza del centro sea de verdad la mochila del nivel anterior y que un
  * {@code item:<id>} sea ese ítem de RPGRoll-Items y no el material pelado.
  */
-public class BackpackRecipes {
+public class BackpackRecipes implements RecipeSource {
 
     private static final String PREFIX = "backpack_";
 
@@ -81,6 +87,59 @@ public class BackpackRecipes {
                 registered.add(key);
             }
         }
+    }
+
+    @Override
+    public String name() {
+        return plugin.getName();
+    }
+
+    /**
+     * Las mismas recetas que van a Bukkit, pero con lo que de verdad piden: Bukkit solo guarda
+     * "una cabeza" donde va la mochila anterior y el recetario enseñaba una cabeza cualquiera.
+     * Mismo id y origen que la de Bukkit, así el recetario se queda con esta.
+     */
+    @Override
+    public Collection<RecipeEntry> recipes() {
+
+        List<RecipeEntry> entries = new ArrayList<>();
+        BackpackSettings settings = service.settings();
+
+        for (BackpackTier tier : settings.tiers()) {
+
+            NamespacedKey key = new NamespacedKey(plugin, PREFIX + tier.id());
+            BackpackRecipe recipe = tier.recipe();
+            if (recipe == null || !registered.contains(key)) {
+                continue;
+            }
+
+            int width = 1;
+            for (String row : recipe.shape()) {
+                width = Math.max(width, row.length());
+            }
+            width = Math.min(3, width);
+
+            List<RecipeSlot> slots = new ArrayList<>(9);
+            for (String row : recipe.shape()) {
+                for (int c = 0; c < width; c++) {
+                    BackpackIngredient ingredient = c < row.length() ? recipe.ingredients().get(row.charAt(c)) : null;
+                    slots.add(ingredient == null ? RecipeSlot.EMPTY : RecipeSlot.of(display(tier, ingredient)));
+                }
+            }
+
+            entries.add(RecipeEntry.builder(key.asString(), RecipeStation.vanilla(RecipeStation.CRAFTING, Material.CRAFTING_TABLE)).source(name()).shaped(width, slots)
+                    .output(service.items().create(tier, null, null)).build());
+        }
+        return entries;
+    }
+
+    private ItemStack display(BackpackTier tier, BackpackIngredient ingredient) {
+        return switch (ingredient.kind()) {
+            case MATERIAL -> ItemStack.of(ingredient.material());
+            case ITEM -> ItemsBridge.stack(ingredient.itemId()).orElseGet(() -> ItemStack.of(Material.BARRIER));
+            case BACKPACK -> service.settings().previous(tier).map(previous -> service.items().create(previous, null, null))
+                    .orElseGet(() -> ItemStack.of(Material.PLAYER_HEAD));
+        };
     }
 
     public void unregister() {

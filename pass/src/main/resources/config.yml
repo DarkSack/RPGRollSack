@@ -30,3 +30,8 @@ playtime-afk-seconds: 300
 #
 # La pista premium la abre el permiso rpgroll.pass.premium, p. ej.:
 #   lp user <jugador> permission settemp rpgroll.pass.premium true 45d
+
+# Menús dibujados del paquete de recursos (pase, misiones, recompensa diaria).
+# Vacío = menús de cofre normales. En Sackito: "sackito:menus".
+menus:
+  pack: ""

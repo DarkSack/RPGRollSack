@@ -22,6 +22,7 @@ import org.bukkit.entity.Player;
 import java.util.List;
 
 /**
+ * /extrasadmin menu
  * /extrasadmin reload
  * /extrasadmin list
  * /extrasadmin get &lt;jugador&gt; &lt;stat&gt;
@@ -32,7 +33,7 @@ import java.util.List;
  */
 public class ExtrasAdminCommand implements CommandExecutor, TabCompleter {
 
-    private static final List<String> SUBCOMMANDS = List.of("reload", "list", "get", "set", "add", "apply", "remove");
+    private static final List<String> SUBCOMMANDS = List.of("menu", "reload", "list", "get", "set", "add", "apply", "remove");
     private static final String PERMISSION = "rpgrollextras.admin.*";
 
     private final StatManager statManager;
@@ -41,6 +42,7 @@ public class ExtrasAdminCommand implements CommandExecutor, TabCompleter {
     private final ConditionRuntime conditionRuntime;
     private final Runnable reloadCallback;
     private final LangManager lang;
+    private java.util.function.Consumer<Player> menuOpener;
 
     public ExtrasAdminCommand(StatManager statManager, StatEngine statEngine, ConditionManager conditionManager,
             ConditionRuntime conditionRuntime, Runnable reloadCallback, LangManager lang) {
@@ -50,6 +52,11 @@ public class ExtrasAdminCommand implements CommandExecutor, TabCompleter {
         this.conditionRuntime = conditionRuntime;
         this.reloadCallback = reloadCallback;
         this.lang = lang;
+    }
+
+    /** Abre el menú de admin de necesidades ({@code /extrasadmin menu}). */
+    public void menuOpener(java.util.function.Consumer<Player> menuOpener) {
+        this.menuOpener = menuOpener;
     }
 
     @Override
@@ -66,6 +73,7 @@ public class ExtrasAdminCommand implements CommandExecutor, TabCompleter {
         }
 
         switch (args[0].toLowerCase()) {
+            case "menu" -> handleMenu(sender);
             case "reload" -> handleReload(sender);
             case "list" -> handleList(sender);
             case "get" -> handleGet(sender, args);
@@ -81,6 +89,14 @@ public class ExtrasAdminCommand implements CommandExecutor, TabCompleter {
 
     private void sendUsage(CommandSender sender) {
         lang.send(sender, "command.usage.main");
+    }
+
+    private void handleMenu(CommandSender sender) {
+        if (!(sender instanceof Player player) || menuOpener == null) {
+            lang.send(sender, "command.player-only");
+            return;
+        }
+        menuOpener.accept(player);
     }
 
     private void handleReload(CommandSender sender) {

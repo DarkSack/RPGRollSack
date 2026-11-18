@@ -146,14 +146,14 @@ guild:
     success: "&7Invitación rechazada."
   disband:
     only_leader: "&cSolo el líder puede disolver el gremio."
-    success: "&7Guild disuelta."
+    success: "&7Gremio disuelto."
   leave:
     is_leader: "&cEres el líder — transfiere el liderazgo o usa /guild disband."
     success: "&7Abandonaste el gremio."
   create:
     usage: "&eUso: /guild create <nombre>"
     invalid_name: "&cEse nombre no es válido, tiene más de 24 letras o ya existe un gremio con ese id."
-    success: "&a✔ Guild '{name}' fundada."
+    success: "&a✔ Gremio '{name}' fundado."
     requires_level: "&cNecesitas nivel {level} para fundar un gremio."
     requires_permission: "&cNo tienes el permiso necesario para fundar un gremio."
     requires_item: "&cNecesitas {amount}x {item} para fundar un gremio."
@@ -166,7 +166,7 @@ guild:
     expired: "&cEsa invitación ya expiró."
     guild_gone: "&cEse gremio ya no existe."
   ranking:
-    header: "&6=== Ranking de Guilds ({category}) ==="
+    header: "&6=== Ranking de gremios ({category}) ==="
     entry: "&7{position}. {name} — {value}"
   chat:
     officers_only: "&cSolo los oficiales/líder pueden usar ese canal."
@@ -199,7 +199,7 @@ guild:
       territory: "Territorio"
       upgrades: "Árbol de Mejoras"
       diplomacy: "Diplomacia"
-      quests: "Quests de Guild"
+      quests: "Misiones del gremio"
       achievements: "Logros"
       calendar: "Calendario"
       customization: "Personalización"
@@ -334,7 +334,7 @@ guild:
     click_change: "&eClic para cambiar relación"
     no_permission: "&cNo tienes permiso para gestionar diplomacia."
   browser:
-    title: "Guilds del servidor"
+    title: "Gremios del servidor"
     level_members: "&7Nivel {level} · {count} miembro(s)"
     click_open: "&eClic para abrir"
 
@@ -352,17 +352,17 @@ guildadmin:
   delete:
     usage: "&eUso: /guildadmin delete <id>"
     not_found: "&cNo existe ese gremio."
-    success: "&a✔ Guild eliminada."
+    success: "&a✔ Gremio eliminado."
   quest:
     browser:
-      title: "Quests de Guild (admin)"
+      title: "Misiones del gremio (admin)"
     click_edit: "&eClic para editar"
     button:
       new: "Crear misión de gremio nueva"
     prompt_new_id: "&eEscribe el id de la nueva misión de gremio:"
     id_already_exists: "&cYa existe una quest con ese id."
     editor:
-      title: "Quest de Guild: {id}"
+      title: "Misión del gremio: {id}"
     name_label: "Nombre: {name}"
     type_label: "Tipo: {type}"
     reference_label: "Referencia: {reference}"
@@ -383,3 +383,16 @@ guildadmin:
       click_increments: "&7Clic: +1 · Mayús + clic: +10 · Clic derecho: -1"
       click_100: "&7Clic: +100 · Clic derecho: -100"
       click_50: "&7Clic: +50 · Clic derecho: -50"
+
+# Nombres de rango para %rpgrollguilds_guild_rank% y %rpgrollguilds_team_rank%.
+enum:
+  GuildRole:
+    LEADER: "Líder"
+    OFFICER: "Oficial"
+    MEMBER: "Miembro"
+    RECRUIT: "Recluta"
+  TeamRole:
+    LEADER: "Líder"
+    OFFICER: "Oficial"
+    MEMBER: "Miembro"
+    GUEST: "Invitado"

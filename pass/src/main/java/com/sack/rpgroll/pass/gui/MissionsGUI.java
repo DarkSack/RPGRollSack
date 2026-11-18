@@ -2,7 +2,6 @@ package com.sack.rpgroll.pass.gui;
 
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
-import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.pass.PassModule;
 import com.sack.rpgroll.pass.mission.Mission;
 import com.sack.rpgroll.pass.mission.MissionScope;
@@ -18,6 +17,9 @@ import java.util.List;
 /** Misiones de hoy, de la semana y de la temporada, con su avance. */
 public class MissionsGUI extends InventoryGUI {
 
+    /** Fondo dibujado (sackito:menus/pase_misiones): volver (49) va dibujado. */
+    public static final String BACKGROUND = "pase_misiones";
+
     private static final int SIZE = 54;
     private static final int BACK = 49;
 
@@ -25,7 +27,7 @@ public class MissionsGUI extends InventoryGUI {
     private final LangManager lang;
 
     public MissionsGUI(Player player, PassModule module) {
-        super(player, module.lang().component("gui.missions.title"), SIZE);
+        super(player, PassMenus.skin().title(BACKGROUND, module.lang().component("gui.missions.title")), SIZE);
         this.module = module;
         this.lang = module.lang();
     }
@@ -35,7 +37,7 @@ public class MissionsGUI extends InventoryGUI {
 
         clear();
         for (int slot = 0; slot < SIZE; slot++) {
-            setItem(slot, ItemBuilder.createFiller());
+            setItem(slot, PassMenus.filler());
         }
 
         PassPlayer state = module.missions().refreshed(player);
@@ -44,7 +46,7 @@ public class MissionsGUI extends InventoryGUI {
         row(18, Material.COMPASS, "gui.missions.weekly", MissionScope.WEEKLY, Material.MAP, 7, state);
         row(27, Material.NETHER_STAR, "gui.missions.season", MissionScope.SEASON, Material.BOOK, 16, state);
 
-        setItem(BACK, GuiItems.item(Material.ARROW, lang.component("gui.back"), List.of()));
+        setItem(BACK, PassMenus.skin().button(GuiItems.item(Material.ARROW, lang.component("gui.back"), List.of())));
     }
 
     @Override

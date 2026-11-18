@@ -92,6 +92,10 @@ combat:
   # Permitir regeneración natural en combate
   natural_regen_in_combat: false
 
+  # Multiplica el daño que recibe la salud RPG (100 + 5 por punto de Resistencia, unas 5 veces
+  # los 20 de vanilla). 1.0 = el golpe vanilla tal cual; 3.0 se parece más a lo que asusta en vanilla.
+  incoming_damage_multiplier: 1.0
+
   # Regeneración pasiva de salud/maná (porcentaje del máximo por intervalo)
   health_regen_percent: 2.0
   mana_regen_percent: 5.0

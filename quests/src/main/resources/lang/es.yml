@@ -41,6 +41,7 @@ command:
     &7 • &dabandon
     &7 • &6active
     &7 • &9completed
+    &7 • &acontinue
     &8   [id]
   list_empty: "&7No hay misiones definidas."
   list_header: "&6Misiones disponibles:"
@@ -65,6 +66,10 @@ command:
   active_empty: "&7No tienes misiones activas."
   active_header: "&6Misiones activas:"
   active_entry: "&f• {name} — etapa {current}/{total}"
+  continue_usage: "&cUso: /quest continuar [MAIN_STORY|SIDE_QUEST|DAILY]"
+  continue_current: "&6Tu capítulo actual: &f{name}"
+  continue_locked: "&eSiguiente capítulo: &f{name}&e. Aún no puedes empezarlo:"
+  continue_finished: "&a✔ Has completado toda la historia. ¡Eres una leyenda!"
   completed_empty: "&7Todavía no completaste ninguna misión."
   completed_header: "&6Misiones completadas: {count}"
   completed_entry: "&f• {id}"

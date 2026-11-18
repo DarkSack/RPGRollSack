@@ -50,8 +50,86 @@ station:
 gui:
   close:
     name: "&cCerrar"
+  categories:
+    title: "&8Recetario · elige un tipo"
+    search:
+      name: "&6Buscar por nombre"
+      lore: "&7Escribe en el chat lo que buscas"
+    all:
+      short: "Todo"
+      name: "&fTodo"
+      lore: "&7Todos los objetos\n&7{count} objetos\n&eClic: abrir"
+    server:
+      short: "Del servidor"
+      name: "&dDel servidor"
+      lore: "&7Lo que añaden los plugins de Sackito\n&7{count} objetos\n&eClic: abrir"
+    weapons:
+      short: "Armas"
+      name: "&cArmas"
+      lore: "&7Espadas, arcos, lanzas y munición\n&7{count} objetos\n&eClic: abrir"
+    tools:
+      short: "Herramientas"
+      name: "&eHerramientas"
+      lore: "&7Picos, hachas, palas, cubos...\n&7{count} objetos\n&eClic: abrir"
+    armor:
+      short: "Armaduras"
+      name: "&bArmaduras"
+      lore: "&7Cascos, petos, escudos, élitros\n&7{count} objetos\n&eClic: abrir"
+    food:
+      short: "Comida"
+      name: "&6Comida"
+      lore: "&7Todo lo que se come\n&7{count} objetos\n&eClic: abrir"
+    potions:
+      short: "Pociones y magia"
+      name: "&5Pociones y magia"
+      lore: "&7Pociones, libros encantados, frascos\n&7{count} objetos\n&eClic: abrir"
+    redstone:
+      short: "Redstone"
+      name: "&4Redstone"
+      lore: "&7Pistones, tolvas, raíles, TNT\n&7{count} objetos\n&eClic: abrir"
+    blocks:
+      short: "Bloques"
+      name: "&2Bloques"
+      lore: "&7Construcción, decoración y menas\n&7{count} objetos\n&eClic: abrir"
+    materials:
+      short: "Materiales"
+      name: "&7Materiales"
+      lore: "&7Lingotes, gemas, tintes y demás\n&7{count} objetos\n&eClic: abrir"
+    own:
+      short: "Fabricable en Sackito"
+      name: "&aFabricable en Sackito"
+      lore: "&7Solo lo que se craftea con recetas\n&7de los plugins de Sackito\n&7{count} objetos\n&eClic: abrir"
+    plugins:
+      name: "&6Por plugin"
+      lore: "&7Un apartado por cada plugin\n&7de Sackito que fabrica algo\n&7{count} {sections}\n&eClic: elegir"
+      one: "apartado"
+      many: "apartados"
+  plugins:
+    title: "&8Recetario · por plugin"
+    section:
+      name: "&6{name}"
+      lore: "&7{count} {items}\n&8{source}\n&eClic: abrir"
+      one: "objeto que se fabrica aquí"
+      many: "objetos que se fabrican aquí"
+    empty:
+      name: "&7Ningún plugin de Sackito fabrica nada"
+    back:
+      name: "&6« Tipos"
+      lore: "&7Volver a la portada del recetario"
+    source:
+      rpgroll-items: "Armas y objetos"
+      rpgroll-crafting: "Mesas de crafteo"
+      rpgroll-extras: "Extras"
+      rpgroll-enchantments: "Encantamientos"
+      rpgroll-machines: "Máquinas"
+      rpgroll-furniture: "Muebles"
+      rpgroll-recipes: "Recetas del servidor"
   catalog:
     title: "&8Recetario"
+    title_of: "&8Recetario · {type}"
+    types:
+      name: "&6« Tipos"
+      lore: "&7Volver a la portada del recetario"
     all: "Todas"
     none: "ninguna"
     item_hint: |-

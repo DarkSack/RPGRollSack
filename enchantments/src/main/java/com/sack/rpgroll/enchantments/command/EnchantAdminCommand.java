@@ -288,6 +288,9 @@ public class EnchantAdminCommand implements CommandExecutor, TabCompleter {
 
     private void handleReload(CommandSender sender) {
         plugin.reloadConfig();
+        if (plugin instanceof com.sack.rpgroll.enchantments.EnchantmentsPlugin enchantments) {
+            enchantments.reloadStations();
+        }
         lang.reload(plugin.getConfig().getString("language", "es"));
         manager.reload();
         lang.send(sender, "enchant_admin_command.reload_success", "count", manager.count());

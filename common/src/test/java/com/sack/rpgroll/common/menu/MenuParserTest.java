@@ -4,6 +4,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -93,5 +94,43 @@ class MenuParserTest {
                 """);
 
         assertTrue(parser.parse(config).items().get(0).actions().isEmpty());
+    }
+
+    @Test
+    void readsBackgroundAndModel() {
+        MenuDefinition def = parser.parse(load("""
+                id: servidor
+                background: sackito:menus/brujula
+                items:
+                  - slot: 4
+                    material: COMPASS
+                    model: invisible
+                """));
+
+        assertEquals("sackito:menus/brujula", def.background());
+        assertEquals("invisible", def.items().get(0).model());
+    }
+
+    @Test
+    void menuWithoutBackgroundStaysPlain() {
+        MenuDefinition def = parser.parse(load("""
+                id: servidor
+                filler: GRAY_STAINED_GLASS_PANE
+                items:
+                  - slot: 4
+                    material: COMPASS
+                """));
+
+        assertNull(def.background());
+        assertNull(def.items().get(0).model());
+        assertEquals("GRAY_STAINED_GLASS_PANE", def.filler());
+    }
+
+    @Test
+    void prefixOfBackground() {
+        assertEquals("sackito:menus/invisible", MenuGUI.modelKey("sackito:menus/brujula", "invisible"));
+        assertNull(MenuGUI.modelKey(null, "invisible"));
+        assertNull(MenuGUI.modelKey("sackito:menus/brujula", null));
+        assertNull(MenuGUI.modelKey("sin barra", "invisible"));
     }
 }

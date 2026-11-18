@@ -3,7 +3,9 @@ package com.sack.rpgroll.gui.job;
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gameplay.job.Job;
 import com.sack.rpgroll.gameplay.job.JobManager;
+import com.sack.rpgroll.gui.CoreMenus;
 import com.sack.rpgroll.gui.InventoryGUI;
+import com.sack.rpgroll.gui.confirm.ConfirmGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.player.PlayerManager;
 import com.sack.rpgroll.player.RPGPlayer;
@@ -30,6 +32,9 @@ import java.util.Optional;
  */
 public class JobAbandonGUI extends InventoryGUI {
 
+    /** Fondo dibujado (sackito:menus/trabajo_abandonar); el botón de cancelar (22) ya va dibujado. */
+    public static final String BACKGROUND = "trabajo_abandonar";
+
     private static final int CANCEL_SLOT = 22;
 
     private final JobManager jobManager;
@@ -41,7 +46,7 @@ public class JobAbandonGUI extends InventoryGUI {
     public JobAbandonGUI(Player player, JobManager jobManager, PlayerManager playerManager, String pendingJobId,
             LangManager lang) {
         super(player,
-                lang.component("job_abandon_gui.title").decorate(TextDecoration.BOLD),
+                CoreMenus.skin().title(BACKGROUND, lang.component("job_abandon_gui.title").decorate(TextDecoration.BOLD)),
                 27);
         this.jobManager = jobManager;
         this.playerManager = playerManager;
@@ -57,7 +62,7 @@ public class JobAbandonGUI extends InventoryGUI {
         slotToJob.clear();
 
         for (int i = 0; i < 9; i++) {
-            setItem(i, ItemBuilder.createFiller());
+            setItem(i, CoreMenus.filler());
         }
 
         setItem(4, new ItemBuilder(Material.PAPER)
@@ -87,10 +92,10 @@ public class JobAbandonGUI extends InventoryGUI {
         }
 
         for (int i = 18; i < 27; i++) {
-            setItem(i, ItemBuilder.createFiller());
+            setItem(i, CoreMenus.filler());
         }
 
-        setItem(CANCEL_SLOT, ItemBuilder.createCancelButton(lang.raw("job_abandon_gui.cancel_button")));
+        setItem(CANCEL_SLOT, CoreMenus.skin().button(ItemBuilder.createCancelButton(lang.raw("job_abandon_gui.cancel_button"))));
     }
 
     private void addJob(int slot, Job job, JobProgress progress) {
@@ -126,7 +131,40 @@ public class JobAbandonGUI extends InventoryGUI {
             return;
         }
 
-        Optional<RPGPlayer> rpgPlayerOpt = playerManager.getPlayer(player.getUniqueId());
+        confirmSwap(jobToLeave);
+    }
+
+    /** Cambiar de oficio borra el nivel del que se deja: se confirma antes, como en JobsGUI. */
+    private void confirmSwap(String jobToLeave) {
+
+        Optional<Job> oldJob = jobManager.get(jobToLeave);
+        String oldName = oldJob.map(Job::displayName).orElse(jobToLeave);
+        String newName = jobManager.get(pendingJobId).map(Job::displayName).orElse(pendingJobId);
+        int level = playerManager.getPlayer(player.getUniqueId())
+                .flatMap(current -> current.getJobs().getProgress(jobToLeave))
+                .map(JobProgress::level).orElse(1);
+
+        ItemStack subject = oldJob.map(job -> ItemBuilder.icon(job.icon()))
+                .orElseGet(() -> new ItemBuilder(Material.BARRIER))
+                .setName(lang.component("job_abandon_gui.confirm_name", "old", oldName, "new", newName)
+                        .decorate(TextDecoration.BOLD))
+                .setLore(lang.component("jobs_gui.confirm_leave_lore1", "level", level),
+                        lang.component("jobs_gui.confirm_leave_lore2"))
+                .build();
+
+        close();
+        new ConfirmGUI(player, lang.component("jobs_gui.confirm_title").decorate(TextDecoration.BOLD), subject,
+                lang.raw("job_abandon_gui.confirm_button", "old", oldName), lang.raw("jobs_gui.confirm_keep_button"),
+                true,
+                () -> swap(jobToLeave),
+                () -> new JobAbandonGUI(player, jobManager, playerManager, pendingJobId, lang).open(),
+                false).open();
+    }
+
+    private void swap(String jobToLeave) {
+
+        Optional<RPGPlayer> rpgPlayerOpt = playerManager.getPlayer(player.getUniqueId())
+                .filter(current -> current.getJobs().hasJob(jobToLeave));
         if (rpgPlayerOpt.isEmpty()) {
             close();
             return;

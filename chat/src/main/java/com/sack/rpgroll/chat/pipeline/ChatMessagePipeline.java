@@ -2,6 +2,7 @@ package com.sack.rpgroll.chat.pipeline;
 
 import com.sack.rpgroll.chat.antispam.AntiSpamManager;
 import com.sack.rpgroll.chat.antispam.MessageFilter;
+import com.sack.rpgroll.chat.channel.ChannelScope;
 import com.sack.rpgroll.chat.channel.ChatChannel;
 import com.sack.rpgroll.chat.channel.ChatTextFormat;
 import com.sack.rpgroll.chat.language.Language;
@@ -19,6 +20,7 @@ import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
@@ -145,6 +147,13 @@ public class ChatMessagePipeline {
                 recipient.playSound(recipient.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1f, 1.2f);
                 lang.send(recipient, "channel.mentioned", "channel", channel.displayName());
             }
+        }
+
+        // En un canal de cercanía nadie más lo oyó (lejos, otro mundo o tras una pared): sin esto parece que el chat no va.
+        if (channel.scope() == ChannelScope.PROXIMITY && recipients.size() <= 1
+                && Bukkit.getOnlinePlayers().size() > 1) {
+            lang.send(sender, "channel.nobody_heard", "channel", channel.displayName(),
+                    "distance", channel.distance());
         }
 
         return SendResult.OK;

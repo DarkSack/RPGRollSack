@@ -65,7 +65,9 @@ public final class Viewer implements Listener {
         RecipeIndex index = indexes.current();
         Deque<InventoryGUI> stack = stack(player);
         stack.clear();
-        push(player, new CatalogGUI(player, this, index, query));
+        // Sin búsqueda se empieza por los tipos; con búsqueda, directo a los resultados de todos.
+        push(player, query == null || query.isBlank() ? new CategoriesGUI(player, this, index)
+                : new CatalogGUI(player, this, index, query, com.sack.rpgroll.recipes.index.Category.ALL));
     }
 
     /**

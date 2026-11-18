@@ -34,6 +34,12 @@ public class FurnitureManager {
 
     private volatile Map<String, FurnitureDefinition> furniture = Map.of();
     private volatile Map<String, Category> categories = Map.of();
+    private boolean crafting = true;
+
+    /** Con false se ignoran todas las recetas: los muebles solo salen de la tienda o de /furnitureadmin give. */
+    public void crafting(boolean enabled) {
+        this.crafting = enabled;
+    }
 
     public void load(File folder, ConfigurationSection categoriesSection, Consumer<String> warn) {
 
@@ -60,6 +66,15 @@ public class FurnitureManager {
                     continue;
                 }
 
+                if (!crafting) {
+                    section.set("recipe", null);
+                    ConfigurationSection variants = section.getConfigurationSection("variants");
+                    if (variants != null) {
+                        for (String variant : variants.getKeys(false)) {
+                            variants.set(variant + ".recipe", null);
+                        }
+                    }
+                }
                 String where = file.getName() + ": ";
                 FurnitureParser.parse(id, section, message -> warn.accept(where + message)).ifPresent(def -> {
                     if (loaded.putIfAbsent(def.id(), def) != null) {

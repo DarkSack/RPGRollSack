@@ -41,6 +41,7 @@ command:
     &7 • &dabandon
     &7 • &6active
     &7 • &9completed
+    &7 • &acontinue
     &8   [id]
   list_empty: "&7No quests defined."
   list_header: "&6Available quests:"
@@ -65,6 +66,10 @@ command:
   active_empty: "&7You have no active quests."
   active_header: "&6Active quests:"
   active_entry: "&f• {name} — stage {current}/{total}"
+  continue_usage: "&cUsage: /quest continue [MAIN_STORY|SIDE_QUEST|DAILY]"
+  continue_current: "&6Your current chapter: &f{name}"
+  continue_locked: "&eNext chapter: &f{name}&e. You can't start it yet:"
+  continue_finished: "&a✔ You have finished the whole story. You are a legend!"
   completed_empty: "&7You haven't completed any quest yet."
   completed_header: "&6Completed quests: {count}"
   completed_entry: "&f• {id}"

@@ -42,3 +42,8 @@ book:
   give-on-first-join: false
   # Libro + mesa de crafteo = recetario.
   recipe: true
+
+# Menús dibujados del paquete de recursos (categorías, plugins, catálogo y receta).
+# Vacío = menús de cofre normales. En Sackito: "sackito:menus".
+menus:
+  pack: ""

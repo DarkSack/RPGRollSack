@@ -6,6 +6,7 @@ command:
   usage:
     main: |-
       &eUsage: /extrasadmin
+      &7 • &dmenu &8(needs admin menu)
       &7 • &breload
       &7 • &alist
       &7 • &eget
@@ -37,6 +38,7 @@ command:
   condition-not-found: "No condition exists with id: {condition}"
   player-not-found: "Player not found: {player}"
   invalid-number: "Invalid numeric value: {value}"
+  player-only: "&cOnly a player can use this."
 
 server_menu:
   unknown: "&cThere is no menu «{id}»."
@@ -97,3 +99,89 @@ warp:
   not_yours: "&cThat warp belongs to &e{owner}&c."
   deleted: "&a✔ Warp &e{warp}&a deleted."
   save_failed: "&cIt could not be saved. Tell an administrator."
+
+elevator:
+  item_name: "&b&lElevator"
+  item_lore_1: "&7Jump on it to go up to the next elevator."
+  item_lore_2: "&7Sneak on it to go down."
+  none_up: "&7No elevator above (with 2 free blocks)."
+  none_down: "&7No elevator below (with 2 free blocks)."
+
+reinforce:
+  tool_name: "&b&lReinforcer"
+  tool_lore_1: "&7Right-click a placed block to reinforce it."
+  tool_lore_2: "&7Nothing breaks it: not players, explosions or disasters."
+  tool_lore_3: "&7Sneak + right-click one of yours to remove the reinforcement."
+  done: "&a✔ Block reinforced: nothing can break it now."
+  removed: "&e✔ Reinforcement removed: the block is normal again."
+  not_reinforced: "&7This block isn't reinforced."
+  already: "&7Already reinforced by &f{owner}&7."
+  cannot: "&cThis block can't be reinforced."
+  not_here: "&cYou can't build here, so you can't reinforce it."
+  protected: "&cBlock reinforced by &f{owner}&c: only its owner can remove the reinforcement."
+  yours: "&eIt's your reinforced block: sneak and right-click it with the Reinforcer to remove the reinforcement."
+
+admin_menu:
+  title: "&8Needs · Admin"
+  home_hint: "&7Click anything to adjust it."
+  state_on: "&aon"
+  state_off: "&coff"
+  state: "&7State: {state}"
+  speed_line: "&7Speed: &f×{speed}"
+  max_line: "&7Max: &f{max}"
+  start_line: "&7Start: &f{start}"
+  click_adjust: "&eClick to adjust"
+  click_toggle: "&eClick to change"
+  temperature: "&6Temperature"
+  afk: "&bAFK"
+  afk_hint: "&7Players idle for that long don't spend needs."
+  afk_pause: "&bPause needs while AFK"
+  afk_time: "&bAFK after &f{minutes} &bmin"
+  minus_minute: "&c-1 minute"
+  plus_minute: "&a+1 minute"
+  worlds: "&2Worlds"
+  worlds_hint: "&7Click a world: needs run there or not."
+  world_name: "&f{world}"
+  world_on: "&aWith needs"
+  world_off: "&cNo needs"
+  players: "&ePlayers"
+  players_hint: "&7Online: &f{count}"
+  player_name: "&e{player}"
+  back: "&7◀ Back"
+  close: "&cClose"
+  stat_name: "&f&l{name}"
+  enabled: "&fEnabled"
+  speed: "&fSpeed"
+  speed_hint: "&eClick: ×0.25 → ×0.5 → ×1 → ×1.5 → ×2 → ×3"
+  reset_on_death: "&fReset on death"
+  value_line: "&7Value: &f{value}&7/&f{max}"
+  minus_ten: "&c-10"
+  plus_ten: "&a+10"
+  fill: "&aFill"
+  empty: "&cEmpty"
+  condition_name: "&5{condition}"
+  condition_hint: "&eClick to cure it"
+  temperature_line: "&7Temperature: &f{value} °C"
+  cure_all: "&6&lCure all"
+  cure_all_hint: "&7Healthy needs, no effects and normal temperature."
+  immune: "&fImmune"
+  immune_hint: "&7Nothing drains and no effects apply."
+  save_failed: "&cCould not save {file}."
+  names:
+    thirst: "Thirst"
+    fatigue: "Fatigue"
+    stress: "Stress"
+    oxygen: "Oxygen"
+    stamina: "Stamina"
+
+sort:
+  wand_name: "&6&lSorting wand"
+  wand_lore_1: "&7Right-click a chest: sorts it without opening it."
+  wand_lore_2: "&7Right-click the air: sorts your inventory."
+  wand_container: "&a✔ Chest sorted."
+  wand_denied: "&cYou can't open this chest: it isn't sorted."
+  wand_given: "&a✔ Here's your Sorting wand."
+  disabled: "&7Sorting is off on this server."
+  turned_off: "&7Clicking no longer sorts. &8/sort on &7to turn it back on."
+  turned_on: "&aDone: middle click or Shift + click on an empty slot sorts."
+  done: "&a✔ Inventory sorted."

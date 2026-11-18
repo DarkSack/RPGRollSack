@@ -42,10 +42,19 @@ public class CombatEffectsListener implements Listener {
     private final PlayerResourceBar resourceBar;
     private final LangManager lang;
     private final com.sack.rpgroll.gameplay.trait.PassiveEffects passiveEffects;
+    /** combat.incoming_damage_multiplier: la salud RPG es ~5 veces la vanilla y sin esto casi nada asusta. */
+    private final double incomingMultiplier;
 
     public CombatEffectsListener(PlayerManager playerManager, CombatTracker combatTracker,
             PlayerResourceBar resourceBar, LangManager lang,
             com.sack.rpgroll.gameplay.trait.PassiveEffects passiveEffects) {
+        this(playerManager, combatTracker, resourceBar, lang, passiveEffects, 1.0);
+    }
+
+    public CombatEffectsListener(PlayerManager playerManager, CombatTracker combatTracker,
+            PlayerResourceBar resourceBar, LangManager lang,
+            com.sack.rpgroll.gameplay.trait.PassiveEffects passiveEffects, double incomingMultiplier) {
+        this.incomingMultiplier = incomingMultiplier;
         this.passiveEffects = passiveEffects;
         this.playerManager = playerManager;
         this.combatTracker = combatTracker;
@@ -130,7 +139,8 @@ public class CombatEffectsListener implements Listener {
         event.setDamage(reducedDamage);
 
         // El daño final ya descuenta armadura puesta, encantamientos, Resistencia y el escudo.
-        int newHealth = (int) Math.round(stats.currentHealth() - event.getFinalDamage());
+        // Solo a la salud RPG: los corazones vanilla los repinta resourceBar según la proporción.
+        int newHealth = (int) Math.round(stats.currentHealth() - event.getFinalDamage() * incomingMultiplier);
         CombatStats updatedStats;
 
         if (newHealth <= 0) {

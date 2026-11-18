@@ -5,6 +5,61 @@
 # puedes editarlos ahí directamente. Tras cambiar esto, /mobadmin reload.
 language: es
 
+# Barra de vida sobre el mob que un jugador golpea: su nombre pasa unos segundos a
+# «nombre ▮▮▮▮▮▯▯▯▯▯ 45/100» y luego vuelve el de antes. Se ve en Java y Bedrock.
+health-bar:
+  enabled: true
+  seconds: 5
+  segments: 10
+
+# Rarezas de los mobs vanilla. Al aparecer cada mob sale de una rareza, por peso (el primero de
+# tiers es el común y no cambia nada). health/damage/scale multiplican sus atributos; loot, xp y money
+# son lo que suelta al matarlo un jugador (money en la moneda de Vault). glow: brilla (solo Java);
+# particles: partículas a su alrededor; announce: avisa a quien esté cerca al aparecer y a todo el
+# servidor al morir. No se les pone nombre: la rareza se ve en la barra de vida al golpearlos.
+# spawn-reasons: solo esas apariciones (sin SPAWNER: una granja de spawner no da rarezas).
+# Tras cambiarlo, /mobadmin reload. Ojo: el bestiario guarda las bajas en el orden de tiers.
+rarities:
+  enabled: true
+  # hostile: solo monstruos; all: también animales y neutrales.
+  applies-to: hostile
+  spawn-reasons: [NATURAL, PATROL, RAID, JOCKEY, MOUNT, REINFORCEMENTS, VILLAGE_INVASION]
+  exclude: [ender_dragon, wither, warden, elder_guardian]
+  tiers:
+    comun:
+      name: "&fComún"
+      weight: 85
+    raro:
+      name: "&9Raro"
+      weight: 12
+      health: 1.5
+      damage: 1.25
+      loot: 2
+      xp: 2
+      money: 2
+    legendario:
+      name: "&6Legendario"
+      weight: 2.7
+      health: 2.5
+      damage: 1.6
+      scale: 1.1
+      loot: 3
+      xp: 5
+      money: 10
+      glow: true
+    galactico:
+      name: "&d&lGaláctico"
+      weight: 0.3
+      health: 4
+      damage: 2.2
+      scale: 1.25
+      loot: 5
+      xp: 12
+      money: 50
+      glow: true
+      particles: true
+      announce: true
+
 # Tamaño aleatorio de los mobs al aparecer (atributo scale), vanilla y de RPGRoll. Funciona en
 # Java y en Bedrock. Un mob vanilla con nombre o una mascota no cambia, y el tamaño se guarda
 # con el mob (no cambia al recargar el chunk). Tras cambiarlo, /mobadmin reload.

@@ -23,7 +23,7 @@ public class MenuParser implements ContentParser<MenuDefinition> {
 
         List<MenuItem> items = parseItems(config);
 
-        return new MenuDefinition(id, title, rows, items, config.getString("filler"));
+        return new MenuDefinition(id, title, rows, items, config.getString("filler"), config.getString("background"));
     }
 
     private List<MenuItem> parseItems(YamlConfiguration config) {
@@ -52,9 +52,10 @@ public class MenuParser implements ContentParser<MenuDefinition> {
             List<MenuAction> actions = parseItemActions(raw);
 
             Object permission = raw.get("permission");
+            Object model = raw.get("model");
 
             items.add(new MenuItem(slot, material, displayName, lore, actions,
-                    permission == null ? null : permission.toString()));
+                    permission == null ? null : permission.toString(), model == null ? null : model.toString()));
         }
 
         return items;

@@ -2,7 +2,6 @@ package com.sack.rpgroll.pass.gui;
 
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
-import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.pass.PassModule;
 import com.sack.rpgroll.pass.daily.DailyConfig;
 import com.sack.rpgroll.pass.daily.DailyService;
@@ -21,6 +20,9 @@ import java.util.Optional;
 /** El calendario de recompensas diarias: siete días a la vista y el de hoy para reclamar. */
 public class DailyGUI extends InventoryGUI {
 
+    /** Fondo dibujado (sackito:menus/pase_diaria): volver (31) va dibujado; racha, días y bonus llevan hueco. */
+    public static final String BACKGROUND = "pase_diaria";
+
     private static final int SIZE = 36;
     private static final int FIRST_DAY = 10;
     private static final int WINDOW = 7;
@@ -33,7 +35,7 @@ public class DailyGUI extends InventoryGUI {
     private int todaySlot = -1;
 
     public DailyGUI(Player player, PassModule module) {
-        super(player, module.lang().component("gui.daily.title"), SIZE);
+        super(player, PassMenus.skin().title(BACKGROUND, module.lang().component("gui.daily.title")), SIZE);
         this.module = module;
         this.lang = module.lang();
     }
@@ -43,7 +45,7 @@ public class DailyGUI extends InventoryGUI {
 
         clear();
         for (int slot = 0; slot < SIZE; slot++) {
-            setItem(slot, ItemBuilder.createFiller());
+            setItem(slot, PassMenus.filler());
         }
 
         DailyService daily = module.daily();
@@ -86,7 +88,7 @@ public class DailyGUI extends InventoryGUI {
         }
 
         setItem(BONUS, bonusItem(daily));
-        setItem(BACK, GuiItems.item(Material.ARROW, lang.component("gui.back"), List.of()));
+        setItem(BACK, PassMenus.skin().button(GuiItems.item(Material.ARROW, lang.component("gui.back"), List.of())));
     }
 
     @Override

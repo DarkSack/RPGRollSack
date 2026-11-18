@@ -22,6 +22,8 @@ import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
+import org.mockito.MockedStatic;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
@@ -43,6 +45,7 @@ class ShootActionTest {
 
     private Player player;
     private World world;
+    private MockedStatic<ShotMuzzle> muzzleScale;
 
     @BeforeEach
     void setUp() {
@@ -50,7 +53,11 @@ class ShootActionTest {
         world = mock(World.class);
         when(player.getWorld()).thenReturn(world);
         when(player.getEyeLocation()).thenReturn(new Location(world, 0, 65, 0));
+        muzzleScale = org.mockito.Mockito.mockStatic(ShotMuzzle.class, org.mockito.Mockito.CALLS_REAL_METHODS);
+        muzzleScale.when(() -> ShotMuzzle.playerScale(player)).thenReturn(1.0);
     }
+
+    @AfterEach void closeMuzzleScale() { muzzleScale.close(); }
 
     @Test
     void damagesTheFirstCreatureOnTheRayAsThePlayer() {

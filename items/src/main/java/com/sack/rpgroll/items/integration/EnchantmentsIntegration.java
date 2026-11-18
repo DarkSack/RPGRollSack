@@ -26,6 +26,35 @@ public final class EnchantmentsIntegration {
                 && Bukkit.getPluginManager().getPlugin("RPGRoll-Enchantments") instanceof EnchantmentsPlugin;
     }
 
+    /** Tras rehacer el lore de un ítem: que RPGRoll-Enchantments vuelva a poner sus líneas. */
+    public static void refreshLore(ItemStack item) {
+        if (!isAvailable()) {
+            return;
+        }
+        ((EnchantmentsPlugin) Bukkit.getPluginManager().getPlugin("RPGRoll-Enchantments")).getEnchantmentItem().refreshLore(item);
+    }
+
+    /**
+     * Las armas de RPGRoll-Items (las que tienen daño o poder mágico) cuentan como WEAPON aunque su
+     * material no sea un arma vanilla, como las varas y báculos sobre BREEZE_ROD.
+     */
+    public static void registerCategories(com.sack.rpgroll.items.instance.ItemInstanceService instances,
+            com.sack.rpgroll.items.core.ItemManager items) {
+        if (!isAvailable()) {
+            return;
+        }
+        EnchantmentItem.addCategoryProvider(stack -> instances.getId(stack)
+                .flatMap(items::get)
+                .map(definition -> {
+                    var stats = definition.stats();
+                    boolean weapon = stats.getOrDefault("damage", 0.0) > 0 || stats.getOrDefault("magic_power", 0.0) > 0;
+                    return weapon && !com.sack.rpgroll.enchantments.core.EnchantCategory.ARMOR.matches(stack.getType())
+                            ? java.util.Set.of(com.sack.rpgroll.enchantments.core.EnchantCategory.WEAPON)
+                            : java.util.Set.<com.sack.rpgroll.enchantments.core.EnchantCategory>of();
+                })
+                .orElse(java.util.Set.of()));
+    }
+
     public static void applyCustomEnchantments(ItemStack item, Map<String, Integer> customEnchantments) {
 
         if (customEnchantments.isEmpty() || !isAvailable()) {

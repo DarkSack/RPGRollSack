@@ -107,6 +107,12 @@ public class SpawnerService {
         spawner.setRequiredPlayerRange(values.range());
         spawner.update(true, false);
         hologram(block, spawner.getSpawnedType(), data);
+        org.bukkit.NamespacedKey frame = settings.frameModel(data);
+        if (frame == null) {
+            displays.remove(block, Displays.FRAME);
+        } else {
+            displays.frame(block, frame, settings.frameScale(), org.bukkit.block.BlockFace.UP);
+        }
     }
 
     public void hologram(Block block, EntityType mob, SpawnerData data) {

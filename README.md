@@ -144,7 +144,7 @@ Los precios son estimados (USD) en función de la complejidad de cada módulo �
 
 # 📀 Distribución (para quien mantiene el repo)
 
-Todos los módulos comparten un único número de versión (`1.1.8` publicado, en cada `build.gradle.kts`). Para armar
+Todos los módulos comparten un único número de versión (`1.1.9` publicado, en cada `build.gradle.kts`). Para armar
 el paquete de release completo del ecosistema:
 
 ```bash

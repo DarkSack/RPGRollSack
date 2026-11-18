@@ -38,8 +38,9 @@ final class Buttons {
         return stack;
     }
 
+    /** Relleno: invisible con menús dibujados, el cristal negro de siempre sin ellos. */
     static ItemStack filler() {
-        return of(Material.BLACK_STAINED_GLASS_PANE, Component.text(" "), List.of());
+        return RecipesMenus.skin().filler(of(Material.BLACK_STAINED_GLASS_PANE, Component.text(" "), List.of()));
     }
 
     /** Texto de menú: sin la cursiva que Minecraft pone por defecto a nombres y lore. */

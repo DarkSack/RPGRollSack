@@ -4,6 +4,8 @@ import com.sack.rpgroll.common.command.Senders;
 
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.quests.core.Quest;
+import com.sack.rpgroll.quests.core.QuestCategory;
+import com.sack.rpgroll.quests.core.StoryProgress;
 import com.sack.rpgroll.quests.engine.QuestEngine;
 import com.sack.rpgroll.quests.player.ActiveQuestProgress;
 import com.sack.rpgroll.quests.player.QuestPlayerState;
@@ -16,6 +18,7 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 /**
@@ -26,11 +29,13 @@ import java.util.Optional;
  * /quest active              — tus misiones activas y su progreso
  * /quest completed           — tus misiones completadas
  * /quest option &lt;id&gt; &lt;n&gt; — elige la opción n del diálogo actual (lo que ejecuta el clic)
+ * /quest continue [categoría] — sigue la historia (MAIN_STORY por defecto): enseña el capítulo en
+ *                              curso o empieza el siguiente; pensado para un botón de menú
  */
 public class QuestCommand implements CommandExecutor, TabCompleter {
 
     private static final List<String> SUBCOMMANDS = List.of("list", "info", "start", "abandon", "active",
-            "completed", "option");
+            "completed", "option", "continue");
 
     private final QuestEngine engine;
     private final LangManager lang;
@@ -68,6 +73,7 @@ public class QuestCommand implements CommandExecutor, TabCompleter {
             case "start" -> handleStart(player, args);
             case "abandon" -> handleAbandon(player, args);
             case "active" -> handleActive(player);
+            case "continue", "continuar" -> handleContinue(player, args);
             case "completed" -> handleCompleted(player);
             case "option" -> handleOption(player, args);
             default -> sendUsage(player);
@@ -177,6 +183,50 @@ public class QuestCommand implements CommandExecutor, TabCompleter {
         if (!engine.chooseOption(player, args[1], number)) {
             lang.send(player, "command.option_invalid");
         }
+    }
+
+    private void handleContinue(Player player, String[] args) {
+
+        QuestCategory category = QuestCategory.MAIN_STORY;
+
+        if (args.length >= 2) {
+            try {
+                category = QuestCategory.valueOf(args[1].toUpperCase(Locale.ROOT));
+            } catch (IllegalArgumentException e) {
+                lang.send(player, "command.continue_usage");
+                return;
+            }
+        }
+
+        QuestPlayerState state = engine.getStateManager().getOrLoad(player);
+        var step = StoryProgress.current(engine.getQuestManager().getAll(), category,
+                state::isActive, state::hasCompleted);
+
+        if (step.isEmpty()) {
+            lang.send(player, "command.continue_finished");
+            return;
+        }
+
+        Quest quest = step.get().quest();
+
+        if (step.get().active()) {
+            ActiveQuestProgress progress = state.allActive().get(quest.id());
+            lang.send(player, "command.continue_current", "name", quest.displayName());
+            if (progress != null) {
+                quest.stageAt(progress.stageIndex()).ifPresent(stage -> engine.sendObjectives(player, stage, progress));
+            }
+            return;
+        }
+
+        var reasons = engine.startQuest(player, quest);
+
+        if (reasons.isEmpty()) {
+            lang.send(player, "command.start_success", "name", quest.displayName());
+            return;
+        }
+
+        lang.send(player, "command.continue_locked", "name", quest.displayName());
+        reasons.forEach(reason -> lang.send(player, "command.start_denied_reason", "reason", reason));
     }
 
     private void handleActive(Player player) {

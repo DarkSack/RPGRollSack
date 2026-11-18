@@ -41,6 +41,7 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.event.player.PlayerToggleSprintEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.EquipmentSlot;
 
 import java.util.HashMap;
 import java.util.List;
@@ -110,7 +111,7 @@ public class ItemTriggerListener implements Listener {
         };
 
         if (trigger != null) {
-            fireTrigger(trigger, event.getPlayer(), heldItem, null);
+            fireTrigger(trigger, event.getPlayer(), heldItem, null, event.getHand());
         }
     }
 
@@ -288,6 +289,10 @@ public class ItemTriggerListener implements Listener {
     // ============ Núcleo ============
 
     private void fireTrigger(ItemTrigger trigger, Player player, ItemStack item, LivingEntity target) {
+        fireTrigger(trigger, player, item, target, EquipmentSlot.HAND);
+    }
+
+    private void fireTrigger(ItemTrigger trigger, Player player, ItemStack item, LivingEntity target, EquipmentSlot hand) {
 
         if (item == null || item.getType().isAir()) {
             return;
@@ -304,7 +309,7 @@ public class ItemTriggerListener implements Listener {
         }
 
         ItemDefinition definition = definitionOpt.get();
-        ItemActionContext context = new ItemActionContext(player, item, definition, target);
+        ItemActionContext context = new ItemActionContext(player, item, definition, target, hand);
 
         actionRegistry.executeAll(definition.actionsFor(trigger), context);
 

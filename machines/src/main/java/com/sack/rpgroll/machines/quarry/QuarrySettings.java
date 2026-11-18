@@ -2,7 +2,10 @@ package com.sack.rpgroll.machines.quarry;
 
 import com.sack.rpgroll.machines.core.Cost;
 
+import net.kyori.adventure.key.Key;
+
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -22,7 +25,7 @@ import java.util.stream.Collectors;
 public record QuarrySettings(boolean enabled, Set<String> disabledWorlds, Material block, String itemModel,
         boolean frame, String frameModel, float frameScale, int maxPerPlayer, boolean requireClaim,
         int blocksPerTick, int scansPerTick, Set<Material> skip, Set<Material> junk,
-        Map<Numeric, Track> tracks, Map<Unlock, Cost> unlocks, Recipe recipe) {
+        Map<Numeric, Track> tracks, Map<Unlock, Cost> unlocks, Recipe recipe, Menu menu) {
 
     /** Mejoras con niveles. El valor del nivel 0 es el de una cantera recién puesta. */
     public enum Numeric {
@@ -165,7 +168,8 @@ public record QuarrySettings(boolean enabled, Set<String> disabledWorlds, Materi
                 Collections.unmodifiableMap(tracks),
                 Collections.unmodifiableMap(unlocks),
                 new Recipe(config.getBoolean("recipe.enabled", false), config.getStringList("recipe.shape"),
-                        Map.copyOf(ingredients)));
+                        Map.copyOf(ingredients)),
+                Menu.from(config.getConfigurationSection("menu")));
     }
 
     private static Cost cost(Object raw, Consumer<String> warn, String where) {
@@ -191,6 +195,33 @@ public record QuarrySettings(boolean enabled, Set<String> disabledWorlds, Materi
 
     private static Set<String> lower(List<String> values) {
         return values.stream().map(v -> v.toLowerCase(Locale.ROOT)).collect(Collectors.toUnmodifiableSet());
+    }
+
+    /**
+     * Menús dibujados con el paquete de recursos: {@code pack} es el prefijo ({@code namespace:ruta})
+     * de los fondos y modelos, con nombres fijos (cantera, cantera_mejoras, cantera_modulos,
+     * invisible, cantera_profundidad_0..8, interruptor_on/off, nivel_1..5, nivel_ok_1..5,
+     * nivel_bloqueado). Vacío o inválido: menús de siempre, con ítems vanilla.
+     */
+    public record Menu(String pack) {
+
+        public static Menu from(ConfigurationSection section) {
+            return new Menu(section == null ? "" : section.getString("pack", "").trim().toLowerCase(Locale.ROOT));
+        }
+
+        public boolean drawn() {
+            return !pack.isBlank() && Key.parseable(pack);
+        }
+
+        /** Clave de la fuente del fondo {@code id}, o "" sin menús dibujados. */
+        public String background(String id) {
+            return drawn() ? pack + "/" + id : "";
+        }
+
+        /** Modelo de ítem {@code id}, o null sin menús dibujados. */
+        public NamespacedKey model(String id) {
+            return drawn() ? NamespacedKey.fromString(pack + "/" + id) : null;
+        }
     }
 
     public Track track(Numeric numeric) {

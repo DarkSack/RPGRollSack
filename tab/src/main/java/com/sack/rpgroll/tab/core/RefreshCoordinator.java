@@ -43,6 +43,10 @@ public class RefreshCoordinator {
     private final BossBarEngine bossBarEngine;
     private final WorldVisibilityService worldVisibilityService;
 
+    /** Pasadas de {@link #tickAnimations} entre dos repintados del sidebar (cada pasada son 10 ticks). */
+    private static final int SIDEBAR_EVERY = 2;
+    private long animationTicks;
+
     public RefreshCoordinator(PlayerStateManager playerStateManager, TabListEngine tabListEngine,
             NametagManager nametagManager, NametagEngine nametagEngine, BelowNameManager belowNameManager,
             BelowNameEngine belowNameEngine, ScoreboardManager scoreboardManager, ScoreboardEngine scoreboardEngine,
@@ -100,6 +104,22 @@ public class RefreshCoordinator {
      */
     public void tickAnimations() {
         tabListEngine.reapplyAnimatedElements();
+
+        // El sidebar lleva placeholders que cambian sin evento propio (saldo,
+        // gremio, nivel): se repinta una de cada SIDEBAR_EVERY pasadas con el
+        // perfil ya resuelto, sin volver a evaluar el contexto.
+        if (++animationTicks % SIDEBAR_EVERY != 0) {
+            return;
+        }
+
+        for (Player player : new ArrayList<>(Bukkit.getOnlinePlayers())) {
+            TABProfile profile = playerStateManager.activeProfile(player).orElse(null);
+            if (profile == null || profile.scoreboardId() == null) {
+                continue;
+            }
+            scoreboardManager.getResolved(profile.scoreboardId())
+                    .ifPresent(definition -> scoreboardEngine.apply(player, definition));
+        }
     }
 
     public void clearPlayer(Player player) {

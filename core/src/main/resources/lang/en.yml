@@ -409,6 +409,11 @@ character_creation_flow:
   success_class: "&e  Class: &f{class}"
   success_level: "&e  Level: &f1"
   success_hint: "&7  Use &f/rpg stats&7 to view your stats"
+  summary_title: "&6Create this character?"
+  summary_name: "&6Your character"
+  summary_warning: "&cYou won't be able to change them from the menus later."
+  summary_confirm: "Create character"
+  summary_back: "« Change class or race"
 
 # Main jobs GUI
 jobs_gui:
@@ -421,7 +426,14 @@ jobs_gui:
   level_line: "&eLevel: {level}/{max}"
   xp_line: "&eXP: {current}/{required}"
   max_level: "&6Max level!"
-  click_abandon: "&cClick to abandon"
+  click_abandon: "&cClick: leave (asks for confirmation)"
+  confirm_title: "&cLeave this job?"
+  confirm_leave_name: "&cLeave {job}"
+  confirm_leave_lore1: "&7You are level &f{level}&7 in this job."
+  confirm_leave_lore2: "&cIf you leave it, you lose its level and experience."
+  confirm_leave_button: "Leave and lose level {level}"
+  confirm_keep_button: "Keep job"
+  kept: "&aYou keep the job &6{job}&a."
   available_badge: "&7○ Available"
   click_join: "&aClick to join"
   joined: "&aYou joined the job: &6{job}"
@@ -434,7 +446,9 @@ job_abandon_gui:
   header_lore_line1: "&7To join a new job"
   header_lore_line2: "&7you must first leave one active."
   level_line: "&eLevel: {level}"
-  click_swap: "&cClick to abandon and join the new job"
+  click_swap: "&cClick: swap it for the new one (asks for confirmation)"
+  confirm_name: "&cSwap {old} for {new}"
+  confirm_button: "Leave {old} and lose its level"
   cancel_button: "Cancel"
   cancelled: "&eYou didn't join any new job."
   job_unavailable: "&cThat job is no longer available."
@@ -443,6 +457,9 @@ job_abandon_gui:
 # Race selection GUI (character creation)
 race_selection_gui:
   title: "&6Choose your Race"
+  step_name: "&6Your character · step 1 of 2"
+  step_lore1: "&7Choose your race."
+  step_lore2: "&7You will see a summary and can go back before it is created."
   none_available: "&cNo races available"
   none_available_lore: "&7No races are loaded. Contact an admin."
   cancel_button: "Cancel"
@@ -451,6 +468,8 @@ race_selection_gui:
 # Class selection GUI (character creation)
 class_selection_gui:
   title: "&6Choose your Class"
+  step_lore: "&6Step 2 of 2: &7choose your class."
+  back_to_races: "&e« Back to races"
   selected_race_name: "&6Selected race"
   selected_race_lore: "&7Now choose your class."
   none_available: "&cNo classes available"

@@ -21,6 +21,15 @@ frame:
   model: ""
   scale: 1.002
 
+# Menús dibujados con tu resource pack: prefijo namespace:ruta de los fondos y modelos, con estos
+# nombres fijos debajo de él:
+#   fuentes (fondo con MenuBackground de RPGRoll): cantera, cantera_mejoras, cantera_modulos
+#   modelos de ítem: invisible, cantera_profundidad_0..8, interruptor_on, interruptor_off,
+#                    nivel_1..5, nivel_ok_1..5, nivel_bloqueado
+# Vacío: menús de siempre, con ítems vanilla.
+menu:
+  pack: ""
+
 # Cuántas puede tener cada jugador (-1 sin límite). rpgroll.machines.bypass no tiene tope.
 max-per-player: 2
 

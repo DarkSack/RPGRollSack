@@ -101,6 +101,14 @@ server-shop:
   player-prices:
     max-discount: 25
     max-surcharge: 50
+  # Tope diario de venta por jugador y producto (/tienda y comprador), para que
+  # canteras y granjas automáticas no fabriquen dinero sin fin. Las primeras
+  # full-price-units del día se pagan enteras; hasta max-units, a reduced-ratio;
+  # pasado eso no se compra más hasta el día siguiente. full-price-units: 0 lo apaga.
+  daily-limits:
+    full-price-units: 192
+    max-units: 768
+    reduced-ratio: 0.3
 
 # El comprador: una ventana donde el jugador deja lo que quiera y pulsa "Vender".
 # Se abre con /economyadmin comprador <jugador>, normalmente desde un NPC (acción
@@ -112,3 +120,8 @@ buyer:
   value-multiplier: 1.0
   # Si compra también los materiales vanilla al precio de venta de /tienda.
   accept-shop-prices: true
+
+# Menús dibujados del paquete de recursos (/tienda y tiendas de jugadores).
+# Vacío = menús de cofre normales. En Sackito: "sackito:menus".
+menus:
+  pack: ""

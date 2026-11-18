@@ -106,6 +106,7 @@ public class ItemsPlugin extends JavaPlugin {
         oreManager.initialize();
 
         instanceService = new ItemInstanceService(this);
+        com.sack.rpgroll.items.integration.EnchantmentsIntegration.registerCategories(instanceService, itemManager);
         itemFactory = new ItemFactory(this, instanceService, rarityManager, langManager);
 
         statRegistry = new StatRegistry();

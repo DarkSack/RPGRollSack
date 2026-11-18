@@ -3,7 +3,7 @@ plugins {
 }
 
 group = "com.sack"
-version = "1.1.8"
+version = "1.1.9"
 
 base.archivesName.set("RPGRoll-Guilds")
 
@@ -24,6 +24,7 @@ dependencies {
     }
 
     compileOnly("me.clip:placeholderapi:2.11.5")
+    testImplementation("me.clip:placeholderapi:2.11.5")
 
     // :common trae ContentParser/RPGContent/LangManager usados por parsers/enums testeados.
 

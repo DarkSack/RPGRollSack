@@ -27,7 +27,7 @@ public class ServerShopService {
 
     public enum Result {
         BOUGHT, SOLD, NO_PERMISSION, NOT_FOR_SALE, NOT_BOUGHT, UNAVAILABLE, INSUFFICIENT_FUNDS, INVENTORY_FULL,
-        NOTHING_TO_SELL, LOCKED, UNKNOWN_CURRENCY, LIMIT_EXCEEDED
+        NOTHING_TO_SELL, LOCKED, UNKNOWN_CURRENCY, LIMIT_EXCEEDED, DAILY_LIMIT
     }
 
     /** Qué pasó, cuántas unidades se movieron y por cuánto dinero. */
@@ -44,6 +44,7 @@ public class ServerShopService {
     private final MarketProductManager products;
     private final MarketEngine market;
     private double sellRatio;
+    private final SellQuota quota = new SellQuota();
     private double maxDiscount = 0.25;
     private double maxSurcharge = 0.5;
 
@@ -57,6 +58,10 @@ public class ServerShopService {
     }
 
     /** Qué fracción del precio de mercado se le paga a quien vende una línea enlazada al mercado. */
+    public SellQuota quota() {
+        return quota;
+    }
+
     public void setSellRatio(double sellRatio) {
         this.sellRatio = Math.max(0, Math.min(1, sellRatio));
     }
@@ -190,8 +195,14 @@ public class ServerShopService {
             return Outcome.of(Result.NOTHING_TO_SELL);
         }
 
+        // Tope diario: pasado cierto volumen se paga menos y luego nada (canteras, granjas automáticas).
+        SellQuota.Deal deal = quota.quote(player.getUniqueId(), entry.key(), lots * entry.amount(), lotPrice / entry.amount());
+        lots = deal.units() / entry.amount();
+        if (lots == 0) {
+            return Outcome.of(Result.DAILY_LIMIT);
+        }
         int units = lots * entry.amount();
-        double money = round(lotPrice * lots);
+        double money = round(quota.quote(player.getUniqueId(), entry.key(), units, lotPrice / entry.amount()).money());
 
         take(inventory, template, units);
 
@@ -204,6 +215,7 @@ public class ServerShopService {
             return Outcome.of(failure(paid));
         }
 
+        quota.record(player.getUniqueId(), entry.key(), units);
         if (marketProduct(entry).isPresent()) {
             market.recordSell(entry.market(), units);
         }

@@ -24,6 +24,14 @@ hologram:
   enabled: true
   height: 1.35
 
+# Marco 3D alrededor de un spawner mejorado o apilado (un item_display con un modelo de tu resource
+# pack). {tier} es 1, 2 o 3 según la parte de las mejoras que ya tiene. Si el modelo sobresale por
+# arriba, sube hologram.height.
+frame:
+  enabled: false
+  model: ""
+  scale: 1.0
+
 upgrades:
   speed:
     icon: SUGAR

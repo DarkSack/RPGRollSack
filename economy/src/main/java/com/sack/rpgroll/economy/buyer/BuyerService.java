@@ -1,5 +1,7 @@
 package com.sack.rpgroll.economy.buyer;
 
+import com.sack.rpgroll.economy.servershop.SellQuota;
+
 import com.sack.rpgroll.common.item.SellValue;
 import com.sack.rpgroll.economy.currency.Currency;
 import com.sack.rpgroll.economy.currency.CurrencyManager;
@@ -31,7 +33,7 @@ import java.util.OptionalDouble;
 public class BuyerService {
 
     /** Un ítem que sí compra: cuánto paga por él, en qué moneda y (si viene de /tienda) de qué línea. */
-    public record Line(int slot, ItemStack item, double money, Currency currency, ServerShopEntry entry) {
+    public record Line(int slot, ItemStack item, double money, Currency currency, ServerShopEntry entry, String quotaKey) {
     }
 
     /** Lo que pagaría por un montón de ítems. */
@@ -75,6 +77,7 @@ public class BuyerService {
         List<Line> lines = new ArrayList<>();
         List<Integer> rejected = new ArrayList<>();
         Map<Material, Offer> shopOffers = acceptShopPrices ? shopOffers(player) : Map.of();
+        Map<String, Integer> pending = new java.util.HashMap<>();
 
         for (int slot = 0; slot < items.length; slot++) {
 
@@ -84,26 +87,30 @@ public class BuyerService {
                 continue;
             }
 
-            Line line = price(slot, item, shopOffers, player);
+            Line line = price(slot, item, shopOffers, player, pending);
 
             if (line == null) {
                 rejected.add(slot);
             } else {
                 lines.add(line);
+                pending.merge(line.quotaKey(), item.getAmount(), Integer::sum);
             }
         }
 
         return new Quote(lines, rejected);
     }
 
-    private Line price(int slot, ItemStack item, Map<Material, Offer> shopOffers, Player player) {
+    private Line price(int slot, ItemStack item, Map<Material, Offer> shopOffers, Player player,
+            Map<String, Integer> pending) {
 
         OptionalDouble own = SellValue.get(item);
 
         if (own.isPresent()) {
             // No es de ninguna facción: aquí solo cuenta el carisma.
-            return new Line(slot, item, round(own.getAsDouble() * item.getAmount() * valueMultiplier
-                    * (1 + shopService.deal(player, null))), currencies.defaultCurrency(), null);
+            String key = "own:" + item.getType().name();
+            SellQuota.Deal deal = quotaFor(player, key, pending, item, own.getAsDouble() * valueMultiplier
+                    * (1 + shopService.deal(player, null)));
+            return deal == null ? null : new Line(slot, item, round(deal.money()), currencies.defaultCurrency(), null, key);
         }
 
         Offer offer = shopOffers.get(item.getType());
@@ -120,8 +127,17 @@ public class BuyerService {
             return null;
         }
 
-        return new Line(slot, item, round(unit * item.getAmount() * valueMultiplier),
-                shopService.currency(offer.category()), offer.entry());
+        String key = offer.entry().key();
+        SellQuota.Deal deal = quotaFor(player, key, pending, item, unit * valueMultiplier);
+        return deal == null ? null : new Line(slot, item, round(deal.money()), shopService.currency(offer.category()),
+                offer.entry(), key);
+    }
+
+    /** El trato del tope diario para toda la pila, o null si no entra entera (se le devuelve al cerrar). */
+    private SellQuota.Deal quotaFor(Player player, String key, Map<String, Integer> pending, ItemStack item, double unit) {
+        SellQuota.Deal deal = shopService.quota().quote(player.getUniqueId(), key, pending.getOrDefault(key, 0),
+                item.getAmount(), unit);
+        return deal.units() < item.getAmount() || deal.money() <= 0 ? null : deal;
     }
 
     /**
@@ -147,6 +163,7 @@ public class BuyerService {
             }
 
             for (Line line : ofCurrency) {
+                shopService.quota().record(player.getUniqueId(), line.quotaKey(), line.item().getAmount());
                 if (line.entry() != null) {
                     shopService.recordMarketSell(line.entry(), line.item().getAmount());
                 }

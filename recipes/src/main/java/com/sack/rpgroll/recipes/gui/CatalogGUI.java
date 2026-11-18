@@ -3,6 +3,7 @@ package com.sack.rpgroll.recipes.gui;
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.common.recipe.RecipeStation;
 import com.sack.rpgroll.gui.InventoryGUI;
+import com.sack.rpgroll.recipes.index.Category;
 import com.sack.rpgroll.recipes.index.RecipeIndex;
 import com.sack.rpgroll.recipes.index.RecipeIndex.CatalogItem;
 
@@ -24,6 +25,9 @@ import java.util.List;
  */
 final class CatalogGUI extends InventoryGUI {
 
+    /** Fondo dibujado (sackito:menus/recetario_catalogo): cerrar (52) va dibujado; los demás botones de abajo llevan hueco. */
+    static final String BACKGROUND = "recetario_catalogo";
+
     private static final int PAGE = 45;
     private static final int PREV = 45;
     private static final int STATION = 46;
@@ -31,31 +35,43 @@ final class CatalogGUI extends InventoryGUI {
     private static final int SEARCH = 48;
     private static final int INFO = 49;
     private static final int HAND = 50;
+    private static final int TYPES = 51;
     private static final int CLOSE = 52;
     private static final int NEXT = 53;
 
     private final Viewer viewer;
     private final LangManager lang;
     private final RecipeIndex index;
+    private final Category category;
     private String query;
     private String station;
     private String source;
     private int page;
     private List<CatalogItem> items = List.of();
 
-    CatalogGUI(Player player, Viewer viewer, RecipeIndex index, String query) {
-        super(player, Buttons.text(viewer.lang().raw("gui.catalog.title")), 54);
+    CatalogGUI(Player player, Viewer viewer, RecipeIndex index, String query, Category category) {
+        this(player, viewer, index, query, category, null);
+    }
+
+    /** Con {@code source}, abierto ya filtrado por ese origen (el apartado de un plugin). */
+    CatalogGUI(Player player, Viewer viewer, RecipeIndex index, String query, Category category, String source) {
+        super(player, RecipesMenus.skin().title(BACKGROUND, Buttons.text(viewer.lang().raw("gui.catalog.title_of", "type",
+                source != null
+                        ? PluginsGUI.label(viewer.lang(), source)
+                        : viewer.lang().raw("gui.categories." + category.id() + ".short")))), 54);
+        this.category = category;
         this.viewer = viewer;
         this.lang = viewer.lang();
         this.index = index;
         this.query = query == null ? "" : query;
+        this.source = source;
     }
 
     @Override
     public void build() {
 
         clear();
-        items = index.catalog(station, source, query, player);
+        items = index.catalog(station, source, query, player).stream().filter(category::matches).toList();
         int pages = Math.max(1, (items.size() + PAGE - 1) / PAGE);
         page = Math.max(0, Math.min(page, pages - 1));
 
@@ -84,7 +100,8 @@ final class CatalogGUI extends InventoryGUI {
         setItem(INFO, Buttons.of(lang, Material.KNOWLEDGE_BOOK, "gui.catalog.info",
                 "items", items.size(), "recipes", index.recipes().size(), "page", page + 1, "pages", pages));
         setItem(HAND, Buttons.of(lang, Material.LEAD, "gui.catalog.hand"));
-        setItem(CLOSE, Buttons.of(lang, Material.BARRIER, "gui.close"));
+        setItem(TYPES, Buttons.of(lang, Material.BOOKSHELF, "gui.catalog.types"));
+        setItem(CLOSE, RecipesMenus.skin().button(Buttons.of(lang, Material.BARRIER, "gui.close")));
 
         if (items.isEmpty()) {
             setItem(22, Buttons.of(lang, Material.STRUCTURE_VOID, "gui.catalog.empty"));
@@ -161,6 +178,7 @@ final class CatalogGUI extends InventoryGUI {
             }
             case HAND -> viewer.showRecipes(player, player.getInventory().getItemInMainHand(),
                     click.isRightClick() ? Viewer.Mode.USES : Viewer.Mode.MAKE, true);
+            case TYPES -> viewer.openCatalog(player, "");
             case CLOSE -> close();
             default -> {
             }

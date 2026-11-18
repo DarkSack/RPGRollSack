@@ -29,6 +29,9 @@ import java.util.List;
  */
 public class ShopManageGUI extends InventoryGUI {
 
+    /** Fondo dibujado (sackito:menus/tienda_gestion): volver (44) va dibujado; añadir, renombrar y abrir/cerrar llevan hueco. */
+    public static final String BACKGROUND = "tienda_gestion";
+
     private static final int SIZE = 45;
     private static final int ADD_HELD_SLOT = 39;
     private static final int RENAME_SLOT = 40;
@@ -43,7 +46,8 @@ public class ShopManageGUI extends InventoryGUI {
 
     public ShopManageGUI(Player player, PlayerShop shop, ShopManager shopManager, ChatPromptManager chatPromptManager,
             Runnable onBack) {
-        super(player, chatPromptManager.lang().component("shop.manage.title", "name", shop.name()), SIZE);
+        super(player, EconomyMenus.skin().title(BACKGROUND,
+                chatPromptManager.lang().component("shop.manage.title", "name", shop.name())), SIZE);
         this.shop = shop;
         this.shopManager = shopManager;
         this.chatPromptManager = chatPromptManager;
@@ -57,7 +61,7 @@ public class ShopManageGUI extends InventoryGUI {
         clear();
 
         for (int slot = 0; slot < SIZE; slot++) {
-            setItem(slot, ItemBuilder.createFiller());
+            setItem(slot, EconomyMenus.filler());
         }
 
         for (int i = 0; i < shop.listings().size() && i < ShopManager.MAX_LISTINGS; i++) {
@@ -83,7 +87,7 @@ public class ShopManageGUI extends InventoryGUI {
                 .setName(lang.component(shop.isOpen() ? "shop.manage.state_open" : "shop.manage.state_closed"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("common.back")));
+        setItem(BACK_SLOT, EconomyMenus.skin().button(ItemBuilder.createCancelButton(lang.raw("common.back"))));
     }
 
     @Override

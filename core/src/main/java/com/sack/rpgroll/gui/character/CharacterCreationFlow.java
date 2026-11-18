@@ -14,9 +14,15 @@ import com.sack.rpgroll.api.race.Race;
 import com.sack.rpgroll.race.RaceAttributeApplier;
 import com.sack.rpgroll.api.race.RaceManager;
 import com.sack.rpgroll.gameplay.selection.CharacterSelectionGate;
+import com.sack.rpgroll.gui.confirm.ConfirmGUI;
+import com.sack.rpgroll.gui.util.ItemBuilder;
+
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextDecoration;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.Map;
 import java.util.Optional;
@@ -86,9 +92,35 @@ public class CharacterCreationFlow {
     }
 
     private void showClassSelection() {
-        ClassSelectionGUI classGUI = new ClassSelectionGUI(player, classManager, selectedRace, this::onClassSelected,
-                true, lang);
+        String raceName = raceManager.get(selectedRace).map(Race::displayName).orElse(selectedRace);
+        ClassSelectionGUI classGUI = new ClassSelectionGUI(player, classManager, raceName, this::onClassSelected,
+                true, lang, this::showRaceSelection);
         classGUI.open();
+    }
+
+    /**
+     * Último paso: raza y clase juntas antes de guardar, porque luego no se cambian desde los
+     * menús. "Crear personaje" guarda; "Cambiar clase" vuelve a la lista de clases (y desde ahí
+     * a las razas). Cerrar con ESC reabre este resumen.
+     */
+    private void showSummary() {
+
+        String raceName = raceManager.get(selectedRace).map(Race::displayName).orElse(selectedRace);
+        String className = classManager.get(selectedClass).map(PlayerClass::displayName).orElse(selectedClass);
+        String classIcon = classManager.get(selectedClass).map(PlayerClass::icon).orElse("PLAYER_HEAD");
+
+        ItemStack subject = ItemBuilder.icon(classIcon)
+                .setName(lang.component("character_creation_flow.summary_name").decorate(TextDecoration.BOLD))
+                .setLore(lang.component("character_creation_flow.success_race", "race", raceName),
+                        lang.component("character_creation_flow.success_class", "class", className),
+                        Component.text(""),
+                        lang.component("character_creation_flow.summary_warning"))
+                .build();
+
+        new ConfirmGUI(player, lang.component("character_creation_flow.summary_title").decorate(TextDecoration.BOLD),
+                subject, lang.raw("character_creation_flow.summary_confirm"),
+                lang.raw("character_creation_flow.summary_back"), false,
+                this::saveCharacter, this::showClassSelection, true).open();
     }
 
     private void onClassSelected(String playerClass) {
@@ -100,7 +132,7 @@ public class CharacterCreationFlow {
         }
 
         this.selectedClass = playerClass;
-        saveCharacter();
+        showSummary();
     }
 
     /**

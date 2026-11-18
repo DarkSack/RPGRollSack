@@ -43,6 +43,8 @@ public class RecipesPlugin extends JavaPlugin {
 
         lang = new LangManager(this, List.of("es", "en", "pt_BR"), "es");
         lang.reload(getConfig().getString("language", "es"));
+        com.sack.rpgroll.gui.MenuSkin.register(com.sack.rpgroll.recipes.gui.RecipesMenus.MODULE,
+                com.sack.rpgroll.gui.MenuSkin.from(getConfig().getConfigurationSection("menus")));
 
         Settings settings = Settings.from(getConfig());
         indexes = new IndexService(this, lang, settings);
@@ -76,6 +78,8 @@ public class RecipesPlugin extends JavaPlugin {
     public void reload() {
         reloadConfig();
         lang.reload(getConfig().getString("language", "es"));
+        com.sack.rpgroll.gui.MenuSkin.register(com.sack.rpgroll.recipes.gui.RecipesMenus.MODULE,
+                com.sack.rpgroll.gui.MenuSkin.from(getConfig().getConfigurationSection("menus")));
         Settings settings = Settings.from(getConfig());
         book.settings(settings.book());
         indexes.settings(settings);

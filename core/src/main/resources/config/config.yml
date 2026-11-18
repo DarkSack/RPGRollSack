@@ -6,3 +6,8 @@ config-version: 1
 language: es
 
 debug: false
+
+# Menús dibujados del paquete de recursos (raza, clase, trabajos, confirmar).
+# Vacío = menús de cofre normales. En Sackito: "sackito:menus".
+menus:
+  pack: ""

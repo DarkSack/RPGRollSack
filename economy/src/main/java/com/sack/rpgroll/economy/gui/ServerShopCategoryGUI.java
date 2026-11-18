@@ -32,6 +32,9 @@ import java.util.Optional;
  */
 public class ServerShopCategoryGUI extends InventoryGUI {
 
+    /** Fondo dibujado (sackito:menus/tienda_categoria): volver (45) y cerrar (53) van dibujados; las flechas y el saldo llevan hueco. */
+    public static final String BACKGROUND = "tienda_categoria";
+
     private static final int SIZE = 54;
     private static final int PER_PAGE = 45;
     private static final int BACK = 45;
@@ -49,7 +52,7 @@ public class ServerShopCategoryGUI extends InventoryGUI {
 
     public ServerShopCategoryGUI(Player player, ServerShopCategory category, ServerShopService service,
             WalletService wallet, LangManager lang, Runnable onBack) {
-        super(player, ComponentUtils.parse(category.displayName()), SIZE);
+        super(player, EconomyMenus.skin().title(BACKGROUND, ComponentUtils.parse(category.displayName())), SIZE);
         this.category = category;
         this.service = service;
         this.wallet = wallet;
@@ -67,9 +70,9 @@ public class ServerShopCategoryGUI extends InventoryGUI {
         clear();
         page = Math.max(0, Math.min(page, pages() - 1));
 
-        ItemStack filler = category.premium()
+        ItemStack filler = EconomyMenus.filler(category.premium()
                 ? new ItemBuilder(Material.ORANGE_STAINED_GLASS_PANE).setName(Component.empty()).build()
-                : ItemBuilder.createFiller();
+                : ItemBuilder.createFiller());
 
         for (int slot = PER_PAGE; slot < SIZE; slot++) {
             setItem(slot, filler);
@@ -86,7 +89,7 @@ public class ServerShopCategoryGUI extends InventoryGUI {
             setItem(i, icon(entries.get(index), currency));
         }
 
-        setItem(BACK, new ItemBuilder(Material.ARROW).setName(lang.component("server_shop.back")).build());
+        setItem(BACK, EconomyMenus.skin().button(new ItemBuilder(Material.ARROW).setName(lang.component("server_shop.back")).build()));
         if (page > 0) {
             setItem(PREVIOUS, new ItemBuilder(Material.ARROW).setName(lang.component("server_shop.previous")).build());
         }
@@ -99,7 +102,7 @@ public class ServerShopCategoryGUI extends InventoryGUI {
                         currency.format(wallet.balance(player.getUniqueId(), currency.id()))),
                         lang.component("server_shop.page", "page", page + 1, "pages", pages()))
                 .build());
-        setItem(CLOSE, ItemBuilder.createCancelButton(lang.raw("server_shop.close")));
+        setItem(CLOSE, EconomyMenus.skin().button(ItemBuilder.createCancelButton(lang.raw("server_shop.close"))));
     }
 
     private ItemStack icon(ServerShopEntry entry, Currency currency) {

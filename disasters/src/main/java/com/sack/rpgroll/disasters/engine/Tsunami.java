@@ -191,7 +191,7 @@ final class Tsunami extends Phenomenon {
                 double angle = Math.PI * 2 * i / 24;
                 Location at = target.clone().add(Math.cos(angle) * distance * factor, 0,
                         Math.sin(angle) * distance * factor);
-                if (world.getHighestBlockAt(at, HeightMap.MOTION_BLOCKING).getType() == Material.WATER) {
+                if (loaded(at) && world.getHighestBlockAt(at, HeightMap.MOTION_BLOCKING).getType() == Material.WATER) {
                     found.add(at);
                 }
             }
@@ -210,6 +210,11 @@ final class Tsunami extends Phenomenon {
      * La superficie en ese punto: el suelo o el mar (las hojas no cuentan). El agua de la propia ola y
      * el aire de su tubo no son suelo: sin esto la ola se subiría encima de sí misma a cada paso.
      */
+    /** Leer un chunk sin cargar obliga a cargarlo (o generarlo) en el hilo principal: eso colgó el servidor. */
+    private boolean loaded(Location at) {
+        return world.isChunkLoaded(at.getBlockX() >> 4, at.getBlockZ() >> 4);
+    }
+
     private int ground(Location at) {
         int y = world.getHighestBlockYAt(at, HeightMap.MOTION_BLOCKING_NO_LEAVES);
         Block block = world.getBlockAt(at.getBlockX(), y, at.getBlockZ());
@@ -245,7 +250,8 @@ final class Tsunami extends Phenomenon {
             bases = new int[columns];
             blocked = new int[columns];
             for (int c = 0; c < columns; c++) {
-                bases[c] = ground(front.clone().add(across.clone().multiply(-width / 2 + c * STEP))) + 1;
+                Location point = front.clone().add(across.clone().multiply(-width / 2 + c * STEP));
+                bases[c] = loaded(point) ? ground(point) + 1 : world.getMinHeight();
             }
         }
 
@@ -263,6 +269,9 @@ final class Tsunami extends Phenomenon {
                 continue;
             }
             Location foot = front.clone().add(across.clone().multiply(side));
+            if (!loaded(foot)) {
+                continue;
+            }
             // Baja de golpe y sube por cuestas de hasta climb por paso. Un escalón más alto (muro, tronco)
             // no lo trepa: se estrella contra él. Si sigue más alto 3 pasos seguidos es terreno y sube.
             int surface = ground(foot) + 1;
@@ -274,6 +283,9 @@ final class Tsunami extends Phenomenon {
 
             for (Slice slice : shapes.computeIfAbsent(columnHeight, h -> profile(h, curl, back))) {
                 Location at = foot.clone().add(direction.clone().multiply(slice.forward()));
+                if (!loaded(at)) {
+                    continue;
+                }
                 int bottom = base + slice.bottom();
                 if (slice.forward() < 0) {
                     bottom = Math.max(ground(at) + 1, bottom);
@@ -366,7 +378,8 @@ final class Tsunami extends Phenomenon {
         WorldDamage damage = engine.damage();
         BlockData puddle = waterLevel(6);
         for (Block block : blocks) {
-            if (block.getType() != Material.WATER) {
+            // Un chunk que se descargó lo repone WorldDamage al pasar SAFETY_SECONDS.
+            if (!world.isChunkLoaded(block.getX() >> 4, block.getZ() >> 4) || block.getType() != Material.WATER) {
                 continue;
             }
             boolean onGround = block.getRelative(0, -1, 0).getType().isSolid();

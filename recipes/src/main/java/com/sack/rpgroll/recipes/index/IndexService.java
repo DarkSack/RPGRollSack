@@ -88,8 +88,6 @@ public final class IndexService implements Listener {
         List<RecipeEntry> entries = new ArrayList<>();
         List<String> sourceErrors = new ArrayList<>();
 
-        BukkitRecipeReader.Result bukkit = new BukkitRecipeReader(plugin.getLogger(), notes).read();
-        entries.addAll(bukkit.entries());
 
         boolean brewingFromServer = false;
         if (settings.brewing()) {
@@ -114,6 +112,11 @@ public final class IndexService implements Listener {
         }
 
         entries.addAll(new YamlRecipeReader(new File(plugin.getDataFolder(), "extra"), plugin.getLogger()).read());
+
+        // Después de los orígenes propios: si un plugin publica la misma receta (mismo origen e id)
+        // con lo que de verdad pide, gana la suya (Bukkit solo sabe de materiales).
+        BukkitRecipeReader.Result bukkit = new BukkitRecipeReader(plugin.getLogger(), notes).read();
+        entries.addAll(bukkit.entries());
 
         List<RecipeEntry> kept = new ArrayList<>(entries.size());
         Set<String> seen = new HashSet<>();

@@ -8,6 +8,7 @@ max-level: 5
 categories:
   - SWORD
   - AXE
+  - SPEAR
 
 trigger:
   - PLAYER_ATTACK

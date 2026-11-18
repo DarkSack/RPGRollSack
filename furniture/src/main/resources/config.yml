@@ -39,6 +39,11 @@ categories:
     name: "&7Taller"
     icon: CRAFTING_TABLE
 
+crafting:
+  # Con false se ignoran todas las recetas del carpintero: los muebles solo se compran en la
+  # tienda (RPGRoll-Economy, línea `furniture: <id>`) o se dan con /furnitureadmin give.
+  enabled: true
+
 limits:
   # Muebles por chunk como máximo (0 = sin límite). Cada mueble son una o dos entidades.
   per-chunk: 64

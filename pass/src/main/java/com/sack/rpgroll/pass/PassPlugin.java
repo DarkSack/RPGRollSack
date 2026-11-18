@@ -69,6 +69,8 @@ public class PassPlugin extends JavaPlugin {
 
         lang = new LangManager(this, List.of("es", "en", "pt_BR"), "es");
         lang.reload(getConfig().getString("language", "es"));
+        com.sack.rpgroll.gui.MenuSkin.register(com.sack.rpgroll.pass.gui.PassMenus.MODULE,
+                com.sack.rpgroll.gui.MenuSkin.from(getConfig().getConfigurationSection("menus")));
 
         clock = new PassClock(zone());
         store = new PassPlayerStore(getDataFolder(), getLogger());
@@ -134,6 +136,8 @@ public class PassPlugin extends JavaPlugin {
     private void reload() {
         reloadConfig();
         lang.reload(getConfig().getString("language", "es"));
+        com.sack.rpgroll.gui.MenuSkin.register(com.sack.rpgroll.pass.gui.PassMenus.MODULE,
+                com.sack.rpgroll.gui.MenuSkin.from(getConfig().getConfigurationSection("menus")));
         loadContent();
     }
 

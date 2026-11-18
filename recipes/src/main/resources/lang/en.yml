@@ -50,8 +50,86 @@ station:
 gui:
   close:
     name: "&cClose"
+  categories:
+    title: "&8Recipe book · pick a type"
+    search:
+      name: "&6Search by name"
+      lore: "&7Type what you are looking for in chat"
+    all:
+      short: "All"
+      name: "&fAll"
+      lore: "&7Every item\n&7{count} items\n&eClick: open"
+    server:
+      short: "Server"
+      name: "&dFrom the server"
+      lore: "&7What Sackito's plugins add\n&7{count} items\n&eClick: open"
+    weapons:
+      short: "Weapons"
+      name: "&cWeapons"
+      lore: "&7Swords, bows, spears and ammo\n&7{count} items\n&eClick: open"
+    tools:
+      short: "Tools"
+      name: "&eTools"
+      lore: "&7Pickaxes, axes, shovels, buckets...\n&7{count} items\n&eClick: open"
+    armor:
+      short: "Armor"
+      name: "&bArmor"
+      lore: "&7Helmets, chestplates, shields, elytra\n&7{count} items\n&eClick: open"
+    food:
+      short: "Food"
+      name: "&6Food"
+      lore: "&7Everything you can eat\n&7{count} items\n&eClick: open"
+    potions:
+      short: "Potions and magic"
+      name: "&5Potions and magic"
+      lore: "&7Potions, enchanted books, bottles\n&7{count} items\n&eClick: open"
+    redstone:
+      short: "Redstone"
+      name: "&4Redstone"
+      lore: "&7Pistons, hoppers, rails, TNT\n&7{count} items\n&eClick: open"
+    blocks:
+      short: "Blocks"
+      name: "&2Blocks"
+      lore: "&7Building, decoration and ores\n&7{count} items\n&eClick: open"
+    materials:
+      short: "Materials"
+      name: "&7Materials"
+      lore: "&7Ingots, gems, dyes and more\n&7{count} items\n&eClick: open"
+    own:
+      short: "Craftable on Sackito"
+      name: "&aCraftable on Sackito"
+      lore: "&7Only what Sackito's plugins\n&7let you craft\n&7{count} items\n&eClick: open"
+    plugins:
+      name: "&6By plugin"
+      lore: "&7One section for each Sackito\n&7plugin that crafts something\n&7{count} {sections}\n&eClick: choose"
+      one: "section"
+      many: "sections"
+  plugins:
+    title: "&8Recipes · by plugin"
+    section:
+      name: "&6{name}"
+      lore: "&7{count} {items}\n&8{source}\n&eClick: open"
+      one: "item crafted here"
+      many: "items crafted here"
+    empty:
+      name: "&7No Sackito plugin crafts anything"
+    back:
+      name: "&6« Types"
+      lore: "&7Back to the recipe book's front page"
+    source:
+      rpgroll-items: "Weapons and items"
+      rpgroll-crafting: "Crafting stations"
+      rpgroll-extras: "Extras"
+      rpgroll-enchantments: "Enchantments"
+      rpgroll-machines: "Machines"
+      rpgroll-furniture: "Furniture"
+      rpgroll-recipes: "Server recipes"
   catalog:
     title: "&8Recipe Book"
+    title_of: "&8Recipes · {type}"
+    types:
+      name: "&6« Types"
+      lore: "&7Back to the recipe book front page"
     all: "All"
     none: "none"
     item_hint: |-

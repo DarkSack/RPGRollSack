@@ -569,7 +569,18 @@ public class MobEngine {
 
     private void giveMoney(Player player, double amount) {
 
-        VaultEconomy.get().ifPresent(economy -> economy.depositPlayer(player, amount));
+        VaultEconomy.get().ifPresent(economy -> {
+            if (economy.depositPlayer(player, amount).transactionSuccess() && lang != null) {
+                // Sin aviso el dinero llegaba sin que nadie se enterara: parecía que los mobs no daban nada.
+                player.sendActionBar(lang.component("loot.money", "amount", economy.format(amount)));
+            }
+        });
+    }
+
+    private com.sack.rpgroll.common.lang.LangManager lang;
+
+    public void lang(com.sack.rpgroll.common.lang.LangManager lang) {
+        this.lang = lang;
     }
 
     // ============ BossBar ============

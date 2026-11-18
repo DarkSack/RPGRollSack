@@ -1,6 +1,7 @@
 package com.sack.rpgroll.gui.character;
 
 import com.sack.rpgroll.common.lang.LangManager;
+import com.sack.rpgroll.gui.CoreMenus;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.api.race.Race;
@@ -28,6 +29,8 @@ import java.util.function.Consumer;
  * textura custom (base64).
  */
 public class RaceSelectionGUI extends InventoryGUI {
+        /** Fondo dibujado (sackito:menus/raza). Las casillas 4 y 31 solo llevan hueco: no siempre hay botón. */
+        public static final String BACKGROUND = "raza";
         private static final int[] CONTENT_SLOTS = { 10, 11, 12, 13, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25 };
         private static final int CANCEL_SLOT = 31;
 
@@ -45,7 +48,8 @@ public class RaceSelectionGUI extends InventoryGUI {
                         boolean mandatory, LangManager lang) {
                 super(
                                 player,
-                                lang.component("race_selection_gui.title").decorate(TextDecoration.BOLD),
+                                CoreMenus.skin().title(BACKGROUND,
+                                                lang.component("race_selection_gui.title").decorate(TextDecoration.BOLD)),
                                 36);
 
                 this.raceManager = raceManager;
@@ -67,7 +71,16 @@ public class RaceSelectionGUI extends InventoryGUI {
                 slotToRace.clear();
 
                 for (int i = 0; i < 9; i++) {
-                        setItem(i, ItemBuilder.createFiller());
+                        setItem(i, CoreMenus.filler());
+                }
+
+                // En la creación del personaje: qué paso es y que se podrá revisar antes de guardar.
+                if (mandatory) {
+                        setItem(4, new ItemBuilder(Material.PAPER)
+                                        .setName(lang.component("race_selection_gui.step_name").decorate(TextDecoration.BOLD))
+                                        .setLore(lang.component("race_selection_gui.step_lore1"),
+                                                        lang.component("race_selection_gui.step_lore2"))
+                                        .build());
                 }
 
                 List<Race> races = new ArrayList<>(raceManager.getAll());
@@ -84,7 +97,7 @@ public class RaceSelectionGUI extends InventoryGUI {
                 }
 
                 for (int i = 27; i < 36; i++) {
-                        setItem(i, ItemBuilder.createFiller());
+                        setItem(i, CoreMenus.filler());
                 }
 
                 if (!mandatory) {

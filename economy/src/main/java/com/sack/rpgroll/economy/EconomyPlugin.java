@@ -102,6 +102,8 @@ public class EconomyPlugin extends JavaPlugin {
 
         langManager = new LangManager(this, List.of("es", "en", "pt_BR"), "es");
         langManager.reload(getConfig().getString("language", "es"));
+        com.sack.rpgroll.gui.MenuSkin.register(com.sack.rpgroll.economy.gui.EconomyMenus.MODULE,
+                com.sack.rpgroll.gui.MenuSkin.from(getConfig().getConfigurationSection("menus")));
 
         new DirectoryCreator(this).create(DIRECTORIES);
         new ResourceCopier(this).copyDirectories(DIRECTORIES);
@@ -167,6 +169,7 @@ public class EconomyPlugin extends JavaPlugin {
         serverShopManager.initialize();
         serverShopService = new ServerShopService(walletService, currencyManager, marketProductManager, marketEngine,
                 getConfig().getDouble("server-shop.market-sell-ratio", 0.4));
+        serverShopService.quota().configure(getConfig().getConfigurationSection("server-shop.daily-limits"));
         configureDeals();
         buyerService = new BuyerService(serverShopManager, serverShopService, currencyManager, walletService);
         configureBuyer();
@@ -311,12 +314,15 @@ public class EconomyPlugin extends JavaPlugin {
     private void reloadContent() {
         reloadConfig();
         langManager.reload(getConfig().getString("language", "es"));
+        com.sack.rpgroll.gui.MenuSkin.register(com.sack.rpgroll.economy.gui.EconomyMenus.MODULE,
+                com.sack.rpgroll.gui.MenuSkin.from(getConfig().getConfigurationSection("menus")));
         currencyManager.reload();
         marketProductManager.reload();
         marketRegionManager.reload();
         taxRuleManager.reload();
         serverShopManager.reload();
         serverShopService.setSellRatio(getConfig().getDouble("server-shop.market-sell-ratio", 0.4));
+        serverShopService.quota().configure(getConfig().getConfigurationSection("server-shop.daily-limits"));
         configureDeals();
         configureBuyer();
         auctionManager.settings(auctionSettings());

@@ -15,6 +15,12 @@ import java.util.Map;
 /** Carga plugins/RPGRoll-Extras/temperature.yml (config singleton, no multi-archivo) — si falta, usa {@link TemperatureSettings#defaults()}. */
 public class TemperatureSettingsLoader {
 
+    /** {@code enabled} de temperature.yml (sin archivo o sin clave: encendida). */
+    public static boolean enabled(JavaPlugin plugin) {
+        File file = new File(plugin.getDataFolder(), "temperature.yml");
+        return !file.exists() || YamlConfiguration.loadConfiguration(file).getBoolean("enabled", true);
+    }
+
     public TemperatureSettings load(JavaPlugin plugin) {
 
         File file = new File(plugin.getDataFolder(), "temperature.yml");

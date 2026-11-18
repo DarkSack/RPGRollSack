@@ -37,6 +37,8 @@ public class ReloadCommand implements RPGCommand {
 
             FileConfiguration mainConfig = configManager.getConfig("config.yml");
             lang.reload(mainConfig != null ? mainConfig.getString("language", "es") : "es");
+            com.sack.rpgroll.gui.MenuSkin.register(com.sack.rpgroll.gui.CoreMenus.MODULE,
+                    com.sack.rpgroll.gui.MenuSkin.from(mainConfig != null ? mainConfig.getConfigurationSection("menus") : null));
 
             // Recarga genérica: cualquier contenido futuro se suma solo
             // agregándose a reloadableContent en Bootstrap, sin tocar este archivo.

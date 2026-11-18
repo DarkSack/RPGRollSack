@@ -6,6 +6,7 @@ command:
   usage:
     main: |-
       &eUso: /extrasadmin
+      &7 • &dmenu &8(menu de admin das necessidades)
       &7 • &breload
       &7 • &alist
       &7 • &eget
@@ -37,6 +38,7 @@ command:
   condition-not-found: "Não existe uma condition com id: {condition}"
   player-not-found: "Jogador não encontrado: {player}"
   invalid-number: "Valor numérico inválido: {value}"
+  player-only: "&cSó um jogador pode usar isto."
 
 server_menu:
   unknown: "&cNão existe o menu «{id}»."
@@ -97,3 +99,89 @@ warp:
   not_yours: "&cEsse warp é de &e{owner}&c."
   deleted: "&a✔ Warp &e{warp}&a apagado."
   save_failed: "&cNão foi possível salvar. Avise um administrador."
+
+elevator:
+  item_name: "&b&lElevador"
+  item_lore_1: "&7Pule em cima para subir ao próximo elevador."
+  item_lore_2: "&7Agache em cima para descer."
+  none_up: "&7Não há outro elevador acima (com 2 blocos livres)."
+  none_down: "&7Não há outro elevador abaixo (com 2 blocos livres)."
+
+reinforce:
+  tool_name: "&b&lReforçador"
+  tool_lore_1: "&7Clique direito num bloco colocado: fica reforçado."
+  tool_lore_2: "&7Nada o quebra: nem jogadores, nem explosões, nem desastres."
+  tool_lore_3: "&7Agachado + clique direito num seu: tira o reforço."
+  done: "&a✔ Bloco reforçado: nada mais o quebra."
+  removed: "&e✔ Reforço removido: o bloco volta a ser normal."
+  not_reinforced: "&7Este bloco não está reforçado."
+  already: "&7Já está reforçado por &f{owner}&7."
+  cannot: "&cEste bloco não pode ser reforçado."
+  not_here: "&cVocê não pode construir aqui, então não pode reforçá-lo."
+  protected: "&cBloco reforçado por &f{owner}&c: só o dono pode tirar o reforço."
+  yours: "&eÉ seu bloco reforçado: agache e clique direito com o Reforçador para tirar o reforço."
+
+admin_menu:
+  title: "&8Necessidades · Admin"
+  home_hint: "&7Clique em cada coisa para ajustar."
+  state_on: "&aligada"
+  state_off: "&cdesligada"
+  state: "&7Estado: {state}"
+  speed_line: "&7Velocidade: &f×{speed}"
+  max_line: "&7Máximo: &f{max}"
+  start_line: "&7Início: &f{start}"
+  click_adjust: "&eClique para ajustar"
+  click_toggle: "&eClique para mudar"
+  temperature: "&6Temperatura"
+  afk: "&bAFK"
+  afk_hint: "&7Quem fica parado esse tempo não gasta necessidades."
+  afk_pause: "&bPausar necessidades em AFK"
+  afk_time: "&bAFK após &f{minutes} &bmin"
+  minus_minute: "&c-1 minuto"
+  plus_minute: "&a+1 minuto"
+  worlds: "&2Mundos"
+  worlds_hint: "&7Clique num mundo: as necessidades correm ali ou não."
+  world_name: "&f{world}"
+  world_on: "&aCom necessidades"
+  world_off: "&cSem necessidades"
+  players: "&eJogadores"
+  players_hint: "&7Conectados: &f{count}"
+  player_name: "&e{player}"
+  back: "&7◀ Voltar"
+  close: "&cFechar"
+  stat_name: "&f&l{name}"
+  enabled: "&fLigada"
+  speed: "&fVelocidade"
+  speed_hint: "&eClique: ×0.25 → ×0.5 → ×1 → ×1.5 → ×2 → ×3"
+  reset_on_death: "&fReiniciar ao morrer"
+  value_line: "&7Valor: &f{value}&7/&f{max}"
+  minus_ten: "&c-10"
+  plus_ten: "&a+10"
+  fill: "&aEncher"
+  empty: "&cEsvaziar"
+  condition_name: "&5{condition}"
+  condition_hint: "&eClique para curar"
+  temperature_line: "&7Temperatura: &f{value} °C"
+  cure_all: "&6&lCurar tudo"
+  cure_all_hint: "&7Necessidades saudáveis, sem efeitos e temperatura normal."
+  immune: "&fImune"
+  immune_hint: "&7Nada diminui e nenhum efeito se aplica."
+  save_failed: "&cNão foi possível salvar {file}."
+  names:
+    thirst: "Sede"
+    fatigue: "Fadiga"
+    stress: "Estresse"
+    oxygen: "Oxigênio"
+    stamina: "Fôlego"
+
+sort:
+  wand_name: "&6&lVarinha de organizar"
+  wand_lore_1: "&7Clique direito num baú: organiza sem abrir."
+  wand_lore_2: "&7Clique direito no ar: organiza seu inventário."
+  wand_container: "&a✔ Baú organizado."
+  wand_denied: "&cVocê não pode abrir este baú: não foi organizado."
+  wand_given: "&a✔ Aqui está sua Varinha de organizar."
+  disabled: "&7Organizar está desligado neste servidor."
+  turned_off: "&7O clique não organiza mais. &8/ordenar on &7para voltar."
+  turned_on: "&aPronto: clique do meio ou Shift + clique num espaço vazio organiza."
+  done: "&a✔ Inventário organizado."

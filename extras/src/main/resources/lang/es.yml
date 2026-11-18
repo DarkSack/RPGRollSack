@@ -6,6 +6,7 @@ command:
   usage:
     main: |-
       &eUso: /extrasadmin
+      &7 • &dmenu &8(menú de admin de necesidades)
       &7 • &breload
       &7 • &alist
       &7 • &eget
@@ -37,6 +38,7 @@ command:
   condition-not-found: "No existe una condition con id: {condition}"
   player-not-found: "Jugador no encontrado: {player}"
   invalid-number: "Valor numérico inválido: {value}"
+  player-only: "&cSolo un jugador puede usar esto."
 
 server_menu:
   unknown: "&cNo existe el menú «{id}»."
@@ -97,3 +99,89 @@ warp:
   not_yours: "&cEse warp es de &e{owner}&c."
   deleted: "&a✔ Warp &e{warp}&a borrado."
   save_failed: "&cNo se pudo guardar. Avisa a un administrador."
+
+elevator:
+  item_name: "&b&lElevador"
+  item_lore_1: "&7Salta encima para subir al siguiente elevador."
+  item_lore_2: "&7Agáchate encima para bajar."
+  none_up: "&7No hay otro elevador encima (con 2 bloques libres)."
+  none_down: "&7No hay otro elevador debajo (con 2 bloques libres)."
+
+reinforce:
+  tool_name: "&b&lReforzador"
+  tool_lore_1: "&7Clic derecho en un bloque puesto: queda reforzado."
+  tool_lore_2: "&7Nada lo rompe: ni jugadores, ni explosiones, ni desastres."
+  tool_lore_3: "&7Agachado + clic derecho en uno tuyo: le quitas el refuerzo."
+  done: "&a✔ Bloque reforzado: ya nada lo rompe."
+  removed: "&e✔ Refuerzo quitado: el bloque vuelve a ser normal."
+  not_reinforced: "&7Este bloque no está reforzado."
+  already: "&7Ya está reforzado por &f{owner}&7."
+  cannot: "&cEste bloque no se puede reforzar."
+  not_here: "&cAquí no puedes construir: no puedes reforzarlo."
+  protected: "&cBloque reforzado por &f{owner}&c: solo su dueño puede quitarle el refuerzo."
+  yours: "&eEs tu bloque reforzado: agáchate y haz clic derecho con el Reforzador para quitarle el refuerzo."
+
+admin_menu:
+  title: "&8Necesidades · Admin"
+  home_hint: "&7Clic en cada cosa para ajustarla."
+  state_on: "&aencendida"
+  state_off: "&capagada"
+  state: "&7Estado: {state}"
+  speed_line: "&7Velocidad: &f×{speed}"
+  max_line: "&7Máximo: &f{max}"
+  start_line: "&7Inicio: &f{start}"
+  click_adjust: "&eClic para ajustar"
+  click_toggle: "&eClic para cambiar"
+  temperature: "&6Temperatura"
+  afk: "&bAFK"
+  afk_hint: "&7Quien no toca nada en ese tiempo no gasta necesidades."
+  afk_pause: "&bPausar necesidades en AFK"
+  afk_time: "&bAFK tras &f{minutes} &bmin"
+  minus_minute: "&c-1 minuto"
+  plus_minute: "&a+1 minuto"
+  worlds: "&2Mundos"
+  worlds_hint: "&7Clic en un mundo: corren o no las necesidades ahí."
+  world_name: "&f{world}"
+  world_on: "&aCon necesidades"
+  world_off: "&cSin necesidades"
+  players: "&eJugadores"
+  players_hint: "&7Conectados: &f{count}"
+  player_name: "&e{player}"
+  back: "&7◀ Volver"
+  close: "&cCerrar"
+  stat_name: "&f&l{name}"
+  enabled: "&fEncendida"
+  speed: "&fVelocidad"
+  speed_hint: "&eClic: ×0.25 → ×0.5 → ×1 → ×1.5 → ×2 → ×3"
+  reset_on_death: "&fReiniciar al morir"
+  value_line: "&7Valor: &f{value}&7/&f{max}"
+  minus_ten: "&c-10"
+  plus_ten: "&a+10"
+  fill: "&aLlenar"
+  empty: "&cVaciar"
+  condition_name: "&5{condition}"
+  condition_hint: "&eClic para curarla"
+  temperature_line: "&7Temperatura: &f{value} °C"
+  cure_all: "&6&lCurar todo"
+  cure_all_hint: "&7Necesidades sanas, sin efectos y temperatura normal."
+  immune: "&fInmune"
+  immune_hint: "&7No le baja nada ni recibe efectos."
+  save_failed: "&cNo se pudo guardar {file}."
+  names:
+    thirst: "Sed"
+    fatigue: "Fatiga"
+    stress: "Estrés"
+    oxygen: "Oxígeno"
+    stamina: "Aguante"
+
+sort:
+  wand_name: "&6&lVarita de orden"
+  wand_lore_1: "&7Clic derecho a un cofre: lo ordena sin abrirlo."
+  wand_lore_2: "&7Clic derecho al aire: ordena tu inventario."
+  wand_container: "&a✔ Cofre ordenado."
+  wand_denied: "&cNo puedes abrir este cofre: no se ordena."
+  wand_given: "&a✔ Te di la Varita de orden."
+  disabled: "&7Ordenar está apagado en este servidor."
+  turned_off: "&7Ya no se ordena con clic. &8/ordenar on &7para volver."
+  turned_on: "&aListo: clic central o Shift + clic en una casilla vacía ordena."
+  done: "&a✔ Inventario ordenado."

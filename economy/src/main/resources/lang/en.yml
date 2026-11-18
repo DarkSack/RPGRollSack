@@ -247,6 +247,7 @@ company:
     owner_only_disband: "&cOnly the owner can disband the company."
 
 server_shop:
+  daily_limit: "&cThe shop will not buy more of this from you today. Come back tomorrow or sell it to other players."
   limit_exceeded: "&cYou cannot receive the full payment: it exceeds your maximum balance."
   title: "&8✦ Server shop"
   no_categories: "&7The shop has no sections yet."

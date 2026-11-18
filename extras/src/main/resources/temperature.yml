@@ -5,6 +5,9 @@
 exchange-rate: 0.05
 update-interval: 40
 
+# Apagada: la temperatura corporal deja de cambiar y no da efectos (/extrasadmin menu).
+enabled: true
+
 # Rangos de temperatura corporal (°C aproximados) — min inclusivo, max exclusivo.
 states:
   - id: severe_hypothermia

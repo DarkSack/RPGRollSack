@@ -247,6 +247,7 @@ company:
     owner_only_disband: "&cSolo el dueño puede disolver la empresa."
 
 server_shop:
+  daily_limit: "&cLa tienda ya no te compra más de esto hoy. Vuelve mañana o véndelo a otros jugadores."
   limit_exceeded: "&cNo puedes recibir el pago completo: superarías el saldo máximo."
   title: "&8✦ Tienda del servidor"
   no_categories: "&7La tienda todavía no tiene secciones."

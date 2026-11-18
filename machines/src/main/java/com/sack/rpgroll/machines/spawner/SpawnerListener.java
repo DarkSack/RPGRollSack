@@ -123,7 +123,7 @@ public class SpawnerListener implements Listener {
         if (spawner.isEmpty()) {
             return;
         }
-        displays.remove(block, Displays.HOLOGRAM);
+        displays.removeAll(block);
 
         Player player = event.getPlayer();
         SpawnerSettings settings = service.settings();

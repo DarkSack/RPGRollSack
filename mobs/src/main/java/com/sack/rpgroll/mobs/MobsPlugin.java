@@ -43,6 +43,8 @@ public class MobsPlugin extends JavaPlugin {
     private MobConditionEvaluator conditionEvaluator;
     private MobRarityResolver rarityResolver;
     private MobEngine engine;
+    private com.sack.rpgroll.mobs.healthbar.HealthBars healthBars;
+    private com.sack.rpgroll.mobs.rarity.MobRarities rarities;
     private ChatPromptManager chatPromptManager;
     private LangManager langManager;
     private volatile com.sack.rpgroll.mobs.size.RandomSizeSettings randomSize =
@@ -81,6 +83,7 @@ public class MobsPlugin extends JavaPlugin {
         BuiltinMobActions.registerAll(actionRegistry, this);
 
         engine = new MobEngine(this, mobManager, instanceService, actionRegistry, conditionEvaluator, rarityResolver);
+        engine.lang(langManager);
 
         new ModuleAssetSync(this, "mobs").syncAll();
 
@@ -98,7 +101,20 @@ public class MobsPlugin extends JavaPlugin {
         // loot por contribución.
         getServer().getPluginManager().registerEvents(new MobReloadListener(engine), this);
 
+        healthBars = new com.sack.rpgroll.mobs.healthbar.HealthBars(this);
+        rarities = new com.sack.rpgroll.mobs.rarity.MobRarities(this, langManager);
+        healthBars.prefix(mob -> {
+            var tier = rarities.tierOf(mob);
+            return tier == null ? null : tier.name();
+        });
+        getServer().getPluginManager().registerEvents(rarities, this);
+        var bestiary = new com.sack.rpgroll.mobs.bestiary.Bestiary(this, mobManager, rarities);
+        getServer().getPluginManager().registerEvents(bestiary, this);
+        com.sack.rpgroll.common.command.BrigadierCommands.register(this, "bestiario",
+                "Tu bestiario: los mobs que has matado y de qué rareza", List.of("bestiary", "pokedex"),
+                new com.sack.rpgroll.mobs.bestiary.BestiaryCommand(bestiary, langManager), null, null);
         reloadRandomSize();
+        getServer().getPluginManager().registerEvents(healthBars, this);
         getServer().getPluginManager().registerEvents(
                 new com.sack.rpgroll.mobs.size.RandomSizeListener(this, () -> randomSize), this);
 
@@ -117,6 +133,19 @@ public class MobsPlugin extends JavaPlugin {
     /** Relee {@code random-size} del config.yml (también desde /mobadmin reload). */
     public void reloadRandomSize() {
         randomSize = com.sack.rpgroll.mobs.size.RandomSizeSettings.from(getConfig().getConfigurationSection("random-size"));
+        if (healthBars != null) {
+            healthBars.configure(getConfig().getConfigurationSection("health-bar"));
+        }
+        if (rarities != null) {
+            rarities.configure(getConfig().getConfigurationSection("rarities"));
+        }
+    }
+
+    @Override
+    public void onDisable() {
+        if (healthBars != null) {
+            healthBars.restoreAll();
+        }
     }
 
     private void registerPlaceholders() {

@@ -25,6 +25,9 @@ import java.util.Map;
 /** Portada de la tienda del servidor: una casilla por sección, en el slot que diga su YAML. */
 public class ServerShopGUI extends InventoryGUI {
 
+    /** Fondo dibujado (sackito:menus/tienda): cerrar (53) va dibujado; el saldo (49) lleva hueco. */
+    public static final String BACKGROUND = "tienda";
+
     private static final int SIZE = 54;
     private static final int CONTENT = 45;
     private static final int BALANCE = 49;
@@ -38,7 +41,7 @@ public class ServerShopGUI extends InventoryGUI {
 
     public ServerShopGUI(Player player, ServerShopManager shops, ServerShopService service, WalletService wallet,
             LangManager lang) {
-        super(player, lang.component("server_shop.title"), SIZE);
+        super(player, EconomyMenus.skin().title(BACKGROUND, lang.component("server_shop.title")), SIZE);
         this.shops = shops;
         this.service = service;
         this.wallet = wallet;
@@ -52,7 +55,7 @@ public class ServerShopGUI extends InventoryGUI {
         bySlot.clear();
 
         for (int slot = 0; slot < SIZE; slot++) {
-            setItem(slot, ItemBuilder.createFiller());
+            setItem(slot, EconomyMenus.filler());
         }
 
         List<ServerShopCategory> pending = new ArrayList<>();
@@ -89,7 +92,7 @@ public class ServerShopGUI extends InventoryGUI {
                 .setLore(lang.component("server_shop.balance_lore", "amount",
                         currency.format(wallet.balance(player.getUniqueId(), currency.id()))))
                 .build());
-        setItem(CLOSE, ItemBuilder.createCancelButton(lang.raw("server_shop.close")));
+        setItem(CLOSE, EconomyMenus.skin().button(ItemBuilder.createCancelButton(lang.raw("server_shop.close"))));
     }
 
     private ItemStack icon(ServerShopCategory category) {

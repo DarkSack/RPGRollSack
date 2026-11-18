@@ -232,11 +232,13 @@ public final class BuiltinItemActions {
         ShotVisuals visuals;
         ShotAmmo ammo;
         ShotBeamModel.Appearance beamAppearance;
+        ShotMuzzle muzzleOffset;
         int sustain;
         try {
             visuals = ShotVisuals.from(action, eye.toVector());
             ammo = ShotAmmo.from(action);
             beamAppearance = ShotBeamModel.Appearance.from(action);
+            muzzleOffset = ShotMuzzle.from(action);
             sustain = Integer.parseInt(action.param("sustain", "0").trim());
         } catch (IllegalArgumentException e) {
             plugin.getLogger().warning("✘ SHOOT mal configurado (" + e.getMessage() + "): partícula "
@@ -254,7 +256,7 @@ public final class BuiltinItemActions {
         }
         playSound(player, action.param("sound", ""), action.param("volume", "1.0"), action.param("pitch", "1.0"), plugin);
         ShotImpact impact = ShotImpact.from(action);
-        Location barrel = barrel(eye, direction);
+        Location barrel = muzzleOffset.at(player, ctx.hand(), eye, direction);
         String muzzle = action.param("muzzle-effect", "");
         if (!muzzle.isBlank()) {
             com.sack.rpgroll.common.integration.ParticlesIntegration.play(muzzle, player, barrel);
@@ -270,7 +272,7 @@ public final class BuiltinItemActions {
         RayTraceResult hit = aim(player, eye, direction, range);
         Vector end = hit != null ? hit.getHitPosition() : eye.toVector().add(direction.clone().multiply(range));
         if (sustain > 0 || beamAppearance != null) {
-            ShotBeam.hold(plugin, player, visuals, range, Math.max(2, sustain), beamAppearance);
+            ShotBeam.hold(plugin, player, visuals, range, Math.max(2, sustain), beamAppearance, muzzleOffset, ctx.hand());
         } else {
             visuals.trail(player.getWorld(), barrel.toVector(), end);
         }
@@ -300,17 +302,6 @@ public final class BuiltinItemActions {
         } catch (IllegalArgumentException e) {
             plugin.getLogger().warning("✘ Sonido inválido en SHOOT: " + name);
         }
-    }
-
-    /** La boca del arma en la mano derecha: un poco delante, a la derecha y por debajo de los ojos. */
-    static Location barrel(Location eye, Vector direction) {
-        Vector right = direction.getCrossProduct(new Vector(0, 1, 0));
-        if (right.lengthSquared() < 1e-6) {
-            right = new Vector(1, 0, 0);
-        }
-        right.normalize();
-        Vector down = right.getCrossProduct(direction).normalize().multiply(-1);
-        return eye.clone().add(direction.clone().multiply(1.0)).add(right.multiply(0.32)).add(down.multiply(0.22));
     }
 
     private static Location targetLocation(ItemActionContext ctx) {

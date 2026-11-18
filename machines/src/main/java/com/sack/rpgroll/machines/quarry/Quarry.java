@@ -191,6 +191,11 @@ public final class Quarry {
         return y < minHeight ? null : new int[] {y, index};
     }
 
+    /** Nivel del indicador de profundidad del menú (0 a 8) para un progreso de 0 a 1. */
+    public static int gaugeLevel(double progress) {
+        return Math.clamp((int) Math.floor(progress * 8), 0, 8);
+    }
+
     /** Cuánto lleva, de 0 a 1: capas hechas desde su altura hasta el fondo. */
     public double progress(int side, int minHeight) {
         if (finished) {

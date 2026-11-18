@@ -3,11 +3,14 @@ package com.sack.rpgroll.common.menu;
 import com.sack.rpgroll.util.ComponentUtils;
 
 import com.sack.rpgroll.gui.InventoryGUI;
+import com.sack.rpgroll.gui.MenuBackground;
+import com.sack.rpgroll.gui.MenuSkin;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
@@ -29,9 +32,33 @@ public class MenuGUI extends InventoryGUI {
     private final Map<Integer, List<MenuAction>> slotToActions = new HashMap<>();
 
     public MenuGUI(Player player, MenuDefinition menu, MenuActionExecutor actionExecutor) {
-        super(player, ComponentUtils.parse(menu.title()), menu.rows() * 9);
+        super(player, MenuBackground.title(menu.background(), ComponentUtils.parse(menu.title())), menu.rows() * 9);
         this.menu = menu;
         this.actionExecutor = actionExecutor;
+    }
+
+    /**
+     * Modelo {@code model} del mismo paquete que el fondo: "sackito:menus/brujula" + "invisible" →
+     * "sackito:menus/invisible". Null si no hay fondo válido o el ítem no pide modelo.
+     */
+    static String modelKey(String background, String model) {
+        String pack = pack(background);
+        return model == null || pack == null ? null : pack + "/" + model;
+    }
+
+    /** Paquete del fondo: "sackito:menus/brujula" → "sackito:menus"; null sin fondo válido. */
+    private static String pack(String background) {
+        if (!MenuBackground.active(background)) {
+            return null;
+        }
+        String bg = background.trim();
+        int slash = bg.lastIndexOf('/');
+        return slash < 0 ? null : bg.substring(0, slash);
+    }
+
+    /** Skin del paquete del fondo (para el relleno invisible), o {@link MenuSkin#OFF} sin fondo. */
+    private MenuSkin skin() {
+        return MenuSkin.of(pack(menu.background()));
     }
 
     @Override
@@ -85,6 +112,11 @@ public class MenuGUI extends InventoryGUI {
                 meta.lore(lore);
             }
 
+            String model = modelKey(menu.background(), menuItem.model());
+            if (model != null && NamespacedKey.fromString(model) != null) {
+                meta.setItemModel(NamespacedKey.fromString(model));
+            }
+
             item.setItemMeta(meta);
             setItem(menuItem.slot(), item);
 
@@ -93,6 +125,16 @@ public class MenuGUI extends InventoryGUI {
     }
 
     private void fill() {
+
+        // Con fondo dibujado, el relleno es invisible: los cristales taparían el dibujo.
+        MenuSkin skin = skin();
+        if (skin.drawn()) {
+            ItemStack invisible = skin.filler(null);
+            for (int slot = 0; slot < menu.rows() * 9; slot++) {
+                setItem(slot, invisible);
+            }
+            return;
+        }
 
         if (menu.filler() == null) {
             return;

@@ -1,13 +1,70 @@
 package com.sack.rpgroll.disasters.engine;
 
+import com.sack.rpgroll.disasters.core.DisasterPhenomenon;
+import com.sack.rpgroll.disasters.core.DisasterType;
+import org.bukkit.Bukkit;
+import org.bukkit.HeightMap;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.block.Block;
+import org.bukkit.block.data.Levelled;
+import org.bukkit.entity.Player;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
 
 class TsunamiTest {
+
+    @Test
+    void findingWaterDoesNotReadUnloadedChunks() {
+        World world = mock(World.class);
+        DisasterEngine engine = mock(DisasterEngine.class);
+        Player player = mock(Player.class);
+        when(player.getLocation()).thenReturn(new Location(world, -0.5, 64, -0.5));
+        when(engine.targets(world)).thenReturn(List.of(player));
+        Tsunami tsunami = new Tsunami(engine, world,
+                new DisasterPhenomenon(DisasterType.TSUNAMI, Map.of("require-water", true)),
+                new Phenomenon.Power(2.2, 1.5), 1680);
+
+        tsunami.tick();
+
+        verify(world, never()).getHighestBlockAt(any(Location.class), any(HeightMap.class));
+    }
+
+    @Test
+    void renderingDoesNotReadChunksThatUnloadedAfterLaunch() {
+        World world = mock(World.class);
+        DisasterEngine engine = mock(DisasterEngine.class);
+        Player player = mock(Player.class);
+        Block ocean = mock(Block.class);
+        when(ocean.getType()).thenReturn(Material.WATER);
+        when(player.getLocation()).thenReturn(new Location(world, 0, 64, 0));
+        when(engine.targets(world)).thenReturn(List.of(player));
+        when(engine.damage()).thenReturn(mock(WorldDamage.class));
+        when(world.isChunkLoaded(anyInt(), anyInt())).thenReturn(true);
+        when(world.getHighestBlockAt(any(Location.class), any(HeightMap.class))).thenReturn(ocean);
+        Tsunami tsunami = new Tsunami(engine, world,
+                new DisasterPhenomenon(DisasterType.TSUNAMI, Map.of("require-water", true, "start-sound", "",
+                        "sound", "", "roar-sound", "", "breakable-blocks", List.of())),
+                new Phenomenon.Power(2.2, 1.5), 1680);
+        tsunami.tick();
+        when(world.isChunkLoaded(anyInt(), anyInt())).thenReturn(false);
+
+        try (var bukkit = mockStatic(Bukkit.class)) {
+            bukkit.when(() -> Bukkit.createBlockData(Material.WATER)).thenReturn(mock(Levelled.class));
+            tsunami.tick();
+        }
+
+        verify(world, never()).getHighestBlockYAt(any(Location.class), any(HeightMap.class));
+        verify(world, never()).getBlockAt(anyInt(), anyInt(), anyInt());
+    }
 
     /** La ola de 12 bloques: el frente llega hasta la punta, la punta cuelga y debajo queda el tubo. */
     @Test

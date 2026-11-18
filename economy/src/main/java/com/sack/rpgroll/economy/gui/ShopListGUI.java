@@ -23,6 +23,9 @@ import java.util.List;
 /** Navegador de todas las tiendas de jugador abiertas. */
 public class ShopListGUI extends InventoryGUI {
 
+    /** Fondo dibujado (sackito:menus/tiendas_lista): cerrar (44) va dibujado; «mi tienda» (40) lleva hueco. */
+    public static final String BACKGROUND = "tiendas_lista";
+
     private static final int SIZE = 45;
     private static final int MY_SHOP_SLOT = 40;
     private static final int CLOSE_SLOT = 44;
@@ -36,7 +39,8 @@ public class ShopListGUI extends InventoryGUI {
 
     public ShopListGUI(Player player, ShopManager shopManager, CurrencyManager currencyManager, TaxEngine taxEngine,
             ChatPromptManager chatPromptManager) {
-        super(player, ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("shop.list.title"), NamedTextColor.GOLD), SIZE);
+        super(player, EconomyMenus.skin().title(BACKGROUND,
+                ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("shop.list.title"), NamedTextColor.GOLD)), SIZE);
         this.shopManager = shopManager;
         this.currencyManager = currencyManager;
         this.taxEngine = taxEngine;
@@ -51,7 +55,7 @@ public class ShopListGUI extends InventoryGUI {
         clear();
 
         for (int slot = 0; slot < SIZE; slot++) {
-            setItem(slot, ItemBuilder.createFiller());
+            setItem(slot, EconomyMenus.filler());
         }
 
         for (int i = 0; i < shops.size() && i < 36; i++) {
@@ -70,7 +74,7 @@ public class ShopListGUI extends InventoryGUI {
 
         setItem(MY_SHOP_SLOT, new ItemBuilder(Material.EMERALD)
                 .setName(lang.component("shop.list.manage_button")).build());
-        setItem(CLOSE_SLOT, ItemBuilder.createCancelButton(lang.raw("common.close")));
+        setItem(CLOSE_SLOT, EconomyMenus.skin().button(ItemBuilder.createCancelButton(lang.raw("common.close"))));
     }
 
     @Override

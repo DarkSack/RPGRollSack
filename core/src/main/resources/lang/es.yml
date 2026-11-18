@@ -409,6 +409,11 @@ character_creation_flow:
   success_class: "&e  Clase: &f{class}"
   success_level: "&e  Nivel: &f1"
   success_hint: "&7  Usa &f/rpg stats&7 para ver tus estadísticas"
+  summary_title: "&6¿Crear este personaje?"
+  summary_name: "&6Tu personaje"
+  summary_warning: "&cDespués no podrás cambiarlos desde los menús."
+  summary_confirm: "Crear personaje"
+  summary_back: "« Cambiar clase o raza"
 
 # GUI principal de trabajos
 jobs_gui:
@@ -421,7 +426,14 @@ jobs_gui:
   level_line: "&eNivel: {level}/{max}"
   xp_line: "&eXP: {current}/{required}"
   max_level: "&6¡Nivel máximo!"
-  click_abandon: "&cClic para abandonar"
+  click_abandon: "&cClic: abandonar (te pedirá confirmación)"
+  confirm_title: "&c¿Abandonar oficio?"
+  confirm_leave_name: "&cAbandonar {job}"
+  confirm_leave_lore1: "&7Tienes nivel &f{level}&7 en este oficio."
+  confirm_leave_lore2: "&cSi lo abandonas, pierdes su nivel y experiencia."
+  confirm_leave_button: "Abandonar y perder nivel {level}"
+  confirm_keep_button: "Conservar oficio"
+  kept: "&aConservas el oficio &6{job}&a."
   available_badge: "&7○ Disponible"
   click_join: "&aClic para unirte"
   joined: "&aTe has unido al trabajo: &6{job}"
@@ -434,7 +446,9 @@ job_abandon_gui:
   header_lore_line1: "&7Para unirte a un nuevo trabajo"
   header_lore_line2: "&7primero debes dejar uno activo."
   level_line: "&eNivel: {level}"
-  click_swap: "&cClic para abandonar y unirte al nuevo trabajo"
+  click_swap: "&cClic: cambiarlo por el nuevo (te pedirá confirmación)"
+  confirm_name: "&cCambiar {old} por {new}"
+  confirm_button: "Dejar {old} y perder su nivel"
   cancel_button: "Cancelar"
   cancelled: "&eNo te uniste a ningún trabajo nuevo."
   job_unavailable: "&cEl trabajo ya no está disponible."
@@ -443,6 +457,9 @@ job_abandon_gui:
 # GUI de selección de raza (creación de personaje)
 race_selection_gui:
   title: "&6Selecciona tu Raza"
+  step_name: "&6Tu personaje · paso 1 de 2"
+  step_lore1: "&7Elige tu raza."
+  step_lore2: "&7Antes de crearlo verás un resumen y podrás volver."
   none_available: "&cSin razas disponibles"
   none_available_lore: "&7No hay razas cargadas. Contacta a un admin."
   cancel_button: "Cancelar"
@@ -451,6 +468,8 @@ race_selection_gui:
 # GUI de selección de clase (creación de personaje)
 class_selection_gui:
   title: "&6Selecciona tu Clase"
+  step_lore: "&6Paso 2 de 2: &7elige tu clase."
+  back_to_races: "&e« Volver a razas"
   selected_race_name: "&6Raza seleccionada"
   selected_race_lore: "&7Ahora elige tu clase."
   none_available: "&cSin clases disponibles"

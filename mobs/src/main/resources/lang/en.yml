@@ -335,3 +335,27 @@ gui:
     prompt_rarity: "Type the rarity id:"
     prompt_description: "Type the description:"
     prompt_tag: "Type the new tag:"
+
+# Aviso al recibir dinero del botín de un mob
+loot:
+  money: "&6+{amount} &7loot"
+
+rarity:
+  spawned_near: "&d✦ &7A {rarity} &7{mob} appeared nearby."
+  killed_broadcast: "&d✦ &f{player} &7killed a {rarity} &7{mob}."
+
+bestiary:
+  title: "&8Bestiary"
+  unknown_name: "&8???"
+  unknown_hostile: "&7You haven't killed any yet. Look at night or in caves."
+  unknown_other: "&7You haven't killed any yet."
+  kills: "&fKills: &e{amount}"
+  tier_line: "  {rarity}&7: &f{amount}"
+  tier_line_none: "  &8{rarity}&8: 0"
+  summary_title: "&6&lYour bestiary"
+  summary_discovered: "&7Discovered: &f{amount}&7/&f{total}"
+  summary_kills: "&7Total kills: &f{amount}"
+  summary_best: "&7{rarity} &7mobs: &f{amount}"
+  summary_hint: "&8Kill a mob to discover it."
+  previous: "&e« Previous"
+  next: "&eNext » &7({page}/{pages})"

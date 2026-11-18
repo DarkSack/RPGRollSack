@@ -383,3 +383,16 @@ guildadmin:
       click_increments: "&7Click: +1 · Shift-click: +10 · Right-click: -1"
       click_100: "&7Click: +100 · Right-click: -100"
       click_50: "&7Click: +50 · Right-click: -50"
+
+# Rank names for %rpgrollguilds_guild_rank% and %rpgrollguilds_team_rank%.
+enum:
+  GuildRole:
+    LEADER: "Leader"
+    OFFICER: "Officer"
+    MEMBER: "Member"
+    RECRUIT: "Recruit"
+  TeamRole:
+    LEADER: "Leader"
+    OFFICER: "Officer"
+    MEMBER: "Member"
+    GUEST: "Guest"
