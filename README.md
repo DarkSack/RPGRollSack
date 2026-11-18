@@ -14,7 +14,21 @@ Ya no es un único plugin: es un **ecosistema de 1 core + 24 addons independient
 
 # 🆕 Novedades recientes
 
-Cambios recientes aplicados en todo el ecosistema:
+## Versión 1.1.9
+
+- 🖼️ **Menús con fondo dibujado** — RPGRoll-Lib trae `MenuBackground`/`MenuSkin`: con `menus.pack` (vacío de fábrica) los menús de raza, clase, trabajos y confirmación (core), `/tienda` y tiendas de jugadores (Economy), pase, misiones y recompensa diaria (Pass) y el recetario (Recipes) usan el fondo y los botones de tu paquete de recursos. Sin él, se ven los menús de cofre de siempre
+- ✨ **Súper encantador por lista (Enchantments)** — una fila por encantamiento, vanilla y del plugin, con una barra de niveles; nada se cobra hasta pulsar Encantar. Coste por rareza (`rarity-levels`, `rarity-lapis`) y tope por encima del máximo vanilla. Nuevo **Infusor**: graba el efecto de una poción en una pieza de armadura
+- 🌡️ **Menú de admin de necesidades (Extras)** — `/extrasadmin menu`: encender o apagar cada necesidad, velocidad (`needs-speed`), temperatura apagable, mundos sin necesidades, pausa por AFK y control de cada jugador (barras, curar efectos, Curar todo, Inmune)
+- 📦 **Ordenar cofres e inventario (Extras)** — Shift + clic en una casilla vacía, `/ordenar` (`on`/`off` por jugador) y la **Varita de orden** (palo + cofre). Solo contenedores de bloque y el cofre de ender: nunca menús de plugins. Además, **elevadores** fabricables y el **Reforzador** (bloques irrompibles)
+- 👹 **Rarezas, barra de vida y bestiario (Mobs)** — común, raro, legendario y galáctico con más vida, daño, botín, XP y dinero; barra de vida al golpear (Java y Bedrock); `/bestiario` (`/bestiary`, `/pokedex`) con las bajas por rareza
+- 💰 **Tope diario de venta (Economy)** — `daily-limits`: precio entero, luego reducido y después nada hasta el día siguiente, para que canteras y granjas no fabriquen dinero sin fin
+- 🏭 **Machines** — mejoras de cantera en 4 filas y menú de módulos; marco 3D en spawners mejorados (`frame` en `spawners.yml`)
+- 📖 **Recipes** — catálogo por tipos, con apartados para lo del servidor y lo de tus plugins; las recetas que publica un plugin con sus ingredientes reales ganan a las que solo ve Bukkit
+- 📜 **Quests** `/quest continuar` · 🛡️ **Guilds** placeholders `team_rank`, `guild_rank` y `guild_balance` · 💬 **Chat** avisa si nadie te oyó en un canal de cercanía · 🪑 **Furniture** `crafting.enabled` · 🌊 **Disasters** ya no carga chunks descargados (podía colgar el servidor) · 📋 **TAB** el sidebar se repinta solo · ⚔️ **core** `combat.incoming_damage_multiplier` y resumen de raza y clase antes de crear el personaje
+
+## Anteriores
+
+Cambios aplicados en todo el ecosistema:
 
 - 🚀 **Migración completa a Paper 26.1.1 (Java 25)** — se abandona el soporte a 1.21.1: los 21 módulos (core + 20 addons) ahora compilan contra la nueva API de Paper. Incluye la renombrada de todas las constantes de `Attribute` (se les quitó el prefijo `GENERIC_`/`PLAYER_`/`ZOMBIE_`) y la adaptación a que `Sound` dejó de ser un `Enum` plano
 - 🖱️ **Botones "Volver" arreglados en todas las GUIs** — encantamientos, tiendas de NPCs, chat, crates y RPGRoll-FX: el botón `Volver`/`Cerrar` reabría el menú anterior sin cerrar de verdad el inventario activo, dejando la GUI "congelada". Corregido en 59 archivos (el `reopen()` de cada GUI ahora usa `open()` en vez de `build()`)
@@ -55,11 +69,11 @@ Cada addon extiende el core con un sistema completo propio, construido por **com
 | ----------------------- | --------------------------------------------------------------------------------------------------------- |
 | 🧑‍🤝‍🧑 **NPCs**             | NPCs interactuables (tiendas, diálogos, menús) como Mannequins nativos, sin ProtocolLib                   |
 | 🎁 **Crates**           | Cajas con ruleta de premios, integrables con DecentHolograms                                              |
-| ✨ **Enchantments**     | Encantamientos personalizados basados en componentes (triggers/condiciones/efectos)                       |
+| ✨ **Enchantments**     | Encantamientos personalizados basados en componentes (triggers/condiciones/efectos), súper encantador por lista e Infusor |
 | 📜 **Quests**           | Misiones ramificadas por etapas, objetivos, condiciones y eventos                                         |
 | 🎒 **Items**            | Ítems personalizados con stats, sockets, skins, mejoras y recetas                                         |
 | 🌟 **Ascension**        | Progresión avanzada: evolución de razas, especialización de clases, talentos, prestigio, legado y afinidades; logros con criterios y recompensas, facciones con reputación, rangos y rivalidades, títulos, rangos de oficio que desbloquean recetas, y razas, clases, rasgos y especializaciones secretas |
-| 👹 **Mobs**             | Mobs, jefes e invocaciones a medida (componentes, fases, IA propia, loot, reskin visual propio)           |
+| 👹 **Mobs**             | Mobs, jefes e invocaciones a medida (componentes, fases, IA propia, loot, reskin visual propio), rarezas de mobs vanilla, barra de vida y bestiario |
 | 🏰 **Dungeons**         | Mazmorras instanciadas: salas, oleadas, jefes, dificultades, ranking; estructuras NATIVE/CUSTOM y schematics de WorldEdit (opcional) |
 | 🛡️ **Guilds**           | Equipos temporales (Teams) y organizaciones permanentes (Guilds)                                          |
 | 💬 **Chat**             | Canales, proximidad, idiomas, roles, whisper, antispam, reacciones, logs                                  |
@@ -74,7 +88,7 @@ Cada addon extiende el core con un sistema completo propio, construido por **com
 | 💰 **RPGRoll-Economy**  | Monedas múltiples, wallets, bancos/préstamos, mercado dinámico con oferta/demanda, tiendas, subastas, empresas, impuestos y libro mayor — proveedor del servicio Economy de Vault |
 | ⚒️ **RPGRoll-Crafting** | Recetas personalizadas (ingredientes/condiciones ricas, calidad), estaciones de crafteo propias, puente con estaciones vanilla y motores de yunque/fermentación |
 | 📋 **RPGRoll-TAB**      | TabList, Scoreboard, Nametags, BelowName y BossBars 100% personalizables por placeholders — perfiles, contextos y animaciones por YAML (o el Diseñador de TAB en la web) |
-| 🌡️ **RPGRoll-Extras**  | Necesidades y condiciones de supervivencia configurables (sed, stamina, fatiga, temperatura, oxígeno, estrés) con umbrales que aplican efectos |
+| 🌡️ **RPGRoll-Extras**  | Necesidades y condiciones de supervivencia configurables (sed, stamina, fatiga, temperatura, oxígeno, estrés) con umbrales que aplican efectos, menú de admin, ordenar cofres e inventario, elevadores y Reforzador |
 | 🪤 **RPGRoll-Traps**    | Motor de trampas/mecanismos por YAML: triggers/condiciones/acciones/cadenas, bloques reforzados con llave, puertas secretas, y torretas autónomas que apuntan y disparan a jugadores/mobs hostiles |
 | 📖 **RPGRoll-Recipes**  | Recetario al estilo JEI: cómo se hace y para qué sirve cada objeto, leyendo las recetas vanilla, las de cualquier plugin, la fermentación y las estaciones de RPGRoll (`RecipeSource` en RPGRoll-Lib para que cualquier plugin publique las suyas) |
 | 🏭 **RPGRoll-Machines** | Máquinas: hornos, altos hornos y ahumadores mejorables (velocidad, combustible, doble resultado), spawners con mejoras, pila y recogida con toque de seda, y canteras que excavan solas dentro del claim de su dueño (fortuna, toque de seda, autofundido, filtro) |

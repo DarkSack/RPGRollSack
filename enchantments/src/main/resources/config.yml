@@ -32,9 +32,10 @@ infuser:
 
 # Súper encantador: una mesa de encantamientos marcada (receta: bloque de lapislázuli, estrella del
 # Nether y bloque de lapislázuli; bloque de diamante, mesa de encantamientos y bloque de diamante;
-# 3 obsidianas llorosas). Con un ítem en la mano, clic derecho: sube uno a uno los encantamientos
-# vanilla que ya estén al máximo (Afilado V → VI...). Cada nivel cuesta base-levels + step-levels por
-# cada nivel extra anterior, y lapis-per-level lapislázulis por nivel extra.
+# 3 obsidianas llorosas). Con un ítem en la mano, clic derecho: una lista con los encantamientos vanilla
+# y los del plugin que admite ese ítem, con una barra de niveles cada uno (por encima del máximo vanilla
+# también: Afilado V → VI...). Nada se cobra hasta pulsar Encantar. Por encima del máximo, cada nivel
+# cuesta base-levels + step-levels por cada nivel extra anterior, y lapis-per-level lapislázulis.
 super-enchanter:
   enabled: true
   # Modelo 3D del resource pack (namespace:id), igual que el del infusor. Vacío: la mesa vanilla.
