@@ -1,0 +1,25 @@
+id: jade_receta_te_de_jazmin
+display-name: "&fTé de Jazmín"
+icon: HONEY_BOTTLE
+station-id: jade_forja_de_jade
+processing-time-ticks: 60
+fuel-per-craft: 0
+xp-amount: 8
+fail-chance: 0
+quality-enabled: false
+
+result:
+  type: ITEM_ID
+  value: jade_te_de_jazmin
+  amount: 2
+
+ingredients:
+  - type: MATERIAL
+    value: GLASS_BOTTLE
+    amount: 2
+  - type: MATERIAL
+    value: CHERRY_LEAVES
+    amount: 4
+  - type: MATERIAL
+    value: OXEYE_DAISY
+    amount: 1

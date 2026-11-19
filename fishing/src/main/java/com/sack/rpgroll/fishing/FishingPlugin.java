@@ -100,6 +100,9 @@ public class FishingPlugin extends JavaPlugin {
 
         FishingAPI.init(speciesManager, rodManager, baitManager, treasureManager, junkManager, regionManager,
                 profileManager, catchEngine);
+        // Peces para las máquinas de otros plugins (la Pescadora de RPGRoll-Machines).
+        com.sack.rpgroll.common.fishing.CatchSource.register(this,
+                new com.sack.rpgroll.fishing.integration.MachineCatchSource(catchEngine, langManager));
 
         ChatPromptManager chatPromptManager = new ChatPromptManager(this, langManager);
         getServer().getPluginManager().registerEvents(chatPromptManager, this);

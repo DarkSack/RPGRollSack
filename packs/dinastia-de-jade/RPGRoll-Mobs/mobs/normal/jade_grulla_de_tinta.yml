@@ -1,0 +1,87 @@
+# Vuela y pica desde arriba. Pintada con tinta: se borra si la miras fijo.
+# Modelo 3D: FreeMinecraftModels/models/jade_grulla_de_tinta.bbmodel. Sin FMM se ve un vex.
+id: jade_grulla_de_tinta
+category: NORMAL
+display-name: "&fGrulla de Tinta"
+name-color: "#E8E8E8"
+level: 46
+rarity: rare
+tags: [ "dinastia_de_jade", "espiritu", "modelo3d" ]
+description: "Un pintor la dibujó tan bien que echó a volar. Nunca le perdonó que la dejara sin ojos."
+base-entity-type: VEX
+
+model:
+  scale: 1.0
+  model-engine-id: jade_grulla_de_tinta
+  equipment:
+
+stats:
+  health: 95
+  damage: 12
+  defense: 3
+  speed: 115
+  armor: 2
+  dodge: 20
+  accuracy: 95
+  critical_chance: 10
+  critical_damage: 35
+  knockback_resistance: 0
+
+resistances:
+  magic: 25
+
+ai:
+  goals: [ "ATTACK_PLAYERS" ]
+  aggro-range: 22
+  move-speed: 1.15
+
+skills:
+  - id: lluvia_de_tinta
+    display-name: "Lluvia de Tinta"
+    trigger: PERIODIC
+    cooldown: 14s
+    chance: 50
+    conditions:
+      - "target.distance <= 8"
+    actions:
+      - type: PARTICLE
+        particle: SQUID_INK
+        count: "40"
+        offset-x: "2.0"
+        offset-y: "1.0"
+        offset-z: "2.0"
+      - type: COMMAND
+        value: "minecraft:effect give {target} minecraft:darkness 4 0"
+      - type: DAMAGE
+        amount: "6"
+
+loot:
+  - type: ITEM
+    reference: jade_seda_imperial
+    amount-min: 1
+    amount-max: 2
+    chance: 35
+    scope: PER_PLAYER
+  - type: ITEM
+    reference: FEATHER
+    amount-min: 2
+    amount-max: 5
+    chance: 60
+    scope: PER_PLAYER
+  - type: ITEM
+    reference: INK_SAC
+    amount-min: 1
+    amount-max: 3
+    chance: 50
+    scope: PER_PLAYER
+  - type: EXPERIENCE
+    amount-min: 45
+    amount-max: 60
+    chance: 100
+    scope: PER_PLAYER
+
+spawn-rules:
+  biomes: [RIVER, SWAMP, CHERRY_GROVE]
+  natural-spawn: true
+  spawn-weight: 0.6
+  chance: 5

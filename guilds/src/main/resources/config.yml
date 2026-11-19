@@ -19,3 +19,8 @@ guild-creation:
   required-quest: ""        # id de una misión de RPGRoll-Quests (sin ese plugin no se exige)
   required-item: ""
   required-item-amount: 0
+
+# Menús dibujados del paquete de recursos (gremios y equipos).
+# Vacío = menús de cofre normales. En Sackito: "sackito:menus".
+menus:
+  pack: ""

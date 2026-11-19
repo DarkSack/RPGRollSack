@@ -1,0 +1,151 @@
+# GENERADO por sackito-network/infra/muebles/construir.py: no se edita a mano.
+
+mareas_cofre_capitan:
+  category: "storage"
+  name: "Cofre del Capitán"
+  lore:
+    - "&7Herrajes de oro y una calavera por cerradura."
+  material: "PAPER"
+  model: "mareas:mareas_cofre_capitan/default"
+  placement:
+    surfaces:
+      - "floor"
+  hitbox:
+    type: "barrier"
+    blocks:
+      - "0,0,0"
+  storage:
+    rows: 3
+    title: "&8Cofre del Capitán"
+  recipe:
+    materials:
+      DARK_OAK_PLANKS: 6
+      GOLD_INGOT: 2
+      CHEST: 1
+    money: 60
+mareas_arcon_de_coral:
+  category: "storage"
+  name: "Arcón de Coral"
+  lore:
+    - "&7Una concha enorme que alguien convirtió en arcón."
+  material: "PAPER"
+  model: "mareas:mareas_arcon_de_coral/default"
+  placement:
+    surfaces:
+      - "floor"
+  hitbox:
+    type: "barrier"
+    blocks:
+      - "0,0,0"
+  storage:
+    rows: 3
+    title: "&3Arcón de Coral"
+  recipe:
+    materials:
+      BRAIN_CORAL_BLOCK: 2
+      BONE_BLOCK: 2
+      CHEST: 1
+    money: 60
+mareas_baul_de_barco:
+  category: "storage"
+  name: "Baúl de Barco"
+  material: "PAPER"
+  model: "mareas:mareas_baul_de_barco/default"
+  placement:
+    surfaces:
+      - "floor"
+  hitbox:
+    type: "barrier"
+    blocks:
+      - "0,0,0"
+  storage:
+    rows: 3
+    title: "&8Baúl de Barco"
+  recipe:
+    materials:
+      SPRUCE_PLANKS: 6
+      STRING: 2
+      CHEST: 1
+    money: 30
+mareas_barril_de_ron:
+  category: "storage"
+  name: "Barril de Ron"
+  material: "PAPER"
+  model: "mareas:mareas_barril_de_ron/default"
+  placement:
+    surfaces:
+      - "floor"
+  hitbox:
+    type: "barrier"
+    blocks:
+      - "0,0,0"
+  storage:
+    rows: 2
+    title: "&6Barril de Ron"
+  recipe:
+    materials:
+      BARREL: 1
+      IRON_INGOT: 2
+      SUGAR_CANE: 4
+    money: 25
+mareas_timon:
+  category: "decoration"
+  name: "Timón"
+  material: "PAPER"
+  model: "mareas:mareas_timon/default"
+  placement:
+    surfaces:
+      - "floor"
+  hitbox:
+    type: "barrier"
+    blocks:
+      - "0,0,0"
+      - "0,1,0"
+  recipe:
+    materials:
+      SPRUCE_PLANKS: 4
+      STICK: 8
+      GOLD_INGOT: 1
+    money: 35
+mareas_farol_de_barco:
+  category: "lighting"
+  name: "Farol de Barco"
+  material: "PAPER"
+  model: "mareas:mareas_farol_de_barco/default"
+  placement:
+    surfaces:
+      - "floor"
+  hitbox:
+    type: "barrier"
+    blocks:
+      - "0,0,0"
+  light:
+    level: 14
+    at: "0,0,0"
+  recipe:
+    materials:
+      LANTERN: 1
+      COPPER_INGOT: 3
+    money: 20
+  sounds:
+    place: "block.metal.place"
+    break: "block.metal.break"
+mareas_mesa_de_cartografo:
+  category: "workshop"
+  name: "Mesa del Cartógrafo"
+  material: "PAPER"
+  model: "mareas:mareas_mesa_de_cartografo/default"
+  placement:
+    surfaces:
+      - "floor"
+  hitbox:
+    type: "barrier"
+    blocks:
+      - "0,0,0"
+  workstation: "CARTOGRAPHY_TABLE"
+  recipe:
+    materials:
+      CARTOGRAPHY_TABLE: 1
+      DARK_OAK_PLANKS: 4
+      PAPER: 4
+    money: 40

@@ -1,0 +1,46 @@
+# Conjunto del Capitán: la armadura del Bucanero. Puesta se ve como el
+# traje del pack (el tricornio, como su modelo). Lo suelta el Capitán Ahogado.
+id: mareas_capitan_tricornio
+pack: mareas_malditas
+material: NETHERITE_HELMET
+item-model: "mareas:armadura/capitan_tricornio"
+equipment-model: "none"
+display-name: "&6Tricornio del Capitán"
+lore:
+  - "&7Una pluma de gaviota y tres costuras de sal."
+  - "&8Conjunto del Capitán."
+rarity: EPIC
+
+stats:
+  defense: 5
+  luck: 4
+
+requirements:
+  level: 30
+  class: mareas_bucanero
+
+durability:
+  max: 900
+  repairable: true
+  degrade-per-use: 1
+
+effects:
+  - potion: WATER_BREATHING
+    amplifier: 0
+    requires-held: true
+
+economy:
+  sell: 1200
+  buy: 3000
+
+translations:
+  en:
+    display-name: "&6Captain's Tricorne"
+    lore:
+      - "&7A gull feather and three salt-stained seams."
+      - "&8Captain set."
+  pt_BR:
+    display-name: "&6Tricórnio do Capitão"
+    lore:
+      - "&7Uma pena de gaivota e três costuras de sal."
+      - "&8Conjunto do Capitão."

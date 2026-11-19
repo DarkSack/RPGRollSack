@@ -37,6 +37,13 @@ public final class ItemsBridge {
         return definition.map(def -> plugin.getItemFactory().create(def));
     }
 
+    /** Los ids de RPGRoll-Items, para autocompletar; vacío si Items no está. */
+    public static java.util.List<String> itemIds() {
+        ItemsPlugin plugin = resolve();
+        return plugin == null ? java.util.List.of()
+                : plugin.getItemManager().getAll().stream().map(ItemDefinition::id).sorted().toList();
+    }
+
     private static ItemsPlugin resolve() {
 
         Plugin plugin = Bukkit.getPluginManager().isPluginEnabled("RPGRoll-Items")

@@ -1,0 +1,41 @@
+# Historia 1 de 5. La da la Maestra Lian. Cada misión empieza la siguiente.
+# Los guerreros de terracota son husks por debajo, los zorros pececillos de
+# plata, las grullas vex, los leones devastadores, el General un esqueleto
+# wither y el Dragón un blaze: KILL_ENTITY cuenta por el tipo vanilla.
+id: jade_el_ejercito_de_barro
+display-name: "&6El Ejército de Barro"
+category: MAIN_STORY
+difficulty: NORMAL
+repeatable: false
+
+requirements:
+  level: 40
+
+stages:
+  - id: soldados_de_barro
+    dialog:
+      - npc: "Los soldados de terracota del mausoleo han salido a los bosques de bambú. Alguien rompió un sello."
+      - player: "Yo me encargo."
+    objectives:
+      - type: KILL_ENTITY
+        entity: HUSK
+        amount: 15
+        description: "Rompe 15 guerreros de terracota"
+  - id: informar_a_lian
+    objectives:
+      - type: TALK_TO_NPC
+        npc: jade_maestra_lian
+        amount: 1
+        description: "Vuelve con la Maestra Lian"
+    on-complete:
+      - type: MESSAGE
+        value: "&6Lian: &7No es un sello: son nueve. Pregúntale al Monje Bao por los espíritus."
+
+rewards:
+  money: 500
+  experience: 1200
+  commands:
+    - "itemadmin give {player} jade_bollo_de_loto 8"
+    - "itemadmin give {player} jade_dao_del_tigre 1"
+  quests:
+    - jade_los_espiritus_del_bosque

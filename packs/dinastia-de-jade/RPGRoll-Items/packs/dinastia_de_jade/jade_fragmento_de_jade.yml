@@ -1,0 +1,26 @@
+# Material común del pack: lo sueltan casi todos sus enemigos.
+id: jade_fragmento_de_jade
+pack: dinastia_de_jade
+material: EMERALD
+item-model: "jade:material/fragmento_de_jade"
+display-name: "&aFragmento de Jade"
+lore:
+  - "&7Frío al tacto y tibio por dentro."
+  - "&8Material de la Forja de Jade."
+rarity: UNCOMMON
+
+economy:
+  sell: 25
+  buy: 80
+
+translations:
+  en:
+    display-name: "&aJade Shard"
+    lore:
+      - "&7Cold to the touch and warm inside."
+      - "&8Jade Forge material."
+  pt_BR:
+    display-name: "&aFragmento de Jade"
+    lore:
+      - "&7Frio ao toque e morno por dentro."
+      - "&8Material da Forja de Jade."

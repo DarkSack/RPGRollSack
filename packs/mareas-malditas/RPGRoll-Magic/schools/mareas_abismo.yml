@@ -1,0 +1,19 @@
+# La escuela del pack: el mar profundo, frío y con hambre. Arrastra,
+# ahoga y protege a quien le sirve. El Brujo de las Mareas la domina.
+id: mareas_abismo
+display-name: "&3Abismo"
+color: DARK_AQUA
+icon: NAUTILUS_SHELL
+description: "La presión del fondo del mar, puesta en las manos de alguien que no debería tenerla."
+cast-sound: AMBIENT_UNDERWATER_ENTER
+
+race-affinities:
+  mareas_triton: 0.2
+  hada: 0.05
+  enano: -0.1
+
+class-affinities:
+  mareas_brujo_de_las_mareas: 0.2
+  mareas_bucanero: 0.05
+  mago: 0.1
+  druida: 0.05

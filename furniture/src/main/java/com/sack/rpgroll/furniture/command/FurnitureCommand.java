@@ -60,6 +60,22 @@ public class FurnitureCommand implements CommandExecutor, TabCompleter {
         if (args.length == 1 && sender.hasPermission("rpgroll.furniture.carpenter.anywhere")) {
             return List.of("fabricar").stream().filter(s -> s.startsWith(args[0].toLowerCase(Locale.ROOT))).toList();
         }
+        // /muebles fabricar <carpintero>: los carpinteros que tienen al menos una receta.
+        if (args.length == 2 && args[0].equalsIgnoreCase("fabricar")
+                && sender.hasPermission("rpgroll.furniture.carpenter.anywhere")) {
+            java.util.Set<String> stations = new java.util.TreeSet<>();
+            for (var def : manager.all()) {
+                if (def.recipe() != null) {
+                    stations.add(def.recipe().station());
+                }
+                def.variants().values().forEach(v -> {
+                    if (v.recipe() != null) {
+                        stations.add(v.recipe().station());
+                    }
+                });
+            }
+            return com.sack.rpgroll.util.TabCompleteUtil.filter(args[1], stations);
+        }
         return List.of();
     }
 }

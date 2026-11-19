@@ -22,6 +22,9 @@ import java.util.List;
 /** Mis publicaciones activas: shift-clic retira una (si no tiene pujas) y vuelve a la caja de recogida. */
 public class AuctionMineGUI extends InventoryGUI {
 
+    /** Fondo dibujado (sackito:menus/subastas_mias): volver (49) va dibujado. */
+    public static final String BACKGROUND = "subastas_mias";
+
     private static final int PREVIOUS = 45;
     private static final int BACK = 49;
     private static final int NEXT = 53;
@@ -34,7 +37,7 @@ public class AuctionMineGUI extends InventoryGUI {
     private int page;
 
     public AuctionMineGUI(Player player, AuctionService service, ChatPromptManager prompts, AuctionHouseGUI.View view) {
-        super(player, ComponentUtils.parseWithDefault(service.lang().raw("auction_house.mine.title"), NamedTextColor.GOLD), 54);
+        super(player, EconomyMenus.skin().title(BACKGROUND, ComponentUtils.parseWithDefault(service.lang().raw("auction_house.mine.title"), NamedTextColor.GOLD)), 54);
         this.service = service;
         this.prompts = prompts;
         this.view = view;
@@ -57,7 +60,7 @@ public class AuctionMineGUI extends InventoryGUI {
         }
 
         for (int slot = AuctionHouseGUI.PAGE_SIZE; slot < 54; slot++) {
-            setItem(slot, ItemBuilder.createFiller());
+            setItem(slot, EconomyMenus.filler());
         }
 
         if (listings.isEmpty()) {
@@ -72,7 +75,7 @@ public class AuctionMineGUI extends InventoryGUI {
                     .setName(lang.component("auction_house.gui.next", "page", page + 2, "pages", pages)).build());
         }
 
-        setItem(BACK, new ItemBuilder(Material.OAK_DOOR).setName(lang.component("auction_house.gui.back")).build());
+        setItem(BACK, EconomyMenus.skin().button(new ItemBuilder(Material.OAK_DOOR).setName(lang.component("auction_house.gui.back")).build()));
     }
 
     private org.bukkit.inventory.ItemStack display(AuctionListing listing) {

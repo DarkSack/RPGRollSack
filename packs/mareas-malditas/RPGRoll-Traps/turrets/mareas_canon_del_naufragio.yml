@@ -1,0 +1,24 @@
+# Torreta del pack: un cañón del barco hundido que todavía dispara. Lento y
+# de radio corto, para cubrir un pasillo de la gruta.
+id: mareas_canon_del_naufragio
+display-name: "&8Cañón del Naufragio"
+description: "Oxidado, mojado y aun así cargado."
+
+radius: 10.0
+target-players: true
+target-hostile-mobs: false
+fire-interval-ticks: 60
+
+conditions: []
+
+impact:
+  type: PROJECTILE
+  params:
+    projectile-type: SMALL_FIREBALL
+    speed: "1.4"
+
+model:
+  base-block: DARK_OAK_PLANKS
+  material: DISPENSER
+  hover-height: 1.1
+  spin-degrees-per-tick: 2.0

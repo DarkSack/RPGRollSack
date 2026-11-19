@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "jade:guardian"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "jade:guardian"
+      }
+    ]
+  }
+}

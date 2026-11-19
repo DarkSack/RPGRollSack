@@ -1,0 +1,87 @@
+# Enemigo de mar profundo: rápida, con una descarga que deja temblando.
+# Modelo 3D: FreeMinecraftModels/models/mareas_anguila.bbmodel. Sin FMM se ve un guardián.
+id: mareas_anguila
+category: NORMAL
+display-name: "&eAnguila Voltaica"
+name-color: "#F4D35E"
+level: 20
+rarity: uncommon
+tags: [ "mareas_malditas", "bestia", "modelo3d" ]
+description: "Brilla un segundo antes de soltar la descarga. Ese segundo es todo el aviso."
+base-entity-type: GUARDIAN
+
+model:
+  scale: 1.0
+  model-engine-id: mareas_anguila
+  equipment:
+
+stats:
+  health: 60
+  damage: 7
+  defense: 3
+  speed: 115
+  armor: 2
+  dodge: 10
+  accuracy: 90
+  critical_chance: 6
+  critical_damage: 30
+  knockback_resistance: 0
+
+resistances:
+  magic: 15
+
+ai:
+  goals: [ "ATTACK_PLAYERS" ]
+  aggro-range: 18
+  move-speed: 1.15
+
+skills:
+  - id: descarga_voltaica
+    display-name: "Descarga Voltaica"
+    trigger: PERIODIC
+    cooldown: 12s
+    chance: 55
+    conditions:
+      - "target.distance <= 6"
+    actions:
+      - type: ANIMATION
+        value: descarga
+      - type: PARTICLE
+        particle: ELECTRIC_SPARK
+        count: "40"
+        offset-x: "1.5"
+        offset-y: "0.8"
+        offset-z: "1.5"
+      - type: DAMAGE
+        amount: "8"
+      - type: COMMAND
+        value: "minecraft:effect give {target} minecraft:mining_fatigue 4 0"
+      - type: SOUND
+        sound: ENTITY_GUARDIAN_ATTACK
+        volume: "1.0"
+        pitch: "1.8"
+
+loot:
+  - type: ITEM
+    reference: mareas_coral_maldito
+    amount-min: 1
+    amount-max: 2
+    chance: 45
+    scope: PER_PLAYER
+  - type: ITEM
+    reference: PRISMARINE_CRYSTALS
+    amount-min: 1
+    amount-max: 3
+    chance: 35
+    scope: PER_PLAYER
+  - type: EXPERIENCE
+    amount-min: 16
+    amount-max: 24
+    chance: 100
+    scope: PER_PLAYER
+
+spawn-rules:
+  biomes: [DEEP_OCEAN, DEEP_COLD_OCEAN, DEEP_LUKEWARM_OCEAN]
+  natural-spawn: true
+  spawn-weight: 0.8
+  chance: 6

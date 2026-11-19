@@ -1,0 +1,50 @@
+# La raza del pack: zorros que aprendieron a tomar forma humana. Rápidos,
+# sabios y astutos; frágiles si los alcanzas.
+id: "jade_kitsune"
+display-name: "&6✿ Kitsune"
+description: |
+  Zorros de muchas colas que caminan como personas.
+  Cada cola es un siglo de astucia.
+base-attributes:
+  dexterity: 2
+  wisdom: 2
+  charisma: 1
+  constitution: -2
+physical:
+  movement-speed-percent: 0.05
+  knockback-resistance: 0.0
+passive-traits:
+  - "jade_nueve_colas"
+icon: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZmM1NzE0MjRjMDM0ZGQzYzEyZTk3MjllNGYxYmQxODBlMTIxMzg5MGU2ZjgwMjIxODU2NGI4OTcxNzc2MDgyYyJ9fX0="
+lore:
+  - "&7Ríen antes de que los veas"
+  - "&a▲ +5% de velocidad"
+  - "&a▲ +2 de vida"
+  - "&c▼ -2% de defensa"
+  - "&c▼ -2 de constitución"
+  - "&7Idioma: Lengua de Zorro"
+translations:
+  en:
+    display-name: "&6✿ Kitsune"
+    description: |
+      Many-tailed foxes who walk like people.
+      Each tail is a century of cunning.
+    lore:
+      - "&7They laugh before you see them"
+      - "&a▲ +5% speed"
+      - "&a▲ +2 health"
+      - "&c▼ -2% defense"
+      - "&c▼ -2 constitution"
+      - "&7Language: Fox Tongue"
+  pt_BR:
+    display-name: "&6✿ Kitsune"
+    description: |
+      Raposas de muitas caudas que andam como gente.
+      Cada cauda é um século de astúcia.
+    lore:
+      - "&7Riem antes que você as veja"
+      - "&a▲ +5% de velocidade"
+      - "&a▲ +2 de vida"
+      - "&c▼ -2% de defesa"
+      - "&c▼ -2 de constituição"
+      - "&7Idioma: Língua de Raposa"

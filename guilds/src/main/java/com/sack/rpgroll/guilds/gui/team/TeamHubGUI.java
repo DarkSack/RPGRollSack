@@ -1,5 +1,6 @@
 package com.sack.rpgroll.guilds.gui.team;
 
+import com.sack.rpgroll.guilds.gui.GuildMenus;
 import com.sack.rpgroll.util.ComponentUtils;
 
 import com.sack.rpgroll.gui.InventoryGUI;
@@ -23,6 +24,9 @@ import java.util.UUID;
 
 /** Panel único de gestión de equipo: miembros/roles, configuración, buffs, y compartir XP/loot/oro. */
 public class TeamHubGUI extends InventoryGUI {
+
+    /** Fondo dibujado (sackito:menus/equipo): cerrar (53) va dibujado; los ajustes y salir llevan hueco. */
+    public static final String BACKGROUND = "equipo";
 
     private static final int SIZE = 54;
 
@@ -52,7 +56,7 @@ public class TeamHubGUI extends InventoryGUI {
     private final List<UUID> memberOrder;
 
     public TeamHubGUI(Player player, TeamManager teamManager, ChatPromptManager chatPromptManager) {
-        super(player, chatPromptManager.lang().component("team.hub.title"), SIZE);
+        super(player, GuildMenus.skin().title(BACKGROUND, chatPromptManager.lang().component("team.hub.title")), SIZE);
         this.teamManager = teamManager;
         this.chatPromptManager = chatPromptManager;
         this.memberOrder = team() != null ? List.copyOf(team().members()) : List.of();
@@ -77,7 +81,7 @@ public class TeamHubGUI extends InventoryGUI {
         clear();
 
         for (int slot = 0; slot < SIZE; slot++) {
-            setItem(slot, ItemBuilder.createFiller());
+            setItem(slot, GuildMenus.filler());
         }
 
         Team team = team();
@@ -86,7 +90,7 @@ public class TeamHubGUI extends InventoryGUI {
             setItem(22, new ItemBuilder(Material.BARRIER)
                     .setName(ComponentUtils.parseWithDefault(lang().raw("team.hub.not_in_team"), NamedTextColor.RED))
                     .build());
-            setItem(CLOSE_SLOT, ItemBuilder.createCancelButton(lang().raw("common.close")));
+            setItem(CLOSE_SLOT, GuildMenus.skin().button(ItemBuilder.createCancelButton(lang().raw("common.close"))));
             return;
         }
 
@@ -140,7 +144,7 @@ public class TeamHubGUI extends InventoryGUI {
                 .setName(ComponentUtils.parseWithDefault(lang().raw(team.size() <= 1 ? "team.hub.button.disband" : "team.hub.button.leave"), NamedTextColor.RED))
                 .build());
 
-        setItem(CLOSE_SLOT, ItemBuilder.createCancelButton(lang().raw("common.close")));
+        setItem(CLOSE_SLOT, GuildMenus.skin().button(ItemBuilder.createCancelButton(lang().raw("common.close"))));
     }
 
     private org.bukkit.inventory.ItemStack toggleItem(String label, boolean enabled) {

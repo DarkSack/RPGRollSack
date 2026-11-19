@@ -132,12 +132,104 @@ quarry:
   upgraded: "&a✔ {upgrade} raised to {level}."
   unlocked: "&a✔ {upgrade} bought."
 
+area:
+  "yes": "yes"
+  "no": "no"
+  item_level: "&7{upgrade}: &f{level}"
+  hub_upgrades: "&aUpgrades"
+  hub_output: "&6Output to chest"
+  click_open: "&e▶ Click to open"
+  click_toggle: "&e▶ Click to toggle"
+  toggle_on: "&aOn"
+  toggle_off: "&7Off"
+  back: "&c◀ Back"
+  level: "&7Level &f{level}&7/&f{max}"
+  upgrade_title: "&e{upgrade}"
+  tier_name: "&e{upgrade} {level}"
+  tier_owned: "&a✔ Already owned"
+  tier_locked: "&7Buy the previous level first"
+  status_owner: "&7Owner: &f{owner}"
+  status_state: "&7State: {state}"
+  status_area: "&7Area: &f{side}×{side}"
+  status_buffer: "&7Waiting for room in the chest: &f{count} items"
+  state:
+    working: "&aworking"
+    idle: "&7nothing to do"
+    "off": "&7off"
+    no_owner: "&ewaiting for its owner"
+    no_chest: "&cneeds a chest next to it"
+    no_claim: "&cits area is no longer inside your claim"
+    full: "&cthe chest is full"
+    waiting_chunk: "&ewaiting for chunks to load"
+    no_water: "&cneeds water around it"
+  limit: "&cYou already have {max} of type {machine}, the maximum."
+  need_claim: "&cThe area ({side}×{side}) must be fully inside one of your claims."
+  world_disabled: "&cThis machine does not work in this world."
+  not_owner: "&cThis machine belongs to {owner}."
+  upgraded: "&a✔ {upgrade} raised to {level}."
+  fisher:
+    name: "Fisher"
+    item_name: "&bFisher"
+    item_lore: "&7Place it by water with a chest next to it: it fishes on its own."
+    menu_title: "Fisher"
+    upgrades_title: "Fisher: upgrades"
+    hub_upgrades_lore: "&7Speed, luck and rods."
+    gauge: "&bLine"
+    placed: "&a✔ Fisher placed. Put a chest next to it."
+    need_water: "&cIt needs water around it: a pond of at least 5×5 at its height or just below."
+    status_water: "&7Needs &f{min} &7water blocks around it."
+    upgrade:
+      speed: "Speed"
+      luck: "Luck"
+      rods: "Rods"
+    value:
+      speed: "&f  {value} catches/s"
+      luck: "&f  Luck of the Sea {value}"
+      rods: "&f  {value} catches per cast"
+  farm:
+    name: "Farm"
+    item_name: "&aFarm"
+    item_lore: "&7Place it among your crops with a chest next to it: it harvests and replants."
+    menu_title: "Farm"
+    upgrades_title: "Farm: upgrades"
+    hub_upgrades_lore: "&7Speed, area and fertilizer."
+    gauge: "&aPlot"
+    placed: "&a✔ Farm placed: it tends {side}×{side} blocks at its height. Put a chest next to it."
+    status_crops: "&7Ripe on the last pass: &f{ripe}&7/&f{crops}"
+    upgrade:
+      speed: "Speed"
+      area: "Area"
+      fertilizer: "Fertilizer"
+    value:
+      speed: "&f  {value} harvests/s"
+      area: "&f  {value}×{value} blocks"
+      fertilizer: "&f  {value} times per second"
+  lumber:
+    name: "Lumberjack"
+    item_name: "&6Lumberjack"
+    item_lore: "&7Place it in your forest with a chest next to it: it chops and replants."
+    menu_title: "Lumberjack"
+    upgrades_title: "Lumberjack: upgrades"
+    hub_upgrades_lore: "&7Speed, area and leaves."
+    gauge: "&6Trunk"
+    placed: "&a✔ Lumberjack placed: it chops {side}×{side} blocks around it. Put a chest next to it."
+    status_next: "&7Next tree: &f{progress}%"
+    upgrade:
+      speed: "Speed"
+      area: "Area"
+      leaves: "Leaves"
+    value:
+      speed: "&f  {value} trees/s"
+      area: "&f  {value}×{value} blocks"
+      leaves: "&f  Breaks leaves: {value}"
+
 command:
   usage: |-
     &6/machines
     &7 • &egive <player> furnace|blast_furnace|smoker <tier> [amount]
     &7 • &egive <player> spawner <mob> [amount]
     &7 • &egive <player> quarry [amount]
+    &7 • &egive <player> fisher|farm|lumber [amount]
     &7 • &equarries [player]
     &7 • &einfo &7(the block you're looking at)
     &7 • &ereload
@@ -153,3 +245,4 @@ command:
   info_furnace: "&7Furnace, tier &f{tier}"
   info_spawner: "&7{mob} spawner&7: speed {speed}, amount {count}, range {range}, stacked {stack}"
   info_quarry: "&7Quarry of &f{owner}&7: {state} &7(Y {depth}, area {side})"
+  info_area: "&7{machine} of &f{owner}&7: {state}"

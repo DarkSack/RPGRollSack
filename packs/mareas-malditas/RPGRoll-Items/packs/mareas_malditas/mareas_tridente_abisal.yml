@@ -1,0 +1,52 @@
+# El arma del Brujo: pega de cerca y suma poder mágico a sus hechizos.
+# Lo suelta el Kraken Ancestral.
+id: mareas_tridente_abisal
+pack: mareas_malditas
+material: NETHERITE_SWORD
+item-model: "mareas:arma/tridente_abisal"
+display-name: "&3&lTridente Abisal"
+lore:
+  - "&7Las puntas brillan como los ojos"
+  - "&7de algo que mira desde muy abajo."
+  - "&7Al golpear: el agua arrastra al objetivo."
+rarity: LEGENDARY
+
+stats:
+  damage: 12
+  magic_power: 14
+  critical_chance: 8
+
+requirements:
+  level: 32
+  class: mareas_brujo_de_las_mareas
+
+durability:
+  max: 1400
+  repairable: true
+  degrade-per-use: 1
+
+triggers:
+  ENTITY_HIT:
+    - type: COMMAND
+      value: "minecraft:effect give {target_uuid} minecraft:slowness 3 1"
+    - type: PARTICLE
+      particle: BUBBLE_POP
+      count: 30
+
+economy:
+  sell: 5000
+  buy: 12000
+
+translations:
+  en:
+    display-name: "&3&lAbyssal Trident"
+    lore:
+      - "&7The tines glow like the eyes"
+      - "&7of something watching from far below."
+      - "&7On hit: the water drags the target."
+  pt_BR:
+    display-name: "&3&lTridente Abissal"
+    lore:
+      - "&7As pontas brilham como os olhos"
+      - "&7de algo que olha lá de baixo."
+      - "&7Ao golpear: a água arrasta o alvo."

@@ -1,0 +1,190 @@
+# La mazmorra del pack: un templo excavado en el monte, sala por sala hasta
+# el santuario donde duerme el dragón. Usa los 6 mobs en orden. Las
+# coordenadas son de ejemplo: muévelas a donde construyas el templo (ver LEEME.md).
+id: jade_templo_de_los_nueve_sellos
+category: temple
+display-name: "&2Templo de los Nueve Sellos"
+icon: EMERALD
+description: "Nueve puertas, nueve sellos rotos y algo enroscado al fondo que respira."
+recommended-level: 55
+estimated-minutes: 45
+min-players: 1
+max-players: 5
+cooldown: 24h
+repeatable: true
+tags: [temple, jade, dinastia_de_jade]
+
+lobby:
+  world: world
+  x: -200
+  y: 70
+  z: 0
+  yaw: 0
+  pitch: 0
+
+bounds:
+  world: world
+  min-x: -270
+  min-y: 30
+  min-z: -80
+  max-x: -130
+  max-y: 110
+  max-z: 60
+
+rooms:
+  - id: puerta_de_las_nubes
+    type: ENTRANCE
+    entry:
+      world: world
+      x: -200
+      y: 70
+      z: 10
+    events:
+      ROOM_ENTER:
+        - type: MESSAGE
+          value: "&2Las nueve puertas están abiertas. Ninguna debería estarlo."
+        - type: SOUND
+          sound: BLOCK_BELL_USE
+          volume: "1.0"
+          pitch: "0.6"
+
+  - id: patio_de_barro
+    type: COMBAT
+    entry:
+      world: world
+      x: -200
+      y: 70
+      z: -10
+    waves:
+      - id: formacion
+        mobs:
+          - id: jade_terracota
+            amount: 5
+        time-limit: 0s
+        delay-before: 0s
+      - id: segunda_fila
+        mobs:
+          - id: jade_terracota
+            amount: 4
+          - id: jade_zorro_espectral
+            amount: 2
+        time-limit: 0s
+        delay-before: 5s
+    events:
+      ROOM_ENTER:
+        - type: MESSAGE
+          value: "&6Un ejército de barro gira la cabeza a la vez."
+
+  - id: jardin_de_tinta
+    type: COMBAT
+    entry:
+      world: world
+      x: -200
+      y: 72
+      z: -30
+    waves:
+      - id: pinceladas
+        mobs:
+          - id: jade_grulla_de_tinta
+            amount: 3
+          - id: jade_zorro_espectral
+            amount: 3
+        time-limit: 0s
+        delay-before: 0s
+    events:
+      ROOM_ENTER:
+        - type: MESSAGE
+          value: "&fLas pinturas del biombo se mueven."
+
+  - id: sala_de_los_leones
+    type: COMBAT
+    entry:
+      world: world
+      x: -200
+      y: 74
+      z: -45
+    waves:
+      - id: guardianes
+        mobs:
+          - id: jade_leon_de_piedra
+            amount: 2
+        time-limit: 0s
+        delay-before: 2s
+    events:
+      ROOM_ENTER:
+        - type: TITLE
+          title: "&7Sala de los Leones"
+          subtitle: "&7La piedra se despereza"
+
+  - id: sala_de_meditacion
+    type: REST
+    entry:
+      world: world
+      x: -200
+      y: 74
+      z: -55
+    events:
+      ROOM_ENTER:
+        - type: MESSAGE
+          value: "&aIncienso y silencio. Respira antes de seguir."
+
+  - id: salon_del_general
+    type: COMBAT
+    entry:
+      world: world
+      x: -200
+      y: 76
+      z: -65
+    waves:
+      - id: el_general
+        mobs:
+          - id: jade_general
+            amount: 1
+          - id: jade_terracota
+            amount: 3
+        time-limit: 0s
+        delay-before: 2s
+    events:
+      ROOM_ENTER:
+        - type: TITLE
+          title: "&4Salón del General"
+          subtitle: "&7Un cuerno de guerra suena"
+
+  - id: santuario_del_dragon
+    type: BOSS
+    entry:
+      world: world
+      x: -200
+      y: 60
+      z: -80
+    waves:
+      - id: dragon
+        mobs:
+          - id: jade_dragon
+            amount: 1
+        time-limit: 0s
+        delay-before: 3s
+    events:
+      ROOM_ENTER:
+        - type: TITLE
+          title: "&2&lEL SANTUARIO"
+          subtitle: "&7Algo enroscado abre un ojo"
+        - type: SOUND
+          sound: ENTITY_ENDER_DRAGON_GROWL
+          volume: "1.0"
+          pitch: "0.6"
+
+rewards:
+  - type: MONEY
+    amount-min: 1200
+    amount-max: 1900
+  - type: EXPERIENCE
+    amount-min: 1800
+    amount-max: 2600
+  - type: ITEM
+    reference: jade_fragmento_de_jade
+    amount-min: 6
+    amount-max: 12
+  - type: COMMAND
+    reference: "tesoro give {player} jade_relicario_del_dragon"
+    chance: 50

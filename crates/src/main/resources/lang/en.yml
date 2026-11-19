@@ -116,3 +116,35 @@ lucky:
   bad: "&c&lBad luck!"
   money: "&a+{amount} &7money."
   announce: "&6{player}&e opened {block}&e: {outcome}"
+
+treasure:
+  usage: |-
+    &cUsage: /treasure
+    &7 • &egive <player> <id> [amount]
+    &7 • &dlist
+    &7 • &6reload
+  not_found: "&cNo treasure with id: {id}"
+  given: "&a✔ {amount} × map of {treasure}&a given to {player}."
+  list_empty: "&7No treasures defined."
+  list_header: "&6Treasures:"
+  list_entry: "&7 • &e{id} &8— {name} &8({min}-{max} blocks)"
+  reloaded: "&a✔ Treasures reloaded: {count}."
+  reading: "&7You study the map..."
+  wrong_world: "&cThis map is no use in this world."
+  no_spot: "&cThe map matches nothing around here. Try reading it somewhere else."
+  located: "&eThe map marks a spot &f{distance}&e blocks to the &f{direction}&e."
+  hint: "&6✦ &e{distance} blocks to the {direction}"
+  hint_here: "&6✦ &aThis is it! Dig &f{depth}&a blocks at the X"
+  other_world: "&7This map's treasure is in another world: &f{world}"
+  found: "&6✦ You dug up {treasure}&6!"
+  already_open: "&7Someone is already looting this chest."
+  unknown: "&cThis map no longer leads anywhere."
+  dir:
+    n: north
+    ne: northeast
+    e: east
+    se: southeast
+    s: south
+    so: southwest
+    o: west
+    "no": northwest

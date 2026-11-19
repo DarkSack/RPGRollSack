@@ -1,0 +1,29 @@
+id: mareas_impacto_de_plomo
+display-name: "&7Impacto de Plomo"
+description: "Astillas y polvo donde pega una bala de plomo."
+
+steps:
+  - type: PARTICLE
+    delay: 0
+    particle: CRIT
+    shape: BURST
+    target: LOCATION
+    radius: 0.8
+    points: 20
+    count: 1
+    speed: 0.2
+  - type: PARTICLE
+    delay: 0
+    particle: SMOKE
+    shape: SPHERE
+    target: LOCATION
+    radius: 0.5
+    points: 14
+    count: 1
+    speed: 0.02
+  - type: SOUND
+    delay: 0
+    sound: BLOCK_WOOD_BREAK
+    target: SELF
+    volume: 0.5
+    pitch: 1.6

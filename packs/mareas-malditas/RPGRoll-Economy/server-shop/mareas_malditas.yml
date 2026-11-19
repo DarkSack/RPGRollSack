@@ -1,0 +1,37 @@
+# Sección del pack en /tienda. Solo vende: la tienda no compra ítems de
+# RPGRoll (los doblones se venden por /vender o en el mercado si lo tienes).
+id: mareas_malditas
+display-name: "&3Mareas Malditas"
+icon: NAUTILUS_SHELL
+slot: 37
+description:
+  - "&7Armas de chispa, ron y muebles de barco"
+
+items:
+  - item: mareas_pistola_de_chispa
+    buy: 1200
+  - item: mareas_sable_del_corsario
+    buy: 1400
+  - item: mareas_galleta_marinera
+    amount: 8
+    buy: 120
+  - item: mareas_ron_del_capitan
+    buy: 240
+  - item: mareas_tonico_salobre
+    buy: 300
+  - item: mareas_kit_de_calafate
+    buy: 280
+  - furniture: mareas_baul_de_barco
+    buy: 900
+  - furniture: mareas_barril_de_ron
+    buy: 600
+  - furniture: mareas_timon
+    buy: 700
+  - furniture: mareas_farol_de_barco
+    buy: 400
+  - furniture: mareas_mesa_de_cartografo
+    buy: 1100
+  - furniture: mareas_cofre_capitan
+    buy: 2500
+    lore:
+      - "&7El mismo cofre que sale de los tesoros."

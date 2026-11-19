@@ -1,0 +1,49 @@
+# Tesoro de montaña: más hondo y el mejor del pack. Sale de los leones
+# (raro), del Dragón, de la última misión, de la mazmorra, de la caja y
+# del Mercader Wei.
+id: jade_relicario_del_dragon
+display-name: "&2Relicario del Dragón"
+
+map:
+  material: PAPER
+  model: "jade:mapa/pergamino_del_dragon"
+  name: "&2Pergamino del Dragón"
+  lore:
+    - "&7Un dragón dorado rodea el mapa."
+    - "&7La X está en lo alto del monte."
+    - "&8Clic derecho para leerlo."
+
+placement:
+  worlds: []
+  biomes: [stony_peaks, jagged_peaks, windswept_hills, cherry_grove]
+  min-distance: 300
+  max-distance: 1000
+  depth: 5
+
+chest:
+  model: "jade:jade_relicario_del_dragon/default"
+  scale: 1.0
+  rows: 4
+  title: "&2Relicario del Dragón"
+  guardians:
+    - {type: COMMAND, command: "mobadmin spawn jade_leon_de_piedra {player}"}
+    - {type: COMMAND, command: "mobadmin spawn jade_zorro_espectral {player}"}
+    - {type: SOUND, sound: entity.ender_dragon.growl, volume: 0.8, pitch: 1.2}
+    - {type: MESSAGE, text: "&2Un rugido lejano. Algo guarda este relicario."}
+
+loot:
+  rolls: 5-8
+  entries:
+    - {item: jade_fragmento_de_jade, amount: 6-14, weight: 12}
+    - {item: jade_escama_de_dragon, amount: 1-3, weight: 8}
+    - {item: DIAMOND, amount: 2-5, weight: 6}
+    - {item: EMERALD_BLOCK, amount: 1-2, weight: 4}
+    - {item: jade_elixir_de_qi, amount: 1-3, weight: 5}
+    - {item: NETHERITE_SCRAP, amount: 1-2, weight: 2}
+    - {item: jade_lanza_media_luna, weight: 1}
+    - {item: jade_medallon_del_dragon, weight: 1}
+
+actions:
+  - {type: XP, amount: 300}
+  - {type: MONEY, amount: 1200-2400}
+  - {type: TITLE, title: "&2&lRELICARIO DEL DRAGÓN", subtitle: "&7La perla del tejado todavía brilla"}

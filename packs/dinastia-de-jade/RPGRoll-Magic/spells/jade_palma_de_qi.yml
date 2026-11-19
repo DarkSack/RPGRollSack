@@ -1,0 +1,34 @@
+# El hechizo de entrada: un golpe de palma que sale disparado.
+id: jade_palma_de_qi
+display-name: "&aPalma de Qi"
+icon: LIME_DYE
+color: GREEN
+school: jade_qi
+rarity: RARE
+level: 40
+cast-time: 0
+cooldown: 60
+trigger: RIGHT_CLICK
+tree-tier: 1
+tags: [qi, jade, proyectil]
+description: "Empujas el aire con la palma abierta y el aire golpea por ti."
+
+cost:
+  mana: 30
+
+components:
+  - type: PROJECTILE
+    speed: 2.0
+    max-distance: 26
+    hit-radius: 1.0
+    trail-particle: HAPPY_VILLAGER
+  - type: DAMAGE_DIRECT
+    amount: 22
+  - type: PUSH
+    strength: 1.2
+  - type: VISUAL
+    effect-id: jade_onda_de_qi
+  - type: SOUND
+    sound: ENTITY_BREEZE_WIND_BURST
+    volume: 0.8
+    pitch: 1.2

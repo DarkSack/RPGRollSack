@@ -1,0 +1,41 @@
+id: jade_guardian_botas
+pack: dinastia_de_jade
+material: NETHERITE_BOOTS
+item-model: "jade:armadura/guardian_botas"
+equipment-model: "jade:guardian"
+display-name: "&cBotas del Guardián Imperial"
+lore:
+  - "&7Suela de cuero y punteras de oro."
+  - "&8Conjunto del Guardián Imperial."
+rarity: LEGENDARY
+
+stats:
+  defense: 6
+
+attributes:
+  MOVEMENT_SPEED: 0.01
+
+requirements:
+  level: 55
+  class: jade_espadachin_del_loto
+
+durability:
+  max: 1400
+  repairable: true
+  degrade-per-use: 1
+
+economy:
+  sell: 2400
+  buy: 6000
+
+translations:
+  en:
+    display-name: "&cImperial Guardian Boots"
+    lore:
+      - "&7Leather soles and golden toecaps."
+      - "&8Imperial Guardian set."
+  pt_BR:
+    display-name: "&cBotas do Guardião Imperial"
+    lore:
+      - "&7Sola de couro e biqueiras de ouro."
+      - "&8Conjunto do Guardião Imperial."

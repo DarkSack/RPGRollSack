@@ -1,0 +1,32 @@
+id: jade_receta_arco_del_loto
+display-name: "&dArco del Loto"
+icon: CARROT_ON_A_STICK
+station-id: jade_forja_de_jade
+processing-time-ticks: 200
+fuel-per-craft: 0
+xp-amount: 50
+fail-chance: 0.1
+quality-enabled: false
+
+result:
+  type: ITEM_ID
+  value: jade_arco_del_loto
+  amount: 1
+
+ingredients:
+  - type: MATERIAL
+    value: BAMBOO
+    amount: 16
+  - type: MATERIAL
+    value: STRING
+    amount: 4
+  - type: ITEM_ID
+    value: jade_fragmento_de_jade
+    amount: 6
+  - type: ITEM_ID
+    value: jade_escama_de_dragon
+    amount: 1
+
+conditions:
+  - type: LEVEL_MIN
+    min-value: 46

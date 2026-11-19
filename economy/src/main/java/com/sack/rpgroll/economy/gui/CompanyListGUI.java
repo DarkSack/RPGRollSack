@@ -22,6 +22,9 @@ import java.util.List;
 
 public class CompanyListGUI extends InventoryGUI {
 
+    /** Fondo dibujado (sackito:menus/empresas): cerrar (44) va dibujado; fundar (40) lleva hueco. */
+    public static final String BACKGROUND = "empresas";
+
     private static final int SIZE = 45;
     private static final int FOUND_SLOT = 40;
     private static final int CLOSE_SLOT = 44;
@@ -36,7 +39,7 @@ public class CompanyListGUI extends InventoryGUI {
 
     public CompanyListGUI(Player player, CompanyManager companyManager, CompanyService companyService,
             BankManager bankManager, CurrencyManager currencyManager, ChatPromptManager chatPromptManager) {
-        super(player, ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("company.list.title"), NamedTextColor.GOLD), SIZE);
+        super(player, EconomyMenus.skin().title(BACKGROUND, ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("company.list.title"), NamedTextColor.GOLD)), SIZE);
         this.companyManager = companyManager;
         this.companyService = companyService;
         this.bankManager = bankManager;
@@ -52,7 +55,7 @@ public class CompanyListGUI extends InventoryGUI {
         clear();
 
         for (int slot = 0; slot < SIZE; slot++) {
-            setItem(slot, ItemBuilder.createFiller());
+            setItem(slot, EconomyMenus.filler());
         }
 
         for (int i = 0; i < companies.size() && i < 36; i++) {
@@ -69,7 +72,7 @@ public class CompanyListGUI extends InventoryGUI {
 
         setItem(FOUND_SLOT, new ItemBuilder(Material.EMERALD)
                 .setName(lang.component("company.list.found_button")).build());
-        setItem(CLOSE_SLOT, ItemBuilder.createCancelButton(lang.raw("common.close")));
+        setItem(CLOSE_SLOT, EconomyMenus.skin().button(ItemBuilder.createCancelButton(lang.raw("common.close"))));
     }
 
     @Override

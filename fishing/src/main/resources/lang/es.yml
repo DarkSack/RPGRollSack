@@ -7,14 +7,15 @@ command:
       &cUso: /fishingadmin
       &7 • &bbrowser
       &7 • &areload
-      &7 • &egiverod <id>
-      &7 • &dgivebait <id>
+      &7 • &egiverod <id> [jugador]
+      &7 • &dgivebait <id> [jugador]
     players_only_studio: "&cSolo jugadores pueden abrir el Fishing Studio."
-    players_only: "&cSolo un jugador puede recibir esto — úsalo desde el juego."
+    players_only: "&cSolo un jugador puede recibir esto: añade su nombre al final del comando."
+    player_not_found: "&cNo hay ningún jugador conectado llamado {player}."
     reloaded: "&a✔ Recargado: {species} especie(s), {rods} caña(s), {baits} carnada(s), {treasures} tesoro(s), {junk} basura(s), {regions} región(es)."
-    giverod_usage: "&cUso: /fishingadmin giverod <id>"
+    giverod_usage: "&cUso: /fishingadmin giverod <id> [jugador]"
     giverod_unknown: "&cNo existe una caña con id: {id}"
-    givebait_usage: "&cUso: /fishingadmin givebait <id>"
+    givebait_usage: "&cUso: /fishingadmin givebait <id> [jugador]"
     givebait_unknown: "&cNo existe una carnada con id: {id}"
     given: "&a✔ Entregada."
   player:

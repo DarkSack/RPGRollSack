@@ -1,0 +1,45 @@
+# Historia 1 de 5. La da la Contramaestre Bruma. Presenta a los mobs de la
+# playa. Cada misión de la historia empieza la siguiente al completarse.
+# Los ahogados y las sirenas son drowned por debajo y los cangrejos, arañas:
+# KILL_ENTITY cuenta por el tipo vanilla.
+id: mareas_la_campana_hundida
+display-name: "&3La Campana Hundida"
+category: MAIN_STORY
+difficulty: EASY
+repeatable: false
+
+requirements:
+  level: 15
+
+stages:
+  - id: limpiar_la_playa
+    dialog:
+      - npc: "Cada noche suena una campana bajo el agua y la playa se llena de muertos. Ayúdame a limpiarla."
+      - player: "Cuenta conmigo."
+    objectives:
+      - type: KILL_ENTITY
+        entity: DROWNED
+        amount: 10
+        description: "Derrota 10 marineros ahogados en la playa"
+      - type: KILL_ENTITY
+        entity: SPIDER
+        amount: 6
+        description: "Aparta 6 cangrejos de arrecife"
+  - id: volver_con_bruma
+    objectives:
+      - type: TALK_TO_NPC
+        npc: mareas_contramaestre_bruma
+        amount: 1
+        description: "Vuelve con la Contramaestre Bruma"
+    on-complete:
+      - type: MESSAGE
+        value: "&3Bruma: &7Esos ahogados llevan el pañuelo de la flota del Capitán. Habla con la cartógrafa."
+
+rewards:
+  money: 150
+  experience: 300
+  commands:
+    - "itemadmin give {player} mareas_galleta_marinera 8"
+    - "itemadmin give {player} mareas_pistola_de_chispa 1"
+  quests:
+    - mareas_la_cartografa

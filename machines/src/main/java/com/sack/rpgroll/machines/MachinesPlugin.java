@@ -1,5 +1,14 @@
 package com.sack.rpgroll.machines;
 
+import com.sack.rpgroll.machines.area.AreaKind;
+import com.sack.rpgroll.machines.area.AreaListener;
+import com.sack.rpgroll.machines.area.AreaMenu;
+import com.sack.rpgroll.machines.area.AreaService;
+import com.sack.rpgroll.machines.area.AreaStore;
+import com.sack.rpgroll.machines.area.AreaWorker;
+import com.sack.rpgroll.machines.area.FarmKind;
+import com.sack.rpgroll.machines.area.FisherKind;
+import com.sack.rpgroll.machines.area.LumberKind;
 import com.sack.rpgroll.common.command.BrigadierCommands;
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.license.identity.LicenseIdentity;
@@ -37,7 +46,8 @@ import java.util.List;
  */
 public class MachinesPlugin extends JavaPlugin {
 
-    private static final List<String> FILES = List.of("furnaces.yml", "spawners.yml", "quarries.yml");
+    private static final List<String> FILES = List.of("furnaces.yml", "spawners.yml", "quarries.yml",
+            "fishers.yml", "farms.yml", "lumberjacks.yml");
 
     private LangManager lang;
     private FurnaceService furnaces;
@@ -47,6 +57,9 @@ public class MachinesPlugin extends JavaPlugin {
     private QuarryWorker worker;
     private BukkitTask workerTask;
     private BukkitTask saveTask;
+    private AreaService areas;
+    private AreaStore areaStore;
+    private BukkitTask areaTask;
 
     @Override
     public void onEnable() {
@@ -73,6 +86,12 @@ public class MachinesPlugin extends JavaPlugin {
         quarries = new QuarryService(this, lang, displays, store, new Claims(getLogger()),
                 QuarrySettings.from(load("quarries.yml"), this::warn));
         worker = new QuarryWorker(quarries);
+        List<AreaKind> kinds = List.of(new FisherKind(), new FarmKind(), new LumberKind());
+        kinds.forEach(kind -> kind.load(load(kind.file()), this::warn));
+        areaStore = new AreaStore(new File(getDataFolder(), "data/machines.yml"), getLogger());
+        areaStore.load();
+        areas = new AreaService(this, lang, displays, areaStore, quarries.claims(), kinds);
+        AreaWorker areaWorker = new AreaWorker(areas);
 
         var events = getServer().getPluginManager();
         events.registerEvents(new FurnaceListener(this, furnaces,
@@ -82,18 +101,26 @@ public class MachinesPlugin extends JavaPlugin {
         events.registerEvents(new QuarryListener(quarries, lang,
                 (player, quarry) -> new QuarryMenu(player, quarry, quarries, lang).open()), this);
         events.registerEvents(worker, this);
+        events.registerEvents(new AreaListener(areas, lang, (player, machine) -> areas.kind(machine.kind())
+                .ifPresent(kind -> new AreaMenu(player, machine, kind, areas, lang).open())), this);
+        events.registerEvents(areaWorker, this);
 
         BrigadierCommands.register(this, "machines", "Máquinas de RPGRoll: dar, ver y recargar",
                 List.of("maquinas", "rpgmachines"),
-                new MachinesCommand(this, lang, furnaces, spawners, quarries), null, MachinesCommand.PERMISSION);
+                new MachinesCommand(this, lang, furnaces, spawners, quarries, areas), null, MachinesCommand.PERMISSION);
 
         // La receta de la cantera ya: RPGRoll-Recipes monta su índice al cargar el servidor (antes del
         // primer tick) y una receta registrada después no sale en el recetario hasta /recetas recargar.
         quarries.registerRecipe();
+        areas.registerRecipes();
         // Las de horno (para el autofundido), cuando todos los plugins ya registraron las suyas.
         getServer().getScheduler().runTask(this, worker::reloadRecipes);
         workerTask = getServer().getScheduler().runTaskTimer(this, worker, 20L, 1L);
-        saveTask = getServer().getScheduler().runTaskTimer(this, () -> store.save(false), 200L, 200L);
+        areaTask = getServer().getScheduler().runTaskTimer(this, areaWorker, 20L, 1L);
+        saveTask = getServer().getScheduler().runTaskTimer(this, () -> {
+            store.save(false);
+            areaStore.save(false);
+        }, 200L, 200L);
         checkClaims();
     }
 
@@ -105,15 +132,24 @@ public class MachinesPlugin extends JavaPlugin {
         if (saveTask != null) {
             saveTask.cancel();
         }
+        if (areaTask != null) {
+            areaTask.cancel();
+        }
         if (store != null) {
             store.save(true);
         }
         if (quarries != null) {
             quarries.unregisterRecipe();
         }
+        if (areaStore != null) {
+            areaStore.save(true);
+        }
+        if (areas != null) {
+            areas.unregisterRecipes();
+        }
     }
 
-    /** /machines reload: config, idioma y los tres ficheros. Las canteras siguen donde iban. */
+    /** /machines reload: config, idioma y los ficheros de cada máquina. Las canteras y las demás siguen donde iban. */
     public void reload() {
         reloadConfig();
         lang.reload(getConfig().getString("language", "es"));
@@ -121,6 +157,8 @@ public class MachinesPlugin extends JavaPlugin {
         spawners.settings(SpawnerSettings.from(load("spawners.yml"), this::warn));
         quarries.settings(QuarrySettings.from(load("quarries.yml"), this::warn));
         quarries.registerRecipe();
+        areas.kinds().forEach(kind -> kind.load(load(kind.file()), this::warn));
+        areas.registerRecipes();
         worker.reloadRecipes();
         checkClaims();
     }

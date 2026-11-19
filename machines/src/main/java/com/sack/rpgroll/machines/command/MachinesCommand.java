@@ -5,6 +5,8 @@ import com.sack.rpgroll.machines.MachinesPlugin;
 import com.sack.rpgroll.machines.core.Ui;
 import com.sack.rpgroll.machines.furnace.FurnaceService;
 import com.sack.rpgroll.machines.furnace.FurnaceSettings;
+import com.sack.rpgroll.machines.area.AreaMachine;
+import com.sack.rpgroll.machines.area.AreaService;
 import com.sack.rpgroll.machines.quarry.Quarry;
 import com.sack.rpgroll.machines.quarry.QuarryService;
 import com.sack.rpgroll.machines.spawner.SpawnerData;
@@ -32,6 +34,7 @@ import java.util.Locale;
  * /machines give &lt;jugador&gt; furnace|blast_furnace|smoker &lt;nivel&gt; [cantidad]
  * /machines give &lt;jugador&gt; spawner &lt;mob&gt; [cantidad]
  * /machines give &lt;jugador&gt; quarry [cantidad]
+ * /machines give &lt;jugador&gt; fisher|farm|lumber [cantidad]
  * /machines quarries [jugador]
  * /machines info        — el bloque que miras
  * /machines reload
@@ -40,21 +43,24 @@ public class MachinesCommand implements CommandExecutor, TabCompleter {
 
     public static final String PERMISSION = "rpgroll.machines.admin";
     private static final List<String> SUBCOMMANDS = List.of("give", "quarries", "info", "reload");
-    private static final List<String> KINDS = List.of("furnace", "blast_furnace", "smoker", "spawner", "quarry");
+    private static final List<String> KINDS = List.of("furnace", "blast_furnace", "smoker", "spawner", "quarry",
+            "fisher", "farm", "lumber");
 
     private final MachinesPlugin plugin;
     private final LangManager lang;
     private final FurnaceService furnaces;
     private final SpawnerService spawners;
     private final QuarryService quarries;
+    private final AreaService areas;
 
     public MachinesCommand(MachinesPlugin plugin, LangManager lang, FurnaceService furnaces, SpawnerService spawners,
-            QuarryService quarries) {
+            QuarryService quarries, AreaService areas) {
         this.plugin = plugin;
         this.lang = lang;
         this.furnaces = furnaces;
         this.spawners = spawners;
         this.quarries = quarries;
+        this.areas = areas;
     }
 
     @Override
@@ -123,8 +129,13 @@ public class MachinesCommand implements CommandExecutor, TabCompleter {
                 amountIndex = 3;
             }
             default -> {
-                lang.send(sender, "command.usage");
-                return;
+                var area = areas.kind(kind);
+                if (area.isEmpty()) {
+                    lang.send(sender, "command.usage");
+                    return;
+                }
+                item = areas.item(area.get(), null, 1);
+                amountIndex = 3;
             }
         }
         int amount = 1;
@@ -184,6 +195,13 @@ public class MachinesCommand implements CommandExecutor, TabCompleter {
                     "side", quarries.side(q));
             return;
         }
+        var machine = areas.at(block);
+        if (machine.isPresent()) {
+            AreaMachine m = machine.get();
+            lang.send(sender, "command.info_area", "machine", lang.raw("area." + m.kind() + ".name"),
+                    "owner", m.ownerName(), "state", lang.raw("area.state." + m.status().name().toLowerCase(Locale.ROOT)));
+            return;
+        }
         lang.send(sender, "command.info_nothing");
     }
 
@@ -221,6 +239,11 @@ public class MachinesCommand implements CommandExecutor, TabCompleter {
                 if (List.of("furnace", "blast_furnace", "smoker").contains(kind)) {
                     return TabCompleteUtil.filter(args[3], furnaces.settings().tiers().stream().map(t -> t.id()).toList());
                 }
+                // quarry, fisher, farm y lumber: el 4.º ya es la cantidad.
+                return TabCompleteUtil.filter(args[3], List.of("1", "4", "16"));
+            }
+            if (args.length == 5) {
+                return TabCompleteUtil.filter(args[4], List.of("1", "4", "16"));
             }
         }
         if (sub.equals("quarries") && args.length == 2) {

@@ -11,3 +11,12 @@ language: es
 lucky-blocks:
   # Mundos donde no se pueden colocar (por nombre).
   disabled-worlds: []
+
+# Tesoros enterrados (carpeta treasures/): un mapa que, al leerlo, marca un punto del mundo; cavando
+# allí aparece un cofre con su modelo, sus guardianes y su botín. /tesoro give <jugador> <id>.
+treasures:
+  enabled: true
+  # Cada cuántos ticks se refresca la pista (distancia y rumbo) a quien lleva el mapa en la mano.
+  hint-interval-ticks: 20
+  # A esta distancia o menos se marca la X en el suelo y se dice cuánto cavar.
+  mark-radius: 6

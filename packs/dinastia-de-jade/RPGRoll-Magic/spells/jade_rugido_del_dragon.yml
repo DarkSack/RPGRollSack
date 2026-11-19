@@ -1,0 +1,31 @@
+# El último del árbol: un cono de fuego de dragón delante del lanzador.
+id: jade_rugido_del_dragon
+display-name: "&2&lRugido del Dragón"
+icon: DRAGON_BREATH
+color: DARK_GREEN
+school: jade_qi
+rarity: LEGENDARY
+level: 58
+cast-time: 20
+cooldown: 600
+trigger: RIGHT_CLICK
+tree-tier: 3
+tags: [qi, jade, area]
+description: "Respiras hondo y lo que sale ya no es aire: es el aliento verde del dragón."
+
+cost:
+  mana: 70
+
+components:
+  - type: DAMAGE_CONE
+    range: 8
+    angle-degrees: 70
+    amount: 32
+  - type: IGNITE
+    fire-ticks: 80
+  - type: VISUAL
+    effect-id: jade_aliento_del_dragon
+  - type: SOUND
+    sound: ENTITY_ENDER_DRAGON_GROWL
+    volume: 0.7
+    pitch: 1.4

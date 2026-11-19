@@ -1,0 +1,25 @@
+id: jade_receta_incienso_de_concentracion
+display-name: "&6Incienso de Concentración"
+icon: PAPER
+station-id: jade_forja_de_jade
+processing-time-ticks: 60
+fuel-per-craft: 0
+xp-amount: 10
+fail-chance: 0
+quality-enabled: false
+
+result:
+  type: ITEM_ID
+  value: jade_incienso_de_concentracion
+  amount: 2
+
+ingredients:
+  - type: MATERIAL
+    value: STICK
+    amount: 3
+  - type: MATERIAL
+    value: COPPER_INGOT
+    amount: 2
+  - type: MATERIAL
+    value: SPORE_BLOSSOM
+    amount: 1

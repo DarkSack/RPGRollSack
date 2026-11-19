@@ -1,0 +1,32 @@
+id: jade_receta_dao_del_tigre
+display-name: "&eDao del Tigre"
+icon: DIAMOND_SWORD
+station-id: jade_forja_de_jade
+processing-time-ticks: 160
+fuel-per-craft: 0
+xp-amount: 40
+fail-chance: 0.08
+quality-enabled: false
+
+result:
+  type: ITEM_ID
+  value: jade_dao_del_tigre
+  amount: 1
+
+ingredients:
+  - type: MATERIAL
+    value: DIAMOND
+    amount: 2
+  - type: MATERIAL
+    value: IRON_INGOT
+    amount: 4
+  - type: ITEM_ID
+    value: jade_fragmento_de_jade
+    amount: 6
+  - type: ITEM_ID
+    value: jade_seda_imperial
+    amount: 2
+
+conditions:
+  - type: LEVEL_MIN
+    min-value: 42

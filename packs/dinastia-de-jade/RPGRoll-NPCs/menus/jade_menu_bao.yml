@@ -1,0 +1,48 @@
+id: jade_menu_bao
+title: "&aMonje Bao"
+rows: 3
+
+items:
+  - slot: 10
+    material: PAPER
+    name: "&aPergamino del Qi"
+    lore:
+      - "&7Catalizador de la escuela Qi."
+      - "&7Precio: &b12 diamantes"
+    actions:
+      - type: CONDITIONAL
+        value: "HAS_ITEM:DIAMOND,12;COMMAND:magicadmin givecatalyst jade_pergamino_del_qi {player};MESSAGE:Necesitas 12 diamantes."
+      - type: CONDITIONAL
+        value: "HAS_ITEM:DIAMOND,12;TAKE_ITEM:DIAMOND,12"
+  - slot: 11
+    material: HONEY_BOTTLE
+    name: "&fTé de Jazmín"
+    lore:
+      - "&7Cura 10 y da Regeneración I."
+      - "&7Precio: &a5 esmeraldas"
+    actions:
+      - type: CONDITIONAL
+        value: "HAS_ITEM:EMERALD,5;COMMAND:itemadmin give {player} jade_te_de_jazmin 1;MESSAGE:Necesitas 5 esmeraldas."
+      - type: CONDITIONAL
+        value: "HAS_ITEM:EMERALD,5;TAKE_ITEM:EMERALD,5"
+  - slot: 13
+    material: PAPER
+    name: "&6Incienso de Concentración"
+    lore:
+      - "&7Fuerza I y Resistencia I durante 45 s."
+      - "&7Precio: &a8 esmeraldas"
+    actions:
+      - type: CONDITIONAL
+        value: "HAS_ITEM:EMERALD,8;COMMAND:itemadmin give {player} jade_incienso_de_concentracion 1;MESSAGE:Necesitas 8 esmeraldas."
+      - type: CONDITIONAL
+        value: "HAS_ITEM:EMERALD,8;TAKE_ITEM:EMERALD,8"
+  - slot: 15
+    material: CHERRY_LEAVES
+    name: "&2La Ceremonia del Té"
+    lore:
+      - "&7Solo para Maestros del Té"
+      - "&7(Alquimista nivel 25)."
+    actions:
+      - type: COMMAND_AS_PLAYER
+        value: "quest start jade_la_ceremonia_del_te"
+      - type: CLOSE

@@ -6,6 +6,11 @@ import com.sack.rpgroll.crates.lucky.LuckyItems;
 import com.sack.rpgroll.crates.lucky.LuckyListener;
 import com.sack.rpgroll.crates.lucky.LuckyManager;
 import com.sack.rpgroll.crates.lucky.LuckyStore;
+import com.sack.rpgroll.crates.treasure.TreasureChests;
+import com.sack.rpgroll.crates.treasure.TreasureCommand;
+import com.sack.rpgroll.crates.treasure.TreasureListener;
+import com.sack.rpgroll.crates.treasure.TreasureManager;
+import com.sack.rpgroll.crates.treasure.TreasureMaps;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
@@ -36,7 +41,7 @@ public class CratesPlugin extends JavaPlugin {
 
     private static final double HOLOGRAM_Y_OFFSET = 2.0;
 
-    private static final List<String> DIRECTORIES = List.of("crates", "lucky");
+    private static final List<String> DIRECTORIES = List.of("crates", "lucky", "treasures");
 
     private CrateManager crateManager;
     private PlacedCrateManager placedCrateManager;
@@ -44,6 +49,8 @@ public class CratesPlugin extends JavaPlugin {
     private LangManager langManager;
     private LuckyManager luckyManager;
     private LuckyExecutor luckyExecutor;
+    private TreasureManager treasureManager;
+    private TreasureListener treasureListener;
 
     @Override
     public void onEnable() {
@@ -92,21 +99,46 @@ public class CratesPlugin extends JavaPlugin {
                 "Gestiona crates", "rpgrollcrates.admin.*", crateAdminCommand);
 
         enableLuckyBlocks(luckyItems);
+        enableTreasures();
 
         rebuildHolograms();
 
         getLogger().info("✔ RPGRoll-Crates habilitado. " + crateManager.count() + " tipo(s) de crate cargados, "
                 + placedCrateManager.getAll().size() + " ubicación(es), " + luckyManager.count()
-                + " lucky block(s).");
+                + " lucky block(s), " + (treasureManager == null ? 0 : treasureManager.count()) + " tesoro(s).");
     }
 
     @Override
     public void onDisable() {
         // Las ruletas a medias se entregan antes de que se guarden los inventarios.
         com.sack.rpgroll.crates.gui.CrateSpinGUI.finishAll();
+        // Antes que nada: los cofres de tesoro abiertos sueltan su contenido al cerrarse.
+        if (treasureListener != null) {
+            treasureListener.shutdown();
+        }
         if (luckyExecutor != null) {
             luckyExecutor.restoreAll();
         }
+    }
+
+    /** Tesoros enterrados (treasures/*.yml): mapa, pista, cavar y cofre con modelo. */
+    private void enableTreasures() {
+
+        if (!getConfig().getBoolean("treasures.enabled", true)) {
+            return;
+        }
+        treasureManager = new TreasureManager(this);
+        treasureManager.initialize();
+        TreasureMaps maps = new TreasureMaps(this);
+        TreasureChests chests = new TreasureChests(this, langManager, treasureManager, luckyExecutor);
+        treasureListener = new TreasureListener(this, langManager, treasureManager, maps, chests,
+                Math.max(1, getConfig().getInt("treasures.mark-radius", 6)));
+        getServer().getPluginManager().registerEvents(treasureListener, this);
+        treasureListener.startHints(Math.max(5, getConfig().getInt("treasures.hint-interval-ticks", 20)));
+
+        TreasureCommand command = new TreasureCommand(treasureManager, maps, langManager);
+        com.sack.rpgroll.common.command.BrigadierCommands.register(this, "tesoro", "Tesoros enterrados",
+                List.of("treasure"), command, command, TreasureCommand.PERMISSION);
     }
 
     /** Lucky blocks: bloques musicales de esqueleto que se abren al romperlos (lucky/*.yml). */
@@ -159,6 +191,11 @@ public class CratesPlugin extends JavaPlugin {
 
     public DecentHologramsHook getHologramsHook() {
         return hologramsHook;
+    }
+
+    /** Null si los tesoros están apagados en config.yml. */
+    public TreasureManager getTreasureManager() {
+        return treasureManager;
     }
 
     public LuckyManager getLuckyManager() {

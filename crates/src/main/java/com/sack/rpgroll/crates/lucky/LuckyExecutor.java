@@ -120,6 +120,22 @@ public class LuckyExecutor implements Listener {
         }
     }
 
+    /**
+     * Ejecuta acciones sueltas en {@code block} para {@code player} (los tesoros: guardianes y recompensas).
+     *
+     * @param where de dónde vienen, para el aviso si una falla
+     */
+    public void runActions(Player player, Block block, List<LuckyAction> actions, String where) {
+        Location center = block.getLocation().add(0.5, 0.5, 0.5);
+        for (LuckyAction action : actions) {
+            try {
+                execute(player, block, center, action);
+            } catch (RuntimeException e) {
+                plugin.getLogger().warning("✘ " + where + ", acción " + action.type() + ": " + e.getMessage());
+            }
+        }
+    }
+
     private void execute(Player player, Block block, Location center, LuckyAction action) {
 
         ThreadLocalRandom random = ThreadLocalRandom.current();

@@ -1,0 +1,42 @@
+# Historia 4 de 5. Manda al Templo de los Nueve Sellos. Al matar al
+# General Sin Sombra, su botín empieza la misión 5 (tipo QUEST en su loot).
+id: jade_el_general_sin_sombra
+display-name: "&4El General Sin Sombra"
+category: MAIN_STORY
+difficulty: ELITE
+repeatable: false
+
+requirements:
+  level: 50
+  completed:
+    - jade_las_grullas_de_tinta
+
+stages:
+  - id: los_leones
+    dialog:
+      - npc: "El General borró los sellos para despertar al dragón del emperador. Sus leones vigilan los pasos del monte."
+    objectives:
+      - type: KILL_ENTITY
+        entity: RAVAGER
+        amount: 3
+        description: "Derriba 3 leones de piedra en los picos"
+      - type: KILL_ENTITY
+        entity: HUSK
+        amount: 20
+        description: "Deshaz la guardia de terracota (20)"
+  - id: informar
+    objectives:
+      - type: TALK_TO_NPC
+        npc: jade_maestra_lian
+        amount: 1
+        description: "Cuéntaselo a la Maestra Lian"
+    on-complete:
+      - type: MESSAGE
+        value: "&6Lian: &7Entra en el Templo de los Nueve Sellos (/mazmorra) y detén al General."
+
+rewards:
+  money: 1000
+  experience: 2600
+  commands:
+    - "itemadmin give {player} jade_incienso_de_concentracion 3"
+    - "itemadmin give {player} jade_elixir_de_qi 3"

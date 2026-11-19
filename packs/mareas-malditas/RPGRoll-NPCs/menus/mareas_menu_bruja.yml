@@ -1,0 +1,59 @@
+id: mareas_menu_bruja
+title: "&5Bruja Salobre"
+rows: 3
+
+items:
+  - slot: 10
+    material: NAUTILUS_SHELL
+    name: "&3Caracola de las Profundidades"
+    lore:
+      - "&7Catalizador de la escuela Abismo."
+      - "&7Precio: &b6 diamantes"
+    actions:
+      - type: CONDITIONAL
+        value: "HAS_ITEM:DIAMOND,6;COMMAND:magicadmin givecatalyst mareas_caracola_de_las_profundidades {player};MESSAGE:Necesitas 6 diamantes."
+      - type: CONDITIONAL
+        value: "HAS_ITEM:DIAMOND,6;TAKE_ITEM:DIAMOND,6"
+  - slot: 11
+    material: HONEY_BOTTLE
+    name: "&bTónico Salobre"
+    lore:
+      - "&7Respirar y ver bajo el agua 3 min."
+      - "&7Precio: &a4 esmeraldas"
+    actions:
+      - type: CONDITIONAL
+        value: "HAS_ITEM:EMERALD,4;COMMAND:itemadmin give {player} mareas_tonico_salobre 1;MESSAGE:Necesitas 4 esmeraldas."
+      - type: CONDITIONAL
+        value: "HAS_ITEM:EMERALD,4;TAKE_ITEM:EMERALD,4"
+  - slot: 13
+    material: HONEY_BOTTLE
+    name: "&6Ron del Capitán"
+    lore:
+      - "&7Cura 6 y da Fuerza I durante 30 s."
+      - "&7Precio: &a3 esmeraldas"
+    actions:
+      - type: CONDITIONAL
+        value: "HAS_ITEM:EMERALD,3;COMMAND:itemadmin give {player} mareas_ron_del_capitan 1;MESSAGE:Necesitas 3 esmeraldas."
+      - type: CONDITIONAL
+        value: "HAS_ITEM:EMERALD,3;TAKE_ITEM:EMERALD,3"
+  - slot: 15
+    material: PRISMARINE_CRYSTALS
+    name: "&3El Buzo y la Perla"
+    lore:
+      - "&7Solo para Buzos de las Mareas"
+      - "&7(Pescador nivel 20)."
+    actions:
+      - type: COMMAND_AS_PLAYER
+        value: "quest start mareas_el_buzo_y_la_perla"
+      - type: CLOSE
+  - slot: 16
+    material: PAPER
+    name: "&dSeñuelo de Coral"
+    lore:
+      - "&7Cebo para la pesca del arrecife."
+      - "&7Precio: &a2 esmeraldas"
+    actions:
+      - type: CONDITIONAL
+        value: "HAS_ITEM:EMERALD,2;COMMAND:fishingadmin givebait mareas_senuelo_de_coral {player};MESSAGE:Necesitas 2 esmeraldas."
+      - type: CONDITIONAL
+        value: "HAS_ITEM:EMERALD,2;TAKE_ITEM:EMERALD,2"

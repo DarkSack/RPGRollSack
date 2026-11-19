@@ -1,0 +1,48 @@
+# Parche de emergencia: brea y estopa para tapar agujeros, también los
+# propios. Da absorción y resistencia un momento.
+id: mareas_kit_de_calafate
+pack: mareas_malditas
+material: PAPER
+item-model: "mareas:consumible/kit_de_calafate"
+display-name: "&eKit de Calafate"
+lore:
+  - "&7Brea, estopa y un mazo pequeño."
+  - "&7Absorción II y Resistencia I durante 15 s."
+  - "&8Clic derecho: úsalo (se gasta)."
+rarity: UNCOMMON
+
+abilities:
+  - id: calafatear
+    display-name: "&eCalafatear"
+    passive: false
+    trigger: RIGHT_CLICK
+    cooldown: 20s
+    actions:
+      - type: COMMAND
+        value: "minecraft:effect give {player} minecraft:absorption 15 1"
+      - type: COMMAND
+        value: "minecraft:effect give {player} minecraft:resistance 15 0"
+      - type: COMMAND
+        value: "minecraft:clear {player} minecraft:paper[minecraft:item_model=\"mareas:consumible/kit_de_calafate\"] 1"
+      - type: SOUND
+        sound: BLOCK_WOOD_HIT
+        volume: "0.8"
+        pitch: "1.4"
+
+economy:
+  sell: 45
+  buy: 140
+
+translations:
+  en:
+    display-name: "&eCaulking Kit"
+    lore:
+      - "&7Tar, oakum and a small mallet."
+      - "&7Absorption II and Resistance I for 15 s."
+      - "&8Right click: use it (consumed)."
+  pt_BR:
+    display-name: "&eKit de Calafetagem"
+    lore:
+      - "&7Piche, estopa e um maço pequeno."
+      - "&7Absorção II e Resistência I por 15 s."
+      - "&8Clique direito: use (é gasto)."

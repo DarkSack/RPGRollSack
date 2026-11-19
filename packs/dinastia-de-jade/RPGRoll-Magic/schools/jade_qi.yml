@@ -1,0 +1,19 @@
+# La escuela del pack: la energía de la respiración, puesta a pelear.
+# Golpea, mueve y protege. El Monje la aprovecha; el Espadachín, algo.
+id: jade_qi
+display-name: "&aQi"
+color: GREEN
+icon: EMERALD
+description: "El aliento que mueve el mundo. Bien dirigido, también lo detiene."
+cast-sound: BLOCK_AMETHYST_BLOCK_CHIME
+
+race-affinities:
+  jade_kitsune: 0.2
+  elfo: 0.05
+  orco: -0.1
+
+class-affinities:
+  jade_monje_del_puno: 0.2
+  jade_espadachin_del_loto: 0.1
+  clerigo: 0.05
+  mago: 0.05

@@ -1,0 +1,25 @@
+id: jade_receta_elixir_de_qi
+display-name: "&aElixir de Qi"
+icon: HONEY_BOTTLE
+station-id: jade_forja_de_jade
+processing-time-ticks: 80
+fuel-per-craft: 0
+xp-amount: 12
+fail-chance: 0.05
+quality-enabled: false
+
+result:
+  type: ITEM_ID
+  value: jade_elixir_de_qi
+  amount: 1
+
+ingredients:
+  - type: MATERIAL
+    value: GLASS_BOTTLE
+    amount: 1
+  - type: MATERIAL
+    value: GLOW_BERRIES
+    amount: 4
+  - type: ITEM_ID
+    value: jade_fragmento_de_jade
+    amount: 2

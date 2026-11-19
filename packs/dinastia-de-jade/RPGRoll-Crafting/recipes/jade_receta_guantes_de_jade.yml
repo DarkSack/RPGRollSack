@@ -1,0 +1,34 @@
+id: jade_receta_guantes_de_jade
+display-name: "&aGuantes de Jade"
+icon: IRON_SWORD
+station-id: jade_forja_de_jade
+processing-time-ticks: 160
+fuel-per-craft: 0
+xp-amount: 40
+fail-chance: 0.08
+quality-enabled: false
+
+result:
+  type: ITEM_ID
+  value: jade_guantes_de_jade
+  amount: 1
+
+ingredients:
+  - type: MATERIAL
+    value: LEATHER
+    amount: 6
+  - type: MATERIAL
+    value: GOLD_INGOT
+    amount: 2
+  - type: ITEM_ID
+    value: jade_fragmento_de_jade
+    amount: 8
+  - type: ITEM_ID
+    value: jade_seda_imperial
+    amount: 2
+
+conditions:
+  - type: LEVEL_MIN
+    min-value: 44
+  - type: CLASS
+    value: jade_monje_del_puno

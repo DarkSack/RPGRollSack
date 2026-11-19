@@ -1,0 +1,84 @@
+{
+ "format_version": 2,
+ "items": {
+  "minecraft:paper": [
+   {
+    "type": "definition",
+    "model": "jade:jade_arca_lacada/default",
+    "bedrock_identifier": "jade:jade_arca_lacada_default",
+    "display_name": "Arca Lacada",
+    "bedrock_options": {
+     "icon": "jade_jade_arca_lacada_default",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "jade:jade_relicario_del_dragon/default",
+    "bedrock_identifier": "jade:jade_relicario_del_dragon_default",
+    "display_name": "Relicario del Dragón",
+    "bedrock_options": {
+     "icon": "jade_jade_relicario_del_dragon_default",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "jade:jade_gabinete_de_te/default",
+    "bedrock_identifier": "jade:jade_gabinete_de_te_default",
+    "display_name": "Gabinete de Té",
+    "bedrock_options": {
+     "icon": "jade_jade_gabinete_de_te_default",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "jade:jade_linterna_de_papel/default",
+    "bedrock_identifier": "jade:jade_linterna_de_papel_default",
+    "display_name": "Linterna de Papel",
+    "bedrock_options": {
+     "icon": "jade_jade_linterna_de_papel_default",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "jade:jade_biombo/default",
+    "bedrock_identifier": "jade:jade_biombo_default",
+    "display_name": "Biombo",
+    "bedrock_options": {
+     "icon": "jade_jade_biombo_default",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "jade:jade_mesa_baja/default",
+    "bedrock_identifier": "jade:jade_mesa_baja_default",
+    "display_name": "Mesa Baja de Té",
+    "bedrock_options": {
+     "icon": "jade_jade_mesa_baja_default",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "jade:jade_bonsai/default",
+    "bedrock_identifier": "jade:jade_bonsai_default",
+    "display_name": "Bonsái",
+    "bedrock_options": {
+     "icon": "jade_jade_bonsai_default",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ]
+ }
+}

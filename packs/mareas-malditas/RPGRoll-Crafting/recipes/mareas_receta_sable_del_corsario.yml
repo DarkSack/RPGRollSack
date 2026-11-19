@@ -1,0 +1,29 @@
+id: mareas_receta_sable_del_corsario
+display-name: "&eSable del Corsario"
+icon: IRON_SWORD
+station-id: mareas_astillero
+processing-time-ticks: 100
+fuel-per-craft: 0
+xp-amount: 15
+fail-chance: 0.05
+quality-enabled: false
+
+result:
+  type: ITEM_ID
+  value: mareas_sable_del_corsario
+  amount: 1
+
+ingredients:
+  - type: MATERIAL
+    value: IRON_INGOT
+    amount: 5
+  - type: MATERIAL
+    value: GOLD_INGOT
+    amount: 1
+  - type: ITEM_ID
+    value: mareas_coral_maldito
+    amount: 4
+
+conditions:
+  - type: LEVEL_MIN
+    min-value: 18

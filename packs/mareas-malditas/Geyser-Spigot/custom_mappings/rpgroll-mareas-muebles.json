@@ -1,0 +1,84 @@
+{
+ "format_version": 2,
+ "items": {
+  "minecraft:paper": [
+   {
+    "type": "definition",
+    "model": "mareas:mareas_cofre_capitan/default",
+    "bedrock_identifier": "mareas:mareas_cofre_capitan_default",
+    "display_name": "Cofre del Capitán",
+    "bedrock_options": {
+     "icon": "mareas_mareas_cofre_capitan_default",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "mareas:mareas_arcon_de_coral/default",
+    "bedrock_identifier": "mareas:mareas_arcon_de_coral_default",
+    "display_name": "Arcón de Coral",
+    "bedrock_options": {
+     "icon": "mareas_mareas_arcon_de_coral_default",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "mareas:mareas_baul_de_barco/default",
+    "bedrock_identifier": "mareas:mareas_baul_de_barco_default",
+    "display_name": "Baúl de Barco",
+    "bedrock_options": {
+     "icon": "mareas_mareas_baul_de_barco_default",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "mareas:mareas_barril_de_ron/default",
+    "bedrock_identifier": "mareas:mareas_barril_de_ron_default",
+    "display_name": "Barril de Ron",
+    "bedrock_options": {
+     "icon": "mareas_mareas_barril_de_ron_default",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "mareas:mareas_timon/default",
+    "bedrock_identifier": "mareas:mareas_timon_default",
+    "display_name": "Timón",
+    "bedrock_options": {
+     "icon": "mareas_mareas_timon_default",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "mareas:mareas_farol_de_barco/default",
+    "bedrock_identifier": "mareas:mareas_farol_de_barco_default",
+    "display_name": "Farol de Barco",
+    "bedrock_options": {
+     "icon": "mareas_mareas_farol_de_barco_default",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "mareas:mareas_mesa_de_cartografo/default",
+    "bedrock_identifier": "mareas:mareas_mesa_de_cartografo_default",
+    "display_name": "Mesa del Cartógrafo",
+    "bedrock_options": {
+     "icon": "mareas_mareas_mesa_de_cartografo_default",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ]
+ }
+}

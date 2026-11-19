@@ -1,0 +1,26 @@
+# Material raro: leones de piedra, el General y el Dragón.
+id: jade_escama_de_dragon
+pack: dinastia_de_jade
+material: AMETHYST_SHARD
+item-model: "jade:material/escama_de_dragon"
+display-name: "&2Escama de Dragón"
+lore:
+  - "&7Dura como el jade y ligera como el papel."
+  - "&8Material de la Forja de Jade."
+rarity: EPIC
+
+economy:
+  sell: 220
+  buy: 650
+
+translations:
+  en:
+    display-name: "&2Dragon Scale"
+    lore:
+      - "&7Hard as jade and light as paper."
+      - "&8Jade Forge material."
+  pt_BR:
+    display-name: "&2Escama de Dragão"
+    lore:
+      - "&7Dura como jade e leve como papel."
+      - "&8Material da Forja de Jade."

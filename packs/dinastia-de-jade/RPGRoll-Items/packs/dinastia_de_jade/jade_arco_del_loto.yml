@@ -1,0 +1,58 @@
+# El arma a distancia del pack: una flecha de jade que no cae.
+id: jade_arco_del_loto
+pack: dinastia_de_jade
+material: CARROT_ON_A_STICK
+item-model: "jade:arma/arco_del_loto"
+display-name: "&dArco del Loto"
+lore:
+  - "&7Laca negra y lotos tallados."
+  - "&7La cuerda canta al soltarla."
+  - "&8Clic derecho: dispara una flecha de jade."
+rarity: EPIC
+
+stats:
+  critical_chance: 12
+
+requirements:
+  level: 46
+
+abilities:
+  - id: flecha_de_jade
+    display-name: "&dFlecha de Jade"
+    passive: false
+    trigger: RIGHT_CLICK
+    cooldown: 900ms
+    actions:
+      - type: SHOOT
+        amount: "16"
+        range: "40"
+        speed: "2.2"
+        model: "jade:proyectil/flecha_de_jade"
+        particle: DUST
+        color: "#5BE3A0"
+        size: "0.9"
+        density: "3"
+        muzzle-effect: jade_destello_del_arco
+        hit-effect: jade_impacto_de_jade
+      - type: SOUND
+        sound: ENTITY_ARROW_SHOOT
+        volume: "0.9"
+        pitch: "1.3"
+
+economy:
+  sell: 2800
+  buy: 7000
+
+translations:
+  en:
+    display-name: "&dLotus Bow"
+    lore:
+      - "&7Black lacquer and carved lotuses."
+      - "&7The string sings when released."
+      - "&8Right click: fire a jade arrow."
+  pt_BR:
+    display-name: "&dArco do Lótus"
+    lore:
+      - "&7Laca preta e lótus entalhados."
+      - "&7A corda canta ao ser solta."
+      - "&8Clique direito: dispara uma flecha de jade."

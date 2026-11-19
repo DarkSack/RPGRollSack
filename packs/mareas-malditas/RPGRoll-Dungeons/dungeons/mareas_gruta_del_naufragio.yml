@@ -1,0 +1,176 @@
+# La mazmorra del pack: el casco de la flota hundida, metido en una gruta
+# marina. Usa los 6 mobs en orden y termina en el Kraken. Las coordenadas
+# son de ejemplo: muévelas a donde construyas la gruta (ver LEEME.md).
+id: mareas_gruta_del_naufragio
+category: cave
+display-name: "&3Gruta del Naufragio"
+icon: NAUTILUS_SHELL
+description: "El casco de la flota del Capitán, encajado en una gruta que solo se vacía con marea baja."
+recommended-level: 30
+estimated-minutes: 35
+min-players: 1
+max-players: 4
+cooldown: 24h
+repeatable: true
+tags: [cave, mar, mareas_malditas]
+
+lobby:
+  world: world
+  x: 200
+  y: 64
+  z: 0
+  yaw: 0
+  pitch: 0
+
+bounds:
+  world: world
+  min-x: 140
+  min-y: 20
+  min-z: -60
+  max-x: 260
+  max-y: 80
+  max-z: 60
+
+rooms:
+  - id: boca_de_la_gruta
+    type: ENTRANCE
+    entry:
+      world: world
+      x: 200
+      y: 55
+      z: 10
+    events:
+      ROOM_ENTER:
+        - type: MESSAGE
+          value: "&3La marea está baja. Tienes hasta que vuelva a subir."
+        - type: SOUND
+          sound: AMBIENT_UNDERWATER_ENTER
+          volume: "1.0"
+          pitch: "0.8"
+
+  - id: la_bodega
+    type: COMBAT
+    entry:
+      world: world
+      x: 200
+      y: 55
+      z: -10
+    waves:
+      - id: marineros
+        mobs:
+          - id: mareas_ahogado
+            amount: 4
+          - id: mareas_cangrejo
+            amount: 2
+        time-limit: 0s
+        delay-before: 0s
+      - id: refuerzos
+        mobs:
+          - id: mareas_ahogado
+            amount: 4
+          - id: mareas_cangrejo
+            amount: 3
+        time-limit: 0s
+        delay-before: 5s
+    events:
+      ROOM_ENTER:
+        - type: MESSAGE
+          value: "&7Barriles rotos, ron derramado y algo que se arrastra entre ellos."
+
+  - id: el_canal
+    type: COMBAT
+    entry:
+      world: world
+      x: 200
+      y: 50
+      z: -30
+    waves:
+      - id: aguas_vivas
+        mobs:
+          - id: mareas_anguila
+            amount: 3
+          - id: mareas_sirena
+            amount: 2
+        time-limit: 0s
+        delay-before: 0s
+    events:
+      ROOM_ENTER:
+        - type: MESSAGE
+          value: "&dAlguien canta al otro lado del agua."
+        - type: SOUND
+          sound: BLOCK_AMETHYST_BLOCK_RESONATE
+          volume: "1.0"
+          pitch: "1.4"
+
+  - id: camarote_del_capitan
+    type: COMBAT
+    entry:
+      world: world
+      x: 200
+      y: 48
+      z: -45
+    waves:
+      - id: el_capitan
+        mobs:
+          - id: mareas_capitan
+            amount: 1
+          - id: mareas_ahogado
+            amount: 2
+        time-limit: 0s
+        delay-before: 2s
+    events:
+      ROOM_ENTER:
+        - type: TITLE
+          title: "&6Camarote del Capitán"
+          subtitle: "&7Una campana suena una sola vez"
+
+  - id: bolsa_de_aire
+    type: REST
+    entry:
+      world: world
+      x: 200
+      y: 48
+      z: -55
+    events:
+      ROOM_ENTER:
+        - type: MESSAGE
+          value: "&aUna bolsa de aire bajo el casco. Respira mientras puedas."
+
+  - id: la_fosa
+    type: BOSS
+    entry:
+      world: world
+      x: 200
+      y: 40
+      z: -70
+    waves:
+      - id: kraken
+        mobs:
+          - id: mareas_kraken
+            amount: 1
+        time-limit: 0s
+        delay-before: 3s
+    events:
+      ROOM_ENTER:
+        - type: TITLE
+          title: "&3&lLA FOSA"
+          subtitle: "&7El suelo respira"
+        - type: SOUND
+          sound: ENTITY_ELDER_GUARDIAN_CURSE
+          volume: "1.0"
+          pitch: "0.5"
+
+rewards:
+  - type: MONEY
+    amount-min: 450
+    amount-max: 750
+  - type: EXPERIENCE
+    amount-min: 650
+    amount-max: 950
+  - type: ITEM
+    reference: mareas_doblon_de_oro
+    amount-min: 5
+    amount-max: 10
+  - type: COMMAND
+    reference: "tesoro give {player} mareas_arcon_de_coral"
+    chance: 50

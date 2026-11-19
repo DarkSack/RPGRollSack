@@ -1,0 +1,43 @@
+# La estación del pack: una mesa de herrería con terracota verde vidriada
+# a cada lado. Fabrica las armas y los consumibles de Dinastía de Jade.
+id: jade_forja_de_jade
+display-name: "&2Forja de Jade"
+icon: SMITHING_TABLE
+trigger-block-material: SMITHING_TABLE
+inventory-size: 27
+ingredient-slots: [10, 11, 12, 13]
+fuel-slot: 9
+output-slot: 16
+requires-fuel: false
+gui-title: "&2Forja de Jade"
+allowed-recipe-ids: []
+
+structure-requirements:
+  - dx: -1
+    dy: 0
+    dz: 0
+    material: GREEN_GLAZED_TERRACOTTA
+  - dx: 1
+    dy: 0
+    dz: 0
+    material: GREEN_GLAZED_TERRACOTTA
+
+max-tier: 3
+speed-bonus-per-tier: 0.1
+fail-reduction-per-tier: 0.03
+tier-upgrades:
+  - tier: 2
+    economy-cost: 1500
+    cost:
+      - type: ITEM_ID
+        value: jade_fragmento_de_jade
+        amount: 24
+  - tier: 3
+    economy-cost: 4000
+    cost:
+      - type: ITEM_ID
+        value: jade_escama_de_dragon
+        amount: 4
+
+skill-category: forja_de_jade
+allow-experimentation: false

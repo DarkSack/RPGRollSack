@@ -1,0 +1,45 @@
+# La hoja de cualquiera que viva del mar: rápida y con buen crítico.
+id: mareas_sable_del_corsario
+pack: mareas_malditas
+material: IRON_SWORD
+item-model: "mareas:arma/sable_del_corsario"
+display-name: "&eSable del Corsario"
+lore:
+  - "&7La guarda tiene grabado un barco"
+  - "&7que ya no está en ningún puerto."
+rarity: UNCOMMON
+
+stats:
+  damage: 8
+  critical_chance: 10
+  attack_speed: 1.2
+
+requirements:
+  level: 18
+
+durability:
+  max: 500
+  repairable: true
+  degrade-per-use: 1
+
+triggers:
+  ENTITY_HIT:
+    - type: PARTICLE
+      particle: SWEEP_ATTACK
+      count: 1
+
+economy:
+  sell: 260
+  buy: 700
+
+translations:
+  en:
+    display-name: "&eCorsair's Sabre"
+    lore:
+      - "&7The guard bears the carving of a ship"
+      - "&7that is no longer in any port."
+  pt_BR:
+    display-name: "&eSabre do Corsário"
+    lore:
+      - "&7A guarda tem gravado um navio"
+      - "&7que já não está em nenhum porto."

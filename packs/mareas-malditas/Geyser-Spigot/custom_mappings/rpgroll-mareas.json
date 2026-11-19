@@ -1,0 +1,288 @@
+{
+ "format_version": 2,
+ "items": {
+  "minecraft:carrot_on_a_stick": [
+   {
+    "type": "definition",
+    "model": "mareas:arma/pistola_de_chispa",
+    "bedrock_identifier": "mareas:arma_pistola_de_chispa",
+    "display_name": "Pistola de Chispa",
+    "bedrock_options": {
+     "icon": "mareas_arma_pistola_de_chispa",
+     "allow_offhand": true,
+     "display_handheld": true
+    }
+   },
+   {
+    "type": "definition",
+    "model": "mareas:arma/trabuco",
+    "bedrock_identifier": "mareas:arma_trabuco",
+    "display_name": "Trabuco del Abordaje",
+    "bedrock_options": {
+     "icon": "mareas_arma_trabuco",
+     "allow_offhand": true,
+     "display_handheld": true
+    }
+   }
+  ],
+  "minecraft:iron_sword": [
+   {
+    "type": "definition",
+    "model": "mareas:arma/sable_del_corsario",
+    "bedrock_identifier": "mareas:arma_sable_del_corsario",
+    "display_name": "Sable del Corsario",
+    "bedrock_options": {
+     "icon": "mareas_arma_sable_del_corsario",
+     "allow_offhand": true,
+     "display_handheld": true
+    }
+   },
+   {
+    "type": "definition",
+    "model": "mareas:arma/garfio_de_abordaje",
+    "bedrock_identifier": "mareas:arma_garfio_de_abordaje",
+    "display_name": "Garfio de Abordaje",
+    "bedrock_options": {
+     "icon": "mareas_arma_garfio_de_abordaje",
+     "allow_offhand": true,
+     "display_handheld": true
+    }
+   }
+  ],
+  "minecraft:mace": [
+   {
+    "type": "definition",
+    "model": "mareas:arma/ancla_de_guerra",
+    "bedrock_identifier": "mareas:arma_ancla_de_guerra",
+    "display_name": "Ancla de Guerra",
+    "bedrock_options": {
+     "icon": "mareas_arma_ancla_de_guerra",
+     "allow_offhand": true,
+     "display_handheld": true
+    }
+   }
+  ],
+  "minecraft:netherite_sword": [
+   {
+    "type": "definition",
+    "model": "mareas:arma/tridente_abisal",
+    "bedrock_identifier": "mareas:arma_tridente_abisal",
+    "display_name": "Tridente Abisal",
+    "bedrock_options": {
+     "icon": "mareas_arma_tridente_abisal",
+     "allow_offhand": true,
+     "display_handheld": true
+    }
+   }
+  ],
+  "minecraft:netherite_helmet": [
+   {
+    "type": "definition",
+    "model": "mareas:armadura/capitan_tricornio",
+    "bedrock_identifier": "mareas:armadura_capitan_tricornio",
+    "display_name": "Tricornio del Capitán",
+    "bedrock_options": {
+     "icon": "mareas_armadura_capitan_tricornio",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:netherite_chestplate": [
+   {
+    "type": "definition",
+    "model": "mareas:armadura/capitan_casaca",
+    "bedrock_identifier": "mareas:armadura_capitan_casaca",
+    "display_name": "Casaca del Capitán",
+    "bedrock_options": {
+     "icon": "mareas_armadura_capitan_casaca",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:netherite_leggings": [
+   {
+    "type": "definition",
+    "model": "mareas:armadura/capitan_calzas",
+    "bedrock_identifier": "mareas:armadura_capitan_calzas",
+    "display_name": "Calzas del Capitán",
+    "bedrock_options": {
+     "icon": "mareas_armadura_capitan_calzas",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:netherite_boots": [
+   {
+    "type": "definition",
+    "model": "mareas:armadura/capitan_botas",
+    "bedrock_identifier": "mareas:armadura_capitan_botas",
+    "display_name": "Botas del Capitán",
+    "bedrock_options": {
+     "icon": "mareas_armadura_capitan_botas",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:honey_bottle": [
+   {
+    "type": "definition",
+    "model": "mareas:consumible/ron_del_capitan",
+    "bedrock_identifier": "mareas:consumible_ron_del_capitan",
+    "display_name": "Ron del Capitán",
+    "bedrock_options": {
+     "icon": "mareas_consumible_ron_del_capitan",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "mareas:consumible/tonico_salobre",
+    "bedrock_identifier": "mareas:consumible_tonico_salobre",
+    "display_name": "Tónico Salobre",
+    "bedrock_options": {
+     "icon": "mareas_consumible_tonico_salobre",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:cookie": [
+   {
+    "type": "definition",
+    "model": "mareas:consumible/galleta_marinera",
+    "bedrock_identifier": "mareas:consumible_galleta_marinera",
+    "display_name": "Galleta Marinera",
+    "bedrock_options": {
+     "icon": "mareas_consumible_galleta_marinera",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:paper": [
+   {
+    "type": "definition",
+    "model": "mareas:consumible/kit_de_calafate",
+    "bedrock_identifier": "mareas:consumible_kit_de_calafate",
+    "display_name": "Kit de Calafate",
+    "bedrock_options": {
+     "icon": "mareas_consumible_kit_de_calafate",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "mareas:mapa/mapa_del_capitan",
+    "bedrock_identifier": "mareas:mapa_mapa_del_capitan",
+    "display_name": "Mapa del Capitán",
+    "bedrock_options": {
+     "icon": "mareas_mapa_mapa_del_capitan",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "mareas:mapa/carta_de_coral",
+    "bedrock_identifier": "mareas:mapa_carta_de_coral",
+    "display_name": "Carta de Coral",
+    "bedrock_options": {
+     "icon": "mareas_mapa_carta_de_coral",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "mareas:proyectil/bala_de_plomo",
+    "bedrock_identifier": "mareas:proyectil_bala_de_plomo",
+    "display_name": "Bala de Plomo",
+    "bedrock_options": {
+     "icon": "mareas_proyectil_bala_de_plomo",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "mareas:cebo/senuelo_de_coral",
+    "bedrock_identifier": "mareas:cebo_senuelo_de_coral",
+    "display_name": "Señuelo de Coral",
+    "bedrock_options": {
+     "icon": "mareas_cebo_senuelo_de_coral",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:prismarine_crystals": [
+   {
+    "type": "definition",
+    "model": "mareas:material/perla_negra",
+    "bedrock_identifier": "mareas:material_perla_negra",
+    "display_name": "Perla Negra",
+    "bedrock_options": {
+     "icon": "mareas_material_perla_negra",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:prismarine_shard": [
+   {
+    "type": "definition",
+    "model": "mareas:material/coral_maldito",
+    "bedrock_identifier": "mareas:material_coral_maldito",
+    "display_name": "Coral Maldito",
+    "bedrock_options": {
+     "icon": "mareas_material_coral_maldito",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:gold_nugget": [
+   {
+    "type": "definition",
+    "model": "mareas:material/doblon_de_oro",
+    "bedrock_identifier": "mareas:material_doblon_de_oro",
+    "display_name": "Doblón de Oro",
+    "bedrock_options": {
+     "icon": "mareas_material_doblon_de_oro",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "mareas:reliquia/brujula_maldita",
+    "bedrock_identifier": "mareas:reliquia_brujula_maldita",
+    "display_name": "Brújula Maldita",
+    "bedrock_options": {
+     "icon": "mareas_reliquia_brujula_maldita",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:fishing_rod": [
+   {
+    "type": "definition",
+    "model": "mareas:cana/cana_de_coral",
+    "bedrock_identifier": "mareas:cana_cana_de_coral",
+    "display_name": "Caña de Coral",
+    "bedrock_options": {
+     "icon": "mareas_cana_cana_de_coral",
+     "allow_offhand": true,
+     "display_handheld": true
+    }
+   }
+  ]
+ }
+}

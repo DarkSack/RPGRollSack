@@ -1,5 +1,6 @@
 package com.sack.rpgroll.guilds.gui.guild;
 
+import com.sack.rpgroll.guilds.gui.GuildMenus;
 import com.sack.rpgroll.util.ComponentUtils;
 
 import com.sack.rpgroll.gui.InventoryGUI;
@@ -27,6 +28,9 @@ import org.bukkit.inventory.ItemStack;
  */
 public class GuildVaultGUI extends InventoryGUI {
 
+    /** Fondo dibujado (sackito:menus/gremio_cofre): volver (53) va dibujado; las casillas bloqueadas siguen con cristal. */
+    public static final String BACKGROUND = "gremio_cofre";
+
     private static final int SIZE = 54;
     private static final int DEPOSIT_MONEY_SLOT = 45;
     private static final int WITHDRAW_MONEY_SLOT = 46;
@@ -41,7 +45,7 @@ public class GuildVaultGUI extends InventoryGUI {
 
     public GuildVaultGUI(Player player, Guild guild, GuildManager guildManager, ChatPromptManager chatPromptManager,
             Runnable onBack) {
-        super(player, chatPromptManager.lang().component("guild.vault.title", "name", guild.name()), SIZE);
+        super(player, GuildMenus.skin().title(BACKGROUND, chatPromptManager.lang().component("guild.vault.title", "name", guild.name())), SIZE);
         this.guild = guild;
         this.guildManager = guildManager;
         this.chatPromptManager = chatPromptManager;
@@ -68,7 +72,7 @@ public class GuildVaultGUI extends InventoryGUI {
             if (i < 45) {
                 setItem(i, i < slots() && i < storage.length && storage[i] != null
                         ? storage[i]
-                        : (i < slots() ? new ItemStack(Material.AIR) : ItemBuilder.createFiller()));
+                        : (i < slots() ? new ItemStack(Material.AIR) : ItemBuilder.createFiller())); // bloqueada: cristal visible
                 continue;
             }
         }
@@ -91,7 +95,7 @@ public class GuildVaultGUI extends InventoryGUI {
                 .setLore(ComponentUtils.parseWithDefault(lang().raw("guild.vault.storage_slots", "count", slots()), NamedTextColor.GRAY))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang().raw("common.back")));
+        setItem(BACK_SLOT, GuildMenus.skin().button(ItemBuilder.createCancelButton(lang().raw("common.back"))));
     }
 
     @Override

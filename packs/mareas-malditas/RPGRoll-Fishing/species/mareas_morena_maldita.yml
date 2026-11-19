@@ -1,0 +1,17 @@
+id: mareas_morena_maldita
+display-name: "&5Morena Maldita"
+icon: COD
+model: "rpgroll_fishing:species/eel"
+description: "Se esconde en el coral maldito y muerde todo lo que brilla."
+category: SALTWATER
+rarity: UNCOMMON
+water-types: [OCEAN]
+biomes: [warm_ocean, lukewarm_ocean, deep_lukewarm_ocean]
+min-weight: 2
+max-weight: 14
+min-length: 60
+max-length: 180
+base-price: 32
+base-experience: 16
+behavior: AGGRESSIVE
+attracted-by-bait-tags: [mareas]

@@ -1,0 +1,149 @@
+# GENERADO por sackito-network/infra/muebles/construir.py: no se edita a mano.
+
+jade_arca_lacada:
+  category: "storage"
+  name: "Arca Lacada"
+  lore:
+    - "&7Laca roja, nubes de oro y una cerradura de jade."
+  material: "PAPER"
+  model: "jade:jade_arca_lacada/default"
+  placement:
+    surfaces:
+      - "floor"
+  hitbox:
+    type: "barrier"
+    blocks:
+      - "0,0,0"
+  storage:
+    rows: 3
+    title: "&4Arca Lacada"
+  recipe:
+    materials:
+      DARK_OAK_PLANKS: 6
+      RED_DYE: 2
+      GOLD_INGOT: 1
+      CHEST: 1
+    money: 70
+jade_relicario_del_dragon:
+  category: "storage"
+  name: "Relicario del Dragón"
+  lore:
+    - "&7Dos dragones de oro guardan la perla del tejado."
+  material: "PAPER"
+  model: "jade:jade_relicario_del_dragon/default"
+  placement:
+    surfaces:
+      - "floor"
+  hitbox:
+    type: "barrier"
+    blocks:
+      - "0,0,0"
+  storage:
+    rows: 3
+    title: "&2Relicario del Dragón"
+  recipe:
+    materials:
+      EMERALD_BLOCK: 1
+      GOLD_INGOT: 4
+      CHEST: 1
+    money: 120
+jade_gabinete_de_te:
+  category: "storage"
+  name: "Gabinete de Té"
+  material: "PAPER"
+  model: "jade:jade_gabinete_de_te/default"
+  placement:
+    surfaces:
+      - "floor"
+  hitbox:
+    type: "barrier"
+    blocks:
+      - "0,0,0"
+  storage:
+    rows: 2
+    title: "&8Gabinete de Té"
+  recipe:
+    materials:
+      DARK_OAK_PLANKS: 6
+      FLOWER_POT: 2
+      CHEST: 1
+    money: 40
+jade_linterna_de_papel:
+  category: "lighting"
+  name: "Linterna de Papel"
+  material: "PAPER"
+  model: "jade:jade_linterna_de_papel/default"
+  placement:
+    surfaces:
+      - "floor"
+  hitbox:
+    type: "barrier"
+    blocks:
+      - "0,0,0"
+  light:
+    level: 14
+    at: "0,0,0"
+  recipe:
+    materials:
+      PAPER: 6
+      TORCH: 1
+      RED_DYE: 1
+    money: 15
+  sounds:
+    place: "block.metal.place"
+    break: "block.metal.break"
+jade_biombo:
+  category: "decoration"
+  name: "Biombo"
+  material: "PAPER"
+  model: "jade:jade_biombo/default"
+  placement:
+    surfaces:
+      - "floor"
+  hitbox:
+    type: "barrier"
+    blocks:
+      - "0,0,0"
+      - "0,1,0"
+  recipe:
+    materials:
+      PAPER: 8
+      DARK_OAK_PLANKS: 4
+      BLACK_DYE: 1
+    money: 30
+jade_bonsai:
+  category: "decoration"
+  name: "Bonsái"
+  material: "PAPER"
+  model: "jade:jade_bonsai/default"
+  placement:
+    surfaces:
+      - "floor"
+  hitbox:
+    type: "barrier"
+    blocks:
+      - "0,0,0"
+  recipe:
+    materials:
+      FLOWER_POT: 1
+      OAK_SAPLING: 1
+      MOSS_BLOCK: 1
+    money: 20
+jade_mesa_baja:
+  category: "tables"
+  name: "Mesa Baja de Té"
+  material: "PAPER"
+  model: "jade:jade_mesa_baja/default"
+  placement:
+    surfaces:
+      - "floor"
+  hitbox:
+    type: "barrier"
+    blocks:
+      - "0,0,0"
+  recipe:
+    materials:
+      DARK_OAK_SLAB: 3
+      RED_DYE: 1
+      FLOWER_POT: 1
+    money: 25

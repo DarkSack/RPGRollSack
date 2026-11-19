@@ -15,6 +15,7 @@ import com.sack.rpgroll.fishing.gui.FishingBrowserGUI;
 import com.sack.rpgroll.fishing.item.FishingItemFactory;
 import com.sack.rpgroll.util.TabCompleteUtil;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -26,8 +27,8 @@ import java.util.List;
 /**
  * /fishingadmin browser
  * /fishingadmin reload
- * /fishingadmin giverod <id>
- * /fishingadmin givebait <id>
+ * /fishingadmin giverod <id> [jugador]
+ * /fishingadmin givebait <id> [jugador]
  */
 public class FishingAdminCommand implements CommandExecutor, TabCompleter {
 
@@ -116,13 +117,14 @@ public class FishingAdminCommand implements CommandExecutor, TabCompleter {
 
     private void handleGiveRod(CommandSender sender, String[] args) {
 
-        if (!(Senders.asPlayer(sender) instanceof Player player)) {
-            lang.send(sender, "command.admin.players_only");
+        if (args.length < 2) {
+            lang.send(sender, "command.admin.giverod_usage");
             return;
         }
 
-        if (args.length < 2) {
-            lang.send(sender, "command.admin.giverod_usage");
+        Player player = Senders.recipient(sender, args, 2);
+        if (player == null) {
+            sendNoRecipient(sender, args);
             return;
         }
 
@@ -139,13 +141,14 @@ public class FishingAdminCommand implements CommandExecutor, TabCompleter {
 
     private void handleGiveBait(CommandSender sender, String[] args) {
 
-        if (!(Senders.asPlayer(sender) instanceof Player player)) {
-            lang.send(sender, "command.admin.players_only");
+        if (args.length < 2) {
+            lang.send(sender, "command.admin.givebait_usage");
             return;
         }
 
-        if (args.length < 2) {
-            lang.send(sender, "command.admin.givebait_usage");
+        Player player = Senders.recipient(sender, args, 2);
+        if (player == null) {
+            sendNoRecipient(sender, args);
             return;
         }
 
@@ -158,6 +161,15 @@ public class FishingAdminCommand implements CommandExecutor, TabCompleter {
 
         player.getInventory().addItem(FishingItemFactory.createBait(baitOpt.get(), lang));
         lang.send(sender, "command.admin.given");
+    }
+
+    /** Sin destinatario: o el nombre no está conectado, o la consola no dio ninguno. */
+    private void sendNoRecipient(CommandSender sender, String[] args) {
+        if (args.length > 2) {
+            lang.send(sender, "command.admin.player_not_found", "player", args[2]);
+        } else {
+            lang.send(sender, "command.admin.players_only");
+        }
     }
 
     @Override
@@ -175,6 +187,11 @@ public class FishingAdminCommand implements CommandExecutor, TabCompleter {
                         .map(b -> b.id()).toList());
                 default -> List.of();
             };
+        }
+
+        if (args.length == 3 && ("giverod".equalsIgnoreCase(args[0]) || "givebait".equalsIgnoreCase(args[0]))) {
+            return TabCompleteUtil.filter(args[2],
+                    Bukkit.getOnlinePlayers().stream().map(Player::getName).toList());
         }
 
         return List.of();

@@ -1,0 +1,42 @@
+# Para bajar a la Gruta del Naufragio: respirar y ver bajo el agua.
+id: mareas_tonico_salobre
+pack: mareas_malditas
+material: HONEY_BOTTLE
+item-model: "mareas:consumible/tonico_salobre"
+display-name: "&bTónico Salobre"
+lore:
+  - "&7Agua de mar, tinta de calamar y algo"
+  - "&7que se mueve en el fondo de la botella."
+  - "&7Respiración acuática y visión nocturna 3 min."
+  - "&8Bébelo para usarlo."
+rarity: UNCOMMON
+
+triggers:
+  CONSUME:
+    - type: COMMAND
+      value: "minecraft:effect give {player} minecraft:water_breathing 180 0"
+    - type: COMMAND
+      value: "minecraft:effect give {player} minecraft:night_vision 180 0"
+    - type: PARTICLE
+      particle: BUBBLE_POP
+      count: 20
+
+economy:
+  sell: 50
+  buy: 150
+
+translations:
+  en:
+    display-name: "&bBrine Tonic"
+    lore:
+      - "&7Sea water, squid ink and something"
+      - "&7moving at the bottom of the bottle."
+      - "&7Water breathing and night vision for 3 min."
+      - "&8Drink it to use it."
+  pt_BR:
+    display-name: "&bTônico Salobre"
+    lore:
+      - "&7Água do mar, tinta de lula e algo"
+      - "&7que se mexe no fundo da garrafa."
+      - "&7Respiração aquática e visão noturna por 3 min."
+      - "&8Beba para usar."

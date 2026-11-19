@@ -1,0 +1,31 @@
+# Pecho: quien te pega queda frenado, como si lo arrastrara la resaca.
+id: mareas_resaca
+display-name: "&3Resaca"
+rarity: EPIC
+max-level: 3
+
+categories:
+  - CHESTPLATE
+
+trigger:
+  - ENTITY_DAMAGE
+
+chance: 25%
+
+levels:
+  1:
+    ticks: 40
+  2:
+    ticks: 60
+  3:
+    ticks: 80
+
+effects:
+  - type: POTION
+    potion: SLOWNESS
+    amplifier: "1"
+    duration: "{ticks}"
+    apply-to: target
+  - type: PARTICLE
+    particle: SPLASH
+    count: "25"

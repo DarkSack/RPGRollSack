@@ -23,6 +23,9 @@ import java.util.List;
  */
 public class AuctionCollectGUI extends InventoryGUI {
 
+    /** Fondo dibujado (sackito:menus/subastas_cobrar): volver (48) va dibujado. */
+    public static final String BACKGROUND = "subastas_cobrar";
+
     private static final int PREVIOUS = 45;
     private static final int BACK = 48;
     private static final int ALL = 50;
@@ -36,7 +39,7 @@ public class AuctionCollectGUI extends InventoryGUI {
     private int page;
 
     public AuctionCollectGUI(Player player, AuctionService service, ChatPromptManager prompts, AuctionHouseGUI.View view) {
-        super(player, ComponentUtils.parseWithDefault(service.lang().raw("auction_house.collect.title"), NamedTextColor.GOLD), 54);
+        super(player, EconomyMenus.skin().title(BACKGROUND, ComponentUtils.parseWithDefault(service.lang().raw("auction_house.collect.title"), NamedTextColor.GOLD)), 54);
         this.service = service;
         this.prompts = prompts;
         this.view = view;
@@ -68,7 +71,7 @@ public class AuctionCollectGUI extends InventoryGUI {
         }
 
         for (int slot = AuctionHouseGUI.PAGE_SIZE; slot < 54; slot++) {
-            setItem(slot, ItemBuilder.createFiller());
+            setItem(slot, EconomyMenus.filler());
         }
 
         if (items.isEmpty()) {
@@ -83,7 +86,7 @@ public class AuctionCollectGUI extends InventoryGUI {
                     .setName(lang.component("auction_house.gui.next", "page", page + 2, "pages", pages)).build());
         }
 
-        setItem(BACK, new ItemBuilder(Material.OAK_DOOR).setName(lang.component("auction_house.gui.back")).build());
+        setItem(BACK, EconomyMenus.skin().button(new ItemBuilder(Material.OAK_DOOR).setName(lang.component("auction_house.gui.back")).build()));
         setItem(ALL, new ItemBuilder(Material.HOPPER).setName(lang.component("auction_house.collect.all"))
                 .setLore(lang.component("auction_house.gui.collect_count", "count", items.size())).build());
     }

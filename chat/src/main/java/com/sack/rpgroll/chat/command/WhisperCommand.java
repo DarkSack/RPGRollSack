@@ -10,10 +10,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
 /** /w &lt;jugador&gt; &lt;mensaje&gt; y /r &lt;mensaje&gt; (responder). */
-public class WhisperCommand implements CommandExecutor {
+public class WhisperCommand implements CommandExecutor, TabCompleter {
 
     private final WhisperManager whisperManager;
     private final IgnoreManager ignoreManager;
@@ -94,4 +95,13 @@ public class WhisperCommand implements CommandExecutor {
                 : com.sack.rpgroll.util.PlayerText.stripCodes(message);
     }
 
+    @Override
+    public java.util.List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
+        // /r responde al último: solo /w pide un jugador.
+        if (args.length == 1 && !label.equalsIgnoreCase("r")) {
+            return com.sack.rpgroll.util.TabCompleteUtil.filter(args[0], Bukkit.getOnlinePlayers().stream()
+                    .filter(p -> !p.equals(sender)).map(Player::getName).toList());
+        }
+        return java.util.List.of();
+    }
 }

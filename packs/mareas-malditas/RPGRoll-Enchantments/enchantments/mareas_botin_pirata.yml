@@ -1,0 +1,20 @@
+# A veces, al matar, cae un doblón. Poco a poco, pero suma.
+id: mareas_botin_pirata
+display-name: "&6Botín Pirata"
+rarity: RARE
+max-level: 3
+
+categories:
+  - WEAPON
+
+trigger:
+  - ENTITY_KILL
+
+# Probabilidad fija; el nivel decide cuántos doblones caen (1, 2 o 3).
+chance: 10%
+
+effects:
+  - type: COMMAND
+    value: "itemadmin give {player} mareas_doblon_de_oro {level}"
+  - type: SOUND
+    sound: ENTITY_EXPERIENCE_ORB_PICKUP

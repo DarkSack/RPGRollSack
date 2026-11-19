@@ -1,0 +1,31 @@
+# A veces el corte deja al objetivo débil un momento.
+id: jade_filo_del_loto
+display-name: "&dFilo del Loto"
+rarity: RARE
+max-level: 3
+
+categories:
+  - WEAPON
+
+trigger:
+  - PLAYER_ATTACK
+
+chance: 15%
+
+levels:
+  1:
+    ticks: 40
+  2:
+    ticks: 60
+  3:
+    ticks: 90
+
+effects:
+  - type: POTION
+    potion: WEAKNESS
+    amplifier: "0"
+    duration: "{ticks}"
+    apply-to: target
+  - type: PARTICLE
+    particle: CRIT
+    count: "12"

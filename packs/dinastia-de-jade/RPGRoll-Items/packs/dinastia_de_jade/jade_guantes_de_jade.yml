@@ -1,0 +1,48 @@
+# El arma del Monje: golpes muy rápidos que aturden un instante.
+id: jade_guantes_de_jade
+pack: dinastia_de_jade
+material: IRON_SWORD
+item-model: "jade:arma/guantes_de_jade"
+display-name: "&aGuantes de Jade"
+lore:
+  - "&7Cuatro jades en los nudillos, uno por estación."
+  - "&7Al golpear: el objetivo se frena."
+rarity: EPIC
+
+stats:
+  damage: 12
+  critical_chance: 14
+  attack_speed: 1.9
+
+requirements:
+  level: 44
+  class: jade_monje_del_puno
+
+durability:
+  max: 1300
+  repairable: true
+  degrade-per-use: 1
+
+triggers:
+  ENTITY_HIT:
+    - type: COMMAND
+      value: "minecraft:effect give {target_uuid} minecraft:slowness 1 1"
+    - type: PARTICLE
+      particle: CRIT
+      count: 8
+
+economy:
+  sell: 2400
+  buy: 6000
+
+translations:
+  en:
+    display-name: "&aJade Gauntlets"
+    lore:
+      - "&7Four jades on the knuckles, one per season."
+      - "&7On hit: the target slows down."
+  pt_BR:
+    display-name: "&aManoplas de Jade"
+    lore:
+      - "&7Quatro jades nos nós dos dedos, um por estação."
+      - "&7Ao golpear: o alvo fica lento."

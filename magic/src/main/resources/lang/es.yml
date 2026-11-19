@@ -4,16 +4,17 @@ common:
 
 command:
   admin:
-    players_only: "&cSolo un jugador puede recibir esto — úsalo desde el juego."
+    players_only: "&cSolo un jugador puede recibir esto: añade su nombre al final del comando."
+    player_not_found: "&cNo hay ningún jugador conectado llamado {player}."
     players_only_studio: "&cSolo jugadores pueden abrir el Magic Studio."
     usage: |-
       &cUso: /magicadmin
       &7 • &bbrowser
       &7 • &areload
-      &7 • &egivecatalyst <id>
-      &7 • &dgivegrimoire <id>
-    usage_givecatalyst: "&cUso: /magicadmin givecatalyst <id>"
-    usage_givegrimoire: "&cUso: /magicadmin givegrimoire <id>"
+      &7 • &egivecatalyst <id> [jugador]
+      &7 • &dgivegrimoire <id> [jugador]
+    usage_givecatalyst: "&cUso: /magicadmin givecatalyst <id> [jugador]"
+    usage_givegrimoire: "&cUso: /magicadmin givegrimoire <id> [jugador]"
     reloaded: "&a✔ Recargado. Escuelas: {schools} · Hechizos: {spells} · Grimorios: {grimoires} · Runas: {runes} · Catalizadores: {catalysts}"
     unknown_catalyst: "&cNo existe un catalizador con id: {id}"
     unknown_grimoire: "&cNo existe un grimorio con id: {id}"

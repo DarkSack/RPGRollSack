@@ -1,0 +1,9 @@
+# Catalizador del pack: más alcance y algo más de poder, mismo coste.
+# Los catalizadores usan su material vanilla (no admiten modelo propio).
+id: mareas_caracola_de_las_profundidades
+display-name: "&3Caracola de las Profundidades"
+material: NAUTILUS_SHELL
+description: "Si te la acercas al oído no se oye el mar: se oye algo que respira."
+power-multiplier: 1.2
+cost-multiplier: 1.0
+range-multiplier: 1.25

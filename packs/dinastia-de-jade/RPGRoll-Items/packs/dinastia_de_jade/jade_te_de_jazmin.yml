@@ -1,0 +1,39 @@
+# La curación del pack: vida y regeneración.
+id: jade_te_de_jazmin
+pack: dinastia_de_jade
+material: HONEY_BOTTLE
+item-model: "jade:consumible/te_de_jazmin"
+display-name: "&fTé de Jazmín"
+lore:
+  - "&7Se sirve en silencio y se bebe despacio."
+  - "&7Cura 10 y da Regeneración I durante 10 s."
+  - "&8Bébelo para usarlo."
+rarity: UNCOMMON
+
+triggers:
+  CONSUME:
+    - type: HEAL
+      amount: "10"
+    - type: COMMAND
+      value: "minecraft:effect give {player} minecraft:regeneration 10 0"
+    - type: PARTICLE
+      particle: HEART
+      count: 5
+
+economy:
+  sell: 70
+  buy: 200
+
+translations:
+  en:
+    display-name: "&fJasmine Tea"
+    lore:
+      - "&7Served in silence and sipped slowly."
+      - "&7Heals 10 and gives Regeneration I for 10 s."
+      - "&8Drink it to use it."
+  pt_BR:
+    display-name: "&fChá de Jasmim"
+    lore:
+      - "&7Servido em silêncio e bebido devagar."
+      - "&7Cura 10 e dá Regeneração I por 10 s."
+      - "&8Beba para usar."

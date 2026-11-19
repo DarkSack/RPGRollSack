@@ -1,0 +1,29 @@
+id: jade_aliento_del_dragon
+display-name: "&2Aliento del Dragón"
+description: "Un cono de fuego verde delante del lanzador."
+
+steps:
+  - type: PARTICLE
+    delay: 0
+    particle: SOUL_FIRE_FLAME
+    shape: CONE
+    target: SELF
+    radius: 3.0
+    points: 120
+    count: 1
+    speed: 0.08
+  - type: PARTICLE
+    delay: 3
+    particle: HAPPY_VILLAGER
+    shape: CONE
+    target: SELF
+    radius: 3.5
+    points: 80
+    count: 1
+    speed: 0.1
+  - type: SOUND
+    delay: 0
+    sound: ITEM_FIRECHARGE_USE
+    target: SELF
+    volume: 1.0
+    pitch: 0.7

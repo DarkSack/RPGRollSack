@@ -1,0 +1,25 @@
+id: mareas_receta_kit_de_calafate
+display-name: "&eKit de Calafate"
+icon: PAPER
+station-id: mareas_astillero
+processing-time-ticks: 60
+fuel-per-craft: 0
+xp-amount: 6
+fail-chance: 0
+quality-enabled: false
+
+result:
+  type: ITEM_ID
+  value: mareas_kit_de_calafate
+  amount: 2
+
+ingredients:
+  - type: MATERIAL
+    value: HONEYCOMB
+    amount: 1
+  - type: MATERIAL
+    value: STRING
+    amount: 4
+  - type: ITEM_ID
+    value: mareas_coral_maldito
+    amount: 2

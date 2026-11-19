@@ -1,0 +1,31 @@
+# Un chorro de agua a presión desde el suelo del canal: lanza hacia arriba.
+id: mareas_geiser_salobre
+display-name: "&bGéiser Salobre"
+description: "El suelo del canal burbujea un segundo antes de reventar."
+icon: PRISMARINE
+
+trigger:
+  type: PROXIMITY
+
+radius: 1.5
+conditions: []
+
+actions:
+  - type: EFFECT
+    params:
+      effect-id: mareas_remolino
+  - type: SOUND
+    params:
+      sound: BLOCK_BUBBLE_COLUMN_UPWARDS_INSIDE
+      volume: "1.5"
+      pitch: "0.8"
+  - type: COMMAND
+    params:
+      value: "minecraft:effect give {player} minecraft:levitation 1 6"
+  - type: DAMAGE
+    params:
+      amount: "6"
+
+cooldown-millis: 5000
+charges: -1
+chain: []

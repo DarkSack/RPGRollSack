@@ -1,0 +1,38 @@
+# Historia 4 de 5. Manda a la Gruta del Naufragio. Al matar al Capitán
+# Ahogado, su botín empieza la misión 5 (tipo QUEST en su loot).
+id: mareas_la_flota_del_capitan
+display-name: "&6La Flota del Capitán"
+category: MAIN_STORY
+difficulty: HARD
+repeatable: false
+
+requirements:
+  level: 26
+  completed:
+    - mareas_el_canto_del_arrecife
+
+stages:
+  - id: la_tripulacion
+    dialog:
+      - npc: "El Capitán quiere despertar lo que duerme bajo el arrecife. Su tripulación vigila la Gruta del Naufragio."
+    objectives:
+      - type: KILL_ENTITY
+        entity: DROWNED
+        amount: 20
+        description: "Diezma a la tripulación del Capitán (20 ahogados)"
+  - id: informar
+    objectives:
+      - type: TALK_TO_NPC
+        npc: mareas_contramaestre_bruma
+        amount: 1
+        description: "Cuéntaselo a la Contramaestre Bruma"
+    on-complete:
+      - type: MESSAGE
+        value: "&3Bruma: &7Entra en la Gruta del Naufragio (/mazmorra) y acaba con el Capitán Ahogado."
+
+rewards:
+  money: 400
+  experience: 900
+  commands:
+    - "itemadmin give {player} mareas_kit_de_calafate 4"
+    - "itemadmin give {player} mareas_ron_del_capitan 4"

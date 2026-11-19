@@ -10,17 +10,25 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 
 import java.util.List;
 import java.util.Locale;
 
 /** /chatlog search|export|clear [canal] [jugador] [fecha] */
-public class ChatLogCommand implements CommandExecutor {
+public class ChatLogCommand implements CommandExecutor, TabCompleter {
 
     private final ChatLogManager logManager;
     private final LangManager lang;
+    private final java.util.function.Supplier<List<String>> channelIds;
 
     public ChatLogCommand(ChatLogManager logManager, LangManager lang) {
+        this(logManager, lang, List::of);
+    }
+
+    public ChatLogCommand(ChatLogManager logManager, LangManager lang,
+            java.util.function.Supplier<List<String>> channelIds) {
+        this.channelIds = channelIds;
         this.logManager = logManager;
         this.lang = lang;
     }
@@ -82,4 +90,21 @@ public class ChatLogCommand implements CommandExecutor {
         lang.send(sender, "log.cleared", "file", file.getName());
     }
 
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
+        if (args.length == 1) {
+            return com.sack.rpgroll.util.TabCompleteUtil.filter(args[0], List.of("search", "export", "clear"));
+        }
+        if (args.length > 4 || args[0].equalsIgnoreCase("clear")) {
+            return List.of();
+        }
+        String token = args[args.length - 1];
+        List<String> options = new java.util.ArrayList<>(List.of("-"));
+        switch (args.length) {
+            case 2 -> options.addAll(channelIds.get());
+            case 3 -> options.addAll(com.sack.rpgroll.util.TabCompleteUtil.allOnlinePlayerNames());
+            default -> options.add(java.time.LocalDate.now().toString());
+        }
+        return com.sack.rpgroll.util.TabCompleteUtil.filter(token, options);
+    }
 }

@@ -1,0 +1,185 @@
+# El jefe del pack. No aparece solo: lo despierta la última misión, el
+# santuario del Templo de los Nueve Sellos o /mobadmin spawn jade_dragon.
+# Tres fases: garras -> aliento -> tormenta de jade.
+# Modelo 3D: FreeMinecraftModels/models/jade_dragon.bbmodel. Sin FMM se ve un blaze.
+id: jade_dragon
+category: WORLD_BOSS
+display-name: "&2&lDragón de Jade"
+name-color: "#2FAE6E"
+level: 60
+rarity: legendary
+tags: [ "dinastia_de_jade", "dragon", "jefe", "modelo3d" ]
+description: "Durmió enroscado bajo el templo mientras le hacían ofrendas. Las ofrendas pararon."
+base-entity-type: BLAZE
+
+model:
+  scale: 1.0
+  glow: true
+  model-engine-id: jade_dragon
+  equipment:
+
+stats:
+  health: 4200
+  damage: 32
+  defense: 22
+  speed: 95
+  armor: 20
+  dodge: 5
+  accuracy: 95
+  critical_chance: 12
+  critical_damage: 70
+  knockback_resistance: 100
+
+resistances:
+  fire: 100
+  poison: 100
+  magic: 20
+
+ai:
+  goals: [ "ATTACK_PLAYERS" ]
+  aggro-range: 36
+  move-speed: 0.95
+
+skills:
+  - id: zarpazo
+    display-name: "Zarpazo"
+    trigger: ATTACK
+    cooldown: 8s
+    chance: 60
+    conditions:
+      - "target.distance <= 6"
+    actions:
+      - type: ANIMATION
+        value: attack
+      - type: DAMAGE
+        amount: "18"
+      - type: PUSH
+        strength: "1.6"
+      - type: SOUND
+        sound: ENTITY_ENDER_DRAGON_HURT
+        volume: "1.2"
+        pitch: "0.8"
+
+phases:
+  - id: aliento_verde
+    health-threshold-percent: 65
+    stat-multipliers:
+      damage: 1.2
+    skills:
+      - id: aliento_de_jade
+        display-name: "Aliento de Jade"
+        trigger: PERIODIC
+        cooldown: 12s
+        chance: 75
+        actions:
+          - type: ANIMATION
+            value: aliento
+          - type: PARTICLE
+            particle: SOUL_FIRE_FLAME
+            count: "140"
+            offset-x: "4.0"
+            offset-y: "1.5"
+            offset-z: "4.0"
+          - type: DAMAGE
+            amount: "16"
+          - type: COMMAND
+            value: "minecraft:effect give {target} minecraft:wither 4 0"
+    bossbar-color: GREEN
+    bossbar-title: "&2&lDragón de Jade &7[Aliento Verde]"
+    dialogue: "&2El templo entero huele a incienso quemado."
+    particle: SOUL_FIRE_FLAME
+
+  - id: tormenta_de_jade
+    health-threshold-percent: 30
+    stat-multipliers:
+      damage: 1.45
+      speed: 1.15
+    skills:
+      - id: tormenta
+        display-name: "Tormenta de Jade"
+        trigger: PERIODIC
+        cooldown: 16s
+        chance: 80
+        actions:
+          - type: ANIMATION
+            value: aliento
+          - type: PARTICLE
+            particle: END_ROD
+            count: "160"
+            offset-x: "6.0"
+            offset-y: "3.0"
+            offset-z: "6.0"
+          - type: DAMAGE
+            amount: "22"
+          - type: COMMAND
+            value: "minecraft:effect give {target} minecraft:levitation 2 1"
+          - type: SOUND
+            sound: ENTITY_LIGHTNING_BOLT_THUNDER
+            volume: "1.4"
+            pitch: "0.8"
+    bossbar-color: PURPLE
+    bossbar-title: "&2&lDragón de Jade &7[Tormenta de Jade]"
+    dialogue: "&2Las escamas se desprenden y vuelan como cuchillas."
+    particle: END_ROD
+
+triggers:
+  SPAWN:
+    - type: TITLE
+      title: "&2&lEL DRAGÓN DESPIERTA"
+      subtitle: "&7Los nueve sellos se rompen a la vez"
+    - type: SOUND
+      sound: ENTITY_ENDER_DRAGON_GROWL
+      volume: "1.5"
+      pitch: "0.7"
+  PHASE_CHANGE:
+    - type: SOUND
+      sound: ENTITY_ENDER_DRAGON_GROWL
+      volume: "1.5"
+      pitch: "0.9"
+  DEATH:
+    - type: TITLE
+      title: "&2&lEL DRAGÓN CAE"
+      subtitle: "&7El jade vuelve a ser piedra"
+    - type: PARTICLE
+      particle: END_ROD
+      count: "200"
+
+loot:
+  - type: ITEM
+    reference: jade_escama_de_dragon
+    amount-min: 4
+    amount-max: 8
+    chance: 100
+    scope: PER_PLAYER
+  - type: ITEM
+    reference: jade_fragmento_de_jade
+    amount-min: 8
+    amount-max: 16
+    chance: 100
+    scope: PER_PLAYER
+  - type: ITEM
+    reference: jade_medallon_del_dragon
+    amount-min: 1
+    amount-max: 1
+    chance: 15
+    scope: SHARED
+  - type: COMMAND
+    reference: "tesoro give {player} jade_relicario_del_dragon"
+    chance: 100
+    scope: PER_PLAYER
+  - type: MONEY
+    amount-min: 900
+    amount-max: 1500
+    chance: 100
+    scope: PER_PLAYER
+  - type: EXPERIENCE
+    amount-min: 1400
+    amount-max: 2000
+    chance: 100
+    scope: PER_PLAYER
+
+bossbar:
+  enabled: true
+  color: GREEN
+  style: NOTCHED_10
+  title: "&2&lDragón de Jade"

@@ -1,0 +1,26 @@
+# Material común: lo suelta casi todo lo que sale del mar en este pack.
+id: mareas_coral_maldito
+pack: mareas_malditas
+material: PRISMARINE_SHARD
+item-model: "mareas:material/coral_maldito"
+display-name: "&dCoral Maldito"
+lore:
+  - "&7Sigue creciendo aunque lo saques del agua."
+  - "&8Material del Astillero."
+rarity: COMMON
+
+economy:
+  sell: 12
+  buy: 40
+
+translations:
+  en:
+    display-name: "&dCursed Coral"
+    lore:
+      - "&7It keeps growing even out of the water."
+      - "&8Shipyard material."
+  pt_BR:
+    display-name: "&dCoral Amaldiçoado"
+    lore:
+      - "&7Continua crescendo mesmo fora da água."
+      - "&8Material do Estaleiro."

@@ -1,0 +1,24 @@
+# Diaria de la Cartógrafa: anguilas voltaicas (guardianes por debajo).
+id: mareas_diaria_cazadores_de_anguilas
+display-name: "&eDiaria: Cazadores de Anguilas"
+category: DAILY
+difficulty: NORMAL
+repeatable: true
+cooldown: "1d"
+
+requirements:
+  level: 20
+
+stages:
+  - id: anguilas
+    objectives:
+      - type: KILL_ENTITY
+        entity: GUARDIAN
+        amount: 6
+        description: "Derrota 6 anguilas voltaicas"
+
+rewards:
+  money: 180
+  experience: 320
+  commands:
+    - "itemadmin give {player} mareas_perla_negra 1"

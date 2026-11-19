@@ -34,7 +34,7 @@ command:
       &7 • &2givedinoegg [jugador] &8(shh)
     player_only_browser: "Solo un jugador puede abrir el Ranch Studio."
     reloaded: "✔ RPGRoll-Ranching recargado."
-    player_only_spawn: "Solo un jugador puede spawnear un animal."
+    player_only_spawn: "Desde la consola, di un dueño conectado: el animal sale junto a él."
     usage_spawn: "Uso: /ranchingadmin spawn <especie> [raza|-] [dueño|-] [macho|hembra]"
     unknown_species: "No existe la especie '{id}'."
     spawned_prefix: "✔ Ha aparecido: "

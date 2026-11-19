@@ -1,0 +1,31 @@
+# Defensa: un escudo de qi y algo de vida.
+id: jade_campana_dorada
+display-name: "&6Campana Dorada"
+icon: BELL
+color: GOLD
+school: jade_qi
+rarity: EPIC
+level: 50
+cast-time: 10
+cooldown: 400
+trigger: RIGHT_CLICK
+tree-tier: 2
+tags: [qi, jade, defensa]
+description: "Una campana de luz baja sobre ti. Lo que la golpea, suena y rebota."
+
+cost:
+  mana: 45
+
+components:
+  - type: APPLY_EFFECT
+    effect-id: shield
+    target: self
+  - type: HEAL
+    amount: 12
+    target: self
+  - type: VISUAL
+    effect-id: jade_campana
+  - type: SOUND
+    sound: BLOCK_BELL_USE
+    volume: 1.0
+    pitch: 1.0

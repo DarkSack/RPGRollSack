@@ -1,0 +1,26 @@
+# La moneda del pack: sale de tesoros y piratas y se vende bien.
+id: mareas_doblon_de_oro
+pack: mareas_malditas
+material: GOLD_NUGGET
+item-model: "mareas:material/doblon_de_oro"
+display-name: "&6Doblón de Oro"
+lore:
+  - "&7Acuñado por un rey que ya nadie recuerda."
+  - "&7Cualquier mercader te lo compra."
+rarity: UNCOMMON
+
+economy:
+  sell: 60
+  buy: 180
+
+translations:
+  en:
+    display-name: "&6Gold Doubloon"
+    lore:
+      - "&7Minted by a king no one remembers."
+      - "&7Any merchant will buy it."
+  pt_BR:
+    display-name: "&6Dobrão de Ouro"
+    lore:
+      - "&7Cunhado por um rei de quem ninguém se lembra."
+      - "&7Qualquer mercador compra."

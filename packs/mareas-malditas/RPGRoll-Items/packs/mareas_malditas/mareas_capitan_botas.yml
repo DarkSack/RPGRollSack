@@ -1,0 +1,46 @@
+id: mareas_capitan_botas
+pack: mareas_malditas
+material: NETHERITE_BOOTS
+item-model: "mareas:armadura/capitan_botas"
+equipment-model: "mareas:capitan"
+display-name: "&6Botas del Capitán"
+lore:
+  - "&7No resbalan ni en cubierta mojada."
+  - "&8Conjunto del Capitán."
+rarity: EPIC
+
+stats:
+  defense: 4
+
+attributes:
+  MOVEMENT_SPEED: 0.01
+
+requirements:
+  level: 30
+  class: mareas_bucanero
+
+durability:
+  max: 900
+  repairable: true
+  degrade-per-use: 1
+
+effects:
+  - potion: DOLPHINS_GRACE
+    amplifier: 0
+    requires-held: true
+
+economy:
+  sell: 1100
+  buy: 2800
+
+translations:
+  en:
+    display-name: "&6Captain's Boots"
+    lore:
+      - "&7They don't slip, not even on a wet deck."
+      - "&8Captain set."
+  pt_BR:
+    display-name: "&6Botas do Capitão"
+    lore:
+      - "&7Não escorregam nem no convés molhado."
+      - "&8Conjunto do Capitão."

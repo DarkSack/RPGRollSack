@@ -25,6 +25,9 @@ import java.util.List;
 
 public class BankAccountDetailGUI extends InventoryGUI {
 
+    /** Fondo dibujado (sackito:menus/banco_cuenta): volver (22) va dibujado; las acciones llevan hueco. */
+    public static final String BACKGROUND = "banco_cuenta";
+
     private static final int SIZE = 27;
 
     private static final int DEPOSIT_SLOT = 10;
@@ -45,7 +48,7 @@ public class BankAccountDetailGUI extends InventoryGUI {
     public BankAccountDetailGUI(Player player, BankAccount account, BankManager bankManager,
             CurrencyManager currencyManager, LoanService loanService, ChatPromptManager chatPromptManager,
             Runnable onBack) {
-        super(player, chatPromptManager.lang().component("bank.detail.title", "name", account.name()), SIZE);
+        super(player, EconomyMenus.skin().title(BACKGROUND, chatPromptManager.lang().component("bank.detail.title", "name", account.name())), SIZE);
         this.account = account;
         this.bankManager = bankManager;
         this.currencyManager = currencyManager;
@@ -61,7 +64,7 @@ public class BankAccountDetailGUI extends InventoryGUI {
         clear();
 
         for (int slot = 0; slot < SIZE; slot++) {
-            setItem(slot, ItemBuilder.createFiller());
+            setItem(slot, EconomyMenus.filler());
         }
 
         Currency currency = currencyManager.defaultCurrency();
@@ -89,7 +92,7 @@ public class BankAccountDetailGUI extends InventoryGUI {
         setItem(RENAME_SLOT, new ItemBuilder(Material.NAME_TAG)
                 .setName(lang.component("bank.detail.rename")).build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("common.back")));
+        setItem(BACK_SLOT, EconomyMenus.skin().button(ItemBuilder.createCancelButton(lang.raw("common.back"))));
     }
 
     @Override

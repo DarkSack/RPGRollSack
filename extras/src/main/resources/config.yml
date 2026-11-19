@@ -102,3 +102,8 @@ elevator:
 # quita el refuerzo. rpgrollextras.reinforce.admin (op) puede quitárselo a cualquiera.
 reinforcement:
   enabled: true
+
+# Menús dibujados del paquete de recursos (warps). El menú del servidor (menus/*.yml) usa su
+# propia clave background:. Vacío = menús de cofre normales. En Sackito: "sackito:menus".
+menus:
+  pack: ""

@@ -1,5 +1,6 @@
 package com.sack.rpgroll.guilds.gui.guild;
 
+import com.sack.rpgroll.guilds.gui.GuildMenus;
 import com.sack.rpgroll.util.ComponentUtils;
 
 import com.sack.rpgroll.gui.InventoryGUI;
@@ -21,6 +22,9 @@ import java.util.UUID;
 
 public class GuildMembersGUI extends InventoryGUI {
 
+    /** Fondo dibujado (sackito:menus/gremio_miembros): volver (53) va dibujado; invitar (49) lleva hueco. */
+    public static final String BACKGROUND = "gremio_miembros";
+
     private static final int SIZE = 54;
     private static final int INVITE_SLOT = 49;
     private static final int BACK_SLOT = 53;
@@ -33,7 +37,7 @@ public class GuildMembersGUI extends InventoryGUI {
 
     public GuildMembersGUI(Player player, Guild guild, GuildManager guildManager, ChatPromptManager chatPromptManager,
             Runnable onBack) {
-        super(player, chatPromptManager.lang().component("guild.members.title", "name", guild.name()), SIZE);
+        super(player, GuildMenus.skin().title(BACKGROUND, chatPromptManager.lang().component("guild.members.title", "name", guild.name())), SIZE);
         this.guild = guild;
         this.guildManager = guildManager;
         this.chatPromptManager = chatPromptManager;
@@ -51,7 +55,7 @@ public class GuildMembersGUI extends InventoryGUI {
         clear();
 
         for (int slot = 0; slot < SIZE; slot++) {
-            setItem(slot, ItemBuilder.createFiller());
+            setItem(slot, GuildMenus.filler());
         }
 
         for (int i = 0; i < memberOrder.size() && i < 45; i++) {
@@ -72,7 +76,7 @@ public class GuildMembersGUI extends InventoryGUI {
                 .setName(ComponentUtils.parseWithDefault(lang().raw("guild.members.button.invite"), NamedTextColor.GREEN))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang().raw("common.back")));
+        setItem(BACK_SLOT, GuildMenus.skin().button(ItemBuilder.createCancelButton(lang().raw("common.back"))));
     }
 
     @Override

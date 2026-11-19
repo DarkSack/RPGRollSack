@@ -1,0 +1,34 @@
+id: mareas_receta_trabuco
+display-name: "&6Trabuco de Abordaje"
+icon: CARROT_ON_A_STICK
+station-id: mareas_astillero
+processing-time-ticks: 160
+fuel-per-craft: 0
+xp-amount: 30
+fail-chance: 0.1
+quality-enabled: false
+
+result:
+  type: ITEM_ID
+  value: mareas_trabuco
+  amount: 1
+
+ingredients:
+  - type: MATERIAL
+    value: IRON_INGOT
+    amount: 6
+  - type: MATERIAL
+    value: GUNPOWDER
+    amount: 8
+  - type: ITEM_ID
+    value: mareas_perla_negra
+    amount: 1
+  - type: ITEM_ID
+    value: mareas_coral_maldito
+    amount: 6
+
+conditions:
+  - type: LEVEL_MIN
+    min-value: 25
+  - type: CLASS
+    value: mareas_bucanero

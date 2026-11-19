@@ -1,0 +1,24 @@
+# Diaria del Mercader Wei: zorros espectrales (pececillos de plata por debajo).
+id: jade_diaria_zorros_inquietos
+display-name: "&eDiaria: Zorros Inquietos"
+category: DAILY
+difficulty: NORMAL
+repeatable: true
+cooldown: "1d"
+
+requirements:
+  level: 44
+
+stages:
+  - id: zorros
+    objectives:
+      - type: KILL_ENTITY
+        entity: SILVERFISH
+        amount: 8
+        description: "Calma a 8 zorros espectrales"
+
+rewards:
+  money: 400
+  experience: 800
+  commands:
+    - "itemadmin give {player} jade_seda_imperial 2"

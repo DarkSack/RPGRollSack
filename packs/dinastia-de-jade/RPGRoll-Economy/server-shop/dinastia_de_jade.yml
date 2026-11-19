@@ -1,0 +1,34 @@
+# Sección del pack en /tienda. Solo vende: la tienda no compra ítems de RPGRoll.
+id: dinastia_de_jade
+display-name: "&2Dinastía de Jade"
+icon: EMERALD
+slot: 38
+description:
+  - "&7Té, incienso, armas del templo y muebles lacados"
+
+items:
+  - item: jade_dao_del_tigre
+    buy: 5200
+  - item: jade_bollo_de_loto
+    amount: 8
+    buy: 280
+  - item: jade_te_de_jazmin
+    buy: 300
+  - item: jade_elixir_de_qi
+    buy: 500
+  - item: jade_incienso_de_concentracion
+    buy: 450
+  - furniture: jade_gabinete_de_te
+    buy: 1200
+  - furniture: jade_linterna_de_papel
+    buy: 350
+  - furniture: jade_biombo
+    buy: 800
+  - furniture: jade_mesa_baja
+    buy: 700
+  - furniture: jade_bonsai
+    buy: 500
+  - furniture: jade_arca_lacada
+    buy: 3500
+    lore:
+      - "&7La misma arca que sale de los tesoros."

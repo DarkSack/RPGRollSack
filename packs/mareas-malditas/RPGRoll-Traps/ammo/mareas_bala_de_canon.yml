@@ -1,0 +1,10 @@
+id: mareas_bala_de_canon
+display-name: "&8Bala de Cañón"
+description: "Munición para el Cañón del Naufragio."
+icon: FIRE_CHARGE
+stack-size: 16
+
+impact:
+  type: DAMAGE
+  params:
+    amount: "8"

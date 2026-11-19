@@ -294,6 +294,10 @@ public class ExtrasAdminCommand implements CommandExecutor, TabCompleter {
             }
         }
 
+        if (args.length == 4 && List.of("set", "add").contains(sub)) {
+            return TabCompleteUtil.filter(args[3], List.of("1", "5", "10"));
+        }
+
         return List.of();
     }
 

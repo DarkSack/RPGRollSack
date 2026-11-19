@@ -1,0 +1,87 @@
+# La caja del pack. La llave sale de la tienda premium, de votos o de lo
+# que el servidor quiera; el premio gordo es un mapa del tesoro.
+id: mareas_malditas
+display-name: "&3&lCofre de las Mareas"
+gui-title: "&3≈ Cofre de las Mareas ≈"
+require-key: true
+
+key:
+  material: TRIPWIRE_HOOK
+  name: "&3Llave: Cofre de las Mareas"
+  lore:
+    - "&7Huele a sal y a pólvora."
+    - "&7Úsala en el Cofre de las Mareas."
+
+hologram:
+  - "&3&lCofre de las Mareas"
+  - "&7Click derecho con la llave"
+
+rewards:
+  - id: doblones
+    display-name: "&64 Doblones de Oro"
+    icon: GOLD_NUGGET
+    weight: 40
+    announce: false
+    actions:
+      - type: COMMAND
+        value: "itemadmin give {player} mareas_doblon_de_oro 4"
+  - id: provisiones
+    display-name: "&eProvisiones de a bordo"
+    icon: COOKIE
+    weight: 30
+    announce: false
+    lore:
+      - "&78 galletas y 2 rones."
+    actions:
+      - type: COMMAND
+        value: "itemadmin give {player} mareas_galleta_marinera 8"
+      - type: COMMAND
+        value: "itemadmin give {player} mareas_ron_del_capitan 2"
+  - id: perla
+    display-name: "&5Perla Negra"
+    icon: PRISMARINE_CRYSTALS
+    weight: 12
+    announce: false
+    actions:
+      - type: COMMAND
+        value: "itemadmin give {player} mareas_perla_negra 1"
+  - id: baul
+    display-name: "&6Baúl de Barco"
+    icon: BARREL
+    weight: 8
+    announce: false
+    actions:
+      - type: COMMAND
+        value: "furnitureadmin give {player} mareas_baul_de_barco"
+  - id: mapa_capitan
+    display-name: "&6Mapa del Capitán"
+    icon: FILLED_MAP
+    weight: 6
+    announce: true
+    lore:
+      - "&7Lleva a un Cofre del Capitán enterrado."
+    actions:
+      - type: COMMAND
+        value: "tesoro give {player} mareas_cofre_capitan"
+      - type: SOUND
+        value: "ENTITY_PLAYER_LEVELUP,1.0,0.8"
+  - id: carta_de_coral
+    display-name: "&3Carta de Coral"
+    icon: FILLED_MAP
+    weight: 3
+    announce: true
+    lore:
+      - "&7Lleva a un Arcón de Coral bajo el arrecife."
+    actions:
+      - type: COMMAND
+        value: "tesoro give {player} mareas_arcon_de_coral"
+  - id: brujula
+    display-name: "&3&lBrújula Maldita"
+    icon: COMPASS
+    weight: 1
+    announce: true
+    actions:
+      - type: COMMAND
+        value: "itemadmin give {player} mareas_brujula_maldita 1"
+      - type: MESSAGE
+        value: "&3&l¡{player} encontró la Brújula Maldita!"

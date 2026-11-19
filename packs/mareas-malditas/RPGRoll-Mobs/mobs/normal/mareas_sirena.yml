@@ -1,0 +1,98 @@
+# Atacante de apoyo: se queda en el agua y canta. El canto ralentiza y
+# confunde a quien está cerca. Suelta perlas negras.
+# Modelo 3D: FreeMinecraftModels/models/mareas_sirena.bbmodel. Sin FMM se ve el drowned.
+id: mareas_sirena
+category: NORMAL
+display-name: "&dSirena del Arrecife"
+name-color: "#C77DFF"
+level: 24
+rarity: rare
+tags: [ "mareas_malditas", "magico", "modelo3d" ]
+description: "Canta para los barcos que pasan cerca. Ninguno pasa de largo."
+base-entity-type: DROWNED
+
+model:
+  scale: 1.0
+  model-engine-id: mareas_sirena
+  equipment:
+
+stats:
+  health: 80
+  damage: 8
+  defense: 3
+  speed: 105
+  armor: 3
+  dodge: 12
+  accuracy: 90
+  critical_chance: 8
+  critical_damage: 35
+  knockback_resistance: 10
+
+resistances:
+  magic: 20
+
+ai:
+  goals: [ "ATTACK_PLAYERS" ]
+  aggro-range: 20
+  move-speed: 1.05
+
+skills:
+  - id: canto_hechizante
+    display-name: "Canto Hechizante"
+    trigger: PERIODIC
+    cooldown: 14s
+    chance: 60
+    conditions:
+      - "target.distance <= 10"
+    actions:
+      - type: ANIMATION
+        value: canto
+      - type: PARTICLE
+        particle: NOTE
+        count: "25"
+        offset-x: "2.0"
+        offset-y: "1.0"
+        offset-z: "2.0"
+      - type: COMMAND
+        value: "minecraft:effect give {target} minecraft:nausea 5 0"
+      - type: COMMAND
+        value: "minecraft:effect give {target} minecraft:slowness 4 1"
+      - type: SOUND
+        sound: BLOCK_AMETHYST_BLOCK_RESONATE
+        volume: "1.2"
+        pitch: "1.6"
+
+loot:
+  - type: ITEM
+    reference: mareas_perla_negra
+    amount-min: 1
+    amount-max: 1
+    chance: 25
+    scope: PER_PLAYER
+  - type: ITEM
+    reference: mareas_coral_maldito
+    amount-min: 1
+    amount-max: 2
+    chance: 50
+    scope: PER_PLAYER
+  - type: ITEM
+    reference: mareas_tonico_salobre
+    amount-min: 1
+    amount-max: 1
+    chance: 12
+    scope: PER_PLAYER
+  - type: COMMAND
+    reference: "tesoro give {player} mareas_arcon_de_coral"
+    chance: 3
+    scope: PER_PLAYER
+  - type: EXPERIENCE
+    amount-min: 22
+    amount-max: 30
+    chance: 100
+    scope: PER_PLAYER
+
+spawn-rules:
+  biomes: [WARM_OCEAN, LUKEWARM_OCEAN, DEEP_LUKEWARM_OCEAN]
+  natural-spawn: true
+  spawn-weight: 0.6
+  chance: 5

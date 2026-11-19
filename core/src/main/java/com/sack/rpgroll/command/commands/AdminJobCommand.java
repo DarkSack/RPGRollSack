@@ -250,6 +250,9 @@ public class AdminJobCommand implements RPGCommand {
             JobManager jobManager = plugin.getBootstrap().getServices().get(JobManager.class);
             return jobManager.getAll().stream().map(Job::id).toList();
         }
+        if (args.length == 4 && args[0].equalsIgnoreCase("setlevel")) {
+            return List.of("1", "10", "25", "50");
+        }
         return List.of();
     }
 

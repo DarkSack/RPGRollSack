@@ -1,0 +1,30 @@
+# Al acercarse a un biombo del jardín, salen dardos envenenados.
+id: jade_dardos_del_biombo
+display-name: "&aDardos del Biombo"
+description: "Detrás de cada grulla pintada hay un tubo de bambú cargado."
+icon: BAMBOO
+
+trigger:
+  type: PROXIMITY
+
+radius: 3.0
+conditions: []
+
+actions:
+  - type: PROJECTILE
+    params:
+      amount: "3"
+      spread: "0.15"
+      speed: "2.4"
+  - type: COMMAND
+    params:
+      value: "minecraft:effect give {player} minecraft:poison 4 1"
+  - type: SOUND
+    params:
+      sound: ENTITY_ARROW_SHOOT
+      volume: "1.0"
+      pitch: "1.6"
+
+cooldown-millis: 3000
+charges: -1
+chain: []

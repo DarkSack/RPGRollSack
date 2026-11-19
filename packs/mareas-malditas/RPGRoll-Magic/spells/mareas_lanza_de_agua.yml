@@ -1,0 +1,32 @@
+# El hechizo de entrada: un chorro a presión que daña desde lejos.
+id: mareas_lanza_de_agua
+display-name: "&bLanza de Agua"
+icon: PRISMARINE_SHARD
+color: AQUA
+school: mareas_abismo
+rarity: UNCOMMON
+level: 15
+cast-time: 0
+cooldown: 60
+trigger: RIGHT_CLICK
+tree-tier: 1
+tags: [abismo, mareas, proyectil]
+description: "Un chorro de agua a presión que golpea como un remo."
+
+cost:
+  mana: 18
+
+components:
+  - type: PROJECTILE
+    speed: 1.8
+    max-distance: 24
+    hit-radius: 1.0
+    trail-particle: SPLASH
+  - type: DAMAGE_DIRECT
+    amount: 11
+  - type: VISUAL
+    effect-id: mareas_salpicadura_abisal
+  - type: SOUND
+    sound: ENTITY_PLAYER_SPLASH_HIGH_SPEED
+    volume: 0.8
+    pitch: 1.4

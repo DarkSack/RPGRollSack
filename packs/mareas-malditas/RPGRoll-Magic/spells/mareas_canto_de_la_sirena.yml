@@ -1,0 +1,31 @@
+# Apoyo: cura y protege al brujo. El último hechizo del árbol.
+id: mareas_canto_de_la_sirena
+display-name: "&dCanto de la Sirena"
+icon: HEART_OF_THE_SEA
+color: LIGHT_PURPLE
+school: mareas_abismo
+rarity: EPIC
+level: 34
+cast-time: 20
+cooldown: 600
+trigger: RIGHT_CLICK
+tree-tier: 3
+tags: [abismo, mareas, curacion]
+description: "Una canción que nadie más oye: cierra heridas y levanta un escudo de espuma."
+
+cost:
+  mana: 55
+
+components:
+  - type: HEAL
+    amount: 16
+    target: self
+  - type: APPLY_EFFECT
+    effect-id: shield
+    target: self
+  - type: VISUAL
+    effect-id: mareas_canto
+  - type: SOUND
+    sound: BLOCK_AMETHYST_BLOCK_RESONATE
+    volume: 1.0
+    pitch: 1.6

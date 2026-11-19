@@ -1,0 +1,19 @@
+# El monje del templo: cierra la historia y atiende a los Maestros del Té.
+# Ubicación de ejemplo (ver LEEME.md).
+id: jade_monje_bao
+display-name: "&aMonje Bao"
+pose: "STANDING"
+
+location:
+  world: world
+  x: -3.5
+  y: 64.0
+  z: 10.5
+  yaw: 180.0
+  pitch: 0.0
+
+actions:
+  - type: SOUND
+    value: "BLOCK_AMETHYST_BLOCK_CHIME,1.0,0.8"
+  - type: OPEN_GUI
+    value: "jade_menu_bao"

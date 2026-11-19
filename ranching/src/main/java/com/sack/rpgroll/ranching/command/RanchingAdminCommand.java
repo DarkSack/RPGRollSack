@@ -138,20 +138,26 @@ public class RanchingAdminCommand implements CommandExecutor, TabCompleter {
 
     private void handleSpawn(CommandSender sender, String[] args) {
 
-        if (!(Senders.asPlayer(sender) instanceof Player player)) {
+        Player player = Senders.asPlayer(sender);
+        // Desde la consola (recompensas, menús, cajas) el animal sale junto a su dueño, si está conectado.
+        if (player == null && args.length >= 4) {
+            player = Bukkit.getPlayerExact(args[3]);
+        }
+
+        if (player == null) {
             sender.sendMessage(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("command.admin.player_only_spawn"), NamedTextColor.RED));
             return;
         }
 
         if (args.length < 2) {
-            player.sendMessage(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("command.admin.usage_spawn"), NamedTextColor.RED));
+            sender.sendMessage(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("command.admin.usage_spawn"), NamedTextColor.RED));
             return;
         }
 
         Species species = speciesManager.get(args[1].toLowerCase()).orElse(null);
 
         if (species == null) {
-            player.sendMessage(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("command.admin.unknown_species", "id", args[1]), NamedTextColor.RED));
+            sender.sendMessage(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("command.admin.unknown_species", "id", args[1]), NamedTextColor.RED));
             return;
         }
 
@@ -179,7 +185,7 @@ public class RanchingAdminCommand implements CommandExecutor, TabCompleter {
         animalManager.registerFounder(entity, species, breed, sex, geneticsEngine,
                 geneManager.getForSpecies(species.id()), owner);
 
-        player.sendMessage(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("command.admin.spawned_prefix"), NamedTextColor.GREEN)
+        sender.sendMessage(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("command.admin.spawned_prefix"), NamedTextColor.GREEN)
                 .append(ComponentUtils.parse(species.displayName()))
                 .append(ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("command.admin.spawned_suffix", "sex", sex), NamedTextColor.GREEN)));
     }

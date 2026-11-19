@@ -572,6 +572,9 @@ public class TrapAdminCommand implements CommandExecutor, TabCompleter {
             return TabCompleteUtil.filter(args[2],
                     ammoManager.getAll().stream().map(a -> a.id()).toList());
         }
+        if (sub.equals("ammo") && args[1].equalsIgnoreCase("give")) {
+            return giveTargetAndAmount(args);
+        }
 
         return List.of();
     }
@@ -588,11 +591,24 @@ public class TrapAdminCommand implements CommandExecutor, TabCompleter {
             return switch (turretSub) {
                 case "edit", "place" -> TabCompleteUtil.filter(args[2], turretIds());
                 case "remove" -> TabCompleteUtil.filter(args[2], turretPlacementIds());
+                case "give" -> TabCompleteUtil.filter(args[2], turretIds());
                 default -> List.of();
             };
         }
+        if (turretSub.equals("give")) {
+            return giveTargetAndAmount(args);
+        }
 
         return List.of();
+    }
+
+    /** «... give <id> [jugador] [cantidad]»: el 4.º argumento es el jugador y el 5.º la cantidad. */
+    private static List<String> giveTargetAndAmount(String[] args) {
+        return switch (args.length) {
+            case 4 -> TabCompleteUtil.onlinePlayerNames(args[3]);
+            case 5 -> TabCompleteUtil.filter(args[4], List.of("1", "16", "64"));
+            default -> List.of();
+        };
     }
 
     private List<String> trapIds() {

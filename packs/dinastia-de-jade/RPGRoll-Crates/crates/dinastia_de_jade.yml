@@ -1,0 +1,86 @@
+# La caja del pack. El premio gordo es un pergamino del tesoro o el medallón.
+id: dinastia_de_jade
+display-name: "&2&lCofre de la Dinastía"
+gui-title: "&2☯ Cofre de la Dinastía ☯"
+require-key: true
+
+key:
+  material: TRIPWIRE_HOOK
+  name: "&2Llave: Cofre de la Dinastía"
+  lore:
+    - "&7Una llave de bronce con un dragón grabado."
+    - "&7Úsala en el Cofre de la Dinastía."
+
+hologram:
+  - "&2&lCofre de la Dinastía"
+  - "&7Click derecho con la llave"
+
+rewards:
+  - id: fragmentos
+    display-name: "&a6 Fragmentos de Jade"
+    icon: EMERALD
+    weight: 40
+    announce: false
+    actions:
+      - type: COMMAND
+        value: "itemadmin give {player} jade_fragmento_de_jade 6"
+  - id: provisiones
+    display-name: "&eTé y bollos"
+    icon: BREAD
+    weight: 28
+    announce: false
+    lore:
+      - "&76 bollos y 3 tés."
+    actions:
+      - type: COMMAND
+        value: "itemadmin give {player} jade_bollo_de_loto 6"
+      - type: COMMAND
+        value: "itemadmin give {player} jade_te_de_jazmin 3"
+  - id: seda
+    display-name: "&c4 Sedas Imperiales"
+    icon: STRING
+    weight: 14
+    announce: false
+    actions:
+      - type: COMMAND
+        value: "itemadmin give {player} jade_seda_imperial 4"
+  - id: linterna
+    display-name: "&6Linterna de Papel"
+    icon: LANTERN
+    weight: 8
+    announce: false
+    actions:
+      - type: COMMAND
+        value: "furnitureadmin give {player} jade_linterna_de_papel"
+  - id: pergamino_lacado
+    display-name: "&cPergamino Lacado"
+    icon: FILLED_MAP
+    weight: 6
+    announce: true
+    lore:
+      - "&7Lleva a un Arca Lacada enterrada."
+    actions:
+      - type: COMMAND
+        value: "tesoro give {player} jade_arca_lacada"
+      - type: SOUND
+        value: "ENTITY_PLAYER_LEVELUP,1.0,0.8"
+  - id: pergamino_del_dragon
+    display-name: "&2Pergamino del Dragón"
+    icon: FILLED_MAP
+    weight: 3
+    announce: true
+    lore:
+      - "&7Lleva a un Relicario del Dragón."
+    actions:
+      - type: COMMAND
+        value: "tesoro give {player} jade_relicario_del_dragon"
+  - id: medallon
+    display-name: "&6&lMedallón del Dragón"
+    icon: GOLD_NUGGET
+    weight: 1
+    announce: true
+    actions:
+      - type: COMMAND
+        value: "itemadmin give {player} jade_medallon_del_dragon 1"
+      - type: MESSAGE
+        value: "&2&l¡{player} encontró el Medallón del Dragón!"

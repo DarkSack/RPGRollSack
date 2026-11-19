@@ -1,0 +1,41 @@
+# Una red tirada en el suelo de la bodega: quien la pisa se enreda.
+id: mareas_red_de_pesca
+display-name: "&eRed de Pesca"
+description: "Una red vieja, todavía con escamas. Se cierra sobre quien la pisa."
+icon: COBWEB
+
+trigger:
+  type: PRESSURE
+
+radius: 1.2
+conditions: []
+
+actions:
+  - type: SOUND
+    params:
+      sound: ENTITY_FISHING_BOBBER_SPLASH
+      volume: "1.2"
+      pitch: "0.7"
+  - type: COMMAND
+    params:
+      value: "minecraft:effect give {player} minecraft:slowness 4 3"
+  - type: PARTICLE
+    params:
+      particle: ITEM_SNOWBALL
+      count: "30"
+      offset-x: "0.8"
+      offset-y: "0.3"
+      offset-z: "0.8"
+      speed: "0.05"
+  - type: DAMAGE
+    params:
+      amount: "3"
+
+cooldown-millis: 6000
+charges: -1
+chain: []
+
+disguise:
+  mode: BLOCK_SWAP
+  visible-material: SAND
+  revealed-material: COBWEB

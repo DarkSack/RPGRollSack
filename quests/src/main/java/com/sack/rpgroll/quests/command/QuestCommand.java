@@ -283,6 +283,15 @@ public class QuestCommand implements CommandExecutor, TabCompleter {
             return TabCompleteUtil.filter(args[1], questIds);
         }
 
+        if (args.length == 2 && List.of("continue", "continuar").contains(args[0].toLowerCase())) {
+            return TabCompleteUtil.filter(args[1], java.util.Arrays.stream(
+                    com.sack.rpgroll.quests.core.QuestCategory.values()).map(c -> c.name().toLowerCase()).toList());
+        }
+
+        if (args.length == 3 && args[0].equalsIgnoreCase("option")) {
+            return TabCompleteUtil.filter(args[2], List.of("1", "2", "3", "4"));
+        }
+
         return List.of();
     }
 

@@ -88,7 +88,12 @@ public class PassAdminCommand implements CommandExecutor, TabCompleter {
         }
 
         if (args.length == 2 && !args[0].equalsIgnoreCase("reload")) {
-            return Bukkit.getOnlinePlayers().stream().map(Player::getName).toList();
+            String token = args[1].toLowerCase(Locale.ROOT);
+            return Bukkit.getOnlinePlayers().stream().map(Player::getName)
+                    .filter(n -> n.toLowerCase(Locale.ROOT).startsWith(token)).toList();
+        }
+        if (args.length == 3 && args[0].equalsIgnoreCase("xp")) {
+            return List.of("100", "500", "1000").stream().filter(n -> n.startsWith(args[2])).toList();
         }
 
         return List.of();

@@ -1,0 +1,178 @@
+# Mini jefe: el general del ejército de barro, de laca negra y sin rostro.
+# Sale rara vez de noche en los bosques de bambú y siempre en el Templo de
+# los Nueve Sellos. Suelta la Lanza de Media Luna, el conjunto del Guardián
+# Imperial y el mapa del Arca Lacada; su muerte empieza la última misión.
+# Modelo 3D: FreeMinecraftModels/models/jade_general.bbmodel. Sin FMM se ve un esqueleto wither.
+id: jade_general
+category: MINI_BOSS
+display-name: "&4&lGeneral Sin Sombra"
+name-color: "#8B0000"
+level: 55
+rarity: epic
+tags: [ "dinastia_de_jade", "constructo", "jefe", "modelo3d" ]
+description: "Su sombra se fue con el emperador. Él se quedó a cumplir la última orden."
+base-entity-type: WITHER_SKELETON
+
+model:
+  scale: 1.1
+  model-engine-id: jade_general
+  equipment:
+
+stats:
+  health: 900
+  damage: 22
+  defense: 18
+  speed: 100
+  armor: 16
+  dodge: 8
+  accuracy: 95
+  critical_chance: 18
+  critical_damage: 60
+  knockback_resistance: 80
+
+resistances:
+  poison: 100
+  physical: 20
+
+ai:
+  goals: [ "ATTACK_PLAYERS" ]
+  aggro-range: 26
+  flee-health-percent: 0
+  move-speed: 1.0
+
+skills:
+  - id: corte_sin_sombra
+    display-name: "Corte Sin Sombra"
+    trigger: PERIODIC
+    cooldown: 9s
+    chance: 60
+    conditions:
+      - "target.distance <= 4"
+    actions:
+      - type: ANIMATION
+        value: corte
+      - type: DAMAGE
+        amount: "16"
+      - type: PARTICLE
+        particle: SWEEP_ATTACK
+        count: "8"
+        offset-x: "1.5"
+        offset-y: "0.5"
+        offset-z: "1.5"
+      - type: SOUND
+        sound: ENTITY_PLAYER_ATTACK_SWEEP
+        volume: "1.3"
+        pitch: "0.6"
+
+phases:
+  - id: ultima_orden
+    health-threshold-percent: 50
+    stat-multipliers:
+      damage: 1.3
+      speed: 1.15
+    skills:
+      - id: llamar_al_ejercito
+        display-name: "Llamar al Ejército"
+        trigger: PERIODIC
+        cooldown: 25s
+        chance: 70
+        actions:
+          - type: SOUND
+            sound: EVENT_RAID_HORN
+            volume: "1.0"
+            pitch: "0.8"
+          - type: PARTICLE
+            particle: ASH
+            count: "60"
+            offset-x: "3.0"
+            offset-y: "0.5"
+            offset-z: "3.0"
+          - type: COMMAND
+            value: "mobadmin spawn jade_terracota {target}"
+    bossbar-color: RED
+    bossbar-title: "&4&lGeneral Sin Sombra &7[Última Orden]"
+    dialogue: "&4\"¡Formación! ¡Nadie cruza la puerta del emperador!\""
+    particle: SOUL
+
+triggers:
+  SPAWN:
+    - type: MESSAGE
+      value: "&4&l[General Sin Sombra] &7Mil pasos de barro se detienen a la vez."
+    - type: SOUND
+      sound: EVENT_RAID_HORN
+      volume: "1.2"
+      pitch: "0.6"
+  DEATH:
+    - type: MESSAGE
+      value: "&4&l[General Sin Sombra] &7\"El dragón... despertará igual...\""
+    - type: PARTICLE
+      particle: ASH
+      count: "80"
+
+loot:
+  - type: QUEST
+    reference: jade_el_despertar_del_dragon
+    chance: 100
+    scope: PER_PLAYER
+  - type: ITEM
+    reference: jade_escama_de_dragon
+    amount-min: 1
+    amount-max: 3
+    chance: 100
+    scope: PER_PLAYER
+  - type: ITEM
+    reference: jade_lanza_media_luna
+    amount-min: 1
+    amount-max: 1
+    chance: 12
+    scope: SHARED
+  - type: ITEM
+    reference: jade_guardian_yelmo
+    amount-min: 1
+    amount-max: 1
+    chance: 9
+    scope: SHARED
+  - type: ITEM
+    reference: jade_guardian_peto
+    amount-min: 1
+    amount-max: 1
+    chance: 7
+    scope: SHARED
+  - type: ITEM
+    reference: jade_guardian_grebas
+    amount-min: 1
+    amount-max: 1
+    chance: 8
+    scope: SHARED
+  - type: ITEM
+    reference: jade_guardian_botas
+    amount-min: 1
+    amount-max: 1
+    chance: 9
+    scope: SHARED
+  - type: COMMAND
+    reference: "tesoro give {player} jade_arca_lacada"
+    chance: 35
+    scope: PER_PLAYER
+  - type: MONEY
+    amount-min: 150
+    amount-max: 300
+    chance: 100
+    scope: PER_PLAYER
+  - type: EXPERIENCE
+    amount-min: 300
+    amount-max: 450
+    chance: 100
+    scope: PER_PLAYER
+
+bossbar:
+  enabled: true
+  color: RED
+  style: NOTCHED_6
+  title: "&4&lGeneral Sin Sombra"
+
+spawn-rules:
+  biomes: [BAMBOO_JUNGLE]
+  natural-spawn: true
+  spawn-weight: 0.1
+  chance: 1

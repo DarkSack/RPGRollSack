@@ -1,0 +1,24 @@
+# Diaria de la Cartógrafa: cangrejos de arrecife (arañas por debajo).
+id: mareas_diaria_playa_limpia
+display-name: "&eDiaria: Playa Limpia"
+category: DAILY
+difficulty: EASY
+repeatable: true
+cooldown: "1d"
+
+requirements:
+  level: 15
+
+stages:
+  - id: cangrejos
+    objectives:
+      - type: KILL_ENTITY
+        entity: SPIDER
+        amount: 10
+        description: "Aparta 10 cangrejos de la playa"
+
+rewards:
+  money: 120
+  experience: 200
+  commands:
+    - "itemadmin give {player} mareas_doblon_de_oro 2"

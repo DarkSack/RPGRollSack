@@ -1,0 +1,38 @@
+# La reliquia del pack: un amuleto (/amuletos) de vida y defensa. Lo
+# suelta el Dragón de Jade y lo da la última misión.
+id: jade_medallon_del_dragon
+pack: dinastia_de_jade
+material: GOLD_NUGGET
+item-model: "jade:reliquia/medallon_del_dragon"
+display-name: "&6&lMedallón del Dragón"
+lore:
+  - "&7Un dragón de oro se muerde la cola"
+  - "&7alrededor de un jade que respira."
+  - "&8Amuleto: póntelo con /amuletos"
+rarity: LEGENDARY
+
+stats:
+  health: 10
+  defense: 3
+  magic_power: 6
+
+custom-data:
+  accessory: amulet
+
+economy:
+  sell: 2500
+  buy: 7000
+
+translations:
+  en:
+    display-name: "&6&lDragon Medallion"
+    lore:
+      - "&7A golden dragon bites its own tail"
+      - "&7around a jade that breathes."
+      - "&8Amulet: wear it with /amulets"
+  pt_BR:
+    display-name: "&6&lMedalhão do Dragão"
+    lore:
+      - "&7Um dragão de ouro morde a própria cauda"
+      - "&7em volta de um jade que respira."
+      - "&8Amuleto: use-o com /amulets"

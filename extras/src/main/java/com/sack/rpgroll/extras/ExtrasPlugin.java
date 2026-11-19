@@ -95,6 +95,8 @@ public class ExtrasPlugin extends JavaPlugin {
 
         langManager = new LangManager(this, List.of("es", "en", "pt_BR"), "es");
         langManager.reload(getConfig().getString("language", "es"));
+        com.sack.rpgroll.gui.MenuSkin.register(ExtrasMenus.MODULE,
+                com.sack.rpgroll.gui.MenuSkin.from(getConfig().getConfigurationSection("menus")));
 
         menuManager = new ExtrasMenuManager(this);
         menuManager.initialize();
@@ -200,6 +202,8 @@ public class ExtrasPlugin extends JavaPlugin {
 
         reloadConfig();
         langManager.reload(getConfig().getString("language", "es"));
+        com.sack.rpgroll.gui.MenuSkin.register(ExtrasMenus.MODULE,
+                com.sack.rpgroll.gui.MenuSkin.from(getConfig().getConfigurationSection("menus")));
 
         statEngine.stop();
         temperatureEngine.stop();

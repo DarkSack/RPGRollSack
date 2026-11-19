@@ -1,0 +1,14 @@
+# La raza del pack: una gallina de plumaje rojo y oro. Pone menos que una
+# leghorn pero aguanta enfermedades y cada huevo vale más en el mercado.
+id: jade_gallina_fenix
+display-name: "&6Gallina Fénix"
+description: "Plumaje de brasa y una cola que brilla al anochecer. Dicen que desciende de un ave sagrada."
+species: chicken
+production-multiplier: 1.1
+weight-multiplier: 1.1
+fertility-multiplier: 0.9
+resistance-multiplier: 1.4
+temperament: "Orgullosa"
+
+# Modelo de FreeMinecraftModels del pack (FreeMinecraftModels/models/jade_gallina_fenix.bbmodel).
+model: jade_gallina_fenix

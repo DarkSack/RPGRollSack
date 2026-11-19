@@ -1,0 +1,50 @@
+# La raza del pack: gente del mar que sube a tierra a comerciar o a saquear.
+# Rápida y con buen instinto; en tierra firme pega menos.
+id: "mareas_triton"
+display-name: "&3≈ Tritón"
+description: |
+  Hijos de las corrientes profundas, con branquias
+  tras las orejas y escamas que brillan en la oscuridad.
+base-attributes:
+  dexterity: 2
+  wisdom: 1
+  constitution: 1
+  strength: -1
+physical:
+  movement-speed-percent: 0.03
+  knockback-resistance: 0.05
+passive-traits:
+  - "mareas_escamas_de_triton"
+icon: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzY2ODhjYmU4M2ZlNjVlMmIzNDY1NzI1ZDU0ZmJkYTI4MDc5NmQ1ZmVlNTRhNzFiOGZmZGFhMDQ2MzRlOTFiIn19fQ=="
+lore:
+  - "&7La marea les habla; ellos contestan"
+  - "&a▲ +3% de velocidad"
+  - "&a▲ +3% de defensa"
+  - "&a▲ +5% contra el empuje"
+  - "&c▼ -1 de fuerza"
+  - "&7Idioma: Salobre"
+translations:
+  en:
+    display-name: "&3≈ Triton"
+    description: |
+      Children of the deep currents, with gills
+      behind their ears and scales that glow in the dark.
+    lore:
+      - "&7The tide speaks to them; they answer"
+      - "&a▲ +3% speed"
+      - "&a▲ +3% defense"
+      - "&a▲ +5% knockback resistance"
+      - "&c▼ -1 strength"
+      - "&7Language: Brine"
+  pt_BR:
+    display-name: "&3≈ Tritão"
+    description: |
+      Filhos das correntes profundas, com guelras
+      atrás das orelhas e escamas que brilham no escuro.
+    lore:
+      - "&7A maré fala com eles; eles respondem"
+      - "&a▲ +3% de velocidade"
+      - "&a▲ +3% de defesa"
+      - "&a▲ +5% contra empurrões"
+      - "&c▼ -1 de força"
+      - "&7Idioma: Salobre"

@@ -1,0 +1,24 @@
+# Diaria del Mercader Wei: bambú para reparar el templo.
+id: jade_diaria_bambu_para_el_templo
+display-name: "&eDiaria: Bambú para el Templo"
+category: DAILY
+difficulty: EASY
+repeatable: true
+cooldown: "1d"
+
+requirements:
+  level: 40
+
+stages:
+  - id: bambu
+    objectives:
+      - type: COLLECT_ITEM
+        material: BAMBOO
+        amount: 48
+        description: "Consigue 48 cañas de bambú"
+
+rewards:
+  money: 250
+  experience: 500
+  commands:
+    - "itemadmin give {player} jade_bollo_de_loto 6"

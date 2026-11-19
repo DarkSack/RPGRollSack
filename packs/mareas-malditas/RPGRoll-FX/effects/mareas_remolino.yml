@@ -1,0 +1,43 @@
+id: mareas_remolino
+display-name: "&1Remolino"
+description: "La ola negra de la Marea Negra: anillos de agua que se abren."
+
+steps:
+  - type: SOUND
+    delay: 0
+    sound: AMBIENT_UNDERWATER_LOOP_ADDITIONS_ULTRA_RARE
+    target: ALL_NEARBY
+    around: SELF
+    radius: 18
+    volume: 1.0
+    pitch: 0.8
+  - type: PARTICLE
+    delay: 0
+    particle: SQUID_INK
+    shape: CIRCLE
+    draw-ticks: 5
+    target: SELF
+    radius: 2.0
+    points: 60
+    count: 2
+    speed: 0.05
+  - type: PARTICLE
+    delay: 4
+    particle: SPLASH
+    shape: CIRCLE
+    draw-ticks: 5
+    target: SELF
+    radius: 3.5
+    points: 90
+    count: 3
+    speed: 0.1
+  - type: PARTICLE
+    delay: 8
+    particle: BUBBLE_COLUMN_UP
+    shape: CIRCLE
+    draw-ticks: 5
+    target: SELF
+    radius: 5.0
+    points: 110
+    count: 2
+    speed: 0.1

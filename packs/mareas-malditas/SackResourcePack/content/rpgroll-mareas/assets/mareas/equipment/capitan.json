@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "mareas:capitan"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "mareas:capitan"
+      }
+    ]
+  }
+}

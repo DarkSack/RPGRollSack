@@ -23,6 +23,9 @@ import java.util.List;
 /** GUI de jugador: lista todas las cuentas bancarias en las que participa (personales, de empresa, de guild, compartidas). */
 public class BankGUI extends InventoryGUI {
 
+    /** Fondo dibujado (sackito:menus/banco): cerrar (44) va dibujado; abrir cuenta (40) lleva hueco. */
+    public static final String BACKGROUND = "banco";
+
     private static final int SIZE = 45;
     private static final int NEW_SLOT = 40;
     private static final int CLOSE_SLOT = 44;
@@ -36,7 +39,7 @@ public class BankGUI extends InventoryGUI {
 
     public BankGUI(Player player, BankManager bankManager, CurrencyManager currencyManager, LoanService loanService,
             ChatPromptManager chatPromptManager) {
-        super(player, ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("bank.title"), NamedTextColor.GOLD), SIZE);
+        super(player, EconomyMenus.skin().title(BACKGROUND, ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("bank.title"), NamedTextColor.GOLD)), SIZE);
         this.bankManager = bankManager;
         this.currencyManager = currencyManager;
         this.loanService = loanService;
@@ -51,7 +54,7 @@ public class BankGUI extends InventoryGUI {
         clear();
 
         for (int slot = 0; slot < SIZE; slot++) {
-            setItem(slot, ItemBuilder.createFiller());
+            setItem(slot, EconomyMenus.filler());
         }
 
         String defaultCurrencyId = currencyManager.defaultCurrency().id();
@@ -78,7 +81,7 @@ public class BankGUI extends InventoryGUI {
 
         setItem(NEW_SLOT, new ItemBuilder(Material.EMERALD)
                 .setName(lang.component("bank.new_account")).build());
-        setItem(CLOSE_SLOT, ItemBuilder.createCancelButton(lang.raw("common.close")));
+        setItem(CLOSE_SLOT, EconomyMenus.skin().button(ItemBuilder.createCancelButton(lang.raw("common.close"))));
     }
 
     @Override

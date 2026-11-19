@@ -1,0 +1,82 @@
+# Rápido y esquivo: aparece entre los cerezos, muerde y se aparta.
+# Modelo 3D: FreeMinecraftModels/models/jade_zorro_espectral.bbmodel. Sin FMM se ve un pez plateado.
+id: jade_zorro_espectral
+category: NORMAL
+display-name: "&bZorro Espectral"
+name-color: "#5BE3C8"
+level: 44
+rarity: uncommon
+tags: [ "dinastia_de_jade", "espiritu", "modelo3d" ]
+description: "Tres colas de fuego frío. Si te sigue, no es por hambre."
+base-entity-type: SILVERFISH
+
+model:
+  scale: 1.0
+  model-engine-id: jade_zorro_espectral
+  equipment:
+
+stats:
+  health: 110
+  damage: 13
+  defense: 4
+  speed: 125
+  armor: 3
+  dodge: 25
+  accuracy: 95
+  critical_chance: 12
+  critical_damage: 40
+  knockback_resistance: 0
+
+resistances:
+  magic: 30
+
+ai:
+  goals: [ "ATTACK_PLAYERS" ]
+  aggro-range: 20
+  move-speed: 1.25
+
+skills:
+  - id: fuego_fatuo
+    display-name: "Fuego Fatuo"
+    trigger: DAMAGED
+    cooldown: 12s
+    chance: 40
+    actions:
+      - type: PARTICLE
+        particle: SOUL_FIRE_FLAME
+        count: "25"
+      - type: COMMAND
+        value: "minecraft:effect give {target} minecraft:blindness 2 0"
+      - type: SOUND
+        sound: ENTITY_FOX_SCREECH
+        volume: "1.0"
+        pitch: "1.2"
+
+loot:
+  - type: ITEM
+    reference: jade_seda_imperial
+    amount-min: 1
+    amount-max: 2
+    chance: 40
+    scope: PER_PLAYER
+  - type: ITEM
+    reference: jade_fragmento_de_jade
+    amount-min: 1
+    amount-max: 1
+    chance: 35
+    scope: PER_PLAYER
+  - type: COMMAND
+    reference: "tesoro give {player} jade_arca_lacada"
+    chance: 2.5
+    scope: PER_PLAYER
+  - type: EXPERIENCE
+    amount-min: 40
+    amount-max: 55
+    chance: 100
+    scope: PER_PLAYER
+
+spawn-rules:
+  biomes: [CHERRY_GROVE, GROVE, OLD_GROWTH_SPRUCE_TAIGA]
+  natural-spawn: true
+  spawn-weight: 0.8
+  chance: 6

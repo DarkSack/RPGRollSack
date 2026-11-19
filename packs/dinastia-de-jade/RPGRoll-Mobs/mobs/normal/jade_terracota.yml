@@ -1,0 +1,88 @@
+# El relleno del pack: soldados de barro que despertaron sin orden de
+# volver a dormir. Lentos, duros y en formación.
+# Modelo 3D: FreeMinecraftModels/models/jade_terracota.bbmodel. Sin FMM se ve el husk.
+id: jade_terracota
+category: NORMAL
+display-name: "&6Guerrero de Terracota"
+name-color: "#C2703D"
+level: 42
+rarity: common
+tags: [ "dinastia_de_jade", "constructo", "modelo3d" ]
+description: "Cada uno tiene una cara distinta. Ninguno recuerda la suya."
+base-entity-type: HUSK
+
+model:
+  scale: 1.0
+  model-engine-id: jade_terracota
+  equipment:
+
+stats:
+  health: 160
+  damage: 14
+  defense: 10
+  speed: 90
+  armor: 8
+  dodge: 0
+  accuracy: 85
+  critical_chance: 5
+  critical_damage: 30
+  knockback_resistance: 50
+
+resistances:
+  poison: 100
+  physical: 15
+
+ai:
+  goals: [ "ATTACK_PLAYERS" ]
+  aggro-range: 18
+  move-speed: 0.9
+
+skills:
+  - id: estocada_de_lanza
+    display-name: "Estocada de Lanza"
+    trigger: ATTACK
+    cooldown: 9s
+    chance: 35
+    actions:
+      - type: ANIMATION
+        value: attack
+      - type: DAMAGE
+        amount: "8"
+      - type: PARTICLE
+        particle: ASH
+        count: "15"
+
+loot:
+  - type: ITEM
+    reference: jade_fragmento_de_jade
+    amount-min: 1
+    amount-max: 2
+    chance: 50
+    scope: PER_PLAYER
+  - type: ITEM
+    reference: jade_bollo_de_loto
+    amount-min: 1
+    amount-max: 2
+    chance: 15
+    scope: PER_PLAYER
+  - type: ITEM
+    reference: TERRACOTTA
+    amount-min: 2
+    amount-max: 5
+    chance: 40
+    scope: PER_PLAYER
+  - type: COMMAND
+    reference: "tesoro give {player} jade_arca_lacada"
+    chance: 1.5
+    scope: PER_PLAYER
+  - type: EXPERIENCE
+    amount-min: 35
+    amount-max: 50
+    chance: 100
+    scope: PER_PLAYER
+
+spawn-rules:
+  biomes: [BAMBOO_JUNGLE, SPARSE_JUNGLE, CHERRY_GROVE]
+  natural-spawn: true
+  spawn-weight: 1.0
+  chance: 8

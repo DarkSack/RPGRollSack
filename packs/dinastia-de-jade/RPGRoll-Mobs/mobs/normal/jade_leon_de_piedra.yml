@@ -1,0 +1,84 @@
+# Guardián de templos: lento, durísimo y con una carga que derriba.
+# Modelo 3D: FreeMinecraftModels/models/jade_leon_de_piedra.bbmodel. Sin FMM se ve un devastador.
+id: jade_leon_de_piedra
+category: NORMAL
+display-name: "&7León de Piedra"
+name-color: "#9C9C9C"
+level: 50
+rarity: rare
+tags: [ "dinastia_de_jade", "constructo", "modelo3d" ]
+description: "Guardó la puerta del templo seiscientos años. Ahora guarda el monte entero."
+base-entity-type: RAVAGER
+
+model:
+  scale: 1.0
+  model-engine-id: jade_leon_de_piedra
+  equipment:
+
+stats:
+  health: 340
+  damage: 18
+  defense: 16
+  speed: 85
+  armor: 14
+  dodge: 0
+  accuracy: 90
+  critical_chance: 6
+  critical_damage: 40
+  knockback_resistance: 90
+
+resistances:
+  poison: 100
+  physical: 25
+
+ai:
+  goals: [ "ATTACK_PLAYERS" ]
+  aggro-range: 16
+  move-speed: 0.85
+
+skills:
+  - id: carga_del_guardian
+    display-name: "Carga del Guardián"
+    trigger: ATTACK
+    cooldown: 12s
+    chance: 45
+    actions:
+      - type: ANIMATION
+        value: attack
+      - type: DAMAGE
+        amount: "12"
+      - type: PUSH
+        strength: "2.0"
+      - type: SOUND
+        sound: ENTITY_RAVAGER_ROAR
+        volume: "1.2"
+        pitch: "1.4"
+
+loot:
+  - type: ITEM
+    reference: jade_escama_de_dragon
+    amount-min: 1
+    amount-max: 1
+    chance: 20
+    scope: PER_PLAYER
+  - type: ITEM
+    reference: jade_fragmento_de_jade
+    amount-min: 2
+    amount-max: 4
+    chance: 70
+    scope: PER_PLAYER
+  - type: COMMAND
+    reference: "tesoro give {player} jade_relicario_del_dragon"
+    chance: 3
+    scope: PER_PLAYER
+  - type: EXPERIENCE
+    amount-min: 80
+    amount-max: 110
+    chance: 100
+    scope: PER_PLAYER
+
+spawn-rules:
+  biomes: [STONY_PEAKS, WINDSWEPT_HILLS, JAGGED_PEAKS]
+  natural-spawn: true
+  spawn-weight: 0.4
+  chance: 3

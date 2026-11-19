@@ -1,0 +1,24 @@
+# Diaria del Mercader Wei: guerreros de terracota (husks por debajo).
+id: jade_diaria_barro_y_arcilla
+display-name: "&eDiaria: Barro y Arcilla"
+category: DAILY
+difficulty: NORMAL
+repeatable: true
+cooldown: "1d"
+
+requirements:
+  level: 40
+
+stages:
+  - id: terracota
+    objectives:
+      - type: KILL_ENTITY
+        entity: HUSK
+        amount: 15
+        description: "Rompe 15 guerreros de terracota"
+
+rewards:
+  money: 350
+  experience: 700
+  commands:
+    - "itemadmin give {player} jade_fragmento_de_jade 3"

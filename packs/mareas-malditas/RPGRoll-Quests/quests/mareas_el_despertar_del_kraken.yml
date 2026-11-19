@@ -1,0 +1,46 @@
+# Historia 5 de 5. Empieza sola al matar al Capitán Ahogado. Al hablar con
+# la bruja, ella invoca al Kraken junto al jugador. El Kraken es un drowned
+# por debajo: el objetivo final cuenta el primer drowned que caiga después.
+id: mareas_el_despertar_del_kraken
+display-name: "&3&lEl Despertar del Kraken"
+category: MAIN_STORY
+difficulty: ELITE
+repeatable: false
+
+requirements:
+  level: 30
+  completed:
+    - mareas_la_flota_del_capitan
+
+stages:
+  - id: el_ritual
+    dialog:
+      - npc: "El Capitán ya hizo su parte: el Kraken está despierto. Si no lo enfrentas ahora, saldrá él a buscarte."
+      - player: "Hazlo subir."
+    objectives:
+      - type: TALK_TO_NPC
+        npc: mareas_bruja_salobre
+        amount: 1
+        description: "Pídele a la Bruja Salobre que haga subir al Kraken"
+    on-complete:
+      - type: TITLE
+        title: "&3&lEL MAR SE ABRE"
+        subtitle: "&7Prepárate"
+      - type: COMMAND
+        value: "mobadmin spawn mareas_kraken {player}"
+  - id: el_kraken
+    objectives:
+      - type: KILL_ENTITY
+        entity: DROWNED
+        amount: 1
+        description: "Derrota al Kraken Ancestral"
+    on-complete:
+      - type: MESSAGE
+        value: "&3&l¡El Kraken se hunde! &7Las campanas dejan de sonar."
+
+rewards:
+  money: 1200
+  experience: 2500
+  commands:
+    - "itemadmin give {player} mareas_brujula_maldita 1"
+    - "tesoro give {player} mareas_arcon_de_coral"

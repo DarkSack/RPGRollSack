@@ -1,0 +1,31 @@
+id: jade_receta_shuriken_estelar
+display-name: "&bShuriken Estelar"
+icon: CARROT_ON_A_STICK
+station-id: jade_forja_de_jade
+processing-time-ticks: 140
+fuel-per-craft: 0
+xp-amount: 35
+fail-chance: 0.08
+quality-enabled: false
+
+result:
+  type: ITEM_ID
+  value: jade_shuriken_estelar
+  amount: 1
+
+ingredients:
+  - type: MATERIAL
+    value: IRON_INGOT
+    amount: 6
+  - type: MATERIAL
+    value: COPPER_INGOT
+    amount: 4
+  - type: ITEM_ID
+    value: jade_fragmento_de_jade
+    amount: 4
+
+conditions:
+  - type: LEVEL_MIN
+    min-value: 48
+  - type: CLASS
+    value: jade_monje_del_puno

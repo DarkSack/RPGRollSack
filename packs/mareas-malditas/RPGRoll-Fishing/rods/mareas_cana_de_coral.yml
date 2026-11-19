@@ -1,0 +1,12 @@
+id: mareas_cana_de_coral
+display-name: "&dCaña de Coral"
+material: FISHING_ROD
+model: "mareas:cana/cana_de_coral"
+description: "El coral sigue creciendo por la vara. Nota cada tirón del fondo."
+durability: 260
+cast-power: 1.4
+reel-speed: 1.4
+precision: 20
+resistance: 2.0
+luck-bonus: 1.5
+preferred-categories: [deep, saltwater, legendary]

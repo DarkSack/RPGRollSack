@@ -1,0 +1,27 @@
+# Movilidad: un salto hacia delante que deja un rastro de hojas.
+id: jade_paso_del_viento
+display-name: "&fPaso del Viento"
+icon: FEATHER
+color: WHITE
+school: jade_qi
+rarity: RARE
+level: 45
+cast-time: 0
+cooldown: 120
+trigger: RIGHT_CLICK
+tree-tier: 2
+tags: [qi, jade, movimiento]
+description: "Das un paso y apareces seis más allá."
+
+cost:
+  mana: 25
+
+components:
+  - type: DASH
+    distance: 6
+  - type: VISUAL
+    effect-id: jade_rafaga_de_viento
+  - type: SOUND
+    sound: ENTITY_BREEZE_JUMP
+    volume: 0.8
+    pitch: 1.2

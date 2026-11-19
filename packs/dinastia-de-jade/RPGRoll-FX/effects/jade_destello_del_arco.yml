@@ -1,0 +1,23 @@
+id: jade_destello_del_arco
+display-name: "&aDestello del Arco"
+description: "Pétalos y luz verde al soltar la cuerda del Arco del Loto."
+
+steps:
+  - type: PARTICLE
+    delay: 0
+    particle: END_ROD
+    shape: CONE
+    target: SELF
+    radius: 0.5
+    points: 12
+    count: 1
+    speed: 0.02
+  - type: PARTICLE
+    delay: 0
+    particle: HAPPY_VILLAGER
+    shape: BURST
+    target: SELF
+    radius: 0.4
+    points: 8
+    count: 1
+    speed: 0.05

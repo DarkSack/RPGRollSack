@@ -1,0 +1,45 @@
+# La hoja de entrada del pack: ancha, rápida y con buen crítico.
+id: jade_dao_del_tigre
+pack: dinastia_de_jade
+material: DIAMOND_SWORD
+item-model: "jade:arma/dao_del_tigre"
+display-name: "&eDao del Tigre"
+lore:
+  - "&7La borla roja se agita antes del corte,"
+  - "&7como la cola de un tigre antes del salto."
+rarity: RARE
+
+stats:
+  damage: 15
+  critical_chance: 12
+  attack_speed: 1.2
+
+requirements:
+  level: 42
+
+durability:
+  max: 1200
+  repairable: true
+  degrade-per-use: 1
+
+triggers:
+  ENTITY_HIT:
+    - type: PARTICLE
+      particle: SWEEP_ATTACK
+      count: 1
+
+economy:
+  sell: 1400
+  buy: 3600
+
+translations:
+  en:
+    display-name: "&eTiger Dao"
+    lore:
+      - "&7The red tassel shakes before the cut,"
+      - "&7like a tiger's tail before the leap."
+  pt_BR:
+    display-name: "&eDao do Tigre"
+    lore:
+      - "&7A borla vermelha balança antes do corte,"
+      - "&7como a cauda de um tigre antes do salto."

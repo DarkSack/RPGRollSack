@@ -1,0 +1,23 @@
+id: mareas_fogonazo_de_polvora
+display-name: "&6Fogonazo de Pólvora"
+description: "Humo y chispas en la boca de las armas de chispa."
+
+steps:
+  - type: PARTICLE
+    delay: 0
+    particle: LARGE_SMOKE
+    shape: CONE
+    target: SELF
+    radius: 0.6
+    points: 18
+    count: 1
+    speed: 0.02
+  - type: PARTICLE
+    delay: 0
+    particle: FLAME
+    shape: BURST
+    target: SELF
+    radius: 0.4
+    points: 10
+    count: 1
+    speed: 0.05

@@ -78,6 +78,8 @@ public class GuildsPlugin extends JavaPlugin {
         // LangManager - Mensajes por idioma (lang/es.yml, en.yml, pt_BR.yml)
         langManager = new LangManager(this, List.of("es", "en", "pt_BR"), "es");
         langManager.reload(getConfig().getString("language", "es"));
+        com.sack.rpgroll.gui.MenuSkin.register(com.sack.rpgroll.guilds.gui.GuildMenus.MODULE,
+                com.sack.rpgroll.gui.MenuSkin.from(getConfig().getConfigurationSection("menus")));
 
         teamManager = new TeamManager();
         matchmakingQueue = new TeamMatchmakingQueue(teamManager);
@@ -214,6 +216,8 @@ public class GuildsPlugin extends JavaPlugin {
     public void reloadLangManager() {
         reloadConfig();
         langManager.reload(getConfig().getString("language", "es"));
+        com.sack.rpgroll.gui.MenuSkin.register(com.sack.rpgroll.guilds.gui.GuildMenus.MODULE,
+                com.sack.rpgroll.gui.MenuSkin.from(getConfig().getConfigurationSection("menus")));
     }
 
 }

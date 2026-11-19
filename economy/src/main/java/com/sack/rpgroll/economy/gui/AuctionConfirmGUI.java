@@ -17,6 +17,9 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 /** Confirmar una compra: un clic de más no debería gastarle a nadie el dinero. */
 public class AuctionConfirmGUI extends InventoryGUI {
 
+    /** Fondo dibujado (sackito:menus/subastas_confirmar): comprar (11) y cancelar (15) van dibujados. */
+    public static final String BACKGROUND = "subastas_confirmar";
+
     private static final int CONFIRM = 11;
     private static final int ITEM = 13;
     private static final int CANCEL = 15;
@@ -29,7 +32,7 @@ public class AuctionConfirmGUI extends InventoryGUI {
 
     public AuctionConfirmGUI(Player player, AuctionService service, ChatPromptManager prompts,
             AuctionHouseGUI.View view, AuctionListing listing) {
-        super(player, ComponentUtils.parseWithDefault(service.lang().raw("auction_house.confirm.title"), NamedTextColor.DARK_GREEN), 27);
+        super(player, EconomyMenus.skin().title(BACKGROUND, ComponentUtils.parseWithDefault(service.lang().raw("auction_house.confirm.title"), NamedTextColor.DARK_GREEN)), 27);
         this.service = service;
         this.prompts = prompts;
         this.view = view;
@@ -41,19 +44,19 @@ public class AuctionConfirmGUI extends InventoryGUI {
     public void build() {
 
         for (int slot = 0; slot < 27; slot++) {
-            setItem(slot, ItemBuilder.createFiller());
+            setItem(slot, EconomyMenus.filler());
         }
 
         String price = service.format(listing, listing.buyNowPrice());
 
-        setItem(CONFIRM, new ItemBuilder(Material.LIME_CONCRETE)
+        setItem(CONFIRM, EconomyMenus.skin().button(new ItemBuilder(Material.LIME_CONCRETE)
                 .setName(lang.component("auction_house.confirm.buy", "price", price))
                 .setLore(lang.component("auction_house.confirm.balance",
                         "balance", service.format(listing, service.balance(player, listing))))
-                .build());
+                .build()));
         setItem(ITEM, listing.item().clone());
-        setItem(CANCEL, new ItemBuilder(Material.RED_CONCRETE)
-                .setName(lang.component("auction_house.confirm.cancel")).build());
+        setItem(CANCEL, EconomyMenus.skin().button(new ItemBuilder(Material.RED_CONCRETE)
+                .setName(lang.component("auction_house.confirm.cancel")).build()));
     }
 
     @Override

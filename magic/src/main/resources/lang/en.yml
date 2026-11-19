@@ -4,16 +4,17 @@ common:
 
 command:
   admin:
-    players_only: "&cOnly a player can receive this — run it in game."
+    players_only: "&cOnly a player can receive this: add their name at the end of the command."
+    player_not_found: "&cNo online player is called {player}."
     players_only_studio: "&cOnly players can open the Magic Studio."
     usage: |-
       &cUsage: /magicadmin
       &7 • &bbrowser
       &7 • &areload
-      &7 • &egivecatalyst <id>
-      &7 • &dgivegrimoire <id>
-    usage_givecatalyst: "&cUsage: /magicadmin givecatalyst <id>"
-    usage_givegrimoire: "&cUsage: /magicadmin givegrimoire <id>"
+      &7 • &egivecatalyst <id> [player]
+      &7 • &dgivegrimoire <id> [player]
+    usage_givecatalyst: "&cUsage: /magicadmin givecatalyst <id> [player]"
+    usage_givegrimoire: "&cUsage: /magicadmin givegrimoire <id> [player]"
     reloaded: "&a✔ Reloaded: {schools} school(s), {spells} spell(s), {grimoires} grimoire(s), {runes} rune(s), {catalysts} catalyst(s)."
     unknown_catalyst: "&cNo catalyst exists with id: {id}"
     unknown_grimoire: "&cNo grimoire exists with id: {id}"

@@ -1,0 +1,18 @@
+# El oficio del pack: un rango del Pescador. Al llegar a nivel 20 de
+# Pescador se vuelve Buzo para siempre y recibe una carta de coral (un mapa
+# del tesoro), la Caña de Coral, tres Señuelos de Coral y la Brújula Maldita.
+id: mareas_buzo
+base-job: pescador
+display-name: "&3Buzo de las Mareas"
+required-job-level: 20
+unlocked-tools: [mareas_brujula_maldita]
+unlocked-quests: [mareas_el_buzo_y_la_perla]
+rewards:
+  money: 800
+  commands:
+    - "tesoro give {player} mareas_arcon_de_coral"
+    - "fishingadmin giverod mareas_cana_de_coral {player}"
+    - "fishingadmin givebait mareas_senuelo_de_coral {player}"
+    - "fishingadmin givebait mareas_senuelo_de_coral {player}"
+    - "fishingadmin givebait mareas_senuelo_de_coral {player}"
+  message: "&3Ahora eres Buzo de las Mareas. El arrecife te enseñará dónde cavar."

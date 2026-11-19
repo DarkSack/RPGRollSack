@@ -286,6 +286,10 @@ public class ItemAdminCommand implements CommandExecutor, TabCompleter {
             return TabCompleteUtil.filter(args[2], giveableIds());
         }
 
+        if (args.length == 4 && "give".equals(sub)) {
+            return TabCompleteUtil.filter(args[3], List.of("1", "16", "64"));
+        }
+
         return List.of();
     }
 

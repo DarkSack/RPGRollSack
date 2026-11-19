@@ -1,0 +1,28 @@
+# Arma: al matar, a veces la furia del dragón da fuerza unos segundos.
+id: jade_furia_del_dragon
+display-name: "&2Furia del Dragón"
+rarity: LEGENDARY
+max-level: 2
+
+categories:
+  - WEAPON
+
+trigger:
+  - ENTITY_KILL
+
+chance: 25%
+
+levels:
+  1:
+    amplifier: 0
+  2:
+    amplifier: 1
+
+effects:
+  - type: POTION
+    potion: STRENGTH
+    amplifier: "{amplifier}"
+    duration: "100"
+  - type: PARTICLE
+    particle: SOUL_FIRE_FLAME
+    count: "20"

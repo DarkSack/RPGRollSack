@@ -1,0 +1,40 @@
+# Cura poco pero da fuerza un rato: para entrar al abordaje con valor.
+id: mareas_ron_del_capitan
+pack: mareas_malditas
+material: HONEY_BOTTLE
+item-model: "mareas:consumible/ron_del_capitan"
+display-name: "&6Ron del Capitán"
+lore:
+  - "&7Sabe a melaza, a barril y a malas ideas."
+  - "&7Cura 6 y da Fuerza I durante 30 s."
+  - "&8Bébelo para usarlo."
+rarity: UNCOMMON
+
+triggers:
+  CONSUME:
+    - type: HEAL
+      amount: "6"
+    - type: COMMAND
+      value: "minecraft:effect give {player} minecraft:strength 30 0"
+    - type: SOUND
+      sound: ENTITY_GENERIC_DRINK
+      volume: "0.8"
+      pitch: "0.8"
+
+economy:
+  sell: 40
+  buy: 120
+
+translations:
+  en:
+    display-name: "&6Captain's Rum"
+    lore:
+      - "&7Tastes of molasses, barrel and bad ideas."
+      - "&7Heals 6 and gives Strength I for 30 s."
+      - "&8Drink it to use it."
+  pt_BR:
+    display-name: "&6Rum do Capitão"
+    lore:
+      - "&7Tem gosto de melaço, barril e más ideias."
+      - "&7Cura 6 e dá Força I por 30 s."
+      - "&8Beba para usar."

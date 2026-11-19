@@ -1,0 +1,39 @@
+# Historia 3 de 5. Lleva al jugador al arrecife cálido y a la bruja.
+id: mareas_el_canto_del_arrecife
+display-name: "&dEl Canto del Arrecife"
+category: MAIN_STORY
+difficulty: NORMAL
+repeatable: false
+
+requirements:
+  level: 22
+  completed:
+    - mareas_la_cartografa
+
+stages:
+  - id: silenciar_el_canto
+    dialog:
+      - npc: "Los barcos que pasan por el arrecife se desvían solos. Algo canta ahí abajo."
+    objectives:
+      - type: KILL_ENTITY
+        entity: DROWNED
+        amount: 12
+        description: "Silencia a las sirenas y ahogados del arrecife cálido"
+  - id: la_bruja_salobre
+    objectives:
+      - type: TALK_TO_NPC
+        npc: mareas_bruja_salobre
+        amount: 1
+        description: "Pregúntale a la Bruja Salobre por el canto"
+    on-complete:
+      - type: MESSAGE
+        value: "&5Bruja Salobre: &7No cantan para atraer barcos. Cantan para que algo siga dormido."
+
+rewards:
+  money: 300
+  experience: 650
+  commands:
+    - "itemadmin give {player} mareas_tonico_salobre 3"
+    - "magicadmin givecatalyst mareas_caracola_de_las_profundidades {player}"
+  quests:
+    - mareas_la_flota_del_capitan

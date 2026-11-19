@@ -1,0 +1,50 @@
+# Lenta pero larga y pesada: el arma que suelta el General Sin Sombra.
+id: jade_lanza_media_luna
+pack: dinastia_de_jade
+material: DIAMOND_SWORD
+item-model: "jade:arma/lanza_media_luna"
+display-name: "&9Lanza de Media Luna"
+lore:
+  - "&7Su hoja dibuja la luna creciente"
+  - "&7y siega lo que queda debajo."
+  - "&7Al golpear: el objetivo se debilita."
+rarity: EPIC
+
+stats:
+  damage: 18
+  critical_damage: 45
+  attack_speed: 0.9
+
+requirements:
+  level: 50
+
+durability:
+  max: 1600
+  repairable: true
+  degrade-per-use: 1
+
+triggers:
+  ENTITY_HIT:
+    - type: COMMAND
+      value: "minecraft:effect give {target_uuid} minecraft:weakness 3 0"
+    - type: PARTICLE
+      particle: SWEEP_ATTACK
+      count: 2
+
+economy:
+  sell: 3200
+  buy: 8000
+
+translations:
+  en:
+    display-name: "&9Crescent Moon Spear"
+    lore:
+      - "&7Its blade draws the waxing moon"
+      - "&7and reaps whatever stands beneath."
+      - "&7On hit: weakens the target."
+  pt_BR:
+    display-name: "&9Lança da Meia-Lua"
+    lore:
+      - "&7Sua lâmina desenha a lua crescente"
+      - "&7e ceifa o que estiver embaixo."
+      - "&7Ao golpear: enfraquece o alvo."

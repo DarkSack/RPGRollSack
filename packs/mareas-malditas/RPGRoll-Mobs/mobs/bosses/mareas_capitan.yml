@@ -1,0 +1,177 @@
+# Mini jefe: el capitán de la flota hundida. Aparece rara vez en las playas
+# de noche y siempre en la Gruta del Naufragio. Suelta el Ancla de Guerra,
+# piezas del conjunto del Capitán y el mapa del Cofre del Capitán.
+# Modelo 3D: FreeMinecraftModels/models/mareas_capitan.bbmodel. Sin FMM se ve el drowned.
+id: mareas_capitan
+category: MINI_BOSS
+display-name: "&6&lCapitán Ahogado"
+name-color: "#E0A526"
+level: 30
+rarity: epic
+tags: [ "mareas_malditas", "no_muerto", "jefe", "modelo3d" ]
+description: "Hundió su propio barco antes que entregarlo. Sigue al mando de lo que quedó."
+base-entity-type: DROWNED
+
+model:
+  scale: 1.15
+  model-engine-id: mareas_capitan
+  equipment:
+
+stats:
+  health: 420
+  damage: 14
+  defense: 9
+  speed: 100
+  armor: 10
+  dodge: 6
+  accuracy: 95
+  critical_chance: 15
+  critical_damage: 55
+  knockback_resistance: 70
+
+resistances:
+  poison: 60
+  physical: 15
+
+ai:
+  goals: [ "ATTACK_PLAYERS" ]
+  aggro-range: 24
+  flee-health-percent: 0
+  move-speed: 1.0
+
+skills:
+  - id: tajo_de_cubierta
+    display-name: "Tajo de Cubierta"
+    trigger: PERIODIC
+    cooldown: 9s
+    chance: 60
+    conditions:
+      - "target.distance <= 4"
+    actions:
+      - type: ANIMATION
+        value: tajo
+      - type: DAMAGE
+        amount: "11"
+      - type: PARTICLE
+        particle: SWEEP_ATTACK
+        count: "6"
+        offset-x: "1.5"
+        offset-y: "0.5"
+        offset-z: "1.5"
+      - type: SOUND
+        sound: ENTITY_PLAYER_ATTACK_SWEEP
+        volume: "1.2"
+        pitch: "0.7"
+
+phases:
+  - id: todos_a_cubierta
+    health-threshold-percent: 50
+    stat-multipliers:
+      damage: 1.25
+      speed: 1.1
+    skills:
+      - id: llamar_a_la_tripulacion
+        display-name: "Llamar a la Tripulación"
+        trigger: PERIODIC
+        cooldown: 25s
+        chance: 70
+        actions:
+          - type: SOUND
+            sound: ENTITY_ELDER_GUARDIAN_AMBIENT
+            volume: "1.2"
+            pitch: "1.2"
+          - type: PARTICLE
+            particle: SPLASH
+            count: "80"
+            offset-x: "3.0"
+            offset-y: "0.5"
+            offset-z: "3.0"
+          - type: COMMAND
+            value: "mobadmin spawn mareas_ahogado {target}"
+    bossbar-color: YELLOW
+    bossbar-title: "&6&lCapitán Ahogado &7[¡Todos a cubierta!]"
+    dialogue: "&6\"¡Tripulación! ¡Al abordaje, perros de agua!\""
+    particle: SPLASH
+
+triggers:
+  SPAWN:
+    - type: MESSAGE
+      value: "&6&l[Capitán Ahogado] &7Una campana suena bajo el agua."
+    - type: SOUND
+      sound: BLOCK_BELL_USE
+      volume: "1.5"
+      pitch: "0.5"
+  DEATH:
+    - type: MESSAGE
+      value: "&6&l[Capitán Ahogado] &7\"El mapa... no es para ti...\""
+    - type: PARTICLE
+      particle: BUBBLE_POP
+      count: "80"
+
+loot:
+  - type: ITEM
+    reference: mareas_doblon_de_oro
+    amount-min: 4
+    amount-max: 9
+    chance: 100
+    scope: PER_PLAYER
+  - type: ITEM
+    reference: mareas_ancla_de_guerra
+    amount-min: 1
+    amount-max: 1
+    chance: 12
+    scope: SHARED
+  - type: ITEM
+    reference: mareas_capitan_tricornio
+    amount-min: 1
+    amount-max: 1
+    chance: 10
+    scope: SHARED
+  - type: ITEM
+    reference: mareas_capitan_casaca
+    amount-min: 1
+    amount-max: 1
+    chance: 8
+    scope: SHARED
+  - type: ITEM
+    reference: mareas_capitan_calzas
+    amount-min: 1
+    amount-max: 1
+    chance: 9
+    scope: SHARED
+  - type: ITEM
+    reference: mareas_capitan_botas
+    amount-min: 1
+    amount-max: 1
+    chance: 10
+    scope: SHARED
+  - type: COMMAND
+    reference: "tesoro give {player} mareas_cofre_capitan"
+    chance: 35
+    scope: PER_PLAYER
+  - type: QUEST
+    reference: mareas_el_despertar_del_kraken
+    chance: 100
+    scope: PER_PLAYER
+  - type: MONEY
+    amount-min: 60
+    amount-max: 120
+    chance: 100
+    scope: PER_PLAYER
+  - type: EXPERIENCE
+    amount-min: 120
+    amount-max: 180
+    chance: 100
+    scope: PER_PLAYER
+
+bossbar:
+  enabled: true
+  color: YELLOW
+  style: NOTCHED_6
+  title: "&6&lCapitán Ahogado"
+
+spawn-rules:
+  biomes: [BEACH]
+  natural-spawn: true
+  spawn-weight: 0.1
+  chance: 1

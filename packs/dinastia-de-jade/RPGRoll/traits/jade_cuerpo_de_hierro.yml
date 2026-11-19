@@ -1,0 +1,14 @@
+id: "jade_cuerpo_de_hierro"
+name: "&aCuerpo de Hierro"
+description: "Mil golpes contra el poste de madera endurecen algo más que los nudillos."
+required-level: 1
+effect:
+  defense-bonus: 0.04
+  health-bonus: 6
+translations:
+  en:
+    name: "&aIron Body"
+    description: "A thousand blows against the wooden post harden more than knuckles."
+  pt_BR:
+    name: "&aCorpo de Ferro"
+    description: "Mil golpes no poste de madeira endurecem mais que os nós dos dedos."

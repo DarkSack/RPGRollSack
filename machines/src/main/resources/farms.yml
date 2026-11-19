@@ -1,0 +1,66 @@
+# Granja de RPGRoll-Machines: cosecha lo maduro de un cuadrado centrado en ella (a su altura), lo
+# vuelve a plantar y deja lo demás en el cofre de al lado. Trigo, zanahoria, patata, remolacha,
+# verrugas, cacao, bayas dulces, y calabazas y sandías con su tallo pegado.
+
+enabled: true
+disabled-worlds: []
+
+# Bloque que se pone (sólido y que no sea un contenedor). Con el paquete de recursos de Sackito,
+# item-model y frame le ponen su modelo 3D; de fábrica se ve el bloque tal cual.
+block: MOSS_BLOCK
+item-model: ""
+frame:
+  enabled: false
+  model: ""
+  scale: 1.002
+
+# Prefijo de los menús dibujados del paquete de recursos (por ejemplo "sackito:menus"). Vacío: menús
+# de siempre, con cristales y materiales vanilla.
+menu:
+  pack: ""
+
+# Cuántas puede tener cada jugador (-1 sin tope). Es aparte del de las canteras y de las otras máquinas.
+max-per-player: 2
+
+# Solo trabaja si su área está entera dentro de un claim de su dueño (GriefPrevention).
+require-claim: true
+
+performance:
+  # Acciones por tick entre todas las máquinas de este tipo.
+  actions-per-tick: 16
+  # Casillas del área que revisa cada máquina por tick.
+  scans-per-tick: 32
+
+upgrades:
+  speed:
+    icon: SUGAR
+    levels:
+      - {value: 1}
+      - {value: 2, cost: {items: ["REDSTONE_BLOCK:8"]}}
+      - {value: 4, cost: {items: ["DIAMOND:8"]}}
+      - {value: 8, cost: {items: ["NETHERITE_INGOT:1"]}}
+  area:
+    icon: MAP
+    levels:
+      - {value: 5}
+      - {value: 7, cost: {items: ["IRON_BLOCK:8"]}}
+      - {value: 9, cost: {items: ["DIAMOND_BLOCK:4"]}}
+      - {value: 11, cost: {items: ["NETHERITE_INGOT:2"]}}
+  # Abono: veces por segundo que hace crecer un cultivo al azar de su área.
+  fertilizer:
+    icon: BONE_MEAL
+    levels:
+      - {value: 0}
+      - {value: 0.5, cost: {items: ["BONE_BLOCK:16"]}}
+      - {value: 1, cost: {items: ["BONE_BLOCK:32", "DIAMOND:4"]}}
+      - {value: 2, cost: {items: ["DIAMOND_BLOCK:4"]}}
+
+recipe:
+  enabled: true
+  shape: ["IHI", "RCR", "IOI"]
+  ingredients:
+    I: IRON_BLOCK
+    H: DIAMOND_HOE
+    R: REDSTONE_BLOCK
+    C: COMPOSTER
+    O: OBSERVER

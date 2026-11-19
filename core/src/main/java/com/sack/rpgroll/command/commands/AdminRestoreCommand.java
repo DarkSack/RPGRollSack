@@ -114,6 +114,15 @@ public class AdminRestoreCommand implements RPGCommand {
     }
 
     @Override
+    public java.util.List<String> getTabCompletions(CommandSender sender, String[] args) {
+        return switch (args.length) {
+            case 0, 1 -> com.sack.rpgroll.util.TabCompleteUtil.onlinePlayerNames(args.length == 0 ? "" : args[0]);
+            case 2 -> com.sack.rpgroll.util.TabCompleteUtil.filter(args[1], java.util.List.of("todo", "vida", "mana"));
+            default -> java.util.List.of();
+        };
+    }
+
+    @Override
     public String getPermission() {
         return "rpgroll.admin.restore";
     }

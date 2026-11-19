@@ -1,0 +1,15 @@
+# El oficio del pack: un rango del Alquimista. Al llegar a nivel 25 de
+# Alquimista se vuelve Maestro del Té para siempre: recibe un Arca Lacada
+# (mapa del tesoro), una Gallina Fénix a su lado y desbloquea una misión semanal con el Monje Bao.
+id: jade_maestro_del_te
+base-job: alquimista
+display-name: "&2Maestro del Té"
+required-job-level: 25
+unlocked-tools: [jade_te_de_jazmin]
+unlocked-quests: [jade_la_ceremonia_del_te]
+rewards:
+  money: 1500
+  commands:
+    - "tesoro give {player} jade_arca_lacada"
+    - "ranchingadmin spawn chicken jade_gallina_fenix {player} hembra"
+  message: "&2Ahora eres Maestro del Té. El Monje Bao quiere verte."

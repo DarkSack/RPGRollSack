@@ -1,0 +1,48 @@
+# Tesoro de bosque: el arca de un funcionario que huyó del palacio. Sale de
+# terracotas y zorros (raro), del General, de la segunda misión, del rango
+# Maestro del Té, de la caja y del Mercader Wei.
+id: jade_arca_lacada
+display-name: "&cArca Lacada"
+
+map:
+  material: PAPER
+  model: "jade:mapa/pergamino_lacado"
+  name: "&cPergamino Lacado"
+  lore:
+    - "&7Un mapa pintado con pincel fino."
+    - "&7La X está bajo un cerezo... o bajo un bambú."
+    - "&8Clic derecho para leerlo."
+
+placement:
+  worlds: []
+  biomes: [cherry_grove, bamboo_jungle, sparse_jungle, meadow]
+  min-distance: 200
+  max-distance: 800
+  depth: 3
+
+chest:
+  model: "jade:jade_arca_lacada/default"
+  scale: 1.0
+  rows: 3
+  title: "&4Arca Lacada"
+  guardians:
+    - {type: COMMAND, command: "mobadmin spawn jade_terracota {player}"}
+    - {type: COMMAND, command: "mobadmin spawn jade_terracota {player}"}
+    - {type: SOUND, sound: block.bell.use, volume: 1.0, pitch: 0.8}
+    - {type: MESSAGE, text: "&6El suelo cruje: alguien enterró soldados junto al arca."}
+
+loot:
+  rolls: 4-7
+  entries:
+    - {item: jade_fragmento_de_jade, amount: 3-8, weight: 12}
+    - {item: EMERALD, amount: 4-12, weight: 10}
+    - {item: GOLD_INGOT, amount: 4-10, weight: 8}
+    - {item: jade_seda_imperial, amount: 1-4, weight: 6}
+    - {item: jade_te_de_jazmin, amount: 1-3, weight: 6}
+    - {item: jade_incienso_de_concentracion, amount: 1-2, weight: 4}
+    - {item: DIAMOND, amount: 1-3, weight: 3}
+    - {item: jade_dao_del_tigre, weight: 2}
+
+actions:
+  - {type: XP, amount: 150}
+  - {type: MONEY, amount: 600-1200}

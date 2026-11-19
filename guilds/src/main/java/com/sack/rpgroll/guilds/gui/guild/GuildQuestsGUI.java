@@ -1,5 +1,6 @@
 package com.sack.rpgroll.guilds.gui.guild;
 
+import com.sack.rpgroll.guilds.gui.GuildMenus;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.guilds.GuildsAPI;
@@ -24,6 +25,9 @@ import java.util.List;
 /** Quests activas de la guild (arriba) + quests disponibles para iniciar (abajo). */
 public class GuildQuestsGUI extends InventoryGUI {
 
+    /** Fondo dibujado (sackito:menus/gremio_misiones): volver (53) va dibujado. */
+    public static final String BACKGROUND = "gremio_misiones";
+
     private static final int SIZE = 54;
     private static final int BACK_SLOT = 53;
 
@@ -38,7 +42,7 @@ public class GuildQuestsGUI extends InventoryGUI {
 
     public GuildQuestsGUI(Player player, Guild guild, GuildManager guildManager, GuildQuestManager questManager,
             GuildQuestService questService, Runnable onBack) {
-        super(player, GuildsAPI.getLangManager().component("guild.quests.title", "name", guild.name()), SIZE);
+        super(player, GuildMenus.skin().title(BACKGROUND, GuildsAPI.getLangManager().component("guild.quests.title", "name", guild.name())), SIZE);
         this.guild = guild;
         this.guildManager = guildManager;
         this.questManager = questManager;
@@ -64,7 +68,7 @@ public class GuildQuestsGUI extends InventoryGUI {
         clear();
 
         for (int slot = 0; slot < SIZE; slot++) {
-            setItem(slot, ItemBuilder.createFiller());
+            setItem(slot, GuildMenus.filler());
         }
 
         for (int i = 0; i < active.size() && i < 18; i++) {
@@ -96,7 +100,7 @@ public class GuildQuestsGUI extends InventoryGUI {
                     .build());
         }
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang().raw("common.back")));
+        setItem(BACK_SLOT, GuildMenus.skin().button(ItemBuilder.createCancelButton(lang().raw("common.back"))));
     }
 
     @Override

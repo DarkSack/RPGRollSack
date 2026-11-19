@@ -1,5 +1,6 @@
 package com.sack.rpgroll.guilds.gui.guild;
 
+import com.sack.rpgroll.guilds.gui.GuildMenus;
 import com.sack.rpgroll.util.ComponentUtils;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
@@ -16,6 +17,9 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 
 public class GuildAchievementsGUI extends InventoryGUI {
 
+    /** Fondo dibujado (sackito:menus/gremio_logros): volver (26) va dibujado. */
+    public static final String BACKGROUND = "gremio_logros";
+
     private static final int SIZE = 27;
     private static final int BACK_SLOT = 26;
 
@@ -23,7 +27,7 @@ public class GuildAchievementsGUI extends InventoryGUI {
     private final Runnable onBack;
 
     public GuildAchievementsGUI(Player player, Guild guild, Runnable onBack) {
-        super(player, GuildsAPI.getLangManager().component("guild.achievements.title", "name", guild.name()), SIZE);
+        super(player, GuildMenus.skin().title(BACKGROUND, GuildsAPI.getLangManager().component("guild.achievements.title", "name", guild.name())), SIZE);
         this.guild = guild;
         this.onBack = onBack;
     }
@@ -38,7 +42,7 @@ public class GuildAchievementsGUI extends InventoryGUI {
         clear();
 
         for (int slot = 0; slot < SIZE; slot++) {
-            setItem(slot, ItemBuilder.createFiller());
+            setItem(slot, GuildMenus.filler());
         }
 
         var definitions = GuildAchievementDefinition.ALL;
@@ -58,7 +62,7 @@ public class GuildAchievementsGUI extends InventoryGUI {
                     .build());
         }
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang().raw("common.back")));
+        setItem(BACK_SLOT, GuildMenus.skin().button(ItemBuilder.createCancelButton(lang().raw("common.back"))));
     }
 
     @Override

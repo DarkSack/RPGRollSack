@@ -1,0 +1,26 @@
+id: jade_onda_de_qi
+display-name: "&aOnda de Qi"
+description: "El golpe de la Palma de Qi: un anillo verde que se abre."
+
+steps:
+  - type: PARTICLE
+    delay: 0
+    particle: DUST
+    color: "#7CFFB0"
+    size: 1.3
+    shape: CIRCLE
+    draw-ticks: 4
+    target: LOCATION
+    radius: 1.6
+    points: 40
+    count: 1
+    speed: 0
+  - type: PARTICLE
+    delay: 3
+    particle: END_ROD
+    shape: SPHERE
+    target: LOCATION
+    radius: 1.0
+    points: 20
+    count: 1
+    speed: 0.05

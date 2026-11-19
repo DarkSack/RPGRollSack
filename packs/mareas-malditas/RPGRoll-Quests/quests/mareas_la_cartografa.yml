@@ -1,0 +1,38 @@
+# Historia 2 de 5. La primera recompensa es un mapa del tesoro.
+id: mareas_la_cartografa
+display-name: "&3La Cartógrafa"
+category: MAIN_STORY
+difficulty: NORMAL
+repeatable: false
+
+requirements:
+  level: 17
+  completed:
+    - mareas_la_campana_hundida
+
+stages:
+  - id: buscar_a_la_cartografa
+    objectives:
+      - type: TALK_TO_NPC
+        npc: mareas_cartografa_isla
+        amount: 1
+        description: "Habla con la Cartógrafa Isla"
+  - id: anguilas_del_canal
+    dialog:
+      - npc: "Tengo la carta de la flota, pero las anguilas no me dejan cruzar el canal. Quítamelas de encima."
+    objectives:
+      - type: KILL_ENTITY
+        entity: GUARDIAN
+        amount: 5
+        description: "Derrota 5 anguilas voltaicas en mar profundo"
+    on-complete:
+      - type: MESSAGE
+        value: "&3Isla: &7Toma, una copia del mapa del Capitán. Ábrelo en la mano y sigue la brújula."
+
+rewards:
+  money: 220
+  experience: 450
+  commands:
+    - "tesoro give {player} mareas_cofre_capitan"
+  quests:
+    - mareas_el_canto_del_arrecife

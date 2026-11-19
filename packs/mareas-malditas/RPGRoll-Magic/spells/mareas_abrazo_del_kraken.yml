@@ -1,0 +1,37 @@
+# Control: arrastra al objetivo hacia el brujo y lo deja lento.
+id: mareas_abrazo_del_kraken
+display-name: "&3Abrazo del Kraken"
+icon: INK_SAC
+color: DARK_AQUA
+school: mareas_abismo
+rarity: RARE
+level: 22
+cast-time: 0
+cooldown: 160
+trigger: RIGHT_CLICK
+tree-tier: 2
+tags: [abismo, mareas, control]
+description: "Un tentáculo de agua negra atrapa al objetivo y lo trae hacia ti."
+
+cost:
+  mana: 30
+
+components:
+  - type: PROJECTILE
+    speed: 1.4
+    max-distance: 18
+    hit-radius: 1.2
+    trail-particle: SQUID_INK
+  - type: DAMAGE_DIRECT
+    amount: 8
+  - type: PULL
+    strength: 1.6
+  - type: APPLY_EFFECT
+    effect-id: frozen
+    target: target
+  - type: VISUAL
+    effect-id: mareas_tentaculos
+  - type: SOUND
+    sound: ENTITY_SQUID_SQUIRT
+    volume: 1.0
+    pitch: 0.6

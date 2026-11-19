@@ -1,0 +1,24 @@
+id: jade_campana
+display-name: "&6Campana"
+description: "La Campana Dorada: una cúpula de luz que baja sobre el lanzador."
+
+steps:
+  - type: PARTICLE
+    delay: 0
+    particle: WAX_ON
+    shape: DOME
+    target: SELF
+    radius: 1.8
+    points: 90
+    count: 1
+    speed: 0
+  - type: PARTICLE
+    delay: 4
+    particle: END_ROD
+    shape: CIRCLE
+    draw-ticks: 4
+    target: SELF
+    radius: 1.8
+    points: 40
+    count: 1
+    speed: 0

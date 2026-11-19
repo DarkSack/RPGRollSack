@@ -70,19 +70,26 @@ public class LuckyParser implements ContentParser<LuckyBlock> {
     }
 
     private static LuckyAction action(Map<?, ?> map, String blockId, String outcomeId) {
+        return parseAction(map, "lucky block '" + blockId + "', resultado '" + outcomeId + "'");
+    }
+
+    /**
+     * Una acción ({@code type} + parámetros) de un mapa YAML. La usan también los tesoros.
+     *
+     * @param where de dónde viene, para el mensaje de error ("tesoro 'x'")
+     */
+    public static LuckyAction parseAction(Map<?, ?> map, String where) {
 
         Object type = map.get("type");
         if (type == null) {
-            throw new IllegalArgumentException("lucky block '" + blockId + "', resultado '" + outcomeId
-                    + "': una acción no tiene type");
+            throw new IllegalArgumentException(where + ": una acción no tiene type");
         }
 
         LuckyAction.Type parsed;
         try {
             parsed = LuckyAction.parseType(type.toString());
         } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("lucky block '" + blockId + "', resultado '" + outcomeId
-                    + "': tipo de acción desconocido '" + type + "'");
+            throw new IllegalArgumentException(where + ": tipo de acción desconocido '" + type + "'");
         }
 
         Map<String, String> params = new LinkedHashMap<>();

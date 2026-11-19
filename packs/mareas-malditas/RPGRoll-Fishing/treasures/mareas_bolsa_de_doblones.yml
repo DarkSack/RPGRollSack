@@ -1,0 +1,9 @@
+# Tesoro de pesca: oro vanilla (los tesoros de pesca solo dan un material).
+id: mareas_bolsa_de_doblones
+display-name: "&6Bolsa de Doblones"
+icon: BUNDLE
+description: "Una bolsa de cuero podrido llena de monedas que ya nadie acepta. Salvo el oro."
+rarity: RARE
+reward-material: GOLD_INGOT
+reward-amount: 4
+weight: 0.6

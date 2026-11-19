@@ -14,6 +14,17 @@ Ya no es un único plugin: es un **ecosistema de 1 core + 24 addons independient
 
 # 🆕 Novedades recientes
 
+## Versión 1.1.11
+
+- 🗺️ **Tesoros enterrados (Crates)** — `treasures/` y `/tesoro give <jugador> <id>`: un mapa que lleva a un punto del bioma elegido, una X de partículas, un cofre con modelo propio, guardianes y su botín. Respeta las protecciones
+- 🏴‍☠️ **Packs Mareas Malditas (15-35) y Dinastía de Jade (40-60)** — en `packs/`: raza, clases, rango de oficio, armas y armaduras con modelo 3D, magia, mobs y jefes, historia de 5 misiones, NPCs, mazmorra, trampas, estación, tienda, caja, muebles y dos tesoros enterrados por pack
+- 🎁 **Dar a otro jugador desde la consola** — `magicadmin givecatalyst|givegrimoire <id> [jugador]` y `fishingadmin giverod|givebait <id> [jugador]`; `ranchingadmin spawn` desde la consola saca el animal junto a su dueño. Así misiones, menús, cajas y rangos pueden darlos
+- ⌨️ **Autocompletado en todos los comandos** — `/w`, `/react` y `/chatlog` (Chat) ya sugieren; además ítems y niveles en `/craftingadmin give`, `/renchant apply|give`, `/itemadmin give`, `/rpg job setlevel` y `/rpg restore`, carpinteros en `/muebles fabricar`, categorías y opciones en `/quest`, coordenadas y rotación en `/dungeonadmin structure paste`, y jugador y cantidad en `/trapadmin turret|ammo give`
+- 🏭 **Máquinas de área (Machines)** — Pescadora, Granja y Leñadora trabajan solas dentro de tu claim; la Pescadora saca peces de RPGRoll-Fishing
+- 🖼️ **Más menús con fondo dibujado** — subastas, banco y empresas (Economy), gremios (Guilds) y warps (Extras)
+
+Necesitan **RPGRoll-Lib 1.1.11**: Lib, core, Crates, Magic, Fishing, Ranching, Chat, Crafting, Furniture, Quests, Pass, Traps, Dungeons, Enchantments, Items, Extras y Machines. Guilds y Economy van en 1.1.10.
+
 ## Versión 1.1.9
 
 - 🖼️ **Menús con fondo dibujado** — RPGRoll-Lib trae `MenuBackground`/`MenuSkin`: con `menus.pack` (vacío de fábrica) los menús de raza, clase, trabajos y confirmación (core), `/tienda` y tiendas de jugadores (Economy), pase, misiones y recompensa diaria (Pass) y el recetario (Recipes) usan el fondo y los botones de tu paquete de recursos. Sin él, se ven los menús de cofre de siempre
@@ -158,8 +169,8 @@ Los precios son estimados (USD) en función de la complejidad de cada módulo �
 
 # 📀 Distribución (para quien mantiene el repo)
 
-Todos los módulos comparten un único número de versión (`1.1.9` publicado, en cada `build.gradle.kts`). Para armar
-el paquete de release completo del ecosistema:
+Cada módulo lleva su versión en su `build.gradle.kts` y su `plugin.yml` (hoy de `1.1.9` a `1.1.11`: solo suben los que cambian). Para armar
+el paquete de release completo del ecosistema (exige el mismo número en todos los módulos):
 
 ```bash
 ./gradlew release

@@ -1,0 +1,15 @@
+id: "jade_paso_del_loto"
+name: "&dPaso del Loto"
+description: "Pisa el agua sin hundirse y el campo de batalla sin hacer ruido."
+required-level: 1
+effect:
+  speed-bonus: 0.04
+  health-bonus: 2
+  defense-bonus: -0.01
+translations:
+  en:
+    name: "&dLotus Step"
+    description: "Walks on water without sinking and on battlefields without a sound."
+  pt_BR:
+    name: "&dPasso do Lótus"
+    description: "Pisa na água sem afundar e no campo de batalha sem fazer barulho."

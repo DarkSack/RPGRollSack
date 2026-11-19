@@ -1,0 +1,44 @@
+# Clase de combate del pack: pistola en una mano y sable en la otra.
+# Las armas de fuego, el garfio y la armadura del Capitán la piden.
+id: "mareas_bucanero"
+display-name: "&6⚓ Bucanero"
+description: |
+  Aborda primero y pregunta después.
+  Dispara una vez, recarga y entra a sable.
+base-attributes:
+  dexterity: 3
+  strength: 1
+  charisma: 1
+  wisdom: -1
+passive-traits:
+  - "mareas_furia_de_abordaje"
+icon: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWJkNTFhYzdmODMzNTViNjcyMTUzZWUzZGYzMzJiNmY1N2EzZjg0ODk1NDcyNjQ1YWE2MzQ5Y2RmOTcyODkwMiJ9fX0="
+lore:
+  - "&7Armas: pistolas de chispa, trabuco y sable"
+  - "&7Rol: DPS mixto (distancia y cuerpo a cuerpo)"
+  - "&a▲ +4% de daño"
+  - "&a▲ +3% de velocidad"
+  - "&c▼ -2% de defensa"
+translations:
+  en:
+    display-name: "&6⚓ Buccaneer"
+    description: |
+      Boards first and asks later.
+      Fires once, reloads and goes in with the sabre.
+    lore:
+      - "&7Weapons: flintlock pistols, blunderbuss and sabre"
+      - "&7Role: Mixed DPS (ranged and melee)"
+      - "&a▲ +4% damage"
+      - "&a▲ +3% speed"
+      - "&c▼ -2% defense"
+  pt_BR:
+    display-name: "&6⚓ Bucaneiro"
+    description: |
+      Aborda primeiro e pergunta depois.
+      Atira uma vez, recarrega e entra no sabre.
+    lore:
+      - "&7Armas: pistolas de pederneira, bacamarte e sabre"
+      - "&7Função: DPS misto (distância e corpo a corpo)"
+      - "&a▲ +4% de dano"
+      - "&a▲ +3% de velocidade"
+      - "&c▼ -2% de defesa"

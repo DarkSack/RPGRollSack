@@ -1,0 +1,14 @@
+id: "mareas_escamas_de_triton"
+name: "&3Escamas de Tritón"
+description: "Piel dura de mar abierto: aguanta golpes y corre con la corriente."
+required-level: 1
+effect:
+  defense-bonus: 0.03
+  speed-bonus: 0.03
+translations:
+  en:
+    name: "&3Triton Scales"
+    description: "Open-sea skin: takes hits and runs with the current."
+  pt_BR:
+    name: "&3Escamas de Tritão"
+    description: "Pele dura de mar aberto: aguenta golpes e corre com a correnteza."

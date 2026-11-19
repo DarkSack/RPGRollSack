@@ -1,0 +1,15 @@
+id: "jade_nueve_colas"
+name: "&6Nueve Colas"
+description: "Nadie alcanza a un zorro que no quiere ser alcanzado."
+required-level: 1
+effect:
+  speed-bonus: 0.05
+  health-bonus: 2
+  defense-bonus: -0.02
+translations:
+  en:
+    name: "&6Nine Tails"
+    description: "No one catches a fox that doesn't want to be caught."
+  pt_BR:
+    name: "&6Nove Caudas"
+    description: "Ninguém alcança uma raposa que não quer ser alcançada."

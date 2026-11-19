@@ -1,0 +1,190 @@
+# El jefe del pack. No aparece solo: lo invoca la última misión de la
+# historia, la sala final de la Gruta o /mobadmin spawn mareas_kraken.
+# Tres fases: tentáculos -> tinta -> remolino.
+# Modelo 3D: FreeMinecraftModels/models/mareas_kraken.bbmodel. Sin FMM se ve un drowned grande.
+id: mareas_kraken
+category: WORLD_BOSS
+display-name: "&3&lKraken Ancestral"
+name-color: "#1B6F8A"
+level: 35
+rarity: legendary
+tags: [ "mareas_malditas", "bestia", "jefe", "modelo3d" ]
+description: "Lo que el Capitán intentó despertar. Lo que hundió a la flota entera."
+base-entity-type: DROWNED
+
+model:
+  scale: 1.0
+  glow: true
+  model-engine-id: mareas_kraken
+  equipment:
+
+stats:
+  health: 2200
+  damage: 22
+  defense: 15
+  speed: 80
+  armor: 14
+  dodge: 0
+  accuracy: 95
+  critical_chance: 10
+  critical_damage: 60
+  knockback_resistance: 100
+
+resistances:
+  poison: 100
+  magic: 20
+
+ai:
+  goals: [ "ATTACK_PLAYERS" ]
+  aggro-range: 32
+  move-speed: 0.8
+
+skills:
+  - id: latigazo_de_tentaculo
+    display-name: "Latigazo de Tentáculo"
+    trigger: ATTACK
+    cooldown: 8s
+    chance: 60
+    conditions:
+      - "target.distance <= 6"
+    actions:
+      - type: ANIMATION
+        value: attack
+      - type: DAMAGE
+        amount: "14"
+      - type: PUSH
+        strength: "1.8"
+      - type: SOUND
+        sound: ENTITY_SQUID_HURT
+        volume: "1.5"
+        pitch: "0.4"
+
+phases:
+  - id: nube_de_tinta
+    health-threshold-percent: 65
+    stat-multipliers:
+      damage: 1.2
+    skills:
+      - id: chorro_de_tinta
+        display-name: "Chorro de Tinta"
+        trigger: PERIODIC
+        cooldown: 12s
+        chance: 75
+        actions:
+          - type: ANIMATION
+            value: rugido
+          - type: PARTICLE
+            particle: SQUID_INK
+            count: "120"
+            offset-x: "4.0"
+            offset-y: "1.5"
+            offset-z: "4.0"
+          - type: COMMAND
+            value: "minecraft:effect give {target} minecraft:blindness 4 0"
+          - type: DAMAGE
+            amount: "10"
+    bossbar-color: BLUE
+    bossbar-title: "&3&lKraken Ancestral &7[Nube de Tinta]"
+    dialogue: "&3El agua se vuelve negra a su alrededor."
+    particle: SQUID_INK
+
+  - id: remolino_abisal
+    health-threshold-percent: 30
+    stat-multipliers:
+      damage: 1.45
+      speed: 1.15
+    skills:
+      - id: remolino
+        display-name: "Remolino"
+        trigger: PERIODIC
+        cooldown: 15s
+        chance: 80
+        actions:
+          - type: ANIMATION
+            value: rugido
+          - type: PARTICLE
+            particle: BUBBLE_COLUMN_UP
+            count: "160"
+            offset-x: "5.0"
+            offset-y: "2.0"
+            offset-z: "5.0"
+          - type: DAMAGE
+            amount: "16"
+          - type: COMMAND
+            value: "minecraft:effect give {target} minecraft:slowness 5 2"
+          - type: SOUND
+            sound: ENTITY_ELDER_GUARDIAN_CURSE
+            volume: "1.6"
+            pitch: "0.6"
+    bossbar-color: PURPLE
+    bossbar-title: "&3&lKraken Ancestral &7[Remolino Abisal]"
+    dialogue: "&3El mar entero empieza a girar."
+    particle: BUBBLE_COLUMN_UP
+
+triggers:
+  SPAWN:
+    - type: TITLE
+      title: "&3&lEL KRAKEN DESPIERTA"
+      subtitle: "&7El mar se abre en dos"
+    - type: SOUND
+      sound: ENTITY_ELDER_GUARDIAN_CURSE
+      volume: "1.5"
+      pitch: "0.5"
+  PHASE_CHANGE:
+    - type: SOUND
+      sound: ENTITY_RAVAGER_ROAR
+      volume: "1.5"
+      pitch: "0.6"
+  DEATH:
+    - type: TITLE
+      title: "&3&lEL KRAKEN SE HUNDE"
+      subtitle: "&7El mar vuelve a estar en calma. Por ahora."
+    - type: PARTICLE
+      particle: SPLASH
+      count: "200"
+
+loot:
+  - type: ITEM
+    reference: mareas_perla_negra
+    amount-min: 3
+    amount-max: 6
+    chance: 100
+    scope: PER_PLAYER
+  - type: ITEM
+    reference: mareas_doblon_de_oro
+    amount-min: 10
+    amount-max: 20
+    chance: 100
+    scope: PER_PLAYER
+  - type: ITEM
+    reference: mareas_tridente_abisal
+    amount-min: 1
+    amount-max: 1
+    chance: 25
+    scope: SHARED
+  - type: ITEM
+    reference: mareas_brujula_maldita
+    amount-min: 1
+    amount-max: 1
+    chance: 10
+    scope: SHARED
+  - type: COMMAND
+    reference: "tesoro give {player} mareas_arcon_de_coral"
+    chance: 100
+    scope: PER_PLAYER
+  - type: MONEY
+    amount-min: 400
+    amount-max: 700
+    chance: 100
+    scope: PER_PLAYER
+  - type: EXPERIENCE
+    amount-min: 600
+    amount-max: 900
+    chance: 100
+    scope: PER_PLAYER
+
+bossbar:
+  enabled: true
+  color: BLUE
+  style: NOTCHED_10
+  title: "&3&lKraken Ancestral"

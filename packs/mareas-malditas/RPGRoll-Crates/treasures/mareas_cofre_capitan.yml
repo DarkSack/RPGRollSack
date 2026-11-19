@@ -1,0 +1,47 @@
+# Tesoro de playa: el cofre de la flota del Capitán. Sale de ahogados,
+# del Capitán Ahogado, de la segunda misión, de la caja y de la Cartógrafa.
+id: mareas_cofre_capitan
+display-name: "&6Cofre del Capitán"
+
+map:
+  material: PAPER
+  model: "mareas:mapa/mapa_del_capitan"
+  name: "&6Mapa del Capitán"
+  lore:
+    - "&7Una X junto a una calavera dibujada."
+    - "&7Alguien escribió: «no cavar con marea alta»."
+    - "&8Clic derecho para leerlo."
+
+placement:
+  worlds: []
+  biomes: [beach, snowy_beach, stony_shore]
+  min-distance: 150
+  max-distance: 600
+  depth: 3
+
+chest:
+  model: "mareas:mareas_cofre_capitan/default"
+  scale: 1.0
+  rows: 3
+  title: "&8Cofre del Capitán"
+  guardians:
+    - {type: COMMAND, command: "mobadmin spawn mareas_ahogado {player}"}
+    - {type: COMMAND, command: "mobadmin spawn mareas_ahogado {player}"}
+    - {type: SOUND, sound: block.bell.use, volume: 1.0, pitch: 0.5}
+    - {type: MESSAGE, text: "&7Una campana suena bajo la arena. Algo viene a recuperar lo suyo."}
+
+loot:
+  rolls: 4-7
+  entries:
+    - {item: mareas_doblon_de_oro, amount: 3-8, weight: 12}
+    - {item: GOLD_INGOT, amount: 3-9, weight: 10}
+    - {item: EMERALD, amount: 2-6, weight: 8}
+    - {item: mareas_ron_del_capitan, amount: 1-3, weight: 6}
+    - {item: mareas_perla_negra, amount: 1-2, weight: 4}
+    - {item: mareas_sable_del_corsario, weight: 2}
+    - {item: mareas_pistola_de_chispa, weight: 2}
+    - {item: DIAMOND, amount: 1-2, weight: 2}
+
+actions:
+  - {type: XP, amount: 80}
+  - {type: MONEY, amount: 200-450}

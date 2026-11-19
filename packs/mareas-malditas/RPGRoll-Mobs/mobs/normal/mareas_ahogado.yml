@@ -1,0 +1,87 @@
+# El relleno del pack: marineros que no llegaron a puerto. Salen en playas
+# y mar abierto, en grupo y de noche.
+# Modelo 3D: FreeMinecraftModels/models/mareas_ahogado.bbmodel. Sin FMM se ve el drowned.
+id: mareas_ahogado
+category: NORMAL
+display-name: "&3Marinero Ahogado"
+name-color: "#3E8E8A"
+level: 16
+rarity: common
+tags: [ "mareas_malditas", "no_muerto", "modelo3d" ]
+description: "Todavía lleva el pañuelo de su barco. Todavía busca la orilla."
+base-entity-type: DROWNED
+
+model:
+  scale: 1.0
+  model-engine-id: mareas_ahogado
+  equipment:
+
+stats:
+  health: 55
+  damage: 6
+  defense: 2
+  speed: 100
+  armor: 2
+  dodge: 3
+  accuracy: 85
+  critical_chance: 4
+  critical_damage: 25
+  knockback_resistance: 10
+
+resistances:
+  poison: 50
+
+ai:
+  goals: [ "ATTACK_PLAYERS" ]
+  aggro-range: 16
+  move-speed: 1.0
+
+skills:
+  - id: agarre_salobre
+    display-name: "Agarre Salobre"
+    trigger: ATTACK
+    cooldown: 10s
+    chance: 30
+    actions:
+      - type: ANIMATION
+        value: attack
+      - type: COMMAND
+        value: "minecraft:effect give {target} minecraft:slowness 3 0"
+      - type: PARTICLE
+        particle: SPLASH
+        count: "20"
+
+loot:
+  - type: ITEM
+    reference: mareas_coral_maldito
+    amount-min: 1
+    amount-max: 2
+    chance: 55
+    scope: PER_PLAYER
+  - type: ITEM
+    reference: mareas_galleta_marinera
+    amount-min: 1
+    amount-max: 2
+    chance: 20
+    scope: PER_PLAYER
+  - type: ITEM
+    reference: mareas_doblon_de_oro
+    amount-min: 1
+    amount-max: 1
+    chance: 8
+    scope: PER_PLAYER
+  - type: COMMAND
+    reference: "tesoro give {player} mareas_cofre_capitan"
+    chance: 1.5
+    scope: PER_PLAYER
+  - type: EXPERIENCE
+    amount-min: 12
+    amount-max: 18
+    chance: 100
+    scope: PER_PLAYER
+
+spawn-rules:
+  biomes: [BEACH, OCEAN, WARM_OCEAN, LUKEWARM_OCEAN, DEEP_OCEAN]
+  natural-spawn: true
+  spawn-weight: 1.0
+  chance: 8

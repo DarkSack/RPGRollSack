@@ -1,9 +1,9 @@
 name: RPGRoll-Machines
-version: 1.1.9
+version: 1.1.11
 main: com.sack.rpgroll.machines.MachinesPlugin
 api-version: "26.1.1"
 author: Sack
-description: Máquinas para RPGRoll — hornos, altos hornos y ahumadores mejorables, spawners con mejoras y canteras que excavan solas
+description: Máquinas para RPGRoll — hornos, altos hornos y ahumadores mejorables, spawners con mejoras, canteras que excavan solas, pescadoras, granjas y leñadoras
 depend: [RPGRoll-Lib]
 # GriefPrevention: las canteras solo trabajan dentro de un claim de su dueño.
 # RPGRoll-Items y RPGRoll-Crates: orden de carga (sus menas y lucky blocks ya escuchan al romper).
@@ -21,6 +21,15 @@ permissions:
     default: op
   rpgroll.machines.quarry.use:
     description: Colocar y usar canteras
+    default: true
+  rpgroll.machines.fisher.use:
+    description: Colocar y usar pescadoras
+    default: true
+  rpgroll.machines.farm.use:
+    description: Colocar y usar granjas
+    default: true
+  rpgroll.machines.lumber.use:
+    description: Colocar y usar leñadoras
     default: true
   rpgroll.machines.bypass:
     description: Abrir y mejorar las máquinas de otros jugadores e ignorar el tope de canteras

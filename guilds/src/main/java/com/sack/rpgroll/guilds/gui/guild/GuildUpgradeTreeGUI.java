@@ -1,5 +1,6 @@
 package com.sack.rpgroll.guilds.gui.guild;
 
+import com.sack.rpgroll.guilds.gui.GuildMenus;
 import com.sack.rpgroll.util.ComponentUtils;
 
 import com.sack.rpgroll.common.lang.LangManager;
@@ -21,6 +22,9 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 
 public class GuildUpgradeTreeGUI extends InventoryGUI {
 
+    /** Fondo dibujado (sackito:menus/gremio_mejoras): volver (26) va dibujado. */
+    public static final String BACKGROUND = "gremio_mejoras";
+
     private static final int SIZE = 27;
     private static final int BACK_SLOT = 26;
 
@@ -29,7 +33,7 @@ public class GuildUpgradeTreeGUI extends InventoryGUI {
     private final Runnable onBack;
 
     public GuildUpgradeTreeGUI(Player player, Guild guild, GuildManager guildManager, Runnable onBack) {
-        super(player, lang().component("guild.upgrade.title", "name", guild.name()), SIZE);
+        super(player, GuildMenus.skin().title(BACKGROUND, lang().component("guild.upgrade.title", "name", guild.name())), SIZE);
         this.guild = guild;
         this.guildManager = guildManager;
         this.onBack = onBack;
@@ -56,7 +60,7 @@ public class GuildUpgradeTreeGUI extends InventoryGUI {
         clear();
 
         for (int slot = 0; slot < SIZE; slot++) {
-            setItem(slot, ItemBuilder.createFiller());
+            setItem(slot, GuildMenus.filler());
         }
 
         GuildUpgradeBranch[] branches = GuildUpgradeBranch.values();
@@ -79,7 +83,7 @@ public class GuildUpgradeTreeGUI extends InventoryGUI {
                     .build());
         }
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang().raw("common.back")));
+        setItem(BACK_SLOT, GuildMenus.skin().button(ItemBuilder.createCancelButton(lang().raw("common.back"))));
     }
 
     @Override

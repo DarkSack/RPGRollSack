@@ -1,0 +1,36 @@
+# Un sello pintado en el suelo: al pisarlo, fuego verde.
+id: jade_sello_de_fuego
+display-name: "&2Sello de Fuego"
+description: "Un carácter rojo pintado en la losa. Significa «no»."
+icon: RED_GLAZED_TERRACOTTA
+
+trigger:
+  type: PRESSURE
+
+radius: 1.2
+conditions: []
+
+actions:
+  - type: EFFECT
+    params:
+      effect-id: jade_aliento_del_dragon
+  - type: FIRE
+    params:
+      ticks: "80"
+  - type: DAMAGE
+    params:
+      amount: "10"
+  - type: SOUND
+    params:
+      sound: ITEM_FIRECHARGE_USE
+      volume: "1.2"
+      pitch: "0.8"
+
+cooldown-millis: 5000
+charges: -1
+chain: []
+
+disguise:
+  mode: BLOCK_SWAP
+  visible-material: POLISHED_ANDESITE
+  revealed-material: RED_GLAZED_TERRACOTTA

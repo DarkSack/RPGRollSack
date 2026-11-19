@@ -12,10 +12,11 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
 /** /react &lt;emoji&gt; (reacciona al último mensaje visto) o /react &lt;id&gt; &lt;emoji&gt; (desde el ícono clickeable). */
-public class ReactCommand implements CommandExecutor {
+public class ReactCommand implements CommandExecutor, TabCompleter {
 
     private final ReactionManager reactionManager;
     private final LangManager lang;
@@ -70,4 +71,16 @@ public class ReactCommand implements CommandExecutor {
         return true;
     }
 
+    @Override
+    public java.util.List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
+        // La reacción va en el 1.er argumento, o en el 2.º si el 1.º es el id de un mensaje.
+        boolean afterId = args.length == 2 && args[0].matches("\\d+");
+        if (args.length == 1 || afterId) {
+            String token = args[args.length - 1];
+            return com.sack.rpgroll.util.TabCompleteUtil.filter(token, java.util.Arrays.stream(
+                    com.sack.rpgroll.chat.reaction.ReactionType.values())
+                    .map(t -> t.name().toLowerCase(java.util.Locale.ROOT)).toList());
+        }
+        return java.util.List.of();
+    }
 }

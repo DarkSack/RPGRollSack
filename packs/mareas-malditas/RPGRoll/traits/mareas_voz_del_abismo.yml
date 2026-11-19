@@ -1,0 +1,15 @@
+id: "mareas_voz_del_abismo"
+name: "&3Voz del Abismo"
+description: "Algo del fondo lo cuida mientras le resulte útil."
+required-level: 1
+effect:
+  health-bonus: 6
+  defense-bonus: 0.02
+  speed-bonus: -0.02
+translations:
+  en:
+    name: "&3Voice of the Abyss"
+    description: "Something from the deep looks after him while he is useful."
+  pt_BR:
+    name: "&3Voz do Abismo"
+    description: "Algo do fundo cuida dele enquanto for útil."

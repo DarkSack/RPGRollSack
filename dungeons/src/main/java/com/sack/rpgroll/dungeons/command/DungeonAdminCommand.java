@@ -409,13 +409,33 @@ public class DungeonAdminCommand implements CommandExecutor, TabCompleter {
         }
 
         if (sub.equals("structure")) {
-            return structureTabComplete(args);
+            return structureTabComplete(sender, args);
         }
 
         return List.of();
     }
 
-    private List<String> structureTabComplete(String[] args) {
+    /** structure paste <id> [mundo x y z] [rotacion]: coordenadas de donde mira quien escribe. */
+    private List<String> pasteTabComplete(CommandSender sender, String[] args) {
+        List<String> rotations = java.util.Arrays.stream(org.bukkit.block.structure.StructureRotation.values())
+                .map(r -> r.name().toLowerCase(Locale.ROOT)).toList();
+        if (args.length == 4) {
+            List<String> options = new java.util.ArrayList<>(Bukkit.getWorlds().stream().map(World::getName).toList());
+            options.addAll(rotations);
+            return TabCompleteUtil.filter(args[3], options);
+        }
+        if (args.length >= 5 && args.length <= 7 && Senders.asPlayer(sender) instanceof Player player) {
+            var block = player.getLocation().getBlock();
+            int[] xyz = { block.getX(), block.getY(), block.getZ() };
+            return TabCompleteUtil.filter(args[args.length - 1], List.of(String.valueOf(xyz[args.length - 5])));
+        }
+        if (args.length == 8) {
+            return TabCompleteUtil.filter(args[7], rotations);
+        }
+        return List.of();
+    }
+
+    private List<String> structureTabComplete(CommandSender sender, String[] args) {
 
         if (args.length == 2) {
             return TabCompleteUtil.filter(args[1], STRUCTURE_SUBCOMMANDS);
@@ -432,8 +452,8 @@ public class DungeonAdminCommand implements CommandExecutor, TabCompleter {
             return TabCompleteUtil.filter(args[2], availableSchematicNames());
         }
 
-        if (args.length == 4 && structureSub.equals("paste")) {
-            return TabCompleteUtil.worldNames(args[3]);
+        if (structureSub.equals("paste")) {
+            return pasteTabComplete(sender, args);
         }
 
         return List.of();

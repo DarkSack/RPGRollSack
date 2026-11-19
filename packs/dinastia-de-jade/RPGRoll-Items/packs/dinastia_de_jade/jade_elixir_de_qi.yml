@@ -1,0 +1,39 @@
+# Para pelear rápido: prisa y velocidad un minuto.
+id: jade_elixir_de_qi
+pack: dinastia_de_jade
+material: HONEY_BOTTLE
+item-model: "jade:consumible/elixir_de_qi"
+display-name: "&aElixir de Qi"
+lore:
+  - "&7Una calabaza de jade con algo que brilla dentro."
+  - "&7Prisa II y Velocidad I durante 60 s."
+  - "&8Bébelo para usarlo."
+rarity: RARE
+
+triggers:
+  CONSUME:
+    - type: COMMAND
+      value: "minecraft:effect give {player} minecraft:haste 60 1"
+    - type: COMMAND
+      value: "minecraft:effect give {player} minecraft:speed 60 0"
+    - type: PARTICLE
+      particle: HAPPY_VILLAGER
+      count: 15
+
+economy:
+  sell: 120
+  buy: 350
+
+translations:
+  en:
+    display-name: "&aQi Elixir"
+    lore:
+      - "&7A jade gourd with something glowing inside."
+      - "&7Haste II and Speed I for 60 s."
+      - "&8Drink it to use it."
+  pt_BR:
+    display-name: "&aElixir de Qi"
+    lore:
+      - "&7Uma cabaça de jade com algo brilhando dentro."
+      - "&7Pressa II e Velocidade I por 60 s."
+      - "&8Beba para usar."

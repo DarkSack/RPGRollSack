@@ -201,6 +201,18 @@ public class CraftingAdminCommand implements CommandExecutor, TabCompleter {
             return TabCompleteUtil.filter(args[1], VILLAGER_SUBCOMMANDS);
         }
 
+        if (args.length == 3 && args[0].equalsIgnoreCase("give")) {
+            return TabCompleteUtil.filter(args[2], ItemsBridge.itemIds());
+        }
+
+        // villager bind <id[,id...]>: sugiere sobre el último id de la lista.
+        if (args.length == 3 && args[0].equalsIgnoreCase("villager") && args[1].equalsIgnoreCase("bind")) {
+            int comma = args[2].lastIndexOf(',');
+            String prefix = args[2].substring(0, comma + 1);
+            return TabCompleteUtil.filter(args[2].substring(comma + 1), villagerTradeManager.getAll().stream()
+                    .map(t -> t.id()).toList()).stream().map(id -> prefix + id).toList();
+        }
+
         return List.of();
     }
 

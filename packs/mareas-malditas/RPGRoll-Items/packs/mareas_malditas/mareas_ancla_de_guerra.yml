@@ -1,0 +1,54 @@
+# Maza pesada: golpe lento que casi inmoviliza. La suelta el Capitán Ahogado.
+id: mareas_ancla_de_guerra
+pack: mareas_malditas
+material: MACE
+item-model: "mareas:arma/ancla_de_guerra"
+display-name: "&9Ancla de Guerra"
+lore:
+  - "&7Sostuvo un galeón en plena tormenta."
+  - "&7Ahora sostiene peleas."
+  - "&7Al golpear: el objetivo casi no se mueve."
+rarity: EPIC
+
+stats:
+  damage: 13
+  critical_damage: 40
+  attack_speed: 0.7
+
+requirements:
+  level: 28
+
+durability:
+  max: 900
+  repairable: true
+  degrade-per-use: 1
+
+triggers:
+  ENTITY_HIT:
+    - type: COMMAND
+      value: "minecraft:effect give {target_uuid} minecraft:slowness 1 3"
+    - type: PARTICLE
+      particle: SPLASH
+      count: 25
+    - type: SOUND
+      sound: BLOCK_ANVIL_LAND
+      volume: "0.6"
+      pitch: "0.7"
+
+economy:
+  sell: 1800
+  buy: 4500
+
+translations:
+  en:
+    display-name: "&9War Anchor"
+    lore:
+      - "&7It held a galleon through a storm."
+      - "&7Now it holds fights."
+      - "&7On hit: the target can barely move."
+  pt_BR:
+    display-name: "&9Âncora de Guerra"
+    lore:
+      - "&7Segurou um galeão em plena tempestade."
+      - "&7Agora segura brigas."
+      - "&7Ao golpear: o alvo quase não se move."

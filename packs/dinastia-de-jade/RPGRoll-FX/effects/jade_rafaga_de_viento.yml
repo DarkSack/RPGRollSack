@@ -1,0 +1,27 @@
+id: jade_rafaga_de_viento
+display-name: "&fRáfaga de Viento"
+description: "El rastro del Paso del Viento."
+
+steps:
+  - type: PARTICLE
+    delay: 0
+    particle: CLOUD
+    shape: CIRCLE
+    draw-ticks: 3
+    target: SELF
+    radius: 1.0
+    points: 24
+    count: 1
+    speed: 0.02
+  - type: PARTICLE
+    delay: 2
+    particle: END_ROD
+    shape: HELIX
+    draw-ticks: 6
+    target: SELF
+    radius: 0.8
+    height: 2.0
+    turns: 2
+    points: 30
+    count: 1
+    speed: 0

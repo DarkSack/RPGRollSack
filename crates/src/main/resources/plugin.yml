@@ -1,13 +1,18 @@
 name: RPGRoll-Crates
-version: 1.1.9
+version: 1.1.11
 main: com.sack.rpgroll.crates.CratesPlugin
 api-version: "26.1.1"
 author: Sack
 description: Crates con ruleta e integración con DecentHolograms para RPGRoll
 depend: [RPGRoll-Lib]
-softdepend: [RPGRoll, DecentHolograms, Vault]
+softdepend: [RPGRoll, DecentHolograms, Vault, RPGRoll-Items, RPGRoll-Mobs]
 
 permissions:
   rpgrollcrates.admin.*:
     description: Acceso completo a comandos de crates
+    default: op
+    children:
+      rpgrollcrates.treasure.admin: true
+  rpgrollcrates.treasure.admin:
+    description: Dar mapas del tesoro, listarlos y recargarlos (/tesoro)
     default: op

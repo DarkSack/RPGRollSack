@@ -1,0 +1,8 @@
+# GENERADO por sackito-network/infra/muebles/construir.py: no se edita a mano.
+id: rpgroll-mareas-muebles
+name: rpgroll-mareas-muebles
+version: '1.0'
+author: 'RPGRoll'
+namespace: mareas
+priority: 25
+description: 'Muebles de Mareas Malditas'

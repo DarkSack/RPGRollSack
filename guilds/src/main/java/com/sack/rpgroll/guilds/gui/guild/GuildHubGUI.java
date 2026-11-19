@@ -1,5 +1,6 @@
 package com.sack.rpgroll.guilds.gui.guild;
 
+import com.sack.rpgroll.guilds.gui.GuildMenus;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.guilds.GuildServices;
@@ -15,6 +16,9 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 
 /** Panel de navegación principal de una guild — botón por componente, igual patrón que el Dungeon Studio. */
 public class GuildHubGUI extends InventoryGUI {
+
+    /** Fondo dibujado (sackito:menus/gremio): cerrar (44) va dibujado; los botones del gremio llevan hueco. */
+    public static final String BACKGROUND = "gremio";
 
     private static final int SIZE = 45;
 
@@ -34,7 +38,7 @@ public class GuildHubGUI extends InventoryGUI {
     private final GuildServices services;
 
     public GuildHubGUI(Player player, Guild guild, GuildServices services) {
-        super(player, ComponentUtils.parse(guild.name()), SIZE);
+        super(player, GuildMenus.skin().title(BACKGROUND, ComponentUtils.parse(guild.name())), SIZE);
         this.guild = guild;
         this.services = services;
     }
@@ -49,7 +53,7 @@ public class GuildHubGUI extends InventoryGUI {
         clear();
 
         for (int slot = 0; slot < SIZE; slot++) {
-            setItem(slot, ItemBuilder.createFiller());
+            setItem(slot, GuildMenus.filler());
         }
 
         setItem(4, new ItemBuilder(guild.icon())
@@ -78,7 +82,7 @@ public class GuildHubGUI extends InventoryGUI {
                 .setName(ComponentUtils.parseWithDefault(lang().raw("guild.hub.button.disband_leave"), NamedTextColor.RED))
                 .build());
 
-        setItem(CLOSE_SLOT, ItemBuilder.createCancelButton(lang().raw("common.close")));
+        setItem(CLOSE_SLOT, GuildMenus.skin().button(ItemBuilder.createCancelButton(lang().raw("common.close"))));
     }
 
     private org.bukkit.inventory.ItemStack button(Material material, String name, NamedTextColor color) {

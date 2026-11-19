@@ -1,0 +1,46 @@
+# Antes de un jefe: fuerza y resistencia un rato. Se gasta al usarlo.
+id: jade_incienso_de_concentracion
+pack: dinastia_de_jade
+material: PAPER
+item-model: "jade:consumible/incienso_de_concentracion"
+display-name: "&6Incienso de Concentración"
+lore:
+  - "&7Tres varillas y un quemador de bronce."
+  - "&7Fuerza I y Resistencia I durante 45 s."
+  - "&8Clic derecho: enciéndelo (se gasta)."
+rarity: RARE
+
+abilities:
+  - id: encender_incienso
+    display-name: "&6Encender Incienso"
+    passive: false
+    trigger: RIGHT_CLICK
+    cooldown: 30s
+    actions:
+      - type: COMMAND
+        value: "minecraft:effect give {player} minecraft:strength 45 0"
+      - type: COMMAND
+        value: "minecraft:effect give {player} minecraft:resistance 45 0"
+      - type: COMMAND
+        value: "minecraft:clear {player} minecraft:paper[minecraft:item_model=\"jade:consumible/incienso_de_concentracion\"] 1"
+      - type: PARTICLE
+        particle: CAMPFIRE_COSY_SMOKE
+        count: 6
+
+economy:
+  sell: 110
+  buy: 320
+
+translations:
+  en:
+    display-name: "&6Focus Incense"
+    lore:
+      - "&7Three sticks and a bronze burner."
+      - "&7Strength I and Resistance I for 45 s."
+      - "&8Right click: light it (consumed)."
+  pt_BR:
+    display-name: "&6Incenso de Concentração"
+    lore:
+      - "&7Três varetas e um queimador de bronze."
+      - "&7Força I e Resistência I por 45 s."
+      - "&8Clique direito: acenda (é gasto)."

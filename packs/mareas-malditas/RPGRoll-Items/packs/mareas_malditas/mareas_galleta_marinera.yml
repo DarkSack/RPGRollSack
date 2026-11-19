@@ -1,0 +1,31 @@
+# Comida de viaje: barata, dura y suficiente.
+id: mareas_galleta_marinera
+pack: mareas_malditas
+material: COOKIE
+item-model: "mareas:consumible/galleta_marinera"
+display-name: "&eGalleta Marinera"
+lore:
+  - "&7Dura tanto que se puede clavar."
+  - "&7Cura 4 al comerla."
+rarity: COMMON
+
+triggers:
+  CONSUME:
+    - type: HEAL
+      amount: "4"
+
+economy:
+  sell: 6
+  buy: 20
+
+translations:
+  en:
+    display-name: "&eShip's Biscuit"
+    lore:
+      - "&7So hard you could hammer it in."
+      - "&7Heals 4 when eaten."
+  pt_BR:
+    display-name: "&eBiscoito de Marinheiro"
+    lore:
+      - "&7Tão duro que dá para pregar."
+      - "&7Cura 4 ao comer."

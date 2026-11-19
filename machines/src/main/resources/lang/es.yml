@@ -132,12 +132,104 @@ quarry:
   upgraded: "&a✔ {upgrade} subida a {level}."
   unlocked: "&a✔ {upgrade} comprado."
 
+area:
+  "yes": "sí"
+  "no": "no"
+  item_level: "&7{upgrade}: &f{level}"
+  hub_upgrades: "&aMejoras"
+  hub_output: "&6Salida al cofre"
+  click_open: "&e▶ Clic para abrir"
+  click_toggle: "&e▶ Clic para cambiar"
+  toggle_on: "&aEncendida"
+  toggle_off: "&7Apagada"
+  back: "&c◀ Volver"
+  level: "&7Nivel &f{level}&7/&f{max}"
+  upgrade_title: "&e{upgrade}"
+  tier_name: "&e{upgrade} {level}"
+  tier_owned: "&a✔ Ya la tienes"
+  tier_locked: "&7Compra antes el nivel anterior"
+  status_owner: "&7Dueño: &f{owner}"
+  status_state: "&7Estado: {state}"
+  status_area: "&7Área: &f{side}×{side}"
+  status_buffer: "&7Esperando sitio en el cofre: &f{count} ítems"
+  state:
+    working: "&atrabajando"
+    idle: "&7sin nada que hacer"
+    "off": "&7apagada"
+    no_owner: "&eesperando a su dueño"
+    no_chest: "&cle falta un cofre al lado"
+    no_claim: "&csu área ya no está dentro de tu claim"
+    full: "&cel cofre está lleno"
+    waiting_chunk: "&eesperando a que carguen los chunks"
+    no_water: "&cle falta agua alrededor"
+  limit: "&cYa tienes {max} de tipo {machine}, el máximo."
+  need_claim: "&cEl área ({side}×{side}) tiene que estar entera dentro de un claim tuyo."
+  world_disabled: "&cEn este mundo no funciona esta máquina."
+  not_owner: "&cEsta máquina es de {owner}."
+  upgraded: "&a✔ {upgrade} subida a {level}."
+  fisher:
+    name: "Pescadora"
+    item_name: "&bPescadora"
+    item_lore: "&7Ponla junto al agua con un cofre al lado: pesca sola."
+    menu_title: "Pescadora"
+    upgrades_title: "Pescadora: mejoras"
+    hub_upgrades_lore: "&7Velocidad, suerte y cañas."
+    gauge: "&bSedal"
+    placed: "&a✔ Pescadora puesta. Ponle un cofre al lado."
+    need_water: "&cNecesita agua alrededor: un estanque de al menos 5×5 a su altura o justo debajo."
+    status_water: "&7Necesita &f{min} &7bloques de agua alrededor."
+    upgrade:
+      speed: "Velocidad"
+      luck: "Suerte"
+      rods: "Cañas"
+    value:
+      speed: "&f  {value} capturas/s"
+      luck: "&f  Suerte del mar {value}"
+      rods: "&f  {value} capturas por tirada"
+  farm:
+    name: "Granja"
+    item_name: "&aGranja"
+    item_lore: "&7Ponla entre tus cultivos con un cofre al lado: cosecha y replanta."
+    menu_title: "Granja"
+    upgrades_title: "Granja: mejoras"
+    hub_upgrades_lore: "&7Velocidad, área y abono."
+    gauge: "&aParcela"
+    placed: "&a✔ Granja puesta: cuida {side}×{side} bloques a su altura. Ponle un cofre al lado."
+    status_crops: "&7Maduros en la última vuelta: &f{ripe}&7/&f{crops}"
+    upgrade:
+      speed: "Velocidad"
+      area: "Área"
+      fertilizer: "Abono"
+    value:
+      speed: "&f  {value} cosechas/s"
+      area: "&f  {value}×{value} bloques"
+      fertilizer: "&f  {value} veces por segundo"
+  lumber:
+    name: "Leñadora"
+    item_name: "&6Leñadora"
+    item_lore: "&7Ponla en tu bosque con un cofre al lado: tala y replanta."
+    menu_title: "Leñadora"
+    upgrades_title: "Leñadora: mejoras"
+    hub_upgrades_lore: "&7Velocidad, área y hojas."
+    gauge: "&6Tronco"
+    placed: "&a✔ Leñadora puesta: tala {side}×{side} bloques alrededor. Ponle un cofre al lado."
+    status_next: "&7Próximo árbol: &f{progress}%"
+    upgrade:
+      speed: "Velocidad"
+      area: "Área"
+      leaves: "Hojas"
+    value:
+      speed: "&f  {value} árboles/s"
+      area: "&f  {value}×{value} bloques"
+      leaves: "&f  Rompe las hojas: {value}"
+
 command:
   usage: |-
     &6/machines
     &7 • &egive <jugador> furnace|blast_furnace|smoker <nivel> [cantidad]
     &7 • &egive <jugador> spawner <mob> [cantidad]
     &7 • &egive <jugador> quarry [cantidad]
+    &7 • &egive <jugador> fisher|farm|lumber [cantidad]
     &7 • &equarries [jugador]
     &7 • &einfo &7(el bloque que miras)
     &7 • &ereload
@@ -153,3 +245,4 @@ command:
   info_furnace: "&7Horno, nivel &f{tier}"
   info_spawner: "&7Spawner de &f{mob}&7: velocidad {speed}, cantidad {count}, alcance {range}, apilados {stack}"
   info_quarry: "&7Cantera de &f{owner}&7: {state} &7(Y {depth}, área {side})"
+  info_area: "&7{machine} de &f{owner}&7: {state}"

@@ -1,0 +1,57 @@
+# Diarias y venta de mapas. Los mapas se pagan en esmeraldas y diamantes
+# (el menú solo sabe cobrar materiales): primero se entrega, después se cobra.
+id: jade_menu_wei
+title: "&eMercader Wei"
+rows: 3
+
+items:
+  - slot: 10
+    material: TERRACOTTA
+    name: "&eDiaria: Barro y Arcilla"
+    lore:
+      - "&715 guerreros de terracota."
+    actions:
+      - type: COMMAND_AS_PLAYER
+        value: "quest start jade_diaria_barro_y_arcilla"
+      - type: CLOSE
+  - slot: 11
+    material: BAMBOO
+    name: "&eDiaria: Bambú para el Templo"
+    lore:
+      - "&748 cañas de bambú."
+    actions:
+      - type: COMMAND_AS_PLAYER
+        value: "quest start jade_diaria_bambu_para_el_templo"
+      - type: CLOSE
+  - slot: 12
+    material: SWEET_BERRIES
+    name: "&eDiaria: Zorros Inquietos"
+    lore:
+      - "&78 zorros espectrales. Desde nivel 44."
+    actions:
+      - type: COMMAND_AS_PLAYER
+        value: "quest start jade_diaria_zorros_inquietos"
+      - type: CLOSE
+  - slot: 15
+    material: FILLED_MAP
+    name: "&cPergamino Lacado"
+    lore:
+      - "&7Lleva a un Arca Lacada enterrada"
+      - "&7entre cerezos o bambú."
+      - "&7Precio: &a16 esmeraldas"
+    actions:
+      - type: CONDITIONAL
+        value: "HAS_ITEM:EMERALD,16;COMMAND:tesoro give {player} jade_arca_lacada;MESSAGE:Necesitas 16 esmeraldas."
+      - type: CONDITIONAL
+        value: "HAS_ITEM:EMERALD,16;TAKE_ITEM:EMERALD,16"
+  - slot: 16
+    material: FILLED_MAP
+    name: "&2Pergamino del Dragón"
+    lore:
+      - "&7Lleva a un Relicario del Dragón en los picos."
+      - "&7Precio: &b10 diamantes"
+    actions:
+      - type: CONDITIONAL
+        value: "HAS_ITEM:DIAMOND,10;COMMAND:tesoro give {player} jade_relicario_del_dragon;MESSAGE:Necesitas 10 diamantes."
+      - type: CONDITIONAL
+        value: "HAS_ITEM:DIAMOND,10;TAKE_ITEM:DIAMOND,10"

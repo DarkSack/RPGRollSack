@@ -31,6 +31,9 @@ import java.util.List;
  */
 public class AuctionHouseGUI extends InventoryGUI {
 
+    /** Fondo dibujado (sackito:menus/subastas): cerrar (52) va dibujado; la barra de abajo lleva huecos. */
+    public static final String BACKGROUND = "subastas";
+
     /** Lo que el jugador eligió en el buscador; sobrevive a abrir otras ventanas y volver. */
     public static final class View {
         AuctionCategory category = AuctionCategory.ALL;
@@ -63,7 +66,7 @@ public class AuctionHouseGUI extends InventoryGUI {
     private List<AuctionListing> results = List.of();
 
     public AuctionHouseGUI(Player player, AuctionService service, ChatPromptManager prompts, View view) {
-        super(player, ComponentUtils.parseWithDefault(service.lang().raw("auction_house.title"), NamedTextColor.GOLD), 54);
+        super(player, EconomyMenus.skin().title(BACKGROUND, ComponentUtils.parseWithDefault(service.lang().raw("auction_house.title"), NamedTextColor.GOLD)), 54);
         this.service = service;
         this.prompts = prompts;
         this.lang = service.lang();
@@ -90,7 +93,7 @@ public class AuctionHouseGUI extends InventoryGUI {
         }
 
         for (int slot = PAGE_SIZE; slot < 54; slot++) {
-            setItem(slot, ItemBuilder.createFiller());
+            setItem(slot, EconomyMenus.filler());
         }
 
         if (results.isEmpty()) {
@@ -139,7 +142,7 @@ public class AuctionHouseGUI extends InventoryGUI {
                 .setLore(lang.component("auction_house.gui.collect_count", "count", collectible))
                 .build());
 
-        setItem(CLOSE, ItemBuilder.createCancelButton(lang.raw("common.close")));
+        setItem(CLOSE, EconomyMenus.skin().button(ItemBuilder.createCancelButton(lang.raw("common.close"))));
     }
 
     private ItemStack display(AuctionListing listing) {

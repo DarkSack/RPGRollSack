@@ -1,0 +1,264 @@
+{
+ "format_version": 2,
+ "items": {
+  "minecraft:diamond_sword": [
+   {
+    "type": "definition",
+    "model": "jade:arma/dao_del_tigre",
+    "bedrock_identifier": "jade:arma_dao_del_tigre",
+    "display_name": "Dao del Tigre",
+    "bedrock_options": {
+     "icon": "jade_arma_dao_del_tigre",
+     "allow_offhand": true,
+     "display_handheld": true
+    }
+   },
+   {
+    "type": "definition",
+    "model": "jade:arma/lanza_media_luna",
+    "bedrock_identifier": "jade:arma_lanza_media_luna",
+    "display_name": "Lanza de Media Luna",
+    "bedrock_options": {
+     "icon": "jade_arma_lanza_media_luna",
+     "allow_offhand": true,
+     "display_handheld": true
+    }
+   }
+  ],
+  "minecraft:iron_sword": [
+   {
+    "type": "definition",
+    "model": "jade:arma/abanico_de_guerra",
+    "bedrock_identifier": "jade:arma_abanico_de_guerra",
+    "display_name": "Abanico de Guerra",
+    "bedrock_options": {
+     "icon": "jade_arma_abanico_de_guerra",
+     "allow_offhand": true,
+     "display_handheld": true
+    }
+   },
+   {
+    "type": "definition",
+    "model": "jade:arma/guantes_de_jade",
+    "bedrock_identifier": "jade:arma_guantes_de_jade",
+    "display_name": "Guantes de Jade",
+    "bedrock_options": {
+     "icon": "jade_arma_guantes_de_jade",
+     "allow_offhand": true,
+     "display_handheld": true
+    }
+   }
+  ],
+  "minecraft:carrot_on_a_stick": [
+   {
+    "type": "definition",
+    "model": "jade:arma/arco_del_loto",
+    "bedrock_identifier": "jade:arma_arco_del_loto",
+    "display_name": "Arco del Loto",
+    "bedrock_options": {
+     "icon": "jade_arma_arco_del_loto",
+     "allow_offhand": true,
+     "display_handheld": true
+    }
+   },
+   {
+    "type": "definition",
+    "model": "jade:arma/shuriken_estelar",
+    "bedrock_identifier": "jade:arma_shuriken_estelar",
+    "display_name": "Shuriken Estelar",
+    "bedrock_options": {
+     "icon": "jade_arma_shuriken_estelar",
+     "allow_offhand": true,
+     "display_handheld": true
+    }
+   }
+  ],
+  "minecraft:netherite_helmet": [
+   {
+    "type": "definition",
+    "model": "jade:armadura/guardian_yelmo",
+    "bedrock_identifier": "jade:armadura_guardian_yelmo",
+    "display_name": "Yelmo del Guardián Imperial",
+    "bedrock_options": {
+     "icon": "jade_armadura_guardian_yelmo",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:netherite_chestplate": [
+   {
+    "type": "definition",
+    "model": "jade:armadura/guardian_peto",
+    "bedrock_identifier": "jade:armadura_guardian_peto",
+    "display_name": "Peto del Guardián Imperial",
+    "bedrock_options": {
+     "icon": "jade_armadura_guardian_peto",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:netherite_leggings": [
+   {
+    "type": "definition",
+    "model": "jade:armadura/guardian_grebas",
+    "bedrock_identifier": "jade:armadura_guardian_grebas",
+    "display_name": "Grebas del Guardián Imperial",
+    "bedrock_options": {
+     "icon": "jade_armadura_guardian_grebas",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:netherite_boots": [
+   {
+    "type": "definition",
+    "model": "jade:armadura/guardian_botas",
+    "bedrock_identifier": "jade:armadura_guardian_botas",
+    "display_name": "Botas del Guardián Imperial",
+    "bedrock_options": {
+     "icon": "jade_armadura_guardian_botas",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:honey_bottle": [
+   {
+    "type": "definition",
+    "model": "jade:consumible/te_de_jazmin",
+    "bedrock_identifier": "jade:consumible_te_de_jazmin",
+    "display_name": "Té de Jazmín",
+    "bedrock_options": {
+     "icon": "jade_consumible_te_de_jazmin",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "jade:consumible/elixir_de_qi",
+    "bedrock_identifier": "jade:consumible_elixir_de_qi",
+    "display_name": "Elixir de Qi",
+    "bedrock_options": {
+     "icon": "jade_consumible_elixir_de_qi",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:bread": [
+   {
+    "type": "definition",
+    "model": "jade:consumible/bollo_de_loto",
+    "bedrock_identifier": "jade:consumible_bollo_de_loto",
+    "display_name": "Bollo de Loto",
+    "bedrock_options": {
+     "icon": "jade_consumible_bollo_de_loto",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:paper": [
+   {
+    "type": "definition",
+    "model": "jade:consumible/incienso_de_concentracion",
+    "bedrock_identifier": "jade:consumible_incienso_de_concentracion",
+    "display_name": "Incienso de Concentración",
+    "bedrock_options": {
+     "icon": "jade_consumible_incienso_de_concentracion",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "jade:mapa/pergamino_lacado",
+    "bedrock_identifier": "jade:mapa_pergamino_lacado",
+    "display_name": "Pergamino Lacado",
+    "bedrock_options": {
+     "icon": "jade_mapa_pergamino_lacado",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "jade:mapa/pergamino_del_dragon",
+    "bedrock_identifier": "jade:mapa_pergamino_del_dragon",
+    "display_name": "Pergamino del Dragón",
+    "bedrock_options": {
+     "icon": "jade_mapa_pergamino_del_dragon",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "jade:proyectil/flecha_de_jade",
+    "bedrock_identifier": "jade:proyectil_flecha_de_jade",
+    "display_name": "Flecha de Jade",
+    "bedrock_options": {
+     "icon": "jade_proyectil_flecha_de_jade",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:emerald": [
+   {
+    "type": "definition",
+    "model": "jade:material/fragmento_de_jade",
+    "bedrock_identifier": "jade:material_fragmento_de_jade",
+    "display_name": "Fragmento de Jade",
+    "bedrock_options": {
+     "icon": "jade_material_fragmento_de_jade",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:string": [
+   {
+    "type": "definition",
+    "model": "jade:material/seda_imperial",
+    "bedrock_identifier": "jade:material_seda_imperial",
+    "display_name": "Seda Imperial",
+    "bedrock_options": {
+     "icon": "jade_material_seda_imperial",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:amethyst_shard": [
+   {
+    "type": "definition",
+    "model": "jade:material/escama_de_dragon",
+    "bedrock_identifier": "jade:material_escama_de_dragon",
+    "display_name": "Escama de Dragón",
+    "bedrock_options": {
+     "icon": "jade_material_escama_de_dragon",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:gold_nugget": [
+   {
+    "type": "definition",
+    "model": "jade:reliquia/medallon_del_dragon",
+    "bedrock_identifier": "jade:reliquia_medallon_del_dragon",
+    "display_name": "Medallón del Dragón",
+    "bedrock_options": {
+     "icon": "jade_reliquia_medallon_del_dragon",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ]
+ }
+}

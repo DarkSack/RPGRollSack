@@ -1,0 +1,8 @@
+# GENERADO por sackito-network/infra/muebles/construir.py: no se edita a mano.
+id: rpgroll-jade-muebles
+name: rpgroll-jade-muebles
+version: '1.0'
+author: 'RPGRoll'
+namespace: jade
+priority: 25
+description: 'Muebles de Dinastía de Jade'

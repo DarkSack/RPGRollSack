@@ -104,7 +104,22 @@ public class EnchantAdminCommand implements CommandExecutor, TabCompleter {
             return TabCompleteUtil.filter(args[2], enchantmentIds());
         }
 
+        // El nivel: de 1 al máximo del encantamiento elegido.
+        if (args.length == 3 && "apply".equalsIgnoreCase(args[0])) {
+            return TabCompleteUtil.filter(args[2], levels(args[1]));
+        }
+
+        if (args.length == 4 && "give".equalsIgnoreCase(args[0])) {
+            return TabCompleteUtil.filter(args[3], levels(args[2]));
+        }
+
         return List.of();
+    }
+
+    private List<String> levels(String enchantmentId) {
+        return manager.get(enchantmentId)
+                .map(e -> java.util.stream.IntStream.rangeClosed(1, e.maxLevel()).mapToObj(String::valueOf).toList())
+                .orElse(List.of());
     }
 
     private List<String> enchantmentIds() {

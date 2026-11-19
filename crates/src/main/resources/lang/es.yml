@@ -116,3 +116,35 @@ lucky:
   bad: "&c&l¡Mala suerte!"
   money: "&a+{amount} &7de dinero."
   announce: "&6{player}&e abrió {block}&e: {outcome}"
+
+treasure:
+  usage: |-
+    &cUso: /tesoro
+    &7 • &egive <jugador> <id> [cantidad]
+    &7 • &dlist
+    &7 • &6reload
+  not_found: "&cNo existe un tesoro con id: {id}"
+  given: "&a✔ {amount} × mapa de {treasure}&a entregado(s) a {player}."
+  list_empty: "&7No hay tesoros definidos."
+  list_header: "&6Tesoros:"
+  list_entry: "&7 • &e{id} &8— {name} &8({min}-{max} bloques)"
+  reloaded: "&a✔ Tesoros recargados: {count}."
+  reading: "&7Estudias el mapa..."
+  wrong_world: "&cEste mapa no sirve en este mundo."
+  no_spot: "&cEl mapa no encaja con nada de por aquí. Prueba a leerlo en otro sitio."
+  located: "&eEl mapa marca un lugar a &f{distance}&e bloques hacia el &f{direction}&e."
+  hint: "&6✦ &e{distance} bloques hacia el {direction}"
+  hint_here: "&6✦ &a¡Es aquí! Cava &f{depth}&a bloques en la X"
+  other_world: "&7El tesoro de este mapa está en otro mundo: &f{world}"
+  found: "&6✦ ¡Has desenterrado {treasure}&6!"
+  already_open: "&7Alguien ya está saqueando este cofre."
+  unknown: "&cEste mapa ya no lleva a ninguna parte."
+  dir:
+    n: norte
+    ne: noreste
+    e: este
+    se: sureste
+    s: sur
+    so: suroeste
+    o: oeste
+    "no": noroeste

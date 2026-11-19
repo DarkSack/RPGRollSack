@@ -1,5 +1,6 @@
 package com.sack.rpgroll.guilds.gui.guild;
 
+import com.sack.rpgroll.guilds.gui.GuildMenus;
 import com.sack.rpgroll.util.ComponentUtils;
 
 import com.sack.rpgroll.guilds.gui.PaginatedGUI;
@@ -21,6 +22,9 @@ import java.util.List;
 
 public class GuildDiplomacyGUI extends PaginatedGUI {
 
+    /** Fondo dibujado (sackito:menus/gremio_diplomacia): volver (53) va dibujado; las flechas llevan hueco. */
+    public static final String BACKGROUND = "gremio_diplomacia";
+
     private static final int SIZE = 54;
     private static final int CONTENT_SLOTS = 45;
     private static final int BACK_SLOT = 53;
@@ -33,7 +37,7 @@ public class GuildDiplomacyGUI extends PaginatedGUI {
 
     public GuildDiplomacyGUI(Player player, Guild guild, GuildManager guildManager,
             GuildDiplomacyManager diplomacyManager, Runnable onBack) {
-        super(player, GuildsAPI.getLangManager().component("guild.diplomacy.title", "name", guild.name()), SIZE,
+        super(player, GuildMenus.skin().title(BACKGROUND, GuildsAPI.getLangManager().component("guild.diplomacy.title", "name", guild.name())), SIZE,
                 CONTENT_SLOTS);
         this.guild = guild;
         this.guildManager = guildManager;
@@ -77,14 +81,14 @@ public class GuildDiplomacyGUI extends PaginatedGUI {
     @Override
     protected void renderExtras() {
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang().raw("common.back")));
+        setItem(BACK_SLOT, GuildMenus.skin().button(ItemBuilder.createCancelButton(lang().raw("common.back"))));
 
         setItem(45, hasPreviousPage()
                 ? new ItemBuilder(Material.ARROW).setName(ComponentUtils.parseWithDefault(lang().raw("common.previous_page"), NamedTextColor.YELLOW)).build()
-                : ItemBuilder.createFiller());
+                : GuildMenus.filler());
         setItem(53 - 1, hasNextPage()
                 ? new ItemBuilder(Material.ARROW).setName(ComponentUtils.parseWithDefault(lang().raw("common.next_page"), NamedTextColor.YELLOW)).build()
-                : ItemBuilder.createFiller());
+                : GuildMenus.filler());
     }
 
     @Override

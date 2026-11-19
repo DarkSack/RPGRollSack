@@ -1,5 +1,6 @@
 package com.sack.rpgroll.guilds.gui.guild;
 
+import com.sack.rpgroll.guilds.gui.GuildMenus;
 import com.sack.rpgroll.util.ComponentUtils;
 
 import com.sack.rpgroll.gui.InventoryGUI;
@@ -16,6 +17,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
 public class GuildCustomizationGUI extends InventoryGUI {
+
+    /** Fondo dibujado (sackito:menus/gremio_personalizar): volver (26) va dibujado. */
+    public static final String BACKGROUND = "gremio_personalizar";
 
     private static final int SIZE = 27;
     private static final int COLOR_SLOT = 10;
@@ -35,7 +39,7 @@ public class GuildCustomizationGUI extends InventoryGUI {
 
     public GuildCustomizationGUI(Player player, Guild guild, GuildManager guildManager,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, chatPromptManager.lang().component("guild.customization.title", "name", guild.name()), SIZE);
+        super(player, GuildMenus.skin().title(BACKGROUND, chatPromptManager.lang().component("guild.customization.title", "name", guild.name())), SIZE);
         this.guild = guild;
         this.guildManager = guildManager;
         this.chatPromptManager = chatPromptManager;
@@ -52,7 +56,7 @@ public class GuildCustomizationGUI extends InventoryGUI {
         clear();
 
         for (int slot = 0; slot < SIZE; slot++) {
-            setItem(slot, ItemBuilder.createFiller());
+            setItem(slot, GuildMenus.filler());
         }
 
         setItem(NAME_SLOT, new ItemBuilder(Material.NAME_TAG)
@@ -81,7 +85,7 @@ public class GuildCustomizationGUI extends InventoryGUI {
                         ? lang().raw("guild.customization.no_description") : guild.description()))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang().raw("common.back")));
+        setItem(BACK_SLOT, GuildMenus.skin().button(ItemBuilder.createCancelButton(lang().raw("common.back"))));
     }
 
     @Override

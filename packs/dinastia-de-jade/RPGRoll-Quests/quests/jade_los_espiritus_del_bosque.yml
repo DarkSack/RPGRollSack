@@ -1,0 +1,38 @@
+# Historia 2 de 5. La primera recompensa es un mapa del tesoro.
+id: jade_los_espiritus_del_bosque
+display-name: "&bLos Espíritus del Bosque"
+category: MAIN_STORY
+difficulty: NORMAL
+repeatable: false
+
+requirements:
+  level: 43
+  completed:
+    - jade_el_ejercito_de_barro
+
+stages:
+  - id: el_monje
+    objectives:
+      - type: TALK_TO_NPC
+        npc: jade_monje_bao
+        amount: 1
+        description: "Habla con el Monje Bao"
+  - id: zorros
+    dialog:
+      - npc: "Los zorros espectrales guardaban el segundo sello. Ahora solo guardan rencor. Cálmalos."
+    objectives:
+      - type: KILL_ENTITY
+        entity: SILVERFISH
+        amount: 8
+        description: "Calma a 8 zorros espectrales entre los cerezos"
+    on-complete:
+      - type: MESSAGE
+        value: "&aBao: &7Toma este pergamino. Lo dibujó el último guardián del primer sello."
+
+rewards:
+  money: 650
+  experience: 1500
+  commands:
+    - "tesoro give {player} jade_arca_lacada"
+  quests:
+    - jade_las_grullas_de_tinta

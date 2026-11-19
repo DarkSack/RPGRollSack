@@ -1,0 +1,77 @@
+# Bicho de playa: lento, duro de caparazón y con pinzas que duelen.
+# Modelo 3D: FreeMinecraftModels/models/mareas_cangrejo.bbmodel. Sin FMM se ve una araña.
+id: mareas_cangrejo
+category: NORMAL
+display-name: "&cCangrejo de Arrecife"
+name-color: "#D9534F"
+level: 15
+rarity: common
+tags: [ "mareas_malditas", "bestia", "modelo3d" ]
+description: "El coral maldito le creció en el caparazón y ahora defiende la playa como suya."
+base-entity-type: SPIDER
+
+model:
+  scale: 1.0
+  model-engine-id: mareas_cangrejo
+  equipment:
+
+stats:
+  health: 45
+  damage: 7
+  defense: 6
+  speed: 85
+  armor: 6
+  dodge: 0
+  accuracy: 80
+  critical_chance: 6
+  critical_damage: 30
+  knockback_resistance: 40
+
+resistances:
+  physical: 15
+
+ai:
+  goals: [ "ATTACK_PLAYERS" ]
+  aggro-range: 10
+  move-speed: 0.85
+
+skills:
+  - id: pinza_de_coral
+    display-name: "Pinza de Coral"
+    trigger: ATTACK
+    cooldown: 8s
+    chance: 35
+    actions:
+      - type: ANIMATION
+        value: attack
+      - type: DAMAGE
+        amount: "4"
+      - type: SOUND
+        sound: ENTITY_TURTLE_HURT
+        volume: "1.0"
+        pitch: "1.4"
+
+loot:
+  - type: ITEM
+    reference: mareas_coral_maldito
+    amount-min: 1
+    amount-max: 3
+    chance: 70
+    scope: PER_PLAYER
+  - type: ITEM
+    reference: COD
+    amount-min: 1
+    amount-max: 2
+    chance: 30
+    scope: PER_PLAYER
+  - type: EXPERIENCE
+    amount-min: 10
+    amount-max: 15
+    chance: 100
+    scope: PER_PLAYER
+
+spawn-rules:
+  biomes: [BEACH, STONY_SHORE, MANGROVE_SWAMP]
+  natural-spawn: true
+  spawn-weight: 1.0
+  chance: 10

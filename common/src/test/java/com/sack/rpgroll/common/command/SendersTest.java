@@ -13,6 +13,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.util.Map;
+
 class SendersTest {
 
     @Test
@@ -54,5 +56,43 @@ class SendersTest {
     @Test
     void anUnknownSenderKindIsNotAPlayer() {
         assertNull(Senders.asPlayer(mock(CommandSender.class)));
+    }
+
+    // /magicadmin givecatalyst <id> [jugador]: con nombre, recibe ese jugador.
+    @Test
+    void aNamedRecipientWinsOverTheSender() {
+        Player admin = mock(Player.class);
+        Player named = mock(Player.class);
+
+        assertSame(named, Senders.recipient(admin, new String[] { "givecatalyst", "x", "Ana" }, 2,
+                Map.of("Ana", named)::get));
+    }
+
+    // Desde la consola (recompensas, menús, cajas) el nombre es la única forma.
+    @Test
+    void theConsoleCanNameARecipient() {
+        Player named = mock(Player.class);
+
+        assertSame(named, Senders.recipient(mock(ConsoleCommandSender.class),
+                new String[] { "givecatalyst", "x", "Ana" }, 2, Map.of("Ana", named)::get));
+    }
+
+    @Test
+    void withoutANameTheSenderReceives() {
+        Player admin = mock(Player.class);
+
+        assertSame(admin, Senders.recipient(admin, new String[] { "givecatalyst", "x" }, 2, name -> null));
+    }
+
+    @Test
+    void anOfflineNameHasNoRecipient() {
+        assertNull(Senders.recipient(mock(Player.class), new String[] { "givecatalyst", "x", "Nadie" }, 2,
+                name -> null));
+    }
+
+    @Test
+    void theConsoleWithoutANameHasNoRecipient() {
+        assertNull(Senders.recipient(mock(ConsoleCommandSender.class), new String[] { "givecatalyst", "x" }, 2,
+                name -> null));
     }
 }

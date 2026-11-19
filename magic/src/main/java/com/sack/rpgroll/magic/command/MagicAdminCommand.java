@@ -13,6 +13,7 @@ import com.sack.rpgroll.magic.gui.MagicBrowserGUI;
 import com.sack.rpgroll.magic.item.MagicItemFactory;
 import com.sack.rpgroll.util.TabCompleteUtil;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -24,8 +25,8 @@ import java.util.List;
 /**
  * /magicadmin browser
  * /magicadmin reload
- * /magicadmin givecatalyst <id>
- * /magicadmin givegrimoire <id>
+ * /magicadmin givecatalyst <id> [jugador]
+ * /magicadmin givegrimoire <id> [jugador]
  */
 public class MagicAdminCommand implements CommandExecutor, TabCompleter {
 
@@ -108,13 +109,14 @@ public class MagicAdminCommand implements CommandExecutor, TabCompleter {
 
     private void handleGiveCatalyst(CommandSender sender, String[] args) {
 
-        if (!(Senders.asPlayer(sender) instanceof Player player)) {
-            lang.send(sender, "command.admin.players_only");
+        if (args.length < 2) {
+            lang.send(sender, "command.admin.usage_givecatalyst");
             return;
         }
 
-        if (args.length < 2) {
-            lang.send(sender, "command.admin.usage_givecatalyst");
+        Player player = Senders.recipient(sender, args, 2);
+        if (player == null) {
+            sendNoRecipient(sender, args);
             return;
         }
 
@@ -131,13 +133,14 @@ public class MagicAdminCommand implements CommandExecutor, TabCompleter {
 
     private void handleGiveGrimoire(CommandSender sender, String[] args) {
 
-        if (!(Senders.asPlayer(sender) instanceof Player player)) {
-            lang.send(sender, "command.admin.players_only");
+        if (args.length < 2) {
+            lang.send(sender, "command.admin.usage_givegrimoire");
             return;
         }
 
-        if (args.length < 2) {
-            lang.send(sender, "command.admin.usage_givegrimoire");
+        Player player = Senders.recipient(sender, args, 2);
+        if (player == null) {
+            sendNoRecipient(sender, args);
             return;
         }
 
@@ -150,6 +153,15 @@ public class MagicAdminCommand implements CommandExecutor, TabCompleter {
 
         player.getInventory().addItem(MagicItemFactory.createGrimoire(grimoireOpt.get(), lang));
         lang.send(sender, "command.admin.given");
+    }
+
+    /** Sin destinatario: o el nombre no está conectado, o la consola no dio ninguno. */
+    private void sendNoRecipient(CommandSender sender, String[] args) {
+        if (args.length > 2) {
+            lang.send(sender, "command.admin.player_not_found", "player", args[2]);
+        } else {
+            lang.send(sender, "command.admin.players_only");
+        }
     }
 
     @Override
@@ -167,6 +179,11 @@ public class MagicAdminCommand implements CommandExecutor, TabCompleter {
                         grimoireManager.getAll().stream().map(g -> g.id()).toList());
                 default -> List.of();
             };
+        }
+
+        if (args.length == 3 && ("givecatalyst".equalsIgnoreCase(args[0]) || "givegrimoire".equalsIgnoreCase(args[0]))) {
+            return TabCompleteUtil.filter(args[2],
+                    Bukkit.getOnlinePlayers().stream().map(Player::getName).toList());
         }
 
         return List.of();

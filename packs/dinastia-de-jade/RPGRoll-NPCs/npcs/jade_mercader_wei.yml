@@ -1,0 +1,18 @@
+# Diarias, mapas y tienda. Ubicación de ejemplo (ver LEEME.md).
+id: jade_mercader_wei
+display-name: "&eMercader Wei"
+pose: "STANDING"
+
+location:
+  world: world
+  x: 4.5
+  y: 64.0
+  z: 10.5
+  yaw: 180.0
+  pitch: 0.0
+
+actions:
+  - type: SOUND
+    value: "ENTITY_VILLAGER_TRADE,1.0,1.0"
+  - type: OPEN_GUI
+    value: "jade_menu_wei"

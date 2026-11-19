@@ -1,0 +1,39 @@
+# Historia 3 de 5. Presenta al mercader y a las grullas.
+id: jade_las_grullas_de_tinta
+display-name: "&fLas Grullas de Tinta"
+category: MAIN_STORY
+difficulty: HARD
+repeatable: false
+
+requirements:
+  level: 46
+  completed:
+    - jade_los_espiritus_del_bosque
+
+stages:
+  - id: grullas
+    dialog:
+      - npc: "Las grullas pintadas del pabellón se escaparon del biombo. Sin ellas, el tercer sello no se cierra."
+    objectives:
+      - type: KILL_ENTITY
+        entity: VEX
+        amount: 8
+        description: "Devuelve al papel a 8 grullas de tinta"
+  - id: el_mercader
+    objectives:
+      - type: TALK_TO_NPC
+        npc: jade_mercader_wei
+        amount: 1
+        description: "Lleva la tinta al Mercader Wei"
+    on-complete:
+      - type: MESSAGE
+        value: "&eWei: &7Con esta tinta se escribieron los sellos. Y con esta tinta, alguien los borró."
+
+rewards:
+  money: 800
+  experience: 1900
+  commands:
+    - "itemadmin give {player} jade_te_de_jazmin 4"
+    - "magicadmin givecatalyst jade_pergamino_del_qi {player}"
+  quests:
+    - jade_el_general_sin_sombra

@@ -1,0 +1,10 @@
+id: jade_perla_de_fuego
+display-name: "&6Perla de Fuego"
+description: "Munición para el Dragón de Bronce."
+icon: MAGMA_CREAM
+stack-size: 32
+
+impact:
+  type: DAMAGE
+  params:
+    amount: "12"

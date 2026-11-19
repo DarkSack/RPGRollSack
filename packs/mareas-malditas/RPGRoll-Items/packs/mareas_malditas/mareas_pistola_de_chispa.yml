@@ -1,0 +1,60 @@
+# El arma de entrada del pack: un tiro, mucho humo y a recargar. Sin
+# clase: cualquiera la usa; el Bucanero la aprovecha mejor por destreza.
+id: mareas_pistola_de_chispa
+pack: mareas_malditas
+material: CARROT_ON_A_STICK
+item-model: "mareas:arma/pistola_de_chispa"
+display-name: "&6Pistola de Chispa"
+lore:
+  - "&7Pedernal, pólvora mojada y fe."
+  - "&7Cuando dispara, se oye en toda la bahía."
+  - "&8Clic derecho: dispara."
+rarity: UNCOMMON
+
+stats:
+  critical_chance: 6
+
+requirements:
+  level: 15
+
+abilities:
+  - id: disparo_de_chispa
+    display-name: "&6Disparo de Chispa"
+    passive: false
+    trigger: RIGHT_CLICK
+    cooldown: 1200ms
+    actions:
+      - type: SHOOT
+        amount: "9"
+        range: "26"
+        speed: "1.8"
+        model: "mareas:proyectil/bala_de_plomo"
+        particle: SMOKE
+        particle2: DUST
+        color2: "#FFB347"
+        size2: "0.6"
+        density: "3"
+        muzzle-effect: mareas_fogonazo_de_polvora
+        hit-effect: mareas_impacto_de_plomo
+      - type: SOUND
+        sound: ENTITY_GENERIC_EXPLODE
+        volume: "0.5"
+        pitch: "1.8"
+
+economy:
+  sell: 220
+  buy: 600
+
+translations:
+  en:
+    display-name: "&6Flintlock Pistol"
+    lore:
+      - "&7Flint, damp powder and faith."
+      - "&7When it fires, the whole bay hears it."
+      - "&8Right click: fire."
+  pt_BR:
+    display-name: "&6Pistola de Pederneira"
+    lore:
+      - "&7Pederneira, pólvora úmida e fé."
+      - "&7Quando dispara, a baía inteira ouve."
+      - "&8Clique direito: dispara."

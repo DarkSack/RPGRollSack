@@ -1,0 +1,31 @@
+id: mareas_receta_garfio_de_abordaje
+display-name: "&eGarfio de Abordaje"
+icon: IRON_SWORD
+station-id: mareas_astillero
+processing-time-ticks: 120
+fuel-per-craft: 0
+xp-amount: 20
+fail-chance: 0.05
+quality-enabled: false
+
+result:
+  type: ITEM_ID
+  value: mareas_garfio_de_abordaje
+  amount: 1
+
+ingredients:
+  - type: MATERIAL
+    value: IRON_INGOT
+    amount: 6
+  - type: MATERIAL
+    value: LEAD
+    amount: 2
+  - type: ITEM_ID
+    value: mareas_coral_maldito
+    amount: 4
+
+conditions:
+  - type: LEVEL_MIN
+    min-value: 20
+  - type: CLASS
+    value: mareas_bucanero

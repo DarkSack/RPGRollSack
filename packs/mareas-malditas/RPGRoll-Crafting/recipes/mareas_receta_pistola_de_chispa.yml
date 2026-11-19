@@ -1,0 +1,32 @@
+id: mareas_receta_pistola_de_chispa
+display-name: "&6Pistola de Chispa"
+icon: CARROT_ON_A_STICK
+station-id: mareas_astillero
+processing-time-ticks: 100
+fuel-per-craft: 0
+xp-amount: 15
+fail-chance: 0.05
+quality-enabled: false
+
+result:
+  type: ITEM_ID
+  value: mareas_pistola_de_chispa
+  amount: 1
+
+ingredients:
+  - type: MATERIAL
+    value: IRON_INGOT
+    amount: 4
+  - type: MATERIAL
+    value: GUNPOWDER
+    amount: 4
+  - type: MATERIAL
+    value: FLINT
+    amount: 2
+  - type: ITEM_ID
+    value: mareas_coral_maldito
+    amount: 3
+
+conditions:
+  - type: LEVEL_MIN
+    min-value: 15

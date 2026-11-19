@@ -1,0 +1,25 @@
+id: mareas_receta_ron_del_capitan
+display-name: "&6Ron del Capitán"
+icon: HONEY_BOTTLE
+station-id: mareas_astillero
+processing-time-ticks: 80
+fuel-per-craft: 0
+xp-amount: 6
+fail-chance: 0
+quality-enabled: false
+
+result:
+  type: ITEM_ID
+  value: mareas_ron_del_capitan
+  amount: 2
+
+ingredients:
+  - type: MATERIAL
+    value: GLASS_BOTTLE
+    amount: 2
+  - type: MATERIAL
+    value: SUGAR_CANE
+    amount: 4
+  - type: ITEM_ID
+    value: mareas_doblon_de_oro
+    amount: 1

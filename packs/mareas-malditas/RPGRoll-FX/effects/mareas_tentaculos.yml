@@ -1,0 +1,29 @@
+id: mareas_tentaculos
+display-name: "&3Tentáculos"
+description: "Espirales de tinta que se cierran sobre el objetivo del Abrazo del Kraken."
+
+steps:
+  - type: PARTICLE
+    delay: 0
+    particle: SQUID_INK
+    shape: HELIX
+    draw-ticks: 10
+    target: LOCATION
+    radius: 1.2
+    height: 2.5
+    turns: 3
+    points: 90
+    count: 1
+    speed: 0
+  - type: PARTICLE
+    delay: 6
+    particle: GLOW_SQUID_INK
+    shape: HELIX
+    draw-ticks: 10
+    target: LOCATION
+    radius: 0.8
+    height: 2.5
+    turns: 3
+    points: 70
+    count: 1
+    speed: 0

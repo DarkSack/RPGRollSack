@@ -1,5 +1,6 @@
 package com.sack.rpgroll.guilds.gui.guild;
 
+import com.sack.rpgroll.guilds.gui.GuildMenus;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.gui.ChatPromptManager;
@@ -22,6 +23,9 @@ import java.util.UUID;
 
 public class GuildCalendarGUI extends InventoryGUI {
 
+    /** Fondo dibujado (sackito:menus/gremio_calendario): volver (44) va dibujado; añadir (40) lleva hueco. */
+    public static final String BACKGROUND = "gremio_calendario";
+
     private static final int SIZE = 45;
     private static final int ADD_SLOT = 40;
     private static final int BACK_SLOT = 44;
@@ -34,7 +38,7 @@ public class GuildCalendarGUI extends InventoryGUI {
 
     public GuildCalendarGUI(Player player, Guild guild, GuildManager guildManager,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, chatPromptManager.lang().component("guild.calendar.title", "name", guild.name()), SIZE);
+        super(player, GuildMenus.skin().title(BACKGROUND, chatPromptManager.lang().component("guild.calendar.title", "name", guild.name())), SIZE);
         this.guild = guild;
         this.guildManager = guildManager;
         this.chatPromptManager = chatPromptManager;
@@ -52,7 +56,7 @@ public class GuildCalendarGUI extends InventoryGUI {
         clear();
 
         for (int slot = 0; slot < SIZE; slot++) {
-            setItem(slot, ItemBuilder.createFiller());
+            setItem(slot, GuildMenus.filler());
         }
 
         SimpleDateFormat format = new SimpleDateFormat("dd/MM HH:mm");
@@ -74,7 +78,7 @@ public class GuildCalendarGUI extends InventoryGUI {
                 .setName(ComponentUtils.parseWithDefault(lang().raw("guild.calendar.button.add"), NamedTextColor.GREEN))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang().raw("common.back")));
+        setItem(BACK_SLOT, GuildMenus.skin().button(ItemBuilder.createCancelButton(lang().raw("common.back"))));
     }
 
     @Override

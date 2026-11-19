@@ -1,0 +1,23 @@
+# Torreta del pack: una cabeza de dragón de bronce que escupe fuego.
+id: jade_dragon_de_bronce
+display-name: "&6Dragón de Bronce"
+description: "Una gárgola del templo con la boca siempre caliente."
+
+radius: 11.0
+target-players: true
+target-hostile-mobs: false
+fire-interval-ticks: 50
+
+conditions: []
+
+impact:
+  type: PROJECTILE
+  params:
+    projectile-type: SMALL_FIREBALL
+    speed: "1.6"
+
+model:
+  base-block: POLISHED_DEEPSLATE
+  material: DRAGON_HEAD
+  hover-height: 1.1
+  spin-degrees-per-tick: 2.5

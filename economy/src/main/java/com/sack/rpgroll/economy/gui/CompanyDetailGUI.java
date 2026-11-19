@@ -25,6 +25,9 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 
 public class CompanyDetailGUI extends InventoryGUI {
 
+    /** Fondo dibujado (sackito:menus/empresa): volver (22) va dibujado; las acciones llevan hueco. */
+    public static final String BACKGROUND = "empresa";
+
     private static final int SIZE = 27;
 
     private static final int DEPOSIT_SLOT = 10;
@@ -47,7 +50,7 @@ public class CompanyDetailGUI extends InventoryGUI {
     public CompanyDetailGUI(Player player, Company company, CompanyManager companyManager,
             CompanyService companyService, BankManager bankManager, CurrencyManager currencyManager,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, chatPromptManager.lang().component("company.detail.title", "name", company.name()), SIZE);
+        super(player, EconomyMenus.skin().title(BACKGROUND, chatPromptManager.lang().component("company.detail.title", "name", company.name())), SIZE);
         this.company = company;
         this.companyManager = companyManager;
         this.companyService = companyService;
@@ -64,7 +67,7 @@ public class CompanyDetailGUI extends InventoryGUI {
         clear();
 
         for (int slot = 0; slot < SIZE; slot++) {
-            setItem(slot, ItemBuilder.createFiller());
+            setItem(slot, EconomyMenus.filler());
         }
 
         var currency = currencyManager.defaultCurrency();
@@ -95,7 +98,7 @@ public class CompanyDetailGUI extends InventoryGUI {
                 .setLore(lang.component("company.detail.owner_only_lore"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("common.back")));
+        setItem(BACK_SLOT, EconomyMenus.skin().button(ItemBuilder.createCancelButton(lang.raw("common.back"))));
     }
 
     @Override

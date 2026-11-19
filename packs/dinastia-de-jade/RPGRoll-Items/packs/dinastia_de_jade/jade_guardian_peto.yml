@@ -1,0 +1,39 @@
+id: jade_guardian_peto
+pack: dinastia_de_jade
+material: NETHERITE_CHESTPLATE
+item-model: "jade:armadura/guardian_peto"
+equipment-model: "jade:guardian"
+display-name: "&cPeto del Guardián Imperial"
+lore:
+  - "&7Láminas lacadas cosidas con seda roja."
+  - "&8Conjunto del Guardián Imperial."
+rarity: LEGENDARY
+
+stats:
+  defense: 13
+  health: 12
+
+requirements:
+  level: 55
+  class: jade_espadachin_del_loto
+
+durability:
+  max: 1800
+  repairable: true
+  degrade-per-use: 1
+
+economy:
+  sell: 3400
+  buy: 8500
+
+translations:
+  en:
+    display-name: "&cImperial Guardian Cuirass"
+    lore:
+      - "&7Lacquered plates sewn with red silk."
+      - "&8Imperial Guardian set."
+  pt_BR:
+    display-name: "&cPeitoral do Guardião Imperial"
+    lore:
+      - "&7Lâminas laqueadas costuradas com seda vermelha."
+      - "&8Conjunto do Guardião Imperial."

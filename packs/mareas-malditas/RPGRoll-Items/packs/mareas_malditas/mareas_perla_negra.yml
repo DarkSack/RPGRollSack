@@ -1,0 +1,26 @@
+# Material raro: sirenas y kraken. Lo piden las recetas del Astillero.
+id: mareas_perla_negra
+pack: mareas_malditas
+material: PRISMARINE_CRYSTALS
+item-model: "mareas:material/perla_negra"
+display-name: "&5Perla Negra"
+lore:
+  - "&7No refleja la luz: se la traga."
+  - "&8Material del Astillero."
+rarity: RARE
+
+economy:
+  sell: 150
+  buy: 450
+
+translations:
+  en:
+    display-name: "&5Black Pearl"
+    lore:
+      - "&7It doesn't reflect light: it swallows it."
+      - "&8Shipyard material."
+  pt_BR:
+    display-name: "&5Pérola Negra"
+    lore:
+      - "&7Não reflete a luz: engole."
+      - "&8Material do Estaleiro."

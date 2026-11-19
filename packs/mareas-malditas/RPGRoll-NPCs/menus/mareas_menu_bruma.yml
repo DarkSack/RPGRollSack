@@ -1,0 +1,31 @@
+id: mareas_menu_bruma
+title: "&3Contramaestre Bruma"
+rows: 3
+
+items:
+  - slot: 11
+    material: BELL
+    name: "&3La Campana Hundida"
+    lore:
+      - "&7Empieza la historia de Mareas Malditas."
+      - "&8Desde nivel 15."
+    actions:
+      - type: COMMAND_AS_PLAYER
+        value: "quest start mareas_la_campana_hundida"
+      - type: CLOSE
+  - slot: 13
+    material: WRITABLE_BOOK
+    name: "&fMis misiones"
+    lore:
+      - "&7Lo que tienes a medias."
+    actions:
+      - type: COMMAND_AS_PLAYER
+        value: "quest active"
+  - slot: 15
+    material: CHEST_MINECART
+    name: "&6Tienda del puerto"
+    lore:
+      - "&7Abre la sección Mareas Malditas de la tienda."
+    actions:
+      - type: COMMAND_AS_PLAYER
+        value: "tienda mareas_malditas"

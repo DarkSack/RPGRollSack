@@ -1,0 +1,24 @@
+# Diaria de la Cartógrafa: pesca. Cuenta el bacalao que entre al inventario.
+id: mareas_diaria_pesca_de_altura
+display-name: "&eDiaria: Pesca de Altura"
+category: DAILY
+difficulty: EASY
+repeatable: true
+cooldown: "1d"
+
+requirements:
+  level: 15
+
+stages:
+  - id: bacalao
+    objectives:
+      - type: COLLECT_ITEM
+        material: COD
+        amount: 12
+        description: "Consigue 12 bacalaos para la despensa del puerto"
+
+rewards:
+  money: 100
+  experience: 180
+  commands:
+    - "itemadmin give {player} mareas_galleta_marinera 6"

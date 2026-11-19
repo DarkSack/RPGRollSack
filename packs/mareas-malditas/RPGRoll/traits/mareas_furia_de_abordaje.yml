@@ -1,0 +1,15 @@
+id: "mareas_furia_de_abordaje"
+name: "&6Furia de Abordaje"
+description: "Salta a la cubierta enemiga antes de que tiendan la pasarela."
+required-level: 1
+effect:
+  speed-bonus: 0.03
+  defense-bonus: -0.02
+  health-bonus: 2
+translations:
+  en:
+    name: "&6Boarding Fury"
+    description: "Leaps onto the enemy deck before the gangplank is down."
+  pt_BR:
+    name: "&6Fúria de Abordagem"
+    description: "Salta no convés inimigo antes de baixarem a prancha."

@@ -1,0 +1,69 @@
+# Leñadora de RPGRoll-Machines: tala los árboles de un cuadrado centrado en ella (con la base a su
+# altura) y planta un brote de su tipo. Solo árboles naturales: los troncos con hojas que no puso
+# nadie. Lo talado va al cofre de al lado.
+
+enabled: true
+disabled-worlds: []
+
+# Bloque que se pone (sólido y que no sea un contenedor). Con el paquete de recursos de Sackito,
+# item-model y frame le ponen su modelo 3D; de fábrica se ve el bloque tal cual.
+block: FLETCHING_TABLE
+item-model: ""
+frame:
+  enabled: false
+  model: ""
+  scale: 1.002
+
+# Prefijo de los menús dibujados del paquete de recursos (por ejemplo "sackito:menus"). Vacío: menús
+# de siempre, con cristales y materiales vanilla.
+menu:
+  pack: ""
+
+# Cuántas puede tener cada jugador (-1 sin tope). Es aparte del de las canteras y de las otras máquinas.
+max-per-player: 2
+
+# Solo trabaja si su área está entera dentro de un claim de su dueño (GriefPrevention).
+require-claim: true
+
+performance:
+  # Acciones por tick entre todas las máquinas de este tipo.
+  actions-per-tick: 64
+  # Casillas del área que revisa cada máquina por tick.
+  scans-per-tick: 32
+
+# Tope de troncos por árbol, de hojas que rompe con la mejora de hojas y de altura sobre la máquina.
+max-logs: 128
+max-leaves: 256
+height: 32
+
+upgrades:
+  speed:
+    icon: SUGAR
+    levels:
+      - {value: 0.05}
+      - {value: 0.1, cost: {items: ["REDSTONE_BLOCK:8"]}}
+      - {value: 0.2, cost: {items: ["DIAMOND:8"]}}
+      - {value: 0.33, cost: {items: ["NETHERITE_INGOT:1"]}}
+  area:
+    icon: MAP
+    levels:
+      - {value: 5}
+      - {value: 9, cost: {items: ["IRON_BLOCK:8"]}}
+      - {value: 13, cost: {items: ["DIAMOND_BLOCK:4"]}}
+      - {value: 17, cost: {items: ["NETHERITE_INGOT:2"]}}
+  # Hojas: rompe también las hojas del árbol (brotes, manzanas y palos al cofre).
+  leaves:
+    icon: OAK_LEAVES
+    levels:
+      - {value: 0}
+      - {value: 1, cost: {items: ["SHEARS:4", "GOLD_BLOCK:4"]}}
+
+recipe:
+  enabled: true
+  shape: ["IAI", "RLR", "IOI"]
+  ingredients:
+    I: IRON_BLOCK
+    A: DIAMOND_AXE
+    R: REDSTONE_BLOCK
+    L: OAK_LOG
+    O: OBSERVER

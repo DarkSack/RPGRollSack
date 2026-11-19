@@ -1,0 +1,46 @@
+# Historia 5 de 5. Empieza sola al matar al General Sin Sombra. Al hablar
+# con el monje, el Dragón despierta junto al jugador. El Dragón es un blaze
+# por debajo: el objetivo final cuenta el primer blaze que caiga después.
+id: jade_el_despertar_del_dragon
+display-name: "&2&lEl Despertar del Dragón"
+category: MAIN_STORY
+difficulty: LEGENDARY
+repeatable: false
+
+requirements:
+  level: 55
+  completed:
+    - jade_el_general_sin_sombra
+
+stages:
+  - id: el_ultimo_sello
+    dialog:
+      - npc: "El General ha caído, pero el noveno sello ya no aguanta. Mejor que el dragón despierte frente a ti que frente a la aldea."
+      - player: "Rómpelo."
+    objectives:
+      - type: TALK_TO_NPC
+        npc: jade_monje_bao
+        amount: 1
+        description: "Pídele al Monje Bao que rompa el noveno sello"
+    on-complete:
+      - type: TITLE
+        title: "&2&lEL NOVENO SELLO SE ROMPE"
+        subtitle: "&7Prepárate"
+      - type: COMMAND
+        value: "mobadmin spawn jade_dragon {player}"
+  - id: el_dragon
+    objectives:
+      - type: KILL_ENTITY
+        entity: BLAZE
+        amount: 1
+        description: "Derrota al Dragón de Jade"
+    on-complete:
+      - type: MESSAGE
+        value: "&2&l¡El Dragón de Jade cae! &7El monte vuelve a respirar."
+
+rewards:
+  money: 3000
+  experience: 6000
+  commands:
+    - "itemadmin give {player} jade_medallon_del_dragon 1"
+    - "tesoro give {player} jade_relicario_del_dragon"

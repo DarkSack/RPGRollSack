@@ -1,0 +1,19 @@
+# Da la historia del pack. La ubicación es de ejemplo: muévela a tu aldea
+# (ver LEEME.md).
+id: jade_maestra_lian
+display-name: "&6Maestra Lian"
+pose: "STANDING"
+
+location:
+  world: world
+  x: 0.5
+  y: 64.0
+  z: 10.5
+  yaw: 180.0
+  pitch: 0.0
+
+actions:
+  - type: SOUND
+    value: "BLOCK_BAMBOO_WOOD_HIT,1.0,1.0"
+  - type: OPEN_GUI
+    value: "jade_menu_lian"

@@ -18,6 +18,9 @@ import java.util.List;
  */
 class WarpsGUI extends InventoryGUI {
 
+    /** Fondo dibujado (sackito:menus/warps): crear warp (49) lleva hueco. */
+    static final String BACKGROUND = "warps";
+
     private static final int SIZE = 54;
     private static final int CREATE_SLOT = 49;
 
@@ -27,7 +30,7 @@ class WarpsGUI extends InventoryGUI {
 
     WarpsGUI(Player player, Iterable<Warp> all, WarpCommand command, LangManager lang) {
 
-        super(player, lang.component("warp.menu_title"), SIZE);
+        super(player, com.sack.rpgroll.extras.ExtrasMenus.skin().title(BACKGROUND, lang.component("warp.menu_title")), SIZE);
 
         this.command = command;
         this.lang = lang;

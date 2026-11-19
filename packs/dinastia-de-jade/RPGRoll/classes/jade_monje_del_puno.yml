@@ -1,0 +1,43 @@
+# Clase de combate cuerpo a cuerpo sin armas: guantes y shuriken.
+id: "jade_monje_del_puno"
+display-name: "&a☯ Monje del Puño de Jade"
+description: |
+  Entrenó mil inviernos en la montaña.
+  Sus manos rompen piedra; su calma, ejércitos.
+base-attributes:
+  strength: 2
+  dexterity: 2
+  wisdom: 2
+  intelligence: -2
+passive-traits:
+  - "jade_cuerpo_de_hierro"
+icon: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTZiNjI5OGQzMzJiZTYzMTdlOWNmNjIwMWE4MzIzZTkxNmI4ZTM1YWVlMzdlZmNiZTc4ZTY3ODZmMzEyODAifX19"
+lore:
+  - "&7Armas: Guantes de Jade y Shuriken Estelar"
+  - "&7Rol: luchador rápido"
+  - "&a▲ +4% de defensa"
+  - "&a▲ +6 de vida"
+  - "&c▼ -2 de inteligencia"
+translations:
+  en:
+    display-name: "&a☯ Jade Fist Monk"
+    description: |
+      Trained a thousand winters on the mountain.
+      His hands break stone; his calm, armies.
+    lore:
+      - "&7Weapons: Jade Gauntlets and Star Shuriken"
+      - "&7Role: Fast brawler"
+      - "&a▲ +4% defense"
+      - "&a▲ +6 health"
+      - "&c▼ -2 intelligence"
+  pt_BR:
+    display-name: "&a☯ Monge do Punho de Jade"
+    description: |
+      Treinou mil invernos na montanha.
+      Suas mãos quebram pedra; sua calma, exércitos.
+    lore:
+      - "&7Armas: Manoplas de Jade e Shuriken Estelar"
+      - "&7Função: lutador rápido"
+      - "&a▲ +4% de defesa"
+      - "&a▲ +6 de vida"
+      - "&c▼ -2 de inteligência"

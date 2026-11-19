@@ -1,0 +1,25 @@
+# Botas: al moverse en el agua, la corriente empuja.
+id: mareas_corriente_favorable
+display-name: "&bCorriente Favorable"
+rarity: UNCOMMON
+max-level: 2
+
+categories:
+  - BOOTS
+
+trigger:
+  - PLAYER_MOVE
+
+chance: 100
+
+levels:
+  1:
+    amplifier: 0
+  2:
+    amplifier: 1
+
+effects:
+  - type: POTION
+    potion: DOLPHINS_GRACE
+    amplifier: "{amplifier}"
+    duration: "60"

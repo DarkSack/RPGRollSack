@@ -1,0 +1,37 @@
+# Misión del rango Maestro del Té (RPGRoll-Ascension): solo la ve quien
+# llegó a Alquimista 25. Semanal; da un Arca Lacada.
+id: jade_la_ceremonia_del_te
+display-name: "&2La Ceremonia del Té"
+category: PROFESSION
+difficulty: NORMAL
+repeatable: true
+cooldown: "7d"
+
+requirements:
+  level: 40
+  permission: rpgrollascension.quest.jade_la_ceremonia_del_te
+
+stages:
+  - id: hojas
+    objectives:
+      - type: COLLECT_ITEM
+        material: CHERRY_LEAVES
+        amount: 24
+        description: "Recoge 24 hojas de cerezo (con tijeras)"
+      - type: COLLECT_ITEM
+        material: HONEY_BOTTLE
+        amount: 4
+        description: "Consigue 4 botellas de miel"
+  - id: ceremonia
+    objectives:
+      - type: TALK_TO_NPC
+        npc: jade_monje_bao
+        amount: 1
+        description: "Sirve el té al Monje Bao"
+
+rewards:
+  money: 900
+  experience: 1400
+  commands:
+    - "tesoro give {player} jade_arca_lacada"
+    - "itemadmin give {player} jade_te_de_jazmin 4"

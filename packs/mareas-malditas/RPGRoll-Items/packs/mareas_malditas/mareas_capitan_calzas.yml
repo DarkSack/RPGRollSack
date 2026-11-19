@@ -1,0 +1,39 @@
+id: mareas_capitan_calzas
+pack: mareas_malditas
+material: NETHERITE_LEGGINGS
+item-model: "mareas:armadura/capitan_calzas"
+equipment-model: "mareas:capitan"
+display-name: "&6Calzas del Capitán"
+lore:
+  - "&7Remendadas en cada puerto del mapa."
+  - "&8Conjunto del Capitán."
+rarity: EPIC
+
+stats:
+  defense: 7
+  health: 4
+
+requirements:
+  level: 30
+  class: mareas_bucanero
+
+durability:
+  max: 1000
+  repairable: true
+  degrade-per-use: 1
+
+economy:
+  sell: 1400
+  buy: 3400
+
+translations:
+  en:
+    display-name: "&6Captain's Breeches"
+    lore:
+      - "&7Patched in every port on the map."
+      - "&8Captain set."
+  pt_BR:
+    display-name: "&6Calções do Capitão"
+    lore:
+      - "&7Remendados em cada porto do mapa."
+      - "&8Conjunto do Capitão."

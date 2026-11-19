@@ -1,0 +1,42 @@
+id: mareas_capitan_casaca
+pack: mareas_malditas
+material: NETHERITE_CHESTPLATE
+item-model: "mareas:armadura/capitan_casaca"
+equipment-model: "mareas:capitan"
+display-name: "&6Casaca del Capitán"
+lore:
+  - "&7Botones de doblón y un forro de lona"
+  - "&7que paró más de un cuchillo."
+  - "&8Conjunto del Capitán."
+rarity: EPIC
+
+stats:
+  defense: 9
+  health: 8
+
+requirements:
+  level: 30
+  class: mareas_bucanero
+
+durability:
+  max: 1100
+  repairable: true
+  degrade-per-use: 1
+
+economy:
+  sell: 1600
+  buy: 3800
+
+translations:
+  en:
+    display-name: "&6Captain's Coat"
+    lore:
+      - "&7Doubloon buttons and a canvas lining"
+      - "&7that stopped more than one knife."
+      - "&8Captain set."
+  pt_BR:
+    display-name: "&6Casaca do Capitão"
+    lore:
+      - "&7Botões de dobrão e um forro de lona"
+      - "&7que parou mais de uma faca."
+      - "&8Conjunto do Capitão."

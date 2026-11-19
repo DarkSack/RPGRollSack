@@ -1,0 +1,62 @@
+# Corto alcance, mucho daño y una pequeña explosión donde pega (no rompe
+# bloques). Lento: es para abrir un abordaje, no para sostenerlo.
+id: mareas_trabuco
+pack: mareas_malditas
+material: CARROT_ON_A_STICK
+item-model: "mareas:arma/trabuco"
+display-name: "&6Trabuco de Abordaje"
+lore:
+  - "&7Se carga con clavos, vidrio y monedas"
+  - "&7que nadie quiso devolver."
+  - "&8Clic derecho: dispara (corto alcance)."
+rarity: RARE
+
+stats:
+  critical_chance: 4
+
+requirements:
+  level: 25
+  class: mareas_bucanero
+
+abilities:
+  - id: andanada
+    display-name: "&6Andanada"
+    passive: false
+    trigger: RIGHT_CLICK
+    cooldown: 3s
+    actions:
+      - type: SHOOT
+        amount: "20"
+        range: "12"
+        speed: "1.4"
+        model: "mareas:proyectil/bala_de_plomo"
+        particle: LARGE_SMOKE
+        particle2: DUST
+        color2: "#FF8C1A"
+        size2: "1.0"
+        density: "4"
+        explosion: "1.2"
+        muzzle-effect: mareas_fogonazo_de_polvora
+        hit-effect: mareas_impacto_de_plomo
+      - type: SOUND
+        sound: ENTITY_GENERIC_EXPLODE
+        volume: "0.9"
+        pitch: "1.1"
+
+economy:
+  sell: 900
+  buy: 2400
+
+translations:
+  en:
+    display-name: "&6Boarding Blunderbuss"
+    lore:
+      - "&7Loaded with nails, glass and coins"
+      - "&7nobody wanted to give back."
+      - "&8Right click: fire (short range)."
+  pt_BR:
+    display-name: "&6Bacamarte de Abordagem"
+    lore:
+      - "&7Carregado com pregos, vidro e moedas"
+      - "&7que ninguém quis devolver."
+      - "&8Clique direito: dispara (curto alcance)."

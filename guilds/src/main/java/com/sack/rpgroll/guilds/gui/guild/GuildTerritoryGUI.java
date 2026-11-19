@@ -1,5 +1,6 @@
 package com.sack.rpgroll.guilds.gui.guild;
 
+import com.sack.rpgroll.guilds.gui.GuildMenus;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.gui.ChatPromptManager;
@@ -25,6 +26,9 @@ import java.util.List;
  */
 public class GuildTerritoryGUI extends InventoryGUI {
 
+    /** Fondo dibujado (sackito:menus/gremio_territorio): volver (44) va dibujado; reclamar (40) lleva hueco. */
+    public static final String BACKGROUND = "gremio_territorio";
+
     private static final int SIZE = 45;
     private static final int CLAIM_SLOT = 40;
     private static final int BACK_SLOT = 44;
@@ -37,7 +41,7 @@ public class GuildTerritoryGUI extends InventoryGUI {
 
     public GuildTerritoryGUI(Player player, Guild guild, GuildManager guildManager,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, chatPromptManager.lang().component("guild.territory.title", "name", guild.name()), SIZE);
+        super(player, GuildMenus.skin().title(BACKGROUND, chatPromptManager.lang().component("guild.territory.title", "name", guild.name())), SIZE);
         this.guild = guild;
         this.guildManager = guildManager;
         this.chatPromptManager = chatPromptManager;
@@ -55,7 +59,7 @@ public class GuildTerritoryGUI extends InventoryGUI {
         clear();
 
         for (int slot = 0; slot < SIZE; slot++) {
-            setItem(slot, ItemBuilder.createFiller());
+            setItem(slot, GuildMenus.filler());
         }
 
         for (int i = 0; i < territories.size() && i < 36; i++) {
@@ -82,7 +86,7 @@ public class GuildTerritoryGUI extends InventoryGUI {
                         "max", maxTerritories), NamedTextColor.GRAY))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang().raw("common.back")));
+        setItem(BACK_SLOT, GuildMenus.skin().button(ItemBuilder.createCancelButton(lang().raw("common.back"))));
     }
 
     @Override

@@ -1,0 +1,8 @@
+id: mareas_senuelo_de_coral
+display-name: "&dSeñuelo de Coral"
+material: PAPER
+model: "mareas:cebo/senuelo_de_coral"
+description: "Un trozo de coral maldito tallado como un pez. A las especies de Mareas les encanta."
+tags: [mareas, deep]
+quality-bonus: 2
+legendary-weight-multiplier: 2.5

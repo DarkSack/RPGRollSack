@@ -1,0 +1,31 @@
+id: jade_menu_lian
+title: "&6Maestra Lian"
+rows: 3
+
+items:
+  - slot: 11
+    material: TERRACOTTA
+    name: "&6El Ejército de Barro"
+    lore:
+      - "&7Empieza la historia de Dinastía de Jade."
+      - "&8Desde nivel 40."
+    actions:
+      - type: COMMAND_AS_PLAYER
+        value: "quest start jade_el_ejercito_de_barro"
+      - type: CLOSE
+  - slot: 13
+    material: WRITABLE_BOOK
+    name: "&fMis misiones"
+    lore:
+      - "&7Lo que tienes a medias."
+    actions:
+      - type: COMMAND_AS_PLAYER
+        value: "quest active"
+  - slot: 15
+    material: BAMBOO
+    name: "&6Tienda de la aldea"
+    lore:
+      - "&7Abre la sección Dinastía de Jade de la tienda."
+    actions:
+      - type: COMMAND_AS_PLAYER
+        value: "tienda dinastia_de_jade"

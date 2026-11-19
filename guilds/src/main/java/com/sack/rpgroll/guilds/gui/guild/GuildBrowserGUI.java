@@ -1,5 +1,6 @@
 package com.sack.rpgroll.guilds.gui.guild;
 
+import com.sack.rpgroll.guilds.gui.GuildMenus;
 import com.sack.rpgroll.util.ComponentUtils;
 
 import com.sack.rpgroll.guilds.gui.PaginatedGUI;
@@ -18,6 +19,9 @@ import java.util.List;
 
 public class GuildBrowserGUI extends PaginatedGUI {
 
+    /** Fondo dibujado (sackito:menus/gremios_lista): cerrar (53) va dibujado; las flechas llevan hueco. */
+    public static final String BACKGROUND = "gremios_lista";
+
     private static final int SIZE = 54;
     private static final int CONTENT_SLOTS = 45;
     private static final int PREV_SLOT = 45;
@@ -28,7 +32,7 @@ public class GuildBrowserGUI extends PaginatedGUI {
     private final List<Guild> guilds;
 
     public GuildBrowserGUI(Player player, GuildServices services) {
-        super(player, ComponentUtils.parseWithDefault(services.langManager().raw("guild.browser.title"), NamedTextColor.GOLD), SIZE,
+        super(player, GuildMenus.skin().title(BACKGROUND, ComponentUtils.parseWithDefault(services.langManager().raw("guild.browser.title"), NamedTextColor.GOLD)), SIZE,
                 CONTENT_SLOTS);
         this.services = services;
         this.guilds = services.guildManager().getAll().stream()
@@ -64,13 +68,13 @@ public class GuildBrowserGUI extends PaginatedGUI {
 
         setItem(PREV_SLOT, hasPreviousPage()
                 ? new ItemBuilder(Material.ARROW).setName(ComponentUtils.parseWithDefault(lang().raw("common.previous_page"), NamedTextColor.YELLOW)).build()
-                : ItemBuilder.createFiller());
+                : GuildMenus.filler());
 
         setItem(NEXT_SLOT, hasNextPage()
                 ? new ItemBuilder(Material.ARROW).setName(ComponentUtils.parseWithDefault(lang().raw("common.next_page"), NamedTextColor.YELLOW)).build()
-                : ItemBuilder.createFiller());
+                : GuildMenus.filler());
 
-        setItem(CLOSE_SLOT, ItemBuilder.createCancelButton(lang().raw("common.close")));
+        setItem(CLOSE_SLOT, GuildMenus.skin().button(ItemBuilder.createCancelButton(lang().raw("common.close"))));
     }
 
     @Override

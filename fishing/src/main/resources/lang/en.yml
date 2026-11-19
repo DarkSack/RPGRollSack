@@ -7,14 +7,15 @@ command:
       &cUsage: /fishingadmin
       &7 • &bbrowser
       &7 • &areload
-      &7 • &egiverod <id>
-      &7 • &dgivebait <id>
+      &7 • &egiverod <id> [player]
+      &7 • &dgivebait <id> [player]
     players_only_studio: "&cOnly players can open the Fishing Studio."
-    players_only: "&cOnly a player can receive this — run it in game."
+    players_only: "&cOnly a player can receive this: add their name at the end of the command."
+    player_not_found: "&cNo online player is called {player}."
     reloaded: "&a✔ Reloaded: {species} species, {rods} rod(s), {baits} bait(s), {treasures} treasure(s), {junk} junk item(s), {regions} region(s)."
-    giverod_usage: "&cUsage: /fishingadmin giverod <id>"
+    giverod_usage: "&cUsage: /fishingadmin giverod <id> [player]"
     giverod_unknown: "&cNo rod exists with id: {id}"
-    givebait_usage: "&cUsage: /fishingadmin givebait <id>"
+    givebait_usage: "&cUsage: /fishingadmin givebait <id> [player]"
     givebait_unknown: "&cNo bait exists with id: {id}"
     given: "&a✔ Given."
   player:

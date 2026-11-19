@@ -1,0 +1,30 @@
+id: jade_bollo_de_loto
+pack: dinastia_de_jade
+material: BREAD
+item-model: "jade:consumible/bollo_de_loto"
+display-name: "&eBollo de Loto"
+lore:
+  - "&7Masa al vapor rellena de pasta de semilla de loto."
+  - "&7Cura 8 al comerlo."
+rarity: COMMON
+
+triggers:
+  CONSUME:
+    - type: HEAL
+      amount: "8"
+
+economy:
+  sell: 10
+  buy: 35
+
+translations:
+  en:
+    display-name: "&eLotus Bun"
+    lore:
+      - "&7Steamed dough filled with lotus seed paste."
+      - "&7Heals 8 when eaten."
+  pt_BR:
+    display-name: "&ePãozinho de Lótus"
+    lore:
+      - "&7Massa no vapor recheada com pasta de semente de lótus."
+      - "&7Cura 8 ao comer."

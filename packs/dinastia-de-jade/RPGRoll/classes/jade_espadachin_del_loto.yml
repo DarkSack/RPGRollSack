@@ -1,0 +1,43 @@
+# Clase de esgrima: dao, abanico de guerra y la armadura del Guardián.
+id: "jade_espadachin_del_loto"
+display-name: "&d❀ Espadachín del Loto"
+description: |
+  Corta tan rápido que los pétalos
+  caen después que el enemigo.
+base-attributes:
+  dexterity: 3
+  strength: 2
+  charisma: 1
+  wisdom: -1
+passive-traits:
+  - "jade_paso_del_loto"
+icon: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTRlYTFkOTdhM2NiMTFhZWJhMjNiNjA2NTEwMWQ3YmJkYzYwN2JiYmJiMGNjODc5NmZjY2Y4Nzc0OWRjZDE3NyJ9fX0="
+lore:
+  - "&7Armas: Dao del Tigre, Abanico de Guerra y Arco del Loto"
+  - "&7Rol: DPS cuerpo a cuerpo"
+  - "&a▲ +4% de velocidad"
+  - "&a▲ +2 de vida"
+  - "&c▼ -1% de defensa"
+translations:
+  en:
+    display-name: "&d❀ Lotus Swordsman"
+    description: |
+      Cuts so fast the petals
+      fall after the enemy does.
+    lore:
+      - "&7Weapons: Tiger Dao, War Fan and Lotus Bow"
+      - "&7Role: Melee DPS"
+      - "&a▲ +4% speed"
+      - "&a▲ +2 health"
+      - "&c▼ -1% defense"
+  pt_BR:
+    display-name: "&d❀ Espadachim do Lótus"
+    description: |
+      Corta tão rápido que as pétalas
+      caem depois do inimigo.
+    lore:
+      - "&7Armas: Dao do Tigre, Leque de Guerra e Arco do Lótus"
+      - "&7Função: DPS corpo a corpo"
+      - "&a▲ +4% de velocidade"
+      - "&a▲ +2 de vida"
+      - "&c▼ -1% de defesa"

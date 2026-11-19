@@ -3,7 +3,7 @@ plugins {
 }
 
 group = "com.sack"
-version = "1.1.9"
+version = "1.1.11"
 
 base.archivesName.set("RPGRoll-Crates")
 
@@ -21,6 +21,9 @@ dependencies {
     compileOnly("com.github.MilkBowl:VaultAPI:1.7.1") {
         exclude(group = "org.bukkit", module = "bukkit")
     }
+
+    // Los tesoros meten en su botín ítems de RPGRoll-Items (softdepend; solo si está activo).
+    compileOnly(project(":items"))
 
     // Visibilidad en tests para ContentParser/RPGContent (:common) — compileOnly
 }

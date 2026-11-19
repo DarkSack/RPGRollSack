@@ -1,0 +1,19 @@
+# Da la historia del pack. La ubicación es de ejemplo: muévela al puerto
+# de tu mundo (ver LEEME.md).
+id: mareas_contramaestre_bruma
+display-name: "&3Contramaestre Bruma"
+pose: "STANDING"
+
+location:
+  world: world
+  x: 0.5
+  y: 64.0
+  z: 0.5
+  yaw: 180.0
+  pitch: 0.0
+
+actions:
+  - type: SOUND
+    value: "ENTITY_VILLAGER_AMBIENT,1.0,0.8"
+  - type: OPEN_GUI
+    value: "mareas_menu_bruma"

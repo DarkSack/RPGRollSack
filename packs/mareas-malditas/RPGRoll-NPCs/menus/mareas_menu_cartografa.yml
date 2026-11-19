@@ -1,0 +1,58 @@
+# Diarias y venta de mapas. Los mapas se pagan en oro vanilla (el menú
+# solo sabe cobrar materiales): primero el condicional que entrega, después
+# el que cobra.
+id: mareas_menu_cartografa
+title: "&eCartógrafa Isla"
+rows: 3
+
+items:
+  - slot: 10
+    material: SAND
+    name: "&eDiaria: Playa Limpia"
+    lore:
+      - "&710 cangrejos de arrecife."
+    actions:
+      - type: COMMAND_AS_PLAYER
+        value: "quest start mareas_diaria_playa_limpia"
+      - type: CLOSE
+  - slot: 11
+    material: COD
+    name: "&eDiaria: Pesca de Altura"
+    lore:
+      - "&712 bacalaos para el puerto."
+    actions:
+      - type: COMMAND_AS_PLAYER
+        value: "quest start mareas_diaria_pesca_de_altura"
+      - type: CLOSE
+  - slot: 12
+    material: PRISMARINE_SHARD
+    name: "&eDiaria: Cazadores de Anguilas"
+    lore:
+      - "&76 anguilas voltaicas. Desde nivel 20."
+    actions:
+      - type: COMMAND_AS_PLAYER
+        value: "quest start mareas_diaria_cazadores_de_anguilas"
+      - type: CLOSE
+  - slot: 15
+    material: FILLED_MAP
+    name: "&6Mapa del Capitán"
+    lore:
+      - "&7Un mapa del tesoro: lleva a un Cofre del Capitán"
+      - "&7enterrado en alguna playa."
+      - "&7Precio: &e12 lingotes de oro"
+    actions:
+      - type: CONDITIONAL
+        value: "HAS_ITEM:GOLD_INGOT,12;COMMAND:tesoro give {player} mareas_cofre_capitan;MESSAGE:Necesitas 12 lingotes de oro."
+      - type: CONDITIONAL
+        value: "HAS_ITEM:GOLD_INGOT,12;TAKE_ITEM:GOLD_INGOT,12"
+  - slot: 16
+    material: FILLED_MAP
+    name: "&3Carta de Coral"
+    lore:
+      - "&7Lleva a un Arcón de Coral bajo el arrecife."
+      - "&7Precio: &e6 diamantes"
+    actions:
+      - type: CONDITIONAL
+        value: "HAS_ITEM:DIAMOND,6;COMMAND:tesoro give {player} mareas_arcon_de_coral;MESSAGE:Necesitas 6 diamantes."
+      - type: CONDITIONAL
+        value: "HAS_ITEM:DIAMOND,6;TAKE_ITEM:DIAMOND,6"

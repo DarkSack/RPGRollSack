@@ -1,0 +1,28 @@
+id: mareas_receta_tonico_salobre
+display-name: "&bTónico Salobre"
+icon: HONEY_BOTTLE
+station-id: mareas_astillero
+processing-time-ticks: 60
+fuel-per-craft: 0
+xp-amount: 6
+fail-chance: 0
+quality-enabled: false
+
+result:
+  type: ITEM_ID
+  value: mareas_tonico_salobre
+  amount: 1
+
+ingredients:
+  - type: MATERIAL
+    value: GLASS_BOTTLE
+    amount: 1
+  - type: MATERIAL
+    value: INK_SAC
+    amount: 1
+  - type: MATERIAL
+    value: PUFFERFISH
+    amount: 1
+  - type: ITEM_ID
+    value: mareas_coral_maldito
+    amount: 1

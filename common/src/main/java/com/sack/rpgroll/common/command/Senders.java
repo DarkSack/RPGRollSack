@@ -1,8 +1,11 @@
 package com.sack.rpgroll.common.command;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ProxiedCommandSender;
 import org.bukkit.entity.Player;
+
+import java.util.function.Function;
 
 /**
  * Resolución de quién ejecuta realmente un comando.
@@ -43,6 +46,22 @@ public final class Senders {
     /** ¿Hay un jugador real detrás de este sender? */
     public static boolean isPlayer(CommandSender sender) {
         return asPlayer(sender) != null;
+    }
+
+    /**
+     * Quién recibe un objeto en un comando {@code give... <id> [jugador]}.
+     * <p>
+     * Con nombre en {@code args[index]}, ese jugador (null si no está
+     * conectado). Sin nombre, quien ejecuta, como antes. El nombre es lo que
+     * deja dar el objeto desde la consola: recompensas de misiones, menús de
+     * NPC, cajas y tesoros corren sus comandos ahí.
+     */
+    public static Player recipient(CommandSender sender, String[] args, int index) {
+        return recipient(sender, args, index, Bukkit::getPlayerExact);
+    }
+
+    static Player recipient(CommandSender sender, String[] args, int index, Function<String, Player> lookup) {
+        return args.length > index ? lookup.apply(args[index]) : asPlayer(sender);
     }
 
 }

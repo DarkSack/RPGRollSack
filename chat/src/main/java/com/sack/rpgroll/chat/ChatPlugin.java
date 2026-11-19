@@ -144,7 +144,8 @@ public class ChatPlugin extends JavaPlugin {
         registerCommand("dance", emoteCommand);
 
         registerCommand("react", new ReactCommand(reactionManager, langManager));
-        registerCommand("chatlog", new ChatLogCommand(logManager, langManager));
+        registerCommand("chatlog", new ChatLogCommand(logManager, langManager,
+                () -> channelManager.sortedByPriority().stream().map(com.sack.rpgroll.chat.channel.ChatChannel::id).toList()));
         registerCommand("language", new LanguageCommand(languageManager, languageService, langManager));
         registerCommand("chatadmin", new ChatAdminCommand(channelManager, languageManager, roleManager, emoteManager,
                 chatPromptManager, langManager, this));

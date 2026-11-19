@@ -1,0 +1,25 @@
+id: jade_seda_imperial
+pack: dinastia_de_jade
+material: STRING
+item-model: "jade:material/seda_imperial"
+display-name: "&cSeda Imperial"
+lore:
+  - "&7Tejida en el palacio y robada en el camino."
+  - "&8Material de la Forja de Jade."
+rarity: UNCOMMON
+
+economy:
+  sell: 30
+  buy: 90
+
+translations:
+  en:
+    display-name: "&cImperial Silk"
+    lore:
+      - "&7Woven in the palace, stolen on the road."
+      - "&8Jade Forge material."
+  pt_BR:
+    display-name: "&cSeda Imperial"
+    lore:
+      - "&7Tecida no palácio e roubada na estrada."
+      - "&8Material da Forja de Jade."

@@ -1,0 +1,34 @@
+# Misión del rango Buzo de las Mareas (RPGRoll-Ascension): solo la ve quien
+# llegó a Pescador 20. Semanal; da una carta de coral.
+id: mareas_el_buzo_y_la_perla
+display-name: "&3El Buzo y la Perla"
+category: PROFESSION
+difficulty: NORMAL
+repeatable: true
+cooldown: "7d"
+
+requirements:
+  level: 15
+  permission: rpgrollascension.quest.mareas_el_buzo_y_la_perla
+
+stages:
+  - id: cristales
+    objectives:
+      - type: COLLECT_ITEM
+        material: PRISMARINE_CRYSTALS
+        amount: 16
+        description: "Saca 16 cristales de prismarina del fondo"
+  - id: entregar
+    objectives:
+      - type: TALK_TO_NPC
+        npc: mareas_bruja_salobre
+        amount: 1
+        description: "Llévaselos a la Bruja Salobre"
+
+rewards:
+  money: 350
+  experience: 500
+  commands:
+    - "tesoro give {player} mareas_arcon_de_coral"
+    - "fishingadmin givebait mareas_senuelo_de_coral {player}"
+    - "fishingadmin givebait mareas_senuelo_de_coral {player}"

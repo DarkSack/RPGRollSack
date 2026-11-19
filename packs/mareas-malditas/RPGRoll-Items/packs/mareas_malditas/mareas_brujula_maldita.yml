@@ -1,0 +1,40 @@
+# La reliquia del pack: un amuleto (/amuletos) de suerte y velocidad.
+# La da el rango de Buzo y la suelta, rara vez, el Kraken.
+id: mareas_brujula_maldita
+pack: mareas_malditas
+material: GOLD_NUGGET
+item-model: "mareas:reliquia/brujula_maldita"
+display-name: "&3Brújula Maldita"
+lore:
+  - "&7No apunta al norte: apunta a lo que más deseas."
+  - "&7Casi siempre es oro."
+  - "&8Amuleto: póntelo con /amuletos"
+rarity: EPIC
+
+stats:
+  luck: 8
+  critical_chance: 2
+
+attributes:
+  MOVEMENT_SPEED: 0.01
+
+custom-data:
+  accessory: amulet
+
+economy:
+  sell: 900
+  buy: 2500
+
+translations:
+  en:
+    display-name: "&3Cursed Compass"
+    lore:
+      - "&7It doesn't point north: it points to what you want most."
+      - "&7Almost always, gold."
+      - "&8Amulet: wear it with /amulets"
+  pt_BR:
+    display-name: "&3Bússola Amaldiçoada"
+    lore:
+      - "&7Não aponta para o norte: aponta para o que você mais deseja."
+      - "&7Quase sempre, ouro."
+      - "&8Amuleto: use-o com /amulets"

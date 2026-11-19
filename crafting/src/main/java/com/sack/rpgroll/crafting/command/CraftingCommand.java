@@ -160,6 +160,11 @@ public class CraftingCommand implements CommandExecutor, TabCompleter {
             return TabCompleteUtil.filter(args[0], SUBCOMMANDS);
         }
 
+        if (args.length == 2 && args[0].equalsIgnoreCase("proficiency")) {
+            return TabCompleteUtil.filter(args[1], stationManager.getAll().stream()
+                    .map(s -> s.skillCategory()).distinct().sorted().toList());
+        }
+
         return List.of();
     }
 

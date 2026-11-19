@@ -1,0 +1,43 @@
+# La estación del pack: un barril con dos troncos de abeto a los lados.
+# Fabrica las armas, los consumibles y los kits de Mareas Malditas.
+id: mareas_astillero
+display-name: "&6Astillero"
+icon: BARREL
+trigger-block-material: BARREL
+inventory-size: 27
+ingredient-slots: [10, 11, 12, 13]
+fuel-slot: 9
+output-slot: 16
+requires-fuel: false
+gui-title: "&6Astillero"
+allowed-recipe-ids: []
+
+structure-requirements:
+  - dx: -1
+    dy: 0
+    dz: 0
+    material: SPRUCE_LOG
+  - dx: 1
+    dy: 0
+    dz: 0
+    material: SPRUCE_LOG
+
+max-tier: 3
+speed-bonus-per-tier: 0.1
+fail-reduction-per-tier: 0.03
+tier-upgrades:
+  - tier: 2
+    economy-cost: 400
+    cost:
+      - type: ITEM_ID
+        value: mareas_coral_maldito
+        amount: 16
+  - tier: 3
+    economy-cost: 1200
+    cost:
+      - type: ITEM_ID
+        value: mareas_perla_negra
+        amount: 4
+
+skill-category: astillero
+allow-experimentation: false

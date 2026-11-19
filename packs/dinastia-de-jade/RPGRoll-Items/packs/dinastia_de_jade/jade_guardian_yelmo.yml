@@ -1,0 +1,47 @@
+# Conjunto del Guardián Imperial: la armadura del Espadachín del Loto.
+# Puesta se ve como la armadura del pack (el yelmo, como su modelo).
+# La suelta el General Sin Sombra.
+id: jade_guardian_yelmo
+pack: dinastia_de_jade
+material: NETHERITE_HELMET
+item-model: "jade:armadura/guardian_yelmo"
+equipment-model: "none"
+display-name: "&cYelmo del Guardián Imperial"
+lore:
+  - "&7Cuernos de oro y una joya de jade en la frente."
+  - "&8Conjunto del Guardián Imperial."
+rarity: LEGENDARY
+
+stats:
+  defense: 8
+  health: 6
+
+requirements:
+  level: 55
+  class: jade_espadachin_del_loto
+
+durability:
+  max: 1500
+  repairable: true
+  degrade-per-use: 1
+
+effects:
+  - potion: NIGHT_VISION
+    amplifier: 0
+    requires-held: true
+
+economy:
+  sell: 2600
+  buy: 6500
+
+translations:
+  en:
+    display-name: "&cImperial Guardian Helm"
+    lore:
+      - "&7Golden horns and a jade jewel on the brow."
+      - "&8Imperial Guardian set."
+  pt_BR:
+    display-name: "&cElmo do Guardião Imperial"
+    lore:
+      - "&7Chifres de ouro e uma joia de jade na testa."
+      - "&8Conjunto do Guardião Imperial."

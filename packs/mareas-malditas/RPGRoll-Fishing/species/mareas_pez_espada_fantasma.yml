@@ -1,0 +1,20 @@
+id: mareas_pez_espada_fantasma
+display-name: "&f&lPez Espada Fantasma"
+icon: SALMON
+model: "rpgroll_fishing:species/swordfish"
+description: "Dicen que es el mascarón de proa de un barco que nunca se hundió del todo."
+category: LEGENDARY
+rarity: EPIC
+water-types: [DEEP_OCEAN]
+biomes: [deep_ocean, deep_lukewarm_ocean]
+depths: [MID_WATER, BOTTOM]
+min-weight: 40
+max-weight: 160
+min-length: 150
+max-length: 380
+base-price: 420
+base-experience: 160
+behavior: FAST
+allowed-weathers: [RAIN, STORM]
+allowed-times: [NIGHT, MIDNIGHT]
+attracted-by-bait-tags: [mareas]

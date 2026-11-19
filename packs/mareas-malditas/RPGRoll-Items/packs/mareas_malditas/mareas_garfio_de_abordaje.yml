@@ -1,0 +1,50 @@
+# El garfio frena: cada golpe deja al objetivo lento un momento, para
+# que el Bucanero no lo deje escapar.
+id: mareas_garfio_de_abordaje
+pack: mareas_malditas
+material: IRON_SWORD
+item-model: "mareas:arma/garfio_de_abordaje"
+display-name: "&eGarfio de Abordaje"
+lore:
+  - "&7Engancha la borda, la cuerda o la pierna."
+  - "&7Al golpear: ralentiza al objetivo."
+rarity: RARE
+
+stats:
+  damage: 7
+  critical_chance: 8
+  attack_speed: 1.4
+
+requirements:
+  level: 20
+  class: mareas_bucanero
+
+durability:
+  max: 550
+  repairable: true
+  degrade-per-use: 1
+
+triggers:
+  ENTITY_HIT:
+    - type: COMMAND
+      value: "minecraft:effect give {target_uuid} minecraft:slowness 2 1"
+    - type: SOUND
+      sound: BLOCK_CHAIN_HIT
+      volume: "0.8"
+      pitch: "1.2"
+
+economy:
+  sell: 520
+  buy: 1300
+
+translations:
+  en:
+    display-name: "&eBoarding Hook"
+    lore:
+      - "&7Hooks the rail, the rope or the leg."
+      - "&7On hit: slows the target."
+  pt_BR:
+    display-name: "&eGancho de Abordagem"
+    lore:
+      - "&7Engancha a amurada, a corda ou a perna."
+      - "&7Ao golpear: deixa o alvo lento."

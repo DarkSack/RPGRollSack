@@ -1,0 +1,39 @@
+id: jade_guardian_grebas
+pack: dinastia_de_jade
+material: NETHERITE_LEGGINGS
+item-model: "jade:armadura/guardian_grebas"
+equipment-model: "jade:guardian"
+display-name: "&cGrebas del Guardián Imperial"
+lore:
+  - "&7Faldones de laca que suenan como lluvia al andar."
+  - "&8Conjunto del Guardián Imperial."
+rarity: LEGENDARY
+
+stats:
+  defense: 10
+  health: 6
+
+requirements:
+  level: 55
+  class: jade_espadachin_del_loto
+
+durability:
+  max: 1600
+  repairable: true
+  degrade-per-use: 1
+
+economy:
+  sell: 3000
+  buy: 7500
+
+translations:
+  en:
+    display-name: "&cImperial Guardian Greaves"
+    lore:
+      - "&7Lacquered tassets that sound like rain when you walk."
+      - "&8Imperial Guardian set."
+  pt_BR:
+    display-name: "&cGrevas do Guardião Imperial"
+    lore:
+      - "&7Faldas de laca que soam como chuva ao andar."
+      - "&8Conjunto do Guardião Imperial."

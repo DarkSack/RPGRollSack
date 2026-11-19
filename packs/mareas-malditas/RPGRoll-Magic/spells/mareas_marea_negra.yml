@@ -1,0 +1,30 @@
+# Área: una ola oscura alrededor del brujo que daña y aparta a todos.
+id: mareas_marea_negra
+display-name: "&1Marea Negra"
+icon: BLACK_DYE
+color: DARK_BLUE
+school: mareas_abismo
+rarity: EPIC
+level: 28
+cast-time: 10
+cooldown: 300
+trigger: RIGHT_CLICK
+tree-tier: 2
+tags: [abismo, mareas, area]
+description: "El agua sube de golpe a tu alrededor, negra y helada, y se lleva a quien esté cerca."
+
+cost:
+  mana: 45
+
+components:
+  - type: DAMAGE_AREA
+    radius: 5
+    amount: 16
+  - type: PUSH
+    strength: 1.4
+  - type: VISUAL
+    effect-id: mareas_remolino
+  - type: SOUND
+    sound: ENTITY_ELDER_GUARDIAN_CURSE
+    volume: 0.9
+    pitch: 0.8

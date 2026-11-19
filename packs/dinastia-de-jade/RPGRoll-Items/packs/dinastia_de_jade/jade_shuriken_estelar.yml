@@ -1,0 +1,56 @@
+# El arma a distancia del Monje: rápida y floja, para rematar.
+id: jade_shuriken_estelar
+pack: dinastia_de_jade
+material: CARROT_ON_A_STICK
+item-model: "jade:arma/shuriken_estelar"
+display-name: "&bShuriken Estelar"
+lore:
+  - "&7Cuatro aspas y un ojo de qi en el centro."
+  - "&7Vuelve sola a la manga."
+  - "&8Clic derecho: lánzalo."
+rarity: RARE
+
+stats:
+  critical_chance: 15
+
+requirements:
+  level: 48
+  class: jade_monje_del_puno
+
+abilities:
+  - id: lanzar_shuriken
+    display-name: "&bLanzar Shuriken"
+    passive: false
+    trigger: RIGHT_CLICK
+    cooldown: 450ms
+    actions:
+      - type: SHOOT
+        amount: "9"
+        range: "24"
+        speed: "2.0"
+        model: "jade:arma/shuriken_estelar"
+        particle: END_ROD
+        density: "2"
+        hit-effect: jade_impacto_de_jade
+      - type: SOUND
+        sound: ENTITY_PLAYER_ATTACK_SWEEP
+        volume: "0.6"
+        pitch: "1.8"
+
+economy:
+  sell: 1600
+  buy: 4000
+
+translations:
+  en:
+    display-name: "&bStar Shuriken"
+    lore:
+      - "&7Four blades and an eye of qi at the centre."
+      - "&7It returns to the sleeve on its own."
+      - "&8Right click: throw it."
+  pt_BR:
+    display-name: "&bShuriken Estelar"
+    lore:
+      - "&7Quatro lâminas e um olho de qi no centro."
+      - "&7Volta sozinho para a manga."
+      - "&8Clique direito: lance-o."

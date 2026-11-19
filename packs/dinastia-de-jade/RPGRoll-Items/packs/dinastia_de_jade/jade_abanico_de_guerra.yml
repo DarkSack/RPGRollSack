@@ -1,0 +1,63 @@
+# Pega de cerca y, con clic derecho, lanza una ráfaga de viento cortante.
+id: jade_abanico_de_guerra
+pack: dinastia_de_jade
+material: IRON_SWORD
+item-model: "jade:arma/abanico_de_guerra"
+display-name: "&dAbanico de Guerra"
+lore:
+  - "&7Varillas de acero y seda pintada."
+  - "&7Se abre para cortar y se cierra para parar."
+  - "&8Clic derecho: ráfaga de viento."
+rarity: EPIC
+
+stats:
+  damage: 11
+  critical_chance: 10
+  attack_speed: 1.5
+
+requirements:
+  level: 45
+  class: jade_espadachin_del_loto
+
+durability:
+  max: 1100
+  repairable: true
+  degrade-per-use: 1
+
+abilities:
+  - id: rafaga_del_abanico
+    display-name: "&dRáfaga del Abanico"
+    passive: false
+    trigger: RIGHT_CLICK
+    cooldown: 5s
+    actions:
+      - type: SHOOT
+        amount: "12"
+        range: "14"
+        speed: "1.6"
+        particle: CLOUD
+        particle2: END_ROD
+        density: "4"
+        hit-effect: jade_impacto_de_jade
+      - type: SOUND
+        sound: ENTITY_BREEZE_SHOOT
+        volume: "0.8"
+        pitch: "1.4"
+
+economy:
+  sell: 2600
+  buy: 6500
+
+translations:
+  en:
+    display-name: "&dWar Fan"
+    lore:
+      - "&7Steel ribs and painted silk."
+      - "&7It opens to cut and closes to parry."
+      - "&8Right click: gust of wind."
+  pt_BR:
+    display-name: "&dLeque de Guerra"
+    lore:
+      - "&7Varetas de aço e seda pintada."
+      - "&7Abre para cortar e fecha para aparar."
+      - "&8Clique direito: rajada de vento."
