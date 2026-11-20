@@ -88,6 +88,10 @@ public class RPGRollPlaceholders extends PlaceholderExpansion {
         return resolveBuiltin(rpgPlayer, key);
     }
 
+    private com.sack.rpgroll.gameplay.levelup.LevelUpRewardsConfig levelCurve() {
+        return plugin.getBootstrap().getServices().get(com.sack.rpgroll.gameplay.levelup.LevelUpRewardsConfig.class);
+    }
+
     private String resolveBuiltin(RPGPlayer rpgPlayer, String key) {
 
         PlayerProgression progression = rpgPlayer.getProgression();
@@ -97,9 +101,11 @@ public class RPGRollPlaceholders extends PlaceholderExpansion {
         return switch (key) {
             case "level" -> String.valueOf(rpgPlayer.getLevel());
             case "xp", "experience" -> String.valueOf(rpgPlayer.getExperience());
-            case "xp_next", "xp_needed" -> String.valueOf(progression.getRequiredExpForNextLevel());
-            case "xp_to_next" -> String.valueOf(progression.getExpToNextLevel());
-            case "xp_percent" -> String.valueOf(progression.getProgressPercent());
+            // La curva de levelup-rewards.yml, la misma que usa la subida de nivel.
+            case "xp_next", "xp_needed" -> String.valueOf(progression.isMaxLevel()
+                    ? rpgPlayer.getExperience() : levelCurve().expRequired(rpgPlayer.getLevel() + 1));
+            case "xp_to_next" -> String.valueOf(levelCurve().expToNext(rpgPlayer.getLevel(), rpgPlayer.getExperience()));
+            case "xp_percent" -> String.valueOf(levelCurve().progressPercent(rpgPlayer.getLevel(), rpgPlayer.getExperience()));
             case "max_level" -> progression.isMaxLevel() ? "si" : "no";
             case "race" -> valueOrDash(raceDisplay(rpgPlayer.getRace()));
             case "class" -> valueOrDash(classDisplay(rpgPlayer.getPlayerClass()));

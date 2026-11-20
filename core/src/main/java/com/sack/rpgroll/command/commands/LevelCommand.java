@@ -3,6 +3,7 @@ package com.sack.rpgroll.command.commands;
 import com.sack.rpgroll.RPGRoll;
 import com.sack.rpgroll.command.RPGCommand;
 import com.sack.rpgroll.common.lang.LangManager;
+import com.sack.rpgroll.gameplay.levelup.LevelUpRewardsConfig;
 import com.sack.rpgroll.player.RPGPlayer;
 
 import com.sack.rpgroll.player.PlayerManager;
@@ -61,8 +62,10 @@ public class LevelCommand implements RPGCommand {
 
         int level = progression.level();
         int experience = progression.experience();
-        int requiredExp = progression.getRequiredExpForNextLevel();
-        int remaining = progression.getExpToNextLevel();
+        // La misma curva que usa la subida de nivel (levelup-rewards.yml), no la fórmula de PlayerProgression.
+        LevelUpRewardsConfig curve = plugin.getBootstrap().getServices().get(LevelUpRewardsConfig.class);
+        int requiredExp = level >= 100 ? experience : curve.expRequired(level + 1);
+        int remaining = curve.expToNext(level, experience);
 
         lang.send(player, "level_command.header");
         lang.send(player, "level_command.level", "level", level);

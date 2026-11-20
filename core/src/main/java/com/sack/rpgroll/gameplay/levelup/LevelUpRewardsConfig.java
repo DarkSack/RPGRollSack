@@ -13,9 +13,13 @@ import org.bukkit.configuration.file.YamlConfiguration;
  */
 public class LevelUpRewardsConfig {
 
+    private static final int MAX_LEVEL = com.sack.rpgroll.player.progression.PlayerProgression.MAX_LEVEL;
+
     private final RPGRoll plugin;
     private final YamlLoader yamlLoader;
     private final Map<Integer, LevelUpRewards> rewards;
+    /** XP de los niveles que no la fijan; se rehace en cada {@link #load()}. */
+    private ExpCurve curve = new ExpCurve(new TreeMap<>());
 
     public LevelUpRewardsConfig(RPGRoll plugin, YamlLoader yamlLoader) {
         this.plugin = plugin;
@@ -28,6 +32,7 @@ public class LevelUpRewardsConfig {
      */
     public void load() {
         rewards.clear();
+        curve = new ExpCurve(new TreeMap<>());
 
         YamlConfiguration config = yamlLoader.loadConfig("levelup-rewards.yml");
 
@@ -44,6 +49,20 @@ public class LevelUpRewardsConfig {
             setDefaults();
             return;
         }
+
+        // Primero los niveles que fijan exp_required: con ellos se calcula la XP de los demás.
+        TreeMap<Integer, Integer> anchors = new TreeMap<>();
+        for (String levelKey : rewardsSection.getKeys(false)) {
+            ConfigurationSection s = rewardsSection.getConfigurationSection(levelKey);
+            if (s != null && s.isInt("exp_required")) {
+                try {
+                    anchors.put(Integer.parseInt(levelKey), s.getInt("exp_required"));
+                } catch (NumberFormatException ignored) {
+                    // Se avisa abajo.
+                }
+            }
+        }
+        curve = new ExpCurve(anchors);
 
         for (String levelKey : rewardsSection.getKeys(false)) {
 
@@ -102,7 +121,7 @@ public class LevelUpRewardsConfig {
      */
     private LevelUpRewards parseReward(int level, ConfigurationSection section) {
 
-        int expRequired = section.getInt("exp_required", calculateExpRequired(level));
+        int expRequired = section.getInt("exp_required", curve.expRequired(level));
         int statPoints = section.getInt("stat_points", 2);
         int healthBonus = section.getInt("health_bonus", 5 * level);
         int manaBonus = section.getInt("mana_bonus", 3 * level);
@@ -124,9 +143,31 @@ public class LevelUpRewardsConfig {
      * Calcula la experiencia requerida para un nivel (fórmula exponencial).
      */
     private int calculateExpRequired(int level) {
-        int baseExp = 100;
-        double multiplier = 1.5;
-        return (int) (baseExp * Math.pow(level - 1, multiplier));
+        return ExpCurve.formula(level);
+    }
+
+    /** XP acumulada que pide {@code level}: la de levelup-rewards.yml o la de la curva. El nivel 1 pide 0. */
+    public int expRequired(int level) {
+        if (level <= 1) {
+            return 0;
+        }
+        return getRewards(level).map(LevelUpRewards::experienceRequired).orElse(Integer.MAX_VALUE);
+    }
+
+    /** XP que le falta para el siguiente nivel (0 en el máximo). */
+    public int expToNext(int level, int experience) {
+        if (level >= MAX_LEVEL) {
+            return 0;
+        }
+        return Math.max(0, expRequired(level + 1) - experience);
+    }
+
+    /** Avance dentro del nivel, de 0 a 100 (100 en el máximo). */
+    public int progressPercent(int level, int experience) {
+        if (level >= MAX_LEVEL) {
+            return 100;
+        }
+        return ExpCurve.percent(experience, expRequired(level), expRequired(level + 1));
     }
 
     /**
@@ -140,7 +181,7 @@ public class LevelUpRewardsConfig {
      * Crea una recompensa por defecto si no existe.
      */
     private LevelUpRewards createDefault(int level) {
-        int expRequired = calculateExpRequired(level);
+        int expRequired = curve.expRequired(level);
         int statPoints = 2;
         int healthBonus = 5 * level;
         int manaBonus = 3 * level;
