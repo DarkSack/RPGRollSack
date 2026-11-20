@@ -1,5 +1,6 @@
 package com.sack.rpgroll.magic.engine;
 
+import com.sack.rpgroll.common.event.magic.SpellCastEvent;
 import com.sack.rpgroll.common.integration.SoftDepend;
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.magic.affinity.AffinityResolver;
@@ -21,6 +22,7 @@ import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
@@ -29,6 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 /**
  * Orquesta un cast completo: chequea/descuenta costo, chequea/inicia
@@ -44,8 +47,16 @@ public class SpellCastEngine {
     private final RuneManager runeManager;
     private final SpellComponentExecutor executor;
     private final LangManager lang;
+    private final Consumer<Event> events;
 
     public SpellCastEngine(Plugin plugin, SchoolManager schoolManager, RuneManager runeManager, LangManager lang) {
+        this(plugin, schoolManager, runeManager, lang, event -> Bukkit.getPluginManager().callEvent(event));
+    }
+
+    /** {@code events} recibe los eventos que lanza el motor; los tests lo sustituyen por un recolector. */
+    public SpellCastEngine(Plugin plugin, SchoolManager schoolManager, RuneManager runeManager, LangManager lang,
+            Consumer<Event> events) {
+        this.events = events;
         this.plugin = plugin;
         this.schoolManager = schoolManager;
         this.runeManager = runeManager;
@@ -94,6 +105,8 @@ public class SpellCastEngine {
 
         long cooldownMillis = (long) (spell.cooldownTicks() * 50L * costCooldownMods.cooldownMultiplier());
         spellbook.startCooldown(spell.id(), Math.max(0, cooldownMillis), now);
+
+        events.accept(new SpellCastEvent(caster, spell.id(), spell.schoolId(), spell.tags()));
 
         double affinityMultiplier = AffinityResolver.multiplierFor(caster, school);
         double powerMultiplier = affinityMultiplier * (catalyst != null ? catalyst.powerMultiplier() : 1.0)

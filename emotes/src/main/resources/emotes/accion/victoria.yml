@@ -1,0 +1,13 @@
+# De fábrica: generado por tools/emotes/construir_emotes.py.
+id: victoria
+name: "lang:emotes.victoria"
+icon: GOLDEN_SWORD
+category: accion
+animation: victoria
+model: rpgroll_emotes
+loop: false
+unlock: free
+rarity: uncommon
+sound: { id: "minecraft:entity.player.levelup", volume: 0.5, pitch: 1.2 }
+particles: { type: TOTEM_OF_UNDYING, count: 12 }
+hidden: false

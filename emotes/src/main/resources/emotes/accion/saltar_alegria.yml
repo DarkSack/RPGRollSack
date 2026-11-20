@@ -1,0 +1,13 @@
+# De fábrica: generado por tools/emotes/construir_emotes.py.
+id: saltar_alegria
+name: "lang:emotes.saltar_alegria"
+icon: FIREWORK_ROCKET
+category: accion
+animation: saltar_alegria
+model: rpgroll_emotes
+loop: false
+unlock: free
+rarity: uncommon
+sound: { id: "minecraft:entity.firework_rocket.twinkle", volume: 0.4, pitch: 1.2 }
+particles: { type: FIREWORK, count: 10 }
+hidden: false

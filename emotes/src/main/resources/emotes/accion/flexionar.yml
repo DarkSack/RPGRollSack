@@ -1,0 +1,13 @@
+# De fábrica: generado por tools/emotes/construir_emotes.py.
+id: flexionar
+name: "lang:emotes.flexionar"
+icon: IRON_CHESTPLATE
+category: accion
+animation: flexionar
+model: rpgroll_emotes
+loop: false
+unlock: locked
+rarity: rare
+sound: { id: "minecraft:item.armor.equip_iron", volume: 0.7, pitch: 0.9 }
+particles: { type: CRIT, count: 8 }
+hidden: false

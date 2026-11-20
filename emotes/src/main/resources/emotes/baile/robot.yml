@@ -1,0 +1,12 @@
+# De fábrica: generado por tools/emotes/construir_emotes.py.
+id: robot
+name: "lang:emotes.robot"
+icon: COMPARATOR
+category: baile
+animation: robot
+model: rpgroll_emotes
+loop: false
+unlock: locked
+rarity: rare
+sound: { id: "minecraft:block.piston.extend", volume: 0.4, pitch: 1.6 }
+hidden: false

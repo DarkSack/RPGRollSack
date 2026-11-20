@@ -34,5 +34,6 @@ rewards:
   experience: 450
   commands:
     - "tesoro give {player} mareas_cofre_capitan"
+    - "emotesadmin give {player} mareas_catalejo"
   quests:
     - mareas_el_canto_del_arrecife

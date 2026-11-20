@@ -1,0 +1,59 @@
+# Configuración de RPGRoll-Emotes
+
+# Idioma de los mensajes: es, en, pt_BR.
+language: es
+
+# Segundos de espera entre un emote y el siguiente del mismo jugador.
+cooldown-seconds: 3
+
+# Segundos tras recibir o dar daño en los que no se puede iniciar un emote.
+combat-tag-seconds: 8
+
+cancel:
+  # Distancia horizontal (bloques) que puede moverse el jugador antes de que el emote se cancele.
+  move-distance: 0.3
+
+favorites:
+  # Huecos de favoritos por jugador (/emote 1 ... /emote N).
+  # De 1 a 7: el menú dibuja como mucho 7; un valor mayor se limita a 7 (y se avisa en el log).
+  max: 7
+
+# Atajos para abrir los emotes sin escribir comandos.
+hotkeys:
+  # Shift + F (cambiar de mano agachado) abre el menú de emotes.
+  sneak-swap: true
+  # /emotes rapido abre un diálogo con los favoritos; pensado para atarlo a una tecla con un macro.
+  # (La tecla vanilla «Acciones rápidas» no se puede usar desde un plugin con plugin.yml.)
+  quick-actions: true
+
+# Nombre del modelo de BetterModel con las extremidades que animan al jugador.
+limb-model: rpgroll_emotes
+
+# Animaciones de conjuro de RPGRoll-Magic (solo actúan si Magic está instalado).
+magic:
+  # Poner en false desactiva las animaciones de conjuro.
+  enabled: true
+  # Umbral para usar la variante _caminando del conjuro. Hoy sin efecto: se mira si el jugador pulsa
+  # una tecla de movimiento (en Paper la velocidad de quien anda da casi 0). No frena al jugador.
+  walking-speed: 0.05
+  cast:
+    # Emote que se reproduce al lanzar un hechizo.
+    default: conjurar
+    # Emote propio por escuela, p. ej. fire: conjurar_fuego
+    schools: {}
+  channel:
+    # Emote en bucle mientras se canaliza.
+    default: canalizar
+    # Emote propio por escuela, p. ej. frost: canalizar_hielo
+    schools: {}
+
+# Menús dibujados del paquete de recursos. Vacío = menús de cofre normales.
+# En Sackito: "sackito:menus".
+menus:
+  pack: ""
+
+resource-pack:
+  # Copiar el pack que genera BetterModel (BetterModel/build.zip, con pack-type: zip) a SackResourcePack si
+  # está instalado, al arrancar y tras cada recarga de BetterModel. Se aplica con /srp publish.
+  # Cambiarlo necesita reiniciar.
+  register-in-sackresourcepack: true

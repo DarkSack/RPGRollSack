@@ -1,0 +1,93 @@
+plugin:
+  prefix: "&8[&dEmotes&8] &r"
+  enabled: "&aRPGRoll-Emotes enabled."
+
+command:
+  players_only: "&cOnly a player can use this."
+
+emote:
+  usage: "&7Use &f/emote <id|1-7|stop>&7."
+
+# Action bar when an emote cannot be launched (one key per LaunchResult).
+launch:
+  unknown: "&cThat emote does not exist."
+  locked: "&cYou do not have that emote yet."
+  cooldown: "&eWait a moment before another emote."
+  busy_state: "&cYou cannot emote right now."
+  in_combat: "&cYou cannot emote while in combat."
+  engine_failed: "&cThe emote could not be played."
+  empty_favorite: "&cThat favorite slot is empty."
+
+admin:
+  usage: "&7Usage: &f/emotesadmin <give|take|list|play|reload> ..."
+  player_not_found: "&cI do not know the player &f{player}&c."
+  not_online: "&c{player} is not online."
+  unknown_emote: "&cThere is no emote &f{id}&c."
+  given: "&aEmote &f{id} &aunlocked for &f{player}&a."
+  already: "&e{player} already had the emote &f{id}&e."
+  taken: "&aEmote &f{id} &aremoved from &f{player}&a."
+  not_had: "&e{player} did not have the emote &f{id}&e."
+  list: "&7Emotes of &f{player}&7: &f{emotes}"
+  list_empty: "&7{player} has no unlocked emotes."
+  played: "&aEmote &f{id} &aplayed for &f{player}&a."
+  play_failed: "&cCould not play &f{id} &cfor &f{player}&c."
+  save_failed: "&cCould not save the emotes of &f{player}&c: their file is unreadable, nothing was changed."
+  reloaded: "&aRPGRoll-Emotes reloaded (some changes, like limb-model or favorites.max, need a restart)."
+
+menu:
+  title: "Emotes"
+  all: "&f&lAll"
+  prev: "&e◀ Previous"
+  next: "&eNext ▶"
+  page: "&7Page &f{page}&7/&f{pages}"
+  stop: "&c&lStop emote"
+  locked: "&7Locked"
+  how_to_unlock: "&7How to get it: &f{how}"
+  rarity: "&7Rarity: &f{rarity}"
+  hint_play: "&eLeft click: &7play"
+  hint_favorite: "&eRight click: &7add to favorites"
+  hint_unfavorite: "&eRight click: &7remove from favorites"
+  favorite: "&6★ {slot}: &f{name}"
+  favorite_empty: "&7★ Favorite {slot} (empty)"
+  favorites_full: "&cAll your favorite slots are taken."
+
+# Rarities (rarity: in the emote's .yml). Without a key, the id is shown.
+rarity:
+  common: "Common"
+  uncommon: "Uncommon"
+  rare: "Rare"
+  epic: "Epic"
+  legendary: "Legendary"
+
+# Quick dialog (/emotes rapido).
+quick:
+  title: "Emotes"
+  menu: "&e☰ Open menu"
+  stop: "&c■ Stop"
+  disabled: "&cThe quick emotes dialog is disabled."
+
+# Names of the bundled emotes (name: "lang:emotes.<id>").
+emotes:
+  saludar: "&fWave"
+  aplaudir: "&fClap"
+  reverencia: "&fBow"
+  asentir: "&fNod"
+  negar: "&fShake head"
+  senalar: "&fPoint"
+  encogerse: "&fShrug"
+  facepalm: "&fFacepalm"
+  reir: "&fLaugh"
+  llorar: "&fCry"
+  pensar: "&fThink"
+  bailar: "&fDance"
+  robot: "&fRobot"
+  saltitos: "&fHop"
+  bailar_lento: "&fSlow dance"
+  victoria: "&fVictory"
+  flexionar: "&fFlex"
+  saltar_alegria: "&fJump for joy"
+  sentarse: "&fSit"
+  meditar: "&fMeditate"
+  conjurar: "&fCast"
+  conjurar_caminando: "&fCast while walking"
+  canalizar: "&fChannel"

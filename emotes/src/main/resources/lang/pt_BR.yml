@@ -1,0 +1,93 @@
+plugin:
+  prefix: "&8[&dEmotes&8] &r"
+  enabled: "&aRPGRoll-Emotes habilitado."
+
+command:
+  players_only: "&cSó um jogador pode usar isto."
+
+emote:
+  usage: "&7Use &f/emote <id|1-7|stop>&7."
+
+# Barra de ação quando um emote não pode ser lançado (uma chave por LaunchResult).
+launch:
+  unknown: "&cEsse emote não existe."
+  locked: "&cVocê ainda não tem esse emote."
+  cooldown: "&eEspere um momento antes de outro emote."
+  busy_state: "&cVocê não pode fazer um emote agora."
+  in_combat: "&cVocê não pode fazer emotes em combate."
+  engine_failed: "&cNão foi possível reproduzir o emote."
+  empty_favorite: "&cEsse espaço de favoritos está vazio."
+
+admin:
+  usage: "&7Uso: &f/emotesadmin <give|take|list|play|reload> ..."
+  player_not_found: "&cNão conheço o jogador &f{player}&c."
+  not_online: "&c{player} não está conectado."
+  unknown_emote: "&cNão existe o emote &f{id}&c."
+  given: "&aEmote &f{id} &adesbloqueado para &f{player}&a."
+  already: "&e{player} já tinha o emote &f{id}&e."
+  taken: "&aEmote &f{id} &aremovido de &f{player}&a."
+  not_had: "&e{player} não tinha o emote &f{id}&e."
+  list: "&7Emotes de &f{player}&7: &f{emotes}"
+  list_empty: "&7{player} não tem emotes desbloqueados."
+  played: "&aEmote &f{id} &areproduzido para &f{player}&a."
+  play_failed: "&cNão foi possível reproduzir &f{id} &cpara &f{player}&c."
+  save_failed: "&cNão foi possível salvar os emotes de &f{player}&c: o arquivo está ilegível, nada foi alterado."
+  reloaded: "&aRPGRoll-Emotes recarregado (algumas mudanças, como limb-model ou favorites.max, precisam de reinício)."
+
+menu:
+  title: "Emotes"
+  all: "&f&lTodos"
+  prev: "&e◀ Anterior"
+  next: "&ePróximo ▶"
+  page: "&7Página &f{page}&7/&f{pages}"
+  stop: "&c&lParar emote"
+  locked: "&7Bloqueado"
+  how_to_unlock: "&7Como conseguir: &f{how}"
+  rarity: "&7Raridade: &f{rarity}"
+  hint_play: "&eClique esquerdo: &7executar"
+  hint_favorite: "&eClique direito: &7adicionar aos favoritos"
+  hint_unfavorite: "&eClique direito: &7remover dos favoritos"
+  favorite: "&6★ {slot}: &f{name}"
+  favorite_empty: "&7★ Favorito {slot} (vazio)"
+  favorites_full: "&cTodos os seus espaços de favoritos estão ocupados."
+
+# Raridades (rarity: no .yml do emote). Sem chave, aparece o id.
+rarity:
+  common: "Comum"
+  uncommon: "Incomum"
+  rare: "Raro"
+  epic: "Épico"
+  legendary: "Lendário"
+
+# Diálogo rápido (/emotes rapido).
+quick:
+  title: "Emotes"
+  menu: "&e☰ Abrir menu"
+  stop: "&c■ Parar"
+  disabled: "&cO diálogo rápido de emotes está desativado."
+
+# Nomes dos emotes de fábrica (name: "lang:emotes.<id>").
+emotes:
+  saludar: "&fAcenar"
+  aplaudir: "&fAplaudir"
+  reverencia: "&fReverência"
+  asentir: "&fConcordar"
+  negar: "&fNegar"
+  senalar: "&fApontar"
+  encogerse: "&fDar de ombros"
+  facepalm: "&fFacepalm"
+  reir: "&fRir"
+  llorar: "&fChorar"
+  pensar: "&fPensar"
+  bailar: "&fDançar"
+  robot: "&fRobô"
+  saltitos: "&fPulinhos"
+  bailar_lento: "&fDança lenta"
+  victoria: "&fVitória"
+  flexionar: "&fMostrar músculo"
+  saltar_alegria: "&fPular de alegria"
+  sentarse: "&fSentar"
+  meditar: "&fMeditar"
+  conjurar: "&fConjurar"
+  conjurar_caminando: "&fConjurar andando"
+  canalizar: "&fCanalizar"

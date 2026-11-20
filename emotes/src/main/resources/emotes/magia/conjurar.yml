@@ -1,0 +1,11 @@
+# De fábrica: generado por tools/emotes/construir_emotes.py.
+id: conjurar
+name: "lang:emotes.conjurar"
+icon: BLAZE_POWDER
+category: magia
+animation: conjurar
+model: rpgroll_emotes
+loop: false
+unlock: free
+rarity: common
+hidden: true

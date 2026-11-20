@@ -1,0 +1,12 @@
+# De fábrica: generado por tools/emotes/construir_emotes.py.
+id: facepalm
+name: "lang:emotes.facepalm"
+icon: SLIME_BALL
+category: social
+animation: facepalm
+model: rpgroll_emotes
+loop: false
+unlock: free
+rarity: uncommon
+sound: { id: "minecraft:entity.player.attack.nodamage", volume: 0.5, pitch: 1.2 }
+hidden: false

@@ -35,5 +35,6 @@ rewards:
   commands:
     - "itemadmin give {player} jade_te_de_jazmin 4"
     - "magicadmin givecatalyst jade_pergamino_del_qi {player}"
+    - "emotesadmin give {player} jade_postura_grulla"
   quests:
     - jade_el_general_sin_sombra

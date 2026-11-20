@@ -1,0 +1,11 @@
+# De fábrica: generado por tools/emotes/construir_emotes.py.
+id: encogerse
+name: "lang:emotes.encogerse"
+icon: LEATHER
+category: social
+animation: encogerse
+model: rpgroll_emotes
+loop: false
+unlock: free
+rarity: common
+hidden: false

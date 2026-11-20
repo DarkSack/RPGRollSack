@@ -1,0 +1,11 @@
+# De fábrica: generado por tools/emotes/construir_emotes.py.
+id: conjurar_caminando
+name: "lang:emotes.conjurar_caminando"
+icon: BLAZE_POWDER
+category: magia
+animation: conjurar_caminando
+model: rpgroll_emotes
+loop: false
+unlock: free
+rarity: common
+hidden: true

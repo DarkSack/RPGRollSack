@@ -1,0 +1,11 @@
+# De fábrica: generado por tools/emotes/construir_emotes.py.
+id: reverencia
+name: "lang:emotes.reverencia"
+icon: NAME_TAG
+category: social
+animation: reverencia
+model: rpgroll_emotes
+loop: false
+unlock: free
+rarity: common
+hidden: false

@@ -1,0 +1,12 @@
+# Pack mareas-malditas: generado por tools/emotes/construir_emotes.py --pack mareas-malditas.
+id: mareas_catalejo
+name: "&3Catalejo"
+icon: SPYGLASS
+category: social
+animation: mareas_catalejo
+model: mareas_malditas_emotes
+loop: false
+unlock: locked
+rarity: uncommon
+how-to-unlock: "Completa la misión «La Cartógrafa»"
+hidden: false

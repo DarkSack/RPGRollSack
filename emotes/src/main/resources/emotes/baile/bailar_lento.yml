@@ -1,0 +1,12 @@
+# De fábrica: generado por tools/emotes/construir_emotes.py.
+id: bailar_lento
+name: "lang:emotes.bailar_lento"
+icon: MUSIC_DISC_CAT
+category: baile
+animation: bailar_lento
+model: rpgroll_emotes
+loop: true
+unlock: locked
+rarity: rare
+particles: { type: HEART, count: 3 }
+hidden: false

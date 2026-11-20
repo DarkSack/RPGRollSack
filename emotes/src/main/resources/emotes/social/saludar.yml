@@ -1,0 +1,11 @@
+# De fábrica: generado por tools/emotes/construir_emotes.py.
+id: saludar
+name: "lang:emotes.saludar"
+icon: FEATHER
+category: social
+animation: saludar
+model: rpgroll_emotes
+loop: false
+unlock: free
+rarity: common
+hidden: false

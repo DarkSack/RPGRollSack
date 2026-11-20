@@ -26,6 +26,7 @@ Sin Sombra, el Dragón de Jade y **tesoros enterrados** con mapa.
 | RPGRoll-Crates | Caja «Cofre de la Dinastía» y 2 tesoros enterrados: Arca Lacada y Relicario del Dragón |
 | RPGRoll-Furniture | 7 muebles: Arca Lacada, Relicario del Dragón y Gabinete de Té (con almacén), Linterna de Papel, Biombo, Mesa Baja y Bonsái |
 | RPGRoll-Ranching | La raza Gallina Fénix, con modelo propio |
+| RPGRoll-Emotes | 2 emotes bloqueados: Saludo Marcial (`jade_saludo_marcial`), que da «El General Sin Sombra», y Postura de la Grulla (`jade_postura_grulla`, en bucle), que da «Las Grullas de Tinta» |
 
 Los ítems, los mapas, los muebles y las 7 criaturas (las 6 de RPGRoll-Mobs y la gallina) tienen
 modelo 3D propio.
@@ -54,6 +55,10 @@ Después reinicia el servidor (o recarga cada plugin) y publica el pack de recur
   anterior esos comandos fallan en consola y no llega nada.
 - **RPGRoll-Items y RPGRoll-Lib posteriores a 1.1.6** para el arco, el abanico y el shuriken (acción
   `SHOOT`). Con esas versiones o anteriores, no disparan.
+
+- **RPGRoll-Emotes 1.1.12 o posterior** (con BetterModel) para los dos emotes. Sin él, las misiones
+  dejan un aviso en consola al dar el emote y el resto de la recompensa llega igual. Con
+  SackResourcePack, publica el pack con `/srp publish` después de instalarlos.
 
 ## Lo que hay que colocar a mano
 

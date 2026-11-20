@@ -37,6 +37,7 @@ include(
     "recipes",
     "machines",
     "disasters",
+    "emotes",
 
     // Herramienta de escritorio para los compradores, no un plugin.
     "packinstaller"

@@ -1,0 +1,12 @@
+# De fábrica: generado por tools/emotes/construir_emotes.py.
+id: pensar
+name: "lang:emotes.pensar"
+icon: WRITABLE_BOOK
+category: social
+animation: pensar
+model: rpgroll_emotes
+loop: false
+unlock: free
+rarity: common
+particles: { type: ENCHANT, count: 8 }
+hidden: false

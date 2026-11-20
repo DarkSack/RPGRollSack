@@ -1,0 +1,13 @@
+# Pack mareas-malditas: generado por tools/emotes/construir_emotes.py --pack mareas-malditas.
+id: pirata_hornpipe
+name: "&3Hornpipe Pirata"
+icon: NAUTILUS_SHELL
+category: baile
+animation: pirata_hornpipe
+model: mareas_malditas_emotes
+loop: true
+unlock: locked
+rarity: rare
+how-to-unlock: "Completa la misión «La Flota del Capitán»"
+particles: { type: NOTE, count: 4 }
+hidden: false

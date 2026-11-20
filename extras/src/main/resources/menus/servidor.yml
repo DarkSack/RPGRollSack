@@ -173,6 +173,16 @@ items:
       - type: COMMAND_AS_PLAYER
         value: "votar"
 
+  # Emotes es un módulo aparte: sin él, el comando no existe y Extras muestra su error estándar.
+  - slot: 33
+    material: ARMOR_STAND
+    name: "&d&lEmotes"
+    lore:
+      - "&7Baila, saluda y mucho más."
+    actions:
+      - type: COMMAND_AS_PLAYER
+        value: "emotes"
+
   - slot: 40
     material: BARRIER
     name: "&cCerrar"

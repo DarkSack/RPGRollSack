@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "com.sack"
-version = "1.1.9"
+version = "1.1.10"
 
 base.archivesName.set("SackResourcePack")
 

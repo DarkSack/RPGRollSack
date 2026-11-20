@@ -1,0 +1,12 @@
+# De fábrica: generado por tools/emotes/construir_emotes.py.
+id: llorar
+name: "lang:emotes.llorar"
+icon: GHAST_TEAR
+category: social
+animation: llorar
+model: rpgroll_emotes
+loop: false
+unlock: free
+rarity: uncommon
+particles: { type: FALLING_WATER, count: 8 }
+hidden: false

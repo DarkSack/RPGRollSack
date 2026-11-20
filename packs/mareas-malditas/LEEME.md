@@ -25,6 +25,7 @@ armas de chispa, sirenas, un capitán ahogado, el Kraken Ancestral y **tesoros e
 | RPGRoll-Crates | Caja «Cofre de las Mareas» y 2 tesoros enterrados: Cofre del Capitán y Arcón de Coral |
 | RPGRoll-Furniture | 7 muebles: Cofre del Capitán, Arcón de Coral, Baúl de Barco y Barril de Ron (con almacén), Timón, Farol de Barco y Mesa de Cartógrafo |
 | RPGRoll-Fishing | 3 especies, el Señuelo de Coral, la Caña de Coral y un tesoro de pesca |
+| RPGRoll-Emotes | 2 emotes bloqueados: Hornpipe Pirata (`pirata_hornpipe`, baile en bucle), que da «La Flota del Capitán», y Catalejo (`mareas_catalejo`), que da «La Cartógrafa» |
 
 Los ítems, la caña, el cebo, los mapas, los muebles y las 6 criaturas tienen modelo 3D propio, en Java y
 en Bedrock.
@@ -41,7 +42,8 @@ packs/mareas-malditas/RPGRoll-Crates/treasures/  ->  plugins/RPGRoll-Crates/trea
 
 Después reinicia el servidor (o recarga cada plugin) y publica el pack de recursos con `/srp publish`.
 
-**Nada se sobrescribe:** todos los ids empiezan por `mareas_` y conviven con lo que ya tengas.
+**Nada se sobrescribe:** todos los ids empiezan por `mareas_` (salvo el emote `pirata_hornpipe`) y
+conviven con lo que ya tengas.
 
 ## Versiones que necesita
 
@@ -53,6 +55,10 @@ Después reinicia el servidor (o recarga cada plugin) y publica el pack de recur
   `giverod` y `givebait`). Con una versión anterior esos comandos fallan en consola y no llega nada.
 - **RPGRoll-Items y RPGRoll-Lib posteriores a 1.1.6** para las armas de fuego (acción `SHOOT` y
   cooldowns en milisegundos). Con esas versiones o anteriores, las pistolas no disparan.
+
+- **RPGRoll-Emotes 1.1.12 o posterior** (con BetterModel) para los dos emotes. Sin él, las misiones
+  dejan un aviso en consola al dar el emote y el resto de la recompensa llega igual. Con
+  SackResourcePack, publica el pack con `/srp publish` después de instalarlos.
 
 ## Lo que hay que colocar a mano
 

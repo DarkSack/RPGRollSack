@@ -41,7 +41,8 @@ public class ManifestScanner {
             return modules;
         }
 
-        File[] children = contentDirectory.listFiles(File::isDirectory);
+        // Las que empiezan por punto son copias a medias de registerArchive (o carpetas ocultas): no son módulos.
+        File[] children = contentDirectory.listFiles(f -> f.isDirectory() && !f.getName().startsWith("."));
 
         if (children == null) {
             return modules;

@@ -1,0 +1,11 @@
+# De fábrica: generado por tools/emotes/construir_emotes.py.
+id: senalar
+name: "lang:emotes.senalar"
+icon: ARROW
+category: social
+animation: senalar
+model: rpgroll_emotes
+loop: false
+unlock: free
+rarity: common
+hidden: false

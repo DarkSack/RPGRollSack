@@ -36,3 +36,4 @@ rewards:
   commands:
     - "itemadmin give {player} mareas_kit_de_calafate 4"
     - "itemadmin give {player} mareas_ron_del_capitan 4"
+    - "emotesadmin give {player} pirata_hornpipe"

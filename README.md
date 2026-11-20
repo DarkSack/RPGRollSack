@@ -23,7 +23,7 @@ Ya no es un único plugin: es un **ecosistema de 1 core + 24 addons independient
 - 🏭 **Máquinas de área (Machines)** — Pescadora, Granja y Leñadora trabajan solas dentro de tu claim; la Pescadora saca peces de RPGRoll-Fishing
 - 🖼️ **Más menús con fondo dibujado** — subastas, banco y empresas (Economy), gremios (Guilds) y warps (Extras)
 
-Necesitan **RPGRoll-Lib 1.1.11**: Lib, core, Crates, Magic, Fishing, Ranching, Chat, Crafting, Furniture, Quests, Pass, Traps, Dungeons, Enchantments, Items, Extras y Machines. Guilds y Economy van en 1.1.10.
+Necesitan **RPGRoll-Lib 1.1.11**: Lib, core, Crates, Magic, Fishing, Ranching, Chat, Crafting, Furniture, Quests, Pass, Traps, Dungeons, Enchantments, Items, Extras, Machines y Emotes. Guilds y Economy van en 1.1.10.
 
 ## Versión 1.1.9
 
@@ -138,6 +138,7 @@ Ver el detalle completo de cada uno (comandos, permisos, formato YAML, ejemplos)
 | RPGRoll-Traps    | `/trapadmin`                                     | RPGRoll-Lib             | Items, RPGRoll-Effects, Mobs, PlaceholderAPI                            | **$14**         |
 | RPGRoll-Pass     | `/pase`, `/diario`, `/votar`, `/passadmin`       | RPGRoll-Lib             | Quests, Mobs, Crates, Items, Votifier, Vault                            | **$12**         |
 | RPGRoll-Furniture | `/muebles`, `/furnitureadmin`                  | RPGRoll-Lib             | SackResourcePack, Vault                                                 | **$14**         |
+| RPGRoll-Emotes   | `/emotes`, `/emote`, `/emotesadmin`              | RPGRoll-Lib, **BetterModel** | SackResourcePack, RPGRoll-Magic                                    | —               |
 | RPGRoll-Recipes  | `/recetas` (`/jei`)                              | RPGRoll-Lib             | Crafting, Furniture, Items, Extras (solo orden de carga)                | **$8**          |
 | RPGRoll-Machines | `/machines`                                      | RPGRoll-Lib             | Vault, GriefPrevention, Items, Crates                                   | **$14**         |
 

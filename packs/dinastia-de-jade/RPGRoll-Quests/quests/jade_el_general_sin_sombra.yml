@@ -40,3 +40,4 @@ rewards:
   commands:
     - "itemadmin give {player} jade_incienso_de_concentracion 3"
     - "itemadmin give {player} jade_elixir_de_qi 3"
+    - "emotesadmin give {player} jade_saludo_marcial"

@@ -1,0 +1,11 @@
+# De fábrica: generado por tools/emotes/construir_emotes.py.
+id: sentarse
+name: "lang:emotes.sentarse"
+icon: OAK_STAIRS
+category: accion
+animation: sentarse
+model: rpgroll_emotes
+loop: true
+unlock: free
+rarity: common
+hidden: false

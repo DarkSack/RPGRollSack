@@ -2,6 +2,9 @@ package com.sack.rpgroll.magic.listener;
 
 import com.sack.rpgroll.util.ComponentUtils;
 
+import com.sack.rpgroll.common.event.magic.SpellChannelEndEvent;
+import com.sack.rpgroll.common.event.magic.SpellChannelEndEvent.Reason;
+import com.sack.rpgroll.common.event.magic.SpellChannelStartEvent;
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.magic.core.Spell;
 import com.sack.rpgroll.magic.core.SpellCatalyst;
@@ -17,6 +20,8 @@ import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import org.bukkit.Bukkit;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -28,6 +33,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 /**
  * Canalización para hechizos con trigger HOLD. Bukkit no expone un evento
@@ -45,12 +51,23 @@ public class SpellChannelManager implements Listener {
     private final Plugin plugin;
     private final SpellCastEngine engine;
     private final LangManager lang;
-    private final Map<UUID, BukkitTask> channeling = new HashMap<>();
+    private final Consumer<Event> events;
+    private final Map<UUID, Channel> channeling = new HashMap<>();
+
+    /** Canal en curso: la tarea y el hechizo, para poder cerrarlo con su {@link SpellChannelEndEvent}. */
+    private record Channel(Player player, BukkitTask task, String spellId) {
+    }
 
     public SpellChannelManager(Plugin plugin, SpellCastEngine engine, LangManager lang) {
+        this(plugin, engine, lang, event -> Bukkit.getPluginManager().callEvent(event));
+    }
+
+    /** {@code events} recibe los eventos que lanza el canal; los tests lo sustituyen por un recolector. */
+    public SpellChannelManager(Plugin plugin, SpellCastEngine engine, LangManager lang, Consumer<Event> events) {
         this.plugin = plugin;
         this.engine = engine;
         this.lang = lang;
+        this.events = events;
     }
 
     public boolean isChanneling(UUID uuid) {
@@ -76,13 +93,19 @@ public class SpellChannelManager implements Listener {
             public void run() {
 
                 if (!player.isOnline()) {
-                    cancelChannel(player.getUniqueId());
+                    cancelChannel(player.getUniqueId(), Reason.OTHER);
+                    return;
+                }
+
+                // Otro mundo: distanceSquared lanzaría IllegalArgumentException cada tick y el canal no acabaría nunca.
+                if (!java.util.Objects.equals(player.getWorld(), startLocation.getWorld())) {
+                    cancelChannel(player.getUniqueId(), Reason.OTHER);
                     return;
                 }
 
                 if (player.getLocation().distanceSquared(startLocation) > CANCEL_MOVE_DISTANCE_SQUARED) {
                     lang.send(player, "channel.cancelled_move");
-                    cancelChannel(player.getUniqueId());
+                    cancelChannel(player.getUniqueId(), Reason.MOVED);
                     return;
                 }
 
@@ -94,7 +117,7 @@ public class SpellChannelManager implements Listener {
                 if (elapsed >= totalTicks) {
 
                     // Hay que parar la tarea, no solo olvidarla: seguía lanzando el hechizo cada tick.
-                    cancelChannel(player.getUniqueId());
+                    cancelChannel(player.getUniqueId(), Reason.COMPLETED);
                     CastResult result = engine.cast(spell, player, spellbook, catalyst);
 
                     if (!result.success()) {
@@ -105,7 +128,8 @@ public class SpellChannelManager implements Listener {
             }
         }.runTaskTimer(plugin, 1L, 1L);
 
-        channeling.put(player.getUniqueId(), task);
+        channeling.put(player.getUniqueId(), new Channel(player, task, spell.id()));
+        events.accept(new SpellChannelStartEvent(player, spell.id(), spell.schoolId(), spell.castTimeTicks()));
     }
 
     /**
@@ -114,7 +138,8 @@ public class SpellChannelManager implements Listener {
      * había un porcentaje en la barra de acción y nada indicaba a los demás que
      * alguien estaba cargando un hechizo.
      */
-    private static void drawChannel(Player player, Spell spell, int elapsed, int totalTicks) {
+    /** Sin {@code private}: los tests lo anulan porque Sound/Particle necesitan el registro de Paper. */
+    void drawChannel(Player player, Spell spell, int elapsed, int totalTicks) {
 
         double progress = Math.min(1.0, elapsed / (double) totalTicks);
         Location base = player.getLocation();
@@ -149,15 +174,18 @@ public class SpellChannelManager implements Listener {
         }
 
         lang.send(player, "channel.cancelled_damage");
-        cancelChannel(player.getUniqueId());
+        cancelChannel(player.getUniqueId(), Reason.DAMAGED);
     }
 
-    private void cancelChannel(UUID uuid) {
+    /** Única salida de un canal: lo para y lo cierra con su evento (solo una vez). */
+    private void cancelChannel(UUID uuid, Reason reason) {
 
-        BukkitTask task = channeling.remove(uuid);
+        Channel channel = channeling.remove(uuid);
 
-        if (task != null) {
-            task.cancel();
+        if (channel != null) {
+            channel.task().cancel();
+
+            events.accept(new SpellChannelEndEvent(channel.player(), channel.spellId(), reason));
         }
     }
 

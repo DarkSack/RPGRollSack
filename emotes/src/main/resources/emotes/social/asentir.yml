@@ -1,0 +1,11 @@
+# De fábrica: generado por tools/emotes/construir_emotes.py.
+id: asentir
+name: "lang:emotes.asentir"
+icon: LIME_DYE
+category: social
+animation: asentir
+model: rpgroll_emotes
+loop: false
+unlock: free
+rarity: common
+hidden: false

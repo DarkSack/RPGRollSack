@@ -1,0 +1,12 @@
+# De fábrica: generado por tools/emotes/construir_emotes.py.
+id: bailar
+name: "lang:emotes.bailar"
+icon: JUKEBOX
+category: baile
+animation: bailar
+model: rpgroll_emotes
+loop: false
+unlock: free
+rarity: common
+particles: { type: NOTE, count: 4 }
+hidden: false

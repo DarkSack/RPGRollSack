@@ -1,0 +1,13 @@
+# De fábrica: generado por tools/emotes/construir_emotes.py.
+id: reir
+name: "lang:emotes.reir"
+icon: SUNFLOWER
+category: social
+animation: reir
+model: rpgroll_emotes
+loop: false
+unlock: free
+rarity: uncommon
+sound: { id: "minecraft:entity.witch.celebrate", volume: 0.5, pitch: 1.3 }
+particles: { type: NOTE, count: 5 }
+hidden: false

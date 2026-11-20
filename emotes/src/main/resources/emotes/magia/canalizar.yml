@@ -1,0 +1,11 @@
+# De fábrica: generado por tools/emotes/construir_emotes.py.
+id: canalizar
+name: "lang:emotes.canalizar"
+icon: AMETHYST_CLUSTER
+category: magia
+animation: canalizar
+model: rpgroll_emotes
+loop: true
+unlock: free
+rarity: common
+hidden: true

@@ -1,0 +1,13 @@
+# De fábrica: generado por tools/emotes/construir_emotes.py.
+id: meditar
+name: "lang:emotes.meditar"
+icon: AMETHYST_SHARD
+category: accion
+animation: meditar
+model: rpgroll_emotes
+loop: true
+unlock: locked
+rarity: epic
+sound: { id: "minecraft:block.amethyst_block.chime", volume: 0.6, pitch: 1.0 }
+particles: { type: ENCHANT, count: 10 }
+hidden: false

@@ -1,0 +1,24 @@
+name: RPGRoll-Emotes
+version: 1.1.12
+main: com.sack.rpgroll.emotes.EmotesPlugin
+api-version: "26.1.1"
+author: Sack
+description: Emotes y animaciones del jugador con BetterModel, con favoritos, desbloqueos y animaciones de conjuro para RPGRoll-Magic
+depend: [RPGRoll-Lib, BetterModel]
+softdepend: [SackResourcePack]
+
+permissions:
+  rpgrollemotes.use:
+    description: Usar los emotes desbloqueados
+    default: true
+  rpgrollemotes.emote.*:
+    description: Todos los emotes, sin desbloquearlos
+    default: false
+  rpgrollemotes.bypass.cooldown:
+    description: Ignorar el enfriamiento entre emotes
+    default: op
+  rpgrollemotes.admin:
+    description: Administrar RPGRoll-Emotes
+    default: op
+    children:
+      rpgrollemotes.bypass.cooldown: true

@@ -1,0 +1,11 @@
+# De fábrica: generado por tools/emotes/construir_emotes.py.
+id: saltitos
+name: "lang:emotes.saltitos"
+icon: RABBIT_FOOT
+category: baile
+animation: saltitos
+model: rpgroll_emotes
+loop: true
+unlock: free
+rarity: common
+hidden: false

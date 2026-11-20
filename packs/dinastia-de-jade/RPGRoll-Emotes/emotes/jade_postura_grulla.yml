@@ -1,0 +1,12 @@
+# Pack dinastia-de-jade: generado por tools/emotes/construir_emotes.py --pack dinastia-de-jade.
+id: jade_postura_grulla
+name: "&aPostura de la Grulla"
+icon: FEATHER
+category: accion
+animation: jade_postura_grulla
+model: dinastia_de_jade_emotes
+loop: true
+unlock: locked
+rarity: rare
+how-to-unlock: "Completa la misión «Las Grullas de Tinta»"
+hidden: false
