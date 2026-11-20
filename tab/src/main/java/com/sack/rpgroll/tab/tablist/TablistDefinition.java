@@ -14,16 +14,20 @@ import java.util.List;
  * confundir con el filtrado de CONTEXTOS (que decide qué tablist se activa);
  * esto es una restricción adicional de "en qué mundos esta tablist en
  * particular tiene sentido mostrarse" (playerlist por mundo, sección 19).
+ * <p>
+ * {@code blocks}: los grupos de líneas que cada jugador puede ocultar desde {@code /tab}, en el orden en que
+ * aparecen (cabecera y luego pie).
  */
 public record TablistDefinition(
         String id,
-        List<String> headerLines,
+        List<TablistLine> headerLines,
         String headerAnimationId,
-        List<String> footerLines,
+        List<TablistLine> footerLines,
         String footerAnimationId,
         String playerFormat,
         List<PingTier> pingTiers,
         boolean gamemodeShown,
         boolean gamemodeShortIcon,
-        List<String> worldFilter) implements RPGContent {
+        List<String> worldFilter,
+        List<TablistBlock> blocks) implements RPGContent {
 }

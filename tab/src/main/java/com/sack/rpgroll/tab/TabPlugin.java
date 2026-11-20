@@ -18,7 +18,10 @@ import com.sack.rpgroll.tab.context.ContextManager;
 import com.sack.rpgroll.tab.context.ContextResolver;
 import com.sack.rpgroll.tab.core.RefreshCoordinator;
 import com.sack.rpgroll.tab.integration.ProtocolLibHook;
+import com.sack.rpgroll.tab.animation.ProgressBarRenderer;
 import com.sack.rpgroll.tab.listener.PlayerLifecycleListener;
+import com.sack.rpgroll.tab.options.TabOptionsCommand;
+import com.sack.rpgroll.tab.options.TabOptionsStore;
 import com.sack.rpgroll.tab.nametag.NametagEngine;
 import com.sack.rpgroll.tab.nametag.NametagManager;
 import com.sack.rpgroll.tab.placeholder.PlaceholderEngine;
@@ -84,6 +87,7 @@ public class TabPlugin extends JavaPlugin {
     private WorldVisibilityService worldVisibilityService;
 
     private RefreshCoordinator refreshCoordinator;
+    private TabOptionsStore tabOptionsStore;
 
     @Override
     public void onEnable() {
@@ -127,8 +131,11 @@ public class TabPlugin extends JavaPlugin {
         registerTeamAffixPlaceholders();
         playerScoreboardService = new PlayerScoreboardService();
         teamsEngine = new TeamsEngine(playerScoreboardService);
+        tabOptionsStore = new TabOptionsStore(this);
+        registerXpBarPlaceholder();
         tabListEngine = new TabListEngine(tablistManager, sortingManager, sortingEngine, teamsManager, teamsEngine,
-                placeholderEngine, animationManager, animationEngine, playerStateManager);
+                placeholderEngine, animationManager, animationEngine, playerStateManager,
+                new LineConditionEvaluator(placeholderEngine), tabOptionsStore);
 
         nametagManager = new NametagManager(this);
         nametagManager.initialize();
@@ -205,6 +212,26 @@ public class TabPlugin extends JavaPlugin {
         placeholderEngine.register("suffix", player -> activeTeams(player).map(TeamsDefinition::suffix).orElse(""));
     }
 
+    /**
+     * {@code {xp_bar}}: barra de 20 casillas con el avance de nivel de RPGRoll ({@code %rpgroll_xp_percent%}).
+     * Vacía si RPGRoll o PlaceholderAPI no están.
+     */
+    private void registerXpBarPlaceholder() {
+
+        placeholderEngine.register("xp_bar", player -> {
+            String raw = placeholderEngine.resolve("%rpgroll_xp_percent%", player);
+            double percent;
+            try {
+                percent = Double.parseDouble(raw.trim());
+            } catch (NumberFormatException e) {
+                return "";
+            }
+            String bar = ProgressBarRenderer.render(percent, 20, '#', '-');
+            int filled = (int) bar.chars().filter(c -> c == '#').count();
+            return "&a" + "▮".repeat(filled) + "&7" + "▮".repeat(bar.length() - filled);
+        });
+    }
+
     private Optional<TeamsDefinition> activeTeams(Player player) {
 
         return playerStateManager.activeProfile(player)
@@ -221,6 +248,10 @@ public class TabPlugin extends JavaPlugin {
         // Registrado por Brigadier para que `execute as` entregue al jugador real.
         com.sack.rpgroll.common.command.BrigadierCommands.register(this, "tabadmin",
                 "Gestiona perfiles, scoreboards, tablist, nametags y bossbars de RPGRoll-TAB", "rpgrolltab.admin.*", executor);
+
+        com.sack.rpgroll.common.command.BrigadierCommands.register(this, "tab",
+                "Elige qué ver en la cabecera y el pie de tu TAB", "rpgrolltab.options",
+                new TabOptionsCommand(tabListEngine, tabOptionsStore, langManager));
     }
 
 }

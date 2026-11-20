@@ -11,3 +11,6 @@ permissions:
   rpgrolltab.admin.*:
     description: Acceso completo a comandos administrativos de RPGRoll-TAB
     default: op
+  rpgrolltab.options:
+    description: Usar /tab para elegir qué ver en tu propia cabecera y pie
+    default: true

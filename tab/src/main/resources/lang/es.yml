@@ -19,3 +19,20 @@ command:
     player-not-found: "Jugador no encontrado: {player}"
     profile-not-found: "No existe un perfil con id: {profile}"
     success: "✔ Perfil de {player} forzado a: {profile}"
+
+# Menú /tab: cada jugador muestra u oculta bloques de su cabecera y pie.
+options:
+  title: "Tu TAB"
+  shown: "&aVisible"
+  hidden: "&cOculto"
+  click_hide: "&7Clic para ocultarlo"
+  click_show: "&7Clic para mostrarlo"
+  close: "&cCerrar"
+  none: "&7Tu TAB no tiene nada que puedas ocultar."
+  players_only: "Solo un jugador puede usar /tab."
+  # Nombre del botón de cada bloque (la clave es el "block" de las líneas del tablist).
+  blocks:
+    personaje: "&eTu personaje"
+    progreso: "&aProgreso de nivel"
+    dinero: "&6Dinero y gremio"
+    servidor: "&bDatos del servidor"

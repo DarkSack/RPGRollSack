@@ -19,3 +19,20 @@ command:
     player-not-found: "Player not found: {player}"
     profile-not-found: "No profile exists with id: {profile}"
     success: "✔ {player}'s profile forced to: {profile}"
+
+# /tab menu: each player shows or hides blocks of their own header and footer.
+options:
+  title: "Your TAB"
+  shown: "&aShown"
+  hidden: "&cHidden"
+  click_hide: "&7Click to hide it"
+  click_show: "&7Click to show it"
+  close: "&cClose"
+  none: "&7Your TAB has nothing you can hide."
+  players_only: "Only a player can use /tab."
+  # Button name of each block (the key is the "block" of the tablist lines).
+  blocks:
+    personaje: "&eYour character"
+    progreso: "&aLevel progress"
+    dinero: "&6Money and guild"
+    servidor: "&bServer info"

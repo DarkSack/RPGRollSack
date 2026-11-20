@@ -5,9 +5,12 @@ import com.sack.rpgroll.tab.animation.AnimationEngine;
 import com.sack.rpgroll.tab.animation.AnimationManager;
 import com.sack.rpgroll.tab.format.GamemodeFormatter;
 import com.sack.rpgroll.tab.format.PingFormatter;
+import com.sack.rpgroll.tab.options.BlockChoices;
+import com.sack.rpgroll.tab.options.TabOptionsStore;
 import com.sack.rpgroll.tab.placeholder.PlaceholderEngine;
 import com.sack.rpgroll.tab.profile.PlayerStateManager;
 import com.sack.rpgroll.tab.profile.TABProfile;
+import com.sack.rpgroll.tab.scoreboard.LineConditionEvaluator;
 import com.sack.rpgroll.tab.sorting.SortingDefinition;
 import com.sack.rpgroll.tab.sorting.SortingEngine;
 import com.sack.rpgroll.tab.sorting.SortingManager;
@@ -44,11 +47,14 @@ public class TabListEngine {
     private final AnimationManager animationManager;
     private final AnimationEngine animationEngine;
     private final PlayerStateManager playerStateManager;
+    private final LineConditionEvaluator conditionEvaluator;
+    private final TabOptionsStore optionsStore;
 
     public TabListEngine(TablistManager tablistManager, SortingManager sortingManager, SortingEngine sortingEngine,
             TeamsManager teamsManager, TeamsEngine teamsEngine, PlaceholderEngine placeholderEngine,
             AnimationManager animationManager, AnimationEngine animationEngine,
-            PlayerStateManager playerStateManager) {
+            PlayerStateManager playerStateManager, LineConditionEvaluator conditionEvaluator,
+            TabOptionsStore optionsStore) {
         this.tablistManager = tablistManager;
         this.sortingManager = sortingManager;
         this.sortingEngine = sortingEngine;
@@ -58,6 +64,13 @@ public class TabListEngine {
         this.animationManager = animationManager;
         this.animationEngine = animationEngine;
         this.playerStateManager = playerStateManager;
+        this.conditionEvaluator = conditionEvaluator;
+        this.optionsStore = optionsStore;
+    }
+
+    /** El tablist que ve ahora el jugador (null si su perfil no tiene). */
+    public TablistDefinition activeTablist(Player player) {
+        return resolveTablist(playerStateManager.activeProfile(player).orElse(null));
     }
 
     /** Recalcula el orden de TODOS los jugadores online una sola vez y aplica cada elemento. */
@@ -128,8 +141,17 @@ public class TabListEngine {
             return;
         }
 
-        Component header = renderBlock(tablist.headerLines(), tablist.headerAnimationId(), player);
-        Component footer = renderBlock(tablist.footerLines(), tablist.footerAnimationId(), player);
+        // Lo que el jugador ocultó desde /tab y las líneas cuya condición no se cumple quedan fuera.
+        BlockChoices choices = optionsStore.get(player);
+        java.util.function.Predicate<String> shown = block -> tablist.blocks().stream()
+                .filter(b -> b.id().equals(block)).findFirst()
+                .map(b -> choices.isShown(block, b.shownByDefault())).orElse(true);
+        java.util.function.Predicate<String> holds = condition -> conditionEvaluator.evaluate(condition, player);
+
+        Component header = renderBlock(TablistLines.visible(tablist.headerLines(), shown, holds),
+                tablist.headerAnimationId(), player);
+        Component footer = renderBlock(TablistLines.visible(tablist.footerLines(), shown, holds),
+                tablist.footerAnimationId(), player);
 
         player.sendPlayerListHeaderAndFooter(header, footer);
     }
@@ -146,9 +168,7 @@ public class TabListEngine {
 
                 String frame = animationEngine.currentFrame(animation);
 
-                if (frame != null) {
-                    effectiveLines = List.of(frame);
-                }
+                effectiveLines = TablistLines.withAnimationFrame(lines, frame);
             }
         }
 

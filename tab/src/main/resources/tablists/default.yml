@@ -1,20 +1,47 @@
-# Header/footer y formato del playerlist. "header.animation"/"footer.animation"
-# son opcionales — si se omiten, "lines" se muestra tal cual (estático).
+# Header/footer y formato del playerlist.
+#
+# Cada línea es un texto o un mapa con:
+#   text:      lo que se ve
+#   condition: (opcional) solo se ve si se cumple, igual que en los scoreboards: "%rpgroll_level% > 0"
+#   block:     (opcional) agrupa líneas que cada jugador puede ocultar en su TAB con /tab
+#
+# "header.animation"/"footer.animation" son opcionales: el frame de la animación ocupa la PRIMERA
+# línea (el título) y el resto de líneas se ven debajo.
 id: default
 
 header:
   animation: rpgroll_title
   lines:
     - "&6&lRPGRoll"
-    - "&7Bienvenido, &f{player}"
+    - text: "&7%rpgroll_race_display% %rpgroll_class_display% &8· &7Nivel &e%rpgroll_level%"
+      block: personaje
+      condition: "%rpgroll_level% > 0"
+    - text: "{xp_bar} &f%rpgroll_xp_percent%%"
+      block: progreso
+      condition: "%rpgroll_max_level% == no"
+    - text: "&6✦ Nivel máximo"
+      block: progreso
+      condition: "%rpgroll_max_level% == si"
     - ""
 
 footer:
   lines:
     - ""
-    - "&7Jugadores: &f{online}&7/&f{max}"
-    - "&7TPS: &a{tps}"
-    - "&6tu-servidor.net"
+    - text: "&7Jugadores: &f{online}&7/&f{max} &8· &7TPS: &a{tps} &8· &7Tu ping: &f{ping}ms"
+      block: servidor
+    - "&6tu-servidor.net &8· &7/tab para ajustar"
+
+# Bloques que el jugador puede ocultar (opcional). Por cada uno:
+#   icon:    material del botón en el menú /tab (por defecto PAPER)
+#   name:    nombre si el idioma no trae options.blocks.<id>
+#   default: true = se ve hasta que el jugador lo oculte; false = oculto hasta que lo muestre
+blocks:
+  personaje:
+    icon: PLAYER_HEAD
+  progreso:
+    icon: EXPERIENCE_BOTTLE
+  servidor:
+    icon: COMPARATOR
 
 # {prefix}/{suffix} salen del Team activo del jugador (el "teams" de su perfil,
 # ver teams/) — por defecto vienen vacíos. También sirve cualquier placeholder
