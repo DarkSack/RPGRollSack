@@ -70,7 +70,7 @@ public record TurretDefinition(
         model = model == null ? Material.CROSSBOW : model;
         // 0 se respeta (quieto a propósito); solo un valor negativo o sin
         // definir cae al default.
-        hoverHeight = hoverHeight <= 0 ? 1.1 : hoverHeight;
+        hoverHeight = hoverHeight < 0 ? 1.1 : hoverHeight;
         spinDegreesPerTick = spinDegreesPerTick < 0 ? 4.0 : spinDegreesPerTick;
     }
 

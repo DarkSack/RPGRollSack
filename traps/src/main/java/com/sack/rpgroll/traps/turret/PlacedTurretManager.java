@@ -66,7 +66,9 @@ public class PlacedTurretManager {
                                 : UUID.fromString(entry.getString("owner")),
                         readAmmo(entry),
                         readTargeting(entry),
-                        entry.getString("name"));
+                        entry.getString("name"),
+                        (float) entry.getDouble("yaw", 0),
+                        entry.getString("mount"));
 
                 placements.put(placementId, placed);
 
@@ -102,6 +104,8 @@ public class PlacedTurretManager {
             }
 
             config.set(path + ".name", placed.name());
+            config.set(path + ".yaw", placed.yaw());
+            config.set(path + ".mount", placed.mount());
             config.set(path + ".targeting.allies", placed.targeting().allies());
             config.set(path + ".targeting.enemies", placed.targeting().enemies());
             config.set(path + ".targeting.hostile-mobs", placed.targeting().hostileMobs());
@@ -123,17 +127,23 @@ public class PlacedTurretManager {
     }
 
     public PlacedTurret add(String turretId, Location location) {
-        return add(turretId, location, null, new TurretTargeting(false, true, true, false));
+        return add(turretId, location, null, new TurretTargeting(false, true, true, false), 0f, null);
     }
 
-    /** @param owner quién la coloca; null si viene de un comando de admin. */
-    public PlacedTurret add(String turretId, Location location, UUID owner, TurretTargeting targeting) {
+    /**
+     * @param owner quién la coloca; null si viene de un comando de admin.
+     * @param yaw   hacia dónde mira en reposo (ver {@link PlacedTurret#yaw()}).
+     * @param mount de dónde cuelga una cámara; null si no cuelga.
+     */
+    public PlacedTurret add(String turretId, Location location, UUID owner, TurretTargeting targeting, float yaw,
+            CameraMount mount) {
 
         String placementId = UUID.randomUUID().toString().substring(0, 8);
 
         PlacedTurret placed = new PlacedTurret(
                 placementId, turretId, location.getWorld().getName(),
-                location.getBlockX(), location.getBlockY(), location.getBlockZ(), owner, java.util.Map.of(), targeting, null);
+                location.getBlockX(), location.getBlockY(), location.getBlockZ(), owner, java.util.Map.of(), targeting, null,
+                yaw, mount == null ? null : mount.name());
 
         placements.put(placementId, placed);
         save();
@@ -168,7 +178,7 @@ public class PlacedTurretManager {
 
         placements.put(placementId, new PlacedTurret(current.placementId(), current.turretId(),
                 current.world(), current.x(), current.y(), current.z(), current.owner(),
-                current.ammo(), targeting, current.name()));
+                current.ammo(), targeting, current.name(), current.yaw(), current.mount()));
 
         save();
     }
@@ -184,7 +194,7 @@ public class PlacedTurretManager {
 
         placements.put(placementId, new PlacedTurret(current.placementId(), current.turretId(),
                 current.world(), current.x(), current.y(), current.z(), current.owner(),
-                current.ammo(), current.targeting(), name));
+                current.ammo(), current.targeting(), name, current.yaw(), current.mount()));
 
         save();
     }
@@ -226,7 +236,7 @@ public class PlacedTurretManager {
 
         placements.put(placementId, new PlacedTurret(current.placementId(), current.turretId(),
                 current.world(), current.x(), current.y(), current.z(), current.owner(), ammo,
-                current.targeting(), current.name()));
+                current.targeting(), current.name(), current.yaw(), current.mount()));
 
         save();
     }

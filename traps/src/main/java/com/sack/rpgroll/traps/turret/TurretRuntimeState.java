@@ -17,4 +17,10 @@ final class TurretRuntimeState {
 
     /** Yaw acumulado del giro en reposo, en grados. */
     public float idleYaw;
+
+    /** El soporte fijo de una cámara colgada (otro ItemDisplay). */
+    UUID mountEntity;
+
+    /** Por dónde va el barrido de una cámara colgada. */
+    CameraMount.Sweep sweep = new CameraMount.Sweep(0f, 1);
 }

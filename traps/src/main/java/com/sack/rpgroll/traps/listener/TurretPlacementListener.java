@@ -4,6 +4,7 @@ import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.common.block.MachineBreakEvent;
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.traps.gui.turret.CameraMonitorGUI;
+import com.sack.rpgroll.traps.turret.CameraMount;
 import com.sack.rpgroll.traps.turret.CameraView;
 import com.sack.rpgroll.traps.turret.PlacedTurret;
 import com.sack.rpgroll.traps.turret.PlacedTurretManager;
@@ -79,6 +80,13 @@ public class TurretPlacementListener implements Listener {
             // dejar un bloque que nunca va a disparar.
             event.setCancelled(true);
             lang.send(event.getPlayer(), "admin.turret.not_found", "id", turretId);
+            return;
+        }
+
+        // Una cámara se cuelga de una pared o del techo, no se deja en el suelo.
+        if (turretId != null && isCamera(turretId) && CameraMount.fromFace(faceOf(event)) == null) {
+            event.setCancelled(true);
+            lang.send(event.getPlayer(), "camera.needs_wall");
         }
     }
 
@@ -98,13 +106,18 @@ public class TurretPlacementListener implements Listener {
             return;
         }
 
+        // De una pared mira hacia fuera del muro; del techo (y todo lo demás), hacia quien la puso.
+        CameraMount mount = isCamera(turretId) ? CameraMount.fromFace(faceOf(event)) : null;
+        float yaw = mount == CameraMount.WALL ? CameraMount.yawAwayFrom(faceOf(event))
+                : CameraView.facing(event.getPlayer().getYaw());
+
         // Arranca con lo que diga su definición; el dueño lo ajusta después
         // desde la GUI.
         PlacedTurret placed = placedTurretManager.add(
                 turretId, event.getBlock().getLocation(), event.getPlayer().getUniqueId(),
-                TurretTargeting.defaultsFor(definition.get()));
+                TurretTargeting.defaultsFor(definition.get()), yaw, mount);
 
-        lang.send(event.getPlayer(), "admin.turret.placed_by_item",
+        lang.send(event.getPlayer(), CameraView.textKey(definition.get().impact().type(), "placed_by_item"),
                 "id", turretId, "placementId", placed.placementId());
     }
 
@@ -125,8 +138,62 @@ public class TurretPlacementListener implements Listener {
         }
     }
 
+    /**
+     * Una cámara o un monitor sueltos van en un bloque de barrera, que en supervivencia no se rompe:
+     * un golpe lo rompe como un bloque normal, con la protección del terreno y las mismas reglas de
+     * dueño (onBreakCheck/onBreak lo reciben igual).
+     */
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onHitBarrier(PlayerInteractEvent event) {
+
+        Block block = event.getClickedBlock();
+
+        if (event.getAction() != Action.LEFT_CLICK_BLOCK || block == null || block.getType() != org.bukkit.Material.BARRIER
+                || event.getHand() != EquipmentSlot.HAND || turretAt(block.getLocation()) == null) {
+            return;
+        }
+
+        event.setCancelled(true);
+        BlockBreakEvent breaking = new BlockBreakEvent(block, event.getPlayer());
+        plugin.getServer().getPluginManager().callEvent(breaking);
+
+        if (!breaking.isCancelled()) {
+            block.setType(org.bukkit.Material.AIR);
+        }
+    }
+
+    /** El monitor de bolsillo: clic derecho (al aire o a un bloque) abre la lista de cámaras. */
+    @EventHandler(priority = EventPriority.LOW)
+    public void onUsePortableMonitor(PlayerInteractEvent event) {
+
+        if ((event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK)
+                || event.getHand() != EquipmentSlot.HAND
+                || !com.sack.rpgroll.traps.turret.PortableMonitor.is(plugin, event.getItem())) {
+            return;
+        }
+
+        event.setCancelled(true);
+        Player player = event.getPlayer();
+
+        if (!cameraView.isWatching(player) && !cameraView.inCombat(player)) {
+            new CameraMonitorGUI(player, turretManager, placedTurretManager, cameraView, lang,
+                    camera -> rename(player, camera)).open();
+        }
+    }
+
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
+
+        // Con el monitor de bolsillo en la mano manda él, aunque se pinche una torreta.
+        if (com.sack.rpgroll.traps.turret.PortableMonitor.is(plugin, event.getItem())) {
+            return;
+        }
+
+        // Mirando por una cámara se está dentro de su bloque: el clic le llega a ella y no pide nada.
+        if (cameraView.isWatching(event.getPlayer())) {
+            event.setCancelled(true);
+            return;
+        }
 
         if (event.getAction() != Action.RIGHT_CLICK_BLOCK || event.getClickedBlock() == null
                 || event.getHand() != EquipmentSlot.HAND) {
@@ -148,13 +215,14 @@ public class TurretPlacementListener implements Listener {
         // Un monitor lo usa cualquiera: cada cual ve solo sus cámaras y las de su equipo.
         if (CameraView.MONITOR.equals(kind)) {
             if (!cameraView.inCombat(player)) {
-                new CameraMonitorGUI(player, turretManager, placedTurretManager, cameraView, lang).open();
+                new CameraMonitorGUI(player, turretManager, placedTurretManager, cameraView, lang,
+                    camera -> rename(player, camera)).open();
             }
             return;
         }
 
         if (!TurretAccess.canManage(player, placed)) {
-            lang.send(player, "admin.turret.no_access");
+            lang.send(player, CameraView.textKey(kind, "no_access"));
             return;
         }
 
@@ -162,11 +230,7 @@ public class TurretPlacementListener implements Listener {
 
             // Agachado, su dueño le pone nombre (solo él, aunque el equipo pueda mirarla); de pie se mira por ella.
             if (player.isSneaking() && player.getUniqueId().equals(placed.owner())) {
-                chatPrompts.promptKey(player, "camera.prompt_name", answer -> {
-                    String name = CameraView.cleanName(answer);
-                    placedTurretManager.setName(placed.placementId(), name);
-                    lang.send(player, name == null ? "camera.bad_name" : "camera.named", "name", name);
-                });
+                rename(player, placed);
             } else {
                 cameraView.watch(player, placed);
             }
@@ -190,7 +254,7 @@ public class TurretPlacementListener implements Listener {
 
         if (placed != null && !canRemove(event.getPlayer(), placed)) {
             event.setCancelled(true);
-            lang.send(event.getPlayer(), "admin.turret.not_owner");
+            lang.send(event.getPlayer(), CameraView.textKey(kindOf(placed), "not_owner"));
         }
     }
 
@@ -238,7 +302,7 @@ public class TurretPlacementListener implements Listener {
             broken.getWorld().dropItemNaturally(broken.add(0.5, 0.5, 0.5), item);
         });
 
-        lang.send(player, "admin.turret.removed_by_break", "placementId", placed.placementId());
+        lang.send(player, CameraView.textKey(kindOf(placed), "removed_by_break"), "placementId", placed.placementId());
     }
 
     // El bloque de una torreta solo sale rompiéndolo su dueño: una explosión
@@ -275,6 +339,28 @@ public class TurretPlacementListener implements Listener {
         if (isTurret(event.getBlock())) {
             event.setCancelled(true);
         }
+    }
+
+    /** Le pide al dueño el nombre de su cámara por el chat. */
+    private void rename(Player player, PlacedTurret camera) {
+        chatPrompts.promptKey(player, "camera.prompt_name", answer -> {
+            String name = CameraView.cleanName(answer);
+            placedTurretManager.setName(camera.placementId(), name);
+            lang.send(player, name == null ? "camera.bad_name" : "camera.named", "name", name);
+        });
+    }
+
+    private String kindOf(PlacedTurret placed) {
+        return turretManager.get(placed.turretId()).map(d -> d.impact().type()).orElse(null);
+    }
+
+    private boolean isCamera(String turretId) {
+        return turretManager.get(turretId).map(d -> CameraView.CAMERA.equals(d.impact().type())).orElse(false);
+    }
+
+    /** Hacia dónde quedó el bloque nuevo respecto al que se pinchó (DOWN = colgado del techo). */
+    private static org.bukkit.block.BlockFace faceOf(BlockPlaceEvent event) {
+        return event.getBlockAgainst().getFace(event.getBlock());
     }
 
     private boolean isTurret(Block block) {

@@ -2,10 +2,10 @@
 # y se puede mirar por ella con clic derecho, o desde lejos con un monitor (turrets/monitor.yml).
 id: camera
 display-name: "&bCámara de Seguridad"
-description: "Te avisa de quien entra en lo que ve. Clic derecho, o un monitor, para mirar. Agachado: ponerle nombre."
+description: "Cuélgala de una pared o del techo. Te avisa de quien entra en lo que ve. Clic derecho, o un monitor, para mirar. Agachado: ponerle nombre."
 
 # Hasta dónde ve. Solo avisa de lo que tiene a la vista: una pared lo tapa.
-radius: 16.0
+radius: 24.0
 target-players: true
 target-hostile-mobs: false
 # Con una cámara, cada cuánto como mucho repite el aviso (600 ticks = 30 s).
@@ -18,10 +18,11 @@ impact:
   type: CAMERA
 
 model:
-  # Un poste: la cámara va encima. Colócalo en alto para que vea más.
-  base-block: POLISHED_DEEPSLATE_WALL
+  # Un bloque suelto: la barrera no se ve, solo la cámara y su soporte. Se cuelga de una pared o del
+  # techo (en el suelo no) y gira dentro de un arco, sin darse la vuelta: ver CameraMount.
+  base-block: BARRIER
   material: SPYGLASS
   item-model: "rpgroll_traps:turret/camera"
-  hover-height: 0.95
-  # Barre despacio la zona; al ver a alguien lo sigue.
+  hover-height: 0.0
+  # Barre despacio de lado a lado; al ver a alguien lo sigue.
   spin-degrees-per-tick: 1.5

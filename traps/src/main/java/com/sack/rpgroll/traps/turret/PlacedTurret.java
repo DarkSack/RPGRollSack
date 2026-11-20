@@ -15,7 +15,9 @@ public record PlacedTurret(String placementId, String turretId, String world, in
         java.util.UUID owner,
         java.util.Map<String, Integer> ammo,
         TurretTargeting targeting,
-        String name) {
+        String name,
+        float yaw,
+        String mount) {
 
     /**
      * @param owner quién la colocó. Solo esa persona (o un admin) puede
@@ -23,6 +25,8 @@ public record PlacedTurret(String placementId, String turretId, String world, in
      *              existiera el ítem: esas quedan sin dueño y solo las puede
      *              sacar un admin.
      * @param name  el que le pone su dueño (hoy solo a las cámaras); null si no tiene.
+     * @param yaw   hacia dónde mira en reposo, en grados (0 = sur). El monitor no gira: mira siempre ahí.
+     * @param mount de dónde cuelga una cámara ({@link CameraMount}); null si no cuelga (gira entera).
      */
     public PlacedTurret {
         // Copia defensiva: el motor consume munición y no debe poder mutar

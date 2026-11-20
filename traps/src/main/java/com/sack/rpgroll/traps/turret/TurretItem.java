@@ -55,9 +55,9 @@ public final class TurretItem {
             lore.add(ComponentUtils.parse(definition.description()).decoration(TextDecoration.ITALIC, false));
         }
 
-        lore.add(ComponentUtils.parse(lang.raw("admin.turret.item_lore_place"))
+        lore.add(ComponentUtils.parse(lang.raw(CameraView.textKey(definition.impact().type(), "item_lore_place")))
                 .decoration(TextDecoration.ITALIC, false));
-        lore.add(ComponentUtils.parse(lang.raw("admin.turret.item_lore_owner"))
+        lore.add(ComponentUtils.parse(lang.raw(CameraView.textKey(definition.impact().type(), "item_lore_owner")))
                 .decoration(TextDecoration.ITALIC, false));
 
         meta.lore(lore);

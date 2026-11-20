@@ -95,6 +95,16 @@ class TurretParserTest {
         assertTrue(def.targetHostileMobs());
         assertEquals(20, def.fireIntervalTicks());
         assertTrue(def.conditions().isEmpty());
+        assertEquals(1.1, def.hoverHeight());
+    }
+
+    /** Una cámara o un monitor sueltos llevan el modelo dentro de su bloque (altura 0), no encima. */
+    @Test
+    void zeroHoverHeightKeepsTheModelInsideItsBlock() throws Exception {
+        TurretDefinition def = parser.parse(load("id: monitor\nmodel:\n  base-block: BARRIER\n  hover-height: 0"));
+
+        assertEquals(0.0, def.hoverHeight());
+        assertEquals(Material.BARRIER, def.baseBlock());
     }
 
     private YamlConfiguration load(String yaml) throws Exception {

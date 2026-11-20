@@ -15,11 +15,15 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
+import net.kyori.adventure.text.Component;
+
+import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * Lo que se abre al usar un monitor: las cámaras de quien lo mira y las de su equipo o guild.
- * Un clic y pasa a mirar por esa cámara.
+ * Un clic y pasa a mirar por esa cámara; clic derecho a una suya, le cambia el nombre.
  */
 public class CameraMonitorGUI extends InventoryGUI {
 
@@ -30,14 +34,16 @@ public class CameraMonitorGUI extends InventoryGUI {
     private final LangManager lang;
     private final CameraView cameraView;
     private final List<PlacedTurret> cameras;
+    private final Consumer<PlacedTurret> rename;
 
     public CameraMonitorGUI(Player player, TurretManager turretManager, PlacedTurretManager placedTurretManager,
-            CameraView cameraView, LangManager lang) {
+            CameraView cameraView, LangManager lang, Consumer<PlacedTurret> rename) {
 
         super(player, TrapMenus.skin().title(BACKGROUND, lang.component("gui.camera_monitor.title")), SIZE);
 
         this.lang = lang;
         this.cameraView = cameraView;
+        this.rename = rename;
         // shortcut: las 54 primeras; con más cámaras que eso por equipo hará falta paginar.
         this.cameras = placedTurretManager.getAll().stream()
                 .filter(placed -> TurretAccess.isAlly(player, placed))
@@ -60,13 +66,19 @@ public class CameraMonitorGUI extends InventoryGUI {
         for (int i = 0; i < cameras.size(); i++) {
 
             PlacedTurret camera = cameras.get(i);
+            List<Component> lore = new ArrayList<>(List.of(
+                    lang.component("gui.camera_monitor.where", "world", camera.world(),
+                            "x", camera.x(), "y", camera.y(), "z", camera.z()),
+                    lang.component("gui.camera_monitor.click")));
+
+            if (player.getUniqueId().equals(camera.owner())) {
+                lore.add(lang.component("gui.camera_monitor.rename"));
+            }
 
             setItem(i, ItemModels.apply(new ItemBuilder(Material.SPYGLASS)
                     .setName(lang.component("gui.camera_monitor.entry", "name", camera.name() != null
                             ? camera.name() : lang.raw("gui.camera_monitor.unnamed", "number", i + 1)))
-                    .setLore(lang.component("gui.camera_monitor.where", "world", camera.world(),
-                            "x", camera.x(), "y", camera.y(), "z", camera.z()),
-                            lang.component("gui.camera_monitor.click"))
+                    .setLore(lore)
                     .build(), "turret", camera.turretId()));
         }
     }
@@ -77,9 +89,20 @@ public class CameraMonitorGUI extends InventoryGUI {
         event.setCancelled(true);
         int slot = event.getSlot();
 
-        if (slot >= 0 && slot < cameras.size()) {
-            cameraView.watch(player, cameras.get(slot));
+        if (slot < 0 || slot >= cameras.size()) {
+            return;
         }
+
+        PlacedTurret camera = cameras.get(slot);
+
+        // El nombre solo se lo pone su dueño, aunque el equipo pueda mirar por ella.
+        if (event.isRightClick() && player.getUniqueId().equals(camera.owner())) {
+            player.closeInventory();
+            rename.accept(camera);
+            return;
+        }
+
+        cameraView.watch(player, camera);
     }
 
 }

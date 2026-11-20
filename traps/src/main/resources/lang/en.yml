@@ -106,7 +106,23 @@ admin:
 
 camera:
   alert: "&c⚠ &fYour camera &e{name} &fhas spotted &c{who}&f."
-  watching: "&7You are looking through the camera. &fSneak &7to leave."
+  watching: "&7You are looking through the camera: &fmove the mouse &7to look around, &fjump &7for night vision and &fsneak &7to leave."
+  night_vision_on: "&a☾ Night vision on."
+  night_vision_off: "&7☾ Night vision off."
+  needs_wall: "&cHang the camera on a &fwall &cor the &fceiling&c, not on the floor."
+  portable_name: "&bPocket Monitor"
+  portable_lore: "&7Right-click to look through your cameras from anywhere."
+  placed_by_item: "&a✔ Camera placed. Only you (or your team) can remove it."
+  removed_by_break: "&a✔ Camera removed; the item was returned to you."
+  not_owner: "&cThis camera isn't yours, you can't remove it."
+  no_access: "&cYou can't use this camera: it isn't yours or your team's."
+  item_lore_place: "&7Hang it on a wall or the ceiling"
+  item_lore_owner: "&8Only you will be able to remove it"
+  monitor_placed_by_item: "&a✔ Monitor placed. Only you (or your team) can remove it."
+  monitor_removed_by_break: "&a✔ Monitor removed; the item was returned to you."
+  monitor_not_owner: "&cThis monitor isn't yours, you can't remove it."
+  monitor_item_lore_place: "&7Place it wherever you want"
+  monitor_item_lore_owner: "&8Only you will be able to remove it"
   unavailable: "&cThat camera cannot be viewed right now (it has to be in your current world)."
   in_combat: "&cYou were just fighting: wait &e{seconds}s &cto look through a camera."
   prompt_name: "&eType the camera's name:"
@@ -124,6 +140,7 @@ gui:
     unnamed: "Camera {number}"
     where: "&7{world}: &f{x} {y} {z}"
     click: "&eClick to look through it"
+    rename: "&eRight-click to rename it"
     empty: "&cYou have no cameras placed."
 
   turret_catalog:

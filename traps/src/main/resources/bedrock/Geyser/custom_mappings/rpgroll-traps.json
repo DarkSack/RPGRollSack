@@ -151,14 +151,82 @@
     }
    }
   ],
-  "minecraft:polished_deepslate_wall": [
+  "minecraft:barrier": [
    {
     "type": "definition",
     "model": "rpgroll_traps:turret/camera",
-    "bedrock_identifier": "rpgroll_traps:turret_camera_polished_deepslate_wall",
+    "bedrock_identifier": "rpgroll_traps:turret_camera_barrier",
     "display_name": "Cámara de Seguridad",
     "bedrock_options": {
      "icon": "rpgroll_traps_turret_camera",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_traps:turret/monitor",
+    "bedrock_identifier": "rpgroll_traps:turret_monitor_barrier",
+    "display_name": "Monitor de Cámaras",
+    "bedrock_options": {
+     "icon": "rpgroll_traps_turret_monitor",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   }
+  ],
+  "minecraft:paper": [
+   {
+    "type": "definition",
+    "model": "rpgroll_traps:turret/camera_mount_wall",
+    "bedrock_identifier": "rpgroll_traps:turret_camera_mount_wall",
+    "display_name": "Soporte de pared de cámara",
+    "bedrock_options": {
+     "icon": "rpgroll_traps_turret_camera_mount_wall",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_traps:turret/camera_mount_ceiling",
+    "bedrock_identifier": "rpgroll_traps:turret_camera_mount_ceiling",
+    "display_name": "Soporte de techo de cámara",
+    "bedrock_options": {
+     "icon": "rpgroll_traps_turret_camera_mount_ceiling",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_traps:turret/portable_monitor",
+    "bedrock_identifier": "rpgroll_traps:turret_portable_monitor",
+    "display_name": "Monitor de Bolsillo",
+    "bedrock_options": {
+     "icon": "rpgroll_traps_turret_portable_monitor",
+     "allow_offhand": true,
+     "display_handheld": true
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_traps:projectile/bolt",
+    "bedrock_identifier": "rpgroll_traps:projectile_bolt",
+    "display_name": "Virote",
+    "bedrock_options": {
+     "icon": "rpgroll_traps_projectile_bolt",
+     "allow_offhand": true,
+     "display_handheld": false
+    }
+   },
+   {
+    "type": "definition",
+    "model": "rpgroll_traps:projectile/fire_bolt",
+    "bedrock_identifier": "rpgroll_traps:projectile_fire_bolt",
+    "display_name": "Virote en llamas",
+    "bedrock_options": {
+     "icon": "rpgroll_traps_projectile_fire_bolt",
      "allow_offhand": true,
      "display_handheld": false
     }
@@ -169,19 +237,6 @@
     "type": "definition",
     "model": "rpgroll_traps:turret/monitor",
     "bedrock_identifier": "rpgroll_traps:turret_monitor",
-    "display_name": "Monitor de Cámaras",
-    "bedrock_options": {
-     "icon": "rpgroll_traps_turret_monitor",
-     "allow_offhand": true,
-     "display_handheld": false
-    }
-   }
-  ],
-  "minecraft:lectern": [
-   {
-    "type": "definition",
-    "model": "rpgroll_traps:turret/monitor",
-    "bedrock_identifier": "rpgroll_traps:turret_monitor_lectern",
     "display_name": "Monitor de Cámaras",
     "bedrock_options": {
      "icon": "rpgroll_traps_turret_monitor",
@@ -213,30 +268,6 @@
      "icon": "rpgroll_traps_ammo_incendiary_bolt",
      "allow_offhand": true,
      "display_handheld": true
-    }
-   }
-  ],
-  "minecraft:paper": [
-   {
-    "type": "definition",
-    "model": "rpgroll_traps:projectile/bolt",
-    "bedrock_identifier": "rpgroll_traps:projectile_bolt",
-    "display_name": "Virote",
-    "bedrock_options": {
-     "icon": "rpgroll_traps_projectile_bolt",
-     "allow_offhand": true,
-     "display_handheld": false
-    }
-   },
-   {
-    "type": "definition",
-    "model": "rpgroll_traps:projectile/fire_bolt",
-    "bedrock_identifier": "rpgroll_traps:projectile_fire_bolt",
-    "display_name": "Virote en llamas",
-    "bedrock_options": {
-     "icon": "rpgroll_traps_projectile_fire_bolt",
-     "allow_offhand": true,
-     "display_handheld": false
     }
    }
   ],

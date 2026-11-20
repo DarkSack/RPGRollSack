@@ -106,7 +106,23 @@ admin:
 
 camera:
   alert: "&c⚠ &fSua câmera &e{name} &fviu &c{who}&f."
-  watching: "&7Você está olhando pela câmera. &fAgache &7para sair."
+  watching: "&7Você está olhando pela câmera: &fmova o mouse &7para olhar, &fpule &7para a visão noturna e &fagache &7para sair."
+  night_vision_on: "&a☾ Visão noturna ligada."
+  night_vision_off: "&7☾ Visão noturna desligada."
+  needs_wall: "&cPendure a câmera numa &fparede &cou no &fteto&c, não no chão."
+  portable_name: "&bMonitor de Bolso"
+  portable_lore: "&7Clique direito para olhar pelas suas câmeras de onde estiver."
+  placed_by_item: "&a✔ Câmera colocada. Só você (ou seu time) pode removê-la."
+  removed_by_break: "&a✔ Câmera removida; o item foi devolvido."
+  not_owner: "&cEsta câmera não é sua, você não pode removê-la."
+  no_access: "&cVocê não pode usar esta câmera: não é sua nem do seu time."
+  item_lore_place: "&7Pendure numa parede ou no teto"
+  item_lore_owner: "&8Só você poderá removê-la"
+  monitor_placed_by_item: "&a✔ Monitor colocado. Só você (ou seu time) pode removê-lo."
+  monitor_removed_by_break: "&a✔ Monitor removido; o item foi devolvido."
+  monitor_not_owner: "&cEste monitor não é seu, você não pode removê-lo."
+  monitor_item_lore_place: "&7Coloque onde quiser"
+  monitor_item_lore_owner: "&8Só você poderá removê-lo"
   unavailable: "&cNão dá para olhar por essa câmera agora (ela precisa estar no seu mundo atual)."
   in_combat: "&cVocê acabou de lutar: espere &e{seconds}s &cpara olhar por uma câmera."
   prompt_name: "&eEscreva o nome da câmera:"
@@ -124,6 +140,7 @@ gui:
     unnamed: "Câmera {number}"
     where: "&7{world}: &f{x} {y} {z}"
     click: "&eClique para olhar por ela"
+    rename: "&eClique direito para mudar o nome"
     empty: "&cVocê não tem câmeras colocadas."
 
   turret_catalog:

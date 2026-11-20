@@ -15,8 +15,9 @@ impact:
   type: MONITOR
 
 model:
-  base-block: LECTERN
+  # Un bloque suelto que mira a quien lo pone y no gira.
+  base-block: BARRIER
   material: PAINTING
   item-model: "rpgroll_traps:turret/monitor"
-  hover-height: 0.95
-  spin-degrees-per-tick: 1.0
+  hover-height: 0.0
+  spin-degrees-per-tick: 0

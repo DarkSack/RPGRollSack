@@ -48,9 +48,12 @@ public class TurretEngine {
     private final com.sack.rpgroll.traps.ammo.AmmoManager ammoManager;
     private final com.sack.rpgroll.common.lang.LangManager lang;
     private final NamespacedKey placementKey;
+    /** Marca el soporte de una cámara, para no confundirlo con su cabeza. */
+    private final NamespacedKey mountKey;
 
     private final Map<String, TurretRuntimeState> runtime = new HashMap<>();
     private BukkitTask task;
+    private CameraView cameraView;
 
     public TurretEngine(JavaPlugin plugin, TurretManager turretManager, PlacedTurretManager placedTurretManager,
             TrapConditionEvaluator conditionEvaluator, TrapActionRegistry actionRegistry, com.sack.rpgroll.traps.ammo.AmmoManager ammoManager,
@@ -63,6 +66,12 @@ public class TurretEngine {
         this.ammoManager = ammoManager;
         this.lang = lang;
         this.placementKey = new NamespacedKey(plugin, "turret-placement");
+        this.mountKey = new NamespacedKey(plugin, "turret-mount");
+    }
+
+    /** Las cámaras por las que alguien mira giran con su vista y no solas; ver {@link CameraView}. */
+    void attach(CameraView cameraView) {
+        this.cameraView = cameraView;
     }
 
     public void start(long intervalTicks) {
@@ -96,14 +105,40 @@ public class TurretEngine {
                 continue;
             }
 
-            TurretRuntimeState state = runtime.computeIfAbsent(placed.placementId(), id -> new TurretRuntimeState());
+            TurretRuntimeState state = runtime.computeIfAbsent(placed.placementId(), id -> {
+                TurretRuntimeState fresh = new TurretRuntimeState();
+                fresh.idleYaw = placed.yaw();
+                return fresh;
+            });
             ensureBaseBlock(anchor, definition);
             ItemDisplay visual = ensureVisual(placed, definition, state, anchor);
+            CameraMount mount = CameraMount.of(placed.mount());
+            ensureMount(placed, definition, state, anchor, mount);
 
+            // Quien mira por ella la gira con su vista (y ya ve lo que hay): ni barre ni avisa.
+            if (cameraView != null && cameraView.isWatched(placed.placementId())) {
+                continue;
+            }
+
+            Location eye = hoverLocation(anchor, definition);
             LivingEntity target = findTarget(anchor, definition, placed);
+            Location aim = target == null ? null : eye.clone().setDirection(target.getLocation()
+                    .add(0, target.getHeight() / 2.0, 0).toVector().subtract(eye.toVector()).normalize());
+
+            // Colgada no ve lo que queda detrás del muro o fuera de su giro.
+            if (aim != null && mount != null && !mount.covers(placed.yaw(), aim.getYaw(), aim.getPitch())) {
+                target = null;
+            }
 
             if (target == null) {
                 state.targetEntity = null;
+
+                // Una cámara colgada barre de lado a lado sin darse la vuelta.
+                if (mount != null) {
+                    state.sweep = mount.sweep(state.sweep, (float) definition.spinDegreesPerTick());
+                    visual.setRotation(placed.yaw() + state.sweep.offset(), mount.restPitch());
+                    continue;
+                }
 
                 // Sin objetivo gira sobre sí misma: se ve a simple vista que
                 // está buscando y no apagada.
@@ -117,11 +152,6 @@ public class TurretEngine {
 
             state.targetEntity = target.getUniqueId();
 
-            Location eye = hoverLocation(anchor, definition);
-            Vector direction = target.getLocation().add(0, target.getHeight() / 2.0, 0).toVector()
-                    .subtract(eye.toVector()).normalize();
-
-            Location aim = eye.clone().setDirection(direction);
             // Las torretas giran sin cabecear; la cámara sí, que por ella se mira.
             visual.setRotation(aim.getYaw(), CameraView.CAMERA.equals(definition.impact().type()) ? aim.getPitch() : 0);
 
@@ -278,7 +308,9 @@ public class TurretEngine {
             }
         }
 
-        ItemDisplay display = anchor.getWorld().spawn(hoverLocation(anchor, definition), ItemDisplay.class);
+        Location spawnAt = hoverLocation(anchor, definition);
+        spawnAt.setYaw(state.idleYaw);
+        ItemDisplay display = anchor.getWorld().spawn(spawnAt, ItemDisplay.class);
         display.getPersistentDataContainer().set(placementKey, PersistentDataType.STRING, placed.placementId());
         // No se guarda con el mundo: se vuelve a crear al cargar la zona, y así un reinicio no deja la anterior de sobra.
         display.setPersistent(false);
@@ -291,6 +323,40 @@ public class TurretEngine {
 
         state.visualEntity = display.getUniqueId();
         return display;
+    }
+
+    /**
+     * El soporte de una cámara colgada: brazo a la pared o barra al techo, quieto, junto a la cabeza.
+     * Su modelo es el de la cabeza con "_mount_wall" / "_mount_ceiling" detrás.
+     */
+    private void ensureMount(PlacedTurret placed, TurretDefinition definition, TurretRuntimeState state,
+            Location anchor, CameraMount mount) {
+
+        NamespacedKey head = mount == null ? null : ItemModels.get("turret", definition.id());
+
+        if (head == null) {
+            return;
+        }
+
+        if (state.mountEntity != null && Bukkit.getEntity(state.mountEntity) instanceof ItemDisplay display
+                && display.isValid()) {
+            return;
+        }
+
+        Location at = hoverLocation(anchor, definition);
+        at.setYaw(placed.yaw());
+        ItemDisplay display = anchor.getWorld().spawn(at, ItemDisplay.class);
+        display.getPersistentDataContainer().set(mountKey, PersistentDataType.STRING, placed.placementId());
+        display.setPersistent(false);
+        display.setBillboard(Display.Billboard.FIXED);
+        ItemStack item = new ItemStack(Material.PAPER);
+        var meta = item.getItemMeta();
+        meta.setItemModel(new NamespacedKey(head.getNamespace(),
+                head.getKey() + "_mount_" + mount.name().toLowerCase(java.util.Locale.ROOT)));
+        item.setItemMeta(meta);
+        display.setItemStack(item);
+        display.setItemDisplayTransform(ItemDisplay.ItemDisplayTransform.FIXED);
+        state.mountEntity = display.getUniqueId();
     }
 
     /** La cabeza de una torreta colocada, si ahora mismo está en el mundo. */
@@ -345,6 +411,11 @@ public class TurretEngine {
     /** Elimina la entidad visual de una torreta — llamado al remover una instancia colocada. */
     public void despawnVisual(String placementId) {
 
+        // Antes de quitar la cabeza: quien mira por ella vuelve a su sitio y deja de tenerla oculta.
+        if (cameraView != null) {
+            cameraView.release(placementId);
+        }
+
         TurretRuntimeState state = runtime.remove(placementId);
 
         if (state != null && state.visualEntity != null) {
@@ -352,13 +423,18 @@ public class TurretEngine {
             if (entity != null) {
                 entity.remove();
             }
+            Entity mount = state.mountEntity == null ? null : Bukkit.getEntity(state.mountEntity);
+            if (mount != null) {
+                mount.remove();
+            }
             return;
         }
 
         for (World world : Bukkit.getWorlds()) {
             for (Entity entity : world.getEntitiesByClass(ItemDisplay.class)) {
-                if (placementId.equals(
-                        entity.getPersistentDataContainer().get(placementKey, PersistentDataType.STRING))) {
+                var data = entity.getPersistentDataContainer();
+                if (placementId.equals(data.get(placementKey, PersistentDataType.STRING))
+                        || placementId.equals(data.get(mountKey, PersistentDataType.STRING))) {
                     entity.remove();
                 }
             }

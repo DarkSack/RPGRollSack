@@ -376,7 +376,9 @@ public class TrapAdminCommand implements CommandExecutor, TabCompleter {
             return;
         }
 
-        PlacedTurret placed = placedTurretManager.add(turretId, target.getLocation().add(0, 1, 0));
+        PlacedTurret placed = placedTurretManager.add(turretId, target.getLocation().add(0, 1, 0), null,
+                new com.sack.rpgroll.traps.turret.TurretTargeting(false, true, true, false),
+                com.sack.rpgroll.traps.turret.CameraView.facing(player.getYaw()), null);
         lang.send(player, "admin.turret.place.ok", "turret", turretId, "placement", placed.placementId());
     }
 
@@ -469,8 +471,9 @@ public class TrapAdminCommand implements CommandExecutor, TabCompleter {
         }
 
         var definitionOpt = turretManager.get(args[2]);
+        boolean portable = com.sack.rpgroll.traps.turret.PortableMonitor.ID.equals(args[2]);
 
-        if (definitionOpt.isEmpty()) {
+        if (definitionOpt.isEmpty() && !portable) {
             lang.send(sender, "admin.turret.not_found", "id", args[2]);
             return;
         }
@@ -504,7 +507,9 @@ public class TrapAdminCommand implements CommandExecutor, TabCompleter {
             }
         }
 
-        target.getInventory().addItem(TurretItem.create(plugin, definitionOpt.get(), lang, amount));
+        target.getInventory().addItem(portable
+                ? com.sack.rpgroll.traps.turret.PortableMonitor.create(plugin, lang, amount)
+                : TurretItem.create(plugin, definitionOpt.get(), lang, amount));
 
         lang.send(sender, "admin.turret.given",
                 "amount", amount, "id", args[2], "player", target.getName());
@@ -591,7 +596,8 @@ public class TrapAdminCommand implements CommandExecutor, TabCompleter {
             return switch (turretSub) {
                 case "edit", "place" -> TabCompleteUtil.filter(args[2], turretIds());
                 case "remove" -> TabCompleteUtil.filter(args[2], turretPlacementIds());
-                case "give" -> TabCompleteUtil.filter(args[2], turretIds());
+                case "give" -> TabCompleteUtil.filter(args[2], java.util.stream.Stream.concat(turretIds().stream(),
+                        java.util.stream.Stream.of(com.sack.rpgroll.traps.turret.PortableMonitor.ID)).toList());
                 default -> List.of();
             };
         }
