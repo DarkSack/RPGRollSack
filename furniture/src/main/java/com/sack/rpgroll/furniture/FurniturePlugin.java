@@ -62,6 +62,8 @@ public class FurniturePlugin extends JavaPlugin {
         lang = new LangManager(this, List.of("es", "en", "pt_BR"), "es");
         settings = FurnitureSettings.from(getConfig());
         lang.reload(getConfig().getString("language", "es"));
+        com.sack.rpgroll.gui.MenuSkin.register(com.sack.rpgroll.furniture.gui.FurnitureMenus.MODULE,
+                com.sack.rpgroll.gui.MenuSkin.from(getConfig().getConfigurationSection("menus")));
 
         FurnitureKeys keys = new FurnitureKeys(this);
         manager = new FurnitureManager();
@@ -140,6 +142,8 @@ public class FurniturePlugin extends JavaPlugin {
         reloadConfig();
         settings = FurnitureSettings.from(getConfig());
         lang.reload(getConfig().getString("language", "es"));
+        com.sack.rpgroll.gui.MenuSkin.register(com.sack.rpgroll.furniture.gui.FurnitureMenus.MODULE,
+                com.sack.rpgroll.gui.MenuSkin.from(getConfig().getConfigurationSection("menus")));
         loadFurniture();
     }
 

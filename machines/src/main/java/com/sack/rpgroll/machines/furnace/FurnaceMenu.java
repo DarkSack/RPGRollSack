@@ -3,6 +3,7 @@ package com.sack.rpgroll.machines.furnace;
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.machines.core.Payment;
+import com.sack.rpgroll.machines.core.MachineMenus;
 import com.sack.rpgroll.machines.core.Ui;
 import com.sack.rpgroll.machines.furnace.FurnaceSettings.FurnaceTier;
 
@@ -20,6 +21,8 @@ import java.util.List;
 /** Las mejoras de un horno: el nivel que tiene, el siguiente y lo que cuesta. */
 public class FurnaceMenu extends InventoryGUI {
 
+    public static final String BACKGROUND = "horno";
+
     private static final int CURRENT = 11;
     private static final int NEXT = 15;
 
@@ -29,7 +32,8 @@ public class FurnaceMenu extends InventoryGUI {
     private final Material kind;
 
     public FurnaceMenu(Player player, Block block, FurnaceService service, LangManager lang) {
-        super(player, lang.component("furnace.menu_title", "kind", lang.raw("furnace.kind." + FurnaceSettings.kindId(block.getType()))), 27);
+        super(player, MachineMenus.skin().title(BACKGROUND, lang.component("furnace.menu_title", "kind",
+                lang.raw("furnace.kind." + FurnaceSettings.kindId(block.getType())))), 27);
         this.service = service;
         this.lang = lang;
         this.block = block;
@@ -41,7 +45,7 @@ public class FurnaceMenu extends InventoryGUI {
 
         clear();
         for (int slot = 0; slot < inventory.getSize(); slot++) {
-            setItem(slot, Ui.filler());
+            setItem(slot, MachineMenus.filler());
         }
 
         FurnaceTier current = service.tier(block).orElse(null);

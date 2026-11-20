@@ -8,3 +8,8 @@
 
 # Idioma de los mensajes: es, en o pt_BR (lang/<idioma>.yml).
 language: es
+
+# Menús dibujados del paquete de recursos (fondos y botones).
+# Vacío = menús de cofre normales. En Sackito: "sackito:menus".
+menus:
+  pack: ""

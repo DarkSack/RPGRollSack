@@ -20,3 +20,8 @@ treasures:
   hint-interval-ticks: 20
   # A esta distancia o menos se marca la X en el suelo y se dice cuánto cavar.
   mark-radius: 6
+
+# Menús dibujados del paquete de recursos (fondos y botones).
+# Vacío = menús de cofre normales. En Sackito: "sackito:menus".
+menus:
+  pack: ""

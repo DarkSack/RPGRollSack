@@ -73,6 +73,8 @@ public class WorkersPlugin extends JavaPlugin {
 
         langManager = new LangManager(this, List.of("es", "en", "pt_BR"), "es");
         langManager.reload(getConfig().getString("language", "es"));
+        com.sack.rpgroll.gui.MenuSkin.register(com.sack.rpgroll.workers.gui.WorkerMenus.MODULE,
+                com.sack.rpgroll.gui.MenuSkin.from(getConfig().getConfigurationSection("menus")));
 
         new DirectoryCreator(this).create(DIRECTORIES);
         new ResourceCopier(this).copyDirectories(DIRECTORIES);
@@ -166,6 +168,8 @@ public class WorkersPlugin extends JavaPlugin {
     private void reloadContent() {
         reloadConfig();
         langManager.reload(getConfig().getString("language", "es"));
+        com.sack.rpgroll.gui.MenuSkin.register(com.sack.rpgroll.workers.gui.WorkerMenus.MODULE,
+                com.sack.rpgroll.gui.MenuSkin.from(getConfig().getConfigurationSection("menus")));
         professionManager.reload();
         skillManager.reload();
         scheduleManager.reload();

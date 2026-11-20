@@ -24,6 +24,8 @@ import java.util.Locale;
 /** Ficha completa de UN worker — identidad, necesidades, habilidades, contrato, y acciones de gestión. */
 public class WorkerDetailGUI extends InventoryGUI {
 
+    public static final String BACKGROUND = "trabajador";
+
     public static final String SET_HOME_PERMISSION = "rpgrollworkers.sethome";
     private static final String ADMIN_PERMISSION = "rpgrollworkers.admin.*";
 
@@ -51,8 +53,8 @@ public class WorkerDetailGUI extends InventoryGUI {
 
     public WorkerDetailGUI(Player player, Worker worker, WorkerManager workerManager,
             ProfessionManager professionManager, ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.worker.detail.title", "id",
-                worker.id().toString().substring(0, 8)), NamedTextColor.GOLD), SIZE);
+        super(player, WorkerMenus.skin().title(BACKGROUND, ComponentUtils.parseWithDefault(chatPromptManager.lang()
+                .raw("gui.worker.detail.title", "id", worker.id().toString().substring(0, 8)), NamedTextColor.GOLD)), SIZE);
         this.worker = worker;
         this.workerManager = workerManager;
         this.professionManager = professionManager;
@@ -66,7 +68,7 @@ public class WorkerDetailGUI extends InventoryGUI {
         clear();
 
         for (int slot = 0; slot < SIZE; slot++) {
-            setItem(slot, ItemBuilder.createFiller());
+            setItem(slot, WorkerMenus.filler());
         }
 
         Profession profession = professionManager.get(worker.professionId()).orElse(null);
@@ -131,7 +133,7 @@ public class WorkerDetailGUI extends InventoryGUI {
                     .build());
         }
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton(chatPromptManager.lang().raw("gui.common.back")));
+        setItem(BACK_SLOT, WorkerMenus.skin().button(ItemBuilder.createCancelButton(chatPromptManager.lang().raw("gui.common.back"))));
     }
 
     /** La skin la pone el staff: es la cara del worker para todo el servidor. */

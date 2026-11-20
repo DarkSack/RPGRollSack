@@ -1,5 +1,6 @@
 package com.sack.rpgroll.traps.gui.turret;
 
+import com.sack.rpgroll.traps.gui.TrapMenus;
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
@@ -22,6 +23,8 @@ import java.util.List;
  */
 public class CameraMonitorGUI extends InventoryGUI {
 
+    public static final String BACKGROUND = "camaras";
+
     private static final int SIZE = 54;
 
     private final LangManager lang;
@@ -31,7 +34,7 @@ public class CameraMonitorGUI extends InventoryGUI {
     public CameraMonitorGUI(Player player, TurretManager turretManager, PlacedTurretManager placedTurretManager,
             CameraView cameraView, LangManager lang) {
 
-        super(player, lang.component("gui.camera_monitor.title"), SIZE);
+        super(player, TrapMenus.skin().title(BACKGROUND, lang.component("gui.camera_monitor.title")), SIZE);
 
         this.lang = lang;
         this.cameraView = cameraView;

@@ -102,3 +102,8 @@ random-size:
     speed: -0.25
     experience: 1.0
     loot: 0.5
+
+# Menús dibujados del paquete de recursos (fondos y botones).
+# Vacío = menús de cofre normales. En Sackito: "sackito:menus".
+menus:
+  pack: ""

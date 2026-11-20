@@ -25,6 +25,8 @@ import java.util.Locale;
 /** Ficha de solo lectura de UN animal — genética expresada, linaje congelado, y estado de salud/bienestar. */
 public class AnimalDetailGUI extends InventoryGUI {
 
+    public static final String BACKGROUND = "animal";
+
     private static final int SIZE = 45;
 
     private static final int IDENTITY_SLOT = 10;
@@ -41,8 +43,8 @@ public class AnimalDetailGUI extends InventoryGUI {
 
     public AnimalDetailGUI(Player player, Animal animal, SpeciesManager speciesManager, BreedManager breedManager,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, ComponentUtils.parseWithDefault(chatPromptManager.lang().raw("gui.animal.detail_title",
-                "id", animal.id().toString().substring(0, 8)), NamedTextColor.GOLD), SIZE);
+        super(player, RanchMenus.skin().title(BACKGROUND, ComponentUtils.parseWithDefault(chatPromptManager.lang()
+                .raw("gui.animal.detail_title", "id", animal.id().toString().substring(0, 8)), NamedTextColor.GOLD)), SIZE);
         this.animal = animal;
         this.speciesManager = speciesManager;
         this.breedManager = breedManager;
@@ -56,7 +58,7 @@ public class AnimalDetailGUI extends InventoryGUI {
         clear();
 
         for (int slot = 0; slot < SIZE; slot++) {
-            setItem(slot, ItemBuilder.createFiller());
+            setItem(slot, RanchMenus.filler());
         }
 
         Species species = speciesManager.get(animal.speciesId()).orElse(null);
@@ -104,7 +106,7 @@ public class AnimalDetailGUI extends InventoryGUI {
                                         "ticks", animal.diseaseRemainingTicks()) : lang.raw("gui.animal.detail.healthy"))))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back")));
+        setItem(BACK_SLOT, RanchMenus.skin().button(ItemBuilder.createCancelButton(lang.raw("gui.common.back"))));
     }
 
     private String formatPhenotype() {

@@ -63,6 +63,8 @@ public class FishingPlugin extends JavaPlugin {
 
         langManager = new LangManager(this, List.of("es", "en", "pt_BR"), "es");
         langManager.reload(getConfig().getString("language", "es"));
+        com.sack.rpgroll.gui.MenuSkin.register(com.sack.rpgroll.fishing.gui.FishingMenus.MODULE,
+                com.sack.rpgroll.gui.MenuSkin.from(getConfig().getConfigurationSection("menus")));
 
         new ModuleAssetSync(this, "fishing").syncAll();
 
@@ -137,6 +139,8 @@ public class FishingPlugin extends JavaPlugin {
 
     /** Vuelve a aplicar lo del config.yml que se usa en caliente (tras {@code reloadConfig()}). */
     public void applySettings() {
+        com.sack.rpgroll.gui.MenuSkin.register(com.sack.rpgroll.fishing.gui.FishingMenus.MODULE,
+                com.sack.rpgroll.gui.MenuSkin.from(getConfig().getConfigurationSection("menus")));
         catchEngine.setChances(getConfig().getDouble("treasure-chance", 0.05), getConfig().getDouble("junk-chance", 0.10));
         castListener.setRpgMode(getConfig().getBoolean("rpg-mode", true));
     }

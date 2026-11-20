@@ -23,6 +23,8 @@ import java.util.List;
 /** Runas adjuntas a UN hechizo aprendido — tope {@link PlayerSpellbook#MAX_RUNES_PER_SPELL}. */
 public class RuneSocketGUI extends InventoryGUI {
 
+    public static final String BACKGROUND = "runas";
+
     private static final int SIZE = 27;
     private static final int RUNES_START = 10;
     private static final int ADD_SLOT = 22;
@@ -37,7 +39,8 @@ public class RuneSocketGUI extends InventoryGUI {
 
     public RuneSocketGUI(Player player, Spell spell, PlayerSpellbook spellbook, RuneManager runeManager,
             ChatPromptManager chatPromptManager, Runnable onBack) {
-        super(player, chatPromptManager.lang().component("gui.rune_socket.title", "spell", spell.displayName()), SIZE);
+        super(player, MagicMenus.skin().title(BACKGROUND,
+                chatPromptManager.lang().component("gui.rune_socket.title", "spell", spell.displayName())), SIZE);
         this.spell = spell;
         this.spellbook = spellbook;
         this.runeManager = runeManager;
@@ -52,7 +55,7 @@ public class RuneSocketGUI extends InventoryGUI {
         clear();
 
         for (int slot = 0; slot < SIZE; slot++) {
-            setItem(slot, ItemBuilder.createFiller());
+            setItem(slot, MagicMenus.filler());
         }
 
         List<String> runeIds = spellbook.runesFor(spell.id());
@@ -76,7 +79,7 @@ public class RuneSocketGUI extends InventoryGUI {
                 .setLore(lang.component("gui.rune_socket.add_lore"))
                 .build());
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.back")));
+        setItem(BACK_SLOT, MagicMenus.skin().button(ItemBuilder.createCancelButton(lang.raw("gui.common.back"))));
     }
 
     @Override

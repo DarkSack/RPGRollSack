@@ -11,6 +11,8 @@ import org.bukkit.inventory.ItemStack;
 /** "¿Seguro?" antes de gastar o cobrar dinero: el ítem del centro dice qué se confirma. */
 public class ConfirmGUI extends InventoryGUI {
 
+    public static final String BACKGROUND = "subastas_confirmar";
+
     private static final int CONFIRM = 11;
     private static final int SUBJECT = 13;
     private static final int CANCEL = 15;
@@ -21,7 +23,7 @@ public class ConfirmGUI extends InventoryGUI {
     private final Runnable onCancel;
 
     public ConfirmGUI(Player player, LangManager lang, ItemStack subject, Runnable onConfirm, Runnable onCancel) {
-        super(player, lang.component("gui.confirm.title"), 27);
+        super(player, RanchMenus.skin().title(BACKGROUND, lang.component("gui.confirm.title")), 27);
         this.lang = lang;
         this.subject = subject;
         this.onConfirm = onConfirm;
@@ -34,12 +36,12 @@ public class ConfirmGUI extends InventoryGUI {
         clear();
 
         for (int slot = 0; slot < 27; slot++) {
-            setItem(slot, ItemBuilder.createFiller());
+            setItem(slot, RanchMenus.filler());
         }
 
-        setItem(CONFIRM, ItemBuilder.createConfirmButton(lang.raw("gui.confirm.accept")));
+        setItem(CONFIRM, RanchMenus.skin().button(ItemBuilder.createConfirmButton(lang.raw("gui.confirm.accept"))));
         setItem(SUBJECT, subject);
-        setItem(CANCEL, ItemBuilder.createCancelButton(lang.raw("gui.confirm.decline")));
+        setItem(CANCEL, RanchMenus.skin().button(ItemBuilder.createCancelButton(lang.raw("gui.confirm.decline"))));
     }
 
     @Override

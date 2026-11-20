@@ -68,6 +68,8 @@ public class TrapsPlugin extends JavaPlugin {
 
         langManager = new LangManager(this, List.of("es", "en", "pt_BR"), "es");
         langManager.reload(getConfig().getString("language", "es"));
+        com.sack.rpgroll.gui.MenuSkin.register(com.sack.rpgroll.traps.gui.TrapMenus.MODULE,
+                com.sack.rpgroll.gui.MenuSkin.from(getConfig().getConfigurationSection("menus")));
 
         // Los modelos de fábrica: el pack de Java va en el jar y se registra en SackResourcePack si está;
         // el de Bedrock y los proyectos de Blockbench se copian para el dueño.

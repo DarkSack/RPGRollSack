@@ -1,5 +1,6 @@
 package com.sack.rpgroll.traps.gui.turret;
 
+import com.sack.rpgroll.traps.gui.TrapMenus;
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.traps.ammo.AmmoDefinition;
 import com.sack.rpgroll.traps.ammo.AmmoItem;
@@ -47,6 +48,8 @@ import java.util.Set;
  */
 public class TurretAmmoGUI implements InventoryHolder, Listener {
 
+    public static final String BACKGROUND = "torreta_municion";
+
     private static final int SIZE = 27;
 
     /** Solo los slots de arriba guardan munición; la fila de abajo son controles. */
@@ -93,14 +96,14 @@ public class TurretAmmoGUI implements InventoryHolder, Listener {
         }
 
         inventory = Bukkit.createInventory(this, SIZE,
-                ComponentUtils.parse(lang.raw("gui.turret_ammo.title")));
+                TrapMenus.skin().title(BACKGROUND, ComponentUtils.parse(lang.raw("gui.turret_ammo.title"))));
 
         // El resto de la fila de controles, ocupado: si no, un shift-click con los 18 de arriba llenos
         // dejaba ahí la munición, y al cerrar solo se leen los de arriba (se perdía). Va antes del
         // stock para que addItem solo pueda usar la fila de arriba.
         for (int slot = AMMO_SLOTS; slot < SIZE; slot++) {
             if (!TOGGLE_SLOTS.contains(slot)) {
-                inventory.setItem(slot, ItemBuilder.createFiller());
+                inventory.setItem(slot, TrapMenus.filler());
             }
         }
 

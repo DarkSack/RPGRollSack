@@ -26,6 +26,8 @@ import java.util.Locale;
  */
 public class RecipeBookGUI extends InventoryGUI {
 
+    public static final String BACKGROUND = "recetario_crafteo";
+
     private static final int SIZE = 54;
 
     private final CustomRecipeManager recipeManager;
@@ -36,7 +38,8 @@ public class RecipeBookGUI extends InventoryGUI {
 
     public RecipeBookGUI(Player player, CustomRecipeManager recipeManager, CustomStationManager stationManager,
             DiscoveryService discoveryService, LangManager lang) {
-        super(player, ComponentUtils.parseWithDefault(lang.raw("gui.recipe_book.title"), NamedTextColor.DARK_AQUA), SIZE);
+        super(player, CraftingMenus.skin().title(BACKGROUND,
+                ComponentUtils.parseWithDefault(lang.raw("gui.recipe_book.title"), NamedTextColor.DARK_AQUA)), SIZE);
         this.recipeManager = recipeManager;
         this.stationManager = stationManager;
         this.discoveryService = discoveryService;

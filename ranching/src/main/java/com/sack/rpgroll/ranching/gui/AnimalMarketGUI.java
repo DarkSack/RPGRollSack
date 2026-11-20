@@ -28,6 +28,8 @@ import java.util.Locale;
  */
 public class AnimalMarketGUI extends InventoryGUI {
 
+    public static final String BACKGROUND = "mercado_animales";
+
     private enum Tab {
         PLAYERS, SERVER, SELL
     }
@@ -49,7 +51,7 @@ public class AnimalMarketGUI extends InventoryGUI {
     private List<Runnable> actions = List.of();
 
     public AnimalMarketGUI(Player player, OwnershipService ownership, ChatPromptManager prompts) {
-        super(player, ownership.lang().component("gui.market.title"), SIZE);
+        super(player, RanchMenus.skin().title(BACKGROUND, ownership.lang().component("gui.market.title")), SIZE);
         this.ownership = ownership;
         this.prompts = prompts;
         this.lang = ownership.lang();
@@ -101,7 +103,7 @@ public class AnimalMarketGUI extends InventoryGUI {
         }
 
         for (int slot = PER_PAGE; slot < SIZE; slot++) {
-            setItem(slot, ItemBuilder.createFiller());
+            setItem(slot, RanchMenus.filler());
         }
 
         if (page > 0) {

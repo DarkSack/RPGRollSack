@@ -75,3 +75,8 @@ ambient:
 resource-pack:
   # Registrar los modelos de fábrica en SackResourcePack al arrancar (si está instalado).
   register-in-sackresourcepack: true
+
+# Menús dibujados del paquete de recursos (fondos y botones).
+# Vacío = menús de cofre normales. En Sackito: "sackito:menus".
+menus:
+  pack: ""

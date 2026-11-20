@@ -34,3 +34,8 @@ experimentation-min-overlap: 0.4
 
 # Segundos de espera entre intentos de un mismo jugador (evita spam-clickear el comando).
 experimentation-cooldown-seconds: 5
+
+# Menús dibujados del paquete de recursos (fondos y botones).
+# Vacío = menús de cofre normales. En Sackito: "sackito:menus".
+menus:
+  pack: ""

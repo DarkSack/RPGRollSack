@@ -3,6 +3,7 @@ package com.sack.rpgroll.machines.spawner;
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.machines.core.Payment;
+import com.sack.rpgroll.machines.core.MachineMenus;
 import com.sack.rpgroll.machines.core.Ui;
 import com.sack.rpgroll.machines.spawner.SpawnerSettings.Level;
 import com.sack.rpgroll.machines.spawner.SpawnerSettings.Track;
@@ -25,6 +26,8 @@ import java.util.Map;
 /** Las tres mejoras de un spawner y su pila. */
 public class SpawnerMenu extends InventoryGUI {
 
+    public static final String BACKGROUND = "generador";
+
     private static final Map<Integer, Upgrade> SLOTS = Map.of(11, Upgrade.SPEED, 13, Upgrade.COUNT, 15, Upgrade.RANGE);
     private static final int STACK = 22;
 
@@ -33,7 +36,7 @@ public class SpawnerMenu extends InventoryGUI {
     private final Block block;
 
     public SpawnerMenu(Player player, Block block, SpawnerService service, LangManager lang, EntityType mob) {
-        super(player, SpawnerService.mob(lang.component("spawner.menu_title"), mob), 27);
+        super(player, MachineMenus.skin().title(BACKGROUND, SpawnerService.mob(lang.component("spawner.menu_title"), mob)), 27);
         this.service = service;
         this.lang = lang;
         this.block = block;
@@ -44,7 +47,7 @@ public class SpawnerMenu extends InventoryGUI {
 
         clear();
         for (int slot = 0; slot < inventory.getSize(); slot++) {
-            setItem(slot, Ui.filler());
+            setItem(slot, MachineMenus.filler());
         }
         var spawner = service.spawner(block);
         if (spawner.isEmpty()) {

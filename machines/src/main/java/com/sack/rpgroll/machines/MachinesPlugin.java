@@ -77,6 +77,8 @@ public class MachinesPlugin extends JavaPlugin {
         }
         lang = new LangManager(this, List.of("es", "en", "pt_BR"), "es");
         lang.reload(getConfig().getString("language", "es"));
+        com.sack.rpgroll.gui.MenuSkin.register(com.sack.rpgroll.machines.core.MachineMenus.MODULE,
+                com.sack.rpgroll.gui.MenuSkin.from(getConfig().getConfigurationSection("menus")));
 
         Displays displays = new Displays(this);
         furnaces = new FurnaceService(this, lang, displays, FurnaceSettings.from(load("furnaces.yml"), this::warn));
@@ -153,6 +155,8 @@ public class MachinesPlugin extends JavaPlugin {
     public void reload() {
         reloadConfig();
         lang.reload(getConfig().getString("language", "es"));
+        com.sack.rpgroll.gui.MenuSkin.register(com.sack.rpgroll.machines.core.MachineMenus.MODULE,
+                com.sack.rpgroll.gui.MenuSkin.from(getConfig().getConfigurationSection("menus")));
         furnaces.settings(FurnaceSettings.from(load("furnaces.yml"), this::warn));
         spawners.settings(SpawnerSettings.from(load("spawners.yml"), this::warn));
         quarries.settings(QuarrySettings.from(load("quarries.yml"), this::warn));

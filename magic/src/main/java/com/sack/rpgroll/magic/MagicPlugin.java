@@ -51,6 +51,8 @@ public class MagicPlugin extends JavaPlugin {
 
         langManager = new LangManager(this, List.of("es", "en", "pt_BR"), "es");
         langManager.reload(getConfig().getString("language", "es"));
+        com.sack.rpgroll.gui.MenuSkin.register(com.sack.rpgroll.magic.gui.MagicMenus.MODULE,
+                com.sack.rpgroll.gui.MenuSkin.from(getConfig().getConfigurationSection("menus")));
 
         new DirectoryCreator(this).create(DIRECTORIES);
         new ResourceCopier(this).copyDirectories(DIRECTORIES);

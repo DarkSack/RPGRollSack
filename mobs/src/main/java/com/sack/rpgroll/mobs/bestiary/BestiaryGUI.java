@@ -1,6 +1,7 @@
 package com.sack.rpgroll.mobs.bestiary;
 
 import com.sack.rpgroll.common.lang.LangManager;
+import com.sack.rpgroll.mobs.gui.MobMenus;
 import com.sack.rpgroll.mobs.gui.PaginatedGUI;
 import com.sack.rpgroll.mobs.rarity.MobRarities;
 
@@ -19,6 +20,8 @@ import java.util.List;
 /** /bestiario: una casilla por especie; las que aún no has matado salen como «???». */
 public final class BestiaryGUI extends PaginatedGUI {
 
+    public static final String BACKGROUND = "bestiario";
+
     private static final int SIZE = 54;
     private static final int CONTENT = 45;
     private static final int PREVIOUS = 45;
@@ -30,7 +33,7 @@ public final class BestiaryGUI extends PaginatedGUI {
     private final List<Bestiary.Species> species;
 
     public BestiaryGUI(Player player, Bestiary bestiary, LangManager lang) {
-        super(player, lang.component("bestiary.title"), SIZE, CONTENT);
+        super(player, MobMenus.skin().title(BACKGROUND, lang.component("bestiary.title")), SIZE, CONTENT);
         this.bestiary = bestiary;
         this.lang = lang;
         this.species = bestiary.species();

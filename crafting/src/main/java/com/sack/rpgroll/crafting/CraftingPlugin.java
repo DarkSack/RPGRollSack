@@ -98,6 +98,8 @@ public class CraftingPlugin extends JavaPlugin {
         // LangManager - Mensajes por idioma (lang/es.yml, en.yml, pt_BR.yml)
         langManager = new LangManager(this, List.of("es", "en", "pt_BR"), "es");
         langManager.reload(getConfig().getString("language", "es"));
+        com.sack.rpgroll.gui.MenuSkin.register(com.sack.rpgroll.crafting.gui.CraftingMenus.MODULE,
+                com.sack.rpgroll.gui.MenuSkin.from(getConfig().getConfigurationSection("menus")));
 
         new DirectoryCreator(this).create(DIRECTORIES);
         new ResourceCopier(this).copyDirectories(DIRECTORIES);
@@ -237,6 +239,8 @@ public class CraftingPlugin extends JavaPlugin {
     private void reloadContent() {
         reloadConfig();
         langManager.reload(getConfig().getString("language", "es"));
+        com.sack.rpgroll.gui.MenuSkin.register(com.sack.rpgroll.crafting.gui.CraftingMenus.MODULE,
+                com.sack.rpgroll.gui.MenuSkin.from(getConfig().getConfigurationSection("menus")));
         stationManager.reload();
         recipeManager.reload();
         fuelManager.reload();

@@ -38,6 +38,8 @@ import java.util.function.Predicate;
  */
 public class FurnitureMenu extends InventoryGUI {
 
+    public static final String BACKGROUND = "muebles";
+
     public enum Mode {
         CARPENTER,
         CATALOG
@@ -65,8 +67,9 @@ public class FurnitureMenu extends InventoryGUI {
 
     public FurnitureMenu(Player player, FurnitureManager manager, FurnitureItems items, LangManager lang, Mode mode,
             String station) {
-        super(player, lang.component(mode == Mode.CARPENTER ? "gui.carpenter.title" : "gui.catalog.title",
-                "station", station == null ? "" : lang.raw("station." + station)), SIZE);
+        super(player, FurnitureMenus.skin().title(BACKGROUND, lang.component(mode == Mode.CARPENTER
+                ? "gui.carpenter.title" : "gui.catalog.title",
+                "station", station == null ? "" : lang.raw("station." + station))), SIZE);
         this.manager = manager;
         this.items = items;
         this.lang = lang;
@@ -102,7 +105,7 @@ public class FurnitureMenu extends InventoryGUI {
         java.util.Collections.fill(craftActions, null);
 
         for (int slot = PAGE; slot < SIZE; slot++) {
-            setItem(slot, ItemBuilder.createFiller());
+            setItem(slot, FurnitureMenus.filler());
         }
 
         List<ItemStack> entries = new ArrayList<>();

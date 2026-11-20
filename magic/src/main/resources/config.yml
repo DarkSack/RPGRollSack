@@ -4,3 +4,8 @@ config-version: 1
 # Los textos viven en lang/<idioma>.yml dentro de esta carpeta de datos —
 # puedes editarlos ahí directamente. Tras cambiar esto, /magicadmin reload.
 language: es
+
+# Menús dibujados del paquete de recursos (fondos y botones).
+# Vacío = menús de cofre normales. En Sackito: "sackito:menus".
+menus:
+  pack: ""

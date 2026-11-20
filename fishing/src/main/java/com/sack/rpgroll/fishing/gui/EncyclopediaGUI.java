@@ -24,6 +24,8 @@ import java.util.Locale;
 /** Colección de capturas del jugador — especies conocidas con su mejor marca, desconocidas como silueta. */
 public class EncyclopediaGUI extends InventoryGUI {
 
+    public static final String BACKGROUND = "enciclopedia_pesca";
+
     private static final int SIZE = 54;
     private static final int SPECIES_MAX = 45;
     private static final int BACK_SLOT = 49;
@@ -35,7 +37,7 @@ public class EncyclopediaGUI extends InventoryGUI {
 
     public EncyclopediaGUI(Player player, FishSpeciesManager speciesManager, FishingProfileManager profileManager,
             LangManager lang) {
-        super(player, lang.component("gui.encyclopedia.title"), SIZE);
+        super(player, FishingMenus.skin().title(BACKGROUND, lang.component("gui.encyclopedia.title")), SIZE);
         this.speciesManager = speciesManager;
         this.profileManager = profileManager;
         this.lang = lang;
@@ -48,7 +50,7 @@ public class EncyclopediaGUI extends InventoryGUI {
         clear();
 
         for (int slot = 0; slot < SIZE; slot++) {
-            setItem(slot, ItemBuilder.createFiller());
+            setItem(slot, FishingMenus.filler());
         }
 
         PlayerFishingProfile profile = profileManager.getOrLoad(player);
@@ -82,7 +84,7 @@ public class EncyclopediaGUI extends InventoryGUI {
                     .build());
         }
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.close")));
+        setItem(BACK_SLOT, FishingMenus.skin().button(ItemBuilder.createCancelButton(lang.raw("gui.common.close"))));
     }
 
     @Override

@@ -85,6 +85,8 @@ public class RanchingPlugin extends JavaPlugin {
 
         langManager = new LangManager(this, List.of("es", "en", "pt_BR"), "es");
         langManager.reload(getConfig().getString("language", "es"));
+        com.sack.rpgroll.gui.MenuSkin.register(com.sack.rpgroll.ranching.gui.RanchMenus.MODULE,
+                com.sack.rpgroll.gui.MenuSkin.from(getConfig().getConfigurationSection("menus")));
 
         new DirectoryCreator(this).create(DIRECTORIES);
         new ResourceCopier(this).copyDirectories(DIRECTORIES);
@@ -219,6 +221,8 @@ public class RanchingPlugin extends JavaPlugin {
     private void reloadContent() {
         reloadConfig();
         langManager.reload(getConfig().getString("language", "es"));
+        com.sack.rpgroll.gui.MenuSkin.register(com.sack.rpgroll.ranching.gui.RanchMenus.MODULE,
+                com.sack.rpgroll.gui.MenuSkin.from(getConfig().getConfigurationSection("menus")));
         ItemModels.loadProducts(getConfig().getConfigurationSection("product-models"));
         ProductPrices.load(getConfig().getConfigurationSection("product-prices"),
                 getConfig().getConfigurationSection("product-quality-multipliers"));

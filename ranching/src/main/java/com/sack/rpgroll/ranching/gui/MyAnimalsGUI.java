@@ -29,6 +29,8 @@ import java.util.Locale;
  */
 public class MyAnimalsGUI extends InventoryGUI {
 
+    public static final String BACKGROUND = "mis_animales";
+
     private static final int SIZE = 54;
     private static final int PER_PAGE = 45;
     private static final int PREV = 45;
@@ -45,7 +47,7 @@ public class MyAnimalsGUI extends InventoryGUI {
     private int page;
 
     public MyAnimalsGUI(Player player, OwnershipService ownership, ChatPromptManager prompts) {
-        super(player, ownership.lang().component("gui.my_animals.title"), SIZE);
+        super(player, RanchMenus.skin().title(BACKGROUND, ownership.lang().component("gui.my_animals.title")), SIZE);
         this.ownership = ownership;
         this.prompts = prompts;
         this.lang = ownership.lang();
@@ -71,7 +73,7 @@ public class MyAnimalsGUI extends InventoryGUI {
         }
 
         for (int slot = PER_PAGE; slot < SIZE; slot++) {
-            setItem(slot, ItemBuilder.createFiller());
+            setItem(slot, RanchMenus.filler());
         }
 
         if (page > 0) {

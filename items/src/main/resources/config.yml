@@ -20,3 +20,8 @@ recipes:
 # para que nadie pueda fabricar una colocando un bloque musical.
 ores:
   retrogen-worlds: []
+
+# Menús dibujados del paquete de recursos (fondos y botones).
+# Vacío = menús de cofre normales. En Sackito: "sackito:menus".
+menus:
+  pack: ""

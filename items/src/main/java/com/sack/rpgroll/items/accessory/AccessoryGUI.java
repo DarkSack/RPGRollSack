@@ -1,5 +1,6 @@
 package com.sack.rpgroll.items.accessory;
 
+import com.sack.rpgroll.items.gui.ItemMenus;
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.gui.util.ItemBuilder;
@@ -17,6 +18,8 @@ import org.bukkit.inventory.ItemStack;
  */
 public class AccessoryGUI extends InventoryGUI {
 
+    public static final String BACKGROUND = "accesorios";
+
     private static final int SIZE = 27;
     private static final int[] SLOT_POSITIONS = { 11, 13, 15 };
 
@@ -24,7 +27,7 @@ public class AccessoryGUI extends InventoryGUI {
     private final LangManager lang;
 
     public AccessoryGUI(Player player, AccessoryService service, LangManager lang) {
-        super(player, lang.component("accessory.title"), SIZE);
+        super(player, ItemMenus.skin().title(BACKGROUND, lang.component("accessory.title")), SIZE);
         this.service = service;
         this.lang = lang;
     }
@@ -33,7 +36,7 @@ public class AccessoryGUI extends InventoryGUI {
     public void build() {
 
         for (int i = 0; i < SIZE; i++) {
-            setItem(i, ItemBuilder.createFiller());
+            setItem(i, ItemMenus.filler());
         }
 
         ItemStack[] worn = service.worn(player);

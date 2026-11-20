@@ -44,6 +44,8 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class CrateSpinGUI extends InventoryGUI {
 
+    public static final String BACKGROUND = "cofre_premio";
+
     private static final int SIZE = 27;
     private static final int[] REEL_SLOTS = { 9, 10, 11, 12, 13, 14, 15, 16, 17 };
     private static final int CENTER_OFFSET = 4; // índice del slot central dentro de REEL_SLOTS
@@ -81,7 +83,8 @@ public class CrateSpinGUI extends InventoryGUI {
 
     public CrateSpinGUI(Plugin plugin, Player player, Crate crate, CrateActionExecutor actionExecutor,
             LangManager lang) {
-        super(player, ComponentUtils.parseWithDefault(crate.guiTitle(), NamedTextColor.GOLD).decorate(TextDecoration.BOLD), SIZE);
+        super(player, CrateMenus.skin().title(BACKGROUND,
+                ComponentUtils.parseWithDefault(crate.guiTitle(), NamedTextColor.GOLD).decorate(TextDecoration.BOLD)), SIZE);
         this.plugin = plugin;
         this.actionExecutor = actionExecutor;
         this.lang = lang;
@@ -177,6 +180,12 @@ public class CrateSpinGUI extends InventoryGUI {
         for (int i = 0; i < SIZE; i++) {
 
             if (isReelSlot(i) || i == POINTER_TOP_SLOT || i == POINTER_BOTTOM_SLOT) {
+                continue;
+            }
+
+            // Con fondo dibujado el marco ya está en el dibujo: relleno invisible, sin arcoíris.
+            if (CrateMenus.skin().drawn()) {
+                setItem(i, CrateMenus.filler());
                 continue;
             }
 

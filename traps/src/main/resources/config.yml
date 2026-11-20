@@ -13,3 +13,8 @@ engine:
   # Cada cuántos ticks el motor de torretas reevalúa objetivo/rotación/disparo.
   # Más bajo = apuntado más fluido, a costa de más carga por tick.
   turret-tick-interval-ticks: 5
+
+# Menús dibujados del paquete de recursos (fondos y botones).
+# Vacío = menús de cofre normales. En Sackito: "sackito:menus".
+menus:
+  pack: ""

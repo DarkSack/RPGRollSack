@@ -21,3 +21,8 @@ stress-gain-per-check: 0.3
 # Probabilidad (0-1) por chequeo de que se dispare un WorkerEvent aleatorio si la moral está baja.
 worker-event-base-chance: 0.01
 low-morale-threshold: 30
+
+# Menús dibujados del paquete de recursos (fondos y botones).
+# Vacío = menús de cofre normales. En Sackito: "sackito:menus".
+menus:
+  pack: ""

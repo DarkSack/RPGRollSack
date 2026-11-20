@@ -34,6 +34,8 @@ import java.util.List;
  */
 public class SpellbookGUI extends InventoryGUI {
 
+    public static final String BACKGROUND = "libro_hechizos";
+
     private static final int SIZE = 54;
     private static final int SPELLS_MAX = 45;
     private static final int BACK_SLOT = 49;
@@ -46,7 +48,7 @@ public class SpellbookGUI extends InventoryGUI {
 
     public SpellbookGUI(Player player, SpellbookManager spellbookManager, SpellManager spellManager,
             RuneManager runeManager, ChatPromptManager chatPromptManager) {
-        super(player, chatPromptManager.lang().component("gui.spellbook.title"), SIZE);
+        super(player, MagicMenus.skin().title(BACKGROUND, chatPromptManager.lang().component("gui.spellbook.title")), SIZE);
         this.spellbookManager = spellbookManager;
         this.spellManager = spellManager;
         this.runeManager = runeManager;
@@ -72,7 +74,7 @@ public class SpellbookGUI extends InventoryGUI {
         clear();
 
         for (int slot = 0; slot < SIZE; slot++) {
-            setItem(slot, ItemBuilder.createFiller());
+            setItem(slot, MagicMenus.filler());
         }
 
         PlayerSpellbook spellbook = spellbookManager.getOrLoad(player);
@@ -136,7 +138,7 @@ public class SpellbookGUI extends InventoryGUI {
             setItem(i, builder.build());
         }
 
-        setItem(BACK_SLOT, ItemBuilder.createCancelButton(lang.raw("gui.common.close")));
+        setItem(BACK_SLOT, MagicMenus.skin().button(ItemBuilder.createCancelButton(lang.raw("gui.common.close"))));
     }
 
     /** Ticks a segundos sin «.0» cuando son enteros (60 → «3», 50 → «2.5»). */
