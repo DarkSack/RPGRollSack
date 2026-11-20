@@ -139,6 +139,7 @@ guild:
     &7 • &9ranking
     &7 • &cchat
     &7 • &fgui
+    &7 • &dcolor
   not_in_guild: "&cYou're not in any guild."
   not_in_guild_browser: "&cYou're not in any guild — use /guild browser."
   already_in_guild: "&cYou're already in a guild."
@@ -150,6 +151,13 @@ guild:
   leave:
     is_leader: "&cYou're the leader — transfer leadership or use /guild disband."
     success: "&7You left the guild."
+  color:
+    usage: "&eUsage: /guild color <name with color codes> &7— or &f/guild color reset &7to remove them. Accepts classic colors, hex (&#RRGGBB) and the per-letter gradient format."
+    only_leader: "&cOnly the leader can change the colors of the guild name."
+    no_permission: "&cYou don't have permission to change the colors of the guild name."
+    invalid: "&cIt must be the guild name ({name}) exactly, with color codes only."
+    success: "&a✔ Guild name: {name}"
+    reset: "&7Name colors removed: it shows in the guild color again."
   create:
     usage: "&eUsage: /guild create <name>"
     invalid_name: "&cThat name isn't valid, is longer than 24 letters or a guild with that id already exists."
@@ -345,10 +353,13 @@ guildadmin:
     &7 • &abrowser [guilds
     &7 • &equests]
     &7 • &ddelete
+    &7 • &6color
   reload:
     success: "&a✔ Guild quests reloaded: {count}"
   browser:
     players_only: "&cOnly a player can open the browser."
+  color:
+    usage: "&eUsage: /guildadmin color <id> <name with color codes | reset>"
   delete:
     usage: "&eUsage: /guildadmin delete <id>"
     not_found: "&cThat guild doesn't exist."

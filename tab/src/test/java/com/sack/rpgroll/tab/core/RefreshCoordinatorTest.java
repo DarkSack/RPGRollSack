@@ -41,16 +41,14 @@ class RefreshCoordinatorTest {
         try (var bukkit = mockStatic(Bukkit.class)) {
             bukkit.when(Bukkit::getOnlinePlayers).thenReturn(List.of(player));
 
-            coordinator.tickAnimations();
-            verifyNoInteractions(engine);
+            // Cada pasada (10 ticks, 0,5 s): así se mueve el nombre animado de un gremio.
             coordinator.tickAnimations();
             verify(engine).apply(player, first);
-            coordinator.tickAnimations();
             coordinator.tickAnimations();
             verify(engine).apply(player, updated);
         }
 
-        verify(tabList, times(4)).reapplyAnimatedElements();
+        verify(tabList, times(2)).reapplyAnimatedElements();
         verify(states, never()).refresh(player);
         verifyNoInteractions(first, updated);
     }

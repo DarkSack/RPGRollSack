@@ -139,6 +139,7 @@ guild:
     &7 • &9ranking
     &7 • &cchat
     &7 • &fgui
+    &7 • &dcolor
   not_in_guild: "&cNo estás en ningún gremio."
   not_in_guild_browser: "&cNo estás en ningún gremio — usa /guild browser."
   already_in_guild: "&cYa estás en un gremio."
@@ -150,6 +151,13 @@ guild:
   leave:
     is_leader: "&cEres el líder — transfiere el liderazgo o usa /guild disband."
     success: "&7Abandonaste el gremio."
+  color:
+    usage: "&eUso: /guild color <nombre con códigos de color> &7— o &f/guild color reset &7para quitarlos. Acepta los colores clásicos, hex (&#RRGGBB) y el formato de degradado por letra."
+    only_leader: "&cSolo el líder puede cambiar los colores del nombre del gremio."
+    no_permission: "&cNo tienes permiso para cambiar los colores del nombre del gremio."
+    invalid: "&cTiene que ser el nombre del gremio ({name}) tal cual, solo con códigos de color."
+    success: "&a✔ Nombre del gremio: {name}"
+    reset: "&7Colores del nombre quitados: vuelve a salir con el color del gremio."
   create:
     usage: "&eUso: /guild create <nombre>"
     invalid_name: "&cEse nombre no es válido, tiene más de 24 letras o ya existe un gremio con ese id."
@@ -345,10 +353,13 @@ guildadmin:
     &7 • &abrowser [guilds
     &7 • &equests]
     &7 • &ddelete
+    &7 • &6color
   reload:
     success: "&a✔ Misiones de gremio recargadas: {count}"
   browser:
     players_only: "&cSolo un jugador puede abrir el navegador."
+  color:
+    usage: "&eUso: /guildadmin color <id> <nombre con códigos de color | reset>"
   delete:
     usage: "&eUso: /guildadmin delete <id>"
     not_found: "&cNo existe ese gremio."

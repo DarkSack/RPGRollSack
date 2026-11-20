@@ -32,7 +32,7 @@ public class GuildCommand implements CommandExecutor, TabCompleter {
 
     private static final List<String> SUBCOMMANDS = List.of("create", "disband", "accept", "decline", "leave",
             "info", "gui", "vault", "territory", "upgrade", "diplomacy", "quest", "achievements", "calendar",
-            "customize", "members", "browser", "ranking", "chat");
+            "customize", "members", "browser", "ranking", "chat", "color");
 
     private final GuildManager guildManager;
     private final GuildServices services;
@@ -76,6 +76,7 @@ public class GuildCommand implements CommandExecutor, TabCompleter {
             case "browser" -> new GuildBrowserGUI(player, services).open();
             case "ranking" -> handleRanking(player, args);
             case "chat" -> handleChat(player, args);
+            case "color" -> handleColor(player, args);
             default -> sendUsage(player);
         }
 
@@ -96,6 +97,35 @@ public class GuildCommand implements CommandExecutor, TabCompleter {
         }
 
         new GuildHubGUI(player, guild, services).open();
+    }
+
+    /** /guild color &lt;nombre con colores | reset&gt;: solo el líder, y con permiso. */
+    private void handleColor(Player player, String[] args) {
+
+        Guild guild = guildManager.findByMember(player.getUniqueId()).orElse(null);
+
+        if (guild == null) {
+            lang().send(player, "guild.not_in_guild");
+            return;
+        }
+
+        if (!guild.roleOf(player.getUniqueId()).canManageSettings()) {
+            lang().send(player, "guild.color.only_leader");
+            return;
+        }
+
+        if (!player.hasPermission("rpgrollguilds.guild.color")) {
+            lang().send(player, "guild.color.no_permission");
+            return;
+        }
+
+        if (args.length < 2) {
+            lang().send(player, "guild.color.usage");
+            return;
+        }
+
+        String input = String.join(" ", java.util.Arrays.asList(args).subList(1, args.length));
+        GuildColorSetter.apply(player, guild, input, guildManager, lang());
     }
 
     private void handleCreate(Player player, String[] args) {
@@ -312,6 +342,7 @@ public class GuildCommand implements CommandExecutor, TabCompleter {
                         GuildRankingManager.Category.values()).map(Enum::name).toList());
                 case "chat" -> TabCompleteUtil.filter(args[1],
                         java.util.Arrays.stream(GuildChatChannel.values()).map(Enum::name).toList());
+                case "color" -> TabCompleteUtil.filter(args[1], List.of("reset"));
                 default -> List.of();
             };
         }

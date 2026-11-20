@@ -34,7 +34,6 @@ public class ScoreboardEngine {
 
     private static final String OBJECTIVE_NAME = "rpgtab_sidebar";
     private static final String HEX = "0123456789abcdef";
-    private static final int MAX_LINE_LENGTH = 64;
 
     private final PlayerScoreboardService scoreboardService;
     private final PlaceholderEngine placeholderEngine;
@@ -149,17 +148,15 @@ public class ScoreboardEngine {
         }
     }
 
-    private void applyLineText(Team team, String rendered) {
-
-        if (rendered.length() <= MAX_LINE_LENGTH) {
-            team.prefix(Component.empty());
-            team.suffix(ComponentUtils.parse(rendered));
-            return;
-        }
-
-        team.prefix(ComponentUtils.parse(rendered.substring(0, MAX_LINE_LENGTH)));
-        team.suffix(ComponentUtils.parse(rendered.substring(MAX_LINE_LENGTH,
-                Math.min(rendered.length(), MAX_LINE_LENGTH * 2))));
+    /**
+     * La línea entera en el sufijo del equipo. Desde 1.13 prefijo y sufijo son
+     * componentes sin el tope de 16 letras; partir el texto en crudo cortaba
+     * códigos por la mitad ({@code &#2632D7} a la vista) en líneas con un color
+     * por letra, como el nombre de un gremio.
+     */
+    static void applyLineText(Team team, String rendered) {
+        team.prefix(Component.empty());
+        team.suffix(ComponentUtils.parse(rendered));
     }
 
     private String entryFor(int index) {

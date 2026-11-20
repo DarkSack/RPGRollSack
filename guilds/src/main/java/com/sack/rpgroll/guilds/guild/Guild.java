@@ -57,6 +57,8 @@ public class Guild {
     private Material icon = Material.SHIELD;
     private String motto = "";
     private String description = "";
+    /** El nombre con colores ({@link GuildNameStyle}), ya validado; null = el nombre con {@link #color}. */
+    private String styledName;
 
     public Guild(String id, String name, UUID founderId) {
         this.id = id;
@@ -76,6 +78,19 @@ public class Guild {
 
     public void setName(String name) {
         this.name = PlayerText.clean(name);
+        // Los colores son de un nombre concreto: con otro nombre se volvería a ver el viejo.
+        if (styledName != null && GuildNameStyle.parse(styledName, this.name).isEmpty()) {
+            styledName = null;
+        }
+    }
+
+    public String styledName() {
+        return styledName;
+    }
+
+    /** Solo un valor que ya pasó por {@link GuildNameStyle#parse}, o null para quitarlo. */
+    public void setStyledName(String styledName) {
+        this.styledName = styledName;
     }
 
     public UUID founderId() {

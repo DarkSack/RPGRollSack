@@ -139,6 +139,7 @@ guild:
     &7 • &9ranking
     &7 • &cchat
     &7 • &fgui
+    &7 • &dcolor
   not_in_guild: "&cVocê não está em nenhuma guilda."
   not_in_guild_browser: "&cVocê não está em nenhuma guilda — use /guild browser."
   already_in_guild: "&cVocê já está em uma guilda."
@@ -150,6 +151,13 @@ guild:
   leave:
     is_leader: "&cVocê é o líder — transfira a liderança ou use /guild disband."
     success: "&7Você saiu da guilda."
+  color:
+    usage: "&eUso: /guild color <nome com códigos de cor> &7— ou &f/guild color reset &7para tirá-los. Aceita as cores clássicas, hex (&#RRGGBB) e o formato de degradê por letra."
+    only_leader: "&cSó o líder pode mudar as cores do nome da guilda."
+    no_permission: "&cVocê não tem permissão para mudar as cores do nome da guilda."
+    invalid: "&cTem que ser o nome da guilda ({name}) exatamente, só com códigos de cor."
+    success: "&a✔ Nome da guilda: {name}"
+    reset: "&7Cores do nome removidas: volta a aparecer na cor da guilda."
   create:
     usage: "&eUso: /guild create <nome>"
     invalid_name: "&cEsse nome não é válido, tem mais de 24 letras ou já existe uma guilda com esse id."
@@ -345,10 +353,13 @@ guildadmin:
     &7 • &abrowser [guilds
     &7 • &equests]
     &7 • &ddelete
+    &7 • &6color
   reload:
     success: "&a✔ Missões de guilda recarregadas: {count}"
   browser:
     players_only: "&cSó um jogador pode abrir o navegador."
+  color:
+    usage: "&eUso: /guildadmin color <id> <nome com códigos de cor | reset>"
   delete:
     usage: "&eUso: /guildadmin delete <id>"
     not_found: "&cEssa guilda não existe."

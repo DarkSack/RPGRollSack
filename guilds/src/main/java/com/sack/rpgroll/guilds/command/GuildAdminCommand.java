@@ -25,7 +25,7 @@ import java.util.Locale;
  */
 public class GuildAdminCommand implements CommandExecutor, TabCompleter {
 
-    private static final List<String> SUBCOMMANDS = List.of("reload", "browser", "delete");
+    private static final List<String> SUBCOMMANDS = List.of("reload", "browser", "delete", "color");
 
     private final GuildManager guildManager;
     private final GuildQuestManager questManager;
@@ -78,6 +78,19 @@ public class GuildAdminCommand implements CommandExecutor, TabCompleter {
                 guildManager.disband(args[1]);
                 services.langManager().send(sender, "guildadmin.delete.success");
             }
+            case "color" -> {
+                if (args.length < 3) {
+                    services.langManager().send(sender, "guildadmin.color.usage");
+                    return true;
+                }
+                var guild = guildManager.get(args[1]).orElse(null);
+                if (guild == null) {
+                    services.langManager().send(sender, "guildadmin.delete.not_found");
+                    return true;
+                }
+                String input = String.join(" ", java.util.Arrays.asList(args).subList(2, args.length));
+                GuildColorSetter.apply(sender, guild, input, guildManager, services.langManager());
+            }
             default -> sendUsage(sender);
         }
 
@@ -98,10 +111,14 @@ public class GuildAdminCommand implements CommandExecutor, TabCompleter {
         if (args.length == 2) {
             return switch (args[0].toLowerCase(Locale.ROOT)) {
                 case "browser" -> TabCompleteUtil.filter(args[1], List.of("guilds", "quests"));
-                case "delete" -> TabCompleteUtil.filter(args[1],
+                case "delete", "color" -> TabCompleteUtil.filter(args[1],
                         guildManager.getAll().stream().map(guild -> guild.id()).toList());
                 default -> List.of();
             };
+        }
+
+        if (args.length == 3 && args[0].equalsIgnoreCase("color")) {
+            return TabCompleteUtil.filter(args[2], List.of("reset"));
         }
 
         return List.of();

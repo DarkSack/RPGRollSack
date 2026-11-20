@@ -1,5 +1,5 @@
 name: RPGRoll-Guilds
-version: 1.1.10
+version: 1.1.12
 main: com.sack.rpgroll.guilds.GuildsPlugin
 api-version: "26.1.1"
 author: Sack
@@ -11,6 +11,9 @@ permissions:
   rpgrollguilds.admin.*:
     description: Acceso completo a comandos administrativos de guilds
     default: op
+  rpgrollguilds.guild.color:
+    description: Poner colores al nombre del gremio (/guild color); además hay que ser el líder
+    default: true
   rpgrollguilds.team.waypoint.teleport:
     description: Teletransportarse a los waypoints del equipo (/team waypoint tp)
     default: op

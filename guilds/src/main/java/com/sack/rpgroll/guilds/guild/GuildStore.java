@@ -227,6 +227,9 @@ public class GuildStore {
 
         guild.setMotto(config.getString("customization.motto", ""));
         guild.setDescription(config.getString("customization.description", ""));
+        // Se vuelve a validar: el archivo se puede editar a mano.
+        guild.setStyledName(GuildNameStyle.parse(config.getString("customization.styled-name"), guild.name())
+                .orElse(null));
 
         return guild;
     }
@@ -363,6 +366,7 @@ public class GuildStore {
         config.set("customization.icon", guild.icon().name());
         config.set("customization.motto", guild.motto());
         config.set("customization.description", guild.description());
+        config.set("customization.styled-name", guild.styledName());
 
         try {
             YamlSaver.save(config, new File(folder, guild.id() + ".yml"));

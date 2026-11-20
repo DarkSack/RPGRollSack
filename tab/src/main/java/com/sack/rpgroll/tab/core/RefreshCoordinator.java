@@ -43,8 +43,11 @@ public class RefreshCoordinator {
     private final BossBarEngine bossBarEngine;
     private final WorldVisibilityService worldVisibilityService;
 
-    /** Pasadas de {@link #tickAnimations} entre dos repintados del sidebar (cada pasada son 10 ticks). */
-    private static final int SIDEBAR_EVERY = 2;
+    /**
+     * Pasadas de {@link #tickAnimations} entre dos repintados del sidebar (cada pasada son 10 ticks).
+     * 1 = cada 0,5 s: lo que necesita el nombre animado de un gremio para moverse fluido.
+     */
+    private static final int SIDEBAR_EVERY = 1;
     private long animationTicks;
 
     public RefreshCoordinator(PlayerStateManager playerStateManager, TabListEngine tabListEngine,

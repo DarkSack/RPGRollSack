@@ -2,6 +2,7 @@ package com.sack.rpgroll.guilds.integration;
 
 import com.sack.rpgroll.guilds.guild.Guild;
 import com.sack.rpgroll.guilds.guild.GuildManager;
+import com.sack.rpgroll.guilds.guild.GuildNameStyle;
 import com.sack.rpgroll.guilds.team.Team;
 import com.sack.rpgroll.guilds.team.TeamManager;
 
@@ -84,6 +85,11 @@ public class GuildsPlaceholders extends PlaceholderExpansion {
             case "team_rank" -> team != null ? roleNames.apply(team.roleOf(player.getUniqueId())) : "-";
             case "in_guild" -> guild != null ? "si" : "no";
             case "guild_name" -> guild != null ? guild.name() : "-";
+            // Con sus colores (&#RRGGBB y &0-&f): para la TAB, que los traduce.
+            case "guild_name_colored" -> guild != null ? GuildNameStyle.display(guild) : "-";
+            // Los mismos colores corridos una letra cada 0,5 s (lo que tarda la TAB en repintar el marcador).
+            case "guild_name_animated" -> guild != null
+                    ? GuildNameStyle.displayAnimated(guild, System.currentTimeMillis() / 500) : "-";
             case "guild_id" -> guild != null ? guild.id() : "-";
             case "guild_level" -> guild != null ? String.valueOf(guild.level()) : "0";
             case "guild_role" -> guild != null ? guild.roleOf(player.getUniqueId()).toString() : "-";

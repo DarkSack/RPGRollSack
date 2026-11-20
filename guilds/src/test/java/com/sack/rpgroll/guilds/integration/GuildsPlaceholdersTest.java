@@ -56,6 +56,35 @@ class GuildsPlaceholdersTest {
     }
 
     @Test
+    void coloredNameUsesTheStyleOrFallsBackToTheGuildColor() {
+        Guild guild = new Guild("papois", "Papois", playerId);
+        when(guilds.findByMember(playerId)).thenReturn(Optional.of(guild));
+
+        assertEquals("&6Papois", value("guild_name_colored"));
+
+        guild.setStyledName("&#54DAF4Pa&bpois");
+        assertEquals("&#54DAF4Pa&bpois", value("guild_name_colored"));
+        assertEquals("Papois", value("guild_name"));
+    }
+
+    @Test
+    void coloredNameIsADashWithoutGuild() {
+        assertEquals("-", value("guild_name_colored"));
+        assertEquals("-", value("guild_name_animated"));
+    }
+
+    @Test
+    void animatedNameIsAFrameOfTheGuildStyle() {
+        Guild guild = new Guild("papois", "Papois", playerId);
+        when(guilds.findByMember(playerId)).thenReturn(Optional.of(guild));
+        assertEquals("&6Papois", value("guild_name_animated"));
+
+        guild.setStyledName("&#111111Pa&#222222pois");
+        String frame = value("guild_name_animated");
+        assertEquals(Optional.of(frame), com.sack.rpgroll.guilds.guild.GuildNameStyle.parse(frame, "Papois"));
+    }
+
+    @Test
     void resolvesOnlyTheRequestingPlayersGuild() {
         Guild ownGuild = new Guild("own", "Propio", playerId);
         ownGuild.vault().restoreBalance(10.5);
