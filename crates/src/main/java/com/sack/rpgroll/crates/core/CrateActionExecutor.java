@@ -1,5 +1,6 @@
 package com.sack.rpgroll.crates.core;
 
+import com.sack.rpgroll.crates.lucky.LuckyBlock;
 import com.sack.rpgroll.crates.lucky.LuckyItems;
 import com.sack.rpgroll.crates.lucky.LuckyManager;
 
@@ -9,6 +10,7 @@ import com.sack.rpgroll.common.lang.LangManager;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -91,6 +93,26 @@ public class CrateActionExecutor {
         var leftover = player.getInventory().addItem(item);
 
         leftover.values().forEach(remaining -> player.getWorld().dropItemNaturally(player.getLocation(), remaining));
+    }
+
+    /** Modelo del lucky block que da el premio, para que su icono en el giro no sea el material plano (o null). */
+    public NamespacedKey luckyModel(CrateReward reward) {
+        return luckyModel(reward, lucky::get);
+    }
+
+    static NamespacedKey luckyModel(CrateReward reward,
+            java.util.function.Function<String, java.util.Optional<LuckyBlock>> blocks) {
+        return reward.actions().stream()
+                .filter(action -> action.type() == CrateAction.CrateActionType.LUCKY_BLOCK)
+                .map(action -> action.value().split(",")[0].trim().toLowerCase(java.util.Locale.ROOT))
+                .map(blocks)
+                .flatMap(java.util.Optional::stream)
+                .map(LuckyBlock::itemModel)
+                .filter(model -> model != null)
+                .map(model -> NamespacedKey.fromString(model.toLowerCase(java.util.Locale.ROOT)))
+                .filter(key -> key != null)
+                .findFirst()
+                .orElse(null);
     }
 
     private void executeLuckyBlock(Player player, String value) {

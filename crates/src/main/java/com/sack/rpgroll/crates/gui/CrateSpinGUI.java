@@ -17,10 +17,12 @@ import net.kyori.adventure.text.format.TextDecoration;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -216,10 +218,18 @@ public class CrateSpinGUI extends InventoryGUI {
             lore.add(ComponentUtils.parse(line));
         }
 
-        return new ItemBuilder(reward.icon())
+        ItemStack item = new ItemBuilder(reward.icon())
                 .setName(ComponentUtils.parse(reward.displayName()).decorate(TextDecoration.BOLD))
                 .setLore(lore)
                 .build();
+        // Un premio de lucky blocks se ve con el modelo del bloque, como el que te llevas.
+        NamespacedKey model = actionExecutor.luckyModel(reward);
+        if (model != null) {
+            ItemMeta meta = item.getItemMeta();
+            meta.setItemModel(model);
+            item.setItemMeta(meta);
+        }
+        return item;
     }
 
     private void scheduleNextStep() {
