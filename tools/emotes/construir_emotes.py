@@ -1,7 +1,7 @@
 """Animaciones y catálogo de fábrica de RPGRoll-Emotes.
 
 Toma la plantilla del jugador de BetterModel (plantilla/steve.bbmodel, MIT) y escribe:
-  - animations/rpgroll_emotes.bbmodel: el modelo de extremidades con las 23 animaciones;
+  - animations/rpgroll_emotes.bbmodel: el modelo de extremidades con las 38 animaciones;
   - emotes/<categoría>/<id>.yml: un emote por animación.
 
     python -I tools/emotes/construir_emotes.py [--salida <carpeta>]
@@ -508,6 +508,221 @@ jade_postura_grulla = anim("jade_postura_grulla", 3.0, {
     "h_ph_head": [rot(t, 5) for t in (0, 3.0)],
 }, loop="loop")
 
+# ================================== tanda 2 de fábrica (2026-11-20) ==================================
+# Van después de los de los packs: así no cambian los uuid de nada de lo anterior.
+
+# --- disco (bucle de 2 s): brazo derecho arriba en diagonal y abajo cruzado, cada 0,5 s; mano izquierda
+# delante de la tripa, cadera y cabeza al ritmo y rebote de rodillas a medio tiempo ---
+_arriba = {"brazo": (0, 0, 145), "cadera": 5, "cabeza": (8, 0, -8)}
+_abajo = {"brazo": (40, 35, 0), "cadera": -5, "cabeza": (-5, 0, 5)}
+_disco = [(0, _arriba), (0.5, _abajo), (1.0, _arriba), (1.5, _abajo), (2.0, _arriba)]
+_rebote = [0.25, 0.75, 1.25, 1.75]
+disco = anim("disco", 2.0, {
+    "pra_right_arm": [rot(t, *f["brazo"]) for t, f in _disco],
+    "prfa_right_forearm": [rot(t, 0 if f is _arriba else 15) for t, f in _disco],
+    "pla_left_arm": [rot(t, 0, 0, -25) for t in (0, 2.0)],
+    "plfa_left_forearm": [rot(t, 60) for t in (0, 2.0)],
+    "phip_hip": [rot(t, 0, 0, f["cadera"]) for t, f in _disco],
+    "h_ph_head": [rot(t, *f["cabeza"]) for t, f in _disco],
+    "player_root": sorted([pos(t) for t, _ in _disco] + [pos(t, 0, -0.8, 0) for t in _rebote], key=lambda c: c[1]),
+    "prl_right_leg": sorted([rot(t) for t, _ in _disco] + [rot(t, 12) for t in _rebote], key=lambda c: c[1]),
+    "pll_left_leg": sorted([rot(t) for t, _ in _disco] + [rot(t, 12) for t in _rebote], key=lambda c: c[1]),
+    "prfl_right_foreleg": sorted([rot(t) for t, _ in _disco] + [rot(t, -24) for t in _rebote], key=lambda c: c[1]),
+    "plfl_left_foreleg": sorted([rot(t) for t, _ in _disco] + [rot(t, -24) for t in _rebote], key=lambda c: c[1]),
+}, loop="loop")
+
+# --- cumbia (bucle de 2 s): paso básico, un pie atrás y vuelta, alternando; brazos doblados a la cintura y el
+# pecho y el cuerpo giran un poco hacia el pie que se queda ---
+cumbia = anim("cumbia", 2.0, {
+    "pra_right_arm": [rot(0, 35, 15, 0), rot(0.5, 35, 15, 8), rot(1.0, 35, 15, 0), rot(1.5, 35, 15, -4),
+                      rot(2.0, 35, 15, 0)],
+    "pla_left_arm": [rot(0, 35, -15, 0), rot(0.5, 35, -15, 4), rot(1.0, 35, -15, 0), rot(1.5, 35, -15, -8),
+                     rot(2.0, 35, -15, 0)],
+    "prfa_right_forearm": [rot(t, 70) for t in (0, 2.0)],
+    "plfa_left_forearm": [rot(t, 70) for t in (0, 2.0)],
+    "pc_chest": [rot(0), rot(0.5, 0, 10, 0), rot(1.0), rot(1.5, 0, -10, 0), rot(2.0)],
+    "h_ph_head": [rot(0), rot(0.5, 0, -6, 5), rot(1.0), rot(1.5, 0, 6, -5), rot(2.0)],
+    "player_root": [rot(0), rot(0.5, 0, 8, 0), rot(1.0), rot(1.5, 0, -8, 0), rot(2.0),
+                    pos(0), pos(0.5, 0, -0.4, 0), pos(1.0), pos(1.5, 0, -0.4, 0), pos(2.0)],
+    "prl_right_leg": [rot(0), rot(0.5, -20), rot(1.0), rot(2.0)],
+    "prfl_right_foreleg": [rot(0), rot(0.5, -15), rot(1.0), rot(2.0)],
+    "pll_left_leg": [rot(0), rot(1.0), rot(1.5, -20), rot(2.0)],
+    "plfl_left_foreleg": [rot(0), rot(1.0), rot(1.5, -15), rot(2.0)],
+}, loop="loop")
+
+# --- giro: brazos abiertos, una vuelta entera sobre sí mismo (lineal, 1 s) y remate con los brazos arriba ---
+# La vuelta va en player_root (y de 0 a 360): acaba en 360, que es la misma pose que 0 (comprobar lo acepta).
+giro = anim("giro", 2.2, {
+    "player_root": [lineal(rot(0)), lineal(rot(0.3)), lineal(rot(0.55, 0, 90, 0)), lineal(rot(0.8, 0, 180, 0)),
+                    lineal(rot(1.05, 0, 270, 0)), lineal(rot(1.3, 0, 360, 0)), lineal(rot(2.2, 0, 360, 0))],
+    "pra_right_arm": [rot(0), rot(0.3, 0, 0, 80), rot(1.3, 0, 0, 80), rot(1.6, 0, 0, 160), rot(1.9, 0, 0, 160),
+                      rot(2.2)],
+    "pla_left_arm": [rot(0), rot(0.3, 0, 0, -80), rot(1.3, 0, 0, -80), rot(1.6, 0, 0, -160),
+                     rot(1.9, 0, 0, -160), rot(2.2)],
+    "h_ph_head": [rot(0), rot(1.3), rot(1.6, 12, 0, 0), rot(1.9, 12, 0, 0), rot(2.2)],
+})
+
+# --- zapateado (bucle de 1 s): manos a la espalda y pies que golpean el suelo, uno cada 0,25 s ---
+# Brazos atrás como el izquierdo de la reverencia (para un brazo que va atrás, +y lo mete hacia el centro en el
+# izquierdo; el derecho usa -y).
+_pie = {}
+for _k, _t in enumerate((0.125, 0.375, 0.625, 0.875)):
+    _pie[_t] = "d" if _k % 2 == 0 else "i"
+zapateado = anim("zapateado", 1.0, {
+    "pra_right_arm": [rot(t, -45, -10, 0) for t in (0, 1.0)],
+    "pla_left_arm": [rot(t, -45, 10, 0) for t in (0, 1.0)],
+    "prfa_right_forearm": [rot(t, 50) for t in (0, 1.0)],
+    "plfa_left_forearm": [rot(t, 50) for t in (0, 1.0)],
+    "prl_right_leg": [rot(0)] + [rot(t, 30 if p == "d" else 0) for t, p in _pie.items()]
+                     + [rot(t) for t in (0.25, 0.75)] + [rot(1.0)],
+    "prfl_right_foreleg": [rot(0)] + [rot(t, -50 if p == "d" else 0) for t, p in _pie.items()]
+                          + [rot(t) for t in (0.25, 0.75)] + [rot(1.0)],
+    "pll_left_leg": [rot(0)] + [rot(t, 30 if p == "i" else 0) for t, p in _pie.items()]
+                    + [rot(t) for t in (0.5,)] + [rot(1.0)],
+    "plfl_left_foreleg": [rot(0)] + [rot(t, -50 if p == "i" else 0) for t, p in _pie.items()]
+                         + [rot(t) for t in (0.5,)] + [rot(1.0)],
+    "h_ph_head": [rot(0), rot(0.125, 0, 0, 4), rot(0.375, 0, 0, -4), rot(0.625, 0, 0, 4), rot(0.875, 0, 0, -4),
+                  rot(1.0)],}, loop="loop")
+for _a in zapateado["animators"].values():
+    _a["keyframes"].sort(key=lambda k: k["time"])
+
+# --- ola: brazos en cruz y una ola que entra por la mano izquierda y sale por la derecha, dos veces ---
+ola = anim("ola", 3.0, {
+    "pla_left_arm": [rot(0), rot(0.4, 0, 0, -90), rot(0.6, 0, 0, -112), rot(0.8, 0, 0, -70), rot(1.0, 0, 0, -90),
+                     rot(1.4, 0, 0, -112), rot(1.6, 0, 0, -70), rot(1.8, 0, 0, -90), rot(2.5, 0, 0, -90), rot(3.0)],
+    "pra_right_arm": [rot(0), rot(0.4, 0, 0, 90), rot(0.9, 0, 0, 112), rot(1.1, 0, 0, 70), rot(1.3, 0, 0, 90),
+                      rot(1.7, 0, 0, 112), rot(1.9, 0, 0, 70), rot(2.1, 0, 0, 90), rot(2.5, 0, 0, 90), rot(3.0)],
+    "pc_chest": [rot(0), rot(0.4), rot(0.7, 0, 0, -6), rot(1.0, 0, 0, 6), rot(1.3), rot(1.5, 0, 0, -6),
+                 rot(1.8, 0, 0, 6), rot(2.1), rot(3.0)],
+    "h_ph_head": [rot(0), rot(0.4), rot(0.7, 0, 0, 5), rot(1.0, 0, 0, -5), rot(1.3), rot(1.5, 0, 0, 5),
+                  rot(1.8, 0, 0, -5), rot(2.1), rot(3.0)],
+})
+
+# --- palmas (bucle de 1,2 s): brazos arriba y un poco al frente; las manos chocan delante y encima de la cara
+# y las rodillas rebotan. Brazos x150: las manos quedan ~1,5 px por delante de la cara y por encima de ella, así no
+# atraviesan la cabeza; z ±17 las junta (manos a ±1,9 px del centro) y ±4 las separa.
+_junta = (0.3, 0.9)
+_tiempos_palmas = (0, 0.3, 0.6, 0.9, 1.2)
+palmas = anim("palmas", 1.2, {
+    "pra_right_arm": [rot(t, 150, 0, 17 if t in _junta else 4) for t in _tiempos_palmas],
+    "pla_left_arm": [rot(t, 150, 0, -17 if t in _junta else -4) for t in _tiempos_palmas],
+    "h_ph_head": [rot(t, 10) for t in (0, 1.2)],
+    "player_root": [pos(t, 0, -0.6 if t in _junta else 0, 0) for t in _tiempos_palmas],
+    "prl_right_leg": [rot(t, 10 if t in _junta else 0) for t in _tiempos_palmas],
+    "pll_left_leg": [rot(t, 10 if t in _junta else 0) for t in _tiempos_palmas],
+    "prfl_right_foreleg": [rot(t, -20 if t in _junta else 0) for t in _tiempos_palmas],
+    "plfl_left_foreleg": [rot(t, -20 if t in _junta else 0) for t in _tiempos_palmas],
+}, loop="loop")
+
+# --- beso_volado: la mano derecha a la boca y luego la lanza al frente, abierta ---
+beso_volado = anim("beso_volado", 2.2, {
+    "pra_right_arm": [rot(0), rot(0.4, 55, 25, 0), rot(0.8, 55, 25, 0), rot(1.1, 95, 0, 15), rot(1.6, 95, 0, 15),
+                      rot(2.2)],
+    "prfa_right_forearm": [rot(0), rot(0.4, 90), rot(0.8, 90), rot(1.1, 5), rot(1.6, 5), rot(2.2)],
+    "h_ph_head": [rot(0), rot(0.4, -5, 0, 0), rot(0.8, -5, 0, 0), rot(1.1, 5, 0, 0), rot(1.6, 5, 0, 0), rot(2.2)],
+    "pc_chest": [rot(0), rot(0.8), rot(1.1, -3, 6, 0), rot(1.6, -3, 6, 0), rot(2.2)],
+})
+
+# --- corazon: las manos juntas delante del pecho (como aplaudir, un poco más altas) y la cabeza se mece ---
+# Con los brazos sobre la cabeza no se puede: el brazo (~11 px) no deja juntar las manos encima sin meterlas en ella.
+corazon = anim("corazon", 2.6, {
+    "pra_right_arm": [rot(0), rot(0.5, 60, 27, 0), rot(2.0, 60, 27, 0), rot(2.6)],
+    "pla_left_arm": [rot(0), rot(0.5, 60, -27, 0), rot(2.0, 60, -27, 0), rot(2.6)],
+    "prfa_right_forearm": [rot(0), rot(0.5, 35), rot(2.0, 35), rot(2.6)],
+    "plfa_left_forearm": [rot(0), rot(0.5, 35), rot(2.0, 35), rot(2.6)],
+    "h_ph_head": [rot(0), rot(0.5, 0, 0, 8), rot(1.0, 0, 0, -8), rot(1.5, 0, 0, 8), rot(2.0), rot(2.6)],
+    "pc_chest": [rot(0), rot(0.5, 3, 0, 0), rot(2.0, 3, 0, 0), rot(2.6)],
+})
+
+# --- saludo_militar: firmes, la mano derecha a la sien (como el facepalm, más abierta) ---
+saludo_militar = anim("saludo_militar", 2.2, {
+    "pra_right_arm": [rot(0), rot(0.35, 70, 8, 15), rot(1.8, 70, 8, 15), rot(2.2)],
+    "prfa_right_forearm": [rot(0), rot(0.35, 80), rot(1.8, 80), rot(2.2)],
+    "pc_chest": [rot(0), rot(0.35, 4, 0, 0), rot(1.8, 4, 0, 0), rot(2.2)],
+    "h_ph_head": [rot(0), rot(0.35, 3, 0, 0), rot(1.8, 3, 0, 0), rot(2.2)],
+})
+
+# --- pulgar_arriba: el puño derecho al frente y una cabezada ---
+pulgar_arriba = anim("pulgar_arriba", 1.8, {
+    "pra_right_arm": [rot(0), rot(0.3, 45, 10, 0), rot(1.4, 45, 10, 0), rot(1.8)],
+    "prfa_right_forearm": [rot(0), rot(0.3, 60), rot(1.4, 60), rot(1.8)],
+    "h_ph_head": [rot(0), rot(0.3), rot(0.6, -8, 0, 0), rot(0.9), rot(1.8)],
+})
+
+# --- ven_aqui: brazo derecho al frente y el antebrazo hace «ven» tres veces ---
+ven_aqui = anim("ven_aqui", 2.0, {
+    "pra_right_arm": [rot(0), rot(0.3, 75, 5, 0), rot(1.6, 75, 5, 0), rot(2.0)],
+    "prfa_right_forearm": [rot(0), rot(0.3, 10), rot(0.5, 70), rot(0.7, 10), rot(0.9, 70), rot(1.1, 10),
+                           rot(1.3, 70), rot(1.6, 10), rot(2.0)],
+    "h_ph_head": [rot(0), rot(0.3, 0, 0, 6), rot(1.6, 0, 0, 6), rot(2.0)],
+})
+
+# --- brazos_cruzados («hold»): cruza los brazos sobre el pecho y se queda así ---
+# Como el brazo izquierdo de pensar (antebrazo a ~0,4 px del pecho); el derecho va un poco más bajo para
+# que los antebrazos no se crucen dentro.
+brazos_cruzados = anim("brazos_cruzados", 0.6, {
+    "pra_right_arm": [rot(0), rot(0.5, 45, 30, 0), rot(0.6, 45, 30, 0)],
+    "prfa_right_forearm": [rot(0), rot(0.5, 70), rot(0.6, 70)],
+    "pla_left_arm": [rot(0), rot(0.5, 58, -32, 0), rot(0.6, 58, -32, 0)],
+    "plfa_left_forearm": [rot(0), rot(0.5, 65), rot(0.6, 65)],
+    "pc_chest": [rot(0), rot(0.5, 3, 0, 0), rot(0.6, 3, 0, 0)],
+    "h_ph_head": [rot(0), rot(0.5, 0, -8, 4), rot(0.6, 0, -8, 4)],
+}, loop="hold")
+
+# --- bostezar: brazos arriba y atrás, el pecho y la cabeza hacia atrás, y vuelve ---
+bostezar = anim("bostezar", 3.0, {
+    "pra_right_arm": [rot(0), rot(0.6, -10, 0, 150), rot(1.7, -10, 0, 150), rot(2.3, 0, 0, 30), rot(3.0)],
+    "pla_left_arm": [rot(0), rot(0.6, -10, 0, -150), rot(1.7, -10, 0, -150), rot(2.3, 0, 0, -30), rot(3.0)],
+    "prfa_right_forearm": [rot(0), rot(0.6, 30), rot(1.7, 30), rot(2.3), rot(3.0)],
+    "plfa_left_forearm": [rot(0), rot(0.6, 30), rot(1.7, 30), rot(2.3), rot(3.0)],
+    "pc_chest": [rot(0), rot(0.6, 10, 0, 0), rot(1.7, 10, 0, 0), rot(2.3), rot(3.0)],
+    "h_ph_head": [rot(0), rot(0.6, 20, 0, 0), rot(1.2, 22, 0, 4), rot(1.7, 20, 0, 0), rot(2.3, -5, 0, 0), rot(3.0)],
+})
+
+# --- estirarse: brazos rectos arriba y el pecho se inclina a un lado y al otro ---
+estirarse = anim("estirarse", 3.0, {
+    "pra_right_arm": [rot(0), rot(0.5, 0, 0, 175), rot(2.4, 0, 0, 175), rot(3.0)],
+    "pla_left_arm": [rot(0), rot(0.5, 0, 0, -175), rot(2.4, 0, 0, -175), rot(3.0)],
+    "pc_chest": [rot(0), rot(0.5), rot(1.1, 0, 0, -12), rot(1.7, 0, 0, 12), rot(2.2), rot(3.0)],
+    "h_ph_head": [rot(0), rot(0.5, 6, 0, 0), rot(1.1, 6, 0, -4), rot(1.7, 6, 0, 4), rot(2.2, 6, 0, 0), rot(3.0)],
+})
+
+# --- guardia (bucle de 1,6 s): de perfil, puños arriba, pie izquierdo delante y rebote sobre las puntas ---
+_bote = (0.4, 1.2)
+_tiempos_guardia = (0, 0.4, 0.8, 1.2, 1.6)
+guardia = anim("guardia", 1.6, {
+    "pra_right_arm": [rot(t, 60, 25, 0) for t in (0, 1.6)],
+    "prfa_right_forearm": [rot(t, 100) for t in (0, 1.6)],
+    "pla_left_arm": [rot(t, 75 if t in _bote else 70, -20, 0) for t in _tiempos_guardia],
+    "plfa_left_forearm": [rot(t, 95) for t in (0, 1.6)],
+    "pc_chest": [rot(t, 0, 15, 0) for t in (0, 1.6)],
+    "h_ph_head": [rot(t, 0, -15, 0) for t in (0, 1.6)],
+    "player_root": [pos(t, 0, -0.6 if t in _bote else 0, 0) for t in _tiempos_guardia],
+    "pll_left_leg": [rot(t, 20 if t in _bote else 12) for t in _tiempos_guardia],
+    "plfl_left_foreleg": [rot(t, -15 if t in _bote else -5) for t in _tiempos_guardia],
+    "prl_right_leg": [rot(t, -2 if t in _bote else -10) for t in _tiempos_guardia],
+    "prfl_right_foreleg": [rot(t, -20 if t in _bote else -10) for t in _tiempos_guardia],
+}, loop="loop")
+
+EMOTES += [
+    (disco, "baile", "GLOW_INK_SAC", "common", "free", None, particulas("NOTE", 4)),
+    (cumbia, "baile", "NOTE_BLOCK", "uncommon", "free", None, particulas("NOTE", 4)),
+    (giro, "baile", "RECOVERY_COMPASS", "rare", "locked",
+     sonido("minecraft:entity.player.attack.sweep", 0.5, 1.4), particulas("CLOUD", 6)),
+    (zapateado, "baile", "LEATHER_BOOTS", "uncommon", "free", sonido("minecraft:block.wood.step", 0.6, 1.0), None),
+    (ola, "baile", "PRISMARINE_SHARD", "common", "free", None, None),
+    (palmas, "baile", "BELL", "common", "free", sonido("minecraft:block.wool.place", 0.6, 1.3), None),
+    (beso_volado, "social", "PINK_PETALS", "uncommon", "free", None, particulas("HEART", 3)),
+    (corazon, "social", "POPPY", "rare", "locked", None, particulas("HEART", 5)),
+    (saludo_militar, "social", "IRON_HELMET", "common", "free", None, None),
+    (pulgar_arriba, "social", "EMERALD", "common", "free", sonido("minecraft:entity.villager.yes", 0.5, 1.0), None),
+    (ven_aqui, "social", "LEAD", "common", "free", None, None),
+    (brazos_cruzados, "social", "SHIELD", "common", "free", None, None),
+    (bostezar, "accion", "WHITE_BED", "common", "free", None, None),
+    (estirarse, "accion", "STRING", "common", "free", None, None),
+    (guardia, "accion", "IRON_SWORD", "uncommon", "free", None, particulas("CRIT", 4)),
+]
+
 # pack -> [(animación, categoría, icono, rareza, nombre, cómo conseguirlo, partículas)]
 # Todos «locked»: los da una misión del pack con «emotesadmin give {player} <id>».
 PACKS = {
@@ -562,15 +777,17 @@ def comprobar(a):
             if not claves:
                 continue
             valores = [tuple(float(k["data_points"][0][e]) for e in "xyz") for k in claves]
+            # Una vuelta entera es la misma pose (el giro acaba en 360): las poses se comparan módulo 360.
+            poses = [tuple(v % 360 for v in val) for val in valores] if canal == "rotation" else valores
             donde = f"{nombre}/{animador['name']}/{canal}"
             assert all(0 <= k["time"] <= largo for k in claves), f"{donde}: clave fuera de 0..{largo}"
             assert claves[0]["time"] == 0 and claves[-1]["time"] == largo, f"{donde}: no cubre de 0 a {largo}"
             if bucle:
-                assert valores[0] == valores[-1], f"{donde}: el bucle no acaba en la pose del inicio"
+                assert poses[0] == poses[-1], f"{donde}: el bucle no acaba en la pose del inicio"
             elif mantiene:
-                assert valores[0] == (0, 0, 0), f"{donde}: no empieza en la pose neutra"
+                assert poses[0] == (0, 0, 0), f"{donde}: no empieza en la pose neutra"
             else:
-                assert valores[0] == valores[-1] == (0, 0, 0), f"{donde}: no empieza y acaba en la pose neutra"
+                assert poses[0] == poses[-1] == (0, 0, 0), f"{donde}: no empieza y acaba en la pose neutra"
             if canal == "rotation" and animador["name"] in ANTEBRAZOS:
                 assert all(v[0] >= 0 for v in valores), f"{donde}: el codo se dobla hacia atrás"
             if canal == "rotation" and animador["name"] in RODILLAS and nombre not in RODILLA_EXENTA:
@@ -656,7 +873,7 @@ def main():
     salida = args.salida or RAIZ / "emotes" / "src" / "main" / "resources"
 
     animaciones = [e[0] for e in EMOTES]
-    assert len({a["name"] for a in animaciones}) == len(animaciones) == 23, "se esperan 23 animaciones distintas"
+    assert len({a["name"] for a in animaciones}) == len(animaciones) == 38, "se esperan 38 animaciones distintas"
     for a in animaciones:
         if a["name"] not in PROTOTIPO:
             mesetas_lineales(a)

@@ -8,6 +8,7 @@ import kr.toxicity.model.api.bukkit.BetterModelBukkit;
 import org.bukkit.plugin.Plugin;
 
 import java.io.File;
+import java.io.IOException;
 
 /**
  * Mete el pack de recursos que genera BetterModel ({@code plugins/BetterModel/build.zip}) en SackResourcePack,
@@ -67,11 +68,26 @@ public final class SrpBridge {
             return;
         }
         if (copied) {
+            patchArmors();
             emotes.getLogger().info("✔ Pack de BetterModel copiado a SackResourcePack (content/" + MODULE
                     + "). Aplícalo con /srp publish.");
         } else {
             emotes.getLogger().warning("✘ No se pudo copiar " + zip + " a SackResourcePack. Comprueba que"
                     + " BetterModel tenga pack-type: zip en su config.yml.");
+        }
+    }
+
+    /** Las armaduras de otros packs (sackito-items…) en el modelo del jugador; ver {@link ArmorPatcher}. */
+    private void patchArmors() {
+        Plugin srp = emotes.getServer().getPluginManager().getPlugin("SackResourcePack");
+        if (srp == null) {
+            return;
+        }
+        File content = new File(srp.getDataFolder(), srp.getConfig().getString("content-directory", "content"));
+        try {
+            new ArmorPatcher(content.toPath(), emotes.getLogger()::info).patch();
+        } catch (IOException | RuntimeException e) {
+            emotes.getLogger().warning("✘ No se pudieron añadir las armaduras propias al pack de BetterModel: " + e);
         }
     }
 

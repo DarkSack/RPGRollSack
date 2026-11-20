@@ -1,0 +1,11 @@
+# De fábrica: generado por tools/emotes/construir_emotes.py.
+id: saludo_militar
+name: "lang:emotes.saludo_militar"
+icon: IRON_HELMET
+category: social
+animation: saludo_militar
+model: rpgroll_emotes
+loop: false
+unlock: free
+rarity: common
+hidden: false

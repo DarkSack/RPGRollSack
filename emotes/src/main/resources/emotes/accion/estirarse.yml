@@ -1,0 +1,11 @@
+# De fábrica: generado por tools/emotes/construir_emotes.py.
+id: estirarse
+name: "lang:emotes.estirarse"
+icon: STRING
+category: accion
+animation: estirarse
+model: rpgroll_emotes
+loop: false
+unlock: free
+rarity: common
+hidden: false

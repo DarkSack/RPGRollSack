@@ -1,0 +1,13 @@
+# De fábrica: generado por tools/emotes/construir_emotes.py.
+id: giro
+name: "lang:emotes.giro"
+icon: RECOVERY_COMPASS
+category: baile
+animation: giro
+model: rpgroll_emotes
+loop: false
+unlock: locked
+rarity: rare
+sound: { id: "minecraft:entity.player.attack.sweep", volume: 0.5, pitch: 1.4 }
+particles: { type: CLOUD, count: 6 }
+hidden: false

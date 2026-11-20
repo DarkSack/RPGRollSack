@@ -1,0 +1,12 @@
+# De fábrica: generado por tools/emotes/construir_emotes.py.
+id: cumbia
+name: "lang:emotes.cumbia"
+icon: NOTE_BLOCK
+category: baile
+animation: cumbia
+model: rpgroll_emotes
+loop: true
+unlock: free
+rarity: uncommon
+particles: { type: NOTE, count: 4 }
+hidden: false

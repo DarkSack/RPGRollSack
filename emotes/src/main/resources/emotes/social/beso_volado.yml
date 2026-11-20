@@ -1,0 +1,12 @@
+# De fábrica: generado por tools/emotes/construir_emotes.py.
+id: beso_volado
+name: "lang:emotes.beso_volado"
+icon: PINK_PETALS
+category: social
+animation: beso_volado
+model: rpgroll_emotes
+loop: false
+unlock: free
+rarity: uncommon
+particles: { type: HEART, count: 3 }
+hidden: false

@@ -1,0 +1,11 @@
+# De fábrica: generado por tools/emotes/construir_emotes.py.
+id: brazos_cruzados
+name: "lang:emotes.brazos_cruzados"
+icon: SHIELD
+category: social
+animation: brazos_cruzados
+model: rpgroll_emotes
+loop: true
+unlock: free
+rarity: common
+hidden: false

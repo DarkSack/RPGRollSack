@@ -1,0 +1,12 @@
+# De fábrica: generado por tools/emotes/construir_emotes.py.
+id: guardia
+name: "lang:emotes.guardia"
+icon: IRON_SWORD
+category: accion
+animation: guardia
+model: rpgroll_emotes
+loop: true
+unlock: free
+rarity: uncommon
+particles: { type: CRIT, count: 4 }
+hidden: false

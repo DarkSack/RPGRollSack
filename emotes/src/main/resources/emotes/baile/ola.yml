@@ -1,0 +1,11 @@
+# De fábrica: generado por tools/emotes/construir_emotes.py.
+id: ola
+name: "lang:emotes.ola"
+icon: PRISMARINE_SHARD
+category: baile
+animation: ola
+model: rpgroll_emotes
+loop: false
+unlock: free
+rarity: common
+hidden: false

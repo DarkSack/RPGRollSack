@@ -1,0 +1,11 @@
+# De fábrica: generado por tools/emotes/construir_emotes.py.
+id: bostezar
+name: "lang:emotes.bostezar"
+icon: WHITE_BED
+category: accion
+animation: bostezar
+model: rpgroll_emotes
+loop: false
+unlock: free
+rarity: common
+hidden: false

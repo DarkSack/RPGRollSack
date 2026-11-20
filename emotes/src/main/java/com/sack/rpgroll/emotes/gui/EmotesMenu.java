@@ -91,14 +91,14 @@ public class EmotesMenu extends InventoryGUI {
             setItem(MenuLayout.CONTENT_SLOTS.get(i), emoteItem(onPage.get(i), data));
         }
 
-        // Favoritos: su emote o un hueco vacío.
+        // Favoritos: su emote o un hueco vacío (con fondo, invisible sobre la estrella dibujada).
         List<String> favs = data.favorites();
         for (int i = 0; i < MenuLayout.FAVORITE_SLOTS.size() && i < favs.size(); i++) {
             Optional<Emote> fav = catalog.get(favs.get(i));
             setItem(MenuLayout.FAVORITE_SLOTS.get(i), fav.isPresent()
                     ? favoriteItem(fav.get(), i + 1)
-                    : EmotesMenus.item(Material.LIGHT_GRAY_STAINED_GLASS_PANE,
-                            lang.component("menu.favorite_empty", "slot", i + 1), List.of()));
+                    : EmotesMenus.skin().button(EmotesMenus.item(Material.LIGHT_GRAY_STAINED_GLASS_PANE,
+                            lang.component("menu.favorite_empty", "slot", i + 1), List.of())));
         }
 
         List<Component> pageLore = List.of(lang.component("menu.page", "page", page + 1, "pages", pages));

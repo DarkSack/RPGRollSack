@@ -1,0 +1,12 @@
+# De fábrica: generado por tools/emotes/construir_emotes.py.
+id: palmas
+name: "lang:emotes.palmas"
+icon: BELL
+category: baile
+animation: palmas
+model: rpgroll_emotes
+loop: true
+unlock: free
+rarity: common
+sound: { id: "minecraft:block.wool.place", volume: 0.6, pitch: 1.3 }
+hidden: false

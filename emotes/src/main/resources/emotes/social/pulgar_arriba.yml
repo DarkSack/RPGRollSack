@@ -1,0 +1,12 @@
+# De fábrica: generado por tools/emotes/construir_emotes.py.
+id: pulgar_arriba
+name: "lang:emotes.pulgar_arriba"
+icon: EMERALD
+category: social
+animation: pulgar_arriba
+model: rpgroll_emotes
+loop: false
+unlock: free
+rarity: common
+sound: { id: "minecraft:entity.villager.yes", volume: 0.5, pitch: 1.0 }
+hidden: false

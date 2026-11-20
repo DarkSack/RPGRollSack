@@ -1,0 +1,12 @@
+# De fábrica: generado por tools/emotes/construir_emotes.py.
+id: corazon
+name: "lang:emotes.corazon"
+icon: POPPY
+category: social
+animation: corazon
+model: rpgroll_emotes
+loop: false
+unlock: locked
+rarity: rare
+particles: { type: HEART, count: 5 }
+hidden: false

@@ -27,8 +27,9 @@ import java.util.Set;
 class BundledCatalogTest {
 
     private static final File RESOURCES = new File("src/main/resources");
-    private static final Set<String> LOCKED = Set.of("robot", "bailar_lento", "flexionar", "meditar");
-    private static final Set<String> LOOPS = Set.of("saltitos", "bailar_lento", "sentarse", "meditar", "canalizar");
+    private static final Set<String> LOCKED = Set.of("robot", "bailar_lento", "flexionar", "meditar", "giro", "corazon");
+    private static final Set<String> LOOPS = Set.of("saltitos", "bailar_lento", "sentarse", "meditar", "canalizar",
+            "disco", "cumbia", "zapateado", "palmas", "guardia", "brazos_cruzados");
     private static final Set<String> CATEGORIES = Set.of("social", "baile", "accion", "magia");
 
     private static EmoteCatalog catalog;
@@ -54,9 +55,11 @@ class BundledCatalogTest {
     }
 
     @Test
-    void loadsTwentyThreeWithoutWarnings() {
+    void loadsThirtyEightWithoutWarnings() {
         assertEquals(List.of(), warns);
-        assertEquals(23, catalog.all().size());
+        assertEquals(38, catalog.all().size());
+        assertTrue(catalog.get("giro").isPresent());
+        assertTrue(catalog.get("guardia").isPresent());
         assertTrue(catalog.get("conjurar_caminando").isPresent());
         assertTrue(catalog.get("canalizar").isPresent());
     }

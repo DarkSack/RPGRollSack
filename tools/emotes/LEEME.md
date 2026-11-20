@@ -2,7 +2,7 @@
 
 `construir_emotes.py` genera las animaciones y el catálogo de fábrica del módulo Emotes:
 
-- `emotes/src/main/resources/animations/rpgroll_emotes.bbmodel`: el modelo de extremidades del jugador con las 23 animaciones.
+- `emotes/src/main/resources/animations/rpgroll_emotes.bbmodel`: el modelo de extremidades del jugador con las 38 animaciones.
 - `emotes/src/main/resources/emotes/<categoría>/<id>.yml`: un emote por animación.
 
 ```

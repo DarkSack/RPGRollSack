@@ -1,0 +1,12 @@
+# De fábrica: generado por tools/emotes/construir_emotes.py.
+id: zapateado
+name: "lang:emotes.zapateado"
+icon: LEATHER_BOOTS
+category: baile
+animation: zapateado
+model: rpgroll_emotes
+loop: true
+unlock: free
+rarity: uncommon
+sound: { id: "minecraft:block.wood.step", volume: 0.6, pitch: 1.0 }
+hidden: false

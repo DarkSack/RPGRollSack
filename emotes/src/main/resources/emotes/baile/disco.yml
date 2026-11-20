@@ -1,0 +1,12 @@
+# De fábrica: generado por tools/emotes/construir_emotes.py.
+id: disco
+name: "lang:emotes.disco"
+icon: GLOW_INK_SAC
+category: baile
+animation: disco
+model: rpgroll_emotes
+loop: true
+unlock: free
+rarity: common
+particles: { type: NOTE, count: 4 }
+hidden: false
