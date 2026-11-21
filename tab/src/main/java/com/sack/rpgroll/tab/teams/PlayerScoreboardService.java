@@ -7,6 +7,7 @@ import org.bukkit.scoreboard.Scoreboard;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Supplier;
 
 /**
  * Bukkit solo permite UN {@link Scoreboard} activo por jugador — ese único
@@ -23,15 +24,25 @@ import java.util.concurrent.ConcurrentHashMap;
 public class PlayerScoreboardService {
 
     private final Map<UUID, Scoreboard> boards = new ConcurrentHashMap<>();
+    private final Supplier<Scoreboard> factory;
+
+    public PlayerScoreboardService() {
+        this(() -> Bukkit.getScoreboardManager().getNewScoreboard());
+    }
+
+    PlayerScoreboardService(Supplier<Scoreboard> factory) {
+        this.factory = factory;
+    }
 
     public Scoreboard getOrCreate(Player player) {
 
-        return boards.computeIfAbsent(player.getUniqueId(), id -> {
-
-            Scoreboard board = Bukkit.getScoreboardManager().getNewScoreboard();
+        Scoreboard board = boards.computeIfAbsent(player.getUniqueId(), id -> factory.get());
+        // Al reconectar es otro Player que arranca con el scoreboard principal, y otro plugin
+        // puede habérselo cambiado: sin esto se pinta en un tablero que ya no ve (sin sidebar).
+        if (player.getScoreboard() != board) {
             player.setScoreboard(board);
-            return board;
-        });
+        }
+        return board;
     }
 
     public void remove(Player player) {

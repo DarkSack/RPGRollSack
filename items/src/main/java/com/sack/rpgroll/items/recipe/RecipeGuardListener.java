@@ -117,7 +117,8 @@ public class RecipeGuardListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onPrepareCraft(PrepareItemCraftEvent event) {
-        if (event.getRecipe() != null && !allows(event.getRecipe(), List.of(event.getInventory().getMatrix()))) {
+        // Arrays.asList y no List.of: las casillas vacías de la mesa vienen como null.
+        if (event.getRecipe() != null && !allows(event.getRecipe(), java.util.Arrays.asList(event.getInventory().getMatrix()))) {
             event.getInventory().setResult(null);
         }
     }
