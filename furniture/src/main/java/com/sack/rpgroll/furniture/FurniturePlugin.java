@@ -100,6 +100,12 @@ public class FurniturePlugin extends JavaPlugin {
         BrigadierCommands.register(this, "furnitureadmin", "Administra RPGRoll-Furniture", List.of("fadmin"),
                 admin, admin, "rpgroll.furniture.admin");
 
+        // /dar mueble:<id> o mueble:<id>:<variante> (comando de la Lib).
+        com.sack.rpgroll.common.quick.Things.give(this, "mueble", () -> manager.all().stream()
+                .flatMap(d -> java.util.stream.Stream.concat(java.util.stream.Stream.of(d.id()),
+                        d.variants().keySet().stream().map(v -> d.id() + ":" + v)))
+                .toList(), id -> createItem(id, 1));
+
         getLogger().info("✔ RPGRoll-Furniture habilitado: " + manager.count() + " mueble(s) en "
                 + manager.categories().size() + " categoría(s), " + index.size() + " colocado(s) ya cargado(s).");
     }

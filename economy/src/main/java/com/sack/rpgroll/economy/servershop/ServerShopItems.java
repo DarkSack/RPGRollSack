@@ -36,16 +36,24 @@ public final class ServerShopItems {
                     ? EnchantmentsBridge.book(entry.key(), entry.level()) : Optional.empty();
             case FURNITURE -> Bukkit.getPluginManager().isPluginEnabled("RPGRoll-Furniture")
                     ? FurnitureBridge.create(entry.key()) : Optional.empty();
+            case SPAWNER -> Bukkit.getPluginManager().isPluginEnabled("RPGRoll-Machines")
+                    ? MachinesBridge.spawner(entry.key()) : Optional.empty();
         };
     }
 
     /** Qué plugin falta para poder vender esta línea (null si no depende de ninguno). */
+    /** El id de RPGRoll-Items de {@code stack} sin mejorar, para recomprarlo; vacío sin ese plugin. */
+    public static Optional<String> rpgrollItemId(ItemStack stack) {
+        return Bukkit.getPluginManager().isPluginEnabled("RPGRoll-Items") ? ItemsBridge.id(stack) : Optional.empty();
+    }
+
     public static String requiredPlugin(ServerShopEntry entry) {
 
         return switch (entry.kind()) {
             case ITEM -> "RPGRoll-Items";
             case ENCHANT -> "RPGRoll-Enchantments";
             case FURNITURE -> "RPGRoll-Furniture";
+            case SPAWNER -> "RPGRoll-Machines";
             default -> null;
         };
     }

@@ -105,6 +105,12 @@ public class CratesPlugin extends JavaPlugin {
 
         rebuildHolograms();
 
+        // /dar llave:<crate> y /dar lucky:<id> (comando de la Lib).
+        com.sack.rpgroll.common.quick.Things.give(this, "llave", () -> crateManager.getAll().stream().map(c -> c.id()).toList(),
+                id -> crateManager.get(id).map(c -> crateKeyItem.create(c, 1)));
+        com.sack.rpgroll.common.quick.Things.give(this, "lucky", () -> luckyManager.getAll().stream().map(b -> b.id()).toList(),
+                id -> luckyManager.get(id).map(b -> luckyItems.create(b, 1)));
+
         getLogger().info("✔ RPGRoll-Crates habilitado. " + crateManager.count() + " tipo(s) de crate cargados, "
                 + placedCrateManager.getAll().size() + " ubicación(es), " + luckyManager.count()
                 + " lucky block(s), " + (treasureManager == null ? 0 : treasureManager.count()) + " tesoro(s).");

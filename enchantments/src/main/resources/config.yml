@@ -36,6 +36,16 @@ infuser:
 # y los del plugin que admite ese ítem, con una barra de niveles cada uno (por encima del máximo vanilla
 # también: Afilado V → VI...). Nada se cobra hasta pulsar Encantar. Por encima del máximo, cada nivel
 # cuesta base-levels + step-levels por cada nivel extra anterior, y lapis-per-level lapislázulis.
+# Desencantador: Mayús + clic derecho en una muela vanilla con un ítem encantado en la mano. Quita el
+# encantamiento elegido (vanilla o de RPGRoll) y lo da en un libro. Se paga por nivel: con dinero
+# (clic izquierdo, por Vault) o con el ítem de RPGRoll-Items shard-item (clic derecho). Los de tesoro,
+# las maldiciones y los de RPGRoll legendarios o más raros cuestan el doble.
+disenchanter:
+  enabled: true
+  money-per-level: 1500
+  shards-per-level: 1
+  shard-item: esquirla_de_olvidita
+
 super-enchanter:
   enabled: true
   # Modelo 3D del resource pack (namespace:id), igual que el del infusor. Vacío: la mesa vanilla.

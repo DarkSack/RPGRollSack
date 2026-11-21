@@ -1,0 +1,19 @@
+# Nombres de los comandos y sus subcomandos en cada idioma (lo lee BrigadierCommands de la Lib).
+# El nombre de cada clave es el de siempre; el comando recibe esa palabra escriba lo que escriba el jugador.
+commands:
+  ascend:
+    names: {es: ascender}
+    subcommands:
+      race: {es: raza, pt: raca}
+      specialize: {es: especializar, pt: especializar}
+      talent: {es: talento, pt: talento}
+      prestige: {es: prestigio, pt: prestigio}
+      affinity: {es: afinidad, pt: afinidade}
+      reputation: {es: reputacion, pt: reputacao}
+      title: {es: titulo, pt: titulo}
+      titles: {es: titulos, pt: titulos}
+      achievements: {es: logros, pt: conquistas}
+      jobs: {es: oficios, pt: profissoes}
+      secrets: {es: secretos, pt: segredos}
+      secret: {es: secreto, pt: segredo}
+      legacy: {es: legado, pt: legado}

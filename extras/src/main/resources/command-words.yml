@@ -1,0 +1,19 @@
+# Nombres de los comandos y sus subcomandos en cada idioma (lo lee BrigadierCommands de la Lib).
+# El nombre de cada clave es el de siempre; el comando recibe esa palabra escriba lo que escriba el jugador.
+commands:
+  ordenar:
+    names: {en: sort, pt: organizar}
+    subcommands:
+      varita: {en: wand, pt: varinha}
+      on: {es: activar, pt: ligar}
+      off: {es: desactivar, pt: desligar}
+  mochila:
+    names: {en: backpack, pt: mochila}
+  warp:
+    subcommands:
+      list: {es: lista, pt: lista}
+  warps:
+    subcommands:
+      list: {es: lista, pt: lista}
+  death:
+    names: {es: muerte, pt: morte}

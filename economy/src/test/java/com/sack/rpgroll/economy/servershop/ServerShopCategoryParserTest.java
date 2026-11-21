@@ -71,6 +71,53 @@ class ServerShopCategoryParserTest {
     }
 
     @Test
+    void readsSpawnerLinesOfMachines() throws InvalidConfigurationException {
+
+        ServerShopCategory category = parse(
+                "id: spawners",
+                "items:",
+                "  - spawner: Zombie",
+                "    buy: 25000",
+                "  - spawner: minecraft:blaze",
+                "    buy: 60000",
+                "  - spawner: skeleton",
+                "    buy: 30000",
+                "    sell: 9000");
+
+        // La tienda no recompra spawners: la línea con sell se descarta con aviso.
+        assertEquals(1, warnings.size());
+        assertEquals(2, category.entries().size());
+        ServerShopEntry zombie = category.entries().get(0);
+        assertEquals(ServerShopEntry.Kind.SPAWNER, zombie.kind());
+        assertEquals("minecraft:zombie", zombie.key());
+        assertFalse(zombie.sellable());
+        assertEquals("minecraft:blaze", category.entries().get(1).key());
+        assertEquals("RPGRoll-Machines", ServerShopItems.requiredPlugin(zombie));
+    }
+
+    @Test
+    void rpgrollItemsCanBeBoughtBackWhenTheLineSaysSell() throws InvalidConfigurationException {
+
+        ServerShopCategory category = parse(
+                "id: botin",
+                "items:",
+                "  - item: insignia_de_bandido",
+                "    sell: 11",
+                "  - item: flame_blade",
+                "    buy: 140000",
+                "  - item: espada",
+                "    market: DIAMOND");
+
+        // Un ítem de RPGRoll no tiene precio de mercado: esa línea se descarta.
+        assertEquals(1, warnings.size());
+        ServerShopEntry badge = category.entries().get(0);
+        assertTrue(badge.sellable());
+        assertEquals(11, badge.sell());
+        assertEquals(0, badge.buy());
+        assertFalse(category.entries().get(1).sellable(), "sin sell la tienda no lo compra");
+    }
+
+    @Test
     void badLinesAreSkippedWithAWarning() throws InvalidConfigurationException {
 
         ServerShopCategory category = parse(
@@ -80,7 +127,7 @@ class ServerShopCategoryParserTest {
                 "    buy: 1",
                 "  - buy: 5",
                 "  - material: STONE",
-                "  - item: dragon_slayer",
+                "  - spawner: zombie",
                 "    sell: 10",
                 "  - potion: HEALING",
                 "    form: BUCKET",

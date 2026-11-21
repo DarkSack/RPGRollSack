@@ -5,7 +5,7 @@ api-version: "26.1.1"
 author: Sack
 description: Sistema de encantamientos personalizados basado en componentes (triggers, condiciones y efectos) para RPGRoll
 depend: [RPGRoll-Lib]
-softdepend: [RPGRoll, RPGRoll-FX, PlaceholderAPI]
+softdepend: [RPGRoll, RPGRoll-FX, PlaceholderAPI, Vault]
 
 permissions:
   rpgrollenchantments.admin.*:

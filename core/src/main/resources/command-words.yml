@@ -1,0 +1,17 @@
+# Nombres de los comandos y sus subcomandos en cada idioma (lo lee BrigadierCommands de la Lib).
+# El nombre de cada clave es el de siempre; el comando recibe esa palabra escriba lo que escriba el jugador.
+commands:
+  rpg:
+    subcommands:
+      help: {es: ayuda, pt: ajuda}
+      stats: {es: estadisticas, pt: estatisticas}
+      level: {es: nivel, pt: nivel}
+      class: {es: clase, pt: classe}
+      race: {es: raza, pt: raca}
+      create: {es: crear, pt: criar}
+      skills: {es: habilidades, pt: habilidades}
+      traits: {es: rasgos, pt: tracos}
+      mystats: {es: detalles, pt: detalhes}
+      jobs: {es: trabajos, pt: profissoes}
+      allocate: {es: asignar, pt: atribuir}
+      use: {es: usar, pt: usar}

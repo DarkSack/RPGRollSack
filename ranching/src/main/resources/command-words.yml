@@ -1,0 +1,15 @@
+# Nombres de los comandos y sus subcomandos en cada idioma (lo lee BrigadierCommands de la Lib).
+# El nombre de cada clave es el de siempre; el comando recibe esa palabra escriba lo que escriba el jugador.
+commands:
+  ranching:
+    names: {es: rancho, pt: rancho}
+    subcommands:
+      inspect: {es: inspeccionar, pt: inspecionar}
+      animales: {en: animals, pt: animais}
+      mercado: {en: market, pt: mercado}
+      reclamar: {en: claim, pt: resgatar}
+      nombrar: {en: name, pt: nomear}
+      vender: {en: sell, pt: vender}
+      comprar: {en: buy, pt: comprar}
+      llamar: {en: call, pt: chamar}
+      corral: {en: pen, pt: curral}

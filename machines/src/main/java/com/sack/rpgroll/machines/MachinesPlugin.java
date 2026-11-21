@@ -26,6 +26,7 @@ import com.sack.rpgroll.machines.quarry.QuarryService;
 import com.sack.rpgroll.machines.quarry.QuarrySettings;
 import com.sack.rpgroll.machines.quarry.QuarryStore;
 import com.sack.rpgroll.machines.quarry.QuarryWorker;
+import com.sack.rpgroll.machines.spawner.SpawnerData;
 import com.sack.rpgroll.machines.spawner.SpawnerListener;
 import com.sack.rpgroll.machines.spawner.SpawnerMenu;
 import com.sack.rpgroll.machines.spawner.SpawnerService;
@@ -38,6 +39,10 @@ import org.bukkit.scheduler.BukkitTask;
 
 import java.io.File;
 import java.util.List;
+import java.util.Optional;
+
+import org.bukkit.entity.EntityType;
+import org.bukkit.inventory.ItemStack;
 
 /**
  * RPGRoll-Machines: hornos, altos hornos y ahumadores mejorables (furnaces.yml), spawners con
@@ -124,6 +129,39 @@ public class MachinesPlugin extends JavaPlugin {
             areaStore.save(false);
         }, 200L, 200L);
         checkClaims();
+        registerQuickGive();
+    }
+
+    /** /dar spawner:<mob> y /dar maquina:<id> (comando de la Lib). */
+    private void registerQuickGive() {
+        com.sack.rpgroll.common.quick.Things.give(this, "spawner", () -> java.util.Arrays.stream(EntityType.values())
+                .filter(t -> t.isSpawnable() && t.isAlive() && t != EntityType.PLAYER)
+                .map(t -> t.getKey().getKey()).toList(), this::createSpawner);
+        com.sack.rpgroll.common.quick.Things.give(this, "maquina", this::machineIds, this::createMachine);
+    }
+
+    /** cantera, las máquinas de área por su id y los hornos como {@code <horno>.<nivel>}. */
+    private java.util.List<String> machineIds() {
+        java.util.List<String> out = new java.util.ArrayList<>();
+        out.add("cantera");
+        areas.kinds().forEach(k -> out.add(k.id()));
+        for (org.bukkit.Material kind : furnaces.settings().kinds()) {
+            furnaces.settings().tiers().forEach(t -> out.add(kind.getKey().getKey() + "." + t.id()));
+        }
+        return out;
+    }
+
+    private Optional<ItemStack> createMachine(String id) {
+        if (id.equals("cantera")) {
+            return Optional.of(quarries.item(null, 1));
+        }
+        int dot = id.lastIndexOf('.');
+        if (dot > 0) {
+            org.bukkit.Material kind = org.bukkit.Material.matchMaterial(id.substring(0, dot));
+            return kind == null || !furnaces.settings().kinds().contains(kind) ? Optional.empty()
+                    : furnaces.settings().tier(id.substring(dot + 1)).map(t -> furnaces.item(kind, t, 1));
+        }
+        return areas.kind(id).map(k -> areas.item(k, null, 1));
     }
 
     @Override
@@ -152,6 +190,23 @@ public class MachinesPlugin extends JavaPlugin {
     }
 
     /** /machines reload: config, idioma y los ficheros de cada máquina. Las canteras y las demás siguen donde iban. */
+    /**
+     * Un spawner nuestro (sin mejoras) del mob {@code mob} ({@code minecraft:zombie} o {@code zombie}), para otros
+     * plugins (la tienda de Economy). Vacío si el mob no existe, no puede salir de un spawner o Machines no ha
+     * arrancado.
+     */
+    public Optional<ItemStack> createSpawner(String mob) {
+
+        if (spawners == null || mob == null) {
+            return Optional.empty();
+        }
+        EntityType type = SpawnerService.entity(mob.contains(":") ? mob : "minecraft:" + mob);
+        if (type == null || !type.isSpawnable() || !type.isAlive()) {
+            return Optional.empty();
+        }
+        return Optional.of(spawners.item(type, SpawnerData.NONE, 1));
+    }
+
     public void reload() {
         reloadConfig();
         lang.reload(getConfig().getString("language", "es"));

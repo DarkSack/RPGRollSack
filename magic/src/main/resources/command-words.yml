@@ -1,0 +1,10 @@
+# Nombres de los comandos y sus subcomandos en cada idioma (lo lee BrigadierCommands de la Lib).
+# El nombre de cada clave es el de siempre; el comando recibe esa palabra escriba lo que escriba el jugador.
+commands:
+  magic:
+    names: {es: magia, pt: magia}
+    subcommands:
+      spellbook: {es: grimorio, pt: grimorio}
+      select: {es: elegir, pt: escolher}
+      cast: {es: lanzar, pt: lancar}
+      cooldowns: {es: recargas, pt: recargas}

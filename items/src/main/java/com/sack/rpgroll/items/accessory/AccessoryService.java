@@ -10,6 +10,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
@@ -21,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 /**
  * Amuletos: ítems que se llevan puestos en ranuras propias, fuera del
@@ -46,6 +50,8 @@ public class AccessoryService implements Listener {
     private final ItemRequirementChecker requirementChecker;
     private final File folder;
     private final Map<UUID, ItemStack[]> worn = new HashMap<>();
+    private Consumer<Player> openMenu = player -> {
+    };
 
     public AccessoryService(Plugin plugin, ItemManager itemManager, ItemInstanceService instanceService,
             ItemRequirementChecker requirementChecker) {
@@ -54,6 +60,11 @@ public class AccessoryService implements Listener {
         this.itemManager = itemManager;
         this.instanceService = instanceService;
         this.folder = new File(plugin.getDataFolder(), "accessories");
+    }
+
+    /** Lo que abre /amuletos; se usa al hacer clic derecho con un amuleto en la mano. */
+    public void setMenuOpener(Consumer<Player> openMenu) {
+        this.openMenu = Objects.requireNonNull(openMenu);
     }
 
     /** Lo que lleva puesto: un hueco vacío es {@code null}. No modificar el array, usar equip/unequip. */
@@ -143,6 +154,20 @@ public class AccessoryService implements Listener {
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
         worn.remove(event.getPlayer().getUniqueId());
+    }
+
+    /** Clic derecho con un amuleto en la mano: abre /amuletos para equiparlo sin escribir. */
+    @EventHandler
+    public void onInteract(PlayerInteractEvent event) {
+
+        if (event.getHand() != EquipmentSlot.HAND
+                || (event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK)
+                || !isAccessory(event.getItem())) {
+            return;
+        }
+
+        event.setCancelled(true);
+        openMenu.accept(event.getPlayer());
     }
 
     /** Muchos amuletos son cabezas: puestas como bloque perderían lo que son. */

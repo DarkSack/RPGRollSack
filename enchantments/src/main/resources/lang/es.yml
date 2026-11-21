@@ -89,6 +89,16 @@ station:
   changed: "&cEl ítem cambió: vuelve a abrir la estación."
   no_xp: "&cNo tienes suficiente experiencia."
   cost_xp: "&7Coste: &e{levels} niveles"
+  disenchanter:
+    title: "&8Desencantador"
+    need_item: "&eSostén un ítem encantado en la mano y haz Mayús + clic derecho en una muela."
+    pay_money: "&e» Clic izquierdo: &f{price}"
+    pay_shards: "&b» Clic derecho: &f{amount} &bolvidita &7(tienes {have})"
+    premium: "&6Tesoro o maldición: precio doble"
+    no_money: "&cNo tienes suficiente dinero."
+    no_shards: "&cTe faltan esquirlas de olvidita."
+    no_economy: "&cAhora no se puede pagar con dinero."
+    done: "&a¡Encantamiento quitado! Lo tienes en un libro."
   infuser:
     item_name: "&b&lInfusor"
     item_lore_1: "&7Colócalo y haz clic derecho con una armadura"

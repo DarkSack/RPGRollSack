@@ -76,11 +76,15 @@ public class ServerShopCategoryParser implements ContentParser<ServerShopCategor
         } else if (map.containsKey("furniture")) {
             kind = ServerShopEntry.Kind.FURNITURE;
             key = text(map, "furniture").toLowerCase(Locale.ROOT);
+        } else if (map.containsKey("spawner")) {
+            kind = ServerShopEntry.Kind.SPAWNER;
+            String mob = text(map, "spawner").toLowerCase(Locale.ROOT).trim();
+            key = mob.isEmpty() || mob.contains(":") ? mob : "minecraft:" + mob;
         } else if (map.containsKey("material")) {
             kind = ServerShopEntry.Kind.MATERIAL;
             key = material(text(map, "material")).name();
         } else {
-            throw new IllegalArgumentException("falta material, item, enchant, book, potion o furniture");
+            throw new IllegalArgumentException("falta material, item, enchant, book, potion, furniture o spawner");
         }
 
         if (key.isBlank()) {
@@ -99,9 +103,13 @@ public class ServerShopCategoryParser implements ContentParser<ServerShopCategor
         double sell = number(map, "sell");
         String market = map.containsKey("market") ? text(map, "market") : null;
 
-        if (kind != ServerShopEntry.Kind.MATERIAL && (sell > 0 || market != null)) {
-            throw new IllegalArgumentException(key + ": solo los ítems vanilla (material) se pueden vender o "
-                    + "enlazar al mercado");
+        if (kind != ServerShopEntry.Kind.MATERIAL && market != null) {
+            throw new IllegalArgumentException(key + ": solo los ítems vanilla (material) se enlazan al mercado");
+        }
+
+        if (kind != ServerShopEntry.Kind.MATERIAL && kind != ServerShopEntry.Kind.ITEM && sell > 0) {
+            throw new IllegalArgumentException(key + ": la tienda solo compra ítems vanilla (material) y de "
+                    + "RPGRoll-Items (item)");
         }
 
         if (market == null && buy <= 0 && sell <= 0) {

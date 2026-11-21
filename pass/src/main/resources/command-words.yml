@@ -1,0 +1,8 @@
+# Nombres de los comandos y sus subcomandos en cada idioma (lo lee BrigadierCommands de la Lib).
+# El nombre de cada clave es el de siempre; el comando recibe esa palabra escriba lo que escriba el jugador.
+commands:
+  pase:
+    names: {pt: passe}
+    subcommands:
+      misiones: {en: missions, pt: missoes}
+      reclamar: {en: claim, pt: resgatar}

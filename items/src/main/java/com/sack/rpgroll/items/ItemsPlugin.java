@@ -167,6 +167,8 @@ public class ItemsPlugin extends JavaPlugin {
             }
             return true;
         };
+        accessories.setMenuOpener(player -> new com.sack.rpgroll.items.accessory.AccessoryGUI(player, accessories,
+                langManager).open());
         registerCommand("amuletos", openAccessories);
         registerCommand("amulets", openAccessories);
         registerCommand("itemadmin", new ItemAdminCommand(itemManager, itemFactory, rarityManager, statRegistry,
@@ -175,6 +177,11 @@ public class ItemsPlugin extends JavaPlugin {
                 socketService, langManager));
 
         registerPlaceholders();
+
+        // /dar item:<id> y /dar gema:<id> (comando de la Lib).
+        com.sack.rpgroll.common.quick.Things.give(this, "item", () -> itemManager.getAll().stream().map(d -> d.id()).toList(), id -> create(id, 1));
+        com.sack.rpgroll.common.quick.Things.give(this, "gema", () -> gemManager.getAll().stream().map(g -> g.id()).toList(),
+                id -> create(GEM_PREFIX + id, 1));
 
         getLogger().info("✔ RPGRoll-Items habilitado. " + itemManager.count() + " ítem(s), "
                 + rarityManager.count() + " rareza(s), " + gemManager.count() + " gema(s) cargadas.");

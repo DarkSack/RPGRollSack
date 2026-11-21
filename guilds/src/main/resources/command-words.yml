@@ -1,0 +1,35 @@
+# Nombres de los comandos y sus subcomandos en cada idioma (lo lee BrigadierCommands de la Lib).
+# El nombre de cada clave es el de siempre; el comando recibe esa palabra escriba lo que escriba el jugador.
+commands:
+  guild:
+    names: {es: gremio, pt: guilda}
+    subcommands:
+      create: {es: crear, pt: criar}
+      disband: {es: disolver, pt: dissolver}
+      accept: {es: aceptar, pt: aceitar}
+      decline: {es: rechazar, pt: recusar}
+      leave: {es: salir, pt: sair}
+      vault: {es: baul, pt: cofre}
+      territory: {es: territorio, pt: territorio}
+      upgrade: {es: mejoras, pt: melhorias}
+      diplomacy: {es: diplomacia, pt: diplomacia}
+      quest: {es: misiones, pt: missoes}
+      achievements: {es: logros, pt: conquistas}
+      calendar: {es: calendario, pt: calendario}
+      customize: {es: personalizar, pt: personalizar}
+      members: {es: miembros, pt: membros}
+      browser: {es: explorar, pt: explorar}
+      color: {es: color, pt: cor}
+  team:
+    names: {es: equipo, pt: equipe}
+    subcommands:
+      invite: {es: invitar, pt: convidar}
+      accept: {es: aceptar, pt: aceitar}
+      decline: {es: rechazar, pt: recusar}
+      leave: {es: salir, pt: sair}
+      kick: {es: expulsar, pt: expulsar}
+      waypoint: {es: marcador, pt: marcador}
+      queue: {es: cola, pt: fila}
+      enemigo: {en: enemy, pt: inimigo}
+      objetivo: {en: objective, pt: objetivo}
+      loot: {es: botin, pt: saque}

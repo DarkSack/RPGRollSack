@@ -1,0 +1,22 @@
+# Nombres de los comandos y sus subcomandos en cada idioma (lo lee BrigadierCommands de la Lib).
+# El nombre de cada clave es el de siempre; el comando recibe esa palabra escriba lo que escriba el jugador.
+commands:
+  economy:
+    names: {es: economia, pt: economia}
+    subcommands:
+      balance: {es: saldo, pt: saldo}
+      pay: {es: pagar, pt: pagar}
+      bank: {es: banco, pt: banco}
+      shop: {es: tienda, pt: loja}
+      auction: {es: subasta, pt: leilao}
+      company: {es: empresa, pt: empresa}
+  tienda:
+    names: {en: shop, pt: loja}
+  subasta:
+    names: {en: auction, pt: leilao}
+    subcommands:
+      vender: {en: sell, pt: vender}
+      subastar: {en: auction, pt: leiloar}
+      buscar: {en: search, pt: buscar}
+      mis: {en: mine, pt: meus}
+      recoger: {en: collect, pt: coletar}

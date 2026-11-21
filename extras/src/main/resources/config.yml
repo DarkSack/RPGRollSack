@@ -103,6 +103,17 @@ elevator:
 reinforcement:
   enabled: true
 
+# Cerraduras con código para cofres, barriles, puertas, trampillas y puertas de valla. Llave en
+# blanco: lingote de hierro + pepita de oro. Agachado + clic derecho con ella en un bloque donde
+# puedas construir: eliges un código de 4 dígitos y la llave queda grabada. Abre el dueño, quien
+# lleve una llave con ese código o quien lo teclee. Copia: llave grabada + llave en blanco.
+# Tras max-fails fallos seguidos, penalty-seconds sin poder teclear. Solo el dueño lo rompe;
+# rpgrollextras.lock.admin (op) abre, rompe y quita cualquiera.
+locks:
+  enabled: true
+  max-fails: 3
+  penalty-seconds: 60
+
 # Menús dibujados del paquete de recursos (warps). El menú del servidor (menus/*.yml) usa su
 # propia clave background:. Vacío = menús de cofre normales. En Sackito: "sackito:menus".
 menus:

@@ -30,4 +30,6 @@ dependencies {
     compileOnly(project(":items"))
     compileOnly(project(":enchantments"))
     compileOnly(project(":furniture"))
+    // Y spawners de Machines.
+    compileOnly(project(":machines"))
 }

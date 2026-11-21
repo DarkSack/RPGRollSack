@@ -1,0 +1,26 @@
+# RPGRoll-Lib
+
+# /abrir <menú> [jugador]: cada menú es el comando que se ejecuta como ese jugador (sin la barra).
+# Solo se ofrecen los menús cuyo comando existe, así que no estorba tener aquí módulos que no uses.
+abrir:
+  menu: menu
+  tienda: tienda
+  subasta: subasta
+  pase: pase
+  misiones: pase misiones
+  diario: diario
+  votar: votar
+  amuletos: amuletos
+  mochila: mochila
+  bestiario: bestiario
+  muebles: muebles
+  gremios: guild
+  equipo: team
+  recetas: crafting book
+  pesca: fishing encyclopedia
+  animales: ranching animales
+  magia: magic spellbook
+  estadisticas: rpg stats
+  habilidades: rpg skills
+  warps: warps
+  tab: tab

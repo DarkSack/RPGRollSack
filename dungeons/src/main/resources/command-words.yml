@@ -1,0 +1,14 @@
+# Nombres de los comandos y sus subcomandos en cada idioma (lo lee BrigadierCommands de la Lib).
+# El nombre de cada clave es el de siempre; el comando recibe esa palabra escriba lo que escriba el jugador.
+commands:
+  dungeon:
+    names: {es: mazmorra, pt: masmorra}
+    subcommands:
+      list: {es: lista, pt: lista}
+      invite: {es: invitar, pt: convidar}
+      accept: {es: aceptar, pt: aceitar}
+      decline: {es: rechazar, pt: recusar}
+      leaveparty: {es: salirgrupo, pt: sairgrupo}
+      enter: {es: entrar, pt: entrar}
+      leave: {es: salir, pt: sair}
+      revive: {es: revivir, pt: reviver}

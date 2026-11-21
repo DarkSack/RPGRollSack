@@ -21,6 +21,8 @@ public class RPGRollLib extends JavaPlugin {
     @Override
     public void onEnable() {
         getServer().getPluginManager().registerEvents(new GUIListener(this), this);
+        saveDefaultConfig();
+        com.sack.rpgroll.common.quick.QuickCommands.register(this);
         getLogger().info("✔ RPGRoll-Lib " + getPluginMeta().getVersion() + " listo.");
     }
 

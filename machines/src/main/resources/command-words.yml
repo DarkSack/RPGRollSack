@@ -1,0 +1,7 @@
+# Nombres de los comandos y sus subcomandos en cada idioma (lo lee BrigadierCommands de la Lib).
+# El nombre de cada clave es el de siempre; el comando recibe esa palabra escriba lo que escriba el jugador.
+commands:
+  machines:
+    names: {es: maquinas, pt: maquinas}
+    subcommands:
+      quarries: {es: canteras, pt: pedreiras}

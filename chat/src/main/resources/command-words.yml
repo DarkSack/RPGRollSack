@@ -1,0 +1,25 @@
+# Nombres de los comandos y sus subcomandos en cada idioma (lo lee BrigadierCommands de la Lib).
+# El nombre de cada clave es el de siempre; el comando recibe esa palabra escriba lo que escriba el jugador.
+commands:
+  channel:
+    names: {es: canal, pt: canal}
+    subcommands:
+      join: {es: unirse, pt: entrar}
+      leave: {es: salir, pt: sair}
+      switch: {es: cambiar, pt: trocar}
+  ch:
+    subcommands:
+      join: {es: unirse, pt: entrar}
+      leave: {es: salir, pt: sair}
+      switch: {es: cambiar, pt: trocar}
+  ignore:
+    names: {es: ignorar, pt: ignorar}
+    subcommands:
+      player: {es: jugador, pt: jogador}
+      guild: {es: gremio, pt: guilda}
+      channel: {es: canal, pt: canal}
+  language:
+    names: {es: idioma, pt: idioma}
+    subcommands:
+      learn: {es: aprender, pt: aprender}
+      speak: {es: hablar, pt: falar}

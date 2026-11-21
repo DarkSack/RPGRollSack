@@ -28,6 +28,7 @@ public class EnchantmentsPlugin extends JavaPlugin {
     private EnchantmentItem enchantmentItem;
     private LangManager langManager;
     private com.sack.rpgroll.enchantments.station.Infuser infuser;
+    private com.sack.rpgroll.enchantments.station.Disenchanter disenchanter;
     private com.sack.rpgroll.enchantments.station.SuperEnchanter superEnchanter;
 
     @Override
@@ -56,6 +57,9 @@ public class EnchantmentsPlugin extends JavaPlugin {
         superEnchanter = new com.sack.rpgroll.enchantments.station.SuperEnchanter(this, langManager, enchantmentManager, enchantmentItem);
         getServer().getPluginManager().registerEvents(infuser, this);
         getServer().getPluginManager().registerEvents(superEnchanter, this);
+        disenchanter = new com.sack.rpgroll.enchantments.station.Disenchanter(langManager, enchantmentManager,
+                enchantmentItem);
+        getServer().getPluginManager().registerEvents(disenchanter, this);
         reloadStations();
 
         ConditionEvaluator conditionEvaluator = new ConditionEvaluator();
@@ -82,6 +86,22 @@ public class EnchantmentsPlugin extends JavaPlugin {
 
         registerPlaceholders();
 
+        // /dar libro:<encantamiento>_<nivel> y /dar estacion:<id> (comando de la Lib).
+        com.sack.rpgroll.common.quick.Things.give(this, "libro", () -> enchantmentManager.getAll().stream()
+                .flatMap(e -> java.util.stream.IntStream.rangeClosed(1, e.maxLevel()).mapToObj(l -> e.id() + "_" + l))
+                .toList(), id -> {
+                    int cut = id.lastIndexOf('_');
+                    int level = cut > 0 && id.substring(cut + 1).matches("[0-9]{1,3}") ? Integer.parseInt(id.substring(cut + 1)) : -1;
+                    return level < 1 ? java.util.Optional.empty() : enchantmentManager.get(id.substring(0, cut))
+                            .filter(e -> level <= e.maxLevel()).map(e -> enchantmentItem.createBook(e, level));
+                });
+        com.sack.rpgroll.common.quick.Things.give(this, "estacion", () -> java.util.List.of("infusor", "super_encantador"),
+                id -> java.util.Optional.ofNullable(switch (id) {
+                    case "infusor" -> infuser == null ? null : infuser.item();
+                    case "super_encantador" -> superEnchanter == null ? null : superEnchanter.item();
+                    default -> null;
+                }));
+
         getLogger().info("✔ RPGRoll-Enchantments habilitado. "
                 + enchantmentManager.count() + " encantamiento(s) cargados.");
     }
@@ -101,6 +121,7 @@ public class EnchantmentsPlugin extends JavaPlugin {
     public void reloadStations() {
         infuser.configure(getConfig().getConfigurationSection("infuser"));
         superEnchanter.configure(getConfig().getConfigurationSection("super-enchanter"));
+        disenchanter.configure(getConfig().getConfigurationSection("disenchanter"));
     }
 
     @Override

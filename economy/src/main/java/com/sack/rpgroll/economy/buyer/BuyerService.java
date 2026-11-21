@@ -8,6 +8,7 @@ import com.sack.rpgroll.economy.currency.CurrencyManager;
 import com.sack.rpgroll.economy.ledger.TransactionType;
 import com.sack.rpgroll.economy.servershop.ServerShopCategory;
 import com.sack.rpgroll.economy.servershop.ServerShopEntry;
+import com.sack.rpgroll.economy.servershop.ServerShopItems;
 import com.sack.rpgroll.economy.servershop.ServerShopManager;
 import com.sack.rpgroll.economy.servershop.ServerShopService;
 import com.sack.rpgroll.economy.wallet.EconomyResult;
@@ -22,6 +23,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 import java.util.OptionalDouble;
 
 /**
@@ -77,6 +79,7 @@ public class BuyerService {
         List<Line> lines = new ArrayList<>();
         List<Integer> rejected = new ArrayList<>();
         Map<Material, Offer> shopOffers = acceptShopPrices ? shopOffers(player) : Map.of();
+        Map<String, Offer> itemOffers = acceptShopPrices ? itemOffers(player) : Map.of();
         Map<String, Integer> pending = new java.util.HashMap<>();
 
         for (int slot = 0; slot < items.length; slot++) {
@@ -87,7 +90,7 @@ public class BuyerService {
                 continue;
             }
 
-            Line line = price(slot, item, shopOffers, player, pending);
+            Line line = price(slot, item, shopOffers, itemOffers, player, pending);
 
             if (line == null) {
                 rejected.add(slot);
@@ -100,8 +103,8 @@ public class BuyerService {
         return new Quote(lines, rejected);
     }
 
-    private Line price(int slot, ItemStack item, Map<Material, Offer> shopOffers, Player player,
-            Map<String, Integer> pending) {
+    private Line price(int slot, ItemStack item, Map<Material, Offer> shopOffers, Map<String, Offer> itemOffers,
+            Player player, Map<String, Integer> pending) {
 
         OptionalDouble own = SellValue.get(item);
 
@@ -113,12 +116,25 @@ public class BuyerService {
             return deal == null ? null : new Line(slot, item, round(deal.money()), currencies.defaultCurrency(), null, key);
         }
 
+        // Un ítem de RPGRoll-Items (botín de mobs...) solo se compra si una línea item: de /tienda trae sell.
+        Optional<String> itemId = itemOffers.isEmpty() ? Optional.empty() : ServerShopItems.rpgrollItemId(item);
+        if (itemId.isPresent()) {
+            Offer itemOffer = itemOffers.get(itemId.get());
+            return itemOffer == null ? null : shopLine(slot, item, itemOffer, player, pending);
+        }
+
         Offer offer = shopOffers.get(item.getType());
 
         // Solo lo vanilla "limpio": un ítem con nombre, encantado o de otro plugin no vale como su material.
         if (offer == null || !item.isSimilar(new ItemStack(item.getType()))) {
             return null;
         }
+
+        return shopLine(slot, item, offer, player, pending);
+    }
+
+    /** Lo que paga la línea de /tienda {@code offer} por la pila, o null si no paga o no entra en el tope. */
+    private Line shopLine(int slot, ItemStack item, Offer offer, Player player, Map<String, Integer> pending) {
 
         double lotPrice = shopService.sellPrice(offer.entry(), player, offer.category());
         double unit = lotPrice / offer.entry().amount();
@@ -199,6 +215,27 @@ public class BuyerService {
 
                 if (material != null) {
                     offers.putIfAbsent(material, new Offer(category, entry));
+                }
+            }
+        }
+
+        return offers;
+    }
+
+    /** La línea item: de /tienda que recompra cada ítem de RPGRoll-Items, por id (la primera en el orden de /tienda). */
+    private Map<String, Offer> itemOffers(Player player) {
+
+        Map<String, Offer> offers = new LinkedHashMap<>();
+
+        for (ServerShopCategory category : shopManager.ordered()) {
+
+            if (!shopService.canEnter(player, category)) {
+                continue;
+            }
+
+            for (ServerShopEntry entry : category.entries()) {
+                if (entry.kind() == ServerShopEntry.Kind.ITEM && entry.sellable()) {
+                    offers.putIfAbsent(entry.key(), new Offer(category, entry));
                 }
             }
         }

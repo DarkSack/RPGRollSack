@@ -11,6 +11,9 @@ permissions:
   rpgrollextras.reinforce.admin:
     description: Quitar el refuerzo de cualquier bloque reforzado con el Reforzador
     default: op
+  rpgrollextras.lock.admin:
+    description: Abrir, romper y quitar cualquier cerradura con código
+    default: op
   rpgrollextras.admin.*:
     description: Acceso completo a comandos administrativos de RPGRoll-Extras
     default: op
@@ -18,6 +21,7 @@ permissions:
       rpgrollextras.menu.any: true
       rpgrollextras.backpack.admin: true
       rpgrollextras.reinforce.admin: true
+      rpgrollextras.lock.admin: true
       rpgrollextras.backpack.bypass: true
       rpgrollextras.sort.admin: true
   rpgrollextras.menu:

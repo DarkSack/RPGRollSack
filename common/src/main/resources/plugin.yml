@@ -5,3 +5,13 @@ api-version: "26.1.1"
 author: Sack
 description: Librería compartida del ecosistema RPGRoll (idiomas, contenido YAML, comandos, menús). Gratuita; la necesitan todos los plugins de RPGRoll.
 softdepend: [SackResourcePack, Vault]
+permissions:
+  rpgrolllib.dar:
+    description: /dar, da cualquier cosa de RPGRoll o de Minecraft.
+    default: op
+  rpgrolllib.invocar:
+    description: /invocar, invoca criaturas de RPGRoll o de Minecraft.
+    default: op
+  rpgrolllib.abrir.otros:
+    description: /abrir <menú> <jugador>, abre un menú a otro jugador.
+    default: op

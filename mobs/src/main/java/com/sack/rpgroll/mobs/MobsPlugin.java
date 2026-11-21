@@ -128,6 +128,10 @@ public class MobsPlugin extends JavaPlugin {
 
         registerPlaceholders();
 
+        // /invocar mob:<id> (comando de la Lib).
+        com.sack.rpgroll.common.quick.Things.summon(this, "mob", () -> mobManager.getAll().stream().map(d -> d.id()).toList(),
+                (id, at) -> mobManager.get(id).flatMap(d -> engine.spawnMob(d, at)).isPresent());
+
         getLogger().info("✔ RPGRoll-Mobs habilitado. " + mobManager.count() + " mob(s), "
                 + regionManager.count() + " región(es) cargadas.");
     }

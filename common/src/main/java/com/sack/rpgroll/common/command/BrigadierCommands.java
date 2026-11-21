@@ -12,7 +12,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Collection;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Registra los comandos del ecosistema con la API Brigadier de Paper en vez de
@@ -49,9 +51,23 @@ public final class BrigadierCommands {
     public static void register(JavaPlugin plugin, String name, String description, List<String> aliases,
             CommandExecutor executor, TabCompleter completer, String permission) {
 
+        // Los nombres en español/inglés/portugués del command-words.yml del módulo van como alias.
+        CommandWords words = CommandWords.load(plugin);
+        List<String> all = aliases(name, aliases, words);
         plugin.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, event ->
-                event.registrar().register(name, description, aliases,
-                        new ExecutorBridge(name, executor, completer, permission)));
+                event.registrar().register(name, description, all,
+                        new ExecutorBridge(name, executor, completer, permission, words)));
+    }
+
+    /** Los alias de siempre más los nombres del comando en otros idiomas, sin repetir. */
+    static List<String> aliases(String name, List<String> aliases, CommandWords words) {
+        Set<String> out = new LinkedHashSet<>();
+        if (aliases != null) {
+            out.addAll(aliases);
+        }
+        out.addAll(words.names(name));
+        out.remove(name);
+        return List.copyOf(out);
     }
 
     /**
@@ -66,12 +82,22 @@ public final class BrigadierCommands {
     }
 
     /** Traduce entre lo que pide Brigadier y lo que ya implementan los comandos. */
-    private record ExecutorBridge(String name, CommandExecutor executor, TabCompleter completer, String permission)
-            implements BasicCommand {
+    record ExecutorBridge(String name, CommandExecutor executor, TabCompleter completer, String permission,
+            CommandWords words) implements BasicCommand {
 
         @Override
         public void execute(CommandSourceStack source, String[] args) {
-            executor.onCommand(resolve(source), new StubCommand(name), name, args);
+            executor.onCommand(resolve(source), new StubCommand(name), name, canonical(args));
+        }
+
+        /** El primer argumento en su forma de siempre: el comando no sabe de idiomas. */
+        private String[] canonical(String[] args) {
+            if (args.length == 0 || words.isEmpty()) {
+                return args;
+            }
+            String[] out = args.clone();
+            out[0] = words.canonical(name, args[0]);
+            return out;
         }
 
         @Override
@@ -84,9 +110,17 @@ public final class BrigadierCommands {
             // Con "/comando " sin nada más, Brigadier pasa cero argumentos; Bukkit siempre pasaba
             // uno vacío y los completadores hacen args[0] sin mirar (ArrayIndexOutOfBounds).
             String[] bukkitArgs = args.length == 0 ? new String[] { "" } : args;
+            CommandSender sender = resolve(source);
+
+            if (bukkitArgs.length == 1 && words.hasSubcommands(name)) {
+                // Se piden todas y se filtran acá, que el jugador puede estar escribiendo en su idioma.
+                List<String> all = completer.onTabComplete(sender, new StubCommand(name), name, new String[] { "" });
+                return all == null ? List.of()
+                        : words.suggestFirst(name, all, bukkitArgs[0], CommandWords.language(sender));
+            }
 
             List<String> suggestions =
-                    completer.onTabComplete(resolve(source), new StubCommand(name), name, bukkitArgs);
+                    completer.onTabComplete(sender, new StubCommand(name), name, canonical(bukkitArgs));
 
             return suggestions != null ? suggestions : List.of();
         }

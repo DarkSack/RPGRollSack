@@ -1,5 +1,9 @@
 package com.sack.rpgroll.economy.servershop;
 
+import org.bukkit.Bukkit;
+
+import java.util.function.Predicate;
+
 import com.sack.rpgroll.common.price.Prices;
 import com.sack.rpgroll.economy.currency.Currency;
 import com.sack.rpgroll.economy.currency.CurrencyManager;
@@ -185,10 +189,26 @@ public class ServerShopService {
             return Outcome.of(Result.NOT_BOUGHT);
         }
 
-        // Solo lo vanilla "limpio": un ítem con nombre, encantado o de RPGRoll no cuenta como su material.
-        ItemStack template = new ItemStack(Material.valueOf(entry.key()));
+        // Lo vanilla "limpio" (un ítem con nombre, encantado o de RPGRoll no cuenta como su material) o, en una
+        // línea item:, ese ítem de RPGRoll-Items sin mejorar.
         PlayerInventory inventory = player.getInventory();
-        int have = InventorySpace.count(inventory.getStorageContents(), template);
+        Predicate<ItemStack> matches;
+        ItemStack template;
+        if (entry.kind() == ServerShopEntry.Kind.ITEM) {
+            if (!Bukkit.getPluginManager().isPluginEnabled("RPGRoll-Items")) {
+                return Outcome.of(Result.UNAVAILABLE);
+            }
+            Optional<ItemStack> unit = ServerShopItems.create(entry);
+            if (unit.isEmpty()) {
+                return Outcome.of(Result.UNAVAILABLE);
+            }
+            template = unit.get();
+            matches = stack -> ItemsBridge.is(stack, entry.key());
+        } else {
+            template = new ItemStack(Material.valueOf(entry.key()));
+            matches = stack -> stack.isSimilar(template);
+        }
+        int have = countMatching(inventory.getStorageContents(), matches);
         int lots = all ? have / entry.amount() : have >= entry.amount() ? 1 : 0;
 
         if (lots == 0) {
@@ -204,7 +224,11 @@ public class ServerShopService {
         int units = lots * entry.amount();
         double money = round(quota.quote(player.getUniqueId(), entry.key(), units, lotPrice / entry.amount()).money());
 
-        take(inventory, template, units);
+        if (entry.kind() == ServerShopEntry.Kind.ITEM) {
+            takeMatching(inventory, matches, units);
+        } else {
+            take(inventory, template, units);
+        }
 
         EconomyResult paid = wallet.deposit(player.getUniqueId(), currency(category).id(), money,
                 TransactionType.MARKET_SELL, "Tienda del servidor: " + entry.key() + " x" + units);
@@ -245,6 +269,35 @@ public class ServerShopService {
             inventory.addItem(stack);
             left -= stack.getAmount();
         }
+    }
+
+    private static int countMatching(ItemStack[] storage, Predicate<ItemStack> matches) {
+
+        int count = 0;
+        for (ItemStack slot : storage) {
+            if (slot != null && !slot.getType().isAir() && matches.test(slot)) {
+                count += slot.getAmount();
+            }
+        }
+        return count;
+    }
+
+    /** Quita {@code units} de las ranuras que cumplen {@code matches}, empezando por la primera. */
+    private static void takeMatching(PlayerInventory inventory, Predicate<ItemStack> matches, int units) {
+
+        ItemStack[] storage = inventory.getStorageContents();
+        int left = units;
+        for (int i = 0; i < storage.length && left > 0; i++) {
+            ItemStack slot = storage[i];
+            if (slot == null || slot.getType().isAir() || !matches.test(slot)) {
+                continue;
+            }
+            int taken = Math.min(left, slot.getAmount());
+            slot.setAmount(slot.getAmount() - taken);
+            storage[i] = slot.getAmount() <= 0 ? null : slot;
+            left -= taken;
+        }
+        inventory.setStorageContents(storage);
     }
 
     private static void take(PlayerInventory inventory, ItemStack template, int units) {

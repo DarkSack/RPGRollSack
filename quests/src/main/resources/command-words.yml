@@ -1,0 +1,12 @@
+# Nombres de los comandos y sus subcomandos en cada idioma (lo lee BrigadierCommands de la Lib).
+# El nombre de cada clave es el de siempre; el comando recibe esa palabra escriba lo que escriba el jugador.
+commands:
+  quest:
+    names: {es: mision, pt: missao}
+    subcommands:
+      start: {es: empezar, pt: iniciar}
+      abandon: {es: abandonar, pt: abandonar}
+      active: {es: activas, pt: ativas}
+      continue: {es: continuar, pt: continuar}
+      completed: {es: completadas, pt: concluidas}
+      option: {es: opcion, pt: opcao}

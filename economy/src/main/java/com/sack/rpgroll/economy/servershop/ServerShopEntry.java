@@ -21,9 +21,9 @@ public record ServerShopEntry(Kind kind, String key, int level, String form, int
         String market, String name, List<String> lore) {
 
     public enum Kind {
-        /** Ítem vanilla. Es lo único que el jugador puede vender. */
+        /** Ítem vanilla. Se le puede comprar al jugador, también al precio del mercado. */
         MATERIAL,
-        /** Ítem de RPGRoll-Items. */
+        /** Ítem de RPGRoll-Items. Con {@code sell}, la tienda se lo compra al jugador (botín de mobs, etc.). */
         ITEM,
         /** Libro de un encantamiento de RPGRoll-Enchantments. */
         ENCHANT,
@@ -32,7 +32,9 @@ public record ServerShopEntry(Kind kind, String key, int level, String form, int
         /** Poción vanilla. */
         POTION,
         /** Mueble de RPGRoll-Furniture ({@code id} o {@code id:versión}). */
-        FURNITURE
+        FURNITURE,
+        /** Spawner de RPGRoll-Machines del mob {@code key} ({@code minecraft:zombie}). */
+        SPAWNER
     }
 
     public ServerShopEntry {
@@ -45,9 +47,12 @@ public record ServerShopEntry(Kind kind, String key, int level, String form, int
         lore = lore == null ? List.of() : List.copyOf(lore);
     }
 
-    /** Solo lo vanilla sin nada especial se puede vender: el resto no se distingue de forma segura. */
+    /**
+     * Lo vanilla sin nada especial, y los ítems de RPGRoll-Items cuya línea trae {@code sell} (se reconocen por su
+     * id). El resto no se distingue de forma segura.
+     */
     public boolean sellable() {
-        return kind == Kind.MATERIAL;
+        return kind == Kind.MATERIAL || (kind == Kind.ITEM && sell > 0);
     }
 
 }

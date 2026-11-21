@@ -13,6 +13,10 @@ base.archivesName.set("RPGRoll-Enchantments")
 // autocontenido (usa PersistentDataContainer directamente para taggear ítems).
 dependencies {
     compileOnly("me.clip:placeholderapi:2.11.5")
+    // El Desencantador cobra en dinero por Vault.
+    compileOnly("com.github.MilkBowl:VaultAPI:1.7.1") {
+        exclude(group = "org.bukkit", module = "bukkit")
+    }
 
     // rpgroll.addon-conventions declara :api y :common como compileOnly, lo
     // que no se propaga al classpath de test — hace falta repetirlos acá

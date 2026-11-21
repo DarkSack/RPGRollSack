@@ -89,6 +89,16 @@ station:
   changed: "&cThe item changed: open the station again."
   no_xp: "&cYou don't have enough experience."
   cost_xp: "&7Cost: &e{levels} levels"
+  disenchanter:
+    title: "&8Disenchanter"
+    need_item: "&eHold an enchanted item and Shift + right-click a grindstone."
+    pay_money: "&e» Left click: &f{price}"
+    pay_shards: "&b» Right click: &f{amount} &boblivite &7(you have {have})"
+    premium: "&6Treasure or curse: double price"
+    no_money: "&cYou don't have enough money."
+    no_shards: "&cYou need more oblivite shards."
+    no_economy: "&cPaying with money isn't available right now."
+    done: "&aEnchantment removed! You got it in a book."
   infuser:
     item_name: "&b&lInfuser"
     item_lore_1: "&7Place it and right-click it with armor"

@@ -58,6 +58,7 @@ public class ExtrasPlugin extends JavaPlugin {
     private LangManager langManager;
     private com.sack.rpgroll.extras.elevator.Elevators elevators;
     private com.sack.rpgroll.extras.reinforce.Reinforcement reinforcement;
+    private com.sack.rpgroll.extras.lock.Locks locks;
     private ExtrasMenuManager menuManager;
     private com.sack.rpgroll.extras.sort.InventorySort inventorySort;
     private com.sack.rpgroll.extras.sort.SortWand sortWand;
@@ -118,6 +119,9 @@ public class ExtrasPlugin extends JavaPlugin {
         reinforcement = new com.sack.rpgroll.extras.reinforce.Reinforcement(this, langManager);
         reinforcement.configure(getConfig().getConfigurationSection("reinforcement"));
         getServer().getPluginManager().registerEvents(reinforcement, this);
+        locks = new com.sack.rpgroll.extras.lock.Locks(this, langManager);
+        locks.configure(getConfig().getConfigurationSection("locks"));
+        getServer().getPluginManager().registerEvents(locks, this);
         inventorySort = new com.sack.rpgroll.extras.sort.InventorySort(this, langManager);
         inventorySort.configure(getConfig().getConfigurationSection("inventory-sort"));
         getServer().getPluginManager().registerEvents(inventorySort, this);
@@ -129,6 +133,14 @@ public class ExtrasPlugin extends JavaPlugin {
         loadAndWire();
 
         registerCommand();
+
+        // /dar extra:reforzador y /dar extra:llave_en_blanco (comando de la Lib).
+        com.sack.rpgroll.common.quick.Things.give(this, "extra", () -> java.util.List.of("reforzador", "llave_en_blanco"),
+                id -> java.util.Optional.ofNullable(switch (id) {
+                    case "reforzador" -> reinforcement == null ? null : reinforcement.tool();
+                    case "llave_en_blanco" -> locks == null ? null : locks.blankKey();
+                    default -> null;
+                }));
 
         getLogger().info("✔ RPGRoll-Extras habilitado. " + statManager.count() + " stat(s), "
                 + conditionManager.count() + " condition(s), " + modifierManager.count() + " modificador(es).");
@@ -238,6 +250,7 @@ public class ExtrasPlugin extends JavaPlugin {
         configureBackpacks();
         elevators.configure(getConfig().getConfigurationSection("elevator"));
         reinforcement.configure(getConfig().getConfigurationSection("reinforcement"));
+        locks.configure(getConfig().getConfigurationSection("locks"));
         inventorySort.configure(getConfig().getConfigurationSection("inventory-sort"));
         sortWand.configure(getConfig().getConfigurationSection("inventory-sort"));
 
@@ -319,6 +332,9 @@ public class ExtrasPlugin extends JavaPlugin {
         }
         if (reinforcement != null) {
             reinforcement.shutdown();
+        }
+        if (locks != null) {
+            locks.shutdown();
         }
 
         if (statEngine != null) {

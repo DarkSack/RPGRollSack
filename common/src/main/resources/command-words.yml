@@ -1,0 +1,24 @@
+# Nombres de los comandos y sus subcomandos en cada idioma (lo lee BrigadierCommands de la Lib).
+# El nombre de cada clave es el de siempre; el comando recibe esa palabra escriba lo que escriba el jugador.
+commands:
+  abrir:
+    names: {en: open}
+    subcommands:
+      tienda: {en: shop, pt: loja}
+      subasta: {en: auction, pt: leilao}
+      pase: {en: pass, pt: passe}
+      misiones: {en: missions, pt: missoes}
+      diario: {en: daily, pt: diario}
+      votar: {en: vote, pt: votar}
+      amuletos: {en: amulets, pt: amuletos}
+      mochila: {en: backpack, pt: mochila}
+      bestiario: {en: bestiary, pt: bestiario}
+      muebles: {en: furniture, pt: moveis}
+      gremios: {en: guilds, pt: guildas}
+      equipo: {en: team, pt: equipe}
+      recetas: {en: recipes, pt: receitas}
+      pesca: {en: fishing, pt: pesca}
+      animales: {en: animals, pt: animais}
+      magia: {en: magic, pt: magia}
+      estadisticas: {en: stats, pt: estatisticas}
+      habilidades: {en: skills, pt: habilidades}
