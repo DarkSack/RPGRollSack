@@ -14,6 +14,11 @@ Ya no es un único plugin: es un **ecosistema de 1 core + 24 addons independient
 
 # 🆕 Novedades recientes
 
+## RPGRoll-Structures 1.0.0 (acceso anticipado) y Lib 1.1.13
+
+- 🏗️ **RPGRoll-Structures** — la mesa de construcción de tres niveles (Constructor, Ingeniero y Arquitecto): se fabrica, se coloca, se mejora en el sitio pagando materiales (y dinero con Vault), se comparte con jugadores de confianza y no la rompen explosiones, pistones ni el Wither. Menús de Centro, Mejoras (cada requisito con ✔ o ✘), Confirmar, Acceso y Ayuda, con fondo dibujado por nivel si `menus.pack` apunta a tu paquete. **Acceso anticipado:** el catálogo de estructuras, los materiales y la obra salen como «Próximamente» y llegan en próximas versiones
+- 🧰 **RPGRoll-Lib 1.1.13** — `/dar` crea un ítem por unidad en vez de clonar el primero. Structures la necesita (usa `Things` para dar la mesa por nombre de nivel)
+
 ## Versión 1.1.11
 
 - 🗺️ **Tesoros enterrados (Crates)** — `treasures/` y `/tesoro give <jugador> <id>`: un mapa que lleva a un punto del bioma elegido, una X de partículas, un cofre con modelo propio, guardianes y su botín. Respeta las protecciones
@@ -102,6 +107,7 @@ Cada addon extiende el core con un sistema completo propio, construido por **com
 | 🌡️ **RPGRoll-Extras**  | Necesidades y condiciones de supervivencia configurables (sed, stamina, fatiga, temperatura, oxígeno, estrés) con umbrales que aplican efectos, menú de admin, ordenar cofres e inventario, elevadores y Reforzador |
 | 🪤 **RPGRoll-Traps**    | Motor de trampas/mecanismos por YAML: triggers/condiciones/acciones/cadenas, bloques reforzados con llave, puertas secretas, y torretas autónomas que apuntan y disparan a jugadores/mobs hostiles |
 | 📖 **RPGRoll-Recipes**  | Recetario al estilo JEI: cómo se hace y para qué sirve cada objeto, leyendo las recetas vanilla, las de cualquier plugin, la fermentación y las estaciones de RPGRoll (`RecipeSource` en RPGRoll-Lib para que cualquier plugin publique las suyas) |
+| 🏗️ **RPGRoll-Structures** | Acceso anticipado: mesa de construcción de tres niveles (Constructor, Ingeniero, Arquitecto) que se mejora en el sitio, con jugadores de confianza, protección y menús con fondo dibujado. El catálogo y la construcción de estructuras llegan en próximas versiones |
 | 🏭 **RPGRoll-Machines** | Máquinas: hornos, altos hornos y ahumadores mejorables (velocidad, combustible, doble resultado), spawners con mejoras, pila y recogida con toque de seda, y canteras que excavan solas dentro del claim de su dueño (fortuna, toque de seda, autofundido, filtro) |
 
 Ver el detalle completo de cada uno (comandos, permisos, formato YAML, ejemplos) en el sitio de documentación (`UI/`).
@@ -141,6 +147,7 @@ Ver el detalle completo de cada uno (comandos, permisos, formato YAML, ejemplos)
 | RPGRoll-Emotes   | `/emotes`, `/emote`, `/emotesadmin`              | RPGRoll-Lib, **BetterModel** | SackResourcePack, RPGRoll-Magic                                    | —               |
 | RPGRoll-Recipes  | `/recetas` (`/jei`)                              | RPGRoll-Lib             | Crafting, Furniture, Items, Extras (solo orden de carga)                | **$8**          |
 | RPGRoll-Machines | `/machines`                                      | RPGRoll-Lib             | Vault, GriefPrevention, Items, Crates                                   | **$14**         |
+| RPGRoll-Structures | `/structures`, `/structuresadmin`              | RPGRoll-Lib **1.1.13**  | SackResourcePack, Vault                                                 | **$6** (acceso anticipado) |
 
 **Solo Ascension y Magic necesitan el core**: prestigio y hechizos trabajan directamente sobre el
 personaje (nivel, maná, vida, stats de combate). El resto funciona **con o sin** `RPGRoll`: si el core
