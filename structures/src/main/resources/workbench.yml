@@ -8,12 +8,14 @@ recipe:
     L: minecraft:oak_log
 
 # Tamaño máximo de obra por nivel (ancho x alto x largo) y coste de mejorar A ESE nivel.
+# model: modelo del paquete de recursos (necesita SackResourcePack; el plugin trae los tres de fábrica).
+# Vacío, o sin SackResourcePack, la mesa es el bloque de fallback-block.
 tiers:
   constructor:
     max-size: {width: 16, height: 16, length: 16}
     upgrade-cost: []
     upgrade-money: 0
-    model: ""
+    model: "rpgroll_structures:workbench/constructor"
     fallback-block: CRAFTING_TABLE
   ingeniero:
     max-size: {width: 32, height: 32, length: 32}
@@ -22,7 +24,7 @@ tiers:
       - {item: "minecraft:redstone", amount: 8}
       - {item: "minecraft:redstone_lamp", amount: 4}
     upgrade-money: 0
-    model: ""
+    model: "rpgroll_structures:workbench/ingeniero"
     fallback-block: SMITHING_TABLE
   arquitecto:
     max-size: {width: 64, height: 96, length: 64}
@@ -31,5 +33,5 @@ tiers:
       - {item: "minecraft:prismarine_crystals", amount: 16}
       - {item: "minecraft:nether_star", amount: 1}
     upgrade-money: 0
-    model: ""
+    model: "rpgroll_structures:workbench/arquitecto"
     fallback-block: BEACON

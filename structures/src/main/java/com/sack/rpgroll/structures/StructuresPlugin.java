@@ -74,6 +74,10 @@ public class StructuresPlugin extends JavaPlugin {
         saveDefaults();
         lang = new LangManager(this, List.of("es", "en", "pt_BR"), "es");
         loadConfigs();
+        // Los modelos de las mesas van en el jar (resourcepack/) y se registran en SackResourcePack si está.
+        if (com.sack.rpgroll.common.assets.ModuleAssetSync.registerEmbeddedPack(this)) {
+            getLogger().info("✔ Modelos registrados en SackResourcePack (aplica con /srp publish).");
+        }
         prompts = new ChatPromptManager(this, lang);
         getServer().getPluginManager().registerEvents(prompts, this);
 

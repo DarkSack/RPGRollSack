@@ -1,5 +1,5 @@
 name: RPGRoll-Structures
-version: 1.0.0
+version: 1.0.1
 main: com.sack.rpgroll.structures.StructuresPlugin
 api-version: "26.1.1"
 author: Sack

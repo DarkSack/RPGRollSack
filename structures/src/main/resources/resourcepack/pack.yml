@@ -1,0 +1,8 @@
+# Modelos de las mesas, generados con structures/models/mesas.py (skill minecraft-models).
+id: rpgroll-structures
+name: rpgroll-structures
+version: '1.0'
+author: 'RPGRoll'
+namespace: rpgroll_structures
+priority: 25
+description: 'Modelos de RPGRoll-Structures'
