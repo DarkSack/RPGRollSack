@@ -10,6 +10,7 @@ workbench:
     lore:
       size: "&7Max size: &f{width}x{height}x{length}"
       serial: "&7Serial: &f#{serial}"
+      sample: "&7Signed when you craft it"
       place: "&ePlace it to start building."
   place:
     not-genuine: "&cThat workbench is not genuine and cannot be placed."
@@ -19,6 +20,9 @@ workbench:
   break:
     denied: "&cOnly the owner can break this workbench."
     has-project: "&cThis workbench has an active project and cannot be broken."
+    gone: "&cThat workbench no longer existed in the database; it was removed without dropping an item. Tell an admin if it was yours."
+    upgrading: "&eThe workbench is being upgraded; wait a moment before breaking it."
+    no-permission: "&cYou do not have permission to break workbenches."
     error: "&cThe workbench could not be broken. Try again."
   use:
     denied: "&cYou do not have access to this workbench."
@@ -27,7 +31,7 @@ workbench:
     fallback-not-block: "fallback-block {material} is not a block ({tier}); using CRAFTING_TABLE."
     world-missing: "Workbench {id} is in world {world}, which is not loaded yet; it is indexed when the world loads."
     bad-row: "Workbench row {id} cannot be read (invalid UUID or tier); skipping it."
-    block-missing: "Workbench {id} ({world} {x},{y},{z}) no longer has its block; marking it as orphan."
+    block-missing: "Workbench {id} ({world} {x},{y},{z}) no longer has its block (found {block}); marking it as orphan and leaving the block alone."
     chunk-orphan: "The chunk stores workbench {id} at {x},{y},{z} but it is not in the database; removing it from the chunk."
     recipe-invalid: "The workbench recipe is invalid ({reason}); it is not registered."
 tier:
@@ -41,20 +45,34 @@ prompt:
 menu:
   coming_soon: "&8Coming soon"
   close: "&cClose"
+  close-lore: "&7Closes this menu"
   back: "&eBack"
+  back-lore: "&7Go back to the previous menu"
   previous: "&ePrevious page"
+  previous-lore: "&7Go to the previous page"
   next: "&eNext page"
+  next-lore: "&7Go to the next page"
   manager-only: "&cOnly the workbench owner can open this."
   center:
     title: "Construction Center"
     level: "&6Workbench: &f{tier}"
+    level-size: "&7Max size: &f{width}x{height}x{length}"
+    level-next: "&7Next tier: &f{tier}"
+    level-max: "&7Already the highest tier"
     catalog: "&eStructure catalog"
+    catalog-lore: "&7Pick a structure to build"
     builds: "&eMy builds"
+    builds-lore: "&7The structures you already built"
     materials: "&eMaterials"
+    materials-lore: "&7What the workbench keeps for your builds"
     project: "&eConstruction"
+    project-lore: "&7The build in progress"
     upgrades: "&aUpgrades"
+    upgrades-lore: "&7Raise the workbench tier"
     access: "&bAccess"
+    access-lore: "&7Who can use your workbench"
     help: "&dHelp"
+    help-lore: "&7How the workbench works"
   upgrade:
     title: "Workbench upgrades"
   access:
@@ -64,7 +82,9 @@ menu:
   confirm:
     title: "Confirm?"
     accept: "&aConfirm"
+    accept-lore: "&7Yes, do it now"
     cancel: "&cCancel"
+    cancel-lore: "&7Go back without changing anything"
 upgrade:
   have: "&a✔ &f{amount}x {item}"
   missing: "&c✘ &f{amount}x {item} &7(you need {missing} more)"
@@ -74,18 +94,21 @@ upgrade:
   confirm: "&eUpgrade the workbench and take the materials"
   done: "&aWorkbench upgraded."
   max-tier: "&7The workbench is already at the highest tier."
+  max-lore: "&7This workbench cannot go any higher"
   result-missing: "&cYou are missing materials to upgrade the workbench."
   no-money: "&cYou do not have enough money to upgrade the workbench."
   no-permission: "&cYou do not have permission to upgrade the workbench to that tier."
   error: "&cThe workbench could not be upgraded. Try again."
 access:
   add: "&aAdd player"
+  add-lore: "&7Type their name in chat"
   player: "&f{player}"
   click-remove: "&cClick to remove access"
   prompt: "&eType the name of the player who will get access to the workbench."
   added: "&aAccess granted."
+  already: "&eThat player already has access."
   removed: "&aAccess removed."
-  not-found: "&cI do not know any player named {player}."
+  not-found: "&cNo one named {player} has joined this server. They must join at least once first."
   is-owner: "&cThat player already owns the workbench."
   error: "&cThe access could not be changed. Try again."
 help:
@@ -116,5 +139,5 @@ admin:
     done: "&aGave {amount} {tier} workbench(es) to {player}."
     error: "&cCould not issue the workbenches. Check the console."
   reload:
-    done: "&aRPGRoll-Structures reloaded."
+    done: "&aRPGRoll-Structures reloaded. Changes to storage.yml need a server restart."
     error: "&cReload failed; check the console."

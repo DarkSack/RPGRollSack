@@ -8,6 +8,7 @@ import com.sack.rpgroll.structures.workbench.WorkbenchTier;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 import java.util.UUID;
@@ -37,7 +38,7 @@ public final class HelpMenu extends InventoryGUI {
     }
 
     private HelpMenu(Player player, StructuresPlugin plugin, UUID benchId, WorkbenchTier tier, int page) {
-        super(player, StructuresMenus.skin().title(StructuresMenus.background("ayuda", tier),
+        super(player, StructuresMenus.skin().title(StructuresMenus.background(StructuresMenus.AYUDA, tier),
                 plugin.menuTitle("help")), 27);
         this.plugin = plugin;
         this.benchId = benchId;
@@ -49,17 +50,27 @@ public final class HelpMenu extends InventoryGUI {
     public void build() {
         StructuresMenus.fill(inventory);
         var lang = plugin.lang();
-        setItem(TEXTO, StructuresMenus.button(Material.BOOK, lang.component("help.page-title",
+        put(TEXTO, StructuresMenus.item(Material.BOOK, lang.component("help.page-title",
                 "page", String.valueOf(page + 1), "pages", String.valueOf(PAGES)),
                 ItemBuilder.toLoreLines(lang.raw("help.page." + (page + 1)))));
         if (page > 0) {
-            setItem(ANTERIOR, StructuresMenus.button(Material.ARROW, lang.component("menu.previous"), List.of()));
+            put(ANTERIOR, StructuresMenus.item(Material.ARROW, lang.component("menu.previous"),
+                    List.of(lang.component("menu.previous-lore"))));
         }
         if (page < PAGES - 1) {
-            setItem(SIGUIENTE, StructuresMenus.button(Material.ARROW, lang.component("menu.next"), List.of()));
+            put(SIGUIENTE, StructuresMenus.item(Material.ARROW, lang.component("menu.next"),
+                    List.of(lang.component("menu.next-lore"))));
         }
-        setItem(VOLVER, StructuresMenus.button(Material.BARRIER,
-                lang.component(benchId == null ? "menu.close" : "menu.back"), List.of()));
+        // Cambia entre volver y cerrar: por eso se ve (no va dibujado en el fondo).
+        put(VOLVER, benchId == null
+                ? StructuresMenus.item(Material.BARRIER, lang.component("menu.close"),
+                        List.of(lang.component("menu.close-lore")))
+                : StructuresMenus.item(Material.BARRIER, lang.component("menu.back"),
+                        List.of(lang.component("menu.back-lore"))));
+    }
+
+    private void put(int slot, ItemStack item) {
+        setItem(slot, StructuresMenus.AYUDA.dress(slot, item));
     }
 
     @Override

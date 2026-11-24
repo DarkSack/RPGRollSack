@@ -30,15 +30,28 @@ public final class WorkbenchItems {
         this.sigKey = new NamespacedKey(plugin, "sig");
     }
 
+    /** La mesa con su sello. {@code tier} deben ser los ajustes del nivel del sello (si no, IllegalArgumentException). */
     public ItemStack create(WorkbenchStamp stamp, LangManager lang, TierSettings tier) {
+        return build(stamp, lang, tier, true);
+    }
+
+    /** La muestra de la receta: igual pero sin línea de serie (aún no tiene); dice que se firma al fabricarla. */
+    public ItemStack sample(WorkbenchStamp stamp, LangManager lang, TierSettings tier) {
+        return build(stamp, lang, tier, false);
+    }
+
+    private ItemStack build(WorkbenchStamp stamp, LangManager lang, TierSettings tier, boolean serialLine) {
+        if (tier.tier() != stamp.tier()) {
+            throw new IllegalArgumentException("Ajustes de " + tier.tier() + " para una mesa " + stamp.tier());
+        }
         ItemStack item = new ItemStack(tier.placeableBlock());
         ItemMeta meta = item.getItemMeta();
-        apply(meta, stamp, lang, tier);
+        apply(meta, stamp, lang, tier, serialLine);
         item.setItemMeta(meta);
         return item;
     }
 
-    void apply(ItemMeta meta, WorkbenchStamp stamp, LangManager lang, TierSettings tier) {
+    void apply(ItemMeta meta, WorkbenchStamp stamp, LangManager lang, TierSettings tier, boolean serialLine) {
         PersistentDataContainer pdc = meta.getPersistentDataContainer();
         pdc.set(idKey, PersistentDataType.STRING, stamp.id().toString());
         pdc.set(tierKey, PersistentDataType.INTEGER, stamp.tier().level());
@@ -51,7 +64,8 @@ public final class WorkbenchItems {
         meta.lore(List.of(
                 plain(lang.component("workbench.item.lore.size", "width", tier.maxSize().width(),
                         "height", tier.maxSize().height(), "length", tier.maxSize().length())),
-                plain(lang.component("workbench.item.lore.serial", "serial", stamp.serial())),
+                serialLine ? plain(lang.component("workbench.item.lore.serial", "serial", stamp.serial()))
+                        : plain(lang.component("workbench.item.lore.sample")),
                 plain(lang.component("workbench.item.lore.place"))));
         if (!tier.model().isEmpty()) {
             NamespacedKey model = NamespacedKey.fromString(tier.model());

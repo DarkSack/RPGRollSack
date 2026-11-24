@@ -11,6 +11,7 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
@@ -99,10 +100,18 @@ public final class StructuresAdminCommand implements CommandExecutor, TabComplet
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        boolean give = sender.hasPermission(PERM_GIVE);
         if (args.length == 1) {
-            return List.of("give", "reload");
+            List<String> subs = new ArrayList<>();
+            if (give) {
+                subs.add("give");
+            }
+            if (sender.hasPermission(PERM_RELOAD)) {
+                subs.add("reload");
+            }
+            return subs;
         }
-        if (args.length >= 2 && args[0].equalsIgnoreCase("give")) {
+        if (give && args.length >= 2 && args[0].equalsIgnoreCase("give")) {
             if (args.length == 2) {
                 return Bukkit.getOnlinePlayers().stream().map(Player::getName).toList();
             }

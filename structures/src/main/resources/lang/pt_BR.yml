@@ -10,6 +10,7 @@ workbench:
     lore:
       size: "&7Tamanho máximo: &f{width}x{height}x{length}"
       serial: "&7Série: &f#{serial}"
+      sample: "&7É assinada ao fabricar"
       place: "&eColoque-a para começar a construir."
   place:
     not-genuine: "&cEssa mesa não é autêntica e não pode ser colocada."
@@ -19,6 +20,9 @@ workbench:
   break:
     denied: "&cSomente o dono pode quebrar esta mesa."
     has-project: "&cEsta mesa tem uma obra ativa e não pode ser quebrada."
+    gone: "&cEssa mesa não existia mais no banco de dados; foi removida sem deixar item. Avise um admin se era sua."
+    upgrading: "&eA mesa está sendo melhorada; espere um momento para quebrá-la."
+    no-permission: "&cVocê não tem permissão para quebrar mesas."
     error: "&cNão foi possível quebrar a mesa. Tente novamente."
   use:
     denied: "&cVocê não tem acesso a esta mesa."
@@ -27,7 +31,7 @@ workbench:
     fallback-not-block: "fallback-block {material} não é um bloco ({tier}); usando CRAFTING_TABLE."
     world-missing: "A mesa {id} está no mundo {world}, que ainda não carregou; será indexada quando ele carregar."
     bad-row: "A linha da mesa {id} não pode ser lida (UUID ou nível inválidos); ignorada."
-    block-missing: "A mesa {id} ({world} {x},{y},{z}) não tem mais o seu bloco; marcada como órfã."
+    block-missing: "A mesa {id} ({world} {x},{y},{z}) não tem mais o seu bloco (há {block}); marcada como órfã sem mexer no bloco."
     chunk-orphan: "O chunk guarda a mesa {id} em {x},{y},{z} mas ela não está no banco de dados; removendo do chunk."
     recipe-invalid: "A receita da mesa não é válida ({reason}); não foi registrada."
 tier:
@@ -41,20 +45,34 @@ prompt:
 menu:
   coming_soon: "&8Em breve"
   close: "&cFechar"
+  close-lore: "&7Fecha este menu"
   back: "&eVoltar"
+  back-lore: "&7Volta ao menu anterior"
   previous: "&ePágina anterior"
+  previous-lore: "&7Vai para a página anterior"
   next: "&ePróxima página"
+  next-lore: "&7Vai para a próxima página"
   manager-only: "&cSó o dono da mesa pode abrir isto."
   center:
     title: "Centro de construção"
     level: "&6Mesa: &f{tier}"
+    level-size: "&7Tamanho máximo: &f{width}x{height}x{length}"
+    level-next: "&7Próximo nível: &f{tier}"
+    level-max: "&7Já é o nível mais alto"
     catalog: "&eCatálogo de estruturas"
+    catalog-lore: "&7Escolha qual estrutura construir"
     builds: "&eMinhas construções"
+    builds-lore: "&7As estruturas que você já fez"
     materials: "&eMateriais"
+    materials-lore: "&7O que a mesa guarda para as suas obras"
     project: "&eObra"
+    project-lore: "&7A obra em andamento"
     upgrades: "&aMelhorias"
+    upgrades-lore: "&7Sobe o nível da mesa"
     access: "&bAcesso"
+    access-lore: "&7Quem pode usar a sua mesa"
     help: "&dAjuda"
+    help-lore: "&7Como a mesa funciona"
   upgrade:
     title: "Melhorias da mesa"
   access:
@@ -64,7 +82,9 @@ menu:
   confirm:
     title: "Confirmar?"
     accept: "&aConfirmar"
+    accept-lore: "&7Sim, faça agora"
     cancel: "&cCancelar"
+    cancel-lore: "&7Volta sem mudar nada"
 upgrade:
   have: "&a✔ &f{amount}x {item}"
   missing: "&c✘ &f{amount}x {item} &7(faltam {missing})"
@@ -74,18 +94,21 @@ upgrade:
   confirm: "&eMelhorar a mesa e cobrar os materiais"
   done: "&aMesa melhorada."
   max-tier: "&7A mesa já está no nível máximo."
+  max-lore: "&7Esta mesa não pode subir mais"
   result-missing: "&cFaltam materiais para melhorar a mesa."
   no-money: "&cVocê não tem dinheiro suficiente para melhorar a mesa."
   no-permission: "&cVocê não tem permissão para melhorar a mesa para esse nível."
   error: "&cNão foi possível melhorar a mesa. Tente de novo."
 access:
   add: "&aAdicionar jogador"
+  add-lore: "&7Digite o nome dele no chat"
   player: "&f{player}"
   click-remove: "&cClique para remover o acesso"
   prompt: "&eEscreva o nome do jogador que terá acesso à mesa."
   added: "&aAcesso concedido."
+  already: "&eEsse jogador já tem acesso."
   removed: "&aAcesso removido."
-  not-found: "&cNão conheço nenhum jogador chamado {player}."
+  not-found: "&cNinguém chamado {player} entrou no servidor. Precisa ter entrado pelo menos uma vez."
   is-owner: "&cEsse jogador já é o dono da mesa."
   error: "&cNão foi possível mudar o acesso. Tente de novo."
 help:
@@ -116,5 +139,5 @@ admin:
     done: "&aDadas {amount} mesa(s) {tier} para {player}."
     error: "&cNão foi possível emitir as mesas. Veja o console."
   reload:
-    done: "&aRPGRoll-Structures recarregado."
+    done: "&aRPGRoll-Structures recarregado. Mudanças no storage.yml precisam reiniciar o servidor."
     error: "&cFalha ao recarregar; veja o console."

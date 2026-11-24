@@ -19,6 +19,7 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 class WorkbenchItemsTest {
@@ -89,11 +90,11 @@ class WorkbenchItemsTest {
     @Test void applyWritesKeysNameLoreAndModel() {
         LangManager lang = mock(LangManager.class);
         when(lang.component(any(String.class), any(Object[].class))).thenReturn(Component.text("x"));
-        TierSettings ts = new TierSettings(new Size(32, 32, 32), List.of(), 0, "rpgroll:bench2",
+        TierSettings ts = new TierSettings(WorkbenchTier.INGENIERO, new Size(32, 32, 32), List.of(), 0, "rpgroll:bench2",
                 Material.SMITHING_TABLE);
         WorkbenchStamp st = new WorkbenchStamp(id, WorkbenchTier.INGENIERO, 9, "sig");
 
-        items.apply(meta, st, lang, ts);
+        items.apply(meta, st, lang, ts, true);
 
         verify(pdc).set(key("workbench_id"), PersistentDataType.STRING, id.toString());
         verify(pdc).set(key("tier"), PersistentDataType.INTEGER, 2);
@@ -110,8 +111,26 @@ class WorkbenchItemsTest {
     @Test void applySkipsModelWhenEmpty() {
         LangManager lang = mock(LangManager.class);
         when(lang.component(any(String.class), any(Object[].class))).thenReturn(Component.text("x"));
-        TierSettings ts = new TierSettings(new Size(16, 16, 16), List.of(), 0, "", Material.CRAFTING_TABLE);
-        items.apply(meta, new WorkbenchStamp(id, WorkbenchTier.CONSTRUCTOR, 1, "s"), lang, ts);
+        TierSettings ts = new TierSettings(WorkbenchTier.CONSTRUCTOR, new Size(16, 16, 16), List.of(), 0, "", Material.CRAFTING_TABLE);
+        items.apply(meta, new WorkbenchStamp(id, WorkbenchTier.CONSTRUCTOR, 1, "s"), lang, ts, true);
         verify(meta, never()).setItemModel(any());
+    }
+
+    @Test void settingsOfAnotherTierAreRejected() {
+        TierSettings constructor = new TierSettings(WorkbenchTier.CONSTRUCTOR, new Size(16, 16, 16), List.of(), 0, "",
+                Material.CRAFTING_TABLE);
+        WorkbenchStamp arquitecto = new WorkbenchStamp(id, WorkbenchTier.ARQUITECTO, 1, "s");
+        assertThrows(IllegalArgumentException.class, () -> items.create(arquitecto, mock(LangManager.class), constructor));
+        assertThrows(IllegalArgumentException.class, () -> items.sample(arquitecto, mock(LangManager.class), constructor));
+    }
+
+    @Test void recipeSampleHasNoSerialLine() {
+        LangManager lang = mock(LangManager.class);
+        when(lang.component(any(String.class), any(Object[].class))).thenReturn(Component.text("x"));
+        TierSettings ts = new TierSettings(WorkbenchTier.CONSTRUCTOR, new Size(16, 16, 16), List.of(), 0, "",
+                Material.CRAFTING_TABLE);
+        items.apply(meta, new WorkbenchStamp(new UUID(0, 0), WorkbenchTier.CONSTRUCTOR, 0, "muestra"), lang, ts, false);
+        verify(lang).component("workbench.item.lore.sample");
+        verify(lang, never()).component(eq("workbench.item.lore.serial"), any(Object[].class));
     }
 }

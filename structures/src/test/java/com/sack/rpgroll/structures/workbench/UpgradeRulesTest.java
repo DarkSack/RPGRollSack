@@ -14,7 +14,7 @@ import static com.sack.rpgroll.structures.workbench.WorkbenchTier.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class UpgradeRulesTest {
-    private final TierSettings ingeniero = new TierSettings(new Size(32, 32, 32),
+    private final TierSettings ingeniero = new TierSettings(INGENIERO, new Size(32, 32, 32),
             List.of(new Cost("minecraft:iron_ingot", 16), new Cost("minecraft:redstone", 8),
                     new Cost("minecraft:redstone_lamp", 4)), 100,
             "", Material.SMITHING_TABLE);
@@ -31,6 +31,24 @@ class UpgradeRulesTest {
 
     @Test void arquitectoIsMax() {
         assertInstanceOf(MaxTier.class, UpgradeRules.check(ARQUITECTO, null, Map.of(), 0, true));
+    }
+
+    @Test void missingNextSettingsBelowMaxTierIsAnError() {
+        var e = assertThrows(IllegalArgumentException.class,
+                () -> UpgradeRules.check(CONSTRUCTOR, null, Map.of(), 0, true));
+        assertTrue(e.getMessage().contains("CONSTRUCTOR"), e.getMessage());
+    }
+
+    @Test void zeroOrNegativeCostIsNeverMissing() {
+        TierSettings free = new TierSettings(INGENIERO, new Size(32, 32, 32),
+                List.of(new Cost("minecraft:iron_ingot", 0), new Cost("minecraft:redstone", -3)), 0,
+                "", Material.SMITHING_TABLE);
+        assertInstanceOf(Ok.class, UpgradeRules.check(CONSTRUCTOR, free, Map.of(), 0, true));
+    }
+
+    @Test void itemTheMapDoesNotMentionIsFullyMissing() {
+        assertEquals(new MissingItems(Map.of("minecraft:iron_ingot", 16, "minecraft:redstone", 8,
+                "minecraft:redstone_lamp", 4)), UpgradeRules.check(CONSTRUCTOR, ingeniero, Map.of(), 500, true));
     }
 
     @Test void noPermissionBeforeItemsAndMoneyBeforeOk() {

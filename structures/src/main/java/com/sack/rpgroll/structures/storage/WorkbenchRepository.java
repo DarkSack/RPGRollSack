@@ -30,19 +30,46 @@ public final class WorkbenchRepository {
 
     public CompletableFuture<Void> insert(WorkbenchRecord r) {
         return db.submit(c -> {
-            try (PreparedStatement ps = c.prepareStatement(
-                    "INSERT INTO workbenches(" + COLUMNS + ") VALUES (?,?,?,?,?,?,?,?,?,?)")) {
-                ps.setString(1, r.id().toString());
-                ps.setString(2, r.owner().toString());
-                ps.setString(3, r.world());
-                ps.setInt(4, r.x());
-                ps.setInt(5, r.y());
-                ps.setInt(6, r.z());
-                ps.setString(7, r.tier().name());
-                ps.setLong(8, r.serial());
-                ps.setInt(9, r.orphan() ? 1 : 0);
-                ps.setLong(10, r.createdAt());
-                ps.executeUpdate();
+            insert(c, r);
+            return null;
+        });
+    }
+
+    private static void insert(Connection c, WorkbenchRecord r) throws SQLException {
+        try (PreparedStatement ps = c.prepareStatement(
+                "INSERT INTO workbenches(" + COLUMNS + ") VALUES (?,?,?,?,?,?,?,?,?,?)")) {
+            ps.setString(1, r.id().toString());
+            ps.setString(2, r.owner().toString());
+            ps.setString(3, r.world());
+            ps.setInt(4, r.x());
+            ps.setInt(5, r.y());
+            ps.setInt(6, r.z());
+            ps.setString(7, r.tier().name());
+            ps.setLong(8, r.serial());
+            ps.setInt(9, r.orphan() ? 1 : 0);
+            ps.setLong(10, r.createdAt());
+            ps.executeUpdate();
+        }
+    }
+
+    /**
+     * Vuelve a colocar una mesa huérfana con su mismo id: su fila pasa a la nueva posición, dueño y nivel, sin
+     * marca de huérfana. Si la fila ya no está, se inserta. Una fila viva con ese id hace fallar el futuro (PK).
+     */
+    public CompletableFuture<Void> reclaim(WorkbenchRecord r) {
+        return db.submit(c -> {
+            int changed = update(c, "UPDATE workbenches SET owner = ?, world = ?, x = ?, y = ?, z = ?, tier = ?,"
+                    + " orphan = 0 WHERE id = ? AND orphan = 1", ps -> {
+                        ps.setString(1, r.owner().toString());
+                        ps.setString(2, r.world());
+                        ps.setInt(3, r.x());
+                        ps.setInt(4, r.y());
+                        ps.setInt(5, r.z());
+                        ps.setString(6, r.tier().name());
+                        ps.setString(7, r.id().toString());
+                    });
+            if (changed == 0) {
+                insert(c, r);
             }
             return null;
         });
@@ -113,24 +140,21 @@ public final class WorkbenchRepository {
         });
     }
 
-    public CompletableFuture<Void> trust(UUID id, UUID player) {
-        return db.submit(c -> {
-            update(c, dialect.insertIgnore() + " INTO workbench_access(workbench_id, player) VALUES (?,?)", ps -> {
-                ps.setString(1, id.toString());
-                ps.setString(2, player.toString());
-            });
-            return null;
-        });
+    /** true si se añadió; false si ya tenía acceso. */
+    public CompletableFuture<Boolean> trust(UUID id, UUID player) {
+        return db.submit(c -> update(c, dialect.insertIgnore()
+                + " INTO workbench_access(workbench_id, player) VALUES (?,?)", ps -> {
+                    ps.setString(1, id.toString());
+                    ps.setString(2, player.toString());
+                }) == 1);
     }
 
-    public CompletableFuture<Void> untrust(UUID id, UUID player) {
-        return db.submit(c -> {
-            update(c, "DELETE FROM workbench_access WHERE workbench_id = ? AND player = ?", ps -> {
-                ps.setString(1, id.toString());
-                ps.setString(2, player.toString());
-            });
-            return null;
-        });
+    /** true si se quitó; false si no lo tenía. */
+    public CompletableFuture<Boolean> untrust(UUID id, UUID player) {
+        return db.submit(c -> update(c, "DELETE FROM workbench_access WHERE workbench_id = ? AND player = ?", ps -> {
+            ps.setString(1, id.toString());
+            ps.setString(2, player.toString());
+        }) == 1);
     }
 
     public CompletableFuture<Set<UUID>> trusted(UUID id) {

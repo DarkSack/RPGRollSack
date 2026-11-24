@@ -83,37 +83,42 @@ public final class UpgradeMenu extends InventoryGUI {
     private final WorkbenchTier tier;
 
     public UpgradeMenu(Player player, StructuresPlugin plugin, WorkbenchRecord bench) {
-        super(player, StructuresMenus.skin().title(StructuresMenus.background("mejoras", bench.tier()),
+        super(player, StructuresMenus.skin().title(StructuresMenus.background(StructuresMenus.MEJORAS, bench.tier()),
                 plugin.menuTitle("upgrade")), 36);
         this.plugin = plugin;
         this.benchId = bench.id();
         this.tier = bench.tier();
     }
 
+    private void put(int slot, ItemStack item) {
+        setItem(slot, StructuresMenus.MEJORAS.dress(slot, item));
+    }
+
     @Override
     public void build() {
         StructuresMenus.fill(inventory);
         var lang = plugin.lang();
-        setItem(NIVEL, StructuresMenus.button(Material.NETHER_STAR, lang.component("menu.center.level",
-                "tier", lang.raw("tier." + tier.name().toLowerCase(Locale.ROOT))), List.of()));
+        put(NIVEL, StructuresMenus.tierIcon(plugin, tier));
         Optional<WorkbenchTier> next = tier.next();
         if (next.isPresent()) {
             TierSettings ts = plugin.workbench().tiers().get(next.get());
             Map<String, Integer> has = WorkbenchService.count(player.getInventory(), ts.upgradeCost());
             List<Line> lines = lines(ts.upgradeCost(), shortfall(ts.upgradeCost(), has));
             for (int i = 0; i < Math.min(lines.size(), REQUISITOS_MAX); i++) {
-                setItem(REQUISITOS_DESDE + i, requirement(lines.get(i)));
+                put(REQUISITOS_DESDE + i, requirement(lines.get(i)));
             }
             List<Component> lore = new ArrayList<>();
-            lore.add(lang.component("upgrade.to", "tier", lang.raw("tier." + next.get().name().toLowerCase(Locale.ROOT))));
+            lore.add(lang.component("upgrade.to", "tier", StructuresMenus.tierName(plugin, next.get())));
             if (ts.upgradeMoney() > 0) {
                 lore.add(lang.component("upgrade.money", "amount", String.format(Locale.ROOT, "%.2f", ts.upgradeMoney())));
             }
-            setItem(MEJORAR, StructuresMenus.button(Material.ANVIL, lang.component("upgrade.button"), lore));
+            put(MEJORAR, StructuresMenus.item(Material.ANVIL, lang.component("upgrade.button"), lore));
         } else {
-            setItem(MEJORAR, StructuresMenus.button(Material.BARRIER, lang.component("upgrade.max-tier"), List.of()));
+            put(MEJORAR, StructuresMenus.item(Material.BARRIER, lang.component("upgrade.max-tier"),
+                    List.of(lang.component("upgrade.max-lore"))));
         }
-        setItem(VOLVER, StructuresMenus.button(Material.ARROW, lang.component("menu.back"), List.of()));
+        put(VOLVER, StructuresMenus.item(Material.ARROW, lang.component("menu.back"),
+                List.of(lang.component("menu.back-lore"))));
     }
 
     private ItemStack requirement(Line line) {
@@ -121,7 +126,7 @@ public final class UpgradeMenu extends InventoryGUI {
         Component name = m != null ? Component.translatable(m.translationKey()) : Component.text(line.itemId());
         Component text = plugin.lang().component(line.key(), "item", name, "amount", String.valueOf(line.amount()),
                 "missing", String.valueOf(line.missing()));
-        return StructuresMenus.button(m != null ? m : Material.BARRIER, text, List.of());
+        return StructuresMenus.item(m != null ? m : Material.BARRIER, text, List.of());
     }
 
     @Override
@@ -131,7 +136,7 @@ public final class UpgradeMenu extends InventoryGUI {
         if (slot == VOLVER) {
             reopenCenter();
         } else if (slot == MEJORAR && tier.next().isPresent()) {
-            new ConfirmMenu(player, plugin, tier, StructuresMenus.button(Material.ANVIL,
+            new ConfirmMenu(player, plugin, tier, StructuresMenus.item(Material.ANVIL,
                     plugin.lang().component("upgrade.confirm"), List.of()), this::doUpgrade, this::reopenSelf).open();
         }
     }
@@ -143,7 +148,9 @@ public final class UpgradeMenu extends InventoryGUI {
                 plugin.getLogger().log(Level.WARNING, "Mejora fallida de la mesa " + benchId, err);
                 plugin.lang().send(player, "upgrade.error");
             } else {
-                resultKey(check, before).ifPresent(k -> plugin.lang().send(player, k));
+                // El nivel de ahora, no el de cuando se abrió el menú: otro gestor pudo mejorarla mientras tanto.
+                WorkbenchTier current = plugin.service().byId(benchId).map(WorkbenchRecord::tier).orElse(before);
+                resultKey(check, current).ifPresent(k -> plugin.lang().send(player, k));
             }
             reopenSelf();
         });

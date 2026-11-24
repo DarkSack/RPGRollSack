@@ -59,7 +59,10 @@ class WorkbenchRepositoryTest {
 
     @Test void twoBenchesCannotShareALocation() {
         repo.insert(rec(CONSTRUCTOR, 1, 1)).join();
-        assertThrows(CompletionException.class, () -> repo.insert(rec(CONSTRUCTOR, 1, 2)).join());
+        CompletionException e = assertThrows(CompletionException.class, () -> repo.insert(rec(CONSTRUCTOR, 1, 2)).join());
+        // La causa es la restricción UNIQUE de la base, no otro fallo cualquiera.
+        assertInstanceOf(java.sql.SQLException.class, e.getCause());
+        assertTrue(String.valueOf(e.getCause().getMessage()).contains("UNIQUE"), e.getCause().getMessage());
     }
 
     @Test void moveRemoveAndOrphan() {
@@ -79,8 +82,8 @@ class WorkbenchRepositoryTest {
         repo.insert(r).join();
         UUID a = UUID.randomUUID();
         UUID b = UUID.randomUUID();
-        repo.trust(r.id(), a).join();
-        repo.trust(r.id(), a).join(); // duplicado no falla
+        assertTrue(repo.trust(r.id(), a).join());
+        assertFalse(repo.trust(r.id(), a).join()); // duplicado no falla y dice que ya estaba
         repo.trust(r.id(), b).join();
         assertEquals(Set.of(a, b), repo.trusted(r.id()).join());
         repo.untrust(r.id(), a).join();

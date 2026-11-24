@@ -20,6 +20,11 @@ class WorkbenchIssuerTest {
         return f;
     }, signer, Runnable::run, Logger.getAnonymousLogger());
 
+    @Test void poolHoldsSixtyFourSerials() {
+        // Un /dar de 64 seguidos no debe agotarlo.
+        assertEquals(64, WorkbenchIssuer.POOL_TARGET);
+    }
+
     @Test void emptyPoolReturnsEmptyWithoutBlocking() {
         assertEquals(Optional.empty(), issuer.issueNow(WorkbenchTier.CONSTRUCTOR));
         assertEquals(WorkbenchIssuer.POOL_TARGET, requested.size());

@@ -3,6 +3,7 @@ package com.sack.rpgroll.structures.gui;
 import com.sack.rpgroll.gui.InventoryGUI;
 import com.sack.rpgroll.structures.StructuresPlugin;
 import com.sack.rpgroll.structures.storage.WorkbenchRecord;
+import com.sack.rpgroll.structures.workbench.WorkbenchService.AccessChange;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -13,8 +14,10 @@ import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
+import java.util.function.Function;
 import java.util.logging.Level;
 
 /** Cabezas de los jugadores de confianza, de 45 en 45. Clic para quitar; «Añadir» pide el nombre por chat. */
@@ -36,6 +39,16 @@ public final class AccessMenu extends InventoryGUI {
         return all.subList(Math.min(all.size(), p * PAGE_SIZE), Math.min(all.size(), (p + 1) * PAGE_SIZE));
     }
 
+    /** Por nombre, sin mayúsculas; quien no tiene nombre conocido va por su UUID. */
+    public static List<UUID> sortedByName(Set<UUID> players, Function<UUID, String> name) {
+        return players.stream()
+                .sorted(Comparator.comparing((UUID id) -> {
+                    String n = name.apply(id);
+                    return (n != null ? n : id.toString()).toLowerCase(Locale.ROOT);
+                }).thenComparing(UUID::toString))
+                .toList();
+    }
+
     /** Lee los de confianza (base de datos) y abre el menú en el hilo principal. */
     public static void show(Player player, StructuresPlugin plugin, WorkbenchRecord bench, int page) {
         plugin.service().trusted(bench.id()).whenComplete((trusted, err) -> {
@@ -54,11 +67,11 @@ public final class AccessMenu extends InventoryGUI {
     private final List<UUID> trusted;
 
     public AccessMenu(Player player, StructuresPlugin plugin, WorkbenchRecord bench, int page, Set<UUID> trusted) {
-        super(player, StructuresMenus.skin().title(StructuresMenus.background("acceso", bench.tier()),
+        super(player, StructuresMenus.skin().title(StructuresMenus.background(StructuresMenus.ACCESO, bench.tier()),
                 plugin.menuTitle("access")), 54);
         this.plugin = plugin;
         this.bench = bench;
-        this.trusted = trusted.stream().sorted(Comparator.comparing(UUID::toString)).toList();
+        this.trusted = sortedByName(trusted, id -> Bukkit.getOfflinePlayer(id).getName());
         this.page = Math.max(0, Math.min(page, pageCount(this.trusted.size()) - 1));
     }
 
@@ -68,16 +81,24 @@ public final class AccessMenu extends InventoryGUI {
         var lang = plugin.lang();
         List<UUID> shown = pageOf(trusted, page);
         for (int i = 0; i < shown.size(); i++) {
-            setItem(i, head(shown.get(i)));
+            put(i, head(shown.get(i)));
         }
         if (page > 0) {
-            setItem(ANTERIOR, StructuresMenus.button(Material.ARROW, lang.component("menu.previous"), List.of()));
+            put(ANTERIOR, StructuresMenus.item(Material.ARROW, lang.component("menu.previous"),
+                    List.of(lang.component("menu.previous-lore"))));
         }
         if (page < pageCount(trusted.size()) - 1) {
-            setItem(SIGUIENTE, StructuresMenus.button(Material.ARROW, lang.component("menu.next"), List.of()));
+            put(SIGUIENTE, StructuresMenus.item(Material.ARROW, lang.component("menu.next"),
+                    List.of(lang.component("menu.next-lore"))));
         }
-        setItem(ANADIR, StructuresMenus.button(Material.LIME_DYE, lang.component("access.add"), List.of()));
-        setItem(VOLVER, StructuresMenus.button(Material.BARRIER, lang.component("menu.back"), List.of()));
+        put(ANADIR, StructuresMenus.item(Material.LIME_DYE, lang.component("access.add"),
+                List.of(lang.component("access.add-lore"))));
+        put(VOLVER, StructuresMenus.item(Material.BARRIER, lang.component("menu.back"),
+                List.of(lang.component("menu.back-lore"))));
+    }
+
+    private void put(int slot, ItemStack item) {
+        setItem(slot, StructuresMenus.ACCESO.dress(slot, item));
     }
 
     private ItemStack head(UUID id) {
@@ -86,10 +107,10 @@ public final class AccessMenu extends InventoryGUI {
         SkullMeta meta = (SkullMeta) item.getItemMeta();
         meta.setOwningPlayer(op);
         String name = op.getName() != null ? op.getName() : id.toString();
-        meta.displayName(plugin.lang().component("access.player", "player", name));
-        meta.lore(List.of(plugin.lang().component("access.click-remove")));
+        meta.displayName(StructuresMenus.plain(plugin.lang().component("access.player", "player", name)));
+        meta.lore(List.of(StructuresMenus.plain(plugin.lang().component("access.click-remove"))));
         item.setItemMeta(meta);
-        return StructuresMenus.skin().button(item);
+        return item;
     }
 
     @Override
@@ -100,7 +121,12 @@ public final class AccessMenu extends InventoryGUI {
             List<UUID> shown = pageOf(trusted, page);
             if (slot < shown.size()) {
                 UUID target = shown.get(slot);
-                plugin.service().untrust(player, bench.id(), target).whenComplete((ok, err) -> done(ok, err, "access.removed"));
+                plugin.service().untrust(player, bench.id(), target).whenComplete((r, err) -> {
+                    if (err == null && r == AccessChange.UNCHANGED) {
+                        r = AccessChange.DONE; // ya no lo tenía: para quien mira, quitado igual
+                    }
+                    done(r, err, "access.removed");
+                });
             }
         } else if (slot == ANTERIOR && page > 0) {
             show(player, plugin, bench, page - 1);
@@ -125,15 +151,24 @@ public final class AccessMenu extends InventoryGUI {
             show(player, plugin, bench, page);
         } else {
             plugin.service().trust(player, bench.id(), target.getUniqueId())
-                    .whenComplete((ok, err) -> done(ok, err, "access.added"));
+                    .whenComplete((r, err) -> done(r, err, "access.added"));
         }
     }
 
-    private void done(Boolean ok, Throwable err, String okKey) {
+    /** Siempre en el hilo principal: el servicio devuelve ahí también los fallos. */
+    private void done(AccessChange result, Throwable err, String okKey) {
         if (err != null) {
             plugin.getLogger().log(Level.WARNING, "Cambio de acceso fallido en la mesa " + bench.id(), err);
         }
-        plugin.lang().send(player, err == null && Boolean.TRUE.equals(ok) ? okKey : "access.error");
+        plugin.lang().send(player, messageKey(err == null ? result : null, okKey));
         show(player, plugin, bench, page);
+    }
+
+    /** Qué decir tras dar o quitar acceso; {@code result} null = falló la base de datos. */
+    static String messageKey(AccessChange result, String okKey) {
+        if (result == null || result == AccessChange.DENIED) {
+            return "access.error";
+        }
+        return result == AccessChange.DONE ? okKey : "access.already";
     }
 }

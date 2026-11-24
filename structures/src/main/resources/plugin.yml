@@ -19,20 +19,16 @@ permissions:
     description: Romper mesas de construcción propias
     default: true
   rpgrollstructures.tier.*:
-    description: Usar mesas de cualquier nivel
+    description: Mejorar la mesa a cualquier nivel
     default: true
     children:
-      rpgrollstructures.tier.1: true
       rpgrollstructures.tier.2: true
       rpgrollstructures.tier.3: true
-  rpgrollstructures.tier.1:
-    description: Usar mesas de nivel 1 (Constructor)
-    default: true
   rpgrollstructures.tier.2:
-    description: Usar mesas de nivel 2 (Ingeniero)
+    description: Mejorar la mesa a nivel 2 (Ingeniero)
     default: true
   rpgrollstructures.tier.3:
-    description: Usar mesas de nivel 3 (Arquitecto)
+    description: Mejorar la mesa a nivel 3 (Arquitecto)
     default: true
   rpgrollstructures.bypass:
     description: Saltarse las restricciones de las mesas

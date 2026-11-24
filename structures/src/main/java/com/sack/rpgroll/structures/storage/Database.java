@@ -10,6 +10,7 @@ import java.util.concurrent.CompletionException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,11 +27,24 @@ public final class Database implements AutoCloseable {
     private final ExecutorService executor;
     private final Connection connection;
     private final Logger log;
+    /**
+     * Espera de {@link #close} en cada una de sus dos fases (como mucho 10 s de apagado en total); las pruebas la
+     * acortan.
+     */
+    long closeTimeoutMillis = 5_000;
+
+    /** Plazo de lectura del socket de MySQL/MariaDB: sin él, una consulta a un servidor mudo cuelga el hilo. */
+    static final int MYSQL_SOCKET_TIMEOUT_MS = 30_000;
 
     private Database(ExecutorService executor, Connection connection, Logger log) {
         this.executor = executor;
         this.connection = connection;
         this.log = log;
+    }
+
+    /** URL JDBC de MariaDB/MySQL con {@code socketTimeout}. */
+    public static String mysqlUrl(String host, int port, String database) {
+        return "jdbc:mariadb://" + host + ":" + port + "/" + database + "?socketTimeout=" + MYSQL_SOCKET_TIMEOUT_MS;
     }
 
     /** Abre, migra y devuelve la base. Bloquea: llamar al arrancar, antes de que haya jugadores. */
@@ -93,29 +107,61 @@ public final class Database implements AutoCloseable {
         }
     }
 
+    /** Tras {@link #close} devuelve un futuro fallido (SQLException) en vez de lanzar. */
     public <T> CompletableFuture<T> submit(SqlWork<T> work) {
-        return CompletableFuture.supplyAsync(() -> {
-            try {
-                return work.run(connection);
-            } catch (SQLException e) {
-                throw new CompletionException(e);
-            }
-        }, executor);
+        try {
+            return CompletableFuture.supplyAsync(() -> {
+                try {
+                    return work.run(connection);
+                } catch (SQLException e) {
+                    throw new CompletionException(e);
+                }
+            }, executor);
+        } catch (RejectedExecutionException e) {
+            return CompletableFuture.failedFuture(new SQLException("La base de datos ya está cerrada", e));
+        }
     }
 
-    /** Espera las tareas pendientes (máximo 10 s) y cierra la conexión. */
+    /**
+     * Espera las tareas pendientes; si siguen tras el plazo, las interrumpe y espera otra vez. La conexión nunca
+     * se cierra con una tarea aún corriendo: si ni así termina, se cierra en segundo plano cuando acabe.
+     */
     @Override
     public void close() {
         executor.shutdown();
-        try {
-            if (!executor.awaitTermination(10, TimeUnit.SECONDS)) {
-                log.warning("La base de datos tenía tareas sin terminar tras 10 s; se cancelan.");
-                executor.shutdownNow();
-            }
-        } catch (InterruptedException e) {
+        if (!await()) {
+            log.warning("La base de datos tenía tareas sin terminar tras " + closeTimeoutMillis + " ms; se interrumpen.");
             executor.shutdownNow();
-            Thread.currentThread().interrupt();
+            if (!await()) {
+                log.warning("Una tarea de la base de datos no responde; la conexión se cerrará cuando termine.");
+                Thread t = new Thread(() -> {
+                    while (!executor.isTerminated()) {
+                        try {
+                            executor.awaitTermination(1, TimeUnit.MINUTES);
+                        } catch (InterruptedException e) {
+                            return; // apagando la JVM: no se cierra sobre una tarea viva
+                        }
+                    }
+                    closeConnection();
+                }, "RPGRoll-Structures-DB-close");
+                t.setDaemon(true);
+                t.start();
+                return;
+            }
         }
+        closeConnection();
+    }
+
+    private boolean await() {
+        try {
+            return executor.awaitTermination(closeTimeoutMillis, TimeUnit.MILLISECONDS);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            return executor.isTerminated();
+        }
+    }
+
+    private void closeConnection() {
         try {
             connection.close();
         } catch (SQLException e) {

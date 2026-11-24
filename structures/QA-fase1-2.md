@@ -49,3 +49,42 @@ Las pruebas las hacen dos bots de mineflayer (QaDueno y QaOtro) con RCON. Script
 - MySQL o MariaDB.
 - `/dar mesa:<nivel> N` con N > 1.
 - Cliente real de Sack: los menús solo los ha visto un bot. Falta el aspecto visual.
+
+## Cliente real de Sack (Minecraft 26.3 vía ViaVersion, DarkSack), 2026-11-23
+
+| Prueba | Resultado |
+|---|---|
+| Colocar la mesa y abrir «Centro de construcción» | OK, con 9 botones e iconos correctos |
+| Mejoras: requisitos con ✔ en verde y ✘ en rojo, «(te faltan N)», «Mejorar → Pasa a: Ingeniero» | OK |
+| Confirmar: botones «Confirmar» y «Cancelar» con su texto (arreglo I4) | OK |
+| Mejora a Ingeniero | OK: «Mesa mejorada.», se cobran los materiales y el bloque pasa a mesa de herrería |
+| Ayuda: 3 páginas | OK |
+| Romper con hacha | OK: se borra la fila y vuelve «Mesa de construcción: Ingeniero», Serie #53 |
+| Receta: el resultado muestra la mesa | OK |
+| Receta: tecla numérica y Ctrl+Q sobre el resultado | OK: se cancelan; no gastan ingredientes ni sueltan nada |
+| Receta: Mayús+clic | OK: 1 mesa (Serie #37) y una sola tanda de ingredientes |
+
+Detalles visuales encontrados:
+- Los nombres y el lore de los botones de los menús salen en cursiva. Falta `ITALIC false`. El ítem de la mesa sí sale bien.
+- El relleno de cristal gris muestra un tooltip vacío; con F3+H muestra el id. Le falta ocultar el tooltip.
+- La muestra de la receta dice «Serie: #0».
+- Mejoras y Acceso no tienen una línea de lore que explique qué hacen.
+
+## Pulido y fondos dibujados con el cliente real de Sack (2026-11-24)
+
+Banco con JAR de desarrollo nuevo (129 pruebas en verde) y `menus.pack: "sackito:menus"`. El pack de producción se mezcló con los 15 fondos nuevos y lo sirve `server.properties` desde `http://127.0.0.1:25637/banco.zip`.
+
+| Prueba | Resultado |
+|---|---|
+| Fondo de Centro, Mejoras, Confirmar, Acceso y Ayuda (taller, Constructor) | OK |
+| Fondo de Centro (ingenio, Ingeniero) y Centro y Mejoras (arcano, Arquitecto) | OK |
+| Botones invisibles sobre los iconos dibujados, con su tooltip | OK |
+| Nombres y lore sin cursiva; descripción en los botones (Ayuda: «Cómo funciona la mesa») | OK |
+| Relleno sin tooltip | OK |
+| Mejoras: falta de materiales con ✘ y «(te faltan 3)» | OK |
+| Mejoras en el nivel máximo | OK |
+| Añadir de confianza por el chat desde Acceso | OK |
+
+Capturas en `E:\Dev\scratchpad\structures-20261123\capturas\` (originales) y `E:\Dev\RPGRollDocs\public\capturas\structures\` (recortadas).
+
+Sin probar todavía: capturas con el ratón encima de un botón (tooltips avanzados de F3+H activados en el cliente), MySQL real y mundos de WorldForge.

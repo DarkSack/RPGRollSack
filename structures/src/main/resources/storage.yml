@@ -1,4 +1,6 @@
 # Base de datos de las mesas: sqlite (un archivo) o mysql.
+# Una base por servidor; no compartirla entre servidores (con MySQL, un `database` distinto en cada uno).
+# Cambiar este archivo pide reiniciar el servidor: /structuresadmin reload no lo vuelve a leer.
 type: sqlite
 sqlite:
   file: data.db

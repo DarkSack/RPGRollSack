@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
+import java.util.function.Predicate;
 
 /**
  * Receta de la mesa Constructor. El resultado registrado y el que se ve al preparar es una MUESTRA con firma
@@ -42,8 +43,18 @@ public final class WorkbenchRecipe implements Listener {
         this.key = new NamespacedKey(plugin, "workbench");
     }
 
-    /** Vacío si la forma y las claves casan; si no, el motivo. Cada letra de la forma necesita clave y cada clave se usa. */
+    /** {@link #problem(List, Map, Predicate)} sin mirar remanentes. */
     public static Optional<String> problem(List<String> shape, Map<Character, String> keys) {
+        return problem(shape, keys, id -> false);
+    }
+
+    /**
+     * Vacío si la forma y las claves casan; si no, el motivo. Cada letra de la forma necesita clave, cada clave se
+     * usa y ningún ingrediente deja remanente ({@code leavesRemainder}: cubos, botellas...). Mayús+clic fabrica a
+     * mano y no devolvería el cubo vacío.
+     */
+    public static Optional<String> problem(List<String> shape, Map<Character, String> keys,
+                                           Predicate<String> leavesRemainder) {
         if (shape.isEmpty() || shape.size() > 3) {
             return Optional.of("la forma debe tener de 1 a 3 filas");
         }
@@ -62,9 +73,13 @@ public final class WorkbenchRecipe implements Listener {
                 used.add(c);
             }
         }
-        for (char c : keys.keySet()) {
-            if (!used.contains(c)) {
-                return Optional.of("la clave '" + c + "' no se usa en la forma");
+        for (Map.Entry<Character, String> e : keys.entrySet()) {
+            if (!used.contains(e.getKey())) {
+                return Optional.of("la clave '" + e.getKey() + "' no se usa en la forma");
+            }
+            if (leavesRemainder.test(e.getValue())) {
+                return Optional.of("la clave '" + e.getKey() + "' (" + e.getValue()
+                        + ") deja un recipiente al fabricar; usa otro ingrediente");
             }
         }
         return Optional.empty();
@@ -74,7 +89,10 @@ public final class WorkbenchRecipe implements Listener {
     public void reload() {
         plugin.getServer().removeRecipe(key);
         WorkbenchSettings ws = plugin.workbench();
-        Optional<String> bad = problem(ws.recipeShape(), ws.recipeKeys());
+        Optional<String> bad = problem(ws.recipeShape(), ws.recipeKeys(), id -> {
+            Material m = Material.matchMaterial(id);
+            return m != null && m.isItem() && m.getCraftingRemainingItem() != null;
+        });
         if (bad.isPresent()) {
             warn(bad.get());
             return;
@@ -106,7 +124,7 @@ public final class WorkbenchRecipe implements Listener {
     }
 
     private ItemStack sample() {
-        return plugin.items().create(SAMPLE, plugin.lang(), plugin.workbench().tiers().get(SAMPLE.tier()));
+        return plugin.items().sample(SAMPLE, plugin.lang(), plugin.workbench().tiers().get(SAMPLE.tier()));
     }
 
     private boolean ours(Recipe r) {
@@ -175,7 +193,7 @@ public final class WorkbenchRecipe implements Listener {
         e.setCancelled(true);
         CraftingInventory grid = e.getInventory();
         ItemStack[] matrix = grid.getMatrix();
-        // shortcut: no devuelve recipientes (cubos...) si la receta se configura con ellos.
+        // Sin recipientes que devolver: reload() rechaza las recetas con ingredientes que dejan remanente.
         for (int i = 0; i < matrix.length; i++) {
             if (matrix[i] != null) {
                 if (matrix[i].getAmount() <= 1) {

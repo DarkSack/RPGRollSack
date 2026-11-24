@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 class StructuresAdminCommandTest {
@@ -54,7 +55,15 @@ class StructuresAdminCommandTest {
         verify(lang).send(sender, "admin.give.bad_tier");
     }
 
+    @Test void tabCompletionOnlyOffersWhatTheSenderMayRun() {
+        assertEquals(List.of(), cmd.onTabComplete(sender, null, "sa", new String[]{""}));
+        assertEquals(List.of(), cmd.onTabComplete(sender, null, "sa", new String[]{"give", "Sack", ""}));
+        when(sender.hasPermission("rpgrollstructures.admin.reload")).thenReturn(true);
+        assertEquals(List.of("reload"), cmd.onTabComplete(sender, null, "sa", new String[]{""}));
+    }
+
     @Test void noArgsShowsUsageAndTabCompletes() {
+        when(sender.hasPermission(anyString())).thenReturn(true);
         cmd.onCommand(sender, null, "sa", new String[]{});
         verify(lang).send(sender, "admin.usage");
         assertEquals(List.of("give", "reload"), cmd.onTabComplete(sender, null, "sa", new String[]{""}));

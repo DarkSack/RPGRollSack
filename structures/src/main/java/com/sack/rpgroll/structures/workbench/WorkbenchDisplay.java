@@ -10,6 +10,7 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.ItemDisplay;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -19,6 +20,8 @@ import org.bukkit.plugin.Plugin;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
+import java.util.UUID;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.logging.Logger;
 
@@ -32,9 +35,11 @@ public class WorkbenchDisplay {
     private final LangManager lang;
     private final Logger log;
     private final Set<Material> warned = new HashSet<>();
+    private final BenchChunks chunks;
 
     public WorkbenchDisplay(Plugin plugin, Supplier<WorkbenchSettings> settings, LangManager lang, Logger log) {
         this.displayKey = new NamespacedKey(plugin, "display");
+        this.chunks = new BenchChunks(plugin);
         this.settings = settings;
         this.lang = lang;
         this.log = log;
@@ -72,6 +77,7 @@ public class WorkbenchDisplay {
         return w == null ? null : w.getBlockAt(r.x(), r.y(), r.z());
     }
 
+    /** Pone el bloque (y el display con modelo) y apunta en el PDC del chunk qué bloque se puso. */
     public void show(WorkbenchRecord r) {
         Block b = block(r);
         if (b == null) {
@@ -79,11 +85,12 @@ public class WorkbenchDisplay {
         }
         removeAround(b, r);
         NamespacedKey model = model(settings.get().tiers().get(r.tier()));
+        Material block = model == null ? fallback(r.tier()) : Material.BARRIER;
+        b.setType(block, false);
+        chunks.mark(b.getChunk(), r, block);
         if (model == null) {
-            b.setType(fallback(r.tier()), false);
             return;
         }
-        b.setType(Material.BARRIER, false);
         ItemStack shown = ItemStack.of(Material.PAPER);
         ItemMeta meta = shown.getItemMeta();
         meta.setItemModel(model);
@@ -121,6 +128,26 @@ public class WorkbenchDisplay {
             removeAround(b, r);
         } else if (nearby(b, r).isEmpty()) {
             show(r);
+        }
+    }
+
+    /** Al cargar entidades: quita los displays de mesas que ya no están activas (huérfanas o borradas). */
+    public void removeStray(Iterable<? extends Entity> entities, Predicate<UUID> active) {
+        for (Entity e : entities) {
+            if (!(e instanceof ItemDisplay d)) {
+                continue;
+            }
+            String id = d.getPersistentDataContainer().get(displayKey, PersistentDataType.STRING);
+            if (id == null) {
+                continue;
+            }
+            try {
+                if (!active.test(UUID.fromString(id))) {
+                    d.remove();
+                }
+            } catch (IllegalArgumentException ignored) {
+                // id ilegible: no es nuestro formato, se deja
+            }
         }
     }
 

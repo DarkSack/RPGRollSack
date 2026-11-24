@@ -31,6 +31,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executor;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BiFunction;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.logging.Level;
@@ -45,6 +46,9 @@ import java.util.logging.Logger;
 public final class WorkbenchService {
 
     public enum PlaceResult { OK, NOT_GENUINE, NO_PERMISSION, OCCUPIED, ERROR }
+
+    /** Resultado de dar o quitar acceso: hecho, ya estaba así, o quien lo pide no gestiona la mesa. */
+    public enum AccessChange { DONE, UNCHANGED, DENIED }
 
     public static final String PERM_PLACE = "rpgrollstructures.workbench.place";
     public static final String PERM_BREAK = "rpgrollstructures.workbench.break";
@@ -64,6 +68,8 @@ public final class WorkbenchService {
 
     private final Map<UUID, WorkbenchRecord> byId = new ConcurrentHashMap<>();
     private final Map<String, UUID> byPos = new ConcurrentHashMap<>();
+    /** Mesas con posición de cada chunk ({@code mundo:cx,cz}), para no recorrerlas todas al cargar uno. */
+    private final Map<String, Set<UUID>> byChunk = new ConcurrentHashMap<>();
     /** Candado por mesa: mejoras en curso. */
     private final Set<UUID> upgrading = ConcurrentHashMap.newKeySet();
     /** Mesas que se están rompiendo: siguen en la caché (protegidas) hasta que la base confirme. */
@@ -101,6 +107,45 @@ public final class WorkbenchService {
         return key(b.getWorld().getName(), b.getX(), b.getY(), b.getZ());
     }
 
+    private static String chunkKey(String world, int chunkX, int chunkZ) {
+        return world + ":" + chunkX + "," + chunkZ;
+    }
+
+    private static String chunkKey(WorkbenchRecord r) {
+        return chunkKey(r.world(), r.x() >> 4, r.z() >> 4);
+    }
+
+    /** Da posición a la mesa; false si ya hay otra en ese bloque. */
+    private boolean addPos(WorkbenchRecord r) {
+        if (byPos.putIfAbsent(key(r), r.id()) != null) {
+            return false;
+        }
+        byChunk.computeIfAbsent(chunkKey(r), k -> ConcurrentHashMap.newKeySet()).add(r.id());
+        return true;
+    }
+
+    private void removePos(WorkbenchRecord r) {
+        if (byPos.remove(key(r), r.id())) {
+            byChunk.computeIfPresent(chunkKey(r), (k, ids) -> {
+                ids.remove(r.id());
+                return ids.isEmpty() ? null : ids;
+            });
+        }
+    }
+
+    /**
+     * Pasa el resultado al hilo principal, también si falla: {@code thenApplyAsync} con un origen fallido terminaría
+     * en el hilo de la base de datos y el menú mandaría mensajes desde ahí.
+     */
+    private <T, R> CompletableFuture<R> onMain(CompletableFuture<T> f, Function<T, R> then) {
+        return f.handleAsync((v, err) -> {
+            if (err != null) {
+                throw err instanceof CompletionException ce ? ce : new CompletionException(err);
+            }
+            return then.apply(v);
+        }, main);
+    }
+
     // ---- caché ----
 
     /**
@@ -127,22 +172,26 @@ public final class WorkbenchService {
     public void worldLoaded(String world) {
         for (WorkbenchRecord r : byId.values()) {
             if (!r.orphan() && r.world().equals(world)) {
-                byPos.putIfAbsent(key(r), r.id());
+                addPos(r);
             }
         }
     }
 
     private void index(WorkbenchRecord r) {
         byId.put(r.id(), r);
-        byPos.put(key(r), r.id());
+        addPos(r);
     }
 
-    /** Marca la mesa como huérfana (fila conservada) y la saca del índice por posición. */
+    /** Marca la mesa como huérfana (fila conservada) y la saca del índice por posición; un fallo de la base se avisa. */
     public void markOrphan(WorkbenchRecord r) {
-        byPos.remove(key(r), r.id());
+        removePos(r);
         byId.put(r.id(), new WorkbenchRecord(r.id(), r.owner(), r.world(), r.x(), r.y(), r.z(), r.tier(),
                 r.serial(), true, r.createdAt()));
-        repo.markOrphan(r.id());
+        repo.markOrphan(r.id()).whenComplete((ok, err) -> {
+            if (err != null) {
+                log.log(Level.SEVERE, "No se pudo marcar como huérfana la mesa " + r.id(), err);
+            }
+        });
     }
 
     public Optional<WorkbenchRecord> at(Block b) {
@@ -157,9 +206,9 @@ public final class WorkbenchService {
     /** Mesas activas de un chunk. */
     public List<WorkbenchRecord> inChunk(String world, int chunkX, int chunkZ) {
         List<WorkbenchRecord> out = new ArrayList<>();
-        for (UUID id : byPos.values()) {
+        for (UUID id : byChunk.getOrDefault(chunkKey(world, chunkX, chunkZ), Set.of())) {
             WorkbenchRecord r = byId.get(id);
-            if (r != null && r.world().equals(world) && (r.x() >> 4) == chunkX && (r.z() >> 4) == chunkZ) {
+            if (r != null && !r.orphan()) {
                 out.add(r);
             }
         }
@@ -177,10 +226,18 @@ public final class WorkbenchService {
         if (!p.hasPermission(PERM_PLACE) && !p.hasPermission(PERM_BYPASS)) {
             return PlaceResult.NO_PERMISSION;
         }
-        if (byId.containsKey(stamp.get().id()) || byPos.containsKey(key(at))) {
+        if (alive(byId.get(stamp.get().id())) || byPos.containsKey(key(at))) {
             return PlaceResult.OCCUPIED;
         }
         return PlaceResult.OK;
+    }
+
+    /**
+     * Una huérfana no está en el mundo: su ítem auténtico (devuelto tras un {@code cancelPlacement} fallido, o en
+     * manos de alguien tras perder el bloque) puede volver a colocarla. Solo una mesa viva con ese id ocupa.
+     */
+    private static boolean alive(WorkbenchRecord r) {
+        return r != null && !r.orphan();
     }
 
     /**
@@ -195,17 +252,23 @@ public final class WorkbenchService {
         WorkbenchStamp s = items.read(item).orElseThrow();
         WorkbenchRecord rec = new WorkbenchRecord(s.id(), p.getUniqueId(), at.getWorld().getName(), at.getX(),
                 at.getY(), at.getZ(), s.tier(), s.serial(), false, System.currentTimeMillis());
-        if (byId.putIfAbsent(rec.id(), rec) != null) {
+        WorkbenchRecord orphan = byId.get(rec.id());
+        if (alive(orphan)) {
             return CompletableFuture.completedFuture(PlaceResult.OCCUPIED);
         }
-        if (byPos.putIfAbsent(key(rec), rec.id()) != null) {
-            byId.remove(rec.id());
+        boolean claimed = orphan == null ? byId.putIfAbsent(rec.id(), rec) == null : byId.replace(rec.id(), orphan, rec);
+        if (!claimed) {
             return CompletableFuture.completedFuture(PlaceResult.OCCUPIED);
         }
-        return repo.insert(rec).handleAsync((ok, err) -> {
+        if (!addPos(rec)) {
+            restore(rec, orphan);
+            return CompletableFuture.completedFuture(PlaceResult.OCCUPIED);
+        }
+        CompletableFuture<Void> write = orphan == null ? repo.insert(rec) : repo.reclaim(rec);
+        return write.handleAsync((ok, err) -> {
             if (err != null) {
-                byPos.remove(key(rec), rec.id());
-                byId.remove(rec.id());
+                removePos(rec);
+                restore(rec, orphan);
                 log.log(Level.SEVERE, "No se pudo guardar la mesa " + rec.id(), err);
                 return PlaceResult.ERROR;
             }
@@ -213,13 +276,35 @@ public final class WorkbenchService {
         }, main);
     }
 
-    /** Deshace un registro cuyo bloque no llegó a colocarse: fila y caché fuera. */
-    public CompletableFuture<Void> cancelPlacement(UUID id) {
-        WorkbenchRecord rec = byId.remove(id);
-        if (rec != null) {
-            byPos.remove(key(rec), id);
+    /** Deshace la entrada de la caché de una colocación fallida: vuelve la huérfana que había, o nada. */
+    private void restore(WorkbenchRecord placed, WorkbenchRecord orphan) {
+        if (orphan == null) {
+            byId.remove(placed.id(), placed);
+        } else {
+            byId.replace(placed.id(), placed, orphan);
         }
-        return repo.remove(id).thenAcceptAsync(v -> {}, main);
+    }
+
+    /**
+     * Deshace un registro cuyo bloque no llegó a colocarse: fila y caché fuera. Si la base falla, la fila sigue ahí y
+     * la mesa queda en la caché como huérfana (sin posición), igual que quedaría tras reiniciar.
+     */
+    public CompletableFuture<Void> cancelPlacement(UUID id) {
+        WorkbenchRecord rec = byId.get(id);
+        if (rec != null) {
+            removePos(rec); // nada se apoya ya en ese bloque
+        }
+        return repo.remove(id).handleAsync((ok, err) -> {
+            if (err == null) {
+                byId.remove(id);
+            } else {
+                log.log(Level.SEVERE, "No se pudo deshacer el registro de la mesa " + id + "; queda como huérfana", err);
+                if (rec != null) {
+                    markOrphan(rec);
+                }
+            }
+            return null;
+        }, main);
     }
 
     // ---- romper ----
@@ -231,21 +316,50 @@ public final class WorkbenchService {
         return BreakRules.decide(structures.get().breakPolicy(), projects.hasActiveProject(bench.id()), manage);
     }
 
+    /** Por qué no puede romperla (clave de lang): no es suya, le falta el permiso o tiene una obra activa. */
+    public String breakDeniedKey(Player p, WorkbenchRecord bench) {
+        boolean bypass = p.hasPermission(PERM_BYPASS);
+        if (!AccessRules.canManage(p.getUniqueId(), bench, Set.of(), bypass)) {
+            return "workbench.break.denied";
+        }
+        if (!bypass && !p.hasPermission(PERM_BREAK)) {
+            return "workbench.break.no-permission";
+        }
+        return "workbench.break.has-project";
+    }
+
+    /**
+     * Cómo acabó un intento de romper. {@code DROPPED}: fuera de la base y de la caché, con su ítem. {@code GONE}: la
+     * fila ya no estaba (otro proceso la borró); la mesa sale de la caché sin ítem y el listener quita el bloque.
+     * {@code UPGRADING}: hay una mejora en curso. {@code NOTHING}: no hay mesa, no puede o ya se está rompiendo.
+     */
+    public enum BreakStatus { DROPPED, GONE, UPGRADING, NOTHING }
+
+    public record BreakResult(BreakStatus status, Optional<ItemStack> dropped) {
+        static BreakResult of(BreakStatus status) {
+            return new BreakResult(status, Optional.empty());
+        }
+    }
+
     /**
      * Quita la mesa y devuelve su ítem, con la misma identidad. La mesa queda marcada como "rompiéndose"
      * (un segundo intento no hace nada) pero sigue en la caché, protegida, hasta que la base confirme; si la
-     * base falla, sigue ahí. Se niega mientras haya una mejora en curso.
+     * base falla, sigue ahí, protegida. Si la fila ya no estaba, se trata como inexistente ({@code GONE}): no se
+     * suelta ningún ítem (no hay con qué demostrar que no se duplica). Se niega mientras haya una mejora en curso.
      */
-    public CompletableFuture<Optional<ItemStack>> breakBench(Player p, Block at) {
+    public CompletableFuture<BreakResult> breakBench(Player p, Block at) {
         Optional<WorkbenchRecord> found = at(at);
         // shortcut: ALLOW_PAUSE/ALLOW_CANCEL se tratan como ALLOW; pausar/cancelar obras llega con el plan 3.
         if (found.isEmpty() || breakDecision(p, found.get()) == BreakDecision.DENY) {
-            return CompletableFuture.completedFuture(Optional.empty());
+            return CompletableFuture.completedFuture(BreakResult.of(BreakStatus.NOTHING));
         }
         WorkbenchRecord rec = found.get();
         // Con una mejora en curso no se rompe: el cobro y el nivel del ítem se cruzarían.
-        if (upgrading.contains(rec.id()) || !breaking.add(rec.id())) {
-            return CompletableFuture.completedFuture(Optional.empty());
+        if (upgrading.contains(rec.id())) {
+            return CompletableFuture.completedFuture(BreakResult.of(BreakStatus.UPGRADING));
+        }
+        if (!breaking.add(rec.id())) {
+            return CompletableFuture.completedFuture(BreakResult.of(BreakStatus.NOTHING));
         }
         // La mesa sigue en la caché (at() la ve y las explosiones/pistones la respetan) hasta confirmar.
         return repo.remove(rec.id()).handleAsync((removed, err) -> {
@@ -254,16 +368,20 @@ public final class WorkbenchService {
                     throw new CompletionException(err);
                 }
                 byId.remove(rec.id(), rec);
-                byPos.remove(key(rec), rec.id());
+                removePos(rec);
                 if (!removed) {
-                    return Optional.<ItemStack>empty();
+                    // Sale de la caché: el siguiente clic ya no la encuentra y este aviso no se repite.
+                    log.warning("La mesa " + rec.id() + " ya no estaba en la base de datos al romperla;"
+                            + " se quita del mundo sin soltar ítem.");
+                    return BreakResult.of(BreakStatus.GONE);
                 }
             } finally {
                 breaking.remove(rec.id());
             }
             WorkbenchStamp stamp = new WorkbenchStamp(rec.id(), rec.tier(), rec.serial(),
                     signer.sign(rec.id(), rec.tier(), rec.serial()));
-            return Optional.of(items.create(stamp, lang, workbench.get().tiers().get(rec.tier())));
+            return new BreakResult(BreakStatus.DROPPED,
+                    Optional.of(items.create(stamp, lang, workbench.get().tiers().get(rec.tier()))));
         }, main);
     }
 
@@ -274,30 +392,32 @@ public final class WorkbenchService {
         if (AccessRules.canManage(p.getUniqueId(), bench, Set.of(), bypass)) {
             return CompletableFuture.completedFuture(true);
         }
-        return repo.trusted(bench.id()).thenApplyAsync(
-                trusted -> AccessRules.canUse(p.getUniqueId(), bench, trusted, false), main);
+        return onMain(repo.trusted(bench.id()), trusted -> AccessRules.canUse(p.getUniqueId(), bench, trusted, false));
     }
 
-    /** Los jugadores de confianza de una mesa; el resultado vuelve al hilo principal. */
+    /** Los jugadores de confianza de una mesa; el resultado (también el fallo) vuelve al hilo principal. */
     public CompletableFuture<Set<UUID>> trusted(UUID bench) {
-        return repo.trusted(bench).thenApplyAsync(t -> t, main);
+        return onMain(repo.trusted(bench), t -> t);
     }
 
-    public CompletableFuture<Boolean> trust(Player owner, UUID bench, UUID target) {
+    /** {@code UNCHANGED} si ya tenía acceso. */
+    public CompletableFuture<AccessChange> trust(Player owner, UUID bench, UUID target) {
         return changeTrust(owner, bench, () -> repo.trust(bench, target));
     }
 
-    public CompletableFuture<Boolean> untrust(Player owner, UUID bench, UUID target) {
+    /** {@code UNCHANGED} si no lo tenía. */
+    public CompletableFuture<AccessChange> untrust(Player owner, UUID bench, UUID target) {
         return changeTrust(owner, bench, () -> repo.untrust(bench, target));
     }
 
-    private CompletableFuture<Boolean> changeTrust(Player owner, UUID bench, Supplier<CompletableFuture<Void>> op) {
+    private CompletableFuture<AccessChange> changeTrust(Player owner, UUID bench,
+                                                        Supplier<CompletableFuture<Boolean>> op) {
         WorkbenchRecord rec = byId.get(bench);
         if (rec == null
                 || !AccessRules.canManage(owner.getUniqueId(), rec, Set.of(), owner.hasPermission(PERM_BYPASS))) {
-            return CompletableFuture.completedFuture(false);
+            return CompletableFuture.completedFuture(AccessChange.DENIED);
         }
-        return op.get().thenApplyAsync(v -> true, main);
+        return onMain(op.get(), changed -> changed ? AccessChange.DONE : AccessChange.UNCHANGED);
     }
 
     // ---- mejorar ----

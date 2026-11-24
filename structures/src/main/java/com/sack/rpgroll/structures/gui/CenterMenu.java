@@ -13,7 +13,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -39,7 +38,7 @@ public final class CenterMenu extends InventoryGUI {
     private final WorkbenchTier tier;
 
     public CenterMenu(Player player, StructuresPlugin plugin, WorkbenchRecord bench) {
-        super(player, StructuresMenus.skin().title(StructuresMenus.background("centro", bench.tier()),
+        super(player, StructuresMenus.skin().title(StructuresMenus.background(StructuresMenus.CENTRO, bench.tier()),
                 plugin.menuTitle("center")), 54);
         this.plugin = plugin;
         this.benchId = bench.id();
@@ -49,25 +48,29 @@ public final class CenterMenu extends InventoryGUI {
     @Override
     public void build() {
         StructuresMenus.fill(inventory);
-        Component soon = plugin.lang().component("menu.coming_soon");
-        setItem(NIVEL, StructuresMenus.button(Material.NETHER_STAR, plugin.lang().component("menu.center.level",
-                "tier", plugin.lang().raw("tier." + tier.name().toLowerCase(Locale.ROOT))), List.of()));
-        setItem(CATALOGO, soonButton(Material.BOOKSHELF, "menu.center.catalog", soon));
-        setItem(MIS_CONSTRUCCIONES, soonButton(Material.CHEST, "menu.center.builds", soon));
-        setItem(MATERIALES, soonButton(Material.BARREL, "menu.center.materials", soon));
-        setItem(OBRA, soonButton(Material.IRON_PICKAXE, "menu.center.project", soon));
-        setItem(MEJORAS, button(Material.ANVIL, "menu.center.upgrades"));
-        setItem(ACCESO, button(Material.PLAYER_HEAD, "menu.center.access"));
-        setItem(AYUDA, button(Material.BOOK, "menu.center.help"));
-        setItem(CERRAR, button(Material.BARRIER, "menu.close"));
+        var lang = plugin.lang();
+        Component soon = lang.component("menu.coming_soon");
+        put(NIVEL, StructuresMenus.tierIcon(plugin, tier));
+        put(CATALOGO, StructuresMenus.item(Material.BOOKSHELF, lang.component("menu.center.catalog"),
+                List.of(lang.component("menu.center.catalog-lore"), soon)));
+        put(MIS_CONSTRUCCIONES, StructuresMenus.item(Material.CHEST, lang.component("menu.center.builds"),
+                List.of(lang.component("menu.center.builds-lore"), soon)));
+        put(MATERIALES, StructuresMenus.item(Material.BARREL, lang.component("menu.center.materials"),
+                List.of(lang.component("menu.center.materials-lore"), soon)));
+        put(OBRA, StructuresMenus.item(Material.IRON_PICKAXE, lang.component("menu.center.project"),
+                List.of(lang.component("menu.center.project-lore"), soon)));
+        put(MEJORAS, StructuresMenus.item(Material.ANVIL, lang.component("menu.center.upgrades"),
+                List.of(lang.component("menu.center.upgrades-lore"))));
+        put(ACCESO, StructuresMenus.item(Material.PLAYER_HEAD, lang.component("menu.center.access"),
+                List.of(lang.component("menu.center.access-lore"))));
+        put(AYUDA, StructuresMenus.item(Material.BOOK, lang.component("menu.center.help"),
+                List.of(lang.component("menu.center.help-lore"))));
+        put(CERRAR, StructuresMenus.item(Material.BARRIER, lang.component("menu.close"),
+                List.of(lang.component("menu.close-lore"))));
     }
 
-    private ItemStack soonButton(Material icon, String key, Component soon) {
-        return StructuresMenus.button(icon, plugin.lang().component(key), List.of(soon));
-    }
-
-    private ItemStack button(Material icon, String key) {
-        return StructuresMenus.button(icon, plugin.lang().component(key), List.of());
+    private void put(int slot, ItemStack item) {
+        setItem(slot, StructuresMenus.CENTRO.dress(slot, item));
     }
 
     @Override

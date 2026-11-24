@@ -8,7 +8,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -29,20 +28,22 @@ import org.bukkit.event.world.EntitiesLoadEvent;
 import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.persistence.PersistentDataContainer;
-import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Level;
 
 /**
  * Mesas como bloque: colocar, romper, usar, explosiones y pistones. Mismo esquema que las estaciones de
  * RPGRoll-Enchantments, pero la identidad viene del ítem firmado y la verdad está en la base de datos; el PDC
- * del chunk ({@code rpgroll-structures:benches}, lista de {@code id@x,y,z}) es la segunda fuente para huérfanas.
+ * del chunk ({@link BenchChunks}, lista de {@code id@x,y,z:MATERIAL}) es la segunda fuente para huérfanas.
  */
 public final class WorkbenchBlocks implements Listener {
 
@@ -51,7 +52,7 @@ public final class WorkbenchBlocks implements Listener {
     private final WorkbenchItems items;
     private final WorkbenchDisplay display;
     private final LangManager lang;
-    private final NamespacedKey chunkKey;
+    private final BenchChunks chunks;
     private volatile BenchOpener opener = BenchOpener.NONE;
 
     public WorkbenchBlocks(Plugin plugin, WorkbenchService service, WorkbenchItems items, WorkbenchDisplay display,
@@ -61,7 +62,7 @@ public final class WorkbenchBlocks implements Listener {
         this.items = items;
         this.display = display;
         this.lang = lang;
-        this.chunkKey = new NamespacedKey(plugin, "benches");
+        this.chunks = new BenchChunks(plugin);
     }
 
     /** La Task 6 enchufa aquí el menú principal. */
@@ -71,36 +72,6 @@ public final class WorkbenchBlocks implements Listener {
 
     private void runMain(Runnable r) {
         Bukkit.getScheduler().runTask(plugin, r);
-    }
-
-    // ---- PDC del chunk ----
-
-    private static String entry(WorkbenchRecord r) {
-        return r.id() + "@" + r.x() + "," + r.y() + "," + r.z();
-    }
-
-    private List<String> stored(Chunk chunk) {
-        List<String> l = chunk.getPersistentDataContainer().get(chunkKey, PersistentDataType.LIST.strings());
-        return l == null ? new ArrayList<>() : new ArrayList<>(l);
-    }
-
-    private void store(Chunk chunk, List<String> entries) {
-        PersistentDataContainer pdc = chunk.getPersistentDataContainer();
-        if (entries.isEmpty()) {
-            pdc.remove(chunkKey);
-        } else {
-            pdc.set(chunkKey, PersistentDataType.LIST.strings(), entries);
-        }
-    }
-
-    private void mark(Block b, WorkbenchRecord r, boolean add) {
-        List<String> entries = stored(b.getChunk());
-        String prefix = r.id() + "@";
-        entries.removeIf(e -> e.startsWith(prefix));
-        if (add) {
-            entries.add(entry(r));
-        }
-        store(b.getChunk(), entries);
     }
 
     // ---- colocar ----
@@ -144,16 +115,15 @@ public final class WorkbenchBlocks implements Listener {
                 if (b.getType() != expected) {
                     // La colocación no se quedó (revertida o cambiada por otro plugin): la mesa no existe.
                     service.cancelPlacement(rec.get().id()).exceptionally(failed("deshacer el registro de " + rec.get().id()));
-                    giveBack(p, back);
+                    giveBack(p, back, b);
                     return;
                 }
-                mark(b, rec.get(), true);
-                display.show(rec.get());
+                display.show(rec.get()); // también la apunta en el PDC del chunk, con su bloque
                 return;
             }
             // La base de datos falló: se quita el bloque y se devuelve el ítem.
             b.setType(Material.AIR, false);
-            giveBack(p, back);
+            giveBack(p, back, b);
             lang.send(p, "workbench.place." + messageKey(result));
         }, this::runMain).exceptionally(failed("colocar una mesa"));
     }
@@ -175,9 +145,14 @@ public final class WorkbenchBlocks implements Listener {
         };
     }
 
-    private static void giveBack(Player p, ItemStack item) {
+    /** Devuelve el ítem; si el jugador ya se desconectó, lo suelta en la mesa en vez de perderlo. */
+    private static void giveBack(Player p, ItemStack item, Block at) {
         // En creativo colocar no gasta el ítem: devolverlo daría una copia con el mismo id.
         if (p.getGameMode() == GameMode.CREATIVE) {
+            return;
+        }
+        if (!p.isOnline()) {
+            at.getWorld().dropItemNaturally(at.getLocation().add(0.5, 0.5, 0.5), item);
             return;
         }
         p.getInventory().addItem(item).values()
@@ -186,11 +161,15 @@ public final class WorkbenchBlocks implements Listener {
 
     // ---- romper ----
 
-    /** La barrera no se pica en supervivencia: el clic izquierdo lanza el evento de romper a mano. */
+    /**
+     * La barrera no se pica en supervivencia: el clic izquierdo lanza el evento de romper a mano. En aventura no:
+     * ahí no se rompen bloques, y el evento sintético se saltaría esa regla.
+     */
     @EventHandler(priority = EventPriority.HIGH)
     public void onHit(PlayerInteractEvent event) {
         Block b = event.getClickedBlock();
         if (event.getAction() != Action.LEFT_CLICK_BLOCK || event.getHand() != EquipmentSlot.HAND || b == null
+                || event.getPlayer().getGameMode() == GameMode.ADVENTURE
                 || b.getType() != Material.BARRIER || service.at(b).isEmpty()) {
             return;
         }
@@ -211,24 +190,38 @@ public final class WorkbenchBlocks implements Listener {
         WorkbenchRecord rec = bench.get();
         BreakDecision decision = service.breakDecision(p, rec);
         if (decision == BreakDecision.DENY) {
-            lang.send(p, rec.owner().equals(p.getUniqueId()) || p.hasPermission(WorkbenchService.PERM_BYPASS)
-                    ? "workbench.break.has-project" : "workbench.break.denied");
+            lang.send(p, service.breakDeniedKey(p, rec));
             return;
         }
         // breakBench termina en el hilo principal: thenAccept quita el bloque en la misma tarea en que la mesa sale
         // de la caché, sin un tick en el que el bloque siga ahí desprotegido.
-        service.breakBench(p, b).thenAccept(dropped -> {
-            dropped.ifPresent(stack -> {
-                display.remove(rec);
-                mark(b, rec, false);
-                b.setType(Material.AIR);
-                b.getWorld().dropItemNaturally(b.getLocation().add(0.5, 0.5, 0.5), stack);
-            });
+        service.breakBench(p, b).thenAccept(result -> {
+            switch (result.status()) {
+                case DROPPED -> {
+                    removeFromWorld(b, rec);
+                    result.dropped().ifPresent(stack ->
+                            b.getWorld().dropItemNaturally(b.getLocation().add(0.5, 0.5, 0.5), stack));
+                }
+                // La fila la borró otro proceso: la mesa ya no existe. Se quita sin ítem para no duplicarla.
+                case GONE -> {
+                    removeFromWorld(b, rec);
+                    lang.send(p, "workbench.break.gone");
+                }
+                case UPGRADING -> lang.send(p, "workbench.break.upgrading");
+                case NOTHING -> { }
+            }
         }).exceptionally(t -> {
             plugin.getLogger().log(Level.SEVERE, "No se pudo romper la mesa " + rec.id(), t);
             runMain(() -> lang.send(p, "workbench.break.error"));
             return null;
         });
+    }
+
+    /** Display, entrada del chunk y bloque fuera. */
+    private void removeFromWorld(Block b, WorkbenchRecord rec) {
+        display.remove(rec);
+        chunks.mark(b.getChunk(), rec, null);
+        b.setType(Material.AIR);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -311,6 +304,8 @@ public final class WorkbenchBlocks implements Listener {
     /** Desde 1.17 las entidades cargan aparte y después del chunk: solo aquí se puede saber si falta el display. */
     @EventHandler
     public void onEntitiesLoad(EntitiesLoadEvent event) {
+        // Displays de mesas que pasaron a huérfanas (o se borraron) mientras sus entidades no estaban cargadas.
+        display.removeStray(event.getEntities(), id -> service.byId(id).filter(r -> !r.orphan()).isPresent());
         ensureDisplays(event.getChunk());
     }
 
@@ -320,7 +315,7 @@ public final class WorkbenchBlocks implements Listener {
         }
     }
 
-    /** Arranque: chunks ya cargados. Si sus entidades aún no cargaron, el evento llegará solo. */
+    /** Arranque y {@code reload}: chunks ya cargados. Si sus entidades aún no cargaron, el evento llegará solo. */
     public void verify(Chunk chunk) {
         verifyBlocks(chunk);
         if (chunk.isEntitiesLoaded()) {
@@ -332,76 +327,88 @@ public final class WorkbenchBlocks implements Listener {
     enum BlockCheck { OK, NORMALIZE, ORPHAN }
 
     /**
-     * Aire: la mesa ya no está (huérfana). El bloque esperado: bien. Otro bloque con la mesa apuntada en el PDC del
-     * chunk: cambió {@code fallback-block} o el modelo, y se repone. Otro bloque sin la mesa en el PDC: huérfana.
+     * Aire: la mesa ya no está (huérfana). El bloque esperado: bien. Si la mesa está apuntada en el PDC del chunk y
+     * el bloque es el que se puso ({@code stored}) o una barrera, cambió {@code fallback-block} o el modelo y se
+     * repone. Cualquier otro bloque (alguien construyó en el hueco tras un /setblock o WorldEdit) no se pisa:
+     * huérfana. {@code stored} es null en las entradas del formato viejo: ahí solo se repone la barrera.
+     * <p>
+     * shortcut: un bloque vanilla igual al que se puso no se distingue del de la mesa. Si la mesa se quitó desde
+     * fuera (WorldEdit), alguien puso ese mismo bloque en el hueco y luego cambia {@code fallback-block}, se
+     * sustituye. Pasa muy poco; para cerrarlo haría falta marcar el bloque (PDC de bloque o tile entity).
      */
-    static BlockCheck check(boolean air, boolean listed, Material actual, Material expected) {
+    static BlockCheck check(boolean air, boolean listed, Material actual, Material stored, Material expected) {
         if (air) {
             return BlockCheck.ORPHAN;
         }
         if (actual == expected) {
             return BlockCheck.OK;
         }
-        return listed ? BlockCheck.NORMALIZE : BlockCheck.ORPHAN;
+        if (listed && (actual == Material.BARRIER || actual == stored)) {
+            return BlockCheck.NORMALIZE;
+        }
+        return BlockCheck.ORPHAN;
     }
 
     /**
-     * Cruza el chunk con la base de datos. Una fila sin su bloque pasa a huérfana (sin borrarse); una con el bloque
-     * de otra configuración se repone; una entrada del chunk sin fila se avisa y se quita.
+     * Cruza el chunk con la base de datos. Una fila sin su bloque pasa a huérfana (sin borrarse, y sin su display);
+     * una con el bloque de otra configuración se repone; una entrada del chunk sin fila se avisa una vez y se quita.
+     * Las entradas se reescriben con el bloque actual (así las del formato viejo pasan al nuevo).
      */
     private void verifyBlocks(Chunk chunk) {
         World w = chunk.getWorld();
-        List<WorkbenchRecord> benches = service.inChunk(w.getName(), chunk.getX(), chunk.getZ());
-        List<String> entries = stored(chunk);
-        for (WorkbenchRecord r : benches) {
+        List<String> raw = chunks.stored(chunk);
+        Map<String, BenchChunks.Entry> entries = new LinkedHashMap<>();
+        for (String e : raw) {
+            BenchChunks.Entry parsed = BenchChunks.parse(e);
+            entries.putIfAbsent(parsed.id(), parsed);
+        }
+        Set<String> handled = new HashSet<>();
+        List<String> kept = new ArrayList<>();
+        for (WorkbenchRecord r : service.inChunk(w.getName(), chunk.getX(), chunk.getZ())) {
+            String id = r.id().toString();
+            handled.add(id);
             Block b = w.getBlockAt(r.x(), r.y(), r.z());
             Material type = b.getType();
             Material expected = display.expectedBlock(r);
-            boolean listed = entries.stream().anyMatch(e -> e.startsWith(r.id() + "@"));
-            switch (check(type.isAir(), listed, type, expected)) {
-                case OK -> { }
-                // Solo el bloque: el display lo pone o lo quita ensureDisplays cuando cargan las entidades.
-                case NORMALIZE -> b.setType(expected, false);
+            BenchChunks.Entry entry = entries.get(id);
+            switch (check(type.isAir(), entry != null, type, entry == null ? null : entry.material(), expected)) {
+                case OK -> kept.add(BenchChunks.entry(r, expected));
+                case NORMALIZE -> {
+                    // Solo el bloque: el display lo pone o lo quita ensureDisplays cuando cargan las entidades.
+                    b.setType(expected, false);
+                    kept.add(BenchChunks.entry(r, expected));
+                }
                 case ORPHAN -> {
                     plugin.getLogger().warning(lang.raw("workbench.warning.block-missing", "id", r.id(),
-                            "world", r.world(), "x", r.x(), "y", r.y(), "z", r.z()));
+                            "world", r.world(), "x", r.x(), "y", r.y(), "z", r.z(), "block", type.name()));
+                    display.remove(r);
                     service.markOrphan(r);
                 }
             }
         }
-        List<String> kept = new ArrayList<>();
-        for (String e : entries) {
-            if (known(e)) {
-                kept.add(e);
-            } else {
-                plugin.getLogger().warning(lang.raw("workbench.warning.chunk-orphan", "id", id(e),
-                        "x", coords(e)[0], "y", coords(e)[1], "z", coords(e)[2]));
+        for (BenchChunks.Entry e : entries.values()) {
+            if (handled.contains(e.id())) {
+                continue;
             }
-        }
-        for (WorkbenchRecord r : benches) {
-            if (service.byId(r.id()).filter(x -> !x.orphan()).isPresent() && kept.stream().noneMatch(e -> e.startsWith(r.id() + "@"))) {
-                kept.add(entry(r));
+            Optional<WorkbenchRecord> row = row(e.id());
+            if (row.isPresent() && !row.get().orphan()) {
+                kept.add(e.raw()); // activa pero aún sin posición aquí (mundo sin indexar): se conserva
+            } else if (row.isEmpty()) {
+                plugin.getLogger().warning(lang.raw("workbench.warning.chunk-orphan", "id", e.id(),
+                        "x", e.x(), "y", e.y(), "z", e.z()));
             }
+            // Fila huérfana: ya se avisó al marcarla; la entrada se quita sin repetir el aviso.
         }
-        if (!kept.equals(entries)) {
-            store(chunk, kept);
+        if (!kept.equals(raw)) {
+            chunks.store(chunk, kept);
         }
     }
 
-    private boolean known(String entry) {
+    private Optional<WorkbenchRecord> row(String id) {
         try {
-            return service.byId(UUID.fromString(id(entry))).filter(r -> !r.orphan()).isPresent();
+            return service.byId(UUID.fromString(id));
         } catch (IllegalArgumentException e) {
-            return false;
+            return Optional.empty();
         }
-    }
-
-    private static String id(String entry) {
-        return entry.substring(0, Math.max(0, entry.indexOf('@')));
-    }
-
-    private static String[] coords(String entry) {
-        String[] c = entry.substring(entry.indexOf('@') + 1).split(",");
-        return c.length == 3 ? c : new String[] {"?", "?", "?"};
     }
 }

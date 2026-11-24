@@ -39,6 +39,37 @@ class SerialSignerTest {
         assertFalse(signer.verify(id, CONSTRUCTOR, 7, ""));
     }
 
+    /** Calculados aparte con Python (hmac + sha256, base64url sin relleno). */
+    @Test void knownHmacVectors() {
+        assertEquals("6524mKO2j5EhZUTYaie9SNKxVnF3AmRMHD8WYdDECmM",
+                new SerialSigner(new byte[32]).sign(new UUID(0, 0), CONSTRUCTOR, 7));
+        byte[] key = new byte[32];
+        for (int i = 0; i < key.length; i++) {
+            key[i] = (byte) i;
+        }
+        assertEquals("vg8ufqHfmf3HiDN6JtHfv7n6Z3xYeIHRQrrg7yWQjHE", new SerialSigner(key)
+                .sign(UUID.fromString("12345678-1234-1234-1234-123456789abc"), ARQUITECTO, 42));
+    }
+
+    @Test void secretOfTheWrongLengthFailsInsteadOfRegenerating(@TempDir Path d) throws Exception {
+        Path file = d.resolve("secret.key");
+        java.nio.file.Files.write(file, new byte[31]);
+        assertThrows(IllegalStateException.class, () -> ServerSecret.load(file));
+        assertEquals(31, java.nio.file.Files.size(file));
+    }
+
+    @Test void secretIsWrittenWithoutLeftoversAndOwnerOnly(@TempDir Path d) throws Exception {
+        Path file = d.resolve("secret.key");
+        ServerSecret.load(file);
+        try (var files = java.nio.file.Files.list(d)) {
+            assertEquals(java.util.List.of(file), files.toList());
+        }
+        if (java.nio.file.FileSystems.getDefault().supportedFileAttributeViews().contains("posix")) {
+            assertEquals("rw-------", java.nio.file.attribute.PosixFilePermissions.toString(
+                    java.nio.file.Files.getPosixFilePermissions(file)));
+        }
+    }
+
     @Test void secretIsCreatedOnceAndReused(@TempDir Path d) {
         byte[] a = ServerSecret.load(d.resolve("sub/secret.key"));
         assertEquals(32, a.length);

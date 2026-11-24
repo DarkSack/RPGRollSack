@@ -23,7 +23,7 @@ public final class ConfirmMenu extends InventoryGUI {
 
     public ConfirmMenu(Player player, StructuresPlugin plugin, WorkbenchTier tier, ItemStack info,
                        Runnable onConfirm, Runnable onCancel) {
-        super(player, StructuresMenus.skin().title(StructuresMenus.background("confirmar", tier),
+        super(player, StructuresMenus.skin().title(StructuresMenus.background(StructuresMenus.CONFIRMAR, tier),
                 plugin.menuTitle("confirm")), 27);
         this.plugin = plugin;
         this.info = info;
@@ -34,11 +34,15 @@ public final class ConfirmMenu extends InventoryGUI {
     @Override
     public void build() {
         StructuresMenus.fill(inventory);
-        setItem(INFO, info);
-        setItem(CONFIRM, StructuresMenus.button(Material.LIME_CONCRETE, plugin.lang().component("menu.confirm.accept"),
-                List.of()));
-        setItem(CANCEL, StructuresMenus.button(Material.RED_CONCRETE, plugin.lang().component("menu.confirm.cancel"),
-                List.of()));
+        put(INFO, info);
+        put(CONFIRM, StructuresMenus.item(Material.LIME_CONCRETE, plugin.lang().component("menu.confirm.accept"),
+                List.of(plugin.lang().component("menu.confirm.accept-lore"))));
+        put(CANCEL, StructuresMenus.item(Material.RED_CONCRETE, plugin.lang().component("menu.confirm.cancel"),
+                List.of(plugin.lang().component("menu.confirm.cancel-lore"))));
+    }
+
+    private void put(int slot, ItemStack item) {
+        setItem(slot, StructuresMenus.CONFIRMAR.dress(slot, item));
     }
 
     @Override

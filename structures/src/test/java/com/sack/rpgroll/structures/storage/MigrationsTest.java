@@ -27,6 +27,31 @@ class MigrationsTest {
         }
     }
 
+    @Test void halfFailedMigrationCanBeRetried() throws Exception {
+        try (Connection c = DriverManager.getConnection("jdbc:sqlite:" + dir.resolve("a.db"))) {
+            // Como un MySQL que cortó a mitad: su DDL no es transaccional y deja tablas sin la versión.
+            try (Statement s = c.createStatement()) {
+                s.execute(Migrations.v1(Dialect.SQLITE).get(0));
+                s.execute(Migrations.v1(Dialect.SQLITE).get(2));
+                s.execute(Migrations.v1(Dialect.SQLITE).get(3));
+            }
+            Migrations.run(c, Dialect.SQLITE, null, log);
+            assertEquals(1, Migrations.currentVersion(c, Dialect.SQLITE));
+            try (Statement s = c.createStatement(); ResultSet rs = s.executeQuery("SELECT COUNT(*) FROM serials")) {
+                assertTrue(rs.next());
+                assertEquals(1, rs.getInt(1), "una sola fila de series");
+            }
+        }
+    }
+
+    @Test void everyDdlStatementCanBeRepeated() {
+        for (Dialect d : Dialect.values()) {
+            for (String sql : Migrations.v1(d)) {
+                assertTrue(sql.contains("IF NOT EXISTS") || sql.contains("WHERE NOT EXISTS"), d + ": " + sql);
+            }
+        }
+    }
+
     @Test void freshDatabaseIsNotBackedUp() throws Exception {
         Database.open(Dialect.SQLITE, "jdbc:sqlite:" + dir.resolve("data.db"), "", "", log).close();
         assertFalse(Files.exists(dir.resolve("backups")));

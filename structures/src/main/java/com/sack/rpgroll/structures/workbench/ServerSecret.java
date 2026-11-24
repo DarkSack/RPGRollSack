@@ -2,8 +2,11 @@ package com.sack.rpgroll.structures.workbench;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
+import java.nio.file.attribute.FileAttribute;
 import java.nio.file.attribute.PosixFilePermissions;
 import java.security.SecureRandom;
 
@@ -27,14 +30,19 @@ public final class ServerSecret {
             }
             byte[] key = new byte[SIZE];
             new SecureRandom().nextBytes(key);
-            if (file.getParent() != null) {
-                Files.createDirectories(file.getParent());
-            }
-            Files.write(file, key);
+            Path dir = file.toAbsolutePath().getParent();
+            Files.createDirectories(dir);
+            // Temporal con permisos de solo el dueño desde que existe (en POSIX), luego movido de golpe: nunca
+            // hay un secret.key a medio escribir ni uno legible por otros usuarios.
+            FileAttribute<?>[] ownerOnly = FileSystems.getDefault().supportedFileAttributeViews().contains("posix")
+                    ? new FileAttribute<?>[] {PosixFilePermissions.asFileAttribute(PosixFilePermissions.fromString("rw-------"))}
+                    : new FileAttribute<?>[0]; // Windows: la carpeta del plugin ya es del usuario del servidor
+            Path tmp = Files.createTempFile(dir, "secret", ".tmp", ownerOnly);
             try {
-                Files.setPosixFilePermissions(file, PosixFilePermissions.fromString("rw-------"));
-            } catch (UnsupportedOperationException ignored) {
-                // Windows: sin permisos POSIX; la carpeta del plugin ya es del usuario del servidor.
+                Files.write(tmp, key);
+                Files.move(tmp, file, StandardCopyOption.ATOMIC_MOVE);
+            } finally {
+                Files.deleteIfExists(tmp);
             }
             return key;
         } catch (IOException e) {

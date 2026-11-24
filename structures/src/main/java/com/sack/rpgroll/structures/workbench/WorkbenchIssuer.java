@@ -23,8 +23,11 @@ import java.util.logging.Logger;
  */
 public final class WorkbenchIssuer {
 
-    /** Series que se mantienen listas. */
-    static final int POOL_TARGET = 16;
+    /**
+     * Series que se mantienen listas para {@link #issueNow}: un {@code /dar mesa:<nivel> 64} seguido no lo agota.
+     * Las que queden al apagar son huecos en la numeración (como mucho 64 por arranque).
+     */
+    static final int POOL_TARGET = 64;
 
     private final Supplier<CompletableFuture<Long>> serials;
     private final SerialSigner signer;

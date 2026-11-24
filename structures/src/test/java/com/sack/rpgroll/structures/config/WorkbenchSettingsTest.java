@@ -67,12 +67,54 @@ class WorkbenchSettingsTest {
     void shippedWorkbenchYmlLoadsCleanWithTheFactoryCosts() throws Exception {
         try (InputStream in = getClass().getResourceAsStream("/workbench.yml")) {
             var y = YamlConfiguration.loadConfiguration(new InputStreamReader(in));
-            var s = WorkbenchSettings.from(y, w -> fail(w));
+            var s = WorkbenchSettings.from(y, w -> fail(w), m -> true);
             assertEquals(List.of(new Cost("minecraft:iron_ingot", 16), new Cost("minecraft:redstone", 8),
                     new Cost("minecraft:redstone_lamp", 4)), s.tiers().get(WorkbenchTier.INGENIERO).upgradeCost());
             assertEquals(3, s.tiers().get(WorkbenchTier.ARQUITECTO).upgradeCost().size());
             assertEquals("minecraft:crafting_table", s.recipeKeys().get('T'));
             assertEquals(Material.BEACON, s.tiers().get(WorkbenchTier.ARQUITECTO).fallbackBlock());
         }
+    }
+
+    @Test
+    void costsOfTheSameMaterialAreMergedAndUnknownIdsWarn() {
+        List<String> warns = new ArrayList<>();
+        var s = WorkbenchSettings.from(yaml("""
+                tiers:
+                  ingeniero:
+                    upgrade-cost:
+                      - {item: "oak_planks", amount: 16}
+                      - {item: "minecraft:redstone", amount: 2}
+                      - {item: "minecraft:oak_planks", amount: 8}
+                      - {item: "rpgroll:reliquia", amount: 1}
+                """), warns::add, m -> true);
+        assertEquals(List.of(new Cost("minecraft:oak_planks", 24), new Cost("minecraft:redstone", 2),
+                new Cost("rpgroll:reliquia", 1)), s.tiers().get(WorkbenchTier.INGENIERO).upgradeCost());
+        assertEquals(1, warns.size());
+        assertTrue(warns.get(0).contains("rpgroll:reliquia"), warns.get(0));
+    }
+
+    @Test
+    void eachTierSettingsKnowsItsTier() {
+        var s = WorkbenchSettings.from(yaml(""), w -> fail(w));
+        for (WorkbenchTier t : WorkbenchTier.values()) {
+            assertEquals(t, s.tiers().get(t).tier());
+        }
+    }
+
+    @Test
+    void costThatIsABlockButNotAnItemWarns() {
+        List<String> warns = new ArrayList<>();
+        var s = WorkbenchSettings.from(yaml("""
+                tiers:
+                  ingeniero:
+                    upgrade-cost:
+                      - {item: "minecraft:water", amount: 1}
+                      - {item: "minecraft:redstone", amount: 2}
+                """), warns::add, m -> m != Material.WATER);
+        // Se conserva (nunca se cumple) pero se avisa al cargar, como un id que no es material.
+        assertEquals(2, s.tiers().get(WorkbenchTier.INGENIERO).upgradeCost().size());
+        assertEquals(1, warns.size());
+        assertTrue(warns.get(0).contains("minecraft:water"), warns.get(0));
     }
 }

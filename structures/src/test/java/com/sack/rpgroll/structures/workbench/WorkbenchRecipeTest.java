@@ -22,6 +22,13 @@ class WorkbenchRecipeTest {
         assertTrue(WorkbenchRecipe.problem(List.of("PPP"), KEYS).orElseThrow().contains("'T'"));
     }
 
+    @Test void ingredientWithACraftingRemainderIsAProblem() {
+        var keys = Map.of('P', "minecraft:oak_planks", 'W', "minecraft:water_bucket");
+        assertTrue(WorkbenchRecipe.problem(List.of("PWP"), keys, id -> id.equals("minecraft:water_bucket"))
+                .orElseThrow().contains("'W'"));
+        assertTrue(WorkbenchRecipe.problem(List.of("PWP"), keys, id -> false).isEmpty());
+    }
+
     @Test void badDimensionsAreAProblem() {
         assertTrue(WorkbenchRecipe.problem(List.of(), KEYS).isPresent());
         assertTrue(WorkbenchRecipe.problem(List.of("PPPP"), KEYS).isPresent());

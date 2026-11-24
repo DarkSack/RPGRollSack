@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 /** Ajustes de {@code workbench.yml}: receta y niveles. */
 public record WorkbenchSettings(Map<WorkbenchTier, TierSettings> tiers, List<String> recipeShape,
@@ -25,8 +26,9 @@ public record WorkbenchSettings(Map<WorkbenchTier, TierSettings> tiers, List<Str
 
     public record Cost(String itemId, int amount) {}
 
-    public record TierSettings(Size maxSize, List<Cost> upgradeCost, double upgradeMoney, String model,
-                               Material fallbackBlock) {
+    /** {@code tier} es el nivel al que pertenecen estos ajustes (el ítem lo comprueba contra su sello). */
+    public record TierSettings(WorkbenchTier tier, Size maxSize, List<Cost> upgradeCost, double upgradeMoney,
+                               String model, Material fallbackBlock) {
         /** Único sitio de la regla: el bloque que se coloca y que lleva el ítem; si el material no es un bloque, uno seguro. */
         public Material placeableBlock() {
             return resolve(fallbackBlock, fallbackBlock.isBlock());
@@ -52,14 +54,19 @@ public record WorkbenchSettings(Map<WorkbenchTier, TierSettings> tiers, List<Str
             'T', "minecraft:crafting_table", 'L', "minecraft:oak_log");
 
     public static WorkbenchSettings from(ConfigurationSection root, Consumer<String> warn) {
+        return from(root, warn, Material::isItem);
+    }
+
+    /** {@code isItem} decide si un material de coste se puede llevar en el inventario (las pruebas no tienen registro). */
+    public static WorkbenchSettings from(ConfigurationSection root, Consumer<String> warn, Predicate<Material> isItem) {
         Map<WorkbenchTier, TierSettings> tiers = new EnumMap<>(WorkbenchTier.class);
         for (WorkbenchTier tier : WorkbenchTier.values()) {
             String path = "tiers." + tier.name().toLowerCase(Locale.ROOT);
             ConfigurationSection s = root.getConfigurationSection(path);
-            tiers.put(tier, new TierSettings(
+            tiers.put(tier, new TierSettings(tier,
                     size(s == null ? null : s.getConfigurationSection("max-size"), DEFAULT_SIZE.get(tier),
                             path + ".max-size", warn),
-                    costs(s == null ? null : s.getMapList("upgrade-cost"), path + ".upgrade-cost", warn),
+                    costs(s == null ? null : s.getMapList("upgrade-cost"), path + ".upgrade-cost", warn, isItem),
                     s == null ? 0 : Math.max(0, s.getDouble("upgrade-money", 0)),
                     s == null ? "" : s.getString("model", ""),
                     material(s == null ? null : s.getString("fallback-block"), DEFAULT_BLOCK.get(tier),
@@ -118,10 +125,16 @@ public record WorkbenchSettings(Map<WorkbenchTier, TierSettings> tiers, List<Str
         return m;
     }
 
-    private static List<Cost> costs(List<Map<?, ?>> raw, String path, Consumer<String> warn) {
-        List<Cost> out = new ArrayList<>();
+    /**
+     * Un coste por material: {@code oak_planks} y {@code minecraft:oak_planks} se suman en uno (si no, cada uno
+     * contaría los mismos tablones y se cobraría el doble). Un id que no es material se avisa y se conserva: nunca
+     * se cumple.
+     */
+    private static List<Cost> costs(List<Map<?, ?>> raw, String path, Consumer<String> warn,
+                                    Predicate<Material> isItem) {
+        Map<String, Integer> out = new LinkedHashMap<>();
         if (raw == null) {
-            return out;
+            return List.of();
         }
         for (Map<?, ?> m : raw) {
             Object item = m.get("item");
@@ -130,8 +143,19 @@ public record WorkbenchSettings(Map<WorkbenchTier, TierSettings> tiers, List<Str
                 warn.accept(path + ": entrada inválida " + m + "; se ignora.");
                 continue;
             }
-            out.add(new Cost(item.toString(), n.intValue()));
+            String id = item.toString().trim();
+            Material mat = Material.matchMaterial(id);
+            if (mat == null) {
+                warn.accept(path + ": '" + id + "' no es un material de Minecraft; ese coste no se podrá pagar.");
+            } else {
+                id = mat.getKey().toString();
+                if (!isItem.test(mat)) {
+                    // minecraft:water, fire...: es material pero no ítem, nadie lo lleva encima.
+                    warn.accept(path + ": '" + id + "' es un bloque pero no un ítem; ese coste no se podrá pagar.");
+                }
+            }
+            out.merge(id, n.intValue(), Integer::sum);
         }
-        return List.copyOf(out);
+        return out.entrySet().stream().map(e -> new Cost(e.getKey(), e.getValue())).toList();
     }
 }

@@ -121,7 +121,7 @@ class WorkbenchServiceTest {
         } catch (Exception e) {
             throw new IllegalStateException(e);
         }
-        return WorkbenchSettings.from(y, s -> {});
+        return WorkbenchSettings.from(y, s -> {}, m -> true);
     }
 
     /** El nivel que mostraría un menú recién abierto. */
@@ -153,7 +153,7 @@ class WorkbenchServiceTest {
         assertEquals(PlaceResult.OK, service.place(p, item(s), block).join());
         assertEquals(1, repo.all().join().size());
 
-        ItemStack back = service.breakBench(p, block).join().orElseThrow();
+        ItemStack back = service.breakBench(p, block).join().dropped().orElseThrow();
         assertEquals(Optional.of(s), items.read(back));
         assertTrue(repo.all().join().isEmpty());
         assertTrue(service.at(block).isEmpty());
@@ -161,8 +161,8 @@ class WorkbenchServiceTest {
 
     @Test void breakingTwiceGivesOneItem() {
         service.place(p, item(genuine(CONSTRUCTOR, 1)), block).join();
-        assertTrue(service.breakBench(p, block).join().isPresent());
-        assertTrue(service.breakBench(p, block).join().isEmpty());
+        assertTrue(service.breakBench(p, block).join().dropped().isPresent());
+        assertTrue(service.breakBench(p, block).join().dropped().isEmpty());
     }
 
     @Test void sameItemCannotBePlacedTwice() {
@@ -180,7 +180,7 @@ class WorkbenchServiceTest {
         Player other = mock(Player.class);
         when(other.getUniqueId()).thenReturn(UUID.randomUUID());
         when(other.hasPermission(WorkbenchService.PERM_BREAK)).thenReturn(true);
-        assertTrue(service.breakBench(other, block).join().isEmpty());
+        assertTrue(service.breakBench(other, block).join().dropped().isEmpty());
         assertEquals(1, repo.all().join().size());
     }
 
@@ -312,7 +312,10 @@ class WorkbenchServiceTest {
         queued = true;
 
         var upgrade = service.upgrade(p, s.id(), shown(s));
-        assertTrue(service.breakBench(p, block).join().isEmpty());
+        var refused = service.breakBench(p, block).join();
+        assertTrue(refused.dropped().isEmpty());
+        // El listener avisa al jugador en vez de callar.
+        assertEquals(WorkbenchService.BreakStatus.UPGRADING, refused.status());
         assertInstanceOf(UpgradeRules.Ok.class, pump(upgrade));
 
         assertEquals(ARQUITECTO, service.byId(s.id()).orElseThrow().tier());
@@ -327,7 +330,7 @@ class WorkbenchServiceTest {
 
         var broken = service.breakBench(p, block);
         assertInstanceOf(UpgradeRules.MaxTier.class, service.upgrade(p, s.id(), shown(s)).join());
-        assertTrue(pump(broken).isPresent());
+        assertTrue(pump(broken).dropped().isPresent());
 
         assertEquals(64, planks.get());
         verify(display, never()).refresh(any());
@@ -340,8 +343,8 @@ class WorkbenchServiceTest {
 
         var broken = service.breakBench(p, block);
         assertTrue(service.at(block).isPresent());
-        assertTrue(service.breakBench(p, block).join().isEmpty());
-        assertTrue(pump(broken).isPresent());
+        assertTrue(service.breakBench(p, block).join().dropped().isEmpty());
+        assertTrue(pump(broken).dropped().isPresent());
         assertTrue(service.at(block).isEmpty());
     }
 
@@ -356,5 +359,137 @@ class WorkbenchServiceTest {
         service.cancelPlacement(s.id()).join();
         assertTrue(repo.all().join().isEmpty());
         assertTrue(service.at(block).isEmpty());
+    }
+
+    @Test void breakWithTheRowAlreadyGoneTreatsTheBenchAsNonexistent() {
+        WorkbenchStamp s = genuine(CONSTRUCTOR, 1);
+        service.place(p, item(s), block).join();
+        repo.remove(s.id()).join(); // otro proceso borró la fila
+
+        var gone = service.breakBench(p, block).join();
+        // Sin ítem (no hay duplicado) y fuera de la caché: el listener quita bloque, display y entrada del chunk.
+        assertEquals(WorkbenchService.BreakStatus.GONE, gone.status());
+        assertTrue(gone.dropped().isEmpty());
+        assertTrue(service.at(block).isEmpty());
+        assertTrue(service.byId(s.id()).isEmpty());
+        assertTrue(service.inChunk("world", 0, 0).isEmpty());
+        // Un segundo clic ya no la encuentra: un solo aviso.
+        assertEquals(WorkbenchService.BreakStatus.NOTHING, service.breakBench(p, block).join().status());
+    }
+
+    @Test void anOrphanedBenchCanBePlacedAgainWithItsItem() {
+        WorkbenchStamp s = genuine(INGENIERO, 7);
+        ItemStack it = item(s);
+        service.place(p, it, block).join();
+        // Como tras un cancelPlacement fallido (o un reinicio): fila y caché huérfanas, el ítem vuelve al jugador.
+        service.markOrphan(service.byId(s.id()).orElseThrow());
+
+        Block other = blockIn("world", 40, 70, 40);
+        assertEquals(PlaceResult.OK, service.validate(p, it, other));
+        assertEquals(PlaceResult.OK, service.place(p, it, other).join());
+
+        WorkbenchRecord now = repo.find(s.id()).join().orElseThrow();
+        assertFalse(now.orphan());
+        assertEquals(40, now.x());
+        assertEquals(1, repo.all().join().size());
+        assertTrue(service.at(other).isPresent());
+        assertFalse(service.byId(s.id()).orElseThrow().orphan());
+        // Una mesa viva con ese id sigue ocupando: no se coloca dos veces.
+        assertEquals(PlaceResult.OCCUPIED, service.place(p, it, blockIn("world", 50, 70, 50)).join());
+    }
+
+    @Test void failedCancelPlacementLeavesTheCacheCoherent() {
+        WorkbenchStamp s = genuine(CONSTRUCTOR, 1);
+        service.place(p, item(s), block).join();
+        db.close(); // la base falla al deshacer
+
+        service.cancelPlacement(s.id()).join();
+
+        // La fila sigue en la base: en la caché queda como huérfana, sin posición, y no como mesa viva ni borrada.
+        assertTrue(service.byId(s.id()).orElseThrow().orphan());
+        assertTrue(service.at(block).isEmpty());
+        assertTrue(service.inChunk("world", 0, 0).isEmpty());
+    }
+
+    static final String SAME_MATERIAL_TWICE = """
+            tiers:
+              ingeniero:
+                upgrade-cost:
+                  - {item: "oak_planks", amount: 16}
+                  - {item: "minecraft:oak_planks", amount: 8}
+            """;
+
+    @Test void twoCostsOfTheSameMaterialAreCountedTogether() {
+        service = newService(settings(SAME_MATERIAL_TWICE));
+        planks.set(20);
+        WorkbenchStamp s = genuine(CONSTRUCTOR, 5);
+        service.place(p, item(s), block).join();
+
+        // 20 tablones no pagan 16 + 8: antes cada coste veía los 20 y se cobraban 24.
+        assertInstanceOf(UpgradeRules.MissingItems.class, service.upgrade(p, s.id(), shown(s)).join());
+        assertEquals(20, planks.get());
+
+        planks.set(30);
+        assertInstanceOf(UpgradeRules.Ok.class, service.upgrade(p, s.id(), shown(s)).join());
+        assertEquals(6, planks.get());
+    }
+
+    @Test void failedTrustedReadStillCompletesOnTheMainThread() {
+        WorkbenchStamp s = genuine(CONSTRUCTOR, 1);
+        service.place(p, item(s), block).join();
+        db.close();
+        queued = true;
+
+        var f = service.trusted(s.id());
+        // Sin pasar por el hilo principal el menú mandaría mensajes desde el hilo de la base.
+        assertFalse(f.isDone(), "el fallo no debe terminar fuera del hilo principal");
+        assertThrows(java.util.concurrent.CompletionException.class, () -> pump(f));
+    }
+
+    @Test void inChunkOnlyReturnsThatChunk() {
+        WorkbenchRecord a = new WorkbenchRecord(UUID.randomUUID(), ownerId, "world", -1, 64, -17, CONSTRUCTOR, 1, false, 1);
+        WorkbenchRecord b = new WorkbenchRecord(UUID.randomUUID(), ownerId, "world", 15, 64, 0, CONSTRUCTOR, 2, false, 1);
+        WorkbenchRecord c = new WorkbenchRecord(UUID.randomUUID(), ownerId, "other", -1, 64, -17, CONSTRUCTOR, 3, false, 1);
+        repo.insert(a).join();
+        repo.insert(b).join();
+        repo.insert(c).join();
+        service.load();
+
+        assertEquals(java.util.List.of(a), service.inChunk("world", -1, -2));
+        assertEquals(java.util.List.of(b), service.inChunk("world", 0, 0));
+        service.markOrphan(a);
+        assertTrue(service.inChunk("world", -1, -2).isEmpty());
+    }
+
+    @Test void trustingTwiceSaysItWasAlreadyThere() {
+        WorkbenchStamp s = genuine(CONSTRUCTOR, 1);
+        service.place(p, item(s), block).join();
+        UUID friend = UUID.randomUUID();
+
+        assertEquals(WorkbenchService.AccessChange.DONE, service.trust(p, s.id(), friend).join());
+        assertEquals(WorkbenchService.AccessChange.UNCHANGED, service.trust(p, s.id(), friend).join());
+        assertEquals(WorkbenchService.AccessChange.DONE, service.untrust(p, s.id(), friend).join());
+        assertEquals(WorkbenchService.AccessChange.UNCHANGED, service.untrust(p, s.id(), friend).join());
+
+        Player other = mock(Player.class);
+        when(other.getUniqueId()).thenReturn(UUID.randomUUID());
+        assertEquals(WorkbenchService.AccessChange.DENIED, service.trust(other, s.id(), friend).join());
+    }
+
+    @Test void breakDenialSaysTheRealReason() {
+        WorkbenchStamp s = genuine(CONSTRUCTOR, 1);
+        service.place(p, item(s), block).join();
+        WorkbenchRecord rec = service.at(block).orElseThrow();
+
+        Player owner = mock(Player.class);
+        when(owner.getUniqueId()).thenReturn(ownerId);
+        assertEquals("workbench.break.no-permission", service.breakDeniedKey(owner, rec));
+
+        Player stranger = mock(Player.class);
+        when(stranger.getUniqueId()).thenReturn(UUID.randomUUID());
+        when(stranger.hasPermission(WorkbenchService.PERM_BREAK)).thenReturn(true);
+        assertEquals("workbench.break.denied", service.breakDeniedKey(stranger, rec));
+
+        assertEquals("workbench.break.has-project", service.breakDeniedKey(p, rec));
     }
 }

@@ -3,23 +3,15 @@ package com.sack.rpgroll.structures;
 import com.sack.rpgroll.common.command.BrigadierCommands;
 import com.sack.rpgroll.common.lang.LangManager;
 import com.sack.rpgroll.common.quick.Things;
-import com.sack.rpgroll.structures.command.StructuresAdminCommand;
-import com.sack.rpgroll.structures.command.StructuresCommand;
-import com.sack.rpgroll.structures.workbench.WorkbenchIssuer;
-import com.sack.rpgroll.structures.workbench.WorkbenchRecipe;
-import com.sack.rpgroll.structures.workbench.WorkbenchStamp;
-import com.sack.rpgroll.structures.workbench.WorkbenchTier;
-import org.bukkit.inventory.ItemStack;
-import java.util.Optional;
 import com.sack.rpgroll.gui.ChatPromptManager;
 import com.sack.rpgroll.gui.MenuSkin;
-import com.sack.rpgroll.structures.gui.CenterMenu;
-import com.sack.rpgroll.util.ComponentUtils;
-import net.kyori.adventure.text.Component;
 import com.sack.rpgroll.license.identity.LicenseIdentity;
 import com.sack.rpgroll.licensing.LicenseGate;
+import com.sack.rpgroll.structures.command.StructuresAdminCommand;
+import com.sack.rpgroll.structures.command.StructuresCommand;
 import com.sack.rpgroll.structures.config.StructuresSettings;
 import com.sack.rpgroll.structures.config.WorkbenchSettings;
+import com.sack.rpgroll.structures.gui.CenterMenu;
 import com.sack.rpgroll.structures.storage.Database;
 import com.sack.rpgroll.structures.storage.Dialect;
 import com.sack.rpgroll.structures.storage.WorkbenchRepository;
@@ -29,17 +21,25 @@ import com.sack.rpgroll.structures.workbench.SerialSigner;
 import com.sack.rpgroll.structures.workbench.ServerSecret;
 import com.sack.rpgroll.structures.workbench.WorkbenchBlocks;
 import com.sack.rpgroll.structures.workbench.WorkbenchDisplay;
+import com.sack.rpgroll.structures.workbench.WorkbenchIssuer;
 import com.sack.rpgroll.structures.workbench.WorkbenchItems;
+import com.sack.rpgroll.structures.workbench.WorkbenchRecipe;
 import com.sack.rpgroll.structures.workbench.WorkbenchService;
+import com.sack.rpgroll.structures.workbench.WorkbenchStamp;
+import com.sack.rpgroll.structures.workbench.WorkbenchTier;
+import com.sack.rpgroll.util.ComponentUtils;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Level;
 
 /** RPGRoll-Structures: mesas de construcción y estructuras. */
@@ -80,7 +80,8 @@ public class StructuresPlugin extends JavaPlugin {
         try {
             database = openDatabase(YamlConfiguration.loadConfiguration(new File(getDataFolder(), "storage.yml")));
             workbenches = new WorkbenchRepository(database, dialect);
-        } catch (SQLException e) {
+        } catch (Exception e) {
+            // Cualquier fallo (también un driver ausente o un storage.yml raro): se desactiva limpio, sin medio arranque.
             getLogger().log(Level.SEVERE, "No se pudo abrir la base de datos; RPGRoll-Structures se desactiva.", e);
             getServer().getPluginManager().disablePlugin(this);
             return;
@@ -99,11 +100,7 @@ public class StructuresPlugin extends JavaPlugin {
         blocks = new WorkbenchBlocks(this, service, items, display, lang);
         getServer().getPluginManager().registerEvents(blocks, this);
         benchOpener((player, bench) -> new CenterMenu(player, this, bench).open());
-        for (World world : Bukkit.getWorlds()) {
-            for (Chunk chunk : world.getLoadedChunks()) {
-                blocks.verify(chunk);
-            }
-        }
+        verifyLoadedChunks();
 
         recipe = new WorkbenchRecipe(this);
         getServer().getPluginManager().registerEvents(recipe, this);
@@ -130,19 +127,36 @@ public class StructuresPlugin extends JavaPlugin {
         }
     }
 
-    /** Lee config.yml, workbench.yml, gui.yml, el idioma y el fondo de los menús. No toca storage.yml. */
+    /**
+     * Lee config.yml, workbench.yml, gui.yml, el idioma y el fondo de los menús. No toca storage.yml. Todo se lee
+     * antes de asignar nada: si un archivo falla, se queda entera la configuración anterior.
+     */
     private void loadConfigs() {
-        settings = StructuresSettings.from(getConfig(), getLogger()::warning);
-        workbench = WorkbenchSettings.from(
+        StructuresSettings newSettings = StructuresSettings.from(getConfig(), getLogger()::warning);
+        WorkbenchSettings newWorkbench = WorkbenchSettings.from(
                 YamlConfiguration.loadConfiguration(new File(getDataFolder(), "workbench.yml")),
                 getLogger()::warning);
-        lang.reload(settings.language());
-        gui = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "gui.yml"));
-        MenuSkin.register(MENU_MODULE, MenuSkin.from(getConfig().getConfigurationSection("menus")));
+        YamlConfiguration newGui = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "gui.yml"));
+        MenuSkin newSkin = MenuSkin.from(getConfig().getConfigurationSection("menus"));
+        lang.reload(newSettings.language());
+        settings = newSettings;
+        workbench = newWorkbench;
+        gui = newGui;
+        MenuSkin.register(MENU_MODULE, newSkin);
+    }
+
+    /** Repasa los chunks cargados: mesas sin bloque, bloques de otra configuración y displays. */
+    private void verifyLoadedChunks() {
+        for (World world : Bukkit.getWorlds()) {
+            for (Chunk chunk : world.getLoadedChunks()) {
+                blocks.verify(chunk);
+            }
+        }
     }
 
     /**
-     * Recarga todo lo que se puede en caliente: ajustes, mesas por nivel, idioma, menús y receta.
+     * Recarga todo lo que se puede en caliente: ajustes, mesas por nivel, idioma, menús y receta, y repone el bloque
+     * de las mesas de los chunks ya cargados si cambió {@code fallback-block} o el modelo.
      * storage.yml NO: cambiar de base de datos pide reiniciar.
      */
     public void reloadAll() {
@@ -150,6 +164,7 @@ public class StructuresPlugin extends JavaPlugin {
         reloadConfig();
         loadConfigs();
         recipe.reload();
+        verifyLoadedChunks();
     }
 
     /** Un ítem de mesa firmado con la identidad dada. */
@@ -179,8 +194,8 @@ public class StructuresPlugin extends JavaPlugin {
     private Database openDatabase(YamlConfiguration storage) throws SQLException {
         if ("mysql".equalsIgnoreCase(storage.getString("type", "sqlite"))) {
             dialect = Dialect.MYSQL;
-            String url = "jdbc:mariadb://" + storage.getString("mysql.host", "localhost") + ":"
-                    + storage.getInt("mysql.port", 3306) + "/" + storage.getString("mysql.database", "rpgrollstructures");
+            String url = Database.mysqlUrl(storage.getString("mysql.host", "localhost"),
+                    storage.getInt("mysql.port", 3306), storage.getString("mysql.database", "rpgrollstructures"));
             return Database.open(dialect, url, storage.getString("mysql.user", "root"),
                     storage.getString("mysql.password", ""), getLogger());
         }

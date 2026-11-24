@@ -18,13 +18,16 @@ public final class UpgradeRules {
     public record NoPermission() implements UpgradeCheck {}
 
     /**
-     * {@code next} son los ajustes del nivel SIGUIENTE (su coste es el precio de llegar a él); puede ser null
-     * si {@code current} es ARQUITECTO. Orden: MaxTier, NoPermission, MissingItems, NotEnoughMoney, Ok.
+     * {@code next} son los ajustes del nivel SIGUIENTE (su coste es el precio de llegar a él); solo puede ser null
+     * si {@code current} es ARQUITECTO (si no, IllegalArgumentException). Orden: MaxTier, NoPermission, MissingItems, NotEnoughMoney, Ok.
      */
     public static UpgradeCheck check(WorkbenchTier current, TierSettings next, Map<String, Integer> playerHas,
                                      double balance, boolean hasTierPermission) {
         if (current.next().isEmpty()) {
             return new MaxTier();
+        }
+        if (next == null) {
+            throw new IllegalArgumentException("Faltan los ajustes del nivel siguiente a " + current);
         }
         if (!hasTierPermission) {
             return new NoPermission();
