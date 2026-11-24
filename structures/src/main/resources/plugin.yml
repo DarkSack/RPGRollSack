@@ -1,0 +1,52 @@
+name: RPGRoll-Structures
+version: 1.0.0
+main: com.sack.rpgroll.structures.StructuresPlugin
+api-version: "26.1.1"
+author: Sack
+description: Mesas de construcción y estructuras para RPGRoll
+depend: [RPGRoll-Lib]
+libraries: ["org.mariadb.jdbc:mariadb-java-client:3.5.11"]
+softdepend: [SackResourcePack, WorldEdit, FastAsyncWorldEdit, WorldGuard, GriefPrevention, Vault, floodgate]
+
+permissions:
+  rpgrollstructures.use:
+    description: Usar RPGRoll-Structures
+    default: true
+  rpgrollstructures.workbench.place:
+    description: Colocar mesas de construcción
+    default: true
+  rpgrollstructures.workbench.break:
+    description: Romper mesas de construcción propias
+    default: true
+  rpgrollstructures.tier.*:
+    description: Usar mesas de cualquier nivel
+    default: true
+    children:
+      rpgrollstructures.tier.1: true
+      rpgrollstructures.tier.2: true
+      rpgrollstructures.tier.3: true
+  rpgrollstructures.tier.1:
+    description: Usar mesas de nivel 1 (Constructor)
+    default: true
+  rpgrollstructures.tier.2:
+    description: Usar mesas de nivel 2 (Ingeniero)
+    default: true
+  rpgrollstructures.tier.3:
+    description: Usar mesas de nivel 3 (Arquitecto)
+    default: true
+  rpgrollstructures.bypass:
+    description: Saltarse las restricciones de las mesas
+    default: op
+  rpgrollstructures.admin.give:
+    description: Dar mesas
+    default: op
+  rpgrollstructures.admin.reload:
+    description: Recargar RPGRoll-Structures
+    default: op
+  rpgrollstructures.admin:
+    description: Administrar RPGRoll-Structures
+    default: op
+    children:
+      rpgrollstructures.bypass: true
+      rpgrollstructures.admin.give: true
+      rpgrollstructures.admin.reload: true

@@ -1,0 +1,12 @@
+# Títulos de los menús de la mesa. Un valor "menu.<x>.title" es una clave del lang (se traduce al idioma del
+# servidor); cualquier otro texto se muestra tal cual (admite colores &).
+center:
+  title: "menu.center.title"
+upgrade:
+  title: "menu.upgrade.title"
+access:
+  title: "menu.access.title"
+help:
+  title: "menu.help.title"
+confirm:
+  title: "menu.confirm.title"

@@ -1,0 +1,120 @@
+plugin:
+  prefix: "&8[&6Structures&8] &r"
+  enabled: "&aRPGRoll-Structures enabled."
+workbench:
+  item:
+    name:
+      constructor: "&6Building Workbench: Builder"
+      ingeniero: "&bBuilding Workbench: Engineer"
+      arquitecto: "&dBuilding Workbench: Architect"
+    lore:
+      size: "&7Max size: &f{width}x{height}x{length}"
+      serial: "&7Serial: &f#{serial}"
+      place: "&ePlace it to start building."
+  place:
+    not-genuine: "&cThat workbench is not genuine and cannot be placed."
+    no-permission: "&cYou do not have permission to place workbenches."
+    occupied: "&cThere is already a workbench here, or that workbench is already placed."
+    error: "&cThe workbench could not be registered. Try again."
+  break:
+    denied: "&cOnly the owner can break this workbench."
+    has-project: "&cThis workbench has an active project and cannot be broken."
+    error: "&cThe workbench could not be broken. Try again."
+  use:
+    denied: "&cYou do not have access to this workbench."
+  warning:
+    vault-missing: "upgrade-money is above 0 but there is no Vault economy; no money is charged for upgrades."
+    fallback-not-block: "fallback-block {material} is not a block ({tier}); using CRAFTING_TABLE."
+    world-missing: "Workbench {id} is in world {world}, which is not loaded yet; it is indexed when the world loads."
+    bad-row: "Workbench row {id} cannot be read (invalid UUID or tier); skipping it."
+    block-missing: "Workbench {id} ({world} {x},{y},{z}) no longer has its block; marking it as orphan."
+    chunk-orphan: "The chunk stores workbench {id} at {x},{y},{z} but it is not in the database; removing it from the chunk."
+    recipe-invalid: "The workbench recipe is invalid ({reason}); it is not registered."
+tier:
+  constructor: "Builder"
+  ingeniero: "Engineer"
+  arquitecto: "Architect"
+prompt:
+  footer: "&7Type in chat, or '{keyword}' to cancel."
+  cancel_keyword: "cancel"
+  cancelled: "&cCancelled."
+menu:
+  coming_soon: "&8Coming soon"
+  close: "&cClose"
+  back: "&eBack"
+  previous: "&ePrevious page"
+  next: "&eNext page"
+  manager-only: "&cOnly the workbench owner can open this."
+  center:
+    title: "Construction Center"
+    level: "&6Workbench: &f{tier}"
+    catalog: "&eStructure catalog"
+    builds: "&eMy builds"
+    materials: "&eMaterials"
+    project: "&eConstruction"
+    upgrades: "&aUpgrades"
+    access: "&bAccess"
+    help: "&dHelp"
+  upgrade:
+    title: "Workbench upgrades"
+  access:
+    title: "Workbench access"
+  help:
+    title: "Workbench help"
+  confirm:
+    title: "Confirm?"
+    accept: "&aConfirm"
+    cancel: "&cCancel"
+upgrade:
+  have: "&a✔ &f{amount}x {item}"
+  missing: "&c✘ &f{amount}x {item} &7(you need {missing} more)"
+  to: "&7Becomes: &f{tier}"
+  money: "&7Price: &6{amount}"
+  button: "&aUpgrade"
+  confirm: "&eUpgrade the workbench and take the materials"
+  done: "&aWorkbench upgraded."
+  max-tier: "&7The workbench is already at the highest tier."
+  result-missing: "&cYou are missing materials to upgrade the workbench."
+  no-money: "&cYou do not have enough money to upgrade the workbench."
+  no-permission: "&cYou do not have permission to upgrade the workbench to that tier."
+  error: "&cThe workbench could not be upgraded. Try again."
+access:
+  add: "&aAdd player"
+  player: "&f{player}"
+  click-remove: "&cClick to remove access"
+  prompt: "&eType the name of the player who will get access to the workbench."
+  added: "&aAccess granted."
+  removed: "&aAccess removed."
+  not-found: "&cI do not know any player named {player}."
+  is-owner: "&cThat player already owns the workbench."
+  error: "&cThe access could not be changed. Try again."
+help:
+  page-title: "&dHelp &7({page}/{pages})"
+  page:
+    1: |-
+      &7The workbench is the center of your builds.
+      &7Right-click it to open this menu.
+    2: |-
+      &7Upgrades: raise the workbench tier with materials
+      &7to build bigger structures.
+    3: |-
+      &7Access: the owner lets other players use the
+      &7workbench. They cannot upgrade it.
+command:
+  player-only: "&cOnly players can use this command."
+  usage: "&7Usage: &f/structures [help|open]"
+recipe:
+  busy: "&cThe workbench is still getting ready. Try again in a moment."
+admin:
+  usage: "&7Usage: &f/structuresadmin give <player> <constructor|ingeniero|arquitecto> [amount]&7 or &f/structuresadmin reload"
+  no_permission: "&cYou do not have permission."
+  give:
+    usage: "&7Usage: &f/structuresadmin give <player> <constructor|ingeniero|arquitecto> [amount]"
+    bad_tier: "&cUnknown tier. Use constructor, ingeniero or arquitecto."
+    bad_amount: "&cThe amount must be a number."
+    offline: "&c{player} is not online."
+    done: "&aGave {amount} {tier} workbench(es) to {player}."
+    error: "&cCould not issue the workbenches. Check the console."
+  reload:
+    done: "&aRPGRoll-Structures reloaded."
+    error: "&cReload failed; check the console."

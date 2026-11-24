@@ -25,7 +25,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 /**
  * {@code /dar}, {@code /invocar} y {@code /abrir}: la forma corta de darse algo, invocar algo o
@@ -79,6 +81,34 @@ public final class QuickCommands {
 
     // ---------------------------------------------------------------- /dar
 
+    /**
+     * Da {@code amount} unidades: {@code first} es la primera y el creador se pide una vez por cada una de las
+     * demás, nunca un clon (hay ítems con datos propios de cada ejemplar). Las que apilan con la anterior se
+     * juntan en una pila hasta su tope. Para al primer vacío; devuelve cuántas se dieron.
+     */
+    static int issue(ItemStack first, int amount, Supplier<Optional<ItemStack>> more, Consumer<ItemStack> give) {
+        ItemStack pending = first;
+        pending.setAmount(1);
+        int issued = 1;
+        while (issued < amount) {
+            Optional<ItemStack> made = more.get();
+            if (made.isEmpty()) {
+                break;
+            }
+            ItemStack one = made.get();
+            issued++;
+            if (pending.getAmount() < Math.max(1, pending.getMaxStackSize()) && pending.isSimilar(one)) {
+                pending.setAmount(pending.getAmount() + 1);
+            } else {
+                give.accept(pending);
+                one.setAmount(1);
+                pending = one;
+            }
+        }
+        give.accept(pending);
+        return issued;
+    }
+
     private static final class Give implements CommandExecutor, TabCompleter {
 
         @Override
@@ -106,21 +136,15 @@ public final class QuickCommands {
                 return true;
             }
             Things.Give source = (Things.Give) match.get().source();
-            int left = a.amount();
-            int max = Math.max(1, item.get().getMaxStackSize());
-            ItemStack next = item.get();
-            while (left > 0) {
-                // Una pieza nueva por pila y no un clon: hay ítems con datos propios de cada ejemplar.
-                ItemStack stack = next != null ? next : source.create(match.get().id()).orElse(item.get().clone());
-                next = null;
-                stack.setAmount(Math.min(left, max));
-                left -= stack.getAmount();
-                // Lo que no cabe cae a sus pies, como el /give de Minecraft.
-                target.getInventory().addItem(stack).values()
-                        .forEach(rest -> target.getWorld().dropItemNaturally(target.getLocation(), rest));
-            }
-            Msg.send(sender, "give.done", a.amount(), match.get().source().type() + ":" + match.get().id(),
+            // Lo que no cabe cae a sus pies, como el /give de Minecraft.
+            int given = issue(item.get(), a.amount(), () -> source.create(match.get().id()),
+                    stack -> target.getInventory().addItem(stack).values()
+                            .forEach(rest -> target.getWorld().dropItemNaturally(target.getLocation(), rest)));
+            Msg.send(sender, "give.done", given, match.get().source().type() + ":" + match.get().id(),
                     target.getName());
+            if (given < a.amount()) {
+                Msg.send(sender, "give.short", a.amount() - given);
+            }
             return true;
         }
 
@@ -369,6 +393,10 @@ public final class QuickCommands {
                         "es", "§aDiste §f{0} × {1} §aa §f{2}§a.",
                         "en", "§aGave §f{0} × {1} §ato §f{2}§a.",
                         "pt", "§aVocê deu §f{0} × {1} §apara §f{2}§a.")),
+                Map.entry("give.short", Map.of(
+                        "es", "§eNo se pudieron dar §f{0}§e: no hay más listas ahora mismo.",
+                        "en", "§e§f{0}§e could not be given: no more are ready right now.",
+                        "pt", "§eNão foi possível dar §f{0}§e: não há mais prontas agora.")),
                 Map.entry("summon.usage", Map.of(
                         "es", "§eUso: §f/invocar <criatura> [cantidad] [jugador]",
                         "en", "§eUsage: §f/invocar <creature> [amount] [player]",

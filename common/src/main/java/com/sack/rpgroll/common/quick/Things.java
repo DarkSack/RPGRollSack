@@ -37,7 +37,7 @@ public final class Things {
 
     /** Cosas que se pueden dar. */
     public interface Give extends Source {
-        /** Una pieza nueva cada vez: {@code /dar} la pide una vez por pila. */
+        /** Una pieza nueva cada vez: {@code /dar} la pide una vez por unidad (y apila las que son iguales). */
         Optional<ItemStack> create(String id);
     }
 

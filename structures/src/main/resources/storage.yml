@@ -1,0 +1,10 @@
+# Base de datos de las mesas: sqlite (un archivo) o mysql.
+type: sqlite
+sqlite:
+  file: data.db
+mysql:
+  host: localhost
+  port: 3306
+  database: rpgrollstructures
+  user: root
+  password: ""

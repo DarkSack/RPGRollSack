@@ -1,0 +1,35 @@
+# Receta de la mesa de nivel 1 (Constructor). Los ids son los de RPGRoll-Lib.
+recipe:
+  shape: ["PPP", "CTC", "L L"]
+  keys:
+    P: minecraft:oak_planks
+    C: minecraft:copper_ingot
+    T: minecraft:crafting_table
+    L: minecraft:oak_log
+
+# Tamaño máximo de obra por nivel (ancho x alto x largo) y coste de mejorar A ESE nivel.
+tiers:
+  constructor:
+    max-size: {width: 16, height: 16, length: 16}
+    upgrade-cost: []
+    upgrade-money: 0
+    model: ""
+    fallback-block: CRAFTING_TABLE
+  ingeniero:
+    max-size: {width: 32, height: 32, length: 32}
+    upgrade-cost:
+      - {item: "minecraft:iron_ingot", amount: 16}
+      - {item: "minecraft:redstone", amount: 8}
+      - {item: "minecraft:redstone_lamp", amount: 4}
+    upgrade-money: 0
+    model: ""
+    fallback-block: SMITHING_TABLE
+  arquitecto:
+    max-size: {width: 64, height: 96, length: 64}
+    upgrade-cost:
+      - {item: "minecraft:diamond", amount: 8}
+      - {item: "minecraft:prismarine_crystals", amount: 16}
+      - {item: "minecraft:nether_star", amount: 1}
+    upgrade-money: 0
+    model: ""
+    fallback-block: BEACON

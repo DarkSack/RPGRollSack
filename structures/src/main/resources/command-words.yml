@@ -1,0 +1,7 @@
+# Nombres de los comandos y sus subcomandos en cada idioma (lo lee BrigadierCommands de la Lib).
+commands:
+  structures:
+    names: {es: estructuras, pt: estruturas}
+    subcommands:
+      help: {es: ayuda, pt: ajuda}
+      open: {es: abrir, pt: abrir}

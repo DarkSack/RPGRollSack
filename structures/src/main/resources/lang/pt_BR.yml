@@ -1,0 +1,120 @@
+plugin:
+  prefix: "&8[&6Estruturas&8] &r"
+  enabled: "&aRPGRoll-Structures habilitado."
+workbench:
+  item:
+    name:
+      constructor: "&6Mesa de construção: Construtor"
+      ingeniero: "&bMesa de construção: Engenheiro"
+      arquitecto: "&dMesa de construção: Arquiteto"
+    lore:
+      size: "&7Tamanho máximo: &f{width}x{height}x{length}"
+      serial: "&7Série: &f#{serial}"
+      place: "&eColoque-a para começar a construir."
+  place:
+    not-genuine: "&cEssa mesa não é autêntica e não pode ser colocada."
+    no-permission: "&cVocê não tem permissão para colocar mesas."
+    occupied: "&cJá existe uma mesa aqui, ou essa mesa já está colocada."
+    error: "&cNão foi possível registrar a mesa. Tente novamente."
+  break:
+    denied: "&cSomente o dono pode quebrar esta mesa."
+    has-project: "&cEsta mesa tem uma obra ativa e não pode ser quebrada."
+    error: "&cNão foi possível quebrar a mesa. Tente novamente."
+  use:
+    denied: "&cVocê não tem acesso a esta mesa."
+  warning:
+    vault-missing: "upgrade-money é maior que 0 mas não há economia do Vault; nenhum dinheiro é cobrado nas melhorias."
+    fallback-not-block: "fallback-block {material} não é um bloco ({tier}); usando CRAFTING_TABLE."
+    world-missing: "A mesa {id} está no mundo {world}, que ainda não carregou; será indexada quando ele carregar."
+    bad-row: "A linha da mesa {id} não pode ser lida (UUID ou nível inválidos); ignorada."
+    block-missing: "A mesa {id} ({world} {x},{y},{z}) não tem mais o seu bloco; marcada como órfã."
+    chunk-orphan: "O chunk guarda a mesa {id} em {x},{y},{z} mas ela não está no banco de dados; removendo do chunk."
+    recipe-invalid: "A receita da mesa não é válida ({reason}); não foi registrada."
+tier:
+  constructor: "Construtor"
+  ingeniero: "Engenheiro"
+  arquitecto: "Arquiteto"
+prompt:
+  footer: "&7Escreva no chat, ou '{keyword}' para cancelar."
+  cancel_keyword: "cancelar"
+  cancelled: "&cCancelado."
+menu:
+  coming_soon: "&8Em breve"
+  close: "&cFechar"
+  back: "&eVoltar"
+  previous: "&ePágina anterior"
+  next: "&ePróxima página"
+  manager-only: "&cSó o dono da mesa pode abrir isto."
+  center:
+    title: "Centro de construção"
+    level: "&6Mesa: &f{tier}"
+    catalog: "&eCatálogo de estruturas"
+    builds: "&eMinhas construções"
+    materials: "&eMateriais"
+    project: "&eObra"
+    upgrades: "&aMelhorias"
+    access: "&bAcesso"
+    help: "&dAjuda"
+  upgrade:
+    title: "Melhorias da mesa"
+  access:
+    title: "Acesso à mesa"
+  help:
+    title: "Ajuda da mesa"
+  confirm:
+    title: "Confirmar?"
+    accept: "&aConfirmar"
+    cancel: "&cCancelar"
+upgrade:
+  have: "&a✔ &f{amount}x {item}"
+  missing: "&c✘ &f{amount}x {item} &7(faltam {missing})"
+  to: "&7Passa para: &f{tier}"
+  money: "&7Preço: &6{amount}"
+  button: "&aMelhorar"
+  confirm: "&eMelhorar a mesa e cobrar os materiais"
+  done: "&aMesa melhorada."
+  max-tier: "&7A mesa já está no nível máximo."
+  result-missing: "&cFaltam materiais para melhorar a mesa."
+  no-money: "&cVocê não tem dinheiro suficiente para melhorar a mesa."
+  no-permission: "&cVocê não tem permissão para melhorar a mesa para esse nível."
+  error: "&cNão foi possível melhorar a mesa. Tente de novo."
+access:
+  add: "&aAdicionar jogador"
+  player: "&f{player}"
+  click-remove: "&cClique para remover o acesso"
+  prompt: "&eEscreva o nome do jogador que terá acesso à mesa."
+  added: "&aAcesso concedido."
+  removed: "&aAcesso removido."
+  not-found: "&cNão conheço nenhum jogador chamado {player}."
+  is-owner: "&cEsse jogador já é o dono da mesa."
+  error: "&cNão foi possível mudar o acesso. Tente de novo."
+help:
+  page-title: "&dAjuda &7({page}/{pages})"
+  page:
+    1: |-
+      &7A mesa é o centro das suas construções.
+      &7Clique com o botão direito nela para abrir este menu.
+    2: |-
+      &7Melhorias: suba o nível da mesa com materiais
+      &7para construir estruturas maiores.
+    3: |-
+      &7Acesso: o dono permite que outros jogadores usem
+      &7a mesa. Eles não podem melhorá-la.
+command:
+  player-only: "&cSó jogadores podem usar este comando."
+  usage: "&7Uso: &f/estruturas [ajuda|abrir]"
+recipe:
+  busy: "&cA mesa ainda está sendo preparada. Tente de novo em instantes."
+admin:
+  usage: "&7Uso: &f/structuresadmin give <jogador> <constructor|ingeniero|arquitecto> [quantidade]&7 ou &f/structuresadmin reload"
+  no_permission: "&cVocê não tem permissão."
+  give:
+    usage: "&7Uso: &f/structuresadmin give <jogador> <constructor|ingeniero|arquitecto> [quantidade]"
+    bad_tier: "&cNível desconhecido. Use constructor, ingeniero ou arquitecto."
+    bad_amount: "&cA quantidade deve ser um número."
+    offline: "&c{player} não está online."
+    done: "&aDadas {amount} mesa(s) {tier} para {player}."
+    error: "&cNão foi possível emitir as mesas. Veja o console."
+  reload:
+    done: "&aRPGRoll-Structures recarregado."
+    error: "&cFalha ao recarregar; veja o console."

@@ -38,6 +38,7 @@ include(
     "machines",
     "disasters",
     "emotes",
+    "structures",
 
     // Herramienta de escritorio para los compradores, no un plugin.
     "packinstaller"

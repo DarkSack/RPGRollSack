@@ -1,0 +1,10 @@
+# Idioma de los mensajes: es, en o pt_BR.
+language: es
+
+# Qué pasa al romper una mesa con una obra activa: block (no deja), pause o cancel.
+break-policy: block
+
+# Menús dibujados del paquete de recursos. Vacío = menús de cofre normales.
+# En Sackito: "sackito:menus".
+menus:
+  pack: ""
