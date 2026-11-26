@@ -14,6 +14,11 @@ Ya no es un único plugin: es un **ecosistema de 1 core + 24 addons independient
 
 # 🆕 Novedades recientes
 
+## RPGRoll-Structures 1.1.0 (acceso anticipado) y Lib 1.1.14
+
+- 🏗️ **RPGRoll-Structures 1.1.0** — la mesa ya construye. Catálogo por categorías, ficha con materiales y tiempo, vista previa en el mundo que se mueve y se gira, depósito de materiales y obra que se levanta sola por tandas (y sigue tras un reinicio). Las estructuras salen de tus esquemáticos `.nbt` o `.schem` (WorldEdit/FAWE) con un YAML cada una. Reparar cobra solo lo que falta; `upgrade_from` mejora una construcción a otra más grande sin tirarla (cofres y bloques puestos a mano se quedan). Respeta WorldGuard y GriefPrevention, cobra dinero con Vault y trae módulos de granja, granja de mobs (vanilla o MythicMobs) y parcela con terreno propio. **Acceso anticipado:** aún no trae estructuras de fábrica
+- 🧰 **RPGRoll-Lib 1.1.14** — paquete `structure`: lectores de `.nbt` y `.schem` y giros de esquemáticos (WorldEdit/FAWE opcional)
+
 ## RPGRoll-Structures 1.0.1 (acceso anticipado) y Lib 1.1.13
 
 - 🏗️ **RPGRoll-Structures** — la mesa de construcción de tres niveles (Constructor, Ingeniero y Arquitecto): se fabrica, se coloca, se mejora en el sitio pagando materiales (y dinero con Vault), se comparte con jugadores de confianza y no la rompen explosiones, pistones ni el Wither. Cada nivel trae su modelo (banco de carpintero, banco de pizarra y redstone, pedestal de runas), que SackResourcePack reparte solo. Menús de Centro, Mejoras (cada requisito con ✔ o ✘), Confirmar, Acceso y Ayuda, con fondo dibujado por nivel si `menus.pack` apunta a tu paquete. **Acceso anticipado:** el catálogo de estructuras, los materiales y la obra salen como «Próximamente» y llegan en próximas versiones
@@ -107,7 +112,7 @@ Cada addon extiende el core con un sistema completo propio, construido por **com
 | 🌡️ **RPGRoll-Extras**  | Necesidades y condiciones de supervivencia configurables (sed, stamina, fatiga, temperatura, oxígeno, estrés) con umbrales que aplican efectos, menú de admin, ordenar cofres e inventario, elevadores y Reforzador |
 | 🪤 **RPGRoll-Traps**    | Motor de trampas/mecanismos por YAML: triggers/condiciones/acciones/cadenas, bloques reforzados con llave, puertas secretas, y torretas autónomas que apuntan y disparan a jugadores/mobs hostiles |
 | 📖 **RPGRoll-Recipes**  | Recetario al estilo JEI: cómo se hace y para qué sirve cada objeto, leyendo las recetas vanilla, las de cualquier plugin, la fermentación y las estaciones de RPGRoll (`RecipeSource` en RPGRoll-Lib para que cualquier plugin publique las suyas) |
-| 🏗️ **RPGRoll-Structures** | Acceso anticipado: mesa de construcción de tres niveles (Constructor, Ingeniero, Arquitecto), con modelo propio por nivel, que se mejora en el sitio, con jugadores de confianza, protección y menús con fondo dibujado. El catálogo y la construcción de estructuras llegan en próximas versiones |
+| 🏗️ **RPGRoll-Structures** | Acceso anticipado: mesa de construcción de tres niveles que levanta estructuras desde tus esquemáticos (.nbt/.schem) con materiales, vista previa, reparación, mejoras, protección de zona y módulos de granja y parcela. Las estructuras de fábrica llegan en próximas versiones |
 | 🏭 **RPGRoll-Machines** | Máquinas: hornos, altos hornos y ahumadores mejorables (velocidad, combustible, doble resultado), spawners con mejoras, pila y recogida con toque de seda, y canteras que excavan solas dentro del claim de su dueño (fortuna, toque de seda, autofundido, filtro) |
 
 Ver el detalle completo de cada uno (comandos, permisos, formato YAML, ejemplos) en el sitio de documentación (`UI/`).
@@ -147,7 +152,7 @@ Ver el detalle completo de cada uno (comandos, permisos, formato YAML, ejemplos)
 | RPGRoll-Emotes   | `/emotes`, `/emote`, `/emotesadmin`              | RPGRoll-Lib, **BetterModel** | SackResourcePack, RPGRoll-Magic                                    | —               |
 | RPGRoll-Recipes  | `/recetas` (`/jei`)                              | RPGRoll-Lib             | Crafting, Furniture, Items, Extras (solo orden de carga)                | **$8**          |
 | RPGRoll-Machines | `/machines`                                      | RPGRoll-Lib             | Vault, GriefPrevention, Items, Crates                                   | **$14**         |
-| RPGRoll-Structures | `/structures`, `/structuresadmin`              | RPGRoll-Lib **1.1.13**  | SackResourcePack, Vault                                                 | **$6** (acceso anticipado) |
+| RPGRoll-Structures | `/structures`, `/structuresadmin`              | RPGRoll-Lib **1.1.14**  | SackResourcePack, Vault, WorldEdit/FAWE, WorldGuard, GriefPrevention, MythicMobs | **$6** (acceso anticipado) |
 
 **Solo Ascension y Magic necesitan el core**: prestigio y hechizos trabajan directamente sobre el
 personaje (nivel, maná, vida, stats de combate). El resto funciona **con o sin** `RPGRoll`: si el core
