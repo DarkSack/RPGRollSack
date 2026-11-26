@@ -30,13 +30,12 @@ public final class AccessMenu extends InventoryGUI {
 
     /** Cuántas páginas hacen falta (mínimo 1, aunque no haya nadie). */
     public static int pageCount(int total) {
-        return Math.max(1, (total + PAGE_SIZE - 1) / PAGE_SIZE);
+        return StructuresMenus.pageCount(total, PAGE_SIZE);
     }
 
     /** Los elementos de una página (la página se acota a lo que existe). */
     public static <T> List<T> pageOf(List<T> all, int page) {
-        int p = Math.max(0, Math.min(page, pageCount(all.size()) - 1));
-        return all.subList(Math.min(all.size(), p * PAGE_SIZE), Math.min(all.size(), (p + 1) * PAGE_SIZE));
+        return StructuresMenus.pageOf(all, page, PAGE_SIZE);
     }
 
     /** Por nombre, sin mayúsculas; quien no tiene nombre conocido va por su UUID. */

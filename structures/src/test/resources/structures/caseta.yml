@@ -1,0 +1,16 @@
+name: {es: "Caseta", en: "Hut"}
+category: casas
+tier: 1
+schematic: caseta.nbt
+materials:
+  - {item: oak_planks, amount: 40}
+  - {any_of: [cobblestone, stone], amount: 20}
+  - {item: glass_pane, amount: 4, optional: true}
+build:
+  mode: progressive
+  order: bottom_up
+  blocks-per-cycle: 16
+  ticks-per-cycle: 20
+placement:
+  ground: true
+  liquids: false

@@ -1,6 +1,25 @@
 package com.sack.rpgroll.structures.workbench;
 
 import com.sack.rpgroll.common.lang.LangManager;
+import com.sack.rpgroll.common.structure.BlockSource;
+import com.sack.rpgroll.common.structure.Rotation;
+import com.sack.rpgroll.common.structure.SourceBlock;
+import com.sack.rpgroll.structures.build.BlockWriter;
+import com.sack.rpgroll.structures.build.ConstructionEngine;
+import com.sack.rpgroll.structures.catalog.BuildOrder;
+import com.sack.rpgroll.structures.catalog.MaterialSpec;
+import com.sack.rpgroll.structures.catalog.PlacementRules;
+import com.sack.rpgroll.structures.catalog.StructureDefinition;
+import com.sack.rpgroll.structures.config.PerformanceSettings;
+import com.sack.rpgroll.structures.deposit.ReturnService;
+import com.sack.rpgroll.structures.integration.Hook;
+import com.sack.rpgroll.structures.project.Project;
+import com.sack.rpgroll.structures.project.ProjectService;
+import com.sack.rpgroll.structures.project.ProjectState;
+import com.sack.rpgroll.structures.protect.AreaGuard;
+import com.sack.rpgroll.structures.storage.ProjectRecord;
+import com.sack.rpgroll.structures.storage.ProjectRepository;
+import com.sack.rpgroll.structures.workbench.BreakRules.BreakDecision;
 import com.sack.rpgroll.structures.config.StructuresSettings;
 import com.sack.rpgroll.structures.config.WorkbenchSettings;
 import com.sack.rpgroll.structures.storage.Database;
@@ -9,9 +28,11 @@ import com.sack.rpgroll.structures.storage.WorkbenchRecord;
 import com.sack.rpgroll.structures.storage.WorkbenchRepository;
 import com.sack.rpgroll.structures.workbench.UpgradeRules.UpgradeCheck;
 import com.sack.rpgroll.structures.workbench.WorkbenchService.PlaceResult;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -22,9 +43,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
@@ -56,6 +80,8 @@ class WorkbenchServiceTest {
     final ItemStack planksStack = mock(ItemStack.class);
     boolean worldExists = true;
     volatile boolean queued;
+    StructuresSettings.BreakPolicy policy = StructuresSettings.BreakPolicy.BLOCK;
+    ProjectsView projectsView = ProjectsView.none();
     final java.util.Queue<Runnable> queue = new java.util.concurrent.ConcurrentLinkedQueue<>();
 
     /** Ejecuta las tareas del hilo principal simulado hasta que el futuro termine. */
@@ -108,7 +134,7 @@ class WorkbenchServiceTest {
 
     WorkbenchService newService(WorkbenchSettings ws) {
         WorkbenchService s = new WorkbenchService(repo, items, signer, mock(LangManager.class), () -> ws,
-                () -> new StructuresSettings("es", "", StructuresSettings.BreakPolicy.BLOCK), ProjectsView.none(),
+                () -> new StructuresSettings("es", "", policy), projectsView,
                 display, name -> worldExists, r -> { if (queued) queue.add(r); else r.run(); }, Logger.getAnonymousLogger());
         s.stackFactory = (m, n) -> mock(ItemStack.class);
         return s;
@@ -491,5 +517,211 @@ class WorkbenchServiceTest {
         assertEquals("workbench.break.denied", service.breakDeniedKey(stranger, rec));
 
         assertEquals("workbench.break.has-project", service.breakDeniedKey(p, rec));
+    }
+
+    // ---- romper con obra activa y volver a colocar (plan 3, Task 4) ----
+
+    static final String KEY = "minecraft:stone";
+    ProjectRepository projectRepo;
+    ProjectService projectService;
+    ConstructionEngine engine;
+    final ReturnService returns = mock(ReturnService.class);
+    AreaGuard guard = AreaGuard.allowAll();
+    /** Jugadores conectados (por UUID) y lo que se les dice: {@code uuid:clave}. */
+    final Map<UUID, Player> online = new HashMap<>();
+    final List<String> told = new ArrayList<>();
+    StructureDefinition def;
+    int nextX = 100;
+
+    /** Servicio con obras reales (ProjectService y motor) y la devolución simulada. */
+    void withProjects(StructuresSettings.BreakPolicy breakPolicy) {
+        projectRepo = new ProjectRepository(db, Dialect.SQLITE);
+        projectService = new ProjectService(projectRepo, Runnable::run, Logger.getAnonymousLogger());
+        List<SourceBlock> blocks = List.of(new SourceBlock(0, 0, 0, mock(BlockData.class), null));
+        BlockSource src = new BlockSource() {
+            public int width() { return 1; }
+            public int height() { return 1; }
+            public int length() { return 1; }
+            public List<SourceBlock> blocks() { return blocks; }
+        };
+        def = new StructureDefinition("casa", Map.of(), "casas", null, null, null, src,
+                List.of(new MaterialSpec(List.of(KEY), 1, false)), 0, true, BuildOrder.BOTTOM_UP, List.of(), 0, 0,
+                new PlacementRules(false, false, List.of(), List.of(), Set.of()), "rpgrollstructures.build.casa");
+        engine = new ConstructionEngine(projectService, projectRepo, id -> Optional.of(def),
+                () -> new PerformanceSettings(256, 10, 5, 2, 4096, 64, 300, 75, 60), mock(BlockWriter.class),
+                Runnable::run, (x, b) -> { }, x -> { }, () -> 0L, Runnable::run, id -> true,
+                (owner, w, box) -> guard.check(owner, w, box), (d, owner, w, box) -> Optional.empty(),
+                Logger.getAnonymousLogger());
+        projectsView = new BenchProjects(projectService, engine, returns, () -> 75, online::get,
+                (pl, key) -> told.add(pl.getUniqueId() + ":" + key));
+        policy = breakPolicy;
+        online.put(ownerId, p);
+        service = newService(settings(""));
+    }
+
+    Project project(UUID bench, UUID owner, ProjectState state) {
+        World w = mock(World.class);
+        when(w.getName()).thenReturn("world");
+        Project pr = projectService.create(bench, def, owner, new Location(w, nextX, 64, 200), Rotation.NONE).join();
+        nextX += 100;
+        pr.setState(state);
+        return pr;
+    }
+
+    Block blockAt(int x, int y, int z) {
+        Block b = mock(Block.class);
+        when(b.getWorld()).thenReturn(world);
+        when(b.getX()).thenReturn(x);
+        when(b.getY()).thenReturn(y);
+        when(b.getZ()).thenReturn(z);
+        return b;
+    }
+
+    ProjectRecord dbRow(Project pr) {
+        return projectRepo.active().join().stream().filter(r -> r.id().equals(pr.id())).findFirst().orElseThrow();
+    }
+
+    @Test void breakWithPauseKeepsRowAsOrphanAndPausesProject() {
+        withProjects(StructuresSettings.BreakPolicy.PAUSE);
+        WorkbenchStamp s = genuine(CONSTRUCTOR, 7);
+        assertEquals(PlaceResult.OK, service.place(p, item(s), block).join());
+        Project building = project(s.id(), ownerId, ProjectState.BUILDING);
+        // Otra mesa con la obra esperando materiales: no cambia de estado.
+        WorkbenchStamp s2 = genuine(CONSTRUCTOR, 8);
+        Block block2 = blockAt(20, 64, 20);
+        assertEquals(PlaceResult.OK, service.place(p, item(s2), block2).join());
+        Project waiting = project(s2.id(), ownerId, ProjectState.WAITING_MATERIALS);
+
+        assertEquals(BreakDecision.ALLOW_PAUSE, service.breakDecision(p, service.at(block).orElseThrow()));
+        WorkbenchService.BreakResult r = service.breakBench(p, block).join();
+        assertEquals(WorkbenchService.BreakStatus.PAUSED, r.status());
+        assertEquals(Optional.of(s), items.read(r.dropped().orElseThrow()), "mismo sello, mismo UUID");
+        assertTrue(repo.find(s.id()).join().orElseThrow().orphan(), "la fila se conserva como huérfana");
+        assertTrue(service.byId(s.id()).orElseThrow().orphan());
+        assertTrue(service.at(block).isEmpty());
+        assertEquals(ProjectState.PAUSED, building.state());
+        assertEquals(ConstructionEngine.PAUSED_BENCH, building.error());
+        assertEquals(ProjectState.PAUSED, dbRow(building).state());
+        assertEquals(ConstructionEngine.PAUSED_BENCH, dbRow(building).error());
+        assertEquals(Optional.of(building), projectService.forBench(s.id()), "sigue atada a su mesa");
+
+        WorkbenchService.BreakResult r2 = service.breakBench(p, block2).join();
+        assertEquals(WorkbenchService.BreakStatus.PAUSED, r2.status());
+        assertEquals(ProjectState.WAITING_MATERIALS, waiting.state());
+        assertNull(waiting.error());
+        assertEquals(Optional.of(waiting), projectService.forBench(s2.id()));
+    }
+
+    @Test void replacingTheItemReconnectsAndResumes() {
+        withProjects(StructuresSettings.BreakPolicy.PAUSE);
+        WorkbenchStamp s = genuine(INGENIERO, 7);
+        service.place(p, item(s), block).join();
+        Project building = project(s.id(), ownerId, ProjectState.BUILDING);
+        ItemStack back = service.breakBench(p, block).join().dropped().orElseThrow();
+
+        Block other = blockAt(50, 70, 50);
+        assertEquals(PlaceResult.OK, service.place(p, back, other).join());
+        WorkbenchRecord row = repo.find(s.id()).join().orElseThrow();
+        assertFalse(row.orphan());
+        assertEquals(50, row.x());
+        assertEquals(INGENIERO, row.tier());
+        assertEquals(s.id(), service.at(other).orElseThrow().id());
+        assertEquals(ProjectState.BUILDING, building.state());
+        assertNull(building.error());
+        assertEquals(100, building.x(), "la obra sigue en su sitio original");
+        assertTrue(told.contains(ownerId + ":build.resumed"), told.toString());
+    }
+
+    /** Review Focus 1: quien vuelve a colocar la mesa (con bypass) no presta sus derechos; manda el dueño de la obra. */
+    @Test void reconnectByTrustedPlayerChecksTheProjectOwner() {
+        guard = (owner, w, box) -> owner.equals(ownerId)
+                ? Optional.of(new AreaGuard.Denial(Hook.WORLDGUARD, "protect.worldguard")) : Optional.empty();
+        withProjects(StructuresSettings.BreakPolicy.PAUSE);
+        WorkbenchStamp s = genuine(CONSTRUCTOR, 7);
+        service.place(p, item(s), block).join();
+        Project building = project(s.id(), ownerId, ProjectState.BUILDING);
+        ItemStack back = service.breakBench(p, block).join().dropped().orElseThrow();
+        online.remove(ownerId); // el dueño se desconecta
+
+        Player friend = mock(Player.class);
+        UUID friendId = UUID.randomUUID();
+        when(friend.getUniqueId()).thenReturn(friendId);
+        when(friend.hasPermission(anyString())).thenReturn(true); // también rpgrollstructures.bypass
+        assertEquals(PlaceResult.OK, service.place(friend, back, blockAt(50, 70, 50)).join());
+        assertEquals(ProjectState.PAUSED, building.state());
+        assertEquals(ConstructionEngine.PAUSED_PROTECTED, building.error());
+        assertTrue(told.contains(friendId + ":" + ConstructionEngine.PAUSED_PROTECTED), told.toString());
+    }
+
+    @Test void breakWithCancelRefundsOwnerThenBreaks() {
+        withProjects(StructuresSettings.BreakPolicy.CANCEL);
+        WorkbenchStamp s = genuine(CONSTRUCTOR, 7);
+        service.place(p, item(s), block).join();
+        // La obra es de otro (de confianza): la devolución va a su dueño, lo hace ReturnService.cancel.
+        Project pr = project(s.id(), UUID.randomUUID(), ProjectState.READY);
+        java.util.concurrent.CompletableFuture<Boolean> cancelled = new java.util.concurrent.CompletableFuture<>();
+        when(returns.cancel(any(), any(), anyInt())).thenReturn(cancelled);
+
+        assertEquals(BreakDecision.ALLOW_CANCEL, service.breakDecision(p, service.at(block).orElseThrow()));
+        java.util.concurrent.CompletableFuture<WorkbenchService.BreakResult> f = service.breakBench(p, block);
+        verify(returns).cancel(p, pr, 75);
+        assertFalse(f.isDone(), "la mesa espera a que la base confirme la cancelación");
+        assertTrue(repo.find(s.id()).join().isPresent());
+        assertTrue(service.at(block).isPresent());
+
+        cancelled.complete(true);
+        WorkbenchService.BreakResult r = f.join();
+        assertEquals(WorkbenchService.BreakStatus.CANCELLED, r.status());
+        assertEquals(Optional.of(s), items.read(r.dropped().orElseThrow()));
+        assertTrue(repo.find(s.id()).join().isEmpty());
+        assertTrue(service.at(block).isEmpty());
+    }
+
+    @Test void cancelFailureKeepsTheBench() {
+        withProjects(StructuresSettings.BreakPolicy.CANCEL);
+        WorkbenchStamp s = genuine(CONSTRUCTOR, 7);
+        service.place(p, item(s), block).join();
+        project(s.id(), ownerId, ProjectState.BUILDING);
+        when(returns.cancel(any(), any(), anyInt()))
+                .thenReturn(java.util.concurrent.CompletableFuture.completedFuture(false));
+
+        WorkbenchService.BreakResult r = service.breakBench(p, block).join();
+        assertEquals(WorkbenchService.BreakStatus.CANCEL_FAILED, r.status());
+        assertTrue(r.dropped().isEmpty());
+        assertFalse(repo.find(s.id()).join().orElseThrow().orphan());
+        assertTrue(service.at(block).isPresent());
+        // El candado se suelta: se puede reintentar.
+        assertEquals(WorkbenchService.BreakStatus.CANCEL_FAILED, service.breakBench(p, block).join().status());
+        verify(returns, times(2)).cancel(any(), any(), anyInt());
+    }
+
+    /** Arreglo de la memoria: una huérfana (p. ej. quitada con WorldEdit) no bloquea su bloque, ni tras reiniciar. */
+    @Test void orphanDoesNotOccupyItsOldPosition() {
+        WorkbenchStamp gone = genuine(CONSTRUCTOR, 1);
+        service.place(p, item(gone), block).join();
+        service.markOrphan(service.at(block).orElseThrow());
+
+        WorkbenchStamp fresh = genuine(CONSTRUCTOR, 2);
+        assertEquals(PlaceResult.OK, service.place(p, item(fresh), block).join());
+        assertEquals(fresh.id(), service.at(block).orElseThrow().id());
+        assertEquals(2, repo.all().join().size());
+
+        WorkbenchService again = newService(settings(""));
+        again.load();
+        assertEquals(fresh.id(), again.at(block).orElseThrow().id());
+        assertTrue(again.byId(gone.id()).orElseThrow().orphan());
+
+        // Tras reiniciar, una huérfana tampoco impide poner una mesa nueva en su bloque.
+        Block third = blockAt(30, 64, 30);
+        WorkbenchStamp later = genuine(CONSTRUCTOR, 3);
+        again.place(p, item(later), third).join();
+        again.markOrphan(again.at(third).orElseThrow());
+        repo.all().join(); // espera a la base
+        WorkbenchService reloaded = newService(settings(""));
+        reloaded.load();
+        assertTrue(reloaded.at(third).isEmpty());
+        assertEquals(PlaceResult.OK, reloaded.place(p, item(genuine(INGENIERO, 4)), third).join());
+        // La huérfana sigue pudiendo volver con su ítem, en otro sitio.
+        assertEquals(PlaceResult.OK, reloaded.place(p, item(later), blockAt(31, 64, 30)).join());
     }
 }

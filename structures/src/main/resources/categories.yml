@@ -1,0 +1,29 @@
+# Categorías del catálogo de estructuras.
+# icon: material vanilla del icono en el menú. order: posición (menor primero).
+# El nombre visible sale del idioma (lang/*.yml): category.<id>.
+# Una estructura (structures/<id>.yml) elige su categoría con "category: <id>".
+categories:
+  casas:
+    icon: minecraft:oak_door
+    order: 1
+  granjas_mobs:
+    icon: minecraft:spawner
+    order: 2
+  granjas_auto:
+    icon: minecraft:wheat
+    order: 3
+  parcelas:
+    icon: minecraft:oak_fence
+    order: 4
+  decoracion:
+    icon: minecraft:flower_pot
+    order: 5
+  infraestructura:
+    icon: minecraft:rail
+    order: 6
+  redstone:
+    icon: minecraft:redstone
+    order: 7
+  especiales:
+    icon: minecraft:nether_star
+    order: 8

@@ -5,3 +5,7 @@ commands:
     subcommands:
       help: {es: ayuda, pt: ajuda}
       open: {es: abrir, pt: abrir}
+      list: {es: lista, pt: lista}
+      info: {es: info, pt: info}
+      status: {es: estado, pt: estado}
+      cancel: {es: cancelar, pt: cancelar}

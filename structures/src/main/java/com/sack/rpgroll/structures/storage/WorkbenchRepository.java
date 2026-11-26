@@ -36,6 +36,7 @@ public final class WorkbenchRepository {
     }
 
     private static void insert(Connection c, WorkbenchRecord r) throws SQLException {
+        freeOrphanAt(c, r);
         try (PreparedStatement ps = c.prepareStatement(
                 "INSERT INTO workbenches(" + COLUMNS + ") VALUES (?,?,?,?,?,?,?,?,?,?)")) {
             ps.setString(1, r.id().toString());
@@ -58,6 +59,7 @@ public final class WorkbenchRepository {
      */
     public CompletableFuture<Void> reclaim(WorkbenchRecord r) {
         return db.submit(c -> {
+            freeOrphanAt(c, r);
             int changed = update(c, "UPDATE workbenches SET owner = ?, world = ?, x = ?, y = ?, z = ?, tier = ?,"
                     + " orphan = 0 WHERE id = ? AND orphan = 1", ps -> {
                         ps.setString(1, r.owner().toString());
@@ -73,6 +75,34 @@ public final class WorkbenchRepository {
             }
             return null;
         });
+    }
+
+    /**
+     * Una huérfana no ocupa su antigua posición, pero su fila la guarda y {@code UNIQUE(world, x, y, z)} impediría
+     * poner otra mesa en ese bloque. Antes de ocuparlo, la huérfana que siga ahí pasa a un mundo que no existe
+     * ({@code #huerfana:<id>}, único por fila); conserva el resto (dueño, nivel, serie y obras).
+     */
+    private static void freeOrphanAt(Connection c, WorkbenchRecord r) throws SQLException {
+        List<String> ids = new ArrayList<>();
+        try (PreparedStatement ps = c.prepareStatement("SELECT id FROM workbenches WHERE orphan = 1 AND world = ?"
+                + " AND x = ? AND y = ? AND z = ? AND id <> ?")) {
+            ps.setString(1, r.world());
+            ps.setInt(2, r.x());
+            ps.setInt(3, r.y());
+            ps.setInt(4, r.z());
+            ps.setString(5, r.id().toString());
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    ids.add(rs.getString(1));
+                }
+            }
+        }
+        for (String id : ids) {
+            update(c, "UPDATE workbenches SET world = ? WHERE id = ?", ps -> {
+                ps.setString(1, "#huerfana:" + id);
+                ps.setString(2, id);
+            });
+        }
     }
 
     public CompletableFuture<Optional<WorkbenchRecord>> find(UUID id) {

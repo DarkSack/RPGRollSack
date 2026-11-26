@@ -197,11 +197,18 @@ public final class WorkbenchBlocks implements Listener {
         // de la caché, sin un tick en el que el bloque siga ahí desprotegido.
         service.breakBench(p, b).thenAccept(result -> {
             switch (result.status()) {
-                case DROPPED -> {
+                // pause y cancel sueltan el ítem igual: con pause la fila queda huérfana y la obra espera a la mesa.
+                case DROPPED, PAUSED, CANCELLED -> {
                     removeFromWorld(b, rec);
                     result.dropped().ifPresent(stack ->
                             b.getWorld().dropItemNaturally(b.getLocation().add(0.5, 0.5, 0.5), stack));
+                    if (result.status() == WorkbenchService.BreakStatus.PAUSED) {
+                        lang.send(p, "workbench.break.paused");
+                    } else if (result.status() == WorkbenchService.BreakStatus.CANCELLED) {
+                        lang.send(p, "build.cancelled");
+                    }
                 }
+                case CANCEL_FAILED -> lang.send(p, "build.cancel-error");
                 // La fila la borró otro proceso: la mesa ya no existe. Se quita sin ítem para no duplicarla.
                 case GONE -> {
                     removeFromWorld(b, rec);

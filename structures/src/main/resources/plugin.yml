@@ -1,12 +1,12 @@
 name: RPGRoll-Structures
-version: 1.0.1
+version: 1.1.0
 main: com.sack.rpgroll.structures.StructuresPlugin
 api-version: "26.1.1"
 author: Sack
 description: Mesas de construcción y estructuras para RPGRoll
 depend: [RPGRoll-Lib]
 libraries: ["org.mariadb.jdbc:mariadb-java-client:3.5.11"]
-softdepend: [SackResourcePack, WorldEdit, FastAsyncWorldEdit, WorldGuard, GriefPrevention, Vault, floodgate]
+softdepend: [SackResourcePack, WorldEdit, FastAsyncWorldEdit, WorldGuard, GriefPrevention, Vault, floodgate, RPGRoll-Items, RPGRoll-Furniture, MythicMobs]
 
 permissions:
   rpgrollstructures.use:
@@ -31,13 +31,28 @@ permissions:
     description: Mejorar la mesa a nivel 3 (Arquitecto)
     default: true
   rpgrollstructures.bypass:
-    description: Saltarse las restricciones de las mesas
+    description: Saltarse las restricciones de las mesas y la protección de la zona (WorldGuard, GriefPrevention) al confirmar o arrancar obras
     default: op
   rpgrollstructures.admin.give:
     description: Dar mesas
     default: op
   rpgrollstructures.admin.reload:
     description: Recargar RPGRoll-Structures
+    default: op
+  rpgrollstructures.build:
+    description: Construir estructuras con la mesa
+    default: true
+  rpgrollstructures.preview:
+    description: Ver la vista previa de una estructura
+    default: true
+  rpgrollstructures.build.*:
+    description: Construir cualquier estructura (rpgrollstructures.build.<id> una sola)
+    default: true
+  rpgrollstructures.category.*:
+    description: Ver cualquier categoría del catálogo (rpgrollstructures.category.<cat> una sola)
+    default: true
+  rpgrollstructures.admin.validate:
+    description: Validar las estructuras y sus archivos
     default: op
   rpgrollstructures.admin:
     description: Administrar RPGRoll-Structures
@@ -46,3 +61,4 @@ permissions:
       rpgrollstructures.bypass: true
       rpgrollstructures.admin.give: true
       rpgrollstructures.admin.reload: true
+      rpgrollstructures.admin.validate: true

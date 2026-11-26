@@ -83,10 +83,37 @@ class LangFilesTest {
         }
     }
 
+    @Test void startResultsAndProtectionDenialsResolve() throws IOException {
+        // Claves que no pasan por un literal en send(...): salen de un switch o de AreaGuard.Denial.
+        List<String> keys = new java.util.ArrayList<>(List.of("protect.worldguard", "protect.griefprevention",
+                "protect.error"));
+        for (var r : com.sack.rpgroll.structures.build.ConstructionEngine.StartResult.values()) {
+            keys.add(com.sack.rpgroll.structures.gui.MaterialsMenu.startKey(r));
+        }
+        for (String name : FILES) {
+            YamlConfiguration y = load(name);
+            for (String key : keys) {
+                assertNotNull(y.getString(key), name + ": falta " + key);
+            }
+        }
+    }
+
     @Test void allFilesHaveTheSameKeys() throws IOException {
         Set<String> es = new TreeSet<>(load("es").getKeys(true));
         for (String name : List.of("en", "pt_BR")) {
             assertEquals(es, new TreeSet<>(load(name).getKeys(true)), name);
+        }
+    }
+
+    @Test void cancelLoreDoesNotPromiseTheRefundToWhoeverClicks() throws IOException {
+        // El dueño de la mesa también cancela, pero la devolución va siempre al dueño de la obra.
+        for (String lang : List.of("es", "en", "pt_BR")) {
+            String lore = load(lang).getString("build.cancel-confirm-lore");
+            assertNotNull(lore, lang);
+            String l = lore.toLowerCase(java.util.Locale.ROOT);
+            assertFalse(l.contains("se te devuelve") || l.contains("you get back") || l.contains("você recebe"),
+                    lang + ": " + lore);
+            assertTrue(l.contains("{percent}"), lang + ": " + lore);
         }
     }
 }

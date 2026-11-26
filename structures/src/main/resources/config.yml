@@ -1,7 +1,11 @@
 # Idioma de los mensajes: es, en o pt_BR.
 language: es
 
-# Qué pasa al romper una mesa con una obra activa: block (no deja), pause o cancel.
+# Qué pasa al romper una mesa con una obra activa:
+#   block:  no deja romperla.
+#   pause:  la mesa sale como ítem (la misma) y la obra espera; si estaba construyendo, queda en pausa.
+#           Al volver a colocar ese ítem (en cualquier sitio) la obra sigue, si la zona no está protegida para su dueño.
+#   cancel: cancela la obra (devuelve al dueño de la obra lo que fija cancel-refund en performance.yml) y rompe la mesa.
 break-policy: block
 
 # Menús dibujados del paquete de recursos. Vacío = menús de cofre normales.

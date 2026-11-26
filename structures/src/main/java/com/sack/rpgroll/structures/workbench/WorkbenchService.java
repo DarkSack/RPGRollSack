@@ -185,13 +185,17 @@ public final class WorkbenchService {
     /** Marca la mesa como huérfana (fila conservada) y la saca del índice por posición; un fallo de la base se avisa. */
     public void markOrphan(WorkbenchRecord r) {
         removePos(r);
-        byId.put(r.id(), new WorkbenchRecord(r.id(), r.owner(), r.world(), r.x(), r.y(), r.z(), r.tier(),
-                r.serial(), true, r.createdAt()));
+        byId.put(r.id(), orphaned(r));
         repo.markOrphan(r.id()).whenComplete((ok, err) -> {
             if (err != null) {
                 log.log(Level.SEVERE, "No se pudo marcar como huérfana la mesa " + r.id(), err);
             }
         });
+    }
+
+    private static WorkbenchRecord orphaned(WorkbenchRecord r) {
+        return new WorkbenchRecord(r.id(), r.owner(), r.world(), r.x(), r.y(), r.z(), r.tier(), r.serial(), true,
+                r.createdAt());
     }
 
     public Optional<WorkbenchRecord> at(Block b) {
@@ -272,6 +276,11 @@ public final class WorkbenchService {
                 log.log(Level.SEVERE, "No se pudo guardar la mesa " + rec.id(), err);
                 return PlaceResult.ERROR;
             }
+            try {
+                projects.benchPlaced(p, rec.id()); // reconecta su obra si estaba en pausa por la mesa
+            } catch (RuntimeException e) {
+                log.log(Level.SEVERE, "No se pudo reanudar la obra de la mesa " + rec.id(), e);
+            }
             return PlaceResult.OK;
         }, main);
     }
@@ -329,11 +338,14 @@ public final class WorkbenchService {
     }
 
     /**
-     * Cómo acabó un intento de romper. {@code DROPPED}: fuera de la base y de la caché, con su ítem. {@code GONE}: la
-     * fila ya no estaba (otro proceso la borró); la mesa sale de la caché sin ítem y el listener quita el bloque.
-     * {@code UPGRADING}: hay una mejora en curso. {@code NOTHING}: no hay mesa, no puede o ya se está rompiendo.
+     * Cómo acabó un intento de romper. {@code DROPPED}: fuera de la base y de la caché, con su ítem. {@code PAUSED}
+     * ({@code break-policy: pause}): la fila queda huérfana, sale su ítem y la obra espera a que se vuelva a colocar.
+     * {@code CANCELLED} ({@code cancel}): la obra se canceló y la mesa salió como en {@code DROPPED}.
+     * {@code CANCEL_FAILED}: la cancelación no se confirmó y la mesa sigue. {@code GONE}: la fila ya no estaba (otro
+     * proceso la borró); la mesa sale de la caché sin ítem y el listener quita el bloque. {@code UPGRADING}: hay una
+     * mejora en curso. {@code NOTHING}: no hay mesa, no puede o ya se está rompiendo.
      */
-    public enum BreakStatus { DROPPED, GONE, UPGRADING, NOTHING }
+    public enum BreakStatus { DROPPED, PAUSED, CANCELLED, CANCEL_FAILED, GONE, UPGRADING, NOTHING }
 
     public record BreakResult(BreakStatus status, Optional<ItemStack> dropped) {
         static BreakResult of(BreakStatus status) {
@@ -346,11 +358,13 @@ public final class WorkbenchService {
      * (un segundo intento no hace nada) pero sigue en la caché, protegida, hasta que la base confirme; si la
      * base falla, sigue ahí, protegida. Si la fila ya no estaba, se trata como inexistente ({@code GONE}): no se
      * suelta ningún ítem (no hay con qué demostrar que no se duplica). Se niega mientras haya una mejora en curso.
+     * Con obra activa, según {@code break-policy}: {@code pause} deja la fila huérfana y {@code cancel} cancela antes la
+     * obra.
      */
     public CompletableFuture<BreakResult> breakBench(Player p, Block at) {
         Optional<WorkbenchRecord> found = at(at);
-        // shortcut: ALLOW_PAUSE/ALLOW_CANCEL se tratan como ALLOW; pausar/cancelar obras llega con el plan 3.
-        if (found.isEmpty() || breakDecision(p, found.get()) == BreakDecision.DENY) {
+        BreakDecision decision = found.isEmpty() ? BreakDecision.DENY : breakDecision(p, found.get());
+        if (decision == BreakDecision.DENY) {
             return CompletableFuture.completedFuture(BreakResult.of(BreakStatus.NOTHING));
         }
         WorkbenchRecord rec = found.get();
@@ -361,6 +375,15 @@ public final class WorkbenchService {
         if (!breaking.add(rec.id())) {
             return CompletableFuture.completedFuture(BreakResult.of(BreakStatus.NOTHING));
         }
+        return switch (decision) {
+            case ALLOW_PAUSE -> orphanOnBreak(p, rec);
+            case ALLOW_CANCEL -> cancelThenRemove(p, rec);
+            default -> removeOnBreak(rec, BreakStatus.DROPPED);
+        };
+    }
+
+    /** Borra la fila y suelta el ítem ({@code done}); suelta el candado {@code breaking}. */
+    private CompletableFuture<BreakResult> removeOnBreak(WorkbenchRecord rec, BreakStatus done) {
         // La mesa sigue en la caché (at() la ve y las explosiones/pistones la respetan) hasta confirmar.
         return repo.remove(rec.id()).handleAsync((removed, err) -> {
             try {
@@ -370,19 +393,78 @@ public final class WorkbenchService {
                 byId.remove(rec.id(), rec);
                 removePos(rec);
                 if (!removed) {
-                    // Sale de la caché: el siguiente clic ya no la encuentra y este aviso no se repite.
-                    log.warning("La mesa " + rec.id() + " ya no estaba en la base de datos al romperla;"
-                            + " se quita del mundo sin soltar ítem.");
-                    return BreakResult.of(BreakStatus.GONE);
+                    return gone(rec);
                 }
             } finally {
                 breaking.remove(rec.id());
             }
-            WorkbenchStamp stamp = new WorkbenchStamp(rec.id(), rec.tier(), rec.serial(),
-                    signer.sign(rec.id(), rec.tier(), rec.serial()));
-            return new BreakResult(BreakStatus.DROPPED,
-                    Optional.of(items.create(stamp, lang, workbench.get().tiers().get(rec.tier()))));
+            return new BreakResult(done, Optional.of(itemOf(rec)));
         }, main);
+    }
+
+    /**
+     * {@code pause}: la fila se conserva como huérfana (sin posición, así otra mesa puede ir en ese bloque) y su obra
+     * queda atada a ella; el ítem sale con el mismo sello. Suelta el candado {@code breaking}.
+     */
+    private CompletableFuture<BreakResult> orphanOnBreak(Player p, WorkbenchRecord rec) {
+        return repo.markOrphan(rec.id()).handleAsync((marked, err) -> {
+            try {
+                if (err != null) {
+                    throw new CompletionException(err);
+                }
+                removePos(rec);
+                if (!marked) {
+                    byId.remove(rec.id(), rec);
+                    return gone(rec);
+                }
+                byId.put(rec.id(), orphaned(rec));
+            } finally {
+                breaking.remove(rec.id());
+            }
+            try {
+                projects.benchRemoved(p, rec.id());
+            } catch (RuntimeException e) {
+                log.log(Level.SEVERE, "No se pudo pausar la obra de la mesa " + rec.id(), e);
+            }
+            return new BreakResult(BreakStatus.PAUSED, Optional.of(itemOf(rec)));
+        }, main);
+    }
+
+    /**
+     * {@code cancel}: primero la obra (devolución al dueño de la obra); solo si la base lo confirma se rompe la mesa.
+     * Si no, la mesa sigue y se suelta el candado {@code breaking}.
+     */
+    private CompletableFuture<BreakResult> cancelThenRemove(Player p, WorkbenchRecord rec) {
+        CompletableFuture<Boolean> cancel;
+        try {
+            cancel = projects.cancelFor(p, rec.id());
+        } catch (RuntimeException e) {
+            cancel = CompletableFuture.failedFuture(e);
+        }
+        return cancel.handleAsync((ok, err) -> {
+            if (err == null && Boolean.TRUE.equals(ok)) {
+                return removeOnBreak(rec, BreakStatus.CANCELLED);
+            }
+            breaking.remove(rec.id());
+            if (err != null) {
+                log.log(Level.SEVERE, "No se pudo cancelar la obra de la mesa " + rec.id(), err);
+            }
+            return CompletableFuture.completedFuture(BreakResult.of(BreakStatus.CANCEL_FAILED));
+        }, main).thenCompose(f -> f);
+    }
+
+    /** La fila ya no estaba: sale de la caché, así el siguiente clic ya no la encuentra y este aviso no se repite. */
+    private BreakResult gone(WorkbenchRecord rec) {
+        log.warning("La mesa " + rec.id() + " ya no estaba en la base de datos al romperla;"
+                + " se quita del mundo sin soltar ítem.");
+        return BreakResult.of(BreakStatus.GONE);
+    }
+
+    /** El ítem de la mesa, con su misma identidad. */
+    private ItemStack itemOf(WorkbenchRecord rec) {
+        WorkbenchStamp stamp = new WorkbenchStamp(rec.id(), rec.tier(), rec.serial(),
+                signer.sign(rec.id(), rec.tier(), rec.serial()));
+        return items.create(stamp, lang, workbench.get().tiers().get(rec.tier()));
     }
 
     // ---- acceso ----

@@ -1,0 +1,23 @@
+# Rendimiento y límites de las obras.
+
+# Bloques que se colocan por tick entre todas las obras (presupuesto global).
+blocks-per-tick: 256
+
+# Obras simultáneas.
+max-projects:
+  server: 10
+  world: 5
+  player: 2
+
+# Vista previa: bloques falsos como máximo (el resto, solo contorno), distancia y duración.
+preview:
+  max-blocks: 4096
+  max-distance: 64
+  seconds: 300
+
+# % de los materiales no gastados que se devuelve al cancelar una obra (0-100).
+cancel-refund: 100
+
+# Cada cuántos segundos se vuelve a comprobar la protección (WorldGuard, GriefPrevention) de una obra en marcha.
+# Si ya no se puede construir allí, la obra se pausa hasta que el dueño la reanude.
+protection-recheck-seconds: 60

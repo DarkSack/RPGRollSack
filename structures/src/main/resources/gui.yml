@@ -10,3 +10,17 @@ help:
   title: "menu.help.title"
 confirm:
   title: "menu.confirm.title"
+categories:
+  title: "menu.categories.title"
+list:
+  title: "menu.list.title"
+detail:
+  title: "menu.detail.title"
+materials:
+  title: "menu.materials.title"
+preview:
+  title: "menu.preview.title"
+project:
+  title: "menu.project.title"
+builds:
+  title: "menu.builds.title"

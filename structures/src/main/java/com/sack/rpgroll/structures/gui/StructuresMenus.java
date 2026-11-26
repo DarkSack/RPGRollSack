@@ -4,10 +4,15 @@ import com.sack.rpgroll.gui.MenuSkin;
 import com.sack.rpgroll.gui.util.ItemBuilder;
 import com.sack.rpgroll.structures.StructuresPlugin;
 import com.sack.rpgroll.structures.config.WorkbenchSettings.Size;
+import com.sack.rpgroll.common.lang.LangManager;
+import com.sack.rpgroll.structures.storage.WorkbenchRecord;
+import com.sack.rpgroll.structures.workbench.WorkbenchService;
 import com.sack.rpgroll.structures.workbench.WorkbenchTier;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -15,6 +20,10 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -47,7 +56,109 @@ public final class StructuresMenus {
     public static final Layout AYUDA = new Layout("ayuda", 3, List.of(), List.of(13, 18, 22, 26));
     public static final Layout CONFIRMAR = new Layout("confirmar", 3, List.of(11, 15), List.of(13));
 
-    public static final List<Layout> LAYOUTS = List.of(CENTRO, MEJORAS, ACCESO, AYUDA, CONFIRMAR);
+    public static final Layout CATEGORIAS = new Layout("categorias", 6, List.of(), with(grid(1, 3), 49));
+    public static final Layout LISTA = new Layout("lista", 6, List.of(49),
+            Stream.concat(Stream.of(4), with(grid(1, 4), 45, 53).stream()).toList());
+    public static final Layout FICHA = new Layout("ficha", 6, List.of(49),
+            Stream.concat(Stream.of(4), with(grid(2, 2), 47, 51).stream()).toList());
+    public static final Layout MATERIALES = new Layout("materiales", 6, List.of(45, 47, 49),
+            Stream.concat(Stream.of(4), with(grid(1, 4), 51, 53).stream()).toList());
+    public static final Layout VISTA = new Layout("vista", 3,
+            with(IntStream.rangeClosed(10, 16).boxed().toList(), 18, 26), List.of(4, 22));
+    public static final Layout OBRA = new Layout("obra", 4, List.of(22, 24, 31), List.of(4, 13, 20));
+    public static final Layout CONSTRUCCIONES = new Layout("construcciones", 6, List.of(),
+            with(IntStream.range(0, 45).boxed().toList(), 45, 49, 53));
+
+    public static final List<Layout> LAYOUTS = List.of(CENTRO, MEJORAS, ACCESO, AYUDA, CONFIRMAR, CATEGORIAS, LISTA,
+            FICHA, MATERIALES, VISTA, OBRA, CONSTRUCCIONES);
+
+    /** Columnas 1 a 7 de {@code rows} filas desde {@code firstRow}: el hueco de contenido con marco. */
+    public static List<Integer> grid(int firstRow, int rows) {
+        return IntStream.range(firstRow, firstRow + rows).boxed()
+                .flatMap(r -> IntStream.rangeClosed(r * 9 + 1, r * 9 + 7).boxed()).toList();
+    }
+
+    private static List<Integer> with(List<Integer> slots, Integer... more) {
+        return Stream.concat(slots.stream(), Stream.of(more)).toList();
+    }
+
+    // ---- lógica pura de los menús (con pruebas) ----
+
+    /** Cuántas páginas de {@code size} hacen falta (mínimo 1, aunque no haya nada). */
+    public static int pageCount(int total, int size) {
+        return Math.max(1, (total + size - 1) / size);
+    }
+
+    /** Los elementos de una página (la página se acota a lo que existe). */
+    public static <T> List<T> pageOf(List<T> all, int page, int size) {
+        int p = Math.max(0, Math.min(page, pageCount(all.size(), size) - 1));
+        return all.subList(Math.min(all.size(), p * size), Math.min(all.size(), (p + 1) * size));
+    }
+
+    /** Segundos de obra para {@code blocks} bloques: {@code ceil(blocks / porCiclo) * ticksPorCiclo / 20}, hacia arriba. */
+    public static long estimateSeconds(int blocks, int blocksPerCycle, int ticksPerCycle) {
+        long cycles = (Math.max(0, blocks) + Math.max(1, blocksPerCycle) - 1L) / Math.max(1, blocksPerCycle);
+        return (cycles * Math.max(1, ticksPerCycle) + 19) / 20;
+    }
+
+    /** {@code 45s}, {@code 3m 05s}, {@code 2h 03m}. */
+    public static String duration(long seconds) {
+        if (seconds < 60) {
+            return seconds + "s";
+        }
+        if (seconds < 3600) {
+            return String.format(Locale.ROOT, "%dm %02ds", seconds / 60, seconds % 60);
+        }
+        return String.format(Locale.ROOT, "%dh %02dm", seconds / 3600, seconds % 3600 / 60);
+    }
+
+    /** Porcentaje hecho, hacia abajo, entre 0 y 100; sin total cuenta como terminado. */
+    public static int percent(int done, int total) {
+        return total <= 0 ? 100 : (int) Math.min(100, Math.max(0, done * 100L / total));
+    }
+
+    /**
+     * Hilo principal. Vuelve a mirar el acceso a la mesa (pudieron quitárselo con el menú abierto) y, ya en el hilo
+     * principal, corre {@code action} si lo tiene y sigue con el menú {@code expected} abierto (null = no hace falta).
+     * Sin acceso: aviso y cierra. Mesa que ya no existe: cierra.
+     */
+    public static void withAccess(Player p, StructuresPlugin plugin, UUID benchId, Inventory expected,
+                                  Runnable action) {
+        withAccess(p, plugin.service(), plugin.lang(), r -> sync(plugin, r), benchId, expected, action);
+    }
+
+    static void withAccess(Player p, WorkbenchService service, LangManager lang, Consumer<Runnable> main,
+                           UUID benchId, Inventory expected, Runnable action) {
+        Optional<WorkbenchRecord> bench = benchId == null ? Optional.empty() : service.byId(benchId);
+        if (bench.isEmpty()) {
+            main.accept(p::closeInventory);
+            return;
+        }
+        CompletableFuture<Boolean> check;
+        try {
+            check = service.canUse(p, bench.get());
+        } catch (RuntimeException e) {
+            check = CompletableFuture.failedFuture(e);
+        }
+        check.whenComplete((ok, err) -> main.accept(() -> {
+            if (err != null || !Boolean.TRUE.equals(ok)) {
+                lang.send(p, "workbench.use.denied");
+                p.closeInventory();
+            } else if (isOpen(p, expected)) {
+                action.run();
+            }
+        }));
+    }
+
+    /** Si el jugador sigue mirando ese inventario ({@code null} = no se espera ninguno: sí). */
+    public static boolean isOpen(Player p, Inventory expected) {
+        return expected == null || expected.equals(p.getOpenInventory().getTopInventory());
+    }
+
+    /** Vuelve al hilo principal (las respuestas de la base de datos tocan inventarios y menús). */
+    public static void sync(StructuresPlugin plugin, Runnable r) {
+        Bukkit.getScheduler().runTask(plugin, r);
+    }
 
     /** {@code centro_taller}, {@code centro_ingenio}, {@code centro_arcano}... */
     public static String background(String menu, WorkbenchTier tier) {
@@ -111,6 +222,49 @@ public final class StructuresMenus {
                 .map(n -> lang.component("menu.center.level-next", "tier", tierName(plugin, n)))
                 .orElseGet(() -> lang.component("menu.center.level-max")));
         return item(Material.NETHER_STAR, lang.component("menu.center.level", "tier", tierName(plugin, tier)), lore);
+    }
+
+    /** Título con el fondo {@code <menu>_<familia>} y el texto de {@code gui.yml}. */
+    public static Component title(StructuresPlugin plugin, Layout layout, WorkbenchTier tier, String menu) {
+        return skin().title(background(layout, tier), plugin.menuTitle(menu));
+    }
+
+    /** Icono de un id de material ({@code tipo:id}) con nombre y lore propios; {@code PAPER} si no hay muestra. */
+    public static ItemStack icon(StructuresPlugin plugin, String id, Component name, List<Component> lore) {
+        ItemStack sample = id == null || id.isBlank() ? null : plugin.materials().sample(id).orElse(null);
+        if (sample == null || sample.isEmpty()) {
+            return item(Material.PAPER, name, lore);
+        }
+        ItemStack out = sample.clone();
+        out.setAmount(1);
+        ItemMeta meta = out.getItemMeta();
+        meta.displayName(plain(name));
+        meta.lore(plain(lore));
+        out.setItemMeta(meta);
+        return out;
+    }
+
+    /** Nombre visible de un material del catálogo; el id si no hay proveedor. */
+    public static Component materialName(StructuresPlugin plugin, String id) {
+        return plugin.materials().sample(id).map(ItemStack::effectiveName).orElseGet(() -> Component.text(id));
+    }
+
+    /** Vuelve al centro de la mesa, o cierra si se abrió sin mesa (comando) o la mesa ya no está. */
+    public static void back(Player player, StructuresPlugin plugin, UUID benchId) {
+        Optional<WorkbenchRecord> bench = benchId == null ? Optional.empty() : plugin.service().byId(benchId);
+        if (bench.isPresent()) {
+            new CenterMenu(player, plugin, bench.get()).open();
+        } else {
+            player.closeInventory();
+        }
+    }
+
+    /** Botón de volver (con mesa) o de cerrar (sin mesa). */
+    public static ItemStack backOrClose(StructuresPlugin plugin, UUID benchId) {
+        var lang = plugin.lang();
+        return benchId == null
+                ? item(Material.BARRIER, lang.component("menu.close"), List.of(lang.component("menu.close-lore")))
+                : item(Material.BARRIER, lang.component("menu.back"), List.of(lang.component("menu.back-lore")));
     }
 
     public static String tierName(StructuresPlugin plugin, WorkbenchTier tier) {

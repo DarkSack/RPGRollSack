@@ -65,6 +65,37 @@ class WorkbenchRepositoryTest {
         assertTrue(String.valueOf(e.getCause().getMessage()).contains("UNIQUE"), e.getCause().getMessage());
     }
 
+    /** Una huérfana no ocupa su antigua posición: otra mesa se inserta (o se reclama) ahí y la huérfana sigue entera. */
+    @Test void orphanDoesNotBlockItsOldPosition() {
+        WorkbenchRecord old = rec(CONSTRUCTOR, 1, 1);
+        repo.insert(old).join();
+        assertTrue(repo.markOrphan(old.id()).join());
+
+        WorkbenchRecord fresh = rec(INGENIERO, 1, 2);
+        repo.insert(fresh).join();
+        assertEquals(Optional.of(fresh), repo.findAt("world", 1, 64, 5).join());
+        WorkbenchRecord kept = repo.find(old.id()).join().orElseThrow();
+        assertTrue(kept.orphan());
+        assertEquals(old.owner(), kept.owner());
+        assertEquals(old.tier(), kept.tier());
+        assertEquals(old.serial(), kept.serial());
+        assertEquals(old.createdAt(), kept.createdAt());
+
+        // Otra huérfana en x=3; la primera se reclama justo ahí.
+        WorkbenchRecord other = rec(CONSTRUCTOR, 3, 3);
+        repo.insert(other).join();
+        assertTrue(repo.markOrphan(other.id()).join());
+        WorkbenchRecord back = new WorkbenchRecord(old.id(), old.owner(), "world", 3, 64, 5, old.tier(), old.serial(),
+                false, old.createdAt());
+        repo.reclaim(back).join();
+        assertEquals(Optional.of(back), repo.findAt("world", 3, 64, 5).join());
+        assertTrue(repo.find(other.id()).join().orElseThrow().orphan());
+        assertEquals(3, repo.all().join().size());
+
+        // Una mesa viva sigue ocupando su sitio.
+        assertThrows(CompletionException.class, () -> repo.insert(rec(CONSTRUCTOR, 3, 4)).join());
+    }
+
     @Test void moveRemoveAndOrphan() {
         WorkbenchRecord r = rec(CONSTRUCTOR, 1, 1);
         repo.insert(r).join();

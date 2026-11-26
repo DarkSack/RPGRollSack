@@ -1,0 +1,11 @@
+# Integraciones opcionales. false = apagada aunque el plugin esté.
+worldguard:
+  enabled: true
+griefprevention:
+  enabled: true
+vault:
+  enabled: true
+floodgate:
+  enabled: true
+mythicmobs:
+  enabled: true

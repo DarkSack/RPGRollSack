@@ -32,8 +32,76 @@ class MenuLayoutTableTest {
                 Stream.concat(range(0, 44).stream(), Stream.of(45, 50, 53)).toList()), StructuresMenus.ACCESO);
         assertEquals(new Layout("ayuda", 3, List.of(), List.of(13, 18, 22, 26)), StructuresMenus.AYUDA);
         assertEquals(new Layout("confirmar", 3, List.of(11, 15), List.of(13)), StructuresMenus.CONFIRMAR);
-        assertEquals(List.of("centro", "mejoras", "acceso", "ayuda", "confirmar"),
+        assertEquals(List.of("centro", "mejoras", "acceso", "ayuda", "confirmar", "categorias", "lista", "ficha",
+                        "materiales", "vista", "obra", "construcciones"),
                 StructuresMenus.LAYOUTS.stream().map(Layout::id).toList());
+    }
+
+    /** Columnas 1 a 7 de {@code rows} filas desde {@code firstRow}. */
+    static List<Integer> grid(int firstRow, int rows) {
+        return IntStream.range(firstRow, firstRow + rows).boxed()
+                .flatMap(r -> range(r * 9 + 1, r * 9 + 7).stream()).toList();
+    }
+
+    static List<Integer> concat(List<Integer> a, Integer... b) {
+        return Stream.concat(a.stream(), Stream.of(b)).toList();
+    }
+
+    @Test void newMenuTablesMatchTheBrief() {
+        assertEquals(new Layout("categorias", 6, List.of(), concat(grid(1, 3), 49)), StructuresMenus.CATEGORIAS);
+        assertEquals(new Layout("lista", 6, List.of(49), Stream.concat(Stream.of(4), concat(grid(1, 4), 45, 53)
+                .stream()).toList()), StructuresMenus.LISTA);
+        assertEquals(new Layout("ficha", 6, List.of(49), Stream.concat(Stream.of(4), concat(grid(2, 2), 47, 51)
+                .stream()).toList()), StructuresMenus.FICHA);
+        assertEquals(new Layout("materiales", 6, List.of(45, 47, 49),
+                Stream.concat(Stream.of(4), concat(grid(1, 4), 51, 53).stream()).toList()), StructuresMenus.MATERIALES);
+        assertEquals(new Layout("vista", 3, concat(range(10, 16), 18, 26), List.of(4, 22)), StructuresMenus.VISTA);
+        assertEquals(new Layout("obra", 4, List.of(22, 24, 31), List.of(4, 13, 20)), StructuresMenus.OBRA);
+        assertEquals(new Layout("construcciones", 6, List.of(), concat(range(0, 44), 45, 49, 53)),
+                StructuresMenus.CONSTRUCCIONES);
+        assertEquals(grid(1, 3), StructuresMenus.grid(1, 3));
+    }
+
+    @Test void slotsAreUniqueInEveryTable() {
+        for (Layout l : StructuresMenus.LAYOUTS) {
+            List<Integer> all = Stream.concat(l.painted().stream(), l.visible().stream()).toList();
+            assertEquals(all.size(), new HashSet<>(all).size(), l.id() + " repite casillas");
+        }
+    }
+
+    /** Las casillas de los menús nuevos están en su tabla, en el lado correcto (true = dibujada). */
+    @Test void newMenuSlotsSitOnTheRightSideOfTheTable() {
+        Map<Layout, Map<Integer, Boolean>> used = Map.of(
+                StructuresMenus.CATEGORIAS, Map.of(CategoriesMenu.VOLVER, false,
+                        CategoriesMenu.CONTENT.getFirst(), false, CategoriesMenu.CONTENT.getLast(), false),
+                StructuresMenus.LISTA, Map.of(ListMenu.CATEGORIA, false, ListMenu.ANTERIOR, false,
+                        ListMenu.VOLVER, true, ListMenu.SIGUIENTE, false, ListMenu.CONTENT.getFirst(), false,
+                        ListMenu.CONTENT.getLast(), false),
+                StructuresMenus.FICHA, Map.of(DetailMenu.ICONO, false, DetailMenu.VISTA_PREVIA, false,
+                        DetailMenu.VOLVER, true, DetailMenu.ELEGIR, false, DetailMenu.MATERIALES.getFirst(), false,
+                        DetailMenu.MATERIALES.getLast(), false),
+                StructuresMenus.MATERIALES, Map.of(MaterialsMenu.INFO, false, MaterialsMenu.DEPOSITAR, true,
+                        MaterialsMenu.RECUPERAR, true, MaterialsMenu.VOLVER, true, MaterialsMenu.CONSTRUIR, false,
+                        MaterialsMenu.RECOGER, false, MaterialsMenu.CONTENT.getFirst(), false,
+                        MaterialsMenu.CONTENT.getLast(), false),
+                StructuresMenus.VISTA, Map.of(PreviewMenu.INFO, false, PreviewMenu.MODO, false,
+                        PreviewMenu.X_MENOS, true, PreviewMenu.Z_MAS, true, PreviewMenu.GIRAR, true,
+                        PreviewMenu.CANCELAR, true, PreviewMenu.CONFIRMAR, true, PreviewMenu.Y_MAS, true),
+                StructuresMenus.OBRA, Map.of(ProjectMenu.INFO, false, ProjectMenu.PROGRESO, false,
+                        ProjectMenu.PAUSA, false, ProjectMenu.MATERIALES, true, ProjectMenu.CANCELAR, true,
+                        ProjectMenu.VOLVER, true),
+                StructuresMenus.CONSTRUCCIONES, Map.of(BuildsMenu.ANTERIOR, false, BuildsMenu.VOLVER, false,
+                        BuildsMenu.SIGUIENTE, false, 0, false, BuildsMenu.PAGE_SIZE - 1, false));
+        used.forEach((layout, slots) -> slots.forEach((slot, painted) -> {
+            assertEquals(painted, layout.isPainted(slot), layout.id() + " " + slot);
+            if (!painted) {
+                assertTrue(layout.visible().contains(slot), layout.id() + " " + slot + " no está en visible");
+            }
+        }));
+        assertEquals(ListMenu.PAGE_SIZE, ListMenu.CONTENT.size());
+        assertEquals(28, ListMenu.PAGE_SIZE);
+        assertEquals(7, List.of(PreviewMenu.X_MENOS, PreviewMenu.X_MAS, PreviewMenu.Y_MENOS, PreviewMenu.Y_MAS,
+                PreviewMenu.Z_MENOS, PreviewMenu.Z_MAS, PreviewMenu.GIRAR).stream().distinct().count());
     }
 
     @Test void paintedAndVisibleNeverOverlapAndFitTheMenu() {

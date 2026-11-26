@@ -6,7 +6,6 @@ import com.sack.rpgroll.structures.storage.WorkbenchRecord;
 import com.sack.rpgroll.structures.workbench.AccessRules;
 import com.sack.rpgroll.structures.workbench.WorkbenchService;
 import com.sack.rpgroll.structures.workbench.WorkbenchTier;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -43,22 +42,22 @@ public final class CenterMenu extends InventoryGUI {
         this.plugin = plugin;
         this.benchId = bench.id();
         this.tier = bench.tier();
+        plugin.projects().acknowledge(bench.id()); // la mesa deja de mostrarse COMPLETED
     }
 
     @Override
     public void build() {
         StructuresMenus.fill(inventory);
         var lang = plugin.lang();
-        Component soon = lang.component("menu.coming_soon");
         put(NIVEL, StructuresMenus.tierIcon(plugin, tier));
         put(CATALOGO, StructuresMenus.item(Material.BOOKSHELF, lang.component("menu.center.catalog"),
-                List.of(lang.component("menu.center.catalog-lore"), soon)));
+                List.of(lang.component("menu.center.catalog-lore"))));
         put(MIS_CONSTRUCCIONES, StructuresMenus.item(Material.CHEST, lang.component("menu.center.builds"),
-                List.of(lang.component("menu.center.builds-lore"), soon)));
+                List.of(lang.component("menu.center.builds-lore"))));
         put(MATERIALES, StructuresMenus.item(Material.BARREL, lang.component("menu.center.materials"),
-                List.of(lang.component("menu.center.materials-lore"), soon)));
+                List.of(lang.component("menu.center.materials-lore"))));
         put(OBRA, StructuresMenus.item(Material.IRON_PICKAXE, lang.component("menu.center.project"),
-                List.of(lang.component("menu.center.project-lore"), soon)));
+                List.of(lang.component("menu.center.project-lore"))));
         put(MEJORAS, StructuresMenus.item(Material.ANVIL, lang.component("menu.center.upgrades"),
                 List.of(lang.component("menu.center.upgrades-lore"))));
         put(ACCESO, StructuresMenus.item(Material.PLAYER_HEAD, lang.component("menu.center.access"),
@@ -85,6 +84,10 @@ public final class CenterMenu extends InventoryGUI {
         boolean manage = AccessRules.canManage(player.getUniqueId(), bench.get(), Set.of(),
                 player.hasPermission(WorkbenchService.PERM_BYPASS));
         switch (slot) {
+            case CATALOGO -> new CategoriesMenu(player, plugin, benchId, tier).open();
+            case MIS_CONSTRUCCIONES -> BuildsMenu.show(player, plugin, benchId, tier, 0, inventory);
+            case MATERIALES -> MaterialsMenu.show(player, plugin, benchId, tier, inventory);
+            case OBRA -> new ProjectMenu(player, plugin, bench.get()).open();
             case MEJORAS -> {
                 if (manage) {
                     new UpgradeMenu(player, plugin, bench.get()).open();
