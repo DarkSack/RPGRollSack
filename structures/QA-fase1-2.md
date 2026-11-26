@@ -87,7 +87,7 @@ Banco con JAR de desarrollo nuevo (129 pruebas en verde) y `menus.pack: "sackito
 
 Capturas en `E:\Dev\scratchpad\structures-20261123\capturas\` (originales) y `E:\Dev\RPGRollDocs\public\capturas\structures\` (recortadas).
 
-Sin probar todavía: capturas con el ratón encima de un botón (tooltips avanzados de F3+H activados en el cliente), MySQL real y mundos de WorldForge.
+Sin probar todavía: capturas con el ratón encima de un botón (tooltips avanzados de F3+H activados en el cliente), mundos de WorldForge. MySQL: probado el 2026-11-26 (abajo).
 
 ## Fases 3-5: qué probar en el banco
 
@@ -215,4 +215,9 @@ Banco Docker `structures-qa`, bots QaDueno (dueño) y QaOtro, script `E:\Dev\scr
 | Lo mismo con el dueño op: deja mejorar (op lleva `rpgrollstructures.bypass`, default op) | OK, por diseño |
 
 - Trampa del banco: los bots op se saltan la protección de zona. Para probar WorldGuard o GriefPrevention, `deop` al dueño.
-- Sin probar en el banco: `build-upgrade.gone` (cubierto por prueba unitaria), granjas y parcelas en una mejora, MySQL.
+| MySQL (MariaDB 10.4 en el anfitrión, `host.docker.internal:3307`): base nueva migrada a la versión 6 | OK |
+| MySQL: construir `caseta` con bots (`MYSQL=1 node qa6.js construir`) | OK 5/5 |
+| MySQL: reparar 3 bloques (`MYSQL=1 node qa6.js reparar`) | OK (el mismo fallo del script) |
+
+- Trampa al cambiar de base: las mesas que el chunk guarda y la base nueva no tiene se quitan del chunk («se quita del chunk»). Al volver a la base vieja, las que perdieron su bloque salen como huérfanas; las demás no dieron aviso (no comprobado a mano). No hay migración entre bases: cambiar de SQLite a MySQL con mesas puestas las deja sin datos en la base nueva.
+- Sin probar en el banco: `build-upgrade.gone` (cubierto por prueba unitaria), granjas y parcelas en una mejora, mundos de WorldForge (el jar de venta exige licencia; hace falta un jar de desarrollo).
