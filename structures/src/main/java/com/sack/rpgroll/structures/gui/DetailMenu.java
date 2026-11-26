@@ -45,7 +45,7 @@ public final class DetailMenu extends InventoryGUI {
 
     @Override
     public void build() {
-        StructuresMenus.fill(inventory);
+        StructuresMenus.FICHA.fill(inventory);
         var lang = plugin.lang();
         List<Component> lore = new ArrayList<>();
         lore.add(lang.component("menu.detail.size", "width", def.blocks().width(), "height", def.blocks().height(),

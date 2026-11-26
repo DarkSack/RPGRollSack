@@ -66,7 +66,7 @@ public final class ListMenu extends InventoryGUI {
 
     @Override
     public void build() {
-        StructuresMenus.fill(inventory);
+        StructuresMenus.LISTA.fill(inventory);
         var lang = plugin.lang();
         String language = plugin.settings().language();
         plugin.categories().byId(category).ifPresent(c -> put(CATEGORIA, StructuresMenus.icon(plugin, c.icon(),

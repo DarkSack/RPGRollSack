@@ -111,7 +111,7 @@ public final class MaterialsMenu extends InventoryGUI {
 
     @Override
     public void build() {
-        StructuresMenus.fill(inventory);
+        StructuresMenus.MATERIALES.fill(inventory);
         var lang = plugin.lang();
         Optional<Project> project = project();
         if (project.isEmpty()) {

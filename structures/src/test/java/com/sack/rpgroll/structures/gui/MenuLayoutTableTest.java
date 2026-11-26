@@ -160,4 +160,19 @@ class MenuLayoutTableTest {
         assertEquals("access.error", AccessMenu.messageKey(AccessChange.DENIED, "access.added"));
         assertEquals("access.error", AccessMenu.messageKey(null, "access.added"));
     }
+
+    /** Solo los menús con fondo dibujado en el pack usan el skin; los demás, sin fondo y con los botones a la vista. */
+    @Test void onlyMenusWithArtUseTheSkin() {
+        com.sack.rpgroll.gui.MenuSkin.register(com.sack.rpgroll.structures.StructuresPlugin.MENU_MODULE,
+                com.sack.rpgroll.gui.MenuSkin.of("sackito:menus"));
+        try {
+            assertEquals(List.of("centro", "mejoras", "acceso", "ayuda", "confirmar"),
+                    StructuresMenus.LAYOUTS.stream().filter(Layout::drawn).map(Layout::id).toList());
+            assertTrue(StructuresMenus.CENTRO.skin().drawn());
+            assertSame(com.sack.rpgroll.gui.MenuSkin.OFF, StructuresMenus.VISTA.skin());
+            assertSame(com.sack.rpgroll.gui.MenuSkin.OFF, StructuresMenus.CONSTRUCCIONES.skin());
+        } finally {
+            com.sack.rpgroll.gui.MenuSkin.register(com.sack.rpgroll.structures.StructuresPlugin.MENU_MODULE, null);
+        }
+    }
 }

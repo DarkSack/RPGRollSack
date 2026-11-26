@@ -44,7 +44,7 @@ public final class CategoriesMenu extends InventoryGUI {
 
     @Override
     public void build() {
-        StructuresMenus.fill(inventory);
+        StructuresMenus.CATEGORIAS.fill(inventory);
         var lang = plugin.lang();
         for (int i = 0; i < shown.size(); i++) {
             Category c = shown.get(i);

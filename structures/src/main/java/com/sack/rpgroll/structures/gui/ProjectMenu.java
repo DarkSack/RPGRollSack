@@ -123,7 +123,7 @@ public final class ProjectMenu extends InventoryGUI {
 
     @Override
     public void build() {
-        StructuresMenus.fill(inventory);
+        StructuresMenus.OBRA.fill(inventory);
         var lang = plugin.lang();
         Optional<Project> found = project();
         if (found.isEmpty()) {

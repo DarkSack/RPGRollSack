@@ -45,7 +45,29 @@ public final class StructuresMenus {
         public ItemStack dress(int slot, ItemStack item) {
             return isPainted(slot) ? skin().button(item) : item;
         }
+
+        /** Si el pack de Sackito tiene su fondo. Los menús nuevos aún no: sin él saldrían «▯» y botones invisibles. */
+        public boolean drawn() {
+            return WITH_ART.contains(id);
+        }
+
+        /** El skin del módulo si este menú tiene fondo dibujado; si no, {@link MenuSkin#OFF}. */
+        public MenuSkin skin() {
+            return drawn() ? StructuresMenus.skin() : MenuSkin.OFF;
+        }
+
+        /** Relleno de este menú: el del skin si tiene fondo, el normal si no. */
+        public void fill(Inventory inv) {
+            ItemStack filler = drawn() ? filler() : plainFiller();
+            for (int i = 0; i < inv.getSize(); i++) {
+                inv.setItem(i, filler.clone());
+            }
+        }
     }
+
+    // shortcut: solo estos cinco tienen fondo en sackito:menus; al dibujar los demás (plan 4), añadirlos aquí.
+    private static final java.util.Set<String> WITH_ART = java.util.Set.of("centro", "mejoras", "acceso", "ayuda",
+            "confirmar");
 
     public static final Layout CENTRO = new Layout("centro", 6, List.of(49, 53),
             List.of(4, 20, 22, 24, 29, 31, 33));
@@ -192,11 +214,15 @@ public final class StructuresMenus {
 
     /** Relleno sin recuadro de nombre (sin pack se veía un tooltip vacío, y su id con F3+H). */
     public static ItemStack filler() {
+        return skin().filler(plainFiller());
+    }
+
+    private static ItemStack plainFiller() {
         ItemStack plain = ItemBuilder.createFiller();
         ItemMeta meta = plain.getItemMeta();
         meta.setHideTooltip(true);
         plain.setItemMeta(meta);
-        return skin().filler(plain);
+        return plain;
     }
 
     public static void fill(Inventory inv) {
@@ -226,7 +252,7 @@ public final class StructuresMenus {
 
     /** Título con el fondo {@code <menu>_<familia>} y el texto de {@code gui.yml}. */
     public static Component title(StructuresPlugin plugin, Layout layout, WorkbenchTier tier, String menu) {
-        return skin().title(background(layout, tier), plugin.menuTitle(menu));
+        return layout.skin().title(background(layout, tier), plugin.menuTitle(menu));
     }
 
     /** Icono de un id de material ({@code tipo:id}) con nombre y lore propios; {@code PAPER} si no hay muestra. */

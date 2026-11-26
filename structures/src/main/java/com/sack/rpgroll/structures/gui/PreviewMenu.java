@@ -55,7 +55,7 @@ public final class PreviewMenu extends InventoryGUI {
 
     @Override
     public void build() {
-        StructuresMenus.fill(inventory);
+        StructuresMenus.VISTA.fill(inventory);
         var lang = plugin.lang();
         Optional<PreviewSession> session = plugin.preview().session(player);
         if (session.isEmpty()) {

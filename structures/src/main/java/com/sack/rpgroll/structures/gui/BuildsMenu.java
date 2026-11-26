@@ -115,7 +115,7 @@ public final class BuildsMenu extends InventoryGUI {
 
     @Override
     public void build() {
-        StructuresMenus.fill(inventory);
+        StructuresMenus.CONSTRUCCIONES.fill(inventory);
         var lang = plugin.lang();
         if (upgrading != null) {
             for (int i = 0; i < targets.size(); i++) {
